@@ -1,0 +1,103 @@
+import { CVExample } from '../../types';
+
+export const kokChef: CVExample = {
+    slug: 'kok-chef',
+    categorySlug: 'horeca-en-detailhandel',
+    name: 'Kok / Chef-kok',
+    description: 'CV voorbeeld voor koks en chef-koks. Laat zien hoe je je culinaire vaardigheden, keukenervaring en HACCP-certificering professioneel presenteert.',
+    templateId: 'dynamic',
+    colorThemeId: 'warm-earth',
+
+    metaTitle: 'CV Voorbeeld Kok / Chef-kok | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor koks en chef-koks. Met voorbeeldteksten voor keukenervaring, menuontwikkeling en HACCP-certificering. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld kok', 'cv chef-kok', 'cv horeca', 'cv keuken'],
+    heroTitle: 'CV Voorbeeld Kok / Chef-kok',
+    heroText: 'Als kok of chef-kok draait alles om passie voor het vak en kwaliteit in de keuken. Dit CV voorbeeld laat zien hoe je je culinaire ervaring, menuontwikkeling en leidinggevende kwaliteiten in de keuken overtuigend op papier zet.',
+    tips: [
+        'Vermeld je HACCP-certificering en Sociale Hygiëne diploma',
+        'Noem de type keukens en restaurants waar je hebt gewerkt (fine dining, bistro, catering)',
+        'Toon ervaring met menuontwikkeling, kostprijsberekening en voorraadbeheer',
+        'Geef aan of je ervaring hebt met het aansturen van keukenbrigades',
+        'Vermeld speciale dieetkennis (allergie, vegetarisch, veganistisch)',
+    ],
+    relatedSlugs: ['horeca-en-detailhandel/ober-serveerster', 'horeca-en-detailhandel/cateringmedewerker'],
+
+    sampleCV: {
+        personal: {
+            name: 'Jeroen Klaassen',
+            title: 'Chef-kok',
+            email: 'jeroen.klaassen@email.nl',
+            phone: '06-45321098',
+            location: 'Amsterdam',
+            address: 'Prinsengracht 214',
+            postalCode: '1016 HC',
+            summary: 'Creatieve en gedreven chef-kok met 10 jaar ervaring in de professionele horeca. Ervaren in fine dining, bistro- en cateringkeukens. Sterk in menuontwikkeling, kostprijsbeheer en het aansturen van keukenbrigades tot 8 personen. Gepassioneerd over seizoensgebonden ingrediënten en duurzaam koken.',
+            birthDate: '16 april 1988',
+            birthPlace: 'Haarlem',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Chef-kok',
+                company: 'Restaurant De Plantage',
+                location: 'Amsterdam',
+                start: 'maart 2020',
+                end: 'heden',
+                description: 'Eindverantwoordelijk voor de keuken van een druk bezocht restaurant met 80 couverts.',
+                highlights: [
+                    'Seizoensgebonden menukaart ontwikkeld die foodcostpercentage met 5% verlaagde',
+                    'Keukenbrigade van 8 medewerkers aangestuurd en rooster opgesteld',
+                    'Restaurant begeleid naar een 8,5 beoordeling op Iens/TheFork',
+                ],
+            },
+            {
+                role: 'Souschef',
+                company: 'Hotel Mercure',
+                location: 'Haarlem',
+                start: 'januari 2016',
+                end: 'februari 2020',
+                description: 'Ondersteuning van de chef-kok bij dagelijkse keukenoperatie en banketten.',
+                highlights: [
+                    'Banquetmenu\'s ontwikkeld voor evenementen tot 200 gasten',
+                    'HACCP-procedures geïmplementeerd en hygiënestandaard verbeterd',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 3 Kok / Gezel Kok',
+                school: 'ROC van Amsterdam',
+                location: 'Amsterdam',
+                start: 'september 2012',
+                end: 'juli 2015',
+                description: 'Opleiding tot gezel kok met stages in diverse keukens van à la carte tot catering.',
+            },
+        ],
+        skills: [
+            { name: 'Menuontwikkeling', level: 5 },
+            { name: 'Keukenaansturing', level: 5 },
+            { name: 'Kostprijsberekening', level: 4 },
+            { name: 'HACCP & Voedselveiligheid', level: 4 },
+            { name: 'Mise en place', level: 5 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+            { name: 'Frans', level: 'Basis' },
+        ],
+        interests: ['Culinaire trends', 'Marktbezoeken', 'Reizen', 'Fotografie'],
+        courses: [
+            { name: 'Sociale Hygiëne', institution: 'SVH', year: '2020' },
+            { name: 'HACCP Certificaat', institution: 'HACCP Nederland', year: '2019' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

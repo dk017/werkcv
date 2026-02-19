@@ -1,0 +1,102 @@
+import { CVExample } from '../../types';
+
+export const magazijnmedewerker: CVExample = {
+    slug: 'magazijnmedewerker',
+    categorySlug: 'vakmanschap-en-logistiek',
+    name: 'Magazijnmedewerker',
+    description: 'CV voorbeeld voor magazijnmedewerkers en orderpickers. Laat zien hoe je je heftruckcertificaat, WMS-ervaring en fysieke inzetbaarheid presenteert.',
+    templateId: 'simple',
+    colorThemeId: 'charcoal',
+
+    metaTitle: 'CV Voorbeeld Magazijnmedewerker | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor magazijnmedewerkers. Met voorbeeldteksten voor heftruckcertificaat, orderpicking en WMS-systemen. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld magazijnmedewerker', 'cv orderpicker', 'cv magazijn', 'cv logistiek medewerker'],
+    heroTitle: 'CV Voorbeeld Magazijnmedewerker',
+    heroText: 'Als magazijnmedewerker ben je een belangrijke schakel in de logistieke keten. Dit CV voorbeeld laat zien hoe je je heftruckcertificaat, ervaring met WMS-systemen en fysieke inzetbaarheid professioneel presenteert.',
+    tips: [
+        'Vermeld je heftruckcertificaat en het type (reachtruck, EPT, heftruck)',
+        'Noem ervaring met specifieke WMS-systemen (SAP, Navision, Picqer)',
+        'Geef aan dat je beschikbaar bent voor ploegendiensten of weekendwerk',
+        'Toon resultaten: picksnelheid, nauwkeurigheid, verbeterprojecten',
+        'Vermeld eventuele VCA-certificering en EHBO-diploma',
+    ],
+    relatedSlugs: ['vakmanschap-en-logistiek/logistiek-coordinator', 'vakmanschap-en-logistiek/chauffeur'],
+
+    sampleCV: {
+        personal: {
+            name: 'Ricardo Bakker',
+            title: 'Magazijnmedewerker / Orderpicker',
+            email: 'ricardo.bakker@email.nl',
+            phone: '06-67890123',
+            location: 'Tilburg',
+            address: 'Ringbaan Zuid 112',
+            postalCode: '5021 DL',
+            summary: 'Hardwerkende en nauwkeurige magazijnmedewerker met 5 jaar ervaring in distributiecentra. In bezit van heftruckcertificaat en ervaren met WMS-systemen. Betrouwbaar teamspeler die ook zelfstandig goed functioneert. Beschikbaar voor ploegendiensten.',
+            birthDate: '27 augustus 1995',
+            birthPlace: 'Tilburg',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Magazijnmedewerker / Orderpicker',
+                company: 'Bol.com Fulfilment Center',
+                location: 'Waalwijk',
+                start: 'augustus 2022',
+                end: 'heden',
+                description: 'Orderpicking, inslag en uitslag van goederen in een grootschalig distributiecentrum.',
+                highlights: [
+                    'Gemiddeld 150 orderregels per uur gepickt met 99,5% nauwkeurigheid',
+                    'Reachtruck bediend voor het plaatsen en ophalen van pallets op hoogte',
+                    'Nieuwe medewerkers ingewerkt op pickprocedures en veiligheidsprotocollen',
+                ],
+            },
+            {
+                role: 'Logistiek Medewerker',
+                company: 'Lidl Distributiecentrum',
+                location: 'Heerenveen',
+                start: 'januari 2019',
+                end: 'juli 2022',
+                description: 'Verwerken van inkomende en uitgaande goederen in het distributiecentrum.',
+                highlights: [
+                    'Dagelijks 80+ pallets verwerkt bij inslag en uitslag',
+                    'Voorraadverschillen teruggebracht met 30% door nauwkeurige controle',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 2 Logistiek Medewerker',
+                school: 'ROC van Amsterdam',
+                location: 'Amsterdam',
+                start: 'september 2015',
+                end: 'juli 2018',
+                description: 'Opleiding tot logistiek medewerker met praktijkstages in distributiecentra.',
+            },
+        ],
+        skills: [
+            { name: 'Orderpicking', level: 5 },
+            { name: 'Heftruck & Reachtruck', level: 5 },
+            { name: 'WMS-systemen', level: 4 },
+            { name: 'Voorraadbeheer', level: 4 },
+            { name: 'Fysieke belastbaarheid', level: 5 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Basis' },
+        ],
+        interests: ['Fitness', 'Gaming', 'Voetbal'],
+        courses: [
+            { name: 'Heftruckcertificaat (Reachtruck)', institution: 'BMWT', year: '2022' },
+            { name: 'VCA-basis', institution: 'PBNA', year: '2021' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

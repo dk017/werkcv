@@ -1,0 +1,103 @@
+import { CVExample } from '../../types';
+
+export const werkvoorbereider: CVExample = {
+    slug: 'werkvoorbereider',
+    categorySlug: 'bouw-en-techniek',
+    name: 'Werkvoorbereider Bouw',
+    description: 'CV voorbeeld voor werkvoorbereiders in de bouw. Toon je expertise in planning, werktekeningen en bouwvoorbereiding.',
+    templateId: 'modern',
+    colorThemeId: 'ocean-blue',
+
+    metaTitle: 'CV Voorbeeld Werkvoorbereider Bouw | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor werkvoorbereiders in de bouw. Met voorbeeldteksten voor planning, tekeningen en calculatie. Maak direct je CV.',
+    keywords: ['cv voorbeeld werkvoorbereider', 'cv werkvoorbereider bouw', 'cv bouwkunde', 'cv planning bouw'],
+    heroTitle: 'CV Voorbeeld Werkvoorbereider Bouw',
+    heroText: 'Als werkvoorbereider zorg je dat bouwprojecten soepel van start gaan. Dit CV voorbeeld laat zien hoe je je kennis van werktekeningen, planning en calculatie overtuigend presenteert aan bouwbedrijven en ingenieursbureaus.',
+    tips: [
+        'Benadruk je ervaring met specifieke software zoals AutoCAD, Revit of BIM',
+        'Beschrijf de omvang van projecten die je hebt voorbereid (budget, m2, aantal woningen)',
+        'Vermeld je kennis van bouwbesluit, bestekken en regelgeving',
+        'Laat zien dat je goed kunt samenwerken met uitvoerders en projectleiders',
+        'Geef aan welke type projecten je kent: woningbouw, utiliteit of infra',
+    ],
+    relatedSlugs: ['bouw-en-techniek/calculator', 'bouw-en-techniek/projectleider-bouw'],
+
+    sampleCV: {
+        personal: {
+            name: 'Mark Jansen',
+            title: 'Werkvoorbereider Bouw',
+            email: 'mark.jansen@email.nl',
+            phone: '06-12345678',
+            location: 'Den Haag',
+            address: 'Laan van Meerdervoort 236',
+            postalCode: '2563 AZ',
+            summary: 'Werkvoorbereider met 5 jaar ervaring in de woningbouw en utiliteitsbouw. Verantwoordelijk voor het opstellen van werktekeningen, planningen en materiaalbegrotingen. Sterk in het vertalen van bestekken naar uitvoerbare werkplannen. Ervaren met AutoCAD, Revit en MS Project.',
+            birthDate: '5 januari 1994',
+            birthPlace: 'Leiden',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: 'linkedin.com/in/markjansen-bouw',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Werkvoorbereider',
+                company: 'VolkerWessels',
+                location: 'Den Haag',
+                start: 'juni 2021',
+                end: 'heden',
+                description: 'Werkvoorbereiding voor woningbouw- en utiliteitsprojecten. Verantwoordelijk voor werktekeningen, planningen en afstemming met uitvoering en onderaannemers.',
+                highlights: [
+                    'Werkvoorbereiding verzorgd voor nieuwbouwproject van 80 appartementen (budget EUR 18 mln)',
+                    'Werktekeningen en detailtekeningen opgesteld in AutoCAD en Revit',
+                    'Materiaalbegrotingen en inkooplijsten opgesteld met kostenbesparingen van 8%',
+                ],
+            },
+            {
+                role: 'Junior Werkvoorbereider',
+                company: 'Dura Vermeer',
+                location: 'Rotterdam',
+                start: 'september 2019',
+                end: 'mei 2021',
+                description: 'Ondersteuning bij werkvoorbereiding van diverse bouwprojecten, met focus op tekeningen en planning.',
+                highlights: [
+                    'Bestektekeningen vertaald naar werktekeningen voor renovatieproject van 50 woningen',
+                    'Planningen opgesteld in MS Project en afgestemd met uitvoerders',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'HBO Bouwkunde',
+                school: 'Hogeschool Rotterdam',
+                location: 'Rotterdam',
+                start: 'september 2014',
+                end: 'juli 2019',
+                description: 'Opleiding Bouwkunde met specialisatie constructief ontwerpen en bouwprojectmanagement.',
+            },
+        ],
+        skills: [
+            { name: 'AutoCAD', level: 5 },
+            { name: 'Revit / BIM', level: 4 },
+            { name: 'Werktekeningen', level: 5 },
+            { name: 'Planning (MS Project)', level: 4 },
+            { name: 'Calculatie & Begroting', level: 4 },
+            { name: 'Bestekkennis', level: 3 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+        ],
+        interests: ['Architectuur', 'Hardlopen', 'Fotografie'],
+        courses: [
+            { name: 'BIM Management', institution: 'Brink Academy', year: '2022' },
+            { name: 'VCA Basis', institution: 'PBNA', year: '2021' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

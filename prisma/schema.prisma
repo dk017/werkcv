@@ -1,0 +1,138 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "library"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  documents CVDocument[]
+  sessions  Session[]
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model LoginCode {
+  id        String   @id @default(uuid())
+  email     String
+  codeHash  String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([email, createdAt])
+  @@index([expiresAt])
+}
+
+model CVDocument {
+  id           String   @id @default(uuid())
+  title        String
+  data         Json
+  templateId   String   @default("professional")
+  colorThemeId String   @default("classic-blue")
+  coverLetter  String?  @db.Text
+  coverLetterUpdatedAt DateTime?
+  attribution  Json?
+  sourceCluster String?
+  sourceLocale  String?
+  startSource   String?
+  userId       String?
+  user         User?    @relation(fields: [userId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Template {
+  id      String @id @default(uuid())
+  name    String
+  preview String
+  config  Json
+}
+
+model Order {
+  id        String   @id @default(uuid())
+  email     String
+  cvId      String
+  product   String
+  amountCents Int?
+  currency  String?
+  addons    String[] @default([])
+  attribution Json?
+  sourceCluster String?
+  lemonId   String?  @unique
+  paidAt    DateTime?
+  createdAt DateTime @default(now())
+}
+
+model AnalyticsEvent {
+  id          String   @id @default(cuid())
+  event       String
+  cvId        String?
+  orderId     String?
+  path        String?
+  cluster     String?
+  properties  Json?
+  attribution Json?
+  createdAt   DateTime @default(now())
+
+  @@index([event, createdAt])
+  @@index([cvId])
+  @@index([orderId])
+}
+
+// SEO Silo Architecture - Categories for CV examples
+model CVCategory {
+  id          String       @id @default(cuid())
+  slug        String       @unique  // URL slug: "ict-en-software", "backend-developer-nodejs"
+  name        String                // Display name: "ICT & Software"
+  nameDutch   String                // Dutch name for UI
+  description String       @db.Text // SEO description for the page
+  type        CategoryType          // pillar, subhub, or spoke
+
+  // Hierarchy
+  parentId    String?
+  parent      CVCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    CVCategory[] @relation("CategoryHierarchy")
+
+  // Content
+  sampleCV    Json?                 // Pre-filled sample CV data for this niche
+  heroTitle   String?               // Hero section title
+  heroText    String?      @db.Text // Hero section description
+  tips        String[]              // Array of tips for this CV type
+
+  // SEO
+  metaTitle   String                // <title> tag
+  metaDesc    String                // meta description
+  keywords    String[]              // Target keywords
+
+  // Sibling linking (for internal links)
+  siblingIds  String[]              // IDs of related categories to link to
+
+  // Tracking
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([parentId])
+  @@index([type])
+}
+
+enum CategoryType {
+  pillar   // Top-level hub: /cv-voorbeeld/ict-en-software
+  subhub   // Mid-level: /cv-voorbeeld/ict-en-software/developer
+  spoke    // Long-tail: /cv-voorbeeld/ict-en-software/backend-developer-nodejs
+}

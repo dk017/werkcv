@@ -1,0 +1,103 @@
+import { CVExample } from '../../types';
+
+export const metselaar: CVExample = {
+    slug: 'metselaar',
+    categorySlug: 'bouw-en-techniek',
+    name: 'Metselaar',
+    description: 'CV voorbeeld voor metselaars in de woningbouw en utiliteitsbouw. Presenteer je vakmanschap in metsel- en voegwerk overtuigend.',
+    templateId: 'simple',
+    colorThemeId: 'charcoal',
+
+    metaTitle: 'CV Voorbeeld Metselaar | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor metselaars. Met voorbeeldteksten voor metselwerk, voegwerk en gevelbouw. Maak direct je eigen metselaar CV.',
+    keywords: ['cv voorbeeld metselaar', 'cv metselwerk', 'cv voegwerk', 'cv gevelbouw'],
+    heroTitle: 'CV Voorbeeld Metselaar',
+    heroText: 'Als metselaar ben je verantwoordelijk voor de stevigheid en uitstraling van gebouwen. Dit CV voorbeeld toont hoe je je ervaring met metselwerk, voegwerk en gevelbouw professioneel presenteert aan aannemers en bouwbedrijven.',
+    tips: [
+        'Vermeld je ervaring met verschillende steensoorten en metselverbanden',
+        'Benoem projecten met omvang (bijv. aantal woningen of m2 gevelwerk)',
+        'Geef aan of je ervaring hebt met siermetselwerk of restauratiewerk',
+        'Vermeld je VCA-certificering en eventuele andere veiligheidscertificaten',
+        'Laat zien dat je nauwkeurig en snel kunt werken',
+    ],
+    relatedSlugs: ['bouw-en-techniek/timmerman', 'bouw-en-techniek/projectleider-bouw'],
+
+    sampleCV: {
+        personal: {
+            name: 'Pieter Bakker',
+            title: 'Metselaar',
+            email: 'pieter.bakker@email.nl',
+            phone: '06-34567890',
+            location: 'Eindhoven',
+            address: 'Tongelresestraat 114',
+            postalCode: '5613 DL',
+            summary: 'Vakbekwame metselaar met ruim 6 jaar ervaring in de woningbouw en utiliteitsbouw. Gespecialiseerd in buitengevelwerk, metselwerk en voegwerk. Ervaren in het werken met diverse steensoorten en metselverbanden. Nauwkeurig, productief en gewend om in alle weersomstandigheden te werken.',
+            birthDate: '8 november 1993',
+            birthPlace: 'Helmond',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Metselaar',
+                company: 'Heijmans',
+                location: 'Eindhoven',
+                start: 'januari 2022',
+                end: 'heden',
+                description: 'Uitvoering van metsel- en voegwerk bij grote woningbouwprojecten en utiliteitsgebouwen in de regio Zuidoost-Brabant.',
+                highlights: [
+                    'Gevelbekleding gemetseld voor nieuwbouwproject van 60 appartementen',
+                    'Siermetselwerk uitgevoerd aan schoolgebouw met verschillende verbanden',
+                    'Dagelijks gemiddeld 1.000 stenen verwerkt met hoge kwaliteitsstandaard',
+                ],
+            },
+            {
+                role: 'Metselaar',
+                company: 'Bouwbedrijf Van de Ven',
+                location: 'Helmond',
+                start: 'mei 2018',
+                end: 'december 2021',
+                description: 'Allround metselwerkzaamheden bij diverse woningbouw- en renovatieprojecten.',
+                highlights: [
+                    'Metselwerk uitgevoerd voor 35 eengezinswoningen inclusief buitengevels en binnenmuren',
+                    'Voegwerk hersteld bij renovatie van historische panden in het centrum van Helmond',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 3 Metselaar',
+                school: 'Summa College',
+                location: 'Eindhoven',
+                start: 'september 2014',
+                end: 'juli 2018',
+                description: 'Opleiding tot metselaar met praktijkervaring in metseltechnieken, voegwerk en bouwkunde.',
+            },
+        ],
+        skills: [
+            { name: 'Metselwerk', level: 5 },
+            { name: 'Voegwerk', level: 5 },
+            { name: 'Betonwerk', level: 4 },
+            { name: 'Gevelbouw', level: 4 },
+            { name: 'Siermetselwerk', level: 3 },
+            { name: 'Tekening lezen', level: 4 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Basis' },
+        ],
+        interests: ['Voetbal', 'Klussen', 'Barbecue'],
+        courses: [
+            { name: 'VCA Basis', institution: 'PBNA', year: '2022' },
+            { name: 'BHV', institution: 'Falck', year: '2023' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

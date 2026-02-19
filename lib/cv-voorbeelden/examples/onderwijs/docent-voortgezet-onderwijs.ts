@@ -1,0 +1,103 @@
+import { CVExample } from '../../types';
+
+export const docentVoortgezetOnderwijs: CVExample = {
+    slug: 'docent-voortgezet-onderwijs',
+    categorySlug: 'onderwijs',
+    name: 'Docent Voortgezet Onderwijs',
+    description: 'CV voorbeeld voor docenten in het voortgezet onderwijs. Laat zien hoe je je lesbevoegdheid, vakinhoudelijke kennis en onderwijservaring presenteert.',
+    templateId: 'professional',
+    colorThemeId: 'classic-blue',
+
+    metaTitle: 'CV Voorbeeld Docent Voortgezet Onderwijs | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor docenten VO. Met voorbeeldteksten voor tweedegraads bevoegdheid, vakkennis en didactische vaardigheden. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld docent', 'cv leraar voortgezet onderwijs', 'cv tweedegraads docent', 'cv middelbare school'],
+    heroTitle: 'CV Voorbeeld Docent Voortgezet Onderwijs',
+    heroText: 'Als docent in het voortgezet onderwijs combineer je vakinhoudelijke expertise met didactische vaardigheden. Dit CV voorbeeld laat zien hoe je je lesbevoegdheid, ervaring met verschillende niveaus en extra activiteiten professioneel presenteert.',
+    tips: [
+        'Vermeld duidelijk je lesbevoegdheid (eerste- of tweedegraads) en je vakgebied',
+        'Geef aan op welke niveaus je ervaring hebt (vmbo, havo, vwo)',
+        'Noem je ervaring met examenklassen en examenvergaderingen',
+        'Vermeld extra taken: mentoraat, sectievoorzitter, werkgroepen',
+        'Toon betrokkenheid bij leerlingen buiten de les om (excursies, projecten)',
+    ],
+    relatedSlugs: ['onderwijs/basisschool-docent', 'onderwijs/gymdocent'],
+
+    sampleCV: {
+        personal: {
+            name: 'Thomas Hendriks',
+            title: 'Docent Nederlands - Tweedegraads',
+            email: 'thomas.hendriks@email.nl',
+            phone: '06-12098765',
+            location: 'Den Haag',
+            address: 'Fahrenheitstraat 150',
+            postalCode: '2561 EG',
+            summary: 'Bevlogen docent Nederlands met een tweedegraads lesbevoegdheid en 7 jaar ervaring in het voortgezet onderwijs. Ervaren met lesgeven aan vmbo-t, havo en vwo, inclusief examenklassen. Sterk in het motiveren van leerlingen door actuele en interactieve lesmethoden. Actief betrokken bij schoolontwikkeling.',
+            birthDate: '30 januari 1990',
+            birthPlace: 'Leiden',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: 'linkedin.com/in/thomashendriks',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Docent Nederlands',
+                company: 'Het Lyceum aan de Vliet',
+                location: 'Den Haag',
+                start: 'augustus 2020',
+                end: 'heden',
+                description: 'Lesgeven in Nederlands aan havo en vwo klassen, inclusief examenklassen in de bovenbouw.',
+                highlights: [
+                    'Examenresultaten verbeterd: gemiddeld cijfer van 6,2 naar 6,8 in twee jaar',
+                    'Mentorklas havo 4 begeleid en loopbaanoriëntatie gecoördineerd',
+                    'Nieuwe digitale leerlijn Nederlands ontwikkeld met interactieve opdrachten',
+                ],
+            },
+            {
+                role: 'Docent Nederlands',
+                company: 'Segbroek College',
+                location: 'Den Haag',
+                start: 'augustus 2017',
+                end: 'juli 2020',
+                description: 'Lesgeven in Nederlands aan vmbo-t en havo onderbouw.',
+                highlights: [
+                    'Leesbevordering opgezet met een schoolbibliotheekproject',
+                    'Sectieoverleg Nederlands gecoördineerd en toetsbeleid geharmoniseerd',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'Bachelor Lerarenopleiding Nederlands (Tweedegraads)',
+                school: 'Hogeschool Rotterdam',
+                location: 'Rotterdam',
+                start: 'september 2013',
+                end: 'juli 2017',
+                description: 'Lerarenopleiding met stages op vmbo, havo en vwo. Afgestudeerd met het predicaat goed.',
+            },
+        ],
+        skills: [
+            { name: 'Didactiek & Lesgeven', level: 5 },
+            { name: 'Differentiatie', level: 4 },
+            { name: 'Mentoraat & Begeleiding', level: 4 },
+            { name: 'ICT in het onderwijs', level: 4 },
+            { name: 'Toetsontwikkeling', level: 4 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+            { name: 'Duits', level: 'Basis' },
+        ],
+        interests: ['Literatuur', 'Theater', 'Debatteren', 'Fietsen'],
+        courses: [
+            { name: 'Formatief evalueren in de praktijk', institution: 'CPS Onderwijsontwikkeling', year: '2023' },
+            { name: 'Omgaan met gedragsproblemen', institution: 'Seminarium voor Orthopedagogiek', year: '2021' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

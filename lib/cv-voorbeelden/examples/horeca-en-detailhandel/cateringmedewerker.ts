@@ -1,0 +1,102 @@
+import { CVExample } from '../../types';
+
+export const cateringmedewerker: CVExample = {
+    slug: 'cateringmedewerker',
+    categorySlug: 'horeca-en-detailhandel',
+    name: 'Cateringmedewerker',
+    description: 'CV voorbeeld voor cateringmedewerkers. Laat zien hoe je je ervaring met evenementen, voedselveiligheid en flexibele inzet professioneel presenteert.',
+    templateId: 'simple',
+    colorThemeId: 'charcoal',
+
+    metaTitle: 'CV Voorbeeld Cateringmedewerker | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor cateringmedewerkers. Met voorbeeldteksten voor evenementen, voedselveiligheid en horecaservice. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld cateringmedewerker', 'cv catering', 'cv evenementen horeca', 'cv banqueting'],
+    heroTitle: 'CV Voorbeeld Cateringmedewerker',
+    heroText: 'Als cateringmedewerker werk je bij de mooiste evenementen en zorgt je ervoor dat gasten een geweldige ervaring hebben. Dit CV voorbeeld toont hoe je je ervaring met evenementen, voedselveiligheid en flexibele inzetbaarheid presenteert.',
+    tips: [
+        'Vermeld je HACCP-certificering en kennis van voedselveiligheid',
+        'Noem het type evenementen waar je ervaring mee hebt (bruiloften, congressen, bedrijfsevenementen)',
+        'Geef aan dat je flexibel beschikbaar bent en kunt reizen naar locaties',
+        'Toon je ervaring met het opbouwen en afbouwen van cateringlocaties',
+        'Benadruk je fysieke fitheid en vermogen om lange diensten te draaien',
+    ],
+    relatedSlugs: ['horeca-en-detailhandel/kok-chef', 'horeca-en-detailhandel/ober-serveerster'],
+
+    sampleCV: {
+        personal: {
+            name: 'Sander Vermeer',
+            title: 'Cateringmedewerker',
+            email: 'sander.vermeer@email.nl',
+            phone: '06-90876543',
+            location: 'Almere',
+            address: 'Stadswerf 67',
+            postalCode: '1315 GH',
+            summary: 'Flexibele en servicegerichte cateringmedewerker met 3 jaar ervaring in de evenementenhoreca. Ervaren met het bereiden en serveren van maaltijden bij diverse evenementen, van bedrijfsbijeenkomsten tot bruiloften. Fysiek fit, stressbestendig en altijd gefocust op een goede gastbeleving.',
+            birthDate: '11 januari 2000',
+            birthPlace: 'Lelystad',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Cateringmedewerker',
+                company: 'Sodexo Nederland',
+                location: 'Amsterdam',
+                start: 'april 2023',
+                end: 'heden',
+                description: 'Bereiden en serveren van maaltijden bij bedrijfscatering en evenementen op diverse locaties.',
+                highlights: [
+                    'Catering verzorgd voor bedrijfsevenementen met 50-500 gasten',
+                    'Buffetten opgebouwd en afgebroken op externe evenementenlocaties',
+                    'HACCP-richtlijnen nageleefd en hygiënecontroles uitgevoerd bij opbouw',
+                ],
+            },
+            {
+                role: 'Horeca Medewerker / Catering',
+                company: 'Partyservice De Feestkeuken',
+                location: 'Almere',
+                start: 'juni 2021',
+                end: 'maart 2023',
+                description: 'All-round medewerker bij een cateringbedrijf gespecialiseerd in bruiloften en feesten.',
+                highlights: [
+                    'Bruiloftscatering verzorgd voor maximaal 150 gasten inclusief opbouw en bediening',
+                    'Koude en warme gerechten voorbereid onder begeleiding van de chef-kok',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 2 Kok',
+                school: 'ROC Flevoland',
+                location: 'Almere',
+                start: 'september 2018',
+                end: 'juli 2021',
+                description: 'Opleiding tot basiskok met praktijkstages in restaurants en cateringbedrijven.',
+            },
+        ],
+        skills: [
+            { name: 'Voedselbereidng', level: 4 },
+            { name: 'Buffetopbouw', level: 5 },
+            { name: 'HACCP & Hygiëne', level: 4 },
+            { name: 'Servicegerichtheid', level: 4 },
+            { name: 'Fysieke belastbaarheid', level: 5 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Basis' },
+        ],
+        interests: ['Koken', 'Fitness', 'Evenementen bezoeken'],
+        courses: [
+            { name: 'HACCP Basis', institution: 'HACCP Nederland', year: '2023' },
+            { name: 'Verantwoord Alcoholgebruik', institution: 'SVH', year: '2022' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

@@ -1,0 +1,102 @@
+import { CVExample } from '../../types';
+
+export const onderwijsassistent: CVExample = {
+    slug: 'onderwijsassistent',
+    categorySlug: 'onderwijs',
+    name: 'Onderwijsassistent',
+    description: 'CV voorbeeld voor onderwijsassistenten. Laat zien hoe je je MBO-diploma, begeleidingservaring en pedagogische vaardigheden presenteert.',
+    templateId: 'simple',
+    colorThemeId: 'sage-green',
+
+    metaTitle: 'CV Voorbeeld Onderwijsassistent | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor onderwijsassistenten. Met voorbeeldteksten voor begeleiding, pedagogische vaardigheden en klasondersteuning. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld onderwijsassistent', 'cv klassenassistent', 'cv onderwijs MBO', 'cv leerlingbegeleiding'],
+    heroTitle: 'CV Voorbeeld Onderwijsassistent',
+    heroText: 'Als onderwijsassistent ondersteun je de leerkracht en begeleid je leerlingen die extra aandacht nodig hebben. Dit CV voorbeeld toont hoe je je pedagogische vaardigheden, begeleidingservaring en betrokkenheid professioneel presenteert.',
+    tips: [
+        'Vermeld je MBO-diploma Onderwijsassistent (niveau 4)',
+        'Beschrijf je ervaring met het begeleiden van individuele leerlingen en kleine groepjes',
+        'Noem ervaring met speciale leerlingbehoeften (dyslexie, ADHD, hoogbegaafdheid)',
+        'Toon je samenwerking met leerkrachten, ouders en externe specialisten',
+        'Vermeld eventuele bijscholing op het gebied van pedagogiek of didactiek',
+    ],
+    relatedSlugs: ['onderwijs/basisschool-docent', 'onderwijs/speciaal-onderwijs'],
+
+    sampleCV: {
+        personal: {
+            name: 'Naomi Peters',
+            title: 'Onderwijsassistent',
+            email: 'naomi.peters@email.nl',
+            phone: '06-90123456',
+            location: 'Arnhem',
+            address: 'Velperweg 33',
+            postalCode: '6824 BG',
+            summary: 'Gedreven onderwijsassistent met 4 jaar ervaring in het basisonderwijs. Ervaren in het begeleiden van leerlingen met extra ondersteuningsbehoeften en het ondersteunen van leerkrachten bij de dagelijkse lespraktijk. Geduldig, creatief en altijd gericht op het welzijn van het kind.',
+            birthDate: '12 oktober 1997',
+            birthPlace: 'Nijmegen',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Onderwijsassistent',
+                company: 'OBS De Bongerd',
+                location: 'Arnhem',
+                start: 'augustus 2022',
+                end: 'heden',
+                description: 'Ondersteuning van leerkrachten in groep 3 t/m 6 en begeleiding van leerlingen met een ontwikkelingsachterstand.',
+                highlights: [
+                    'Remedial teaching gegeven aan leerlingen met dyslexie en dyscalculie',
+                    'Sociale vaardigheidstraining begeleid voor groepjes van 4-6 leerlingen',
+                    'Lesmateriaal voorbereid en aangepast voor leerlingen met speciale behoeften',
+                ],
+            },
+            {
+                role: 'Onderwijsassistent',
+                company: 'Basisschool Sint-Jan',
+                location: 'Nijmegen',
+                start: 'augustus 2020',
+                end: 'juli 2022',
+                description: 'Klasondersteuning en begeleiding van leerlingen in de onderbouw.',
+                highlights: [
+                    'Kleuters begeleid bij spelend leren en sociaal-emotionele ontwikkeling',
+                    'Leesbegeleiding gegeven aan leerlingen uit groep 3 met een leesachterstand',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 4 Onderwijsassistent',
+                school: 'ROC Nijmegen',
+                location: 'Nijmegen',
+                start: 'september 2016',
+                end: 'juli 2020',
+                description: 'Opleiding tot onderwijsassistent met stages in regulier en speciaal basisonderwijs.',
+            },
+        ],
+        skills: [
+            { name: 'Leerlingbegeleiding', level: 5 },
+            { name: 'Pedagogische vaardigheden', level: 4 },
+            { name: 'Remedial teaching', level: 4 },
+            { name: 'Creatieve werkvormen', level: 4 },
+            { name: 'Samenwerking', level: 5 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+        ],
+        interests: ['Knutselen', 'Voorlezen', 'Wandelen', 'Bakken'],
+        courses: [
+            { name: 'Omgaan met ADHD in de klas', institution: 'Seminarium voor Orthopedagogiek', year: '2023' },
+            { name: 'EHBO bij kinderen', institution: 'Het Oranje Kruis', year: '2022' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

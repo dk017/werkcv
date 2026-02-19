@@ -1,0 +1,102 @@
+import { CVExample } from '../../types';
+
+export const loodgieter: CVExample = {
+    slug: 'loodgieter',
+    categorySlug: 'vakmanschap-en-logistiek',
+    name: 'Loodgieter / Installateur',
+    description: 'CV voorbeeld voor loodgieters en installateurs. Laat zien hoe je je ervaring met gas, water en sanitair overtuigend presenteert.',
+    templateId: 'simple',
+    colorThemeId: 'charcoal',
+
+    metaTitle: 'CV Voorbeeld Loodgieter | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor loodgieters en installateurs. Met voorbeeldteksten voor gas, water, sanitair en cv-installaties. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld loodgieter', 'cv installateur', 'cv sanitair', 'cv gas water'],
+    heroTitle: 'CV Voorbeeld Loodgieter',
+    heroText: 'Als loodgieter of installateur ben je een veelgevraagd vakman. Dit CV voorbeeld toont hoe je je kennis van gas-, water- en sanitairinstallaties, certificaten en praktijkervaring professioneel op papier zet.',
+    tips: [
+        'Vermeld je certificeringen voor gas en water (AIG, STEK indien van toepassing)',
+        'Noem ervaring met specifieke systemen: cv-ketels, warmtepompen, vloerverwarming',
+        'Geef aan of je ervaring hebt met nieuwbouw, renovatie of storingsdienst',
+        'Vermeld je VCA-certificering en rijbewijs',
+        'Toon dat je zelfstandig kunt werken en problemen snel oplost',
+    ],
+    relatedSlugs: ['vakmanschap-en-logistiek/elektricien', 'vakmanschap-en-logistiek/chauffeur'],
+
+    sampleCV: {
+        personal: {
+            name: 'Bas Willems',
+            title: 'Loodgieter / Installateur',
+            email: 'bas.willems@email.nl',
+            phone: '06-45678901',
+            location: 'Zwolle',
+            address: 'Assendorperstraat 54',
+            postalCode: '8012 CS',
+            summary: 'Allround loodgieter en installateur met 7 jaar ervaring in de installatietechniek. Gespecialiseerd in aanleg en onderhoud van sanitair, waterleiding en cv-installaties. Ervaren in zowel nieuwbouw als renovatieprojecten. Betrouwbaar, nauwkeurig en klantgericht.',
+            birthDate: '14 mei 1991',
+            birthPlace: 'Deventer',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Loodgieter / Installateur',
+                company: 'Feenstra',
+                location: 'Zwolle',
+                start: 'april 2021',
+                end: 'heden',
+                description: 'Verantwoordelijk voor installatie en onderhoud van verwarmings- en sanitairsystemen bij particuliere en zakelijke klanten.',
+                highlights: [
+                    'Gemiddeld 6 servicebeurten per dag uitgevoerd met hoge klanttevredenheid',
+                    'Cv-ketels en warmtepompen geïnstalleerd in nieuwbouwprojecten',
+                    'Storingsdienst gedraaid en spoedreparaties uitgevoerd binnen 4 uur',
+                ],
+            },
+            {
+                role: 'Monteur Sanitair',
+                company: 'Installatiebedrijf Van Dam',
+                location: 'Deventer',
+                start: 'september 2017',
+                end: 'maart 2021',
+                description: 'Aanleg van sanitair en waterleidingen in woningbouw- en renovatieprojecten.',
+                highlights: [
+                    'Badkamer- en keukeninstallaties uitgevoerd in renovatieproject van 40 woningen',
+                    'Zelfstandig werkzaamheden gepland en uitgevoerd op basis van technische tekeningen',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 3 Installateur',
+                school: 'Deltion College',
+                location: 'Zwolle',
+                start: 'september 2013',
+                end: 'juli 2017',
+                description: 'Opleiding tot installateur met specialisatie sanitaire techniek en verwarming.',
+            },
+        ],
+        skills: [
+            { name: 'Sanitair & Waterleiding', level: 5 },
+            { name: 'CV-installaties', level: 4 },
+            { name: 'Storingsdiagnose', level: 4 },
+            { name: 'Tekening lezen', level: 4 },
+            { name: 'Warmtepompen', level: 3 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Basis' },
+        ],
+        interests: ['Vissen', 'Klussen', 'Voetbal'],
+        courses: [
+            { name: 'VCA-basis', institution: 'PBNA', year: '2021' },
+            { name: 'F-gassen certificaat', institution: 'Refrigeration Academy', year: '2022' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

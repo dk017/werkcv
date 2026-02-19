@@ -1,0 +1,103 @@
+import { CVExample } from '../../types';
+
+export const hrMedewerker: CVExample = {
+    slug: 'hr-medewerker',
+    categorySlug: 'zakelijk-en-financieel',
+    name: 'HR-medewerker / HR-adviseur',
+    description: 'CV voorbeeld voor HR-professionals. Laat zien hoe je je ervaring in werving, personeelsbeheer en arbeidsrecht effectief presenteert.',
+    templateId: 'dynamic',
+    colorThemeId: 'purple-royal',
+
+    metaTitle: 'CV Voorbeeld HR-medewerker & HR-adviseur | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor HR-medewerkers en HR-adviseurs. Met voorbeeldteksten voor werving & selectie, arbeidsrecht en personeelsbeleid.',
+    keywords: ['cv voorbeeld hr-medewerker', 'cv hr-adviseur', 'cv human resources', 'cv personeelszaken'],
+    heroTitle: 'CV Voorbeeld HR-medewerker',
+    heroText: 'Als HR-professional ben je het visitekaartje van de organisatie. Dit CV voorbeeld laat zien hoe je je ervaring in werving & selectie, personeelsontwikkeling en HR-beleid overtuigend presenteert aan werkgevers.',
+    tips: [
+        'Vermeld concrete resultaten: time-to-hire, medewerkerstevredenheid, verloop',
+        'Benadruk kennis van arbeidsrecht en CAO-regelgeving',
+        'Toon ervaring met HR-systemen (AFAS, Workday, SAP SuccessFactors)',
+        'Beschrijf je rol in organisatieontwikkeling en cultuurverandering',
+        'Laat zien dat je zowel operationeel als strategisch kunt werken',
+    ],
+    relatedSlugs: ['zakelijk-en-financieel/bedrijfsadviseur', 'zakelijk-en-financieel/accountant'],
+
+    sampleCV: {
+        personal: {
+            name: 'Femke van Dijk',
+            title: 'HR-adviseur',
+            email: 'f.vandijk@email.nl',
+            phone: '06-56789012',
+            location: 'Den Haag',
+            address: 'Laan van Meerdervoort 155',
+            postalCode: '2517 AZ',
+            summary: 'Enthousiaste HR-adviseur met 4 jaar ervaring in werving & selectie, personeelsontwikkeling en HR-beleid. Ervaren in het adviseren van lijnmanagers over arbeidsrechtelijke vraagstukken en het implementeren van HR-processen. Passie voor het creeren van een positieve werkcultuur.',
+            birthDate: '8 maart 1995',
+            birthPlace: 'Leiden',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: 'linkedin.com/in/femkevandijk',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'HR-adviseur',
+                company: 'Nationale-Nederlanden',
+                location: 'Den Haag',
+                start: 'april 2022',
+                end: 'heden',
+                description: 'HR-advies voor 3 afdelingen met totaal 450 medewerkers.',
+                highlights: [
+                    'Time-to-hire teruggebracht van 62 naar 38 dagen door procesoptimalisatie',
+                    'Onboarding programma vernieuwd, medewerkerstevredenheid steeg naar 8.4',
+                    'Geadviseerd bij 15+ arbeidsrechtelijke casussen (ziekte, ontslag, reorganisatie)',
+                ],
+            },
+            {
+                role: 'HR-medewerker',
+                company: 'Randstad',
+                location: 'Diemen',
+                start: 'september 2020',
+                end: 'maart 2022',
+                description: 'Operationele HR-taken en ondersteuning van het recruitmentteam.',
+                highlights: [
+                    'Personeelsadministratie verzorgd voor 300+ medewerkers in AFAS',
+                    'Recruitmentcampagnes gecoordineerd met gemiddeld 25 vacatures per kwartaal',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'HBO Human Resource Management',
+                school: 'Hogeschool Leiden',
+                location: 'Leiden',
+                start: 'september 2016',
+                end: 'juli 2020',
+                description: 'Minor: Arbeidsrecht. Afstudeeronderzoek over employer branding bij MKB-bedrijven.',
+            },
+        ],
+        skills: [
+            { name: 'Werving & selectie', level: 5 },
+            { name: 'Arbeidsrecht', level: 4 },
+            { name: 'AFAS / HR-systemen', level: 4 },
+            { name: 'Personeelsontwikkeling', level: 4 },
+            { name: 'Gespreksvoering', level: 5 },
+            { name: 'HR-analytics', level: 3 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Vloeiend' },
+        ],
+        interests: ['Yoga', 'Persoonlijke ontwikkeling', 'Vrijwilligerswerk'],
+        courses: [
+            { name: 'Arbeidsrecht Basis', institution: 'GITP', year: '2022' },
+            { name: 'Competentiegericht Interviewen', institution: 'SHL', year: '2021' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

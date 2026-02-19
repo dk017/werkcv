@@ -1,0 +1,103 @@
+import { CVExample } from '../../types';
+
+export const logistiekCoordinator: CVExample = {
+    slug: 'logistiek-coordinator',
+    categorySlug: 'vakmanschap-en-logistiek',
+    name: 'Logistiek Coördinator',
+    description: 'CV voorbeeld voor logistiek coördinatoren en planners. Laat zien hoe je je planningservaring, WMS-kennis en leidinggevende kwaliteiten presenteert.',
+    templateId: 'formal',
+    colorThemeId: 'elegant-navy',
+
+    metaTitle: 'CV Voorbeeld Logistiek Coördinator | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor logistiek coördinatoren. Met voorbeeldteksten voor planning, WMS-systemen en teamaansturing. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld logistiek coordinator', 'cv logistiek planner', 'cv supply chain', 'cv logistiek leidinggevende'],
+    heroTitle: 'CV Voorbeeld Logistiek Coördinator',
+    heroText: 'Als logistiek coördinator ben je verantwoordelijk voor de soepele doorstroom van goederen. Dit CV voorbeeld laat zien hoe je je planningsvaardigheden, kennis van WMS-systemen en leidinggevende ervaring professioneel presenteert.',
+    tips: [
+        'Vermeld je ervaring met WMS- en ERP-systemen (SAP, Microsoft Dynamics)',
+        'Toon resultaten: kostenbesparingen, efficiëntieverbeteringen, levertijden',
+        'Geef aan hoeveel medewerkers je hebt aangestuurd',
+        'Noem kennis van lean management of Six Sigma als je die hebt',
+        'Benadruk je communicatieve vaardigheden en stakeholder management',
+    ],
+    relatedSlugs: ['vakmanschap-en-logistiek/magazijnmedewerker', 'vakmanschap-en-logistiek/chauffeur'],
+
+    sampleCV: {
+        personal: {
+            name: 'Sandra Mulder',
+            title: 'Logistiek Coördinator',
+            email: 'sandra.mulder@email.nl',
+            phone: '06-78901234',
+            location: 'Utrecht',
+            address: 'Europalaan 88',
+            postalCode: '3526 KS',
+            summary: 'Resultaatgerichte logistiek coördinator met 9 jaar ervaring in warehouse management en supply chain coördinatie. Ervaren in het aansturen van teams tot 25 medewerkers en het optimaliseren van logistieke processen. Sterk in planning, probleemoplossing en het werken met WMS- en ERP-systemen.',
+            birthDate: '19 maart 1989',
+            birthPlace: 'Amersfoort',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: 'linkedin.com/in/sandramulder',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Logistiek Coördinator',
+                company: 'DHL Supply Chain',
+                location: 'Utrecht',
+                start: 'februari 2020',
+                end: 'heden',
+                description: 'Coördinatie van inbound en outbound logistiek in een distributiecentrum met 25 medewerkers.',
+                highlights: [
+                    'Doorlooptijd van orderverwerking met 20% verkort door procesoptimalisatie',
+                    'Team van 25 magazijnmedewerkers aangestuurd over 2 ploegendiensten',
+                    'WMS-migratie naar SAP Extended Warehouse Management succesvol begeleid',
+                ],
+            },
+            {
+                role: 'Teamleider Magazijn',
+                company: 'Wehkamp',
+                location: 'Zwolle',
+                start: 'mei 2015',
+                end: 'januari 2020',
+                description: 'Aansturing van het magazijnteam en bewaking van dagelijkse KPI\'s.',
+                highlights: [
+                    'Picknauwkeurigheid verhoogd van 97% naar 99,2% door verbeterde werkprocessen',
+                    'Seizoensplanning opgezet voor piekperiodes (Black Friday, feestdagen)',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 4 Logistiek Supervisor',
+                school: 'ROC Midden Nederland',
+                location: 'Utrecht',
+                start: 'september 2011',
+                end: 'juli 2015',
+                description: 'Opleiding tot logistiek leidinggevende met focus op warehouse management en supply chain.',
+            },
+        ],
+        skills: [
+            { name: 'WMS & ERP (SAP)', level: 5 },
+            { name: 'Teamaansturing', level: 5 },
+            { name: 'Planning & Capaciteit', level: 4 },
+            { name: 'Lean Management', level: 4 },
+            { name: 'Excel & Data-analyse', level: 4 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+            { name: 'Duits', level: 'Basis' },
+        ],
+        interests: ['Hardlopen', 'Reizen', 'Lezen'],
+        courses: [
+            { name: 'Lean Six Sigma Green Belt', institution: 'Lean Six Sigma Groep', year: '2022' },
+            { name: 'SAP EWM Basis', institution: 'SAP Academy', year: '2020' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

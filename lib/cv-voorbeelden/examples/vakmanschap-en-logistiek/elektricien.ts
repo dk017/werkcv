@@ -1,0 +1,103 @@
+import { CVExample } from '../../types';
+
+export const elektricien: CVExample = {
+    slug: 'elektricien',
+    categorySlug: 'vakmanschap-en-logistiek',
+    name: 'Elektricien',
+    description: 'CV voorbeeld voor elektriciens en installateurs. Laat zien hoe je NEN-certificeringen, installatiewerk en storingsdiagnose professioneel presenteert.',
+    templateId: 'professional',
+    colorThemeId: 'ocean-blue',
+
+    metaTitle: 'CV Voorbeeld Elektricien | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor elektriciens. Met voorbeeldteksten voor NEN-certificeringen, installatiewerk en VCA. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld elektricien', 'cv installateur', 'cv elektrotechniek', 'cv monteur elektra'],
+    heroTitle: 'CV Voorbeeld Elektricien',
+    heroText: 'Als elektricien ben je onmisbaar in de bouw en installatietechniek. Dit CV voorbeeld laat zien hoe je je NEN-certificeringen, technische vaardigheden en projectervaring overtuigend op papier zet voor werkgevers.',
+    tips: [
+        'Vermeld al je NEN-certificeringen (NEN 1010, NEN 3140) en de geldigheid ervan',
+        'Geef aan of je VCA-basis of VCA-VOL gecertificeerd bent',
+        'Noem ervaring met specifieke installaties: zonnepanelen, laadpalen, domotica',
+        'Toon dat je zelfstandig én in teamverband kunt werken op projecten',
+        'Vermeld je rijbewijs - mobiliteit is essentieel in deze branche',
+    ],
+    relatedSlugs: ['vakmanschap-en-logistiek/loodgieter', 'vakmanschap-en-logistiek/autotechnicus'],
+
+    sampleCV: {
+        personal: {
+            name: 'Mark Verhoeven',
+            title: 'Elektricien / Installatiemonteur',
+            email: 'mark.verhoeven@email.nl',
+            phone: '06-34567890',
+            location: 'Breda',
+            address: 'Haagweg 15',
+            postalCode: '4813 XB',
+            summary: 'Gecertificeerd elektricien met 10 jaar ervaring in de installatietechniek. Specialist in woningbouw en utiliteitsbouw, met uitgebreide kennis van NEN-normen en duurzame energiesystemen. Zelfstandig en oplossingsgericht, met een sterk veiligheidsbewustzijn.',
+            birthDate: '22 januari 1988',
+            birthPlace: 'Tilburg',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Eerste Monteur Elektra',
+                company: 'Hoppenbrouwers Techniek',
+                location: 'Breda',
+                start: 'januari 2019',
+                end: 'heden',
+                description: 'Verantwoordelijk voor elektrotechnische installaties in nieuwbouw- en renovatieprojecten.',
+                highlights: [
+                    'Elektra-installaties gerealiseerd in nieuwbouwproject van 120 woningen',
+                    'Zonnepaneel- en laadpaalinstallaties uitgevoerd bij particuliere en zakelijke klanten',
+                    'Storingsdienst gedraaid en complexe elektrische storingen opgelost',
+                ],
+            },
+            {
+                role: 'Elektricien',
+                company: 'TechnoVolt Installatietechniek',
+                location: 'Tilburg',
+                start: 'augustus 2014',
+                end: 'december 2018',
+                description: 'Aanleg en onderhoud van elektrotechnische installaties in woningen en bedrijfspanden.',
+                highlights: [
+                    'Zelfstandig projecten uitgevoerd van offerte tot oplevering',
+                    'Leerling-monteurs begeleid en opgeleid op de werkplek',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 3 Elektrotechnische Installaties',
+                school: 'ROC Tilburg',
+                location: 'Tilburg',
+                start: 'september 2010',
+                end: 'juli 2014',
+                description: 'Opleiding tot elektricien met focus op woningbouw en utiliteitsbouw.',
+            },
+        ],
+        skills: [
+            { name: 'Elektra-installatie', level: 5 },
+            { name: 'Storingsdiagnose', level: 5 },
+            { name: 'Zonnepanelen & Laadpalen', level: 4 },
+            { name: 'Tekening lezen', level: 4 },
+            { name: 'Domotica', level: 3 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+        ],
+        interests: ['Duurzame energie', 'Klussen', 'Wielrennen'],
+        courses: [
+            { name: 'NEN 1010 Inspectie', institution: 'ESTO', year: '2021' },
+            { name: 'VCA-VOL', institution: 'PBNA', year: '2023' },
+            { name: 'Zonnepanelen Monteur', institution: 'Duurzaam Leren', year: '2020' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

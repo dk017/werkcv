@@ -1,0 +1,102 @@
+import { CVExample } from '../../types';
+
+export const gymdocent: CVExample = {
+    slug: 'gymdocent',
+    categorySlug: 'onderwijs',
+    name: 'Gymdocent / Docent LO',
+    description: 'CV voorbeeld voor gymdocenten en docenten lichamelijke opvoeding. Laat zien hoe je je ALO-diploma, sportervaring en pedagogische aanpak presenteert.',
+    templateId: 'dynamic',
+    colorThemeId: 'modern-teal',
+
+    metaTitle: 'CV Voorbeeld Gymdocent | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor gymdocenten en docenten LO. Met voorbeeldteksten voor ALO-diploma, sportactiviteiten en bewegingsonderwijs. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld gymdocent', 'cv docent lichamelijke opvoeding', 'cv ALO', 'cv sportdocent'],
+    heroTitle: 'CV Voorbeeld Gymdocent',
+    heroText: 'Als gymdocent inspireer je leerlingen om te bewegen en gezond te leven. Dit CV voorbeeld laat zien hoe je je ALO-diploma, sportachtergrond en ervaring met bewegingsonderwijs overtuigend presenteert aan scholen en sportorganisaties.',
+    tips: [
+        'Vermeld je ALO-diploma (Academie voor Lichamelijke Opvoeding) en je bevoegdheid',
+        'Noem je sportspecialisaties en eventuele trainerscertificaten',
+        'Geef aan welke schoolsportactiviteiten je hebt georganiseerd',
+        'Toon je ervaring met leerlingen van verschillende niveaus en leeftijden',
+        'Vermeld EHBO-diploma en eventuele BHV-certificering',
+    ],
+    relatedSlugs: ['onderwijs/docent-voortgezet-onderwijs', 'onderwijs/basisschool-docent'],
+
+    sampleCV: {
+        personal: {
+            name: 'Daan van der Linden',
+            title: 'Docent Lichamelijke Opvoeding',
+            email: 'daan.vanderlinden@email.nl',
+            phone: '06-23109876',
+            location: 'Groningen',
+            address: 'Hereweg 112',
+            postalCode: '9725 AK',
+            summary: 'Sportieve en energieke docent lichamelijke opvoeding met een ALO-diploma en 5 jaar ervaring in het voortgezet onderwijs. Gepassioneerd over het stimuleren van een actieve leefstijl bij jongeren. Ervaren met het organiseren van schoolsportevenementen en het begeleiden van schoolteams. Sterk in het creëren van een veilige en inclusieve sportomgeving.',
+            birthDate: '7 december 1993',
+            birthPlace: 'Assen',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Docent Lichamelijke Opvoeding',
+                company: 'Maartens College',
+                location: 'Groningen',
+                start: 'augustus 2021',
+                end: 'heden',
+                description: 'Lesgeven in lichamelijke opvoeding aan havo en vwo, klassen 1 t/m 6.',
+                highlights: [
+                    'Schoolsportdag georganiseerd voor 800+ leerlingen met 15 sportactiviteiten',
+                    'Schoolvoetbalteam begeleid naar regiofinale van de KNVB Schoolcup',
+                    'Lesprogramma aangepast voor leerlingen met een fysieke beperking',
+                ],
+            },
+            {
+                role: 'Docent LO / Sportcoach',
+                company: 'RSG De Borgen',
+                location: 'Leek',
+                start: 'augustus 2019',
+                end: 'juli 2021',
+                description: 'Bewegingsonderwijs aan vmbo en havo leerlingen, aanvullend sportcoaching.',
+                highlights: [
+                    'Naschoolse sportprogramma\'s opgezet voor vmbo-leerlingen',
+                    'Veldloopwedstrijd georganiseerd als onderdeel van de Gezonde School-aanpak',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'Bachelor ALO (Academie voor Lichamelijke Opvoeding)',
+                school: 'Hanzehogeschool Groningen',
+                location: 'Groningen',
+                start: 'september 2015',
+                end: 'juli 2019',
+                description: 'Eerstegraads bevoegdheid lichamelijke opvoeding. Specialisatie sportcoaching en gezondheidsbevordering.',
+            },
+        ],
+        skills: [
+            { name: 'Bewegingsonderwijs', level: 5 },
+            { name: 'Sportcoaching', level: 5 },
+            { name: 'Evenementorganisatie', level: 4 },
+            { name: 'EHBO & BHV', level: 4 },
+            { name: 'Inclusief onderwijs', level: 4 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+        ],
+        interests: ['Voetbal', 'Hardlopen', 'Outdoor sporten', 'Gezonde voeding'],
+        courses: [
+            { name: 'KNVB Trainerscursus UEFA C', institution: 'KNVB', year: '2022' },
+            { name: 'EHBO-diploma', institution: 'Het Oranje Kruis', year: '2023' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

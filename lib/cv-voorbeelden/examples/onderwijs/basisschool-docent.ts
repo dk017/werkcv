@@ -1,0 +1,102 @@
+import { CVExample } from '../../types';
+
+export const basisschoolDocent: CVExample = {
+    slug: 'basisschool-docent',
+    categorySlug: 'onderwijs',
+    name: 'Basisschool Docent / Leerkracht',
+    description: 'CV voorbeeld voor basisschool leerkrachten. Laat zien hoe je je PABO-diploma, didactische vaardigheden en werkervaring voor de klas presenteert.',
+    templateId: 'classical',
+    colorThemeId: 'elegant-navy',
+
+    metaTitle: 'CV Voorbeeld Basisschool Docent | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor basisschool leerkrachten. Met voorbeeldteksten voor PABO-diploma, didactische vaardigheden en klaservaring. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld leerkracht', 'cv basisschool docent', 'cv PABO', 'cv juf meester'],
+    heroTitle: 'CV Voorbeeld Basisschool Docent',
+    heroText: 'Als leerkracht in het basisonderwijs maak je elke dag het verschil voor kinderen. Dit CV voorbeeld laat zien hoe je je PABO-diploma, didactische vaardigheden en ervaring met verschillende groepen overtuigend presenteert aan schoolbesturen.',
+    tips: [
+        'Vermeld je PABO-diploma en eventuele specialisaties (rekencoördinator, ICT)',
+        'Geef aan in welke groepen je ervaring hebt (onder-, midden- of bovenbouw)',
+        'Noem je ervaring met differentiatie en passend onderwijs',
+        'Vermeld extra taken zoals mentoraat, schoolprojecten of ouderavonden',
+        'Toon je betrokkenheid bij de school als geheel, niet alleen je eigen klas',
+    ],
+    relatedSlugs: ['onderwijs/onderwijsassistent', 'onderwijs/docent-voortgezet-onderwijs'],
+
+    sampleCV: {
+        personal: {
+            name: 'Lisa van Beek',
+            title: 'Leerkracht Basisonderwijs',
+            email: 'lisa.vanbeek@email.nl',
+            phone: '06-89012345',
+            location: 'Haarlem',
+            address: 'Zijlweg 74',
+            postalCode: '2013 DL',
+            summary: 'Enthousiaste en betrokken leerkracht met 6 jaar ervaring in het basisonderwijs. Ervaren met groepen 3 tot en met 8, met een passie voor gedifferentieerd lesgeven en creatieve werkvormen. Sterk in oudercommunicatie en samenwerking met collega\'s. Altijd op zoek naar manieren om het onderwijs te verbeteren.',
+            birthDate: '4 juli 1994',
+            birthPlace: 'Amsterdam',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Leerkracht Groep 6',
+                company: 'OBS De Wereldwijzer',
+                location: 'Haarlem',
+                start: 'augustus 2021',
+                end: 'heden',
+                description: 'Verantwoordelijk voor het lesgeven aan groep 6 en coördinatie van het rekenonderwijs.',
+                highlights: [
+                    'Rekencoördinator voor de hele school: methode-invoering en collegiale consultatie',
+                    'Differentiatie-aanpak ontwikkeld die CITO-scores met gemiddeld 10% verbeterde',
+                    'Schoolbrede projectweek georganiseerd rondom wetenschap en techniek',
+                ],
+            },
+            {
+                role: 'Leerkracht Groep 3/4',
+                company: 'CBS Het Kompas',
+                location: 'Amsterdam',
+                start: 'augustus 2018',
+                end: 'juli 2021',
+                description: 'Lesgeven aan combinatiegroep 3/4 met focus op aanvankelijk lees- en rekenonderwijs.',
+                highlights: [
+                    'Succesvol aanvankelijk leesonderwijs gegeven met methode Veilig Leren Lezen',
+                    'Ouderbetrokkenheid vergroot door maandelijkse nieuwsbrieven en inloopochtenden',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'Bachelor PABO (Pedagogische Academie)',
+                school: 'Hogeschool Inholland',
+                location: 'Haarlem',
+                start: 'september 2014',
+                end: 'juli 2018',
+                description: 'Afgestudeerd met specialisatie rekenen en wiskunde. Stages in onder-, midden- en bovenbouw.',
+            },
+        ],
+        skills: [
+            { name: 'Didactiek & Differentiatie', level: 5 },
+            { name: 'Klassenmanagement', level: 5 },
+            { name: 'Oudercommunicatie', level: 4 },
+            { name: 'ICT in het onderwijs', level: 4 },
+            { name: 'Leerlingvolgsysteem (Parnassys)', level: 4 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+        ],
+        interests: ['Lezen', 'Creatief schrijven', 'Yoga', 'Natuur'],
+        courses: [
+            { name: 'Rekenspecialist', institution: 'Hogeschool iPabo', year: '2022' },
+            { name: 'Kanjertraining', institution: 'Instituut voor Kanjertrainingen', year: '2021' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

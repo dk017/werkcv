@@ -1,0 +1,102 @@
+import { CVExample } from '../../types';
+
+export const autotechnicus: CVExample = {
+    slug: 'autotechnicus',
+    categorySlug: 'vakmanschap-en-logistiek',
+    name: 'Autotechnicus',
+    description: 'CV voorbeeld voor autotechnici en automonteurs. Laat zien hoe je je technische kennis, APK-bevoegdheid en merkervaring sterk presenteert.',
+    templateId: 'simple',
+    colorThemeId: 'charcoal',
+
+    metaTitle: 'CV Voorbeeld Autotechnicus | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor autotechnici. Met voorbeeldteksten voor APK-bevoegdheid, diagnoseapparatuur en merkervaring. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld autotechnicus', 'cv automonteur', 'cv autotechniek', 'cv garage'],
+    heroTitle: 'CV Voorbeeld Autotechnicus',
+    heroText: 'Als autotechnicus draait alles om vakkennis en praktijkervaring. Dit CV voorbeeld laat zien hoe je je technische vaardigheden, certificaten en merkspecifieke kennis overtuigend presenteert aan werkgevers in de autobranche.',
+    tips: [
+        'Vermeld je APK-bevoegdheid en eventuele specialisaties (airco, elektronica)',
+        'Noem specifieke merktrainingen en -certificaten die je hebt behaald',
+        'Geef aan met welke diagnoseapparatuur en systemen je kunt werken',
+        'Toon resultaten: doorlooptijden verbeterd, klanttevredenheid verhoogd',
+        'Vermeld je MBO-niveau en eventuele aanvullende cursussen',
+    ],
+    relatedSlugs: ['vakmanschap-en-logistiek/elektricien', 'vakmanschap-en-logistiek/loodgieter'],
+
+    sampleCV: {
+        personal: {
+            name: 'Kevin de Groot',
+            title: 'Autotechnicus',
+            email: 'kevin.degroot@email.nl',
+            phone: '06-23456789',
+            location: 'Eindhoven',
+            address: 'Geldropseweg 87',
+            postalCode: '5611 SE',
+            summary: 'Ervaren autotechnicus met ruim 8 jaar ervaring in de autobranche. Gespecialiseerd in diagnose en reparatie van personen- en bedrijfswagens. APK-bevoegd en opgeleid voor meerdere merken. Staat bekend om nauwkeurig werk en klantgerichte houding.',
+            birthDate: '3 november 1993',
+            birthPlace: 'Helmond',
+            nationality: 'Nederlands',
+            driversLicense: 'B, BE',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Autotechnicus',
+                company: 'Van Mossel Automotive',
+                location: 'Eindhoven',
+                start: 'maart 2020',
+                end: 'heden',
+                description: 'Verantwoordelijk voor diagnose, onderhoud en reparatie van personenvoertuigen.',
+                highlights: [
+                    'APK-keuringen uitgevoerd met een goedkeuringspercentage van 97%',
+                    'Complexe elektronische storingen opgelost met merkspecifieke diagnoseapparatuur',
+                    'Nieuwe monteurs ingewerkt en begeleid als werkplaatsmentor',
+                ],
+            },
+            {
+                role: 'Junior Automonteur',
+                company: 'Autobedrijf Jansen',
+                location: 'Helmond',
+                start: 'september 2016',
+                end: 'februari 2020',
+                description: 'Uitvoeren van onderhoud en eenvoudige reparaties aan diverse automerken.',
+                highlights: [
+                    'Banden-, rem- en uitlaatservice uitgevoerd voor gemiddeld 8 voertuigen per dag',
+                    'APK-keuring bevoegdheid behaald na interne opleiding',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 3 Autotechniek',
+                school: 'Summa College',
+                location: 'Eindhoven',
+                start: 'september 2012',
+                end: 'juli 2016',
+                description: 'Opleiding tot eerste automonteur met specialisatie personenvoertuigen.',
+            },
+        ],
+        skills: [
+            { name: 'Diagnose & Storingen', level: 5 },
+            { name: 'APK-keuring', level: 5 },
+            { name: 'Motormanagement', level: 4 },
+            { name: 'Airco-service', level: 4 },
+            { name: 'Klantenservice', level: 4 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+        ],
+        interests: ['Auto-evenementen', 'Karting', 'Techniek'],
+        courses: [
+            { name: 'APK-bevoegdheid', institution: 'IBKI', year: '2019' },
+            { name: 'Hybride & Elektrische Voertuigen', institution: 'Innovam', year: '2022' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

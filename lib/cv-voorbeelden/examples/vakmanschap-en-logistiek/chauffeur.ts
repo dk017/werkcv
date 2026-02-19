@@ -1,0 +1,103 @@
+import { CVExample } from '../../types';
+
+export const chauffeur: CVExample = {
+    slug: 'chauffeur',
+    categorySlug: 'vakmanschap-en-logistiek',
+    name: 'Vrachtwagenchauffeur',
+    description: 'CV voorbeeld voor vrachtwagenchauffeurs. Laat zien hoe je je rijbewijzen, ADR-certificaat en internationale transportervaring professioneel presenteert.',
+    templateId: 'ats',
+    colorThemeId: 'charcoal',
+
+    metaTitle: 'CV Voorbeeld Vrachtwagenchauffeur | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor vrachtwagenchauffeurs. Met voorbeeldteksten voor CE-rijbewijs, ADR en internationaal transport. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld chauffeur', 'cv vrachtwagenchauffeur', 'cv transport', 'cv rijbewijs CE'],
+    heroTitle: 'CV Voorbeeld Vrachtwagenchauffeur',
+    heroText: 'Als vrachtwagenchauffeur ben je de spil van de logistiek. Dit CV voorbeeld laat zien hoe je je rijbewijzen, ADR-certificaat en ervaring met internationaal transport overtuigend presenteert aan transportbedrijven.',
+    tips: [
+        'Vermeld al je rijbewijzen (C, CE, D) en de geldigheid van je bestuurderskaart',
+        'Noem je ADR-certificaat en eventuele specialisaties (tank, koelvervoer)',
+        'Geef aan of je ervaring hebt met internationaal transport en welke landen',
+        'Vermeld je kennis van boordcomputers, tachografen en routeplanning',
+        'Toon je betrouwbaarheid: schadevrije kilometers, tijdige leveringen',
+    ],
+    relatedSlugs: ['vakmanschap-en-logistiek/magazijnmedewerker', 'vakmanschap-en-logistiek/logistiek-coordinator'],
+
+    sampleCV: {
+        personal: {
+            name: 'Peter van Dijk',
+            title: 'Vrachtwagenchauffeur CE',
+            email: 'peter.vandijk@email.nl',
+            phone: '06-56789012',
+            location: 'Rotterdam',
+            address: 'Maashaven 23',
+            postalCode: '3072 AK',
+            summary: 'Ervaren vrachtwagenchauffeur met 12 jaar ervaring in nationaal en internationaal transport. In bezit van rijbewijs CE, ADR-certificaat en code 95. Betrouwbaar en flexibel, met uitstekende kennis van Europese routes en regelgeving. Meer dan 1,5 miljoen schadevrije kilometers gereden.',
+            birthDate: '8 september 1985',
+            birthPlace: 'Dordrecht',
+            nationality: 'Nederlands',
+            driversLicense: 'B, C, CE',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Internationaal Vrachtwagenchauffeur',
+                company: 'Vos Transport',
+                location: 'Rotterdam',
+                start: 'juni 2018',
+                end: 'heden',
+                description: 'Internationaal transport van stukgoed en palletladingen door heel Europa.',
+                highlights: [
+                    'Wekelijkse ritten naar Duitsland, België, Frankrijk en Scandinavië',
+                    'Meer dan 600.000 schadevrije kilometers gereden in 6 jaar',
+                    'Verantwoordelijk voor laden, lossen en correcte CMR-documentatie',
+                ],
+            },
+            {
+                role: 'Vrachtwagenchauffeur Nationaal',
+                company: 'PostNL Pakketten',
+                location: 'Dordrecht',
+                start: 'maart 2012',
+                end: 'mei 2018',
+                description: 'Distributie van pakketten en palletgoederen binnen Nederland.',
+                highlights: [
+                    'Dagelijks 15-20 afleveradressen bediend met tijdige levering',
+                    'Collega-chauffeurs ingewerkt op routes en procedures',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 2 Chauffeur Goederenvervoer',
+                school: 'ROC Zadkine',
+                location: 'Rotterdam',
+                start: 'september 2009',
+                end: 'juli 2011',
+                description: 'Opleiding tot beroepschauffeur met rijbewijs C en CE.',
+            },
+        ],
+        skills: [
+            { name: 'Rijbewijs CE & ADR', level: 5 },
+            { name: 'Routeplanning', level: 5 },
+            { name: 'Ladingzekering', level: 4 },
+            { name: 'Boordcomputer & Tachograaf', level: 4 },
+            { name: 'CMR-documentatie', level: 4 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+            { name: 'Duits', level: 'Basis' },
+        ],
+        interests: ['Motorsport', 'Vissen', 'Kamperen'],
+        courses: [
+            { name: 'ADR Basiscertificaat', institution: 'NIWO', year: '2023' },
+            { name: 'Code 95 Nascholing', institution: 'EVO-Fenedex', year: '2024' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

@@ -1,0 +1,101 @@
+import { CVExample } from '../../types';
+
+export const winkelmedewerker: CVExample = {
+    slug: 'winkelmedewerker',
+    categorySlug: 'horeca-en-detailhandel',
+    name: 'Winkelmedewerker / Verkoper',
+    description: 'CV voorbeeld voor winkelmedewerkers en verkopers in de detailhandel. Laat zien hoe je je verkoopervaring, klantgerichtheid en productkennis presenteert.',
+    templateId: 'remarkable',
+    colorThemeId: 'modern-teal',
+
+    metaTitle: 'CV Voorbeeld Winkelmedewerker | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor winkelmedewerkers en verkopers. Met voorbeeldteksten voor verkoopervaring, klantenservice en detailhandel. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld winkelmedewerker', 'cv verkoper', 'cv detailhandel', 'cv retail'],
+    heroTitle: 'CV Voorbeeld Winkelmedewerker',
+    heroText: 'Als winkelmedewerker ben je het gezicht van de winkel. Dit CV voorbeeld laat zien hoe je je verkoopvaardigheden, klantgerichtheid en productkennis overtuigend presenteert aan retailers en winkeleigenaren.',
+    tips: [
+        'Benadruk je klantvriendelijkheid en verkoopresultaten met cijfers',
+        'Vermeld je ervaring met kassasystemen en voorraadbeheer',
+        'Geef aan dat je beschikbaar bent voor avond- en weekendwerk',
+        'Noem je ervaring met visual merchandising en etalage-inrichting',
+        'Toon je productkennis en adviesvaardigheden',
+    ],
+    relatedSlugs: ['horeca-en-detailhandel/filiaalmanager', 'horeca-en-detailhandel/hotel-receptionist'],
+
+    sampleCV: {
+        personal: {
+            name: 'Amber Kok',
+            title: 'Winkelmedewerker / Verkoopmedewerker',
+            email: 'amber.kok@email.nl',
+            phone: '06-78654321',
+            location: 'Leiden',
+            address: 'Breestraat 55',
+            postalCode: '2311 CK',
+            summary: 'Klantgerichte en commercieel ingestelde winkelmedewerker met 4 jaar ervaring in de modedetailhandel. Sterk in persoonlijk advies, styling en het behalen van verkooptargets. Ervaren met kassabeheer, voorraadbeheer en visual merchandising. Enthousiast teamlid dat graag bijdraagt aan een positieve winkelbeleving.',
+            birthDate: '25 september 1999',
+            birthPlace: 'Leiden',
+            nationality: 'Nederlands',
+            driversLicense: '',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Verkoopmedewerker',
+                company: 'Zara (Inditex)',
+                location: 'Leiden',
+                start: 'september 2022',
+                end: 'heden',
+                description: 'Verkoop en klantadvies in een drukbezochte modezaak in het stadscentrum.',
+                highlights: [
+                    'Persoonlijke verkooptargets consistent met 15% overtroffen',
+                    'Visual merchandising en etalage-inrichting verzorgd volgens richtlijnen',
+                    'Nieuwe collega\'s ingewerkt op verkoopproces en kassasysteem',
+                ],
+            },
+            {
+                role: 'Winkelmedewerker',
+                company: 'HEMA',
+                location: 'Leiden',
+                start: 'juni 2020',
+                end: 'augustus 2022',
+                description: 'All-round werkzaamheden waaronder kassa, vullen en klantadvies.',
+                highlights: [
+                    'Dagelijkse kassacontrole uitgevoerd met 100% nauwkeurigheid',
+                    'Seizoenspresentaties mede-opgezet voor schoolseizoen en feestdagen',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 3 Verkoopspecialist',
+                school: 'ROC Leiden',
+                location: 'Leiden',
+                start: 'september 2017',
+                end: 'juli 2020',
+                description: 'Opleiding tot verkoopspecialist met stages in mode- en warenhuis retail.',
+            },
+        ],
+        skills: [
+            { name: 'Klantadvies & Verkoop', level: 5 },
+            { name: 'Kassabeheer', level: 5 },
+            { name: 'Visual Merchandising', level: 4 },
+            { name: 'Voorraadbeheer', level: 4 },
+            { name: 'Stressbestendigheid', level: 4 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+        ],
+        interests: ['Mode', 'Shoppen', 'Instagram', 'Fitness'],
+        courses: [
+            { name: 'Verkooptechnieken Masterclass', institution: 'Retail Academy', year: '2023' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};

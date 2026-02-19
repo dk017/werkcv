@@ -1,0 +1,102 @@
+import { CVExample } from '../../types';
+
+export const filiaalmanager: CVExample = {
+    slug: 'filiaalmanager',
+    categorySlug: 'horeca-en-detailhandel',
+    name: 'Filiaalmanager / Winkelmanager',
+    description: 'CV voorbeeld voor filiaalmanagers en winkelmanagers. Laat zien hoe je je leidinggevende ervaring, omzetverantwoordelijkheid en people management presenteert.',
+    templateId: 'professional',
+    colorThemeId: 'classic-blue',
+
+    metaTitle: 'CV Voorbeeld Filiaalmanager | WerkCV.nl',
+    metaDesc: 'Professioneel CV voorbeeld voor filiaalmanagers en winkelmanagers. Met voorbeeldteksten voor leidinggeven, omzetgroei en retailmanagement. Maak direct je eigen CV.',
+    keywords: ['cv voorbeeld filiaalmanager', 'cv winkelmanager', 'cv retail manager', 'cv storemanager'],
+    heroTitle: 'CV Voorbeeld Filiaalmanager',
+    heroText: 'Als filiaalmanager ben je verantwoordelijk voor de totale winkeloperatie. Dit CV voorbeeld laat zien hoe je je leidinggevende kwaliteiten, omzetresultaten en operationele vaardigheden overtuigend presenteert aan retailers.',
+    tips: [
+        'Toon omzetresultaten en KPI-verbeteringen met concrete cijfers',
+        'Vermeld hoeveel medewerkers je hebt aangestuurd en ontwikkeld',
+        'Noem je ervaring met personeelsplanning, budgetbeheer en inkoop',
+        'Benadruk je commerciële vaardigheden en kennis van retailtrends',
+        'Vermeld ervaring met omnichannel-retail als je die hebt',
+    ],
+    relatedSlugs: ['horeca-en-detailhandel/winkelmedewerker', 'horeca-en-detailhandel/hotel-receptionist'],
+
+    sampleCV: {
+        personal: {
+            name: 'Robert van Loon',
+            title: 'Filiaalmanager Retail',
+            email: 'robert.vanloon@email.nl',
+            phone: '06-89765432',
+            location: 'Eindhoven',
+            address: 'Stratumseind 10',
+            postalCode: '5611 ET',
+            summary: 'Resultaatgerichte filiaalmanager met 8 jaar ervaring in de retail, waarvan 5 jaar in een leidinggevende functie. Bewezen track record in omzetgroei, teamontwikkeling en operationele efficiëntie. Sterk in het motiveren van teams en het realiseren van commerciële doelstellingen. Ervaren met zowel fashion als non-food retail.',
+            birthDate: '2 december 1987',
+            birthPlace: 'Eindhoven',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: 'linkedin.com/in/robertvanloon',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Filiaalmanager',
+                company: 'Action',
+                location: 'Eindhoven',
+                start: 'januari 2021',
+                end: 'heden',
+                description: 'Eindverantwoordelijk voor een filiaal met een team van 18 medewerkers en een jaaromzet van €3,5 miljoen.',
+                highlights: [
+                    'Jaaromzet met 12% verhoogd door actief commercieel beleid en verbeterde etalagepresentatie',
+                    'Personeelsverloop teruggebracht van 35% naar 18% door betere coaching en roostering',
+                    'Mystery shopper-score verbeterd van 7,2 naar 8,8 binnen een jaar',
+                ],
+            },
+            {
+                role: 'Assistent Filiaalmanager',
+                company: 'Blokker',
+                location: 'Veldhoven',
+                start: 'maart 2018',
+                end: 'december 2020',
+                description: 'Ondersteuning van de filiaalmanager bij dagelijkse operatie en teamaansturing.',
+                highlights: [
+                    'Team van 10 medewerkers aangestuurd bij afwezigheid van de filiaalmanager',
+                    'Voorraadbeheer geoptimaliseerd waardoor derving met 20% afnam',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 4 Manager Retail',
+                school: 'Summa College',
+                location: 'Eindhoven',
+                start: 'september 2013',
+                end: 'juli 2017',
+                description: 'Opleiding tot retail manager met stages bij grootwinkelbedrijven.',
+            },
+        ],
+        skills: [
+            { name: 'Leidinggeven & Coaching', level: 5 },
+            { name: 'Commercieel management', level: 5 },
+            { name: 'Personeelsplanning', level: 4 },
+            { name: 'Budgetbeheer', level: 4 },
+            { name: 'Visual Merchandising', level: 4 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+        ],
+        interests: ['Retailtrends', 'Voetbal', 'Reizen', 'Lezen'],
+        courses: [
+            { name: 'Retail Management Masterclass', institution: 'Retail Academy', year: '2022' },
+            { name: 'Leidinggeven in de praktijk', institution: 'NCOI', year: '2020' },
+        ],
+        internships: [],
+        awards: [],
+    },
+};
