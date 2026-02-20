@@ -9,4 +9,3 @@ README.md
 .env*.local
 docker-compose.yml
 Dockerfile
-entrypoint.sh
