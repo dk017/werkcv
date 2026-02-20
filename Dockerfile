@@ -29,6 +29,11 @@ COPY . .
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV NEXT_TELEMETRY_DISABLED=1
 
+# Dummy env vars needed so module-level singletons (Prisma Pool, OpenAI) don't
+# fail during Next.js static analysis. Real values come from .env at runtime.
+ENV DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy
+ENV OPENAI_API_KEY=dummy
+
 RUN npm run build
 
 # ─────────────────────────────────────────────────────────
