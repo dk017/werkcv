@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getCategoryByPath, getCategoryBreadcrumbs, getRelatedCategories, getCategoryChildren } from '@/lib/categories';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+
+export const dynamic = 'force-dynamic';
 import { RelatedCVs } from '@/components/seo/RelatedCVs';
 import { SampleCVPreview } from '@/components/seo/SampleCVPreview';
 import { TableOfContents, TableOfContentsMobile } from '@/components/seo/TableOfContents';

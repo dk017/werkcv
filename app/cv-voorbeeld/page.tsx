@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { getPillarCategories } from '@/lib/categories';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
     title: 'CV Voorbeelden per Beroep | WerkCV.nl',
     description: 'Bekijk professionele CV voorbeelden voor jouw beroep. Van ICT tot Zorg, van Logistiek tot Administratie. Start direct met een perfect CV template.',
