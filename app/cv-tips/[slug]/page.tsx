@@ -389,7 +389,7 @@ export default async function ArticlePage({ params }: PageProps) {
                     </h2>
                     <p className="text-lg mb-6 max-w-2xl mx-auto text-gray-800">
                         Maak binnen 5 minuten een professioneel CV met onze templates en voorbeeldteksten.
-                        Eenmalig €5, geen abonnement.
+                        Eenmalig $5, geen abonnement.
                     </p>
                     <Link
                         href="/templates"

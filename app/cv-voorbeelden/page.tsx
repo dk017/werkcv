@@ -141,7 +141,7 @@ export default function CVVoorbeeldenOverview() {
                         Klaar om te beginnen?
                     </h2>
                     <p className="text-xl mb-8 max-w-2xl mx-auto">
-                        Maak binnen 5 minuten een professioneel CV. Eenmalig €5, geen abonnement.
+                        Maak binnen 5 minuten een professioneel CV. Eenmalig $5, geen abonnement.
                     </p>
                     <Link
                         href="/templates"

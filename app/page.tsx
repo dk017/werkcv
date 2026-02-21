@@ -267,7 +267,7 @@ export default function Home() {
         { title: "ATS-Vriendelijk", desc: "Alle templates werken met Applicant Tracking Systems", color: "bg-yellow-400", icon: "✓" },
         { title: "Direct PDF Download", desc: "Download je CV direct als professionele PDF", color: "bg-blue-400", icon: "↓" },
         { title: "100% Privacy", desc: "Je gegevens blijven van jou. Wij verkopen niets door", color: "bg-pink-400", icon: "🔒" },
-        { title: "Geen Abonnement", desc: "Eenmalig €5 per download, geen verborgen kosten", color: "bg-green-400", icon: "€" },
+        { title: "Geen Abonnement", desc: "Eenmalig $5 per download, geen verborgen kosten", color: "bg-green-400", icon: "€" },
         { title: "Live Preview", desc: "Bekijk je CV in realtime terwijl je typt", color: "bg-purple-400", icon: "👁" },
         { title: "Binnen 5 Minuten", desc: "Upload je bestaande CV of begin helemaal opnieuw", color: "bg-[#4ECDC4]", icon: "⚡" },
     ];
@@ -275,7 +275,7 @@ export default function Home() {
     const steps = [
         { num: "1", title: "Kies een template", desc: `Selecteer uit ${templateCount}+ professionele, ATS-vriendelijke templates.`, color: "bg-yellow-400" },
         { num: "2", title: "Vul je gegevens in", desc: "Typ je gegevens in de editor. Je CV wordt live bijgewerkt.", color: "bg-blue-400" },
-        { num: "3", title: "Download als PDF", desc: "Download je afgeronde CV als professionele PDF. Eenmalig €5.", color: "bg-pink-400" },
+        { num: "3", title: "Download als PDF", desc: "Download je afgeronde CV als professionele PDF. Eenmalig $5.", color: "bg-pink-400" },
     ];
 
     return (
@@ -375,7 +375,7 @@ export default function Home() {
                             </h1>
                             <p className="text-lg md:text-xl font-medium text-gray-700 mb-8 max-w-xl mx-auto lg:mx-0">
                                 Kies uit {templateCount}+ professionele templates, vul je gegevens in en download als PDF.{" "}
-                                <span className="bg-blue-200 px-1">Eenmalig €5, geen abonnement.</span>
+                                <span className="bg-blue-200 px-1">Eenmalig $5, geen abonnement.</span>
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                                 <Link
@@ -409,7 +409,7 @@ export default function Home() {
                         { number: `${templateCount}+`, label: "Templates", color: "bg-yellow-400" },
                         { number: `${exampleCount}+`, label: "CV Voorbeelden", color: "bg-blue-400" },
                         { number: `${articleCount}`, label: "Expert Artikelen", color: "bg-pink-400" },
-                        { number: "€5", label: "Eenmalig", color: "bg-green-400" },
+                        { number: "$5", label: "Eenmalig", color: "bg-green-400" },
                     ].map((stat) => (
                         <div key={stat.label} className="flex flex-col items-center">
                             <div
@@ -647,7 +647,7 @@ export default function Home() {
                     </h2>
                     <p className="text-xl mb-8 max-w-2xl mx-auto text-black/80">
                         Maak binnen 5 minuten een professioneel CV dat opvalt bij recruiters.
-                        Eenmalig €5, geen abonnement.
+                        Eenmalig $5, geen abonnement.
                     </p>
                     <Link
                         href="/templates"

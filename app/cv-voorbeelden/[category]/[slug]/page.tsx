@@ -326,7 +326,7 @@ export default async function ExamplePage({ params }: PageProps) {
                             </h3>
                             <p className="text-gray-700 mb-4">
                                 Gebruik het voorbeeld hierboven als startpunt of begin met een leeg template.
-                                Binnen 5 minuten klaar, eenmalig €5.
+                                Binnen 5 minuten klaar, eenmalig $5.
                             </p>
                             <div className="flex flex-wrap gap-3">
                                 <UseExampleButton
@@ -401,7 +401,7 @@ export default async function ExamplePage({ params }: PageProps) {
                     </h2>
                     <p className="text-lg mb-6 max-w-2xl mx-auto text-gray-800">
                         Maak binnen 5 minuten een professioneel {example.name.toLowerCase()} CV
-                        met onze templates en voorbeeldteksten. Eenmalig €5, geen abonnement.
+                        met onze templates en voorbeeldteksten. Eenmalig $5, geen abonnement.
                     </p>
                     <Link
                         href="/templates"

@@ -1128,7 +1128,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
 
                         <div className="flex items-center justify-between border-2 border-black p-4 mb-6 bg-gray-50">
                             <p className="font-bold text-black">CV als PDF</p>
-                            <p className="text-2xl font-black text-black">€5</p>
+                            <p className="text-2xl font-black text-black">$5</p>
                         </div>
 
                         <div className="flex gap-3 justify-end">

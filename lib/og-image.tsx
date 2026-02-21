@@ -103,7 +103,7 @@ export function buildOgImage({
 
                 {/* Footer tagline */}
                 <div style={{ fontSize: 22, color: '#666', fontWeight: 700 }}>
-                    werkcv.nl · professioneel cv maken · eenmalig €5
+                    werkcv.nl · professioneel cv maken · eenmalig $5
                 </div>
             </div>
 
@@ -121,7 +121,7 @@ export function buildOgImage({
                     padding: '40px 28px',
                 }}
             >
-                <div style={{ fontSize: 100, fontWeight: 900, color: '#000', lineHeight: 1 }}>€5</div>
+                <div style={{ fontSize: 100, fontWeight: 900, color: '#000', lineHeight: 1 }}>$5</div>
                 <div
                     style={{
                         fontSize: 17,

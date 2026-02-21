@@ -18,7 +18,7 @@ const steps = [
     },
     {
         title: "Download je CV",
-        description: "Klaar? Download als professionele PDF. Eenmalig €5, geen abonnement.",
+        description: "Klaar? Download als professionele PDF. Eenmalig $5, geen abonnement.",
         color: "bg-pink-400",
     },
 ];
