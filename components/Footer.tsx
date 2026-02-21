@@ -41,6 +41,9 @@ export default function Footer() {
                         <Link href="/over-ons" className="hover:text-yellow-600 transition-colors">
                             Over Ons
                         </Link>
+                        <Link href="/contact" className="hover:text-yellow-600 transition-colors">
+                            Contact
+                        </Link>
                         <Link href="/privacy" className="hover:text-yellow-600 transition-colors">
                             Privacybeleid
                         </Link>
