@@ -73,6 +73,13 @@ export default function RootLayout({
     <html lang="nl" suppressHydrationWarning translate="no">
       <head>
         <meta name="google" content="notranslate" />
+        {/* Google Analytics — inline so Google's detector finds it in page source */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-PCC26F3HBJ" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-PCC26F3HBJ');`,
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased notranslate`}
