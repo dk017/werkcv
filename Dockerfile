@@ -86,6 +86,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # Tell Puppeteer to use the system-installed Chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+# Chromium needs a writable HOME for its crashpad database
+ENV HOME=/tmp
 
 # Non-root user for security
 RUN groupadd --system --gid 1001 nodejs \
