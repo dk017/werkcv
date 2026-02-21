@@ -43,14 +43,16 @@ export async function buildCheckoutURL(
 
     const addons = uniqueAddons(selectedAddons);
 
+    const metadata: Record<string, string> = { cv_id: cvId };
+    if (addons.length > 0) {
+        metadata.addons_csv = addons.join(',');
+    }
+
     const body: Record<string, unknown> = {
         product_price_id: POLAR_PRICE_ID,
         success_url: `${APP_URL}/success?cvId=${encodeURIComponent(cvId)}`,
         return_url: `${APP_URL}/editor?id=${encodeURIComponent(cvId)}`,
-        metadata: {
-            cv_id: cvId,
-            addons_csv: addons.join(','),
-        },
+        metadata,
     };
 
     if (email) {
