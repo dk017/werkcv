@@ -23,6 +23,7 @@ import TemplateSelector from "./TemplateSelector";
 import ColorThemePicker from "./ColorThemePicker";
 import CVUploader from "./CVUploader";
 import WelcomeOnboarding from "./WelcomeOnboarding";
+import CvScoreWidget from "./CvScoreWidget";
 import PhotoUpload from "./PhotoUpload";
 import { hasCompletionTracked, markCompletionTracked, track } from "@/lib/analytics";
 
@@ -669,6 +670,9 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                 {/* Scrollable Form Area */}
                 <div className="flex-1 overflow-y-auto p-4 sm:p-5 scroll-smooth bg-[#f1f5f4]">
                     <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12">
+
+                        {/* CV Score Widget */}
+                        <CvScoreWidget data={data} />
 
                         {/* Personal Section */}
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
