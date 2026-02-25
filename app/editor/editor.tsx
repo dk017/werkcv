@@ -24,6 +24,7 @@ import ColorThemePicker from "./ColorThemePicker";
 import CVUploader from "./CVUploader";
 import WelcomeOnboarding from "./WelcomeOnboarding";
 import CvScoreWidget from "./CvScoreWidget";
+import KeywordScannerWidget from "./KeywordScannerWidget";
 import PhotoUpload from "./PhotoUpload";
 import { hasCompletionTracked, markCompletionTracked, track } from "@/lib/analytics";
 
@@ -673,6 +674,9 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
 
                         {/* CV Score Widget */}
                         <CvScoreWidget data={data} />
+
+                        {/* Keyword Scanner Widget */}
+                        <KeywordScannerWidget data={data} />
 
                         {/* Personal Section */}
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
