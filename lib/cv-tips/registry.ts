@@ -33,6 +33,9 @@ import { videoCvMaken } from './articles/video-cv-maken';
 import { cvMakenAlsStudent } from './articles/cv-maken-als-student';
 import { cvMakenInHetEngels } from './articles/cv-maken-in-het-engels';
 import { cvMakenInWord } from './articles/cv-maken-in-word';
+import { cvVoorUitzendbureau } from './articles/cv-voor-uitzendbureau';
+import { cvNaOntslag } from './articles/cv-na-ontslag';
+import { cv50Plus } from './articles/cv-50-plus';
 
 // ============================================================================
 // DATA COLLECTION
@@ -66,6 +69,9 @@ const allArticles: BlogArticle[] = [
     cvMakenAlsStudent,
     cvMakenInHetEngels,
     cvMakenInWord,
+    cvVoorUitzendbureau,
+    cvNaOntslag,
+    cv50Plus,
 ].sort((a, b) => a.order - b.order);
 
 // ============================================================================
