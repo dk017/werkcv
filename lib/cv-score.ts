@@ -155,26 +155,33 @@ export function computeCvScore(data: CVData): CvScoreResult {
     });
 
     // ─── 8. Geen zwakke werkwoorden (7 pts) ──────────────────────────────────
+    // Only evaluate once there's actual content to check against
     const allHighlightText = allHighlights.join(' ');
     const summaryAndHighlights = `${summary} ${allHighlightText}`;
-    const hasWeakVerbs = containsWeakVerb(summaryAndHighlights);
-    checks.push({
-        id: 'weak-verbs',
-        label: 'Geen passieve formuleringen',
-        tip: 'Vermijd "verantwoordelijk voor", "betrokken bij" en "hielp bij". Gebruik actieve werkwoorden: Geleid, Ontwikkeld, Gerealiseerd, Verhoogd.',
-        passed: !hasWeakVerbs,
-        points: 7,
-    });
+    const hasEnoughContentToEvaluate = summaryWords >= 10 || allHighlights.length > 0;
+
+    if (hasEnoughContentToEvaluate) {
+        const hasWeakVerbs = containsWeakVerb(summaryAndHighlights);
+        checks.push({
+            id: 'weak-verbs',
+            label: 'Geen passieve formuleringen',
+            tip: 'Vermijd "verantwoordelijk voor", "betrokken bij" en "hielp bij". Gebruik actieve werkwoorden: Geleid, Ontwikkeld, Gerealiseerd, Verhoogd.',
+            passed: !hasWeakVerbs,
+            points: 7,
+        });
+    }
 
     // ─── 9. Geen buzzwords (5 pts) ───────────────────────────────────────────
-    const hasBuzzwords = containsBuzzword(summaryAndHighlights);
-    checks.push({
-        id: 'buzzwords',
-        label: 'Geen lege buzzwords',
-        tip: 'Woorden als "gemotiveerd", "dynamisch" en "resultaatgericht" zeggen niets. Toon het in je werkervaring in plaats van het te claimen.',
-        passed: !hasBuzzwords,
-        points: 5,
-    });
+    if (hasEnoughContentToEvaluate) {
+        const hasBuzzwords = containsBuzzword(summaryAndHighlights);
+        checks.push({
+            id: 'buzzwords',
+            label: 'Geen lege buzzwords',
+            tip: 'Woorden als "gemotiveerd", "dynamisch" en "resultaatgericht" zeggen niets. Toon het in je werkervaring in plaats van het te claimen.',
+            passed: !hasBuzzwords,
+            points: 5,
+        });
+    }
 
     // ─── 10. Vaardigheden aanwezig (8 pts) ───────────────────────────────────
     const hasSkills = data.skills.length >= 3;
