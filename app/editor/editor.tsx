@@ -540,16 +540,16 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
     };
 
     return (
-        <div className="flex flex-col lg:flex-row h-screen bg-[#eef3f1] font-sans text-slate-900 overflow-hidden">
+        <div className="flex flex-col lg:flex-row h-screen bg-[#FFFEF9] font-sans text-slate-900 overflow-hidden">
             {/* Left: Editor Form */}
-            <div className="flex w-full lg:w-[54%] flex-col border-r-0 lg:border-r border-slate-200 bg-[#f8fbfa] z-10 h-screen">
+            <div className="flex w-full lg:w-[54%] flex-col border-r-0 lg:border-r border-slate-200 bg-[#FFFEF9] z-10 h-screen">
                 {/* Toolbar */}
                 <div className="min-h-14 lg:h-16 border-b border-slate-200 flex flex-wrap items-center justify-between px-3 sm:px-5 py-2 lg:py-0 bg-white/95 backdrop-blur sticky top-0 z-20 gap-2">
                     {/* Left side - Logo and tools */}
                     <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                         <Link href="/" className="flex items-center gap-1">
                             <span className="font-semibold text-lg sm:text-xl tracking-tight text-slate-900">
-                                Werk<span className="bg-emerald-200 px-1 rounded-sm">CV</span>.nl
+                                Werk<span className="bg-[#4ECDC4] px-1 rounded-sm">CV</span>.nl
                             </span>
                         </Link>
                         <Link
@@ -669,7 +669,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                 </div>
 
                 {/* Scrollable Form Area */}
-                <div className="flex-1 overflow-y-auto p-4 sm:p-5 scroll-smooth bg-[#f1f5f4]">
+                <div className="flex-1 overflow-y-auto p-4 sm:p-5 scroll-smooth bg-[#FFFEF9]">
                     <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12">
 
                         {/* CV Score Widget */}
@@ -992,7 +992,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
             </div>
 
             {/* Right: Live Preview */}
-            <div className="hidden lg:flex flex-col lg:w-[46%] xl:w-[48%] bg-[#e8efed] overflow-hidden">
+            <div className="hidden lg:flex flex-col lg:w-[46%] xl:w-[48%] bg-[#f0faf9] overflow-hidden">
                 {/* Fixed header */}
                 <div className="shrink-0 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200">
                     <span className="text-xs font-semibold text-slate-600">Live preview</span>
@@ -1066,7 +1066,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                         className="absolute inset-0 w-full h-full cursor-default"
                         aria-label="Sluit voorbeeld"
                     />
-                    <div className="absolute inset-x-0 bottom-0 h-[72vh] md:inset-y-0 md:right-0 md:left-auto md:h-full md:w-[460px] bg-[#e8efed] border-t md:border-t-0 md:border-l border-slate-300 flex flex-col">
+                    <div className="absolute inset-x-0 bottom-0 h-[72vh] md:inset-y-0 md:right-0 md:left-auto md:h-full md:w-[460px] bg-[#f0faf9] border-t md:border-t-0 md:border-l border-slate-300 flex flex-col">
                         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-white">
                             <div className="flex items-center gap-2">
                                 <span className="bg-slate-900 px-2 py-1 text-xs font-semibold text-white border border-slate-900 rounded-md">Live preview</span>

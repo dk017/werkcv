@@ -31,7 +31,7 @@ export default function CvScoreWidget({ data }: CvScoreWidgetProps) {
     if (!checked) {
         return (
             <section className="bg-white border border-slate-200 rounded-2xl shadow-sm px-5 py-4 flex items-center gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#4ECDC4]/15 flex items-center justify-center">
                     <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                             d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />

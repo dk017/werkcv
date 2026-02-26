@@ -79,8 +79,8 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                 className="w-full flex items-center gap-4 px-5 py-4 hover:bg-slate-50 transition-colors text-left"
             >
                 {/* Icon */}
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-violet-100 flex items-center justify-center">
-                    <svg className="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#4ECDC4]/15 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
@@ -89,7 +89,7 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                         <span className="text-[11px] font-bold uppercase tracking-wide text-slate-500">Vacature Scanner</span>
-                        <span className="text-[10px] font-bold bg-violet-100 text-violet-700 px-1.5 py-0.5 rounded-full">NIEUW</span>
+                        <span className="text-[10px] font-bold bg-[#4ECDC4]/20 text-teal-700 px-1.5 py-0.5 rounded-full">NIEUW</span>
                     </div>
                     {results ? (
                         <p className="text-sm font-semibold text-slate-800">
@@ -138,7 +138,7 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                                     onChange={e => { setJobDescription(e.target.value); setError(''); }}
                                     placeholder="Plak hier de volledige vacaturetekst..."
                                     rows={6}
-                                    className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 resize-none font-medium"
+                                    className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 resize-none font-medium"
                                 />
                                 {error && (
                                     <p className="text-xs text-red-600 mt-1 font-medium">{error}</p>
@@ -148,7 +148,7 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                             <button
                                 onClick={handleScan}
                                 disabled={isLoading || jobDescription.trim().length < 20}
-                                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-violet-600 hover:bg-violet-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-bold rounded-lg transition-colors"
+                                className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-[#4ECDC4] hover:bg-teal-500 disabled:opacity-50 disabled:cursor-not-allowed text-slate-900 text-sm font-bold rounded-lg transition-colors"
                             >
                                 {isLoading ? (
                                     <>
@@ -184,7 +184,7 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                                         </span>
                                         <button
                                             onClick={handleCopyMissing}
-                                            className="text-[11px] font-bold text-violet-600 hover:text-violet-800 transition-colors"
+                                            className="text-[11px] font-bold text-teal-600 hover:text-teal-800 transition-colors"
                                         >
                                             {copied ? '✓ Gekopieerd!' : 'Kopieer alles'}
                                         </button>
