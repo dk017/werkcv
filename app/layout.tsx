@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AnalyticsProvider from "@/components/AnalyticsProvider";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/seo/JsonLd";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -73,6 +74,8 @@ export default function RootLayout({
     <html lang="nl" suppressHydrationWarning translate="no">
       <head>
         <meta name="google" content="notranslate" />
+        <OrganizationJsonLd />
+        <WebsiteJsonLd />
         {/* Google Analytics — inline so Google's detector finds it in page source */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-PCC26F3HBJ" />
         <script
