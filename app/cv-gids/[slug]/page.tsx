@@ -52,8 +52,19 @@ export default async function DutchWavePage({ params }: PageProps) {
         headline: page.title,
         description: page.metaDesc,
         inLanguage: 'nl-NL',
-        mainEntityOfPage: `https://werkcv.nl/cv-gids/${page.slug}`,
-        author: { '@type': 'Organization', name: 'WerkCV.nl' },
+        mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': `https://werkcv.nl/cv-gids/${page.slug}`,
+        },
+        author: { '@type': 'Organization', name: 'WerkCV.nl', url: 'https://werkcv.nl' },
+        publisher: {
+            '@type': 'Organization',
+            name: 'WerkCV.nl',
+            logo: {
+                '@type': 'ImageObject',
+                url: 'https://werkcv.nl/logo.png',
+            },
+        },
     };
     const faqJsonLd = page.faq.length
         ? {
@@ -76,6 +87,16 @@ export default async function DutchWavePage({ params }: PageProps) {
         { label: page.title, href: `/cv-gids/${page.slug}` },
     ];
 
+    const breadcrumbJsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://werkcv.nl' },
+            { '@type': 'ListItem', position: 2, name: 'CV Gidsen', item: 'https://werkcv.nl/cv-gids' },
+            { '@type': 'ListItem', position: 3, name: page.title, item: `https://werkcv.nl/cv-gids/${page.slug}` },
+        ],
+    };
+
     return (
         <main className="min-h-screen bg-[#FFFEF9]">
             <script
@@ -88,6 +109,10 @@ export default async function DutchWavePage({ params }: PageProps) {
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
                 />
             )}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+            />
 
             {/* Breadcrumbs */}
             <div className="border-b-4 border-black bg-white">
