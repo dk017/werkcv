@@ -338,6 +338,7 @@ export default function Home() {
                         <Link href="/templates" className="hover:text-yellow-600 transition-colors">Templates</Link>
                         <Link href="/cv-voorbeelden" className="hover:text-yellow-600 transition-colors">CV Voorbeelden</Link>
                         <Link href="/cv-tips" className="hover:text-yellow-600 transition-colors">CV Tips</Link>
+                        <Link href="/tools" className="hover:text-yellow-600 transition-colors">Tools</Link>
                         <Link href="/prijzen" className="hover:text-yellow-600 transition-colors">Prijzen</Link>
                     </nav>
                     <div className="flex items-center gap-4">
@@ -632,6 +633,63 @@ export default function Home() {
                                     +{categoryCount - 6} meer
                                 </span>
                             </div>
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* ============================================================ */}
+            {/* TOOLS PROMO - 4 highlighted tools */}
+            {/* ============================================================ */}
+            <section className="relative z-10 border-b-4 border-black bg-white">
+                <div className="max-w-6xl mx-auto px-6 py-16">
+                    <div className="flex items-center justify-between mb-10">
+                        <div>
+                            <h2 className="text-3xl md:text-4xl font-black text-black">
+                                Gratis carrière tools
+                            </h2>
+                            <p className="text-gray-600 font-medium mt-1">Geen registratie vereist</p>
+                        </div>
+                        <Link
+                            href="/tools"
+                            className="hidden sm:flex items-center gap-1 font-bold text-sm text-[#4ECDC4] hover:underline"
+                        >
+                            Bekijk alle 10 tools
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </Link>
+                    </div>
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        {[
+                            { href: "/tools/ats-cv-checker", title: "ATS CV Checker", desc: "Check je ATS-score met 16 verbeterpunten.", badge: "AI" },
+                            { href: "/tools/sollicitatiebrief-generator", title: "Sollicitatiebrief", desc: "Schrijf een sterke sollicitatiebrief met AI.", badge: "AI" },
+                            { href: "/tools/salaris-calculator", title: "Salaris Calculator", desc: "Bereken je marktsalaris voor 2026.", badge: "Gratis" },
+                            { href: "/tools/cv-keywords", title: "CV Keywords", desc: "Vind de ATS-keywords voor jouw functie.", badge: "AI" },
+                        ].map((tool) => (
+                            <Link
+                                key={tool.href}
+                                href={tool.href}
+                                className="group bg-[#FFFEF9] border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all p-4 block"
+                            >
+                                <div className="flex items-start justify-between gap-2 mb-2">
+                                    <h3 className="font-black text-slate-900 text-sm leading-tight group-hover:text-teal-700 transition-colors">
+                                        {tool.title}
+                                    </h3>
+                                    <span className="flex-shrink-0 text-[10px] font-black uppercase tracking-wide bg-[#4ECDC4]/20 text-teal-700 px-2 py-0.5 rounded-full">
+                                        {tool.badge}
+                                    </span>
+                                </div>
+                                <p className="text-xs text-slate-500 leading-relaxed">{tool.desc}</p>
+                            </Link>
+                        ))}
+                    </div>
+                    <div className="sm:hidden text-center mt-6">
+                        <Link href="/tools" className="inline-flex items-center gap-1 font-bold text-sm text-[#4ECDC4] hover:underline">
+                            Bekijk alle 10 gratis tools
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                            </svg>
                         </Link>
                     </div>
                 </div>

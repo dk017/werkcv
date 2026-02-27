@@ -23,6 +23,9 @@ export default function Footer() {
                         <Link href="/cv-tips" className="hover:text-yellow-600 transition-colors">
                             CV Tips
                         </Link>
+                        <Link href="/tools" className="hover:text-yellow-600 transition-colors">
+                            Gratis Tools
+                        </Link>
                         <Link href="/cv-gids" className="hover:text-yellow-600 transition-colors">
                             CV Gidsen
                         </Link>
