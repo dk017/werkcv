@@ -267,7 +267,7 @@ export default function Home() {
         { title: "ATS-Vriendelijk", desc: "Alle templates werken met Applicant Tracking Systems", color: "bg-yellow-400", icon: "✓" },
         { title: "Direct PDF Download", desc: "Download je CV direct als professionele PDF", color: "bg-blue-400", icon: "↓" },
         { title: "100% Privacy", desc: "Je gegevens blijven van jou. Wij verkopen niets door", color: "bg-pink-400", icon: "🔒" },
-        { title: "Geen Abonnement", desc: "Eenmalig $5 per download, geen verborgen kosten", color: "bg-green-400", icon: "€" },
+        { title: "Geen Abonnement", desc: "Eenmalig $5 per download, geen verborgen kosten", color: "bg-green-400", icon: "$" },
         { title: "Live Preview", desc: "Bekijk je CV in realtime terwijl je typt", color: "bg-purple-400", icon: "👁" },
         { title: "Binnen 5 Minuten", desc: "Upload je bestaande CV of begin helemaal opnieuw", color: "bg-[#4ECDC4]", icon: "⚡" },
     ];
@@ -542,7 +542,7 @@ export default function Home() {
                         </span>
                         <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                             <div className="text-6xl font-black text-black mb-2">
-                                <span className="text-3xl align-top">€</span>5
+                                <span className="text-3xl align-top">$</span>5
                             </div>
                             <p className="text-gray-600 font-medium mb-6">per CV download</p>
                             <div className="space-y-3 text-left mb-8">
