@@ -3,15 +3,17 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-    title: "Gratis CV Tools - Salaris, Proeftijd, Brieven & Meer | WerkCV.nl",
-    description: "Handige gratis tools voor je carrière: salaris berekenen, proeftijd checken, opzeggingsbrief genereren, sollicitatiebrief schrijven en meer.",
+    title: "15 Gratis CV & Carrière Tools | WerkCV.nl",
+    description: "15 gratis tools voor je sollicitatie en carrière: ATS checker, salaris berekenen, sollicitatiegesprek oefenen, cv-vacature match, salarisonderhandeling en meer.",
     keywords: [
         "cv tools gratis",
         "salaris calculator",
         "proeftijd checker",
-        "opzegtermijn berekenen",
-        "sollicitatiebrief generator",
-        "vaardigheden generator",
+        "sollicitatiegesprek voorbereiding",
+        "cv vacature match",
+        "salarisonderhandeling",
+        "functietitel vertaler",
+        "carrièreswitch",
     ],
 };
 
@@ -86,6 +88,41 @@ const tools = [
         badge: "Gratis",
         color: "bg-slate-50 border-slate-300",
     },
+    {
+        href: "/tools/cv-vacature-match",
+        title: "CV vs Vacature Match",
+        description: "Vergelijk je CV met een vacature en zie je matchscore + ontbrekende keywords.",
+        badge: "AI",
+        color: "bg-teal-50 border-teal-300",
+    },
+    {
+        href: "/tools/salaris-onderhandeling",
+        title: "Salaris Onderhandeling",
+        description: "Genereer een persoonlijk script + e-mail voor je salarisonderhandeling.",
+        badge: "AI",
+        color: "bg-teal-50 border-teal-300",
+    },
+    {
+        href: "/tools/sollicitatiegesprek-quiz",
+        title: "Sollicitatiegesprek Quiz",
+        description: "Oefen met 8 op maat gemaakte vragen voor jouw functie en niveau.",
+        badge: "AI",
+        color: "bg-teal-50 border-teal-300",
+    },
+    {
+        href: "/tools/job-title-translator",
+        title: "Functietitel Vertaler NL↔EN",
+        description: "Vertaal je functietitel naar Engels of Nederlands voor LinkedIn en je CV.",
+        badge: "AI",
+        color: "bg-teal-50 border-teal-300",
+    },
+    {
+        href: "/tools/career-change-advisor",
+        title: "Carrièreswitch Advisor",
+        description: "Analyseer de haalbaarheid van je carrièreswitch met een concreet stappenplan.",
+        badge: "AI",
+        color: "bg-teal-50 border-teal-300",
+    },
 ];
 
 export default function ToolsPage() {
@@ -110,7 +147,7 @@ export default function ToolsPage() {
                         Gratis carrière tools
                     </h1>
                     <p className="text-lg text-slate-600 font-medium">
-                        10 gratis tools voor je sollicitatie, arbeidsovereenkomst en CV — geen registratie vereist.
+                        15 gratis tools voor je sollicitatie, salarisonderhandeling en carrière — geen registratie vereist.
                     </p>
                 </div>
 
