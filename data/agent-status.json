@@ -1,0 +1,47 @@
+{
+  "lastUpdated": "2026-03-01T06:00:00Z",
+  "agents": {
+    "orchestrator": {
+      "lastRun": "2026-02-28T16:40:00Z",
+      "status": "active",
+      "nextRun": "Monday 08:00 Amsterdam"
+    },
+    "researcher": { "lastRun": null, "status": "standby" },
+    "writer": { "lastRun": null, "status": "standby" },
+    "prioritizer": { "lastRun": null, "status": "standby" },
+    "toolbuilder": { "lastRun": null, "status": "standby" }
+  },
+  "metrics": {
+    "pagesIndexed": 4,
+    "monthlyVisitors": 0,
+    "monthlyRevenue": 0,
+    "backlinks": 0,
+    "toolsLive": 15,
+    "cvExamplePages": 58,
+    "articlesPublished": 50
+  },
+  "tasks": {
+    "completed": [
+      "15 free tools built (Phase 1-3)",
+      "OpenClaw agents deployed on Hetzner VPS",
+      "5 skills written: orchestrator, researcher, writer, prioritizer, toolbuilder",
+      "Cron jobs set up (Monday + Friday)",
+      "SOUL.md, USER.md, MEMORY.md, IDENTITY.md, HEARTBEAT.md configured with full Dhinesh context"
+    ],
+    "inProgress": [],
+    "pending": [
+      "Submit sitemap to Google Search Console",
+      "Request manual indexing for top 10 pages",
+      "Submit to startupjungle.nl, dutchstartups.com, betalist.com",
+      "Write verpleegkundige cv voorbeeld page",
+      "Write leraar cv voorbeeld page",
+      "Write software developer cv voorbeeld page",
+      "Create /ontslag-nemen toolkit page"
+    ]
+  },
+  "contentGenerated": {
+    "cvVoorbeelden": [],
+    "cvTips": [],
+    "tools": []
+  }
+}
