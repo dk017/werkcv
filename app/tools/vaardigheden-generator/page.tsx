@@ -43,6 +43,12 @@ export default function VaardigheidGeneratorPage() {
                     <p className="text-lg text-slate-600 font-medium">
                         Vul je functietitel in en krijg direct een lijst met relevante hard en soft skills voor je CV — afgestemd op jouw rol en sector.
                     </p>
+                    <p className="mt-3 text-sm font-bold text-slate-700">
+                        Eerst inspiratie nodig?{" "}
+                        <Link href="/vaardigheden-cv-voorbeelden" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            Bekijk vaardigheden CV voorbeelden
+                        </Link>
+                    </p>
                 </div>
 
                 <VaardigheidsTool />
@@ -60,7 +66,7 @@ export default function VaardigheidGeneratorPage() {
                         </div>
                         <div className="bg-white border-2 border-black p-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
                             <h3 className="font-black text-slate-900 mb-2">Soft skills</h3>
-                            <p className="text-xs text-slate-600 leading-relaxed">Interpersoonlijke vaardigheden en karaktereigenschappen. Zeg niet "teamplayer" maar "cross-functionele samenwerking" — concreet telt.</p>
+                            <p className="text-xs text-slate-600 leading-relaxed">Interpersoonlijke vaardigheden en karaktereigenschappen. Zeg niet teamplayer maar cross-functionele samenwerking; concreet telt.</p>
                         </div>
                     </div>
 

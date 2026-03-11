@@ -43,6 +43,20 @@ export default function SollicitatiebriefGeneratorPage() {
                     <p className="text-lg text-slate-600 font-medium">
                         Vul je doelrol en motivatie in — onze AI schrijft binnen 30 seconden een professionele sollicitatiebrief die je direct kunt gebruiken.
                     </p>
+                    <p className="mt-3 text-sm font-bold text-slate-700">
+                        Liever eerst inspiratie?{" "}
+                        <Link href="/sollicitatiebrief-voorbeeld" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            Bekijk sollicitatiebrief voorbeelden
+                        </Link>
+                        {" "}of{" "}
+                        <Link href="/motivatiebrief-voorbeeld" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            motivatiebrief voorbeelden
+                        </Link>
+                        {" "}of{" "}
+                        <Link href="/sollicitatiebrief-in-engels" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            sollicitatiebrief in engels
+                        </Link>
+                    </p>
                 </div>
 
                 <SollicitatiebriefTool />

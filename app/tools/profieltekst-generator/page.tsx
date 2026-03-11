@@ -43,6 +43,16 @@ export default function ProfieltekstGeneratorPage() {
                     <p className="text-lg text-slate-600 font-medium">
                         Vul je huidige functie, doelrol en competenties in. Onze AI schrijft binnen seconden een scherpe profieltekst voor bovenaan je CV.
                     </p>
+                    <p className="mt-3 text-sm font-bold text-slate-700">
+                        Eerst inspiratie nodig?{" "}
+                        <Link href="/profieltekst-cv-voorbeelden" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            Bekijk profieltekst CV voorbeelden
+                        </Link>
+                        {" "}of{" "}
+                        <Link href="/cv-samenvatting-voorbeelden" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            CV samenvatting voorbeelden
+                        </Link>
+                    </p>
                 </div>
 
                 <ProfieltekstTool />

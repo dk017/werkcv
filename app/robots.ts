@@ -8,6 +8,16 @@ export default function robots(): MetadataRoute.Robots {
                 allow: '/',
                 disallow: ['/api/', '/editor'],
             },
+            {
+                userAgent: 'OAI-SearchBot',
+                allow: '/',
+                disallow: ['/api/', '/editor'],
+            },
+            {
+                userAgent: 'GPTBot',
+                allow: '/',
+                disallow: ['/api/', '/editor'],
+            },
         ],
         sitemap: 'https://werkcv.nl/sitemap.xml',
     };

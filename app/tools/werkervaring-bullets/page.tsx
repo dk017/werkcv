@@ -43,6 +43,12 @@ export default function WerkervaringBulletsPage() {
                     <p className="text-lg text-slate-600 font-medium">
                         Beschrijf wat je deed in je functie en ontvang 5 krachtige, resultaatgerichte bullet points — klaar om in je CV te plakken.
                     </p>
+                    <p className="mt-3 text-sm font-bold text-slate-700">
+                        Eerst voorbeelden zien?{" "}
+                        <Link href="/werkervaring-cv-voorbeelden" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            Bekijk werkervaring CV voorbeelden
+                        </Link>
+                    </p>
                 </div>
 
                 <WerkervaringTool />
