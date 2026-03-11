@@ -4,40 +4,40 @@ import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
-import EUBlueCardTool from "./EUBlueCardTool";
+import ZoekjaarCheckerTool from "./ZoekjaarCheckerTool";
 
 const faqItems = [
     {
-        question: "What is the EU Blue Card salary threshold in the Netherlands in 2026?",
-        answer: "From January 1, 2026 up to and including June 30, 2026, the standard Dutch EU Blue Card threshold is EUR 5,942 gross per month excluding holiday allowance. A reduced threshold of EUR 4,754 applies to qualifying recent graduates.",
+        question: "How long after graduation can I still apply for the Dutch orientation year?",
+        answer: "The IND generally requires the application to be filed within 3 years after your graduation, doctorate or qualifying research end date.",
     },
     {
-        question: "How long must the contract be for an EU Blue Card?",
-        answer: "The employment contract usually needs to be valid for at least 6 months.",
+        question: "How long is the orientation year permit valid?",
+        answer: "The orientation year residence permit is valid for 1 year and is not extended as another orientation year permit on the same basis.",
     },
     {
-        question: "Do I need a recognised sponsor for the EU Blue Card route?",
-        answer: "No. Unlike the highly skilled migrant route, the Dutch EU Blue Card route does not require the employer to be a recognised sponsor.",
+        question: "Can I work freely during the orientation year?",
+        answer: "Yes. During the orientation year you can work freely in the Netherlands and the employer does not need a separate TWV work permit.",
     },
     {
-        question: "Can work experience replace a diploma?",
-        answer: "In some cases, yes. The route can involve either a higher education diploma or sufficiently strong relevant work experience, depending on the role and route conditions.",
+        question: "Can I use a foreign degree for the orientation year?",
+        answer: "Yes, but only if the foreign university meets the IND ranking rules and you can also provide the required Nuffic credential evaluation and accepted language proof.",
     },
 ];
 
 export const metadata: Metadata = {
-    title: "EU Blue Card Checker Netherlands 2026 | WerkCV.nl",
-    description: "Check whether a Dutch job offer broadly fits the EU Blue Card route in 2026. Includes current salary threshold, 6-month contract rule and qualification check.",
+    title: "Zoekjaar Checker Netherlands 2026 | WerkCV.nl",
+    description: "Check whether you still fit the Dutch orientation year (zoekjaar) route in 2026. Covers the IND 3-year window, foreign university rules, research basis and repeat-use limits.",
     keywords: [
-        "eu blue card netherlands 2026",
-        "eu blue card salary netherlands",
-        "blue card checker netherlands",
-        "ind eu blue card salary threshold",
-        "expat netherlands blue card",
+        "zoekjaar checker netherlands",
+        "orientation year netherlands 2026",
+        "orientation year highly educated persons",
+        "ind zoekjaar requirements",
+        "zoekjaar foreign degree netherlands",
     ],
 };
 
-export default function EUBlueCardCheckerPage() {
+export default function ZoekjaarCheckerPage() {
     return (
         <div className="min-h-screen bg-[#FFFEF9]">
             <FAQJsonLd questions={faqItems} />
@@ -60,7 +60,7 @@ export default function EUBlueCardCheckerPage() {
                     <Breadcrumbs items={[
                         { label: "Home", href: "/" },
                         { label: "Tools", href: "/tools" },
-                        { label: "EU Blue Card checker", href: "/tools/eu-blue-card-checker" },
+                        { label: "Zoekjaar checker", href: "/tools/zoekjaar-checker" },
                     ]} />
                 </div>
 
@@ -75,17 +75,17 @@ export default function EUBlueCardCheckerPage() {
                             </span>
                         </div>
                         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-                            EU Blue Card checker
+                            Zoekjaar checker
                         </h1>
                         <p className="text-lg text-slate-600 font-medium max-w-3xl">
-                            Compare your Dutch offer against the current EU Blue Card rules without digging through immigration tables. This checker is built for expats who want a fast route comparison before they commit to a move or application strategy.
+                            Check whether you still fit the Dutch orientation year route after graduation, a PhD or research in the Netherlands. This screen follows the current IND basis rules so you can quickly see whether the 3-year window and documentary conditions still line up.
                         </p>
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
                             {[
-                                ["Standard threshold", "EUR 5,942", "gross per month excl. holiday allowance"],
-                                ["Reduced threshold", "EUR 4,754", "for qualifying recent graduates"],
-                                ["Contract rule", "At least 6 months", "shorter contracts usually fail"],
+                                ["Application window", "3 years", "from graduation, doctorate or research end date"],
+                                ["Permit duration", "1 year", "orientation year permits are not extended"],
+                                ["Work access", "Free to work", "no separate TWV work permit needed"],
                             ].map(([label, value, note]) => (
                                 <div key={label} className="bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                                     <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">{label}</p>
@@ -101,68 +101,68 @@ export default function EUBlueCardCheckerPage() {
                             Why this route matters
                         </p>
                         <div className="space-y-3 text-sm text-slate-600">
-                            <p>The EU Blue Card can be a strong alternative to the highly skilled migrant route.</p>
-                            <p>It does not depend on a recognised sponsor, which changes how you assess employers.</p>
-                            <p>That makes route comparison valuable before you rewrite your CV and start applying.</p>
+                            <p>The orientation year gives graduates and researchers room to stay and work in the Netherlands for up to a year.</p>
+                            <p>It also connects directly to the reduced salary criterion in the highly skilled migrant route if your next work application is filed in time.</p>
+                            <p>Most mistakes happen on timing, foreign-degree evidence, or the second-orientation-year rule.</p>
                         </div>
                     </aside>
                 </section>
 
                 <section className="mb-12">
-                    <EUBlueCardTool />
+                    <ZoekjaarCheckerTool />
                 </section>
 
                 <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
                     <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                         <h2 className="text-2xl font-black text-slate-900 mb-4">
-                            Main route checks
+                            Qualification bases the IND recognises
                         </h2>
                         <ul className="space-y-2 text-sm text-slate-700">
-                            <li>Salary threshold must be met excluding holiday allowance.</li>
-                            <li>The contract usually needs to be valid for at least 6 months.</li>
-                            <li>The role must be highly qualified and linked to your background.</li>
-                            <li>You normally need a diploma or qualifying work experience.</li>
+                            <li>Accredited Dutch bachelor or master degrees.</li>
+                            <li>Dutch post-master or Master of Advanced Studies routes of at least 10 months.</li>
+                            <li>Erasmus Mundus Joint Masters and certain Dutch public-policy study routes.</li>
+                            <li>Qualifying Dutch scientific research or a foreign master, post-master or PhD from a designated university.</li>
                         </ul>
                     </div>
                     <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                         <h2 className="text-2xl font-black text-slate-900 mb-4">
-                            Why expats compare this to the kennismigrant route
+                            What usually causes a no
                         </h2>
                         <ul className="space-y-2 text-sm text-slate-700">
-                            <li>The salary threshold can differ by route and date band.</li>
-                            <li>The employer does not need recognised sponsor status for the Blue Card route.</li>
-                            <li>The best route depends on your age, salary, background and employer profile.</li>
-                            <li>Your CV still needs to fit Dutch expectations whichever route you choose.</li>
+                            <li>The 3-year application window has already expired.</li>
+                            <li>You already used an orientation year on the same study, doctorate or research basis.</li>
+                            <li>A foreign university does not meet the IND top-200 rule on the graduation date.</li>
+                            <li>The application lacks Nuffic evaluation, accepted language proof or the correct research-permit basis.</li>
                         </ul>
                     </div>
                 </section>
 
                 <RelatedToolsSection
-                    title="Best next steps after the Blue Card check"
-                    description="Use the immigration route check together with CV localization and title matching so your application works in the Dutch market, not just on paper."
+                    title="Best next tools after the zoekjaar check"
+                    description="Most expats use the orientation year to compare sponsor routes, salary thresholds and how to localize their CV for Dutch hiring."
                     tools={[
                         {
                             href: "/tools/kennismigrant-salary-checker",
                             title: "Highly skilled migrant salary checker",
-                            description: "Compare the Blue Card route with the standard sponsor-based route.",
+                            description: "Check whether the reduced salary criterion could fit your next work route.",
                             badge: "Expat",
                         },
                         {
-                            href: "/tools/zoekjaar-checker",
-                            title: "Zoekjaar checker",
-                            description: "Check whether the orientation year route is still open after graduation or research.",
+                            href: "/tools/eu-blue-card-checker",
+                            title: "EU Blue Card checker",
+                            description: "Compare the orientation year path with the Dutch Blue Card route.",
                             badge: "Expat",
                         },
                         {
                             href: "/tools/job-title-translator",
                             title: "Job title translator NL-EN",
-                            description: "Localize your job title for Dutch vacancies and recruiter search.",
+                            description: "Translate your title into recruiter-friendly Dutch or English phrasing.",
                             badge: "Expat",
                         },
                         {
                             href: "/editor",
                             title: "Build your Dutch CV",
-                            description: "Move straight from route planning to an editable CV.",
+                            description: "Turn route planning into an application-ready CV in the editor.",
                             badge: "CV",
                         },
                     ]}
@@ -193,13 +193,23 @@ export default function EUBlueCardCheckerPage() {
                     </p>
                     <ul className="space-y-2 text-sm text-slate-600">
                         <li>
+                            <a href="https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year-highly-educated-persons" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
+                                IND - Residence permit for orientation year highly educated persons
+                            </a>
+                        </li>
+                        <li>
                             <a href="https://ind.nl/en/required-amounts-income-requirements" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
                                 IND - Required amounts and income requirements
                             </a>
                         </li>
                         <li>
-                            <a href="https://ind.nl/en/residence-permits/work/european-blue-card" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
-                                IND - European Blue Card
+                            <a href="https://ind.nl/en/recognised-sponsor/public-register-educational-institutions" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
+                                IND - Designated foreign educational institutions
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.idw.nl/en/credential-evaluation/apply-for-credential-evaluation.html" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
+                                IDW / Nuffic - Apply for credential evaluation
                             </a>
                         </li>
                     </ul>

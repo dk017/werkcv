@@ -343,6 +343,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'werkervaring-bullets',
         'ww-duur-checker',
         'ww-recht-checker',
+        'zoekjaar-checker',
     ];
 
     const toolPages: MetadataRoute.Sitemap = toolSlugs.map((slug) => ({

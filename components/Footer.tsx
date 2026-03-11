@@ -21,6 +21,7 @@ const toolLinks = [
     { href: "/tools/uurloon-calculator", label: "Uurloon" },
     { href: "/tools/minimumloon-checker", label: "Minimumloon" },
     { href: "/tools/ww-recht-checker", label: "WW-recht" },
+    { href: "/tools/zoekjaar-checker", label: "Zoekjaar" },
     { href: "/tools/cv-samenvatting-generator", label: "CV samenvatting" },
 ];
 

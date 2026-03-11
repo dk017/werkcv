@@ -142,6 +142,12 @@ export default function KennismigrantSalaryCheckerPage() {
                     description="Salary eligibility is only one part of the move. The next questions are usually route comparison, Dutch job title fit and how to shape your CV for the local market."
                     tools={[
                         {
+                            href: "/tools/zoekjaar-checker",
+                            title: "Zoekjaar checker",
+                            description: "Check whether you still fit the orientation year route behind the reduced salary criterion.",
+                            badge: "Expat",
+                        },
+                        {
                             href: "/tools/eu-blue-card-checker",
                             title: "EU Blue Card checker",
                             description: "Compare the Blue Card route with the highly skilled migrant route using current 2026 thresholds.",
@@ -152,12 +158,6 @@ export default function KennismigrantSalaryCheckerPage() {
                             title: "Job title translator NL-EN",
                             description: "Translate your current title into a recruiter-friendly Dutch or English version.",
                             badge: "Expat",
-                        },
-                        {
-                            href: "/en/dutch-cv-template",
-                            title: "Dutch CV template guide",
-                            description: "Learn what Dutch recruiters expect before you apply.",
-                            badge: "Guide",
                         },
                         {
                             href: "/editor",

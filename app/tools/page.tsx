@@ -17,7 +17,7 @@ type ToolSection = {
     tools: ToolCard[];
 };
 
-const totalTools = 26;
+const totalTools = 27;
 
 const featuredTools: ToolCard[] = [
     {
@@ -216,6 +216,13 @@ const sections: ToolSection[] = [
                 badgeClass: "bg-violet-100 text-violet-800 border-violet-300",
             },
             {
+                href: "/tools/zoekjaar-checker",
+                title: "Zoekjaar checker",
+                description: "Check of je nog binnen de 3-jaars IND-termijn valt voor de orientation year route.",
+                badge: "Expat",
+                badgeClass: "bg-violet-100 text-violet-800 border-violet-300",
+            },
+            {
                 href: "/tools/eu-blue-card-checker",
                 title: "EU Blue Card checker",
                 description: "Vergelijk je aanbod met de actuele Blue Card route en salary threshold.",
@@ -253,10 +260,6 @@ const roadmapTools = [
         description: "Brede Nederlandse vraag met duidelijke wettelijke basis en terugkerend zoekvolume.",
     },
     {
-        title: "Zoekjaar checker",
-        description: "Logische expat-uitbreiding voor afgestudeerden die in Nederland willen blijven werken.",
-    },
-    {
         title: "WW dagloon indicatie",
         description: "Waardevolle aanvulling tussen WW-recht, WW-duur en daadwerkelijke uitkeringsverwachting.",
     },
@@ -267,8 +270,8 @@ const roadmapTools = [
 ];
 
 export const metadata: Metadata = {
-    title: "26 Gratis CV, Sollicitatie & Werk Tools | WerkCV.nl",
-    description: "26 gratis tools voor CV, sollicitatie en werken in Nederland: netto-bruto, salaris, vakantiegeld, minimumloon, WW, transitievergoeding, opzegtermijn, ATS check, cv-samenvatting en meer.",
+    title: "27 Gratis CV, Sollicitatie & Werk Tools | WerkCV.nl",
+    description: "27 gratis tools voor CV, sollicitatie en werken in Nederland: netto-bruto, salaris, vakantiegeld, minimumloon, WW, transitievergoeding, opzegtermijn, zoekjaar, ATS check, cv-samenvatting en meer.",
     keywords: [
         "cv tools gratis",
         "netto bruto calculator",
@@ -282,6 +285,7 @@ export const metadata: Metadata = {
         "ats cv checker",
         "cv samenvatting generator",
         "kennismigrant salary checker",
+        "zoekjaar checker",
     ],
 };
 
@@ -420,7 +424,7 @@ export default function ToolsPage() {
                             Deze volgende laag verdiept de salaris-, verlof-, WW- en expat-clusters zonder de site te verbreden naar irrelevante generieke tools.
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         {roadmapTools.map((tool) => (
                             <div
                                 key={tool.title}
