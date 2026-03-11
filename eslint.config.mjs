@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local scratch artifact from the interrupted content generation session.
+    "_write_pages.mjs",
   ]),
 ]);
 

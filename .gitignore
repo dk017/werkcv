@@ -51,6 +51,7 @@ next-env.d.ts
 AGENTS.md
 AUDIT_AND_ACTION_PLAN.md
 MASTER_ACTION_PLAN.md
+GROWTH_5K_MONTH_AUDIT.md
 
 # Windows artifacts
 nul
@@ -59,3 +60,13 @@ nul
 screenshots/
 
 /app/generated/prisma
+
+# Local scratch and recovery artifacts
+_write_pages.mjs
+add-ga.py
+add-price-id.py
+app-logs.txt
+test-polar.py
+public/Dhineshkumar R-cv (22).pdf
+public/Dhineshkumar R-cv (23).pdf
+public/Keyword Stats 2026-03-08 at 08_01_42.csv
