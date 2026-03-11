@@ -5,9 +5,17 @@ import { sanitizeAttribution } from '@/lib/attribution';
 
 const PERSISTED_FUNNEL_EVENTS = new Set([
     'landing',
+    'landing_cta_click',
+    'landing_to_editor',
     'start_cv',
+    'editor_started',
     'complete_cv',
+    'checkout_modal_viewed',
+    'checkout_modal_closed',
     'checkout_start',
+    'checkout_started',
+    'checkout_failed',
+    'checkout_completed',
     'paid',
 ]);
 

@@ -654,7 +654,7 @@ export default function Home() {
                             href="/tools"
                             className="hidden sm:flex items-center gap-1 font-bold text-sm text-[#4ECDC4] hover:underline"
                         >
-                            Bekijk alle 10 tools
+                            Bekijk alle 26 tools
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                             </svg>
@@ -662,10 +662,10 @@ export default function Home() {
                     </div>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         {[
-                            { href: "/tools/ats-cv-checker", title: "ATS CV Checker", desc: "Check je ATS-score met 16 verbeterpunten.", badge: "AI" },
-                            { href: "/tools/sollicitatiebrief-generator", title: "Sollicitatiebrief", desc: "Schrijf een sterke sollicitatiebrief met AI.", badge: "AI" },
-                            { href: "/tools/salaris-calculator", title: "Salaris Calculator", desc: "Bereken je marktsalaris voor 2026.", badge: "Gratis" },
-                            { href: "/tools/cv-keywords", title: "CV Keywords", desc: "Vind de ATS-keywords voor jouw functie.", badge: "AI" },
+                            { href: "/tools/netto-bruto-calculator", title: "Netto-Bruto", desc: "Bereken bruto naar netto en netto naar bruto voor 2026.", badge: "Geld" },
+                            { href: "/tools/vakantiegeld-berekenen", title: "Vakantiegeld", desc: "Bereken je bruto vakantiegeld op basis van 8% en je loon.", badge: "Geld" },
+                            { href: "/tools/ww-recht-checker", title: "WW-recht", desc: "Controleer snel de basisvoorwaarden voor WW.", badge: "NL wetgeving" },
+                            { href: "/tools/cv-samenvatting-generator", title: "CV Samenvatting", desc: "Genereer een scherpe intro voor bovenaan je CV.", badge: "AI" },
                         ].map((tool) => (
                             <Link
                                 key={tool.href}
@@ -686,7 +686,7 @@ export default function Home() {
                     </div>
                     <div className="sm:hidden text-center mt-6">
                         <Link href="/tools" className="inline-flex items-center gap-1 font-bold text-sm text-[#4ECDC4] hover:underline">
-                            Bekijk alle 10 gratis tools
+                            Bekijk alle 26 gratis tools
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                             </svg>

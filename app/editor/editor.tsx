@@ -26,7 +26,13 @@ import WelcomeOnboarding from "./WelcomeOnboarding";
 import CvScoreWidget from "./CvScoreWidget";
 import KeywordScannerWidget from "./KeywordScannerWidget";
 import PhotoUpload from "./PhotoUpload";
-import { hasCompletionTracked, markCompletionTracked, track } from "@/lib/analytics";
+import {
+    hasCompletionTracked,
+    hasEditorStartedTracked,
+    markCompletionTracked,
+    markEditorStartedTracked,
+    track
+} from "@/lib/analytics";
 
 interface EditorProps {
     initialData: CVData;
@@ -45,6 +51,7 @@ const A4_HEIGHT_PX = 1123;
 
 type CoverLetterTone = 'professional' | 'enthusiastic' | 'concise';
 type AtsLanguageLock = 'auto' | 'nl' | 'en';
+type CheckoutModalCloseReason = 'later_button' | 'close_button' | 'overlay';
 type OptionalSectionId =
     | 'internships'
     | 'courses'
@@ -107,6 +114,13 @@ function getCompletionScore(data: CVData): number {
     if (data.education.length > 0) score += 10;
     if (data.skills.length >= 3) score += 10;
     return Math.min(score, 100);
+}
+
+function getCheckoutFailureReason(error: unknown): string {
+    if (error instanceof Error && error.message) {
+        return error.message.slice(0, 160);
+    }
+    return "unknown";
 }
 
 export default function Editor({ initialData, id, initialTemplateId, initialColorThemeId }: EditorProps) {
@@ -203,6 +217,30 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
             track('onboarding_shown', {});
         }
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        if (hasEditorStartedTracked(id)) return;
+
+        let fromPath: string | undefined;
+        if (typeof document !== 'undefined' && document.referrer) {
+            try {
+                const referrerUrl = new URL(document.referrer);
+                if (referrerUrl.origin === window.location.origin) {
+                    fromPath = referrerUrl.pathname;
+                }
+            } catch {
+                // Ignore malformed referrers.
+            }
+        }
+
+        track('editor_started', { cvId: id, fromPath });
+        markEditorStartedTracked(id);
+    }, [id]);
+
+    useEffect(() => {
+        if (!showCheckoutModal) return;
+        track('checkout_modal_viewed', { cvId: id, source: 'pdf_download' });
+    }, [showCheckoutModal, id]);
 
     useEffect(() => {
         let cancelled = false;
@@ -358,14 +396,21 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
     const startCheckout = async () => {
         setIsCheckoutRedirecting(true);
         track('checkout_start', { cvId: id });
-        track('checkout_started', { cvId: id });
         try {
             const checkoutUrl = await getCheckoutURL(id, undefined, []);
+            track('checkout_started', { cvId: id });
             window.location.href = checkoutUrl;
-        } catch {
+        } catch (error) {
+            track('checkout_failed', { cvId: id, reason: getCheckoutFailureReason(error) });
             alert("Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.");
             setIsCheckoutRedirecting(false);
         }
+    };
+
+    const closeCheckoutModal = (reason: CheckoutModalCloseReason) => {
+        if (isCheckoutRedirecting) return;
+        track('checkout_modal_closed', { cvId: id, reason });
+        setShowCheckoutModal(false);
     };
 
     const handleAtsRewrite = async () => {
@@ -633,7 +678,12 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                             className="bg-emerald-600 text-white px-3 sm:px-4 py-2 font-semibold text-xs sm:text-sm rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                            
                         >
-                            {isDownloading ? "..." : "PDF"}
+                            {isDownloading ? "..." : (
+                                <>
+                                    <span className="sm:hidden">PDF</span>
+                                    <span className="hidden sm:inline">Download PDF</span>
+                                </>
+                            )}
                         </button>
                     </div>
                 </div>
@@ -1127,33 +1177,93 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
 
             {/* Checkout Modal */}
             {showCheckoutModal && (
-                <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
-                    <div className="w-full max-w-sm bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] p-6">
-                        <h3 className="text-2xl font-black text-black mb-2">Download je CV</h3>
-                        <p className="text-sm text-gray-700 mb-6">
-                            Eenmalige betaling. Geen abonnement.
-                        </p>
-
-                        <div className="flex items-center justify-between border-2 border-black p-4 mb-6 bg-gray-50">
-                            <p className="font-bold text-black">CV als PDF</p>
-                            <p className="text-2xl font-black text-black">$5</p>
+                <div
+                    className="fixed inset-0 z-50 bg-black/55 flex items-center justify-center p-4"
+                    onClick={() => closeCheckoutModal('overlay')}
+                >
+                    <div
+                        className="w-full max-w-md overflow-hidden bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+                        onClick={(event) => event.stopPropagation()}
+                    >
+                        <div className="border-b-4 border-black bg-[#FFF3BF] px-5 py-5 sm:px-6">
+                            <div className="flex items-start justify-between gap-3">
+                                <div className="inline-flex items-center gap-2 border-2 border-black bg-white px-2.5 py-1 text-[11px] font-black uppercase tracking-wide text-black">
+                                    Eenmalige betaling
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={() => closeCheckoutModal('close_button')}
+                                    disabled={isCheckoutRedirecting}
+                                    className="flex h-9 w-9 items-center justify-center border-2 border-black bg-white text-lg font-black text-black hover:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed"
+                                    aria-label="Sluit betalingsoverzicht"
+                                >
+                                    ×
+                                </button>
+                            </div>
+                            <h3 className="mt-4 text-2xl font-black text-black sm:text-[2rem]">
+                                Download direct je professionele CV als PDF
+                            </h3>
+                            <p className="mt-2 text-sm font-medium text-slate-700">
+                                Klaar om te versturen, netjes opgemaakt en direct beschikbaar na betaling.
+                            </p>
                         </div>
 
-                        <div className="flex gap-3 justify-end">
-                            <button
-                                onClick={() => setShowCheckoutModal(false)}
-                                disabled={isCheckoutRedirecting}
-                                className="px-4 py-2 border-2 border-black font-bold text-sm bg-gray-100 hover:bg-gray-200"
-                            >
-                                Later
-                            </button>
-                            <button
-                                onClick={startCheckout}
-                                disabled={isCheckoutRedirecting}
-                                className="px-5 py-2 border-2 border-black font-black text-sm bg-yellow-400 hover:bg-yellow-500 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] disabled:opacity-60 disabled:cursor-not-allowed"
-                            >
-                                {isCheckoutRedirecting ? 'Bezig...' : 'Betalen →'}
-                            </button>
+                        <div className="px-5 py-5 sm:px-6">
+                            <div className="mb-5 flex items-end justify-between gap-4 border-2 border-black bg-gray-50 p-4">
+                                <div>
+                                    <p className="font-black text-black">CV als PDF</p>
+                                    <p className="text-xs font-semibold text-slate-600">
+                                        Geen abonnement, geen verborgen kosten
+                                    </p>
+                                </div>
+                                <div className="text-right">
+                                    <p className="text-3xl font-black text-black">$5</p>
+                                    <p className="text-[11px] font-black uppercase tracking-wide text-slate-600">
+                                        eenmalig
+                                    </p>
+                                </div>
+                            </div>
+
+                            <ul className="mb-5 space-y-2.5">
+                                {[
+                                    'Direct downloaden na betaling',
+                                    'Je CV blijft gratis bewerkbaar in je account',
+                                    'Professionele PDF-opmaak voor sollicitaties',
+                                    'Veilige checkout via onze betaalpartner',
+                                ].map((benefit) => (
+                                    <li key={benefit} className="flex items-start gap-3">
+                                        <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center border-2 border-black bg-green-300 font-black text-black">
+                                            ✓
+                                        </span>
+                                        <span className="text-sm font-semibold text-slate-800">{benefit}</span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <div className="mb-5 rounded-md border border-slate-300 bg-slate-50 px-3 py-3 text-xs font-semibold text-slate-700">
+                                Je gegevens en CV blijven opgeslagen. Je kunt later altijd verder bewerken.
+                            </div>
+
+                            <div className="grid gap-3 sm:grid-cols-2">
+                                <button
+                                    onClick={() => closeCheckoutModal('later_button')}
+                                    disabled={isCheckoutRedirecting}
+                                    className="px-4 py-3 border-2 border-black font-bold text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-60 disabled:cursor-not-allowed"
+                                >
+                                    Nog even niet
+                                </button>
+                                <button
+                                    onClick={startCheckout}
+                                    disabled={isCheckoutRedirecting}
+                                    className="px-5 py-3 border-2 border-black font-black text-sm bg-yellow-400 hover:bg-yellow-500 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] disabled:opacity-60 disabled:cursor-not-allowed"
+                                >
+                                    {isCheckoutRedirecting ? 'Bezig...' : 'Ga veilig naar betaling'}
+                                </button>
+                            </div>
+
+                            <p className="mt-3 text-center text-[11px] font-medium text-slate-500">
+                                Na betaling kun je je PDF direct downloaden.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -1177,6 +1287,3 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
         </div>
     );
 }
-
-
-

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import OpzeggingsbriefTool from "./OpzeggingsbriefTool";
 
 export const metadata: Metadata = {
@@ -67,16 +68,64 @@ export default function OpzeggingsbriefGeneratorPage() {
                         ))}
                     </div>
 
-                    <div className="text-center pt-2">
-                        <p className="text-sm text-slate-500 mb-3">Weet je nog niet wanneer je kunt opzeggen?</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                         <Link
                             href="/tools/opzegtermijn-berekenen"
-                            className="inline-flex items-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            className="bg-[#4ECDC4] text-slate-900 border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
                         >
-                            Bereken je opzegtermijn →
+                            <p className="text-xs font-black uppercase tracking-wide text-teal-900 mb-1">
+                                Eerst checken
+                            </p>
+                            <p className="font-black text-lg mb-2">Bereken je opzegtermijn</p>
+                            <p className="text-sm text-slate-800 leading-relaxed">
+                                Handig als je nog niet zeker weet wat je laatste werkdag mag zijn.
+                            </p>
+                        </Link>
+                        <Link
+                            href="/tools/transitievergoeding-berekenen"
+                            className="bg-white text-slate-900 border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                        >
+                            <p className="text-xs font-black uppercase tracking-wide text-emerald-700 mb-1">
+                                Bij ontslag
+                            </p>
+                            <p className="font-black text-lg mb-2">Check je transitievergoeding</p>
+                            <p className="text-sm text-slate-600 leading-relaxed">
+                                Relevant als je contract eindigt op initiatief van je werkgever.
+                            </p>
                         </Link>
                     </div>
                 </div>
+
+                <RelatedToolsSection
+                    title="Controleer ook de juridische en financiële kant"
+                    description="Een nette brief is pas stap één. Gebruik daarna deze checks om te zien of je nog rechten of vervolgstappen hebt."
+                    tools={[
+                        {
+                            href: "/tools/aanzegvergoeding-checker",
+                            title: "Aanzegvergoeding checker",
+                            description: "Relevant bij tijdelijke contracten van 6 maanden of langer.",
+                            badge: "NL wetgeving",
+                        },
+                        {
+                            href: "/tools/ww-recht-checker",
+                            title: "WW recht checker",
+                            description: "Check of je waarschijnlijk aan de basisvoorwaarden voor WW voldoet.",
+                            badge: "NL wetgeving",
+                        },
+                        {
+                            href: "/tools/ww-duur-checker",
+                            title: "WW duur checker",
+                            description: "Schat de mogelijke duur van je WW-uitkering.",
+                            badge: "NL wetgeving",
+                        },
+                        {
+                            href: "/editor",
+                            title: "Maak je volgende CV",
+                            description: "Ga direct door naar een nieuw CV voor je volgende sollicitatie.",
+                            badge: "CV",
+                        },
+                    ]}
+                />
             </div>
 
             <Footer />

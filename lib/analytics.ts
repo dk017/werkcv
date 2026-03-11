@@ -18,6 +18,8 @@ import {
 const ATTRIBUTION_STORAGE_KEY = 'werkcv_attribution_v1';
 const LANDING_TRACKED_SESSION_KEY = 'werkcv_landing_tracked_v1';
 const COMPLETION_TRACKED_PREFIX = 'werkcv_complete_cv_tracked_';
+const EDITOR_STARTED_TRACKED_PREFIX = 'werkcv_editor_started_tracked_';
+const PREVIOUS_PATH_SESSION_KEY = 'werkcv_previous_path_v1';
 
 // ============================================================
 // Event types — exhaustive list of all tracked interactions
@@ -34,11 +36,14 @@ export type AnalyticsEvent =
               locale: 'nl' | 'en';
           };
       }
+    | { event: 'landing_cta_click'; properties: { fromPath: string; toPath: string; label: string } }
+    | { event: 'landing_to_editor'; properties: { fromPath: string; toPath: string } }
     // CV lifecycle
     | { event: 'cv_created'; properties: { templateId: string } }
     | { event: 'cv_uploaded'; properties: { fileType: string } }
     | { event: 'cv_saved'; properties: { cvId: string } }
     | { event: 'start_cv'; properties: { entryPoint: string; templateId?: string; cvId?: string } }
+    | { event: 'editor_started'; properties: { cvId: string; fromPath?: string } }
     | { event: 'complete_cv'; properties: { cvId: string; completionScore: number } }
     // Template & theme
     | { event: 'template_selected'; properties: { templateId: string; previousId?: string } }
@@ -52,8 +57,15 @@ export type AnalyticsEvent =
     | { event: 'pdf_download_started'; properties: { cvId: string } }
     | { event: 'pdf_download_completed'; properties: { cvId: string } }
     | { event: 'addon_selected'; properties: { cvId: string; addons: string[] } }
+    | { event: 'checkout_modal_viewed'; properties: { cvId: string; source: 'pdf_download' } }
+    | {
+          event: 'checkout_modal_closed';
+          properties: { cvId: string; reason: 'later_button' | 'close_button' | 'overlay' };
+      }
     | { event: 'checkout_start'; properties: { cvId: string } }
     | { event: 'checkout_started'; properties: { cvId: string } }
+    | { event: 'checkout_failed'; properties: { cvId: string; reason?: string } }
+    | { event: 'checkout_completed'; properties: { cvId: string; orderId?: string; amountCents?: number } }
     | { event: 'paid'; properties: { cvId: string; orderId?: string; amountCents?: number } }
     | { event: 'payment_completed'; properties: { cvId: string } }
     // Engagement
@@ -142,6 +154,7 @@ function sendToGA4(event: string, properties: Record<string, unknown>): void {
 // ============================================================
 export function trackPageView(path: string): void {
     ensureAttribution(path, window.location.search);
+    maybeTrackLandingToEditor(path);
     track('page_view', {
         path,
         referrer: typeof document !== 'undefined' ? document.referrer : undefined,
@@ -201,4 +214,33 @@ export function markCompletionTracked(cvId: string): void {
 export function hasCompletionTracked(cvId: string): boolean {
     if (typeof window === 'undefined') return false;
     return window.sessionStorage.getItem(`${COMPLETION_TRACKED_PREFIX}${cvId}`) === '1';
+}
+
+export function markEditorStartedTracked(cvId: string): void {
+    if (typeof window === 'undefined') return;
+    window.sessionStorage.setItem(`${EDITOR_STARTED_TRACKED_PREFIX}${cvId}`, '1');
+}
+
+export function hasEditorStartedTracked(cvId: string): boolean {
+    if (typeof window === 'undefined') return false;
+    return window.sessionStorage.getItem(`${EDITOR_STARTED_TRACKED_PREFIX}${cvId}`) === '1';
+}
+
+function isEditorPath(path: string): boolean {
+    return path === '/editor' || path.startsWith('/editor/');
+}
+
+function maybeTrackLandingToEditor(currentPath: string): void {
+    if (typeof window === 'undefined') return;
+
+    const previousPath = window.sessionStorage.getItem(PREVIOUS_PATH_SESSION_KEY) || '';
+
+    if (isEditorPath(currentPath) && previousPath && !isEditorPath(previousPath)) {
+        track('landing_to_editor', {
+            fromPath: previousPath,
+            toPath: currentPath,
+        });
+    }
+
+    window.sessionStorage.setItem(PREVIOUS_PATH_SESSION_KEY, currentPath);
 }

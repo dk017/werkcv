@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { trackLanding, trackPageView } from "@/lib/analytics";
+import { track, trackLanding, trackPageView } from "@/lib/analytics";
 
 /**
  * Client component that tracks page views on route changes.
@@ -15,6 +15,47 @@ export default function AnalyticsProvider() {
         const search = typeof window !== 'undefined' ? window.location.search : '';
         trackLanding(pathname, search);
         trackPageView(pathname);
+    }, [pathname]);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        const handleClick = (event: MouseEvent) => {
+            const target = event.target as HTMLElement | null;
+            const anchor = target?.closest('a[href]') as HTMLAnchorElement | null;
+            if (!anchor) return;
+
+            const href = anchor.getAttribute('href');
+            if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
+            if (pathname === '/editor' || pathname.startsWith('/editor/')) return;
+
+            let url: URL;
+            try {
+                url = new URL(href, window.location.origin);
+            } catch {
+                return;
+            }
+
+            if (url.origin !== window.location.origin) return;
+
+            const toPath = url.pathname;
+            const isFunnelCtaTarget = toPath.startsWith('/editor') || toPath.startsWith('/tools/sollicitatiebrief-generator');
+            if (!isFunnelCtaTarget) return;
+
+            const label =
+                anchor.getAttribute('aria-label') ||
+                anchor.textContent?.trim() ||
+                toPath;
+
+            track('landing_cta_click', {
+                fromPath: pathname,
+                toPath,
+                label: label.slice(0, 120),
+            });
+        };
+
+        document.addEventListener('click', handleClick, true);
+        return () => document.removeEventListener('click', handleClick, true);
     }, [pathname]);
 
     return null;

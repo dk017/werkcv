@@ -151,6 +151,21 @@ export async function POST(request: NextRequest) {
         console.error('paid_event_persist_failed', error);
     }
 
+    try {
+        await prismaWithAttributionExtensions.analyticsEvent?.create({
+            data: {
+                event: 'checkout_completed',
+                cvId,
+                orderId: order.id,
+                cluster: cvDocument?.sourceCluster || null,
+                properties: paidProperties as unknown as Prisma.InputJsonValue,
+                attribution: (cvDocument?.attribution || undefined) as unknown as Prisma.InputJsonValue | undefined,
+            },
+        });
+    } catch (error) {
+        console.error('checkout_completed_event_persist_failed', error);
+    }
+
     console.log(
         JSON.stringify({
             type: 'analytics',

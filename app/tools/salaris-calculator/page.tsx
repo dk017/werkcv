@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import SalarisCalculatorTool from "./SalarisCalculatorTool";
 
 export const metadata: Metadata = {
@@ -79,6 +80,43 @@ export default function SalarisCalculatorPage() {
                         ))}
                     </div>
                 </div>
+
+                <RelatedToolsSection
+                    title="Verdiep je salarischeck"
+                    description="Na een marktindicatie wil je meestal ook je uurloon, minimumgrens en vakantiegeld scherp hebben voordat je gaat onderhandelen."
+                    tools={[
+                        {
+                            href: "/tools/netto-bruto-calculator",
+                            title: "Netto bruto calculator",
+                            description: "Zet je marktloon door naar een netto indicatie met 2026 belastingregels.",
+                            badge: "Geld",
+                        },
+                        {
+                            href: "/tools/vakantiegeld-berekenen",
+                            title: "Vakantiegeld berekenen",
+                            description: "Reken je bruto vakantiegeld uit op basis van salaris en opgebouwde maanden.",
+                            badge: "Geld",
+                        },
+                        {
+                            href: "/tools/uurloon-calculator",
+                            title: "Uurloon calculator",
+                            description: "Zet je maand- of jaarsalaris om naar een concreet bruto uurloon.",
+                            badge: "Geld",
+                        },
+                        {
+                            href: "/tools/minimumloon-checker",
+                            title: "Minimumloon checker",
+                            description: "Controleer of je uurloon boven de wettelijke ondergrens ligt.",
+                            badge: "NL wetgeving",
+                        },
+                        {
+                            href: "/tools/salaris-onderhandeling",
+                            title: "Salaris onderhandeling",
+                            description: "Gebruik je salarischeck direct in een script of e-mail.",
+                            badge: "AI",
+                        },
+                    ]}
+                />
             </div>
 
             <Footer />
