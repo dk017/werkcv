@@ -1,5 +1,9 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Deployment
+
+For production deployment on Hetzner, use [DEPLOYMENT_HETZNER.md](./DEPLOYMENT_HETZNER.md). Do not deploy directly from the live `/opt/werkcv` checkout unless you have confirmed it is clean.
+
 ## Getting Started
 
 First, run the development server:
