@@ -5,8 +5,8 @@ import { getDutchWavePages } from '@/lib/seo-wave/data';
 export const metadata: Metadata = {
     title: 'CV Gidsen per zoekopdracht | WerkCV.nl',
     description:
-        'Praktische CV gidsen voor veelgezochte termen: van cv voorbeeld per functie tot cv zonder ervaring en Engels CV in Nederland.',
-    keywords: ['cv gids', 'cv voorbeeld', 'cv zonder ervaring', 'cv maken nederland'],
+        'Praktische CV gidsen voor veelgezochte termen: van cv voorbeeld per functie tot profieltekst, werkervaring, vaardigheden en Engels CV in Nederland.',
+    keywords: ['cv gids', 'cv voorbeeld', 'profieltekst cv', 'werkervaring cv', 'vaardigheden cv', 'cv maken nederland'],
     alternates: {
         canonical: 'https://werkcv.nl/cv-gids',
         languages: {
@@ -38,8 +38,9 @@ export default function CvgidsHubPage() {
                         CV Gidsen voor veelgezochte termen
                     </h1>
                     <p className="text-lg text-gray-700 max-w-3xl">
-                        Gebruik deze korte, praktische gidsen om sneller te bouwen aan een CV
-                        dat past bij Nederlandse vacatures en ATS-systemen.
+                        Gebruik deze praktische gidsen om sneller te bouwen aan een CV
+                        dat past bij Nederlandse vacatures en ATS-systemen, van profieltekst en
+                        werkervaring tot vaardigheden en rolgerichte voorbeelden.
                     </p>
                 </div>
             </section>

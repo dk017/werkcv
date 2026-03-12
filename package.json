@@ -12,7 +12,9 @@
     "db:generate": "npx prisma generate",
     "db:studio": "npx prisma studio",
     "db:seed": "npx tsx prisma/seed-categories.ts",
-    "analytics:weekly": "npx tsx scripts/weekly-funnel-dashboard.ts"
+    "analytics:weekly": "npx tsx scripts/weekly-funnel-dashboard.ts",
+    "analytics:signups": "node ./node_modules/typescript/lib/tsc.js --pretty false --module commonjs --target es2020 --esModuleInterop --skipLibCheck --moduleResolution node --outDir .codex-tmp scripts/signup-attribution-report.ts && node .codex-tmp/scripts/signup-attribution-report.js",
+    "seo-wave:pilot-report": "node ./node_modules/typescript/lib/tsc.js --pretty false --module commonjs --target es2020 --esModuleInterop --skipLibCheck --moduleResolution node --outDir .codex-tmp scripts/seo-wave-pilot-report.ts && node .codex-tmp/scripts/seo-wave-pilot-report.js"
   },
   "dependencies": {
     "@polar-sh/sdk": "^0.43.0",

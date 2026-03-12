@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { getStoredAttribution } from "@/lib/analytics";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -56,7 +57,12 @@ export default function LoginPage() {
             const response = await fetch("/api/auth/verify-code", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, code }),
+                body: JSON.stringify({
+                    email,
+                    code,
+                    next,
+                    attribution: getStoredAttribution(),
+                }),
             });
             const data = await response.json().catch(() => null);
             if (!response.ok) {

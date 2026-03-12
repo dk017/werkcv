@@ -40,8 +40,11 @@ export function getPathCluster(pathname: string): string {
     const path = cleanPath(pathname);
     if (path === '/') return 'home';
     if (path.startsWith('/en')) return 'en-guides';
+    if (path === '/gratis-cv-template') return 'free-template';
     if (path.startsWith('/cv-voorbeelden')) return 'nl-cv-voorbeelden';
+    if (path.startsWith('/cv-gids')) return 'nl-cv-gids';
     if (path.startsWith('/cv-tips')) return 'nl-cv-tips';
+    if (path.startsWith('/tools')) return 'tools';
     if (path.startsWith('/templates')) return 'templates';
     if (path.startsWith('/editor')) return 'editor';
     if (path.startsWith('/prijzen')) return 'pricing';

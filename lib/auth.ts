@@ -2,7 +2,9 @@ import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
+import { AttributionSnapshot } from '@/lib/attribution';
 
 const SESSION_COOKIE_NAME = 'werkcv_session';
 const LOGIN_CODE_TTL_MINUTES = 15;
@@ -48,6 +50,15 @@ export function isValidEmail(email: string): boolean {
     return emailRegex.test(email);
 }
 
+function buildUserAttributionData(attribution: AttributionSnapshot | null) {
+    return {
+        attribution: (attribution || undefined) as Prisma.InputJsonValue | undefined,
+        sourceCluster: attribution?.firstTouchCluster || null,
+        sourceLocale: attribution?.locale || null,
+        sourcePath: attribution?.firstTouchPath || null,
+    };
+}
+
 export async function requestEmailLoginCode(emailInput: string): Promise<{ devCode?: string }> {
     const email = normalizeEmail(emailInput);
     if (!isValidEmail(email)) {
@@ -86,7 +97,11 @@ export async function requestEmailLoginCode(emailInput: string): Promise<{ devCo
     return {};
 }
 
-export async function verifyEmailLoginCode(emailInput: string, codeInput: string): Promise<{ token: string; userId: string } | null> {
+export async function verifyEmailLoginCode(
+    emailInput: string,
+    codeInput: string,
+    attribution: AttributionSnapshot | null = null
+): Promise<{ token: string; userId: string; isNewUser: boolean } | null> {
     const email = normalizeEmail(emailInput);
     const code = codeInput.trim();
     if (!isValidEmail(email) || !/^\d{6}$/.test(code)) return null;
@@ -104,10 +119,15 @@ export async function verifyEmailLoginCode(emailInput: string, codeInput: string
     if (!record) return null;
     if (record.codeHash !== hashValue(code)) return null;
 
-    const user = await prisma.user.upsert({
+    const existingUser = await prisma.user.findUnique({
         where: { email },
-        update: {},
-        create: { email },
+    });
+    const isNewUser = !existingUser;
+    const user = existingUser || await prisma.user.create({
+        data: {
+            email,
+            ...buildUserAttributionData(attribution),
+        },
     });
 
     await prisma.loginCode.update({
@@ -124,7 +144,7 @@ export async function verifyEmailLoginCode(emailInput: string, codeInput: string
         },
     });
 
-    return { token, userId: user.id };
+    return { token, userId: user.id, isNewUser };
 }
 
 export function applySessionCookie(response: NextResponse, token: string) {

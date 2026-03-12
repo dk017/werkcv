@@ -10,6 +10,10 @@ datasource db {
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
+  attribution Json?
+  sourceCluster String?
+  sourceLocale String?
+  sourcePath String?
   createdAt DateTime @default(now())
   documents CVDocument[]
   sessions  Session[]

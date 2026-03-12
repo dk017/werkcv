@@ -1,3 +1,4 @@
+import { getPilotRoleGuidePages } from './programmatic-builders';
 import { SeoGuidePage } from './types';
 
 type DutchSeed = {
@@ -1509,7 +1510,25 @@ function toEnglishGuide(seed: EnglishSeed): SeoGuidePage {
     return applyGuideOverride(page, englishBespokeOverrides[seed.slug]);
 }
 
-const dutchWavePages = dutchSeeds.map(toDutchGuide);
+function mergeUniqueGuidePages(...groups: SeoGuidePage[][]): SeoGuidePage[] {
+    const merged: SeoGuidePage[] = [];
+    const seen = new Set<string>();
+
+    for (const group of groups) {
+        for (const page of group) {
+            if (seen.has(page.slug)) continue;
+            seen.add(page.slug);
+            merged.push(page);
+        }
+    }
+
+    return merged;
+}
+
+const dutchWavePages = mergeUniqueGuidePages(
+    dutchSeeds.map(toDutchGuide),
+    getPilotRoleGuidePages()
+);
 const englishWavePages = englishSeeds.map(toEnglishGuide);
 
 const dutchMap = new Map(dutchWavePages.map((page) => [page.slug, page]));
@@ -1530,3 +1549,12 @@ export function getDutchWavePage(slug: string): SeoGuidePage | undefined {
 export function getEnglishWavePage(slug: string): SeoGuidePage | undefined {
     return englishMap.get(slug);
 }
+
+export {
+    buildRoleGuidePage,
+    getPilotGuideFamilies,
+    getPilotGuideFamily,
+    getPilotRoleGuidePage,
+    getPilotRoleGuidePages,
+    getPilotRoleTaxonomy,
+} from './programmatic-builders';
