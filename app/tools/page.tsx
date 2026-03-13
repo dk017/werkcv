@@ -17,8 +17,6 @@ type ToolSection = {
     tools: ToolCard[];
 };
 
-const totalTools = 27;
-
 const featuredTools: ToolCard[] = [
     {
         href: "/tools/transitievergoeding-berekenen",
@@ -42,25 +40,25 @@ const featuredTools: ToolCard[] = [
         badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
     },
     {
-        href: "/tools/cv-samenvatting-generator",
-        title: "CV samenvatting generator",
-        description: "Schrijf een korte, recruiter-vriendelijke intro die direct past bij je doelrol.",
-        badge: "AI",
-        badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
+        href: "/tools/vakantiedagen-berekenen",
+        title: "Vakantiedagen berekenen",
+        description: "Reken wettelijke verlofuren en resterende dagen uit op basis van je echte contractschema.",
+        badge: "NL wetgeving",
+        badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
     },
     {
-        href: "/tools/ats-cv-checker",
-        title: "ATS CV checker",
-        description: "Upload je CV en ontvang direct je ATS-score met concrete verbeterpunten.",
-        badge: "AI",
-        badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
+        href: "/tools/ww-dagloon-checker",
+        title: "WW dagloon checker",
+        description: "Schat je WW-dagloon en de bruto WW-uitkering in de eerste 2 maanden en daarna.",
+        badge: "NL wetgeving",
+        badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
     },
     {
-        href: "/tools/kennismigrant-salary-checker",
-        title: "Kennismigrant salary checker",
-        description: "Check actuele IND-salarisdrempels voor de highly skilled migrant route in Nederland.",
-        badge: "Expat",
-        badgeClass: "bg-violet-100 text-violet-800 border-violet-300",
+        href: "/tools/parttime-salaris-calculator",
+        title: "Parttime salaris calculator",
+        description: "Vergelijk 24, 28, 32 of 36 uur direct met je fulltime salaris en vakantiegeld.",
+        badge: "Geld",
+        badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
     },
 ];
 
@@ -68,7 +66,7 @@ const sections: ToolSection[] = [
     {
         eyebrow: "Werk & contract",
         title: "Werken in Nederland",
-        description: "Praktische calculators en checkers voor ontslag, contractregels en WW - gebouwd rond Nederlandse arbeidsregels in plaats van generieke adviestekst.",
+        description: "Praktische calculators en checkers voor ontslag, contractregels en WW - gebouwd rond Nederlandse arbeidsregels en echte uitkeringsvragen in plaats van generieke adviestekst.",
         tools: [
             featuredTools[0],
             {
@@ -93,6 +91,7 @@ const sections: ToolSection[] = [
                 badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
             },
             featuredTools[2],
+            featuredTools[4],
             {
                 href: "/tools/ww-duur-checker",
                 title: "WW duur checker",
@@ -112,7 +111,7 @@ const sections: ToolSection[] = [
     {
         eyebrow: "Salaris & loon",
         title: "Loonchecks die direct bruikbaar zijn",
-        description: "Gebruik deze tools samen als je salarissen vergelijkt, uurloon wilt controleren of wilt zien waar wettelijke ondergrenzen liggen.",
+        description: "Gebruik deze tools samen als je salarissen vergelijkt, parttime uren wilt doorrekenen, verlof wilt checken of wilt zien waar wettelijke ondergrenzen liggen.",
         tools: [
             {
                 href: "/tools/salaris-calculator",
@@ -143,6 +142,8 @@ const sections: ToolSection[] = [
                 badge: "NL wetgeving",
                 badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
             },
+            featuredTools[3],
+            featuredTools[5],
             {
                 href: "/tools/salaris-onderhandeling",
                 title: "Salaris onderhandeling",
@@ -157,7 +158,13 @@ const sections: ToolSection[] = [
         title: "Van vacature naar sterk CV",
         description: "AI-tools die direct aansluiten op de kern van WerkCV: beter schrijven, beter matchen en sneller solliciteren.",
         tools: [
-            featuredTools[4],
+            {
+                href: "/tools/ats-cv-checker",
+                title: "ATS CV checker",
+                description: "Upload je CV en ontvang direct je ATS-score met concrete verbeterpunten.",
+                badge: "AI",
+                badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
+            },
             {
                 href: "/tools/cv-vacature-match",
                 title: "CV vs Vacature Match",
@@ -172,7 +179,13 @@ const sections: ToolSection[] = [
                 badge: "AI",
                 badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
             },
-            featuredTools[3],
+            {
+                href: "/tools/cv-samenvatting-generator",
+                title: "CV samenvatting generator",
+                description: "Schrijf een korte, recruiter-vriendelijke intro die direct past bij je doelrol.",
+                badge: "AI",
+                badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
+            },
             {
                 href: "/tools/profieltekst-generator",
                 title: "Profieltekst generator",
@@ -254,29 +267,34 @@ const sections: ToolSection[] = [
     },
 ];
 
+const totalTools = new Set(sections.flatMap((section) => section.tools.map((tool) => tool.href))).size;
+
 const roadmapTools = [
     {
-        title: "Vakantiedagen berekenen",
-        description: "Brede Nederlandse vraag met duidelijke wettelijke basis en terugkerend zoekvolume.",
+        title: "Eindejaarsuitkering berekenen",
+        description: "Sterke uitbreiding van de salariscluster voor december- en bonusintentie.",
     },
     {
-        title: "WW dagloon indicatie",
-        description: "Waardevolle aanvulling tussen WW-recht, WW-duur en daadwerkelijke uitkeringsverwachting.",
+        title: "30%-regeling checker",
+        description: "Logische volgende stap voor de expat-cluster rond salaris en nettoloon in Nederland.",
     },
     {
-        title: "Parttime salaris calculator",
-        description: "Handige brug tussen uurloon, netto-bruto en salarisvergelijkingen voor 24/32/36 uur.",
+        title: "Verlofuren omrekenen",
+        description: "Handige verdieping naast vakantiedagen voor teams die vooral in uren registreren.",
     },
 ];
 
 export const metadata: Metadata = {
-    title: "27 Gratis CV, Sollicitatie & Werk Tools | WerkCV.nl",
-    description: "27 gratis tools voor CV, sollicitatie en werken in Nederland: netto-bruto, salaris, vakantiegeld, minimumloon, WW, transitievergoeding, opzegtermijn, zoekjaar, ATS check, cv-samenvatting en meer.",
+    title: "30 Gratis CV, Sollicitatie & Werk Tools | WerkCV.nl",
+    description: "30 gratis tools voor CV, sollicitatie en werken in Nederland: netto-bruto, parttime salaris, vakantiedagen, WW, transitievergoeding, salaris, opzegtermijn, zoekjaar, ATS check, cv-samenvatting en meer.",
     keywords: [
         "cv tools gratis",
         "netto bruto calculator",
         "transitievergoeding berekenen",
         "vakantiegeld berekenen",
+        "vakantiedagen berekenen",
+        "parttime salaris calculator",
+        "ww dagloon checker",
         "minimumloon checker",
         "ww recht checker",
         "opzegtermijn berekenen",
@@ -335,7 +353,7 @@ export default function ToolsPage() {
                                 NL wetgeving + AI + Expat
                             </span>
                             <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                                Bijgewerkt 11 maart 2026
+                                Bijgewerkt 12 maart 2026
                             </span>
                         </div>
                         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">

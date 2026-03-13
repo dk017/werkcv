@@ -9,9 +9,9 @@ const hourlyRates: Record<AgeBracket, number> = {
     "21_plus": 14.71,
     "20": 11.77,
     "19": 8.83,
-    "18": 7.35,
+    "18": 7.36,
     "17": 5.81,
-    "16": 5.08,
+    "16": 5.07,
     "15": 4.41,
 };
 
@@ -189,3 +189,4 @@ export default function MinimumloonCheckerTool() {
         </div>
     );
 }
+
