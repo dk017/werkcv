@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
     const addons = readAddons(metadata);
     const email = event.data.customer.email;
     const amountCents = event.data.totalAmount;
-    const currency = event.data.currency || 'EUR';
+    const currency = event.data.currency || 'USD';
 
     if (!cvId) {
         console.error('No cv_id found in Polar order metadata');

@@ -25,11 +25,11 @@ const faqs = [
             },
             {
                 q: "Is WerkCV.nl gratis?",
-                a: "Het aanmaken en bewerken van je CV is volledig gratis. Je betaalt alleen een eenmalig bedrag van \u20ac5 wanneer je je CV als PDF wilt downloaden. Er zijn geen abonnementen of verborgen kosten."
+                a: "Het aanmaken en bewerken van je CV is volledig gratis. Je betaalt alleen een eenmalig bedrag van $5 wanneer je je CV als PDF wilt downloaden. Er zijn geen abonnementen of verborgen kosten."
             },
             {
                 q: "Hoe verschilt WerkCV.nl van andere CV-sites?",
-                a: "De meeste CV-sites werken met dure maandabonnementen (\u20ac10-25 per maand). Wij vragen een eenmalige betaling van \u20ac5 per download. Geen automatische verlengingen, geen gedoe met opzeggen."
+                a: "De meeste CV-sites werken met dure maandabonnementen (\u20ac10-25 per maand). Wij vragen een eenmalige betaling van $5 per download. Geen automatische verlengingen, geen gedoe met opzeggen."
             },
         ],
     },
@@ -63,7 +63,7 @@ const faqs = [
         questions: [
             {
                 q: "Hoeveel kost het om een CV te downloaden?",
-                a: "Een CV downloaden als PDF kost eenmalig \u20ac5. Dit is een eenmalige betaling, geen abonnement."
+                a: "Een CV downloaden als PDF kost eenmalig $5. Dit is een eenmalige betaling, geen abonnement."
             },
             {
                 q: "Welke betaalmethoden worden geaccepteerd?",
