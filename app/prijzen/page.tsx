@@ -17,6 +17,47 @@ export const metadata: Metadata = {
     ],
 };
 
+// Keep this date in sync with the currently advertised price period.
+const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "WerkCV - Professioneel CV Downloaden",
+    "description": "Maak een professioneel, ATS-vriendelijk CV en download als PDF.",
+    "url": "https://werkcv.nl/prijzen",
+    "image": [
+        "https://werkcv.nl/opengraph-image",
+    ],
+    "brand": {
+        "@type": "Brand",
+        "name": "WerkCV.nl",
+    },
+    "sku": "cv-download",
+    "offers": {
+        "@type": "Offer",
+        "url": "https://werkcv.nl/prijzen",
+        "price": "5.00",
+        "priceCurrency": "USD",
+        "priceValidUntil": "2026-12-31",
+        "availability": "https://schema.org/InStock",
+        "itemCondition": "https://schema.org/NewCondition",
+        "seller": {
+            "@type": "Organization",
+            "name": "WerkCV.nl",
+            "url": "https://werkcv.nl",
+        },
+        "shippingDetails": {
+            "@type": "OfferShippingDetails",
+            "doesNotShip": true,
+        },
+        "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "applicableCountry": "NL",
+            "returnPolicyCategory": "https://schema.org/MerchantReturnNotPermitted",
+            "merchantReturnLink": "https://werkcv.nl/voorwaarden",
+        },
+    },
+};
+
 export default function PrijzenPage() {
     return (
         <div className="min-h-screen bg-[#FFFEF0]">
@@ -164,18 +205,7 @@ export default function PrijzenPage() {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{
-                    __html: JSON.stringify({
-                        "@context": "https://schema.org",
-                        "@type": "Product",
-                        "name": "WerkCV - Professioneel CV Downloaden",
-                        "description": "Maak een professioneel, ATS-vriendelijk CV en download als PDF.",
-                        "offers": {
-                            "@type": "Offer",
-                            "price": "5.00",
-                            "priceCurrency": "USD",
-                            "availability": "https://schema.org/InStock",
-                        },
-                    }),
+                    __html: JSON.stringify(productJsonLd),
                 }}
             />
 
