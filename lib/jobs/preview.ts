@@ -70,7 +70,15 @@ export async function loadJobsPreview(): Promise<JobsPreviewData> {
 }
 
 export function descriptionExcerpt(text: string, maxLength = 220): string {
-  const collapsed = text.replace(/\s+/g, " ").trim();
+  const stripped = text
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, "\"")
+    .replace(/&#39;/g, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+  const collapsed = stripped;
   if (!collapsed) {
     return "Geen beschrijving beschikbaar in de preview-export.";
   }
