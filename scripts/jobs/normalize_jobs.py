@@ -94,6 +94,10 @@ def infer_dutch_required(text: str) -> bool | None:
         "dutch speaker",
         "fluent dutch",
         "native dutch",
+        "dutch language is a requirement",
+        "fluency in the dutch language",
+        "(dutch)",
+        "(dutch speaking)",
     )
     if any(marker in lowered for marker in strong_no):
         return False
@@ -407,4 +411,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
 
