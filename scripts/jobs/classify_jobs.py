@@ -40,7 +40,11 @@ def is_nl_job(job: dict[str, object]) -> bool:
 
 
 def english_speaking(job: dict[str, object]) -> bool:
-    return is_nl_job(job) and job.get("languageHint") in {"english", "mixed"}
+    if not is_nl_job(job):
+        return False
+    if job.get("dutchRequired") is True:
+        return False
+    return job.get("languageHint") in {"english", "mixed"}
 
 
 def without_dutch(job: dict[str, object]) -> bool:
@@ -81,3 +85,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

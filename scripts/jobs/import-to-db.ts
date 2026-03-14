@@ -143,6 +143,7 @@ function makeExcerpt(text: string, maxLength = 320): string {
 }
 
 function isEnglishFriendly(languageHint: LanguageHint | undefined, tags: string[], dutchRequired: boolean | null | undefined) {
+  if (dutchRequired === true) return false;
   if (dutchRequired === false) return true;
   if (languageHint === "english" || languageHint === "mixed") return true;
   return tags.includes("english_possible");
@@ -515,3 +516,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
