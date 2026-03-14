@@ -9,6 +9,16 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Jobs in the Netherlands | WerkCV",
   description: "Curated English-friendly jobs in the Netherlands, paired with CV tools and Dutch-job-market guidance.",
+  alternates: {
+    canonical: "https://werkcv.nl/jobs",
+  },
+  openGraph: {
+    title: "Jobs in the Netherlands | WerkCV",
+    description: "Curated English-friendly jobs in the Netherlands, paired with CV tools and Dutch-job-market guidance.",
+    url: "https://werkcv.nl/jobs",
+    type: "website",
+    locale: "en_NL",
+  },
 };
 
 export default async function JobsHubPage() {
@@ -47,4 +57,5 @@ export default async function JobsHubPage() {
     </div>
   );
 }
+
 

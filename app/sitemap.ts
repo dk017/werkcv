@@ -4,6 +4,9 @@ import { getAllArticles } from '@/lib/cv-tips/registry';
 import { getDutchWavePages, getEnglishWavePages } from '@/lib/seo-wave/data';
 import { getIndexableJobListingPages, getJobRoutesForSitemap } from '@/lib/jobs/data';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://werkcv.nl';
 
@@ -465,3 +468,4 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...jobPages,
     ];
 }
+

@@ -9,6 +9,16 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: "Vacatures in Nederland voor Engelstaligen | WerkCV",
   description: "Geselecteerde vacatures in Nederland voor Engelstaligen en internationals, gekoppeld aan cv-hulp van WerkCV.",
+  alternates: {
+    canonical: "https://werkcv.nl/vacatures",
+  },
+  openGraph: {
+    title: "Vacatures in Nederland voor Engelstaligen | WerkCV",
+    description: "Geselecteerde vacatures in Nederland voor Engelstaligen en internationals, gekoppeld aan cv-hulp van WerkCV.",
+    url: "https://werkcv.nl/vacatures",
+    type: "website",
+    locale: "nl_NL",
+  },
 };
 
 export default async function VacaturesHubPage() {
@@ -47,5 +57,6 @@ export default async function VacaturesHubPage() {
     </div>
   );
 }
+
 
 
