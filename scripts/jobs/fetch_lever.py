@@ -21,10 +21,11 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Fetch raw Lever jobs for verified sources.")
     parser.add_argument("--status", nargs="+", default=["verified", "pilot"])
     parser.add_argument("--limit", type=int, default=0)
+    parser.add_argument("--source-id", dest="source_ids", nargs="+", default=[])
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
 
-    sources = load_sources(provider="lever", statuses=args.status)
+    sources = load_sources(provider="lever", statuses=args.status, source_ids=args.source_ids)
     if args.limit > 0:
         sources = sources[: args.limit]
 
@@ -68,3 +69,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

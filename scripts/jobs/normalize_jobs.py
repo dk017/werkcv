@@ -81,12 +81,19 @@ def infer_dutch_required(text: str) -> bool | None:
         "dutch is not required",
         "without dutch",
         "english speaking environment",
+        "english-speaking environment",
+        "english only",
+        "business language is english",
     )
     strong_yes = (
         "dutch required",
         "must speak dutch",
         "nederlands vereist",
         "vloeiend nederlands",
+        "dutch speaking",
+        "dutch speaker",
+        "fluent dutch",
+        "native dutch",
     )
     if any(marker in lowered for marker in strong_no):
         return False
@@ -135,6 +142,20 @@ def infer_country_code(location_raw: str, city: str | None) -> str | None:
     if "netherlands" in lowered or "nederland" in lowered or city:
         return "NL"
     return None
+
+
+def apply_source_language_fallback(
+    language_hint: LanguageHint,
+    *,
+    english_fit: str,
+    country_code: str | None,
+    dutch_required: bool | None,
+) -> LanguageHint:
+    if language_hint != "unknown":
+        return language_hint
+    if country_code == "NL" and english_fit == "high" and dutch_required is not True:
+        return "english"
+    return language_hint
 
 
 def cluster_tags_for_job(job: NormalizedJob) -> list[str]:
@@ -190,9 +211,17 @@ def normalize_greenhouse(payload: object, source: dict[str, object]) -> list[Nor
         description_text = strip_html(str(job.get("content") or ""))
         inferred_city = infer_city_from_location(location_raw)
         combined_text = flatten_text((location_raw, description_text, str(job.get("title") or "")))
+        country_code = infer_country_code(location_raw, inferred_city)
+        dutch_required = infer_dutch_required(combined_text)
         language_hint = infer_language_hint(description_text)
         if language_hint == "unknown" and str(job.get("language") or "").lower() == "en":
             language_hint = "english"
+        language_hint = apply_source_language_fallback(
+            language_hint,
+            english_fit=str(source.get("english_fit") or ""),
+            country_code=country_code,
+            dutch_required=dutch_required,
+        )
 
         normalized_job = NormalizedJob(
             provider="greenhouse",
@@ -202,11 +231,11 @@ def normalize_greenhouse(payload: object, source: dict[str, object]) -> list[Nor
             title=str(job.get("title") or ""),
             location_raw=location_raw,
             city=inferred_city,
-            country_code=infer_country_code(location_raw, inferred_city),
+            country_code=country_code,
             remote_mode=infer_remote_mode(location_raw, description_text),
             employment_type=None,
             language_hint=language_hint,
-            dutch_required=infer_dutch_required(combined_text),
+            dutch_required=dutch_required,
             visa_hint=infer_visa_hint(combined_text),
             description_text=description_text,
             apply_url=str(job.get("absolute_url") or job.get("url") or ""),
@@ -240,6 +269,14 @@ def normalize_lever(payload: object, source: dict[str, object]) -> list[Normaliz
         inferred_city = infer_city_from_location(location_raw)
         combined_text = flatten_text((location_raw, description_text, str(job.get("text") or "")))
         apply_url = str(job.get("hostedUrl") or job.get("applyUrl") or "")
+        country_code = infer_country_code(location_raw, inferred_city)
+        dutch_required = infer_dutch_required(combined_text)
+        language_hint = apply_source_language_fallback(
+            infer_language_hint(description_text),
+            english_fit=str(source.get("english_fit") or ""),
+            country_code=country_code,
+            dutch_required=dutch_required,
+        )
 
         normalized_job = NormalizedJob(
             provider="lever",
@@ -249,11 +286,11 @@ def normalize_lever(payload: object, source: dict[str, object]) -> list[Normaliz
             title=str(job.get("text") or job.get("title") or ""),
             location_raw=location_raw,
             city=inferred_city,
-            country_code=infer_country_code(location_raw, inferred_city),
+            country_code=country_code,
             remote_mode=infer_remote_mode(location_raw, description_text),
             employment_type=str(categories.get("commitment") or "") or None,
-            language_hint=infer_language_hint(description_text),
-            dutch_required=infer_dutch_required(combined_text),
+            language_hint=language_hint,
+            dutch_required=dutch_required,
             visa_hint=infer_visa_hint(combined_text),
             description_text=description_text,
             apply_url=apply_url,
@@ -291,6 +328,14 @@ def normalize_generic(provider: Provider, payload: object, source: dict[str, obj
         inferred_city = infer_city_from_location(location_raw)
         combined_text = flatten_text((title, location_raw, description_text))
         apply_url = str(job.get("applyUrl") or job.get("url") or job.get("jobUrl") or "")
+        country_code = infer_country_code(location_raw, inferred_city)
+        dutch_required = infer_dutch_required(combined_text)
+        language_hint = apply_source_language_fallback(
+            infer_language_hint(description_text),
+            english_fit=str(source.get("english_fit") or ""),
+            country_code=country_code,
+            dutch_required=dutch_required,
+        )
 
         normalized_job = NormalizedJob(
             provider=provider,
@@ -300,11 +345,11 @@ def normalize_generic(provider: Provider, payload: object, source: dict[str, obj
             title=title,
             location_raw=location_raw,
             city=inferred_city,
-            country_code=infer_country_code(location_raw, inferred_city),
+            country_code=country_code,
             remote_mode=infer_remote_mode(location_raw, description_text),
             employment_type=str(job.get("employmentType") or "") or None,
-            language_hint=infer_language_hint(description_text),
-            dutch_required=infer_dutch_required(combined_text),
+            language_hint=language_hint,
+            dutch_required=dutch_required,
             visa_hint=infer_visa_hint(combined_text),
             description_text=description_text,
             apply_url=apply_url,
@@ -362,3 +407,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

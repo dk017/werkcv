@@ -23,8 +23,10 @@ def slugify(value: str) -> str:
 def load_sources(
     provider: str | None = None,
     statuses: Iterable[str] = ("verified", "pilot"),
+    source_ids: Iterable[str] = (),
 ) -> list[JobSource]:
     allowed_statuses = {status.strip() for status in statuses if status.strip()}
+    allowed_source_ids = {source_id.strip() for source_id in source_ids if source_id.strip()}
     sources: list[JobSource] = []
 
     with SOURCES_PATH.open("r", encoding="utf-8", newline="") as handle:
@@ -33,6 +35,8 @@ def load_sources(
             if provider and row["provider"] != provider:
                 continue
             if allowed_statuses and row["status"] not in allowed_statuses:
+                continue
+            if allowed_source_ids and row["source_id"] not in allowed_source_ids:
                 continue
             sources.append(JobSource(**row))
 
@@ -69,3 +73,4 @@ def write_raw_snapshot(provider: str, source: JobSource, api_url: str, payload: 
         json.dump(wrapper, handle, ensure_ascii=False, indent=2)
 
     return output_path
+

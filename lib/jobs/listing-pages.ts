@@ -156,5 +156,58 @@ export const jobsListingPageSeeds: JobListingPageSeed[] = [
     primaryCtaLabel: "Build a Dutch CV in English",
     relatedGuideHref: "/tools/zoekjaar-checker",
   },
+  {
+    slug: "engelstalige-vacatures-amsterdam",
+    path: "/vacatures/engelstalige-vacatures-amsterdam",
+    locale: "nl",
+    kind: "english_speaking_city",
+    title: "Engelstalige vacatures in Amsterdam",
+    heroTitle: "Engelstalige vacatures in Amsterdam",
+    description:
+      "Geselecteerde Engelstalige vacatures in Amsterdam voor internationals en kandidaten die in het Engels solliciteren.",
+    metaTitle: "Engelstalige vacatures in Amsterdam | WerkCV",
+    metaDesc:
+      "Bekijk Engelstalige vacatures in Amsterdam en pas je cv direct aan voor internationale werkgevers met WerkCV.",
+    introText:
+      "Amsterdam heeft genoeg internationale werkgevers om een aparte Engelstalige vacaturepagina te verdienen. Deze route blijft alleen live zolang de dataset breed genoeg blijft over meerdere bedrijven.",
+    filters: {
+      countryCode: "NL",
+      citySlug: "amsterdam",
+      isNlRelevant: true,
+      isEnglishFriendly: true,
+      languageHints: ["english", "mixed"],
+    },
+    minJobCount: 25,
+    minCompanyCount: 8,
+    primaryCtaHref: "/engels-cv-template",
+    primaryCtaLabel: "Start with an English CV template",
+    relatedGuideHref: "/cv-maken-in-engels",
+  },
+  {
+    slug: "english-speaking-jobs-amsterdam",
+    path: "/jobs/english-speaking-jobs-amsterdam",
+    locale: "en",
+    kind: "english_speaking_city",
+    title: "English-Speaking Jobs in Amsterdam",
+    heroTitle: "English-Speaking Jobs in Amsterdam",
+    description:
+      "Curated English-speaking jobs in Amsterdam for international candidates applying in the Dutch market.",
+    metaTitle: "English-Speaking Jobs in Amsterdam | WerkCV",
+    metaDesc:
+      "Browse English-speaking jobs in Amsterdam and tailor your CV for international employers with WerkCV.",
+    introText:
+      "Amsterdam is dense enough to support its own English-speaking jobs page. We keep this route indexable only while the data stays broad across multiple employers.",
+    filters: {
+      countryCode: "NL",
+      citySlug: "amsterdam",
+      isNlRelevant: true,
+      isEnglishFriendly: true,
+      languageHints: ["english", "mixed"],
+    },
+    minJobCount: 25,
+    minCompanyCount: 8,
+    primaryCtaHref: "/en/dutch-cv-template",
+    primaryCtaLabel: "Build a Dutch CV in English",
+    relatedGuideHref: "/en/dutch-cv-template",
+  },
 ];
-

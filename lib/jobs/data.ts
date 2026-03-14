@@ -126,6 +126,11 @@ function relatedListingPathsForJob(job: Job): string[] {
     paths.add("/jobs/english-speaking-jobs-netherlands");
     paths.add("/vacatures/engelstalige-vacatures-nederland");
     paths.add("/vacatures/vacatures-voor-engelstaligen");
+
+    if (job.citySlug === "amsterdam") {
+      paths.add("/jobs/english-speaking-jobs-amsterdam");
+      paths.add("/vacatures/engelstalige-vacatures-amsterdam");
+    }
   }
 
   if (job.isWithoutDutch) {
@@ -267,3 +272,4 @@ export async function getJobRoutesForSitemap() {
 export function listingSeedForPath(path: string) {
   return jobsListingPageSeeds.find((seed) => seed.path === path) ?? null;
 }
+
