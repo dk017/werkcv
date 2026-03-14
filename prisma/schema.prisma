@@ -99,6 +99,109 @@ model AnalyticsEvent {
   @@index([orderId])
 }
 
+model JobSource {
+  id                   String          @id @default(cuid())
+  slug                 String          @unique
+  companyName          String
+  companySlug          String
+  segment              String?
+  city                 String?
+  countryCode          String?
+  englishFit           JobEnglishFit   @default(medium)
+  providerHint         String?
+  provider             JobProvider
+  sourceKey            String?
+  apiUrl               String?         @db.Text
+  careersUrl           String          @db.Text
+  status               JobSourceStatus @default(research)
+  priority             Int             @default(100)
+  notes                String?         @db.Text
+  isActive             Boolean         @default(true)
+  lastFetchedAt        DateTime?
+  lastSuccessfulFetchAt DateTime?
+  lastError            String?         @db.Text
+  jobs                 Job[]
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+
+  @@unique([provider, sourceKey])
+  @@index([companySlug])
+  @@index([provider, status])
+  @@index([status, priority])
+}
+
+model Job {
+  id                String          @id @default(cuid())
+  sourceId          String?
+  source            JobSource?      @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+  provider          JobProvider
+  externalId        String
+  companyName       String
+  companySlug       String
+  title             String
+  titleSlug         String
+  canonicalSlug     String
+  routePath         String          @unique
+  locationRaw       String
+  city              String?
+  citySlug          String?
+  countryCode       String?
+  remoteMode        JobRemoteMode?
+  employmentType    String?
+  languageHint      JobLanguageHint @default(unknown)
+  dutchRequired     Boolean?
+  visaHint          Boolean?
+  isNlRelevant      Boolean         @default(false)
+  isEnglishFriendly Boolean         @default(false)
+  isWithoutDutch    Boolean         @default(false)
+  status            JobRecordStatus @default(active)
+  descriptionText   String          @db.Text
+  excerpt           String?         @db.Text
+  applyUrl          String          @db.Text
+  sourceUrl         String          @db.Text
+  postedAt          DateTime?
+  firstSeenAt       DateTime        @default(now())
+  lastSeenAt        DateTime        @default(now())
+  expiresAt         DateTime?
+  keywords          String[]
+  clusterTags       String[]
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@unique([provider, externalId])
+  @@index([companySlug, titleSlug])
+  @@index([countryCode, citySlug, status])
+  @@index([isNlRelevant, isEnglishFriendly, status])
+  @@index([isWithoutDutch, status])
+  @@index([lastSeenAt])
+}
+
+model JobListingPage {
+  id               String         @id @default(cuid())
+  slug             String         @unique
+  path             String         @unique
+  locale           String         @default("nl")
+  kind             JobListingKind
+  title            String
+  heroTitle        String?
+  description      String         @db.Text
+  metaTitle        String
+  metaDesc         String
+  introText        String?        @db.Text
+  filters          Json
+  minJobCount      Int            @default(10)
+  minCompanyCount  Int            @default(5)
+  primaryCtaHref   String?
+  primaryCtaLabel  String?
+  relatedGuideHref String?
+  isActive         Boolean        @default(true)
+  isIndexable      Boolean        @default(true)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([locale, kind, isActive])
+}
+
 // SEO Silo Architecture - Categories for CV examples
 model CVCategory {
   id          String       @id @default(cuid())
@@ -139,4 +242,51 @@ enum CategoryType {
   pillar   // Top-level hub: /cv-voorbeeld/ict-en-software
   subhub   // Mid-level: /cv-voorbeeld/ict-en-software/developer
   spoke    // Long-tail: /cv-voorbeeld/ict-en-software/backend-developer-nodejs
+}
+
+enum JobProvider {
+  greenhouse
+  lever
+  ashby
+  workable
+}
+
+enum JobSourceStatus {
+  research
+  pilot
+  verified
+  paused
+}
+
+enum JobEnglishFit {
+  high
+  medium
+  low
+}
+
+enum JobRemoteMode {
+  remote
+  hybrid
+  onsite
+}
+
+enum JobLanguageHint {
+  english
+  dutch
+  mixed
+  unknown
+}
+
+enum JobRecordStatus {
+  active
+  expired
+  hidden
+}
+
+enum JobListingKind {
+  english_speaking_nl
+  without_dutch
+  visa_sponsorship
+  english_speaking_city
+  without_dutch_city
 }

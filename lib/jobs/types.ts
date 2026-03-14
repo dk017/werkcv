@@ -3,6 +3,13 @@ export type JobProvider = "greenhouse" | "lever" | "ashby" | "workable" | "unkno
 export type EnglishFit = "high" | "medium" | "low";
 export type RemoteMode = "remote" | "hybrid" | "onsite";
 export type LanguageHint = "english" | "dutch" | "mixed" | "unknown";
+export type JobRecordStatus = "active" | "expired" | "hidden";
+export type JobListingKind =
+  | "english_speaking_nl"
+  | "without_dutch"
+  | "visa_sponsorship"
+  | "english_speaking_city"
+  | "without_dutch_city";
 
 export interface JobSource {
   sourceId: string;
@@ -57,4 +64,35 @@ export interface JobPagePayload {
   relatedClusters: string[];
   primaryCtaHref: string;
   primaryCtaLabel: string;
+}
+
+export interface JobListingFilter {
+  countryCode?: string;
+  citySlug?: string;
+  isNlRelevant?: boolean;
+  isEnglishFriendly?: boolean;
+  isWithoutDutch?: boolean;
+  visaHint?: boolean;
+  languageHints?: LanguageHint[];
+  remoteModes?: RemoteMode[];
+  clusterTagsAny?: string[];
+}
+
+export interface JobListingPageSeed {
+  slug: string;
+  path: string;
+  locale: "nl" | "en";
+  kind: JobListingKind;
+  title: string;
+  heroTitle: string;
+  description: string;
+  metaTitle: string;
+  metaDesc: string;
+  introText: string;
+  filters: JobListingFilter;
+  minJobCount: number;
+  minCompanyCount: number;
+  primaryCtaHref: string;
+  primaryCtaLabel: string;
+  relatedGuideHref?: string;
 }
