@@ -2,6 +2,7 @@ import { MetadataRoute } from 'next';
 import { getAllCategories, getAllExamples } from '@/lib/cv-voorbeelden/registry';
 import { getAllArticles } from '@/lib/cv-tips/registry';
 import { getDutchWavePages, getEnglishWavePages } from '@/lib/seo-wave/data';
+import { getIndexableJobListingPages, getJobRoutesForSitemap } from '@/lib/jobs/data';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://werkcv.nl';
@@ -279,6 +280,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.85,
         },
         {
+            url: `${baseUrl}/jobs`,
+            lastModified: new Date(),
+            changeFrequency: 'daily',
+            priority: 0.72,
+        },
+        {
+            url: `${baseUrl}/vacatures`,
+            lastModified: new Date(),
+            changeFrequency: 'daily',
+            priority: 0.72,
+        },
+        {
             url: `${baseUrl}/partners`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
@@ -414,6 +427,32 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.73,
     }));
 
+    let jobListingPages: MetadataRoute.Sitemap = [];
+    let jobPages: MetadataRoute.Sitemap = [];
+
+    try {
+        const [listingPages, jobRoutes] = await Promise.all([
+            getIndexableJobListingPages(),
+            getJobRoutesForSitemap(),
+        ]);
+
+        jobListingPages = listingPages.map((item) => ({
+            url: `${baseUrl}${item.page.path}`,
+            lastModified: item.page.updatedAt,
+            changeFrequency: 'daily' as const,
+            priority: 0.68,
+        }));
+
+        jobPages = jobRoutes.map((job) => ({
+            url: `${baseUrl}${job.routePath}`,
+            lastModified: job.updatedAt,
+            changeFrequency: 'daily' as const,
+            priority: 0.58,
+        }));
+    } catch {
+        jobListingPages = [];
+        jobPages = [];
+    }
     return [
         ...staticPages,
         ...toolPages,
@@ -422,5 +461,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...articlePages,
         ...dutchWavePages,
         ...englishWavePages,
+        ...jobListingPages,
+        ...jobPages,
     ];
 }

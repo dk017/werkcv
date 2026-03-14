@@ -64,3 +64,20 @@ npm run jobs:import:db
 
 In this sandbox, `tsx` cannot spawn `esbuild`, so local verification used a `tsc -> node` path.
 In a normal environment, the npm scripts above are the intended entrypoints.
+
+## Refresh runner
+
+- `refresh_jobs.py` runs the full fetch -> normalize -> classify -> export -> seed -> import cycle.
+- Local/manual entrypoint:
+
+```bash
+python scripts/jobs/refresh_jobs.py
+```
+
+## Cron example
+
+On Hetzner or any Linux host, the refresh can run from cron once the app directory has `.env` and dependencies available:
+
+```bash
+15 * * * * cd /opt/werkcv && /usr/bin/python3 scripts/jobs/refresh_jobs.py >> /var/log/werkcv-jobs.log 2>&1
+```

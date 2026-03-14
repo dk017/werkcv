@@ -389,7 +389,7 @@ async function main() {
           externalId: row.externalId,
         },
       },
-      select: { id: true },
+      select: { id: true, routePath: true, canonicalSlug: true },
     });
 
     await prisma.job.upsert({
@@ -407,8 +407,8 @@ async function main() {
         companySlug: row.companySlug,
         title: row.title,
         titleSlug: row.titleSlug,
-        canonicalSlug: row.canonicalSlug,
-        routePath: row.routePath,
+        canonicalSlug: existing?.canonicalSlug || row.canonicalSlug,
+        routePath: existing?.routePath || row.routePath,
         locationRaw: row.locationRaw,
         city: row.city,
         citySlug: row.citySlug,
@@ -438,8 +438,8 @@ async function main() {
         companySlug: row.companySlug,
         title: row.title,
         titleSlug: row.titleSlug,
-        canonicalSlug: row.canonicalSlug,
-        routePath: row.routePath,
+        canonicalSlug: existing?.canonicalSlug || row.canonicalSlug,
+        routePath: existing?.routePath || row.routePath,
         locationRaw: row.locationRaw,
         city: row.city,
         citySlug: row.citySlug,
@@ -515,5 +515,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
-

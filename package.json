@@ -24,7 +24,8 @@
     "jobs:export": "python scripts/jobs/export_page_payloads.py",
     "jobs:review": "python scripts/jobs/review_jobs.py",
     "jobs:seed:listings": "node ./node_modules/typescript/lib/tsc.js --pretty false --module commonjs --target es2020 --esModuleInterop --skipLibCheck --moduleResolution node --outDir .codex-tmp scripts/jobs/seed-listing-pages.ts && node -e \"require('./.codex-tmp/scripts/jobs/seed-listing-pages.js')\"",
-    "jobs:import:db": "node ./node_modules/typescript/lib/tsc.js --pretty false --module commonjs --target es2020 --esModuleInterop --skipLibCheck --moduleResolution node --outDir .codex-tmp scripts/jobs/import-to-db.ts && node -e \"require('./.codex-tmp/scripts/jobs/import-to-db.js')\""
+    "jobs:import:db": "node ./node_modules/typescript/lib/tsc.js --pretty false --module commonjs --target es2020 --esModuleInterop --skipLibCheck --moduleResolution node --outDir .codex-tmp scripts/jobs/import-to-db.ts && node -e \"require('./.codex-tmp/scripts/jobs/import-to-db.js')\"",
+    "jobs:refresh:db": "python scripts/jobs/refresh_jobs.py"
   },
   "dependencies": {
     "@polar-sh/sdk": "^0.43.0",
