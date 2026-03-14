@@ -8,6 +8,35 @@ Provider = Literal["greenhouse", "lever", "ashby", "workable", "unknown"]
 EnglishFit = Literal["high", "medium", "low"]
 RemoteMode = Literal["remote", "hybrid", "onsite"]
 LanguageHint = Literal["english", "dutch", "mixed", "unknown"]
+JobRoleFamily = Literal[
+    "engineering",
+    "data",
+    "product_design",
+    "sales",
+    "marketing",
+    "customer_support",
+    "customer_success",
+    "operations",
+    "finance_accounting",
+    "hr_people",
+    "legal_compliance",
+    "admin_office",
+    "logistics_supply_chain",
+    "general_business",
+    "unknown",
+]
+JobSeniority = Literal[
+    "internship",
+    "graduate",
+    "junior",
+    "mid",
+    "senior",
+    "lead",
+    "manager",
+    "director",
+    "executive",
+    "unknown",
+]
 
 
 @dataclass(slots=True)
@@ -48,6 +77,8 @@ class NormalizedJob:
     language_hint: LanguageHint = "unknown"
     dutch_required: bool | None = None
     visa_hint: bool | None = None
+    role_family: JobRoleFamily = "unknown"
+    seniority: JobSeniority = "unknown"
     description_text: str = ""
     apply_url: str = ""
     posted_at: str | None = None

@@ -75,6 +75,31 @@ English signals worth validating again with Netherlands-only targeting:
 - `/vacatures/engelstalige-vacatures-den-haag`
 - `/jobs/english-speaking-jobs-the-hague`
 
+## Category Strategy
+
+Do not treat the jobs layer as "tech only".
+
+Current source mix is tech-heavy because ATS-friendly international employers are the fastest feeds to verify. That is a sourcing shortcut, not the target market.
+
+The public jobs product should be organized on four axes:
+
+- `role family`: sales, marketing, finance/accounting, customer support, operations, product/design, data, engineering
+- `seniority`: internship, graduate, junior, mid, senior, manager, director
+- `access`: english-friendly, without dutch, visa-possible
+- `location`: Netherlands first, then major cities only when density is real
+
+Current publish rule:
+
+- role page only if it has at least `15` live jobs
+- and at least `5` different companies
+
+Current measured status from the first role-density pass:
+
+- publish now: `starter jobs`, `sales jobs`
+- later after more sources: `marketing`, `finance/accounting`, `customer support`, `operations`
+- do not prioritize publicly even if it qualifies: `engineering`
+  because it is not the strongest conversion audience for WerkCV today
+
 ## Product Rules
 
 Each job page must do more than list a vacancy.
@@ -171,6 +196,8 @@ type NormalizedJob = {
   languageHint?: "english" | "dutch" | "mixed" | "unknown";
   dutchRequired?: boolean | null;
   visaHint?: boolean | null;
+  roleFamily?: "engineering" | "data" | "product_design" | "sales" | "marketing" | "customer_support" | "customer_success" | "operations" | "finance_accounting" | "hr_people" | "legal_compliance" | "admin_office" | "logistics_supply_chain" | "general_business" | "unknown";
+  seniority?: "internship" | "graduate" | "junior" | "mid" | "senior" | "lead" | "manager" | "director" | "executive" | "unknown";
   descriptionText: string;
   applyUrl: string;
   postedAt?: string;

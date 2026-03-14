@@ -1,6 +1,14 @@
 import Link from "next/link";
 import type { Job } from "@prisma/client";
-import { descriptionExcerpt, formatLanguageHint, formatLocationLabel, formatPostedDate, formatRemoteMode } from "@/lib/jobs/format";
+import {
+  descriptionExcerpt,
+  formatLanguageHint,
+  formatLocationLabel,
+  formatPostedDate,
+  formatRemoteMode,
+  formatRoleFamily,
+  formatSeniority,
+} from "@/lib/jobs/format";
 
 type PublicJobCardProps = {
   job: Job;
@@ -20,6 +28,8 @@ export default function PublicJobCard({
   const detailLabel = locale === "nl" ? "Bekijk vacaturepagina" : "View job page";
   const applyLabel = locale === "nl" ? "Originele vacature" : "Open original job";
   const postedLabel = formatPostedDate(job.postedAt);
+  const roleLabel = formatRoleFamily(job.roleFamily);
+  const seniorityLabel = formatSeniority(job.seniority);
 
   return (
     <article className="rounded-3xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300">
@@ -33,6 +43,16 @@ export default function PublicJobCard({
         <span className="rounded-full bg-sky-100 px-3 py-1 text-xs text-sky-800">
           {formatLanguageHint(job.languageHint)}
         </span>
+        {roleLabel && (
+          <span className="rounded-full bg-violet-100 px-3 py-1 text-xs text-violet-800">
+            {roleLabel}
+          </span>
+        )}
+        {seniorityLabel && (
+          <span className="rounded-full bg-rose-100 px-3 py-1 text-xs text-rose-800">
+            {seniorityLabel}
+          </span>
+        )}
         {job.remoteMode && (
           <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-800">
             {formatRemoteMode(job.remoteMode)}

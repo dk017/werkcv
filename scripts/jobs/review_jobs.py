@@ -46,6 +46,8 @@ def main() -> None:
                 "city",
                 "countryCode",
                 "languageHint",
+                "roleFamily",
+                "seniority",
                 "visaHint",
                 "applyUrl",
                 "jobPath",
@@ -62,6 +64,8 @@ def main() -> None:
                     "city": job.get("city"),
                     "countryCode": job.get("countryCode"),
                     "languageHint": job.get("languageHint"),
+                    "roleFamily": job.get("roleFamily"),
+                    "seniority": job.get("seniority"),
                     "visaHint": job.get("visaHint"),
                     "applyUrl": job.get("applyUrl"),
                     "jobPath": page_path_by_key.get(key, ""),
@@ -97,6 +101,8 @@ def main() -> None:
                     str(job.get("companyName") or ""),
                     str(job.get("title") or ""),
                     str(job.get("locationRaw") or ""),
+                    str(job.get("roleFamily") or ""),
+                    str(job.get("seniority") or ""),
                     page_path_by_key.get(key, ""),
                 ]
             )

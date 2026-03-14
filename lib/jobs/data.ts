@@ -40,6 +40,8 @@ function buildJobWhere(filters: JobListingFilter): Prisma.JobWhereInput {
   if (typeof filters.visaHint === "boolean") where.visaHint = filters.visaHint;
   if (filters.languageHints?.length) where.languageHint = { in: filters.languageHints };
   if (filters.remoteModes?.length) where.remoteMode = { in: filters.remoteModes };
+  if (filters.roleFamilies?.length) where.roleFamily = { in: filters.roleFamilies };
+  if (filters.seniorities?.length) where.seniority = { in: filters.seniorities };
   if (filters.clusterTagsAny?.length) where.clusterTags = { hasSome: filters.clusterTagsAny };
 
   return where;
@@ -142,6 +144,18 @@ function relatedListingPathsForJob(job: Job): string[] {
     paths.add("/jobs/visa-sponsorship-jobs-netherlands");
   }
 
+  if (job.isEnglishFriendly) {
+    if (job.roleFamily === "sales") paths.add("/jobs/english-speaking-sales-jobs-netherlands");
+    if (job.roleFamily === "marketing") paths.add("/jobs/english-speaking-marketing-jobs-netherlands");
+    if (job.roleFamily === "finance_accounting") paths.add("/jobs/english-speaking-finance-jobs-netherlands");
+    if (job.roleFamily === "customer_support") paths.add("/jobs/english-speaking-customer-support-jobs-netherlands");
+    if (job.roleFamily === "operations") paths.add("/jobs/english-speaking-operations-jobs-netherlands");
+  }
+
+  if (["internship", "graduate", "junior"].includes(job.seniority)) {
+    paths.add("/jobs/starter-jobs-netherlands");
+  }
+
   if (paths.size === 0) {
     paths.add("/jobs/english-speaking-jobs-netherlands");
   }
@@ -171,6 +185,12 @@ async function getRelatedJobs(job: Job): Promise<Job[]> {
   }
   if (job.isWithoutDutch) {
     secondaryOr.push({ isWithoutDutch: true });
+  }
+  if (job.roleFamily !== "unknown") {
+    secondaryOr.push({ roleFamily: job.roleFamily });
+  }
+  if (job.seniority !== "unknown") {
+    secondaryOr.push({ seniority: job.seniority });
   }
   if (job.clusterTags.length > 0) {
     secondaryOr.push({ clusterTags: { hasSome: job.clusterTags.slice(0, 3) } });

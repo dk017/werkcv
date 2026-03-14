@@ -12,6 +12,8 @@ import {
   formatLocationLabel,
   formatPostedDate,
   formatRemoteMode,
+  formatRoleFamily,
+  formatSeniority,
   pickPrimaryJobCta,
 } from "@/lib/jobs/format";
 
@@ -67,6 +69,8 @@ export default function PublicJobDetailPage({ result }: PublicJobDetailPageProps
   const cvTips = buildJobCvTips(job);
   const internationalSignals = buildInternationalSignals(job);
   const postedLabel = formatPostedDate(job.postedAt);
+  const roleLabel = formatRoleFamily(job.roleFamily);
+  const seniorityLabel = formatSeniority(job.seniority);
   const breadcrumbs = [
     { label: "Home", href: "/" },
     { label: "Jobs", href: "/jobs" },
@@ -103,6 +107,16 @@ export default function PublicJobDetailPage({ result }: PublicJobDetailPageProps
                 <span className="rounded-full bg-sky-100 px-3 py-1 text-sky-800">
                   {formatLanguageHint(job.languageHint)}
                 </span>
+                {roleLabel && (
+                  <span className="rounded-full bg-violet-100 px-3 py-1 text-violet-800">
+                    {roleLabel}
+                  </span>
+                )}
+                {seniorityLabel && (
+                  <span className="rounded-full bg-rose-100 px-3 py-1 text-rose-800">
+                    {seniorityLabel}
+                  </span>
+                )}
                 {job.remoteMode && (
                   <span className="rounded-full bg-emerald-100 px-3 py-1 text-emerald-800">
                     {formatRemoteMode(job.remoteMode)}

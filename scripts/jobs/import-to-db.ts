@@ -2,7 +2,7 @@ import "dotenv/config";
 import { readFile } from "fs/promises";
 import path from "path";
 import { prisma } from "../../lib/prisma";
-import type { JobPagePayload, LanguageHint, RemoteMode } from "../../lib/jobs/types";
+import type { JobPagePayload, JobRoleFamily, JobSeniority, LanguageHint, RemoteMode } from "../../lib/jobs/types";
 
 type SupportedJobProvider = JobPagePayload["normalizedJob"]["provider"];
 type SeedSourceRow = {
@@ -215,6 +215,8 @@ async function main() {
     languageHint: LanguageHint;
     dutchRequired: boolean | null;
     visaHint: boolean | null;
+    roleFamily: JobRoleFamily;
+    seniority: JobSeniority;
     isNlRelevant: boolean;
     isEnglishFriendly: boolean;
     isWithoutDutch: boolean;
@@ -273,6 +275,8 @@ async function main() {
       languageHint: (job.languageHint ?? "unknown") as LanguageHint,
       dutchRequired: job.dutchRequired ?? null,
       visaHint: job.visaHint ?? null,
+      roleFamily: (job.roleFamily ?? "unknown") as JobRoleFamily,
+      seniority: (job.seniority ?? "unknown") as JobSeniority,
       isNlRelevant: isNlRelevant(job.countryCode ?? null, clusterTags, job.locationRaw),
       isEnglishFriendly: isEnglishFriendly(job.languageHint, clusterTags, job.dutchRequired),
       isWithoutDutch: isWithoutDutch(clusterTags, job.dutchRequired),
@@ -419,6 +423,8 @@ async function main() {
         languageHint: row.languageHint,
         dutchRequired: row.dutchRequired,
         visaHint: row.visaHint,
+        roleFamily: row.roleFamily,
+        seniority: row.seniority,
         isNlRelevant: row.isNlRelevant,
         isEnglishFriendly: row.isEnglishFriendly,
         isWithoutDutch: row.isWithoutDutch,
@@ -450,6 +456,8 @@ async function main() {
         languageHint: row.languageHint,
         dutchRequired: row.dutchRequired,
         visaHint: row.visaHint,
+        roleFamily: row.roleFamily,
+        seniority: row.seniority,
         isNlRelevant: row.isNlRelevant,
         isEnglishFriendly: row.isEnglishFriendly,
         isWithoutDutch: row.isWithoutDutch,

@@ -151,6 +151,8 @@ model Job {
   languageHint      JobLanguageHint @default(unknown)
   dutchRequired     Boolean?
   visaHint          Boolean?
+  roleFamily        JobRoleFamily   @default(unknown)
+  seniority         JobSeniority    @default(unknown)
   isNlRelevant      Boolean         @default(false)
   isEnglishFriendly Boolean         @default(false)
   isWithoutDutch    Boolean         @default(false)
@@ -173,6 +175,8 @@ model Job {
   @@index([countryCode, citySlug, status])
   @@index([isNlRelevant, isEnglishFriendly, status])
   @@index([isWithoutDutch, status])
+  @@index([roleFamily, status])
+  @@index([seniority, status])
   @@index([lastSeenAt])
 }
 
@@ -277,6 +281,37 @@ enum JobLanguageHint {
   unknown
 }
 
+enum JobRoleFamily {
+  engineering
+  data
+  product_design
+  sales
+  marketing
+  customer_support
+  customer_success
+  operations
+  finance_accounting
+  hr_people
+  legal_compliance
+  admin_office
+  logistics_supply_chain
+  general_business
+  unknown
+}
+
+enum JobSeniority {
+  internship
+  graduate
+  junior
+  mid
+  senior
+  lead
+  manager
+  director
+  executive
+  unknown
+}
+
 enum JobRecordStatus {
   active
   expired
@@ -289,4 +324,7 @@ enum JobListingKind {
   visa_sponsorship
   english_speaking_city
   without_dutch_city
+  role_family_nl
+  starter_nl
 }
+

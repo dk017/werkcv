@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Iterable
 
 from common import RAW_DIR, ROOT_DIR, slugify
-from schema import LanguageHint, NormalizedJob, Provider
+from schema import JobRoleFamily, JobSeniority, LanguageHint, NormalizedJob, Provider
 
 NORMALIZED_DIR = ROOT_DIR / "data" / "jobs" / "normalized"
 NORMALIZED_PATH = NORMALIZED_DIR / "jobs.json"
@@ -162,6 +162,272 @@ def apply_source_language_fallback(
     return language_hint
 
 
+def has_any(text: str, markers: tuple[str, ...]) -> bool:
+    return any(marker in text for marker in markers)
+
+
+def infer_role_family(title: str, text: str) -> JobRoleFamily:
+    title_lower = title.lower()
+
+    if has_any(
+        title_lower,
+        (
+            "accountant",
+            "accounting",
+            "finance",
+            "financial",
+            "controller",
+            "fp&a",
+            "treasury",
+            "audit",
+            "tax",
+            "boekhouder",
+            "payroll",
+        ),
+    ):
+        return "finance_accounting"
+
+    if has_any(
+        title_lower,
+        (
+            "sales",
+            "account executive",
+            "account manager",
+            "business development",
+            "partnerships",
+            "commercial",
+            "revenue",
+            "sdr",
+            "bdr",
+            "sales development representative",
+        ),
+    ):
+        return "sales"
+
+    if has_any(
+        title_lower,
+        (
+            "marketing",
+            "growth",
+            "content",
+            "brand",
+            "communications",
+            "seo",
+            "social media",
+            "demand generation",
+            "campaign",
+            "performance marketing",
+        ),
+    ):
+        return "marketing"
+
+    if has_any(
+        title_lower,
+        (
+            "customer support",
+            "customer service",
+            "support engineer",
+            "support specialist",
+            "support representative",
+            "helpdesk",
+            "service desk",
+            "customer care",
+            "technical support",
+        ),
+    ):
+        return "customer_support"
+
+    if has_any(
+        title_lower,
+        (
+            "customer success",
+            "implementation consultant",
+            "implementation manager",
+            "onboarding",
+            "adoption",
+            "customer experience manager",
+            "client success",
+        ),
+    ):
+        return "customer_success"
+
+    if has_any(
+        title_lower,
+        (
+            "operations",
+            "business operations",
+            "project coordinator",
+            "program manager",
+            "office operations",
+            "strategy & operations",
+            "chief of staff",
+            "business analyst",
+        ),
+    ):
+        return "operations"
+
+    if has_any(
+        title_lower,
+        (
+            "logistics",
+            "supply chain",
+            "procurement",
+            "warehouse",
+            "inventory",
+            "transport",
+            "fulfillment",
+            "planner",
+        ),
+    ):
+        return "logistics_supply_chain"
+
+    if has_any(
+        title_lower,
+        (
+            "recruiter",
+            "talent acquisition",
+            "human resources",
+            "hr ",
+            "people partner",
+            "people operations",
+            "people ops",
+        ),
+    ):
+        return "hr_people"
+
+    if has_any(
+        title_lower,
+        (
+            "legal",
+            "counsel",
+            "compliance",
+            "privacy",
+            "risk",
+            "aml",
+            "kyc",
+            "governance",
+        ),
+    ):
+        return "legal_compliance"
+
+    if has_any(
+        title_lower,
+        (
+            "administrative",
+            "administrator",
+            "receptionist",
+            "office manager",
+            "executive assistant",
+            "personal assistant",
+            "front desk",
+            "office assistant",
+        ),
+    ):
+        return "admin_office"
+
+    if has_any(
+        title_lower,
+        (
+            "product manager",
+            "product designer",
+            "ux",
+            "ui",
+            "user researcher",
+            "service designer",
+            "graphic designer",
+            "brand designer",
+        ),
+    ):
+        return "product_design"
+
+    if has_any(
+        title_lower,
+        (
+            "data scientist",
+            "data analyst",
+            "analytics engineer",
+            "business intelligence",
+            "bi analyst",
+            "machine learning",
+            "ml engineer",
+            "ai engineer",
+            "research scientist",
+            "data engineer",
+        ),
+    ):
+        return "data"
+
+    if has_any(
+        title_lower,
+        (
+            "software engineer",
+            "developer",
+            "frontend",
+            "backend",
+            "full stack",
+            "fullstack",
+            "devops",
+            "site reliability",
+            "sre",
+            "security engineer",
+            "platform engineer",
+            "architect",
+            "qa engineer",
+            "test engineer",
+        ),
+    ):
+        return "engineering"
+
+    if has_any(
+        title_lower,
+        (
+            "consultant",
+            "analyst",
+            "associate",
+            "specialist",
+            "coordinator",
+        ),
+    ):
+        return "general_business"
+
+    return "unknown"
+
+
+def infer_seniority(title: str, employment_type: str | None, role_family: JobRoleFamily) -> JobSeniority:
+    lowered_title = title.lower()
+    lowered_employment = (employment_type or "").lower()
+    combined = f"{lowered_title} {lowered_employment}"
+
+    if has_any(combined, ("intern", "internship", "stage", "stagiair")):
+        return "internship"
+    if has_any(combined, ("graduate", "new grad", "trainee", "traineeship", "campus", "starter")):
+        return "graduate"
+    if has_any(combined, ("chief ", " ceo", " cfo", " cmo", " coo", "vp", "vice president", "president")):
+        return "executive"
+    if has_any(combined, ("director", "head of")):
+        return "director"
+    if has_any(combined, ("manager", "supervisor")):
+        return "manager"
+    if has_any(combined, ("lead", "principal", "staff ")):
+        return "lead"
+    if has_any(combined, ("senior", " sr", "sr.", "expert")):
+        return "senior"
+    if has_any(combined, ("junior", " jr", "jr.", "entry level")):
+        return "junior"
+
+    early_title_markers = ("assistant", "coordinator", "representative")
+    if has_any(combined, early_title_markers):
+        return "junior"
+
+    if role_family in {"sales", "marketing", "customer_support", "customer_success", "operations", "finance_accounting", "admin_office", "hr_people"} and has_any(
+        combined,
+        ("associate", "specialist", "analyst"),
+    ):
+        return "junior"
+
+    return "unknown"
+
+
 def cluster_tags_for_job(job: NormalizedJob) -> list[str]:
     tags: list[str] = []
     if job.city:
@@ -174,6 +440,10 @@ def cluster_tags_for_job(job: NormalizedJob) -> list[str]:
         tags.append("without_dutch")
     if job.visa_hint:
         tags.append("visa_possible")
+    if job.role_family and job.role_family != "unknown":
+        tags.append(f"role_{job.role_family}")
+    if job.seniority and job.seniority != "unknown":
+        tags.append(f"seniority_{job.seniority}")
     return sorted(set(tags))
 
 
@@ -192,6 +462,8 @@ def job_to_payload(job: NormalizedJob) -> dict[str, object]:
         "languageHint": job.language_hint,
         "dutchRequired": job.dutch_required,
         "visaHint": job.visa_hint,
+        "roleFamily": job.role_family,
+        "seniority": job.seniority,
         "descriptionText": job.description_text,
         "applyUrl": job.apply_url,
         "postedAt": job.posted_at,
@@ -213,8 +485,9 @@ def normalize_greenhouse(payload: object, source: dict[str, object]) -> list[Nor
         if isinstance(location, dict):
             location_raw = str(location.get("name") or "")
         description_text = strip_html(str(job.get("content") or ""))
+        title = str(job.get("title") or "")
         inferred_city = infer_city_from_location(location_raw)
-        combined_text = flatten_text((location_raw, description_text, str(job.get("title") or "")))
+        combined_text = flatten_text((location_raw, description_text, title))
         country_code = infer_country_code(location_raw, inferred_city)
         dutch_required = infer_dutch_required(combined_text)
         language_hint = infer_language_hint(description_text)
@@ -226,13 +499,15 @@ def normalize_greenhouse(payload: object, source: dict[str, object]) -> list[Nor
             country_code=country_code,
             dutch_required=dutch_required,
         )
+        role_family = infer_role_family(title, combined_text)
+        seniority = infer_seniority(title, None, role_family)
 
         normalized_job = NormalizedJob(
             provider="greenhouse",
             external_id=str(job.get("id") or ""),
             company_slug=slugify(str(source.get("company_name") or "")),
             company_name=str(source.get("company_name") or ""),
-            title=str(job.get("title") or ""),
+            title=title,
             location_raw=location_raw,
             city=inferred_city,
             country_code=country_code,
@@ -241,6 +516,8 @@ def normalize_greenhouse(payload: object, source: dict[str, object]) -> list[Nor
             language_hint=language_hint,
             dutch_required=dutch_required,
             visa_hint=infer_visa_hint(combined_text),
+            role_family=role_family,
+            seniority=seniority,
             description_text=description_text,
             apply_url=str(job.get("absolute_url") or job.get("url") or ""),
             posted_at=str(job.get("updated_at") or "") or None,
@@ -263,6 +540,7 @@ def normalize_lever(payload: object, source: dict[str, object]) -> list[Normaliz
             continue
         categories = job.get("categories") or {}
         location_raw = str(categories.get("location") or job.get("categoriesText") or "")
+        title = str(job.get("text") or job.get("title") or "")
         description_text = flatten_text(
             (
                 strip_html(str(job.get("description") or "")),
@@ -271,7 +549,7 @@ def normalize_lever(payload: object, source: dict[str, object]) -> list[Normaliz
             )
         )
         inferred_city = infer_city_from_location(location_raw)
-        combined_text = flatten_text((location_raw, description_text, str(job.get("text") or "")))
+        combined_text = flatten_text((location_raw, description_text, title))
         apply_url = str(job.get("hostedUrl") or job.get("applyUrl") or "")
         country_code = infer_country_code(location_raw, inferred_city)
         dutch_required = infer_dutch_required(combined_text)
@@ -281,21 +559,26 @@ def normalize_lever(payload: object, source: dict[str, object]) -> list[Normaliz
             country_code=country_code,
             dutch_required=dutch_required,
         )
+        employment_type = str(categories.get("commitment") or "") or None
+        role_family = infer_role_family(title, combined_text)
+        seniority = infer_seniority(title, employment_type, role_family)
 
         normalized_job = NormalizedJob(
             provider="lever",
             external_id=str(job.get("id") or ""),
             company_slug=slugify(str(source.get("company_name") or "")),
             company_name=str(source.get("company_name") or ""),
-            title=str(job.get("text") or job.get("title") or ""),
+            title=title,
             location_raw=location_raw,
             city=inferred_city,
             country_code=country_code,
             remote_mode=infer_remote_mode(location_raw, description_text),
-            employment_type=str(categories.get("commitment") or "") or None,
+            employment_type=employment_type,
             language_hint=language_hint,
             dutch_required=dutch_required,
             visa_hint=infer_visa_hint(combined_text),
+            role_family=role_family,
+            seniority=seniority,
             description_text=description_text,
             apply_url=apply_url,
             posted_at=str(job.get("createdAt") or "") or None,
@@ -340,6 +623,9 @@ def normalize_generic(provider: Provider, payload: object, source: dict[str, obj
             country_code=country_code,
             dutch_required=dutch_required,
         )
+        employment_type = str(job.get("employmentType") or "") or None
+        role_family = infer_role_family(title, combined_text)
+        seniority = infer_seniority(title, employment_type, role_family)
 
         normalized_job = NormalizedJob(
             provider=provider,
@@ -351,10 +637,12 @@ def normalize_generic(provider: Provider, payload: object, source: dict[str, obj
             city=inferred_city,
             country_code=country_code,
             remote_mode=infer_remote_mode(location_raw, description_text),
-            employment_type=str(job.get("employmentType") or "") or None,
+            employment_type=employment_type,
             language_hint=language_hint,
             dutch_required=dutch_required,
             visa_hint=infer_visa_hint(combined_text),
+            role_family=role_family,
+            seniority=seniority,
             description_text=description_text,
             apply_url=apply_url,
             posted_at=str(job.get("postedAt") or "") or None,
@@ -411,5 +699,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-

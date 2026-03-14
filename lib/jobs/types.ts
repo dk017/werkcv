@@ -3,13 +3,42 @@ export type JobProvider = "greenhouse" | "lever" | "ashby" | "workable" | "unkno
 export type EnglishFit = "high" | "medium" | "low";
 export type RemoteMode = "remote" | "hybrid" | "onsite";
 export type LanguageHint = "english" | "dutch" | "mixed" | "unknown";
+export type JobRoleFamily =
+  | "engineering"
+  | "data"
+  | "product_design"
+  | "sales"
+  | "marketing"
+  | "customer_support"
+  | "customer_success"
+  | "operations"
+  | "finance_accounting"
+  | "hr_people"
+  | "legal_compliance"
+  | "admin_office"
+  | "logistics_supply_chain"
+  | "general_business"
+  | "unknown";
+export type JobSeniority =
+  | "internship"
+  | "graduate"
+  | "junior"
+  | "mid"
+  | "senior"
+  | "lead"
+  | "manager"
+  | "director"
+  | "executive"
+  | "unknown";
 export type JobRecordStatus = "active" | "expired" | "hidden";
 export type JobListingKind =
   | "english_speaking_nl"
   | "without_dutch"
   | "visa_sponsorship"
   | "english_speaking_city"
-  | "without_dutch_city";
+  | "without_dutch_city"
+  | "role_family_nl"
+  | "starter_nl";
 
 export interface JobSource {
   sourceId: string;
@@ -41,6 +70,8 @@ export interface NormalizedJob {
   languageHint?: LanguageHint;
   dutchRequired?: boolean | null;
   visaHint?: boolean | null;
+  roleFamily?: JobRoleFamily;
+  seniority?: JobSeniority;
   descriptionText: string;
   applyUrl: string;
   postedAt?: string;
@@ -75,6 +106,8 @@ export interface JobListingFilter {
   visaHint?: boolean;
   languageHints?: LanguageHint[];
   remoteModes?: RemoteMode[];
+  roleFamilies?: JobRoleFamily[];
+  seniorities?: JobSeniority[];
   clusterTagsAny?: string[];
 }
 

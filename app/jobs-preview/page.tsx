@@ -33,6 +33,8 @@ export default async function JobsPreviewPage({
       page.normalizedJob.companyName,
       page.normalizedJob.title,
       page.normalizedJob.locationRaw,
+      page.normalizedJob.roleFamily || "",
+      page.normalizedJob.seniority || "",
       page.normalizedJob.descriptionText,
     ]
       .join(" ")
@@ -152,6 +154,16 @@ export default async function JobsPreviewPage({
                       <span className="rounded-full bg-sky-100 px-3 py-1 text-xs text-sky-800">
                         {job.languageHint || "unknown"}
                       </span>
+                      {job.roleFamily && job.roleFamily !== "unknown" && (
+                        <span className="rounded-full bg-violet-100 px-3 py-1 text-xs text-violet-800">
+                          {job.roleFamily}
+                        </span>
+                      )}
+                      {job.seniority && job.seniority !== "unknown" && (
+                        <span className="rounded-full bg-rose-100 px-3 py-1 text-xs text-rose-800">
+                          {job.seniority}
+                        </span>
+                      )}
                       {job.remoteMode && (
                         <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs text-emerald-800">
                           {job.remoteMode}
