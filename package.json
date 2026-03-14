@@ -14,7 +14,15 @@
     "db:seed": "npx tsx prisma/seed-categories.ts",
     "analytics:weekly": "npx tsx scripts/weekly-funnel-dashboard.ts",
     "analytics:signups": "node ./node_modules/typescript/lib/tsc.js --pretty false --module commonjs --target es2020 --esModuleInterop --skipLibCheck --moduleResolution node --outDir .codex-tmp scripts/signup-attribution-report.ts && node .codex-tmp/scripts/signup-attribution-report.js",
-    "seo-wave:pilot-report": "node ./node_modules/typescript/lib/tsc.js --pretty false --module commonjs --target es2020 --esModuleInterop --skipLibCheck --moduleResolution node --outDir .codex-tmp scripts/seo-wave-pilot-report.ts && node .codex-tmp/scripts/seo-wave-pilot-report.js"
+    "seo-wave:pilot-report": "node ./node_modules/typescript/lib/tsc.js --pretty false --module commonjs --target es2020 --esModuleInterop --skipLibCheck --moduleResolution node --outDir .codex-tmp scripts/seo-wave-pilot-report.ts && node .codex-tmp/scripts/seo-wave-pilot-report.js",
+    "jobs:fetch:greenhouse": "python scripts/jobs/fetch_greenhouse.py",
+    "jobs:fetch:lever": "python scripts/jobs/fetch_lever.py",
+    "jobs:fetch:ashby": "python scripts/jobs/fetch_ashby.py",
+    "jobs:fetch:workable": "python scripts/jobs/fetch_workable.py",
+    "jobs:normalize": "python scripts/jobs/normalize_jobs.py",
+    "jobs:classify": "python scripts/jobs/classify_jobs.py",
+    "jobs:export": "python scripts/jobs/export_page_payloads.py",
+    "jobs:review": "python scripts/jobs/review_jobs.py"
   },
   "dependencies": {
     "@polar-sh/sdk": "^0.43.0",
@@ -47,3 +55,8 @@
     "typescript": "^5"
   }
 }
+
+
+
+
+

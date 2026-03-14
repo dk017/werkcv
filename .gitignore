@@ -71,4 +71,8 @@ public/Dhineshkumar R-cv (22).pdf
 public/Dhineshkumar R-cv (23).pdf
 public/Keyword Stats 2026-03-08 at 08_01_42.csv
 .codex-tmp/
+data/jobs/raw/
+data/jobs/normalized/
+data/jobs/derived/
 
+__pycache__/
