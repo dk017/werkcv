@@ -149,7 +149,7 @@ export const cv50Plus: BlogArticle = {
             content: [
                 'Je CV-design spreekt namens jou voordat een recruiter ook maar één woord heeft gelezen. Een verouderd design — drukke lay-out, dik lettertype, zwarte blokken met witte tekst — verraadt dat je al een tijdje geen CV meer hebt bijgewerkt. Dat is een subtiel maar reëel signaal. Een clean, modern design toont het tegendeel.',
                 'Kies een template met voldoende witruimte, een schoon sans-serif lettertype (Calibri, Arial) en subtiel gebruik van kleur. Geen flashy design, maar ook geen museum-stuk uit 2005. WerkCV.nl biedt meerdere templates die precies in die sweet spot zitten: professioneel, modern en ATS-leesbaar.',
-                'Eenmalig $5 en je hebt een professioneel PDF-CV dat je kunt aanpassen per sollicitatie. Bewaar een versie voor directe sollicitaties, een voor uitzendbureaus en een voor interim-aanvragen. Drie versies, één basis — dat is hoe je als 50-plusser de markt efficiënt bestrijkt. Begin vandaag: de helft van je concurrenten heeft zijn CV al twee jaar niet bijgewerkt.',
+                'Eenmalig €4,99 en je hebt een professioneel PDF-CV dat je kunt aanpassen per sollicitatie. Bewaar een versie voor directe sollicitaties, een voor uitzendbureaus en een voor interim-aanvragen. Drie versies, één basis — dat is hoe je als 50-plusser de markt efficiënt bestrijkt. Begin vandaag: de helft van je concurrenten heeft zijn CV al twee jaar niet bijgewerkt.',
             ],
         },
     ],
@@ -199,3 +199,4 @@ export const cv50Plus: BlogArticle = {
         'zakelijk-en-financieel/controller',
     ],
 };
+

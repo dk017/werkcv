@@ -150,7 +150,7 @@ export const cvMakenInWord: BlogArticle = {
             content: [
                 'Word is prima als je weet wat je doet. Maar als je meerdere sollicitaties tegelijkertijd doet, steeds je CV wil aanpassen per vacature, of als je niet zeker weet of je opmaak correct is — dan is een online CV-builder efficiënter. Je hoeft geen uren te besteden aan uitlijning, kopteksten en PDF-export.',
                 'Online CV-builders zoals WerkCV.nl zijn specifiek gebouwd voor ATS-compatibiliteit. Alle templates zijn getest op leesbaarheid door de meest gebruikte ATS-systemen. Je vult je gegevens in via een gestructureerd formulier, kiest een template en exporteert direct als PDF. Geen opmaakproblemen, geen verslippende lay-out.',
-                'Een bijkomend voordeel: bij WerkCV.nl kun je meerdere CV-versies opslaan en per vacature aanpassen. Dit is bij Word vrijwel onmogelijk zonder een chaotische verzameling documenten bij te houden. De eenmalige $5 voor een professionele PDF-download verdient zichzelf terug bij de eerste succesvolle sollicitatie.',
+                'Een bijkomend voordeel: bij WerkCV.nl kun je meerdere CV-versies opslaan en per vacature aanpassen. Dit is bij Word vrijwel onmogelijk zonder een chaotische verzameling documenten bij te houden. De eenmalige €4,99 voor een professionele PDF-download verdient zichzelf terug bij de eerste succesvolle sollicitatie.',
             ],
         },
         {
@@ -226,3 +226,4 @@ export const cvMakenInWord: BlogArticle = {
         'financien-en-accountancy/financieel-administrateur',
     ],
 };
+

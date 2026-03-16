@@ -18,7 +18,7 @@ const steps = [
     },
     {
         title: "Download je CV",
-        description: "Klaar? Download als professionele PDF. Eenmalig $5, geen abonnement.",
+        description: "Klaar? Download als professionele PDF. Eenmalig €4,99, geen abonnement.",
         color: "bg-pink-400",
     },
 ];
@@ -83,3 +83,4 @@ export default function WelcomeOnboarding({ onDismiss, onUploadCV }: WelcomeOnbo
         </div>
     );
 }
+

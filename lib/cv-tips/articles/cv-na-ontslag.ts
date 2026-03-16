@@ -131,7 +131,7 @@ export const cvNaOntslag: BlogArticle = {
             content: [
                 'Na ontslag wil je snel vooruit — en een nieuw, professioneel CV is een van de eerste concrete stappen die je kunt zetten. Het heropstellen van je CV dwingt je ook om terug te kijken op je prestaties en bewust na te denken over wat je wilt. Dat is zinvoller dan het klinkt.',
                 'WerkCV.nl is speciaal gebouwd voor mensen die snel een professioneel resultaat willen zonder uren te verliezen aan opmaak. Vul je werkervaring in, schrijf je profieltekst en kies een clean ATS-vriendelijk template. Je CV is klaar als PDF — gereed voor uitzendbureaus, directe sollicitaties en LinkedIn.',
-                'Voor eenmalig $5 download je een professionele PDF die je kunt gebruiken voor tientallen sollicitaties. Geen maandelijks abonnement, geen additionele kosten. Eén CV, meerdere versies per vacature — bewaar ze allemaal in je account. Zet die eerste stap vandaag nog: elke dag dat je wacht is een dag zonder kansen.',
+                'Voor eenmalig €4,99 download je een professionele PDF die je kunt gebruiken voor tientallen sollicitaties. Geen maandelijks abonnement, geen additionele kosten. Eén CV, meerdere versies per vacature — bewaar ze allemaal in je account. Zet die eerste stap vandaag nog: elke dag dat je wacht is een dag zonder kansen.',
             ],
         },
     ],
@@ -177,3 +177,4 @@ export const cvNaOntslag: BlogArticle = {
         'marketing-en-communicatie/marketing-manager',
     ],
 };
+

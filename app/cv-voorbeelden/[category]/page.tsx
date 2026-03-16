@@ -168,7 +168,7 @@ export default async function CategoryPage({ params }: PageProps) {
                     </h2>
                     <p className="text-lg mb-6 max-w-2xl mx-auto text-gray-800">
                         Kies een voorbeeld hierboven of start direct met een leeg template.
-                        Eenmalig $5, geen abonnement.
+                        Eenmalig €4,99, geen abonnement.
                     </p>
                     <Link
                         href="/templates"
@@ -181,3 +181,4 @@ export default async function CategoryPage({ params }: PageProps) {
         </main>
     );
 }
+

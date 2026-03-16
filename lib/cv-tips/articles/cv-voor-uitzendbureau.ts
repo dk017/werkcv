@@ -157,7 +157,7 @@ export const cvVoorUitzendbureau: BlogArticle = {
             content: [
                 'Een uitzendbureau-CV hoeft niet indrukwekkend te zijn in design — het moet functioneel zijn. Schoon, leesbaar, volledig. Dat is precies wat een ATS-systeem en een drukke consulent nodig hebben. Een te druk of te creatief CV trekt weliswaar aandacht, maar wordt door ATS-software slechter gelezen.',
                 'Met WerkCV.nl maak je in een kwartier een professioneel, ATS-leesbaar CV. Vul je gegevens in, voeg je beschikbaarheidsinformatie toe in de profieltekst, en exporteer als PDF. Alle templates zijn geoptimaliseerd voor ATS-leesbaarheid — geen tabellen, geen tekstvakken, één kolom. Je CV is klaar voor inschrijving bij alle grote bureaus.',
-                'Maak voor elk groot bureau een licht aangepaste versie: kopieer je basisversie en pas de profieltekst en vaardigheidsvolgorde aan per bureau-specialisatie. Bij WerkCV.nl sla je meerdere versies op en download je altijd de juiste versie als PDF. Eenmalig $5, onbeperkt te gebruiken voor alle bureaus waar je je bij inschrijft.',
+                'Maak voor elk groot bureau een licht aangepaste versie: kopieer je basisversie en pas de profieltekst en vaardigheidsvolgorde aan per bureau-specialisatie. Bij WerkCV.nl sla je meerdere versies op en download je altijd de juiste versie als PDF. Eenmalig €4,99, onbeperkt te gebruiken voor alle bureaus waar je je bij inschrijft.',
             ],
         },
     ],
@@ -203,3 +203,4 @@ export const cvVoorUitzendbureau: BlogArticle = {
         'vakmanschap-en-logistiek/chauffeur',
     ],
 };
+

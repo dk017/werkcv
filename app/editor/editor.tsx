@@ -1217,7 +1217,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                                     </p>
                                 </div>
                                 <div className="text-right">
-                                    <p className="text-3xl font-black text-black">$5</p>
+                                    <p className="text-3xl font-black text-black">€4,99</p>
                                     <p className="text-[11px] font-black uppercase tracking-wide text-slate-600">
                                         eenmalig
                                     </p>
@@ -1287,3 +1287,4 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
         </div>
     );
 }
+

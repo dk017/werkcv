@@ -160,7 +160,7 @@ export default function CVTipsHub() {
                     </h2>
                     <p className="text-xl mb-8 max-w-2xl mx-auto">
                         Pas deze tips direct toe. Maak binnen 5 minuten een professioneel CV
-                        met onze templates. Eenmalig $5, geen abonnement.
+                        met onze templates. Eenmalig €4,99, geen abonnement.
                     </p>
                     <Link
                         href="/templates"
@@ -173,3 +173,4 @@ export default function CVTipsHub() {
         </main>
     );
 }
+

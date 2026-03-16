@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     default: "WerkCV.nl - Professioneel CV Maken | Online CV Builder",
     template: "%s | WerkCV.nl",
   },
-  description: "Maak binnen 5 minuten een professioneel CV. Kies uit 13+ ATS-vriendelijke templates, vul je gegevens in en download als PDF. Eenmalig $5, geen abonnement.",
+  description: "Maak binnen 5 minuten een professioneel CV. Kies uit 13+ ATS-vriendelijke templates, vul je gegevens in en download als PDF. Eenmalig €4,99, geen abonnement.",
   keywords: [
     "cv maken",
     "cv builder",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "WerkCV.nl - Professioneel CV Maken | Online CV Builder",
-    description: "Maak binnen 5 minuten een professioneel CV. Kies uit 13+ ATS-vriendelijke templates en download als PDF. Eenmalig $5.",
+    description: "Maak binnen 5 minuten een professioneel CV. Kies uit 13+ ATS-vriendelijke templates en download als PDF. Eenmalig €4,99.",
     url: "https://werkcv.nl",
     siteName: "WerkCV.nl",
     locale: "nl_NL",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "WerkCV.nl - Professioneel CV Maken",
-    description: "Maak binnen 5 minuten een professioneel CV. 13+ templates, eenmalig $5, geen abonnement.",
+    description: "Maak binnen 5 minuten een professioneel CV. 13+ templates, eenmalig €4,99, geen abonnement.",
     images: ["/opengraph-image"],
   },
   alternates: {
@@ -94,3 +94,4 @@ export default function RootLayout({
     </html>
   );
 }
+

@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
     title: "Prijzen - CV Maken Kosten | WerkCV.nl",
-    description: "Maak gratis je CV en betaal alleen als je downloadt. Eenmalig $5 voor een professionele PDF. Geen abonnement, geen verborgen kosten.",
+    description: "Maak gratis je CV en betaal alleen als je downloadt. Eenmalig €4,99 voor een professionele PDF. Geen abonnement, geen verborgen kosten.",
     keywords: [
         "cv maken kosten",
         "cv maker prijs",
@@ -35,8 +35,8 @@ const productJsonLd = {
     "offers": {
         "@type": "Offer",
         "url": "https://werkcv.nl/prijzen",
-        "price": "5.00",
-        "priceCurrency": "USD",
+        "price": "4.99",
+        "priceCurrency": "EUR",
         "priceValidUntil": "2026-12-31",
         "availability": "https://schema.org/InStock",
         "itemCondition": "https://schema.org/NewCondition",
@@ -97,7 +97,7 @@ export default function PrijzenPage() {
                         </div>
 
                         <div className="text-center pt-4">
-                            <div className="text-6xl font-black text-black mb-2">$5</div>
+                            <div className="text-6xl font-black text-black mb-2">€4,99</div>
                             <p className="text-lg font-bold text-gray-600 mb-8">per CV download</p>
 
                             <ul className="text-left space-y-3 mb-8">
@@ -156,7 +156,7 @@ export default function PrijzenPage() {
                             </div>
                             <h3 className="font-black text-black mb-2">WerkCV.nl</h3>
                             <ul className="space-y-2 text-sm font-black text-black">
-                                <li>&bull; Eenmalig $5, klaar</li>
+                                <li>&bull; Eenmalig €4,99, klaar</li>
                                 <li>&bull; Geen abonnement</li>
                                 <li>&bull; Gratis bewerken, altijd</li>
                                 <li>&bull; Eerlijk en transparant</li>
@@ -183,7 +183,7 @@ export default function PrijzenPage() {
                     <div className="space-y-4 max-w-2xl mx-auto">
                         {[
                             { q: 'Moet ik betalen om mijn CV te maken?', a: 'Nee, het aanmaken en bewerken van je CV is volledig gratis. Je betaalt alleen als je je CV als PDF wilt downloaden.' },
-                            { q: 'Is het een abonnement?', a: 'Nee! Het is een eenmalige betaling van $5. Geen automatische verlengingen, geen verborgen kosten.' },
+                            { q: 'Is het een abonnement?', a: 'Nee! Het is een eenmalige betaling van €4,99. Geen automatische verlengingen, geen verborgen kosten.' },
                             { q: 'Kan ik mijn CV later nog bewerken?', a: 'Ja, je CV blijft opgeslagen en je kunt het altijd gratis bewerken. Alleen voor een nieuwe PDF-download betaal je opnieuw.' },
                             { q: 'Welke betaalmethoden accepteren jullie?', a: 'We accepteren iDEAL, creditcard, Bancontact en andere gangbare betaalmethoden via onze betalingspartner.' },
                         ].map((faq, i) => (
@@ -213,3 +213,4 @@ export default function PrijzenPage() {
         </div>
     );
 }
+

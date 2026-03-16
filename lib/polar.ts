@@ -1,7 +1,9 @@
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 const POLAR_ACCESS_TOKEN = process.env.POLAR_ACCESS_TOKEN;
-const POLAR_PRICE_ID =
-    process.env.POLAR_PRICE_ID_CV_DOWNLOAD || process.env.POLAR_PRODUCT_ID_CV_DOWNLOAD || process.env.POLAR_PRODUCT_ID;
+const POLAR_PRODUCT_ID =
+    process.env.POLAR_PRODUCT_ID_CV_DOWNLOAD || process.env.POLAR_PRODUCT_ID;
+const POLAR_PRICE_ID = process.env.POLAR_PRICE_ID_CV_DOWNLOAD;
+const POLAR_CHECKOUT_CURRENCY = 'eur';
 const POLAR_SERVER = process.env.POLAR_SERVER === 'sandbox' ? 'sandbox' : 'production';
 
 const POLAR_API_BASE = POLAR_SERVER === 'sandbox'
@@ -37,8 +39,8 @@ export async function buildCheckoutURL(
     if (!POLAR_ACCESS_TOKEN) {
         throw new Error('POLAR_ACCESS_TOKEN is not configured');
     }
-    if (!POLAR_PRICE_ID) {
-        throw new Error('POLAR_PRICE_ID_CV_DOWNLOAD is not configured');
+    if (!POLAR_PRODUCT_ID && !POLAR_PRICE_ID) {
+        throw new Error('POLAR_PRODUCT_ID_CV_DOWNLOAD or POLAR_PRICE_ID_CV_DOWNLOAD is not configured');
     }
 
     const addons = uniqueAddons(selectedAddons);
@@ -49,11 +51,17 @@ export async function buildCheckoutURL(
     }
 
     const body: Record<string, unknown> = {
-        product_price_id: POLAR_PRICE_ID,
         success_url: `${APP_URL}/success?cvId=${encodeURIComponent(cvId)}`,
         return_url: `${APP_URL}/editor?id=${encodeURIComponent(cvId)}`,
+        currency: POLAR_CHECKOUT_CURRENCY,
         metadata,
     };
+
+    if (POLAR_PRODUCT_ID) {
+        body.products = [POLAR_PRODUCT_ID];
+    } else {
+        body.product_price_id = POLAR_PRICE_ID;
+    }
 
     if (email) {
         body.customer_email = email;
