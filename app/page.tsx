@@ -542,7 +542,7 @@ export default function Home() {
                         </span>
                         <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
                             <div className="text-6xl font-black text-black mb-2">
-                                <span className="text-3xl align-top">$</span>5
+                                <span className="text-3xl align-top">€</span>4,99
                             </div>
                             <p className="text-gray-600 font-medium mb-6">per CV download</p>
                             <div className="space-y-3 text-left mb-8">
