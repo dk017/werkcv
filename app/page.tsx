@@ -378,6 +378,11 @@ export default function Home() {
                                 Kies uit {templateCount}+ professionele templates, vul je gegevens in en download als PDF.{" "}
                                 <span className="bg-blue-200 px-1">Eenmalig €4,99, geen abonnement.</span>
                             </p>
+                            <div className="flex flex-wrap gap-3 text-xs font-black uppercase tracking-[0.3em] text-slate-600">
+                                <span className="px-3 py-1 border-2 border-black bg-white">Gehost in EU (Hetzner DE)</span>
+                                <span className="px-3 py-1 border-2 border-black bg-white">GDPR-compliant &amp; data stays in EU</span>
+                                <span className="px-3 py-1 border-2 border-black bg-white">Geen abonnement, betaal alleen bij download</span>
+                            </div>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                                 <Link
                                     href="/templates"
@@ -514,10 +519,10 @@ export default function Home() {
                     <h2 className="text-3xl md:text-4xl font-black text-black text-center mb-12">
                         Waarom WerkCV.nl?
                     </h2>
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {features.map((feature) => (
-                            <div
-                                key={feature.title}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {features.map((feature) => (
+                    <div
+                        key={feature.title}
                                 className="bg-white border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                             >
                                 <div className={`${feature.color} w-12 h-12 border-3 border-black flex items-center justify-center font-black text-xl text-black mb-4 -rotate-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`} style={{ borderWidth: '3px' }}>
@@ -525,11 +530,47 @@ export default function Home() {
                                 </div>
                                 <h3 className="text-lg font-black text-black mb-2">{feature.title}</h3>
                                 <p className="text-gray-600 font-medium text-sm">{feature.desc}</p>
-                            </div>
-                        ))}
+                    </div>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <section className="relative z-10 border-b-4 border-black bg-[#FFFEF0]">
+        <div className="max-w-6xl mx-auto px-6 py-16">
+            <div className="mb-8 flex flex-col gap-2 text-center">
+                <p className="text-xs font-black uppercase tracking-[0.3em] text-slate-600">
+                    Vertrouwen
+                </p>
+                <h2 className="text-3xl font-black text-black">
+                    Wat vroege gebruikers waarderen
+                </h2>
+            </div>
+            <div className="grid gap-5 md:grid-cols-2">
+                <blockquote className="border-4 border-black bg-white p-6 text-slate-700 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="text-base font-medium text-slate-900">
+                        “WerkCV liet me in één sessie twee cv’s bouwen die ATS-proof waren. De download was €4,99 en er zaten geen abonnementsvallen aan. Ik begin nu elke sollicitatie hier.”
+                    </p>
+                    <footer className="mt-4 text-sm font-black text-black uppercase tracking-[0.3em]">
+                        Mark — Marketing &amp; HR, Amsterdam
+                    </footer>
+                </blockquote>
+                <div className="border-4 border-black bg-white p-6 text-slate-700 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="text-base font-bold text-black">
+                        30+ gratis Nederlandse HR-tools
+                    </p>
+                    <p className="mt-3 text-sm">
+                        De tools geven context rond salaris, contracten en werk in Nederland. Elk van hen leidt met een CTA naar de editor zodat gebruikers meteen hun CV kunnen bouwen.
+                    </p>
+                    <div className="mt-5 flex flex-col gap-2 text-xs font-black uppercase tracking-[0.2em] text-black">
+                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">EU hosting + GDPR</span>
+                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">Veilige downloads via Polar</span>
+                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">Geen auto-renew</span>
                     </div>
                 </div>
-            </section>
+            </div>
+        </div>
+    </section>
 
             {/* ============================================================ */}
             {/* PRICING CLARITY */}
@@ -551,6 +592,7 @@ export default function Home() {
                                     `${templateCount}+ professionele templates`,
                                     "ATS-vriendelijk ontwerp",
                                     "Direct downloaden als PDF",
+                                    "Gehost op EU-servers (Hetzner, Duitsland)",
                                     "Geen abonnement of verborgen kosten",
                                 ].map((item) => (
                                     <div key={item} className="flex items-center gap-3">
