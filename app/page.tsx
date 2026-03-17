@@ -378,11 +378,6 @@ export default function Home() {
                                 Kies uit {templateCount}+ professionele templates, vul je gegevens in en download als PDF.{" "}
                                 <span className="bg-blue-200 px-1">Eenmalig €4,99, geen abonnement.</span>
                             </p>
-                            <div className="flex flex-wrap gap-3 text-xs font-black uppercase tracking-[0.3em] text-slate-600">
-                                <span className="px-3 py-1 border-2 border-black bg-white">Gehost in EU (Hetzner DE)</span>
-                                <span className="px-3 py-1 border-2 border-black bg-white">GDPR-compliant &amp; data stays in EU</span>
-                                <span className="px-3 py-1 border-2 border-black bg-white">Geen abonnement, betaal alleen bij download</span>
-                            </div>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                                 <Link
                                     href="/templates"
