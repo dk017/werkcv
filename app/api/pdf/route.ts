@@ -36,7 +36,14 @@ export async function GET(request: NextRequest) {
 
     // Payment gate — enabled via PAYMENT_ENABLED=true env var
     const paymentEnabled = process.env.PAYMENT_ENABLED === 'true';
-    if (paymentEnabled) {
+    const pilotAccess = await prisma.pilotAccess.findFirst({
+        where: {
+            userId: user.id,
+            expiresAt: { gte: new Date() },
+        },
+        orderBy: { expiresAt: 'desc' },
+    });
+    if (paymentEnabled && !pilotAccess) {
         const order = await prisma.order.findFirst({
             where: {
                 cvId: cvId,

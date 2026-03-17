@@ -17,6 +17,19 @@ model User {
   createdAt DateTime @default(now())
   documents CVDocument[]
   sessions  Session[]
+  pilotAccess PilotAccess?
+}
+
+model PilotAccess {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt   DateTime
+  notes       String?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@unique([userId])
 }
 
 model Session {
