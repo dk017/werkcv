@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getEnglishWavePage, getEnglishWavePages } from '@/lib/seo-wave/data';
 import CtaExperiment from '@/components/seo/CtaExperiment';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import ResumeTranslator from '@/components/translate/ResumeTranslator';
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -101,8 +102,30 @@ export default async function EnglishWavePage({ params }: PageProps) {
                 <div className="max-w-4xl mx-auto px-6 py-12">
                     <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">{page.title}</h1>
                     <p className="text-lg text-gray-700">{page.intro}</p>
+                    {page.slug === 'netherlands-cv-photo-rules' && (
+                        <div className="mt-8 flex flex-wrap gap-3">
+                            <Link
+                                href="/editor"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-black text-white font-black text-sm border-3 border-black hover:bg-slate-900 transition-colors"
+                            >
+                                Build your CV in the editor
+                            </Link>
+                            <Link
+                                href="/templates"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-black font-black text-sm border-3 border-black hover:bg-slate-100 transition-colors"
+                            >
+                                Browse CV templates
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </section>
+
+            {page.slug === 'translate-resume-to-dutch-format' && (
+                <div className="max-w-4xl mx-auto px-6 py-10">
+                    <ResumeTranslator />
+                </div>
+            )}
 
             <article className="max-w-4xl mx-auto px-6 py-10">
                 <div className="space-y-10">

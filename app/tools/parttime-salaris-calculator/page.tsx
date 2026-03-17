@@ -81,6 +81,20 @@ export default function ParttimeSalarisCalculatorPage() {
             <p className="text-lg text-slate-600 font-medium max-w-3xl">
               Handig voor iedereen die een 24-, 28-, 32- of 36-urige werkweek wil vergelijken zonder zelf te gaan prutsen met FTE-percentages. WerkCV zet fulltime salaris direct om naar een bruikbare parttime indicatie.
             </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/editor"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
+              >
+                Maak gratis je CV
+              </Link>
+              <Link
+                href="/templates"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-200 transition-colors"
+              >
+                Bekijk CV-templates
+              </Link>
+            </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
               {[

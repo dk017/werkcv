@@ -1,6 +1,6 @@
-import OpenAI from 'openai';
 import mammoth from 'mammoth';
 import { CVData, cvSchema } from './cv';
+import openai from './openai-client';
 
 // pdfjs-dist types
 type PDFDocumentProxy = {
@@ -30,10 +30,6 @@ async function getPdfjs() {
     }
     return pdfjs;
 }
-
-const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-});
 
 export async function extractTextFromPDF(buffer: Buffer): Promise<string> {
     const pdfjsLib = await getPdfjs();

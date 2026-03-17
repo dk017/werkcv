@@ -735,17 +735,19 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
         },
     },
     'translate-resume-to-dutch-format': {
-        intro: 'Converting a US/UK resume to Dutch format is mostly about structure and emphasis. Keep your facts, but reshape presentation for faster recruiter scanning in the Netherlands.',
+        intro: 'Upload your PDF resume with the translator below and WerkCV will reshape its sections, keywords, and emphasis into the Dutch structure featured on this page.',
         sectionOverrides: {
             wording: {
                 paragraphs: [
                     'US/UK resumes often over-index on long narrative and under-index on role-specific summary. Dutch screening prefers concise relevance and practical proof.',
+                    'Start with the translator widget, then review the draft in the editor—it keeps your original language but reorders everything for Dutch recruiters.',
                     'When translating format, preserve your achievements but trim non-essential context. Move strongest evidence to page one.',
                 ],
                 bullets: [
                     'Replace long paragraph summaries with 3-4 focused lines.',
                     'Convert responsibility-heavy bullets into action + outcome statements.',
                     'Rename sections to Dutch-market familiar structure and order.',
+                    'Upload your current PDF to the translator to get a Dutch-formatted draft instantly.',
                 ],
             },
             'special-case': {
