@@ -1,8 +1,135 @@
 export const WW_MAX_DAGLOON_2026 = 304.25;
+export const THIRTY_PERCENT_GENERAL_THRESHOLD_2026 = 48013;
+export const THIRTY_PERCENT_YOUNG_MASTER_THRESHOLD_2026 = 36497;
+export const THIRTY_PERCENT_MAX_ALLOWANCE_2026 = 78600;
 const AVERAGE_WORKDAYS_PER_MONTH = 261 / 12;
 
 function round2(value: number): number {
   return Math.round(value * 100) / 100;
+}
+
+export type YearEndBonusInput = {
+  monthlyGrossSalary: number;
+  bonusPercentage: number;
+  monthsWorked: number;
+};
+
+export type YearEndBonusResult = {
+  annualBaseSalary: number;
+  fullYearBonus: number;
+  proratedBonus: number;
+  decemberGrossWithBonus: number;
+  bonusEquivalentMonths: number;
+  monthlyBonusReserve: number;
+};
+
+export function calculateYearEndBonus(input: YearEndBonusInput): YearEndBonusResult {
+  const annualBaseSalary = input.monthlyGrossSalary * 12;
+  const fullYearBonus = annualBaseSalary * (input.bonusPercentage / 100);
+  const proratedBonus = fullYearBonus * (input.monthsWorked / 12);
+
+  return {
+    annualBaseSalary: round2(annualBaseSalary),
+    fullYearBonus: round2(fullYearBonus),
+    proratedBonus: round2(proratedBonus),
+    decemberGrossWithBonus: round2(input.monthlyGrossSalary + proratedBonus),
+    bonusEquivalentMonths: round2(proratedBonus / input.monthlyGrossSalary),
+    monthlyBonusReserve: round2(proratedBonus / Math.max(1, input.monthsWorked)),
+  };
+}
+
+export type ThirtyPercentRulingInput = {
+  annualTaxableSalary: number;
+  monthsInScheme: number;
+  under30WithMasters: boolean;
+  researcherOrMedicalSpecialist: boolean;
+  recruitedFromAbroad: boolean;
+  livedOutside150KmZone: boolean;
+  dutchPayrollEmployment: boolean;
+};
+
+export type ThirtyPercentRulingResult = {
+  thresholdAnnual: number;
+  proratedThresholdAnnual: number;
+  meetsSalaryThreshold: boolean;
+  structuralConditionsMet: boolean;
+  likelyEligible: boolean;
+  salaryGap: number;
+  maximumUntaxedAllowanceAnnual: number;
+  monthlyUntaxedAllowance: number;
+  impliedTotalPackageAnnual: number;
+  capApplied: boolean;
+  status: "eligible" | "salary_gap" | "conditions_gap";
+};
+
+export function calculateThirtyPercentRuling(input: ThirtyPercentRulingInput): ThirtyPercentRulingResult {
+  const baseThreshold = input.researcherOrMedicalSpecialist
+    ? 0
+    : input.under30WithMasters
+      ? THIRTY_PERCENT_YOUNG_MASTER_THRESHOLD_2026
+      : THIRTY_PERCENT_GENERAL_THRESHOLD_2026;
+  const proratedThresholdAnnual = baseThreshold * (input.monthsInScheme / 12);
+  const meetsSalaryThreshold = input.annualTaxableSalary >= proratedThresholdAnnual;
+  const structuralConditionsMet =
+    input.recruitedFromAbroad &&
+    input.livedOutside150KmZone &&
+    input.dutchPayrollEmployment;
+  const rawAllowance = input.annualTaxableSalary * (30 / 70);
+  const maxAllowanceCap = THIRTY_PERCENT_MAX_ALLOWANCE_2026 * (input.monthsInScheme / 12);
+  const maximumUntaxedAllowanceAnnual = Math.min(rawAllowance, maxAllowanceCap);
+  const likelyEligible = meetsSalaryThreshold && structuralConditionsMet;
+  const status: ThirtyPercentRulingResult["status"] = !structuralConditionsMet
+    ? "conditions_gap"
+    : meetsSalaryThreshold
+      ? "eligible"
+      : "salary_gap";
+
+  return {
+    thresholdAnnual: round2(baseThreshold),
+    proratedThresholdAnnual: round2(proratedThresholdAnnual),
+    meetsSalaryThreshold,
+    structuralConditionsMet,
+    likelyEligible,
+    salaryGap: round2(Math.max(0, proratedThresholdAnnual - input.annualTaxableSalary)),
+    maximumUntaxedAllowanceAnnual: round2(maximumUntaxedAllowanceAnnual),
+    monthlyUntaxedAllowance: round2(maximumUntaxedAllowanceAnnual / Math.max(1, input.monthsInScheme)),
+    impliedTotalPackageAnnual: round2(input.annualTaxableSalary + maximumUntaxedAllowanceAnnual),
+    capApplied: rawAllowance > maxAllowanceCap,
+    status,
+  };
+}
+
+export type LeaveHoursConversionMode = "hours_to_days" | "days_to_hours";
+
+export type LeaveHoursConversionInput = {
+  weeklyHours: number;
+  workDaysPerWeek: number;
+  amount: number;
+  mode: LeaveHoursConversionMode;
+};
+
+export type LeaveHoursConversionResult = {
+  hoursPerDay: number;
+  convertedHours: number;
+  convertedDays: number;
+  workWeeksEquivalent: number;
+};
+
+export function calculateLeaveHoursConversion(input: LeaveHoursConversionInput): LeaveHoursConversionResult {
+  const hoursPerDay = input.weeklyHours / input.workDaysPerWeek;
+  const convertedHours = input.mode === "days_to_hours"
+    ? input.amount * hoursPerDay
+    : input.amount;
+  const convertedDays = input.mode === "hours_to_days"
+    ? input.amount / hoursPerDay
+    : input.amount;
+
+  return {
+    hoursPerDay: round2(hoursPerDay),
+    convertedHours: round2(convertedHours),
+    convertedDays: round2(convertedDays),
+    workWeeksEquivalent: round2(convertedHours / input.weeklyHours),
+  };
 }
 
 export type VacationDaysInput = {

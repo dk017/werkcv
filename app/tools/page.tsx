@@ -62,6 +62,30 @@ const featuredTools: ToolCard[] = [
     },
 ];
 
+const newLiveTools: ToolCard[] = [
+    {
+        href: "/tools/eindejaarsuitkering-berekenen",
+        title: "Eindejaarsuitkering berekenen",
+        description: "Bereken je bruto 13e maand of eindejaarsuitkering op basis van salaris, percentage en gewerkte maanden.",
+        badge: "Geld",
+        badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
+    },
+    {
+        href: "/tools/30-procent-regeling-checker",
+        title: "30%-regeling checker",
+        description: "Check de 2026-drempels en basisvoorwaarden voor expats die de 30%-regeling willen inschatten.",
+        badge: "Expat",
+        badgeClass: "bg-violet-100 text-violet-800 border-violet-300",
+    },
+    {
+        href: "/tools/verlofuren-omrekenen",
+        title: "Verlofuren omrekenen",
+        description: "Zet verlofuren om naar dagen of dagen naar uren op basis van je echte contractschema.",
+        badge: "NL wetgeving",
+        badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
+    },
+];
+
 const sections: ToolSection[] = [
     {
         eyebrow: "Werk & contract",
@@ -151,6 +175,8 @@ const sections: ToolSection[] = [
                 badge: "AI",
                 badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
             },
+            newLiveTools[0],
+            newLiveTools[2],
         ],
     },
     {
@@ -263,36 +289,24 @@ const sections: ToolSection[] = [
                 badge: "AI",
                 badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
             },
+            newLiveTools[1],
         ],
     },
 ];
 
 const totalTools = new Set(sections.flatMap((section) => section.tools.map((tool) => tool.href))).size;
 
-const roadmapTools = [
-    {
-        title: "Eindejaarsuitkering berekenen",
-        description: "Sterke uitbreiding van de salariscluster voor december- en bonusintentie.",
-    },
-    {
-        title: "30%-regeling checker",
-        description: "Logische volgende stap voor de expat-cluster rond salaris en nettoloon in Nederland.",
-    },
-    {
-        title: "Verlofuren omrekenen",
-        description: "Handige verdieping naast vakantiedagen voor teams die vooral in uren registreren.",
-    },
-];
-
 export const metadata: Metadata = {
-    title: "30 Gratis CV, Sollicitatie & Werk Tools | WerkCV.nl",
-    description: "30 gratis tools voor CV, sollicitatie en werken in Nederland: netto-bruto, parttime salaris, vakantiedagen, WW, transitievergoeding, salaris, opzegtermijn, zoekjaar, ATS check, cv-samenvatting en meer.",
+    title: `${totalTools} Gratis CV, Sollicitatie & Werk Tools | WerkCV.nl`,
+    description: `${totalTools} gratis tools voor CV, sollicitatie en werken in Nederland: netto-bruto, parttime salaris, vakantiedagen, verlofuren, WW, transitievergoeding, salaris, 30%-regeling, ATS check en meer.`,
     keywords: [
         "cv tools gratis",
         "netto bruto calculator",
         "transitievergoeding berekenen",
+        "eindejaarsuitkering berekenen",
         "vakantiegeld berekenen",
         "vakantiedagen berekenen",
+        "verlofuren omrekenen",
         "parttime salaris calculator",
         "ww dagloon checker",
         "minimumloon checker",
@@ -300,6 +314,7 @@ export const metadata: Metadata = {
         "opzegtermijn berekenen",
         "salaris calculator nederland",
         "proeftijd checker",
+        "30 regeling checker",
         "ats cv checker",
         "cv samenvatting generator",
         "kennismigrant salary checker",
@@ -353,7 +368,7 @@ export default function ToolsPage() {
                                 NL wetgeving + AI + Expat
                             </span>
                             <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                                Bijgewerkt 12 maart 2026
+                                Bijgewerkt 19 maart 2026
                             </span>
                         </div>
                         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
@@ -433,33 +448,18 @@ export default function ToolsPage() {
                 <section className="mt-12">
                     <div className="mb-5">
                         <p className="text-xs font-black uppercase tracking-[0.2em] text-violet-700 mb-2">
-                            Roadmap
+                            Nieuw live
                         </p>
                         <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">
                             Volgende tools met EU/NL moat
                         </h2>
                         <p className="text-sm sm:text-base text-slate-600 max-w-3xl">
-                            Deze volgende laag verdiept de salaris-, verlof-, WW- en expat-clusters zonder de site te verbreden naar irrelevante generieke tools.
+                            Deze laag is nu live en verdiept precies de salaris-, verlof- en expat-clusters waar WerkCV het sterkst op kan bouwen.
                         </p>
                     </div>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {roadmapTools.map((tool) => (
-                            <div
-                                key={tool.title}
-                                className="bg-white border-2 border-dashed border-slate-300 p-5"
-                            >
-                                <div className="flex items-center justify-between gap-3 mb-2">
-                                    <h3 className="font-black text-slate-900 text-sm leading-tight">
-                                        {tool.title}
-                                    </h3>
-                                    <span className="flex-shrink-0 text-[10px] font-black uppercase tracking-wide bg-violet-100 text-violet-800 px-2 py-0.5 rounded-full border border-violet-300">
-                                        Roadmap
-                                    </span>
-                                </div>
-                                <p className="text-xs text-slate-500 leading-relaxed">
-                                    {tool.description}
-                                </p>
-                            </div>
+                        {newLiveTools.map((tool) => (
+                            <ToolCardView key={`new-${tool.href}`} tool={tool} />
                         ))}
                     </div>
                 </section>

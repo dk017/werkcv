@@ -346,11 +346,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const toolSlugs = [
         'aanzegvergoeding-checker',
+        '30-procent-regeling-checker',
         'ats-cv-checker',
         'career-change-advisor',
         'cv-keywords',
         'cv-samenvatting-generator',
         'cv-vacature-match',
+        'eindejaarsuitkering-berekenen',
         'eu-blue-card-checker',
         'job-title-translator',
         'kennismigrant-salary-checker',
@@ -370,6 +372,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'vaardigheden-generator',
         'vakantiedagen-berekenen',
         'vakantiegeld-berekenen',
+        'verlofuren-omrekenen',
         'werkervaring-bullets',
         'ww-dagloon-checker',
         'ww-duur-checker',
