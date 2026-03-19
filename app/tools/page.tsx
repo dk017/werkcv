@@ -445,25 +445,6 @@ export default function ToolsPage() {
                     ))}
                 </div>
 
-                <section className="mt-12">
-                    <div className="mb-5">
-                        <p className="text-xs font-black uppercase tracking-[0.2em] text-violet-700 mb-2">
-                            Nieuw live
-                        </p>
-                        <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">
-                            Volgende tools met EU/NL moat
-                        </h2>
-                        <p className="text-sm sm:text-base text-slate-600 max-w-3xl">
-                            Deze laag is nu live en verdiept precies de salaris-, verlof- en expat-clusters waar WerkCV het sterkst op kan bouwen.
-                        </p>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {newLiveTools.map((tool) => (
-                            <ToolCardView key={`new-${tool.href}`} tool={tool} />
-                        ))}
-                    </div>
-                </section>
-
                 <section className="mt-12 bg-black text-white p-8 border-4 border-black shadow-[6px_6px_0px_0px_rgba(78,205,196,1)]">
                     <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6 items-center">
                         <div>
