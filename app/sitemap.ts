@@ -61,16 +61,40 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.89,
         },
         {
+            url: `${baseUrl}/cv-maken-template`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.88,
+        },
+        {
+            url: `${baseUrl}/cv-maken-sjabloon`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.88,
+        },
+        {
             url: `${baseUrl}/cv-maken-in-engels`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.88,
         },
         {
+            url: `${baseUrl}/cv-opmaken`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.87,
+        },
+        {
             url: `${baseUrl}/cv-opmaak-voorbeeld`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.87,
+        },
+        {
+            url: `${baseUrl}/modern-cv-voorbeeld`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.85,
         },
         {
             url: `${baseUrl}/gratis-cv-template`,
@@ -104,6 +128,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/professioneel-cv-template`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.84,
+        },
+        {
+            url: `${baseUrl}/professioneel-cv-voorbeeld`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.84,
