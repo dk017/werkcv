@@ -31,13 +31,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.92,
         },
         {
+            url: `${baseUrl}/gratis-cv-maken`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.91,
+        },
+        {
             url: `${baseUrl}/online-cv-maken`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.9,
         },
         {
+            url: `${baseUrl}/cv-aanmaken`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
             url: `${baseUrl}/cv-opstellen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.89,
+        },
+        {
+            url: `${baseUrl}/curriculum-vitae-maken`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.89,
