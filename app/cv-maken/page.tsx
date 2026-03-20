@@ -173,8 +173,10 @@ export const metadata: Metadata = {
     "cv maken tips",
     "online cv maken",
     "cv opstellen",
+    "cv aanmaken",
     "goed cv maken",
     "cv maken gratis",
+    "gratis cv maken",
   ],
   alternates: {
     canonical: "https://werkcv.nl/cv-maken",
@@ -549,9 +551,24 @@ export default function CvMakenPage() {
                   body: "Werk je liever volledig online? Volg de snelle web-based workflow voor meerdere vacaturevarianten.",
                 },
                 {
+                  href: "/gratis-cv-maken",
+                  title: "Gratis CV maken",
+                  body: "Legt direct uit hoe gratis starten werkt en waarom je pas bij de PDF-download betaalt.",
+                },
+                {
+                  href: "/cv-aanmaken",
+                  title: "CV aanmaken",
+                  body: "Ideaal als je vooral snel een eerste versie wilt opzetten zonder opmaakstress.",
+                },
+                {
                   href: "/cv-opstellen",
                   title: "CV opstellen",
                   body: "Loop je vast op volgorde en structuur? Gebruik de opstelgids met sectie-indeling en voorbeelden.",
+                },
+                {
+                  href: "/curriculum-vitae-maken",
+                  title: "Curriculum vitae maken",
+                  body: "Formelere variant van dezelfde intentie, handig voor zakelijke en traditionele zoekers.",
                 },
                 {
                   href: "/cv-maken-in-engels",

@@ -162,6 +162,7 @@ export const metadata: Metadata = {
     "cv opstellen voorbeeld",
     "hoe cv opstellen",
     "cv structuur",
+    "curriculum vitae opstellen",
   ],
   alternates: {
     canonical: "https://werkcv.nl/cv-opstellen",
@@ -489,6 +490,85 @@ export default function CvOpstellenPage() {
                 <span className="mt-1 block break-all">{source.href}</span>
               </a>
             ))}
+          </div>
+        </section>
+
+        <section className="mb-14 grid gap-6 md:grid-cols-2">
+          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Verwante intenties
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Pagina&apos;s die dicht op CV opstellen zitten
+            </h2>
+            <div className="mt-4 space-y-4">
+              {[
+                {
+                  href: "/cv-maken",
+                  title: "CV maken",
+                  body: "De bredere gids als je behalve structuur ook hulp zoekt bij profieltekst, bullets en templatekeuze.",
+                },
+                {
+                  href: "/cv-aanmaken",
+                  title: "CV aanmaken",
+                  body: "Voor zoekers die eerst snel een eerste basisversie willen opzetten en daarna pas willen aanscherpen.",
+                },
+                {
+                  href: "/curriculum-vitae-maken",
+                  title: "Curriculum vitae maken",
+                  body: "Formelere variant voor bezoekers die zakelijker taalgebruik gebruiken maar dezelfde opbouw nodig hebben.",
+                },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="block border-2 border-black bg-[#FFFEF0] p-4 transition-colors hover:bg-yellow-100"
+                >
+                  <p className="text-sm font-black text-black">{item.title}</p>
+                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
+                    {item.body}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Prijs- en startintentie
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Routes voor gratis starten of direct bouwen
+            </h2>
+            <div className="mt-4 space-y-4">
+              {[
+                {
+                  href: "/gratis-cv-maken",
+                  title: "Gratis CV maken",
+                  body: "Legt helder uit hoe gratis starten werkt en wanneer de eenmalige betaling pas in beeld komt.",
+                },
+                {
+                  href: "/online-cv-maken",
+                  title: "Online CV maken",
+                  body: "Logische vervolgroute voor bezoekers die structuur zoeken, maar liever meteen online in een builder werken.",
+                },
+                {
+                  href: "/prijzen",
+                  title: "Prijzen",
+                  body: "Bekijk het betaalmodel als je wilt snappen hoe gratis bewerken en betaald downloaden samenkomen.",
+                },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="block border-2 border-black bg-[#FFFEF0] p-4 transition-colors hover:bg-yellow-100"
+                >
+                  <p className="text-sm font-black text-black">{item.title}</p>
+                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
+                    {item.body}
+                  </p>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
 
