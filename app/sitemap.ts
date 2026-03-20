@@ -73,10 +73,28 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.88,
         },
         {
+            url: `${baseUrl}/cv-maken-in-word`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.88,
+        },
+        {
             url: `${baseUrl}/cv-maken-in-engels`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.88,
+        },
+        {
+            url: `${baseUrl}/cv-maken-pdf`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.87,
+        },
+        {
+            url: `${baseUrl}/cv-maken-op-mobiel`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.87,
         },
         {
             url: `${baseUrl}/cv-opmaken`,
