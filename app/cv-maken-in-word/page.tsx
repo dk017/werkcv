@@ -48,6 +48,11 @@ const faqs = [
       "Ja. Je kiest een template, vult je inhoud in en downloadt pas als je klaar bent. Daarmee vervang je het handmatige Word-opmaakwerk grotendeels.",
   },
   {
+    question: "Kan ik mijn cv bij WerkCV als Word-bestand downloaden?",
+    answer:
+      "Nee. WerkCV is bedoeld als sneller alternatief voor cv maken in Word. Je kiest een template, werkt online in de editor en downloadt daarna de definitieve versie als PDF.",
+  },
+  {
     question: "Moet ik nog steeds als PDF versturen?",
     answer:
       "Meestal wel. PDF blijft voor sollicitaties de veiligste eindvorm, omdat de layout dan stabiel blijft bij recruiters en ATS-systemen.",
@@ -55,9 +60,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken in Word - Sneller Alternatief Zonder Opmaakstress | WerkCV.nl",
+  title: "CV Maken in Word - Kies Templates en Download Daarna als PDF | WerkCV.nl",
   description:
-    "CV maken in Word? Bekijk een snellere route met vaste templates, minder opmaakgedoe en een stabiele PDF-download. Start gratis in de editor.",
+    "CV maken in Word? WerkCV is een sneller alternatief: kies een template, vul online in en download daarna als stabiele PDF. Geen Word-opmaakstress.",
   keywords: [
     "cv maken in word",
     "cv maken word",
@@ -147,26 +152,27 @@ export default function CvMakenInWordPage() {
               Word-intentie
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV maken in Word? Sneller is meestal: vaste template, online invullen, PDF klaar
+              CV maken in Word? Kies liever een template en download daarna als PDF
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Mensen zoeken nog vaak op <strong>cv maken in Word</strong> omdat dat
               vertrouwd voelt. In de praktijk ontstaat daar vaak opmaakfrictie.
-              WerkCV geeft je dezelfde controle over je inhoud, maar zonder te
-              worstelen met tabellen, marges en schuivende koppen.
+              WerkCV is geen Word-export tool, maar een sneller alternatief: je kiest
+              een template, werkt online in de editor en downloadt daarna een stabiele
+              PDF zonder te worstelen met tabellen, marges en schuivende koppen.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                href="/editor"
+                href="/templates"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Start sneller dan in Word
+                Bekijk CV templates
               </Link>
               <Link
-                href="/cv-template-word"
+                href="/editor"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Vergelijk met Word-templates
+                Of start direct in editor
               </Link>
             </div>
           </div>
@@ -178,6 +184,9 @@ export default function CvMakenInWordPage() {
                 <li key={item}>{item}</li>
               ))}
             </ul>
+            <p className="mt-5 border-t-4 border-black pt-5 text-sm font-black text-black">
+              WerkCV eindigt in PDF, niet in Word.
+            </p>
           </div>
         </section>
 
@@ -187,7 +196,7 @@ export default function CvMakenInWordPage() {
               Praktische start
             </p>
             <h2 className="mt-2 text-3xl font-black text-black">
-              Beste template als je nu nog in Word denkt
+              Beste start als je normaal in Word begint
             </h2>
             <div className="mt-5 border-4 border-black bg-[#FFFEF0] p-5">
               <h3 className="text-2xl font-black text-black">{simpleTemplate.nameDutch}</h3>
@@ -247,22 +256,23 @@ export default function CvMakenInWordPage() {
             Gebruik Word niet als einddoel, maar als zoeksignaal
           </h2>
           <p className="mt-4 max-w-3xl text-base font-medium leading-relaxed text-slate-200">
-            De meeste gebruikers willen uiteindelijk gewoon een nette PDF versturen.
-            WerkCV verkort die route: template kiezen, inhoud invullen, per vacature
-            aanscherpen en pas op het einde downloaden.
+            De meeste gebruikers willen uiteindelijk geen Word-bestand bewaren, maar
+            gewoon een nette sollicitatieversie versturen. WerkCV verkort die route:
+            template kiezen, inhoud invullen, per vacature aanscherpen en daarna als
+            PDF downloaden.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
-              href="/editor"
+              href="/templates"
               className="border-4 border-white bg-yellow-400 px-5 py-3 text-base font-black text-black"
             >
-              Start gratis
+              Bekijk templates
             </Link>
             <Link
               href="/cv-maken-pdf"
               className="border-4 border-white bg-transparent px-5 py-3 text-base font-black text-white"
             >
-              Bekijk PDF-flow
+              Waarom PDF beter werkt
             </Link>
           </div>
         </section>
