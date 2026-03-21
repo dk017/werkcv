@@ -138,6 +138,8 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
     });
 
     const data = watch();
+    const completionScore = getCompletionScore(data);
+    const isReadyToDownload = completionScore >= 70;
     const [isSaved, setIsSaved] = useState(true);
     const [lastSaved, setLastSaved] = useState<Date | null>(null);
     const [isDownloading, setIsDownloading] = useState(false);
@@ -657,34 +659,43 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                     </div>
 
                     {/* Right side - Save and Download */}
-                    <div className="flex items-center gap-2 sm:gap-3">
-                        <div className="text-xs font-medium text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">
-                            {isSaved ? (lastSaved ? <span className="text-green-700">✓ <span className="hidden sm:inline">Opgeslagen {lastSaved.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span></span> : "✓") : <span className="text-orange-600">●<span className="hidden sm:inline"> Niet opgeslagen</span></span>}
+                    <div className="flex flex-col items-end gap-1.5">
+                        <div className="flex items-center gap-2 sm:gap-3">
+                            <div className="text-xs font-medium text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">
+                                {isSaved ? (lastSaved ? <span className="text-green-700">✓ <span className="hidden sm:inline">Opgeslagen {lastSaved.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span></span> : "✓") : <span className="text-orange-600">●<span className="hidden sm:inline"> Niet opgeslagen</span></span>}
+                            </div>
+                            <button
+                                onClick={handleSubmit(onSubmit)}
+                                disabled={isSubmitting || isSaved}
+                                className={`px-3 sm:px-4 py-2 font-semibold text-xs sm:text-sm rounded-md border transition-colors ${isSaved
+                                        ? "bg-emerald-100 text-emerald-800 border-emerald-200"
+                                        : "bg-white text-slate-800 border-slate-300 hover:bg-slate-50"
+                                    }`}
+                            >
+                                {isSubmitting ? "..." : isSaved ? "✓" : "Opslaan"}
+                            </button>
+                            <button
+                                onClick={handleDownload}
+                                disabled={isDownloading}
+                                className="bg-emerald-600 text-white px-3 sm:px-4 py-2 font-semibold text-xs sm:text-sm rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {isDownloading ? "..." : (
+                                    <>
+                                        <span className="sm:hidden">Download</span>
+                                        <span className="hidden sm:inline">Download PDF</span>
+                                    </>
+                                )}
+                            </button>
                         </div>
-                        <button
-                            onClick={handleSubmit(onSubmit)}
-                            disabled={isSubmitting || isSaved}
-                            className={`px-3 sm:px-4 py-2 font-semibold text-xs sm:text-sm rounded-md border transition-colors ${isSaved
-                                    ? "bg-emerald-100 text-emerald-800 border-emerald-200"
-                                    : "bg-white text-slate-800 border-slate-300 hover:bg-slate-50"
-                                }`}
-                           
-                        >
-                            {isSubmitting ? "..." : isSaved ? "✓" : "Opslaan"}
-                        </button>
-                        <button
-                            onClick={handleDownload}
-                            disabled={isDownloading}
-                            className="bg-emerald-600 text-white px-3 sm:px-4 py-2 font-semibold text-xs sm:text-sm rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                           
-                        >
-                            {isDownloading ? "..." : (
-                                <>
-                                    <span className="sm:hidden">PDF</span>
-                                    <span className="hidden sm:inline">Download PDF</span>
-                                </>
+                        <div className="hidden md:flex items-center gap-2 text-[11px] font-medium text-slate-500">
+                            {isReadyToDownload && (
+                                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-emerald-800">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                                    Klaar voor PDF
+                                </span>
                             )}
-                        </button>
+                            <span>Gratis bewerken, betaal alleen bij downloaden.</span>
+                        </div>
                     </div>
                 </div>
 
@@ -717,6 +728,27 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                         {isCoverLetterGenerating ? '...' : 'Brief AI'}
                     </button>
                 </div>
+
+                {isReadyToDownload && !showCheckoutModal && (
+                    <div className="md:hidden border-b border-emerald-200 bg-emerald-50/80 px-4 py-3">
+                        <div className="flex items-center justify-between gap-3">
+                            <div className="min-w-0">
+                                <p className="text-sm font-semibold text-slate-900">Je CV is klaar om te downloaden.</p>
+                                <p className="text-[11px] font-medium text-slate-600">
+                                    Gratis bewerken, betaal pas als je de PDF wilt downloaden.
+                                </p>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={handleDownload}
+                                disabled={isDownloading}
+                                className="shrink-0 rounded-md border border-emerald-700 bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                                {isDownloading ? "..." : "Download"}
+                            </button>
+                        </div>
+                    </div>
+                )}
 
                 {/* Scrollable Form Area */}
                 <div className="flex-1 overflow-y-auto p-4 sm:p-5 scroll-smooth bg-[#FFFEF9]">
