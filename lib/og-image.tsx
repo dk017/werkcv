@@ -69,7 +69,7 @@ export function buildOgImage({
                             style={{
                                 display: 'flex',
                                 alignItems: 'center',
-                                width: 'fit-content',
+                                alignSelf: 'flex-start',
                             }}
                         >
                             <span
