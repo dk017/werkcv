@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import ParttimeSalarisTool from "./ParttimeSalarisTool";
 
@@ -22,6 +23,29 @@ const faqItems = [
   {
     question: "Kan ik hiermee ook 24, 28, 32 of 36 uur vergelijken?",
     answer: "Ja. De tool laat naast je eigen invoer ook direct meerdere veelgekozen parttime scenario's zien, zodat je sneller kunt vergelijken.",
+  },
+];
+
+const parttimeCvIntentLinks = [
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken voor je volgende stap",
+    description: "Zet je salarisvergelijking direct om in een sollicitatieversie voor een andere rol of urenafspraak.",
+  },
+  {
+    href: "/gratis-cv-maken",
+    label: "Gratis CV maken",
+    description: "Handig als je snel een nieuwe versie wilt bouwen terwijl je uren en salaris vergelijkt.",
+  },
+  {
+    href: "/cv-maken-op-mobiel",
+    label: "CV maken op mobiel",
+    description: "Past goed bij gebruikers die hun uren- en looncheck direct vanaf hun telefoon willen doortrekken.",
+  },
+  {
+    href: "/cv-maken-pdf",
+    label: "CV als PDF afronden",
+    description: "Maak de vergelijking af met een stabiele sollicitatie-PDF zodra je keuze duidelijk is.",
   },
 ];
 
@@ -208,6 +232,19 @@ export default function ParttimeSalarisCalculatorPage() {
               </Link>
             </div>
           </div>
+        </section>
+
+        <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+            CV vervolgstap
+          </p>
+          <h2 className="mt-2 text-2xl font-black text-slate-900">
+            Van parttime salarisvergelijking naar nieuw CV
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Parttime rekenen is vaak geen eindpunt maar een voorbereiding op een nieuwe baan, urenafspraak of sollicitatie. Gebruik deze routes om die stap direct door te trekken naar je CV.
+          </p>
+          <SectionIntentLinks links={parttimeCvIntentLinks} locale="nl" />
         </section>
 
         <section className="mt-12 mb-12">

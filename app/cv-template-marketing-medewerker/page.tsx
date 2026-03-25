@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { getTemplateConfig } from "@/lib/templates/registry";
 
 const modernTemplate = getTemplateConfig("modern");
@@ -147,6 +148,34 @@ const sourceLinks = [
   {
     label: "Resume.io - Marketing Resume Examples",
     href: "https://resume.io/resume-examples/marketing",
+  },
+];
+
+const marketingTemplateIntentLinks = [
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken voor marketingrollen",
+    description: "Start direct met een sollicitatieversie waarin campagne-impact en kanaalervaring centraal staan.",
+  },
+  {
+    href: "/gratis-cv-template",
+    label: "Gratis CV template voor marketeers",
+    description: "Vergelijk eerst gratis layout-opties voordat je je marketing-CV afrondt.",
+  },
+  {
+    href: "/cv-maken-template",
+    label: "CV maken met template",
+    description: "Gebruik een vaste templateflow om KPI's, cases en kanaalervaring beter te structureren.",
+  },
+  {
+    href: "/modern-cv-template",
+    label: "Modern CV template voor marketing",
+    description: "Handig als je creativiteit en performance wilt laten zien zonder onrustige opmaak.",
+  },
+  {
+    href: "/ats-cv-template",
+    label: "ATS CV template voor grote marketingteams",
+    description: "Relevant voor corporate vacatures en funnels met striktere ATS-screening.",
   },
 ];
 
@@ -347,6 +376,18 @@ export default function CvTemplateMarketingMedewerkerPage() {
             >
               Bekijk alle templates
             </Link>
+          </div>
+          <div className="mt-8 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Template-intentie
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Van marketing template naar sollicitatieversie
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Gebruik deze vervolgstappen als je vanuit marketing-intentie wilt doorpakken naar de beste template- of aanmaakroute voor performance-, content- en allround marketingrollen.
+            </p>
+            <SectionIntentLinks links={marketingTemplateIntentLinks} locale="nl" />
           </div>
         </section>
 

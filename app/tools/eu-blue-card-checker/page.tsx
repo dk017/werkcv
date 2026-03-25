@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import EUBlueCardTool from "./EUBlueCardTool";
 
@@ -23,6 +24,29 @@ const faqItems = [
         question: "Can work experience replace a diploma?",
         answer: "In some cases, yes. The route can involve either a higher education diploma or sufficiently strong relevant work experience, depending on the role and route conditions.",
     },
+];
+
+const blueCardCvIntentLinks = [
+  {
+    href: "/en/dutch-cv-template",
+    label: "Use a Dutch CV template",
+    description: "Move from route comparison to a template that fits Dutch recruiter expectations.",
+  },
+  {
+    href: "/en/netherlands-cv-format",
+    label: "Review the Netherlands CV format",
+    description: "Check the local structure before you send applications under the Blue Card route.",
+  },
+  {
+    href: "/en/guides/translate-resume-to-dutch-format",
+    label: "Convert your current resume",
+    description: "Useful if you already have a CV but need a Dutch-ready structure fast.",
+  },
+  {
+    href: "/editor",
+    label: "Build your Dutch CV in the editor",
+    description: "Turn the Blue Card route check into an application-ready CV without leaving WerkCV.",
+  },
 ];
 
 export const metadata: Metadata = {
@@ -168,7 +192,20 @@ export default function EUBlueCardCheckerPage() {
                     ]}
                 />
 
-                <section className="mt-12 mb-12">
+                <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+            CV next step
+          </p>
+          <h2 className="mt-2 text-2xl font-black text-slate-900">
+            From Blue Card route to Dutch CV preparation
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Once the route looks viable, the next bottleneck is usually not immigration paperwork but a CV that fits Dutch formatting, wording and recruiter expectations.
+          </p>
+          <SectionIntentLinks links={blueCardCvIntentLinks} locale="en" />
+        </section>
+
+        <section className="mt-12 mb-12">
                     <div className="mb-5">
                         <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
                             FAQ

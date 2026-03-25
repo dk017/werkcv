@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { getTemplateConfig } from "@/lib/templates/registry";
 
 const modernTemplate = getTemplateConfig("modern");
@@ -150,6 +151,34 @@ const faqs = [
     question: "Hoe ATS-proof maak ik een software developer CV?",
     answer:
       "Gebruik duidelijke koppen, vacature-terminologie en exacte stacktermen in profiel, skills en werkervaring. Vermijd visuele ruis en houd je opbouw consistent.",
+  },
+];
+
+const developerTemplateIntentLinks = [
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken voor software developers",
+    description: "Start met een sollicitatieversie waarin stack, projectimpact en teamfit direct zichtbaar zijn.",
+  },
+  {
+    href: "/gratis-cv-template",
+    label: "Gratis CV template voor developers",
+    description: "Vergelijk eerst een paar layouts voordat je je developer-CV definitief maakt.",
+  },
+  {
+    href: "/cv-maken-template",
+    label: "CV maken met template",
+    description: "Gebruik een vaste templateflow om techstack, projecten en ATS-keywords consistent te structureren.",
+  },
+  {
+    href: "/modern-cv-template",
+    label: "Modern CV template voor productteams",
+    description: "Handig als je actuele frontend- of full-stack ervaring wilt laten zien zonder designruis.",
+  },
+  {
+    href: "/ats-cv-template",
+    label: "ATS CV template voor enterprise tech vacatures",
+    description: "Relevant voor grote werkgevers, consultancies en striktere developer funnels.",
   },
 ];
 
@@ -358,6 +387,18 @@ export default function CvTemplateSoftwareOntwikkelaarPage() {
             >
               Vergelijk met professioneel CV template
             </Link>
+          </div>
+          <div className="mt-8 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Template-intentie
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Van developer template naar vacatureklare CV-route
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Deze vervolgstappen helpen je om vanuit een software-developer template door te gaan naar de juiste template-, ATS- of aanmaakroute voor Nederlandse techsollicitaties.
+            </p>
+            <SectionIntentLinks links={developerTemplateIntentLinks} locale="nl" />
           </div>
         </section>
 

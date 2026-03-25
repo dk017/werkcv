@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import VakantiedagenTool from "./VakantiedagenTool";
 
@@ -22,6 +23,29 @@ const faqItems = [
   {
     question: "Bouw ik vakantiedagen op tijdens ziekte?",
     answer: "Ja, in principe bouw je tijdens ziekte wettelijke vakantiedagen op. Controleer bij bovenwettelijke dagen wel je cao of arbeidscontract.",
+  },
+];
+
+const vacationCvIntentLinks = [
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken voor een baanwissel",
+    description: "Gebruik je verlof- en contractcheck als opstap naar een nieuwe sollicitatieversie.",
+  },
+  {
+    href: "/gratis-cv-maken",
+    label: "Gratis CV maken",
+    description: "Handig als je snel een nieuw CV wilt opzetten terwijl je verlof en uren opnieuw bekijkt.",
+  },
+  {
+    href: "/cv-maken-op-mobiel",
+    label: "CV maken op mobiel",
+    description: "Past goed bij gebruikers die hun contract- en verlofcheck meteen op hun telefoon willen vervolgen.",
+  },
+  {
+    href: "/cv-maken-pdf",
+    label: "CV als PDF afronden",
+    description: "Rond je nieuwe sollicitatieversie af zodra je plannen rond verlof of vertrek concreet worden.",
   },
 ];
 
@@ -194,6 +218,19 @@ export default function VakantiedagenBerekenenPage() {
               </Link>
             </div>
           </div>
+        </section>
+
+        <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+            CV vervolgstap
+          </p>
+          <h2 className="mt-2 text-2xl font-black text-slate-900">
+            Van verlofcheck naar sollicitatieactie
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Verlofuren, einddata en baanwissels hangen vaak samen. Gebruik deze vervolgstappen als je vanuit contract- of verlofplanning door wilt naar een sollicitatieklaar CV.
+          </p>
+          <SectionIntentLinks links={vacationCvIntentLinks} locale="nl" />
         </section>
 
         <section className="mt-12 mb-12">

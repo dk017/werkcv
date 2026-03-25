@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { getTemplateConfig } from "@/lib/templates/registry";
 
 const professionalTemplate = getTemplateConfig("professional");
@@ -147,6 +148,34 @@ const sourceLinks = [
   {
     label: "Indeed - Office Manager Resume Guide",
     href: "https://www.indeed.com/career-advice/resume-samples/office-manager",
+  },
+];
+
+const officeTemplateIntentLinks = [
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken voor office management",
+    description: "Ga door naar een sollicitatieversie waarin structuur, planning en operationele regie meteen zichtbaar zijn.",
+  },
+  {
+    href: "/gratis-cv-template",
+    label: "Gratis CV template voor office rollen",
+    description: "Vergelijk eerst rustige templates voordat je je office manager CV definitief maakt.",
+  },
+  {
+    href: "/cv-maken-template",
+    label: "CV maken met template",
+    description: "Gebruik een vaste templateflow voor office operations in plaats van losse opmaakkeuzes.",
+  },
+  {
+    href: "/professioneel-cv-template",
+    label: "Professioneel CV template voor office teams",
+    description: "Handig als betrouwbaarheid, rust en managementsupport centraal staan.",
+  },
+  {
+    href: "/ats-cv-template",
+    label: "ATS CV template voor corporate officefuncties",
+    description: "Relevant voor grotere organisaties en formele vacaturesites met softwareselectie.",
   },
 ];
 
@@ -341,6 +370,18 @@ export default function CvTemplateOfficeManagerPage() {
             >
               Bekijk alle templates
             </Link>
+          </div>
+          <div className="mt-8 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Template-intentie
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Van office manager template naar de juiste CV-route
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Deze vervolgstappen helpen je om vanuit een office-manager template door te gaan naar de juiste aanmaak-, template- of ATS-route zonder je structuur opnieuw op te bouwen.
+            </p>
+            <SectionIntentLinks links={officeTemplateIntentLinks} locale="nl" />
           </div>
         </section>
 
