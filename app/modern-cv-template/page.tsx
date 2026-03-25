@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { getTemplateConfig } from "@/lib/templates/registry";
 
 const modernTemplate = getTemplateConfig("modern");
@@ -39,6 +40,39 @@ const faqs = [
     question: "Kan ik een modern cv template gratis proberen?",
     answer:
       "Ja. Je kunt de moderne template gratis openen en invullen in de editor. Je betaalt pas als je je CV als PDF wilt downloaden.",
+  },
+];
+
+const modernIntentLinks = [
+  {
+    href: "/modern-cv-voorbeeld",
+    label: "Modern CV voorbeeld bekijken voordat je je eigen versie opent",
+    description:
+      "Gebruik eerst een voorbeeld om te zien hoe een moderne layout eruitziet in een echte sollicitatiecontext.",
+  },
+  {
+    href: "/cv-maken-template",
+    label: "CV maken met een template als je vooral op stijl en snelheid stuurt",
+    description:
+      "Vergelijk meerdere templates en kies daarna een layout die bij je rol en ervaringsniveau past.",
+  },
+  {
+    href: "/gratis-cv-template",
+    label: "Gratis CV template kiezen als je eerst modern versus klassiek wilt vergelijken",
+    description:
+      "Bekijk hoe moderne, professionele en ATS-veilige layouts zich tot elkaar verhouden voordat je begint.",
+  },
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken zodra je een moderne stijl hebt gekozen",
+    description:
+      "Open direct een Nederlandse basisstructuur en vul die daarna met een moderne uitstraling aan.",
+  },
+  {
+    href: "/ats-cv-template",
+    label: "ATS CV template vergelijken als scanbaarheid boven design gaat",
+    description:
+      "Handig wanneer je twijfelt tussen een moderne look en maximale ATS-veiligheid.",
   },
 ];
 
@@ -108,10 +142,10 @@ export default function ModernCvTemplatePage() {
             </span>
           </Link>
           <Link
-            href="/editor"
+            href="/templates"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
-            Start in editor
+            Bekijk moderne templates
           </Link>
         </div>
       </header>
@@ -131,16 +165,16 @@ export default function ModernCvTemplatePage() {
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                href="/editor"
+                href="/templates"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Start met modern template
+                Vergelijk moderne templates
               </Link>
               <Link
-                href="/templates"
+                href="/modern-cv-voorbeeld"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Vergelijk layouts
+                Bekijk modern CV voorbeeld
               </Link>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -200,10 +234,10 @@ export default function ModernCvTemplatePage() {
               </ul>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
-                  href="/editor"
+                  href="/cv-maken-template"
                   className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
                 >
-                  Gebruik deze template
+                  Bouw met deze stijl
                 </Link>
                 <Link
                   href="/cv-tips/cv-template-kiezen"
@@ -273,44 +307,36 @@ export default function ModernCvTemplatePage() {
           </div>
           <div className="border-4 border-black bg-white p-6">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Slimme vervolgstappen
+              Van design-intentie naar de juiste template-route
             </p>
-            <div className="mt-4 space-y-4">
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Kies eerst de route die bij jouw moderne CV-doel past
+            </h2>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Een moderne layout werkt het best als stijl en sollicitatiedoel op elkaar aansluiten. Vergelijk daarom eerst voorbeeld, template-route en ATS-variant voordat je je definitieve versie opent.
+            </p>
+            <SectionIntentLinks links={modernIntentLinks} locale="nl" />
+            <div className="mt-6 space-y-4">
               {[
                 {
-                  href: "/tools/profieltekst-generator",
-                  title: "Profieltekst generator",
-                  body: "Geef je moderne layout een sterke, korte openingssamenvatting die direct overtuigt.",
+                  href: "/modern-cv-voorbeeld",
+                  title: "Modern CV voorbeeld",
+                  body: "Bekijk eerst een voorbeeld als je wilt zien hoe moderne layout en inhoud samen moeten landen.",
                 },
                 {
-                  href: "/tools/werkervaring-bullets",
-                  title: "Werkervaring bullets",
-                  body: "Maak je ervaring scherper zodat de inhoud net zo sterk is als het design.",
+                  href: "/cv-maken-template",
+                  title: "CV maken template",
+                  body: "Open de bredere template-route als je nog tussen modern, professioneel en ATS wilt vergelijken.",
                 },
                 {
-                  href: "/cv-template-software-ontwikkelaar",
-                  title: "CV template software ontwikkelaar",
-                  body: "Bekijk een developer-specifieke pagina met stackopbouw, metrics en ATS-termen.",
-                },
-                {
-                  href: "/cv-template-marketing-medewerker",
-                  title: "CV template marketing medewerker",
-                  body: "Bekijk een marketing-specifieke pagina met campagne-KPI's, kanalen en ATS-termen.",
-                },
-                {
-                  href: "/cv-template-office-manager",
-                  title: "CV template office manager",
-                  body: "Bekijk een operations-specifieke pagina met planning, procesregie en stakeholderfocus.",
+                  href: "/gratis-cv-template",
+                  title: "Gratis CV template",
+                  body: "Vergelijk eerst meerdere gratis stijlen voordat je je definitieve moderne versie kiest.",
                 },
                 {
                   href: "/ats-cv-template",
                   title: "ATS CV template",
-                  body: "Twijfel je tussen modern en veilig voor ATS? Vergelijk hier de meer functionele optie.",
-                },
-                {
-                  href: "/prijzen",
-                  title: "Prijzen",
-                  body: "Bekijk hoe je gratis kunt starten en alleen betaalt wanneer je wilt downloaden.",
+                  body: "Gebruik deze route als je minder op design en meer op scanbaarheid wilt sturen.",
                 },
               ].map((item) => (
                 <Link
@@ -362,10 +388,10 @@ export default function ModernCvTemplatePage() {
               </p>
             </div>
             <Link
-              href="/editor"
+              href="/templates"
               className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >
-              Start direct in editor
+              Bekijk moderne templates
             </Link>
           </div>
         </section>

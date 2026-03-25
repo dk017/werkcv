@@ -1,8 +1,32 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import SalarisCalculatorTool from "./SalarisCalculatorTool";
+
+const cvIntentLinks = [
+    {
+        href: "/cv-aanmaken",
+        label: "CV aanmaken zodra je weet welke salarisrange bij je markt past",
+        description: "Gebruik je salarisindicatie om gerichter te solliciteren op rollen die echt binnen je doelniveau vallen.",
+    },
+    {
+        href: "/gratis-cv-maken",
+        label: "Gratis CV maken voor je volgende salarisstap",
+        description: "Trek je marktsalaris door naar een sollicitatieversie zonder eerst te hoeven betalen.",
+    },
+    {
+        href: "/cv-maken-template",
+        label: "CV maken met een template voor een serieuzere salarisswitch",
+        description: "Kies een rustige layout als je met marktdata, onderhandeling en recruitercontact serieuzer wilt sturen.",
+    },
+    {
+        href: "/cv-maken-pdf",
+        label: "CV maken en als PDF klaarzetten voor je volgende aanbod of gesprek",
+        description: "Werk eerst online en rond pas af wanneer je sollicitatieversie helemaal klopt.",
+    },
+];
 
 export const metadata: Metadata = {
     title: "Salaris Calculator Nederland 2026 - Wat Verdien Jij? | WerkCV.nl",
@@ -117,7 +141,21 @@ export default function SalarisCalculatorPage() {
                         },
                     ]}
                 />
+
+                <section className="mt-12 mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
+                        Van marktloon naar een sterker CV
+                    </p>
+                    <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-3">
+                        Gebruik je salarisindicatie om je volgende sollicitatiestap concreet te maken
+                    </h2>
+                    <p className="max-w-3xl text-sm text-slate-600 leading-relaxed">
+                        Een salarischeck is vaak geen eindpunt maar een beslismoment. Gebruik die marktrange om je CV opnieuw te richten op rollen, niveaus en salarisbandes die beter bij je doel passen.
+                    </p>
+                    <SectionIntentLinks links={cvIntentLinks} locale="nl" />
+                </section>
             </div>
+
 
             <Footer />
         </div>

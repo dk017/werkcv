@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { getTemplateConfig } from "@/lib/templates/registry";
 
 const professionalTemplate = getTemplateConfig("professional");
@@ -39,6 +40,39 @@ const faqs = [
     question: "Kan ik een professioneel cv template gratis gebruiken?",
     answer:
       "Ja. Je kunt gratis starten in de editor, templates vergelijken en je CV opbouwen. Je betaalt alleen wanneer je je definitieve PDF wilt downloaden.",
+  },
+];
+
+const professionalIntentLinks = [
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken met een rustige template die vertrouwen opbouwt",
+    description:
+      "Open meteen een Nederlandse basisstructuur en vul die daarna met een zakelijke, overzichtelijke stijl in.",
+  },
+  {
+    href: "/gratis-cv-template",
+    label: "Gratis CV template vergelijken voordat je voor professioneel kiest",
+    description:
+      "Vergelijk moderne, professionele en ATS-veilige routes als je nog twijfelt over de juiste uitstraling.",
+  },
+  {
+    href: "/cv-maken-template",
+    label: "CV maken via een template-route in plaats van losse layoutkeuzes",
+    description:
+      "Handig wanneer je vooral snel wilt kiezen tussen verschillende rustige en zakelijke stijlen.",
+  },
+  {
+    href: "/ats-cv-template",
+    label: "ATS CV template naast professioneel vergelijken",
+    description:
+      "Gebruik dit als sollicitatiesoftware of grote werkgevers zwaarder wegen dan visuele nuance.",
+  },
+  {
+    href: "/cv-maken-pdf",
+    label: "CV maken en afronden als stabiele PDF voor zakelijke sollicitaties",
+    description:
+      "Werk vanuit een rustige template en stuur pas op PDF aan wanneer je versie volledig klopt.",
   },
 ];
 
@@ -108,10 +142,10 @@ export default function ProfessioneelCvTemplatePage() {
             </span>
           </Link>
           <Link
-            href="/editor"
+            href="/templates"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
-            Start in editor
+            Bekijk zakelijke templates
           </Link>
         </div>
       </header>
@@ -131,10 +165,10 @@ export default function ProfessioneelCvTemplatePage() {
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                href="/editor"
+                href="/cv-aanmaken"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Start met professioneel template
+                CV aanmaken met rustige template
               </Link>
               <Link
                 href="/templates"
@@ -200,10 +234,10 @@ export default function ProfessioneelCvTemplatePage() {
               </ul>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
-                  href="/editor"
+                  href="/cv-aanmaken"
                   className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
                 >
-                  Gebruik deze template
+                  Start met dit professionele CV
                 </Link>
                 <Link
                   href="/cv-tips/cv-template-kiezen"
@@ -273,59 +307,36 @@ export default function ProfessioneelCvTemplatePage() {
           </div>
           <div className="border-4 border-black bg-white p-6">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Relevante vervolgstappen
+              Van zakelijke intentie naar de juiste CV-route
             </p>
-            <div className="mt-4 space-y-4">
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Kies eerst de route die het best past bij een professioneel CV
+            </h2>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Een rustige zakelijke layout werkt het best als je daarna ook de juiste template-flow, ATS-vergelijking en eindformaat kiest. Gebruik daarom eerst de route die jouw sollicitatiedoel het snelst ondersteunt.
+            </p>
+            <SectionIntentLinks links={professionalIntentLinks} locale="nl" />
+            <div className="mt-6 space-y-4">
               {[
                 {
-                  href: "/cv-samenvatting-voorbeelden",
-                  title: "CV samenvatting voorbeelden",
-                  body: "Gebruik sterke profieltekstvoorbeelden om je professionele opening scherper te maken.",
-                },
-                {
-                  href: "/cv-template-administratief-medewerker",
-                  title: "CV template administratief medewerker",
-                  body: "Specifieke template- en inhoudsaanpak voor administratieve en backoffice vacatures.",
-                },
-                {
-                  href: "/cv-template-verpleegkundige",
-                  title: "CV template verpleegkundige",
-                  body: "Specifieke BIG-proof aanpak met zorggerichte profielteksten, skills en bullets.",
-                },
-                {
-                  href: "/cv-template-verkoopmedewerker",
-                  title: "CV template verkoopmedewerker",
-                  body: "Commerciële retail-aanpak met concrete KPI-bullets en scanbare profielteksten.",
-                },
-                {
-                  href: "/cv-template-marketing-medewerker",
-                  title: "CV template marketing medewerker",
-                  body: "Datagedreven marketing-aanpak met campagne-KPI's, profielteksten en ATS-termen.",
-                },
-                {
-                  href: "/cv-template-office-manager",
-                  title: "CV template office manager",
-                  body: "Structuur- en operationsgerichte aanpak voor planning, leveranciers en teamondersteuning.",
+                  href: "/cv-aanmaken",
+                  title: "CV aanmaken",
+                  body: "Open direct de rustige Nederlandse CV-structuur die past bij een zakelijke sollicitatie.",
                 },
                 {
                   href: "/gratis-cv-template",
                   title: "Gratis CV template",
-                  body: "Vergelijk professionele templates met andere stijlen voordat je definitief kiest.",
-                },
-                {
-                  href: "/cv-template-word",
-                  title: "CV template Word alternatief",
-                  body: "Werk je nu in Word? Stap over op een strakker proces zonder opmaakstress.",
+                  body: "Vergelijk deze professionele stijl eerst met andere gratis layouts voordat je definitief kiest.",
                 },
                 {
                   href: "/ats-cv-template",
                   title: "ATS CV template",
-                  body: "Wil je maximale zekerheid op ATS-scans? Vergelijk met de ATS-veilige optie.",
+                  body: "Gebruik deze route als scanbaarheid en sollicitatiesoftware zwaarder wegen dan uitstraling.",
                 },
                 {
-                  href: "/prijzen",
-                  title: "Prijzen",
-                  body: "Bekijk het model: gratis bouwen, eenmalig betalen bij download.",
+                  href: "/cv-template-word",
+                  title: "CV template Word alternatief",
+                  body: "Werk je nu in Word? Stap over op een rustiger proces zonder opmaakstress of versiechaos.",
                 },
               ].map((item) => (
                 <Link
@@ -377,10 +388,10 @@ export default function ProfessioneelCvTemplatePage() {
               </p>
             </div>
             <Link
-              href="/editor"
+              href="/cv-aanmaken"
               className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >
-              Start direct in editor
+              CV aanmaken
             </Link>
           </div>
         </section>

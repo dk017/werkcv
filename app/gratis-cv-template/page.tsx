@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { templateList } from "@/lib/templates/registry";
 
 const featuredTemplates = templateList.filter((template) =>
@@ -34,6 +35,39 @@ const faqs = [
     question: "Kan ik mijn gratis CV later aanpassen?",
     answer:
       "Ja. Je CV blijft bewerkbaar, zodat je eenvoudig meerdere versies voor verschillende vacatures kunt maken en pas downloadt wanneer je tevreden bent.",
+  },
+];
+
+const freeTemplateIntentLinks = [
+  {
+    href: "/gratis-cv-maken",
+    label: "Gratis CV maken zodra je een template hebt gekozen",
+    description:
+      "Gebruik de gratis template als startpunt en bouw daarna direct je eerste sollicitatieversie op.",
+  },
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken met een structuur die bij je gekozen stijl past",
+    description:
+      "Open meteen een Nederlandse basisopbouw waarin profieltekst, ervaring en vaardigheden logisch staan.",
+  },
+  {
+    href: "/cv-maken-template",
+    label: "CV maken met een template-route in plaats van losse layoutkeuzes",
+    description:
+      "Handig als je vooral templates wilt vergelijken en daarna snel een richting wilt kiezen.",
+  },
+  {
+    href: "/cv-maken-pdf",
+    label: "CV maken en afronden als stabiele PDF",
+    description:
+      "Werk gratis op in de editor en stuur pas op PDF aan wanneer je versie echt klaar is.",
+  },
+  {
+    href: "/ats-cv-template",
+    label: "ATS CV template kiezen als scanbaarheid je hoogste prioriteit is",
+    description:
+      "Ga hierheen wanneer je vooral zekerheid wilt op sollicitatiesoftware en rustige secties.",
   },
 ];
 
@@ -104,10 +138,10 @@ export default function GratisCvTemplatePage() {
             </span>
           </Link>
           <Link
-            href="/editor"
+            href="/templates"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
-            Start in editor
+            Vergelijk gratis templates
           </Link>
         </div>
       </header>
@@ -127,16 +161,16 @@ export default function GratisCvTemplatePage() {
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                href="/editor"
+                href="/templates"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Begin direct gratis
+                Bekijk gratis templates
               </Link>
               <Link
-                href="/templates"
+                href="/gratis-cv-maken"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Vergelijk templates
+                Gratis CV maken
               </Link>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -220,10 +254,10 @@ export default function GratisCvTemplatePage() {
                 </p>
                 <div className="mt-auto pt-5">
                   <Link
-                    href="/editor"
+                    href="/cv-aanmaken"
                     className="inline-block border-2 border-black bg-yellow-400 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-black"
                   >
-                    Start in editor
+                    Start met deze stijl
                   </Link>
                 </div>
               </div>
@@ -295,93 +329,35 @@ export default function GratisCvTemplatePage() {
             </div>
           </div>
           <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-            <h3 className="text-xl font-black text-black">Slimme interne vervolgstappen</h3>
-            <div className="mt-5 space-y-4">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Van gratis template naar downloadklare versie
+            </p>
+            <h3 className="mt-2 text-xl font-black text-black">Welke route wil je hierna openen?</h3>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Gebruik gratis templates om te vergelijken, maar stuur daarna direct op de route die past bij je intentie: snel beginnen, ATS-veilig werken of als PDF afronden.
+            </p>
+            <SectionIntentLinks links={freeTemplateIntentLinks} locale="nl" />
+            <div className="mt-6 space-y-4">
               {[
-                {
-                  href: "/cv-maken",
-                  title: "CV maken stappenplan",
-                  body: "Gebruik de complete workflow om van leeg document naar een sterk, sollicitatieklaar CV te gaan.",
-                },
-                {
-                  href: "/online-cv-maken",
-                  title: "Online CV maken",
-                  body: "Werk volledig online, pas snel aan per vacature en vermijd opmaakproblemen.",
-                },
                 {
                   href: "/professioneel-cv-template",
                   title: "Professioneel CV template",
-                  body: "Zoek je een zakelijke, strakke stijl? Bekijk de professionele template voor kantoor- en businessrollen.",
-                },
-                {
-                  href: "/cv-template-administratief-medewerker",
-                  title: "CV template administratief medewerker",
-                  body: "Bekijk een complete template + voorbeeldstructuur voor administratieve functies.",
-                },
-                {
-                  href: "/cv-template-klantenservice-medewerker",
-                  title: "CV template klantenservice medewerker",
-                  body: "Praktische template- en KPI-aanpak voor customer service en support vacatures.",
-                },
-                {
-                  href: "/cv-template-verpleegkundige",
-                  title: "CV template verpleegkundige",
-                  body: "BIG-proof template + zorgspecifieke voorbeelden voor ziekenhuis, wijk en VVT.",
-                },
-                {
-                  href: "/cv-template-software-ontwikkelaar",
-                  title: "CV template software ontwikkelaar",
-                  body: "Developer-specifieke template met stack-opbouw, projectimpact en ATS-keywords.",
-                },
-                {
-                  href: "/cv-template-verkoopmedewerker",
-                  title: "CV template verkoopmedewerker",
-                  body: "Retailgerichte template met profielteksten, omzet-KPI bullets en verkooptermen.",
-                },
-                {
-                  href: "/cv-template-marketing-medewerker",
-                  title: "CV template marketing medewerker",
-                  body: "Kanaal- en campagnegerichte template met KPI-bullets voor marketingrollen.",
-                },
-                {
-                  href: "/cv-template-office-manager",
-                  title: "CV template office manager",
-                  body: "Operationsgerichte template met planning-, proces- en stakeholderfocus.",
-                },
-                {
-                  href: "/engels-cv-template",
-                  title: "Engels CV template",
-                  body: "Solliciteer je internationaal? Gebruik een Engelse template die past bij Nederlandse expat-vacatures.",
-                },
-                {
-                  href: "/cv-template-word",
-                  title: "CV template Word alternatief",
-                  body: "Werk je nu in Word? Bekijk hoe je sneller kunt bouwen zonder opmaakproblemen.",
+                  body: "Vergelijk met een rustige zakelijke layout voor administratie, finance, HR en operations.",
                 },
                 {
                   href: "/modern-cv-template",
                   title: "Modern CV template",
-                  body: "Wil je een strakke, eigentijdse uitstraling? Bekijk wanneer een moderne layout beter werkt dan klassiek.",
+                  body: "Kies deze route als je een eigentijdse uitstraling wilt zonder onrustige design-elementen.",
                 },
                 {
                   href: "/ats-cv-template",
                   title: "ATS CV template",
-                  body: "Wil je specifiek door sollicitatiesoftware heen komen? Bekijk de ATS-veilige template en bijbehorende checklist.",
+                  body: "Ga hierheen wanneer scanbaarheid en sollicitatiesoftware zwaarder wegen dan stijlvariatie.",
                 },
                 {
-                  href: "/cv-tips/cv-maken-in-word",
-                  title: "CV maken in Word",
-                  body: "Vergelijk waarom een online template vaak sneller en consistenter werkt dan Word.",
-                },
-                {
-                  href: "/tools/profieltekst-generator",
-                  title: "Profieltekst generator",
-                  body: "Maak direct een sterke openingsalinea voor het template dat je kiest.",
-                },
-                {
-                  href: "/prijzen",
-                  title: "Prijzen",
-                  body: "Bekijk precies wanneer je betaalt en waarom er geen abonnement nodig is.",
+                  href: "/cv-template-word",
+                  title: "CV template Word alternatief",
+                  body: "Werk je nu nog in Word? Bekijk hoe je sneller werkt met een stabiele online template-flow.",
                 },
               ].map((item) => (
                 <Link
@@ -433,10 +409,10 @@ export default function GratisCvTemplatePage() {
               </p>
             </div>
             <Link
-              href="/editor"
+              href="/gratis-cv-maken"
               className="inline-block border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black"
             >
-              Begin direct met je CV
+              Begin gratis met je CV
             </Link>
           </div>
         </section>

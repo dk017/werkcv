@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { getTemplateConfig } from "@/lib/templates/registry";
 
 const simpleTemplate = getTemplateConfig("simple");
@@ -39,6 +40,33 @@ const faqs = [
     question: "Kan ik gratis starten en later pas beslissen?",
     answer:
       "Ja. Je kunt gratis beginnen, templates vergelijken en je CV opbouwen. Je betaalt pas op het moment dat je je PDF wilt downloaden.",
+  },
+];
+
+const wordIntentLinks = [
+  {
+    href: "/cv-maken-in-word",
+    label: "CV maken in Word-intent omzetten naar een snellere online flow",
+    description:
+      "Lees eerst wanneer Word nog logisch is en wanneer een online editor je minder opmaakstress geeft.",
+  },
+  {
+    href: "/cv-maken-template",
+    label: "CV maken met een template in plaats van losse Word-opmaak",
+    description:
+      "Werk vanuit een vaste layout zodat je sneller per vacature kunt aanpassen.",
+  },
+  {
+    href: "/gratis-cv-template",
+    label: "Gratis CV template kiezen zonder direct vast te zitten aan Word",
+    description:
+      "Vergelijk meerdere gratis stijlen voordat je beslist welke layout het best past.",
+  },
+  {
+    href: "/cv-maken-pdf",
+    label: "CV maken en als stabiele PDF versturen in plaats van als .docx",
+    description:
+      "Gebruik een eindformaat dat er op elk scherm hetzelfde uitziet wanneer je solliciteert.",
   },
 ];
 
@@ -108,10 +136,10 @@ export default function CvTemplateWordPage() {
             </span>
           </Link>
           <Link
-            href="/editor"
+            href="/templates"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
-            Start in editor
+            Bekijk Word-alternatieven
           </Link>
         </div>
       </header>
@@ -131,16 +159,16 @@ export default function CvTemplateWordPage() {
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                href="/editor"
+                href="/templates"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Begin direct gratis
+                Bekijk CV templates
               </Link>
               <Link
-                href="/templates"
+                href="/cv-aanmaken"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Vergelijk templates
+                CV aanmaken zonder Word
               </Link>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -201,10 +229,10 @@ export default function CvTemplateWordPage() {
               </ul>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
-                  href="/editor"
+                  href="/cv-maken-template"
                   className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
                 >
-                  Start met deze template
+                  Bouw je CV met een template
                 </Link>
                 <Link
                   href="/modern-cv-template"
@@ -274,46 +302,15 @@ export default function CvTemplateWordPage() {
           </div>
           <div className="border-4 border-black bg-white p-6">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Relevante vervolgstappen
+              Van Word-intentie naar een stabieler sollicitatieproces
             </p>
-            <div className="mt-4 space-y-4">
-              {[
-                {
-                  href: "/cv-opmaak-voorbeeld",
-                  title: "CV opmaak voorbeeld",
-                  body: "Bekijk goede en slechte opmaakkeuzes voordat je opnieuw tijd verliest aan layoutfixes.",
-                },
-                {
-                  href: "/gratis-cv-template",
-                  title: "Gratis CV template",
-                  body: "Bekijk alle gratis startopties en kies de stijl die past bij je doelrol.",
-                },
-                {
-                  href: "/ats-cv-template",
-                  title: "ATS CV template",
-                  body: "Ga hierheen als je vooral zekerheid wilt op sollicitatiesoftware.",
-                },
-                {
-                  href: "/cv-tips/ats-vriendelijk-cv",
-                  title: "ATS-vriendelijk CV",
-                  body: "Leer welke inhoud en structuur in 2026 het verschil maken.",
-                },
-                {
-                  href: "/prijzen",
-                  title: "Prijzen",
-                  body: "Controleer het model: gratis opbouwen, eenmalig betalen bij download.",
-                },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block border-2 border-black bg-[#FFFEF0] p-4 transition-colors hover:bg-yellow-100"
-                >
-                  <p className="text-sm font-black text-black">{item.title}</p>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
-                </Link>
-              ))}
-            </div>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Open eerst de route die je Word-werk echt vervangt
+            </h2>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Wie zoekt op een CV template voor Word wil meestal niet per se een .docx-bestand, maar een snelle manier om een nette versie te bouwen, te bewaren en als PDF te versturen.
+            </p>
+            <SectionIntentLinks links={wordIntentLinks} locale="nl" />
           </div>
         </section>
 
@@ -353,10 +350,10 @@ export default function CvTemplateWordPage() {
               </p>
             </div>
             <Link
-              href="/editor"
+              href="/templates"
               className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >
-              Start direct in editor
+              Bekijk templates
             </Link>
           </div>
         </section>

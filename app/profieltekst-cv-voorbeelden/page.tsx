@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 
 const frameworkSteps = [
   "Open met je rol, ervaringsniveau en domein in 1 zin.",
@@ -90,6 +91,33 @@ const faqs = [
     question: "Moet ik mijn profieltekst per vacature aanpassen?",
     answer:
       "Ja. Pas functietitel, kernvaardigheden en impactzinnen aan op de vacaturetaal. Dat verhoogt zowel recruiter-relevantie als ATS-match.",
+  },
+];
+
+const profileIntentLinks = [
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken met een profieltekst die meteen de toon zet",
+    description:
+      "Gebruik een Nederlandse CV-opbouw waarin je opening, werkervaring en vaardigheden elkaar logisch versterken.",
+  },
+  {
+    href: "/gratis-cv-maken",
+    label: "Gratis CV maken en je profieltekst daarna per vacature aanscherpen",
+    description:
+      "Start gratis met een basisversie en verfijn je opening pas wanneer je inhoud en layout goed staan.",
+  },
+  {
+    href: "/cv-maken-student",
+    label: "Studenten-CV maken als je profieltekst extra veel context moet geven",
+    description:
+      "Laat opleiding, stages en leervermogen sneller landen met een compacte opening bovenaan je CV.",
+  },
+  {
+    href: "/cv-maken-in-engels",
+    label: "Engels CV maken met Nederlandse scanstructuur",
+    description:
+      "Houd je profieltekst Engelstalig, maar laat de opbouw wel aansluiten op wat Nederlandse recruiters verwachten.",
   },
 ];
 
@@ -187,10 +215,10 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                 Genereer je profieltekst
               </Link>
               <Link
-                href="/editor"
+                href="/cv-aanmaken"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Zet direct op je CV
+                CV aanmaken met deze opening
               </Link>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -280,6 +308,19 @@ export default function ProfieltekstCvVoorbeeldenPage() {
           </div>
         </section>
 
+        <section className="mb-14 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+            Van profieltekst naar complete sollicitatieversie
+          </p>
+          <h2 className="mt-2 text-2xl font-black text-black sm:text-3xl">
+            Gebruik je openingszin als startpunt voor een sterker volledig CV
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Een goede profieltekst werkt pas echt als de rest van je CV dezelfde toon, bewijsvoering en vacaturefocus vasthoudt. Open daarom meteen de juiste CV-route zodra je basiszin staat.
+          </p>
+          <SectionIntentLinks links={profileIntentLinks} locale="nl" />
+        </section>
+
         <section className="mb-14 grid gap-6 md:grid-cols-2">
           <div className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
@@ -306,19 +347,24 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                   body: "Genereer in seconden een profieltekst op basis van jouw doelrol.",
                 },
                 {
-                  href: "/cv-samenvatting-voorbeelden",
-                  title: "CV samenvatting voorbeelden",
-                  body: "Vergelijk verschillende samenvattingsstijlen en rolprofielen.",
+                  href: "/cv-aanmaken",
+                  title: "CV aanmaken",
+                  body: "Zet je profieltekst meteen boven een goed opgebouwde Nederlandse CV-structuur.",
                 },
                 {
-                  href: "/werkervaring-cv-voorbeelden",
-                  title: "Werkervaring CV voorbeelden",
-                  body: "Onderbouw je profieltekst met sterke resultaat-bullets.",
+                  href: "/gratis-cv-maken",
+                  title: "Gratis CV maken",
+                  body: "Begin gratis en werk je profieltekst verder uit zodra je hele sollicitatieversie staat.",
                 },
                 {
-                  href: "/prijzen",
-                  title: "Prijzen",
-                  body: "Start gratis en betaal alleen wanneer je je CV wilt downloaden.",
+                  href: "/cv-maken-student",
+                  title: "Studenten-CV maken",
+                  body: "Handig als je profieltekst opleiding, stages en eerste ervaring extra duidelijk moet maken.",
+                },
+                {
+                  href: "/cv-maken-in-engels",
+                  title: "Engels CV maken",
+                  body: "Gebruik een Engelstalige opening met een structuur die Nederlandse recruiters nog steeds snel kunnen scannen.",
                 },
               ].map((item) => (
                 <Link
@@ -377,10 +423,10 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                 Start profieltekst tool
               </Link>
               <Link
-                href="/editor"
+                href="/cv-aanmaken"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
-                Open editor
+                CV aanmaken
               </Link>
             </div>
           </div>
