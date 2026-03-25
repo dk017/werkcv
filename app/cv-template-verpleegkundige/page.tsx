@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { getTemplateConfig } from "@/lib/templates/registry";
 
 const professionalTemplate = getTemplateConfig("professional");
@@ -147,6 +148,34 @@ const faqs = [
     question: "Hoe maak ik een verpleegkundige CV zonder veel werkervaring?",
     answer:
       "Gebruik stage, leerwerktrajecten en praktijkvoorbeelden met concrete handelingen en context. Laat zien hoe je veilig werkt, rapporteert en samenwerkt in het zorgteam.",
+  },
+];
+
+const nurseTemplateIntentLinks = [
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken voor verpleegkundige functies",
+    description: "Ga door naar een sollicitatieversie waarin BIG, klinische ervaring en teamfit direct zichtbaar zijn.",
+  },
+  {
+    href: "/gratis-cv-template",
+    label: "Gratis CV template voor zorgprofielen",
+    description: "Vergelijk eerst rustige templates voordat je je zorg-CV definitief maakt.",
+  },
+  {
+    href: "/professioneel-cv-template",
+    label: "Professioneel CV template voor zorg",
+    description: "Handig als je betrouwbaarheid, rust en scanbaarheid centraal wilt zetten.",
+  },
+  {
+    href: "/ats-cv-template",
+    label: "ATS CV template voor zorginstellingen",
+    description: "Relevant voor ziekenhuisconcerns, grote zorggroepen en detacheringsroutes.",
+  },
+  {
+    href: "/cv-maken-pdf",
+    label: "Verpleegkundige CV als PDF afronden",
+    description: "Zorg dat je definitieve zorg-CV stabiel blijft bij upload en recruiter-review.",
   },
 ];
 
@@ -356,6 +385,18 @@ export default function CvTemplateVerpleegkundigePage() {
             >
               Vergelijk met ATS CV template
             </Link>
+          </div>
+          <div className="mt-8 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Template-intentie
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Van verpleegkundige template naar zorgsollicitatie
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Gebruik deze vervolgstappen als je vanuit zorgspecifieke template-intentie verder wilt naar de beste aanmaak-, ATS- of PDF-route voor verpleegkundige sollicitaties.
+            </p>
+            <SectionIntentLinks links={nurseTemplateIntentLinks} locale="nl" />
           </div>
         </section>
 

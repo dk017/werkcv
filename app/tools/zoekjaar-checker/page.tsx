@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import ZoekjaarCheckerTool from "./ZoekjaarCheckerTool";
 
@@ -22,6 +23,29 @@ const faqItems = [
     {
         question: "Can I use a foreign degree for the orientation year?",
         answer: "Yes, but only if the foreign university meets the IND ranking rules and you can also provide the required Nuffic credential evaluation and accepted language proof.",
+    },
+];
+
+const orientationCvIntentLinks = [
+    {
+        href: "/en/dutch-cv-template",
+        label: "Use a Dutch CV template",
+        description: "Start with a template that fits Dutch recruiters while you prepare orientation-year applications.",
+    },
+    {
+        href: "/en/netherlands-cv-format",
+        label: "Review the Netherlands CV format",
+        description: "Check the local structure before applying to employers during your search year.",
+    },
+    {
+        href: "/en/guides/translate-resume-to-dutch-format",
+        label: "Convert your existing resume",
+        description: "Useful if you already have an English CV and need a Dutch-market version quickly.",
+    },
+    {
+        href: "/editor",
+        label: "Build your Dutch CV in the editor",
+        description: "Turn your route planning into an application-ready CV without leaving WerkCV.",
     },
 ];
 
@@ -167,6 +191,19 @@ export default function ZoekjaarCheckerPage() {
                         },
                     ]}
                 />
+
+                <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+                        CV next step
+                    </p>
+                    <h2 className="mt-2 text-2xl font-black text-slate-900">
+                        From orientation-year check to Dutch CV action
+                    </h2>
+                    <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+                        After the zoekjaar check, the practical next step is usually getting your CV aligned with Dutch formatting, wording and recruiter expectations while you still have route flexibility.
+                    </p>
+                    <SectionIntentLinks links={orientationCvIntentLinks} locale="en" />
+                </section>
 
                 <section className="mt-12 mb-12">
                     <div className="mb-5">

@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import KennismigrantSalaryTool from "./KennismigrantSalaryTool";
 
@@ -22,6 +23,29 @@ const faqItems = [
     {
         question: "Does this tool give legal approval?",
         answer: "No. It is a quick eligibility screen for salary and sponsor status. IND still assesses the full route, documents, market-conform salary and the exact basis for any reduced threshold.",
+    },
+];
+
+const migrationCvIntentLinks = [
+    {
+        href: "/en/dutch-cv-template",
+        label: "Use a Dutch CV template",
+        description: "Move from salary eligibility to a CV that matches Dutch hiring expectations.",
+    },
+    {
+        href: "/en/netherlands-cv-format",
+        label: "Check the Netherlands CV format",
+        description: "See what Dutch recruiters expect before you start applying.",
+    },
+    {
+        href: "/en/guides/translate-resume-to-dutch-format",
+        label: "Convert your current resume",
+        description: "Useful if you already have a CV but need a Dutch-ready structure.",
+    },
+    {
+        href: "/editor",
+        label: "Start your Dutch CV in the editor",
+        description: "Turn the visa-route check into an application-ready CV without leaving the flow.",
     },
 ];
 
@@ -167,6 +191,19 @@ export default function KennismigrantSalaryCheckerPage() {
                         },
                     ]}
                 />
+
+                <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+                        CV next step
+                    </p>
+                    <h2 className="mt-2 text-2xl font-black text-slate-900">
+                        From salary route to Dutch CV preparation
+                    </h2>
+                    <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+                        Once the salary route looks viable, the next bottleneck is usually a Netherlands-ready CV, not the threshold itself. Use these pages to move straight into the right format and template.
+                    </p>
+                    <SectionIntentLinks links={migrationCvIntentLinks} locale="en" />
+                </section>
 
                 <section className="mt-12 mb-12">
                     <div className="mb-5">

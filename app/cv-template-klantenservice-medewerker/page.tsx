@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { getTemplateConfig } from "@/lib/templates/registry";
 
 const modernTemplate = getTemplateConfig("modern");
@@ -132,6 +133,34 @@ const faqs = [
     question: "Wat is het verschil tussen cv template en cv voorbeeld voor klantenservice?",
     answer:
       "Een template geeft je de juiste structuur en layout. Een voorbeeld helpt je met inhoud en formuleringen. Het sterkste resultaat krijg je door beide te combineren in de editor.",
+  },
+];
+
+const supportTemplateIntentLinks = [
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken voor klantenservice",
+    description: "Start direct met een sollicitatieversie die servicekwaliteit en structuur combineert.",
+  },
+  {
+    href: "/gratis-cv-template",
+    label: "Gratis CV template gebruiken",
+    description: "Vergelijk laagdrempelig meerdere templates voordat je je support-CV afrondt.",
+  },
+  {
+    href: "/cv-maken-template",
+    label: "CV maken met template",
+    description: "Gebruik een vaste templateflow om KPIs en service-ervaring duidelijk te presenteren.",
+  },
+  {
+    href: "/modern-cv-template",
+    label: "Modern CV template voor servicefuncties",
+    description: "Handig als je klantencontact en energie wilt laten terugkomen zonder onrustige layout.",
+  },
+  {
+    href: "/ats-cv-template",
+    label: "ATS CV template voor grote werkgevers",
+    description: "Relevant voor supportteams met veel sollicitanten en strikte softwareselectie.",
   },
 ];
 
@@ -326,6 +355,18 @@ export default function CvTemplateKlantenserviceMedewerkerPage() {
             >
               Bekijk verkoopmedewerker variant
             </Link>
+          </div>
+          <div className="mt-8 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Template-intentie
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Van klantenservice template naar sollicitatieversie
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Gebruik deze vervolgstappen als je vanuit klantenservice-intentie wilt doorpakken naar de beste template- of aanmaakroute voor supportrollen in Nederland.
+            </p>
+            <SectionIntentLinks links={supportTemplateIntentLinks} locale="nl" />
           </div>
         </section>
 

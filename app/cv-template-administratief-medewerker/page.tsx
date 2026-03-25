@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { getTemplateConfig } from "@/lib/templates/registry";
 
 const professionalTemplate = getTemplateConfig("professional");
@@ -132,6 +133,34 @@ const faqs = [
     question: "Wat is beter: cv voorbeeld of cv template?",
     answer:
       "Een voorbeeld helpt je met inhoud en formuleringen. Een template helpt je met structuur en presentatie. De beste aanpak is beide combineren: begin met een template en gebruik voorbeelden voor tekst en bullets.",
+  },
+];
+
+const adminTemplateIntentLinks = [
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken voor administratief werk",
+    description: "Gebruik een directe route naar een rustige sollicitatieversie voor administratie en backoffice.",
+  },
+  {
+    href: "/gratis-cv-template",
+    label: "Gratis CV template kiezen",
+    description: "Vergelijk eerst gratis layout-opties voordat je je admin-CV definitief maakt.",
+  },
+  {
+    href: "/cv-maken-template",
+    label: "CV maken met template",
+    description: "Start vanuit een templateflow in plaats van losse layoutkeuzes in Word.",
+  },
+  {
+    href: "/professioneel-cv-template",
+    label: "Professioneel CV template vergelijken",
+    description: "Handig als je vooral betrouwbaarheid en structuur wilt uitstralen.",
+  },
+  {
+    href: "/ats-cv-template",
+    label: "ATS CV template voor administratie",
+    description: "Relevant voor corporate vacatures en portals met striktere softwareselectie.",
   },
 ];
 
@@ -332,6 +361,18 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
             >
               Bekijk office manager variant
             </Link>
+          </div>
+          <div className="mt-8 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Template-intentie
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Van administratieve templatekeuze naar de juiste CV-route
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Deze vervolgstappen helpen je om vanuit een rolgerichte template door te gaan naar de juiste aanmaak-, template- of ATS-route zonder je structuur opnieuw te hoeven uitvinden.
+            </p>
+            <SectionIntentLinks links={adminTemplateIntentLinks} locale="nl" />
           </div>
         </section>
 

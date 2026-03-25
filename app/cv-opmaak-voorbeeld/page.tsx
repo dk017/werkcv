@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { templateList } from "@/lib/templates/registry";
 
 const featuredTemplates = templateList.filter((template) =>
@@ -92,6 +93,34 @@ const faqs = [
     question: "Hoeveel kleuren mag ik gebruiken in mijn cv-opmaak?",
     answer:
       "Meestal is één hoofdkleur met neutrale basis voldoende. Te veel kleuren maken je CV vaak onrustig.",
+  },
+];
+
+const layoutIntentLinks = [
+  {
+    href: "/cv-opmaken",
+    label: "CV opmaken zonder layoutstress",
+    description: "Gebruik een route die draait om structuur, witruimte en recruiter-proof opmaak.",
+  },
+  {
+    href: "/cv-maken-template",
+    label: "CV maken met template",
+    description: "Start met een template in plaats van alles handmatig op te maken.",
+  },
+  {
+    href: "/ats-cv-template",
+    label: "ATS CV template kiezen",
+    description: "Handig als je layout ook softwareveilig moet blijven voor sollicitatiesystemen.",
+  },
+  {
+    href: "/cv-maken-in-word",
+    label: "CV maken in Word vergelijken",
+    description: "Zie wanneer Word meer opmaakfrictie geeft dan een vaste templateflow.",
+  },
+  {
+    href: "/cv-maken-pdf",
+    label: "CV als stabiele PDF afronden",
+    description: "Zet je definitieve opmaak om in een sollicitatieklare PDF zonder layoutverschuiving.",
   },
 ];
 
@@ -337,8 +366,8 @@ export default function CvOpmaakVoorbeeldPage() {
                 Templates die opmaakproblemen voorkomen
               </h2>
             </div>
-            <Link href="/templates" className="text-sm font-black text-black underline decoration-2 underline-offset-4">
-              Bekijk alle templates
+            <Link href="/cv-maken-template" className="text-sm font-black text-black underline decoration-2 underline-offset-4">
+              Bekijk template-route
             </Link>
           </div>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -356,14 +385,26 @@ export default function CvOpmaakVoorbeeldPage() {
                 </p>
                 <div className="mt-auto pt-5">
                   <Link
-                    href="/editor"
+                    href="/cv-maken-template"
                     className="inline-block border-2 border-black bg-yellow-400 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-black"
                   >
-                    Start in editor
+                    Kies template-route
                   </Link>
                 </div>
               </article>
             ))}
+          </div>
+          <div className="mt-8 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Layout-intentie
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Van opmaakvoorbeeld naar de juiste CV-route
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Gebruik deze vervolgstappen als je niet alleen inspiratie zoekt, maar direct wilt doorpakken naar de juiste template, ATS-veilige layout of definitieve PDF-flow.
+            </p>
+            <SectionIntentLinks links={layoutIntentLinks} locale="nl" />
           </div>
         </section>
 

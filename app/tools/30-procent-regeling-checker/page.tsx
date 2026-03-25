@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import {
   THIRTY_PERCENT_GENERAL_THRESHOLD_2026,
@@ -28,6 +29,29 @@ const faqItems = [
   {
     question: "Wat doet deze checker wel en niet?",
     answer: "Deze tool geeft een pre-check op salaris en basisvoorwaarden. Het is geen officiële beschikking en vervangt geen advies van je werkgever, payrollprovider of de Belastingdienst.",
+  },
+];
+
+const expatCvIntentLinks = [
+  {
+    href: "/en/dutch-cv-template",
+    label: "Dutch CV template voor expats",
+    description: "Gebruik een template die past bij Nederlandse recruiter-verwachtingen en Engelstalige kandidaten.",
+  },
+  {
+    href: "/templates",
+    label: "Vergelijk alle CV templates",
+    description: "Bekijk welke template het best werkt voor jouw branche, visumroute of sollicitatieniveau.",
+  },
+  {
+    href: "/en/guides/translate-resume-to-dutch-format",
+    label: "Zet je bestaande resume om naar Dutch format",
+    description: "Handig als je al een CV hebt maar het moet passen bij Nederlandse selectie.",
+  },
+  {
+    href: "/editor",
+    label: "Start direct in de editor",
+    description: "Ga meteen van salaris- en expatcheck naar een sollicitatieklare CV-versie.",
   },
 ];
 
@@ -173,6 +197,19 @@ export default function DertigProcentRegelingCheckerPage() {
             },
           ]}
         />
+
+        <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+            CV vervolgstap
+          </p>
+          <h2 className="mt-2 text-2xl font-black text-slate-900">
+            Van expatregeling naar sollicitatieklaar CV
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Zodra je weet welke salaris- en belastingroute haalbaar is, draait de volgende stap meestal om een Nederlandse CV-template, goede formattering en een snelle editorflow.
+          </p>
+          <SectionIntentLinks links={expatCvIntentLinks} locale="nl" />
+        </section>
 
         <section className="mt-12 mb-12">
           <div className="mb-5">
