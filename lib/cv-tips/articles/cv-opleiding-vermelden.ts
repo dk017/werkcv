@@ -62,6 +62,18 @@ export const cvOpleidingVermelden: BlogArticle = {
                 'Voor starters en recent afgestudeerden (minder dan 3 jaar werkervaring) staat de opleidingssectie in het eerste kwart van het cv, direct na de profieltekst. Dit is de sterkste troef en de recruiters verwachten dit patroon. UWV (2024) bevestigt dat 74% van vacatures voor starters een diploma als formele toegangseis stelt.',
                 'Voor professionals met 5 of meer jaar werkervaring verschuift de opleiding naar het tweede of derde blok, na de werkervaring. Je trackrecord weegt zwaarder dan je diploma. De sectie mag ook beknopter: diplomabenaming, instelling en jaar volstaan. Relevante vakken en het afstudeerthema laat je dan weg, tenzij ze direct relevant zijn.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-student',
+                    label: 'Studenten-CV maken met opleiding direct op de juiste plek',
+                    description: 'Gebruik een starterstructuur waarin opleiding, stage en profieltekst logisch bovenaan staan.',
+                },
+                {
+                    href: '/stage-cv-maken',
+                    label: 'Stage-CV maken als je opleiding je sterkste bewijs is',
+                    description: 'Zet studie, projecten en praktijkervaring in de volgorde die recruiters van starters verwachten.',
+                },
+            ],
         },
         {
             id: 'nlqf-niveaus',
@@ -121,6 +133,18 @@ export const cvOpleidingVermelden: BlogArticle = {
                 'Voor een volledig buitenlands diploma is de Nuffic-waardering sterk aanbevolen. Vermeld in je cv: "Nuffic-waardering: bachelor-niveau (NLQF 6), ontvangen [jaar]". Zorg dat de brief beschikbaar is wanneer een werkgever erom vraagt — voeg hem niet direct bij, maar meld dat hij beschikbaar is.',
                 'Bij een exchange-semester of deelcertificaat vermeld je de gastinstelling, het land, de periode en wat je hebt gestudeerd. Schrijf: "Exchange semester, Uppsala University (Zweden), 2023 — vakken: International Marketing, Cross-cultural Management". Dit is aanzienlijk sterker dan een generieke vermelding. Het toont een internationale oriëntatie die steeds vaker gevraagd wordt: Randstad (2024) rapporteert dat 61% van grotere Nederlandse werkgevers internationaal georiënteerde kandidaten prefereert.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-in-engels',
+                    label: 'Engels CV maken als je opleiding internationaal moet landen',
+                    description: 'Presenteer buitenlandse diploma’s en Nuffic-context in een versie die ook Engelstalig overtuigt.',
+                },
+                {
+                    href: '/engels-cv-template',
+                    label: 'Kies een Engels CV template voor internationale opleiding en taalniveau',
+                    description: 'Gebruik een template waarin buitenlandse diploma’s en toelichting netjes leesbaar blijven.',
+                },
+            ],
         },
         {
             id: 'evc-procedure',
@@ -148,6 +172,18 @@ export const cvOpleidingVermelden: BlogArticle = {
                 'Vermijd tabellen en tekstvakken — gebruik platte tekst met witregels',
                 'Bij buitenlands diploma: voeg NLQF-niveau en Nuffic-waardering toe als aparte regel',
                 'Schrijf lopende opleidingen uit: "2023 - heden (verwacht juni 2026)"',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-aanmaken',
+                    label: 'CV aanmaken met een ATS-veilige opleidingssectie',
+                    description: 'Gebruik een opmaak waarin diplomabenamingen en instellingsnamen als gewone tekst goed uitleesbaar blijven.',
+                },
+                {
+                    href: '/cv-maken-template',
+                    label: 'CV maken met een template die opleiding schoon laat parsen',
+                    description: 'Voorkom tekstvakken en layouttrucs die diploma’s en vakgebieden minder vindbaar maken.',
+                },
             ],
         },
         {

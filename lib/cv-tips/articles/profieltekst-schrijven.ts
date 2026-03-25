@@ -54,6 +54,18 @@ export const profieltekstSchrijven: BlogArticle = {
                 'In de tweede en derde zin beschrijf je je specialisatie of belangrijkste competenties, bij voorkeur ondersteund door een concreet resultaat. Denk aan: "Gespecialiseerd in het leiden van agile softwareontwikkelteams, waarbij ik projecten gemiddeld 20% sneller oplever dan gepland." Door een prestatie met een concreet getal te benoemen, bewijs je dat je niet alleen kennis hebt, maar ook daadwerkelijk impact maakt.',
                 'Sluit af met een zin over je meerwaarde voor de werkgever — niet over wat jij zoekt. Niet "Ik zoek een uitdagende baan" maar "Op zoek naar een organisatie waar ik complexe digitale transformaties van A tot Z begeleid." Houd de totale lengte tussen de 40 en 80 woorden. Meer is geen meerwaarde; minder mist diepgang.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-aanmaken',
+                    label: 'CV aanmaken met direct de juiste profielopbouw',
+                    description: 'Start vanuit een vaste Nederlandse structuur zodat je profieltekst logisch bovenaan je cv landt.',
+                },
+                {
+                    href: '/gratis-cv-maken',
+                    label: 'Gratis CV maken zonder eerst zelf een indeling te verzinnen',
+                    description: 'Gebruik een basisflow waarin je profieltekst, ervaring en opleiding al in de juiste volgorde staan.',
+                },
+            ],
         },
         {
             id: 'profieltekst-schrijven-stappen',
@@ -120,6 +132,18 @@ export const profieltekstSchrijven: BlogArticle = {
                 'Neem relevante functietitels, vakjargon en gevraagde certificeringen letterlijk over uit de vacature. Als de vacature vraagt om "ervaring met stakeholdermanagement", gebruik dan precies die term — niet "communicatie met betrokkenen" of "stakeholdercommunicatie". Veel ATS-systemen matchen op exacte terminologie, zeker de keyword-gebaseerde systemen die nog bij veel Nederlandse intermediairs draaien zoals OTYS en Connexys.',
                 'Praktisch: kopieer de vacaturetekst in een apart document en markeer de 5 tot 7 meest herhaalde termen. Verwerk er minimaal 3 tot 4 organisch in je profieltekst. Combineer dit met je natuurlijke schrijfstijl — de tekst moet ook voor de menselijke recruiter overtuigend zijn. Een profieltekst die 80% of meer match scoort in ATS, heeft 3x meer kans op doorverwijzing naar een menselijke recruiter (Jobscan 2024).',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-template',
+                    label: 'CV maken met een template dat ATS-termen goed leesbaar houdt',
+                    description: 'Gebruik een nette layout waarin profieltekst en vacaturekeywords bovenaan direct scanbaar blijven.',
+                },
+                {
+                    href: '/ats-cv-template',
+                    label: 'Kies een ATS CV template voor sterkere keyword-matching',
+                    description: 'Beperk layout-ruis zodat je profieltekst inhoudelijk meer gewicht krijgt in de eerste software-scan.',
+                },
+            ],
         },
         {
             id: 'starters-vs-ervaren',
@@ -130,6 +154,18 @@ export const profieltekstSchrijven: BlogArticle = {
                 'Voor ervaren professionals is het juist belangrijk om selectief te zijn. Met 10 of 15 jaar werkervaring kun je een boek schrijven, maar je profieltekst is geen biografie. Kies de 2 tot 3 meest indrukwekkende en vacature-relevante prestaties. Gebruik concrete cijfers: omzet, percentages, teamgrootte, projectbudget. Hoe meer ervaring je hebt, hoe strenger je moet selecteren — er is meer te kiezen, maar de recruiter heeft minder tijd.',
                 'Het verschil in focus: starters benadrukken potentieel en leervermogen, ervaren professionals benadrukken bewezen impact. In beide gevallen geldt: één generieke profieltekst werkt niet. Uit onderzoek van CareerBuilder (2024) blijkt dat 59% van de recruiters een CV direct afwijst als de profieltekst generiek of niet vacature-relevant is.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-student',
+                    label: 'Studenten-CV maken met ruimte voor stages en leervermogen',
+                    description: 'Gebruik een starterflow waarin profieltekst en opleiding direct de juiste nadruk krijgen.',
+                },
+                {
+                    href: '/gratis-cv-maken',
+                    label: 'Gratis CV maken als je eerst een sterke basisversie wilt',
+                    description: 'Begin met een compacte opzet en pas daarna je profieltekst verder aan per vacature.',
+                },
+            ],
         },
         {
             id: 'aanpassen-per-vacature',
@@ -139,6 +175,18 @@ export const profieltekstSchrijven: BlogArticle = {
                 'Het aanpassen van je profieltekst per vacature is de meest effectieve en minst tijdrovende verbetering die je kunt maken. Begin met het zorgvuldig lezen van de vacaturetekst en identificeer de drie belangrijkste eisen. Een vacature die "bewezen ervaring in B2B-verkoop" als eerste eis noemt, vraagt om een profieltekst die direct opent met je B2B-verkoopervaring.',
                 'Maak een sterke basis-profieltekst die je als template gebruikt. Deze bevat je kerngegevens: functietitel, jaren ervaring en vakgebied. Pas voor elke vacature de specialisatie, prestaties en ambities aan. Dit hoeft geen groot werk te zijn — vaak volstaan 2 tot 3 herschreven zinnen en het verwisselen van de juiste zoekwoorden om je profiel fundamenteel anders te laten aanvoelen voor de recruiter.',
                 'Houd per sollicitatie bij welke versie je hebt gebruikt — een simpele spreadsheet met bedrijfsnaam, datum en de variabele onderdelen is voldoende. Zo weet je bij een uitnodiging exact wat je hebt geschreven en kun je je gesprek goed voorbereiden. Je profieltekst is immers het startpunt van elk sollicitatiegesprek: de recruiter heeft hem gelezen en wil er dieper op ingaan.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-aanmaken',
+                    label: 'CV aanmaken met een basisversie die je per vacature kunt aanpassen',
+                    description: 'Werk vanuit een vaste kern en wissel daarna alleen profieltekst, keywords en accenten per sollicitatie.',
+                },
+                {
+                    href: '/cv-maken-in-engels',
+                    label: 'Engels CV maken als de vacature om een Engelstalige versie vraagt',
+                    description: 'Houd je profieltekst vacaturegericht zonder de Nederlandse recruiter-logica uit het oog te verliezen.',
+                },
             ],
         },
         {

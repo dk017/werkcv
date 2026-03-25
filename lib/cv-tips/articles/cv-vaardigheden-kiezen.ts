@@ -84,6 +84,18 @@ export const cvVaardighedenKiezen: BlogArticle = {
                 'Stap 4 — Neem de exacte terminologie en spelwijze over uit de vacature',
                 'Stap 5 — Controleer: heb je voor elke skill minimaal 1 jaar ervaring of bewijs?',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-template',
+                    label: 'CV maken met een template waarin vaardigheden direct scanbaar staan',
+                    description: 'Gebruik een layout waarin je top 6 tot 10 skills compact en vacaturegericht zichtbaar blijven.',
+                },
+                {
+                    href: '/gratis-cv-maken',
+                    label: 'Gratis CV maken en je vaardigheden per vacature aanscherpen',
+                    description: 'Start met een basisset skills en herschik daarna per sollicitatie alleen de relevante termen.',
+                },
+            ],
         },
         {
             id: 'taalvaardigheden',
@@ -100,6 +112,18 @@ export const cvVaardighedenKiezen: BlogArticle = {
                 'C1: Vaardig — complexe teksten, vloeiende zakelijke communicatie',
                 'C2: Moedertaalniveau — perfecte beheersing, presenteren voor grote groepen',
                 'Moedertaal: alleen voor je moedertaal — schrijf dit niet bij geleerde talen',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-in-engels',
+                    label: 'Engels CV maken met een duidelijke talen-sectie',
+                    description: 'Gebruik een flow waarin Engels en Nederlands logisch naast elkaar kunnen worden gepresenteerd.',
+                },
+                {
+                    href: '/engels-cv-template',
+                    label: 'Kies een Engels CV template voor internationale sollicitaties',
+                    description: 'Laat taalniveau en internationale context netjes landen in een recruiter-vriendelijke opmaak.',
+                },
             ],
         },
         {
@@ -128,6 +152,18 @@ export const cvVaardighedenKiezen: BlogArticle = {
                 'AI-tools 2026: ChatGPT/Claude (tekstproductie), Copilot (Office), GitHub Copilot (code), Midjourney (design)',
                 'Sector-specifiek: Salesforce (sales/CRM), HubSpot (marketing), SAP/AFAS (finance/HR), Epic/HiX (zorg)',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-template',
+                    label: 'CV maken met een template waarin digitale skills niet wegvallen',
+                    description: 'Gebruik een schone vaardigheidssectie zonder grafische blokken of overvolle kolommen.',
+                },
+                {
+                    href: '/templates',
+                    label: 'Bekijk templates voor een modern maar recruiter-vriendelijk skills-overzicht',
+                    description: 'Vergelijk layouts die tools, AI-kennis en certificaten compact laten zien.',
+                },
+            ],
         },
         {
             id: 'vaardigheden-per-beroep',
@@ -147,6 +183,18 @@ export const cvVaardighedenKiezen: BlogArticle = {
                 'In Nederland gebruiken recruitmentbureaus en grote werkgevers systemen als OTYS, Connexys, Workday en Oracle Taleo. Deze systemen filteren cv-documenten op basis van exacte keyword-matching in de vaardigheidssectie. Een recruiter die zoekt op "PRINCE2" vindt je niet als je "Prince 2" of "Projectmanagement certificering" hebt geschreven.',
                 'Let op afkortingen: schrijf zowel de volledige naam als de afkorting als beide gangbaar zijn. "Zoekmachineoptimalisatie (SEO)" is beter dan alleen "SEO" of alleen "zoekmachineoptimalisatie". Zo scoor je bij zowel de recruiter die het uitschrijft als de ATS die op afkortingen zoekt.',
                 'Vermijd plaatje-gebaseerde vaardigheidssecties of iconen die de vaardigheid weergeven. ATS-systemen parsen tekst, geen afbeeldingen. Een vaardigheidssectie als een grid van iconen met labels erbij wordt door veel ATS-systemen volledig overgeslagen. Gebruik gewone tekst, gescheiden door komma of bullet points, voor maximale parseerbaarheid.',
+            ],
+            intentLinks: [
+                {
+                    href: '/ats-cv-template',
+                    label: 'ATS CV template gebruiken voor een beter leesbare skills-sectie',
+                    description: 'Voorkom iconen en grafische elementen die je vaardigheden voor software onzichtbaar maken.',
+                },
+                {
+                    href: '/cv-maken-pdf',
+                    label: 'CV maken als PDF met tekstveilige vaardigheden en keywords',
+                    description: 'Behoud de juiste termen en afkortingen in een export die stabiel blijft voor recruiters en ATS.',
+                },
             ],
         },
         {

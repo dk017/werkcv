@@ -51,6 +51,18 @@ export const cvWerkervaringBeschrijven: BlogArticle = {
                 '2–4 bullet points: resultaten + bijdragen, gestart met actief werkwoord',
                 'Optioneel: 1 zin bedrijfsomschrijving als de werkgever onbekend is (branche, omvang)',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-aanmaken',
+                    label: 'CV aanmaken met de juiste werkervaring-volgorde al ingebouwd',
+                    description: 'Gebruik een vaste structuur waarin recente functies automatisch vooraan staan.',
+                },
+                {
+                    href: '/gratis-cv-maken',
+                    label: 'Gratis CV maken zonder zelf met chronologie en sectievolgorde te puzzelen',
+                    description: 'Begin vanuit een heldere basis en vul daarna alleen je sterkste bullets per functie in.',
+                },
+            ],
         },
         {
             id: 'resultaatgericht-formuleren',
@@ -67,6 +79,18 @@ export const cvWerkervaringBeschrijven: BlogArticle = {
                 'Taak: "Verkoopgesprekken voeren" → Resultaat: "Sluitingspercentage verhoogd van 18% naar 29% via SPIN-verkooptechniek"',
                 'Taak: "Teamleiding" → Resultaat: "Team van 8 personen gecoacht; verzuim gedaald van 9,1% naar 4,3%"',
                 'Taak: "Procesverbetering" → Resultaat: "Administratieve doorlooptijd met 40% verkort door automatisering in Power Automate"',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-template',
+                    label: 'CV maken in een template dat resultaat-bullets goed laat uitkomen',
+                    description: 'Gebruik een layout waarin acties en meetbare uitkomsten direct scanbaar onder je functies staan.',
+                },
+                {
+                    href: '/templates',
+                    label: 'Bekijk CV-templates die ruimte geven aan sterke werkervaring-bullets',
+                    description: 'Vergelijk layouts waarin prestaties boven taken blijven domineren.',
+                },
             ],
         },
         {
@@ -145,6 +169,18 @@ export const cvWerkervaringBeschrijven: BlogArticle = {
                 'In Nederland gebruikt 75% van de organisaties met meer dan 50 medewerkers een ATS om sollicitaties te filteren (Jobscan 2024). De werkervaring-sectie is de zwaarst gewogen sectie in de meeste ATS-algoritmes. Dat betekent dat je niet alleen voor de menselijke recruiter schrijft, maar ook voor de software die bepaalt of jij de recruiter ooit bereikt.',
                 'Verwerk de exacte functietitels en zoekwoorden uit de vacature in je werkervaring-bullets. Als de vacature vraagt om "scrum master", schrijf dan "scrum master" — niet "agile projectcoördinator" of "sprint begeleider". ATS-systemen matchen op exacte terminologie. Dubbelcheck ook je functietitels: als jij intern "Customer Experience Specialist" heette maar de vacature vraagt om een "Klantenservice Manager", overweeg dan je titel aan te passen (mits eerlijk en aantoonbaar).',
                 'Vermijd tabellen, tekstvakken en afbeeldingen in de werkervaring-sectie — ATS-systemen parsen deze niet of slecht. Gebruik eenvoudige opsommingstekens (•) of streepjes (-) voor je bullets. Sla je CV altijd op als .docx of .pdf met leesbare tekst, nooit als afbeelding. Een eenkoloms CV scoort 97% parse-nauwkeurigheid; een tweekoloms CV slechts 68% (Jobscan 2024).',
+            ],
+            intentLinks: [
+                {
+                    href: '/ats-cv-template',
+                    label: 'ATS CV template kiezen voor beter leesbare werkervaring',
+                    description: 'Gebruik een template waarin functietitels, bullets en keywords schoon door recruitmentsoftware worden gelezen.',
+                },
+                {
+                    href: '/cv-maken-pdf',
+                    label: 'CV maken als PDF zonder layoutfouten in je werkervaring',
+                    description: 'Werk in een tekstveilige flow en exporteer daarna stabiel naar recruiters en ATS-systemen.',
+                },
             ],
         },
         {

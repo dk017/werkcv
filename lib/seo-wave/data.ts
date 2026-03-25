@@ -300,12 +300,36 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
                     'Zet daarom direct je target role, werkvergunningstatus (indien relevant) en meest relevante NL-marktresultaten bovenaan.',
                     'Een goed Engels CV in Nederland voelt lokaal in structuur en bewijs, niet als een ongewijzigde US/UK resume.',
                 ],
+                intentLinks: [
+                    {
+                        href: '/cv-maken-in-engels',
+                        label: 'Engels CV maken met Nederlandse recruiter-logica',
+                        description: 'Start vanuit een flow die Engelse copy combineert met de structuur die in Nederland verwacht wordt.',
+                    },
+                    {
+                        href: '/engels-cv-template',
+                        label: 'Kies een Engels CV template voor sollicitaties in Nederland',
+                        description: 'Gebruik een template waarin je target role, taalniveau en relevante resultaten direct bovenaan staan.',
+                    },
+                ],
             },
             ats: {
                 bullets: [
                     'Combineer Engelse kerntermen met Nederlandse vacaturewoorden: bijvoorbeeld "customer success / klanttevredenheid".',
                     'Gebruik functietitels uit de vacature en voeg zo nodig een alternatieve titel tussen haakjes toe.',
                     'Noem taalniveau expliciet (Nederlands A2/B1/B2, English C1/C2) zodat recruiters risico beter inschatten.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/engels-cv-template',
+                        label: 'Gebruik een Engels CV template met sterkere ATS-leesbaarheid',
+                        description: 'Houd Engelse termen en Nederlandse vacaturekeywords samen in een layout die recruitersoftware goed begrijpt.',
+                    },
+                    {
+                        href: '/en/dutch-cv-template',
+                        label: 'Open de Dutch CV template flow in het Engels',
+                        description: 'Behoud je Engelse inhoud terwijl je CV de Nederlandse structuur en scanvolgorde volgt.',
+                    },
                 ],
             },
         },
@@ -456,6 +480,18 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
                     'MBO-starter met recente stage- en bijbaanervaring, gewend om verantwoordelijkheid te nemen en afspraken na te komen.',
                     'Leergierig en praktisch ingesteld, met focus op snel inwerken en zorgvuldig uitvoeren van werkzaamheden.',
                 ],
+                intentLinks: [
+                    {
+                        href: '/cv-maken-student',
+                        label: 'Studenten-CV maken als je nog vooral school en stage hebt',
+                        description: 'Gebruik een starterflow waarin profieltekst, opleiding en eerste ervaring logisch zijn opgebouwd.',
+                    },
+                    {
+                        href: '/cv-maken-16-jarige',
+                        label: 'CV maken voor 16-jarigen met weinig formele werkervaring',
+                        description: 'Krijg een eenvoudiger startpunt als je vooral bijbaan, stage of schoolprojecten kunt tonen.',
+                    },
+                ],
             },
             werkervaring: {
                 exampleItems: [
@@ -463,12 +499,36 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
                     'Schoolproject opgeleverd binnen deadline met duidelijke taakverdeling en teamwork.',
                     'Bijbaanervaring gebruikt om klantcontact, tempo en werkdiscipline aantoonbaar te ontwikkelen.',
                 ],
+                intentLinks: [
+                    {
+                        href: '/cv-maken-15-jarige',
+                        label: 'CV maken voor 15-jarigen met school, bijbaan of eerste werkervaring',
+                        description: 'Gebruik voorbeelden waarin kleine ervaringen toch professioneel worden gepresenteerd.',
+                    },
+                    {
+                        href: '/cv-maken-16-jarige',
+                        label: 'CV maken voor 16-jarigen met stage of eerste bijbaan',
+                        description: 'Geef schoolprojecten, praktijkuren en werkhouding een sterkere plek op je cv.',
+                    },
+                ],
             },
             ats: {
                 bullets: [
                     'Belangrijke termen voor dit type profiel: stage, praktijkervaring, leervermogen, teamwork, betrouwbaarheid.',
                     'Zet stage en bijbaan boven opleiding als die sterker aansluit op de vacature.',
                     'Noem relevante certificaten (VCA, BHV, heftruck, etc.) zodra je die hebt.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/gratis-cv-maken',
+                        label: 'Gratis CV maken voor een eerste nette sollicitatieversie',
+                        description: 'Start snel met een compact cv en voeg daarna vacaturewoorden en bewijs per rol toe.',
+                    },
+                    {
+                        href: '/cv-maken-student',
+                        label: 'Gebruik de studentenroute voor een ATS-veilige starteropbouw',
+                        description: 'Houd stage, bijbaan en opleiding in gewone tekst zodat recruitersoftware alles goed leest.',
+                    },
                 ],
             },
         },
@@ -499,6 +559,18 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
                     'HBO-starter met stage- en afstudeerervaring in projectmatige omgevingen, sterk in analyse en communicatie.',
                     'Verbindt theoretische kennis aan praktische uitvoering en werkt gestructureerd naar concrete oplevering.',
                 ],
+                intentLinks: [
+                    {
+                        href: '/cv-maken-student',
+                        label: 'Studenten-CV maken met nadruk op potentieel en studie-output',
+                        description: 'Gebruik een opbouw waarin profieltekst, opleiding en junior-positionering goed samenwerken.',
+                    },
+                    {
+                        href: '/stage-cv-maken',
+                        label: 'Stage-CV maken wanneer je stage en afstudeerproject je sterkste bewijs zijn',
+                        description: 'Zet projecten, onderzoek en praktische oplevering centraal in je eerste professionele cv.',
+                    },
+                ],
             },
             werkervaring: {
                 exampleItems: [
@@ -506,12 +578,36 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
                     'Projectrol als coordinator ingevuld met oplevering binnen scope, planning en kwaliteitscriteria.',
                     'Stageopdracht uitgevoerd met stakeholderinterviews en datagedreven aanbevelingen.',
                 ],
+                intentLinks: [
+                    {
+                        href: '/stage-cv-maken',
+                        label: 'Stage-CV maken met ruimte voor project- en onderzoeksresultaten',
+                        description: 'Gebruik een layout waarin stage, afstudeeronderzoek en concrete oplevering sterker zichtbaar worden.',
+                    },
+                    {
+                        href: '/gratis-cv-maken',
+                        label: 'Gratis CV maken en daarna je junior-verhaal per vacature aanscherpen',
+                        description: 'Begin met een basisversie en benadruk vervolgens per functie de meest relevante studie-output.',
+                    },
+                ],
             },
             ats: {
                 bullets: [
                     'Belangrijke termen voor dit type profiel: afstudeerproject, analyse, stakeholder, implementatie, resultaat.',
                     'Noem tools en methodes uit je studie alleen als je ze echt hebt toegepast.',
                     'Leg nadruk op transfer: hoe je studie-output direct waarde levert in de praktijk.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/gratis-cv-maken',
+                        label: 'Gratis CV maken met een eenvoudige, ATS-veilige starterstructuur',
+                        description: 'Voorkom ruis en laat projecttermen, tools en stagebewijs als gewone tekst uitlezen.',
+                    },
+                    {
+                        href: '/cv-maken-student',
+                        label: 'Gebruik de studentenroute voor een recruiter-scanbare juniorversie',
+                        description: 'Houd opleiding, projecten en skills compact zodat je eerste selectie sterker wordt.',
+                    },
                 ],
             },
         },
