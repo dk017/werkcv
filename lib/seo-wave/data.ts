@@ -715,6 +715,38 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
             },
         ],
     },
+    'netherlands-cv-photo-rules': {
+        sectionOverrides: {
+            layout: {
+                intentLinks: [
+                    {
+                        href: '/en/dutch-cv-template',
+                        label: 'Build a Dutch-style CV without overthinking the photo layout',
+                        description: 'Use the English template flow if you want Dutch structure with cleaner recruiter presentation.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Browse CV templates before deciding on photo placement',
+                        description: 'Compare layouts that keep the focus on achievements first and visuals second.',
+                    },
+                ],
+            },
+            'special-case': {
+                intentLinks: [
+                    {
+                        href: '/en/dutch-cv-template',
+                        label: 'Create a content-first Dutch CV in English',
+                        description: 'Start from a template where the top half page stays focused on role fit, not visuals.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Choose a cleaner template if your current CV feels too image-led',
+                        description: 'Switch to layouts that leave more room for summary, experience, and keywords.',
+                    },
+                ],
+            },
+        },
+    },
     'cv-format-netherlands-english': {
         intro: 'Use this as an execution blueprint for English CVs in the Netherlands: exact section order, concise writing style, and ATS-safe formatting that still reads naturally to humans.',
         sectionOverrides: {
@@ -724,12 +756,36 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                     'Summary: 3-4 lines with role focus, years of experience, and strongest value.',
                     'Experience: reverse-chronological, 3-5 impact bullets per recent role.',
                 ],
+                intentLinks: [
+                    {
+                        href: '/en/dutch-cv-template',
+                        label: 'Open a Dutch-style CV template in English',
+                        description: 'Use the expat-facing template route if you want the right section order from the start.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Browse CV templates that fit Dutch recruiter expectations',
+                        description: 'Compare layouts before you commit to the final structure and visual style.',
+                    },
+                ],
             },
             'ats-keywords': {
                 bullets: [
                     'Use role terms from the vacancy in summary, recent role bullets, and skills.',
                     'Avoid decorative CV elements that break text extraction in ATS parsing.',
                     'Keep file naming clear: Firstname-Lastname-CV.pdf',
+                ],
+                intentLinks: [
+                    {
+                        href: '/engels-cv-template',
+                        label: 'Choose an English CV template with stronger ATS readability',
+                        description: 'Start from a cleaner base before refining vacancy-specific wording.',
+                    },
+                    {
+                        href: '/en/dutch-cv-template',
+                        label: 'Use a Dutch-market template flow for English applications',
+                        description: 'Keep English copy while matching Netherlands recruiter structure and scan behavior.',
+                    },
                 ],
             },
         },
@@ -749,11 +805,30 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                     'Rename sections to Dutch-market familiar structure and order.',
                     'Upload your current PDF to the translator to get a Dutch-formatted draft instantly.',
                 ],
+                intentLinks: [
+                    {
+                        href: '/en/dutch-cv-template',
+                        label: 'Open the translated draft in a Dutch-style CV template',
+                        description: 'Use the English template flow once your sections and wording are reorganized.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Compare templates before finalizing your Dutch-format CV',
+                        description: 'Pick the layout that best matches the role and the amount of experience you have.',
+                    },
+                ],
             },
             'special-case': {
                 paragraphs: [
                     'Before final export, compare your CV against the vacancy sentence-by-sentence and close wording gaps in title, skills, and outcomes.',
                     'The best conversion keeps your original credibility while matching Dutch recruiter scan behavior.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/en/dutch-cv-template',
+                        label: 'Finish inside the Dutch CV template flow',
+                        description: 'Move from translated structure into a polished export flow built for Netherlands applications.',
+                    },
                 ],
             },
         },
@@ -787,12 +862,31 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                     'Repeat high-priority terms naturally across summary, skills, and top two recent roles.',
                     'Avoid tables, text-heavy graphics, and unusual symbols that can break ATS parsing.',
                 ],
+                intentLinks: [
+                    {
+                        href: '/en/dutch-cv-template',
+                        label: 'Use an ATS-safer Dutch CV template in English',
+                        description: 'Start from a layout that keeps keywords readable for both parsers and recruiters.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Choose a cleaner template before optimizing keywords',
+                        description: 'Fix structure first, then layer vacancy language onto the strongest layout.',
+                    },
+                ],
             },
             'special-case': {
                 bullets: [
                     'Run a final vacancy-to-CV comparison and close wording gaps before each application.',
                     'Keep one base CV, but always create a role-specific variant for high-value applications.',
                     'If interview rate is low, audit title wording and top-five keywords first.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/engels-cv-template',
+                        label: 'Switch to an English CV template built for cleaner keyword placement',
+                        description: 'Use a simpler structure if your current CV makes ATS optimization harder than it should be.',
+                    },
                 ],
             },
         },
@@ -828,12 +922,31 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                     'Move endorsements and recommendations into proof points, not separate sections.',
                     'Prioritize most relevant roles for the target vacancy, even if older roles were more senior.',
                 ],
+                intentLinks: [
+                    {
+                        href: '/en/guides/translate-resume-to-dutch-format',
+                        label: 'Translate your current resume into Dutch CV format',
+                        description: 'Use the translator flow if you already have a resume and want a faster Dutch-market draft.',
+                    },
+                    {
+                        href: '/en/dutch-cv-template',
+                        label: 'Move LinkedIn content into a Dutch-style CV template',
+                        description: 'Open the English template route once you have trimmed your profile to role-relevant proof.',
+                    },
+                ],
             },
             layout: {
                 bullets: [
                     'Use a compact summary instead of a long "About" paragraph.',
                     'Keep skills section focused on vacancy-relevant terms only.',
                     'Retain LinkedIn URL in contact block, but keep CV self-sufficient without external clicks.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/templates',
+                        label: 'Browse templates that suit a tighter LinkedIn-to-CV conversion',
+                        description: 'Choose a layout that keeps summary, top bullets, and skills above the fold.',
+                    },
                 ],
             },
         },
@@ -972,12 +1085,31 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                     'Use part-time work to prove reliability, teamwork, and customer-facing discipline.',
                     'Highlight tools and methods you can demonstrate in interview tasks.',
                 ],
+                intentLinks: [
+                    {
+                        href: '/en/dutch-cv-template',
+                        label: 'Build an English CV for Dutch recruiters as an international student',
+                        description: 'Use the expat-facing template flow to keep projects, internships, and part-time work in the right order.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Browse templates that fit early-career and student profiles',
+                        description: 'Choose a layout that leaves enough room for education, projects, and practical evidence.',
+                    },
+                ],
             },
             'special-case': {
                 bullets: [
                     'Add graduation date and availability clearly in the header section.',
                     'Keep one strong page; avoid overloading with unrelated academic detail.',
                     'Use vacancy-specific terminology in top skills and recent project bullets.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/engels-cv-template',
+                        label: 'Start from an English CV template if you want a one-page student version',
+                        description: 'Use a cleaner base before tailoring it to internships, part-time roles, or graduate jobs.',
+                    },
                 ],
             },
         },

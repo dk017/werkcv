@@ -5,6 +5,7 @@ import { getAllArticleSlugs, getArticleBySlug, getRelatedArticles } from '@/lib/
 import { getExampleBySlug } from '@/lib/cv-voorbeelden/registry';
 import { articleCategoryLabels, articleCategoryColors } from '@/lib/cv-tips/types';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
 
 interface PageProps {
     params: Promise<{ slug: string }>;
@@ -264,6 +265,7 @@ export default async function ArticlePage({ params }: PageProps) {
                                         ))}
                                     </ul>
                                 )}
+                                <SectionIntentLinks links={section.intentLinks} locale="nl" />
                             </div>
                         </section>
                     ))}

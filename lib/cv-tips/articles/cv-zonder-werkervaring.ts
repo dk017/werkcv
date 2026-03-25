@@ -52,6 +52,18 @@ export const cvZonderWerkervaring: BlogArticle = {
                 '6. Nevenactiviteiten: bestuursfuncties, commissies, vrijwilligerswerk',
                 '7. Projecten of portfolio (optioneel maar aanbevolen voor creatieve en tech-functies)',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-student',
+                    label: 'CV maken als student met de juiste starter-opbouw',
+                    description: 'Gebruik direct een volgorde die opleiding, stage en bijbaan slim prioriteert.',
+                },
+                {
+                    href: '/gratis-cv-maken',
+                    label: 'Gratis CV maken voor je eerste sollicitaties',
+                    description: 'Start snel met een basisversie en werk daarna vacaturegericht verder.',
+                },
+            ],
         },
         {
             id: 'opleiding-centraal',
@@ -87,6 +99,18 @@ export const cvZonderWerkervaring: BlogArticle = {
                 'Bullet 3: samenwerking, verantwoordelijkheid of zelfsturing (optioneel)',
                 'Vermijd: "assisteerde bij...", "hielp mee met..." — gebruik actieve werkwoorden als "ontwikkeld", "uitgevoerd", "geoptimaliseerd"',
             ],
+            intentLinks: [
+                {
+                    href: '/stage-cv-maken',
+                    label: 'Stage CV maken met stageprojecten als hoofdonderdeel',
+                    description: 'Gebruik een stagegerichte pagina als je praktijkervaring je sterkste bewijs is.',
+                },
+                {
+                    href: '/cv-maken-student',
+                    label: 'Student-CV opbouwen rond stage en opleiding',
+                    description: 'Combineer stages, vakken en projecten in een startervriendelijke structuur.',
+                },
+            ],
         },
         {
             id: 'bijbanen-presenteren',
@@ -96,6 +120,18 @@ export const cvZonderWerkervaring: BlogArticle = {
                 'Bijbanen in de horeca, retail, kinderopvang of als bezorger worden door starters vaak onderschat op hun cv-document. Toch tonen ze waardevolle eigenschappen: klantvriendelijkheid, werken onder druk, teamwork, aanpassingsvermogen en verantwoordelijkheid. Uit CBS-data (2024) blijkt dat 68% van de Nederlandse studenten naast hun studie werkt — een bijbaan is dus normaal, maar hoe je hem beschrijft maakt het verschil.',
                 'Beschrijf je bijbaan resultaatgericht in plaats van taakgericht. Vergelijk: "Kassamedewerker bij Albert Heijn" versus "Als kassamedewerker dagelijks 150-200 klanten geholpen, kassaverantwoording gedaan en nieuwe collega\'s ingewerkt — in een omgeving met hoge tijdsdruk en klantcontact." De tweede versie klinkt meteen professioneler en toont overdraagbare vaardigheden.',
                 'Selecteer bijbanen die het meest relevant zijn voor de vacature. Als je solliciteert op een HR-functie en je hebt gewerkt als oproepkracht bij een uitzendbureau, toont dat kennis van flexibele arbeidsmarkt en personeelsadministratie. Als je solliciteert als developer en je enige bijbaan was in een supermarkt, vermeld hem dan in 1 regel — maar laat hem er zeker op staan als je nog weinig andere ervaring hebt.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-15-jarige',
+                    label: 'CV maken als 15-jarige voor je eerste bijbaan',
+                    description: 'Gebruik een versie die rekening houdt met weinig ervaring en een korter schoolprofiel.',
+                },
+                {
+                    href: '/cv-maken-16-jarige',
+                    label: 'CV maken als 16-jarige met bijbaanervaring',
+                    description: 'Leg sneller de link tussen school, bijbaan en praktische verantwoordelijkheid.',
+                },
             ],
         },
         {

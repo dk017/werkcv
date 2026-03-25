@@ -46,6 +46,18 @@ export const atsVriendelijkCv: BlogArticle = {
                 'Vermijd tabellen voor het indelen van vaardigheden of werkervaring. Wat er visueel als een nette tabel uitziet, wordt door ATS geëxtraheerd als een aaneengesloten tekstreeks zonder structuur. Datzelfde geldt voor tekstvakken (text boxes), kaders, grafische skill-bars en iconen voor sectiescheiders. Al deze elementen worden door de meeste ATS-parsers genegeerd of verkeerd geïnterpreteerd.',
                 'De veiligste opmaak: eenkoloms layout, standaard lettertype (Arial, Calibri of Lato, minimaal 10pt), bullet points als gewone tekstronde punten (•) of streepjes (-), en sectiescheiders als een eenvoudige horizontale lijn of wit ruimte. Kleuraccenten op kopjes zijn prima — zolang de tekst zelf zwart op wit is. Minimale marges van 2 cm rondom. Geen kop- of voetteksten voor cv-inhoud.',
             ],
+            intentLinks: [
+                {
+                    href: '/ats-cv-template',
+                    label: 'ATS-vriendelijk CV template gebruiken',
+                    description: 'Kies een layout die al is gebouwd voor eenkoloms scanbaarheid en standaardsecties.',
+                },
+                {
+                    href: '/cv-maken-template',
+                    label: 'CV maken met een template die ATS-risico beperkt',
+                    description: 'Start vanuit een templateflow die minder kans geeft op kolommen en verborgen objecten.',
+                },
+            ],
         },
         {
             id: 'standaard-kopjes',
@@ -83,6 +95,18 @@ export const atsVriendelijkCv: BlogArticle = {
                 'Het bestandsformaat is de meest basale ATS-vereiste en tegelijk de meest onderschatte. Moderne ATS-systemen (Workday, Greenhouse, Recruitee, OTYS) verwerken PDF correct — mits de PDF is gegenereerd vanuit een tekstverwerker, niet gescand. Oudere ATS-systemen (sommige Taleo-versies, lokale HR-software) geven nog steeds de voorkeur aan .docx. Controleer daarom altijd de vacaturetekst of het sollicitatieformulier op instructies over bestandsformaat.',
                 'De gevaarlijkste varianten: een gescand cv (.jpg of .pdf van scan) wordt door ATS niet als tekst gelezen tenzij het systeem OCR-technologie heeft — wat lang niet altijd het geval is. Een Canva-export als PDF ziet er mooi uit maar bevat vaak ontoegankelijke vectortekst die parsers niet kunnen lezen. Een .pages-bestand (Apple Pages) is voor de meeste Windows-gebaseerde ATS-systemen onleesbaar.',
                 'De veiligste workflow: maak je cv in Microsoft Word of Google Docs, gebruik geen templates met tekstvakken of afbeeldingen, en exporteer naar PDF via Bestand → Opslaan als → PDF. Geef het bestand een professionele naam: "CV-Voornaam-Achternaam.pdf". Vermijd spaties in de bestandsnaam — sommige upload-systemen interpreteren spaties verkeerd.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-pdf',
+                    label: 'CV maken in een PDF-veilige flow',
+                    description: 'Werk direct naar een verzendklare PDF toe zonder scan- of Canva-problemen.',
+                },
+                {
+                    href: '/cv-maken-in-word',
+                    label: 'CV maken in Word met minder ATS-risico',
+                    description: 'Gebruik Word alleen met een veilige opmaak als een formulier echt om DOCX vraagt.',
+                },
             ],
         },
         {
@@ -142,6 +166,18 @@ export const atsVriendelijkCv: BlogArticle = {
                 'De eenvoudigste ATS-test: open je cv-PDF, selecteer alle tekst (Ctrl+A), kopieer het (Ctrl+C) en plak het in een leeg Kladblok- of Notepad-document. Controleer: staat alle tekst er? Is de volgorde logisch (niet door elkaar gegooid door kolommen)? Zijn sectienamen herkenbaar? Ontbreekt er iets of staat er tekst in de verkeerde volgorde, dan heeft je cv een opmaakprobleem dat ATS eveneens zal veroorzaken.',
                 'Online ATS-checkers zoals Jobscan, Resume Worded of Enhancv vergelijken je cv met een specifieke vacaturetekst en geven een keyword-match-score plus concrete verbeterpunten. Jobscan (gratis basisversie) is de meest uitgebreide optie en ondersteunt ook Nederlandse cv\'s. Let op: gebruik deze tools als richtlijn, niet als absolute autoriteit — elk ATS-systeem werkt anders.',
                 'De derde test is praktisch maar effectief: vraag iemand die jouw vakgebied niet kent om je cv te scannen in 10 seconden en te vertellen wat jij doet en wat je sterkste kwalificatie is. Als ze dat niet kunnen beantwoorden, is je cv ook voor een recruiter te onduidelijk — ATS of niet. Een cv dat de menselijke scan niet overleeft, bereikt de hiring manager nooit ook al haalt het de ATS-filter.',
+            ],
+            intentLinks: [
+                {
+                    href: '/tools/ats-cv-checker',
+                    label: 'ATS CV checker gebruiken voor een snelle eerste test',
+                    description: 'Controleer direct of je huidige CV op kernfouten en keyword-match hapert.',
+                },
+                {
+                    href: '/ats-cv-template',
+                    label: 'Daarna overstappen op een ATS-vriendelijk template',
+                    description: 'Gebruik een schone template als je uit de test haalt dat opmaak de grootste zwakte is.',
+                },
             ],
         },
         {

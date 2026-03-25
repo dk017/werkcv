@@ -5,6 +5,7 @@ import { getEnglishWavePage, getEnglishWavePages } from '@/lib/seo-wave/data';
 import CtaExperiment from '@/components/seo/CtaExperiment';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import ResumeTranslator from '@/components/translate/ResumeTranslator';
+import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -162,6 +163,7 @@ export default async function EnglishWavePage({ params }: PageProps) {
                                         </ul>
                                     </div>
                                 )}
+                                <SectionIntentLinks links={section.intentLinks} locale="en" />
                             </div>
                         </section>
                     ))}

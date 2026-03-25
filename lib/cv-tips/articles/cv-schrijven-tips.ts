@@ -46,6 +46,18 @@ export const cvSchrijvenTips: BlogArticle = {
                 'Starters en recent afgestudeerden plaatsen de opleiding soms vóór werkervaring — dat is logisch als je opleiding relevanter is dan je beperkte werkervaring. Freelancers en mensen met een loopbaanonderbreking kunnen overwegen te kiezen voor een functioneel cv waarbij vaardigheden centraler staan. Voor iedereen met een normale loopbaan is de chronologische variant het sterkst: het is de norm en elke afwijking vraagt om extra uitleg.',
                 'Gebruik duidelijke kopjes, voldoende witruimte en bullet points voor werkervaring. Vermijd lange alinea\'s in de werkervaringsectie — recruiters scannen bullets, ze lezen geen proza. Consistente opmaak (dezelfde datumnotatie, dezelfde inspringen, dezelfde bullet-stijl) communiceert nauwkeurigheid en oog voor detail — eigenschappen die in vrijwel elke functie gevraagd worden.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-aanmaken',
+                    label: 'CV aanmaken met een heldere standaardstructuur',
+                    description: 'Gebruik direct een Nederlandse opbouw zonder zelf de hele volgorde te moeten bedenken.',
+                },
+                {
+                    href: '/gratis-cv-maken',
+                    label: 'Gratis CV maken zonder eerst met de opmaak te worstelen',
+                    description: 'Start met een duidelijke basis en verfijn daarna pas de inhoud per vacature.',
+                },
+            ],
         },
         {
             id: 'sterke-profieltekst',
@@ -114,6 +126,18 @@ export const cvSchrijvenTips: BlogArticle = {
                 'Bestandsformaat: PDF van een teksteditor (Word, Google Docs) — niet van Canva',
                 'Bestandsnaam: "CV-Voornaam-Achternaam.pdf"',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-template',
+                    label: 'CV maken met een professioneel template',
+                    description: 'Ga direct naar templates die al zijn ingericht voor recruiter-scan en nette leesbaarheid.',
+                },
+                {
+                    href: '/cv-maken-pdf',
+                    label: 'CV maken als PDF voor een stabiele sollicitatieversie',
+                    description: 'Werk online en exporteer daarna in een formaat dat op elk apparaat gelijk blijft.',
+                },
+            ],
         },
         {
             id: 'fouten-vermijden',
@@ -133,6 +157,18 @@ export const cvSchrijvenTips: BlogArticle = {
                 'ATS-systemen (Applicant Tracking Systems) zijn bij 75% van de Nederlandse bedrijven met meer dan 50 medewerkers actief (Jobscan 2024). Ze filteren cv\'s op keyword-match, bestandsformaat en leesbaarheid. Gemiddeld wordt 70 tot 75% van alle ingezonden cv\'s door ATS weggefilterd vóór een menselijke recruiter ze ziet. Dit betekent dat een perfect cv dat de ATS-beoordeling niet haalt, nooit gezien wordt.',
                 'De drie ATS-regels die het meeste impact hebben: (1) gebruik de exacte trefwoorden uit de vacature in je cv — niet alleen synoniemen maar letterlijk dezelfde termen; (2) vermijd tabellen, tekstvakken, grafische elementen en kopteksten/voetteksten voor cv-inhoud — ATS leest die onbetrouwbaar; (3) sla je cv op als PDF vanuit Word of Google Docs, niet als een gescand document of Canva-export.',
                 'Buiten ATS-optimalisatie geldt ook voor menselijke digitale lezers: minimaal 10pt lettergrootte, voldoende witruimte, bullet points in plaats van alinea\'s, en duidelijke kopjes die als ankers werken bij scannen. Onderzoek van Nielsen Norman Group (2024) laat zien dat mensen online tekst niet lezen maar scannen — in een F-patroon van links naar rechts voor de eerste twee regels, daarna verticaal langs de linkerkant.',
+            ],
+            intentLinks: [
+                {
+                    href: '/ats-cv-template',
+                    label: 'ATS-vriendelijk CV template gebruiken',
+                    description: 'Kies een lay-out die al is ingericht op scanbaarheid en vacaturematching.',
+                },
+                {
+                    href: '/cv-maken-pdf',
+                    label: 'CV maken als PDF zonder Canva- of scanfouten',
+                    description: 'Beperk technische risico\'s door vanuit een tekstveilige flow te exporteren.',
+                },
             ],
         },
         {

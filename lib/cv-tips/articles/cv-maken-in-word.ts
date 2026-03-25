@@ -132,6 +132,18 @@ export const cvMakenInWord: BlogArticle = {
                 'Gebruik Bestand > Exporteren > PDF maken (of Bestand > Opslaan als > kies PDF als bestandstype) in Word. Dit geeft de beste kwaliteit. De optie "Afdrukken naar PDF" via je printerdialoog geeft soms lagere resolutie en minder nauwkeurige tekst-embedding.',
                 'Geef je PDF-bestand een professionele naam: "CV_VoornaamAchternaam.pdf" of "CV_AnnaDeVries_Marketing.pdf". Bewaar ook altijd de originele .docx versie — dit is je bewerkingsbestand dat je kunt updaten voor toekomstige sollicitaties. Maak bij elke belangrijke update een nieuwe versie-kopie: "CV_AnnaDeVries_v2.docx".',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-pdf',
+                    label: 'CV maken en direct als PDF exporteren',
+                    description: 'Kies een flow waarbij je eindbestand meteen geschikt is om te versturen.',
+                },
+                {
+                    href: '/cv-maken-in-word',
+                    label: 'CV maken in Word met een duidelijkere route',
+                    description: 'Gebruik de canonieke pagina als je specifiek op Word-intentie wilt landen en vergelijken.',
+                },
+            ],
         },
         {
             id: 'templates-word',
@@ -142,6 +154,18 @@ export const cvMakenInWord: BlogArticle = {
                 'Als je toch een sjabloon wil gebruiken, kies dan één met minimale opmaak: geen foto-placeholder, geen grafieken voor vaardigheidsniveaus, geen kleurkolommen en geen logo-ruimte. Een clean, single-column sjabloon zonder tabellen is de enige veilige keuze voor ATS-gebruik.',
                 'Alternatieven voor Word-sjablonen: WerkCV.nl biedt kant-en-klare ATS-vriendelijke templates waarbij je alleen je gegevens invult en direct een geoptimaliseerde PDF downloadt. Je hoeft de opmaak niet te bewaken — dat is al voor je gedaan. Dit bespaart gemiddeld 2-3 uur opmaakwerk per sollicitatieronde.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-template',
+                    label: 'CV maken met een professioneel template in plaats van losse Word-sjablonen',
+                    description: 'Gebruik een templateflow die al is gecontroleerd op leesbaarheid en recruiter-scan.',
+                },
+                {
+                    href: '/templates',
+                    label: 'CV templates bekijken voor een sneller alternatief',
+                    description: 'Vergelijk direct welke layouts beter werken dan de standaard Word-bibliotheek.',
+                },
+            ],
         },
         {
             id: 'wanneer-cv-builder',
@@ -151,6 +175,18 @@ export const cvMakenInWord: BlogArticle = {
                 'Word is prima als je weet wat je doet. Maar als je meerdere sollicitaties tegelijkertijd doet, steeds je CV wil aanpassen per vacature, of als je niet zeker weet of je opmaak correct is — dan is een online CV-builder efficiënter. Je hoeft geen uren te besteden aan uitlijning, kopteksten en PDF-export.',
                 'Online CV-builders zoals WerkCV.nl zijn specifiek gebouwd voor ATS-compatibiliteit. Alle templates zijn getest op leesbaarheid door de meest gebruikte ATS-systemen. Je vult je gegevens in via een gestructureerd formulier, kiest een template en exporteert direct als PDF. Geen opmaakproblemen, geen verslippende lay-out.',
                 'Een bijkomend voordeel: bij WerkCV.nl kun je meerdere CV-versies opslaan en per vacature aanpassen. Dit is bij Word vrijwel onmogelijk zonder een chaotische verzameling documenten bij te houden. De eenmalige €4,99 voor een professionele PDF-download verdient zichzelf terug bij de eerste succesvolle sollicitatie.',
+            ],
+            intentLinks: [
+                {
+                    href: '/templates',
+                    label: 'Direct overstappen naar een online CV-builder met templates',
+                    description: 'Ga naar de templatekeuze als je Word-opmaak wilt overslaan en sneller wilt afronden.',
+                },
+                {
+                    href: '/gratis-cv-maken',
+                    label: 'Gratis CV maken voordat je beslist om te downloaden',
+                    description: 'Bewerk eerst alles online en betaal pas op het moment dat je PDF klaar is.',
+                },
             ],
         },
         {

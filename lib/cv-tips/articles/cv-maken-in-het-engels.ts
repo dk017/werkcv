@@ -81,6 +81,18 @@ export const cvMakenInHetEngels: BlogArticle = {
                 'Languages: met niveau (Native, Fluent, Professional, Conversational, Basic)',
                 'References: "Available upon request" — noem geen namen',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-in-engels',
+                    label: 'CV maken in Engels met de juiste internationale structuur',
+                    description: 'Gebruik een canonieke Engelse landingspagina die direct op deze intentie aansluit.',
+                },
+                {
+                    href: '/engels-cv-template',
+                    label: 'Engels CV template kiezen voor je eerste versie',
+                    description: 'Ga direct naar templates die passen bij internationale en Nederlandstalige recruiters.',
+                },
+            ],
         },
         {
             id: 'functies-vertalen',
@@ -161,6 +173,18 @@ export const cvMakenInHetEngels: BlogArticle = {
                 'Lees de vacature zorgvuldig en markeer de exact gebruikte termen. Als de vacature "data-driven decision making" noemt, zet dan die exacte frase in je CV — niet "analytisch sterk" of "werkt met data". ATS-systemen matchen op letterlijke tekst, niet op betekenis. Dit geldt ook voor sectorspecifieke acroniemen: SCRUM, KPI, B2B, SaaS, GAAP, PMP.',
                 'Vermijd verborgen tekst, tabellen, tekstvakken en kolommen — de meeste ATS-systemen kunnen deze niet lezen. Gebruik een simpele structuur: één kolom, standaard koppen (Work Experience, Education, Skills) en geen grafieken of pictogrammen. Save as PDF na afronding.',
             ],
+            intentLinks: [
+                {
+                    href: '/en/dutch-cv-template',
+                    label: 'Use a Dutch-style CV template in English',
+                    description: 'Open the expat-facing template flow if you want English copy with Dutch recruiter structure.',
+                },
+                {
+                    href: '/engels-cv-template',
+                    label: 'Choose an English CV template built for ATS readability',
+                    description: 'Start from a cleaner base before tuning vacancy keywords and terminology.',
+                },
+            ],
         },
         {
             id: 'wat-weglaten',
@@ -190,6 +214,18 @@ export const cvMakenInHetEngels: BlogArticle = {
                 'Voor het vertalen van je CV zijn er meerdere tools beschikbaar. DeepL is kwalitatief de beste vertaalmachine voor het Nederlands-naar-Engels en pikt ook nuanceverschillen op. Gebruik het als startpunt maar corrigeer altijd de output — automatische vertalingen missen vakjargon en context.',
                 'Grammarly (gratis versie beschikbaar) controleert je grammatica en stijl in het Engels en geeft suggesties voor professionelere formuleringen. De premium-versie geeft ook stijlanalyse en tone-feedback, wat handig is als je niet zeker weet of je tekst formeel genoeg klinkt.',
                 'WerkCV.nl biedt je de mogelijkheid je CV-data in het Engels in te vullen en direct als PDF te exporteren in een ATS-vriendelijk template. Zo bespaar je de opmaak-stap en houd je je energie voor de inhoud. Alle templates zijn beschikbaar voor internationale sollicitaties.',
+            ],
+            intentLinks: [
+                {
+                    href: '/en/guides/translate-resume-to-dutch-format',
+                    label: 'Translate your current resume into Dutch CV format',
+                    description: 'Use the translator flow if you already have a PDF resume and want a faster starting draft.',
+                },
+                {
+                    href: '/cv-maken-in-engels',
+                    label: 'Build an English CV directly inside WerkCV',
+                    description: 'Open the main English-building route if you prefer to start fresh instead of translating.',
+                },
             ],
         },
     ],

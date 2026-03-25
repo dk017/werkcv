@@ -6,6 +6,13 @@ export interface ArticleSection {
     content: string[];       // Paragraphs of text (rendered as <p> tags)
     answerCapsule?: string;  // 120-150 char direct answer for AI/featured-snippet extraction
     bullets?: string[];      // Optional bullet points rendered after content paragraphs
+    intentLinks?: ArticleIntentLink[]; // Contextual links to deeper CV landing pages
+}
+
+export interface ArticleIntentLink {
+    href: string;
+    label: string;
+    description?: string;
 }
 
 export interface ArticleFAQ {

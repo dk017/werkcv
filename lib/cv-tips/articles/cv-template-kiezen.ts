@@ -53,6 +53,18 @@ export const cvTemplateKiezen: BlogArticle = {
                 'Vermijd: grafische vaardigheidsbalkjes (onleesbaar voor ATS, subjectief voor mensen)',
                 'Vermijd: niet-selecteerbare tekst of ingesloten PDF-afbeeldingen',
             ],
+            intentLinks: [
+                {
+                    href: '/ats-cv-template',
+                    label: 'ATS-vriendelijk CV template kiezen',
+                    description: 'Bekijk een templatecluster die al gebouwd is voor eenkoloms leesbaarheid en standaardkopjes.',
+                },
+                {
+                    href: '/cv-maken-template',
+                    label: 'CV maken met een recruiter-veilige templateflow',
+                    description: 'Start vanuit een template die minder technische keuzes van jou vraagt.',
+                },
+            ],
         },
         {
             id: 'zakelijke-sectoren',
@@ -139,6 +151,18 @@ export const cvTemplateKiezen: BlogArticle = {
                 'Envato Market (2024) meldt dat 61% van sollicitanten hun cv als Word of DOCX verstuurt, en slechts 34% als PDF — ondanks dat PDF statistisch beter presteert bij ATS-verwerking. De reden is dat veel templates in DOCX-formaat worden verkocht en gebruikers ze gewoon in dat formaat bewaren.',
                 'De praktische richtlijn: stuur altijd als PDF, tenzij de vacature expliciet vraagt om DOCX of een online formulier je niet toestaat een PDF te uploaden. Zorg dat de PDF "tekst-doorzoekbaar" is (geen gescand afbeeldings-PDF) en dat de bestandsnaam professioneel is: "Voornaam-Achternaam-CV-2026.pdf" — nooit "cv-nieuw-definitief-3.pdf".',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-pdf',
+                    label: 'CV maken en direct als PDF exporteren',
+                    description: 'Kies een flow waarbij het verzendformaat vanaf het begin al klopt.',
+                },
+                {
+                    href: '/cv-maken-in-word',
+                    label: 'CV maken in Word zonder ATS-fouten',
+                    description: 'Gebruik Word alleen met een veilige structuur als een vacature echt om DOCX vraagt.',
+                },
+            ],
         },
         {
             id: 'template-aanpassen',
@@ -147,7 +171,19 @@ export const cvTemplateKiezen: BlogArticle = {
             content: [
                 'Een template is een startpunt, geen keurslijf. De beste cv-documenten ontstaan wanneer je een template kiest die bij je sector past en deze daarna aanpast aan je persoonlijke situatie. Heb je veel werkervaring? Kies een template met ruime werkervaring-secties en beperk de hobbysectie. Ben je starter? Kies een template die meer nadruk legt op opleiding, vaardigheden en persoonlijke projecten.',
                 'Pas ook de sectie-volgorde aan. De standaard volgorde is profieltekst → werkervaring → opleiding → vaardigheden → talen → overige. Maar als je als starter indruk wilt maken met een hbo-diploma, zet dan opleiding direct na de profieltekst. Als je technische vaardigheden je grootste troef zijn, kan een vaardigheidssectie direct na de profieltekst verstandig zijn.',
-                'Test je aangepaste template altijd op meerdere apparaten. Recruiters bekijken cv-documenten op laptops, tablets en soms smartphones. Een template die er op jouw scherm fantastisch uitziet, kan er op een kleiner scherm of in een ander PDF-viewer heel anders uitzien. Stuur een proef-PDF naar je eigen e-mailadres en open hem op je telefoon voordat je solliciteert.',
+                'Test je aangepaste template altijd op meerdere apparaten. Recruiters bekijken cv-documenten op laptops, tablets en soms smartphones. Een template die er op jouw scherm fantastisch uitziet, kan er op een kleiner scherm of in een andere PDF-viewer heel anders uitzien. Stuur een proef-PDF naar je eigen e-mailadres en open hem op je telefoon voordat je solliciteert.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-sjabloon',
+                    label: 'CV maken met een sjabloon dat je per situatie kunt aanpassen',
+                    description: 'Gebruik een basis die al klopt en wijzig daarna alleen volgorde en nadruk.',
+                },
+                {
+                    href: '/templates',
+                    label: 'CV templates vergelijken op stijl en beroep',
+                    description: 'Bekijk eerst welk template het beste past bij jouw sector en ervaringsniveau.',
+                },
             ],
         },
         {

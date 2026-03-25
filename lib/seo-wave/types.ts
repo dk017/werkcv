@@ -5,6 +5,13 @@ export interface SeoSection {
     bullets?: string[];
     exampleTitle?: string;
     exampleItems?: string[];
+    intentLinks?: SeoIntentLink[];
+}
+
+export interface SeoIntentLink {
+    href: string;
+    label: string;
+    description?: string;
 }
 
 export interface SeoFaq {

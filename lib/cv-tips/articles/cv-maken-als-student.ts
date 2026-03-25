@@ -64,6 +64,18 @@ export const cvMakenAlsStudent: BlogArticle = {
                 'Vaardigheden: software, talen, technische skills',
                 'Activiteiten: commissies, studievereniging, sport, vrijwilligerswerk',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-maken-student',
+                    label: 'Student-CV maken met de juiste sectievolgorde',
+                    description: 'Ga meteen naar een pagina die is opgebouwd rond starters, stages en studie.',
+                },
+                {
+                    href: '/gratis-cv-maken',
+                    label: 'Gratis CV maken en daarna per vacature aanscherpen',
+                    description: 'Start snel met een basisversie zonder direct in Word of losse sjablonen te duiken.',
+                },
+            ],
         },
         {
             id: 'profieltekst',
@@ -103,6 +115,18 @@ export const cvMakenAlsStudent: BlogArticle = {
                 'Veel studenten onderschatten hun bijbanen. Een bijbaan als barista, kassamedewerker of bezorger leert je klantenservice, werken onder druk, verantwoordelijkheid en tijdmanagement — allemaal skills die recruiters waarderen. Beschrijf je bijbaan niet met taken maar met resultaten en context.',
                 'Formuleer elke werkervaring met een actief werkwoord en bij voorkeur een meetbaar resultaat. In plaats van "Werkte als kassamedewerker bij Albert Heijn" schrijf je: "Bediende dagelijks 200+ klanten efficiënt en met hoge klanttevredenheid (4,6/5 in interne evaluatie)." Heb je geen meetbare resultaten? Geef dan context: hoe groot was de vestiging, hoe zelfstandig werkte je, wat leerde je?',
                 'Stages verdienen extra aandacht. Een stage is vaak al relevanter voor je gewenste baan dan een bijbaan. Beschrijf je stageproject, de opdrachtgever en wat je hebt opgeleverd. Kwantificeer waar mogelijk: "Ontwikkelde een content-strategie die het bereik van de LinkedIn-pagina met 40% verhoogde in 3 maanden." Als je nog geen stage hebt gehad, zet dan in je CV dat je actief op zoek bent naar een stageplek voor [semester/jaar].',
+            ],
+            intentLinks: [
+                {
+                    href: '/stage-cv-maken',
+                    label: 'Stage CV maken met stageprojecten als hoofdonderdeel',
+                    description: 'Gebruik een stagegerichte opbouw als je praktijkervaring je sterkste bewijs is.',
+                },
+                {
+                    href: '/cv-maken-16-jarige',
+                    label: 'CV maken als 16-jarige met bijbaan en school',
+                    description: 'Handig als je vooral eerste werkervaring, weekendwerk of scholierenwerk wilt laten tellen.',
+                },
             ],
         },
         {
