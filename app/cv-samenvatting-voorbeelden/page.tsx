@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 
 const frameworkSteps = [
   "Start met je rol + jaren ervaring (wie ben je professioneel?).",
@@ -69,6 +70,33 @@ const faqs = [
     question: "Moet ik mijn cv samenvatting per vacature aanpassen?",
     answer:
       "Ja. Pas termen, focus en voorbeelden aan op de specifieke rol. Vooral functietitel, kernvaardigheden en resultaatzinnen moeten aansluiten op de vacaturetaal.",
+  },
+];
+
+const summaryIntentLinks = [
+  {
+    href: "/gratis-cv-maken",
+    label: "Gratis CV maken met een sterke samenvatting bovenaan",
+    description:
+      "Start met een basis-CV en werk daarna je profieltekst verder uit per vacature.",
+  },
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken met de juiste plek voor je profieltekst",
+    description:
+      "Gebruik een Nederlandse opbouw waarin samenvatting, werkervaring en vaardigheden logisch op elkaar volgen.",
+  },
+  {
+    href: "/cv-maken-student",
+    label: "Studenten-CV maken als je samenvatting extra veel werk moet doen",
+    description:
+      "Geef opleiding, stage en leervermogen sneller context met een korte sterke opening.",
+  },
+  {
+    href: "/cv-maken-in-engels",
+    label: "Engels CV maken voor Nederlandse recruiters",
+    description:
+      "Houd je samenvatting Engelstalig, maar laat de structuur wel aansluiten op Nederlandse scanverwachtingen.",
   },
 ];
 
@@ -167,10 +195,10 @@ export default function CvSamenvattingVoorbeeldenPage() {
                 Maak je samenvatting in tool
               </Link>
               <Link
-                href="/editor"
+                href="/cv-aanmaken"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Zet direct op je CV
+                CV aanmaken met deze opening
               </Link>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -236,6 +264,21 @@ export default function CvSamenvattingVoorbeeldenPage() {
           </div>
         </section>
 
+        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Van voorbeeld naar sollicitatieversie
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            Trek een sterke samenvatting direct door naar het juiste CV-type
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Deze pagina wint pas echt als je de juiste opening meteen in de juiste
+            CV-structuur zet. Gebruik daarom niet alleen de profieltekst-tool, maar
+            ook de route die past bij jouw fase, taal of sollicitatiecontext.
+          </p>
+          <SectionIntentLinks links={summaryIntentLinks} locale="nl" />
+        </section>
+
         <section className="mb-14 grid gap-6 md:grid-cols-2">
           <div className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
@@ -262,29 +305,29 @@ export default function CvSamenvattingVoorbeeldenPage() {
                   body: "Gebruik de voorbeelden als input en genereer een versie op jouw doelrol.",
                 },
                 {
-                  href: "/profieltekst-cv-voorbeelden",
-                  title: "Profieltekst CV voorbeelden",
-                  body: "Bekijk extra copy-ready profielteksten per functie en profieltype.",
+                  href: "/gratis-cv-maken",
+                  title: "Gratis CV maken",
+                  body: "Zet je samenvatting direct in een complete Nederlandse CV-opbouw.",
                 },
                 {
-                  href: "/professioneel-cv-template",
-                  title: "Professioneel CV template",
-                  body: "Plaats je samenvatting direct in een zakelijke, recruiter-vriendelijke layout.",
+                  href: "/cv-aanmaken",
+                  title: "CV aanmaken",
+                  body: "Gebruik een heldere structuur waarin je profieltekst meteen op de juiste plek staat.",
                 },
                 {
-                  href: "/cv-tips/cv-zonder-werkervaring",
-                  title: "CV zonder werkervaring",
-                  body: "Specifieke tips voor starters die nog weinig praktijkervaring hebben.",
+                  href: "/cv-maken-student",
+                  title: "Studenten-CV maken",
+                  body: "Handige route als je samenvatting opleiding, stage en potentieel moet verbinden.",
                 },
                 {
-                  href: "/werkervaring-cv-voorbeelden",
-                  title: "Werkervaring CV voorbeelden",
-                  body: "Maak je profieltekst sterker met concrete werkervaring bullets per functie.",
+                  href: "/cv-maken-in-engels",
+                  title: "Engels CV maken",
+                  body: "Houd je opening Engelstalig, maar wel afgestemd op Nederlandse recruiters.",
                 },
                 {
-                  href: "/prijzen",
-                  title: "Prijzen",
-                  body: "Start gratis en betaal alleen wanneer je je CV wilt downloaden.",
+                  href: "/cv-maken-template",
+                  title: "CV maken met template",
+                  body: "Kies een layout waarin je samenvatting, ervaring en skills direct goed uitlijnen.",
                 },
               ].map((item) => (
                 <Link
@@ -358,3 +401,5 @@ export default function CvSamenvattingVoorbeeldenPage() {
     </div>
   );
 }
+
+

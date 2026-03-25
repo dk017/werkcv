@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import NettoBrutoTool from "./NettoBrutoTool";
 
@@ -22,6 +23,24 @@ const faqItems = [
     {
         question: "Telt vakantiegeld mee in bruto naar netto?",
         answer: "Ja, als je vakantiegeld ontvangt telt het mee in je belastbare jaarinkomen. WerkCV laat daarom apart zien wat het geschatte netto effect van vakantiegeld is.",
+    },
+];
+
+const cvIntentLinks = [
+    {
+        href: "/cv-aanmaken",
+        label: "CV aanmaken zodra je weet welke salarisrange bij je past",
+        description: "Gebruik je looninschatting om gerichter op functies te solliciteren die bij je doelbedrag horen.",
+    },
+    {
+        href: "/gratis-cv-maken",
+        label: "Gratis CV maken voor je volgende salarissprong",
+        description: "Trek je bruto-netto inzicht direct door naar een sollicitatieversie zonder eerst te hoeven betalen.",
+    },
+    {
+        href: "/cv-maken-template",
+        label: "CV maken met een template voor een nette salarisgedreven sollicitatie",
+        description: "Kies een rustige layout als je met recruiter- en loonvergelijkingen serieuzer wilt solliciteren.",
     },
 ];
 
@@ -169,6 +188,21 @@ export default function NettoBrutoCalculatorPage() {
                     ]}
                 />
 
+                <section className="mt-12 mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
+                        Van salarischeck naar sollicitatieactie
+                    </p>
+                    <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-3">
+                        Gebruik je looninzicht om de volgende stap concreet te maken
+                    </h2>
+                    <p className="max-w-3xl text-sm text-slate-600 leading-relaxed">
+                        Wie bruto en netto vergelijkt, zit vaak midden in een baanwissel,
+                        offercheck of salarisgesprek. Trek dat moment door naar een CV dat
+                        past bij het niveau en type rol waar je nu op mikt.
+                    </p>
+                    <SectionIntentLinks links={cvIntentLinks} locale="nl" />
+                </section>
+
                 <section className="mt-12 mb-12">
                     <div className="mb-5">
                         <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
@@ -221,3 +255,4 @@ export default function NettoBrutoCalculatorPage() {
         </div>
     );
 }
+

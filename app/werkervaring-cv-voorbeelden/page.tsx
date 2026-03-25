@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 
 const frameworkSteps = [
   "Start elke bullet met een krachtig werkwoord (verbeterde, verhoogde, reduceerde, ontwikkelde).",
@@ -111,6 +112,33 @@ const faqs = [
   },
 ];
 
+const experienceIntentLinks = [
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken met sterke werkervaring als hoofdmotor",
+    description:
+      "Gebruik een structuur waarin recente functies en resultaat-bullets direct de meeste ruimte krijgen.",
+  },
+  {
+    href: "/cv-maken-template",
+    label: "CV maken met een template voor resultaatgedreven bullets",
+    description:
+      "Kies een layout waarin prestaties en meetbare impact beter scannen dan taakomschrijvingen.",
+  },
+  {
+    href: "/ats-cv-template",
+    label: "ATS CV template gebruiken voor leesbare werkervaring",
+    description:
+      "Houd functietitels, bullets en vacaturekeywords schoon voor recruitersoftware en snelle handmatige scans.",
+  },
+  {
+    href: "/cv-maken-pdf",
+    label: "CV maken als PDF voor een stabiele sollicitatieversie",
+    description:
+      "Werk je ervaring online uit en exporteer daarna naar een format dat overal hetzelfde blijft.",
+  },
+];
+
 export const metadata: Metadata = {
   title: "Werkervaring CV Voorbeelden - Sterke Bullet Points met Resultaat | WerkCV.nl",
   description:
@@ -205,10 +233,10 @@ export default function WerkervaringCvVoorbeeldenPage() {
                 Genereer je bullets
               </Link>
               <Link
-                href="/editor"
+                href="/cv-aanmaken"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Zet direct op je CV
+                CV aanmaken met deze bullets
               </Link>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -313,6 +341,21 @@ export default function WerkervaringCvVoorbeeldenPage() {
           </ul>
         </section>
 
+        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Van bullet naar complete CV-versie
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            Zet sterke werkervaring in de juiste template en exportflow
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Goede bullets verliezen waarde als ze in een zwakke structuur of rommelige
+            layout belanden. Gebruik daarom een route die je werkervaring niet alleen
+            inhoudelijk, maar ook visueel en technisch recruiter-proof maakt.
+          </p>
+          <SectionIntentLinks links={experienceIntentLinks} locale="nl" />
+        </section>
+
         <section className="mb-14 grid gap-6 md:grid-cols-2">
           <div className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
@@ -339,24 +382,24 @@ export default function WerkervaringCvVoorbeeldenPage() {
                   body: "Genereer direct functiegerichte bullets die je kunt aanpassen op jouw situatie.",
                 },
                 {
-                  href: "/cv-samenvatting-voorbeelden",
-                  title: "CV samenvatting voorbeelden",
-                  body: "Maak je opening net zo sterk als je werkervaringsectie.",
+                  href: "/cv-aanmaken",
+                  title: "CV aanmaken",
+                  body: "Gebruik een structuur waarin werkervaring direct de kern van je sollicitatie wordt.",
                 },
                 {
-                  href: "/vaardigheden-cv-voorbeelden",
-                  title: "Vaardigheden CV voorbeelden",
-                  body: "Kies de juiste hard en soft skills die je werkervaring logisch ondersteunen.",
+                  href: "/cv-maken-template",
+                  title: "CV maken met template",
+                  body: "Zet je bullets in een layout die impact en scanbaarheid voorop zet.",
                 },
                 {
-                  href: "/professioneel-cv-template",
-                  title: "Professioneel CV template",
-                  body: "Plaats je bullets in een rustige, recruiter-vriendelijke layout.",
+                  href: "/ats-cv-template",
+                  title: "ATS CV template",
+                  body: "Gebruik een template waarin functietitels, bullets en keywords schoon uitleesbaar blijven.",
                 },
                 {
-                  href: "/prijzen",
-                  title: "Prijzen",
-                  body: "Start gratis en betaal alleen als je je CV downloadt.",
+                  href: "/cv-maken-pdf",
+                  title: "CV maken als PDF",
+                  body: "Werk je ervaringen online uit en download daarna een stabiele sollicitatieversie.",
                 },
               ].map((item) => (
                 <Link
@@ -415,10 +458,10 @@ export default function WerkervaringCvVoorbeeldenPage() {
                 Start bullets tool
               </Link>
               <Link
-                href="/editor"
+                href="/cv-aanmaken"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
-                Open editor
+                CV aanmaken met je bullets
               </Link>
             </div>
           </div>
@@ -438,3 +481,5 @@ export default function WerkervaringCvVoorbeeldenPage() {
     </div>
   );
 }
+
+

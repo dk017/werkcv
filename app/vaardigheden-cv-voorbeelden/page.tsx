@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 
 const frameworkSteps = [
   "Kies 6 tot 10 vaardigheden die echt aansluiten op de functie-eisen.",
@@ -105,6 +106,33 @@ const faqs = [
   },
 ];
 
+const skillsIntentLinks = [
+  {
+    href: "/cv-maken-template",
+    label: "CV maken met een template voor een heldere skillssectie",
+    description:
+      "Gebruik een layout waarin je belangrijkste hard en soft skills compact en scanbaar boven water blijven.",
+  },
+  {
+    href: "/ats-cv-template",
+    label: "ATS CV template kiezen voor betere skill-keyword match",
+    description:
+      "Voorkom iconen, kolommen en layout-ruis die je vaardigheden minder goed vindbaar maken in software.",
+  },
+  {
+    href: "/cv-maken-in-engels",
+    label: "Engels CV maken als taalniveau en internationale skills tellen",
+    description:
+      "Laat Engelse copy en Nederlandse recruiterlogica samenwerken wanneer je op internationale rollen mikt.",
+  },
+  {
+    href: "/engels-cv-template",
+    label: "Kies een Engels CV template voor internationale sollicitaties",
+    description:
+      "Presenteer tools, methodes en taalniveau in een format dat ook voor expat- en English-first vacatures werkt.",
+  },
+];
+
 export const metadata: Metadata = {
   title: "Vaardigheden CV Voorbeelden - Hard & Soft Skills per Functie | WerkCV.nl",
   description:
@@ -199,10 +227,10 @@ export default function VaardighedenCvVoorbeeldenPage() {
                 Genereer je vaardigheden
               </Link>
               <Link
-                href="/editor"
+                href="/cv-maken-template"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Zet direct op je CV
+                Zet dit in een CV-template
               </Link>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -313,6 +341,21 @@ export default function VaardighedenCvVoorbeeldenPage() {
           </div>
         </section>
 
+        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Van skillslijst naar recruiter-match
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            Gebruik de juiste route voor een skillssectie die ook echt gevonden wordt
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Een goede skillslijst is niet alleen inhoudelijk sterk, maar ook goed
+            geplaatst, logisch gegroepeerd en technisch leesbaar. Trek deze voorbeelden
+            daarom direct door naar het CV-type dat bij jouw rol en taal past.
+          </p>
+          <SectionIntentLinks links={skillsIntentLinks} locale="nl" />
+        </section>
+
         <section className="mb-14 grid gap-6 md:grid-cols-2">
           <div className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
@@ -339,19 +382,24 @@ export default function VaardighedenCvVoorbeeldenPage() {
                   body: "Maak direct een shortlist skills op basis van jouw doelrol.",
                 },
                 {
-                  href: "/werkervaring-cv-voorbeelden",
-                  title: "Werkervaring CV voorbeelden",
-                  body: "Bewijs je skills met resultaatgedreven bullets in werkervaring.",
+                  href: "/cv-maken-template",
+                  title: "CV maken met template",
+                  body: "Gebruik een layout waarin je skills niet verdrinken tussen andere secties.",
                 },
                 {
-                  href: "/cv-samenvatting-voorbeelden",
-                  title: "CV samenvatting voorbeelden",
-                  body: "Laat je sterkste vaardigheden terugkomen in je profieltekst.",
+                  href: "/ats-cv-template",
+                  title: "ATS CV template",
+                  body: "Houd je skillssectie schoon, scanbaar en beter matchbaar met vacaturekeywords.",
                 },
                 {
-                  href: "/prijzen",
-                  title: "Prijzen",
-                  body: "Start gratis en betaal alleen als je je CV downloadt.",
+                  href: "/cv-maken-in-engels",
+                  title: "Engels CV maken",
+                  body: "Handig als taalniveau, tools en internationale context samen belangrijk zijn.",
+                },
+                {
+                  href: "/engels-cv-template",
+                  title: "Engels CV template",
+                  body: "Plaats vaardigheden en taalniveau in een format dat ook voor internationale rollen werkt.",
                 },
               ].map((item) => (
                 <Link
@@ -410,10 +458,10 @@ export default function VaardighedenCvVoorbeeldenPage() {
                 Start vaardigheden tool
               </Link>
               <Link
-                href="/editor"
+                href="/cv-maken-template"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
-                Open editor
+                Kies een CV-template
               </Link>
             </div>
           </div>
@@ -433,3 +481,5 @@ export default function VaardighedenCvVoorbeeldenPage() {
     </div>
   );
 }
+
+

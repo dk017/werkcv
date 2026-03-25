@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import MinimumloonCheckerTool from "./MinimumloonCheckerTool";
 
@@ -18,6 +19,24 @@ const faqItems = [
     {
         question: "Waarom rekent WerkCV in uurloon en niet maandloon?",
         answer: "Sinds de invoering van het minimumuurloon is het uurbedrag de meest bruikbare wettelijke basis. WerkCV rekent daaruit wel een week- en maandindicatie voor je uit.",
+    },
+];
+
+const cvIntentLinks = [
+    {
+        href: "/cv-maken-15-jarige",
+        label: "CV maken voor 15-jarigen als je eerste baan boven minimumloon moet uitkomen",
+        description: "Gebruik een eenvoudige starterroute voor vakkenvullen, horeca, bezorging of ander bijbaanwerk.",
+    },
+    {
+        href: "/cv-maken-16-jarige",
+        label: "CV maken voor 16-jarigen met bijbaan- of stage-intentie",
+        description: "Zet school, eerste werkervaring en beschikbaarheid snel in een nette sollicitatieversie.",
+    },
+    {
+        href: "/cv-maken-student",
+        label: "Studenten-CV maken voor bijbaan, parttime rol of eerste serieuze stap",
+        description: "Koppel looncontrole direct aan een CV dat past bij starters en jonge sollicitanten.",
     },
 ];
 
@@ -122,6 +141,21 @@ export default function MinimumloonCheckerPage() {
                     ]}
                 />
 
+                <section className="mt-12 mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
+                        Van looncheck naar eerste sollicitatie
+                    </p>
+                    <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-3">
+                        Gebruik minimumloon-intentie om direct een starter-CV te bouwen
+                    </h2>
+                    <p className="max-w-3xl text-sm text-slate-600 leading-relaxed">
+                        Deze pagina trekt vooral scholieren, starters en parttimers. Dat is
+                        precies het moment waarop een eenvoudige CV-route met de juiste leeftijds-
+                        of studentencontext het meeste verschil maakt.
+                    </p>
+                    <SectionIntentLinks links={cvIntentLinks} locale="nl" />
+                </section>
+
                 <section className="mt-12 mb-12">
                     <div className="mb-5">
                         <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
@@ -155,3 +189,4 @@ export default function MinimumloonCheckerPage() {
         </div>
     );
 }
+

@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import VakantiegeldTool from "./VakantiegeldTool";
 
@@ -22,6 +23,24 @@ const faqItems = [
     {
         question: "Is dit bedrag bruto of netto?",
         answer: "Deze tool rekent bruto. De netto uitbetaling hangt af van loonheffing en je persoonlijke situatie.",
+    },
+];
+
+const cvIntentLinks = [
+    {
+        href: "/gratis-cv-maken",
+        label: "Gratis CV maken als je rond vakantiegeld over een nieuwe baan nadenkt",
+        description: "Gebruik je extra loonruimte of vergelijking direct als aanleiding voor een sterkere sollicitatie.",
+    },
+    {
+        href: "/cv-aanmaken",
+        label: "CV aanmaken voor een beter loon- of vakantiegeldpakket",
+        description: "Werk snel een Nederlandse CV-versie uit zodra je weet welk aanbod je wilt verbeteren.",
+    },
+    {
+        href: "/cv-maken-pdf",
+        label: "CV maken als PDF voor snelle sollicitaties in drukke salarisperiodes",
+        description: "Bouw je CV online en download daarna een nette versie voor directe versturing.",
     },
 ];
 
@@ -167,6 +186,21 @@ export default function VakantiegeldBerekenenPage() {
                     ]}
                 />
 
+                <section className="mt-12 mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
+                        Van vakantiegeld naar nieuwe rol
+                    </p>
+                    <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-3">
+                        Gebruik je loonmoment om je volgende CV-versie klaar te zetten
+                    </h2>
+                    <p className="max-w-3xl text-sm text-slate-600 leading-relaxed">
+                        Vakantiegeldvragen komen vaak samen met loonvergelijking, offerchecks
+                        en het gevoel dat een nieuwe stap financieel slimmer is. Zet dat moment
+                        meteen om in een CV dat je snel kunt gebruiken.
+                    </p>
+                    <SectionIntentLinks links={cvIntentLinks} locale="nl" />
+                </section>
+
                 <section className="mt-12 mb-12">
                     <div className="mb-5">
                         <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
@@ -204,3 +238,4 @@ export default function VakantiegeldBerekenenPage() {
         </div>
     );
 }
+
