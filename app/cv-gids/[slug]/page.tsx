@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getDutchWavePage, getDutchWavePages } from '@/lib/seo-wave/data';
 import CtaExperiment from '@/components/seo/CtaExperiment';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -163,6 +164,7 @@ export default async function DutchWavePage({ params }: PageProps) {
                                         </ul>
                                     </div>
                                 )}
+                                <SectionIntentLinks links={section.intentLinks} locale="nl" />
                             </div>
                         </section>
                     ))}
