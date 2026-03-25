@@ -364,6 +364,74 @@ export default function CVVoorbeeldenOverview() {
                 </div>
             </section>
 
+            <section className="border-b-4 border-black bg-[#FFFEF9]">
+                <div className="max-w-6xl mx-auto px-6 py-14">
+                    <h2 className="text-3xl font-black mb-4">Van voorbeelden naar de juiste CV-route</h2>
+                    <p className="text-gray-700 max-w-5xl leading-relaxed">
+                        Niet iedere bezoeker heeft alleen een voorbeeld nodig. Soms zoek je eigenlijk naar een{" "}
+                        <Link href="/professioneel-cv-voorbeeld" className="font-bold underline decoration-2 underline-offset-2">
+                            professioneel CV voorbeeld
+                        </Link>
+                        , een{" "}
+                        <Link href="/modern-cv-voorbeeld" className="font-bold underline decoration-2 underline-offset-2">
+                            modern CV voorbeeld
+                        </Link>
+                        , een aparte pagina voor{" "}
+                        <Link href="/cv-maken-student" className="font-bold underline decoration-2 underline-offset-2">
+                            CV maken als student
+                        </Link>
+                        {" "}of juist hulp bij{" "}
+                        <Link href="/cv-opmaken" className="font-bold underline decoration-2 underline-offset-2">
+                            CV opmaken
+                        </Link>
+                        . Gebruik deze routes als je intentie specifieker is dan alleen inspiratie opdoen.
+                    </p>
+                    <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        {[
+                            {
+                                href: "/professioneel-cv-voorbeeld",
+                                title: "Professioneel CV voorbeeld",
+                                body: "Voor rustige, zakelijke sollicitaties waar betrouwbaarheid en scanbaarheid prioriteit hebben.",
+                            },
+                            {
+                                href: "/modern-cv-voorbeeld",
+                                title: "Modern CV voorbeeld",
+                                body: "Voor marketing, sales en andere rollen waar een frissere uitstraling logisch is.",
+                            },
+                            {
+                                href: "/cv-opmaken",
+                                title: "CV opmaken",
+                                body: "Ga van inhoudelijke inspiratie naar betere layout, hiërarchie en leesbaarheid.",
+                            },
+                            {
+                                href: "/cv-maken-student",
+                                title: "CV maken student",
+                                body: "Speciaal voor studenten, starters en profielen met weinig formele werkervaring.",
+                            },
+                            {
+                                href: "/stage-cv-maken",
+                                title: "Stage CV maken",
+                                body: "Gebruik deze route als je vooral stage-intentie en projectervaring wilt uitwerken.",
+                            },
+                            {
+                                href: "/cv-maken-in-engels",
+                                title: "CV maken in Engels",
+                                body: "Handig als je internationaal solliciteert maar wel de Nederlandse structuur wilt aanhouden.",
+                            },
+                        ].map((item) => (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5"
+                            >
+                                <p className="text-sm font-black text-gray-900">{item.title}</p>
+                                <p className="mt-2 text-sm leading-relaxed text-gray-700">{item.body}</p>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             <section className="border-b-4 border-black bg-white">
                 <div className="max-w-6xl mx-auto px-6 py-16">
                     <h2 className="text-3xl font-black mb-6">Wat recruiters in 2026 in een CV scannen</h2>

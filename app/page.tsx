@@ -675,6 +675,77 @@ export default function Home() {
                 </div>
             </section>
 
+            <section className="relative z-10 border-b-4 border-black bg-white">
+                <div className="max-w-6xl mx-auto px-6 py-16">
+                    <div className="max-w-4xl">
+                        <p className="text-xs font-black uppercase tracking-[0.3em] text-slate-600">
+                            Populaire CV Zoekopdrachten
+                        </p>
+                        <h2 className="mt-3 text-3xl md:text-4xl font-black text-black">
+                            Start direct op de route die bij je zoekintentie past
+                        </h2>
+                        <p className="mt-4 text-base md:text-lg font-medium leading-relaxed text-gray-700">
+                            Niet iedereen zoekt op dezelfde manier. Sommige bezoekers willen{" "}
+                            <Link href="/gratis-cv-maken" className="font-black underline decoration-2 underline-offset-4">
+                                gratis een CV maken
+                            </Link>
+                            , anderen willen snel een eerste versie{" "}
+                            <Link href="/cv-aanmaken" className="font-black underline decoration-2 underline-offset-4">
+                                aanmaken
+                            </Link>
+                            , op mobiel werken of direct weten hoe een eerste CV voor school, stage of bijbaan eruitziet. Daarom linken we hieronder direct naar de belangrijkste routes.
+                        </p>
+                    </div>
+                    <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        {[
+                            {
+                                href: "/gratis-cv-maken",
+                                title: "Gratis CV maken",
+                                body: "Voor bezoekers die eerst willen schrijven, vergelijken en pas bij download betalen.",
+                            },
+                            {
+                                href: "/cv-aanmaken",
+                                title: "CV aanmaken",
+                                body: "Voor snelle starters die zonder opmaakstress direct hun eerste versie willen opzetten.",
+                            },
+                            {
+                                href: "/cv-maken-student",
+                                title: "CV maken student",
+                                body: "Sterke route voor studenten, starters en iedereen die school, projecten of stage slim wil inzetten.",
+                            },
+                            {
+                                href: "/stage-cv-maken",
+                                title: "Stage CV maken",
+                                body: "Focus op stage-intentie, afstudeerrollen en een profieltekst zonder veel werkervaring.",
+                            },
+                            {
+                                href: "/cv-maken-16-jarige",
+                                title: "CV maken 16-jarige",
+                                body: "Praktische eerste-CV pagina voor jongeren die solliciteren op bijbaan, winkel of horeca.",
+                            },
+                            {
+                                href: "/cv-maken-pdf",
+                                title: "CV maken PDF",
+                                body: "Voor mensen die vooral op eindformaat zoeken en van daaruit naar de editorflow moeten worden geleid.",
+                            },
+                        ].map((item) => (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className="group block border-4 border-black bg-[#FFFEF9] p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-[7px_7px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            >
+                                <h3 className="text-lg font-black text-black group-hover:text-[#FF6B6B] transition-colors">
+                                    {item.title}
+                                </h3>
+                                <p className="mt-2 text-sm font-medium leading-relaxed text-gray-700">
+                                    {item.body}
+                                </p>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* ============================================================ */}
             {/* TOOLS PROMO - 4 highlighted tools */}
             {/* ============================================================ */}

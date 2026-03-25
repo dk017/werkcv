@@ -27,6 +27,17 @@ const toolLinks = [
     { href: "/tools/cv-samenvatting-generator", label: "CV samenvatting" },
 ];
 
+const cvIntentLinks = [
+    { href: "/gratis-cv-maken", label: "Gratis CV maken" },
+    { href: "/cv-aanmaken", label: "CV aanmaken" },
+    { href: "/cv-maken-template", label: "CV maken template" },
+    { href: "/cv-maken-student", label: "CV maken student" },
+    { href: "/stage-cv-maken", label: "Stage CV maken" },
+    { href: "/cv-maken-16-jarige", label: "CV maken 16-jarige" },
+    { href: "/cv-maken-pdf", label: "CV maken PDF" },
+    { href: "/cv-maken-in-word", label: "CV maken in Word" },
+];
+
 const legalLinks = [
     { href: "/privacy", label: "Privacybeleid" },
     { href: "/voorwaarden", label: "Algemene Voorwaarden" },
@@ -36,7 +47,7 @@ export default function Footer() {
     return (
         <footer className="relative z-10 border-t-4 border-black bg-white mt-20">
             <div className="max-w-6xl mx-auto px-6 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr_1fr] gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1fr_1.1fr_1fr_1fr] gap-8">
                     <div>
                         <Link href="/" className="inline-block font-black text-xl tracking-tight text-black mb-3">
                             Werk<span className="bg-yellow-400 px-1">CV</span>.nl
@@ -79,6 +90,19 @@ export default function Footer() {
                         <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm font-bold text-black">
                             {toolLinks.map((link) => (
                                 <Link key={link.href} href={link.href} className="hover:text-teal-700 transition-colors">
+                                    {link.label}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div>
+                        <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">
+                            Populaire CV Pagina&apos;s
+                        </p>
+                        <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm font-bold text-black">
+                            {cvIntentLinks.map((link) => (
+                                <Link key={link.href} href={link.href} className="hover:text-yellow-600 transition-colors">
                                     {link.label}
                                 </Link>
                             ))}

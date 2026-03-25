@@ -445,6 +445,65 @@ export default function ToolsPage() {
                     ))}
                 </div>
 
+                <section className="mt-12 border-4 border-black bg-white p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="max-w-4xl">
+                        <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">
+                            Van tool-intentie naar CV-intentie
+                        </p>
+                        <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+                            Veel bezoekers beginnen met een tool, maar eindigen bij een nieuw CV
+                        </h2>
+                        <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed">
+                            Dat geldt vooral voor salaris-, WW- en parttime-vragen. Wie zijn loon vergelijkt of contractruimte onderzoekt, zoekt vaak daarna ook naar{" "}
+                            <Link href="/gratis-cv-maken" className="font-black underline decoration-2 underline-offset-4">
+                                gratis CV maken
+                            </Link>
+                            ,{" "}
+                            <Link href="/cv-aanmaken" className="font-black underline decoration-2 underline-offset-4">
+                                CV aanmaken
+                            </Link>
+                            {" "}of een snellere route voor{" "}
+                            <Link href="/cv-maken-op-mobiel" className="font-black underline decoration-2 underline-offset-4">
+                                CV maken op mobiel
+                            </Link>
+                            . Daarom koppelen we de sterkste intentpagina&apos;s hieronder aan deze toolhub.
+                        </p>
+                    </div>
+                    <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                        {[
+                            {
+                                href: "/gratis-cv-maken",
+                                title: "Gratis CV maken",
+                                description: "Sterk voor bezoekers die eerst willen schrijven en pas bij download betalen.",
+                            },
+                            {
+                                href: "/cv-aanmaken",
+                                title: "CV aanmaken",
+                                description: "Voor zoekers die snel een eerste versie willen opzetten zonder layoutgedoe.",
+                            },
+                            {
+                                href: "/cv-maken-op-mobiel",
+                                title: "CV maken op mobiel",
+                                description: "Sluit goed aan op toolverkeer dat direct vanaf mobiel zoekt en vergelijkt.",
+                            },
+                            {
+                                href: "/cv-maken-pdf",
+                                title: "CV maken PDF",
+                                description: "Vangt bezoekers op die een eindformat zoeken en daarna naar de editorflow moeten.",
+                            },
+                        ].map((item) => (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className="block border-2 border-black bg-[#FFFEF9] p-4 hover:bg-teal-50 transition-colors"
+                            >
+                                <p className="text-sm font-black text-slate-900">{item.title}</p>
+                                <p className="mt-2 text-sm text-slate-600 leading-relaxed">{item.description}</p>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
+
                 <section className="mt-12 bg-black text-white p-8 border-4 border-black shadow-[6px_6px_0px_0px_rgba(78,205,196,1)]">
                     <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6 items-center">
                         <div>
