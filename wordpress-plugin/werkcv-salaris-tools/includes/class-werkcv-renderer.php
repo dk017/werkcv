@@ -55,6 +55,10 @@ class WerkCV_Salaris_Tools_Renderer {
 
     private function resolve_toggle($atts, $att_name, $setting_key) {
         if (isset($atts[$att_name])) {
+            if (is_bool($atts[$att_name])) {
+                return $atts[$att_name];
+            }
+
             return in_array($atts[$att_name], array('1', 'true', 'yes', 'on'), true);
         }
 

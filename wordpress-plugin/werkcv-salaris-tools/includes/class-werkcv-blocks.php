@@ -33,34 +33,32 @@ class WerkCV_Salaris_Tools_Blocks {
             true
         );
 
-        register_block_type(
-            WERKCV_SALARIS_TOOLS_DIR . 'blocks/src/block-netto-bruto.json',
-            array(
-                'editor_script' => 'werkcv-salaris-tools-blocks',
-                'render_callback' => function ($attributes) {
-                    return $this->renderer->render('netto-bruto', (array) $attributes);
-                },
-            )
+        $blocks = array(
+            'werkcv/netto-bruto' => 'netto-bruto',
+            'werkcv/vakantiegeld' => 'vakantiegeld',
+            'werkcv/minimumloon' => 'minimumloon',
         );
 
-        register_block_type(
-            WERKCV_SALARIS_TOOLS_DIR . 'blocks/src/block-vakantiegeld.json',
-            array(
-                'editor_script' => 'werkcv-salaris-tools-blocks',
-                'render_callback' => function ($attributes) {
-                    return $this->renderer->render('vakantiegeld', (array) $attributes);
-                },
-            )
-        );
-
-        register_block_type(
-            WERKCV_SALARIS_TOOLS_DIR . 'blocks/src/block-minimumloon.json',
-            array(
-                'editor_script' => 'werkcv-salaris-tools-blocks',
-                'render_callback' => function ($attributes) {
-                    return $this->renderer->render('minimumloon', (array) $attributes);
-                },
-            )
-        );
+        foreach ($blocks as $block_name => $tool_slug) {
+            register_block_type(
+                $block_name,
+                array(
+                    'editor_script' => 'werkcv-salaris-tools-blocks',
+                    'attributes' => array(
+                        'cta' => array(
+                            'type' => 'boolean',
+                            'default' => true,
+                        ),
+                        'footer' => array(
+                            'type' => 'boolean',
+                            'default' => false,
+                        ),
+                    ),
+                    'render_callback' => function ($attributes) use ($tool_slug) {
+                        return $this->renderer->render($tool_slug, (array) $attributes);
+                    },
+                )
+            );
+        }
     }
 }
