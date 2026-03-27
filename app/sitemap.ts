@@ -181,6 +181,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.84,
         },
         {
+            url: `${baseUrl}/wordpress/salaris-tools-plugin`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.56,
+        },
+        {
+            url: `${baseUrl}/wordpress/salaris-tools-plugin/installatie`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.42,
+        },
+        {
+            url: `${baseUrl}/wordpress/salaris-tools-plugin/privacy`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.41,
+        },
+        {
             url: `${baseUrl}/cv-template-administratief-medewerker`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
