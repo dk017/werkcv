@@ -60,6 +60,10 @@
     { term: "zelfstandig", category: "soft" },
     { term: "agile", category: "hard" },
     { term: "canva", category: "hard" },
+    { term: "b2b", category: "hard" },
+    { term: "bing ads", category: "hard" },
+    { term: "conversion rate optimization", category: "hard" },
+    { term: "cro", category: "hard" },
     { term: "content marketing", category: "hard" },
     { term: "crm", category: "hard" },
     { term: "css", category: "hard" },
@@ -67,13 +71,19 @@
     { term: "data analysis", category: "hard" },
     { term: "excel", category: "hard" },
     { term: "figma", category: "hard" },
+    { term: "ga4", category: "hard" },
+    { term: "git", category: "hard" },
+    { term: "google ads", category: "hard" },
     { term: "google analytics", category: "hard" },
+    { term: "google search console", category: "hard" },
     { term: "html", category: "hard" },
+    { term: "hubspot", category: "hard" },
     { term: "javascript", category: "hard" },
     { term: "klantenservice", category: "hard" },
     { term: "customer service", category: "hard" },
     { term: "leadgeneratie", category: "hard" },
     { term: "lead generation", category: "hard" },
+    { term: "looker studio", category: "hard" },
     { term: "marketing automation", category: "hard" },
     { term: "office 365", category: "hard" },
     { term: "power bi", category: "hard" },
@@ -82,16 +92,24 @@
     { term: "process improvement", category: "hard" },
     { term: "projectmanagement", category: "hard" },
     { term: "project management", category: "hard" },
+    { term: "php", category: "hard" },
     { term: "react", category: "hard" },
     { term: "recruitment", category: "hard" },
     { term: "recruiting", category: "hard" },
+    { term: "rest api", category: "hard" },
+    { term: "rest apis", category: "hard" },
+    { term: "saas", category: "hard" },
     { term: "salesforce", category: "hard" },
     { term: "sap", category: "hard" },
     { term: "scrum", category: "hard" },
+    { term: "sem", category: "hard" },
+    { term: "semrush", category: "hard" },
     { term: "seo", category: "hard" },
     { term: "social media", category: "hard" },
     { term: "sql", category: "hard" },
     { term: "stakeholder management", category: "hard" },
+    { term: "a/b testing", category: "hard" },
+    { term: "ab testing", category: "hard" },
     { term: "ux", category: "hard" },
     { term: "wordpress", category: "hard" },
     { term: "mbo", category: "qualification" },
@@ -114,6 +132,7 @@
     { term: "benefits", category: "theme" },
     { term: "compensation", category: "theme" },
     { term: "employment type", category: "theme" },
+    { term: "freelance", category: "theme" },
     { term: "full time", category: "theme" },
     { term: "full-time", category: "theme" },
     { term: "fulltime", category: "theme" },
@@ -135,6 +154,8 @@
     { regex: /experience with ([^.:\n]{4,140})/gi, category: "hard" },
     { regex: /kennis van ([^.:\n]{4,140})/gi, category: "hard" },
     { regex: /knowledge of ([^.:\n]{4,140})/gi, category: "hard" },
+    { regex: /must have skills?(?: and experience)?[:\s]+([^.:\n]{4,140})/gi, category: "hard" },
+    { regex: /must-have skills?(?: and experience)?[:\s]+([^.:\n]{4,140})/gi, category: "hard" },
     { regex: /proficient in ([^.:\n]{4,140})/gi, category: "hard" },
     { regex: /vaardig in ([^.:\n]{4,140})/gi, category: "hard" },
     { regex: /affiniteit met ([^.:\n]{4,140})/gi, category: "soft" },
@@ -148,21 +169,29 @@
 
   const VACANCY_MARKERS = [
     { term: "about the role", score: 4 },
+    { term: "about this role", score: 4 },
     { term: "apply now", score: 3 },
     { term: "benefits", score: 3 },
     { term: "compensation", score: 2 },
     { term: "vacature", score: 5 },
     { term: "vacancy", score: 5 },
     { term: "functie", score: 2 },
+    { term: "functieomschrijving", score: 4 },
     { term: "functie-eisen", score: 4 },
     { term: "job description", score: 4 },
     { term: "job requirements", score: 4 },
     { term: "jouw profiel", score: 4 },
+    { term: "key responsibilities", score: 4 },
+    { term: "minimum qualifications", score: 4 },
+    { term: "preferred qualifications", score: 3 },
     { term: "qualifications", score: 3 },
     { term: "requirements", score: 3 },
     { term: "responsibilities", score: 3 },
+    { term: "the role", score: 3 },
     { term: "wat breng je mee", score: 4 },
     { term: "wat bieden wij", score: 4 },
+    { term: "wat je gaat doen", score: 4 },
+    { term: "wat we zoeken", score: 4 },
     { term: "what we are looking for", score: 4 },
     { term: "what we're looking for", score: 4 },
     { term: "what you will do", score: 4 },
@@ -170,7 +199,9 @@
     { term: "wij bieden", score: 3 },
     { term: "we offer", score: 3 },
     { term: "solliciteer", score: 3 },
+    { term: "sollicitatieproces", score: 3 },
     { term: "apply", score: 2 },
+    { term: "freelance", score: 2 },
     { term: "werkzaamheden", score: 3 },
     { term: "verantwoordelijkheden", score: 3 },
     { term: "vereisten", score: 3 },
@@ -207,6 +238,25 @@
     { term: "master", score: 2 }
   ];
 
+  const LANGUAGE_TERMS = new Set([
+    "dutch", "english", "nederlands", "engels", "french", "german", "spanish"
+  ]);
+
+  const RECURRING_STOPWORDS = new Set([
+    "alle", "apply", "based", "base", "candidate", "candidates", "company", "comply", "data", "details",
+    "development", "duties", "experience", "global", "home", "jobs", "location", "main", "netherlands",
+    "overview", "page", "pages", "performance", "position", "project", "projects", "quality", "remote",
+    "role", "roles", "section", "site", "support", "suriname", "team", "teams", "week", "weeks", "website",
+    "welo", "work", "working"
+  ]);
+
+  const CATEGORY_PRIORITY = {
+    qualification: 4,
+    hard: 3,
+    soft: 2,
+    theme: 1
+  };
+
   function escapeRegex(value) {
     return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   }
@@ -229,6 +279,29 @@
       .join(" ");
   }
 
+  function choosePreferredCategory(left, right) {
+    return CATEGORY_PRIORITY[left] >= CATEGORY_PRIORITY[right] ? left : right;
+  }
+
+  function createDictionaryCategoryMap() {
+    const map = new Map();
+
+    DICTIONARY.forEach((item) => {
+      const current = map.get(item.term);
+      if (!current) {
+        map.set(item.term, item.category);
+        return;
+      }
+
+      map.set(item.term, choosePreferredCategory(current, item.category));
+    });
+
+    return map;
+  }
+
+  const DICTIONARY_CATEGORY_BY_TERM = createDictionaryCategoryMap();
+  const DICTIONARY_TERMS = new Set(DICTIONARY.map((item) => item.term));
+
   function pushResult(bucket, entry) {
     const existing = bucket.find((item) => item.term === entry.term && item.category === entry.category);
     if (existing) {
@@ -238,6 +311,19 @@
     }
 
     bucket.push(entry);
+  }
+
+  function normalizeCategoryForTerm(term, category) {
+    if (LANGUAGE_TERMS.has(term)) {
+      return "qualification";
+    }
+
+    const dictionaryCategory = DICTIONARY_CATEGORY_BY_TERM.get(term);
+    if (!dictionaryCategory) {
+      return category;
+    }
+
+    return choosePreferredCategory(dictionaryCategory, category);
   }
 
   function detectDictionaryMatches(text) {
@@ -290,10 +376,11 @@
       let match;
       while ((match = patternConfig.regex.exec(text)) !== null) {
         splitSignalChunk(match[1]).forEach((term) => {
+          const category = normalizeCategoryForTerm(term, patternConfig.category);
           pushResult(results, {
             term,
             label: titleCase(term),
-            category: patternConfig.category,
+            category,
             count: 1,
             score: 4,
             source: "signal"
@@ -340,8 +427,14 @@
       strongKeywordCount,
       evidenceScore,
       isLikelyVacancy:
-        markerScore >= 5 &&
-        (strongKeywordCount >= 2 || matchedMarkers.length >= 4 || evidenceScore >= 10)
+        (
+          markerScore >= 5 &&
+          (strongKeywordCount >= 2 || matchedMarkers.length >= 4 || evidenceScore >= 10)
+        ) ||
+        (
+          markerScore >= 4 &&
+          strongKeywordCount >= 3
+        )
     };
   }
 
@@ -351,7 +444,14 @@
 
     words.forEach((rawWord) => {
       const word = normalizePhrase(rawWord);
-      if (word.length < 4 || STOPWORDS.has(word) || /^\d+$/.test(word)) {
+      if (
+        word.length < 5 ||
+        STOPWORDS.has(word) ||
+        RECURRING_STOPWORDS.has(word) ||
+        DICTIONARY_TERMS.has(word) ||
+        LANGUAGE_TERMS.has(word) ||
+        /^\d+$/.test(word)
+      ) {
         return;
       }
 
@@ -367,7 +467,7 @@
 
         return right[0].length - left[0].length;
       })
-      .slice(0, 8)
+      .slice(0, 6)
       .map(([term, count]) => ({
         term,
         label: titleCase(term),
@@ -389,6 +489,25 @@
       seen.add(key);
       return true;
     });
+  }
+
+  function mergeResultsByTerm(items) {
+    const merged = new Map();
+
+    items.forEach((item) => {
+      const existing = merged.get(item.term);
+      if (!existing) {
+        merged.set(item.term, { ...item });
+        return;
+      }
+
+      existing.count += item.count;
+      existing.score += item.score;
+      existing.category = choosePreferredCategory(existing.category, item.category);
+      existing.source = existing.source === item.source ? existing.source : "mixed";
+    });
+
+    return Array.from(merged.values());
   }
 
   function uniqueTerms(items) {
@@ -459,11 +578,11 @@
 
     const recurringTerms = detectRecurringTerms(text);
 
-    const combined = uniqueByTerm([
+    const combined = mergeResultsByTerm(uniqueByTerm([
       ...dictionaryMatches,
       ...signalMatches,
       ...recurringTerms
-    ]);
+    ]));
 
     const grouped = groupResults(combined);
 
