@@ -1,6 +1,6 @@
 === WerkCV Salaris Tools ===
 Contributors: werkcv
-Tags: salaris calculator, netto bruto, vakantiegeld, minimumloon, nederland
+Tags: salary calculator, net pay, holiday pay, minimum wage, netherlands
 Requires at least: 6.4
 Tested up to: 6.9
 Requires PHP: 8.0
@@ -8,45 +8,45 @@ Stable tag: 0.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Voeg Nederlandse salaris-tools toe aan je WordPress-site met Gutenberg-blokken en shortcodes.
+Add Dutch salary tools to your WordPress site with Gutenberg blocks and shortcodes.
 
 == Description ==
 
-WerkCV Salaris Tools helpt Nederlandse career-, HR- en expat-sites om praktische salaris-tools toe te voegen zonder maatwerk of eigen rekenlogica.
+WerkCV Salaris Tools helps Dutch career, HR, and expat sites add practical salary tools without custom development or local calculation logic.
 
-De plugin gebruikt hosted embeds van WerkCV.nl. Daardoor kun je snel bruikbare NL-tools plaatsen zonder zelf fiscale logica, salarisstaffels of updates te onderhouden.
+The plugin uses hosted embeds from WerkCV.nl. This makes it possible to publish useful Netherlands-focused salary tools without maintaining tax rules, salary tables, or yearly updates inside WordPress.
 
-Inbegrepen in deze versie:
+Included in this version:
 
-* Netto-bruto calculator
-* Vakantiegeld calculator
-* Minimumloon / uurloon checker
+* Net-to-gross salary calculator
+* Holiday pay calculator
+* Minimum wage / hourly wage checker
 
-Gebruiksvormen:
+Available as:
 
-* Gutenberg-blokken
+* Gutenberg blocks
 * Shortcodes
 
-Praktisch voor:
+Useful for:
 
-* loopbaanblogs
-* HR- en recruitmentsites
-* onderwijs- en career-service pagina's
-* expat- en relocationcontent
+* career blogs
+* HR and recruitment sites
+* education and career service pages
+* expat and relocation content
 
-Belangrijke notitie:
+Important notes:
 
-* De plugin forceert geen publieke backlink.
-* Een WerkCV CTA en footer-credit zijn optioneel.
-* Support en privacy-info staan op WerkCV.nl.
+* The plugin does not require a public backlink.
+* WerkCV CTA and footer credit options are optional and disabled by default.
+* Support and privacy information are published on WerkCV.nl.
 
 == Installation ==
 
-1. Upload en activeer de plugin.
-2. Voeg een blok toe of gebruik een shortcode.
-3. Pas optionele instellingen aan onder Instellingen -> WerkCV Salaris Tools.
+1. Upload and activate the plugin.
+2. Insert a block or use a shortcode.
+3. Adjust optional settings under Settings -> WerkCV Salaris Tools.
 
-Shortcode voorbeelden:
+Shortcode examples:
 
 * `[werkcv_netto_bruto]`
 * `[werkcv_vakantiegeld]`
@@ -54,37 +54,37 @@ Shortcode voorbeelden:
 
 == Frequently Asked Questions ==
 
-= Werkt dit met Gutenberg? =
+= Does it work with Gutenberg? =
 
-Ja. De plugin bevat drie Gutenberg-blokken voor de meegeleverde tools.
+Yes. The plugin includes three Gutenberg blocks for the included tools.
 
-= Kan ik de tools met shortcodes plaatsen? =
+= Can I place the tools with shortcodes? =
 
-Ja. Je kunt per tool een shortcode gebruiken of de generieke shortcodevariant toepassen.
+Yes. You can use a shortcode per tool or the generic shortcode variant.
 
-= Moet ik een WerkCV-account hebben? =
+= Do I need a WerkCV account? =
 
-Nee. Voor het embedden van de tools is geen WerkCV-account nodig.
+No. A WerkCV account is not required to embed the tools.
 
-= Wordt er automatisch een backlink geplaatst? =
+= Is a backlink added automatically? =
 
-Nee. Een optionele WerkCV-link kan in instellingen worden aangezet.
+No. An optional WerkCV link can be enabled in the settings.
 
-= Waar vind ik support en privacy-info? =
+= Where can I find support and privacy information? =
 
 Support: `https://werkcv.nl/wordpress/salaris-tools-plugin`  
-Installatie: `https://werkcv.nl/wordpress/salaris-tools-plugin/installatie`  
+Installation: `https://werkcv.nl/wordpress/salaris-tools-plugin/installatie`  
 Privacy: `https://werkcv.nl/wordpress/salaris-tools-plugin/privacy`
 
 == Screenshots ==
 
-1. Gutenberg blok selector met de drie WerkCV-tools
-2. Netto-bruto calculator op een gepubliceerde pagina
-3. Instellingenpagina voor CTA, footer en standaardthema
-4. Mobiele weergave van een embedded tool
+1. Gutenberg block selector with the three WerkCV tools
+2. Net-to-gross calculator on a published page
+3. Settings page for CTA, footer credit, and default theme
+4. Mobile view of an embedded tool
 
 == Changelog ==
 
 = 0.1.0 =
 
-Eerste release met 3 Nederlandse salaris-tools, shortcode-ondersteuning en Gutenberg-blokken.
+Initial release with 3 Dutch salary tools, shortcode support, and Gutenberg blocks.

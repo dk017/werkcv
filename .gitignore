@@ -58,6 +58,8 @@ nul
 
 # Screenshots
 screenshots/
+!wordpress-plugin/werkcv-salaris-tools/screenshots/
+!wordpress-plugin/werkcv-salaris-tools/screenshots/*.png
 
 /app/generated/prisma
 

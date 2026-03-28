@@ -47,7 +47,7 @@ class WerkCV_Salaris_Tools_Blocks {
                     'attributes' => array(
                         'cta' => array(
                             'type' => 'boolean',
-                            'default' => true,
+                            'default' => false,
                         ),
                         'footer' => array(
                             'type' => 'boolean',

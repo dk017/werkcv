@@ -16,7 +16,11 @@ if (-not (Test-Path $pluginDir)) {
 New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null
 
 if (Test-Path $pluginZip) {
-  Remove-Item $pluginZip -Force
+  try {
+    Remove-Item $pluginZip -Force
+  } catch {
+    $pluginZip = Join-Path $artifactDir ("werkcv-salaris-tools-{0}.zip" -f (Get-Date -Format "yyyyMMdd-HHmmss"))
+  }
 }
 
 Compress-Archive -Path (Join-Path $pluginDir "*") -DestinationPath $pluginZip -Force
@@ -57,8 +61,8 @@ try {
   Write-Output "Plugin activated."
 
   Invoke-Expression "$wp option update werkcv_tools_default_theme light"
-  Invoke-Expression "$wp option update werkcv_tools_enable_cta 1"
-  Invoke-Expression "$wp option update werkcv_tools_enable_footer_credit 1"
+  Invoke-Expression "$wp option update werkcv_tools_enable_cta 0"
+  Invoke-Expression "$wp option update werkcv_tools_enable_footer_credit 0"
 
   $existingId = Invoke-Expression "$wp post list --post_type=page --name=$pageSlug --field=ID"
 
@@ -80,4 +84,3 @@ try {
 } finally {
   Pop-Location
 }
-

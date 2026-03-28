@@ -10,7 +10,7 @@
   "attributes": {
     "cta": {
       "type": "boolean",
-      "default": true
+      "default": false
     },
     "footer": {
       "type": "boolean",

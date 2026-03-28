@@ -8,7 +8,7 @@ class WerkCV_Salaris_Tools_Settings {
     public static function get_defaults() {
         return array(
             'werkcv_tools_default_theme' => 'light',
-            'werkcv_tools_enable_cta' => '1',
+            'werkcv_tools_enable_cta' => '0',
             'werkcv_tools_enable_footer_credit' => '0',
             'werkcv_tools_open_links_new_tab' => '1',
         );
@@ -110,14 +110,14 @@ class WerkCV_Salaris_Tools_Settings {
     public function render_cta_field() {
         $this->render_checkbox(
             'werkcv_tools_enable_cta',
-            __('Toon een optionele WerkCV CTA onder de tool.', 'werkcv-salaris-tools')
+            __('Toon een optionele WerkCV CTA onder de tool. Standaard uit.', 'werkcv-salaris-tools')
         );
     }
 
     public function render_footer_credit_field() {
         $this->render_checkbox(
             'werkcv_tools_enable_footer_credit',
-            __('Toon een optionele WerkCV footerlink op de publieke site.', 'werkcv-salaris-tools')
+            __('Toon een optionele WerkCV footerlink op de publieke site. Standaard uit.', 'werkcv-salaris-tools')
         );
     }
 
