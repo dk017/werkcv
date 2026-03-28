@@ -25,6 +25,12 @@ export interface SeoRelatedLink {
     description: string;
 }
 
+export interface SeoSourceLink {
+    label: string;
+    href: string;
+    note?: string;
+}
+
 export interface SeoGuidePage {
     slug: string;
     title: string;
@@ -38,6 +44,7 @@ export interface SeoGuidePage {
     checklist: string[];
     faq: SeoFaq[];
     relatedLinks: SeoRelatedLink[];
+    sources?: SeoSourceLink[];
     ctaTitle: string;
     ctaText: string;
     ctaHref: string;

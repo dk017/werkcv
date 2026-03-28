@@ -54,6 +54,11 @@ export const cvZonderWerkervaring: BlogArticle = {
             ],
             intentLinks: [
                 {
+                    href: '/cv-gids/cv-voorbeeld-zonder-ervaring',
+                    label: 'Gebruik het BOFU CV voorbeeld zonder ervaring',
+                    description: 'Pak een kortere, copy-ready versie als je direct wilt solliciteren met opleiding, stage en bijbaan.',
+                },
+                {
                     href: '/cv-maken-student',
                     label: 'CV maken als student met de juiste starter-opbouw',
                     description: 'Gebruik direct een volgorde die opleiding, stage en bijbaan slim prioriteert.',
@@ -122,6 +127,11 @@ export const cvZonderWerkervaring: BlogArticle = {
                 'Selecteer bijbanen die het meest relevant zijn voor de vacature. Als je solliciteert op een HR-functie en je hebt gewerkt als oproepkracht bij een uitzendbureau, toont dat kennis van flexibele arbeidsmarkt en personeelsadministratie. Als je solliciteert als developer en je enige bijbaan was in een supermarkt, vermeld hem dan in 1 regel — maar laat hem er zeker op staan als je nog weinig andere ervaring hebt.',
             ],
             intentLinks: [
+                {
+                    href: '/cv-gids/cv-voorbeeld-student-bijbaan',
+                    label: 'Gebruik het student-bijbaan voorbeeld voor snelle sollicitaties',
+                    description: 'Handig als je vooral een compact CV nodig hebt voor winkel-, horeca- of weekendwerk.',
+                },
                 {
                     href: '/cv-maken-15-jarige',
                     label: 'CV maken als 15-jarige voor je eerste bijbaan',

@@ -80,6 +80,9 @@ const clusterSummaries: Record<string, string> = {
 
 const popularRoleLinks = [
     { label: 'CV voorbeeld student', href: '/cv-voorbeelden/studenten-en-starters/student-cv' },
+    { label: 'CV voorbeeld zonder ervaring', href: '/cv-gids/cv-voorbeeld-zonder-ervaring' },
+    { label: 'CV voorbeeld student bijbaan', href: '/cv-gids/cv-voorbeeld-student-bijbaan' },
+    { label: 'CV horeca voorbeeld', href: '/cv-gids/cv-voorbeeld-horeca-medewerker' },
     { label: 'CV voorbeeld stage', href: '/cv-voorbeelden/studenten-en-starters/stage-cv' },
     { label: 'CV voorbeeld verpleegkundige', href: '/cv-voorbeelden/zorg-en-welzijn/verpleegkundige' },
     { label: 'CV voorbeeld software ontwikkelaar', href: '/cv-voorbeelden/technologie-en-ict/software-ontwikkelaar' },
@@ -90,6 +93,7 @@ const popularRoleLinks = [
     { label: 'CV voorbeeld marketing manager', href: '/cv-voorbeelden/marketing-en-communicatie/marketing-manager' },
     { label: 'CV voorbeeld juridisch medewerker', href: '/cv-voorbeelden/juridisch-en-overheid/juridisch-medewerker' },
     { label: 'CV voorbeeld magazijnmedewerker', href: '/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker' },
+    { label: 'CV magazijnmedewerker zonder ervaring', href: '/cv-gids/cv-voorbeeld-magazijnmedewerker-zonder-ervaring' },
     { label: 'CV voorbeeld timmerman', href: '/cv-voorbeelden/bouw-en-techniek/timmerman' },
 ];
 

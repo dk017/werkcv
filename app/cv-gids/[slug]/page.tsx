@@ -215,6 +215,28 @@ export default async function DutchWavePage({ params }: PageProps) {
                     </div>
                 </section>
 
+                {page.sources && page.sources.length > 0 && (
+                    <section className="mt-12">
+                        <h2 className="text-2xl font-black mb-4 text-gray-900">Bronnen</h2>
+                        <div className="space-y-4">
+                            {page.sources.map((source) => (
+                                <a
+                                    key={source.href}
+                                    href={source.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block bg-white border-3 border-black p-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-transform"
+                                >
+                                    <h3 className="font-black text-sm text-gray-900 mb-1">{source.label}</h3>
+                                    {source.note && (
+                                        <p className="text-sm text-gray-700">{source.note}</p>
+                                    )}
+                                </a>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
                 <CtaExperiment
                     locale="nl"
                     slug={page.slug}

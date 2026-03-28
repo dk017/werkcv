@@ -71,6 +71,11 @@ export const cvMakenAlsStudent: BlogArticle = {
                     description: 'Ga meteen naar een pagina die is opgebouwd rond starters, stages en studie.',
                 },
                 {
+                    href: '/cv-gids/cv-voorbeeld-zonder-ervaring',
+                    label: 'Gebruik een direct CV voorbeeld zonder ervaring',
+                    description: 'Pak een compact BOFU voorbeeld als je snel van school, stage of project naar sollicitatie wilt gaan.',
+                },
+                {
                     href: '/gratis-cv-maken',
                     label: 'Gratis CV maken en daarna per vacature aanscherpen',
                     description: 'Start snel met een basisversie zonder direct in Word of losse sjablonen te duiken.',
@@ -117,6 +122,16 @@ export const cvMakenAlsStudent: BlogArticle = {
                 'Stages verdienen extra aandacht. Een stage is vaak al relevanter voor je gewenste baan dan een bijbaan. Beschrijf je stageproject, de opdrachtgever en wat je hebt opgeleverd. Kwantificeer waar mogelijk: "Ontwikkelde een content-strategie die het bereik van de LinkedIn-pagina met 40% verhoogde in 3 maanden." Als je nog geen stage hebt gehad, zet dan in je CV dat je actief op zoek bent naar een stageplek voor [semester/jaar].',
             ],
             intentLinks: [
+                {
+                    href: '/cv-gids/cv-voorbeeld-student-bijbaan',
+                    label: 'Gebruik het student-bijbaan voorbeeld voor een korte sollicitatieversie',
+                    description: 'Handig als je vooral avonden, weekenden of vakantiewerk zoekt naast je studie.',
+                },
+                {
+                    href: '/cv-gids/cv-voorbeeld-horeca-medewerker',
+                    label: 'Gebruik de horeca-variant voor restaurant, cafe of fastservice',
+                    description: 'Pak een meer praktische versie als gastvrijheid, tempo en beschikbaarheid centraal staan.',
+                },
                 {
                     href: '/stage-cv-maken',
                     label: 'Stage CV maken met stageprojecten als hoofdonderdeel',

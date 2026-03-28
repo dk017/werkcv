@@ -267,6 +267,16 @@ export default function CvMakenStudentPage() {
               title: "Stage CV maken",
               body: "Ga door naar de aparte stage-zoekintentie.",
             },
+            {
+              href: "/cv-gids/cv-voorbeeld-student-bijbaan",
+              title: "CV voorbeeld student bijbaan",
+              body: "Pak een kort, scanbaar voorbeeld voor winkel-, horeca- of logistiek werk naast je studie.",
+            },
+            {
+              href: "/cv-gids/cv-voorbeeld-zonder-ervaring",
+              title: "CV zonder ervaring",
+              body: "Gebruik de BOFU gids als school, stage en kleine jobs nu nog je belangrijkste bewijs zijn.",
+            },
           ].map((item) => (
             <Link
               key={item.href}
@@ -282,7 +292,7 @@ export default function CvMakenStudentPage() {
         </section>
 
         <section className="mb-14">
-          <h2 className="text-3xl font-black text-black">Veelgestelde vragen over student-CV's</h2>
+          <h2 className="text-3xl font-black text-black">Veelgestelde vragen over student-CV&apos;s</h2>
           <div className="mt-6 space-y-4">
             {faqs.map((faq) => (
               <article

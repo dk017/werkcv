@@ -138,6 +138,11 @@ const faqs = [
 
 const adminTemplateIntentLinks = [
   {
+    href: "/cv-gids/cv-voorbeeld-administratief-medewerker-parttime",
+    label: "CV voorbeeld administratief medewerker parttime",
+    description: "Gebruik deze variant als je beschikbaarheid, overdracht en parttime uren extra goed moet positioneren.",
+  },
+  {
     href: "/cv-aanmaken",
     label: "CV aanmaken voor administratief werk",
     description: "Gebruik een directe route naar een rustige sollicitatieversie voor administratie en backoffice.",

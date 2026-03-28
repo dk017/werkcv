@@ -26,18 +26,28 @@ type ContentPack = {
 type SectionOverride = Partial<SeoGuidePage['sections'][number]>;
 
 type GuideOverride = {
+    title?: string;
+    description?: string;
+    metaTitle?: string;
+    metaDesc?: string;
+    keywords?: string[];
     intro?: string;
     checklist?: string[];
     faq?: SeoGuidePage['faq'];
     relatedLinks?: SeoGuidePage['relatedLinks'];
+    sources?: SeoGuidePage['sources'];
+    ctaTitle?: string;
     ctaText?: string;
+    ctaHref?: string;
     sectionOverrides?: Record<string, SectionOverride>;
 };
 
 const dutchSeeds: DutchSeed[] = [
     { slug: 'cv-voorbeeld-administratief-medewerker', keyword: 'cv voorbeeld administratief medewerker', role: 'administratief medewerker', painPoint: 'je taken concreet en meetbaar te maken' },
+    { slug: 'cv-voorbeeld-administratief-medewerker-parttime', keyword: 'cv administratief medewerker parttime', role: 'administratief medewerker parttime', painPoint: 'nauwkeurigheid en parttime inzet professioneel te combineren' },
     { slug: 'cv-voorbeeld-klantenservice-medewerker', keyword: 'cv voorbeeld klantenservice medewerker', role: 'klantenservice medewerker', painPoint: 'zowel soft skills als KPI-resultaten te laten zien' },
     { slug: 'cv-voorbeeld-verkoopmedewerker', keyword: 'cv voorbeeld verkoopmedewerker', role: 'verkoopmedewerker', painPoint: 'commerciele resultaten kort en overtuigend te benoemen' },
+    { slug: 'cv-voorbeeld-horeca-medewerker', keyword: 'cv horeca voorbeeld', role: 'horeca medewerker', painPoint: 'gastvrijheid, tempo en betrouwbaarheid tegelijk overtuigend te laten zien' },
     { slug: 'cv-voorbeeld-callcenter-medewerker', keyword: 'cv voorbeeld callcenter medewerker', role: 'callcenter medewerker', painPoint: 'gesprekskwaliteit en targets goed te bewijzen' },
     { slug: 'cv-voorbeeld-receptionist', keyword: 'cv voorbeeld receptionist', role: 'receptionist', painPoint: 'servicegerichtheid en organisatiekracht in balans te tonen' },
     { slug: 'cv-voorbeeld-office-manager', keyword: 'cv voorbeeld office manager', role: 'office manager', painPoint: 'coordinatie, planning en eigenaarschap scherp neer te zetten' },
@@ -51,6 +61,9 @@ const dutchSeeds: DutchSeed[] = [
     { slug: 'cv-voorbeeld-productiemedewerker', keyword: 'cv voorbeeld productiemedewerker', role: 'productiemedewerker', painPoint: 'werktempo en betrouwbaarheid goed te onderbouwen' },
     { slug: 'cv-voorbeeld-schoonmaakmedewerker', keyword: 'cv voorbeeld schoonmaakmedewerker', role: 'schoonmaakmedewerker', painPoint: 'nauwkeurigheid en zelfstandigheid professioneel te verwoorden' },
     { slug: 'cv-voorbeeld-bezorger', keyword: 'cv voorbeeld bezorger', role: 'bezorger', painPoint: 'service, punctualiteit en route-efficientie te laten terugkomen' },
+    { slug: 'cv-voorbeeld-zonder-ervaring', keyword: 'cv zonder ervaring', role: 'starter', painPoint: 'relevantie te tonen zonder formele werkervaring' },
+    { slug: 'cv-voorbeeld-magazijnmedewerker-zonder-ervaring', keyword: 'cv magazijnmedewerker zonder ervaring', role: 'magazijnmedewerker starter', painPoint: 'praktische inzet en leerbaarheid te bewijzen zonder direct magazijnverleden' },
+    { slug: 'cv-voorbeeld-student-bijbaan', keyword: 'cv student voorbeeld', role: 'student bijbaan', painPoint: 'studie, beschikbaarheid en werkhouding in weinig regels overtuigend te tonen' },
     { slug: 'cv-zonder-ervaring-mbo', keyword: 'cv zonder ervaring mbo', role: 'MBO-starter', painPoint: 'relevantie te creeren zonder formele werkervaring' },
     { slug: 'cv-zonder-ervaring-hbo', keyword: 'cv zonder ervaring hbo', role: 'HBO-starter', painPoint: 'stage-, project- en studieresultaten slim te positioneren' },
     { slug: 'engels-cv-in-nederland', keyword: 'engels cv in nederland', role: 'internationale kandidaat', painPoint: 'Nederlandse verwachtingen met Engelse inhoud te combineren' },
@@ -395,6 +408,151 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
             },
         ],
     },
+    'cv-voorbeeld-administratief-medewerker-parttime': {
+        title: 'CV voorbeeld administratief medewerker parttime (2026)',
+        description: 'Praktische gids voor een parttime administratief CV, met voorbeeldprofielen, werkervaring, softwaretermen en een check voor recruiters.',
+        metaTitle: 'CV voorbeeld administratief medewerker parttime (2026) | WerkCV.nl',
+        metaDesc: 'Gebruik dit parttime CV voorbeeld voor administratief medewerker. Met profieltekst, Excel- en dossierbeheer skills, werkervaring en beschikbaarheid.',
+        keywords: [
+            'cv administratief medewerker parttime',
+            'parttime administratief medewerker cv',
+            'administratief medewerker parttime voorbeeld',
+            'administratie cv voorbeeld',
+            'backoffice cv parttime',
+        ],
+        intro: 'Een parttime administratief CV moet twee dingen tegelijk bewijzen: dat je foutarm en gestructureerd werkt, en dat jouw beperkte uren geen risico vormen voor planning, overdracht en opvolging. UWV noteerde eind 2025 nog altijd ongeveer 70.000 open vacatures in administratieve beroepen, maar ziet tegelijk dat klassiek administratief en secretarieel werk al jaren onder druk staat. Juist daarom moet je CV concreet zijn over systemen, werktempo en betrouwbaarheid.',
+        relatedLinks: [
+            {
+                href: '/templates',
+                title: 'Start met een ATS-proof CV template',
+                description: 'Gebruik dit parttime voorbeeld direct in een rustige template en werk je eigen versie af in de editor.',
+            },
+            {
+                href: '/cv-template-administratief-medewerker',
+                title: 'Administratief medewerker template',
+                description: 'Gebruik een template die ruimte geeft aan profieltekst, systemen en foutarme werkervaring.',
+            },
+            {
+                href: '/cv-gids/cv-voorbeeld-administratief-medewerker',
+                title: 'Algemeen CV voorbeeld administratief medewerker',
+                description: 'Vergelijk je parttime versie met de bredere administratieve parent-pagina en pak de sterkste formuleringen mee.',
+            },
+        ],
+        sources: [
+            {
+                label: 'UWV - Administratieve beroepen',
+                href: 'https://www.uwv.nl/nl/arbeidsmarktinformatie/sector/administratieve-beroepen',
+                note: 'Actueel sectorbeeld met vacaturevolume, WW-ontwikkelingen en de waarschuwing dat klassiek administratief en secretarieel werk structureel afneemt.',
+            },
+            {
+                label: 'CBS - Weer meer mensen met grote deeltijdbanen',
+                href: 'https://www.cbs.nl/nl-nl/nieuws/2025/46/weer-meer-mensen-met-grote-deeltijdbanen',
+                note: 'CBS meldde op 13 november 2025 dat bijna 1,9 miljoen mensen 28 tot 35 uur per week werkten in Q3 2025.',
+            },
+        ],
+        ctaTitle: 'Maak je parttime administratieve CV direct af',
+        ctaText: 'Gebruik dit voorbeeld in een ATS-proof template, zet je dagen en systemen helder neer, en exporteer daarna een nette PDF voor je sollicitatie.',
+        sectionOverrides: {
+            'recruiter-scan': {
+                title: 'Hoe recruiters een parttime administratief CV beoordelen',
+                paragraphs: [
+                    'Bij parttime administratieve functies zoeken recruiters niet alleen naar nauwkeurigheid, maar ook naar voorspelbaarheid. Ze willen zien dat jij in minder uren toch grip houdt op mailboxen, dossiers, facturen, planning en overdracht.',
+                    'Algemene zinnen als "ik ben nauwkeurig" zijn hier niet genoeg. Laat liever zien welke systemen je gebruikte, welke foutmarge of doorlooptijd je verbeterde, en hoe je taken overdraagt wanneer je niet alle werkdagen aanwezig bent.',
+                ],
+                bullets: [
+                    'Noem direct je meest relevante systemen, bijvoorbeeld Excel, AFAS, Exact, SAP of Office 365.',
+                    'Maak je parttime inzet concreet: aantal uren, voorkeursdagen of vaste beschikbaarheid als dat voor de vacature relevant is.',
+                    'Gebruik voorbeelden die rust, foutarme verwerking en betrouwbare opvolging zichtbaar maken.',
+                ],
+            },
+            profieltekst: {
+                exampleItems: [
+                    'Administratief medewerker met ervaring in factuurverwerking, dossierbeheer en agendacoordinatie. Werkt foutarm, houdt overzicht en zorgt ook in parttime inzet voor duidelijke overdracht en stabiele opvolging.',
+                    'Parttime backoffice professional met sterke basis in Excel, mailboxbeheer en documentcontrole. Combineert nauwkeurigheid met heldere communicatie richting collega s, leveranciers en klanten.',
+                    'Financieel-administratief medewerker met ervaring in orderadministratie, declaraties en rapportage. Zoekt een parttime rol waarin betrouwbaarheid, structuur en tempo zichtbaar gewaardeerd worden.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-template-administratief-medewerker',
+                        label: 'Gebruik een administratieve template met rustige, scanbare opbouw',
+                        description: 'Zet profiel, systemen en recente werkervaring in een layout die recruiters snel kunnen lezen.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Start direct je eigen parttime administratieve CV',
+                        description: 'Neem dit voorbeeld over in de editor en maak daarna per vacature kleine varianten.',
+                    },
+                ],
+            },
+            werkervaring: {
+                exampleItems: [
+                    'Factuurcontrole en dossieropvolging gestandaardiseerd, waardoor correctierondes met 24% afnamen.',
+                    'Gedeelde mailbox en actielijst beheerd voor meerdere teams, met snellere opvolging en minder openstaande verzoeken aan het einde van de week.',
+                    'Excel-overzicht ingericht voor terugkerende betalingen en deadlines, waardoor achterstanden eerder zichtbaar werden en tijdig konden worden opgelost.',
+                    'Heldere overdracht per werkdag ingevoerd, zodat collega s lopende dossiers zonder informatieverlies konden overnemen.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/werkervaring-cv-voorbeelden',
+                        label: 'Maak van administratieve taken sterkere bullets',
+                        description: 'Zie hoe je verwerking, controle en opvolging omzet in kortere resultaatgerichte zinnen.',
+                    },
+                    {
+                        href: '/cv-tips/cv-werkervaring-beschrijven',
+                        label: 'Verdiep je werkervaring met actie plus resultaat',
+                        description: 'Handig als je wel taken hebt, maar nog niet duidelijk genoeg laat zien wat jouw impact was.',
+                    },
+                ],
+            },
+            ats: {
+                bullets: [
+                    'Belangrijke termen voor dit type functie zijn vaak: Excel, Office 365, facturatie, dossierbeheer, agendabeheer, mailboxbeheer en administratieve verwerking.',
+                    'Zet alleen software op je CV die je in gesprek ook concreet kunt toelichten.',
+                    'Noem parttime beschikbaarheid professioneel en feitelijk: bijvoorbeeld 24-28 uur, maandag tot en met donderdag of flexibel inzetbaar binnen kantooruren.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/vaardigheden-cv-voorbeelden',
+                        label: 'Kies de juiste administratieve vaardigheden voor je CV',
+                        description: 'Gebruik alleen vaardigheden die logisch terugkomen in je recente werk en systemen.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Werk je parttime CV direct uit in een ATS-proof template',
+                        description: 'Gebruik standaardkopjes en een rustige opmaak zodat recruitersoftware alles goed uitleest.',
+                    },
+                ],
+            },
+            'final-check': {
+                title: 'Final check voor je parttime administratieve CV',
+                bullets: [
+                    'Je profieltekst noemt direct je administratieve focus en parttime inzet waar relevant.',
+                    'Systemen en software zijn specifiek genoemd in plaats van vaag samengevat als "computerkennis".',
+                    'Werkervaring laat foutarme verwerking, planning of overdracht zien.',
+                    'Beschikbaarheid is duidelijk maar niet het enige verkoopargument van je CV.',
+                    'Bestandsnaam, datumnotatie en contactgegevens zijn volledig consistent.',
+                ],
+            },
+        },
+        faq: [
+            {
+                question: 'Moet ik parttime in mijn profieltekst noemen?',
+                answer: 'Alleen als het voor de vacature of je beschikbaarheid belangrijk is. Je profieltekst moet eerst je administratieve waarde tonen, daarna pas je urencontext.',
+            },
+            {
+                question: 'Welke software moet op een administratief CV staan?',
+                answer: 'Noem alleen systemen waarmee je echt hebt gewerkt, zoals Excel, AFAS, Exact, SAP of Office 365. Recruiters prikken snel door algemene softwarelijsten heen.',
+            },
+            {
+                question: 'Is Excel nog belangrijk op een administratief CV?',
+                answer: 'Ja. Excel blijft in veel administratieve vacatures een harde basisvaardigheid, vooral als je controles, overzichten of rapportage ondersteunt.',
+            },
+            {
+                question: 'Hoe vermeld ik meerdere korte administratieve opdrachten?',
+                answer: 'Groepeer soortgelijke opdrachten waar dat kan en benadruk terugkerende patronen: verwerking, controle, opvolging, planning en systeemgebruik.',
+            },
+        ],
+    },
     'cv-voorbeeld-klantenservice-medewerker': {
         intro: 'Bij klantenservice draait selectie om twee dingen: klanttevredenheid en consistente performance. Dit CV helpt je precies die combinatie zichtbaar te maken.',
         sectionOverrides: {
@@ -469,6 +627,601 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
             {
                 question: 'Wat maakt een verkoop CV zwak?',
                 answer: 'Algemene claims als "commercieel ingesteld" zonder bewijs in concrete verkoopresultaten.',
+            },
+        ],
+    },
+    'cv-voorbeeld-horeca-medewerker': {
+        title: 'CV voorbeeld horeca medewerker (restaurant / cafe)',
+        description: 'BOFU gids voor een horeca-CV met profieltekst, beschikbaarheid, werkervaring en recruiterproof voorbeeldzinnen voor restaurant, cafe en fastservice.',
+        metaTitle: 'CV voorbeeld horeca medewerker (2026) | WerkCV.nl',
+        metaDesc: 'Gebruik dit horeca CV voorbeeld voor restaurant, cafe of fastservice. Met profieltekst, werkervaring, skills en tips voor starters en bijbanen.',
+        keywords: [
+            'cv horeca voorbeeld',
+            'cv voorbeeld horecamedewerker',
+            'horeca cv',
+            'restaurant cv voorbeeld',
+            'cafe cv voorbeeld',
+        ],
+        intro: 'Een horeca-CV wordt vaak snel beoordeeld: ben je gastvrij, houd je tempo onder druk, en ben je inzetbaar op de momenten dat het echt druk is? UWV telde in het vierde kwartaal van 2025 nog altijd meer dan 22.000 open vacatures in de horeca. Tegelijk laat CBS zien dat 58% van de werkenden in de horeca 15 tot 25 jaar is. Dat betekent dat jouw CV niet lang hoeft te zijn, maar wel direct service, betrouwbaarheid en beschikbaarheid moet laten zien.',
+        relatedLinks: [
+            {
+                href: '/templates',
+                title: 'Start direct met een horeca CV template',
+                description: 'Gebruik dit voorbeeld in een rustige template en maak daarna per werkgever een snellere variant.',
+            },
+            {
+                href: '/cv-voorbeelden/horeca-en-detailhandel/ober-serveerster',
+                title: 'CV voorbeeld bediening',
+                description: 'Bekijk een specifieker voorbeeld voor tafelservice, gastcontact en werken in piekuren.',
+            },
+            {
+                href: '/cv-maken-student',
+                title: 'Student-CV voor stage of bijbaan',
+                description: 'Handig als jouw horeca-sollicitatie vooral draait om een bijbaan naast school of studie.',
+            },
+        ],
+        sources: [
+            {
+                label: 'UWV - Horeca',
+                href: 'https://www.uwv.nl/nl/arbeidsmarktinformatie/sector/horeca',
+                note: 'Actueel sectorbeeld met flexwerk, studentenaandeel en meer dan 22.000 open vacatures in Q4 2025.',
+            },
+            {
+                label: 'UWV - Kansrijke beroepen 2025-2026',
+                href: 'https://www.uwv.nl/assets-kai/files/bcd769b3-07a1-498c-b0f4-4bcc6b78f3c6/kansrijke-beroepen-2025-2026.pdf',
+                note: 'UWV noemt onder meer cateringmedewerkers, medewerkers bediening horeca, barpersoneel en hotelreceptionisten kansrijk.',
+            },
+            {
+                label: 'CBS - Het aanbod van arbeid 2024',
+                href: 'https://longreads.cbs.nl/dearbeidsmarktincijfers-2024/het-aanbod-van-arbeid/',
+                note: 'CBS laat zien dat in 2024 een groot deel van het horecapersoneel 15 tot 25 jaar was en vaak in deeltijd werkte.',
+            },
+        ],
+        ctaTitle: 'Maak je horeca-CV direct af in de editor',
+        ctaText: 'Gebruik dit voorbeeld in een ATS-proof template, zet je beschikbaarheid slim neer en exporteer daarna een professionele PDF voor je volgende sollicitatie.',
+        sectionOverrides: {
+            'recruiter-scan': {
+                title: 'Hoe recruiters een horeca-CV scannen',
+                paragraphs: [
+                    'In horeca draait de eerste selectie meestal om drie signalen: gastvrijheid, tempo en betrouwbaarheid. Werkgevers willen snel zien of jij gasten goed helpt, piekdrukte aankunt en inzetbaar bent op avonden, weekenden of feestdagen.',
+                    'Vage claims als "hardwerkend" of "sociaal" overtuigen weinig. Benoem liever concrete werkzaamheden zoals bediening, kassa, bar, mise en place, reserveringen of het oplossen van gastvragen.',
+                ],
+                bullets: [
+                    'Noem direct je type ervaring: bediening, fastservice, bar, keukenondersteuning of allround horeca.',
+                    'Laat beschikbaarheid en flexibiliteit zien als dat relevant is voor de vacature.',
+                    'Gebruik korte voorbeelden die service en tempo samen laten zien.',
+                ],
+            },
+            profieltekst: {
+                exampleItems: [
+                    'Gastvrije horeca medewerker met ervaring in bediening, kassa en werken tijdens piekuren. Combineert service, tempo en duidelijke communicatie voor een sterke gastbeleving.',
+                    'Allround horeca kracht met ervaring in restaurant en cafe-omgeving. Snel inzetbaar op ontvangst, bestellingen, afrekenen en het ondersteunen van het team op drukke momenten.',
+                    'Starter in de horeca met bijbaanervaring in klantcontact en retail. Leert snel, werkt netjes en is flexibel beschikbaar in avonden en weekenden.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-voorbeelden/horeca-en-detailhandel',
+                        label: 'Bekijk meer horeca- en retailvoorbeelden',
+                        description: 'Vergelijk bediening, catering, receptionist en winkelwerk om de beste formuleringen over te nemen.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Start direct je eigen horeca-CV',
+                        description: 'Neem deze voorbeeldstructuur over en maak daarna een vacaturegerichte versie in de editor.',
+                    },
+                ],
+            },
+            werkervaring: {
+                exampleItems: [
+                    'Tijdens piekuren gemiddeld 35+ gasten per shift geholpen met snelle en correcte bestellingopname.',
+                    'Kassa- en afrekenproces strak uitgevoerd waardoor verschillen in kassastand uitbleven.',
+                    'Actief meegedraaid in opening, mise en place en afsluiting, waardoor het team sneller kon schakelen tussen rustige en drukke momenten.',
+                    'Gastvragen en klachten direct opgepakt en netjes opgelost, met behoud van een positieve sfeer op de vloer.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/werkervaring-cv-voorbeelden',
+                        label: 'Herschrijf horecataken naar sterkere bullets',
+                        description: 'Maak van bediening, kassa en teamwork kortere zinnen met zichtbaar resultaat.',
+                    },
+                    {
+                        href: '/cv-gids/cv-voorbeeld-student-bijbaan',
+                        label: 'Gebruik de student-bijbaan variant als je vooral op oproepbasis werkt',
+                        description: 'Handig wanneer school, beschikbaarheid en snelle inzetbaarheid belangrijker zijn dan jaren ervaring.',
+                    },
+                ],
+            },
+            ats: {
+                bullets: [
+                    'Belangrijke termen voor dit type CV zijn vaak: bediening, gastvrijheid, kassa, reserveringen, fastservice, teamwork en piekdrukte.',
+                    'Noem HACCP, sociale hygiene of talen alleen als je ze echt hebt of gebruikt.',
+                    'Zet beschikbaarheid feitelijk neer: bijvoorbeeld avonden, weekenden of flexibel inzetbaar tijdens drukte.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/vaardigheden-cv-voorbeelden',
+                        label: 'Kies horeca-skills die ook recruiterproof zijn',
+                        description: 'Gebruik service, teamwork en tempo alleen als ze ook terugkomen in je werkvoorbeelden.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Werk je horeca-CV uit in een ATS-proof template',
+                        description: 'Gebruik een rustige opmaak zodat beschikbaarheid, service en recente ervaring direct zichtbaar zijn.',
+                    },
+                ],
+            },
+            'final-check': {
+                title: 'Final check voor je horeca-CV',
+                bullets: [
+                    'Je profieltekst noemt direct service, tempo en je type horeca-ervaring.',
+                    'Beschikbaarheid is duidelijk als dat een selectievoorwaarde is.',
+                    'Werkervaring laat piekdrukte, gastcontact of kassaverantwoordelijkheid zien.',
+                    'Certificaten en talen staan alleen op je CV als ze echt relevant en waar zijn.',
+                    'Je CV blijft compact en scanbaar, idealiter op 1 pagina voor starters en bijbanen.',
+                ],
+            },
+        },
+        faq: [
+            {
+                question: 'Wat zet je op een horeca-CV?',
+                answer: 'Noem je type werk, je beschikbaarheid, gastcontact, tempo, kassawerk en voorbeelden van service of teamwork. Houd het praktisch en concreet.',
+            },
+            {
+                question: 'Hoe maak je een horeca-CV zonder ervaring?',
+                answer: 'Gebruik retail, vrijwilligerswerk, evenementen, schoolprojecten of bijbanen als bewijs van klantcontact, tempo en verantwoordelijkheid.',
+            },
+            {
+                question: 'Moet ik weekendbeschikbaarheid noemen?',
+                answer: 'Ja, als de vacature daarom vraagt of als jouw flexibiliteit een sterk verkoopargument is. In horeca is dat vaak relevant.',
+            },
+            {
+                question: 'Welke vaardigheden horen op een horeca-CV?',
+                answer: 'Gastvrijheid, teamwork, tempo, stressbestendigheid, kassa of POS-ervaring en duidelijke communicatie zijn vaak de sterkste basisvaardigheden.',
+            },
+        ],
+    },
+    'cv-voorbeeld-zonder-ervaring': {
+        title: 'CV voorbeeld zonder ervaring (2026)',
+        description: 'Startergids voor een CV zonder ervaring, met voorbeeldprofielen, stage- en bijbaanbullets en een recruiterproof eindcheck.',
+        metaTitle: 'CV voorbeeld zonder ervaring (2026) | Starter CV | WerkCV.nl',
+        metaDesc: 'CV zonder ervaring maken? Gebruik dit starter CV voorbeeld met profieltekst, opleiding, stage, bijbaan en slimme ATS-tips. Start direct in een template.',
+        keywords: [
+            'cv zonder ervaring',
+            'starter cv voorbeeld',
+            'cv voorbeeld zonder werkervaring',
+            'eerste cv maken',
+            'cv voor eerste baan',
+        ],
+        intro: 'Zoek je op "cv zonder ervaring", dan gaat het zelden om nul bewijs. Het gaat meestal om weinig formele werkervaring. In 2025 gaf 52% van de werkgevers met recente vacatures volgens UWV aan dat zij door de krappe arbeidsmarkt vaker mensen aannemen die nog opgeleid moeten worden. Dat betekent dat jouw CV vooral moet bewijzen dat je snel leert, afspraken nakomt en relevante signalen uit school, stage, bijbaan of vrijwilligerswerk slim kunt vertalen.',
+        relatedLinks: [
+            {
+                href: '/templates',
+                title: 'Start met een starter-CV template',
+                description: 'Gebruik dit voorbeeld direct in een rustige template en maak daarna een vacaturegerichte versie in de editor.',
+            },
+            {
+                href: '/cv-tips/cv-zonder-werkervaring',
+                title: 'Diepere gids: CV zonder werkervaring',
+                description: 'Lees de uitgebreide uitleg als je meer wilt weten over opleiding, stages, projecten en valkuilen.',
+            },
+            {
+                href: '/cv-maken-student',
+                title: 'CV maken als student',
+                description: 'Handig als je eerste sollicitaties vooral stage, bijbaan of een juniorfunctie betreffen.',
+            },
+        ],
+        sources: [
+            {
+                label: 'UWV - Werkgevers leiden vaker nieuw personeel op',
+                href: 'https://www.uwv.nl/nl/arbeidsmarktinformatie/inzichten-werving-behoud/werkgevers-leiden-vaker-nieuw-personeel-op-vanwege-krappe-arbeidsmarkt',
+                note: 'UWV meldde op basis van 2025-onderzoek dat 52% van werkgevers door krapte vaker mensen aanneemt die nog opgeleid moeten worden.',
+            },
+            {
+                label: 'CBS - Het aanbod van arbeid 2024',
+                href: 'https://longreads.cbs.nl/dearbeidsmarktincijfers-2024/het-aanbod-van-arbeid/',
+                note: 'CBS laat zien dat in 2024 76% van de 15- tot 25-jarigen werkte en dat jongeren relatief vaak tijdelijke contracten hadden.',
+            },
+            {
+                label: 'CBS - Stages en banen van studenten in mbo en ho, 2024-2025',
+                href: 'https://www.cbs.nl/nl-nl/maatwerk/2025/51/stages-en-banen-van-studenten-in-het-mbo-en-ho-naar-cao-en-sbi-2024-2025',
+                note: 'Recente CBS-tabellen over stages, banen, lonen en arbeidsduur van studenten in studiejaar 2024/25.',
+            },
+        ],
+        ctaTitle: 'Maak je starter-CV direct af',
+        ctaText: 'Gebruik dit voorbeeld in een ATS-proof template, zet stage, school en bijbaan slim neer en exporteer daarna een nette PDF voor je eerste sollicitaties.',
+        sectionOverrides: {
+            'recruiter-scan': {
+                title: 'Hoe recruiters een CV zonder ervaring beoordelen',
+                paragraphs: [
+                    'Recruiters verwachten bij starters geen lang werkverleden. Ze zoeken vooral naar potentieel, leerbaarheid, betrouwbaarheid en bewijs dat jij al verantwoordelijkheid hebt genomen in een andere context.',
+                    'Dat bewijs kan uit stage, schoolprojecten, verenigingen, vrijwilligerswerk, sport, retail, horeca of korte bijbanen komen. Het verschil zit niet in hoeveel ervaring je hebt, maar in hoe goed je laat zien wat die ervaringen over jou zeggen.',
+                ],
+                bullets: [
+                    'Zet profieltekst, opleiding en je sterkste eerste ervaring bovenaan in een logische volgorde.',
+                    'Beschrijf kleine ervaringen professioneel: wat deed jij, in welke context, en wat ging daardoor beter?',
+                    'Houd je CV compact: voor de meeste starters is 1 pagina het sterkste formaat.',
+                ],
+            },
+            profieltekst: {
+                exampleItems: [
+                    'Gemotiveerde starter met recente stage- en projectervaring. Leert snel, werkt gestructureerd en vertaalt feedback direct naar betere uitvoering.',
+                    'Schoolverlater met bijbaanervaring in klantcontact en teamwork. Zoekt een eerste functie waarin betrouwbaarheid, werktempo en leergierigheid centraal staan.',
+                    'Junior kandidaat met sterke basis in planning, samenwerking en duidelijke communicatie vanuit studie, projecten en nevenactiviteiten.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-gids/cv-zonder-ervaring-mbo',
+                        label: 'Gebruik de MBO-variant als stage en praktijkuren je sterkste bewijs zijn',
+                        description: 'Leg meer nadruk op praktijkervaring, werkhouding en snel inwerken.',
+                    },
+                    {
+                        href: '/cv-gids/cv-zonder-ervaring-hbo',
+                        label: 'Gebruik de HBO-variant als projecten en afstudeerwerk je kernbewijs vormen',
+                        description: 'Zet analyse, projectwerk en studie-output zakelijker neer voor juniorvacatures.',
+                    },
+                ],
+            },
+            werkervaring: {
+                exampleItems: [
+                    'Tijdens stage zelfstandig dagtaken uitgevoerd en positief beoordeeld op nauwkeurigheid, communicatie en opvolging.',
+                    'Schoolproject met duidelijke taakverdeling en oplevering binnen deadline afgerond, inclusief presentatie van advies of resultaat.',
+                    'Bijbaan gebruikt om klantcontact, tempo en verantwoordelijkheid aantoonbaar te ontwikkelen in een echte werkomgeving.',
+                    'Vrijwilligers- of verenigingswerk vertaald naar organisatie, samenwerking of het regelen van activiteiten voor anderen.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/werkervaring-cv-voorbeelden',
+                        label: 'Maak van kleine ervaringen sterkere werkervaring-bullets',
+                        description: 'Handig als je wel voorbeelden hebt, maar ze nog te algemeen opschrijft.',
+                    },
+                    {
+                        href: '/cv-voorbeelden/studenten-en-starters/eerste-baan-starter',
+                        label: 'Bekijk een eerste-baan voorbeeld-CV',
+                        description: 'Zie hoe een starterprofiel eruitziet wanneer opleiding, stage en eerste werkervaring samenkomen.',
+                    },
+                ],
+            },
+            ats: {
+                bullets: [
+                    'Belangrijke termen voor dit type profiel zijn vaak: stage, project, praktijkervaring, teamwork, leervermogen en betrouwbaarheid.',
+                    'Neem vacaturewoorden over die je echt kunt onderbouwen, bijvoorbeeld klantenservice, planning, administratie of logistiek.',
+                    'Gebruik gewone kopjes zoals Opleiding, Werkervaring, Vaardigheden en Projecten zodat ATS-software alles goed herkent.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/vaardigheden-cv-voorbeelden',
+                        label: 'Kies vaardigheden die bij starters echt geloofwaardig zijn',
+                        description: 'Gebruik alleen skills die je ook kunt terugzien in stage, project of bijbaan.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Werk je starter-CV uit in een ATS-proof template',
+                        description: 'Gebruik een eenvoudige layout waarin profiel, opleiding en eerste bewijs direct zichtbaar zijn.',
+                    },
+                ],
+            },
+            'final-check': {
+                title: 'Final check voor je starter-CV',
+                bullets: [
+                    'Je profieltekst noemt een rolrichting en niet alleen dat je gemotiveerd bent.',
+                    'Opleiding, stage of project staan hoog genoeg als dat jouw sterkste bewijs is.',
+                    'Bijbaan of vrijwilligerswerk is vertaald naar vaardigheden die ook voor werk tellen.',
+                    'Je CV blijft eerlijk: je overdrijft geen niveau, taken of certificaten.',
+                    'De hele pagina is in 10 seconden scanbaar voor een recruiter.',
+                ],
+            },
+        },
+        faq: [
+            {
+                question: 'Wat zet je op een CV zonder ervaring?',
+                answer: 'Gebruik opleiding, stage, bijbaan, projecten, vrijwilligerswerk en nevenactiviteiten als bewijs van werkhouding, vaardigheden en richting.',
+            },
+            {
+                question: 'Moet opleiding boven werkervaring staan?',
+                answer: 'Vaak wel, tenzij je stage of bijbaan direct relevanter is voor de vacature dan je opleiding.',
+            },
+            {
+                question: 'Mag ik een bijbaan meetellen als ervaring?',
+                answer: 'Ja. Bijbanen tellen zeker mee, vooral als je er klantcontact, tempo, verantwoordelijkheid of teamwork mee kunt aantonen.',
+            },
+            {
+                question: 'Hoe lang mag een starter-CV zijn?',
+                answer: 'Voor de meeste starters is 1 pagina de beste keuze. Kort en concreet werkt beter dan een te brede opsomming.',
+            },
+        ],
+    },
+    'cv-voorbeeld-magazijnmedewerker-zonder-ervaring': {
+        title: 'CV voorbeeld magazijnmedewerker zonder ervaring',
+        description: 'Startergids voor logistieke sollicitaties zonder direct magazijnverleden, met voorbeeldprofielen, overdraagbare skills en orderpicker-termen.',
+        metaTitle: 'CV voorbeeld magazijnmedewerker zonder ervaring (2026) | WerkCV.nl',
+        metaDesc: 'Solliciteren als magazijnmedewerker zonder ervaring? Gebruik dit startervoorbeeld met profieltekst, logistieke skills, orderpicker bullets en ATS-termen.',
+        keywords: [
+            'cv magazijnmedewerker zonder ervaring',
+            'magazijnmedewerker starter cv',
+            'orderpicker cv zonder ervaring',
+            'logistiek starter cv',
+            'warehouse cv voorbeeld',
+        ],
+        intro: 'Zonder direct magazijnverleden kun je nog steeds een sterk logistiek CV neerzetten, zolang je laat zien dat je betrouwbaar, fysiek inzetbaar en leerbaar bent. Dat is extra relevant omdat UWV magazijn-, expeditiemedewerkers en orderpickers ook in 2025-2026 als kansrijk noemt. En in de huidige krapte nemen werkgevers vaker mensen aan die nog opgeleid moeten worden, mits hun CV tempo, discipline en beschikbaarheid geloofwaardig laat zien.',
+        relatedLinks: [
+            {
+                href: '/templates',
+                title: 'Start direct met een logistiek CV template',
+                description: 'Neem dit voorbeeld over in een rustige template en maak daarna een vacaturegerichte versie in de editor.',
+            },
+            {
+                href: '/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker',
+                title: 'Algemeen CV voorbeeld magazijnmedewerker',
+                description: 'Vergelijk je startervariant met het bredere voorbeeld voor kandidaten met direct logistiek profiel.',
+            },
+            {
+                href: '/cv-tips/cv-zonder-werkervaring',
+                title: 'Tips voor een CV zonder werkervaring',
+                description: 'Gebruik deze gids als je vooral uit retail, horeca, productie of schoolprojecten moet putten.',
+            },
+        ],
+        sources: [
+            {
+                label: 'UWV - Kansrijke beroepen 2025-2026',
+                href: 'https://www.uwv.nl/assets-kai/files/bcd769b3-07a1-498c-b0f4-4bcc6b78f3c6/kansrijke-beroepen-2025-2026.pdf',
+                note: 'UWV noemt magazijn-, expeditiemedewerkers en orderpickers en ook heftruckchauffeurs kansrijk in 2025-2026.',
+            },
+            {
+                label: 'UWV - Werkgevers leiden vaker nieuw personeel op',
+                href: 'https://www.uwv.nl/nl/arbeidsmarktinformatie/inzichten-werving-behoud/werkgevers-leiden-vaker-nieuw-personeel-op-vanwege-krappe-arbeidsmarkt',
+                note: 'UWV meldde dat 52% van werkgevers door krapte vaker mensen aanneemt die nog opgeleid moeten worden.',
+            },
+        ],
+        ctaTitle: 'Maak je logistiek-CV direct af',
+        ctaText: 'Gebruik dit startervoorbeeld in een ATS-proof template, zet je overdraagbare skills scherp neer en exporteer daarna een professionele PDF.',
+        sectionOverrides: {
+            'recruiter-scan': {
+                title: 'Hoe recruiters een starter-CV voor magazijnwerk beoordelen',
+                paragraphs: [
+                    'Bij logistieke starters draait selectie meestal om betrouwbaarheid, tempo, nauwkeurigheid en inzetbaarheid in ploeg- of vroege diensten. Werkgevers willen snel zien of jij afspraken nakomt en of je gewend bent om gestructureerd en fysiek actief te werken.',
+                    'Je hoeft daarvoor niet al in een warehouse gewerkt te hebben. Retail, horeca, productie, verhuizen, bezorgen of sportverenigingswerk kunnen allemaal bewijzen dat jij tempo houdt, samenwerkt en netjes met taken omgaat.',
+                ],
+                bullets: [
+                    'Noem overdraagbare signalen zoals order, tempo, tillen, sorteren, voorraad of werken onder tijdsdruk.',
+                    'Zet beschikbaarheid voor vroege diensten, avonden of ploegendiensten helder neer als dat relevant is.',
+                    'Gebruik nuchtere taal: recruiters willen feiten, geen stoere maar lege claims.',
+                ],
+            },
+            profieltekst: {
+                exampleItems: [
+                    'Gemotiveerde starter met ervaring in fysiek en tempo-gericht werk vanuit retail en bijbanen. Werkt nauwkeurig, leert snel en is inzetbaar in logistieke teams.',
+                    'Praktisch ingestelde kandidaat met sterke basis in voorraadwerk, laden en lossen en het volgen van werkafspraken. Zoekt een eerste logistieke rol als orderpicker of magazijnmedewerker.',
+                    'Betrouwbare starter die gewend is om op tijd, netjes en gestructureerd te werken. Combineert fysieke inzetbaarheid met aandacht voor veiligheid en teamwerk.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-gids/cv-voorbeeld-zonder-ervaring',
+                        label: 'Gebruik de brede no-experience parent als je nog heel weinig werkverleden hebt',
+                        description: 'Handig als je eerst je stage, school of bijbaan goed wilt neerzetten voordat je specifieker wordt.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Start je logistiek-CV direct in de editor',
+                        description: 'Neem dit profiel over en pas het daarna per vacature aan op taken, shifts en omgeving.',
+                    },
+                ],
+            },
+            werkervaring: {
+                exampleItems: [
+                    'Tijdens bijbaan dagelijks producten aangevuld en netjes gesorteerd, waardoor schappen of voorraadlocaties op orde bleven.',
+                    'Pakketten, rolcontainers of leveringen verwerkt binnen afgesproken tempo zonder fouten in telling of plaatsing.',
+                    'Onder tijdsdruk gewerkt met duidelijke taakverdeling, waardoor piekmomenten zonder achterstand konden worden afgerond.',
+                    'Werkplek opgeruimd en veiligheidsafspraken gevolgd, zodat materialen en routes bruikbaar en overzichtelijk bleven.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/werkervaring-cv-voorbeelden',
+                        label: 'Herschrijf ruwe logistieke taken naar sterkere bullets',
+                        description: 'Maak van tillen, sorteren of voorraadwerk kortere zinnen met tempo en nauwkeurigheid.',
+                    },
+                    {
+                        href: '/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker',
+                        label: 'Vergelijk met het algemene magazijnmedewerker voorbeeld',
+                        description: 'Neem termen over die ook in ervaren logistieke CV s vaak sterk werken.',
+                    },
+                ],
+            },
+            ats: {
+                bullets: [
+                    'Belangrijke termen voor dit type profiel zijn vaak: orderpicken, voorraad, magazijn, logistiek, laden en lossen, scanner, WMS en ploegendienst.',
+                    'Noem EPT, heftruck of reachtruck alleen als je daar echt mee hebt gewerkt of een certificaat voor hebt.',
+                    'Gebruik woorden uit de vacature als ze kloppen met jouw praktijk, bijvoorbeeld inbound, outbound, picking of distributiecentrum.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/vaardigheden-cv-voorbeelden',
+                        label: 'Kies logistieke vaardigheden die geloofwaardig en vacaturegericht zijn',
+                        description: 'Gebruik alleen skills die je in werk, stage of bijbaan ook echt kunt laten terugkomen.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Werk je logistiek-CV uit in een ATS-proof template',
+                        description: 'Houd kopjes, werkervaring en beschikbaarheid netjes in gewone tekst voor betere scanbaarheid.',
+                    },
+                ],
+            },
+            'final-check': {
+                title: 'Final check voor een magazijnstarter-CV',
+                bullets: [
+                    'Je CV bewijst tempo en betrouwbaarheid ook zonder direct magazijnverleden.',
+                    'Beschikbaarheid en fysieke inzetbaarheid zijn concreet maar niet overdreven beschreven.',
+                    'Je noemt alleen certificaten en machines die je echt beheerst.',
+                    'Werkervaring laat orde, discipline en samenwerken zien.',
+                    'Je layout blijft kort, rustig en recruiterproof.',
+                ],
+            },
+        },
+        faq: [
+            {
+                question: 'Kun je magazijnmedewerker worden zonder ervaring?',
+                answer: 'Ja. Veel werkgevers staan open voor starters als je CV tempo, betrouwbaarheid, fysieke inzetbaarheid en leerbaarheid duidelijk laat zien.',
+            },
+            {
+                question: 'Moet je een heftruckcertificaat al hebben?',
+                answer: 'Niet altijd. Voor sommige functies wel, maar veel startfuncties draaien eerst om orderpicken, voorraadwerk en algemene logistieke discipline.',
+            },
+            {
+                question: 'Welke skills zet je op een orderpicker-CV?',
+                answer: 'Denk aan nauwkeurigheid, tempo, voorraadwerk, samenwerken, scannergebruik, veiligheidsbewustzijn en beschikbaarheid voor shifts.',
+            },
+            {
+                question: 'Wat als ik uit horeca of retail kom?',
+                answer: 'Dan kun je juist sterke overdraagbare skills meenemen: tempo, discipline, werken onder druk, tillen, aanvullen en klant- of teamgericht handelen.',
+            },
+        ],
+    },
+    'cv-voorbeeld-student-bijbaan': {
+        title: 'CV voorbeeld student bijbaan (simpel + snel)',
+        description: 'Snel inzetbare BOFU pagina voor studenten die een kort, scanbaar en eerlijk CV nodig hebben voor hun volgende bijbaan.',
+        metaTitle: 'CV voorbeeld student bijbaan (2026) | Simpel en Snel | WerkCV.nl',
+        metaDesc: 'Snel een student-CV voor je bijbaan maken? Bekijk een simpel voorbeeld met profieltekst, beschikbaarheid, opleiding en bijbaan skills.',
+        keywords: [
+            'cv student voorbeeld',
+            'cv student bijbaan',
+            'student bijbaan cv',
+            'cv voorbeeld student bijbaan',
+            'simpel student cv',
+        ],
+        intro: 'Een student-CV voor een bijbaan hoeft niet vol te staan. Het moet snel duidelijk maken wat je zoekt, wanneer je beschikbaar bent en waarom jij betrouwbaar genoeg bent om in te plannen. CBS laat zien dat in 2024 76% van de 15- tot 25-jarigen werkte. Van die jongeren had 55% een tijdelijk contract. Werkgevers zijn dus gewend aan korte, flexibele studentprofielen, maar verwachten wel dat jouw CV meteen duidelijkheid geeft over richting, beschikbaarheid en werkhouding.',
+        relatedLinks: [
+            {
+                href: '/templates',
+                title: 'Start direct met een student-CV template',
+                description: 'Gebruik dit voorbeeld in een simpele template en maak daarna snel je eigen bijbaanversie af.',
+            },
+            {
+                href: '/cv-maken-student',
+                title: 'CV maken als student',
+                description: 'Gebruik de bredere studentenroute als je naast bijbanen ook stage of een startersfunctie overweegt.',
+            },
+            {
+                href: '/cv-voorbeelden/studenten-en-starters/bijbaan-deeltijd-cv',
+                title: 'Voorbeeld-CV bijbaan en deeltijd',
+                description: 'Vergelijk dit gidsformat met een uitgewerkt voorbeeld voor scholieren en studenten.',
+            },
+        ],
+        sources: [
+            {
+                label: 'CBS - Het aanbod van arbeid 2024',
+                href: 'https://longreads.cbs.nl/dearbeidsmarktincijfers-2024/het-aanbod-van-arbeid/',
+                note: 'CBS laat zien dat in 2024 76% van de 15- tot 25-jarigen werkte en dat 55% van die jongeren een tijdelijk contract had.',
+            },
+            {
+                label: 'CBS - Weer meer mensen met grote deeltijdbanen',
+                href: 'https://www.cbs.nl/nl-nl/nieuws/2025/46/weer-meer-mensen-met-grote-deeltijdbanen',
+                note: 'CBS meldde eind 2025 dat jongeren vaak kleine deeltijdbanen combineren met school of studie.',
+            },
+            {
+                label: 'CBS - Stages en banen van studenten in mbo en ho, 2024-2025',
+                href: 'https://www.cbs.nl/nl-nl/maatwerk/2025/51/stages-en-banen-van-studenten-in-het-mbo-en-ho-naar-cao-en-sbi-2024-2025',
+                note: 'Recente CBS-tabellen met arbeidsduur en loongegevens voor studenten in studiejaar 2024/25.',
+            },
+        ],
+        ctaTitle: 'Maak je student-CV vandaag nog af',
+        ctaText: 'Gebruik dit voorbeeld in een simpele, ATS-proof template en exporteer daarna een nette PDF voor je volgende bijbaan of studentenjob.',
+        sectionOverrides: {
+            'recruiter-scan': {
+                title: 'Hoe werkgevers een student-CV voor een bijbaan scannen',
+                paragraphs: [
+                    'Bij bijbanen kijken werkgevers meestal niet eerst naar lange ervaring, maar naar duidelijkheid. Ze willen snel zien wat voor werk je zoekt, hoeveel uur je beschikbaar bent en of je betrouwbaar genoeg bent om op te nemen in het rooster.',
+                    'Een student-CV wint daarom op eenvoud: 1 pagina, duidelijke kopjes, korte voorbeelden en een profieltekst die meteen richting geeft.',
+                ],
+                bullets: [
+                    'Noem direct of je mikt op horeca, winkel, logistiek, klantenservice of een allround bijbaan.',
+                    'Zet beschikbaarheid feitelijk neer: avonden, weekenden, vakanties of vaste dagen.',
+                    'Gebruik korte voorbeelden van school, vrijwilligerswerk of eerdere bijbanen als bewijs van werkhouding.',
+                ],
+            },
+            profieltekst: {
+                exampleItems: [
+                    'Betrouwbare student met ervaring in klantcontact en teamwork. Beschikbaar in avonden en weekenden en gewend om snel te schakelen tijdens drukke momenten.',
+                    'MBO-student op zoek naar een bijbaan in retail of horeca. Werkt netjes, leert snel en is gewend om afspraken na te komen.',
+                    'HBO-student met sterke basis in communicatie, organiseren en service. Zoekt een bijbaan waarin klantgerichtheid en verantwoordelijkheid samenkomen.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-maken-student',
+                        label: 'Gebruik de studentenroute als je meer wilt dan alleen een bijbaan-CV',
+                        description: 'Handig als je ook stage, traineeship of een eerste serieuze startersrol wilt voorbereiden.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Start direct je eigen student-bijbaan CV',
+                        description: 'Neem dit profiel over in de editor en pas het daarna aan op winkel, horeca of logistiek werk.',
+                    },
+                ],
+            },
+            werkervaring: {
+                exampleItems: [
+                    'Naast studie gewerkt in klantgerichte omgeving, waarbij afspraken, tempo en nette afhandeling belangrijk waren.',
+                    'Vrijwilligers- of verenigingswerk gebruikt om planning, samenwerken en verantwoordelijkheid aantoonbaar te maken.',
+                    'Korte bijbaan professioneel beschreven met focus op wat die ervaring zegt over je betrouwbaarheid, service of tempo.',
+                    'Schoolproject of commissiewerk vertaald naar organiseren, communiceren en op tijd opleveren.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-gids/cv-voorbeeld-horeca-medewerker',
+                        label: 'Gebruik de horeca-variant als je vooral voor restaurant of cafe solliciteert',
+                        description: 'Pak service, piekdrukte en beschikbaarheid specifieker aan voor horecaomgevingen.',
+                    },
+                    {
+                        href: '/cv-gids/cv-voorbeeld-zonder-ervaring',
+                        label: 'Gebruik de no-experience parent als je bijna geen werkverleden hebt',
+                        description: 'Handig als school, stage en projecten nog zwaarder wegen dan je bijbanen.',
+                    },
+                ],
+            },
+            ats: {
+                bullets: [
+                    'Belangrijke termen voor dit type profiel zijn vaak: beschikbaarheid, klantcontact, teamwork, bijbaan, student, flexibiliteit en tempo.',
+                    'Noem software of kassa-ervaring alleen als je die echt hebt gebruikt.',
+                    'Laat je CV niet verdrinken in hobby s: focus op werkhouding, richting en inzetbaarheid.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/vaardigheden-cv-voorbeelden',
+                        label: 'Kies geloofwaardige student-skills voor je CV',
+                        description: 'Gebruik alleen vaardigheden die je in school, bijbaan of vrijwilligerswerk echt hebt laten zien.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Werk je student-CV uit in een eenvoudige ATS-proof template',
+                        description: 'Gebruik een korte layout waarin profiel, opleiding en beschikbaarheid direct boven water komen.',
+                    },
+                ],
+            },
+            'final-check': {
+                title: 'Final check voor een student-bijbaan CV',
+                bullets: [
+                    'Je CV past op 1 pagina en is in seconden te scannen.',
+                    'Beschikbaarheid staat helder maar professioneel geformuleerd.',
+                    'Profieltekst laat richting en werkhouding zien, niet alleen dat je werk zoekt.',
+                    'Kleine ervaringen zijn professioneel vertaald naar bewijs van betrouwbaarheid of service.',
+                    'Je contactgegevens en woonplaats zijn actueel en foutloos.',
+                ],
+            },
+        },
+        faq: [
+            {
+                question: 'Hoe lang mag een student-CV zijn?',
+                answer: 'Voor een bijbaan is 1 pagina bijna altijd genoeg. Werkgevers willen snel zien wat je zoekt, wat je kunt en wanneer je beschikbaar bent.',
+            },
+            {
+                question: 'Moet ik mijn cijferlijst noemen?',
+                answer: 'Meestal niet. Alleen als je opleiding of bepaalde resultaten direct relevant zijn voor de baan waarop je solliciteert.',
+            },
+            {
+                question: 'Mag ik een korte of oude bijbaan noemen?',
+                answer: 'Ja, zolang je duidelijk maakt wat die ervaring zegt over je werkhouding, service of verantwoordelijkheid.',
+            },
+            {
+                question: 'Hoe noem ik mijn beschikbaarheid op mijn CV?',
+                answer: 'Hou het feitelijk: bijvoorbeeld 12 tot 16 uur per week, beschikbaar op avonden en zaterdag, extra inzetbaar in vakanties.',
             },
         ],
     },
@@ -1287,11 +2040,19 @@ function applyGuideOverride(page: SeoGuidePage, override?: GuideOverride): SeoGu
 
     const next: SeoGuidePage = {
         ...page,
+        title: override.title ?? page.title,
+        description: override.description ?? page.description,
+        metaTitle: override.metaTitle ?? page.metaTitle,
+        metaDesc: override.metaDesc ?? page.metaDesc,
+        keywords: override.keywords ?? page.keywords,
         intro: override.intro ?? page.intro,
         checklist: override.checklist ?? page.checklist,
         faq: override.faq ?? page.faq,
         relatedLinks: override.relatedLinks ?? page.relatedLinks,
+        sources: override.sources ?? page.sources,
+        ctaTitle: override.ctaTitle ?? page.ctaTitle,
         ctaText: override.ctaText ?? page.ctaText,
+        ctaHref: override.ctaHref ?? page.ctaHref,
         sections: page.sections,
     };
 
