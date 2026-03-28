@@ -63,6 +63,8 @@ const dutchSeeds: DutchSeed[] = [
     { slug: 'cv-voorbeeld-bezorger', keyword: 'cv voorbeeld bezorger', role: 'bezorger', painPoint: 'service, punctualiteit en route-efficientie te laten terugkomen' },
     { slug: 'cv-voorbeeld-zonder-ervaring', keyword: 'cv zonder ervaring', role: 'starter', painPoint: 'relevantie te tonen zonder formele werkervaring' },
     { slug: 'cv-voorbeeld-magazijnmedewerker-zonder-ervaring', keyword: 'cv magazijnmedewerker zonder ervaring', role: 'magazijnmedewerker starter', painPoint: 'praktische inzet en leerbaarheid te bewijzen zonder direct magazijnverleden' },
+    { slug: 'cv-voorbeeld-magazijnmedewerker-parttime', keyword: 'cv magazijnmedewerker parttime', role: 'magazijnmedewerker parttime', painPoint: 'beperkte uren, shiftbeschikbaarheid en betrouwbaarheid overtuigend te combineren' },
+    { slug: 'cv-voorbeeld-orderpicker', keyword: 'cv orderpicker voorbeeld', role: 'orderpicker', painPoint: 'snelheid, nauwkeurigheid en scanner-ervaring recruiterproof te laten zien' },
     { slug: 'cv-voorbeeld-student-bijbaan', keyword: 'cv student voorbeeld', role: 'student bijbaan', painPoint: 'studie, beschikbaarheid en werkhouding in weinig regels overtuigend te tonen' },
     { slug: 'cv-zonder-ervaring-mbo', keyword: 'cv zonder ervaring mbo', role: 'MBO-starter', painPoint: 'relevantie te creeren zonder formele werkervaring' },
     { slug: 'cv-zonder-ervaring-hbo', keyword: 'cv zonder ervaring hbo', role: 'HBO-starter', painPoint: 'stage-, project- en studieresultaten slim te positioneren' },
@@ -1072,6 +1074,296 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
             {
                 question: 'Wat als ik uit horeca of retail kom?',
                 answer: 'Dan kun je juist sterke overdraagbare skills meenemen: tempo, discipline, werken onder druk, tillen, aanvullen en klant- of teamgericht handelen.',
+            },
+        ],
+    },
+    'cv-voorbeeld-magazijnmedewerker-parttime': {
+        title: 'CV voorbeeld magazijnmedewerker parttime',
+        description: 'BOFU gids voor een parttime magazijn-CV met shifts, beschikbaarheid, werktempo en voorbeeldzinnen voor logistiek werk in minder uren.',
+        metaTitle: 'CV voorbeeld magazijnmedewerker parttime (2026) | WerkCV.nl',
+        metaDesc: 'Gebruik dit parttime CV voorbeeld voor magazijnmedewerker. Met profieltekst, orderpick-bullets, beschikbaarheid en ATS-termen voor logistiek werk.',
+        keywords: [
+            'cv magazijnmedewerker parttime',
+            'parttime magazijnmedewerker cv',
+            'magazijnmedewerker parttime voorbeeld',
+            'logistiek parttime cv',
+            'warehouse parttime cv',
+        ],
+        intro: 'Een parttime magazijn-CV moet vooral rust geven over inzetbaarheid. Werkgevers willen zien op welke dagen of shifts je beschikbaar bent, of je tempo ook in kortere diensten goed blijft en of overdracht, voorraadwerk en picktaken netjes worden uitgevoerd. Dat past bij de bredere deeltijdtrend: CBS meldde in november 2025 dat bijna 1,9 miljoen mensen 28 tot 35 uur per week werkten, terwijl UWV orderpickers en magazijnmedewerkers ook in 2025-2026 kansrijk blijft noemen.',
+        relatedLinks: [
+            {
+                href: '/templates',
+                title: 'Start direct met een logistiek CV template',
+                description: 'Neem dit parttime voorbeeld over in een rustige template en werk daarna per werkgever een variant uit.',
+            },
+            {
+                href: '/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker',
+                title: 'Algemeen CV voorbeeld magazijnmedewerker',
+                description: 'Vergelijk je parttime versie met het bredere logistieke voorbeeld voor fulltime en allround magazijnwerk.',
+            },
+            {
+                href: '/cv-gids/cv-voorbeeld-orderpicker',
+                title: 'CV voorbeeld orderpicker',
+                description: 'Handig als jouw parttime rol vooral draait om picking, scannergebruik en picksnelheid.',
+            },
+        ],
+        sources: [
+            {
+                label: 'CBS - Weer meer mensen met grote deeltijdbanen',
+                href: 'https://www.cbs.nl/nl-nl/nieuws/2025/46/weer-meer-mensen-met-grote-deeltijdbanen',
+                note: 'CBS meldde op 13 november 2025 dat bijna 1,9 miljoen mensen 28 tot 35 uur per week werkten in Q3 2025.',
+            },
+            {
+                label: 'UWV - Kansrijke beroepen 2025-2026',
+                href: 'https://www.uwv.nl/assets-kai/files/bcd769b3-07a1-498c-b0f4-4bcc6b78f3c6/kansrijke-beroepen-2025-2026.pdf',
+                note: 'UWV noemt magazijn-, expeditiemedewerkers en orderpickers en ook heftruckchauffeurs kansrijk in 2025-2026.',
+            },
+        ],
+        ctaTitle: 'Maak je parttime logistieke CV direct af',
+        ctaText: 'Gebruik dit voorbeeld in een ATS-proof template, zet je shifts en uren duidelijk neer en exporteer daarna een nette PDF voor je sollicitatie.',
+        sectionOverrides: {
+            'recruiter-scan': {
+                title: 'Hoe recruiters een parttime magazijn-CV beoordelen',
+                paragraphs: [
+                    'Bij parttime logistieke functies willen recruiters snel zien of jij betrouwbaar in te plannen bent. Het gaat dus niet alleen om magazijnervaring, maar ook om duidelijkheid over dagen, uren, ochtend- of avonddiensten en hoe je in korte diensten productief blijft.',
+                    'Vage claims als "flexibel" zeggen weinig. Benoem liever of je inzetbaar bent op vaste dagen, of je ervaring hebt met piekmomenten, en welke pick- of voorraadtaken je foutarm uitvoerde.',
+                ],
+                bullets: [
+                    'Noem beschikbaarheid concreet: bijvoorbeeld 24 uur, ochtenddiensten of vaste werkdagen.',
+                    'Laat zien dat tempo en nauwkeurigheid ook in kortere shifts stabiel blijven.',
+                    'Gebruik voorbeelden die overdracht, orderdiscipline en voorraadnetheid zichtbaar maken.',
+                ],
+            },
+            profieltekst: {
+                exampleItems: [
+                    'Parttime magazijnmedewerker met ervaring in orderpicken, voorraadcontrole en het verwerken van goederen in vaste ochtend- en avonddiensten. Werkt nauwkeurig, houdt tempo vast en is betrouwbaar inzetbaar in logistieke teams.',
+                    'Logistiek medewerker met sterke basis in scannerwerk, orderdiscipline en nette werkplekopvolging. Zoekt een parttime magazijnrol waarin structuur, beschikbaarheid en foutarme uitvoering belangrijk zijn.',
+                    'Praktisch ingestelde magazijnkracht met ervaring in distributie en retaillogistiek. Combineert duidelijke beschikbaarheid met tempo, teamwerk en aandacht voor veiligheid.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker',
+                        label: 'Vergelijk met het algemene magazijnmedewerker voorbeeld',
+                        description: 'Handig als je zowel parttime inzetbaarheid als bredere warehouse-ervaring wilt laten zien.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Start direct je parttime logistieke CV',
+                        description: 'Neem dit profiel over in de editor en pas het daarna per werkgever aan op uren en shifts.',
+                    },
+                ],
+            },
+            werkervaring: {
+                exampleItems: [
+                    'Gemiddeld 110+ orderregels per shift verwerkt met stabiele nauwkeurigheid en nette afronding van picklijsten.',
+                    'Voorraadlocaties en pickroutes op orde gehouden, zodat opvolgende collega s zonder vertraging konden doorwerken.',
+                    'Scanner- en controlewerk foutarm uitgevoerd, waardoor verschillen in voorraad of orderuitgifte beperkt bleven.',
+                    'Beschikbaarheid op vaste piekmomenten ingezet, waardoor drukke dagen beter opgevangen konden worden zonder achterstand.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/werkervaring-cv-voorbeelden',
+                        label: 'Herschrijf logistieke taken naar sterkere bullets',
+                        description: 'Maak van orderwerk, voorraadcontrole en shifts kortere zinnen met meer bewijs en tempo.',
+                    },
+                    {
+                        href: '/cv-gids/cv-voorbeeld-orderpicker',
+                        label: 'Gebruik de orderpicker-variant als picking je hoofdtaak is',
+                        description: 'Pak een specifieker logistiek profiel als scannerwerk, picksnelheid en orderfouten centraal staan.',
+                    },
+                ],
+            },
+            ats: {
+                bullets: [
+                    'Belangrijke termen voor dit type profiel zijn vaak: magazijn, orderpicken, parttime, voorraad, scanner, WMS, ochtenddienst, avonddienst en logistiek.',
+                    'Zet parttime beschikbaarheid feitelijk neer, niet te vaag. Recruiters willen uren en inzetmomenten snel zien.',
+                    'Noem EPT, heftruck of reachtruck alleen als je daar echt mee hebt gewerkt of een certificaat voor hebt.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/vaardigheden-cv-voorbeelden',
+                        label: 'Kies logistieke vaardigheden die ook recruiterproof zijn',
+                        description: 'Gebruik alleen skills die je in warehouse- of voorraadwerk echt kunt onderbouwen.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Werk je parttime magazijn-CV uit in een ATS-proof template',
+                        description: 'Houd uren, recente ervaring en logistieke termen netjes in gewone tekst voor betere scanbaarheid.',
+                    },
+                ],
+            },
+            'final-check': {
+                title: 'Final check voor een parttime magazijn-CV',
+                bullets: [
+                    'Je beschikbaarheid staat duidelijk en professioneel op het CV.',
+                    'Werkervaring laat tempo, nauwkeurigheid en teamoverdracht zien.',
+                    'Je noemt alleen logistieke tools of machines die je echt beheerst.',
+                    'Parttime inzet klinkt als voorspelbaar en betrouwbaar, niet als beperkt of onzeker.',
+                    'Je CV blijft kort, rustig en direct scanbaar.',
+                ],
+            },
+        },
+        faq: [
+            {
+                question: 'Moet ik parttime beschikbaarheid op mijn CV zetten?',
+                answer: 'Ja, als uren of shifts belangrijk zijn voor de functie. In logistiek willen werkgevers snel zien wanneer je inzetbaar bent.',
+            },
+            {
+                question: 'Hoe beschrijf ik een parttime magazijnbaan sterk?',
+                answer: 'Focus op output per shift, nauwkeurigheid, beschikbaarheid en hoe je pick- of voorraadwerk betrouwbaar uitvoerde.',
+            },
+            {
+                question: 'Kan ik parttime logistiek werk professioneel laten klinken?',
+                answer: 'Ja. Benoem je uren feitelijk, laat resultaat per dienst zien en maak duidelijk dat je inzetbaarheid voorspelbaar is.',
+            },
+            {
+                question: 'Welke termen helpen op een parttime logistiek CV?',
+                answer: 'Denk aan magazijn, orderpicken, scanner, voorraad, WMS, ochtenddienst, avonddienst en logistieke verwerking.',
+            },
+        ],
+    },
+    'cv-voorbeeld-orderpicker': {
+        title: 'CV voorbeeld orderpicker',
+        description: 'Praktische BOFU gids voor een orderpicker-CV met picksnelheid, scannersystemen, logistieke skills en recruiterproof voorbeeldzinnen.',
+        metaTitle: 'CV voorbeeld orderpicker (2026) | WerkCV.nl',
+        metaDesc: 'Gebruik dit orderpicker CV voorbeeld met profieltekst, picksnelheid, scanner- en WMS-termen, werkervaring en logistieke ATS-tips.',
+        keywords: [
+            'cv orderpicker voorbeeld',
+            'cv voorbeeld orderpicker',
+            'orderpicker cv',
+            'logistiek cv orderpicker',
+            'warehouse orderpicker cv',
+        ],
+        intro: 'Een orderpicker-CV wordt meestal snel gescand op drie dingen: tempo, nauwkeurigheid en systeemgebruik. Werkgevers willen weten of jij orders foutarm verwerkt, of je met scanners of picklijsten kunt werken en of je betrouwbaar presteert tijdens drukke shifts. Dat sluit goed aan op UWV, dat orderpickers ook in 2025-2026 nog steeds noemt binnen de kansrijke logistieke beroepen.',
+        relatedLinks: [
+            {
+                href: '/templates',
+                title: 'Start direct met een orderpicker template',
+                description: 'Gebruik dit voorbeeld in een rustige template en zet daarna je eigen picksnelheid en logistieke ervaring netjes bovenaan.',
+            },
+            {
+                href: '/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker',
+                title: 'Algemeen CV voorbeeld magazijnmedewerker',
+                description: 'Vergelijk orderpicker-termen met het bredere magazijnprofiel voor voorraad, laden en lossen en logistieke uitvoering.',
+            },
+            {
+                href: '/cv-gids/cv-voorbeeld-magazijnmedewerker-zonder-ervaring',
+                title: 'CV voorbeeld magazijnmedewerker zonder ervaring',
+                description: 'Handig als je orderpicker wilt worden maar nog weinig direct warehouseverleden hebt.',
+            },
+        ],
+        sources: [
+            {
+                label: 'UWV - Kansrijke beroepen 2025-2026',
+                href: 'https://www.uwv.nl/assets-kai/files/bcd769b3-07a1-498c-b0f4-4bcc6b78f3c6/kansrijke-beroepen-2025-2026.pdf',
+                note: 'UWV noemt orderpickers, magazijn- en expeditiemedewerkers kansrijk in 2025-2026.',
+            },
+            {
+                label: 'UWV - Werkgevers leiden vaker nieuw personeel op',
+                href: 'https://www.uwv.nl/nl/arbeidsmarktinformatie/inzichten-werving-behoud/werkgevers-leiden-vaker-nieuw-personeel-op-vanwege-krappe-arbeidsmarkt',
+                note: 'UWV meldde dat 52% van werkgevers door krapte vaker mensen aanneemt die nog opgeleid moeten worden.',
+            },
+        ],
+        ctaTitle: 'Maak je orderpicker-CV direct af',
+        ctaText: 'Gebruik dit voorbeeld in een ATS-proof template, zet picksnelheid en scannertermen goed neer en exporteer daarna een nette PDF voor je volgende sollicitatie.',
+        sectionOverrides: {
+            'recruiter-scan': {
+                title: 'Hoe recruiters een orderpicker-CV beoordelen',
+                paragraphs: [
+                    'Bij orderpicker-functies is selectie vaak praktisch en hard op uitvoering. Werkgevers willen snel zien of jij foutarm kunt picken, of je instructies en locaties goed volgt en of je het tempo van het warehouse aankunt.',
+                    'Daarom werken concrete termen beter dan vage claims. Benoem scannergebruik, picklijsten, voorraadlocaties, orderregels per uur of foutarme afhandeling als je die echt kunt onderbouwen.',
+                ],
+                bullets: [
+                    'Gebruik termen als orderpicken, scanner, picklijst, WMS en voorraadlocaties als ze passen bij je werk.',
+                    'Laat tempo en nauwkeurigheid samen zien, niet alleen snelheid.',
+                    'Noem shifts, fysieke inzetbaarheid en teamwork als dat in jouw warehouseomgeving relevant was.',
+                ],
+            },
+            profieltekst: {
+                exampleItems: [
+                    'Orderpicker met ervaring in scannerwerk, picklijsten en het foutarm verwerken van orders in drukke logistieke omgevingen. Werkt snel, nauwkeurig en houdt overzicht tijdens piekmomenten.',
+                    'Praktisch ingestelde logistiek medewerker met sterke basis in orderpicken, voorraadcontrole en nette werkdiscipline. Zoekt een orderpickerrol waarin tempo en betrouwbaarheid direct tellen.',
+                    'Gemotiveerde warehousekracht met ervaring in picking, verpakken en routevolgorde. Combineert fysieke inzetbaarheid met aandacht voor veiligheid en foutarme uitvoering.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker',
+                        label: 'Vergelijk met het algemene magazijnmedewerker voorbeeld',
+                        description: 'Handig als jouw rol deels picking is en deels voorraad, laden en lossen of allround logistiek werk.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Start direct je orderpicker-CV in de editor',
+                        description: 'Neem deze profielstructuur over en pas hem daarna per warehouse of werkgever aan.',
+                    },
+                ],
+            },
+            werkervaring: {
+                exampleItems: [
+                    'Gemiddeld 120+ orderregels per uur verwerkt met stabiele nauwkeurigheid tijdens piekuren.',
+                    'RF-scanner en picklijsten gebruikt om orders correct te verzamelen en tijdig af te ronden voor verzending.',
+                    'Orderfouten beperkt gehouden door systematische controle van locatie, artikel en aantallen voor afronding.',
+                    'Samengewerkt met inpak- en laadteams zodat picks zonder onnodige wachttijd doorgingen naar de volgende stap.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/werkervaring-cv-voorbeelden',
+                        label: 'Herschrijf picking- en scannerwerk naar sterkere bullets',
+                        description: 'Maak van orderregels, locaties en controles kortere zinnen met meer bewijs en resultaat.',
+                    },
+                    {
+                        href: '/cv-gids/cv-voorbeeld-magazijnmedewerker-parttime',
+                        label: 'Gebruik de parttime variant als je vooral in vaste korte shifts werkt',
+                        description: 'Pak een specifieker profiel als uren, dagen en inzetmomenten een groot deel van je sollicitatie bepalen.',
+                    },
+                ],
+            },
+            ats: {
+                bullets: [
+                    'Belangrijke termen voor dit type profiel zijn vaak: orderpicker, orderpicken, RF scanner, picklijst, WMS, voorraad, inbound, outbound en distributiecentrum.',
+                    'Noem productiviteit alleen als je die geloofwaardig kunt uitleggen in een gesprek.',
+                    'Zet EPT, heftruck of reachtruck alleen op je CV als je er echt mee hebt gewerkt of gecertificeerd bent.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/vaardigheden-cv-voorbeelden',
+                        label: 'Kies orderpicker-skills die logisch terugkomen in je ervaring',
+                        description: 'Gebruik alleen logistieke vaardigheden die je ook echt op de vloer kunt toelichten.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Werk je orderpicker-CV uit in een ATS-proof template',
+                        description: 'Gebruik een rustige layout zodat picksnelheid, scannertermen en recente ervaring direct zichtbaar zijn.',
+                    },
+                ],
+            },
+            'final-check': {
+                title: 'Final check voor een orderpicker-CV',
+                bullets: [
+                    'Je CV noemt picking, scannerwerk of orderdiscipline concreet genoeg.',
+                    'Tempo en nauwkeurigheid staan beide op je CV, niet slechts een van de twee.',
+                    'Warehouse-termen sluiten aan op het type vacature waarop je reageert.',
+                    'Je noemt alleen machines of systemen die je echt beheerst.',
+                    'Je CV blijft compact, feitelijk en snel scanbaar.',
+                ],
+            },
+        },
+        faq: [
+            {
+                question: 'Wat moet er op een orderpicker-CV staan?',
+                answer: 'Noem picksnelheid, nauwkeurigheid, scanner- of picklijstwerk, warehouse-termen, shifts en logistieke discipline.',
+            },
+            {
+                question: 'Is orderpicker hetzelfde als magazijnmedewerker op je CV?',
+                answer: 'Niet helemaal. Orderpicker is specifieker en draait vaker direct om picking, scanners en foutarme orderverwerking.',
+            },
+            {
+                question: 'Moet ik picksnelheid noemen op mijn CV?',
+                answer: 'Ja, als je die ongeveer kunt onderbouwen. Tempo is relevant, maar combineer het altijd met nauwkeurigheid.',
+            },
+            {
+                question: 'Wat als ik nog geen scannerervaring heb?',
+                answer: 'Gebruik dan de magazijn zonder ervaring-pagina en focus op overdraagbare logistieke signalen zoals tempo, voorraadwerk en nauwkeurigheid.',
             },
         ],
     },

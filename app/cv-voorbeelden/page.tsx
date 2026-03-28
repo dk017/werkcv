@@ -94,6 +94,8 @@ const popularRoleLinks = [
     { label: 'CV voorbeeld juridisch medewerker', href: '/cv-voorbeelden/juridisch-en-overheid/juridisch-medewerker' },
     { label: 'CV voorbeeld magazijnmedewerker', href: '/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker' },
     { label: 'CV magazijnmedewerker zonder ervaring', href: '/cv-gids/cv-voorbeeld-magazijnmedewerker-zonder-ervaring' },
+    { label: 'CV magazijnmedewerker parttime', href: '/cv-gids/cv-voorbeeld-magazijnmedewerker-parttime' },
+    { label: 'CV voorbeeld orderpicker', href: '/cv-gids/cv-voorbeeld-orderpicker' },
     { label: 'CV voorbeeld timmerman', href: '/cv-voorbeelden/bouw-en-techniek/timmerman' },
 ];
 
