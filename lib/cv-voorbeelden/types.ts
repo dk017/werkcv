@@ -38,6 +38,12 @@ export interface CVExample {
     relatedSlugs?: string[];  // Slugs of related examples (format: "category/slug")
 }
 
+export interface CVExampleInternalLink {
+    href: string;
+    title: string;
+    description: string;
+}
+
 // Resolved example with category info (for page rendering)
 export interface CVExampleWithCategory extends CVExample {
     category: CVExampleCategory;

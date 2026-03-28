@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getAllCategoryExamplePairs, getExampleBySlug, getRelatedExamples } from '@/lib/cv-voorbeelden/registry';
+import { getAllCategoryExamplePairs, getExampleBySlug, getRelatedExamples, getRelatedGuideLink } from '@/lib/cv-voorbeelden/registry';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { SampleCVPreview } from '@/components/seo/SampleCVPreview';
 import { TableOfContents, TableOfContentsMobile } from '@/components/seo/TableOfContents';
@@ -65,6 +65,7 @@ export default async function ExamplePage({ params }: PageProps) {
     }
 
     const relatedExamples = getRelatedExamples(example, 3);
+    const relatedGuide = getRelatedGuideLink(example);
     const cvData = example.sampleCV;
 
     const breadcrumbItems = [
@@ -392,6 +393,40 @@ export default async function ExamplePage({ params }: PageProps) {
                     </div>
                 </section>
             )}
+
+            <section className="border-t-4 border-black bg-[#FFFEF9]">
+                <div className="max-w-6xl mx-auto px-6 py-12">
+                    <h2 className="text-3xl font-black mb-4 text-gray-900">Volgende slimme stap</h2>
+                    <p className="text-gray-700 max-w-4xl leading-relaxed">
+                        Gebruik niet alleen het voorbeeld. Open ook een relevante gids voor betere formuleringen en ga daarna direct door naar een template waarmee je je eigen versie snel kunt afmaken.
+                    </p>
+                    <div className="mt-8 grid gap-6 md:grid-cols-2">
+                        <Link
+                            href={relatedGuide.href}
+                            className="block bg-white border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                        >
+                            <span className="text-xs font-black uppercase tracking-[0.18em] text-gray-500">
+                                Relevante gids
+                            </span>
+                            <h3 className="mt-2 text-2xl font-black text-gray-900">{relatedGuide.title}</h3>
+                            <p className="mt-3 text-sm leading-relaxed text-gray-700">{relatedGuide.description}</p>
+                        </Link>
+
+                        <Link
+                            href="/templates"
+                            className="block bg-white border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                        >
+                            <span className="text-xs font-black uppercase tracking-[0.18em] text-gray-500">
+                                Start direct
+                            </span>
+                            <h3 className="mt-2 text-2xl font-black text-gray-900">Maak dit CV direct in een template</h3>
+                            <p className="mt-3 text-sm leading-relaxed text-gray-700">
+                                Neem de structuur van dit voorbeeld over, kies een rustige layout en werk daarna je eigen versie af in de editor.
+                            </p>
+                        </Link>
+                    </div>
+                </div>
+            </section>
 
             {/* Final CTA */}
             <section className="border-t-4 border-black bg-[#4ECDC4]">

@@ -1,7 +1,7 @@
 // Central Registry for CV Examples
 // Imports all categories and examples, provides lookup functions
 
-import { CVExampleCategory, CVExample, CVExampleWithCategory } from './types';
+import { CVExampleCategory, CVExample, CVExampleInternalLink, CVExampleWithCategory } from './types';
 
 // ============================================================================
 // CATEGORY IMPORTS
@@ -222,6 +222,127 @@ const exampleMap = new Map<string, CVExample>(
     allExamples.map(e => [`${e.categorySlug}/${e.slug}`, e])
 );
 
+const exactGuideLinks: Record<string, CVExampleInternalLink> = {
+    'studenten-en-starters/student-cv': {
+        href: '/cv-gids/cv-voorbeeld-zonder-ervaring',
+        title: 'CV voorbeeld zonder ervaring',
+        description: 'Gebruik de startergids als opleiding, stage en nevenactiviteiten je belangrijkste bewijs zijn.',
+    },
+    'studenten-en-starters/afgestudeerde-cv': {
+        href: '/cv-gids/cv-voorbeeld-zonder-ervaring',
+        title: 'CV voorbeeld zonder ervaring',
+        description: 'Handig als je net bent afgestudeerd en je eerste serieuze sollicitaties scherper wilt positioneren.',
+    },
+    'studenten-en-starters/eerste-baan-starter': {
+        href: '/cv-gids/cv-voorbeeld-zonder-ervaring',
+        title: 'CV voorbeeld zonder ervaring',
+        description: 'Pak een concreet BOFU voorbeeld voor je eerste baan en zet stage, studie en bijbaan beter neer.',
+    },
+    'studenten-en-starters/stage-cv': {
+        href: '/stage-cv-maken',
+        title: 'Stage CV maken',
+        description: 'Ga naar de stagegids als je stage-intentie, leerdoelen en praktijkervaring centraal wilt zetten.',
+    },
+    'studenten-en-starters/bijbaan-deeltijd-cv': {
+        href: '/cv-gids/cv-voorbeeld-student-bijbaan',
+        title: 'CV voorbeeld student bijbaan',
+        description: 'Gebruik een korte, scanbare variant voor winkel-, horeca- of logistiek werk naast school of studie.',
+    },
+    'horeca-en-detailhandel/winkelmedewerker': {
+        href: '/cv-gids/cv-voorbeeld-verkoopmedewerker',
+        title: 'CV voorbeeld verkoopmedewerker',
+        description: 'Pak een commercielere variant als klantadvies, winkelvloer en verkoopresultaat belangrijk zijn.',
+    },
+    'horeca-en-detailhandel/filiaalmanager': {
+        href: '/cv-gids/cv-voorbeeld-verkoopmedewerker',
+        title: 'CV voorbeeld verkoopmedewerker',
+        description: 'Gebruik de retail-gids voor sterkere formuleringen rond omzet, teamcoordinatie en klantbeleving.',
+    },
+    'horeca-en-detailhandel/hotel-receptionist': {
+        href: '/cv-gids/cv-voorbeeld-receptionist',
+        title: 'CV voorbeeld receptionist',
+        description: 'Relevant als ontvangst, reserveringen, administratie en servicegerichtheid je kernpunten zijn.',
+    },
+    'horeca-en-detailhandel/ober-serveerster': {
+        href: '/cv-gids/cv-voorbeeld-horeca-medewerker',
+        title: 'CV voorbeeld horeca medewerker',
+        description: 'Gebruik de brede horeca-gids voor bediening, tempo, gastvrijheid en beschikbaarheid.',
+    },
+    'horeca-en-detailhandel/kok-chef': {
+        href: '/cv-gids/cv-voorbeeld-horeca-medewerker',
+        title: 'CV voorbeeld horeca medewerker',
+        description: 'Handig als je horeca-ervaring breder wilt kaderen voor keuken, restaurant of fastservice.',
+    },
+    'horeca-en-detailhandel/cateringmedewerker': {
+        href: '/cv-gids/cv-voorbeeld-horeca-medewerker',
+        title: 'CV voorbeeld horeca medewerker',
+        description: 'Pak een horeca-gids die tempo, service en inzetbaarheid in wisselende shifts beter laat landen.',
+    },
+    'vakmanschap-en-logistiek/magazijnmedewerker': {
+        href: '/cv-gids/cv-voorbeeld-magazijnmedewerker-zonder-ervaring',
+        title: 'CV voorbeeld magazijnmedewerker zonder ervaring',
+        description: 'Gebruik deze variant als je ook starters, zij-instromers of kandidaten zonder warehouseverleden wilt bedienen.',
+    },
+    'zorg-en-welzijn/verpleegkundige': {
+        href: '/profieltekst-cv-voorbeelden',
+        title: 'Profieltekst CV voorbeelden',
+        description: 'Gebruik sterkere openingszinnen voor zorgrollen waar verantwoordelijkheid, samenwerking en patientgerichtheid snel zichtbaar moeten zijn.',
+    },
+};
+
+const categoryGuideLinks: Record<string, CVExampleInternalLink> = {
+    'studenten-en-starters': {
+        href: '/cv-gids/cv-voorbeeld-zonder-ervaring',
+        title: 'CV voorbeeld zonder ervaring',
+        description: 'Gebruik deze gids om opleiding, stage, projecten en kleine jobs recruiterproof te positioneren.',
+    },
+    'zorg-en-welzijn': {
+        href: '/profieltekst-cv-voorbeelden',
+        title: 'Profieltekst CV voorbeelden',
+        description: 'Scherp je openingsalinea aan zodat verantwoordelijkheden, zorgkwaliteit en samenwerking sneller opvallen.',
+    },
+    'technologie-en-ict': {
+        href: '/cv-tips/ats-vriendelijk-cv',
+        title: 'ATS-vriendelijk CV',
+        description: 'Relevante gids voor technische CV s waar keywords, stack-termen en scanbaarheid zwaar meewegen.',
+    },
+    'vakmanschap-en-logistiek': {
+        href: '/cv-tips/cv-werkervaring-beschrijven',
+        title: 'Werkervaring op je CV beschrijven',
+        description: 'Maak van taken rond veiligheid, tempo en uitvoering sterkere bullets met actie en resultaat.',
+    },
+    onderwijs: {
+        href: '/profieltekst-cv-voorbeelden',
+        title: 'Profieltekst CV voorbeelden',
+        description: 'Gebruik sterkere openingszinnen voor onderwijsrollen waar didactiek, begeleiding en betrouwbaarheid tellen.',
+    },
+    'horeca-en-detailhandel': {
+        href: '/cv-gids/cv-voorbeeld-horeca-medewerker',
+        title: 'CV voorbeeld horeca medewerker',
+        description: 'Brede BOFU gids voor horeca, service, tempo, beschikbaarheid en bijbaanachtige sollicitaties.',
+    },
+    'zakelijk-en-financieel': {
+        href: '/cv-tips/cv-werkervaring-beschrijven',
+        title: 'Werkervaring op je CV beschrijven',
+        description: 'Handig voor scherpere bullets rond controle, analyse, processen en zakelijke impact.',
+    },
+    'marketing-en-communicatie': {
+        href: '/profieltekst-cv-voorbeelden',
+        title: 'Profieltekst CV voorbeelden',
+        description: 'Gebruik sterkere profielteksten voor rollen waar positionering, impact en doelgroepfocus veel uitmaken.',
+    },
+    'juridisch-en-overheid': {
+        href: '/cv-tips/cv-werkervaring-beschrijven',
+        title: 'Werkervaring op je CV beschrijven',
+        description: 'Maak van dossiers, regelgeving en besluitvorming concretere, beter scanbare ervaringsteksten.',
+    },
+    'bouw-en-techniek': {
+        href: '/cv-tips/cv-werkervaring-beschrijven',
+        title: 'Werkervaring op je CV beschrijven',
+        description: 'Gebruik sterkere bullets voor oplevering, veiligheid, planning en vaktechnische uitvoering.',
+    },
+};
+
 // ============================================================================
 // PUBLIC API
 // ============================================================================
@@ -267,24 +388,42 @@ export function getAllCategoryExamplePairs(): { category: string; slug: string }
 
 /** Get related examples for internal linking */
 export function getRelatedExamples(example: CVExample, limit = 3): CVExampleWithCategory[] {
-    // Try explicit relatedSlugs first
+    const related: CVExampleWithCategory[] = [];
+    const seen = new Set<string>([`${example.categorySlug}/${example.slug}`]);
+
+    // Try explicit relatedSlugs first and then top up to the requested limit.
     if (example.relatedSlugs && example.relatedSlugs.length > 0) {
-        const related: CVExampleWithCategory[] = [];
         for (const slug of example.relatedSlugs.slice(0, limit)) {
+            if (seen.has(slug)) continue;
             const [catSlug, exSlug] = slug.split('/');
             const resolved = getExampleBySlug(catSlug, exSlug);
-            if (resolved) related.push(resolved);
+            if (!resolved) continue;
+            related.push(resolved);
+            seen.add(slug);
         }
-        if (related.length > 0) return related;
     }
 
-    // Fallback: other examples in the same category
-    const siblings = getExamplesByCategory(example.categorySlug)
-        .filter(e => e.slug !== example.slug)
-        .slice(0, limit);
+    if (related.length < limit) {
+        const siblings = getExamplesByCategory(example.categorySlug)
+            .filter(e => !seen.has(`${e.categorySlug}/${e.slug}`))
+            .slice(0, limit - related.length);
 
-    return siblings.map(e => {
-        const category = categoryMap.get(e.categorySlug)!;
-        return { ...e, category };
-    });
+        for (const sibling of siblings) {
+            const category = categoryMap.get(sibling.categorySlug)!;
+            related.push({ ...sibling, category });
+            seen.add(`${sibling.categorySlug}/${sibling.slug}`);
+        }
+    }
+
+    return related;
+}
+
+/** Get the most relevant guide-like internal link for an example page */
+export function getRelatedGuideLink(example: CVExample): CVExampleInternalLink {
+    const key = `${example.categorySlug}/${example.slug}`;
+    return exactGuideLinks[key] ?? categoryGuideLinks[example.categorySlug] ?? {
+        href: '/cv-maken',
+        title: 'Hoe maak je een CV?',
+        description: 'Gebruik de algemene CV-gids als je eerst structuur, volgorde en inhoud scherp wilt krijgen.',
+    };
 }
