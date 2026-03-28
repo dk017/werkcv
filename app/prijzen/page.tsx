@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
     title: "Prijzen - CV Maken Kosten | WerkCV.nl",
-    description: "Maak gratis je CV en betaal alleen als je downloadt. Eenmalig €4,99 voor een professionele PDF. Geen abonnement, geen verborgen kosten.",
+    description: "Maak gratis je CV en betaal eenmalig €4,99 per CV. Daarna kun je dat CV blijven bewerken, van template wisselen en opnieuw downloaden. Geen abonnement.",
     keywords: [
         "cv maken kosten",
         "cv maker prijs",
@@ -22,7 +22,7 @@ const productJsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     "name": "WerkCV - Professioneel CV Downloaden",
-    "description": "Maak een professioneel, ATS-vriendelijk CV en download als PDF.",
+    "description": "Maak een professioneel, ATS-vriendelijk CV en download als PDF. Na betaling kun je hetzelfde CV later opnieuw downloaden.",
     "url": "https://werkcv.nl/prijzen",
     "image": [
         "https://werkcv.nl/opengraph-image",
@@ -85,7 +85,7 @@ export default function PrijzenPage() {
                         Simpel & eerlijk geprijsd
                     </h1>
                     <p className="text-lg font-medium text-black max-w-2xl mx-auto">
-                        Maak je CV helemaal gratis. Betaal alleen als je tevreden bent en wilt downloaden.
+                        Maak je CV helemaal gratis. Betaal eenmalig per CV zodra je tevreden bent, en blijf datzelfde CV daarna gewoon bewerken en downloaden.
                     </p>
                 </div>
 
@@ -98,7 +98,7 @@ export default function PrijzenPage() {
 
                         <div className="text-center pt-4">
                             <div className="text-6xl font-black text-black mb-2">€4,99</div>
-                            <p className="text-lg font-bold text-gray-600 mb-8">per CV download</p>
+                            <p className="text-lg font-bold text-gray-600 mb-8">eenmalig per CV</p>
 
                             <ul className="text-left space-y-3 mb-8">
                                 {[
@@ -107,6 +107,8 @@ export default function PrijzenPage() {
                                     '12 kleurthema\'s per template',
                                     'ATS-vriendelijk PDF formaat',
                                     'Direct downloaden na betaling',
+                                    'Later opnieuw downloaden zonder extra betaling',
+                                    'Template en kleur later nog aanpassen',
                                     'Geen abonnement of verborgen kosten',
                                     'CV blijft opgeslagen voor later',
                                 ].map((feature, i) => (
@@ -156,9 +158,9 @@ export default function PrijzenPage() {
                             </div>
                             <h3 className="font-black text-black mb-2">WerkCV.nl</h3>
                             <ul className="space-y-2 text-sm font-black text-black">
-                                <li>&bull; Eenmalig €4,99, klaar</li>
+                                <li>&bull; Eenmalig €4,99 per CV</li>
                                 <li>&bull; Geen abonnement</li>
-                                <li>&bull; Gratis bewerken, altijd</li>
+                                <li>&bull; Later opnieuw bewerken en downloaden</li>
                                 <li>&bull; Eerlijk en transparant</li>
                             </ul>
                         </div>
@@ -182,9 +184,10 @@ export default function PrijzenPage() {
                     <h2 className="text-2xl font-black text-black text-center mb-8">Veelgestelde vragen over prijzen</h2>
                     <div className="space-y-4 max-w-2xl mx-auto">
                         {[
-                            { q: 'Moet ik betalen om mijn CV te maken?', a: 'Nee, het aanmaken en bewerken van je CV is volledig gratis. Je betaalt alleen als je je CV als PDF wilt downloaden.' },
-                            { q: 'Is het een abonnement?', a: 'Nee! Het is een eenmalige betaling van €4,99. Geen automatische verlengingen, geen verborgen kosten.' },
-                            { q: 'Kan ik mijn CV later nog bewerken?', a: 'Ja, je CV blijft opgeslagen en je kunt het altijd gratis bewerken. Alleen voor een nieuwe PDF-download betaal je opnieuw.' },
+                            { q: 'Moet ik betalen om mijn CV te maken?', a: 'Nee, het aanmaken en bewerken van je CV is volledig gratis. Je betaalt pas als je dat CV als PDF wilt downloaden.' },
+                            { q: 'Is het een abonnement?', a: 'Nee. Het is een eenmalige betaling van €4,99 per CV. Geen automatische verlengingen en geen verborgen kosten.' },
+                            { q: 'Kan ik mijn CV later nog bewerken?', a: 'Ja. Na betaling blijft dat CV in je account staan en kun je het later opnieuw openen, bewerken, van template of kleur wisselen en opnieuw downloaden zonder opnieuw te betalen.' },
+                            { q: 'Wanneer betaal ik opnieuw?', a: 'Alleen als je een nieuw CV als apart document aanmaakt. Voor een CV waarvoor je al hebt betaald, hoef je niet opnieuw te betalen om later nog een PDF te downloaden.' },
                             { q: 'Welke betaalmethoden accepteren jullie?', a: 'We accepteren iDEAL, creditcard, Bancontact en andere gangbare betaalmethoden via onze betalingspartner.' },
                         ].map((faq, i) => (
                             <details key={i} className="bg-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group">

@@ -25,11 +25,11 @@ const faqs = [
             },
             {
                 q: "Is WerkCV.nl gratis?",
-                a: "Het aanmaken en bewerken van je CV is volledig gratis. Je betaalt alleen een eenmalig bedrag van €4,99 wanneer je je CV als PDF wilt downloaden. Er zijn geen abonnementen of verborgen kosten."
+                a: "Het aanmaken en bewerken van je CV is volledig gratis. Je betaalt eenmalig €4,99 per CV wanneer je dat CV als PDF wilt downloaden. Er zijn geen abonnementen of verborgen kosten."
             },
             {
                 q: "Hoe verschilt WerkCV.nl van andere CV-sites?",
-                a: "De meeste CV-sites werken met dure maandabonnementen (\u20ac10-25 per maand). Wij vragen een eenmalige betaling van €4,99 per download. Geen automatische verlengingen, geen gedoe met opzeggen."
+                a: "De meeste CV-sites werken met dure maandabonnementen (\u20ac10-25 per maand). Wij vragen een eenmalige betaling van €4,99 per CV. Daarna kun je datzelfde CV later opnieuw bewerken en downloaden zonder extra betaling. Geen automatische verlengingen, geen gedoe met opzeggen."
             },
         ],
     },
@@ -54,7 +54,7 @@ const faqs = [
             },
             {
                 q: "Kan ik mijn CV later nog bewerken?",
-                a: "Ja, je CV blijft opgeslagen en je kunt het op elk moment gratis bewerken. Je wijzigingen worden automatisch opgeslagen terwijl je typt."
+                a: "Ja, je CV blijft opgeslagen en je kunt het op elk moment gratis bewerken. Je wijzigingen worden automatisch opgeslagen terwijl je typt, ook nadat je al voor dat CV hebt betaald."
             },
         ],
     },
@@ -63,7 +63,11 @@ const faqs = [
         questions: [
             {
                 q: "Hoeveel kost het om een CV te downloaden?",
-                a: "Een CV downloaden als PDF kost eenmalig €4,99. Dit is een eenmalige betaling, geen abonnement."
+                a: "Een CV downloaden als PDF kost eenmalig €4,99 per CV. Dit is een eenmalige betaling, geen abonnement."
+            },
+            {
+                q: "Moet ik opnieuw betalen als ik mijn CV later aanpas?",
+                a: "Nee. Als je eenmaal voor een CV hebt betaald, kun je later gewoon inloggen, datzelfde CV opnieuw openen, aanpassen, van template of kleur wisselen en opnieuw downloaden zonder opnieuw te betalen."
             },
             {
                 q: "Welke betaalmethoden worden geaccepteerd?",

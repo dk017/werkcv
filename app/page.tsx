@@ -267,7 +267,7 @@ export default function Home() {
         { title: "ATS-Vriendelijk", desc: "Alle templates werken met Applicant Tracking Systems", color: "bg-yellow-400", icon: "✓" },
         { title: "Direct PDF Download", desc: "Download je CV direct als professionele PDF", color: "bg-blue-400", icon: "↓" },
         { title: "100% Privacy", desc: "Je gegevens blijven van jou. Wij verkopen niets door", color: "bg-pink-400", icon: "🔒" },
-        { title: "Geen Abonnement", desc: "Eenmalig €4,99 per download, geen verborgen kosten", color: "bg-green-400", icon: "€" },
+        { title: "Geen Abonnement", desc: "Eenmalig €4,99 per CV, geen verborgen kosten", color: "bg-green-400", icon: "€" },
         { title: "Live Preview", desc: "Bekijk je CV in realtime terwijl je typt", color: "bg-purple-400", icon: "👁" },
         { title: "Binnen 5 Minuten", desc: "Upload je bestaande CV of begin helemaal opnieuw", color: "bg-[#4ECDC4]", icon: "⚡" },
     ];
@@ -275,7 +275,7 @@ export default function Home() {
     const steps = [
         { num: "1", title: "Kies een template", desc: `Selecteer uit ${templateCount}+ professionele, ATS-vriendelijke templates.`, color: "bg-yellow-400" },
         { num: "2", title: "Vul je gegevens in", desc: "Typ je gegevens in de editor. Je CV wordt live bijgewerkt.", color: "bg-blue-400" },
-        { num: "3", title: "Download als PDF", desc: "Download je afgeronde CV als professionele PDF. Eenmalig €4,99.", color: "bg-pink-400" },
+        { num: "3", title: "Download als PDF", desc: "Download je afgeronde CV als professionele PDF. Eenmalig €4,99 per CV.", color: "bg-pink-400" },
     ];
 
     return (
@@ -580,13 +580,14 @@ export default function Home() {
                             <div className="text-6xl font-black text-black mb-2">
                                 <span className="text-3xl align-top">€</span>4,99
                             </div>
-                            <p className="text-gray-600 font-medium mb-6">per CV download</p>
+                            <p className="text-gray-600 font-medium mb-6">eenmalig per CV</p>
                             <div className="space-y-3 text-left mb-8">
                                 {[
                                     "Gratis bewerken en vormgeven",
                                     `${templateCount}+ professionele templates`,
                                     "ATS-vriendelijk ontwerp",
                                     "Direct downloaden als PDF",
+                                    "Later opnieuw downloaden zonder extra betaling",
                                     "Gehost op EU-servers (Hetzner, Duitsland)",
                                     "Geen abonnement of verborgen kosten",
                                 ].map((item) => (

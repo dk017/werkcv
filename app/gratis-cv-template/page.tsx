@@ -191,7 +191,7 @@ export default function GratisCvTemplatePage() {
             <div className="mt-6 flex flex-wrap gap-3 text-xs font-black uppercase tracking-[0.3em] text-slate-600">
               <span className="px-3 py-1 border-2 border-black bg-white">Gehost op EU-servers (Hetzner, DE)</span>
               <span className="px-3 py-1 border-2 border-black bg-white">GDPR-compliant – gegevens blijven in de EU</span>
-              <span className="px-3 py-1 border-2 border-black bg-white">Geen abonnement, download betaal je los</span>
+              <span className="px-3 py-1 border-2 border-black bg-white">Geen abonnement, eenmalig per CV</span>
             </div>
           </div>
 
@@ -431,4 +431,3 @@ export default function GratisCvTemplatePage() {
     </div>
   );
 }
-
