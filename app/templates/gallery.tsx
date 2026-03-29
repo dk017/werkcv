@@ -83,6 +83,27 @@ function RichTemplatePreview({ templateId, colorThemeId }: { templateId: string;
 
 const recommendedTemplateIds = new Set(['professional', 'modern', 'ats']);
 
+const quickStartTemplates = [
+    {
+        templateId: 'professional',
+        themeId: 'classic-blue',
+        eyebrow: 'Meeste sollicitaties',
+        body: 'Rustige keuze voor administratie, finance, HR, operations en brede zakelijke rollen.',
+    },
+    {
+        templateId: 'ats',
+        themeId: 'charcoal',
+        eyebrow: 'Strikte ATS-focus',
+        body: 'Beste optie als scanbaarheid en standaardkoppen het zwaarst meewegen voor de vacature.',
+    },
+    {
+        templateId: 'modern',
+        themeId: 'ocean-blue',
+        eyebrow: 'Modern maar veilig',
+        body: 'Meer uitstraling zonder onrustig te worden voor recruiters of sollicitatiesoftware.',
+    },
+];
+
 export default function TemplateGallery({ templates }: TemplateGalleryProps) {
     const router = useRouter();
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -107,10 +128,15 @@ export default function TemplateGallery({ templates }: TemplateGalleryProps) {
         minimal: templates.filter(t => t.category === 'minimal').length,
     };
 
-    const handleSelectTemplate = async (templateId: string, defaultThemeId: string) => {
+    const handleSelectTemplate = async (
+        templateId: string,
+        defaultThemeId: string,
+        entryPoint: string = 'template_gallery'
+    ) => {
         setIsCreating(templateId);
         try {
-            track('start_cv', { entryPoint: 'template_gallery', templateId });
+            track('cta_clicked', { location: entryPoint, label: templateId });
+            track('start_cv', { entryPoint, templateId });
             const attribution = getStoredAttribution();
             const response = await fetch('/api/create-cv', {
                 method: 'POST',
@@ -119,7 +145,7 @@ export default function TemplateGallery({ templates }: TemplateGalleryProps) {
                     templateId,
                     colorThemeId: defaultThemeId,
                     attribution,
-                    startSource: 'template_gallery',
+                    startSource: entryPoint,
                 }),
             });
             const raw = await response.text();
@@ -191,17 +217,59 @@ export default function TemplateGallery({ templates }: TemplateGalleryProps) {
             <main className="relative z-10 max-w-6xl mx-auto px-6 py-12">
                 {/* Hero */}
                 <div className="text-center mb-10">
+                    <p className="mb-3 text-xs font-black uppercase tracking-[0.28em] text-slate-600">
+                        Nederlandse sollicitaties
+                    </p>
                     <h1 className="text-4xl md:text-5xl font-black text-black mb-4">
                         Kies je{" "}
                         <span className="bg-purple-400 px-2 -rotate-1 inline-block border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                            CV template
+                            ATS-vriendelijke
                         </span>
+                        {" "}CV template
                     </h1>
-                    <p className="text-xl font-medium text-black max-w-2xl mx-auto">
-                        Selecteer een professioneel ontwerp dat bij jou past.
+                    <p className="text-xl font-medium text-black max-w-3xl mx-auto">
+                        Vergelijk ATS-vriendelijke layouts voor Nederlandse vacatures, kies de stijl die bij je rol past en wissel later nog van template of kleur als je inhoud verandert.
                         <br />
-                        <span className="bg-green-200 px-1">Alle templates zijn ATS-vriendelijk.</span>
+                        <span className="bg-green-200 px-1">Start gratis, betaal eenmalig per CV wanneer je wilt downloaden.</span>
                     </p>
+                    <div className="mt-5 flex flex-wrap justify-center gap-3 text-xs font-black uppercase tracking-[0.18em] text-black">
+                        <span className="border-2 border-black bg-white px-3 py-1">ATS-vriendelijk</span>
+                        <span className="border-2 border-black bg-white px-3 py-1">Voor NL vacatures</span>
+                        <span className="border-2 border-black bg-white px-3 py-1">Later opnieuw downloaden</span>
+                        <span className="border-2 border-black bg-white px-3 py-1">Geen abonnement</span>
+                    </div>
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-3 mb-10">
+                    {quickStartTemplates.map((item) => {
+                        const template = templates.find((entry) => entry.id === item.templateId);
+                        if (!template) return null;
+
+                        return (
+                            <div
+                                key={item.templateId}
+                                className="border-4 border-black bg-white p-5 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                            >
+                                <p className="text-[11px] font-black uppercase tracking-[0.24em] text-slate-600">
+                                    {item.eyebrow}
+                                </p>
+                                <h2 className="mt-2 text-2xl font-black text-black">
+                                    {template.nameDutch}
+                                </h2>
+                                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+                                    {item.body}
+                                </p>
+                                <button
+                                    onClick={() => handleSelectTemplate(item.templateId, item.themeId, 'template_quick_pick')}
+                                    disabled={isCreating !== null}
+                                    className="mt-5 w-full border-3 border-black bg-yellow-400 px-4 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:cursor-wait disabled:bg-gray-300 disabled:text-gray-600 disabled:shadow-none"
+                                    style={{ borderWidth: '3px' }}
+                                >
+                                    {isCreating === item.templateId ? 'Bezig...' : `Start met ${template.nameDutch}`}
+                                </button>
+                            </div>
+                        );
+                    })}
                 </div>
 
                 {/* Search Bar */}

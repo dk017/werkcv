@@ -211,6 +211,11 @@ export default function Home() {
     const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    const trackHomepageTemplatesClick = (location: string, label: string) => {
+        track('cta_clicked', { location, label });
+        track('landing_cta_click', { fromPath: '/', toPath: '/templates', label });
+    };
+
     const handleFile = async (file: File) => {
         setError(null);
         setIsUploading(true);
@@ -345,6 +350,7 @@ export default function Home() {
                         <NavUserMenu />
                         <Link
                             href="/templates"
+                            onClick={() => trackHomepageTemplatesClick('header', 'CV Maken')}
                             className="bg-yellow-400 text-black px-4 py-2 font-black text-sm border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
                             style={{ borderWidth: '3px' }}
                         >
@@ -367,24 +373,27 @@ export default function Home() {
                     <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
                         {/* Left: Copy */}
                         <div className="flex-1 text-center lg:text-left">
+                            <div className="mb-4 inline-block bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700 border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                                Nederlandse CV builder
+                            </div>
                             <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-black leading-tight mb-6">
-                                Maak een CV dat{" "}
+                                Maak een{" "}
                                 <span className="bg-yellow-400 px-2 -rotate-1 inline-block border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                                    uitnodigt
+                                    ATS-vriendelijk
                                 </span>{" "}
-                                voor gesprekken
+                                CV voor Nederlandse vacatures
                             </h1>
                             <p className="text-lg md:text-xl font-medium text-gray-700 mb-8 max-w-xl mx-auto lg:mx-0">
-                                Kies uit {templateCount}+ professionele templates, vul je gegevens in en download als PDF.{" "}
-                                <span className="bg-blue-200 px-1">Eenmalig €4,99, geen abonnement.</span>
+                                WerkCV.nl helpt je snel een professioneel CV op te bouwen met {templateCount}+ templates die rustig, recruiter-proof en ATS-vriendelijk blijven.{" "}
+                                <span className="bg-blue-200 px-1">Start gratis, betaal eenmalig €4,99 per CV en download later opnieuw zonder abonnement.</span>
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                                 <Link
                                     href="/templates"
-                                    onClick={() => track('cta_clicked', { location: 'hero', label: 'Begin je CV' })}
+                                    onClick={() => trackHomepageTemplatesClick('hero', 'Vergelijk templates')}
                                     className="bg-yellow-400 text-black px-8 py-4 font-black text-lg border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
                                 >
-                                    Begin je CV
+                                    Vergelijk templates
                                 </Link>
                                 <button
                                     onClick={() => { track('cta_clicked', { location: 'hero', label: 'Upload bestaand CV' }); fileInputRef.current?.click(); }}
@@ -392,6 +401,12 @@ export default function Home() {
                                 >
                                     Upload bestaand CV
                                 </button>
+                            </div>
+                            <div className="mt-5 flex flex-wrap gap-3 justify-center lg:justify-start text-xs font-black uppercase tracking-[0.2em] text-black">
+                                <span className="px-3 py-1 border-2 border-black bg-white">Voor Nederlandse sollicitaties</span>
+                                <span className="px-3 py-1 border-2 border-black bg-white">ATS-vriendelijke templates</span>
+                                <span className="px-3 py-1 border-2 border-black bg-white">Eenmalig per CV</span>
+                                <span className="px-3 py-1 border-2 border-black bg-white">Later opnieuw downloaden</span>
                             </div>
                         </div>
 
@@ -601,7 +616,7 @@ export default function Home() {
                             </div>
                             <Link
                                 href="/templates"
-                                onClick={() => track('cta_clicked', { location: 'pricing', label: 'Begin nu gratis' })}
+                                onClick={() => trackHomepageTemplatesClick('pricing', 'Begin nu gratis')}
                                 className="block w-full bg-yellow-400 text-black py-4 font-black text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
                             >
                                 Begin nu gratis
@@ -814,11 +829,11 @@ export default function Home() {
                     </h2>
                     <p className="text-xl mb-8 max-w-2xl mx-auto text-black/80">
                         Maak binnen 5 minuten een professioneel CV dat opvalt bij recruiters.
-                        Eenmalig €4,99, geen abonnement.
+                        Eenmalig €4,99 per CV, later opnieuw bewerken en downloaden.
                     </p>
                     <Link
                         href="/templates"
-                        onClick={() => track('cta_clicked', { location: 'footer_cta', label: 'Begin nu' })}
+                        onClick={() => trackHomepageTemplatesClick('footer_cta', 'Begin nu')}
                         className="inline-block bg-black text-white font-bold px-10 py-5 text-xl border-4 border-black shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
                     >
                         Begin nu

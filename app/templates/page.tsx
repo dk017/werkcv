@@ -5,7 +5,7 @@ import TemplateGallery from "./gallery";
 
 export const metadata: Metadata = {
   title: "CV Templates Kiezen - 13+ Professionele Ontwerpen | WerkCV.nl",
-  description: "Kies uit 13+ professionele CV templates. Van klassiek tot modern, ATS-vriendelijk ontwerp. Vind de perfecte stijl voor jouw sollicitatie.",
+  description: "Vergelijk 13+ ATS-vriendelijke CV templates voor Nederlandse sollicitaties. Start gratis, wissel later van template en betaal eenmalig per CV als je downloadt.",
   keywords: [
     "cv template",
     "cv ontwerp",
@@ -35,14 +35,20 @@ export default function TemplatesPage() {
         <div className="mx-auto flex max-w-5xl flex-col gap-4 px-6 py-6 md:flex-row md:items-center md:justify-between">
           <div className="max-w-3xl">
             <p className="mb-2 text-xs font-black uppercase tracking-[0.25em] text-slate-600">
-              Slim Startpunt
+              Voor Nederlandse sollicitaties
             </p>
             <h2 className="text-2xl font-black text-black sm:text-3xl">
-              Zoek je een gratis CV template?
+              Vergelijk ATS-vriendelijke CV templates zonder abonnementsmodel
             </h2>
             <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700 sm:text-base">
-              Start gratis met een professioneel ontwerp, vergelijk ATS-vriendelijke opties en betaal pas als je een PDF wilt downloaden.
+              WerkCV.nl helpt je eerst gratis vergelijken, daarna pas beslissen. Kies een rustige of moderne layout, wissel later nog van template of kleur en betaal eenmalig per CV wanneer je wilt downloaden.
             </p>
+            <div className="mt-4 flex flex-wrap gap-2 text-xs font-black uppercase tracking-[0.18em] text-black">
+              <span className="border-2 border-black bg-white px-3 py-1">ATS-vriendelijk</span>
+              <span className="border-2 border-black bg-white px-3 py-1">Eenmalig per CV</span>
+              <span className="border-2 border-black bg-white px-3 py-1">Later opnieuw downloaden</span>
+              <span className="border-2 border-black bg-white px-3 py-1">Ontworpen voor NL vacatures</span>
+            </div>
           </div>
           <div className="flex flex-wrap gap-3">
             <Link
