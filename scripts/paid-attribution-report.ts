@@ -26,6 +26,12 @@ type PaidOrderRow = {
   minutesToPay: number | null;
 };
 
+function readPropertyString(properties: unknown, key: string): string {
+  if (!properties || typeof properties !== "object") return "";
+  const value = (properties as Record<string, unknown>)[key];
+  return typeof value === "string" ? value : "";
+}
+
 function maskEmail(email: string): string {
   const [localPart, domain] = email.split("@");
   if (!localPart || !domain) return email;
@@ -138,6 +144,18 @@ async function main() {
     orderBy: { createdAt: "asc" },
   });
 
+  const templateStartEvents = await prisma.analyticsEvent.findMany({
+    where: {
+      createdAt: { gte: since },
+      event: "start_cv",
+    },
+    select: {
+      properties: true,
+      createdAt: true,
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
   const documentsById = new Map(documents.map((doc) => [doc.id, doc]));
   const checkoutPathByCvId = new Map<string, string>();
 
@@ -239,6 +257,44 @@ async function main() {
         };
       })
       .sort((a, b) => b.orders - a.orders || a.landing_page.localeCompare(b.landing_page))
+  );
+
+  const startsByTemplate = new Map<string, { starts: number; quickStarts: number }>();
+  for (const event of templateStartEvents) {
+    const templateId = readPropertyString(event.properties, "templateId");
+    if (!templateId) continue;
+    const entryPoint = readPropertyString(event.properties, "entryPoint");
+    const current = startsByTemplate.get(templateId) || { starts: 0, quickStarts: 0 };
+    current.starts += 1;
+    if (entryPoint === "template_quick_pick") current.quickStarts += 1;
+    startsByTemplate.set(templateId, current);
+  }
+
+  const paidByTemplate = new Map<string, number>();
+  for (const row of rows) {
+    const key = row.templateId || "";
+    if (!key) continue;
+    paidByTemplate.set(key, (paidByTemplate.get(key) || 0) + 1);
+  }
+
+  console.log("Template starts vs paid orders");
+  console.table(
+    [...new Set([...startsByTemplate.keys(), ...paidByTemplate.keys()])]
+      .map((templateId) => {
+        const startData = startsByTemplate.get(templateId) || { starts: 0, quickStarts: 0 };
+        const paidOrders = paidByTemplate.get(templateId) || 0;
+        const templateName = getTemplateConfig(templateId).nameDutch;
+        return {
+          template: templateName,
+          template_id: templateId,
+          starts: startData.starts,
+          quick_pick_starts: startData.quickStarts,
+          paid_orders: paidOrders,
+          paid_per_10_starts:
+            startData.starts > 0 ? Number(((paidOrders / startData.starts) * 10).toFixed(2)) : 0,
+        };
+      })
+      .sort((a, b) => b.starts - a.starts || b.paid_orders - a.paid_orders || a.template.localeCompare(b.template))
   );
 
   console.log("Latest paid orders");

@@ -81,20 +81,28 @@ function RichTemplatePreview({ templateId, colorThemeId }: { templateId: string;
     );
 }
 
-const recommendedTemplateIds = new Set(['professional', 'modern', 'ats']);
+const recommendedTemplateIds = new Set(['classical', 'ats', 'modern']);
+
+const templatePriority: Record<string, number> = {
+    classical: 0,
+    professional: 1,
+    ats: 2,
+    modern: 3,
+    formal: 4,
+};
 
 const quickStartTemplates = [
     {
-        templateId: 'professional',
-        themeId: 'classic-blue',
-        eyebrow: 'Meeste sollicitaties',
-        body: 'Rustige keuze voor administratie, finance, HR, operations en brede zakelijke rollen.',
+        templateId: 'classical',
+        themeId: 'charcoal',
+        eyebrow: 'Veilige keuze voor de meeste vacatures',
+        body: 'Beste startpunt als je snel een rustige, geloofwaardige sollicitatieversie wilt voor Nederlandse werkgevers.',
     },
     {
         templateId: 'ats',
         themeId: 'charcoal',
         eyebrow: 'Strikte ATS-focus',
-        body: 'Beste optie als scanbaarheid en standaardkoppen het zwaarst meewegen voor de vacature.',
+        body: 'Kies deze als scanbaarheid, standaardkoppen en keyword-structuur het zwaarst meewegen voor de vacature.',
     },
     {
         templateId: 'modern',
@@ -118,6 +126,11 @@ export default function TemplateGallery({ templates }: TemplateGalleryProps) {
             t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
             t.description.toLowerCase().includes(searchQuery.toLowerCase());
         return matchesCategory && matchesSearch;
+    }).sort((left, right) => {
+        const leftPriority = templatePriority[left.id] ?? 999;
+        const rightPriority = templatePriority[right.id] ?? 999;
+        if (leftPriority !== rightPriority) return leftPriority - rightPriority;
+        return left.nameDutch.localeCompare(right.nameDutch, 'nl');
     });
 
     const categoryCounts: Record<string, number> = {
@@ -240,6 +253,15 @@ export default function TemplateGallery({ templates }: TemplateGalleryProps) {
                     </div>
                 </div>
 
+                <div className="mb-5 text-center">
+                    <p className="text-sm font-black uppercase tracking-[0.24em] text-slate-600">
+                        Welke moet ik kiezen?
+                    </p>
+                    <p className="mt-2 text-sm font-medium text-slate-700">
+                        Als je twijfelt, begin met <span className="bg-yellow-200 px-1 font-black text-black">Klassiek</span>. Die route geven we nu bewust voorrang omdat hij het veiligst voelt voor brede Nederlandse sollicitaties.
+                    </p>
+                </div>
+
                 <div className="grid gap-4 md:grid-cols-3 mb-10">
                     {quickStartTemplates.map((item) => {
                         const template = templates.find((entry) => entry.id === item.templateId);
@@ -304,6 +326,29 @@ export default function TemplateGallery({ templates }: TemplateGalleryProps) {
                             </span>
                         </button>
                     ))}
+                </div>
+
+                <div className="mb-8 border-4 border-black bg-white p-5 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="grid gap-4 md:grid-cols-3">
+                        <div>
+                            <p className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-600">Klassiek</p>
+                            <p className="mt-2 text-sm font-medium text-slate-700">
+                                Beste keuze als je vooral rust, duidelijkheid en brede inzetbaarheid zoekt.
+                            </p>
+                        </div>
+                        <div>
+                            <p className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-600">ATS</p>
+                            <p className="mt-2 text-sm font-medium text-slate-700">
+                                Gebruik dit als de vacature corporate, streng of sterk keyword-gedreven aanvoelt.
+                            </p>
+                        </div>
+                        <div>
+                            <p className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-600">Modern</p>
+                            <p className="mt-2 text-sm font-medium text-slate-700">
+                                Kies deze als je iets meer uitstraling wilt zonder recruiter-veiligheid op te geven.
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Template Grid */}
@@ -381,7 +426,7 @@ export default function TemplateGallery({ templates }: TemplateGalleryProps) {
                                                 Bezig...
                                             </span>
                                         ) : (
-                                            'Kies template'
+                                            `Start met ${template.nameDutch}`
                                         )}
                                     </button>
                                 </div>
