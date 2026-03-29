@@ -10,7 +10,7 @@ Recommended order:
 Recommended send window:
 
 - send between `08:30` and `10:30` local Netherlands time
-- for `e-search`, email first and use LinkedIn only as a second touch
+- for `e-search`, use the site contact route or LinkedIn first
 
 Signature baseline:
 
@@ -67,7 +67,7 @@ DK
 
 `Snelle vraag over jullie boutique searchproces`
 
-### Email
+### Website contact or email-style message
 
 Best Ernst,
 
