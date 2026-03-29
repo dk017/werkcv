@@ -207,10 +207,10 @@ export default function PartnersPage() {
               Plan een kennismaking
             </Link>
             <Link
-              href="/for-coaches"
+              href="/agency"
               className="inline-block border-4 border-black bg-white px-6 py-4 text-center text-lg font-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-gray-50 hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
             >
-              Bekijk de coach-pagina
+              Agency pilot voor recruiters
             </Link>
           </div>
         </section>

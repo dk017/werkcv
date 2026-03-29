@@ -6,6 +6,7 @@ const mainLinks = [
     { href: "/cv-tips", label: "CV Tips" },
     { href: "/tools", label: "Gratis Tools" },
     { href: "/cv-gids", label: "CV Gidsen" },
+    { href: "/agency", label: "Agency" },
     { href: "/partners", label: "Partners" },
     { href: "/for-coaches", label: "Voor Coaches" },
     { href: "/en", label: "English Guides" },
