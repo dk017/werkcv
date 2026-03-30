@@ -50,11 +50,13 @@ const parttimeCvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Parttime Salaris Calculator 2026 - Gratis Tool | WerkCV.nl",
-  description: "Bereken snel je parttime salaris voor 24, 28, 32 of 36 uur. Vul je fulltime salaris en uren in en zie direct je bruto maandloon, jaarloon en vakantiegeld.",
+  title: "Parttime Salaris Berekenen | 24, 28, 32 of 36 Uur",
+  description: "Bereken direct je parttime salaris voor 24, 28, 32 of 36 uur. Vul fulltime salaris en uren in en zie bruto maandloon, jaarloon en vakantiegeld.",
   keywords: [
     "parttime salaris calculator",
+    "parttime salaris berekenen",
     "32 uur salaris berekenen",
+    "28 uur salaris berekenen",
     "24 uur salaris berekenen",
     "36 uur salaris berekenen",
     "parttime loon berekenen",
@@ -100,10 +102,10 @@ export default function ParttimeSalarisCalculatorPage() {
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-              Parttime salaris calculator
+              Parttime salaris berekenen voor 24, 28, 32 of 36 uur
             </h1>
             <p className="text-lg text-slate-600 font-medium max-w-3xl">
-              Handig voor iedereen die een 24-, 28-, 32- of 36-urige werkweek wil vergelijken zonder zelf te gaan prutsen met FTE-percentages. WerkCV zet fulltime salaris direct om naar een bruikbare parttime indicatie.
+              Bereken direct wat 24, 28, 32 of 36 uur bruto betekent. WerkCV zet je fulltime salaris om naar een bruikbare parttime indicatie met maandloon, jaarloon en vakantiegeld.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link

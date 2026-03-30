@@ -2,14 +2,14 @@ import { BlogArticle } from '../types';
 
 export const cvSchrijvenTips: BlogArticle = {
     slug: 'cv-schrijven-tips',
-    title: 'CV Schrijven: 10 Tips voor een Perfect CV in 2026',
-    description: 'Leer hoe je een professioneel cv schrijft dat opvalt bij recruiters én door ATS-systemen komt. Van structuur tot inhoud: bewezen tips met Nederlandse statistieken en concrete voorbeelden.',
+    title: 'CV schrijven in 2026: 10 tips + voorbeelden voor een sterk cv',
+    description: 'Wil je een goed cv schrijven? Gebruik 10 praktische tips voor structuur, profieltekst, werkervaring en ATS, met Nederlandse voorbeelden die je direct kunt toepassen.',
     publishedAt: '2025-01-15',
     updatedAt: '2026-02-19',
 
-    metaTitle: 'CV Schrijven: 10 Tips voor een Perfect CV [2026] | WerkCV.nl',
-    metaDesc: 'Hoe schrijf je een goed cv in 2026? 10 bewezen tips voor structuur, inhoud en ATS-optimalisatie. Met Nederlandse voorbeelden, statistieken en 8 veelgestelde vragen.',
-    keywords: ['cv schrijven', 'cv maken', 'cv tips', 'curriculum vitae schrijven', 'hoe schrijf je een cv', 'cv schrijven tips', 'goed cv schrijven', 'cv 2026'],
+    metaTitle: 'CV schrijven in 2026: 10 tips + voorbeelden | WerkCV.nl',
+    metaDesc: 'Wil je een goed cv schrijven? Ontdek 10 praktische tips voor structuur, profieltekst, werkervaring en ATS. Met Nederlandse voorbeelden en directe vervolgstappen.',
+    keywords: ['cv schrijven', 'cv maken', 'cv tips', 'curriculum vitae schrijven', 'hoe schrijf je een cv', 'hoe schrijf je een goed cv', 'cv schrijven tips', 'goed cv schrijven', 'cv 2026'],
 
     readingTime: 10,
     category: 'schrijven',

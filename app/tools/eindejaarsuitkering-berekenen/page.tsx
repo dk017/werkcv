@@ -26,14 +26,17 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
-  title: "Eindejaarsuitkering Berekenen 2026 - Gratis Tool | WerkCV.nl",
-  description: "Bereken je bruto eindejaarsuitkering of 13e maand in 2026. Vul je bruto maandsalaris, percentage en gewerkte maanden in en zie direct je pro-rata indicatie.",
+  title: "Eindejaarsuitkering Berekenen 2026 | 13e Maand & Pro Rata",
+  description: "Bereken direct je eindejaarsuitkering of 13e maand in 2026. Vul bruto maandsalaris, percentage en maanden in en zie meteen je pro-rata bruto bedrag.",
   keywords: [
     "eindejaarsuitkering berekenen",
+    "eindejaarsuitkering calculator",
     "13e maand berekenen",
+    "13e maand calculator",
     "bonus percentage salaris",
     "pro rata eindejaarsuitkering",
     "bruto eindejaarsuitkering",
+    "eindejaarsuitkering uitrekenen",
   ],
 };
 
@@ -75,10 +78,10 @@ export default function EindejaarsuitkeringBerekenenPage() {
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-              Eindejaarsuitkering berekenen
+              Eindejaarsuitkering berekenen: 13e maand en pro rata
             </h1>
             <p className="text-lg text-slate-600 font-medium max-w-3xl">
-              Bereken snel je bruto eindejaarsuitkering of 13e maand. Deze tool is handig als je wilt inschatten wat december bruto kan opleveren, of als je een aanbod vergelijkt waarin een bonuspercentage of vaste eindejaarsuitkering zit.
+              Bereken direct je bruto eindejaarsuitkering of 13e maand. Vul je maandsalaris, percentage en gewerkte maanden in en zie meteen wat je pro-rata bruto bedrag ongeveer wordt.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">

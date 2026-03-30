@@ -2,13 +2,15 @@ import { BlogArticle } from '../types';
 
 export const sollicitatieBedankbrief: BlogArticle = {
     slug: 'sollicitatie-bedankbrief',
-    title: 'Bedankmail na Sollicitatiegesprek: Voorbeelden en Tips',
-    description: 'Een bedankmail na je sollicitatiegesprek verhoogt je kansen op een tweede gesprek. Leer wanneer je stuurt, wat je schrijft en bekijk concrete voorbeeldteksten voor elke situatie.',
-    metaTitle: 'Bedankmail na Sollicitatiegesprek: Voorbeelden en Tips 2026 | WerkCV.nl',
-    metaDesc: 'Bedankmail sturen na je sollicitatiegesprek? Ontdek de beste timing, structuur en voorbeeldteksten voor elke situatie — van eerste gesprek tot assessment.',
+    title: 'Bedankmail na sollicitatie: voorbeeld, timing en tips',
+    description: 'Wil je een bedankmail na sollicitatie of sollicitatiegesprek sturen? Bekijk voorbeeldteksten, de beste timing en wat je wel en niet schrijft.',
+    metaTitle: 'Bedankmail na sollicitatie: voorbeeld + timing | WerkCV.nl',
+    metaDesc: 'Bedankmail na sollicitatie sturen? Bekijk voorbeeldteksten, timing en tips voor na een sollicitatiegesprek, assessment of afwijzing.',
     category: 'solliciteren',
     keywords: [
+        'bedankmail na sollicitatie',
         'bedankmail sollicitatiegesprek',
+        'bedankmail na sollicitatiegesprek',
         'sollicitatie bedankbrief',
         'bedankje na interview',
         'bedankmail na gesprek',
