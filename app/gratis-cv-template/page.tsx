@@ -293,6 +293,53 @@ export default function GratisCvTemplatePage() {
           </div>
         </section>
 
+        <section className="mb-14">
+          <div className="border-4 border-black bg-[#FFF7E8] p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Eerst tools vergelijken
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Gebruik deze gidsen als je &quot;gratis&quot; ook op prijsmodel en tooltype wilt checken
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Wie zoekt op gratis CV templates vergelijkt vaak niet alleen layouts, maar ook proefperiodes, abonnementen, ATS-risico en designtools zoals Canva. Deze pagina&apos;s helpen je die keuze sneller maken.
+            </p>
+            <div className="mt-5 grid gap-4 md:grid-cols-2">
+              {[
+                {
+                  href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+                  title: "Beste CV builder zonder abonnement",
+                  body: "Helpt je het verschil zien tussen echt eenmalig betalen, gratis handmatig werken en proefperiodemodellen.",
+                },
+                {
+                  href: "/cv-gids/welke-cv-builder-past-bij-jou-in-nederland",
+                  title: "Welke CV builder past bij jou?",
+                  body: "Gebruik deze keuzehulp als je WerkCV, CV.nl, CVMaker, CVster of Canva wilt vergelijken op use case.",
+                },
+                {
+                  href: "/cv-gids/canva-vs-cv-builder-voor-sollicitaties",
+                  title: "Canva vs CV builder",
+                  body: "Voor wie twijfelt tussen visuele vrijheid en een rustiger sollicitatie-CV dat sneller klaar is.",
+                },
+                {
+                  href: "/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures",
+                  title: "ATS-vriendelijke CV builder",
+                  body: "Nuttig als je gratis wilt starten, maar wel zeker wilt weten dat je layout netjes scanbaar blijft.",
+                },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
+                >
+                  <p className="text-sm font-black text-black">{item.title}</p>
+                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="mb-14 grid gap-8 lg:grid-cols-[1fr_0.9fr]">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">

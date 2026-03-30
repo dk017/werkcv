@@ -70,6 +70,32 @@ const guideGroups = [
   },
 ];
 
+const comparisonGuideGroups = [
+  {
+    title: "Vergelijk builders op het juiste criterium",
+    description:
+      "Gebruik deze pagina's als je niet alleen een template zoekt, maar wilt kiezen op prijsmodel, ATS-risico, designvrijheid of type sollicitatieworkflow.",
+    links: [
+      { href: "/cv-gids/welke-cv-builder-past-bij-jou-in-nederland", label: "Welke CV builder past bij jou?" },
+      { href: "/cv-gids/beste-cv-builder-zonder-abonnement", label: "Beste zonder abonnement" },
+      { href: "/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures", label: "ATS-vriendelijke builder" },
+      { href: "/cv-gids/canva-vs-cv-builder-voor-sollicitaties", label: "Canva vs CV builder" },
+    ],
+  },
+  {
+    title: "Vergelijk WerkCV met andere platforms",
+    description:
+      "Deze vergelijkingen zijn nuttig als je niet zomaar de bekendste tool wilt kiezen, maar het model en de use case van elk platform wilt afwegen.",
+    links: [
+      { href: "/cv-gids/werkcv-vs-cvmaker", label: "WerkCV vs CVMaker" },
+      { href: "/cv-gids/werkcv-vs-cv-nl", label: "WerkCV vs CV.nl" },
+      { href: "/cv-gids/werkcv-vs-cvster", label: "WerkCV vs CVster" },
+      { href: "/cv-gids/werkcv-vs-resumaker", label: "WerkCV vs Resumaker" },
+      { href: "/cv-gids/werkcv-vs-maakeencv", label: "WerkCV vs maakeencv.nl" },
+    ],
+  },
+];
+
 const contentBlocks = [
   {
     href: "/profieltekst-cv-voorbeelden",
@@ -163,7 +189,7 @@ export default function CvgidsHubPage() {
         <div className="max-w-6xl mx-auto px-6 py-12">
           <h2 className="text-3xl font-black text-gray-900 mb-4">Belangrijkste CV-routes</h2>
           <p className="text-gray-700 max-w-4xl leading-relaxed">
-            Dit zijn de pagina's waar de meeste Nederlandse zoekintenties samenkomen. Als deze hub links moet doorgeven aan routes met de meeste commerciële en inhoudelijke waarde, dan zijn dit de logische kandidaten.
+            Dit zijn de pagina&apos;s waar de meeste Nederlandse zoekintenties samenkomen. Als deze hub links moet doorgeven aan routes met de meeste commerciële en inhoudelijke waarde, dan zijn dit de logische kandidaten.
           </p>
           <div className="mt-8 grid gap-6 lg:grid-cols-3">
             {guideGroups.map((group) => (
@@ -191,7 +217,7 @@ export default function CvgidsHubPage() {
         <div className="max-w-6xl mx-auto px-6 py-12">
           <h2 className="text-3xl font-black text-gray-900 mb-4">Diepe gidsen voor profiel, werkervaring en vaardigheden</h2>
           <p className="text-gray-700 max-w-4xl leading-relaxed">
-            Een goede Nederlandse CV-pagina is niet alleen een overzicht, maar ook een bron waar andere sites natuurlijk naar zouden kunnen linken. Daarom wijzen we hier niet alleen naar losse rolpagina's, maar ook naar de belangrijkste inhoudsthema's: hoe je een sterke profieltekst schrijft, werkervaring overtuigend formuleert en vaardigheden ATS-proof inzet.
+            Een goede Nederlandse CV-pagina is niet alleen een overzicht, maar ook een bron waar andere sites natuurlijk naar zouden kunnen linken. Daarom wijzen we hier niet alleen naar losse rolpagina&apos;s, maar ook naar de belangrijkste inhoudsthema&apos;s: hoe je een sterke profieltekst schrijft, werkervaring overtuigend formuleert en vaardigheden ATS-proof inzet.
           </p>
           <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {contentBlocks.map((item) => (
@@ -203,6 +229,34 @@ export default function CvgidsHubPage() {
                 <p className="text-sm font-black text-gray-900">{item.title}</p>
                 <p className="mt-2 text-sm leading-relaxed text-gray-700">{item.body}</p>
               </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b-4 border-black bg-[#FFF7E8]">
+        <div className="max-w-6xl mx-auto px-6 py-12">
+          <h2 className="text-3xl font-black text-gray-900 mb-4">Vergelijk CV builders slim voordat je kiest</h2>
+          <p className="text-gray-700 max-w-4xl leading-relaxed">
+            Steeds meer bezoekers komen niet binnen op “hoe maak ik een CV?”, maar op “welke tool moet ik gebruiken?”. Daarom hebben we de belangrijkste vergelijking- en keuzehulppagina&apos;s hier als eigen cluster bij elkaar gezet.
+          </p>
+          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+            {comparisonGuideGroups.map((group) => (
+              <article key={group.title} className="border-4 border-black bg-white p-6">
+                <h3 className="text-2xl font-black text-gray-900">{group.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-gray-700">{group.description}</p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {group.links.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="border-2 border-black bg-[#FFFEF9] px-3 py-1.5 text-sm font-bold hover:bg-yellow-100 transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+              </article>
             ))}
           </div>
         </div>

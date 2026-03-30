@@ -96,6 +96,48 @@ export default function TemplatesPage() {
           </div>
         </div>
       </section>
+
+      <section className="border-b-4 border-black bg-white">
+        <div className="mx-auto max-w-5xl px-6 py-6">
+          <div className="border-4 border-black bg-[#FFF7E8] p-5">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Eerst de tool kiezen?
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Twijfel je nog tussen templates, builders of ATS-routes?
+            </h2>
+            <p className="mt-2 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Als je niet alleen tussen layouts twijfelt, maar ook tussen prijsmodel, ATS-veiligheid of een tool zoals Canva, gebruik dan eerst een van deze keuzehulpen.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              <Link
+                href="/cv-gids/welke-cv-builder-past-bij-jou-in-nederland"
+                className="border-2 border-black bg-blue-200 px-3 py-2 text-sm font-black text-black hover:bg-blue-300 transition-colors"
+              >
+                Welke CV builder past bij jou?
+              </Link>
+              <Link
+                href="/cv-gids/beste-cv-builder-zonder-abonnement"
+                className="border-2 border-black bg-yellow-200 px-3 py-2 text-sm font-black text-black hover:bg-yellow-300 transition-colors"
+              >
+                Beste zonder abonnement
+              </Link>
+              <Link
+                href="/cv-gids/canva-vs-cv-builder-voor-sollicitaties"
+                className="border-2 border-black bg-white px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors"
+              >
+                Canva vs CV builder
+              </Link>
+              <Link
+                href="/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures"
+                className="border-2 border-black bg-white px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors"
+              >
+                ATS-vriendelijke builder
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
       <TemplateGallery templates={templateList} />
     </main>
   );

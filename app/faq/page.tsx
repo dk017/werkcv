@@ -98,6 +98,29 @@ const faqs = [
     },
 ];
 
+const comparisonGuides = [
+    {
+        href: "/cv-gids/welke-cv-builder-past-bij-jou-in-nederland",
+        title: "Welke CV builder past bij jou?",
+        body: "Gebruik deze keuzehulp als je niet alleen vragen hebt over WerkCV, maar ook wilt vergelijken met andere CV-tools.",
+    },
+    {
+        href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+        title: "Beste CV builder zonder abonnement",
+        body: "Handig als je vooral prijsmodel, eenmalig betalen en abonnementsverschillen wilt afwegen.",
+    },
+    {
+        href: "/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures",
+        title: "ATS-vriendelijke CV builder",
+        body: "Voor als je wilt begrijpen wat ATS-vriendelijk echt betekent zonder in marketingtaal te blijven hangen.",
+    },
+    {
+        href: "/cv-gids/canva-vs-cv-builder-voor-sollicitaties",
+        title: "Canva vs CV builder",
+        body: "Gebruik deze gids als je twijfelt tussen een designtool en een rustiger sollicitatiedocument.",
+    },
+];
+
 export default function FAQPage() {
     return (
         <div className="min-h-screen bg-[#FFFEF0]">
@@ -150,6 +173,29 @@ export default function FAQPage() {
                         </section>
                     ))}
                 </div>
+
+                <section className="mt-14">
+                    <h2 className="text-xl font-black text-black mb-4 flex items-center gap-2">
+                        <span className="bg-yellow-400 px-2 py-1 border-2 border-black -rotate-1">
+                            Vergelijkingsgidsen
+                        </span>
+                    </h2>
+                    <p className="text-sm font-medium text-gray-700 leading-relaxed mb-5">
+                        Nog aan het twijfelen tussen WerkCV en andere routes? Gebruik deze pagina&apos;s als je keuze eerder gaat over tooltype, prijsmodel of ATS-aanpak dan over een losse productvraag.
+                    </p>
+                    <div className="grid gap-4 md:grid-cols-2">
+                        {comparisonGuides.map((guide) => (
+                            <Link
+                                key={guide.href}
+                                href={guide.href}
+                                className="block bg-white border-4 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:bg-yellow-100 transition-colors"
+                            >
+                                <p className="text-sm font-black text-black">{guide.title}</p>
+                                <p className="mt-2 text-sm font-medium leading-relaxed text-gray-700">{guide.body}</p>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
 
                 {/* CTA */}
                 <div className="mt-16 text-center">

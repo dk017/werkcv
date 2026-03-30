@@ -403,6 +403,50 @@ export default function CvMakenPage() {
               CV maken vs Word aanpak
             </Link>
           </div>
+          <div className="mt-6 border-4 border-black bg-[#FFF7E8] p-5">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Eerst de juiste builder kiezen?
+            </p>
+            <h3 className="mt-2 text-xl font-black text-black">
+              Gebruik deze keuzehulpen voordat je je template vastzet
+            </h3>
+            <p className="mt-2 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Sommige bezoekers zoeken niet alleen hoe ze een CV moeten maken, maar ook welke tool of route daar het best bij past. Deze gidsen helpen je kiezen op prijsmodel, ATS-risico en designvrijheid.
+            </p>
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              {[
+                {
+                  href: "/cv-gids/welke-cv-builder-past-bij-jou-in-nederland",
+                  title: "Welke CV builder past bij jou?",
+                  body: "Gebruik deze keuzehulp als je twijfelt tussen WerkCV, CV.nl, CVMaker, CVster of Canva.",
+                },
+                {
+                  href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+                  title: "Beste zonder abonnement",
+                  body: "Relevant als je vooral wilt voorkomen dat een proefperiode of maandmodel je sollicitatie duurder maakt.",
+                },
+                {
+                  href: "/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures",
+                  title: "ATS-vriendelijke CV builder",
+                  body: "Legt uit welke layouts en builders rustiger en softwareveiliger zijn voor Nederlandse vacatures.",
+                },
+                {
+                  href: "/cv-gids/canva-vs-cv-builder-voor-sollicitaties",
+                  title: "Canva vs CV builder",
+                  body: "Handig als je designvrijheid wilt afwegen tegen een recruiter-safe sollicitatieflow.",
+                },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
+                >
+                  <p className="text-sm font-black text-black">{item.title}</p>
+                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className="mb-14">

@@ -409,6 +409,53 @@ export default function CvOpmaakVoorbeeldPage() {
         </section>
 
         <section className="mb-14">
+          <div className="border-4 border-black bg-[#FFF7E8] p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Opmaak is ook een toolkeuze
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Vergelijk eerst builder, ATS-aanpak en designroute
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Wie op CV-opmaak zoekt, twijfelt vaak ook tussen een vaste CV builder, Canva of een Word-flow. Deze gidsen helpen je kiezen voordat je te veel tijd stopt in een layout die minder recruiter-safe blijkt.
+            </p>
+            <div className="mt-5 grid gap-4 md:grid-cols-2">
+              {[
+                {
+                  href: "/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures",
+                  title: "ATS-vriendelijke CV builder",
+                  body: "Lees welke layouts, secties en builder-keuzes parsingrisico verlagen voor Nederlandse sollicitaties.",
+                },
+                {
+                  href: "/cv-gids/canva-vs-cv-builder-voor-sollicitaties",
+                  title: "Canva vs CV builder",
+                  body: "Handig als je visuele vrijheid wilt afzetten tegen een rustiger en sneller sollicitatiedocument.",
+                },
+                {
+                  href: "/cv-gids/welke-cv-builder-past-bij-jou-in-nederland",
+                  title: "Welke CV builder past bij jou?",
+                  body: "Vergelijk WerkCV, CV.nl, CVMaker, CVster en Canva op use case, prijsmodel en output.",
+                },
+                {
+                  href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+                  title: "Beste zonder abonnement",
+                  body: "Gebruik deze gids als je heldere prijzen wilt zonder proefperiode of maandkosten.",
+                },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
+                >
+                  <p className="text-sm font-black text-black">{item.title}</p>
+                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-14">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
             Bronnen en checkdatum
           </p>

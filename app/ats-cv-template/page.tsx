@@ -246,12 +246,12 @@ export default function AtsCvTemplatePage() {
                 </p>
               </Link>
               <Link
-                href="/cv-tips/ats-vriendelijk-cv"
+                href="/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures"
                 className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-colors hover:bg-yellow-100"
               >
                 <p className="text-sm font-black text-black">Lees de ATS gids</p>
                 <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
-                  Verdiep je in de regels achter ATS-leesbaarheid voor Nederlandse sollicitaties.
+                  Verdiep je in de regels achter ATS-vriendelijke builders, layouts en parsing voor Nederlandse sollicitaties.
                 </p>
               </Link>
             </div>
@@ -297,6 +297,16 @@ export default function AtsCvTemplatePage() {
                   href: "/cv-tips/cv-template-kiezen",
                   title: "CV template kiezen",
                   body: "Lees wanneer je beter voor ATS, modern of klassiek moet kiezen.",
+                },
+                {
+                  href: "/cv-gids/welke-cv-builder-past-bij-jou-in-nederland",
+                  title: "Welke CV builder past bij jou?",
+                  body: "Gebruik deze keuzehulp als je ATS ook wilt afwegen tegen prijsmodel, tooltype en bredere sollicitatieflows.",
+                },
+                {
+                  href: "/cv-gids/canva-vs-cv-builder-voor-sollicitaties",
+                  title: "Canva vs CV builder",
+                  body: "Handig als je twijfelt tussen visuele vrijheid en een rustiger, ATS-veilige sollicitatie-CV.",
                 },
               ].map((item) => (
                 <Link
