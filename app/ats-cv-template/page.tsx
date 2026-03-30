@@ -43,18 +43,18 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "ATS CV Template - ATS-Vriendelijk CV Voor Sollicitatiesoftware | WerkCV.nl",
+  title: "ATS CV Template voor Nederlandse Sollicitaties | WerkCV.nl",
   description:
-    "Zoek je een ATS CV template? Kies een ATS-vriendelijke CV layout die goed leesbaar is voor sollicitatiesoftware, optimaliseer je keywords en begin direct gratis in de editor.",
+    "Zoek je een ATS CV template? Kies een rustige ATS-vriendelijke template voor Nederlandse sollicitaties, start gratis in de editor en download pas als je CV klaar is.",
   keywords: [
     "ats cv template",
-    "ats vriendelijk cv template",
+    "ats cv template nederland",
+    "ats vriendelijke template",
     "ats cv sjabloon",
     "cv template voor ats",
-    "cv sollicitatiesoftware",
+    "ats template sollicitatie",
     "ats proof cv template",
     "ats resume template nederland",
-    "cv template keywords",
   ],
   alternates: {
     canonical: "https://werkcv.nl/ats-cv-template",
@@ -120,14 +120,14 @@ export default function AtsCvTemplatePage() {
         <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
             <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              ATS-intent
+              Template-intent
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              ATS CV template voor kandidaten die door sollicitatiesoftware heen willen komen
+              ATS CV template voor Nederlandse sollicitaties
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Een ATS-vriendelijk CV draait niet om meer design, maar om betere leesbaarheid. Met de {atsTemplate.nameDutch.toLowerCase()}e template van WerkCV kies je een rustige layout
-              die recruiters snel kunnen scannen en applicant tracking systems goed kunnen uitlezen. Zo combineer je sterke inhoud met een veilige structuur.
+              Deze pagina is voor je templatekeuze. Met de {atsTemplate.nameDutch.toLowerCase()}e template van WerkCV kies je een rustige layout die recruiters snel kunnen scannen en
+              sollicitatiesoftware goed kan uitlezen. Wil je eerst de regels achter een ATS-vriendelijke cv begrijpen of builders vergelijken, gebruik dan de gidslinks hieronder.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -141,6 +141,26 @@ export default function AtsCvTemplatePage() {
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 Test je CV
+              </Link>
+            </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2">
+              <Link
+                href="/cv-tips/ats-vriendelijk-cv"
+                className="border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
+              >
+                <p className="text-sm font-black text-black">Eerst de ATS-regels begrijpen</p>
+                <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
+                  Lees hoe je je cv zelf ATS-vriendelijk maakt met de juiste opmaak, keywords en PDF-keuzes.
+                </p>
+              </Link>
+              <Link
+                href="/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures"
+                className="border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
+              >
+                <p className="text-sm font-black text-black">Builders vergelijken</p>
+                <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
+                  Gebruik deze keuzehulp als je ATS ook wilt afwegen tegen andere builders en tooltypes.
+                </p>
               </Link>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -161,7 +181,7 @@ export default function AtsCvTemplatePage() {
           </div>
 
           <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">Waarom recruiters en ATS rust verkiezen</h2>
+            <h2 className="text-xl font-black text-black">Waarom recruiters en ATS rustige templates verkiezen</h2>
             <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
               Veel gratis CV sjablonen zien er mooi uit, maar verliezen punten zodra ze door een parser worden gelezen. Onnodige grafische elementen, creatieve kolommen en slecht geplaatste
               tekstvakken maken je CV minder betrouwbaar voor software.
@@ -278,6 +298,11 @@ export default function AtsCvTemplatePage() {
             </p>
             <div className="mt-4 space-y-4">
               {[
+                {
+                  href: "/cv-tips/ats-vriendelijk-cv",
+                  title: "ATS-vriendelijke cv maken",
+                  body: "Gebruik deze gids als je eerst de regels achter opmaak, keywords en PDF-keuzes wilt begrijpen.",
+                },
                 {
                   href: "/gratis-cv-template",
                   title: "Gratis CV template",

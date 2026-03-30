@@ -4742,18 +4742,18 @@ const dutchEditorialPages: SeoGuidePage[] = [
     {
         slug: 'ats-vriendelijke-cv-builder-voor-nederlandse-vacatures',
         locale: 'nl',
-        title: 'ATS-vriendelijke CV builder voor Nederlandse vacatures: waar moet je echt op letten?',
-        description: 'Praktische gids voor het kiezen van een ATS-vriendelijke CV builder in Nederland. Leer wat echt helpt: simpele layout, duidelijke secties, rustige PDF\'s en minder parser-risico.',
-        metaTitle: 'ATS-vriendelijke CV builder voor Nederlandse vacatures (2026) | WerkCV.nl',
-        metaDesc: 'Zo kies je een ATS-vriendelijke CV builder voor Nederlandse vacatures. Vergelijk parse-veilige layouts, PDF-risico\'s, standaardsecties en de slimste route voor gewone sollicitaties.',
+        title: 'ATS-vriendelijke CV builder voor Nederlandse vacatures vergelijken',
+        description: 'Praktische keuzehulp voor het vergelijken van een ATS-vriendelijke CV builder in Nederland. Leer wat echt helpt: simpele layouts, duidelijke secties, rustige PDF\'s en minder parser-risico.',
+        metaTitle: 'ATS-vriendelijke CV builder vergelijken (2026) | WerkCV.nl',
+        metaDesc: 'Vergelijk ATS-vriendelijke CV builders voor Nederlandse vacatures. Zie waar simpele layouts, vaste secties en rustige PDF\'s belangrijker zijn dan marketingclaims.',
         keywords: [
             'ats vriendelijke cv builder',
             'ats cv builder nederland',
-            'ats vriendelijke cv nederland',
+            'ats vriendelijke cv builder nederland',
             'cv builder voor ats',
-            'ats cv template nederland',
+            'ats builder vergelijken',
         ],
-        intro: 'Voor de meeste Nederlandse vacatures is een ATS-vriendelijke CV builder vooral een rustige CV builder. Het gaat minder om een magisch “ATS-keurmerk” en meer om simpele layouts, duidelijke secties, gewone tekst en zo min mogelijk opmaak die parsing in de weg zit.',
+        intro: 'Deze pagina is voor toolkeuze. Voor de meeste Nederlandse vacatures is een ATS-vriendelijke CV builder vooral een rustige CV builder. Het gaat minder om een magisch “ATS-keurmerk” en meer om simpele layouts, duidelijke secties, gewone tekst en zo min mogelijk opmaak die parsing in de weg zit.',
         sections: [
             {
                 id: 'wat-maakt-ats-vriendelijk',
@@ -4798,6 +4798,11 @@ const dutchEditorialPages: SeoGuidePage[] = [
                     ],
                 },
                 intentLinks: [
+                    {
+                        href: '/cv-tips/ats-vriendelijk-cv',
+                        label: 'Leer eerst hoe je een cv ATS-vriendelijk maakt',
+                        description: 'Gebruik deze gids als je niet builders maar de cv-regels zelf beter wilt begrijpen.',
+                    },
                     {
                         href: '/ats-cv-template',
                         label: 'Bekijk de ATS-vriendelijke WerkCV template route',
@@ -4926,6 +4931,11 @@ const dutchEditorialPages: SeoGuidePage[] = [
             },
         ],
         relatedLinks: [
+            {
+                href: '/cv-tips/ats-vriendelijk-cv',
+                title: 'ATS-vriendelijke cv maken',
+                description: 'Gebruik deze gids als je eerst de cv-opmaak, keywords en PDF-keuzes zelf wilt begrijpen.',
+            },
             {
                 href: '/ats-cv-template',
                 title: 'ATS-vriendelijke CV template',

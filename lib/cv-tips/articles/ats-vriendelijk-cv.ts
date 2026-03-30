@@ -2,14 +2,14 @@ import { BlogArticle } from '../types';
 
 export const atsVriendelijkCv: BlogArticle = {
     slug: 'ats-vriendelijk-cv',
-    title: 'ATS-vriendelijk CV Maken: Zo Kom je Door de Automatische Filter (2026)',
-    description: 'Tot 75% van de cv\'s wordt door ATS-software afgewezen vóór een recruiter ze ziet. Leer hoe je opmaak, zoekwoorden en bestandsformaat kiest zodat jouw cv de automatische screening overleeft.',
+    title: 'ATS-vriendelijke CV maken: opmaak, keywords en PDF (2026)',
+    description: 'Wil je een ATS-vriendelijke cv maken? Leer hoe je opmaak, secties, keywords en PDF-keuzes goed zet, zodat recruiters en sollicitatiesoftware je cv beter lezen.',
     publishedAt: '2025-06-10',
     updatedAt: '2026-02-19',
 
-    metaTitle: 'ATS-vriendelijk CV Maken: Door de Filter Komen in 2026 | WerkCV.nl',
-    metaDesc: 'ATS filtert 70–75% van alle cv\'s weg vóór menselijke beoordeling. Leer welke opmaak, zoekwoorden en bestandsformaten werken voor Nederlandse ATS-systemen zoals OTYS, Connexys en Workday.',
-    keywords: ['ats-vriendelijk cv', 'applicant tracking system', 'cv ats', 'cv door ats krijgen', 'ats cv tips', 'cv scanbaar maken', 'ats cv nederland', 'cv automatische screening'],
+    metaTitle: 'ATS-vriendelijke CV maken in 2026 | WerkCV.nl',
+    metaDesc: 'Wil je een ATS-vriendelijke cv maken? Leer welke opmaak, secties, keywords en PDF-keuzes werken voor Nederlandse ATS-systemen en recruiters.',
+    keywords: ['ats-vriendelijke cv', 'ats vriendelijk cv', 'ats vriendelijke cv maken', 'ats cv maken', 'cv door ats krijgen', 'ats cv tips', 'cv scanbaar maken', 'ats cv nederland'],
 
     readingTime: 10,
     category: 'opmaak',
@@ -35,6 +35,18 @@ export const atsVriendelijkCv: BlogArticle = {
                 'Een Applicant Tracking System (ATS) is software die bedrijven gebruiken om sollicitaties automatisch te beheren, te filteren en te rangschikken. Het systeem scant je cv op zoekwoorden, werkervaring, opleidingsniveau en opmaak — en berekent een match-score met de vacature-eisen. Alleen cv\'s boven een bepaalde drempelwaarde bereiken de inbox van een recruiter.',
                 'In Nederland gebruiken naar schatting 75% van de bedrijven met meer dan 50 medewerkers een vorm van ATS-software (Jobscan 2024). Bekende Nederlandse systemen zijn OTYS Recruiting Technology en Connexys (Randstad-platform). Internationaal domineren Workday, Greenhouse, Lever en Oracle Taleo. Elk systeem heeft zijn eigen parsing-logica, maar de basisregels zijn universeel.',
                 'De gevolgen zijn concreet: uit onderzoek van Jobscan (2024) blijkt dat gemiddeld 70 tot 75% van alle ingezonden cv\'s door ATS wordt afgewezen vóór menselijke beoordeling. Een perfect geschreven cv dat niet ATS-compatibel is opgemaakt, bereikt de recruiter nooit. Dit artikel behandelt elke variabele die dat percentage bepaalt — zodat jij bij de 25–30% hoort die wél doorgaat.',
+            ],
+            intentLinks: [
+                {
+                    href: '/ats-cv-template',
+                    label: 'Gebruik daarna een ATS CV template',
+                    description: 'Deze route is voor je templatekeuze zodra je begrijpt welke ATS-regels je CV moet volgen.',
+                },
+                {
+                    href: '/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures',
+                    label: 'Vergelijk ATS-vriendelijke CV builders',
+                    description: 'Gebruik deze keuzehulp als je nog twijfelt tussen tools en builders in plaats van alleen de CV-regels.',
+                },
             ],
         },
         {
