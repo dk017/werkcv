@@ -4022,6 +4022,957 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ctaText: 'Als je vooral zonder abonnement snel een sterk CV wilt maken, begin dan met WerkCV en test eerst de templates voordat je naar een groter platform grijpt.',
         ctaHref: '/templates',
     },
+    {
+        slug: 'werkcv-vs-resumaker',
+        locale: 'nl',
+        title: 'WerkCV vs Resumaker: welke CV builder is slimmer voor Nederlandse sollicitanten?',
+        description: 'Eerlijke vergelijking tussen WerkCV en Resumaker voor Nederlandse werkzoekenden. Vergelijk abonnement, proefperiode, bedrijfslocatie, productscope en wanneer elk platform beter past.',
+        metaTitle: 'WerkCV vs Resumaker (2026) | Welke CV builder past beter? | WerkCV.nl',
+        metaDesc: 'WerkCV of Resumaker? Vergelijk eenmalige prijs vs abonnement, proefperiode, cancellation flow, internationale platformfocus en kies de beste CV builder voor jouw situatie.',
+        keywords: [
+            'werkcv vs resumaker',
+            'resumaker alternatief',
+            'resumaker abonnement',
+            'werkcv of resumaker',
+            'cv builder zonder abonnement',
+        ],
+        intro: 'Wil je vooral zonder abonnement snel een sterk CV maken en afronden, dan past WerkCV meestal beter. Wil je liever werken in een groter internationaal platform met proefperiode, maandabonnement en veel extra voorbeeld- en contentpagina\'s, dan past Resumaker beter.',
+        sections: [
+            {
+                id: 'vergelijking',
+                title: 'WerkCV vs Resumaker in een minuut',
+                paragraphs: [
+                    'WerkCV en Resumaker zijn niet hetzelfde type product, ook al helpen ze allebei bij het maken van een CV. WerkCV is bewust klein gehouden: een Nederlandse CV-flow met gratis start, daarna een eenmalige betaling per CV zodra je wilt downloaden. Resumaker positioneert zich veel breder als een internationaal platform met sjablonen, CV-voorbeelden, schrijfcontent en een abonnementsmodel.',
+                    'Voor de meeste gebruikers zit het echte verschil daarom in het model, niet in de marketing. Wil je een rustig document afronden zonder doorlopende kosten, of wil je een platform gebruiken dat volgens de officiële voorwaarden op een maandelijks abonnement draait en waarbij opzegregels belangrijk zijn?',
+                ],
+                comparisonTable: {
+                    columns: ['Onderdeel', 'WerkCV', 'Resumaker'],
+                    rows: [
+                        {
+                            label: 'Prijsmodel',
+                            primary: 'Gratis starten, daarna eenmalig EUR4,99 per CV als je downloadt.',
+                            secondary: 'Volgens de officiële voorwaarden een maandelijks abonnement met een proefabonnement van 14 dagen; daarna automatisch terugkerende maandkosten van ongeveer USD 30 inclusief btw, afhankelijk van regio, tenzij je tijdig opzegt.',
+                        },
+                        {
+                            label: 'Opzeggen / verlenging',
+                            primary: 'Geen maandabonnement, dus geen verlenging om te onthouden voor hetzelfde CV.',
+                            secondary: 'De voorwaarden noemen automatische maandverlenging en vragen annulering minstens zeven dagen voor het einde van de lopende maandperiode.',
+                        },
+                        {
+                            label: 'Productscope',
+                            primary: 'Compacte CV-builder met focus op template kiezen, invullen, aanpassen en opnieuw downloaden van hetzelfde document.',
+                            secondary: 'Breder platform met sjablonen, CV-voorbeelden, uitlegcontent, sollicitatiebriefvoorbeelden en een grotere internationale contentlaag.',
+                        },
+                        {
+                            label: 'Bedrijfspositionering',
+                            primary: 'Nederlandse, no-subscription CV-flow.',
+                            secondary: 'Internationaal meertalig platform; contactpagina noemt Resumaker S.L. in Barcelona, Spanje.',
+                        },
+                        {
+                            label: 'Na betaling of gebruik',
+                            primary: 'Voor hetzelfde betaalde CV later opnieuw openen, bewerken, van template wisselen en opnieuw downloaden zonder opnieuw te betalen.',
+                            secondary: 'Gebruik en toegang volgen het account- en abonnementsmodel uit de voorwaarden, niet een eenmalige documentunlock.',
+                        },
+                        {
+                            label: 'Beste voor',
+                            primary: 'Mensen die snel een recruiter-veilige CV-PDF willen zonder abonnementsfrictie.',
+                            secondary: 'Mensen die een groter internationaal CV-platform willen en proefperiode plus abonnement acceptabel vinden.',
+                        },
+                    ],
+                },
+                intentLinks: [
+                    {
+                        href: '/prijzen',
+                        label: 'Bekijk exact hoe WerkCV-pricing werkt',
+                        description: 'Controleer het eenmalige model en wat je daarna nog kunt doen met hetzelfde CV.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Open eerst de WerkCV templates',
+                        description: 'Test of de compacte route al genoeg is voordat je een abonnement overweegt.',
+                    },
+                ],
+            },
+            {
+                id: 'kies-werkcv',
+                title: 'Kies WerkCV als je vooral duidelijkheid en afronding zoekt',
+                paragraphs: [
+                    'WerkCV wint vooral voor sollicitanten die niet op zoek zijn naar een groot accountgedreven platform, maar gewoon een goed CV willen maken en afronden. Dat is in de praktijk een grote groep. Veel mensen willen geen trial, geen maandbedrag en geen opzegschema hoeven onthouden. Ze willen een rustige editor, een veilige template en een duidelijke route naar PDF.',
+                    'Daar past WerkCV beter bij. Je begint gratis, vult je inhoud in, vergelijkt de templates en betaalt pas als je wilt downloaden. Daarna blijft datzelfde CV beschikbaar om opnieuw te bewerken, van template te wisselen en opnieuw te exporteren. Voor iemand die vooral resultaat zoekt in plaats van een platformrelatie, is dat meestal de simpelere keuze.',
+                ],
+                bullets: [
+                    'Je wilt geen proefperiode of maandelijkse verlenging hoeven bewaken.',
+                    'Je wilt hetzelfde CV later opnieuw openen en opnieuw downloaden zonder opnieuw te betalen.',
+                    'Je zoekt een Nederlandse, recruiter-veilige CV-flow in plaats van een groter internationaal contentplatform.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/faq',
+                        label: 'Lees hoe opnieuw bewerken en downloaden werkt',
+                        description: 'Handig als je later nog varianten per vacature wilt maken.',
+                    },
+                    {
+                        href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                        label: 'Vergelijk eerst no-subscription opties',
+                        description: 'Voor gebruikers bij wie het prijsmodel het belangrijkste verschil maakt.',
+                    },
+                ],
+            },
+            {
+                id: 'kies-resumaker',
+                title: 'Kies Resumaker als je bewust een groter platform wilt gebruiken',
+                paragraphs: [
+                    'Resumaker is logischer als je niet alleen naar de editor kijkt, maar waarde ziet in een grotere laag van voorbeelden, schrijfcontent en een internationaal productecosysteem. De site laat duidelijk een bredere setup zien met sjablonen, CV-voorbeelden, pagina\'s over hoe je een CV schrijft en voorbeeldsollicitatiebrieven. Dat is nuttig als je graag veel context en inspiratie om je document heen hebt.',
+                    'Ook de over-ons-pagina laat zien dat het product voortkomt uit een recruitmentachtergrond. Daarin beschrijft Resumaker dat het team in 2012 met een wervingsbureau begon en daarna het product lanceerde vanuit ervaring met grote aantallen CV\'s. Als dat soort bredere productpositionering jou aanspreekt en een abonnementsmodel geen bezwaar is, dan kan Resumaker inhoudelijk prima passen.',
+                ],
+                bullets: [
+                    'Je wilt een groter internationaal platform met meer contentlagen om het CV heen.',
+                    'Je vindt een trial- en abonnementsmodel acceptabel als je daar meer platformbreedte voor terugkrijgt.',
+                    'Je gebruikt graag voorbeeldpagina\'s, uitlegcontent en meerdere routes om tot je uiteindelijke CV te komen.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-maken',
+                        label: 'Bekijk eerst de eenvoudige WerkCV-route',
+                        description: 'Handig als je wilt toetsen of je echt een groter platform nodig hebt.',
+                    },
+                    {
+                        href: '/sollicitatiebrief-voorbeeld',
+                        label: 'Gebruik WerkCV-content als je vooral inhoudelijke voorbeelden zoekt',
+                        description: 'Voor wie wel begeleiding wil, maar niet per se een abonnement.',
+                    },
+                ],
+            },
+            {
+                id: 'wanneer-niet',
+                title: 'Wanneer WerkCV niet de beste keuze is',
+                paragraphs: [
+                    'Een goede vergelijking zegt ook wanneer je niet voor WerkCV moet kiezen. Als jij expliciet een groter internationaal platform wilt met veel content om het CV heen, meerdere inspiratieroutes en een accountmodel dat langer mag doorlopen, dan is WerkCV bewust smaller.',
+                    'WerkCV is dus niet de beste keuze als je het liefst in een grotere suite werkt en het abonnementsmodel niet erg vindt. Het is de betere keuze als je brede platformfeatures minder belangrijk vindt dan een snelle, transparante en rustige CV-flow.',
+                ],
+                bullets: [
+                    'Niet kiezen voor WerkCV als je vooral een grotere internationale productomgeving zoekt.',
+                    'Niet kiezen voor WerkCV als een trial plus maandabonnement voor jou geen probleem is en je graag veel extra content gebruikt.',
+                    'Wel kiezen voor WerkCV als je minder frictie en minder billing-risico wilt rond een enkel CV-document.',
+                ],
+            },
+            {
+                id: 'beste-route',
+                title: 'Beste keuze voor de meeste Nederlandse gebruikers',
+                paragraphs: [
+                    'Voor de meeste Nederlandse sollicitanten die gewoon snel een goed CV nodig hebben, is WerkCV de logischere start. Niet omdat Resumaker per definitie slechter is, maar omdat een groot deel van de markt vooral een duidelijk document wil afronden zonder trialvoorwaarden, maandverlenging of opzegmomenten.',
+                    'De slimste route is daarom meestal: begin eerst met de compacte, no-subscription optie. Pas als je merkt dat je echt een breder internationaal platform wilt met meer contentlagen en een langer lopend accountmodel, heeft het zin om richting Resumaker te kijken.',
+                ],
+                exampleTitle: 'Snelle beslisregel',
+                exampleItems: [
+                    'Kies WerkCV als je zonder abonnement een sterk CV wilt maken en afronden.',
+                    'Kies Resumaker als je bewust een groter internationaal platform wilt gebruiken en de trial- plus abonnementsstructuur accepteert.',
+                    'Twijfel je nog? Open eerst de WerkCV templates en kijk of de eenvoudige route al genoeg is voor jouw sollicitaties.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/templates',
+                        label: 'Start met een WerkCV template',
+                        description: 'De snelste manier om te zien of je genoeg hebt aan een compacte builder.',
+                    },
+                    {
+                        href: '/cv-gids/welke-cv-builder-past-bij-jou-in-nederland',
+                        label: 'Gebruik de brede keuzehulp voor Nederland',
+                        description: 'Handig als je Resumaker ook naast andere builders wilt afwegen.',
+                    },
+                ],
+            },
+        ],
+        checklist: [
+            'Je weet nu of je liever een eenmalige CV-betaling of een trial plus maandabonnement wilt.',
+            'Je begrijpt dat Resumaker volgens de voorwaarden op een maandelijks abonnementsmodel draait.',
+            'Je hebt bepaald of je alleen een CV-builder nodig hebt of een groter contentplatform eromheen.',
+            'Je weet hoe opnieuw downloaden bij WerkCV werkt voor hetzelfde document.',
+            'Je kiest nu op basis van jouw sollicitatiegedrag, niet alleen op basis van merkbekendheid.',
+        ],
+        faq: [
+            {
+                question: 'Is Resumaker een abonnement?',
+                answer: 'Ja. De officiële gebruiksvoorwaarden beschrijven Resumaker als een maandelijks abonnementsproduct met een proefabonnement van 14 dagen en daarna automatisch terugkerende maandkosten, tenzij je op tijd opzegt.',
+            },
+            {
+                question: 'Is WerkCV goedkoper dan Resumaker?',
+                answer: 'Voor iemand die vooral een CV wil afronden meestal wel, omdat WerkCV met een eenmalige betaling per CV werkt. Resumaker gebruikt volgens de voorwaarden een proef- en maandabonnementsstructuur. Controleer wel altijd de actuele checkoutinformatie van beide aanbieders.',
+            },
+            {
+                question: 'Kan ik bij WerkCV later opnieuw downloaden zonder opnieuw te betalen?',
+                answer: 'Ja, voor hetzelfde CV-document wel. Na betaling kun je datzelfde CV later opnieuw openen, bewerken, van template wisselen en opnieuw downloaden zonder opnieuw te betalen.',
+            },
+            {
+                question: 'Wanneer is Resumaker een betere keuze dan WerkCV?',
+                answer: 'Vooral als je bewust een groter internationaal platform wilt met veel voorbeeld- en contentpagina\'s om je CV heen, en als een trial plus abonnement voor jou geen bezwaar is.',
+            },
+        ],
+        relatedLinks: [
+            {
+                href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                title: 'Beste CV builder zonder abonnement',
+                description: 'Gebruik deze gids als je vooral het prijsmodel en abonnementsverschil wilt vergelijken.',
+            },
+            {
+                href: '/cv-gids/welke-cv-builder-past-bij-jou-in-nederland',
+                title: 'Welke CV builder past bij jou in Nederland?',
+                description: 'Voor de brede keuze tussen compacte builders, grotere platformen en gratis tools.',
+            },
+            {
+                href: '/cv-gids/werkcv-vs-cvmaker',
+                title: 'WerkCV vs CVMaker',
+                description: 'Vergelijk WerkCV ook met een ander groter platform met trial- en abonnementsmodel.',
+            },
+        ],
+        sources: [
+            {
+                label: 'Resumaker voorwaarden',
+                href: 'https://resumaker.nl/tos/',
+                note: 'Officiële voorwaarden met maandelijks abonnementsmodel, proefabonnement van 14 dagen, automatische verlenging, terugkerende maandkosten van ongeveer USD 30 inclusief btw afhankelijk van regio en annulering minstens zeven dagen voor het einde van de maandperiode. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'Resumaker contact',
+                href: 'https://resumaker.nl/contact/',
+                note: 'Officiële contactpagina met onderwerp "Abonnement opzeggen" en bedrijfsgegevens van Resumaker S.L. in Barcelona, Spanje. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'Resumaker over ons',
+                href: 'https://resumaker.nl/over/',
+                note: 'Officiële over-ons-pagina met uitleg over de recruitmentachtergrond, start van het wervingsbureau in 2012 en de bredere productpositionering. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'Resumaker pricing',
+                href: 'https://resumaker.nl/pricing/',
+                note: 'Officiële pricingroute van Resumaker. Gebruik deze pagina altijd naast de voorwaarden om de actuele checkoutweergave en prijsdetails te controleren.',
+            },
+            {
+                label: 'WerkCV prijzen',
+                href: 'https://werkcv.nl/prijzen',
+                note: 'Openbare WerkCV-prijzenpagina met eenmalige betaling per CV en uitleg over later opnieuw bewerken en downloaden.',
+            },
+            {
+                label: 'WerkCV FAQ',
+                href: 'https://werkcv.nl/faq',
+                note: 'Openbare FAQ met uitleg over account, betaling, opnieuw downloaden en verschillen met abonnementssites.',
+            },
+        ],
+        ctaTitle: 'Wil je zonder abonnement gewoon een sterk CV afronden?',
+        ctaText: 'Begin dan met een WerkCV template, bouw je CV gratis op en beslis pas op het einde of je jouw PDF wilt downloaden.',
+        ctaHref: '/templates',
+    },
+    {
+        slug: 'werkcv-vs-maakeencv',
+        locale: 'nl',
+        title: 'WerkCV vs maakeencv.nl: welke CV builder is slimmer voor jouw situatie?',
+        description: 'Eerlijke vergelijking tussen WerkCV en maakeencv.nl. Vergelijk eenmalige prijs, gratis plan, Pro-abonnement, tracker, AI-functies en wanneer elk platform beter past.',
+        metaTitle: 'WerkCV vs maakeencv.nl (2026) | Welke CV builder past beter? | WerkCV.nl',
+        metaDesc: 'WerkCV of maakeencv.nl? Vergelijk eenmalig betalen vs gratis plan en Pro, PDF-regels, tracker, AI-schrijfhulp en kies de beste CV builder voor jouw sollicitatiestijl.',
+        keywords: [
+            'werkcv vs maakeencv',
+            'maakeencv alternatief',
+            'maakeencv prijs',
+            'maakeencv pro',
+            'cv builder zonder abonnement',
+        ],
+        intro: 'Wil je vooral zonder abonnement een of enkele sterke CV\'s maken en afronden, dan past WerkCV meestal beter. Wil je juist gratis kunnen starten met een ruimer freemiummodel, plus tracker, AI-schrijfhulp en sollicitatiebriefgenerator, dan past maakeencv.nl vaak beter.',
+        sections: [
+            {
+                id: 'vergelijking',
+                title: 'WerkCV vs maakeencv.nl in een minuut',
+                paragraphs: [
+                    'Dit is een nuttige vergelijking omdat beide producten Nederlands ogen, maar een ander economisch model hebben. WerkCV is gebouwd rond een duidelijke eenmalige betaling per CV zodra je wilt downloaden. maakeencv.nl werkt met een ruim gratis plan, betaalde extra PDF-downloads op dat gratis plan en een Pro-abonnement voor mensen die actiever solliciteren of meer functies willen gebruiken.',
+                    'Voor gebruikers is het echte beslispunt daarom heel praktisch: wil je pas betalen als je een concreet CV afrondt, of wil je een bredere sollicitatiesuite met tracker, AI-schrijfhulp en sollicitatiebriefgenerator waar een maandmodel logisch bij kan zijn?',
+                ],
+                comparisonTable: {
+                    columns: ['Onderdeel', 'WerkCV', 'maakeencv.nl'],
+                    rows: [
+                        {
+                            label: 'Prijsmodel',
+                            primary: 'Gratis starten, daarna eenmalig EUR4,99 per CV als je downloadt.',
+                            secondary: 'Gratis plan met onbeperkt CV\'s bouwen, 1 gratis PDF per maand en extra PDF\'s voor EUR2 per download; Pro kost EUR12 per maand.',
+                        },
+                        {
+                            label: 'Wat je krijgt voordat je betaalt',
+                            primary: 'Je kunt gratis opbouwen en templates vergelijken; betalen gebeurt pas bij download van het CV dat je echt wilt gebruiken.',
+                            secondary: 'Het gratis plan is ruimer: onbeperkt CV\'s bouwen, alle templates en een sollicitatietracker nog voordat je naar Pro gaat.',
+                        },
+                        {
+                            label: 'Extra tools',
+                            primary: 'Gericht op een rustige CV-builder en snelle route naar PDF.',
+                            secondary: 'Breder pakket met AI Schrijfassistent, sollicitatiebriefgenerator, tracker, vertalen en masterprofiel-systeem.',
+                        },
+                        {
+                            label: 'Na betaling of upgrade',
+                            primary: 'Voor hetzelfde betaalde CV later opnieuw openen, bewerken, van template wisselen en opnieuw downloaden zonder opnieuw te betalen.',
+                            secondary: 'Gratis plan rekent per extra PDF-download; Pro geeft onbeperkt PDF-exports zolang het abonnement actief is.',
+                        },
+                        {
+                            label: 'Bedrijfspositionering',
+                            primary: 'Nederlandse, no-subscription CV-flow.',
+                            secondary: 'Nederlandse challenger, volgens disclaimer gevestigd in Amsterdam; over-ons-pagina benadrukt EU-opslag en geen watermerken.',
+                        },
+                        {
+                            label: 'Beste voor',
+                            primary: 'Mensen die snel en zonder abonnement een sterk CV-document willen afronden.',
+                            secondary: 'Actieve werkzoekenden die gratis willen starten en meer waarde zien in tracker, AI en bredere sollicitatiefuncties.',
+                        },
+                    ],
+                },
+                intentLinks: [
+                    {
+                        href: '/prijzen',
+                        label: 'Bekijk exact hoe WerkCV-pricing werkt',
+                        description: 'Controleer het eenmalige model en wanneer je voor hetzelfde CV niet opnieuw betaalt.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Open eerst de WerkCV templates',
+                        description: 'Test eerst of een compacte builder al genoeg is voor jouw sollicitaties.',
+                    },
+                ],
+            },
+            {
+                id: 'kies-werkcv',
+                title: 'Kies WerkCV als je vooral een duidelijk document wilt afronden',
+                paragraphs: [
+                    'WerkCV is sterker voor mensen die niet op zoek zijn naar een hele sollicitatiesuite, maar gewoon een goed CV willen maken en afronden. Zeker als je maar een of enkele documenten nodig hebt, voelt een eenmalige betaling vaak logischer dan een maandmodel. Je wilt dan niet hoeven nadenken over extra functies die je misschien niet gebruikt.',
+                    'Dat is precies waar WerkCV beter uitkomt. Je begint gratis, werkt je inhoud uit, kiest een template en betaalt pas wanneer jouw document echt klaar is voor download. Daarna blijft datzelfde CV beschikbaar om later te bewerken, van template te wisselen en opnieuw te downloaden. Voor iemand die snelheid en prijsrust belangrijker vindt dan extra tooling, is dat een sterke propositie.',
+                ],
+                bullets: [
+                    'Je wilt geen abonnement hoeven nemen alleen omdat je een goed CV-PDF nodig hebt.',
+                    'Je maakt liever een duidelijke keuze per document dan te betalen voor een bredere suite.',
+                    'Je wilt later terug kunnen komen op hetzelfde CV zonder opnieuw te betalen voor datzelfde document.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/faq',
+                        label: 'Lees hoe opnieuw bewerken en downloaden werkt',
+                        description: 'Handig als je meerdere sollicitatievarianten uit hetzelfde CV wilt halen.',
+                    },
+                    {
+                        href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                        label: 'Vergelijk eerst no-subscription routes',
+                        description: 'Voor gebruikers die vooral prijsmodel en billingrust willen vergelijken.',
+                    },
+                ],
+            },
+            {
+                id: 'kies-maakeencv',
+                title: 'Kies maakeencv.nl als je breder en actiever solliciteert',
+                paragraphs: [
+                    'maakeencv.nl is logischer als jij meer nodig hebt dan alleen een CV-download. De homepage positioneert het product als een gratis CV-bouwer met AI-ondersteuning, moderne templates en een ingebouwde sollicitatietracker. Daar bovenop noemt de over-ons-pagina expliciet ATS-proof templates, een slimme briefgenerator, EU-opslag en geen watermerken.',
+                    'Dat maakt maakeencv.nl vooral interessant voor actieve werkzoekenden die vaker itereren, meerdere CV-versies willen bouwen, een tracker willen gebruiken en ook sollicitatiebrieven via hetzelfde platform willen laten genereren. Het gratis plan is bovendien opvallend ruim, wat de instap laag maakt als je eerst wilt experimenteren voordat je beslist of Pro de moeite waard is.',
+                ],
+                bullets: [
+                    'Je wilt eerst echt gratis kunnen testen met onbeperkt CV\'s bouwen en 1 gratis PDF per maand.',
+                    'Je vindt een tracker, AI-schrijfhulp en sollicitatiebriefgenerator inhoudelijk nuttig in jouw sollicitatieproces.',
+                    'Je bent actiever aan het solliciteren en kunt daardoor meer waarde halen uit onbeperkte PDF-exports via Pro.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/sollicitatiebrief-voorbeeld',
+                        label: 'Gebruik WerkCV-content als je vooral briefrichting zoekt',
+                        description: 'Voor wie inhoudelijke briefhulp wil zonder meteen in een bredere suite te stappen.',
+                    },
+                    {
+                        href: '/ats-cv-template',
+                        label: 'Bekijk de rustige ATS-veilige WerkCV-route',
+                        description: 'Handig als je twijfelt of je extra tools nodig hebt of vooral een scanbaar CV wilt.',
+                    },
+                ],
+            },
+            {
+                id: 'wanneer-niet',
+                title: 'Wanneer WerkCV niet de beste keuze is',
+                paragraphs: [
+                    'WerkCV is niet de beste keuze als jij expliciet een freemium- of suite-aanpak zoekt. Als je waarde hecht aan een sollicitatietracker, AI-schrijfsuggesties, sollicitatiebriefgeneratie en ruimer gratis gebruik voordat je gaat betalen, dan heeft maakeencv.nl daar vandaag gewoon een bredere propositie voor.',
+                    'WerkCV wint niet omdat het de meeste features heeft. Het wint wanneer je juist minder frictie wilt: minder features, minder abonnementen en een duidelijkere route van inhoud naar PDF. Als jouw sollicitatieproces breder is dan alleen dat document, dan kan maakeencv.nl rationeel beter passen.',
+                ],
+                bullets: [
+                    'Niet kiezen voor WerkCV als je een tracker en AI-schrijfhulp echt wilt gebruiken.',
+                    'Niet kiezen voor WerkCV als je veel PDF-exports per maand verwacht en een Pro-model dan logischer vindt.',
+                    'Wel kiezen voor WerkCV als je vooral een sterke CV-builder wilt zonder maandverplichting.',
+                ],
+            },
+            {
+                id: 'beste-route',
+                title: 'Beste keuze voor de meeste gebruikers',
+                paragraphs: [
+                    'Voor de meeste mensen die gewoon snel een goed CV willen afronden, is WerkCV nog steeds de logischere start. Niet omdat maakeencv.nl zwak is, maar omdat veel sollicitanten minder behoefte hebben aan extra tools dan aan een snelle, overzichtelijke en betaalbare route naar een sterk document.',
+                    'Maar deze vergelijking is eerlijker dan alleen "WerkCV is beter". Als je actief solliciteert, veel wilt testen en ook de tracker, AI-schrijfhulp en sollicitatiebriefgenerator serieus gaat gebruiken, dan kan maakeencv.nl zelfs de rationelere keuze zijn. De juiste keuze hangt hier dus sterk af van sollicitatie-intensiteit.',
+                ],
+                exampleTitle: 'Snelle beslisregel',
+                exampleItems: [
+                    'Kies WerkCV als je zonder abonnement snel een of enkele sterke CV\'s wilt afronden.',
+                    'Kies maakeencv.nl als je veel wilt testen, gratis wilt starten en actief gebruik wilt maken van tracker, AI en extra sollicitatiefuncties.',
+                    'Twijfel je nog? Start eerst met de WerkCV templates en check daarna pas of je echt een bredere suite nodig hebt.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/templates',
+                        label: 'Start met een WerkCV template',
+                        description: 'De snelste manier om te zien of een compacte builder al voldoende is.',
+                    },
+                    {
+                        href: '/cv-gids/welke-cv-builder-past-bij-jou-in-nederland',
+                        label: 'Gebruik de brede keuzehulp voor Nederland',
+                        description: 'Handig als je maakeencv.nl ook naast CV.nl, CVMaker en andere builders wilt afwegen.',
+                    },
+                ],
+            },
+        ],
+        checklist: [
+            'Je weet nu of je liever per document betaalt of liever met een gratis plan en optioneel Pro werkt.',
+            'Je begrijpt dat maakeencv.nl inhoudelijk meer sollicitatiefuncties biedt dan alleen CV-opmaak.',
+            'Je weet dat het gratis plan van maakeencv.nl 1 gratis PDF per maand bevat en extra PDF\'s voor EUR2 per download rekent.',
+            'Je weet hoe WerkCV werkt als je hetzelfde CV later opnieuw wilt bewerken en downloaden.',
+            'Je hebt jouw keuze gekoppeld aan sollicitatie-intensiteit, niet alleen aan marketingclaims.',
+        ],
+        faq: [
+            {
+                question: 'Is maakeencv.nl echt gratis?',
+                answer: 'Gedeeltelijk. Volgens de homepage kun je gratis onbeperkt CV\'s bouwen, alle templates gebruiken, een tracker gebruiken en 1 gratis PDF per maand downloaden. Voor extra PDF-downloads rekent het gratis plan EUR2 per download, en Pro kost EUR12 per maand.',
+            },
+            {
+                question: 'Is WerkCV goedkoper dan maakeencv.nl?',
+                answer: 'Dat hangt af van hoe vaak je solliciteert. Voor iemand die vooral een of enkele CV\'s wil afronden is WerkCV vaak goedkoper en rustiger, omdat je eenmalig per CV betaalt. Als je heel veel exporteert en ook tracker, AI en briefgenerator gebruikt, kan maakeencv.nl Pro logischer zijn.',
+            },
+            {
+                question: 'Kan ik bij WerkCV later opnieuw downloaden zonder opnieuw te betalen?',
+                answer: 'Ja, voor hetzelfde CV-document wel. Na betaling kun je datzelfde CV later opnieuw openen, bewerken, van template wisselen en opnieuw downloaden zonder opnieuw te betalen.',
+            },
+            {
+                question: 'Wanneer is maakeencv.nl een betere keuze dan WerkCV?',
+                answer: 'Vooral als je actief solliciteert en veel waarde ziet in een ruimer gratis plan, een sollicitatietracker, AI-schrijfhulp, sollicitatiebriefgenerator en onbeperkte PDF-exports via Pro.',
+            },
+        ],
+        relatedLinks: [
+            {
+                href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                title: 'Beste CV builder zonder abonnement',
+                description: 'Gebruik deze gids als je vooral het prijsmodel en abonnementsverschil wilt vergelijken.',
+            },
+            {
+                href: '/cv-gids/welke-cv-builder-past-bij-jou-in-nederland',
+                title: 'Welke CV builder past bij jou in Nederland?',
+                description: 'Voor de brede keuze tussen compacte builders, grotere platformen en gratis tools.',
+            },
+            {
+                href: '/cv-gids/werkcv-vs-cv-nl',
+                title: 'WerkCV vs CV.nl',
+                description: 'Vergelijk WerkCV ook met een ander breder Nederlands sollicitatieplatform.',
+            },
+        ],
+        sources: [
+            {
+                label: 'maakeencv.nl homepage',
+                href: 'https://www.maakeencv.nl/',
+                note: 'Officiële homepage met gratis plan, Pro-plan van EUR12 per maand, 1 gratis PDF per maand, extra PDF\'s voor EUR2 per download, tracker en AI-positionering. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'maakeencv.nl over ons',
+                href: 'https://www.maakeencv.nl/over-ons',
+                note: 'Officiële over-ons-pagina met ATS-proof templates, slimme briefgenerator, kanban-tracker, EU-opslag en geen watermerken. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'maakeencv.nl disclaimer',
+                href: 'https://www.maakeencv.nl/disclaimer',
+                note: 'Officiële disclaimer met KvK 84619740, vestiging in Amsterdam en uitleg dat AI taalsuggesties geeft maar de feitelijke juistheid van CV-inhoud niet controleert. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'maakeencv.nl sollicitatiebriefgenerator',
+                href: 'https://www.maakeencv.nl/sollicitatiebriefgenerator',
+                note: 'Officiële productpagina met ATS-proof briefstructuur, CV-koppeling en vacaturematch-positie. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'WerkCV prijzen',
+                href: 'https://werkcv.nl/prijzen',
+                note: 'Openbare WerkCV-prijzenpagina met eenmalige betaling per CV en uitleg over later opnieuw bewerken en downloaden.',
+            },
+            {
+                label: 'WerkCV FAQ',
+                href: 'https://werkcv.nl/faq',
+                note: 'Openbare FAQ met uitleg over account, betaling, opnieuw downloaden en verschillen met abonnementssites.',
+            },
+        ],
+        ctaTitle: 'Wil je zonder abonnement gewoon een sterk CV afronden?',
+        ctaText: 'Begin dan met een WerkCV template, bouw je CV gratis op en beslis pas op het einde of je jouw PDF wilt downloaden.',
+        ctaHref: '/templates',
+    },
+    {
+        slug: 'canva-vs-cv-builder-voor-sollicitaties',
+        locale: 'nl',
+        title: 'Canva vs CV builder voor sollicitaties: wat is slimmer voor je CV?',
+        description: 'Eerlijke vergelijking tussen Canva en een dedicated CV builder voor sollicitaties. Vergelijk designvrijheid, ATS-risico, prijsmodel, premium-content regels en wanneer elk beter past.',
+        metaTitle: 'Canva vs CV builder voor sollicitaties (2026) | Wat is slimmer? | WerkCV.nl',
+        metaDesc: 'Canva of een dedicated CV builder? Vergelijk designvrijheid, ATS-veiligheid, gratis gebruik, Pro-content regels en kies de slimste route voor Nederlandse sollicitaties.',
+        keywords: [
+            'canva vs cv builder',
+            'canva cv of cv builder',
+            'canva cv ats',
+            'beste cv builder vs canva',
+            'cv maken canva of werkcv',
+        ],
+        intro: 'Wil je vooral een recruiter-veilige CV voor gewone Nederlandse vacatures, dan is een dedicated CV builder meestal slimmer dan Canva. Wil je maximale designvrijheid of een visueel opvallend CV voor creatieve rollen, dan kan Canva beter passen, zolang je zelf goed bewaakt dat de layout professioneel en leesbaar blijft.',
+        sections: [
+            {
+                id: 'vergelijking',
+                title: 'Canva vs een dedicated CV builder in één oogopslag',
+                paragraphs: [
+                    'Canva en een CV builder lossen niet precies hetzelfde probleem op. Canva is een algemene designtool waarmee je ook CV\'s kunt maken. Een dedicated CV builder zoals WerkCV is juist gebouwd rondom het sollicitatieproces zelf: standaardsecties, rustige templates, minder opmaakgedoe en een directere route naar een bruikbare PDF.',
+                    'Daarom is deze keuze minder een merkvraag dan een workflowvraag. Wil je ontwerpen, schuiven en visueel finetunen, of wil je snel een goed CV maken met zo min mogelijk designbeslissingen en zo weinig mogelijk risico op een onrustige layout?',
+                ],
+                comparisonTable: {
+                    columns: ['Onderdeel', 'Canva', 'CV builder zoals WerkCV'],
+                    rows: [
+                        {
+                            label: 'Producttype',
+                            primary: 'Algemene designtool voor veel soorten documenten en visuals, waaronder CV\'s.',
+                            secondary: 'Gerichte CV-tool voor sollicitaties, met templates en flow die al op een CV-situatie zijn ingericht.',
+                        },
+                        {
+                            label: 'Prijsmodel',
+                            primary: 'Canva Free is altijd gratis; Canva Pro is een abonnement met 30-daagse proefperiode. Free gebruikers kunnen ook eenmalig betalen voor Pro-content in een design.',
+                            secondary: 'Gratis starten, daarna eenmalig EUR4,99 per CV als je downloadt.',
+                        },
+                        {
+                            label: 'Designvrijheid',
+                            primary: 'Zeer hoog: drag-and-drop, veel visuele elementen, kleuren, kolommen en creatieve layouts.',
+                            secondary: 'Beperkter, maar juist daardoor sneller en rustiger voor standaard sollicitaties.',
+                        },
+                        {
+                            label: 'ATS- en recruiter-veiligheid',
+                            primary: 'Kan goed werken, maar je moet zelf bewaken dat je CV simpel, scanbaar en standaard genoeg blijft.',
+                            secondary: 'Meestal makkelijker, omdat templates en secties al dichter op een klassieke sollicitatie-CV-flow zitten.',
+                        },
+                        {
+                            label: 'Premium content en licenties',
+                            primary: 'Free gebruikers betalen soms extra voor Pro-content of hebben een Pro-abonnement nodig om watermerken te vermijden.',
+                            secondary: 'Geen aparte contentlicenties per element; je betaalt voor het CV-document dat je wilt downloaden.',
+                        },
+                        {
+                            label: 'Beste voor',
+                            primary: 'Creatieve rollen, visuele one-pagers en gebruikers die graag zelf ontwerpen.',
+                            secondary: 'De meeste standaard Nederlandse vacatures waarbij snelheid, rust en duidelijkheid belangrijker zijn dan designvrijheid.',
+                        },
+                    ],
+                },
+                intentLinks: [
+                    {
+                        href: '/templates',
+                        label: 'Open eerst de WerkCV templates',
+                        description: 'Bekijk of een rustige CV-builder al voldoende is voor jouw sollicitaties.',
+                    },
+                    {
+                        href: '/ats-cv-template',
+                        label: 'Bekijk de ATS-veilige WerkCV-route',
+                        description: 'Handig als scanbaarheid en standaardstructuur voor jou prioriteit hebben.',
+                    },
+                ],
+            },
+            {
+                id: 'kies-canva',
+                title: 'Kies Canva als designvrijheid echt onderdeel is van je sollicitatie',
+                paragraphs: [
+                    'Canva is vooral logisch als het uiterlijk van je document een belangrijk deel van je presentatie is. Dat geldt bijvoorbeeld vaker bij design, branding, content, social media of andere creatieve functies waarbij jouw gevoel voor visuele communicatie indirect mee wordt beoordeeld. De officiële Canva resume builder benadrukt precies die kracht: veel designer-made templates, drag-and-drop bewerking en veel vrijheid om je document visueel aan te passen.',
+                    'Canva kan ook handig zijn als je al dagelijks in Canva werkt en je een CV wilt maken dat visueel aansluit op een portfolio, case study of persoonlijke merkstijl. Dan is de extra ontwerpvrijheid niet zomaar decoratie, maar echt onderdeel van je sollicitatiestrategie.',
+                ],
+                bullets: [
+                    'Je solliciteert op creatieve of visueel georiënteerde rollen.',
+                    'Je wilt meer controle over kleur, compositie, iconen en lay-out dan een CV builder normaal geeft.',
+                    'Je gebruikt Canva al voor portfolio, slides of persoonlijke branding en wilt alles in één omgeving houden.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-opmaak-voorbeeld',
+                        label: 'Bekijk eerst wat een goede CV-opmaak nodig heeft',
+                        description: 'Handig als je wel visueel wilt werken, maar niet ten koste van leesbaarheid.',
+                    },
+                    {
+                        href: '/cv-maken-in-word',
+                        label: 'Vergelijk Canva ook met een handmatige Word-route',
+                        description: 'Zo zie je beter of je echt een designtool nodig hebt of alleen meer controle zoekt.',
+                    },
+                ],
+            },
+            {
+                id: 'kies-builder',
+                title: 'Kies een CV builder zoals WerkCV als je vooral snel goed wilt solliciteren',
+                paragraphs: [
+                    'Voor de meeste sollicitanten is een dedicated CV builder de veiligere en snellere keuze. Dat geldt zeker voor functies in administratie, klantenservice, logistiek, zorg, retail, support en veel starterrollen. Daar wil je meestal geen visueel experiment, maar een helder document met standaardkoppen, logische volgorde en een PDF die rustig oogt.',
+                    'Dat is precies waar een CV builder voordeel heeft. Minder ontwerpvrijheid betekent hier niet minder waarde, maar minder foutkans. Je hoeft minder zelf te beslissen over marges, grafieken, icoontjes of kolommen en kunt je meer richten op inhoud, relevantie en snelheid.',
+                ],
+                bullets: [
+                    'Je wilt minder opmaakbeslissingen en sneller tot een sterke PDF komen.',
+                    'Je solliciteert op standaard vacatures waar inhoud en scanbaarheid zwaarder wegen dan creatieve styling.',
+                    'Je wilt een duidelijke betalingslogica zonder Canva Pro-content of abonnementsafwegingen rond design-assets.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/prijzen',
+                        label: 'Bekijk hoe WerkCV-pricing werkt',
+                        description: 'Controleer het eenmalige model per CV als dat voor jou belangrijk is.',
+                    },
+                    {
+                        href: '/faq',
+                        label: 'Lees hoe WerkCV opnieuw bewerken en downloaden ondersteunt',
+                        description: 'Handig als je meerdere vacaturevarianten uit hetzelfde CV wilt maken.',
+                    },
+                ],
+            },
+            {
+                id: 'wanneer-niet',
+                title: 'Wanneer WerkCV niet de beste keuze is',
+                paragraphs: [
+                    'WerkCV is niet de beste keuze als jouw CV zelf een ontwerpstuk moet zijn. Wanneer je solliciteert op creatieve rollen en bewust een visueel onderscheidend document wilt laten zien, dan heeft Canva simpelweg meer vrijheid. In die situatie kan een vaste CV-builder juist te beperkt voelen.',
+                    'Maar dat betekent niet automatisch dat Canva voor iedereen beter is. Voor veel mensen is een visueel CV vooral extra werk en extra risico. Het slimme verschil zit dus in de functie waarop je solliciteert, niet alleen in wat er mooier uitziet in de editor.',
+                ],
+                bullets: [
+                    'Niet kiezen voor WerkCV als designvrijheid een kernonderdeel is van hoe je jezelf presenteert.',
+                    'Niet kiezen voor WerkCV als je bewust een visuele one-pager of portfolio-achtige CV-stijl wilt bouwen.',
+                    'Wel kiezen voor WerkCV als je vooral een sterke sollicitatie-CV wilt zonder ontwerpgedoe.',
+                ],
+            },
+            {
+                id: 'beste-route',
+                title: 'De slimste route voor de meeste Nederlandse sollicitanten',
+                paragraphs: [
+                    'Voor de meeste Nederlandse vacatures is een dedicated CV builder de slimste start. Niet omdat Canva zwak is, maar omdat het voor gewone sollicitaties meestal slimmer is om eerst een rustig, duidelijk en recruiter-proof CV te hebben dan een visueel opvallend document. De beste keuze is vaak de tool die de minste fouten toelaat.',
+                    'Een praktische middenweg is zelfs nog beter: gebruik een CV builder zoals WerkCV voor je hoofd-CV en gebruik Canva alleen aanvullend als je ook een portfolio, one-pager of creatieve presentatie nodig hebt. Zo combineer je snelheid en standaardisatie met visuele vrijheid, zonder je hoofdsollicitatie afhankelijk te maken van designexperimenten.',
+                ],
+                exampleTitle: 'Snelle beslisregel',
+                exampleItems: [
+                    'Kies een dedicated CV builder voor de meeste standaard sollicitaties in Nederland.',
+                    'Kies Canva als visuele presentatie echt onderdeel is van de functie waarop je solliciteert.',
+                    'Bij twijfel: maak eerst je hoofd-CV in WerkCV en beslis daarna pas of je daarnaast nog een visuele Canva-versie nodig hebt.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/templates',
+                        label: 'Start met je hoofd-CV in WerkCV',
+                        description: 'De snelste manier om eerst de veilige basisversie op orde te hebben.',
+                    },
+                    {
+                        href: '/cv-gids/welke-cv-builder-past-bij-jou-in-nederland',
+                        label: 'Gebruik de brede keuzehulp voor Nederland',
+                        description: 'Handig als je Canva ook naast andere builders wilt afwegen.',
+                    },
+                ],
+            },
+        ],
+        checklist: [
+            'Je weet nu of je vooral designvrijheid of juist sollicitatiesnelheid nodig hebt.',
+            'Je begrijpt dat Canva Free echt gratis kan zijn, maar dat Pro-content soms extra licentie- of abonnementskosten meebrengt.',
+            'Je weet dat een dedicated CV builder meestal minder foutgevoelig is voor standaard Nederlandse vacatures.',
+            'Je hebt bepaald of jouw functie een creatief CV vraagt of juist een rustige recruiter-versie.',
+            'Je hebt nu een praktische route: hoofd-CV eerst, visuele versie alleen als dat echt nodig is.',
+        ],
+        faq: [
+            {
+                question: 'Is Canva goed voor een CV?',
+                answer: 'Ja, vooral als je veel designvrijheid wilt of op creatieve functies solliciteert. Voor de meeste standaard sollicitaties is een dedicated CV builder vaak sneller en veiliger, omdat je minder kans hebt op een onrustige of te visuele layout.',
+            },
+            {
+                question: 'Is de Canva resume builder echt gratis?',
+                answer: 'De officiële Canva resume builder is gratis te gebruiken. Wel geldt dat Free gebruikers soms extra moeten betalen voor Pro-content in een design of een Canva Pro-abonnement nodig hebben om bepaalde premium-elementen zonder watermark te gebruiken.',
+            },
+            {
+                question: 'Is een Canva-CV ATS-vriendelijk?',
+                answer: 'Dat kan, maar je moet het zelf simpel houden. Gebruik liever een rustige layout, standaardkoppen en weinig visuele elementen. Een dedicated CV builder maakt die route meestal makkelijker, omdat de templates al minder ruimte laten voor ATS-onhandige keuzes.',
+            },
+            {
+                question: 'Wanneer is WerkCV slimmer dan Canva?',
+                answer: 'Voor de meeste gewone Nederlandse vacatures waarbij je vooral snel een sterk, rustig en duidelijk CV wilt maken zonder ontwerprisico of abonnementsfrictie rond designtools.',
+            },
+        ],
+        relatedLinks: [
+            {
+                href: '/ats-cv-template',
+                title: 'ATS-vriendelijke CV template',
+                description: 'Gebruik deze route als je vooral een scanbaar, rustig en recruiter-proof CV wilt maken.',
+            },
+            {
+                href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                title: 'Beste CV builder zonder abonnement',
+                description: 'Handig als je Canva ook afweegt tegen no-subscription builders.',
+            },
+            {
+                href: '/cv-gids/welke-cv-builder-past-bij-jou-in-nederland',
+                title: 'Welke CV builder past bij jou in Nederland?',
+                description: 'Voor de brede keuze tussen Canva, WerkCV en andere builders in Nederland.',
+            },
+        ],
+        sources: [
+            {
+                label: 'Canva resume builder',
+                href: 'https://www.canva.com/create/resumes/',
+                note: 'Officiële Canva-pagina met gratis resume builder, save-and-edit workflow en resume-templatepositionering. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'Canva Pro',
+                href: 'https://www.canva.com/pro/',
+                note: 'Officiële Canva Pro-pagina met Canva Free, Pro-functies, 25+ AI-tools en algemene productpositionering. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'Canva licensing explained',
+                href: 'https://www.canva.com/licensing-explained/',
+                note: 'Officiële licentie-uitleg met verschil tussen Free en Pro-content, watermarks en eenmalige licenties voor Pro-content bij Free gebruikers. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'Canva Pro vs Business vs Enterprise',
+                href: 'https://www.canva.com/learn/canva-pro-vs-canva-enterprise/',
+                note: 'Officiële Canva-uitleg dat Canva Pro voor individuen is, een flat monthly fee gebruikt en een 30-daagse proefperiode heeft. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'WerkCV prijzen',
+                href: 'https://werkcv.nl/prijzen',
+                note: 'Openbare WerkCV-prijzenpagina met eenmalige betaling per CV en uitleg over later opnieuw bewerken en downloaden.',
+            },
+            {
+                label: 'WerkCV ATS CV template',
+                href: 'https://werkcv.nl/ats-cv-template',
+                note: 'Openbare WerkCV-pagina met uitleg over ATS-vriendelijke templates en rustige CV-opmaak voor sollicitaties.',
+            },
+        ],
+        ctaTitle: 'Wil je eerst een recruiter-veilige hoofdversie van je CV?',
+        ctaText: 'Begin dan met een WerkCV template, maak je hoofd-CV in een rustige layout en beslis daarna pas of je daarnaast nog een visuele Canva-versie nodig hebt.',
+        ctaHref: '/templates',
+    },
+    {
+        slug: 'ats-vriendelijke-cv-builder-voor-nederlandse-vacatures',
+        locale: 'nl',
+        title: 'ATS-vriendelijke CV builder voor Nederlandse vacatures: waar moet je echt op letten?',
+        description: 'Praktische gids voor het kiezen van een ATS-vriendelijke CV builder in Nederland. Leer wat echt helpt: simpele layout, duidelijke secties, rustige PDF\'s en minder parser-risico.',
+        metaTitle: 'ATS-vriendelijke CV builder voor Nederlandse vacatures (2026) | WerkCV.nl',
+        metaDesc: 'Zo kies je een ATS-vriendelijke CV builder voor Nederlandse vacatures. Vergelijk parse-veilige layouts, PDF-risico\'s, standaardsecties en de slimste route voor gewone sollicitaties.',
+        keywords: [
+            'ats vriendelijke cv builder',
+            'ats cv builder nederland',
+            'ats vriendelijke cv nederland',
+            'cv builder voor ats',
+            'ats cv template nederland',
+        ],
+        intro: 'Voor de meeste Nederlandse vacatures is een ATS-vriendelijke CV builder vooral een rustige CV builder. Het gaat minder om een magisch “ATS-keurmerk” en meer om simpele layouts, duidelijke secties, gewone tekst en zo min mogelijk opmaak die parsing in de weg zit.',
+        sections: [
+            {
+                id: 'wat-maakt-ats-vriendelijk',
+                title: 'Wat maakt een CV builder echt ATS-vriendelijk?',
+                paragraphs: [
+                    'Het belangrijkste misverstand is dat ATS-vriendelijkheid vooral een score of badge zou zijn. In de praktijk gaat het veel vaker om basisdingen: of een parser je informatie kan lezen, of je contactgegevens logisch staan, en of je CV geen complexe layout gebruikt die voor mensen mooi lijkt maar voor software rommelig is.',
+                    'Dat zie je ook terug in officiële ATS-documentatie. Greenhouse noemt bijvoorbeeld heel concreet welke formatting issues parsing laten mislukken: afbeeldingen, word art, image-bestanden in plaats van documenten, complexe tabellen, headers, footers, kolomlayouts en onduidelijke secties. De juiste CV builder beperkt juist dat soort risico\'s in plaats van je te verleiden tot te veel designvrijheid.',
+                ],
+                comparisonTable: {
+                    columns: ['Onderdeel', 'ATS-vriendelijk signaal', 'Risico of waarschuwing'],
+                    rows: [
+                        {
+                            label: 'Bestand en tekst',
+                            primary: 'Normale documentoutput zoals PDF of DOCX met echte tekst die selecteerbaar en leesbaar blijft.',
+                            secondary: 'CV\'s die als afbeelding worden opgeslagen of veel grafische elementen gebruiken in plaats van gewone tekst.',
+                        },
+                        {
+                            label: 'Layout',
+                            primary: 'Rustige, voorspelbare layout met duidelijke secties en zo min mogelijk ingewikkelde visuele constructies.',
+                            secondary: 'Kolommen, decoratieve blokken, tabellen, tekstvakken, kop- en voetteksten met belangrijke info.',
+                        },
+                        {
+                            label: 'Secties en koppen',
+                            primary: 'Consistente secties zoals werkervaring, opleiding en vaardigheden met duidelijke titels.',
+                            secondary: 'Ongewone labels, wisselende formats per sectie of een layout zonder heldere structuur.',
+                        },
+                        {
+                            label: 'Contactgegevens',
+                            primary: 'Naam en contactgegevens in de hoofdtekst op een duidelijke plek bovenaan.',
+                            secondary: 'Naam, e-mail of telefoon in headers, footers of losse tekstvakken.',
+                        },
+                        {
+                            label: 'Keywords',
+                            primary: 'Makkelijk de functietitel, tools en vaardigheden uit de vacature verwerken in gewone taal.',
+                            secondary: 'Te creatieve samenvattingen of designfocus waardoor relevante vacaturetaal ondergesneeuwd raakt.',
+                        },
+                        {
+                            label: 'Editorflow',
+                            primary: 'Een builder die je richting eenvoudige keuzes en sollicitatiegerichte structuur stuurt.',
+                            secondary: 'Een vrije designtool waarin je zelf alle layoutbeslissingen moet nemen en sneller fouten maakt.',
+                        },
+                    ],
+                },
+                intentLinks: [
+                    {
+                        href: '/ats-cv-template',
+                        label: 'Bekijk de ATS-vriendelijke WerkCV template route',
+                        description: 'Start met de veiligste layout als rust en scanbaarheid voorop staan.',
+                    },
+                    {
+                        href: '/tools/ats-cv-checker',
+                        label: 'Controleer je CV eerst met de ATS-checker',
+                        description: 'Gebruik dit als extra controle, niet als vervanging van gezond CV-oordeel.',
+                    },
+                ],
+            },
+            {
+                id: 'nederlandse-vacatures',
+                title: 'Wat dit betekent voor Nederlandse vacatures',
+                paragraphs: [
+                    'Voor Nederlandse werkzoekenden is het nuttig om ATS-vriendelijkheid nuchter te bekijken. ATS-systemen zijn geen theorie; LinkedIn Help documenteert expliciet hoe LinkedIn Recruiter met ATS-integraties werkt en hoe data en resumes tussen ATS en LinkedIn worden gesynchroniseerd. Tegelijk laat Greenhouse zien dat Dutch gewoon tot de ondersteunde talen voor parsing hoort. De taal Nederlands is dus niet per se het probleem; de layout is dat veel vaker wel.',
+                    'Daarom is voor Nederlandse vacatures meestal niet de slimste vraag “welke tool heeft de hoogste ATS-marketingclaim?”, maar “welke tool helpt mij een rustig, logisch en standaard CV te maken dat zowel door software als door recruiters goed te lezen is?”. Voor veel kantoor-, zorg-, logistieke, retail- en starterfuncties is dat belangrijker dan visuele originaliteit.',
+                ],
+                bullets: [
+                    'Nederlandse parsing is bij grote systemen niet per definitie het probleem; rommelige opmaak vaak wel.',
+                    'Een gewone, duidelijke CV-opbouw wint in veel Nederlandse sollicitaties van een creatief maar parser-onhandig document.',
+                    'ATS-vriendelijk betekent meestal ook recruiter-vriendelijk: snel scanbaar, duidelijk en relevant.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-gids/canva-vs-cv-builder-voor-sollicitaties',
+                        label: 'Vergelijk eerst Canva vs een dedicated CV builder',
+                        description: 'Handig als je twijfelt tussen designvrijheid en een rustig sollicitatiedocument.',
+                    },
+                    {
+                        href: '/cv-opmaak-voorbeeld',
+                        label: 'Bekijk voorbeelden van goede CV-opmaak',
+                        description: 'Zo zie je concreet wat een rustige layout in de praktijk betekent.',
+                    },
+                ],
+            },
+            {
+                id: 'kies-werkcv',
+                title: 'Kies WerkCV als je minder ATS-risico en minder designgedoe wilt',
+                paragraphs: [
+                    'WerkCV is het sterkst voor mensen die niet willen experimenteren met design, maar gewoon een sollicitatieklaar CV nodig hebben. Dat maakt het juist aantrekkelijk voor ATS-gevoelige situaties. Je werkt met templates die al dichter liggen bij een klassieke recruiterflow, hoeft minder layoutbeslissingen zelf te nemen en kunt je energie steken in inhoud, functierelevantie en keywordafstemming op de vacature.',
+                    'Voor veel gebruikers is dat de echte winst. Een ATS-vriendelijke builder is niet per se de builder met de meeste AI of de luidste marketing, maar de builder die de kans kleiner maakt dat jij per ongeluk een parser-onvriendelijke layout bouwt. Juist daar helpt een rustige tool meer dan een vrije designtool.',
+                ],
+                bullets: [
+                    'Je wilt een simpele, rustige layout met zo min mogelijk parser-risico.',
+                    'Je wilt niet zelf hoeven beslissen over kolommen, tekstvakken of decoratieve elementen.',
+                    'Je wilt later hetzelfde CV opnieuw kunnen aanpassen en downloaden zonder opnieuw te betalen voor datzelfde document.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/templates',
+                        label: 'Start met een WerkCV template',
+                        description: 'De snelste manier om je hoofd-CV in een rustige ATS-veilige richting op te bouwen.',
+                    },
+                    {
+                        href: '/prijzen',
+                        label: 'Bekijk het eenmalige WerkCV-model',
+                        description: 'Handig als je een ATS-veilige CV-builder zoekt zonder doorlopend abonnement.',
+                    },
+                ],
+            },
+            {
+                id: 'wanneer-niet',
+                title: 'Wanneer WerkCV niet de beste keuze is',
+                paragraphs: [
+                    'WerkCV is niet de beste keuze als je bewust een grotere sollicitatiesuite zoekt met tracker, brede AI-hulp of een veel vrijere designomgeving. In dat geval kunnen andere platforms beter passen, mits je goed oplet dat je CV inhoudelijk en qua layout simpel genoeg blijft voor parsing.',
+                    'Het is ook niet de beste keuze als jouw CV zelf een creatief ontwerpstuk moet zijn. Dan kan een tool als Canva of een breder visueel platform beter passen, maar je moet dan accepteren dat je meer verantwoordelijkheid krijgt voor de leesbaarheid en ATS-veiligheid van het einddocument.',
+                ],
+                bullets: [
+                    'Niet kiezen voor WerkCV als je primair designvrijheid of een brede suite zoekt.',
+                    'Niet kiezen voor WerkCV als een visuele portfolio-achtige CV belangrijker is dan standaardisatie.',
+                    'Wel kiezen voor WerkCV als je het hoofdprobleem ziet als: snel een rustig, sollicitatieklaar CV maken.',
+                ],
+            },
+            {
+                id: 'beste-route',
+                title: 'De slimste ATS-route voor de meeste sollicitanten',
+                paragraphs: [
+                    'Voor de meeste Nederlandse sollicitanten is de slimste route verrassend simpel: kies een rustige builder, gebruik gewone sectietitels, zet je contactgegevens niet in rare plekken, neem relevante woorden uit de vacature over en exporteer een nette PDF. Meer ingewikkeld hoeft ATS-vriendelijkheid meestal niet te worden.',
+                    'De beste aanpak is daarom eerst je hoofd-CV goed opbouwen in een rustige builder zoals WerkCV. Pas daarna kun je extra checks of optimalisaties toevoegen. Wie omgekeerd begint met design, scores en gimmicks, eindigt vaak met meer ruis dan resultaat.',
+                ],
+                exampleTitle: 'Snelle beslisregel',
+                exampleItems: [
+                    'Kies een rustige CV builder als jouw hoofd-CV door zoveel mogelijk standaard sollicitatieflows moet werken.',
+                    'Gebruik ATS-checks als hulpmiddel, niet als waarheid op zichzelf.',
+                    'Zoek niet naar “ATS-approved”, maar naar eenvoudige layouts, duidelijke secties en logische vacaturetaal.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/templates',
+                        label: 'Maak je hoofd-CV nu in WerkCV',
+                        description: 'Begin met de veiligste basisversie voordat je andere tools toevoegt.',
+                    },
+                    {
+                        href: '/cv-gids/welke-cv-builder-past-bij-jou-in-nederland',
+                        label: 'Gebruik de brede keuzehulp voor Nederland',
+                        description: 'Handig als je WerkCV ook naast andere builders wilt vergelijken.',
+                    },
+                ],
+            },
+        ],
+        checklist: [
+            'Je weet nu dat ATS-vriendelijkheid vooral over structuur en leesbaarheid gaat, niet over een badge.',
+            'Je begrijpt welke layoutkeuzes parsers volgens officiële ATS-documentatie kunnen verstoren.',
+            'Je weet dat Nederlands zelf geen hoofdprobleem hoeft te zijn, maar rommelige opmaak wel.',
+            'Je hebt een concrete route om eerst een rustige hoofdversie van je CV te maken.',
+            'Je kunt nu ATS-vriendelijke keuzes maken zonder in marketingtaal of scoringshypes te geloven.',
+        ],
+        faq: [
+            {
+                question: 'Wat is een ATS-vriendelijke CV builder?',
+                answer: 'Dat is vooral een CV builder die je helpt een simpel, logisch en goed leesbaar document te maken. Denk aan duidelijke secties, weinig designruis, gewone tekst en een layout die minder kans geeft op parsingproblemen.',
+            },
+            {
+                question: 'Bestaat er zoiets als ATS-approved?',
+                answer: 'Gebruik die term liever niet als besliscriterium. Er is geen universeel publiek keurmerk dat alle ATS-systemen afdekt. Let liever op praktische signalen zoals simpele layouts, duidelijke secties, echte tekst en minder parser-risico.',
+            },
+            {
+                question: 'Is een PDF goed voor ATS in Nederland?',
+                answer: 'Vaak wel, zolang het een normale PDF met echte tekst is en geen beeldbestand of zwaar vormgegeven design. Officiële ATS-documentatie noemt vooral problemen bij image-bestanden, graphics, headers, footers, tabellen en kolomlayouts.',
+            },
+            {
+                question: 'Waarom is een dedicated CV builder vaak slimmer dan Canva voor ATS?',
+                answer: 'Omdat een dedicated CV builder je meestal automatisch dichter bij een rustige, standaard sollicitatie-layout houdt. Canva geeft meer vrijheid, maar daardoor ook meer kans op keuzes die parsing en leesbaarheid kunnen schaden.',
+            },
+        ],
+        relatedLinks: [
+            {
+                href: '/ats-cv-template',
+                title: 'ATS-vriendelijke CV template',
+                description: 'Gebruik deze route als je direct met een rustige, scanbare template wilt starten.',
+            },
+            {
+                href: '/tools/ats-cv-checker',
+                title: 'ATS CV checker',
+                description: 'Controleer je CV extra, maar gebruik het als hulpmiddel en niet als eindwaarheid.',
+            },
+            {
+                href: '/cv-gids/canva-vs-cv-builder-voor-sollicitaties',
+                title: 'Canva vs CV builder voor sollicitaties',
+                description: 'Voor de keuze tussen designvrijheid en een rustiger sollicitatiedocument.',
+            },
+        ],
+        sources: [
+            {
+                label: 'Greenhouse: Unsuccessful resume parse',
+                href: 'https://support.greenhouse.io/hc/en-us/articles/200989175-Unsuccessful-resume-parse',
+                note: 'Officiële Greenhouse Support-pagina met concrete parsingproblemen zoals graphics, image-bestanden, complexe tabellen, headers, footers, kolommen en onduidelijke secties. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'Greenhouse: Resume parsing with non-English languages',
+                href: 'https://support.greenhouse.io/hc/en-us/articles/205019689-Resume-parsing-with-non-English-languages',
+                note: 'Officiële Greenhouse Support-pagina die bevestigt dat Dutch tot de ondersteunde parsingtalen hoort. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'LinkedIn Help: ATS integrations in Recruiter',
+                href: 'https://www.linkedin.com/help/linkedin/answer/a496957',
+                note: 'Officiële LinkedIn Help-pagina die uitlegt hoe ATS-integraties, resume-sync en ATS-rapportage in Recruiter werken. Gecontroleerd op 30 maart 2026.',
+            },
+            {
+                label: 'WerkCV ATS CV template',
+                href: 'https://werkcv.nl/ats-cv-template',
+                note: 'Openbare WerkCV-pagina over rustige ATS-vriendelijke templates voor sollicitaties.',
+            },
+            {
+                label: 'WerkCV prijzen',
+                href: 'https://werkcv.nl/prijzen',
+                note: 'Openbare WerkCV-prijzenpagina met eenmalige betaling per CV en uitleg over later opnieuw bewerken en downloaden.',
+            },
+        ],
+        ctaTitle: 'Wil je eerst een rustige ATS-veilige basisversie van je CV?',
+        ctaText: 'Begin dan met een WerkCV template, bouw je hoofd-CV in een simpele layout op en voeg pas daarna extra checks of optimalisaties toe.',
+        ctaHref: '/templates',
+    },
 ];
 
 function mergeUniqueGuidePages(...groups: SeoGuidePage[][]): SeoGuidePage[] {

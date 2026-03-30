@@ -200,6 +200,15 @@ export default function PrijzenPage() {
                             <Link href="/cv-gids/werkcv-vs-cvster" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
                                 WerkCV vs CVster
                             </Link>
+                            <Link href="/cv-gids/werkcv-vs-resumaker" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
+                                WerkCV vs Resumaker
+                            </Link>
+                            <Link href="/cv-gids/werkcv-vs-maakeencv" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
+                                WerkCV vs maakeencv.nl
+                            </Link>
+                            <Link href="/cv-gids/canva-vs-cv-builder-voor-sollicitaties" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
+                                Canva vs CV builder
+                            </Link>
                         </div>
                     </div>
                 </div>
