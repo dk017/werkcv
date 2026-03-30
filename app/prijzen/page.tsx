@@ -177,6 +177,31 @@ export default function PrijzenPage() {
                             </ul>
                         </div>
                     </div>
+                    <div className="mt-6 bg-white border-4 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-600 mb-2">
+                            Vergelijking
+                        </p>
+                        <p className="text-sm md:text-base font-medium text-gray-700">
+                            Twijfel je tussen een eenmalige CV-builder en een abonnementsplatform? Bekijk dan onze eerlijke vergelijkingen:
+                        </p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                            <Link href="/cv-gids/welke-cv-builder-past-bij-jou-in-nederland" className="border-2 border-black bg-blue-200 px-3 py-2 text-sm font-black text-black hover:bg-blue-300 transition-colors">
+                                Welke CV builder past bij jou?
+                            </Link>
+                            <Link href="/cv-gids/beste-cv-builder-zonder-abonnement" className="border-2 border-black bg-yellow-200 px-3 py-2 text-sm font-black text-black hover:bg-yellow-300 transition-colors">
+                                Beste zonder abonnement
+                            </Link>
+                            <Link href="/cv-gids/werkcv-vs-cvmaker" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
+                                WerkCV vs CVMaker
+                            </Link>
+                            <Link href="/cv-gids/werkcv-vs-cv-nl" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
+                                WerkCV vs CV.nl
+                            </Link>
+                            <Link href="/cv-gids/werkcv-vs-cvster" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
+                                WerkCV vs CVster
+                            </Link>
+                        </div>
+                    </div>
                 </div>
 
                 {/* FAQ */}

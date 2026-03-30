@@ -222,6 +222,31 @@ export default async function DutchWavePage({ params }: PageProps) {
                                         {paragraph}
                                     </p>
                                 ))}
+                                {section.comparisonTable && (
+                                    <div className="overflow-hidden rounded-sm border-3 border-black bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                                        <div className="grid grid-cols-[1.15fr_1fr_1fr] border-b-3 border-black bg-[#FFF4D6] text-sm font-black text-gray-900">
+                                            {section.comparisonTable.columns.map((column) => (
+                                                <div key={column} className="border-r-3 border-black px-4 py-3 last:border-r-0">
+                                                    {column}
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className="divide-y-2 divide-black">
+                                            {section.comparisonTable.rows.map((row) => (
+                                                <div
+                                                    key={row.label}
+                                                    className="grid grid-cols-[1.15fr_1fr_1fr] text-sm leading-relaxed text-gray-700"
+                                                >
+                                                    <div className="border-r-2 border-black bg-[#FFFEF9] px-4 py-3 font-black text-gray-900">
+                                                        {row.label}
+                                                    </div>
+                                                    <div className="border-r-2 border-black px-4 py-3">{row.primary}</div>
+                                                    <div className="px-4 py-3">{row.secondary}</div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                                 {section.bullets && section.bullets.length > 0 && (
                                     <ul className="space-y-2 pl-1">
                                         {section.bullets.map((bullet, idx) => (

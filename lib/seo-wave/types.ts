@@ -3,6 +3,7 @@ export interface SeoSection {
     title: string;
     paragraphs: string[];
     bullets?: string[];
+    comparisonTable?: SeoComparisonTable;
     exampleTitle?: string;
     exampleItems?: string[];
     intentLinks?: SeoIntentLink[];
@@ -12,6 +13,17 @@ export interface SeoIntentLink {
     href: string;
     label: string;
     description?: string;
+}
+
+export interface SeoComparisonRow {
+    label: string;
+    primary: string;
+    secondary: string;
+}
+
+export interface SeoComparisonTable {
+    columns: [string, string, string];
+    rows: SeoComparisonRow[];
 }
 
 export interface SeoFaq {
