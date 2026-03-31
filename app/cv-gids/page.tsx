@@ -42,6 +42,8 @@ const guideGroups = [
       { href: "/gratis-cv-maken", label: "Gratis CV maken" },
       { href: "/cv-aanmaken", label: "CV aanmaken" },
       { href: "/cv-opstellen", label: "CV opstellen" },
+      { href: "/makkelijk-cv-maken", label: "Makkelijk CV maken" },
+      { href: "/snel-cv-maken", label: "Snel CV maken" },
     ],
   },
   {
@@ -53,6 +55,9 @@ const guideGroups = [
       { href: "/cv-maken-template", label: "CV maken template" },
       { href: "/cv-maken-sjabloon", label: "CV maken sjabloon" },
       { href: "/templates", label: "CV templates" },
+      { href: "/professioneel-cv-maken", label: "Professioneel CV maken" },
+      { href: "/mooie-cv-maken", label: "Mooie CV maken" },
+      { href: "/cv-ontwerpen", label: "CV ontwerpen" },
     ],
   },
   {
@@ -62,6 +67,7 @@ const guideGroups = [
     links: [
       { href: "/cv-maken-student", label: "CV maken student" },
       { href: "/stage-cv-maken", label: "Stage CV maken" },
+      { href: "/eerste-cv-maken", label: "Eerste CV maken" },
       { href: "/cv-maken-16-jarige", label: "CV maken 16-jarige" },
       { href: "/cv-maken-pdf", label: "CV maken PDF" },
       { href: "/cv-maken-op-mobiel", label: "CV maken op mobiel" },
@@ -191,7 +197,7 @@ export default function CvgidsHubPage() {
           <p className="text-gray-700 max-w-4xl leading-relaxed">
             Dit zijn de pagina&apos;s waar de meeste Nederlandse zoekintenties samenkomen. Als deze hub links moet doorgeven aan routes met de meeste commerciële en inhoudelijke waarde, dan zijn dit de logische kandidaten.
           </p>
-          <div className="mt-8 grid gap-6 lg:grid-cols-3">
+          <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {guideGroups.map((group) => (
               <article key={group.title} className="border-4 border-black bg-white p-6">
                 <h3 className="text-2xl font-black text-gray-900">{group.title}</h3>

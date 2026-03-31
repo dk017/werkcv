@@ -127,6 +127,42 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.87,
         },
         {
+            url: `${baseUrl}/professioneel-cv-maken`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.86,
+        },
+        {
+            url: `${baseUrl}/eerste-cv-maken`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.86,
+        },
+        {
+            url: `${baseUrl}/mooie-cv-maken`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.85,
+        },
+        {
+            url: `${baseUrl}/cv-ontwerpen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.85,
+        },
+        {
+            url: `${baseUrl}/makkelijk-cv-maken`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.85,
+        },
+        {
+            url: `${baseUrl}/snel-cv-maken`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.85,
+        },
+        {
             url: `${baseUrl}/cv-opmaak-voorbeeld`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
