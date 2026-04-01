@@ -372,6 +372,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.84,
         },
         {
+            url: `${baseUrl}/motivatiebrief-schrijven`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.84,
+        },
+        {
+            url: `${baseUrl}/korte-motivatiebrief-voorbeeld`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.83,
+        },
+        {
             url: `${baseUrl}/motivatiebrief-layout`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -406,6 +418,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.83,
+        },
+        {
+            url: `${baseUrl}/competenties-voorbeelden`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.82,
+        },
+        {
+            url: `${baseUrl}/curriculum-vitae-template`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.82,
         },
         {
             url: `${baseUrl}/tools`,
@@ -520,6 +544,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.77,
+        },
+        {
+            url: `${baseUrl}/cv-nl-opzeggen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.74,
         },
         {
             url: `${baseUrl}/faq`,

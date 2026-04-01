@@ -203,6 +203,9 @@ export default function PrijzenPage() {
                             <Link href="/cv-gids/werkcv-vs-cv-nl" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
                                 WerkCV vs CV.nl
                             </Link>
+                            <Link href="/cv-nl-opzeggen" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
+                                CV.nl opzeggen
+                            </Link>
                             <Link href="/cv-gids/werkcv-vs-cvster" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
                                 WerkCV vs CVster
                             </Link>

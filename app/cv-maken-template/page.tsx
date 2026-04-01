@@ -292,6 +292,11 @@ export default function CvMakenTemplatePage() {
         <section className="mb-14 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {[
             {
+              href: "/curriculum-vitae-template",
+              title: "Curriculum vitae template",
+              body: "Speciaal voor formelere template-intentie en rustige, zakelijke layouts.",
+            },
+            {
               href: "/cv-maken-sjabloon",
               title: "CV maken sjabloon",
               body: "Dezelfde cluster in meer sjabloon-taal en met extra keuzehulp.",

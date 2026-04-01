@@ -406,6 +406,11 @@ export default function VaardighedenCvVoorbeeldenPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
+                  href: "/competenties-voorbeelden",
+                  title: "Competenties voorbeelden",
+                  body: "Gebruik deze route als je vooral zoekt naar gedragsmatige competenties in plaats van losse skills of tools.",
+                },
+                {
                   href: "/tools/vaardigheden-generator",
                   title: "Vaardigheden generator",
                   body: "Maak direct een shortlist skills op basis van jouw doelrol.",

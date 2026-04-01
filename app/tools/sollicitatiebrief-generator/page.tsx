@@ -53,6 +53,14 @@ export default function SollicitatiebriefGeneratorPage() {
                             motivatiebrief voorbeelden
                         </Link>
                         {" "}of{" "}
+                        <Link href="/motivatiebrief-schrijven" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            motivatiebrief schrijven
+                        </Link>
+                        {" "}of{" "}
+                        <Link href="/korte-motivatiebrief-voorbeeld" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            korte motivatiebrief
+                        </Link>
+                        {" "}of{" "}
                         <Link href="/motivatiebrief-layout" className="underline decoration-2 underline-offset-2 text-slate-900">
                             motivatiebrief layout
                         </Link>

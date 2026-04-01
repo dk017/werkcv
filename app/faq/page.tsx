@@ -119,6 +119,11 @@ const comparisonGuides = [
         title: "Canva vs CV builder",
         body: "Gebruik deze gids als je twijfelt tussen een designtool en een rustiger sollicitatiedocument.",
     },
+    {
+        href: "/cv-nl-opzeggen",
+        title: "CV.nl opzeggen",
+        body: "Handig als je juist zoekt naar een abonnements-exit en daarna een alternatief zonder maandelijkse verlenging wilt vergelijken.",
+    },
 ];
 
 export default function FAQPage() {

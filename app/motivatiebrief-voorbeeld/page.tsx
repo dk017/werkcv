@@ -228,6 +228,16 @@ export default function MotivatiebriefVoorbeeldPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
+                  href: "/motivatiebrief-schrijven",
+                  title: "Motivatiebrief schrijven",
+                  body: "Gebruik deze route als je minder voorbeelden en meer stap-voor-stap schrijfstructuur zoekt.",
+                },
+                {
+                  href: "/korte-motivatiebrief-voorbeeld",
+                  title: "Korte motivatiebrief voorbeeld",
+                  body: "Handig als je compact wilt schrijven zonder de inhoud te mager te maken.",
+                },
+                {
                   href: "/sollicitatiebrief-voorbeeld-administratief-medewerker",
                   title: "Sollicitatiebrief administratief medewerker",
                   body: "Bekijk role-specifieke voorbeeldzinnen voor administratieve functies.",

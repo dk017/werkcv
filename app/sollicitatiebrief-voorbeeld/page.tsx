@@ -227,6 +227,16 @@ export default function SollicitatiebriefVoorbeeldPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
+                  href: "/motivatiebrief-schrijven",
+                  title: "Motivatiebrief schrijven",
+                  body: "Gebruik deze route als je eerst de schrijfstructuur en opbouw wilt aanscherpen.",
+                },
+                {
+                  href: "/korte-motivatiebrief-voorbeeld",
+                  title: "Korte motivatiebrief voorbeeld",
+                  body: "Vergelijk compacte voorbeeldbrieven die sneller tot de kern komen.",
+                },
+                {
                   href: "/sollicitatiebrief-voorbeeld-horeca-medewerker",
                   title: "Sollicitatiebrief horeca medewerker",
                   body: "Gebruik servicegerichte voorbeeldzinnen voor bediening, allround horeca en bijbanen met piekdrukte.",

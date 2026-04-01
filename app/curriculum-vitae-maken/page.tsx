@@ -379,6 +379,11 @@ export default function CurriculumVitaeMakenPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
+                  href: "/curriculum-vitae-template",
+                  title: "Curriculum vitae template",
+                  body: "Gebruik deze route als je formele templatekeuze belangrijker is dan algemene schrijfbegeleiding.",
+                },
+                {
                   href: "/cv-maken",
                   title: "CV maken",
                   body: "De hoofdgids als je behalve formele taal ook praktische schrijfrichtlijnen en copy-ready voorbeelden wilt.",
