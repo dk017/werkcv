@@ -68,6 +68,13 @@ export type AnalyticsEvent =
     | { event: 'checkout_completed'; properties: { cvId: string; orderId?: string; amountCents?: number } }
     | { event: 'paid'; properties: { cvId: string; orderId?: string; amountCents?: number } }
     | { event: 'payment_completed'; properties: { cvId: string } }
+    // B2B lead capture
+    | { event: 'b2b_form_started'; properties: { pageType: 'agency' | 'coach' | 'partner'; path: string } }
+    | { event: 'b2b_form_submitted'; properties: { pageType: 'agency' | 'coach' | 'partner'; path: string } }
+    | {
+          event: 'b2b_form_failed';
+          properties: { pageType: 'agency' | 'coach' | 'partner'; path: string; reason: string };
+      }
     // Engagement
     | { event: 'onboarding_shown'; properties: Record<string, never> }
     | { event: 'onboarding_dismissed'; properties: { action: 'start_typing' | 'upload_cv' } }

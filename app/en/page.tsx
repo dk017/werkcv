@@ -49,6 +49,29 @@ const pages = [
   },
 ];
 
+const expatTools = [
+  {
+    href: "/tools/zoekjaar-checker",
+    title: "Zoekjaar Checker",
+    description: "Check whether the Dutch orientation year route still fits your timeline.",
+  },
+  {
+    href: "/tools/kennismigrant-salary-checker",
+    title: "Highly Skilled Migrant Salary Checker",
+    description: "Compare your offer against the current IND salary thresholds.",
+  },
+  {
+    href: "/tools/eu-blue-card-checker",
+    title: "EU Blue Card Checker",
+    description: "Compare the Blue Card route with Dutch sponsor-based options.",
+  },
+  {
+    href: "/tools/job-title-translator",
+    title: "Job Title Translator",
+    description: "Translate job titles between Dutch and English for CV and LinkedIn use.",
+  },
+];
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
@@ -99,6 +122,31 @@ export default function EnglishHubPage() {
               <p className="text-gray-700">{page.description}</p>
             </Link>
           ))}
+        </div>
+
+        <div className="mt-12 border-t-4 border-black pt-12">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-black text-gray-900 mb-3">
+              Practical Tools for Expats Applying in the Netherlands
+            </h2>
+            <p className="text-gray-700 text-lg">
+              CV format is only one part of the move. These tools help you compare routes,
+              salary thresholds, and job-title wording before you localize your applications.
+            </p>
+          </div>
+
+          <div className="mt-6 grid md:grid-cols-2 gap-5">
+            {expatTools.map((tool) => (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                className="block bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all"
+              >
+                <h3 className="text-xl font-black mb-2 text-gray-900">{tool.title}</h3>
+                <p className="text-gray-700">{tool.description}</p>
+              </Link>
+            ))}
+          </div>
         </div>
 
         <div className="mt-10 flex flex-wrap gap-3">

@@ -819,6 +819,56 @@ export default function Home() {
                 </div>
             </section>
 
+            <section className="relative z-10 border-b-4 border-black bg-[#FFFEF0]">
+                <div className="max-w-6xl mx-auto px-6 py-16">
+                    <div className="max-w-3xl">
+                        <span className="inline-block border-2 border-black bg-yellow-300 px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-black">
+                            B2B routes
+                        </span>
+                        <h2 className="mt-4 text-3xl md:text-4xl font-black text-black">
+                            Werk je met kandidaten, cliënten of deelnemers?
+                        </h2>
+                        <p className="mt-4 text-base md:text-lg font-medium leading-relaxed text-gray-700">
+                            WerkCV heeft ook routes voor coaches, recruitmentbureaus en partners die hun doelgroep sneller
+                            van advies naar een concrete sollicitatieversie willen brengen.
+                        </p>
+                    </div>
+
+                    <div className="mt-8 grid gap-4 md:grid-cols-3">
+                        {[
+                            {
+                                href: "/for-coaches",
+                                title: "Voor coaches",
+                                body: "Voor loopbaancoaches, jobcoaches, re-integratie en outplacement met Nederlandse en expat-doelgroepen.",
+                            },
+                            {
+                                href: "/agency",
+                                title: "Agency pilot",
+                                body: "Voor recruiters en boutique bureaus die kandidaat-CV's sneller in bureau-uitstraling willen opleveren.",
+                            },
+                            {
+                                href: "/partners",
+                                title: "Partners",
+                                body: "Voor scholen, communities, career services en programma's die bruikbare WerkCV-assets willen delen.",
+                            },
+                        ].map((item) => (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className="group block border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-[7px_7px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            >
+                                <h3 className="text-lg font-black text-black group-hover:text-[#FF6B6B] transition-colors">
+                                    {item.title}
+                                </h3>
+                                <p className="mt-2 text-sm font-medium leading-relaxed text-gray-700">
+                                    {item.body}
+                                </p>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* ============================================================ */}
             {/* FINAL CTA */}
             {/* ============================================================ */}

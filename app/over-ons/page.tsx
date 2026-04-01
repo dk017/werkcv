@@ -54,7 +54,7 @@ export default function OverOnsPage() {
                             <h2 className="text-xl font-black mb-3">Waarom WerkCV.nl?</h2>
                             <div className="grid sm:grid-cols-2 gap-4">
                                 {[
-                                    { title: 'Eerlijke prijs', desc: 'Eenmalig \u20ac5 per CV. Daarna kun je datzelfde CV later opnieuw bewerken en downloaden. Geen abonnementen en geen automatische verlengingen.' },
+                                    { title: 'Eerlijke prijs', desc: 'Eenmalig \u20ac4,99 per CV. Daarna kun je datzelfde CV later opnieuw bewerken en downloaden. Geen abonnementen en geen automatische verlengingen.' },
                                     { title: 'ATS-geoptimaliseerd', desc: 'Al onze templates zijn getest met de meest gebruikte Applicant Tracking Systems in Nederland.' },
                                     { title: 'Nederlandse focus', desc: 'Ontworpen voor de Nederlandse arbeidsmarkt. Met de juiste opmaak, secties en taal die werkgevers verwachten.' },
                                     { title: 'Privacy eerst', desc: 'Je gegevens zijn van jou. We verkopen niets aan derden en je kunt je data altijd laten verwijderen.' },
@@ -73,7 +73,7 @@ export default function OverOnsPage() {
                                 {[
                                     { step: '1', title: 'Upload of begin nieuw', desc: 'Upload je bestaande CV of begin vanaf nul met een leeg template.' },
                                     { step: '2', title: 'Bewerk in de live editor', desc: 'Vul je gegevens in en zie direct hoe je CV eruitziet. Wissel van template en kleurthema wanneer je wilt.' },
-                                    { step: '3', title: 'Download als PDF', desc: 'Tevreden? Download je CV als professionele PDF voor een eenmalige betaling van \u20ac5 per CV. Daarna kun je hetzelfde CV later opnieuw openen en downloaden.' },
+                                    { step: '3', title: 'Download als PDF', desc: 'Tevreden? Download je CV als professionele PDF voor een eenmalige betaling van \u20ac4,99 per CV. Daarna kun je hetzelfde CV later opnieuw openen en downloaden.' },
                                 ].map((item, i) => (
                                     <div key={i} className="flex gap-4 items-start">
                                         <div className="w-10 h-10 bg-yellow-400 border-3 border-black flex items-center justify-center flex-shrink-0 font-black text-lg" style={{ borderWidth: '3px' }}>

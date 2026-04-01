@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import AgencyCtaLink from "@/components/agency/AgencyCtaLink";
+import B2BLeadForm from "@/components/b2b/B2BLeadForm";
 import { FAQJsonLd, OrganizationJsonLd } from "@/components/seo/JsonLd";
 
 const painPoints = [
@@ -91,6 +91,37 @@ const comparisonRows = [
     body:
       "Pas na betaalde interesse bouwen we teamfuncties zoals seats, gedeelde templates, usage limits en strengere retentiecontrole.",
   },
+];
+
+const agencyProof = [
+  {
+    title: "13+ ATS-geteste templatebasis",
+    body:
+      "WerkCV draait al op een Nederlandse CV-editor met ATS-vriendelijke templates. De agency-pilot gebruikt die bestaande basis in plaats van een demo zonder echte productlaag.",
+  },
+  {
+    title: "Branded route als eerste betaalde test",
+    body:
+      "Je start met 1 branded kandidaat-CV route, onboarding en factuurafspraken. Dat is genoeg om echte cases te toetsen zonder meteen een groot maatwerktraject te starten.",
+  },
+  {
+    title: "Ook bruikbaar voor internationale kandidaten",
+    body:
+      "Naast Dutch-first CV-routes zijn er ook Engelse en expat-assets. Dat helpt bureaus die zowel Nederlandse kandidaten als internationals begeleiden.",
+  },
+  {
+    title: "Meer dan alleen een opmaaktool",
+    body:
+      "WerkCV heeft daarnaast live gidsen en tools rond solliciteren, salaris en werken in Nederland. Daardoor kun je een bredere kandidaatflow testen dan alleen een template-export.",
+  },
+];
+
+const agencyAudienceOptions = [
+  { value: "boutique-recruitment", label: "Boutique recruitmentbureau" },
+  { value: "outplacement", label: "Outplacementbureau" },
+  { value: "executive-search", label: "Executive search of werving" },
+  { value: "staffing", label: "Staffing of uitzendpartij" },
+  { value: "other", label: "Andere B2B kandidaatflow" },
 ];
 
 const faqs = [
@@ -213,18 +244,18 @@ export default function AgencyPage() {
           </div>
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-            <AgencyCtaLink
-              href="mailto:contact@werkcv.nl?subject=WerkCV%20Agency%20pilot&body=Bedrijfsnaam:%0AType%20organisatie:%0AOngeveer%20aantal%20kandidaat-CV's%20per%20maand:%0AHuidige%20werkwijze:%0A"
-              label="Vraag agency pilot aan"
-              location="agency_hero"
+            <a
+              href="#b2b-lead-form"
               className="inline-block border-4 border-black bg-yellow-400 px-6 py-4 text-center text-lg font-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-            />
-            <AgencyCtaLink
+            >
+              Vraag agency intake aan
+            </a>
+            <Link
               href="/contact"
-              label="Plan eerst een kennismaking"
-              location="agency_hero"
               className="inline-block border-4 border-black bg-white px-6 py-4 text-center text-lg font-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-gray-50 hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-            />
+            >
+              Plan eerst een kennismaking
+            </Link>
           </div>
         </section>
 
@@ -328,28 +359,50 @@ export default function AgencyPage() {
           </div>
         </section>
 
-        <section className="border-4 border-black bg-yellow-400 p-8 text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="mb-3 text-3xl font-black text-black">
-            Richt je eerste agency-pilot deze maand scherp in
-          </h2>
-          <p className="mx-auto mb-6 max-w-2xl font-medium leading-relaxed text-black">
-            Stuur kort je bureau-type, ongeveer maandvolume en huidige manier van kandidaat-CV&apos;s
-            presenteren. Dan reageren we met de snelste werkbare pilotroute.
-          </p>
-          <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <AgencyCtaLink
-              href="mailto:contact@werkcv.nl?subject=WerkCV%20Agency%20pilot"
-              label="Mail over de pilot"
-              location="agency_footer"
-              className="inline-block border-4 border-black bg-white px-6 py-4 text-lg font-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-            />
-            <AgencyCtaLink
-              href="/contact"
-              label="Open contactpagina"
-              location="agency_footer"
-              className="inline-block border-4 border-black bg-black px-6 py-4 text-lg font-black text-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-            />
+        <section id="b2b-lead-form" className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="space-y-6">
+            <div className="border-4 border-black bg-yellow-400 p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+              <h2 className="mb-3 text-3xl font-black text-black">
+                Laat zien hoe je kandidaat-CV&apos;s nu verwerkt
+              </h2>
+              <p className="font-medium leading-relaxed text-black">
+                Als er echte betaalde vraag is, moet de eerste stap niet een losse demo-call zijn
+                maar een bruikbare intake. Stuur je doelgroep, volume en huidige workflow. Dan
+                reageren we met de snelste pilotroute die nu geloofwaardig te testen is.
+              </p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {agencyProof.map((item) => (
+                <article
+                  key={item.title}
+                  className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                >
+                  <h3 className="mb-2 text-lg font-black text-black">{item.title}</h3>
+                  <p className="text-sm font-medium leading-relaxed text-gray-700">{item.body}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <h3 className="mb-3 text-xl font-black text-black">Wat we het liefst meteen zien</h3>
+              <ul className="space-y-2 text-sm font-bold leading-relaxed text-black">
+                <li>&bull; Hoe kandidaten nu hun bron-CV&apos;s aanleveren</li>
+                <li>&bull; Welk type bureau-uitstraling je wilt neerzetten</li>
+                <li>&bull; Of je vooral snelheid, consistentie of klantpresentatie wilt testen</li>
+              </ul>
+            </div>
           </div>
+
+          <B2BLeadForm
+            pageType="agency"
+            pagePath="/agency"
+            title="Vraag een agency pilot-intake aan"
+            description="Geen generieke salesform. We willen genoeg context om terug te komen met een pilot die bij jouw kandidaatflow past."
+            submitLabel="Stuur agency intake"
+            audienceLabel="Type organisatie"
+            audienceOptions={agencyAudienceOptions}
+          />
         </section>
       </main>
 

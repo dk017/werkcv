@@ -17,6 +17,9 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'checkout_failed',
     'checkout_completed',
     'paid',
+    'b2b_form_started',
+    'b2b_form_submitted',
+    'b2b_form_failed',
 ]);
 
 type PrismaWithOptionalAnalytics = typeof prisma & {
@@ -24,6 +27,15 @@ type PrismaWithOptionalAnalytics = typeof prisma & {
         create: (args: { data: Record<string, unknown> }) => Promise<unknown>;
     };
 };
+
+let hasLoggedAnalyticsDbWarning = false;
+
+function isDatabaseUnavailable(error: unknown) {
+    return (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'ECONNREFUSED'
+    );
+}
 
 /**
  * POST /api/analytics
@@ -64,7 +76,16 @@ export async function POST(request: NextRequest) {
                     },
                 });
             } catch (error) {
-                console.error('analytics_event_persist_failed', error);
+                if (isDatabaseUnavailable(error)) {
+                    if (!hasLoggedAnalyticsDbWarning) {
+                        console.warn(
+                            'analytics_event_persist_skipped: database unavailable, continuing without persistence'
+                        );
+                        hasLoggedAnalyticsDbWarning = true;
+                    }
+                } else {
+                    console.error('analytics_event_persist_failed', error);
+                }
             }
         }
 

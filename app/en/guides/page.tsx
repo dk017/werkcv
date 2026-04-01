@@ -18,6 +18,28 @@ export const metadata = buildEnglishMetadata({
 
 export default function EnglishGuidesHubPage() {
     const pages = getEnglishWavePages();
+    const expatTools = [
+        {
+            href: '/tools/zoekjaar-checker',
+            title: 'Zoekjaar Checker',
+            description: 'Check whether the Dutch orientation year still fits your timeline.',
+        },
+        {
+            href: '/tools/kennismigrant-salary-checker',
+            title: 'Highly Skilled Migrant Salary Checker',
+            description: 'Compare your offer against the current IND sponsor thresholds.',
+        },
+        {
+            href: '/tools/eu-blue-card-checker',
+            title: 'EU Blue Card Checker',
+            description: 'See whether Blue Card or sponsor routes look more realistic for your move.',
+        },
+        {
+            href: '/tools/job-title-translator',
+            title: 'Job Title Translator',
+            description: 'Localize job titles for Dutch vacancies, CV wording, and LinkedIn search.',
+        },
+    ];
 
     return (
         <main className="min-h-screen bg-[#FFFEF9]">
@@ -50,6 +72,33 @@ export default function EnglishGuidesHubPage() {
                             <p className="text-sm text-gray-600 line-clamp-3">{page.description}</p>
                         </Link>
                     ))}
+                </div>
+
+                <div className="mt-12 border-t-4 border-black pt-10">
+                    <div className="max-w-3xl mb-6">
+                        <h2 className="text-3xl font-black text-gray-900 mb-3">
+                            Practical visa and localization tools
+                        </h2>
+                        <p className="text-lg text-gray-700">
+                            Many expat readers need more than CV advice. These routes help with salary
+                            thresholds, visa-path comparison, and Dutch-market job-title wording.
+                        </p>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+                        {expatTools.map((tool) => (
+                            <Link
+                                key={tool.href}
+                                href={tool.href}
+                                className="group block bg-white border-3 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            >
+                                <h3 className="font-black text-lg mb-2 group-hover:text-[#0ea5e9] transition-colors">
+                                    {tool.title}
+                                </h3>
+                                <p className="text-sm text-gray-600">{tool.description}</p>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </section>
         </main>

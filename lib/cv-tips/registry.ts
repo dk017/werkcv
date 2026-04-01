@@ -36,6 +36,8 @@ import { cvMakenInWord } from './articles/cv-maken-in-word';
 import { cvVoorUitzendbureau } from './articles/cv-voor-uitzendbureau';
 import { cvNaOntslag } from './articles/cv-na-ontslag';
 import { cv50Plus } from './articles/cv-50-plus';
+import { cvSchrijvenMetAi } from './articles/cv-schrijven-met-ai';
+import { cvBijwerken } from './articles/cv-bijwerken';
 
 // ============================================================================
 // DATA COLLECTION
@@ -72,6 +74,8 @@ const allArticles: BlogArticle[] = [
     cvVoorUitzendbureau,
     cvNaOntslag,
     cv50Plus,
+    cvSchrijvenMetAi,
+    cvBijwerken,
 ].sort((a, b) => a.order - b.order);
 
 // ============================================================================

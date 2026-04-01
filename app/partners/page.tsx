@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import B2BLeadForm from "@/components/b2b/B2BLeadForm";
 import Footer from "@/components/Footer";
 import { FAQJsonLd, OrganizationJsonLd } from "@/components/seo/JsonLd";
 
@@ -93,6 +94,38 @@ const steps = [
     body:
       "Begin met een resource-link, workshop of partnerverwijzing en schaal alleen wat echt gebruikt wordt.",
   },
+];
+
+const partnerProof = [
+  {
+    title: "Meerdere linkbare asset-clusters",
+    body:
+      "Partners kunnen niet alleen naar een homepage verwijzen, maar ook naar calculators, CV-gidsen, templates en expat-routes die direct bruikbaar zijn.",
+  },
+  {
+    title: "Duidelijk consumentenverhaal",
+    body:
+      "Gratis starten en pas betalen bij download is een eenvoudiger verhaal voor partners dan een tool die direct met abonnementen begint.",
+  },
+  {
+    title: "Dutch-first plus international bereik",
+    body:
+      "WerkCV past zowel bij Nederlandse doelgroepen als bij communities of programma's die internationals richting de Nederlandse arbeidsmarkt helpen.",
+  },
+  {
+    title: "Samenwerking kan klein beginnen",
+    body:
+      "Een resource-link, nieuwsbriefvermelding of workshop kan al genoeg zijn om fit te toetsen voordat je iets groters opzet.",
+  },
+];
+
+const partnerAudienceOptions = [
+  { value: "school", label: "School of career service" },
+  { value: "community", label: "Community of nieuwsbrief" },
+  { value: "bootcamp", label: "Bootcamp of opleider" },
+  { value: "nonprofit", label: "NGO of nonprofit programma" },
+  { value: "employer", label: "Werkgever of HR-initiatief" },
+  { value: "other", label: "Andere partnerroute" },
 ];
 
 const faqs = [
@@ -200,12 +233,12 @@ export default function PartnersPage() {
           </p>
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-            <Link
-              href="/contact?subject=Partner%20met%20WerkCV"
+            <a
+              href="#b2b-lead-form"
               className="inline-block border-4 border-black bg-yellow-400 px-6 py-4 text-center text-lg font-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
             >
-              Plan een kennismaking
-            </Link>
+              Vraag partner voorstel aan
+            </a>
             <Link
               href="/agency"
               className="inline-block border-4 border-black bg-white px-6 py-4 text-center text-lg font-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-gray-50 hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
@@ -314,26 +347,50 @@ export default function PartnersPage() {
           </div>
         </section>
 
-        <section className="border-4 border-black bg-yellow-400 p-8 text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="mb-3 text-3xl font-black text-black">Praat met ons over een relevante samenwerking</h2>
-          <p className="mx-auto mb-6 max-w-2xl font-medium leading-relaxed text-black">
-            Stuur kort door wie je helpt, welke doelgroep je hebt en welke WerkCV-assets daarbij
-            kunnen passen. Dan reageren we met een praktische eerste stap.
-          </p>
-          <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <a
-              href="mailto:contact@werkcv.nl?subject=Partner%20met%20WerkCV"
-              className="inline-block border-4 border-black bg-white px-6 py-4 text-lg font-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-            >
-              Mail ons
-            </a>
-            <Link
-              href="/contact"
-              className="inline-block border-4 border-black bg-black px-6 py-4 text-lg font-black text-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-            >
-              Open contactpagina
-            </Link>
+        <section id="b2b-lead-form" className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="space-y-6">
+            <div className="border-4 border-black bg-yellow-400 p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+              <h2 className="mb-3 text-3xl font-black text-black">
+                Bespreek een kleine maar relevante samenwerking
+              </h2>
+              <p className="font-medium leading-relaxed text-black">
+                Geen abstract partnerprogramma, maar een route die aansluit op jouw doelgroep. Stuur
+                door wie je helpt, waar je bereik zit en welke WerkCV-assets het meest logisch lijken.
+                Dan reageren we met een praktische eerste stap.
+              </p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {partnerProof.map((item) => (
+                <article
+                  key={item.title}
+                  className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                >
+                  <h3 className="mb-2 text-lg font-black text-black">{item.title}</h3>
+                  <p className="text-sm font-medium leading-relaxed text-gray-700">{item.body}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <h3 className="mb-3 text-xl font-black text-black">Typische eerste samenwerkingen</h3>
+              <ul className="space-y-2 text-sm font-bold leading-relaxed text-black">
+                <li>&bull; Resource-link of toolkit in een ledenomgeving</li>
+                <li>&bull; Nieuwsbrief of community-drop naar een relevante toolcluster</li>
+                <li>&bull; Workshop of webinar voor solliciteren of werken in Nederland</li>
+              </ul>
+            </div>
           </div>
+
+          <B2BLeadForm
+            pageType="partner"
+            pagePath="/partners"
+            title="Vraag een partner-samenwerking aan"
+            description="Geef context over je doelgroep, kanaal en gewenste samenwerking. Dan sturen we terug welke WerkCV-route het best past."
+            submitLabel="Stuur partner aanvraag"
+            audienceLabel="Type partner"
+            audienceOptions={partnerAudienceOptions}
+          />
         </section>
       </main>
 

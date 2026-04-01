@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import B2BLeadForm from "@/components/b2b/B2BLeadForm";
 import Footer from "@/components/Footer";
 import { FAQJsonLd, OrganizationJsonLd } from "@/components/seo/JsonLd";
 
@@ -63,6 +64,38 @@ const collaborationOptions = [
   "Workshop of webinar voor jouw doelgroep",
   "Co-branded selectie van relevante WerkCV-assets",
   "Eenvoudige partnerafspraak op maat per doelgroep",
+];
+
+const coachProof = [
+  {
+    title: "Direct bruikbare Dutch-first editor",
+    body:
+      "Cliënten kunnen meteen in Nederlandse templates werken in plaats van te blijven hangen in losse Word-bestanden of vage layouts.",
+  },
+  {
+    title: "Gratis starten, pas betalen bij download",
+    body:
+      "De éénmalige downloadlogica maakt doorverwijzen veel makkelijker dan een CV-tool met abonnement als basisverhaal.",
+  },
+  {
+    title: "Expat- en Engelstalige routes al live",
+    body:
+      "Handig voor coaches die internationals begeleiden en niet alleen Nederlandstalige kandidaten ondersteunen.",
+  },
+  {
+    title: "Meer context dan alleen een template",
+    body:
+      "WerkCV heeft ook voorbeeldpagina's, sollicitatiegidsen en tools rond werken in Nederland. Daardoor kun je cliënten een complete volgende stap meegeven.",
+  },
+];
+
+const coachAudienceOptions = [
+  { value: "loopbaancoach", label: "Loopbaancoach" },
+  { value: "jobcoach", label: "Jobcoach of re-integratie" },
+  { value: "outplacement", label: "Outplacement of mobiliteit" },
+  { value: "student", label: "Studenten- of startercoaching" },
+  { value: "expat", label: "Expat of international coaching" },
+  { value: "other", label: "Andere begeleidingspraktijk" },
 ];
 
 const faqs = [
@@ -172,16 +205,16 @@ export default function ForCoachesPage() {
 
           <div className="mt-8 flex flex-col gap-4 sm:flex-row">
             <a
-              href="mailto:contact@werkcv.nl?subject=WerkCV%20voor%20coaches"
+              href="#b2b-lead-form"
               className="inline-block border-4 border-black bg-yellow-400 px-6 py-4 text-center text-lg font-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
             >
-              Bespreek samenwerking
+              Vraag coach voorstel aan
             </a>
             <Link
-              href="/contact"
+              href="/partners"
               className="inline-block border-4 border-black bg-white px-6 py-4 text-center text-lg font-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-gray-50 hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
             >
-              Contact opnemen
+              Bekijk partneropties
             </Link>
           </div>
         </section>
@@ -260,26 +293,50 @@ export default function ForCoachesPage() {
           </div>
         </section>
 
-        <section className="border-4 border-black bg-yellow-400 p-8 text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="mb-3 text-3xl font-black text-black">Stuur ons jouw doelgroep en use case</h2>
-          <p className="mx-auto mb-6 max-w-2xl font-medium leading-relaxed text-black">
-            Vertel in een paar regels wie je begeleidt, welke content of tools je nodig hebt en hoe je
-            cliënten nu richting hun CV helpt. Dan komen wij terug met een concrete eerste route.
-          </p>
-          <div className="flex flex-col justify-center gap-4 sm:flex-row">
-            <a
-              href="mailto:contact@werkcv.nl?subject=WerkCV%20voor%20coaches"
-              className="inline-block border-4 border-black bg-white px-6 py-4 text-lg font-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-            >
-              Mail voor samenwerking
-            </a>
-            <Link
-              href="/partners"
-              className="inline-block border-4 border-black bg-black px-6 py-4 text-lg font-black text-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-            >
-              Bekijk partneropties
-            </Link>
+        <section id="b2b-lead-form" className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="space-y-6">
+            <div className="border-4 border-black bg-yellow-400 p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+              <h2 className="mb-3 text-3xl font-black text-black">
+                Vertel wie je begeleidt en wat je wilt doorgeven
+              </h2>
+              <p className="font-medium leading-relaxed text-black">
+                Deze route is bedoeld voor coaches die meer willen dan een losse link. Geef aan of
+                je een toolkit, workshop, expatflow of vaste cliënt-route zoekt. Dan komen we terug
+                met een voorstel dat bij je doelgroep past.
+              </p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {coachProof.map((item) => (
+                <article
+                  key={item.title}
+                  className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                >
+                  <h3 className="mb-2 text-lg font-black text-black">{item.title}</h3>
+                  <p className="text-sm font-medium leading-relaxed text-gray-700">{item.body}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <h3 className="mb-3 text-xl font-black text-black">Voorbeelden van goede eerste fits</h3>
+              <ul className="space-y-2 text-sm font-bold leading-relaxed text-black">
+                <li>&bull; Toolkit voor cliënten na een loopbaansessie</li>
+                <li>&bull; Workshop of webinar voor starters, herintreders of expats</li>
+                <li>&bull; Relevante resource-selectie voor begeleid traject of deelnemersomgeving</li>
+              </ul>
+            </div>
           </div>
+
+          <B2BLeadForm
+            pageType="coach"
+            pagePath="/for-coaches"
+            title="Vraag een coach-samenwerking aan"
+            description="Beschrijf kort je doelgroep, werkwijze en wat je cliënten nu missen. Dan sturen we een bruikbare eerste route terug."
+            submitLabel="Stuur coach aanvraag"
+            audienceLabel="Type praktijk"
+            audienceOptions={coachAudienceOptions}
+          />
         </section>
       </main>
 
