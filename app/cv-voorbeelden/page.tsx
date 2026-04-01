@@ -244,6 +244,10 @@ export default function CVVoorbeeldenOverview() {
                             <p className="font-black text-sm">CV samenvatting voorbeelden</p>
                             <p className="text-xs mt-1 text-gray-700">Schrijf een openingsalinea met echte impact.</p>
                         </Link>
+                        <Link href="/profieltekst-cv-voorbeelden" className="border-2 border-black bg-amber-50 p-4 hover:bg-amber-100 transition-colors">
+                            <p className="font-black text-sm">Voorbeeld profiel CV</p>
+                            <p className="text-xs mt-1 text-gray-700">Gebruik profieltekst voorbeelden die direct onder je naam en functietitel passen.</p>
+                        </Link>
                         <Link href="/cv-maken" className="border-2 border-black bg-orange-50 p-4 hover:bg-orange-100 transition-colors">
                             <p className="font-black text-sm">CV maken stappenplan</p>
                             <p className="text-xs mt-1 text-gray-700">Volg een complete workflow van voorbeeld naar eindversie.</p>

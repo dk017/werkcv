@@ -13,6 +13,10 @@ const faqItems = [
         answer: "In Nederland krijg je als werknemer meestal minimaal 8% vakantiegeld over je brutoloon. Cao of arbeidsovereenkomst kan een hoger percentage geven.",
     },
     {
+        question: "Hoe bereken je netto vakantiegeld?",
+        answer: "Deze tool rekent je bruto vakantiegeld uit. Voor netto vakantiegeld houdt je werkgever loonheffing in. Die inhouding hangt af van je situatie en de regels voor bijzondere beloningen, waardoor netto per persoon kan verschillen.",
+    },
+    {
         question: "Wanneer wordt vakantiegeld meestal uitbetaald?",
         answer: "Vakantiegeld wordt meestal in mei of juni uitbetaald. Je werkgever mag daarvan afwijken als dit in je contract of cao staat.",
     },
@@ -23,6 +27,10 @@ const faqItems = [
     {
         question: "Is dit bedrag bruto of netto?",
         answer: "Deze tool rekent bruto. De netto uitbetaling hangt af van loonheffing en je persoonlijke situatie.",
+    },
+    {
+        question: "Is vakantiegeld hetzelfde als een 13e maand?",
+        answer: "Nee. Vakantiegeld is meestal minimaal 8% van loon dat je opbouwt. Een 13e maand is een aparte arbeidsvoorwaarde die niet automatisch voor iedereen geldt.",
     },
 ];
 
@@ -50,10 +58,14 @@ const cvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-    title: "Vakantiegeld Berekenen 2026 - Gratis Tool | WerkCV.nl",
-    description: "Bereken snel je vakantiegeld voor 2026. Vul je bruto salaris en opgebouwde maanden in en zie direct je bruto indicatie volgens de Nederlandse basisregel van 8%.",
+    title: "Vakantiegeld Berekenen 2026 - Bruto Tool + Netto Uitleg | WerkCV.nl",
+    description: "Bereken je bruto vakantiegeld voor 2026 en lees direct hoe bruto, netto, loonheffing en 13e maand van elkaar verschillen. Praktische tool voor Nederlandse werknemers.",
     keywords: [
         "vakantiegeld berekenen",
+        "vakantie geld berekenen",
+        "vakantiegeld berekenen bruto netto",
+        "bruto netto vakantiegeld",
+        "netto vakantiegeld berekenen",
         "hoeveel vakantiegeld",
         "vakantiegeld 2026",
         "8 procent vakantiegeld",
@@ -96,14 +108,14 @@ export default function VakantiegeldBerekenenPage() {
                                 Geld
                             </span>
                             <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                                Bijgewerkt 11 maart 2026
+                                Bijgewerkt 1 april 2026
                             </span>
                         </div>
                         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-                            Vakantiegeld berekenen
+                            Vakantiegeld berekenen: bruto tool met netto uitleg
                         </h1>
                         <p className="text-lg text-slate-600 font-medium max-w-3xl">
-                            Simpel, snel en bruikbaar. Deze tool rekent met de Nederlandse basisregel van minimaal 8% en laat direct zien wat je bruto vakantiegeld ongeveer is over de periode die je hebt opgebouwd.
+                            Simpel, snel en bruikbaar. Deze tool rekent met de Nederlandse basisregel van minimaal 8% en laat direct zien wat je bruto vakantiegeld ongeveer is over de periode die je hebt opgebouwd. Daaronder zie je ook hoe bruto, netto, belasting en 13e maand van elkaar verschillen.
                         </p>
                         <div className="mt-6 flex flex-wrap gap-3">
                             <Link
@@ -130,7 +142,7 @@ export default function VakantiegeldBerekenenPage() {
                             {[
                                 ["Basisregel", "Minimaal 8%", "voor veel reguliere werknemers"],
                                 ["Uitbetaling", "Mei of juni", "meestal, tenzij contract/cao anders zegt"],
-                                ["Uitkomst", "Bruto indicatie", "netto hangt af van loonheffing"],
+                                ["Uitkomst", "Bruto eerst", "netto hangt af van loonheffing en inhouding"],
                             ].map(([label, value, note]) => (
                                 <div key={label} className="bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                                     <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">{label}</p>
@@ -148,7 +160,7 @@ export default function VakantiegeldBerekenenPage() {
                         <div className="space-y-3 text-sm text-slate-600">
                             <p>Veel mensen kennen de 8%-regel, maar niet welk loon precies meetelt.</p>
                             <p>WerkCV rekent met bruto loon in de opgebouwde periode plus optionele structurele extra componenten.</p>
-                            <p>Daardoor krijg je een betere indicatie voor loonstrookcontrole, budgetplanning of salarisonderhandeling.</p>
+                            <p>Daardoor krijg je een betere indicatie voor loonstrookcontrole, budgetplanning of de stap van bruto vakantiegeld naar wat er netto op je rekening komt.</p>
                         </div>
                     </aside>
                 </section>
@@ -177,6 +189,49 @@ export default function VakantiegeldBerekenenPage() {
                             <li>Onkostenvergoeding</li>
                             <li>Bedragen die in je cao of arbeidscontract expliciet anders zijn geregeld</li>
                         </ul>
+                    </div>
+                </section>
+
+                <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+                    <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <h2 className="text-2xl font-black text-slate-900 mb-4">
+                            Bruto naar netto vakantiegeld: waar gaat het verschil zitten?
+                        </h2>
+                        <div className="space-y-3 text-sm text-slate-700 leading-relaxed">
+                            <p>
+                                Deze tool rekent je bruto vakantiegeld uit. Op je loonstrook kan het netto bedrag lager uitvallen
+                                omdat je werkgever loonheffing inhoudt. Vakantiegeld valt vaak onder de regels voor bijzondere
+                                beloningen, waardoor de inhouding anders kan voelen dan bij een gewone maand.
+                            </p>
+                            <p>
+                                Gebruik je bruto uitkomst daarom vooral als basis voor controle en vergelijking. Wil je daarna
+                                beter snappen wat bruto en netto in jouw situatie betekenen, ga dan verder met de{" "}
+                                <Link href="/tools/netto-bruto-calculator" className="font-black underline decoration-2 underline-offset-2 text-slate-900">
+                                    netto bruto calculator
+                                </Link>
+                                .
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <h2 className="text-2xl font-black text-slate-900 mb-4">
+                            Vakantiegeld en 13e maand zijn niet hetzelfde
+                        </h2>
+                        <div className="space-y-3 text-sm text-slate-700 leading-relaxed">
+                            <p>
+                                Vakantiegeld is meestal minimaal 8% van het loon dat je over een periode opbouwt. Een 13e maand is
+                                een aparte afspraak in je contract of cao en bestaat niet voor iedere werknemer.
+                            </p>
+                            <p>
+                                Zoek je beide begrippen door elkaar, dan helpt deze pagina vooral voor vakantiegeld. Voor een
+                                eindejaars- of extra maanduitkering gebruik je beter de{" "}
+                                <Link href="/tools/eindejaarsuitkering-berekenen" className="font-black underline decoration-2 underline-offset-2 text-slate-900">
+                                    eindejaarsuitkering berekenen
+                                </Link>
+                                {" "}tool.
+                            </p>
+                        </div>
                     </div>
                 </section>
 
@@ -253,6 +308,11 @@ export default function VakantiegeldBerekenenPage() {
                         <li>
                             <a href="https://www.rijksoverheid.nl/onderwerpen/vakantiedagen-en-vakantiegeld/vraag-en-antwoord/hoe-hoog-is-mijn-vakantiegeld" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
                                 Rijksoverheid - Hoe hoog is mijn vakantiegeld?
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.belastingdienst.nl/wps/wcm/connect/nl/personeel-en-loon/content/hulpmiddel-loonbelastingtabellen" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
+                                Belastingdienst - Hulpmiddel loonbelastingtabellen en bijzondere beloningen
                             </a>
                         </li>
                     </ul>

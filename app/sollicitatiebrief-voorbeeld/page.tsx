@@ -282,6 +282,11 @@ export default function SollicitatiebriefVoorbeeldPage() {
                   body: "Gebruik extra voorbeeldalinea's als je focus meer op motivatie en fit ligt.",
                 },
                 {
+                  href: "/motivatiebrief-layout",
+                  title: "Motivatiebrief layout",
+                  body: "Gebruik deze route als je vooral opmaak, witruimte en een nette briefstructuur wilt aanscherpen.",
+                },
+                {
                   href: "/tools/sollicitatiebrief-generator",
                   title: "Sollicitatiebrief generator",
                   body: "Gebruik deze voorbeelden direct in de tool en pas ze aan op jouw vacature.",

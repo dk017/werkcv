@@ -64,6 +64,21 @@ const sentenceStarters = {
   ],
 };
 
+const intentMatches = [
+  {
+    title: "Voorbeeld profiel cv",
+    body: "Gebruik een korte opening van 3 tot 5 zinnen met rol, kernskills, bewijs en gewenste volgende stap.",
+  },
+  {
+    title: "Profiel in cv voorbeeld",
+    body: "Plaats je profiel direct onder je naam en contactgegevens, zodat recruiters eerst context zien en daarna je ervaring.",
+  },
+  {
+    title: "CV profielschets voorbeeld",
+    body: "Zie profielschets, profieltekst en CV-samenvatting als varianten van dezelfde opening: kort, concreet en vacaturegericht.",
+  },
+];
+
 const mistakes = [
   "Te algemeen: motivatiewoorden zonder bewijs of context.",
   "Te lang: profieltekst van 120+ woorden wordt vaak overgeslagen.",
@@ -122,10 +137,13 @@ const profileIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Profieltekst CV Voorbeelden - Sterke Intro's per Functie | WerkCV.nl",
+  title: "Voorbeeld Profiel CV - Profieltekst Voorbeelden per Functie | WerkCV.nl",
   description:
-    "Zoek je profieltekst CV voorbeelden? Bekijk copy-ready voorbeelden per functie, plus structuur, zinsstarters en foutencheck. Direct toepassen in je CV.",
+    "Zoek je een voorbeeld profiel cv of profiel in cv voorbeeld? Bekijk profieltekst voorbeelden per functie, plus structuur, zinsstarters en foutencheck. Direct toepassen in je CV.",
   keywords: [
+    "voorbeeld profiel cv",
+    "profiel in cv voorbeeld",
+    "cv profielschets voorbeeld",
     "profieltekst cv voorbeelden",
     "persoonlijk profiel cv voorbeeld",
     "cv profieltekst voorbeeld",
@@ -198,14 +216,14 @@ export default function ProfieltekstCvVoorbeeldenPage() {
         <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
             <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Hoog-intent voorbeelden
+              Intent: voorbeeld profiel cv
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              Profieltekst CV voorbeelden die meteen relevantie en vertrouwen opbouwen
+              Voorbeeld profiel CV: profieltekst voorbeelden die meteen relevantie opbouwen
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Sterke Engelstalige resume-sites winnen op korte, scherpe profile summaries met bewijs. Voor Nederlandse sollicitaties geldt hetzelfde: geen vage claims, wel rolcontext, kernskills en
-              meetbare impact. Gebruik de voorbeelden hieronder als bouwstenen voor je eigen profieltekst.
+              Zoek je een voorbeeld profiel op je cv? Voor Nederlandse sollicitaties werkt dezelfde regel als op sterke resume-sites: geen vage claims, wel rolcontext, kernskills en meetbare impact.
+              Gebruik de voorbeelden hieronder als bouwstenen voor je eigen profieltekst of profielschets.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -259,6 +277,18 @@ export default function ProfieltekstCvVoorbeeldenPage() {
               </Link>
             </div>
           </div>
+        </section>
+
+        <section className="mb-14 grid gap-4 md:grid-cols-3">
+          {intentMatches.map((item) => (
+            <article
+              key={item.title}
+              className="border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+            >
+              <h2 className="text-lg font-black text-black">{item.title}</h2>
+              <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
+            </article>
+          ))}
         </section>
 
         <section className="mb-14">

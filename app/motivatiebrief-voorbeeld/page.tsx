@@ -268,6 +268,11 @@ export default function MotivatiebriefVoorbeeldPage() {
                   body: "Gebruik Engelse opbouw en voorbeeldzinnen voor internationale of Engelstalige vacatures.",
                 },
                 {
+                  href: "/motivatiebrief-layout",
+                  title: "Motivatiebrief layout",
+                  body: "Gebruik deze pagina als je niet alleen voorbeeldzinnen, maar ook de juiste opmaak, witruimte en PDF-structuur wilt.",
+                },
+                {
                   href: "/tools/sollicitatiebrief-generator",
                   title: "Sollicitatiebrief generator",
                   body: "Gebruik de voorbeelden direct als input en personaliseer op jouw vacature.",

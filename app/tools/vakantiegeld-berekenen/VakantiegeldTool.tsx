@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
 
@@ -175,6 +176,19 @@ export default function VakantiegeldTool() {
                             <li>Een reguliere werknemer krijgt minimaal 8%, maar werkgevers mogen meer betalen.</li>
                             <li>Eenmalige beloningen en onkostenvergoedingen tellen meestal niet standaard mee in deze eenvoudige indicatie.</li>
                         </ul>
+                        <div className="mt-4 rounded-lg border border-slate-200 bg-white p-3">
+                            <p className="text-[11px] font-black uppercase tracking-wide text-slate-500">
+                                Bruto naar netto
+                            </p>
+                            <p className="mt-1 text-sm text-slate-700 leading-relaxed">
+                                Je netto uitbetaling kan lager uitvallen door loonheffing op bijzondere beloningen.
+                                Gebruik je bruto uitkomst als basis en vergelijk daarna met de{" "}
+                                <Link href="/tools/netto-bruto-calculator" className="font-bold text-slate-900 underline decoration-2 underline-offset-2">
+                                    netto bruto calculator
+                                </Link>
+                                .
+                            </p>
+                        </div>
                     </div>
 
                     <button

@@ -76,6 +76,21 @@ const skillLibrary = {
   ],
 };
 
+const intentMatches = [
+  {
+    title: "Vaardigheden voor cv",
+    body: "Kies 6 tot 10 vaardigheden die direct uit de vacature of je doelrol volgen, niet een losse lijst met alles wat je ooit hebt gedaan.",
+  },
+  {
+    title: "Welke vaardigheden zet je op je cv?",
+    body: "Combineer tools, methodes en vakinhoud met gedrag dat recruiters echt terugzien in jouw werkervaring of projecten.",
+  },
+  {
+    title: "Vaardigheden voor cv voorbeelden",
+    body: "Gebruik voorbeelden per functie als shortlist en pas daarna de termen aan op jouw sector, senioriteit en gebruikte systemen.",
+  },
+];
+
 const mistakes = [
   "Te lange lijst (15+) zonder focus op de doelrol.",
   "Vage claims zoals “teamplayer” zonder bewijs in werkervaring.",
@@ -134,15 +149,17 @@ const skillsIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Vaardigheden CV Voorbeelden - Hard & Soft Skills per Functie | WerkCV.nl",
+  title: "Vaardigheden Voor CV - Voorbeelden per Functie | WerkCV.nl",
   description:
-    "Zoek je vaardigheden cv voorbeelden? Bekijk sterke hard en soft skills per functie, inclusief structuur, checklist en direct toepassen in je CV.",
+    "Zoek je vaardigheden voor cv of voorbeelden per functie? Bekijk sterke hard en soft skills, een heldere checklist en direct toepassen in je CV.",
   keywords: [
+    "vaardigheden voor cv",
+    "vaardigheden voor cv voorbeelden",
+    "welke vaardigheden op cv",
     "vaardigheden cv voorbeelden",
     "cv vaardigheden voorbeelden",
     "hard skills cv",
     "soft skills cv",
-    "welke vaardigheden op cv",
     "vaardigheden op cv zetten",
     "skills cv voorbeeld",
   ],
@@ -210,14 +227,14 @@ export default function VaardighedenCvVoorbeeldenPage() {
         <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
             <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Hoog-intent voorbeelden
+              Intent: vaardigheden voor cv
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              Vaardigheden CV voorbeelden die direct aansluiten op vacature-eisen
+              Vaardigheden voor CV die direct aansluiten op vacature-eisen
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Sterke Engelstalige resume-sites winnen op specifieke skill-secties met duidelijke vacaturematch. In Nederland werkt hetzelfde: combineer relevante hard skills met bewezen soft skills
-              en koppel ze aan echte werkresultaten. Gebruik deze voorbeelden als basis voor je eigen skillssectie.
+              Zoek je welke vaardigheden je op je cv zet? In Nederland werkt dezelfde regel als op sterke resume-sites: combineer relevante hard skills met bewezen soft skills en koppel ze aan echte
+              werkresultaten. Gebruik deze voorbeelden als basis voor je eigen skillssectie.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -271,6 +288,18 @@ export default function VaardighedenCvVoorbeeldenPage() {
               </Link>
             </div>
           </div>
+        </section>
+
+        <section className="mb-14 grid gap-4 md:grid-cols-3">
+          {intentMatches.map((item) => (
+            <article
+              key={item.title}
+              className="border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+            >
+              <h2 className="text-lg font-black text-black">{item.title}</h2>
+              <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
+            </article>
+          ))}
         </section>
 
         <section className="mb-14">
