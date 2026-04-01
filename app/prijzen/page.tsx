@@ -203,11 +203,23 @@ export default function PrijzenPage() {
                             <Link href="/cv-gids/werkcv-vs-cv-nl" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
                                 WerkCV vs CV.nl
                             </Link>
+                            <Link href="/cv-gids/werkcv-vs-cvwizard" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
+                                WerkCV vs CVwizard
+                            </Link>
                             <Link href="/cv-nl-opzeggen" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
                                 CV.nl opzeggen
                             </Link>
+                            <Link href="/cvmaker-opzeggen" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
+                                CVMaker opzeggen
+                            </Link>
                             <Link href="/cv-gids/werkcv-vs-cvster" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
                                 WerkCV vs CVster
+                            </Link>
+                            <Link href="/cvster-opzeggen" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
+                                CVster opzeggen
+                            </Link>
+                            <Link href="/cv-gids/werkcv-vs-europass" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
+                                WerkCV vs Europass
                             </Link>
                             <Link href="/cv-gids/werkcv-vs-resumaker" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
                                 WerkCV vs Resumaker

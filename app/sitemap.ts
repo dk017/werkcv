@@ -552,6 +552,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.74,
         },
         {
+            url: `${baseUrl}/cvmaker-opzeggen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.74,
+        },
+        {
+            url: `${baseUrl}/cvster-opzeggen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.74,
+        },
+        {
             url: `${baseUrl}/faq`,
             lastModified: new Date(),
             changeFrequency: 'monthly',

@@ -95,7 +95,9 @@ const comparisonGuideGroups = [
     links: [
       { href: "/cv-gids/werkcv-vs-cvmaker", label: "WerkCV vs CVMaker" },
       { href: "/cv-gids/werkcv-vs-cv-nl", label: "WerkCV vs CV.nl" },
+      { href: "/cv-gids/werkcv-vs-cvwizard", label: "WerkCV vs CVwizard" },
       { href: "/cv-gids/werkcv-vs-cvster", label: "WerkCV vs CVster" },
+      { href: "/cv-gids/werkcv-vs-europass", label: "WerkCV vs Europass" },
       { href: "/cv-gids/werkcv-vs-resumaker", label: "WerkCV vs Resumaker" },
       { href: "/cv-gids/werkcv-vs-maakeencv", label: "WerkCV vs maakeencv.nl" },
     ],

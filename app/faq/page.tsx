@@ -124,6 +124,26 @@ const comparisonGuides = [
         title: "CV.nl opzeggen",
         body: "Handig als je juist zoekt naar een abonnements-exit en daarna een alternatief zonder maandelijkse verlenging wilt vergelijken.",
     },
+    {
+        href: "/cvmaker-opzeggen",
+        title: "CVMaker opzeggen",
+        body: "Gebruik deze pagina als je CVMaker wilt stoppen en daarna een eenvoudiger prijsmodel wilt afwegen.",
+    },
+    {
+        href: "/cvster-opzeggen",
+        title: "CVster opzeggen",
+        body: "Handig als je uit een proef- of premiummodel wilt stappen en daarna zonder abonnement wilt vergelijken.",
+    },
+    {
+        href: "/cv-gids/werkcv-vs-cvwizard",
+        title: "WerkCV vs CVwizard",
+        body: "Vergelijk een compacte builder zonder abonnement met een groter sollicitatieplatform met briefbuilder en vacatures.",
+    },
+    {
+        href: "/cv-gids/werkcv-vs-europass",
+        title: "WerkCV vs Europass",
+        body: "Handig als je twijfelt tussen een Nederlandse builderflow en een gratis Europees standaardprofiel.",
+    },
 ];
 
 export default function FAQPage() {

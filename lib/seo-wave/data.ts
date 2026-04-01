@@ -1,4 +1,5 @@
 import { getPilotRoleGuidePages } from './programmatic-builders';
+import { extraDutchEditorialPages } from './extra-dutch-pages';
 import { SeoGuidePage } from './types';
 
 type DutchSeed = {
@@ -5003,6 +5004,7 @@ function mergeUniqueGuidePages(...groups: SeoGuidePage[][]): SeoGuidePage[] {
 const dutchWavePages = mergeUniqueGuidePages(
     dutchSeeds.map(toDutchGuide),
     dutchEditorialPages,
+    extraDutchEditorialPages,
     getPilotRoleGuidePages()
 );
 const englishWavePages = englishSeeds.map(toEnglishGuide);
