@@ -276,6 +276,13 @@ export default function CvMakenInEngelsPage() {
               >
                 Bekijk ook: Engels CV template
               </Link>
+              <span className="mx-2 text-slate-400">|</span>
+              <Link
+                href="/engels-cv-voorbeeld"
+                className="text-sm font-black text-black underline decoration-2 underline-offset-4"
+              >
+                Engels CV voorbeeld
+              </Link>
             </div>
           </div>
         </section>

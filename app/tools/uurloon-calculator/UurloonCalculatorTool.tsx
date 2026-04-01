@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
 
-type SalaryInputMode = "monthly" | "annual";
+type SalaryInputMode = "monthly" | "annual" | "hourly";
 
 type Result = {
     annualGross: number;
@@ -11,6 +11,8 @@ type Result = {
     hourlyWithHolidayAllowance: number;
     monthlyGross: number;
     weeklyHours: number;
+    inputMode: SalaryInputMode;
+    inputValue: number;
 };
 
 const inputClass = "w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 font-medium bg-white";
@@ -29,7 +31,8 @@ export default function UurloonCalculatorTool() {
         const holidayPct = parseDecimal(holidayAllowancePct);
 
         if (isNaN(salary) || salary <= 0) {
-            setError(`Vul een geldig bruto ${mode === "monthly" ? "maand" : "jaar"}salaris in.`);
+            const label = mode === "monthly" ? "maand" : mode === "annual" ? "jaar" : "uur";
+            setError(`Vul een geldig bruto ${label}loon in.`);
             return;
         }
 
@@ -43,8 +46,12 @@ export default function UurloonCalculatorTool() {
             return;
         }
 
-        const annualGross = mode === "monthly" ? salary * 12 : salary;
-        const hourlyGross = annualGross / (hours * 52);
+        const annualGross = mode === "monthly"
+            ? salary * 12
+            : mode === "annual"
+                ? salary
+                : salary * hours * 52;
+        const hourlyGross = mode === "hourly" ? salary : annualGross / (hours * 52);
 
         setError("");
         setResult({
@@ -53,6 +60,8 @@ export default function UurloonCalculatorTool() {
             hourlyWithHolidayAllowance: hourlyGross * (1 + (holidayPct / 100)),
             monthlyGross: annualGross / 12,
             weeklyHours: hours,
+            inputMode: mode,
+            inputValue: salary,
         });
     }
 
@@ -64,10 +73,11 @@ export default function UurloonCalculatorTool() {
                         <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
                             Rekenen vanaf
                         </label>
-                        <div className="grid grid-cols-2 gap-2">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                             {([
                                 ["monthly", "Maandsalaris"],
                                 ["annual", "Jaarsalaris"],
+                                ["hourly", "Uurloon"],
                             ] as const).map(([value, label]) => (
                                 <button
                                     key={value}
@@ -92,12 +102,22 @@ export default function UurloonCalculatorTool() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
-                                Bruto {mode === "monthly" ? "maand" : "jaar"}salaris
+                                {mode === "monthly"
+                                    ? "Bruto maandsalaris"
+                                    : mode === "annual"
+                                        ? "Bruto jaarsalaris"
+                                        : "Bruto uurloon"}
                             </label>
                             <input
                                 value={salaryInput}
                                 onChange={(event) => setSalaryInput(event.target.value)}
-                                placeholder={mode === "monthly" ? "bijv. 3200" : "bijv. 42000"}
+                                placeholder={
+                                    mode === "monthly"
+                                        ? "bijv. 3200"
+                                        : mode === "annual"
+                                            ? "bijv. 42000"
+                                            : "bijv. 18,50"
+                                }
                                 className={inputClass}
                                 inputMode="decimal"
                             />
@@ -137,7 +157,7 @@ export default function UurloonCalculatorTool() {
                         className="w-full py-3 px-6 bg-[#4ECDC4] hover:bg-teal-500 text-slate-900 font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
                         style={{ borderWidth: "3px" }}
                     >
-                        Bereken uurloon
+                        {mode === "hourly" ? "Bereken maandloon" : "Bereken uurloon"}
                     </button>
                 </div>
             ) : (
@@ -150,11 +170,13 @@ export default function UurloonCalculatorTool() {
                             {formatEuro(result.hourlyGross)}
                         </p>
                         <p className="text-sm text-slate-700 leading-relaxed">
-                            Op basis van {formatEuro(result.annualGross, 0)} bruto per jaar en {result.weeklyHours} uur per week.
+                            {result.inputMode === "hourly"
+                                ? `Op basis van ${formatEuro(result.inputValue)} bruto per uur en ${result.weeklyHours} uur per week.`
+                                : `Op basis van ${formatEuro(result.annualGross, 0)} bruto per jaar en ${result.weeklyHours} uur per week.`}
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
                             <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">Uurloon zonder vakantiegeld</p>
                             <p className="text-xl font-black text-slate-900">{formatEuro(result.hourlyGross)}</p>
@@ -167,6 +189,10 @@ export default function UurloonCalculatorTool() {
                             <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">Bruto maandsalaris</p>
                             <p className="text-xl font-black text-slate-900">{formatEuro(result.monthlyGross)}</p>
                         </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                            <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">Bruto jaarsalaris</p>
+                            <p className="text-xl font-black text-slate-900">{formatEuro(result.annualGross, 0)}</p>
+                        </div>
                     </div>
 
                     <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
@@ -174,7 +200,9 @@ export default function UurloonCalculatorTool() {
                             Formule
                         </p>
                         <p className="text-sm text-slate-700 leading-relaxed">
-                            WerkCV rekent met bruto jaarsalaris gedeeld door 52 weken en je contracturen per week. Dit geeft je een bruikbare bruto uurprijs voor vergelijking, onderhandeling en controle tegen het minimumloon.
+                            {result.inputMode === "hourly"
+                                ? "WerkCV rekent je uurloon terug naar bruto maandloon en bruto jaarloon via uren per week x 52 weken. Zo kun je snel zien wat een uurbedrag betekent voor een contractaanbod."
+                                : "WerkCV rekent met bruto jaarsalaris gedeeld door 52 weken en je contracturen per week. Dit geeft je een bruikbare bruto uurprijs voor vergelijking, onderhandeling en controle tegen het minimumloon."}
                         </p>
                     </div>
 

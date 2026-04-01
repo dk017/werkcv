@@ -13,6 +13,10 @@ const faqItems = [
         answer: "Je rekent je bruto jaarsalaris uit, deelt dit door 52 weken en daarna door het aantal contracturen per week. Zo krijg je een bruto uurloon.",
     },
     {
+        question: "Hoe reken je uurloon naar maandloon om?",
+        answer: "Vermenigvuldig je bruto uurloon met je uren per week en daarna met 52 weken per jaar. Deel dat jaarbedrag vervolgens door 12 om een bruto maandindicatie te krijgen.",
+    },
+    {
         question: "Is dit bruto of netto uurloon?",
         answer: "Deze tool rekent bruto. Voor netto moet je rekening houden met loonheffing, premies en persoonlijke omstandigheden.",
     },
@@ -46,14 +50,18 @@ const cvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-    title: "Uurloon Calculator - Gratis Tool | WerkCV.nl",
-    description: "Bereken snel je bruto uurloon vanuit je maand- of jaarsalaris. Inclusief vergelijking met uurloon mét vakantiegeld.",
+    title: "Uurloon Calculator 2026 | Uurloon Naar Maandloon & Bruto Uurloon",
+    description: "Bereken bruto uurloon vanuit maand- of jaarsalaris, of reken je uurloon terug naar maandloon. Inclusief vergelijking met uurloon mét vakantiegeld.",
     keywords: [
         "uurloon berekenen",
         "bruto uurloon berekenen",
         "uurloon calculator",
         "maandsalaris naar uurloon",
         "jaarsalaris naar uurloon",
+        "uurloon naar maandloon berekenen",
+        "bereken uurloon naar maandloon",
+        "netto uurloon uitrekenen",
+        "bruto netto uurloon omrekenen",
     ],
 };
 
@@ -95,7 +103,7 @@ export default function UurloonCalculatorPage() {
                             Uurloon calculator
                         </h1>
                         <p className="text-lg text-slate-600 font-medium max-w-3xl">
-                            Gebruik deze tool als je wilt weten wat je bruto uurloon is vanuit je maand- of jaarsalaris. Handig voor salarisvergelijking, onderhandelingen en controle tegen het minimumloon.
+                            Gebruik deze tool als je wilt weten wat je bruto uurloon is vanuit je maand- of jaarsalaris, of juist wat een uurloon betekent als bruto maandloon. Handig voor salarisvergelijking, onderhandelingen en controle tegen het minimumloon.
                         </p>
                         <div className="mt-6 flex flex-wrap gap-3">
                             <Link
@@ -127,6 +135,7 @@ export default function UurloonCalculatorPage() {
                             <li>Bij een nieuwe baan of salarisaanbod</li>
                             <li>Als je parttime en fulltime salarissen wilt vergelijken</li>
                             <li>Als je wilt checken hoe jouw loon zich verhoudt tot minimumloon of marktloon</li>
+                            <li>Als je uurloon naar maandloon wilt omrekenen voor een concreet aanbod</li>
                         </ul>
                     </aside>
                 </section>

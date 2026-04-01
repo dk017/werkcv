@@ -52,7 +52,6 @@ export const metadata: Metadata = {
     "engels cv maken",
     "engels resume template",
     "cv in het engels",
-    "engels cv voorbeeld",
     "international cv template",
     "ats english cv template",
   ],
@@ -279,6 +278,11 @@ export default function EngelsCvTemplatePage() {
             </p>
             <div className="mt-4 space-y-4">
               {[
+                {
+                  href: "/engels-cv-voorbeeld",
+                  title: "Engels CV voorbeeld",
+                  body: "Gebruik eerst een inhoudelijk voorbeeld als je vooral zoekt naar Engelse summary- en bulletstijl.",
+                },
                 {
                   href: "/sollicitatiebrief-in-engels",
                   title: "Sollicitatiebrief in Engels",

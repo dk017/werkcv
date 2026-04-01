@@ -23,11 +23,19 @@ const faqItems = [
     question: "Rekent deze tool netto of bruto?",
     answer: "Deze tool geeft een bruto indicatie. Wil je daarna weten wat je netto ongeveer overhoudt, gebruik dan de netto-bruto calculator.",
   },
+  {
+    question: "Waarom valt mijn netto eindejaarsuitkering lager uit dan verwacht?",
+    answer: "Je eindejaarsuitkering blijft loon voor de loonheffingen. Werkgevers houden daarom loonheffing in, en bij eenmalige extra uitkeringen gebruiken ze vaak de tabellen voor bijzondere beloningen. Het exacte netto effect hangt af van je totale inkomen en loonheffingskorting.",
+  },
+  {
+    question: "Wordt een eindejaarsuitkering anders belast dan normaal loon?",
+    answer: "Het blijft onderdeel van je loon, maar op de loonstrook kan de inhouding anders aanvoelen door de manier waarop werkgevers loonheffing op bijzondere beloningen toepassen. Daardoor kan bruto en netto verder uit elkaar liggen dan je verwacht.",
+  },
 ];
 
 export const metadata: Metadata = {
-  title: "Eindejaarsuitkering Berekenen 2026 | 13e Maand & Pro Rata",
-  description: "Bereken direct je eindejaarsuitkering of 13e maand in 2026. Vul bruto maandsalaris, percentage en maanden in en zie meteen je pro-rata bruto bedrag.",
+  title: "Eindejaarsuitkering Berekenen 2026 | Netto, Belasting & 13e Maand",
+  description: "Bereken direct je eindejaarsuitkering of 13e maand in 2026. Inclusief pro rata, netto-uitleg, belastingcontext en directe link naar je netto schatting.",
   keywords: [
     "eindejaarsuitkering berekenen",
     "eindejaarsuitkering calculator",
@@ -37,6 +45,10 @@ export const metadata: Metadata = {
     "pro rata eindejaarsuitkering",
     "bruto eindejaarsuitkering",
     "eindejaarsuitkering uitrekenen",
+    "eindejaarsuitkering netto berekenen",
+    "bruto naar netto eindejaarsuitkering",
+    "eindejaarsuitkering belasting berekenen",
+    "eindejaarsuitkering en 13e maand",
   ],
 };
 
@@ -81,14 +93,28 @@ export default function EindejaarsuitkeringBerekenenPage() {
               Eindejaarsuitkering berekenen: 13e maand en pro rata
             </h1>
             <p className="text-lg text-slate-600 font-medium max-w-3xl">
-              Bereken direct je bruto eindejaarsuitkering of 13e maand. Vul je maandsalaris, percentage en gewerkte maanden in en zie meteen wat je pro-rata bruto bedrag ongeveer wordt.
+              Bereken direct je bruto eindejaarsuitkering of 13e maand. Vul je maandsalaris, percentage en gewerkte maanden in en zie meteen wat je pro-rata bruto bedrag ongeveer wordt. Daarna kun je ook beter inschatten waarom netto en belasting op je loonstrook anders kunnen uitpakken.
             </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/tools/netto-bruto-calculator"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
+              >
+                Schat netto effect
+              </Link>
+              <Link
+                href="/editor"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
+              >
+                Maak gratis je CV
+              </Link>
+            </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
               {[
                 ["Veelgebruikte basis", "8,33%", "komt ongeveer neer op 1 extra bruto maandloon"],
                 ["Pro rata", "Later gestart?", "dan rekent je werkgever vaak over gewerkte maanden"],
-                ["Echte bron", "Cao of contract", "daar staat of en hoe de regeling voor jou geldt"],
+                ["Netto verschil", "Loonheffing", "kan op je loonstrook anders aanvoelen dan je verwacht"],
               ].map(([label, value, note]) => (
                 <div key={label} className="bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                   <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">{label}</p>
@@ -140,9 +166,41 @@ export default function EindejaarsuitkeringBerekenenPage() {
           </div>
         </section>
 
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
+          <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="text-2xl font-black text-slate-900 mb-4">
+              Netto eindejaarsuitkering: waarom bruto niet gelijk is aan wat je ontvangt
+            </h2>
+            <div className="space-y-3 text-sm text-slate-700 leading-relaxed">
+              <p>Deze tool rekent eerst je bruto uitkering uit. Dat is de juiste basis als je verschillende banen, percentages of pro-rata scenario&apos;s wilt vergelijken.</p>
+              <p>Op je loonstrook zie je daarna een netto bedrag. Dat bedrag hangt af van loonheffing, de toepassing van loonheffingskorting en je totale inkomenssituatie in het jaar.</p>
+              <p>Daardoor voelt een bruto bonus op de loonstrook soms zwaarder belast dan een normaal maandsalaris, ook al blijft het loon voor de loonheffingen.</p>
+            </div>
+            <div className="mt-5">
+              <Link
+                href="/tools/netto-bruto-calculator"
+                className="inline-block border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
+              >
+                Reken door naar netto indicatie
+              </Link>
+            </div>
+          </div>
+          <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="text-2xl font-black text-slate-900 mb-4">
+              Belasting en 13e maand: wat je praktisch moet controleren
+            </h2>
+            <ul className="space-y-2 text-sm text-slate-700">
+              <li>Of jouw werkgever werkt met een vaste 13e maand of een percentage van je bruto loon.</li>
+              <li>Of je uitkering volledig in december komt of via IKB / maandelijkse opbouw loopt.</li>
+              <li>Of je bij instroom of uitstroom pro rata krijgt uitbetaald.</li>
+              <li>Hoe de loonstrook de inhouding op bijzondere beloningen laat zien ten opzichte van je normale maandloon.</li>
+            </ul>
+          </div>
+        </section>
+
         <RelatedToolsSection
           title="Slimme vervolgstappen rond loon en arbeidsvoorwaarden"
-          description="Na je eindejaarsuitkering wil je vaak ook weten wat je vakantiegeld, netto salaris of verlofuren betekenen in dezelfde baan."
+          description="Na je eindejaarsuitkering wil je vaak ook weten wat je netto effect, vakantiegeld of parttime scenario betekent in dezelfde baan."
           tools={[
             {
               href: "/tools/vakantiegeld-berekenen",
@@ -234,6 +292,16 @@ export default function EindejaarsuitkeringBerekenenPage() {
                   className="font-medium text-teal-700 hover:underline"
                 >
                   Rijksoverheid - Wat is een cao?
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.belastingdienst.nl/wps/wcm/connect/nl/personeel-en-loon/content/hulpmiddel-loonbelastingtabellen"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-teal-700 hover:underline"
+                >
+                  Belastingdienst - Loonbelastingtabellen en bijzondere beloningen
                 </a>
               </li>
             </ul>

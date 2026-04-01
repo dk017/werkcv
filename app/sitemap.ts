@@ -216,6 +216,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.83,
         },
         {
+            url: `${baseUrl}/engels-cv-voorbeeld`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.83,
+        },
+        {
             url: `${baseUrl}/professioneel-cv-template`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
