@@ -2,85 +2,84 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 
-const competencyGroups = [
+const propertyGroups = [
   {
-    title: "Administratief en office",
-    examples: ["Nauwkeurigheid", "Plannen en organiseren", "Prioriteren", "Verantwoordelijkheid nemen"],
+    title: "Goede eigenschappen voor service en klantcontact",
+    examples: ["Klantgericht", "Geduldig", "Stressbestendig", "Helder communiceren"],
   },
   {
-    title: "Klantcontact en service",
-    examples: ["Empathisch communiceren", "Problemen oplossen", "Conflicten rustig afhandelen", "Klantgericht handelen"],
+    title: "Goede eigenschappen voor administratie en office",
+    examples: ["Nauwkeurig", "Georganiseerd", "Betrouwbaar", "Zelfstandig"],
   },
   {
-    title: "Management en coordinatie",
-    examples: ["Leiderschap", "Besluitvaardigheid", "Stakeholdermanagement", "Resultaatgericht sturen"],
+    title: "Goede eigenschappen voor leiding of coordinatie",
+    examples: ["Besluitvaardig", "Verantwoordelijk", "Coachend", "Resultaatgericht"],
   },
   {
-    title: "Technisch en analytisch werk",
-    examples: ["Analytisch denken", "Zelfstandig werken", "Kwaliteitsbewustzijn", "Continu verbeteren"],
+    title: "Goede eigenschappen voor starters en scholieren",
+    examples: ["Leergierig", "Punctueel", "Sociaal", "Aanpakker"],
   },
 ];
 
 const differenceCards = [
   {
-    title: "Competenties",
-    body: "Breder gedragsmatig of beroepsmatig vermogen, zoals plannen, analyseren of samenwerken.",
-  },
-  {
-    title: "Vaardigheden",
-    body: "Concretere skills of technieken, zoals Excel, SQL, Power BI, tillen of orderpicken.",
-  },
-  {
     title: "Eigenschappen",
-    body: "Persoonlijke kenmerken, zoals geduldig of sociaal. Op een CV zijn competenties meestal sterker dan losse eigenschappen.",
+    body: "Persoonlijke kenmerken zoals betrouwbaar, nauwkeurig of sociaal. Ze werken alleen goed als ze logisch terugkomen in je ervaring of gedrag.",
+  },
+  {
+    title: "Sterke punten",
+    body: "Eigenschappen of vaardigheden die jij echt als voordeel inzet in je werk. Sterke punten zijn dus vaak beter onderbouwde eigenschappen.",
+  },
+  {
+    title: "Competenties",
+    body: "Breder en professioneler geformuleerd gedrag, zoals plannen, analyseren of samenwerken. Op een volwassen CV zijn competenties vaak krachtiger dan losse eigenschappen.",
   },
 ];
 
 const faqs = [
   {
-    question: "Wat zijn goede competenties voor op je cv?",
+    question: "Welke eigenschappen zet je op je cv?",
     answer:
-      "Goede competenties sluiten direct aan op de functie en kun je onderbouwen met voorbeelden. Denk aan plannen, analyseren, klantgerichtheid, samenwerken of besluitvaardigheid.",
+      "Gebruik alleen eigenschappen die direct relevant zijn voor de functie en die je kunt onderbouwen met voorbeelden uit werk, school, stage of projecten. Een korte selectie van 3 tot 5 sterke eigenschappen werkt meestal beter dan een lange lijst.",
   },
   {
-    question: "Wat is het verschil tussen competenties en vaardigheden?",
+    question: "Wat zijn goede eigenschappen voor een cv?",
     answer:
-      "Vaardigheden zijn meestal concreter en technischer, zoals Excel of Power BI. Competenties gaan vaker over hoe je werkt, zoals plannen, communiceren of prioriteren.",
+      "Dat hangt af van de rol. Voor administratie werken bijvoorbeeld nauwkeurig en georganiseerd vaak goed, terwijl voor servicefuncties klantgericht en stressbestendig sterker zijn. Kies dus altijd functiegericht.",
   },
   {
-    question: "Hoeveel competenties zet je op je cv?",
+    question: "Wat is het verschil tussen eigenschappen en competenties?",
     answer:
-      "Voor de meeste CV&apos;s werkt een korte selectie van 4 tot 8 competenties het best. Kies alleen competenties die je later ook terug laat komen in werkervaring of projecten.",
+      "Eigenschappen zijn persoonlijker en eenvoudiger geformuleerd, zoals betrouwbaar of sociaal. Competenties zijn professioneler geformuleerd gedragsvaardigheden zoals samenwerken, plannen of analyseren.",
   },
   {
-    question: "Kan ik competenties voorbeelden letterlijk overnemen?",
+    question: "Kan ik eigenschappen voorbeelden letterlijk overnemen?",
     answer:
-      "Gebruik voorbeelden als shortlist, maar stem ze af op de vacature en jouw praktijkervaring. Een recruiter gelooft competenties pas als ze terugkomen in je resultaten.",
+      "Gebruik voorbeelden als shortlist, maar stem ze af op jouw rol en bewijs. Recruiters geloven eigenschappen pas als ze ook terugkomen in je werkervaring, profieltekst of projecten.",
   },
 ];
 
 export const metadata: Metadata = {
-  title: "Competenties Voorbeelden - Sterke Competenties voor je CV | WerkCV.nl",
+  title: "Eigenschappen Op CV - Goede Eigenschappen en Sterke Punten | WerkCV.nl",
   description:
-    "Zoek je competenties voorbeelden voor je CV? Bekijk sterke competenties per rol, het verschil met vaardigheden en hoe je ze geloofwaardig op je CV zet.",
+    "Zoek je goede eigenschappen voor op je CV? Bekijk sterke eigenschappen en sterke punten per rol, plus het verschil met competenties en vaardigheden.",
   keywords: [
-    "competenties voorbeelden",
-    "competenties cv",
-    "wat zijn competenties",
-    "competentie betekenis",
-    "goede competenties voor cv",
-    "voorbeelden competenties",
+    "eigenschappen in cv",
+    "goede eigenschappen cv",
+    "sterke punten cv",
+    "voorbeelden sterke punten",
+    "eigenschappen cv voorbeelden",
   ],
   alternates: {
-    canonical: "https://werkcv.nl/competenties-voorbeelden",
+    canonical: "https://werkcv.nl/eigenschappen-cv-voorbeelden",
     languages: {
-      "nl-NL": "https://werkcv.nl/competenties-voorbeelden",
-      "x-default": "https://werkcv.nl/competenties-voorbeelden",
+      "nl-NL": "https://werkcv.nl/eigenschappen-cv-voorbeelden",
+      "x-default": "https://werkcv.nl/eigenschappen-cv-voorbeelden",
     },
   },
 };
 
-export default function CompetentiesVoorbeeldenPage() {
+export default function EigenschappenCvVoorbeeldenPage() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -107,8 +106,8 @@ export default function CompetentiesVoorbeeldenPage() {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Competenties Voorbeelden",
-        item: "https://werkcv.nl/competenties-voorbeelden",
+        name: "Eigenschappen op CV",
+        item: "https://werkcv.nl/eigenschappen-cv-voorbeelden",
       },
     ],
   };
@@ -135,28 +134,28 @@ export default function CompetentiesVoorbeeldenPage() {
         <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
             <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Intent: competenties voorbeelden
+              Intent: eigenschappen in cv
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              Competenties voorbeelden die sterker zijn dan losse eigenschappen
+              Goede eigenschappen en sterke punten die beter werken dan losse buzzwords
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Wie zoekt op competenties voorbeelden wil meestal weten welke woorden op een CV
-              geloofwaardig zijn en welke te vaag blijven. Op deze pagina zie je per rol welke
-              competenties goed werken, hoe ze verschillen van vaardigheden en hoe je ze slim inzet.
+              Eigenschappen op een CV werken alleen als ze geloofwaardig voelen. Wie zoekt op goede
+              eigenschappen of sterke punten wil meestal weten welke woorden echt helpen, welke te vaag
+              zijn en hoe je ze koppelt aan de functie waarop je solliciteert.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/tools/vaardigheden-generator"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Genereer shortlist
+                Maak shortlist eigenschappen
               </Link>
               <Link
-                href="/vaardigheden-cv-voorbeelden"
+                href="/competenties-voorbeelden"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Bekijk vaardigheden voorbeelden
+                Vergelijk met competenties
               </Link>
             </div>
           </div>
@@ -164,9 +163,9 @@ export default function CompetentiesVoorbeeldenPage() {
           <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <h2 className="text-xl font-black text-black">Snelle vuistregel</h2>
             <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
-              Gebruik competenties niet als losse buzzwords. Kies alleen competenties die
-              in je werkervaring, stages of projecten herkenbaar terugkomen. Dan voelen ze
-              recruiter-proof in plaats van opgeplakt.
+              Schrijf niet alleen &quot;betrouwbaar&quot; of &quot;sociaal&quot;. Kies eigenschappen die direct bij de
+              functie passen en laat ze daarna terugkomen in je profieltekst, werkervaring of concrete
+              voorbeelden uit school, stage of werk.
             </p>
           </div>
         </section>
@@ -188,10 +187,10 @@ export default function CompetentiesVoorbeeldenPage() {
             Per rolcluster
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            Competenties voorbeelden per type werk
+            Goede eigenschappen voor op je CV per situatie
           </h2>
           <div className="mt-6 grid gap-5 md:grid-cols-2">
-            {competencyGroups.map((group) => (
+            {propertyGroups.map((group) => (
               <article
                 key={group.title}
                 className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
@@ -214,29 +213,24 @@ export default function CompetentiesVoorbeeldenPage() {
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             {[
               {
+                href: "/competenties-voorbeelden",
+                title: "Competenties voorbeelden",
+                body: "Gebruik deze route als je eigenschappen professioneler wilt formuleren in termen van competenties.",
+              },
+              {
                 href: "/vaardigheden-cv-voorbeelden",
                 title: "Vaardigheden voor CV",
-                body: "Vergelijk competenties met hard en soft skills zodra je je CV-sectie concreter wilt maken.",
-              },
-              {
-                href: "/eigenschappen-cv-voorbeelden",
-                title: "Eigenschappen op CV",
-                body: "Gebruik deze route als je zoekt naar goede eigenschappen en sterke punten in eenvoudiger taal.",
-              },
-              {
-                href: "/tools/vaardigheden-generator",
-                title: "Vaardigheden generator",
-                body: "Gebruik een tool als je vanuit de vacature een shortlist wilt bouwen in plaats van losse woorden te bedenken.",
+                body: "Vergelijk eigenschappen met hard en soft skills zodra je je CV-sectie concreter wilt maken.",
               },
               {
                 href: "/profieltekst-cv-voorbeelden",
                 title: "Voorbeeld profiel CV",
-                body: "Laat je sterkste competenties terugkomen in je profieltekst zodat ze niet alleen in een lijst staan.",
+                body: "Laat je sterkste eigenschappen terugkomen in je profieltekst in plaats van alleen in een losse lijst.",
               },
               {
                 href: "/cv-voorbeelden",
                 title: "CV voorbeelden",
-                body: "Zie hoe competenties geloofwaardig landen wanneer ze terugkomen in werkervaring en resultaatbulletpoints.",
+                body: "Zie hoe eigenschappen geloofwaardig landen zodra ze terugkomen in bullets en resultaten.",
               },
             ].map((item) => (
               <Link
@@ -253,7 +247,7 @@ export default function CompetentiesVoorbeeldenPage() {
 
         <section className="mb-14">
           <h2 className="text-center text-3xl font-black text-black">
-            Veelgestelde vragen over competenties
+            Veelgestelde vragen over eigenschappen op je CV
           </h2>
           <div className="mx-auto mt-8 max-w-3xl space-y-4">
             {faqs.map((faq) => (
@@ -277,10 +271,10 @@ export default function CompetentiesVoorbeeldenPage() {
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div className="max-w-3xl">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
-                Klaar om competenties goed te plaatsen?
+                Klaar om je sterke punten scherper te formuleren?
               </p>
               <h2 className="mt-2 text-3xl font-black text-black">
-                Kies je shortlist en zet die direct in je CV
+                Kies eigenschappen die passen bij de rol en bewijs ze direct in je CV
               </h2>
             </div>
             <Link

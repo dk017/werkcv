@@ -411,6 +411,11 @@ export default function VaardighedenCvVoorbeeldenPage() {
                   body: "Gebruik deze route als je vooral zoekt naar gedragsmatige competenties in plaats van losse skills of tools.",
                 },
                 {
+                  href: "/eigenschappen-cv-voorbeelden",
+                  title: "Eigenschappen op CV",
+                  body: "Handig als je zoekt naar goede eigenschappen en sterke punten die passen bij jouw rol.",
+                },
+                {
                   href: "/tools/vaardigheden-generator",
                   title: "Vaardigheden generator",
                   body: "Maak direct een shortlist skills op basis van jouw doelrol.",

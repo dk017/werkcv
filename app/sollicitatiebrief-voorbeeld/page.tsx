@@ -237,6 +237,11 @@ export default function SollicitatiebriefVoorbeeldPage() {
                   body: "Vergelijk compacte voorbeeldbrieven die sneller tot de kern komen.",
                 },
                 {
+                  href: "/motivatiebrief-stage-voorbeeld",
+                  title: "Motivatiebrief stage voorbeeld",
+                  body: "Gebruik stagegerichte voorbeeldblokken als je vooral opleiding, projecten en leerdoelen wilt laten landen.",
+                },
+                {
                   href: "/sollicitatiebrief-voorbeeld-horeca-medewerker",
                   title: "Sollicitatiebrief horeca medewerker",
                   body: "Gebruik servicegerichte voorbeeldzinnen voor bediening, allround horeca en bijbanen met piekdrukte.",
@@ -285,6 +290,11 @@ export default function SollicitatiebriefVoorbeeldPage() {
                   href: "/sollicitatiebrief-in-engels",
                   title: "Sollicitatiebrief in Engels",
                   body: "Solliciteer je internationaal? Gebruik de Engelse opbouw met copy-ready voorbeelden.",
+                },
+                {
+                  href: "/open-sollicitatie-brief",
+                  title: "Open sollicitatie brief",
+                  body: "Gebruik deze route als je zonder vacature toch een scherpe brief wilt sturen naar een specifiek bedrijf.",
                 },
                 {
                   href: "/motivatiebrief-voorbeeld",

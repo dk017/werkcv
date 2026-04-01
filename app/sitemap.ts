@@ -102,6 +102,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.87,
         },
         {
+            url: `${baseUrl}/cv-middelbare-school-student`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.85,
+        },
+        {
             url: `${baseUrl}/cv-voorbeeld-student`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -372,6 +378,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.84,
         },
         {
+            url: `${baseUrl}/motivatiebrief-stage-voorbeeld`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.83,
+        },
+        {
             url: `${baseUrl}/motivatiebrief-schrijven`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -385,6 +397,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/motivatiebrief-layout`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.83,
+        },
+        {
+            url: `${baseUrl}/open-sollicitatie-brief`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.83,
@@ -421,6 +439,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/competenties-voorbeelden`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.82,
+        },
+        {
+            url: `${baseUrl}/eigenschappen-cv-voorbeelden`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.82,

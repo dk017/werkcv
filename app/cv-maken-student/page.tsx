@@ -273,6 +273,11 @@ export default function CvMakenStudentPage() {
               body: "Pak een kort, scanbaar voorbeeld voor winkel-, horeca- of logistiek werk naast je studie.",
             },
             {
+              href: "/cv-middelbare-school-student",
+              title: "CV middelbare school student",
+              body: "Gebruik deze route als je nog op school zit en een eerste CV zoekt voor stage of bijbaan.",
+            },
+            {
               href: "/cv-gids/cv-voorbeeld-zonder-ervaring",
               title: "CV zonder ervaring",
               body: "Gebruik de BOFU gids als school, stage en kleine jobs nu nog je belangrijkste bewijs zijn.",

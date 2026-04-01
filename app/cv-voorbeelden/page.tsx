@@ -80,6 +80,7 @@ const clusterSummaries: Record<string, string> = {
 
 const popularRoleLinks = [
     { label: 'CV voorbeeld student', href: '/cv-voorbeeld-student' },
+    { label: 'CV middelbare school student', href: '/cv-middelbare-school-student' },
     { label: 'CV voorbeeld starter', href: '/cv-voorbeeld-starter' },
     { label: 'CV voorbeeld zonder ervaring', href: '/cv-gids/cv-voorbeeld-zonder-ervaring' },
     { label: 'CV voorbeeld student bijbaan', href: '/cv-gids/cv-voorbeeld-student-bijbaan' },
@@ -411,6 +412,11 @@ export default function CVVoorbeeldenOverview() {
                                 href: "/cv-voorbeeld-student",
                                 title: "CV voorbeeld student",
                                 body: "Gebruik deze route als je zoekt naar een duidelijke student-opbouw voor stage, bijbaan of eerste stap.",
+                            },
+                            {
+                                href: "/cv-middelbare-school-student",
+                                title: "CV middelbare school student",
+                                body: "Speciaal voor scholieren die een eerste CV nodig hebben voor stage, bijbaan of vakantiewerk.",
                             },
                             {
                                 href: "/cv-voorbeeld-starter",

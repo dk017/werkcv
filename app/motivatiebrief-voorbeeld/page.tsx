@@ -238,6 +238,11 @@ export default function MotivatiebriefVoorbeeldPage() {
                   body: "Handig als je compact wilt schrijven zonder de inhoud te mager te maken.",
                 },
                 {
+                  href: "/motivatiebrief-stage-voorbeeld",
+                  title: "Motivatiebrief stage voorbeeld",
+                  body: "Gebruik stagegerichte voorbeeldblokken als je opleiding, projecten en leerdoelen centraal staan.",
+                },
+                {
                   href: "/sollicitatiebrief-voorbeeld-administratief-medewerker",
                   title: "Sollicitatiebrief administratief medewerker",
                   body: "Bekijk role-specifieke voorbeeldzinnen voor administratieve functies.",
@@ -276,6 +281,11 @@ export default function MotivatiebriefVoorbeeldPage() {
                   href: "/sollicitatiebrief-in-engels",
                   title: "Sollicitatiebrief in Engels",
                   body: "Gebruik Engelse opbouw en voorbeeldzinnen voor internationale of Engelstalige vacatures.",
+                },
+                {
+                  href: "/open-sollicitatie-brief",
+                  title: "Open sollicitatie brief",
+                  body: "Gebruik deze route als je zonder concrete vacature toch een sterke, gerichte brief wilt sturen.",
                 },
                 {
                   href: "/motivatiebrief-layout",
