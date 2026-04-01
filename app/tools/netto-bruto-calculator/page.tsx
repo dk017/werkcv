@@ -27,21 +27,26 @@ const faqItems = [
 ];
 
 const cvIntentLinks = [
-    {
-        href: "/cv-aanmaken",
-        label: "CV aanmaken zodra je weet welke salarisrange bij je past",
-        description: "Gebruik je looninschatting om gerichter op functies te solliciteren die bij je doelbedrag horen.",
-    },
-    {
-        href: "/gratis-cv-maken",
-        label: "Gratis CV maken voor je volgende salarissprong",
-        description: "Trek je bruto-netto inzicht direct door naar een sollicitatieversie zonder eerst te hoeven betalen.",
-    },
-    {
-        href: "/cv-maken-template",
-        label: "CV maken met een template voor een nette salarisgedreven sollicitatie",
-        description: "Kies een rustige layout als je met recruiter- en loonvergelijkingen serieuzer wilt solliciteren.",
-    },
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken zodra je weet welke salarisrange bij je past",
+    description: "Gebruik je looninschatting om gerichter op functies te solliciteren die bij je doelbedrag horen.",
+  },
+  {
+    href: "/cv-maken-zonder-abonnement",
+    label: "CV maken zonder abonnement voor je volgende salarissprong",
+    description: "Handig als je wel meteen wilt bouwen, maar niet in een doorlopend prijsmodel wilt stappen.",
+  },
+  {
+    href: "/beste-cv-maker-nederland",
+    label: "Vergelijk de beste CV makers in Nederland",
+    description: "Gebruik deze stap als je je salarisdoel al scherper hebt en nu de juiste tool wilt kiezen.",
+  },
+  {
+    href: "/cv-maken-template",
+    label: "CV maken met een template voor een nette salarisgedreven sollicitatie",
+    description: "Kies een rustige layout als je met recruiter- en loonvergelijkingen serieuzer wilt solliciteren.",
+  },
 ];
 
 export const metadata: Metadata = {
@@ -100,6 +105,26 @@ export default function NettoBrutoCalculatorPage() {
                         <p className="text-lg text-slate-600 font-medium max-w-3xl">
                             Dit is de brede salaristool die nog ontbrak in WerkCV. Gebruik hem voor bruto naar netto, netto naar bruto, loonheffingskorting en vakantiegeld in één flow, zonder dat je direct vastloopt in verspreide belastingtabellen.
                         </p>
+                        <div className="mt-6 flex flex-wrap gap-3">
+                            <Link
+                                href="/editor"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
+                            >
+                                Maak gratis je CV
+                            </Link>
+                            <Link
+                                href="/cv-maken-zonder-abonnement"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
+                            >
+                                Zonder abonnement
+                            </Link>
+                            <Link
+                                href="/beste-cv-maker-nederland"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
+                            >
+                                Beste CV maker NL
+                            </Link>
+                        </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
                             {[

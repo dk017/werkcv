@@ -79,7 +79,8 @@ const clusterSummaries: Record<string, string> = {
 };
 
 const popularRoleLinks = [
-    { label: 'CV voorbeeld student', href: '/cv-voorbeelden/studenten-en-starters/student-cv' },
+    { label: 'CV voorbeeld student', href: '/cv-voorbeeld-student' },
+    { label: 'CV voorbeeld starter', href: '/cv-voorbeeld-starter' },
     { label: 'CV voorbeeld zonder ervaring', href: '/cv-gids/cv-voorbeeld-zonder-ervaring' },
     { label: 'CV voorbeeld student bijbaan', href: '/cv-gids/cv-voorbeeld-student-bijbaan' },
     { label: 'CV horeca voorbeeld', href: '/cv-gids/cv-voorbeeld-horeca-medewerker' },
@@ -379,6 +380,14 @@ export default function CVVoorbeeldenOverview() {
                             professioneel CV voorbeeld
                         </Link>
                         , een{" "}
+                        <Link href="/cv-voorbeeld-student" className="font-bold underline decoration-2 underline-offset-2">
+                            student CV voorbeeld
+                        </Link>
+                        , een{" "}
+                        <Link href="/cv-voorbeeld-starter" className="font-bold underline decoration-2 underline-offset-2">
+                            starter CV voorbeeld
+                        </Link>
+                        , een{" "}
                         <Link href="/modern-cv-voorbeeld" className="font-bold underline decoration-2 underline-offset-2">
                             modern CV voorbeeld
                         </Link>
@@ -394,6 +403,16 @@ export default function CVVoorbeeldenOverview() {
                     </p>
                     <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                         {[
+                            {
+                                href: "/cv-voorbeeld-student",
+                                title: "CV voorbeeld student",
+                                body: "Gebruik deze route als je zoekt naar een duidelijke student-opbouw voor stage, bijbaan of eerste stap.",
+                            },
+                            {
+                                href: "/cv-voorbeeld-starter",
+                                title: "CV voorbeeld starter",
+                                body: "Sterk voor junior rollen, traineeships en eerste banen waar potentie duidelijk moet landen.",
+                            },
                             {
                                 href: "/professioneel-cv-voorbeeld",
                                 title: "Professioneel CV voorbeeld",
@@ -413,11 +432,6 @@ export default function CVVoorbeeldenOverview() {
                                 href: "/cv-maken-student",
                                 title: "CV maken student",
                                 body: "Speciaal voor studenten, starters en profielen met weinig formele werkervaring.",
-                            },
-                            {
-                                href: "/stage-cv-maken",
-                                title: "Stage CV maken",
-                                body: "Gebruik deze route als je vooral stage-intentie en projectervaring wilt uitwerken.",
                             },
                             {
                                 href: "/cv-maken-in-engels",

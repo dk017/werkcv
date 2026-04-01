@@ -102,6 +102,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.87,
         },
         {
+            url: `${baseUrl}/cv-voorbeeld-student`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.86,
+        },
+        {
+            url: `${baseUrl}/cv-voorbeeld-starter`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.86,
+        },
+        {
             url: `${baseUrl}/stage-cv-maken`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -276,6 +288,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.84,
         },
         {
+            url: `${baseUrl}/cv-template-horeca-medewerker`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.84,
+        },
+        {
+            url: `${baseUrl}/cv-template-magazijnmedewerker`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.84,
+        },
+        {
             url: `${baseUrl}/sollicitatiebrief-voorbeeld`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -319,6 +343,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/sollicitatiebrief-voorbeeld-software-ontwikkelaar`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.84,
+        },
+        {
+            url: `${baseUrl}/sollicitatiebrief-voorbeeld-horeca-medewerker`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.84,
+        },
+        {
+            url: `${baseUrl}/sollicitatiebrief-voorbeeld-magazijnmedewerker`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.84,
@@ -408,6 +444,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.78,
         },
         {
+            url: `${baseUrl}/en/english-speaking-companies-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.75,
+        },
+        {
             url: `${baseUrl}/cv-voorbeelden`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -448,6 +490,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/cv-maken-zonder-abonnement`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.82,
+        },
+        {
+            url: `${baseUrl}/beste-cv-maker-nederland`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.82,
+        },
+        {
+            url: `${baseUrl}/engelstalige-bedrijven-in-nederland`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.77,
         },
         {
             url: `${baseUrl}/faq`,

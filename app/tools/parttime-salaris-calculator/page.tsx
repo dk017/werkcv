@@ -33,14 +33,14 @@ const parttimeCvIntentLinks = [
     description: "Zet je salarisvergelijking direct om in een sollicitatieversie voor een andere rol of urenafspraak.",
   },
   {
-    href: "/gratis-cv-maken",
-    label: "Gratis CV maken",
-    description: "Handig als je snel een nieuwe versie wilt bouwen terwijl je uren en salaris vergelijkt.",
+    href: "/cv-maken-zonder-abonnement",
+    label: "CV maken zonder abonnement",
+    description: "Sterk voor bezoekers die een nieuwe baan overwegen, maar geen maandelijkse CV-tool willen.",
   },
   {
-    href: "/cv-maken-op-mobiel",
-    label: "CV maken op mobiel",
-    description: "Past goed bij gebruikers die hun uren- en looncheck direct vanaf hun telefoon willen doortrekken.",
+    href: "/cv-voorbeeld-starter",
+    label: "CV voorbeeld starter",
+    description: "Handig als je parttime of junior zoekt en eerst een inhoudelijke voorbeeldstructuur wilt zien.",
   },
   {
     href: "/cv-maken-pdf",
@@ -113,6 +113,12 @@ export default function ParttimeSalarisCalculatorPage() {
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
               >
                 Maak gratis je CV
+              </Link>
+              <Link
+                href="/cv-maken-zonder-abonnement"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-200 transition-colors"
+              >
+                Zonder abonnement
               </Link>
               <Link
                 href="/templates"
@@ -231,6 +237,12 @@ export default function ParttimeSalarisCalculatorPage() {
                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
               >
                 Maak gratis je CV
+              </Link>
+              <Link
+                href="/beste-cv-maker-nederland"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
+              >
+                Beste CV maker NL
               </Link>
             </div>
           </div>

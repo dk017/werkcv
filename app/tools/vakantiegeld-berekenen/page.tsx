@@ -27,21 +27,26 @@ const faqItems = [
 ];
 
 const cvIntentLinks = [
-    {
-        href: "/gratis-cv-maken",
-        label: "Gratis CV maken als je rond vakantiegeld over een nieuwe baan nadenkt",
-        description: "Gebruik je extra loonruimte of vergelijking direct als aanleiding voor een sterkere sollicitatie.",
-    },
-    {
-        href: "/cv-aanmaken",
-        label: "CV aanmaken voor een beter loon- of vakantiegeldpakket",
-        description: "Werk snel een Nederlandse CV-versie uit zodra je weet welk aanbod je wilt verbeteren.",
-    },
-    {
-        href: "/cv-maken-pdf",
-        label: "CV maken als PDF voor snelle sollicitaties in drukke salarisperiodes",
-        description: "Bouw je CV online en download daarna een nette versie voor directe versturing.",
-    },
+  {
+    href: "/gratis-cv-maken",
+    label: "Gratis CV maken als je rond vakantiegeld over een nieuwe baan nadenkt",
+    description: "Gebruik je extra loonruimte of vergelijking direct als aanleiding voor een sterkere sollicitatie.",
+  },
+  {
+    href: "/cv-maken-zonder-abonnement",
+    label: "CV maken zonder abonnement voor een nieuwe baan of beter pakket",
+    description: "Sluit goed aan op bezoekers die hun opties vergelijken maar niet vast willen zitten aan maandelijkse kosten.",
+  },
+  {
+    href: "/beste-cv-maker-nederland",
+    label: "Vergelijk eerst de beste CV maker voor Nederlandse sollicitaties",
+    description: "Gebruik deze route als prijs, templates en ATS-veiligheid meewegen in je keuze.",
+  },
+  {
+    href: "/cv-maken-pdf",
+    label: "CV maken als PDF voor snelle sollicitaties in drukke salarisperiodes",
+    description: "Bouw je CV online en download daarna een nette versie voor directe versturing.",
+  },
 ];
 
 export const metadata: Metadata = {
@@ -100,6 +105,26 @@ export default function VakantiegeldBerekenenPage() {
                         <p className="text-lg text-slate-600 font-medium max-w-3xl">
                             Simpel, snel en bruikbaar. Deze tool rekent met de Nederlandse basisregel van minimaal 8% en laat direct zien wat je bruto vakantiegeld ongeveer is over de periode die je hebt opgebouwd.
                         </p>
+                        <div className="mt-6 flex flex-wrap gap-3">
+                            <Link
+                                href="/editor"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
+                            >
+                                Maak gratis je CV
+                            </Link>
+                            <Link
+                                href="/cv-maken-zonder-abonnement"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
+                            >
+                                CV zonder abonnement
+                            </Link>
+                            <Link
+                                href="/beste-cv-maker-nederland"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
+                            >
+                                Beste CV maker NL
+                            </Link>
+                        </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
                             {[

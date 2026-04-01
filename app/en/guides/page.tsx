@@ -20,6 +20,11 @@ export default function EnglishGuidesHubPage() {
     const pages = getEnglishWavePages();
     const expatTools = [
         {
+            href: '/en/english-speaking-companies-netherlands',
+            title: 'English-Speaking Companies',
+            description: 'Move from employer search to a CV and localization plan that fits the Dutch market.',
+        },
+        {
             href: '/tools/zoekjaar-checker',
             title: 'Zoekjaar Checker',
             description: 'Check whether the Dutch orientation year still fits your timeline.',
@@ -85,7 +90,7 @@ export default function EnglishGuidesHubPage() {
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-5">
                         {expatTools.map((tool) => (
                             <Link
                                 key={tool.href}

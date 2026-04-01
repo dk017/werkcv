@@ -185,6 +185,12 @@ export default function PrijzenPage() {
                             Twijfel je tussen een eenmalige CV-builder en een abonnementsplatform? Bekijk dan onze eerlijke vergelijkingen:
                         </p>
                         <div className="mt-3 flex flex-wrap gap-2">
+                            <Link href="/cv-maken-zonder-abonnement" className="border-2 border-black bg-yellow-200 px-3 py-2 text-sm font-black text-black hover:bg-yellow-300 transition-colors">
+                                CV zonder abonnement
+                            </Link>
+                            <Link href="/beste-cv-maker-nederland" className="border-2 border-black bg-blue-200 px-3 py-2 text-sm font-black text-black hover:bg-blue-300 transition-colors">
+                                Beste CV maker NL
+                            </Link>
                             <Link href="/cv-gids/welke-cv-builder-past-bij-jou-in-nederland" className="border-2 border-black bg-blue-200 px-3 py-2 text-sm font-black text-black hover:bg-blue-300 transition-colors">
                                 Welke CV builder past bij jou?
                             </Link>

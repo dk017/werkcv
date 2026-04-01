@@ -227,6 +227,16 @@ export default function SollicitatiebriefVoorbeeldPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
+                  href: "/sollicitatiebrief-voorbeeld-horeca-medewerker",
+                  title: "Sollicitatiebrief horeca medewerker",
+                  body: "Gebruik servicegerichte voorbeeldzinnen voor bediening, allround horeca en bijbanen met piekdrukte.",
+                },
+                {
+                  href: "/sollicitatiebrief-voorbeeld-magazijnmedewerker",
+                  title: "Sollicitatiebrief magazijnmedewerker",
+                  body: "Gebruik logistieke voorbeeldzinnen voor tempo, discipline en praktische inzetbaarheid.",
+                },
+                {
                   href: "/sollicitatiebrief-voorbeeld-administratief-medewerker",
                   title: "Sollicitatiebrief administratief medewerker",
                   body: "Gebruik een role-specifiek voorbeeld met administratieve zinnen, resultaten en structuur.",

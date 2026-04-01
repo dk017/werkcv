@@ -47,6 +47,11 @@ const pages = [
     title: "Expat SEO Guides",
     description: "Long-tail English guides for expats applying in the Netherlands.",
   },
+  {
+    href: "/en/english-speaking-companies-netherlands",
+    title: "English-Speaking Companies",
+    description: "Move from employer search to a Dutch-market CV that fits international jobs.",
+  },
 ];
 
 const expatTools = [
@@ -150,6 +155,12 @@ export default function EnglishHubPage() {
         </div>
 
         <div className="mt-10 flex flex-wrap gap-3">
+          <Link
+            href="/en/english-speaking-companies-netherlands"
+            className="inline-block bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black"
+          >
+            English-Speaking Companies
+          </Link>
           <Link
             href="/templates"
             className="inline-block bg-black text-white font-bold px-5 py-3 border-4 border-black"

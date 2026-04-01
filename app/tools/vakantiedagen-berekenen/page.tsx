@@ -33,14 +33,14 @@ const vacationCvIntentLinks = [
     description: "Gebruik je verlof- en contractcheck als opstap naar een nieuwe sollicitatieversie.",
   },
   {
-    href: "/gratis-cv-maken",
-    label: "Gratis CV maken",
-    description: "Handig als je snel een nieuw CV wilt opzetten terwijl je verlof en uren opnieuw bekijkt.",
+    href: "/cv-maken-zonder-abonnement",
+    label: "CV maken zonder abonnement",
+    description: "Past goed als je wel een nieuwe sollicitatieroute wilt, maar niet vast wilt zitten aan maandelijkse kosten.",
   },
   {
-    href: "/cv-maken-op-mobiel",
-    label: "CV maken op mobiel",
-    description: "Past goed bij gebruikers die hun contract- en verlofcheck meteen op hun telefoon willen vervolgen.",
+    href: "/beste-cv-maker-nederland",
+    label: "Beste CV maker vergelijken",
+    description: "Handig als je eerst prijsmodel, templates en Nederlandse sollicitatiefit wilt vergelijken.",
   },
   {
     href: "/cv-maken-pdf",
@@ -215,6 +215,12 @@ export default function VakantiedagenBerekenenPage() {
                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
               >
                 Maak gratis je CV
+              </Link>
+              <Link
+                href="/cv-maken-zonder-abonnement"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
+              >
+                Zonder abonnement
               </Link>
             </div>
           </div>

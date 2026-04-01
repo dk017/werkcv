@@ -126,6 +126,9 @@ export default function DutchCvExamplesPage() {
         </div>
 
         <div className="flex flex-wrap gap-3">
+          <Link href="/en/english-speaking-companies-netherlands" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+            English-Speaking Companies
+          </Link>
           <Link href="/cv-voorbeelden" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
             Browse All Dutch Examples
           </Link>

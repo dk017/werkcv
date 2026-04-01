@@ -23,25 +23,25 @@ const faqItems = [
 ];
 
 const cvIntentLinks = [
-    {
-        href: "/cv-aanmaken",
-        label: "CV aanmaken zodra je uurloon laat zien wat je volgende stap waard is",
-        description: "Gebruik je uurlooncheck om gerichter te mikken op functies die beter betalen dan je huidige situatie.",
-    },
-    {
-        href: "/gratis-cv-maken",
-        label: "Gratis CV maken voor een betere loononderhandeling of nieuwe baan",
-        description: "Trek je uurloonvergelijking direct door naar een sollicitatieversie zonder eerst te hoeven betalen.",
-    },
-    {
-        href: "/cv-maken-template",
-        label: "CV maken met een template als je nu professioneel wilt solliciteren",
-        description: "Gebruik een rustige layout wanneer je met loondata serieuzer de markt op gaat.",
-    },
-    {
-        href: "/cv-maken-pdf",
-        label: "CV maken en als PDF klaarzetten voor je volgende aanbod",
-        description: "Werk eerst online en rond pas af als je sollicitatieversie echt klaar is om te versturen.",
+  {
+    href: "/cv-aanmaken",
+    label: "CV aanmaken zodra je uurloon laat zien wat je volgende stap waard is",
+    description: "Gebruik je uurlooncheck om gerichter te mikken op functies die beter betalen dan je huidige situatie.",
+  },
+  {
+    href: "/cv-maken-zonder-abonnement",
+    label: "CV maken zonder abonnement als je geen maandelijkse tool wilt voor een baanwissel",
+    description: "Sterk voor bezoekers die wel direct willen bouwen, maar niet in een abonnementsmodel willen belanden.",
+  },
+  {
+    href: "/beste-cv-maker-nederland",
+    label: "Vergelijk eerst de beste CV makers in Nederland",
+    description: "Handig als je salarissignalen al hebt en nu de juiste tool of prijslogica wilt kiezen.",
+  },
+  {
+    href: "/cv-maken-pdf",
+    label: "CV maken en als PDF klaarzetten voor je volgende aanbod",
+    description: "Werk eerst online en rond pas af als je sollicitatieversie echt klaar is om te versturen.",
     },
 ];
 
@@ -97,6 +97,26 @@ export default function UurloonCalculatorPage() {
                         <p className="text-lg text-slate-600 font-medium max-w-3xl">
                             Gebruik deze tool als je wilt weten wat je bruto uurloon is vanuit je maand- of jaarsalaris. Handig voor salarisvergelijking, onderhandelingen en controle tegen het minimumloon.
                         </p>
+                        <div className="mt-6 flex flex-wrap gap-3">
+                            <Link
+                                href="/editor"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
+                            >
+                                Maak gratis je CV
+                            </Link>
+                            <Link
+                                href="/cv-maken-zonder-abonnement"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
+                            >
+                                Zonder abonnement
+                            </Link>
+                            <Link
+                                href="/beste-cv-maker-nederland"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
+                            >
+                                Beste CV maker NL
+                            </Link>
+                        </div>
                     </div>
 
                     <aside className="bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
