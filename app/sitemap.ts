@@ -54,6 +54,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.89,
         },
         {
+            url: `${baseUrl}/cv-tools-links`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.55,
+        },
+        {
             url: `${baseUrl}/curriculum-vitae-maken`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
