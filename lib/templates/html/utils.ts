@@ -1,6 +1,7 @@
 // HTML Utilities for PDF Generation
 
 import { ColorTheme } from '@/lib/templates';
+import { ResumeLanguage } from '@/lib/resume-language';
 
 export const escapeHtml = (str: string) =>
     str.replace(/&/g, '&amp;')
@@ -11,9 +12,9 @@ export const escapeHtml = (str: string) =>
 
 export const nl2br = (str: string) => escapeHtml(str).replace(/\n/g, '<br>');
 
-export function wrapPage(content: string, theme: ColorTheme): string {
+export function wrapPage(content: string, theme: ColorTheme, language: ResumeLanguage = 'nl'): string {
     return `<!DOCTYPE html>
-<html lang="nl">
+<html lang="${language}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

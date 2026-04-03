@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 import { CVData } from './cv';
+import { formatGender, formatLanguageLevel, formatMaritalStatus, getResumeLanguage, resumeText } from './resume-language';
 import { ColorTheme, getThemeForTemplate } from './templates';
 import { templateRegistry, getTemplateConfig } from './templates/registry';
 import { escapeHtml, wrapPage } from './templates/html/utils';
@@ -127,6 +128,7 @@ export function buildHTML(data: CVData, templateId: string, colorThemeId: string
 
 function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: string): string {
     const e = escapeHtml;
+    const rt = (key: Parameters<typeof resumeText>[1]) => resumeText(data, key);
 
     // Template-specific configurations
     const hasColoredSidebar = ['modern', 'sepia'].includes(templateId);
@@ -167,7 +169,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
     const photoHtml = `
         <div style="display: flex; justify-content: center; margin-bottom: 16px;">
             ${data.personal.photo
-                ? `<img src="${e(data.personal.photo)}" alt="${e(data.personal.name || 'Foto')}" style="width: ${photoSize}; height: ${photoSize}; ${photoShape} object-fit: cover; ${hasColoredSidebar ? 'border: 4px solid rgba(255,255,255,0.2);' : `border: 4px solid ${theme.primary};`}" />`
+                ? `<img src="${e(data.personal.photo)}" alt="${e(data.personal.name || rt('profilePhotoAlt'))}" style="width: ${photoSize}; height: ${photoSize}; ${photoShape} object-fit: cover; ${hasColoredSidebar ? 'border: 4px solid rgba(255,255,255,0.2);' : `border: 4px solid ${theme.primary};`}" />`
                 : `<div style="width: ${photoSize}; height: ${photoSize}; ${photoShape} display: flex; align-items: center; justify-content: center; font-size: ${isRobust ? '20px' : '32px'}; font-weight: bold; ${
                     hasColoredSidebar ? 'background-color: rgba(255,255,255,0.2); color: white;'
                     : isRemarkable ? `background-color: ${theme.primary}; color: #ffffff;`
@@ -184,7 +186,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
     const sidebarNameHtml = (hasColoredSidebar || isRemarkable) ? `
         <div style="text-align: center; margin-bottom: 16px;">
             <h1 style="font-size: ${isRemarkable ? '18px' : '20px'}; font-weight: bold; ${isSepia ? 'font-family: Georgia, serif;' : ''} text-transform: ${hasColoredSidebar ? 'uppercase' : 'none'}; letter-spacing: 0.05em; margin: 0; color: ${hasColoredSidebar ? 'white' : theme.text};">
-                ${e(data.personal.name || 'Naam')}
+                ${e(data.personal.name || rt('nameFallback'))}
             </h1>
             ${data.personal.title ? `<p style="font-size: 12px; margin-top: 4px; ${isSepia ? 'font-style: italic; font-family: Georgia, serif;' : ''} ${hasColoredSidebar ? 'opacity: 0.8; color: white;' : `color: ${theme.primary};`}">${e(data.personal.title)}</p>` : ''}
         </div>
@@ -233,7 +235,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
     }
 
     // ---- PERSONALIA SECTION ----
-    const personaliaTitle = isProfessional ? 'Personalia' : (hasColoredSidebar ? 'Personalia' : (isDynamic ? 'Personalia' : 'Personalia'));
+    const personaliaTitle = isProfessional ? rt('personalDetails') : (hasColoredSidebar ? rt('personalDetails') : (isDynamic ? rt('personalDetails') : rt('personalDetails')));
 
     const personaliaHtml = `
         <div class="cv-section-small" style="margin-bottom: 24px;">
@@ -245,38 +247,38 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
                 ${data.personal.email ? `<div style="margin-bottom: 4px; word-break: break-all;">${linkifyText(data.personal.email)}</div>` : ''}
                 ${data.personal.birthDate ? `
                     <div style="margin-top: 8px;">
-                        <div style="font-weight: 600; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.text};`} font-size: 10px;">Geboortedatum</div>
+                        <div style="font-weight: 600; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.text};`} font-size: 10px;">${rt('birthDate')}</div>
                         <div>${e(data.personal.birthDate)}</div>
                         ${data.personal.birthPlace ? `<div>${e(data.personal.birthPlace)}</div>` : ''}
                     </div>
                 ` : ''}
                 ${data.personal.nationality ? `
                     <div style="margin-top: 6px;">
-                        <div style="font-weight: 600; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.text};`} font-size: 10px;">Nationaliteit</div>
+                        <div style="font-weight: 600; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.text};`} font-size: 10px;">${rt('nationality')}</div>
                         <div>${e(data.personal.nationality)}</div>
                     </div>
                 ` : ''}
                 ${data.personal.driversLicense ? `
                     <div style="margin-top: 6px;">
-                        <div style="font-weight: 600; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.text};`} font-size: 10px;">Rijbewijs</div>
+                        <div style="font-weight: 600; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.text};`} font-size: 10px;">${rt('driversLicense')}</div>
                         <div>${e(data.personal.driversLicense)}</div>
                     </div>
                 ` : ''}
                 ${data.personal.gender ? `
                     <div style="margin-top: 6px;">
-                        <div style="font-weight: 600; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.text};`} font-size: 10px;">Geslacht</div>
-                        <div>${e(data.personal.gender)}</div>
+                        <div style="font-weight: 600; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.text};`} font-size: 10px;">${rt('gender')}</div>
+                        <div>${e(formatGender(data.personal.gender, data))}</div>
                     </div>
                 ` : ''}
                 ${data.personal.maritalStatus ? `
                     <div style="margin-top: 6px;">
-                        <div style="font-weight: 600; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.text};`} font-size: 10px;">Burgerlijke staat</div>
-                        <div>${e(data.personal.maritalStatus)}</div>
+                        <div style="font-weight: 600; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.text};`} font-size: 10px;">${rt('maritalStatus')}</div>
+                        <div>${e(formatMaritalStatus(data.personal.maritalStatus, data))}</div>
                     </div>
                 ` : ''}
                 ${data.personal.linkedIn ? `
                     <div style="margin-top: 6px;">
-                        <div style="font-weight: 600; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.text};`} font-size: 10px;">${isProfessional ? 'Links' : 'LinkedIn'}</div>
+                        <div style="font-weight: 600; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.text};`} font-size: 10px;">${isProfessional ? rt('links') : 'LinkedIn'}</div>
                         <div style="word-break: break-all;">${linkifyText(data.personal.linkedIn)}</div>
                     </div>
                 ` : ''}
@@ -321,7 +323,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
 
     const skillsHtml = data.skills.length > 0 ? `
         <div class="cv-section-small" style="margin-bottom: 24px;">
-            ${sidebarHeading('Vaardigheden')}
+            ${sidebarHeading(rt('skills'))}
             <div style="display: flex; flex-direction: column; gap: ${isProfessional || isDynamic ? '8px' : '12px'};">
                 ${data.skills.map(skill => buildSkillItem(skill)).join('')}
             </div>
@@ -331,10 +333,10 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
     // ---- LANGUAGES ----
     function buildLanguageItem(lang: { name: string; level: string }): string {
         if (isProfessional) {
-            return `<div><div style="font-size: 12px; font-weight: 500; color: ${theme.text};">${e(lang.name)}</div>${lang.level ? `<div style="font-size: 12px; color: ${theme.textMuted};">${e(lang.level)}</div>` : ''}</div>`;
+            return `<div><div style="font-size: 12px; font-weight: 500; color: ${theme.text};">${e(lang.name)}</div>${lang.level ? `<div style="font-size: 12px; color: ${theme.textMuted};">${e(formatLanguageLevel(lang.level, data))}</div>` : ''}</div>`;
         }
         if (isSepia) {
-            return `<div><div style="font-size: 12px; font-weight: 500; opacity: 0.9; color: white;">${e(lang.name)}</div>${lang.level ? `<div style="font-size: 12px; opacity: 0.6; font-style: italic; color: white;">${e(lang.level)}</div>` : ''}</div>`;
+            return `<div><div style="font-size: 12px; font-weight: 500; opacity: 0.9; color: white;">${e(lang.name)}</div>${lang.level ? `<div style="font-size: 12px; opacity: 0.6; font-style: italic; color: white;">${e(formatLanguageLevel(lang.level, data))}</div>` : ''}</div>`;
         }
         if (hasColoredSidebar) {
             // modern
@@ -349,7 +351,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
 
     const languagesHtml = data.languages.length > 0 ? `
         <div class="cv-section-small" style="margin-bottom: 24px;">
-            ${sidebarHeading('Talen')}
+            ${sidebarHeading(rt('languages'))}
             <div style="display: flex; flex-direction: column; gap: ${isProfessional ? '8px' : '12px'};">
                 ${data.languages.map(lang => buildLanguageItem(lang)).join('')}
             </div>
@@ -359,7 +361,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
     // ---- INTERESTS ----
     const interestsHtml = data.interests && data.interests.length > 0 ? `
         <div class="cv-section-small" style="margin-bottom: 24px;">
-            ${sidebarHeading('Interesses')}
+            ${sidebarHeading(rt('interests'))}
             <div style="display: flex; flex-wrap: wrap; gap: 6px;">
                 ${data.interests.map(interest => `
                     <span style="font-size: 11px; padding: 4px 8px; border-radius: 4px; background-color: ${hasColoredSidebar ? 'rgba(255,255,255,0.15)' : `${theme.primary}20`}; color: ${hasColoredSidebar ? 'rgba(255,255,255,0.9)' : theme.text};">
@@ -377,11 +379,11 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
             <div style="background-color: ${theme.primary}; padding: 32px 48px;">
                 <div style="display: flex; align-items: center; gap: 24px;">
                     ${data.personal.photo
-                        ? `<img src="${e(data.personal.photo)}" alt="${e(data.personal.name || 'Foto')}" style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 4px solid ${theme.background};" />`
+                        ? `<img src="${e(data.personal.photo)}" alt="${e(data.personal.name || rt('profilePhotoAlt'))}" style="width: 96px; height: 96px; border-radius: 50%; object-fit: cover; border: 4px solid ${theme.background};" />`
                         : `<div style="width: 96px; height: 96px; border-radius: 50%; background-color: ${theme.background}; display: flex; align-items: center; justify-content: center; color: ${theme.primary}; font-size: 24px; font-weight: bold; border: 4px solid ${theme.background};">${e(getInitials(data.personal.name))}</div>`
                     }
                     <div style="color: white;">
-                        <h1 style="font-size: 28px; font-weight: bold; letter-spacing: 0.05em; margin: 0;">${e(data.personal.name || 'Naam')}</h1>
+                        <h1 style="font-size: 28px; font-weight: bold; letter-spacing: 0.05em; margin: 0;">${e(data.personal.name || rt('nameFallback'))}</h1>
                         ${data.personal.title ? `<p style="font-size: 18px; margin-top: 4px; opacity: 0.9;">${e(data.personal.title)}</p>` : ''}
                     </div>
                 </div>
@@ -392,11 +394,11 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
             <div style="background-color: ${theme.primary}; padding: 24px 32px;">
                 <div style="display: flex; align-items: center; gap: 16px;">
                     ${data.personal.photo
-                        ? `<img src="${e(data.personal.photo)}" alt="${e(data.personal.name || 'Foto')}" style="width: 64px; height: 64px; border-radius: 4px; object-fit: cover; border: 2px solid rgba(255,255,255,0.3);" />`
+                        ? `<img src="${e(data.personal.photo)}" alt="${e(data.personal.name || rt('profilePhotoAlt'))}" style="width: 64px; height: 64px; border-radius: 4px; object-fit: cover; border: 2px solid rgba(255,255,255,0.3);" />`
                         : `<div style="width: 64px; height: 64px; border-radius: 4px; background-color: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; font-weight: bold;">${e(getInitials(data.personal.name))}</div>`
                     }
                     <div style="color: white; flex: 1;">
-                        <h1 style="font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">${e(data.personal.name || 'Naam')}</h1>
+                        <h1 style="font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">${e(data.personal.name || rt('nameFallback'))}</h1>
                         ${data.personal.title ? `<p style="font-size: 14px; margin-top: 4px; opacity: 0.9;">${e(data.personal.title)}</p>` : ''}
                     </div>
                 </div>
@@ -408,7 +410,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
     const headerHtml = (!hasHeaderBanner && !hasColoredSidebar && !isRemarkable) ? `
         <div style="border-bottom: 2px solid ${theme.primary}; padding-bottom: 16px; margin-bottom: 24px;">
             <h1 style="font-size: 28px; font-weight: bold; ${isProfessional ? '' : 'text-transform: uppercase; letter-spacing: 0.05em;'} margin: 0; color: ${theme.primary};">
-                ${e(data.personal.name || 'Naam')}
+                ${e(data.personal.name || rt('nameFallback'))}
             </h1>
             ${data.personal.title ? `<p style="font-size: 18px; margin-top: 8px; color: ${theme.textMuted};">${e(data.personal.title)}</p>` : ''}
         </div>
@@ -433,7 +435,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
             // Remarkable: italic with left border
             summaryHtml = `<div style="margin-bottom: 24px;"><p style="font-size: 13px; line-height: 1.6; color: ${theme.text}; font-style: italic; padding-left: 16px; border-left: 3px solid ${theme.primary}; white-space: pre-wrap;">${nl2brLinkified(data.personal.summary)}</p></div>`;
         } else {
-            summaryHtml = `<div style="margin-bottom: 24px;">${mainHeading('Profiel')}<p style="font-size: 13px; line-height: 1.6; color: ${theme.text}; ${isSepia ? 'font-weight: 300; font-family: Georgia, serif;' : ''} white-space: pre-wrap;">${nl2brLinkified(data.personal.summary)}</p></div>`;
+            summaryHtml = `<div style="margin-bottom: 24px;">${mainHeading(rt('profile'))}<p style="font-size: 13px; line-height: 1.6; color: ${theme.text}; ${isSepia ? 'font-weight: 300; font-family: Georgia, serif;' : ''} white-space: pre-wrap;">${nl2brLinkified(data.personal.summary)}</p></div>`;
         }
     }
 
@@ -511,7 +513,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
 
     const experienceHtml = data.experience.length > 0 ? `
         <div style="margin-bottom: 24px;">
-            ${mainHeading('Werkervaring')}
+            ${mainHeading(rt('experience'))}
             ${data.experience.map(exp => buildExperienceItem(exp)).join('')}
         </div>
     ` : '';
@@ -519,7 +521,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
     // ---- INTERNSHIPS ----
     const internshipsHtml = data.internships && data.internships.length > 0 ? `
         <div style="margin-bottom: 24px;">
-            ${mainHeading('Stages')}
+            ${mainHeading(rt('internships'))}
             ${data.internships.map(intern => {
                 if (isDynamic) {
                     return `
@@ -572,7 +574,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
     // ---- EDUCATION ----
     const educationHtml = data.education.length > 0 ? `
         <div style="margin-bottom: 24px;">
-            ${mainHeading('Opleidingen')}
+            ${mainHeading(rt('education'))}
             ${data.education.map(edu => {
                 if (isDynamic) {
                     return `
@@ -622,7 +624,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
     // ---- COURSES ----
     const coursesHtml = data.courses && data.courses.length > 0 ? `
         <div class="cv-section-small" style="margin-bottom: 24px;">
-            ${mainHeading(isRobust ? 'Cursussen' : 'Cursussen & Certificaten')}
+            ${mainHeading(isRobust ? rt('coursesShort') : rt('courses'))}
             ${data.courses.map(course => `
                 <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
                     <span style="font-size: 12px; font-weight: 500; color: ${theme.text}; ${isSepia ? 'font-family: Georgia, serif;' : ''}">${e(course.name)}</span>
@@ -637,7 +639,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
     // ---- AWARDS ----
     const awardsHtml = data.awards && data.awards.length > 0 ? `
         <div style="margin-bottom: 24px;">
-            ${mainHeading('Prijzen & Prestaties')}
+            ${mainHeading(rt('awards'))}
             <ul style="margin: 0; padding: 0; list-style: none;">
                 ${data.awards.map(award => `
                     <li class="cv-item" style="font-size: 12px; color: ${theme.text}; margin-bottom: 4px; display: flex; gap: 8px; ${isSepia ? 'font-weight: 300;' : ''}">
@@ -682,7 +684,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
         </div>
     `;
 
-    return wrapPage(content, theme);
+    return wrapPage(content, theme, getResumeLanguage(data));
 }
 
 // ============================================================
@@ -692,6 +694,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
 
 function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: string): string {
     const e = escapeHtml;
+    const rt = (key: Parameters<typeof resumeText>[1]) => resumeText(data, key);
     const isFormal = templateId === 'formal';
     const isElegant = templateId === 'elegant';
     const hasColoredSidebar = isFormal;
@@ -711,7 +714,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
     const photoHtml = `
         <div style="text-align: center; margin-bottom: 24px;">
             ${data.personal.photo
-                ? `<img src="${e(data.personal.photo)}" alt="${e(data.personal.name || 'Foto')}" style="width: 112px; height: 112px; border-radius: 50%; object-fit: cover; margin: 0 auto; ${hasColoredSidebar ? 'border: 4px solid rgba(255,255,255,0.3);' : `border: 2px solid ${theme.primary};`}" />`
+                ? `<img src="${e(data.personal.photo)}" alt="${e(data.personal.name || rt('profilePhotoAlt'))}" style="width: 112px; height: 112px; border-radius: 50%; object-fit: cover; margin: 0 auto; ${hasColoredSidebar ? 'border: 4px solid rgba(255,255,255,0.3);' : `border: 2px solid ${theme.primary};`}" />`
                 : `<div style="width: 112px; height: 112px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; font-size: 36px; font-weight: bold; ${
                     hasColoredSidebar ? `background-color: ${theme.background}; color: ${theme.primary};`
                     : isElegant ? `border: 2px solid ${theme.primary}; color: ${theme.primary}; font-family: Georgia, serif;`
@@ -744,7 +747,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
     // ---- PERSONALIA ----
     const contactHtml = `
         <div class="cv-section-small" style="margin-bottom: 24px;">
-            ${sidebarHeading('Personalia')}
+            ${sidebarHeading(rt('personalDetails'))}
             <div style="font-size: 12px; color: ${sidebarTextColor}; line-height: 1.6;">
                 ${data.personal.address ? `<div style="margin-bottom: 4px; ${!hasColoredSidebar ? `font-weight: 500; color: ${theme.text};` : 'font-weight: 600;'}">${e(data.personal.address)}</div>` : ''}
                 ${data.personal.postalCode ? `<div style="margin-bottom: 6px;">${e(data.personal.postalCode)}</div>` : ''}
@@ -752,15 +755,15 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
                 ${data.personal.phone ? `<div style="margin-bottom: 6px;">${e(data.personal.phone)}</div>` : ''}
                 ${data.personal.birthDate ? `
                     <div style="margin-top: 8px;">
-                        <div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">Geboortedatum</div>
+                        <div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">${rt('birthDate')}</div>
                         <div>${e(data.personal.birthDate)}</div>
                         ${data.personal.birthPlace ? `<div>${e(data.personal.birthPlace)}</div>` : ''}
                     </div>
                 ` : ''}
-                ${data.personal.nationality ? `<div style="margin-top: 6px;"><div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">Nationaliteit</div><div>${e(data.personal.nationality)}</div></div>` : ''}
-                ${data.personal.driversLicense ? `<div style="margin-top: 6px;"><div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">Rijbewijs</div><div>${e(data.personal.driversLicense)}</div></div>` : ''}
-                ${data.personal.gender ? `<div style="margin-top: 6px;"><div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">Geslacht</div><div>${e(data.personal.gender)}</div></div>` : ''}
-                ${data.personal.maritalStatus ? `<div style="margin-top: 6px;"><div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">Burgerlijke staat</div><div>${e(data.personal.maritalStatus)}</div></div>` : ''}
+                ${data.personal.nationality ? `<div style="margin-top: 6px;"><div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">${rt('nationality')}</div><div>${e(data.personal.nationality)}</div></div>` : ''}
+                ${data.personal.driversLicense ? `<div style="margin-top: 6px;"><div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">${rt('driversLicense')}</div><div>${e(data.personal.driversLicense)}</div></div>` : ''}
+                ${data.personal.gender ? `<div style="margin-top: 6px;"><div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">${rt('gender')}</div><div>${e(formatGender(data.personal.gender, data))}</div></div>` : ''}
+                ${data.personal.maritalStatus ? `<div style="margin-top: 6px;"><div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">${rt('maritalStatus')}</div><div>${e(formatMaritalStatus(data.personal.maritalStatus, data))}</div></div>` : ''}
                 ${data.personal.linkedIn ? `<div style="margin-top: 6px;"><div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">LinkedIn</div><div style="word-break: break-all;">${linkifyText(data.personal.linkedIn)}</div></div>` : ''}
                 ${data.personal.github ? `<div style="margin-top: 6px;"><div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">GitHub</div><div style="word-break: break-all;">${linkifyText(data.personal.github)}</div></div>` : ''}
                 ${data.personal.website ? `<div style="margin-top: 6px;"><div style="font-weight: 600; ${hasColoredSidebar ? '' : `color: ${theme.text};`}">Website</div><div style="word-break: break-all;">${linkifyText(data.personal.website)}</div></div>` : ''}
@@ -771,7 +774,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
     // ---- SKILLS ----
     const skillsHtml = data.skills.length > 0 ? `
         <div class="cv-section-small" style="margin-bottom: 24px;">
-            ${sidebarHeading('Vaardigheden')}
+            ${sidebarHeading(rt('skills'))}
             <div style="display: flex; flex-direction: column; gap: 8px;">
                 ${data.skills.map(skill => {
                     if (isFormal) {
@@ -789,12 +792,12 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
     // ---- LANGUAGES ----
     const languagesHtml = data.languages.length > 0 ? `
         <div class="cv-section-small" style="margin-bottom: 24px;">
-            ${sidebarHeading('Talen')}
+            ${sidebarHeading(rt('languages'))}
             <div style="display: flex; flex-direction: column; gap: 8px;">
                 ${data.languages.map(lang => `
                     <div>
                         <div style="font-size: 12px; font-weight: 500; color: ${hasColoredSidebar ? 'rgba(255,255,255,0.9)' : theme.text};">${e(lang.name)}</div>
-                        ${lang.level ? `<div style="font-size: 12px; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.textMuted};`} ${isElegant ? 'font-style: italic;' : ''}">${e(lang.level)}</div>` : ''}
+                        ${lang.level ? `<div style="font-size: 12px; ${hasColoredSidebar ? 'opacity: 0.7;' : `color: ${theme.textMuted};`} ${isElegant ? 'font-style: italic;' : ''}">${e(formatLanguageLevel(lang.level, data))}</div>` : ''}
                     </div>
                 `).join('')}
             </div>
@@ -804,7 +807,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
     // ---- INTERESTS ----
     const interestsHtml = data.interests && data.interests.length > 0 ? `
         <div class="cv-section-small" style="margin-bottom: 24px;">
-            ${sidebarHeading('Interesses')}
+            ${sidebarHeading(rt('interests'))}
             <div style="display: flex; flex-wrap: wrap; gap: 6px;">
                 ${data.interests.map(interest => `
                     <span style="font-size: 11px; padding: 4px 8px; border-radius: 4px; ${
@@ -822,18 +825,18 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
     // ---- MAIN CONTENT HEADER ----
     const headerHtml = isFormal ? `
         <div style="margin-bottom: 24px;">
-            <h1 style="font-size: 28px; font-weight: bold; margin: 0 0 4px 0; color: ${theme.primary};">${e(data.personal.name || 'Naam')}</h1>
+            <h1 style="font-size: 28px; font-weight: bold; margin: 0 0 4px 0; color: ${theme.primary};">${e(data.personal.name || rt('nameFallback'))}</h1>
             ${data.personal.title ? `<p style="font-size: 18px; margin: 0; color: ${theme.textMuted};">${e(data.personal.title)}</p>` : ''}
         </div>
     ` : isElegant ? `
         <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="font-size: 28px; font-weight: bold; letter-spacing: 0.05em; margin: 0; font-family: Georgia, serif;">${e(data.personal.name || 'Naam')}</h1>
+            <h1 style="font-size: 28px; font-weight: bold; letter-spacing: 0.05em; margin: 0; font-family: Georgia, serif;">${e(data.personal.name || rt('nameFallback'))}</h1>
             ${data.personal.title ? `<p style="font-size: 16px; margin-top: 8px; font-family: Georgia, serif; font-style: italic; color: ${theme.primary};">${e(data.personal.title)}</p>` : ''}
             <div style="width: 64px; height: 2px; margin: 16px auto 0; background-color: ${theme.primary};"></div>
         </div>
     ` : `
         <div style="margin-bottom: 24px;">
-            <h1 style="font-size: 28px; font-weight: bold; margin: 0 0 4px 0; color: ${theme.primary};">${e(data.personal.name || 'Naam')}</h1>
+            <h1 style="font-size: 28px; font-weight: bold; margin: 0 0 4px 0; color: ${theme.primary};">${e(data.personal.name || rt('nameFallback'))}</h1>
             ${data.personal.title ? `<p style="font-size: 16px; margin: 0; color: ${theme.textMuted};">${e(data.personal.title)}</p>` : ''}
         </div>
     `;
@@ -841,7 +844,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
     // ---- SUMMARY ----
     const summaryHtml = data.personal.summary ? `
         <div style="margin-bottom: 24px;">
-            ${mainHeading('Profiel')}
+            ${mainHeading(rt('profile'))}
             <p style="font-size: 13px; line-height: 1.6; color: ${theme.text}; ${isElegant ? 'font-weight: 300;' : ''} white-space: pre-wrap;">${nl2brLinkified(data.personal.summary)}</p>
         </div>
     ` : '';
@@ -851,7 +854,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
 
     const experienceHtml = data.experience.length > 0 ? `
         <div style="margin-bottom: 24px;">
-            ${mainHeading('Werkervaring')}
+            ${mainHeading(rt('experience'))}
             ${data.experience.map(exp => `
                 <div class="cv-item" style="margin-bottom: 16px;">
                     <div style="display: flex; justify-content: space-between; align-items: baseline;">
@@ -871,7 +874,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
     // ---- INTERNSHIPS ----
     const internshipsHtml = data.internships && data.internships.length > 0 ? `
         <div style="margin-bottom: 24px;">
-            ${mainHeading('Stages')}
+            ${mainHeading(rt('internships'))}
             ${data.internships.map(intern => `
                 <div class="cv-item" style="margin-bottom: 12px;">
                     <div style="display: flex; justify-content: space-between; align-items: baseline;">
@@ -889,7 +892,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
     // ---- EDUCATION ----
     const educationHtml = data.education.length > 0 ? `
         <div style="margin-bottom: 24px;">
-            ${mainHeading('Opleidingen')}
+            ${mainHeading(rt('education'))}
             ${data.education.map(edu => `
                 <div class="cv-item" style="margin-bottom: 12px;">
                     <div style="display: flex; justify-content: space-between; align-items: baseline;">
@@ -906,7 +909,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
     // ---- COURSES ----
     const coursesHtml = data.courses && data.courses.length > 0 ? `
         <div class="cv-section-small" style="margin-bottom: 24px;">
-            ${mainHeading('Cursussen & Certificaten')}
+            ${mainHeading(rt('courses'))}
             ${data.courses.map(course => `
                 <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
                     <span style="font-size: 12px; font-weight: 500; ${isElegant ? '' : `color: ${theme.text};`}">${e(course.name)}</span>
@@ -921,7 +924,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
     // ---- AWARDS ----
     const awardsHtml = data.awards && data.awards.length > 0 ? `
         <div style="margin-bottom: 24px;">
-            ${mainHeading('Prijzen & Prestaties')}
+            ${mainHeading(rt('awards'))}
             <ul style="margin: 0; padding: 0; list-style: none;">
                 ${data.awards.map(award => `
                     <li class="cv-item" style="font-size: 12px; color: ${theme.text}; margin-bottom: 4px; display: flex; gap: 8px; ${isElegant ? 'font-weight: 300;' : ''}">
@@ -957,7 +960,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
         </div>
     `;
 
-    return wrapPage(content, theme);
+    return wrapPage(content, theme, getResumeLanguage(data));
 }
 
 // ============================================================
@@ -967,6 +970,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
 
 function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: string): string {
     const e = escapeHtml;
+    const rt = (key: Parameters<typeof resumeText>[1]) => resumeText(data, key);
     const contactItems = [
         data.personal.email,
         data.personal.phone,
@@ -978,20 +982,20 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
     const personalDetailItems: string[] = [];
     if (data.personal.birthDate || data.personal.birthPlace) {
         personalDetailItems.push(
-            `Geboren: ${e(data.personal.birthDate || '')}${data.personal.birthPlace ? `, ${e(data.personal.birthPlace)}` : ''}`
+            `${rt('birthDateAndPlace')}: ${e(data.personal.birthDate || '')}${data.personal.birthPlace ? `, ${e(data.personal.birthPlace)}` : ''}`
         );
     }
     if (data.personal.nationality) {
-        personalDetailItems.push(`Nationaliteit: ${e(data.personal.nationality)}`);
+        personalDetailItems.push(`${rt('nationality')}: ${e(data.personal.nationality)}`);
     }
     if (data.personal.driversLicense) {
-        personalDetailItems.push(`Rijbewijs: ${e(data.personal.driversLicense)}`);
+        personalDetailItems.push(`${rt('driversLicense')}: ${e(data.personal.driversLicense)}`);
     }
     if (data.personal.gender) {
-        personalDetailItems.push(`Geslacht: ${e(data.personal.gender)}`);
+        personalDetailItems.push(`${rt('gender')}: ${e(formatGender(data.personal.gender, data))}`);
     }
     if (data.personal.maritalStatus) {
-        personalDetailItems.push(`Burgerlijke staat: ${e(data.personal.maritalStatus)}`);
+        personalDetailItems.push(`${rt('maritalStatus')}: ${e(formatMaritalStatus(data.personal.maritalStatus, data))}`);
     }
     if (data.personal.linkedIn) {
         personalDetailItems.push(`LinkedIn: ${linkifyText(data.personal.linkedIn)}`);
@@ -1006,11 +1010,11 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
     const headerHtml = `
         <div style="text-align: center; border-bottom: 2px solid ${theme.primary}; padding-bottom: 24px; margin-bottom: 24px;">
             ${data.personal.photo
-                ? `<img src="${e(data.personal.photo)}" alt="${e(data.personal.name || 'Foto')}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 12px; display: block; border: 3px solid ${theme.primary};" />`
+                ? `<img src="${e(data.personal.photo)}" alt="${e(data.personal.name || rt('profilePhotoAlt'))}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 12px; display: block; border: 3px solid ${theme.primary};" />`
                 : ''
             }
             <h1 style="font-size: 32px; font-weight: bold; margin: 0 0 8px 0; color: ${theme.text};">
-                ${e(data.personal.name || 'Naam')}
+                ${e(data.personal.name || rt('nameFallback'))}
             </h1>
             ${data.personal.title ? `<p style="font-size: 16px; margin: 0; color: ${theme.textMuted};">${e(data.personal.title)}</p>` : ''}
             <div style="display: flex; justify-content: center; gap: 24px; margin-top: 16px; font-size: 13px; color: ${theme.textMuted}; flex-wrap: wrap;">
@@ -1027,7 +1031,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
     const summaryHtml = data.personal.summary ? `
         <div style="margin-bottom: 24px;">
             <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 12px;">
-                Profiel
+                ${rt('profile')}
             </h2>
             <p style="font-size: 13px; line-height: 1.6; color: ${theme.text}; white-space: pre-wrap;">${nl2brLinkified(data.personal.summary)}</p>
         </div>
@@ -1036,7 +1040,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
     const experienceHtml = data.experience.length > 0 ? `
         <div style="margin-bottom: 24px;">
             <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 16px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">
-                Werkervaring
+                ${rt('experience')}
             </h2>
             ${data.experience.map(exp => `
                 <div class="cv-item" style="margin-bottom: 20px;">
@@ -1061,7 +1065,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
     const internshipsHtml = data.internships && data.internships.length > 0 ? `
         <div style="margin-bottom: 24px;">
             <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 16px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">
-                Stages
+                ${rt('internships')}
             </h2>
             ${data.internships.map(intern => `
                 <div class="cv-item" style="margin-bottom: 16px;">
@@ -1084,7 +1088,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
     const educationHtml = data.education.length > 0 ? `
         <div style="margin-bottom: 24px;">
             <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 16px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">
-                Opleiding
+                ${rt('educationSingle')}
             </h2>
             ${data.education.map(edu => `
                 <div class="cv-item" style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px;">
@@ -1101,7 +1105,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
     const coursesHtml = data.courses && data.courses.length > 0 ? `
         <div class="cv-section-small" style="margin-bottom: 24px;">
             <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 12px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">
-                Cursussen & Certificaten
+                ${rt('courses')}
             </h2>
             ${data.courses.map(course => `
                 <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px;">
@@ -1116,7 +1120,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
     const awardsHtml = data.awards && data.awards.length > 0 ? `
         <div style="margin-bottom: 24px;">
             <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 12px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">
-                Prijzen & Prestaties
+                ${rt('awards')}
             </h2>
             <ul style="margin: 0; padding: 0; list-style: none;">
                 ${data.awards.map(award => `
@@ -1135,7 +1139,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
             ${data.skills.length > 0 ? `
                 <div style="flex: 1;">
                     <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 12px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">
-                        Vaardigheden
+                        ${rt('skills')}
                     </h2>
                     <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                         ${data.skills.map(skill => `
@@ -1149,12 +1153,12 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
             ${data.languages.length > 0 ? `
                 <div style="flex: 1;">
                     <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 12px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">
-                        Talen
+                        ${rt('languages')}
                     </h2>
                     <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                         ${data.languages.map(lang => `
                             <span style="font-size: 12px; padding: 4px 12px; border-radius: 9999px; background-color: ${theme.secondary}10; color: ${theme.secondary};">
-                                ${e(lang.name)} (${e(lang.level)})
+                                ${e(lang.name)} (${e(formatLanguageLevel(lang.level, data))})
                             </span>
                         `).join('')}
                     </div>
@@ -1166,7 +1170,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
     const interestsHtml = data.interests && data.interests.length > 0 ? `
         <div class="cv-section-small" style="margin-top: 24px;">
             <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 12px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">
-                Interesses
+                ${rt('interests')}
             </h2>
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 ${data.interests.map(interest => `
@@ -1192,7 +1196,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
         </div>
     `;
 
-    return wrapPage(content, theme);
+    return wrapPage(content, theme, getResumeLanguage(data));
 }
 
 // ============================================================
@@ -1201,11 +1205,12 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
 
 function buildATSHTML(data: CVData, theme: ColorTheme): string {
     const e = escapeHtml;
+    const rt = (key: Parameters<typeof resumeText>[1]) => resumeText(data, key);
 
     const headerHtml = `
         <div style="text-align: center; border-bottom: 2px solid ${theme.primary}; padding-bottom: 16px; margin-bottom: 20px;">
             <h1 style="font-size: 24px; font-weight: bold; margin: 0 0 4px 0; color: ${theme.text};">
-                ${e(data.personal.name || 'Naam')}
+                ${e(data.personal.name || rt('nameFallback'))}
             </h1>
             ${data.personal.title ? `<p style="font-size: 14px; margin: 0 0 8px 0; color: ${theme.textMuted};">${e(data.personal.title)}</p>` : ''}
             <div style="font-size: 11px; color: ${theme.textMuted};">
@@ -1216,21 +1221,21 @@ function buildATSHTML(data: CVData, theme: ColorTheme): string {
 
     const summaryHtml = data.personal.summary ? `
         <div style="margin-bottom: 16px;">
-            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 6px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">Profiel</h2>
+            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 6px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">${rt('profile')}</h2>
             <p style="font-size: 11px; line-height: 1.5; color: ${theme.text};">${nl2brLinkified(data.personal.summary)}</p>
         </div>
     ` : '';
 
     const skillsHtml = data.skills.length > 0 ? `
         <div style="margin-bottom: 16px;">
-            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 6px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">Vaardigheden</h2>
+            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 6px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">${rt('skills')}</h2>
             <p style="font-size: 11px; line-height: 1.5; color: ${theme.text};">${data.skills.map(s => e(s.name)).join(' &#8226; ')}</p>
         </div>
     ` : '';
 
     const experienceHtml = data.experience.length > 0 ? `
         <div style="margin-bottom: 16px;">
-            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 8px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">Werkervaring</h2>
+            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 8px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">${rt('experience')}</h2>
             ${data.experience.map(exp => `
                 <div class="cv-item" style="margin-bottom: 12px;">
                     <div style="display: flex; justify-content: space-between; align-items: baseline;">
@@ -1247,7 +1252,7 @@ function buildATSHTML(data: CVData, theme: ColorTheme): string {
 
     const internshipsHtml = data.internships && data.internships.length > 0 ? `
         <div style="margin-bottom: 16px;">
-            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 8px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">Stages</h2>
+            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 8px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">${rt('internships')}</h2>
             ${data.internships.map(intern => `
                 <div class="cv-item" style="margin-bottom: 12px;">
                     <div style="display: flex; justify-content: space-between; align-items: baseline;">
@@ -1264,7 +1269,7 @@ function buildATSHTML(data: CVData, theme: ColorTheme): string {
 
     const educationHtml = data.education.length > 0 ? `
         <div style="margin-bottom: 16px;">
-            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 8px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">Opleiding</h2>
+            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 8px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">${rt('educationSingle')}</h2>
             ${data.education.map(edu => `
                 <div class="cv-item" style="margin-bottom: 8px;">
                     <div style="display: flex; justify-content: space-between; align-items: baseline;">
@@ -1280,14 +1285,14 @@ function buildATSHTML(data: CVData, theme: ColorTheme): string {
 
     const awardsHtml = data.awards && data.awards.length > 0 ? `
         <div style="margin-bottom: 16px;">
-            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 6px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">Prijzen & Prestaties</h2>
+            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 6px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">${rt('awards')}</h2>
             <ul style="margin: 0; padding-left: 16px;">${data.awards.map(award => `<li style="font-size: 10px; color: ${theme.text}; margin-bottom: 2px;">${e(award)}</li>`).join('')}</ul>
         </div>
     ` : '';
 
     const coursesHtml = data.courses && data.courses.length > 0 ? `
         <div style="margin-bottom: 16px;">
-            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 6px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">Cursussen & Certificaten</h2>
+            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 6px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">${rt('courses')}</h2>
             ${data.courses.map(course => `
                 <div style="display: flex; justify-content: space-between; font-size: 10px; margin-bottom: 2px;">
                     <span>${e(course.name)}</span>
@@ -1299,8 +1304,8 @@ function buildATSHTML(data: CVData, theme: ColorTheme): string {
 
     const languagesHtml = data.languages.length > 0 ? `
         <div style="margin-bottom: 16px;">
-            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 6px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">Talen</h2>
-            <p style="font-size: 11px; color: ${theme.text};">${data.languages.map(l => `${e(l.name)} (${e(l.level)})`).join(' &#8226; ')}</p>
+            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 6px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">${rt('languages')}</h2>
+            <p style="font-size: 11px; color: ${theme.text};">${data.languages.map(l => `${e(l.name)} (${e(formatLanguageLevel(l.level, data))})`).join(' &#8226; ')}</p>
         </div>
     ` : '';
 
@@ -1318,7 +1323,7 @@ function buildATSHTML(data: CVData, theme: ColorTheme): string {
         </div>
     `;
 
-    return wrapPage(content, theme);
+    return wrapPage(content, theme, getResumeLanguage(data));
 }
 
 // ============================================================
@@ -1362,4 +1367,6 @@ export async function generatePDF(
         await browser.close();
     }
 }
+
+
 

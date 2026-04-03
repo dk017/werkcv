@@ -1,6 +1,7 @@
 import { CVData } from "@/lib/cv";
 import { ColorTheme } from "@/lib/templates";
 import { LinkText } from "./link-utils";
+import { resumeText } from "@/lib/resume-language";
 
 interface TemplateProps {
     data: CVData;
@@ -58,7 +59,7 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
                     {data.personal.photo ? (
                         <img
                             src={data.personal.photo}
-                            alt={data.personal.name || 'Profielfoto'}
+                            alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
                             className="w-24 h-24 rounded-full object-cover border-4"
                             style={{ borderColor: theme.primary }}
                         />
@@ -78,7 +79,7 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
                 {/* Name */}
                 <div className="text-center">
                     <h1 className="text-lg font-bold">
-                        {data.personal.name || "Naam"}
+                        {data.personal.name || resumeText(data, "nameFallback")}
                     </h1>
                     {data.personal.title && (
                         <p className="text-xs mt-1" style={{ color: theme.primary }}>
@@ -96,9 +97,7 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
                         <span
                             className="w-4 h-0.5"
                             style={{ backgroundColor: theme.primary }}
-                        />
-                        Personalia
-                    </h2>
+                        />{resumeText(data, "personalDetails")}</h2>
                     <div className="space-y-2 text-xs" style={{ color: theme.textMuted }}>
                         {data.personal.address && (
                             <div>
@@ -112,20 +111,20 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
                         {data.personal.phone && <div>{data.personal.phone}</div>}
                         {(data.personal.birthDate || data.personal.birthPlace) && (
                             <div className="pt-2">
-                                <div className="font-semibold" style={{ color: theme.text }}>Geboortedatum</div>
+                                <div className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "birthDate")}</div>
                                 <div>{data.personal.birthDate}</div>
                                 {data.personal.birthPlace && <div>{data.personal.birthPlace}</div>}
                             </div>
                         )}
                         {data.personal.nationality && (
                             <div className="pt-1">
-                                <div className="font-semibold" style={{ color: theme.text }}>Nationaliteit</div>
+                                <div className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "nationality")}</div>
                                 <div>{data.personal.nationality}</div>
                             </div>
                         )}
                         {data.personal.driversLicense && (
                             <div className="pt-1">
-                                <div className="font-semibold" style={{ color: theme.text }}>Rijbewijs</div>
+                                <div className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "driversLicense")}</div>
                                 <div>{data.personal.driversLicense}</div>
                             </div>
                         )}
@@ -148,9 +147,7 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
                             <span
                                 className="w-4 h-0.5"
                                 style={{ backgroundColor: theme.primary }}
-                            />
-                            Vaardigheden
-                        </h2>
+                            />{resumeText(data, "skills")}</h2>
                         <div className="space-y-3">
                             {data.skills.map((skill, i) => (
                                 <div key={i}>
@@ -177,9 +174,7 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
                             <span
                                 className="w-4 h-0.5"
                                 style={{ backgroundColor: theme.primary }}
-                            />
-                            Talen
-                        </h2>
+                            />{resumeText(data, "languages")}</h2>
                         <div className="space-y-3">
                             {data.languages.map((lang, i) => (
                                 <div key={i}>
@@ -205,9 +200,7 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
                             <span
                                 className="w-4 h-0.5"
                                 style={{ backgroundColor: theme.primary }}
-                            />
-                            Interesses
-                        </h2>
+                            />{resumeText(data, "interests")}</h2>
                         <div className="flex flex-wrap gap-1">
                             {data.interests.map((interest, i) => (
                                 <span
@@ -250,9 +243,7 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
                             <span
                                 className="w-6 h-0.5"
                                 style={{ backgroundColor: theme.primary }}
-                            />
-                            Werkervaring
-                        </h2>
+                            />{resumeText(data, "experience")}</h2>
                         <div className="space-y-4">
                             {data.experience.map((exp, i) => (
                                 <div key={i}>
@@ -306,9 +297,7 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
                             <span
                                 className="w-6 h-0.5"
                                 style={{ backgroundColor: theme.primary }}
-                            />
-                            Stages
-                        </h2>
+                            />{resumeText(data, "internships")}</h2>
                         <div className="space-y-3">
                             {data.internships.map((intern, i) => (
                                 <div key={i}>
@@ -356,9 +345,7 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
                             <span
                                 className="w-6 h-0.5"
                                 style={{ backgroundColor: theme.primary }}
-                            />
-                            Opleidingen
-                        </h2>
+                            />{resumeText(data, "education")}</h2>
                         <div className="space-y-3">
                             {data.education.map((edu, i) => (
                                 <div key={i} className="flex justify-between items-start">
@@ -392,9 +379,7 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
                             <span
                                 className="w-6 h-0.5"
                                 style={{ backgroundColor: theme.primary }}
-                            />
-                            Cursussen & Certificaten
-                        </h2>
+                            />{resumeText(data, "courses")}</h2>
                         <div className="space-y-1">
                             {data.courses.map((course, i) => (
                                 <div key={i} className="flex justify-between text-xs">
@@ -417,9 +402,7 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
                                 <span
                                     className="w-6 h-0.5"
                                     style={{ backgroundColor: theme.primary }}
-                                />
-                                Prijzen & Prestaties
-                            </h2>
+                                />{resumeText(data, "awards")}</h2>
                             <ul className="space-y-1">
                                 {data.awards.map((award, i) => (
                                     <li key={i} className="text-xs flex items-start gap-2">
@@ -434,3 +417,6 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
         </div>
     );
 }
+
+
+

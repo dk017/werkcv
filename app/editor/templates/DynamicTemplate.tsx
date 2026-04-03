@@ -1,6 +1,7 @@
 import { CVData } from "@/lib/cv";
 import { ColorTheme } from "@/lib/templates";
 import { LinkText } from "./link-utils";
+import { resumeText } from "@/lib/resume-language";
 
 interface TemplateProps {
     data: CVData;
@@ -73,7 +74,7 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                     {data.personal.photo ? (
                         <img
                             src={data.personal.photo}
-                            alt={data.personal.name || 'Profielfoto'}
+                            alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
                             className="w-24 h-24 rounded-full object-cover border-4"
                             style={{ borderColor: theme.background }}
                         />
@@ -87,7 +88,7 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                     )}
                     <div className="text-white">
                         <h1 className="text-3xl font-bold tracking-wide">
-                            {data.personal.name || "Naam"}
+                            {data.personal.name || resumeText(data, "nameFallback")}
                         </h1>
                         {data.personal.title && (
                             <p className="text-lg mt-1 opacity-90">{data.personal.title}</p>
@@ -108,8 +109,7 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                             className="text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"
                             style={{ color: theme.primary }}
                         >
-                            <span>◆</span> Personalia
-                        </h2>
+                            <span>◆</span>{resumeText(data, "personalDetails")}</h2>
                         <div className="space-y-2 text-xs" style={{ color: theme.textMuted }}>
                             {data.personal.address && (
                                 <div className="flex items-start gap-2">
@@ -134,20 +134,20 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                             )}
                             {(data.personal.birthDate || data.personal.birthPlace) && (
                                 <div className="pt-2">
-                                    <span className="font-semibold" style={{ color: theme.text }}>Geboortedatum</span>
+                                    <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "birthDate")}</span>
                                     <div>{data.personal.birthDate}</div>
                                     {data.personal.birthPlace && <div>{data.personal.birthPlace}</div>}
                                 </div>
                             )}
                             {data.personal.nationality && (
                                 <div className="pt-1">
-                                    <span className="font-semibold" style={{ color: theme.text }}>Nationaliteit</span>
+                                    <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "nationality")}</span>
                                     <div>{data.personal.nationality}</div>
                                 </div>
                             )}
                             {data.personal.driversLicense && (
                                 <div className="pt-1">
-                                    <span className="font-semibold" style={{ color: theme.text }}>Rijbewijs</span>
+                                    <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "driversLicense")}</span>
                                     <div>{data.personal.driversLicense}</div>
                                 </div>
                             )}
@@ -167,8 +167,7 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                                 className="text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"
                                 style={{ color: theme.primary }}
                             >
-                                <span>◆</span> Vaardigheden
-                            </h2>
+                                <span>◆</span>{resumeText(data, "skills")}</h2>
                             <div className="space-y-2">
                                 {data.skills.map((skill, i) => (
                                     <div key={i} className="flex justify-between items-center">
@@ -192,8 +191,7 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                                 className="text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"
                                 style={{ color: theme.primary }}
                             >
-                                <span>◆</span> Talen
-                            </h2>
+                                <span>◆</span>{resumeText(data, "languages")}</h2>
                             <div className="space-y-3">
                                 {data.languages.map((lang, i) => (
                                     <div key={i}>
@@ -216,8 +214,7 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                                 className="text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2"
                                 style={{ color: theme.primary }}
                             >
-                                <span>◆</span> Interesses
-                            </h2>
+                                <span>◆</span>{resumeText(data, "interests")}</h2>
                             <div className="flex flex-wrap gap-1">
                                 {data.interests.map((interest, i) => (
                                     <span
@@ -247,9 +244,7 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                                     color: theme.primary,
                                     borderBottom: `2px solid ${theme.primary}`
                                 }}
-                            >
-                                Profiel
-                            </h2>
+                            >{resumeText(data, "profile")}</h2>
                             <p className="text-sm leading-relaxed whitespace-pre-wrap">
                                 {data.personal.summary}
                             </p>
@@ -265,9 +260,7 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                                     color: theme.primary,
                                     borderBottom: `2px solid ${theme.primary}`
                                 }}
-                            >
-                                Werkervaring
-                            </h2>
+                            >{resumeText(data, "experience")}</h2>
                             <div className="space-y-4">
                                 {data.experience.map((exp, i) => (
                                     <div key={i} className="relative pl-4" style={{ borderLeft: `2px solid ${theme.border}` }}>
@@ -322,9 +315,7 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                                     color: theme.primary,
                                     borderBottom: `2px solid ${theme.primary}`
                                 }}
-                            >
-                                Stages
-                            </h2>
+                            >{resumeText(data, "internships")}</h2>
                             <div className="space-y-3">
                                 {data.internships.map((intern, i) => (
                                     <div key={i} className="relative pl-4" style={{ borderLeft: `2px solid ${theme.secondary || theme.primary}` }}>
@@ -373,9 +364,7 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                                     color: theme.primary,
                                     borderBottom: `2px solid ${theme.primary}`
                                 }}
-                            >
-                                Opleidingen
-                            </h2>
+                            >{resumeText(data, "education")}</h2>
                             <div className="space-y-3">
                                 {data.education.map((edu, i) => (
                                     <div key={i} className="relative pl-4" style={{ borderLeft: `2px solid ${theme.border}` }}>
@@ -414,9 +403,7 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                                     color: theme.primary,
                                     borderBottom: `2px solid ${theme.primary}`
                                 }}
-                            >
-                                Cursussen & Certificaten
-                            </h2>
+                            >{resumeText(data, "courses")}</h2>
                             <div className="space-y-1">
                                 {data.courses.map((course, i) => (
                                     <div key={i} className="flex justify-between text-xs">
@@ -438,9 +425,7 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                                     color: theme.primary,
                                     borderBottom: `2px solid ${theme.primary}`
                                 }}
-                            >
-                                Prijzen & Prestaties
-                            </h2>
+                            >{resumeText(data, "awards")}</h2>
                             <ul className="space-y-1">
                                 {data.awards.map((award, i) => (
                                     <li key={i} className="text-xs flex items-start gap-2">
@@ -456,3 +441,6 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
         </div>
     );
 }
+
+
+

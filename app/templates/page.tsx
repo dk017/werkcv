@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     canonical: "https://werkcv.nl/templates",
     languages: {
       "nl-NL": "https://werkcv.nl/templates",
-      "en-NL": "https://werkcv.nl/en/dutch-cv-template",
+      "en-NL": "https://werkcv.nl/en/templates",
       "x-default": "https://werkcv.nl/templates",
     },
   },

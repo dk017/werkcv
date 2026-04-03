@@ -33,12 +33,14 @@ import {
     markEditorStartedTracked,
     track
 } from "@/lib/analytics";
+import { UiLanguage } from "@/lib/ui-language";
 
 interface EditorProps {
     initialData: CVData;
     id: string;
     initialTemplateId: string;
     initialColorThemeId: string;
+    uiLanguage?: UiLanguage;
 }
 
 // Reusable input styles for cleaner, calmer form UI
@@ -62,27 +64,42 @@ type OptionalSectionId =
     | 'sideActivities'
     | 'customSections';
 
-const optionalSectionOptions: Array<{ id: OptionalSectionId; label: string }> = [
-    { id: 'interests', label: 'Interesses' },
-    { id: 'properties', label: 'Eigenschappen' },
-    { id: 'courses', label: 'Cursussen/Certificaten' },
-    { id: 'internships', label: 'Stages' },
-    { id: 'awards', label: 'Prestaties' },
-    { id: 'references', label: 'Referenties' },
-    { id: 'sideActivities', label: 'Nevenactiviteiten' },
-    { id: 'customSections', label: 'Eigen onderdeel' },
-];
+function getOptionalSectionOptions(uiLanguage: UiLanguage): Array<{ id: OptionalSectionId; label: string }> {
+    if (uiLanguage === "en") {
+        return [
+            { id: "interests", label: "Interests" },
+            { id: "properties", label: "Strengths" },
+            { id: "courses", label: "Courses/Certificates" },
+            { id: "internships", label: "Internships" },
+            { id: "awards", label: "Achievements" },
+            { id: "references", label: "References" },
+            { id: "sideActivities", label: "Side Activities" },
+            { id: "customSections", label: "Custom Section" },
+        ];
+    }
+
+    return [
+        { id: "interests", label: "Interesses" },
+        { id: "properties", label: "Eigenschappen" },
+        { id: "courses", label: "Cursussen/Certificaten" },
+        { id: "internships", label: "Stages" },
+        { id: "awards", label: "Prestaties" },
+        { id: "references", label: "Referenties" },
+        { id: "sideActivities", label: "Nevenactiviteiten" },
+        { id: "customSections", label: "Eigen onderdeel" },
+    ];
+}
 
 function hasItems(value: unknown): boolean {
     return Array.isArray(value) && value.length > 0;
 }
 
-function ensureEditorData(data: CVData): CVData {
+function ensureEditorData(data: CVData, fallbackLanguage: UiLanguage = "nl"): CVData {
     return {
         ...data,
         personal: {
             ...data.personal,
-            resumeLanguage: data.personal.resumeLanguage ?? 'nl',
+            resumeLanguage: data.personal.resumeLanguage ?? fallbackLanguage,
         },
         references: data.references ?? [],
         sideActivities: data.sideActivities ?? [],
@@ -123,8 +140,48 @@ function getCheckoutFailureReason(error: unknown): string {
     return "unknown";
 }
 
-export default function Editor({ initialData, id, initialTemplateId, initialColorThemeId }: EditorProps) {
-    const normalizedInitialData = ensureEditorData(initialData);
+export default function Editor({
+    initialData,
+    id,
+    initialTemplateId,
+    initialColorThemeId,
+    uiLanguage = "nl",
+}: EditorProps) {
+    const isEnglish = uiLanguage === "en";
+    const tr = (dutch: string, english: string) => (isEnglish ? english : dutch);
+    const normalizedInitialData = ensureEditorData(initialData, uiLanguage);
+    const optionalSectionOptions = getOptionalSectionOptions(uiLanguage);
+    const genderOptions = [
+        { value: "", label: tr("Selecteer...", "Select...") },
+        { value: "Man", label: tr("Man", "Male") },
+        { value: "Vrouw", label: tr("Vrouw", "Female") },
+        { value: "Anders", label: tr("Anders", "Other") },
+    ];
+    const maritalStatusOptions = [
+        { value: "", label: tr("Selecteer...", "Select...") },
+        { value: "Ongehuwd", label: tr("Ongehuwd", "Single") },
+        { value: "Gehuwd", label: tr("Gehuwd", "Married") },
+        { value: "Samenwonend", label: tr("Samenwonend", "Cohabiting") },
+        { value: "Gescheiden", label: tr("Gescheiden", "Divorced") },
+    ];
+    const coverLetterToneOptions: Array<{ value: CoverLetterTone; label: string }> = [
+        { value: "professional", label: tr("Professioneel", "Professional") },
+        { value: "enthusiastic", label: tr("Enthousiast", "Enthusiastic") },
+        { value: "concise", label: tr("Bondig", "Concise") },
+    ];
+    const checkoutBenefits = isEnglish
+        ? [
+            "Download instantly after payment",
+            "Your CV stays editable in your account for free",
+            "Professional PDF formatting for job applications",
+            "Secure checkout via our payment partner",
+        ]
+        : [
+            "Direct downloaden na betaling",
+            "Je CV blijft gratis bewerkbaar in je account",
+            "Professionele PDF-opmaak voor sollicitaties",
+            "Veilige checkout via onze betaalpartner",
+        ];
     const {
         register,
         control,
@@ -320,7 +377,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
             setLastSaved(new Date());
             maybeTrackCompletion(formData);
         } else {
-            alert("Er ging iets mis bij het opslaan.");
+            alert(tr("Er ging iets mis bij het opslaan.", "Something went wrong while saving."));
         }
     };
 
@@ -386,7 +443,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
     };
 
     const handleCVParsed = (data: CVData) => {
-        const normalizedData = ensureEditorData(data);
+        const normalizedData = ensureEditorData(data, uiLanguage);
         // Reset the form with the parsed CV data
         reset(normalizedData);
         setVisibleOptionalSections(deriveVisibleOptionalSections(normalizedData));
@@ -404,7 +461,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
             window.location.href = checkoutUrl;
         } catch (error) {
             track('checkout_failed', { cvId: id, reason: getCheckoutFailureReason(error) });
-            alert("Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.");
+            alert(tr("Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.", "Payment could not be started. Check the payment configuration and try again."));
             setIsCheckoutRedirecting(false);
         }
     };
@@ -434,10 +491,10 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
 
             if (!response.ok) {
                 if (result?.code === 'ATS_LANGUAGE_MISMATCH') {
-                    alert("ATS kon de gewenste taal niet betrouwbaar aanhouden. Kies een vaste taal (NL/EN) en probeer opnieuw.");
+                    alert(tr("ATS kon de gewenste taal niet betrouwbaar aanhouden. Kies een vaste taal (NL/EN) en probeer opnieuw.", "ATS could not reliably keep the requested language. Choose a fixed language (NL/EN) and try again."));
                     return;
                 }
-                alert(result?.error || "ATS Rewrite mislukt. Probeer het opnieuw.");
+                alert(result?.error || tr("ATS Rewrite mislukt. Probeer het opnieuw.", "ATS rewrite failed. Please try again."));
                 return;
             }
 
@@ -455,7 +512,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                     sideActivities: rewrittenData.sideActivities ?? currentData.sideActivities,
                     customSections: rewrittenData.customSections ?? currentData.customSections,
                     properties: rewrittenData.properties ?? currentData.properties,
-                });
+                }, uiLanguage);
                 reset(normalizedData);
                 setVisibleOptionalSections((prev) => ({
                     ...prev,
@@ -493,7 +550,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
 
             const result = await response.json().catch(() => null);
             if (!response.ok) {
-                alert(result?.error || "Sollicitatiebrief genereren mislukt. Probeer het opnieuw.");
+                alert(result?.error || tr("Sollicitatiebrief genereren mislukt. Probeer het opnieuw.", "Cover letter generation failed. Please try again."));
                 return;
             }
 
@@ -521,7 +578,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
 
             const result = await response.json().catch(() => null);
             if (!response.ok) {
-                alert(result?.error || "Opslaan van sollicitatiebrief mislukt.");
+                alert(result?.error || tr("Opslaan van sollicitatiebrief mislukt.", "Saving the cover letter failed."));
                 return;
             }
 
@@ -541,7 +598,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
             const formData = watch();
             const res = await updateCV(id, formData);
             if (!res.success) {
-                alert("Er ging iets mis bij het opslaan.");
+                alert(tr("Er ging iets mis bij het opslaan.", "Something went wrong while saving."));
                 return;
             }
             setIsSaved(true);
@@ -555,9 +612,9 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                 if (errorData?.code === 'PAYMENT_REQUIRED') {
                     setShowCheckoutModal(true);
                 } else if (errorData?.code === 'PDF_ERROR') {
-                    alert("Er ging iets mis bij het genereren van de PDF. Probeer het opnieuw.");
+                    alert(tr("Er ging iets mis bij het genereren van de PDF. Probeer het opnieuw.", "Something went wrong while generating the PDF. Please try again."));
                 } else {
-                    alert("Er ging iets mis bij het downloaden.");
+                    alert(tr("Er ging iets mis bij het downloaden.", "Something went wrong while downloading."));
                 }
                 return;
             }
@@ -602,22 +659,23 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                         <Link
                             href="/mijn-cvs"
                             className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors"
-                            title="Mijn CV's"
+                            title={tr("Mijn CV's", "My CVs")}
                         >
                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                             </svg>
-                            Mijn CV&apos;s
+                            {tr("Mijn CV's", "My CVs")}
                         </Link>
                         <div className="hidden sm:block w-px h-6 bg-slate-300" />
                         <div className="relative flex items-center gap-1 sm:gap-2">
                             <TemplateSelector
                                 currentTemplateId={templateId}
                                 onSelectTemplate={handleTemplateChange}
+                                uiLanguage={uiLanguage}
                             />
                             {showTemplateHint && (
                                 <div className="absolute top-full left-0 mt-2 bg-emerald-100 border border-emerald-300 px-3 py-2 text-xs font-semibold text-emerald-900 shadow-sm z-30 whitespace-nowrap">
-                                    Wissel hier van template
+                                    {tr("Wissel hier van template", "Switch templates here")}
                                 </div>
                             )}
                             <ColorThemePicker
@@ -631,12 +689,12 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                             onClick={() => setShowUploader(true)}
                             className="hidden md:flex px-3 py-1.5 font-semibold text-xs border border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition-colors rounded-md items-center gap-1.5"
                            
-                            title="Upload je bestaande CV"
+                            title={tr("Upload je bestaande CV", "Upload your existing CV")}
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                             </svg>
-                            <span className="hidden lg:inline">CV Uploaden</span>
+                            <span className="hidden lg:inline">{tr("CV Uploaden", "Upload CV")}</span>
                         </button>
                         <button
                             onClick={handleAtsRewrite}
@@ -652,9 +710,9 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                             disabled={isCoverLetterGenerating}
                             className="hidden md:flex px-3 py-1.5 font-semibold text-xs border border-rose-300 bg-rose-50 text-rose-900 hover:bg-rose-100 transition-colors rounded-md items-center gap-1.5 disabled:opacity-60 disabled:cursor-not-allowed"
                            
-                            title="Genereer sollicitatiebrief"
+                            title={tr("Genereer sollicitatiebrief", "Generate cover letter")}
                         >
-                            <span className="font-black">{isCoverLetterGenerating ? '...' : 'Brief AI'}</span>
+                            <span className="font-black">{isCoverLetterGenerating ? '...' : tr('Brief AI', 'Letter AI')}</span>
                         </button>
                     </div>
 
@@ -662,7 +720,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                     <div className="flex flex-col items-end gap-1.5">
                         <div className="flex items-center gap-2 sm:gap-3">
                             <div className="text-xs font-medium text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">
-                                {isSaved ? (lastSaved ? <span className="text-green-700">✓ <span className="hidden sm:inline">Opgeslagen {lastSaved.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span></span> : "✓") : <span className="text-orange-600">●<span className="hidden sm:inline"> Niet opgeslagen</span></span>}
+                                {isSaved ? (lastSaved ? <span className="text-green-700">✓ <span className="hidden sm:inline">{tr("Opgeslagen", "Saved")} {lastSaved.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span></span> : "✓") : <span className="text-orange-600">●<span className="hidden sm:inline"> {tr("Niet opgeslagen", "Not saved")}</span></span>}
                             </div>
                             <button
                                 onClick={handleSubmit(onSubmit)}
@@ -672,7 +730,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                                         : "bg-white text-slate-800 border-slate-300 hover:bg-slate-50"
                                     }`}
                             >
-                                {isSubmitting ? "..." : isSaved ? "✓" : "Opslaan"}
+                                {isSubmitting ? "..." : isSaved ? "✓" : tr("Opslaan", "Save")}
                             </button>
                             <button
                                 onClick={handleDownload}
@@ -681,8 +739,8 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                             >
                                 {isDownloading ? "..." : (
                                     <>
-                                        <span className="sm:hidden">Download</span>
-                                        <span className="hidden sm:inline">Download PDF</span>
+                                        <span className="sm:hidden">{tr("Download", "Download")}</span>
+                                        <span className="hidden sm:inline">{tr("Download PDF", "Download PDF")}</span>
                                     </>
                                 )}
                             </button>
@@ -691,10 +749,10 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                             {isReadyToDownload && (
                                 <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-emerald-800">
                                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                                    Klaar voor PDF
+                                    {tr("Klaar voor PDF", "Ready for PDF")}
                                 </span>
                             )}
-                            <span>Gratis bewerken, betaal alleen bij downloaden.</span>
+                            <span>{tr("Gratis bewerken, betaal alleen bij downloaden.", "Edit for free, pay only when downloading.")}</span>
                         </div>
                     </div>
                 </div>
@@ -709,7 +767,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                         </svg>
-                        Upload bestaand CV
+                        {tr("Upload bestaand CV", "Upload existing CV")}
                     </button>
                     <button
                         onClick={handleAtsRewrite}
@@ -725,7 +783,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                         className="px-3 py-2 font-semibold text-xs rounded-md border border-rose-300 bg-rose-50 text-rose-900 hover:bg-rose-100 transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                        
                     >
-                        {isCoverLetterGenerating ? '...' : 'Brief AI'}
+                        {isCoverLetterGenerating ? '...' : tr('Brief AI', 'Letter AI')}
                     </button>
                 </div>
 
@@ -733,9 +791,9 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                     <div className="md:hidden border-b border-emerald-200 bg-emerald-50/80 px-4 py-3">
                         <div className="flex items-center justify-between gap-3">
                             <div className="min-w-0">
-                                <p className="text-sm font-semibold text-slate-900">Je CV is klaar om te downloaden.</p>
+                                <p className="text-sm font-semibold text-slate-900">{tr("Je CV is klaar om te downloaden.", "Your CV is ready to download.")}</p>
                                 <p className="text-[11px] font-medium text-slate-600">
-                                    Gratis bewerken, betaal pas als je de PDF wilt downloaden.
+                                    {tr("Gratis bewerken, betaal pas als je de PDF wilt downloaden.", "Edit for free, only pay when you want the PDF.")}
                                 </p>
                             </div>
                             <button
@@ -744,7 +802,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                                 disabled={isDownloading}
                                 className="shrink-0 rounded-md border border-emerald-700 bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
                             >
-                                {isDownloading ? "..." : "Download"}
+                                {isDownloading ? "..." : tr("Download", "Download")}
                             </button>
                         </div>
                     </div>
@@ -755,16 +813,16 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                     <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12">
 
                         {/* CV Score Widget */}
-                        <CvScoreWidget data={data} />
+                        <CvScoreWidget data={data} uiLanguage={uiLanguage} />
 
                         {/* Keyword Scanner Widget */}
-                        <KeywordScannerWidget data={data} />
+                        <KeywordScannerWidget data={data} uiLanguage={uiLanguage} />
 
                         {/* Personal Section */}
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                             <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
                                 <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md">
-                                    Persoonlijke Gegevens
+                                    {tr("Persoonlijke Gegevens", "Personal Details")}
                                 </span>
                             </h2>
 
@@ -773,20 +831,21 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                                 <PhotoUpload
                                     currentPhoto={data.personal.photo}
                                     onPhotoChange={handlePhotoChange}
+                                    uiLanguage={uiLanguage}
                                 />
                                 <div className="flex-1 grid grid-cols-1 gap-4">
                                     <div>
-                                        <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Volledige Naam</label>
-                                        <input {...register("personal.name")} placeholder="bv. Simone van Roodenburg" className={inputClass} style={inputStyle} />
+                                        <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Volledige Naam", "Full Name")}</label>
+                                        <input {...register("personal.name")} placeholder={tr("bv. Simone van Roodenburg", "e.g. Emma Johnson")} className={inputClass} style={inputStyle} />
                                     </div>
                                     <div>
-                                        <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Gewenste Functie</label>
-                                        <input {...register("personal.title")} placeholder="bv. Leerkracht Basisonderwijs" className={inputClass} style={inputStyle} />
+                                        <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Gewenste Functie", "Target Role")}</label>
+                                        <input {...register("personal.title")} placeholder={tr("bv. Leerkracht Basisonderwijs", "e.g. Primary School Teacher")} className={inputClass} style={inputStyle} />
                                     </div>
                                     <div>
-                                        <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">CV taal</label>
+                                        <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("CV taal", "CV language")}</label>
                                         <select {...register("personal.resumeLanguage")} className={inputClass} style={inputStyle}>
-                                            <option value="nl">Nederlands</option>
+                                            <option value="nl">{tr("Nederlands", "Dutch")}</option>
                                             <option value="en">English</option>
                                         </select>
                                     </div>
@@ -800,19 +859,19 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                                     <input {...register("personal.email")} placeholder="email@voorbeeld.nl" className={inputClass} style={inputStyle} />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Telefoonnummer</label>
-                                    <input {...register("personal.phone")} placeholder="06 12345678" className={inputClass} style={inputStyle} />
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Telefoonnummer", "Phone number")}</label>
+                                    <input {...register("personal.phone")} placeholder={tr("06 12345678", "+31 6 12345678")} className={inputClass} style={inputStyle} />
                                 </div>
                             </div>
 
                             {/* Address */}
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                                 <div className="sm:col-span-2">
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Adres</label>
-                                    <input {...register("personal.address")} placeholder="bv. Wilhelminastraat 78" className={inputClass} style={inputStyle} />
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Adres", "Address")}</label>
+                                    <input {...register("personal.address")} placeholder={tr("bv. Wilhelminastraat 78", "e.g. Wilhelminastraat 78")} className={inputClass} style={inputStyle} />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Postcode & Plaats</label>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Postcode & Plaats", "Postal code & city")}</label>
                                     <input {...register("personal.postalCode")} placeholder="1234 AB Utrecht" className={inputClass} style={inputStyle} />
                                 </div>
                             </div>
@@ -820,46 +879,43 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                             {/* Personal Details */}
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4">
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Geboortedatum</label>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Geboortedatum", "Date of birth")}</label>
                                     <input {...register("personal.birthDate")} placeholder="15-03-1994" className={inputClass} style={inputStyle} />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Geboorteplaats</label>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Geboorteplaats", "Place of birth")}</label>
                                     <input {...register("personal.birthPlace")} placeholder="Naarden" className={inputClass} style={inputStyle} />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Nationaliteit</label>
-                                    <input {...register("personal.nationality")} placeholder="Nederlandse" className={inputClass} style={inputStyle} />
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Nationaliteit", "Nationality")}</label>
+                                    <input {...register("personal.nationality")} placeholder={tr("Nederlandse", "Dutch")} className={inputClass} style={inputStyle} />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Rijbewijs</label>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Rijbewijs", "Driver's license")}</label>
                                     <input {...register("personal.driversLicense")} placeholder="B" className={inputClass} style={inputStyle} />
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4">
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Geslacht</label>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Geslacht", "Gender")}</label>
                                     <select {...register("personal.gender")} className={inputClass} style={inputStyle}>
-                                        <option value="">Selecteer...</option>
-                                        <option value="Man">Man</option>
-                                        <option value="Vrouw">Vrouw</option>
-                                        <option value="Anders">Anders</option>
+                                        {genderOptions.map((option) => (
+                                            <option key={option.value || "empty"} value={option.value}>{option.label}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Burgerlijke staat</label>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Burgerlijke staat", "Marital status")}</label>
                                     <select {...register("personal.maritalStatus")} className={inputClass} style={inputStyle}>
-                                        <option value="">Selecteer...</option>
-                                        <option value="Ongehuwd">Ongehuwd</option>
-                                        <option value="Gehuwd">Gehuwd</option>
-                                        <option value="Samenwonend">Samenwonend</option>
-                                        <option value="Gescheiden">Gescheiden</option>
+                                        {maritalStatusOptions.map((option) => (
+                                            <option key={option.value || "empty"} value={option.value}>{option.label}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div>
                                     <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">LinkedIn</label>
-                                    <input {...register("personal.linkedIn")} placeholder="linkedin.com/in/naam" className={inputClass} style={inputStyle} />
+                                    <input {...register("personal.linkedIn")} placeholder={tr("linkedin.com/in/naam", "linkedin.com/in/name")} className={inputClass} style={inputStyle} />
                                 </div>
                                 <div>
                                     <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">GitHub</label>
@@ -869,50 +925,50 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
 
                             {/* Summary */}
                             <div>
-                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Persoonlijk Profiel</label>
-                                <textarea {...register("personal.summary")} placeholder="Korte introductie over jezelf, je ervaring en wat je zoekt..." className={`${inputClass} h-28`} style={inputStyle} />
+                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Persoonlijk Profiel", "Personal Profile")}</label>
+                                <textarea {...register("personal.summary")} placeholder={tr("Korte introductie over jezelf, je ervaring en wat je zoekt...", "Short introduction about yourself, your experience, and what you are looking for...")} className={`${inputClass} h-28`} style={inputStyle} />
                             </div>
                         </section>
 
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                             <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
                                 <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                                    ATS Optimalisatie
+                                    {tr("ATS Optimalisatie", "ATS Optimization")}
                                 </span>
                             </h2>
 
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                                 <div className="sm:col-span-2">
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Doelrol</label>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Doelrol", "Target role")}</label>
                                     <input
                                         value={atsTargetRole}
                                         onChange={(e) => setAtsTargetRole(e.target.value)}
-                                        placeholder={data.personal.title || "bv. Backend Developer"}
+                                        placeholder={data.personal.title || tr("bv. Backend Developer", "e.g. Backend Developer")}
                                         className={inputClass}
                                         style={inputStyle}
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Taal lock</label>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Taal lock", "Language lock")}</label>
                                     <select
                                         value={atsLanguageLock}
                                         onChange={(e) => setAtsLanguageLock(e.target.value as AtsLanguageLock)}
                                         className={inputClass}
                                         style={inputStyle}
                                     >
-                                        <option value="auto">Auto (detecteer)</option>
-                                        <option value="nl">Nederlands</option>
+                                        <option value="auto">{tr("Auto (detecteer)", "Auto (detect)")}</option>
+                                        <option value="nl">{tr("Nederlands", "Dutch")}</option>
                                         <option value="en">English</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div className="mb-4">
-                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Vacaturetekst (optioneel)</label>
+                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Vacaturetekst (optioneel)", "Job description (optional)")}</label>
                                 <textarea
                                     value={atsJobDescription}
                                     onChange={(e) => setAtsJobDescription(e.target.value)}
-                                    placeholder="Plak de vacaturetekst voor sterkere ATS-keyword match..."
+                                    placeholder={tr("Plak de vacaturetekst voor sterkere ATS-keyword match...", "Paste the job description for a stronger ATS keyword match...")}
                                     className={`${inputClass} h-24`}
                                     style={inputStyle}
                                 />
@@ -924,10 +980,10 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                                     disabled={isAtsRewriting}
                                     className="px-4 py-2 rounded-md border border-sky-300 bg-sky-50 text-sky-900 font-semibold text-xs hover:bg-sky-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    {isAtsRewriting ? 'Bezig...' : 'ATS herschrijven'}
+                                    {isAtsRewriting ? tr('Bezig...', 'Working...') : tr('ATS herschrijven', 'Rewrite for ATS')}
                                 </button>
                                 <p className="text-xs font-bold text-gray-600">
-                                    Herschrijft profiel + werkervaring met taalbehoud.
+                                    {tr("Herschrijft profiel + werkervaring met taalbehoud.", "Rewrites your profile and experience while keeping the selected language.")}
                                 </p>
                             </div>
                         </section>
@@ -936,58 +992,58 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                             <div className="flex items-start justify-between gap-3 mb-4">
                                 <h2 className="text-base sm:text-lg font-semibold text-slate-900">
                                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                                        Sollicitatiebrief AI
+                                        {tr("Sollicitatiebrief AI", "Cover Letter AI")}
                                     </span>
                                 </h2>
                                 {coverLetterUpdatedAt && (
                                     <span className="text-[11px] font-bold text-gray-600">
-                                        Bijgewerkt: {new Date(coverLetterUpdatedAt).toLocaleString()}
+                                        {tr("Bijgewerkt", "Updated")}: {new Date(coverLetterUpdatedAt).toLocaleString(isEnglish ? "en-NL" : "nl-NL")}
                                     </span>
                                 )}
                             </div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                                 <div className="sm:col-span-2">
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Bedrijfsnaam (optioneel)</label>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Bedrijfsnaam (optioneel)", "Company name (optional)")}</label>
                                     <input
                                         value={coverLetterCompanyName}
                                         onChange={(e) => setCoverLetterCompanyName(e.target.value)}
-                                        placeholder="bv. ASML"
+                                        placeholder={tr("bv. ASML", "e.g. ASML")}
                                         className={inputClass}
                                         style={inputStyle}
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Toon</label>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Toon", "Tone")}</label>
                                     <select
                                         value={coverLetterTone}
                                         onChange={(e) => setCoverLetterTone(e.target.value as CoverLetterTone)}
                                         className={inputClass}
                                         style={inputStyle}
                                     >
-                                        <option value="professional">Professioneel</option>
-                                        <option value="enthusiastic">Enthousiast</option>
-                                        <option value="concise">Bondig</option>
+                                        {coverLetterToneOptions.map((option) => (
+                                            <option key={option.value} value={option.value}>{option.label}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
 
                             <div className="mb-4">
-                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Vacaturetekst (optioneel)</label>
+                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Vacaturetekst (optioneel)", "Job description (optional)")}</label>
                                 <textarea
                                     value={coverLetterJobDescription}
                                     onChange={(e) => setCoverLetterJobDescription(e.target.value)}
-                                    placeholder="Plak hier de vacaturetekst voor betere afstemming..."
+                                    placeholder={tr("Plak hier de vacaturetekst voor betere afstemming...", "Paste the job description here for better alignment...")}
                                     className={`${inputClass} h-24`}
                                     style={inputStyle}
                                 />
                             </div>
 
                             <div className="mb-4">
-                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Brieftekst</label>
+                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Brieftekst", "Letter text")}</label>
                                 {isCoverLetterLoading ? (
                                     <div className="border-3 border-black bg-gray-50 px-3 py-4 text-sm font-bold text-gray-600">
-                                        Sollicitatiebrief laden...
+                                        {tr("Sollicitatiebrief laden...", "Loading cover letter...")}
                                     </div>
                                 ) : (
                                     <textarea
@@ -996,7 +1052,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                                             setCoverLetter(e.target.value);
                                             setIsCoverLetterDirty(true);
                                         }}
-                                        placeholder="Klik op 'Genereer brief' om je sollicitatiebrief te maken."
+                                        placeholder={tr("Klik op 'Genereer brief' om je sollicitatiebrief te maken.", "Click 'Generate letter' to create your cover letter.")}
                                         className={`${inputClass} h-56`}
                                         style={inputStyle}
                                     />
@@ -1009,34 +1065,34 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                                     disabled={isCoverLetterGenerating}
                                     className="px-4 py-2 rounded-md border border-rose-300 bg-rose-50 text-rose-900 font-semibold text-xs hover:bg-rose-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    {isCoverLetterGenerating ? 'Bezig...' : coverLetter ? 'Regenereer brief' : 'Genereer brief'}
+                                    {isCoverLetterGenerating ? tr('Bezig...', 'Working...') : coverLetter ? tr('Regenereer brief', 'Regenerate letter') : tr('Genereer brief', 'Generate letter')}
                                 </button>
                                 <button
                                     onClick={handleSaveCoverLetter}
                                     disabled={!isCoverLetterDirty || isCoverLetterSaving}
                                     className="px-4 py-2 rounded-md border border-amber-300 bg-amber-50 text-amber-900 font-semibold text-xs hover:bg-amber-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    {isCoverLetterSaving ? 'Opslaan...' : 'Brief opslaan'}
+                                    {isCoverLetterSaving ? tr('Opslaan...', 'Saving...') : tr('Brief opslaan', 'Save letter')}
                                 </button>
                                 <p className="text-xs font-bold text-gray-600">
-                                    Je kunt handmatig aanpassen en opnieuw genereren.
+                                    {tr("Je kunt handmatig aanpassen en opnieuw genereren.", "You can edit it manually and regenerate it at any time.")}
                                 </p>
                             </div>
                         </section>
 
-                        <ExperienceSection control={control} register={register} />
-                        <EducationSection control={control} register={register} />
-                        <SkillsSection control={control} register={register} />
-                        <LanguagesSection control={control} register={register} />
+                        <ExperienceSection control={control} register={register} uiLanguage={uiLanguage} />
+                        <EducationSection control={control} register={register} uiLanguage={uiLanguage} />
+                        <SkillsSection control={control} register={register} uiLanguage={uiLanguage} />
+                        <LanguagesSection control={control} register={register} uiLanguage={uiLanguage} />
 
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                             <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
                                 <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                                    Add Part
+                                    {tr("Extra onderdelen", "Add Section")}
                                 </span>
                             </h2>
                             <p className="text-xs font-bold text-gray-700 mb-4">
-                                Activeer extra onderdelen zoals referenties, nevenactiviteiten of een eigen sectie.
+                                {tr("Activeer extra onderdelen zoals referenties, nevenactiviteiten of een eigen sectie.", "Enable extra sections such as references, side activities, or a custom section.")}
                             </p>
                             <div className="flex flex-wrap gap-2">
                                 {optionalSectionOptions.map((option) => {
@@ -1060,14 +1116,14 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                             </div>
                         </section>
 
-                        {visibleOptionalSections.internships && <InternshipsSection control={control} register={register} />}
-                        {visibleOptionalSections.courses && <CoursesSection control={control} register={register} />}
-                        {visibleOptionalSections.awards && <AwardsSection control={control} register={register} />}
-                        {visibleOptionalSections.interests && <InterestsSection control={control} register={register} />}
-                        {visibleOptionalSections.properties && <PropertiesSection control={control} register={register} />}
-                        {visibleOptionalSections.references && <ReferencesSection control={control} register={register} />}
-                        {visibleOptionalSections.sideActivities && <SideActivitiesSection control={control} register={register} />}
-                        {visibleOptionalSections.customSections && <CustomSectionsSection control={control} register={register} />}
+                        {visibleOptionalSections.internships && <InternshipsSection control={control} register={register} uiLanguage={uiLanguage} />}
+                        {visibleOptionalSections.courses && <CoursesSection control={control} register={register} uiLanguage={uiLanguage} />}
+                        {visibleOptionalSections.awards && <AwardsSection control={control} register={register} uiLanguage={uiLanguage} />}
+                        {visibleOptionalSections.interests && <InterestsSection control={control} register={register} uiLanguage={uiLanguage} />}
+                        {visibleOptionalSections.properties && <PropertiesSection control={control} register={register} uiLanguage={uiLanguage} />}
+                        {visibleOptionalSections.references && <ReferencesSection control={control} register={register} uiLanguage={uiLanguage} />}
+                        {visibleOptionalSections.sideActivities && <SideActivitiesSection control={control} register={register} uiLanguage={uiLanguage} />}
+                        {visibleOptionalSections.customSections && <CustomSectionsSection control={control} register={register} uiLanguage={uiLanguage} />}
 
                     </div>
                 </div>
@@ -1077,11 +1133,11 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
             <div className="hidden lg:flex flex-col lg:w-[46%] xl:w-[48%] bg-[#f0faf9] overflow-hidden">
                 {/* Fixed header */}
                 <div className="shrink-0 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200">
-                    <span className="text-xs font-semibold text-slate-600">Live preview</span>
+                    <span className="text-xs font-semibold text-slate-600">{tr("Live preview", "Live preview")}</span>
                     <div className="flex items-center gap-2">
                         {pageCount > 1 && (
                             <div className="bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-900 border border-amber-300 rounded-md">
-                                {pageCount} pagina&apos;s
+                                {pageCount} {tr("pagina's", "pages")}
                             </div>
                         )}
                         <div className="bg-slate-900 px-2 py-1 text-xs font-semibold text-white border border-slate-900 rounded-md">
@@ -1136,7 +1192,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                 className="lg:hidden fixed bottom-4 right-4 z-40 bg-slate-900 text-white px-4 py-2 font-semibold text-xs rounded-md border border-slate-900 shadow-sm"
                
             >
-                Live preview{pageCount > 1 ? ` (${pageCount})` : ""}
+                {tr("Live preview", "Live preview")}{pageCount > 1 ? ` (${pageCount})` : ""}
             </button>
 
             {/* Mobile/Tablet preview panel */}
@@ -1146,14 +1202,14 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                         type="button"
                         onClick={() => setShowMobilePreview(false)}
                         className="absolute inset-0 w-full h-full cursor-default"
-                        aria-label="Sluit voorbeeld"
+                        aria-label={tr("Sluit voorbeeld", "Close preview")}
                     />
                     <div className="absolute inset-x-0 bottom-0 h-[72vh] md:inset-y-0 md:right-0 md:left-auto md:h-full md:w-[460px] bg-[#f0faf9] border-t md:border-t-0 md:border-l border-slate-300 flex flex-col">
                         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-white">
                             <div className="flex items-center gap-2">
-                                <span className="bg-slate-900 px-2 py-1 text-xs font-semibold text-white border border-slate-900 rounded-md">Live preview</span>
+                                <span className="bg-slate-900 px-2 py-1 text-xs font-semibold text-white border border-slate-900 rounded-md">{tr("Live preview", "Live preview")}</span>
                                 {pageCount > 1 && (
-                                    <span className="bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-900 border border-amber-300 rounded-md">{pageCount} pagina&apos;s</span>
+                                    <span className="bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-900 border border-amber-300 rounded-md">{pageCount} {tr("pagina's", "pages")}</span>
                                 )}
                             </div>
                             <button
@@ -1161,7 +1217,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                                 onClick={() => setShowMobilePreview(false)}
                                 className="px-3 py-1 border border-slate-300 text-xs font-semibold text-slate-700 bg-slate-100 rounded-md hover:bg-slate-200"
                             >
-                                Sluiten
+                                {tr("Sluiten", "Close")}
                             </button>
                         </div>
                         <div className="flex-1 overflow-y-auto px-2 sm:px-3 py-4">
@@ -1220,49 +1276,44 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                         <div className="border-b-4 border-black bg-[#FFF3BF] px-5 py-5 sm:px-6">
                             <div className="flex items-start justify-between gap-3">
                                 <div className="inline-flex items-center gap-2 border-2 border-black bg-white px-2.5 py-1 text-[11px] font-black uppercase tracking-wide text-black">
-                                    Eenmalige betaling
+                                    {tr("Eenmalige betaling", "One-time payment")}
                                 </div>
                                 <button
                                     type="button"
                                     onClick={() => closeCheckoutModal('close_button')}
                                     disabled={isCheckoutRedirecting}
                                     className="flex h-9 w-9 items-center justify-center border-2 border-black bg-white text-lg font-black text-black hover:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed"
-                                    aria-label="Sluit betalingsoverzicht"
+                                    aria-label={tr("Sluit betalingsoverzicht", "Close payment summary")}
                                 >
                                     ×
                                 </button>
                             </div>
                             <h3 className="mt-4 text-2xl font-black text-black sm:text-[2rem]">
-                                Download direct je professionele CV als PDF
+                                {tr("Download direct je professionele CV als PDF", "Download your professional CV as a PDF instantly")}
                             </h3>
                             <p className="mt-2 text-sm font-medium text-slate-700">
-                                Klaar om te versturen, netjes opgemaakt en direct beschikbaar na betaling.
+                                {tr("Klaar om te versturen, netjes opgemaakt en direct beschikbaar na betaling.", "Ready to send, professionally formatted, and available right after payment.")}
                             </p>
                         </div>
 
                         <div className="px-5 py-5 sm:px-6">
                             <div className="mb-5 flex items-end justify-between gap-4 border-2 border-black bg-gray-50 p-4">
                                 <div>
-                                    <p className="font-black text-black">CV als PDF</p>
+                                    <p className="font-black text-black">{tr("CV als PDF", "CV as PDF")}</p>
                                     <p className="text-xs font-semibold text-slate-600">
-                                        Geen abonnement, geen verborgen kosten
+                                        {tr("Geen abonnement, geen verborgen kosten", "No subscription, no hidden costs")}
                                     </p>
                                 </div>
                                 <div className="text-right">
                                     <p className="text-3xl font-black text-black">€4,99</p>
                                     <p className="text-[11px] font-black uppercase tracking-wide text-slate-600">
-                                        eenmalig
+                                        {tr("eenmalig", "one-time")}
                                     </p>
                                 </div>
                             </div>
 
                             <ul className="mb-5 space-y-2.5">
-                                {[
-                                    'Direct downloaden na betaling',
-                                    'Je CV blijft gratis bewerkbaar in je account',
-                                    'Professionele PDF-opmaak voor sollicitaties',
-                                    'Veilige checkout via onze betaalpartner',
-                                ].map((benefit) => (
+                                {checkoutBenefits.map((benefit) => (
                                     <li key={benefit} className="flex items-start gap-3">
                                         <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center border-2 border-black bg-green-300 font-black text-black">
                                             ✓
@@ -1273,7 +1324,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                             </ul>
 
                             <div className="mb-5 rounded-md border border-slate-300 bg-slate-50 px-3 py-3 text-xs font-semibold text-slate-700">
-                                Je gegevens en CV blijven opgeslagen. Je kunt later altijd verder bewerken.
+                                {tr("Je gegevens en CV blijven opgeslagen. Je kunt later altijd verder bewerken.", "Your details and CV stay saved. You can continue editing later at any time.")}
                             </div>
 
                             <div className="grid gap-3 sm:grid-cols-2">
@@ -1282,19 +1333,19 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                                     disabled={isCheckoutRedirecting}
                                     className="px-4 py-3 border-2 border-black font-bold text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    Nog even niet
+                                    {tr("Nog even niet", "Maybe later")}
                                 </button>
                                 <button
                                     onClick={startCheckout}
                                     disabled={isCheckoutRedirecting}
                                     className="px-5 py-3 border-2 border-black font-black text-sm bg-yellow-400 hover:bg-yellow-500 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    {isCheckoutRedirecting ? 'Bezig...' : 'Ga veilig naar betaling'}
+                                    {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr('Ga veilig naar betaling', 'Continue to secure payment')}
                                 </button>
                             </div>
 
                             <p className="mt-3 text-center text-[11px] font-medium text-slate-500">
-                                Na betaling kun je je PDF direct downloaden.
+                                {tr("Na betaling kun je je PDF direct downloaden.", "After payment you can download your PDF immediately.")}
                             </p>
                         </div>
                     </div>
@@ -1306,6 +1357,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                 <CVUploader
                     onParsed={handleCVParsed}
                     onClose={() => setShowUploader(false)}
+                    uiLanguage={uiLanguage}
                 />
             )}
 
@@ -1314,6 +1366,7 @@ export default function Editor({ initialData, id, initialTemplateId, initialColo
                 <WelcomeOnboarding
                     onDismiss={handleDismissOnboarding}
                     onUploadCV={handleOnboardingUpload}
+                    uiLanguage={uiLanguage}
                 />
             )}
         </div>

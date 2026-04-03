@@ -106,13 +106,13 @@ export default async function EnglishWavePage({ params }: PageProps) {
                     {page.slug === 'netherlands-cv-photo-rules' && (
                         <div className="mt-8 flex flex-wrap gap-3">
                             <Link
-                                href="/editor"
+                                href="/en/editor"
                                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-black text-white font-black text-sm border-3 border-black hover:bg-slate-900 transition-colors"
                             >
                                 Build your CV in the editor
                             </Link>
                             <Link
-                                href="/templates"
+                                href="/en/templates"
                                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-black font-black text-sm border-3 border-black hover:bg-slate-100 transition-colors"
                             >
                                 Browse CV templates

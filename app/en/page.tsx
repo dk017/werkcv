@@ -162,7 +162,7 @@ export default function EnglishHubPage() {
             English-Speaking Companies
           </Link>
           <Link
-            href="/templates"
+            href="/en/templates"
             className="inline-block bg-black text-white font-bold px-5 py-3 border-4 border-black"
           >
             Open CV Templates

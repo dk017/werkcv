@@ -1,6 +1,7 @@
 import { CVData } from "@/lib/cv";
 import { ColorTheme } from "@/lib/templates";
 import { LinkText } from "./link-utils";
+import { formatGender, formatLanguageLevel, formatMaritalStatus, resumeText } from "@/lib/resume-language";
 
 interface TemplateProps {
     data: CVData;
@@ -38,7 +39,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                         className="text-3xl font-bold mb-1"
                         style={{ color: theme.primary }}
                     >
-                        {data.personal.name || "Naam"}
+                        {data.personal.name || resumeText(data, "nameFallback")}
                     </h1>
                     {data.personal.title && (
                         <p className="text-lg" style={{ color: theme.textMuted }}>
@@ -53,9 +54,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-base font-bold uppercase tracking-wide mb-2 pb-1"
                             style={{ borderBottom: `2px solid ${theme.primary}` }}
-                        >
-                            Profiel
-                        </h2>
+                        >{resumeText(data, "profile")}</h2>
                         <p className="text-sm leading-relaxed whitespace-pre-wrap">
                             {data.personal.summary}
                         </p>
@@ -68,9 +67,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-base font-bold uppercase tracking-wide mb-3 pb-1"
                             style={{ borderBottom: `2px solid ${theme.primary}` }}
-                        >
-                            Werkervaring
-                        </h2>
+                        >{resumeText(data, "experience")}</h2>
                         <div className="space-y-4">
                             {data.experience.map((exp, i) => (
                                 <div key={i}>
@@ -112,9 +109,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-base font-bold uppercase tracking-wide mb-3 pb-1"
                             style={{ borderBottom: `2px solid ${theme.primary}` }}
-                        >
-                            Stages
-                        </h2>
+                        >{resumeText(data, "internships")}</h2>
                         <div className="space-y-3">
                             {data.internships.map((intern, i) => (
                                 <div key={i}>
@@ -156,9 +151,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-base font-bold uppercase tracking-wide mb-3 pb-1"
                             style={{ borderBottom: `2px solid ${theme.primary}` }}
-                        >
-                            Opleidingen
-                        </h2>
+                        >{resumeText(data, "education")}</h2>
                         <div className="space-y-3">
                             {data.education.map((edu, i) => (
                                 <div key={i}>
@@ -188,9 +181,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-base font-bold uppercase tracking-wide mb-3 pb-1"
                             style={{ borderBottom: `2px solid ${theme.primary}` }}
-                        >
-                            Cursussen & Certificaten
-                        </h2>
+                        >{resumeText(data, "courses")}</h2>
                         <div className="space-y-1">
                             {data.courses.map((course, i) => (
                                 <div key={i} className="flex justify-between text-sm">
@@ -209,9 +200,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-base font-bold uppercase tracking-wide mb-3 pb-1"
                             style={{ borderBottom: `2px solid ${theme.primary}` }}
-                        >
-                            Prijzen & Prestaties
-                        </h2>
+                        >{resumeText(data, "awards")}</h2>
                         <ul className="space-y-1">
                             {data.awards.map((award, i) => (
                                 <li key={i} className="text-sm flex items-start gap-2">
@@ -234,7 +223,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                     {data.personal.photo ? (
                         <img
                             src={data.personal.photo}
-                            alt={data.personal.name || 'Profielfoto'}
+                            alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
                             className="w-28 h-28 rounded-full object-cover border-4"
                             style={{ borderColor: 'rgba(255,255,255,0.3)' }}
                         />
@@ -250,9 +239,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
 
                 {/* Personalia */}
                 <div>
-                    <h2 className="text-xs font-bold uppercase tracking-wider mb-3 opacity-90">
-                        Personalia
-                    </h2>
+                    <h2 className="text-xs font-bold uppercase tracking-wider mb-3 opacity-90">{resumeText(data, "personalDetails")}</h2>
                     <div className="space-y-2 text-xs opacity-90">
                         {data.personal.address && (
                             <div>
@@ -266,33 +253,33 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                         {data.personal.phone && <div>{data.personal.phone}</div>}
                         {(data.personal.birthDate || data.personal.birthPlace) && (
                             <div className="pt-2">
-                                <div className="font-semibold">Geboortedatum</div>
+                                <div className="font-semibold">{resumeText(data, "birthDate")}</div>
                                 <div>{data.personal.birthDate}</div>
                                 {data.personal.birthPlace && <div>{data.personal.birthPlace}</div>}
                             </div>
                         )}
                         {data.personal.nationality && (
                             <div className="pt-1">
-                                <div className="font-semibold">Nationaliteit</div>
+                                <div className="font-semibold">{resumeText(data, "nationality")}</div>
                                 <div>{data.personal.nationality}</div>
                             </div>
                         )}
                         {data.personal.driversLicense && (
                             <div className="pt-1">
-                                <div className="font-semibold">Rijbewijs</div>
+                                <div className="font-semibold">{resumeText(data, "driversLicense")}</div>
                                 <div>{data.personal.driversLicense}</div>
                             </div>
                         )}
-                        {data.personal.gender && (
+                        {formatGender(data.personal.gender, data) && (
                             <div className="pt-1">
-                                <div className="font-semibold">Geslacht</div>
-                                <div>{data.personal.gender}</div>
+                                <div className="font-semibold">{resumeText(data, "gender")}</div>
+                                <div>{formatGender(data.personal.gender, data)}</div>
                             </div>
                         )}
-                        {data.personal.maritalStatus && (
+                        {formatMaritalStatus(data.personal.maritalStatus, data) && (
                             <div className="pt-1">
-                                <div className="font-semibold">Burgerlijke staat</div>
-                                <div>{data.personal.maritalStatus}</div>
+                                <div className="font-semibold">{resumeText(data, "maritalStatus")}</div>
+                                <div>{formatMaritalStatus(data.personal.maritalStatus, data)}</div>
                             </div>
                         )}
                         {data.personal.linkedIn && (
@@ -307,9 +294,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                 {/* Skills with level dots */}
                 {data.skills.length > 0 && (
                     <div>
-                        <h2 className="text-xs font-bold uppercase tracking-wider mb-3 opacity-90">
-                            Vaardigheden
-                        </h2>
+                        <h2 className="text-xs font-bold uppercase tracking-wider mb-3 opacity-90">{resumeText(data, "skills")}</h2>
                         <div className="space-y-2">
                             {data.skills.map((skill, i) => (
                                 <div key={i} className="flex justify-between items-center">
@@ -326,9 +311,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                 {/* Languages */}
                 {data.languages.length > 0 && (
                     <div>
-                        <h2 className="text-xs font-bold uppercase tracking-wider mb-3 opacity-90">
-                            Talen
-                        </h2>
+                        <h2 className="text-xs font-bold uppercase tracking-wider mb-3 opacity-90">{resumeText(data, "languages")}</h2>
                         <div className="space-y-2">
                             {data.languages.map((lang, i) => (
                                 <div key={i}>
@@ -336,9 +319,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                                         {typeof lang === 'object' ? lang.name : lang}
                                     </div>
                                     {typeof lang === 'object' && lang.level && (
-                                        <div className="text-xs opacity-70">
-                                            {lang.level}
-                                        </div>
+                                        <div className="text-xs opacity-70">{formatLanguageLevel(lang.level, data)}</div>
                                     )}
                                 </div>
                             ))}
@@ -349,9 +330,7 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                 {/* Interests */}
                 {data.interests && data.interests.length > 0 && (
                     <div>
-                        <h2 className="text-xs font-bold uppercase tracking-wider mb-3 opacity-90">
-                            Interesses
-                        </h2>
+                        <h2 className="text-xs font-bold uppercase tracking-wider mb-3 opacity-90">{resumeText(data, "interests")}</h2>
                         <div className="flex flex-wrap gap-1">
                             {data.interests.map((interest, i) => (
                                 <span
@@ -371,3 +350,6 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
         </div>
     );
 }
+
+
+

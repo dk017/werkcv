@@ -1,6 +1,7 @@
 import { CVData } from "@/lib/cv";
 import { ColorTheme } from "@/lib/templates";
 import { LinkText } from "./link-utils";
+import { resumeText } from "@/lib/resume-language";
 
 interface TemplateProps {
     data: CVData;
@@ -54,7 +55,7 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                     {data.personal.photo ? (
                         <img
                             src={data.personal.photo}
-                            alt={data.personal.name || 'Profielfoto'}
+                            alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
                             className="w-16 h-16 rounded object-cover border-2 border-white/30"
                         />
                     ) : (
@@ -67,7 +68,7 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                     )}
                     <div className="text-white flex-1">
                         <h1 className="text-2xl font-bold uppercase tracking-wide">
-                            {data.personal.name || "Naam"}
+                            {data.personal.name || resumeText(data, "nameFallback")}
                         </h1>
                         {data.personal.title && (
                             <p className="text-sm opacity-90">{data.personal.title}</p>
@@ -84,9 +85,7 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-xs font-bold uppercase tracking-wider mb-2 pb-1"
                             style={{ color: theme.primary, borderBottom: `2px solid ${theme.primary}` }}
-                        >
-                            Personalia
-                        </h2>
+                        >{resumeText(data, "personalDetails")}</h2>
                         <div className="space-y-1" style={{ color: theme.textMuted }}>
                             {data.personal.address && (
                                 <div>
@@ -100,20 +99,20 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                             {data.personal.phone && <div className="text-xs">{data.personal.phone}</div>}
                             {(data.personal.birthDate || data.personal.birthPlace) && (
                                 <div className="pt-1">
-                                    <div className="text-xs font-semibold" style={{ color: theme.text }}>Geboren</div>
+                                    <div className="text-xs font-semibold" style={{ color: theme.text }}>{resumeText(data, "birthDateAndPlace")}</div>
                                     <div className="text-xs">{data.personal.birthDate}</div>
                                     {data.personal.birthPlace && <div className="text-xs">{data.personal.birthPlace}</div>}
                                 </div>
                             )}
                             {data.personal.nationality && (
                                 <div className="pt-1">
-                                    <div className="text-xs font-semibold" style={{ color: theme.text }}>Nationaliteit</div>
+                                    <div className="text-xs font-semibold" style={{ color: theme.text }}>{resumeText(data, "nationality")}</div>
                                     <div className="text-xs">{data.personal.nationality}</div>
                                 </div>
                             )}
                             {data.personal.driversLicense && (
                                 <div className="pt-1">
-                                    <div className="text-xs font-semibold" style={{ color: theme.text }}>Rijbewijs</div>
+                                    <div className="text-xs font-semibold" style={{ color: theme.text }}>{resumeText(data, "driversLicense")}</div>
                                     <div className="text-xs">{data.personal.driversLicense}</div>
                                 </div>
                             )}
@@ -132,9 +131,7 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                             <h2
                                 className="text-xs font-bold uppercase tracking-wider mb-2 pb-1"
                                 style={{ color: theme.primary, borderBottom: `2px solid ${theme.primary}` }}
-                            >
-                                Vaardigheden
-                            </h2>
+                            >{resumeText(data, "skills")}</h2>
                             <div className="space-y-2">
                                 {data.skills.map((skill, i) => (
                                     <div key={i}>
@@ -157,9 +154,7 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                             <h2
                                 className="text-xs font-bold uppercase tracking-wider mb-2 pb-1"
                                 style={{ color: theme.primary, borderBottom: `2px solid ${theme.primary}` }}
-                            >
-                                Talen
-                            </h2>
+                            >{resumeText(data, "languages")}</h2>
                             <div className="space-y-2">
                                 {data.languages.map((lang, i) => (
                                     <div key={i}>
@@ -181,9 +176,7 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                             <h2
                                 className="text-xs font-bold uppercase tracking-wider mb-2 pb-1"
                                 style={{ color: theme.primary, borderBottom: `2px solid ${theme.primary}` }}
-                            >
-                                Interesses
-                            </h2>
+                            >{resumeText(data, "interests")}</h2>
                             <div className="flex flex-wrap gap-1">
                                 {data.interests.map((interest, i) => (
                                     <span
@@ -210,9 +203,7 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                             <h2
                                 className="text-xs font-bold uppercase tracking-wider mb-2 pb-1"
                                 style={{ color: theme.primary, borderBottom: `2px solid ${theme.primary}` }}
-                            >
-                                Profiel
-                            </h2>
+                            >{resumeText(data, "profile")}</h2>
                             <p className="text-xs leading-relaxed whitespace-pre-wrap">
                                 {data.personal.summary}
                             </p>
@@ -225,9 +216,7 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                             <h2
                                 className="text-xs font-bold uppercase tracking-wider mb-2 pb-1"
                                 style={{ color: theme.primary, borderBottom: `2px solid ${theme.primary}` }}
-                            >
-                                Werkervaring
-                            </h2>
+                            >{resumeText(data, "experience")}</h2>
                             <div className="space-y-3">
                                 {data.experience.map((exp, i) => (
                                     <div key={i}>
@@ -267,9 +256,7 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                             <h2
                                 className="text-xs font-bold uppercase tracking-wider mb-2 pb-1"
                                 style={{ color: theme.primary, borderBottom: `2px solid ${theme.primary}` }}
-                            >
-                                Stages
-                            </h2>
+                            >{resumeText(data, "internships")}</h2>
                             <div className="space-y-2">
                                 {data.internships.map((intern, i) => (
                                     <div key={i}>
@@ -309,9 +296,7 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                             <h2
                                 className="text-xs font-bold uppercase tracking-wider mb-2 pb-1"
                                 style={{ color: theme.primary, borderBottom: `2px solid ${theme.primary}` }}
-                            >
-                                Opleidingen
-                            </h2>
+                            >{resumeText(data, "education")}</h2>
                             <div className="space-y-2">
                                 {data.education.map((edu, i) => (
                                     <div key={i} className="flex justify-between items-baseline">
@@ -341,9 +326,7 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                             <h2
                                 className="text-xs font-bold uppercase tracking-wider mb-2 pb-1"
                                 style={{ color: theme.primary, borderBottom: `2px solid ${theme.primary}` }}
-                            >
-                                Cursussen
-                            </h2>
+                            >{resumeText(data, "coursesShort")}</h2>
                             <div className="space-y-1">
                                 {data.courses.map((course, i) => (
                                     <div key={i} className="flex justify-between text-xs">
@@ -362,9 +345,7 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                             <h2
                                 className="text-xs font-bold uppercase tracking-wider mb-2 pb-1"
                                 style={{ color: theme.primary, borderBottom: `2px solid ${theme.primary}` }}
-                            >
-                                Prijzen & Prestaties
-                            </h2>
+                            >{resumeText(data, "awards")}</h2>
                             <ul className="space-y-1">
                                 {data.awards.map((award, i) => (
                                     <li key={i} className="text-xs flex items-start gap-2">
@@ -380,3 +361,6 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
         </div>
     );
 }
+
+
+

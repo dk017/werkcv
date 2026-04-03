@@ -34,6 +34,7 @@ export default async function EditorPage({
             id={id}
             initialTemplateId={cv.templateId}
             initialColorThemeId={cv.colorThemeId}
+            uiLanguage="nl"
         />
     );
 }

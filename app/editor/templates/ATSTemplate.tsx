@@ -1,6 +1,7 @@
 import { CVData } from "@/lib/cv";
 import { ColorTheme } from "@/lib/templates";
 import { LinkText } from "./link-utils";
+import { formatLanguageLevel, resumeText } from "@/lib/resume-language";
 
 interface TemplateProps {
     data: CVData;
@@ -26,7 +27,7 @@ export default function ATSTemplate({ data, theme }: TemplateProps) {
             {/* Header - Name and Contact */}
             <div className="text-center mb-6 pb-4" style={{ borderBottom: `2px solid ${theme.primary}` }}>
                 <h1 className="text-2xl font-bold uppercase tracking-wide mb-2">
-                    {data.personal.name || "Naam"}
+                    {data.personal.name || resumeText(data, "nameFallback")}
                 </h1>
                 {data.personal.title && (
                     <p className="text-base mb-3" style={{ color: theme.textMuted }}>
@@ -49,9 +50,7 @@ export default function ATSTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-2 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Profiel
-                    </h2>
+                    >{resumeText(data, "profile")}</h2>
                     <p className="text-xs leading-relaxed whitespace-pre-wrap">
                         {data.personal.summary}
                     </p>
@@ -64,9 +63,7 @@ export default function ATSTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-2 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Vaardigheden
-                    </h2>
+                    >{resumeText(data, "skills")}</h2>
                     <p className="text-xs leading-relaxed">
                         {data.skills.map(skill => skill.name).join(' • ')}
                     </p>
@@ -79,9 +76,7 @@ export default function ATSTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Werkervaring
-                    </h2>
+                    >{resumeText(data, "experience")}</h2>
                     <div className="space-y-4">
                         {data.experience.map((exp, i) => (
                             <div key={i}>
@@ -120,9 +115,7 @@ export default function ATSTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Stages
-                    </h2>
+                    >{resumeText(data, "internships")}</h2>
                     <div className="space-y-3">
                         {data.internships.map((intern, i) => (
                             <div key={i}>
@@ -161,9 +154,7 @@ export default function ATSTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Opleiding
-                    </h2>
+                    >{resumeText(data, "education")}</h2>
                     <div className="space-y-3">
                         {data.education.map((edu, i) => (
                             <div key={i}>
@@ -193,9 +184,7 @@ export default function ATSTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-2 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Cursussen & Certificaten
-                    </h2>
+                    >{resumeText(data, "courses")}</h2>
                     <div className="space-y-1">
                         {data.courses.map((course, i) => (
                             <div key={i} className="flex justify-between text-xs">
@@ -215,9 +204,7 @@ export default function ATSTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-2 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Prijzen & Prestaties
-                    </h2>
+                    >{resumeText(data, "awards")}</h2>
                     <ul className="space-y-1 ml-4">
                         {data.awards.map((award, i) => (
                             <li key={i} className="text-xs list-disc">
@@ -234,11 +221,9 @@ export default function ATSTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-2 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Talen
-                    </h2>
+                    >{resumeText(data, "languages")}</h2>
                     <p className="text-xs">
-                        {data.languages.map(lang => `${lang.name} (${lang.level})`).join(' • ')}
+                        {data.languages.map(lang => `${lang.name} (${formatLanguageLevel(lang.level, data)})`).join(' • ')}
                     </p>
                 </div>
             )}
@@ -249,9 +234,7 @@ export default function ATSTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-2 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Interesses
-                    </h2>
+                    >{resumeText(data, "interests")}</h2>
                     <p className="text-xs">
                         {data.interests.join(' • ')}
                     </p>
@@ -260,3 +243,6 @@ export default function ATSTemplate({ data, theme }: TemplateProps) {
         </div>
     );
 }
+
+
+

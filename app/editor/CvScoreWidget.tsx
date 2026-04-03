@@ -2,23 +2,26 @@
 import { useMemo, useState } from "react";
 import { CVData } from "@/lib/cv";
 import { computeCvScore } from "@/lib/cv-score";
+import { UiLanguage } from "@/lib/ui-language";
 
 interface CvScoreWidgetProps {
     data: CVData;
+    uiLanguage?: UiLanguage;
 }
 
 const RADIUS = 28;
 const CIRC = 2 * Math.PI * RADIUS;
 
-export default function CvScoreWidget({ data }: CvScoreWidgetProps) {
+export default function CvScoreWidget({ data, uiLanguage = "nl" }: CvScoreWidgetProps) {
+    const isEnglish = uiLanguage === "en";
     const [checked, setChecked] = useState(false);
     const [expanded, setExpanded] = useState(true);
 
     // Only compute once user triggers the check
     const result = useMemo(
-        () => (checked ? computeCvScore(data) : null),
+        () => (checked ? computeCvScore(data, uiLanguage) : null),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [checked, checked ? data : null]
+        [checked, checked ? data : null, uiLanguage]
     );
 
     const passedCount = result?.checks.filter(c => c.passed).length ?? 0;
@@ -39,13 +42,13 @@ export default function CvScoreWidget({ data }: CvScoreWidgetProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500 mb-0.5">CV Score</p>
-                    <p className="text-xs text-slate-500">Controleer hoe sterk je CV is en wat je kunt verbeteren.</p>
+                    <p className="text-xs text-slate-500">{isEnglish ? "Check how strong your CV is and what to improve." : "Controleer hoe sterk je CV is en wat je kunt verbeteren."}</p>
                 </div>
                 <button
                     onClick={() => setChecked(true)}
                     className="flex-shrink-0 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition-colors whitespace-nowrap"
                 >
-                    Controleer CV
+                    {isEnglish ? "Check CV" : "Controleer CV"}
                 </button>
             </section>
         );
@@ -83,7 +86,9 @@ export default function CvScoreWidget({ data }: CvScoreWidgetProps) {
                 <div className="flex-1 min-w-0">
                     <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500 mb-0.5">CV Score</p>
                     <p className={`text-sm font-bold ${result?.color ?? ''} leading-tight`}>{result?.label}</p>
-                    <p className="text-xs text-slate-500 mt-0.5">{passedCount} van {totalCount} checks geslaagd</p>
+                    <p className="text-xs text-slate-500 mt-0.5">
+                        {isEnglish ? `${passedCount} of ${totalCount} checks passed` : `${passedCount} van ${totalCount} checks geslaagd`}
+                    </p>
                 </div>
 
                 {/* Re-check link + chevron */}
@@ -92,7 +97,7 @@ export default function CvScoreWidget({ data }: CvScoreWidgetProps) {
                         onClick={e => { e.stopPropagation(); setChecked(false); }}
                         className="text-[11px] font-semibold text-slate-400 hover:text-slate-600 transition-colors"
                     >
-                        Opnieuw
+                        {isEnglish ? "Reset" : "Opnieuw"}
                     </button>
                     <svg
                         className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
@@ -138,7 +143,7 @@ export default function CvScoreWidget({ data }: CvScoreWidgetProps) {
 
                     {result?.score === 100 && (
                         <p className="text-xs text-emerald-700 font-semibold text-center py-2">
-                            🎉 Je CV is volledig geoptimaliseerd!
+                            {isEnglish ? "Your CV is fully optimized." : "🎉 Je CV is volledig geoptimaliseerd!"}
                         </p>
                     )}
 
@@ -148,7 +153,7 @@ export default function CvScoreWidget({ data }: CvScoreWidgetProps) {
                             onClick={() => { setChecked(false); setTimeout(() => setChecked(true), 50); }}
                             className="w-full py-2 text-xs font-semibold text-slate-500 hover:text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
                         >
-                            Score opnieuw berekenen
+                            {isEnglish ? "Recalculate score" : "Score opnieuw berekenen"}
                         </button>
                     </div>
                 </div>

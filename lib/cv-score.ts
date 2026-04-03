@@ -1,4 +1,5 @@
 import { CVData } from './cv';
+import { UiLanguage } from './ui-language';
 
 export interface CvCheck {
     id: string;
@@ -65,7 +66,8 @@ function containsBuzzword(text: string): boolean {
     return BUZZWORDS.some(b => lower.includes(b));
 }
 
-export function computeCvScore(data: CVData): CvScoreResult {
+export function computeCvScore(data: CVData, uiLanguage: UiLanguage = 'nl'): CvScoreResult {
+    const t = (dutch: string, english: string) => uiLanguage === 'en' ? english : dutch;
     const checks: CvCheck[] = [];
 
     // ─── 1. Naam + contactgegevens (8 pts) ──────────────────────────────────
@@ -76,8 +78,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
     );
     checks.push({
         id: 'contact',
-        label: 'Naam, e-mail en telefoon ingevuld',
-        tip: 'Vul je volledige naam, e-mailadres en telefoonnummer in onder Persoonlijke Gegevens.',
+        label: t('Naam, e-mail en telefoon ingevuld', 'Name, email, and phone completed'),
+        tip: t('Vul je volledige naam, e-mailadres en telefoonnummer in onder Persoonlijke Gegevens.', 'Add your full name, email address, and phone number under Personal Details.'),
         passed: hasContact,
         points: 8,
     });
@@ -86,8 +88,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
     const hasTitle = !!(data.personal.title?.trim());
     checks.push({
         id: 'title',
-        label: 'Gewenste functie ingevuld',
-        tip: 'Voeg een functietitel toe (bijv. "Marketing Manager") — dit is het eerste wat een recruiter ziet.',
+        label: t('Gewenste functie ingevuld', 'Target role completed'),
+        tip: t('Voeg een functietitel toe (bijv. "Marketing Manager") — dit is het eerste wat een recruiter ziet.', 'Add a target role title (for example "Marketing Manager") — it is one of the first things a recruiter sees.'),
         passed: hasTitle,
         points: 6,
     });
@@ -98,8 +100,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
     const hasSummary = summaryWords >= 20;
     checks.push({
         id: 'summary-present',
-        label: 'Profieltekst aanwezig',
-        tip: 'Schrijf een profieltekst van minimaal 3 zinnen die vertelt wie je bent, wat je kunt en wat je zoekt.',
+        label: t('Profieltekst aanwezig', 'Profile summary present'),
+        tip: t('Schrijf een profieltekst van minimaal 3 zinnen die vertelt wie je bent, wat je kunt en wat je zoekt.', 'Write a short profile summary of at least 3 sentences that explains who you are, what you do well, and what you want next.'),
         passed: hasSummary,
         points: 8,
     });
@@ -108,10 +110,10 @@ export function computeCvScore(data: CVData): CvScoreResult {
     const summaryIdealLength = summaryWords >= 30 && summaryWords <= 150;
     checks.push({
         id: 'summary-length',
-        label: 'Profieltekst ideale lengte (30–150 woorden)',
+        label: t('Profieltekst ideale lengte (30–150 woorden)', 'Profile summary ideal length (30-150 words)'),
         tip: summaryWords < 30
-            ? 'Je profieltekst is te kort. Voeg meer context toe: je sterkste skills, je ervaring in jaren en wat je zoekt.'
-            : 'Je profieltekst is te lang. Recruiters lezen profielteksten die korter zijn dan 150 woorden vaker volledig.',
+            ? t('Je profieltekst is te kort. Voeg meer context toe: je sterkste skills, je ervaring in jaren en wat je zoekt.', 'Your profile summary is too short. Add more context: your strongest skills, years of experience, and the type of role you want.')
+            : t('Je profieltekst is te lang. Recruiters lezen profielteksten die korter zijn dan 150 woorden vaker volledig.', 'Your profile summary is too long. Recruiters are more likely to read summaries under 150 words all the way through.'),
         passed: summaryIdealLength,
         points: 5,
     });
@@ -120,8 +122,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
     const hasExperience = data.experience.length > 0;
     checks.push({
         id: 'experience-present',
-        label: 'Minimaal 1 werkervaring vermeld',
-        tip: 'Voeg je meest recente baan of stage toe onder Werkervaring. Ook korte opdrachten en bijbanen tellen mee.',
+        label: t('Minimaal 1 werkervaring vermeld', 'At least 1 experience entry added'),
+        tip: t('Voeg je meest recente baan of stage toe onder Werkervaring. Ook korte opdrachten en bijbanen tellen mee.', 'Add your most recent job or internship under Experience. Short projects and part-time roles also count.'),
         passed: hasExperience,
         points: 10,
     });
@@ -136,8 +138,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
     const hasHighlights = highlightRatio >= 0.5;
     checks.push({
         id: 'highlights',
-        label: 'Bullet points toegevoegd per functie',
-        tip: 'Voeg bij elke functie minimaal 2 bullet points toe die beschrijven wat je hebt bereikt — niet alleen wat je deed.',
+        label: t('Bullet points toegevoegd per functie', 'Bullet points added per role'),
+        tip: t('Voeg bij elke functie minimaal 2 bullet points toe die beschrijven wat je hebt bereikt — niet alleen wat je deed.', 'Add at least 2 bullet points per role that explain what you achieved, not only what you did.'),
         passed: hasHighlights,
         points: 8,
     });
@@ -148,8 +150,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
     const hasMetrics = allHighlights.length > 0 && highlightsWithNumbers.length > 0;
     checks.push({
         id: 'metrics',
-        label: 'Resultaten met cijfers onderbouwd',
-        tip: 'Voeg getallen toe aan je bullet points: percentages, bedragen, aantallen of tijdsperioden. "Verhoogde verkoop met 23%" overtuigt meer dan "Verbeterde verkoop".',
+        label: t('Resultaten met cijfers onderbouwd', 'Achievements backed by numbers'),
+        tip: t('Voeg getallen toe aan je bullet points: percentages, bedragen, aantallen of tijdsperioden. "Verhoogde verkoop met 23%" overtuigt meer dan "Verbeterde verkoop".', 'Add numbers to your bullet points: percentages, amounts, counts, or time periods. "Increased sales by 23%" is stronger than "Improved sales".'),
         passed: hasMetrics,
         points: 10,
     });
@@ -164,8 +166,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
         const hasWeakVerbs = containsWeakVerb(summaryAndHighlights);
         checks.push({
             id: 'weak-verbs',
-            label: 'Geen passieve formuleringen',
-            tip: 'Vermijd "verantwoordelijk voor", "betrokken bij" en "hielp bij". Gebruik actieve werkwoorden: Geleid, Ontwikkeld, Gerealiseerd, Verhoogd.',
+            label: t('Geen passieve formuleringen', 'No passive phrasing'),
+            tip: t('Vermijd "verantwoordelijk voor", "betrokken bij" en "hielp bij". Gebruik actieve werkwoorden: Geleid, Ontwikkeld, Gerealiseerd, Verhoogd.', 'Avoid passive phrasing like "responsible for" or "helped with". Use active verbs such as Led, Built, Delivered, and Increased.'),
             passed: !hasWeakVerbs,
             points: 7,
         });
@@ -176,8 +178,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
         const hasBuzzwords = containsBuzzword(summaryAndHighlights);
         checks.push({
             id: 'buzzwords',
-            label: 'Geen lege buzzwords',
-            tip: 'Woorden als "gemotiveerd", "dynamisch" en "resultaatgericht" zeggen niets. Toon het in je werkervaring in plaats van het te claimen.',
+            label: t('Geen lege buzzwords', 'No empty buzzwords'),
+            tip: t('Woorden als "gemotiveerd", "dynamisch" en "resultaatgericht" zeggen niets. Toon het in je werkervaring in plaats van het te claimen.', 'Words like "motivated" and "results-driven" mean little on their own. Show the evidence in your experience instead of claiming it.'),
             passed: !hasBuzzwords,
             points: 5,
         });
@@ -187,8 +189,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
     const hasSkills = data.skills.length >= 3;
     checks.push({
         id: 'skills',
-        label: 'Minimaal 3 vaardigheden vermeld',
-        tip: 'Voeg concrete vaardigheden toe: software, tools, technische skills. "Excel (gevorderd)" is beter dan alleen "MS Office".',
+        label: t('Minimaal 3 vaardigheden vermeld', 'At least 3 skills listed'),
+        tip: t('Voeg concrete vaardigheden toe: software, tools, technische skills. "Excel (gevorderd)" is beter dan alleen "MS Office".', 'Add concrete skills: software, tools, and technical skills. "Excel (advanced)" is stronger than only writing "MS Office".'),
         passed: hasSkills,
         points: 8,
     });
@@ -197,8 +199,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
     const hasLanguages = data.languages.length > 0;
     checks.push({
         id: 'languages',
-        label: 'Talen toegevoegd',
-        tip: 'Voeg minimaal je moedertaal en het Engels toe onder Talen. Recruiters en ATS-systemen matchen actief op taalniveau.',
+        label: t('Talen toegevoegd', 'Languages added'),
+        tip: t('Voeg minimaal je moedertaal en het Engels toe onder Talen. Recruiters en ATS-systemen matchen actief op taalniveau.', 'Add at least your native language and English under Languages. Recruiters and ATS systems actively match on language level.'),
         passed: hasLanguages,
         points: 5,
     });
@@ -207,8 +209,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
     const hasEducation = data.education.length > 0;
     checks.push({
         id: 'education',
-        label: 'Opleiding vermeld',
-        tip: 'Voeg je hoogst genoten opleiding toe. Vermeld ook de instelling en de periode.',
+        label: t('Opleiding vermeld', 'Education added'),
+        tip: t('Voeg je hoogst genoten opleiding toe. Vermeld ook de instelling en de periode.', 'Add your highest completed education and include the institution and time period.'),
         passed: hasEducation,
         points: 8,
     });
@@ -217,8 +219,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
     const hasLinkedIn = !!(data.personal.linkedIn?.trim());
     checks.push({
         id: 'linkedin',
-        label: 'LinkedIn-URL toegevoegd',
-        tip: '87% van recruiters bekijkt je LinkedIn naast je CV. Voeg je LinkedIn-URL toe — bij voorkeur een persoonlijke URL (linkedin.com/in/jounaam).',
+        label: t('LinkedIn-URL toegevoegd', 'LinkedIn URL added'),
+        tip: t('87% van recruiters bekijkt je LinkedIn naast je CV. Voeg je LinkedIn-URL toe — bij voorkeur een persoonlijke URL (linkedin.com/in/jounaam).', 'Many recruiters check LinkedIn next to your CV. Add your LinkedIn URL, ideally with a clean personal profile link.'),
         passed: hasLinkedIn,
         points: 5,
     });
@@ -231,8 +233,8 @@ export function computeCvScore(data: CVData): CvScoreResult {
     const hasEnoughContent = totalWords >= 100;
     checks.push({
         id: 'content-volume',
-        label: 'Voldoende inhoud (min. 100 woorden)',
-        tip: 'Je CV heeft nog weinig inhoud. Werk je werkervaring en profieltekst verder uit voor een sterkere indruk.',
+        label: t('Voldoende inhoud (min. 100 woorden)', 'Enough content (min. 100 words)'),
+        tip: t('Je CV heeft nog weinig inhoud. Werk je werkervaring en profieltekst verder uit voor een sterkere indruk.', 'Your CV still has limited content. Expand your experience and summary to create a stronger impression.'),
         passed: hasEnoughContent,
         points: 7,
     });
@@ -247,19 +249,19 @@ export function computeCvScore(data: CVData): CvScoreResult {
     let ringColor: string;
 
     if (score >= 90) {
-        label = 'Klaar om te versturen';
+        label = t('Klaar om te versturen', 'Ready to send');
         color = 'text-emerald-700';
         ringColor = '#10b981';
     } else if (score >= 75) {
-        label = 'Goed op weg';
+        label = t('Goed op weg', 'On the right track');
         color = 'text-teal-600';
         ringColor = '#4ECDC4';
     } else if (score >= 50) {
-        label = 'Verbetering mogelijk';
+        label = t('Verbetering mogelijk', 'Room for improvement');
         color = 'text-amber-600';
         ringColor = '#f59e0b';
     } else {
-        label = 'Aandacht nodig';
+        label = t('Aandacht nodig', 'Needs attention');
         color = 'text-red-600';
         ringColor = '#ef4444';
     }

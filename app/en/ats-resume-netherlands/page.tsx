@@ -111,7 +111,7 @@ export default function AtsResumeNetherlandsPage() {
             <Link href="/cv-tips/ats-vriendelijk-cv" className="underline font-bold">
               ATS-friendly CV Article (Dutch)
             </Link>
-            <Link href="/templates" className="underline font-bold">
+            <Link href="/en/templates" className="underline font-bold">
               ATS Template Options
             </Link>
             <Link href="/cv-voorbeelden/technologie-en-ict/software-ontwikkelaar" className="underline font-bold">
@@ -121,7 +121,7 @@ export default function AtsResumeNetherlandsPage() {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Link href="/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
+          <Link href="/en/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
             Build ATS-safe CV
           </Link>
           <Link href="/en" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">

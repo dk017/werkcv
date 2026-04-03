@@ -1,6 +1,7 @@
 import { CVData } from "@/lib/cv";
 import { ColorTheme } from "@/lib/templates";
 import { LinkText } from "./link-utils";
+import { formatLanguageLevel, resumeText } from "@/lib/resume-language";
 
 interface TemplateProps {
     data: CVData;
@@ -36,7 +37,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                     {data.personal.photo ? (
                         <img
                             src={data.personal.photo}
-                            alt={data.personal.name || 'Profielfoto'}
+                            alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
                             className="w-24 h-24 rounded-full object-cover"
                             style={{ border: `3px solid rgba(255,255,255,0.3)` }}
                         />
@@ -57,7 +58,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                 {/* Name */}
                 <div className="text-center text-white">
                     <h1 className="text-lg font-serif font-bold">
-                        {data.personal.name || "Naam"}
+                        {data.personal.name || resumeText(data, "nameFallback")}
                     </h1>
                     {data.personal.title && (
                         <p className="text-xs mt-1 opacity-80 font-serif italic">
@@ -68,9 +69,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
 
                 {/* Personalia */}
                 <div className="text-white">
-                    <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70 font-serif">
-                        Personalia
-                    </h2>
+                    <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70 font-serif">{resumeText(data, "personalDetails")}</h2>
                     <div className="space-y-2 text-xs opacity-90">
                         {data.personal.address && (
                             <div>
@@ -84,20 +83,20 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                         {data.personal.phone && <div>{data.personal.phone}</div>}
                         {(data.personal.birthDate || data.personal.birthPlace) && (
                             <div className="pt-2">
-                                <div className="font-semibold opacity-70">Geboortedatum</div>
+                                <div className="font-semibold opacity-70">{resumeText(data, "birthDate")}</div>
                                 <div>{data.personal.birthDate}</div>
                                 {data.personal.birthPlace && <div>{data.personal.birthPlace}</div>}
                             </div>
                         )}
                         {data.personal.nationality && (
                             <div className="pt-1">
-                                <div className="font-semibold opacity-70">Nationaliteit</div>
+                                <div className="font-semibold opacity-70">{resumeText(data, "nationality")}</div>
                                 <div>{data.personal.nationality}</div>
                             </div>
                         )}
                         {data.personal.driversLicense && (
                             <div className="pt-1">
-                                <div className="font-semibold opacity-70">Rijbewijs</div>
+                                <div className="font-semibold opacity-70">{resumeText(data, "driversLicense")}</div>
                                 <div>{data.personal.driversLicense}</div>
                             </div>
                         )}
@@ -113,9 +112,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                 {/* Skills with stars */}
                 {data.skills.length > 0 && (
                     <div className="text-white">
-                        <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70 font-serif">
-                            Vaardigheden
-                        </h2>
+                        <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70 font-serif">{resumeText(data, "skills")}</h2>
                         <div className="space-y-2">
                             {data.skills.map((skill, i) => (
                                 <div key={i} className="flex items-center justify-between opacity-90">
@@ -132,9 +129,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                 {/* Languages */}
                 {data.languages.length > 0 && (
                     <div className="text-white">
-                        <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70 font-serif">
-                            Talen
-                        </h2>
+                        <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70 font-serif">{resumeText(data, "languages")}</h2>
                         <div className="space-y-1">
                             {data.languages.map((lang, i) => (
                                 <div key={i}>
@@ -142,9 +137,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                                         {typeof lang === 'object' ? lang.name : lang}
                                     </div>
                                     {typeof lang === 'object' && lang.level && (
-                                        <div className="text-xs opacity-60 italic">
-                                            {lang.level}
-                                        </div>
+                                        <div className="text-xs opacity-60 italic">{formatLanguageLevel(lang.level, data)}</div>
                                     )}
                                 </div>
                             ))}
@@ -155,9 +148,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                 {/* Interests */}
                 {data.interests && data.interests.length > 0 && (
                     <div className="text-white">
-                        <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70 font-serif">
-                            Interesses
-                        </h2>
+                        <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70 font-serif">{resumeText(data, "interests")}</h2>
                         <div className="flex flex-wrap gap-1">
                             {data.interests.map((interest, i) => (
                                 <span
@@ -196,9 +187,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-sm font-serif font-bold uppercase tracking-widest mb-3"
                             style={{ color: theme.primary }}
-                        >
-                            Profiel
-                        </h2>
+                        >{resumeText(data, "profile")}</h2>
                         <p className="text-sm leading-relaxed whitespace-pre-wrap font-light">
                             {data.personal.summary}
                         </p>
@@ -211,9 +200,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-sm font-serif font-bold uppercase tracking-widest mb-4"
                             style={{ color: theme.primary }}
-                        >
-                            Werkervaring
-                        </h2>
+                        >{resumeText(data, "experience")}</h2>
                         <div className="space-y-4">
                             {data.experience.map((exp, i) => (
                                 <div key={i}>
@@ -259,9 +246,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-sm font-serif font-bold uppercase tracking-widest mb-4"
                             style={{ color: theme.primary }}
-                        >
-                            Stages
-                        </h2>
+                        >{resumeText(data, "internships")}</h2>
                         <div className="space-y-3">
                             {data.internships.map((intern, i) => (
                                 <div key={i}>
@@ -301,9 +286,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-sm font-serif font-bold uppercase tracking-widest mb-4"
                             style={{ color: theme.primary }}
-                        >
-                            Opleidingen
-                        </h2>
+                        >{resumeText(data, "education")}</h2>
                         <div className="space-y-3">
                             {data.education.map((edu, i) => (
                                 <div key={i}>
@@ -336,9 +319,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-sm font-serif font-bold uppercase tracking-widest mb-3"
                             style={{ color: theme.primary }}
-                        >
-                            Cursussen & Certificaten
-                        </h2>
+                        >{resumeText(data, "courses")}</h2>
                         <div className="space-y-1">
                             {data.courses.map((course, i) => (
                                 <div key={i} className="flex justify-between text-xs font-light">
@@ -357,9 +338,7 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
                             <h2
                                 className="text-sm font-serif font-bold uppercase tracking-widest mb-3"
                                 style={{ color: theme.primary }}
-                            >
-                                Prijzen & Prestaties
-                            </h2>
+                            >{resumeText(data, "awards")}</h2>
                             <ul className="space-y-1">
                                 {data.awards.map((award, i) => (
                                     <li key={i} className="text-xs font-light flex items-start gap-2">
@@ -374,3 +353,6 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
         </div>
     );
 }
+
+
+

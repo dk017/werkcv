@@ -3,17 +3,23 @@
 
 import { useFieldArray, Control, UseFormRegister, Controller } from "react-hook-form";
 import { CVData } from "@/lib/cv";
+import { UiLanguage } from "@/lib/ui-language";
 
 interface SectionProps {
     control: Control<CVData>;
     register: UseFormRegister<CVData>;
+    uiLanguage?: UiLanguage;
 }
 
 // Reusable input styles - text-black ensures populated values are clearly visible (not gray like placeholders)
 const inputClass = "w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100";
 const inputStyle = undefined;
 
-export function ExperienceSection({ control, register }: SectionProps) {
+function t(uiLanguage: UiLanguage, dutch: string, english: string) {
+    return uiLanguage === "en" ? english : dutch;
+}
+
+export function ExperienceSection({ control, register, uiLanguage = "nl" }: SectionProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "experience",
@@ -24,7 +30,7 @@ export function ExperienceSection({ control, register }: SectionProps) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                        Werkervaring
+                        {t(uiLanguage, "Werkervaring", "Experience")}
                     </span>
                 </h2>
                 <button
@@ -32,17 +38,25 @@ export function ExperienceSection({ control, register }: SectionProps) {
                     onClick={() => append({ role: "", company: "", description: "", start: "", end: "", location: "", highlights: [] })}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
-                    + Toevoegen
+                    {t(uiLanguage, "+ Toevoegen", "+ Add")}
                 </button>
             </div>
 
             <div className="space-y-4">
                 {fields.map((item, index) => (
-                    <ExperienceItem key={item.id} index={index} register={register} control={control} onRemove={() => remove(index)} fieldName="experience" />
+                    <ExperienceItem
+                        key={item.id}
+                        index={index}
+                        register={register}
+                        control={control}
+                        onRemove={() => remove(index)}
+                        fieldName="experience"
+                        uiLanguage={uiLanguage}
+                    />
                 ))}
                 {fields.length === 0 && (
                     <div className="text-center py-8 bg-slate-50 border border-dashed border-slate-300 text-slate-600 font-medium text-sm rounded-xl">
-                        Nog geen werkervaring toegevoegd.
+                        {t(uiLanguage, "Nog geen werkervaring toegevoegd.", "No experience added yet.")}
                     </div>
                 )}
             </div>
@@ -50,12 +64,13 @@ export function ExperienceSection({ control, register }: SectionProps) {
     );
 }
 
-function ExperienceItem({ index, register, control, onRemove, fieldName }: {
+function ExperienceItem({ index, register, control, onRemove, fieldName, uiLanguage }: {
     index: number;
     register: UseFormRegister<CVData>;
     control: Control<CVData>;
     onRemove: () => void;
     fieldName: "experience" | "internships";
+    uiLanguage: UiLanguage;
 }) {
     const { fields: highlightFields, append: appendHighlight, remove: removeHighlight } = useFieldArray({
         control,
@@ -68,25 +83,25 @@ function ExperienceItem({ index, register, control, onRemove, fieldName }: {
                 type="button"
                 onClick={onRemove}
                 className="absolute top-2 right-2 bg-white text-rose-700 font-semibold px-2 py-1 text-xs border border-rose-200 rounded-md opacity-0 group-hover:opacity-100 hover:bg-rose-50 transition-colors"
-                title="Verwijderen"
+                title={t(uiLanguage, "Verwijderen", "Remove")}
             >
                 ✕
             </button>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Functie</label>
+                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Functie", "Role")}</label>
                     <input
                         {...register(`${fieldName}.${index}.role` as any)}
-                        placeholder="bv. Software Developer"
+                        placeholder={t(uiLanguage, "bv. Software Developer", "e.g. Software Developer")}
                         className={inputClass}
                         style={inputStyle}
                     />
                 </div>
                 <div>
-                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Bedrijf</label>
+                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Bedrijf", "Company")}</label>
                     <input
                         {...register(`${fieldName}.${index}.company` as any)}
-                        placeholder="bv. Tech Solutions BV"
+                        placeholder={t(uiLanguage, "bv. Tech Solutions BV", "e.g. Tech Solutions BV")}
                         className={inputClass}
                         style={inputStyle}
                     />
@@ -95,28 +110,28 @@ function ExperienceItem({ index, register, control, onRemove, fieldName }: {
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                 <div>
-                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Start</label>
+                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Start", "Start")}</label>
                     <input
                         {...register(`${fieldName}.${index}.start` as any)}
-                        placeholder="bv. jan 2020"
+                        placeholder={t(uiLanguage, "bv. jan 2020", "e.g. Jan 2020")}
                         className={inputClass}
                         style={inputStyle}
                     />
                 </div>
                 <div>
-                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Eind</label>
+                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Eind", "End")}</label>
                     <input
                         {...register(`${fieldName}.${index}.end` as any)}
-                        placeholder="bv. heden"
+                        placeholder={t(uiLanguage, "bv. heden", "e.g. Present")}
                         className={inputClass}
                         style={inputStyle}
                     />
                 </div>
                 <div>
-                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Locatie</label>
+                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Locatie", "Location")}</label>
                     <input
                         {...register(`${fieldName}.${index}.location` as any)}
-                        placeholder="bv. Amsterdam"
+                        placeholder={t(uiLanguage, "bv. Amsterdam", "e.g. Amsterdam")}
                         className={inputClass}
                         style={inputStyle}
                     />
@@ -124,25 +139,24 @@ function ExperienceItem({ index, register, control, onRemove, fieldName }: {
             </div>
 
             <div className="mb-4">
-                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Omschrijving (optioneel)</label>
+                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Omschrijving (optioneel)", "Description (optional)")}</label>
                 <textarea
                     {...register(`${fieldName}.${index}.description` as any)}
-                    placeholder="Korte omschrijving van je rol..."
+                    placeholder={t(uiLanguage, "Korte omschrijving van je rol...", "Short description of your role...")}
                     className={`${inputClass} min-h-[60px]`}
                     style={inputStyle}
                 />
             </div>
 
-            {/* Highlights / Bullet points */}
             <div>
                 <div className="flex justify-between items-center mb-2">
-                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Taken & Resultaten</label>
+                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide">{t(uiLanguage, "Taken & Resultaten", "Tasks & Results")}</label>
                     <button
                         type="button"
                         onClick={() => appendHighlight("" as any)}
                         className="text-xs bg-sky-100 text-sky-900 font-semibold px-2 py-1 rounded-md border border-sky-300 hover:bg-sky-200 transition-colors"
                     >
-                        + Punt
+                        {t(uiLanguage, "+ Punt", "+ Bullet")}
                     </button>
                 </div>
                 <div className="space-y-2">
@@ -151,7 +165,7 @@ function ExperienceItem({ index, register, control, onRemove, fieldName }: {
                             <span className="text-black mt-2">•</span>
                             <textarea
                                 {...register(`${fieldName}.${index}.highlights.${hIndex}` as any)}
-                                placeholder="Beschrijf een taak of resultaat..."
+                                placeholder={t(uiLanguage, "Beschrijf een taak of resultaat...", "Describe a task or result...")}
                                 className={`${inputClass} min-h-[50px] flex-1`}
                                 style={inputStyle}
                             />
@@ -170,7 +184,7 @@ function ExperienceItem({ index, register, control, onRemove, fieldName }: {
     );
 }
 
-export function InternshipsSection({ control, register }: SectionProps) {
+export function InternshipsSection({ control, register, uiLanguage = "nl" }: SectionProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "internships",
@@ -181,7 +195,7 @@ export function InternshipsSection({ control, register }: SectionProps) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                        Stages
+                        {t(uiLanguage, "Stages", "Internships")}
                     </span>
                 </h2>
                 <button
@@ -189,17 +203,25 @@ export function InternshipsSection({ control, register }: SectionProps) {
                     onClick={() => append({ role: "", company: "", description: "", start: "", end: "", location: "", highlights: [] })}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
-                    + Toevoegen
+                    {t(uiLanguage, "+ Toevoegen", "+ Add")}
                 </button>
             </div>
 
             <div className="space-y-4">
                 {fields.map((item, index) => (
-                    <ExperienceItem key={item.id} index={index} register={register} control={control} onRemove={() => remove(index)} fieldName="internships" />
+                    <ExperienceItem
+                        key={item.id}
+                        index={index}
+                        register={register}
+                        control={control}
+                        onRemove={() => remove(index)}
+                        fieldName="internships"
+                        uiLanguage={uiLanguage}
+                    />
                 ))}
                 {fields.length === 0 && (
                     <div className="text-center py-6 bg-slate-50 border border-dashed border-slate-300 text-slate-600 font-medium text-sm rounded-xl">
-                        Nog geen stages toegevoegd.
+                        {t(uiLanguage, "Nog geen stages toegevoegd.", "No internships added yet.")}
                     </div>
                 )}
             </div>
@@ -207,7 +229,7 @@ export function InternshipsSection({ control, register }: SectionProps) {
     );
 }
 
-export function EducationSection({ control, register }: SectionProps) {
+export function EducationSection({ control, register, uiLanguage = "nl" }: SectionProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "education",
@@ -218,7 +240,7 @@ export function EducationSection({ control, register }: SectionProps) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                        Opleidingen
+                        {t(uiLanguage, "Opleidingen", "Education")}
                     </span>
                 </h2>
                 <button
@@ -226,7 +248,7 @@ export function EducationSection({ control, register }: SectionProps) {
                     onClick={() => append({ degree: "", school: "", start: "", end: "", location: "", description: "" })}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
-                    + Toevoegen
+                    {t(uiLanguage, "+ Toevoegen", "+ Add")}
                 </button>
             </div>
 
@@ -237,25 +259,25 @@ export function EducationSection({ control, register }: SectionProps) {
                             type="button"
                             onClick={() => remove(index)}
                             className="absolute top-2 right-2 bg-white text-rose-700 font-semibold px-2 py-1 text-xs border border-rose-200 rounded-md opacity-0 group-hover:opacity-100 hover:bg-rose-50 transition-colors"
-                            title="Verwijderen"
+                            title={t(uiLanguage, "Verwijderen", "Remove")}
                         >
                             ✕
                         </button>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Opleiding / Studie</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Opleiding / Studie", "Degree / Study")}</label>
                                 <input
                                     {...register(`education.${index}.degree`)}
-                                    placeholder="bv. HBO Informatica"
+                                    placeholder={t(uiLanguage, "bv. HBO Informatica", "e.g. BSc Computer Science")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
                             </div>
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Onderwijsinstelling</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Onderwijsinstelling", "Institution")}</label>
                                 <input
                                     {...register(`education.${index}.school`)}
-                                    placeholder="bv. Hogeschool Utrecht"
+                                    placeholder={t(uiLanguage, "bv. Hogeschool Utrecht", "e.g. Utrecht University")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
@@ -264,28 +286,28 @@ export function EducationSection({ control, register }: SectionProps) {
 
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Start</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Start", "Start")}</label>
                                 <input
                                     {...register(`education.${index}.start`)}
-                                    placeholder="sep 2016"
+                                    placeholder={t(uiLanguage, "sep 2016", "Sep 2016")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
                             </div>
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Eind</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Eind", "End")}</label>
                                 <input
                                     {...register(`education.${index}.end`)}
-                                    placeholder="jun 2020"
+                                    placeholder={t(uiLanguage, "jun 2020", "Jun 2020")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
                             </div>
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Locatie</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Locatie", "Location")}</label>
                                 <input
                                     {...register(`education.${index}.location`)}
-                                    placeholder="bv. Utrecht"
+                                    placeholder={t(uiLanguage, "bv. Utrecht", "e.g. Utrecht")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
@@ -293,10 +315,10 @@ export function EducationSection({ control, register }: SectionProps) {
                         </div>
 
                         <div>
-                            <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Omschrijving (optioneel)</label>
+                            <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Omschrijving (optioneel)", "Description (optional)")}</label>
                             <textarea
                                 {...register(`education.${index}.description`)}
-                                placeholder="Relevante vakken, thesis, etc..."
+                                placeholder={t(uiLanguage, "Relevante vakken, thesis, etc...", "Relevant coursework, thesis, etc.")}
                                 className={`${inputClass} min-h-[60px]`}
                                 style={inputStyle}
                             />
@@ -305,7 +327,7 @@ export function EducationSection({ control, register }: SectionProps) {
                 ))}
                 {fields.length === 0 && (
                     <div className="text-center py-6 bg-slate-50 border border-dashed border-slate-300 text-slate-600 font-medium text-sm rounded-xl">
-                        Nog geen opleiding toegevoegd.
+                        {t(uiLanguage, "Nog geen opleiding toegevoegd.", "No education added yet.")}
                     </div>
                 )}
             </div>
@@ -314,22 +336,23 @@ export function EducationSection({ control, register }: SectionProps) {
 }
 
 // Individual skill item with controlled level using Controller for reliable updates
-function SkillItem({ index, control, register, onRemove }: {
+function SkillItem({ index, control, register, onRemove, uiLanguage }: {
     index: number;
     control: Control<CVData>;
     register: UseFormRegister<CVData>;
     onRemove: () => void;
+    uiLanguage: UiLanguage;
 }) {
     return (
         <div className="flex flex-col sm:flex-row gap-3 sm:items-center bg-slate-50 p-3 border border-slate-200 rounded-xl">
             <input
                 {...register(`skills.${index}.name`)}
-                placeholder="bv. Projectmanagement"
+                placeholder={t(uiLanguage, "bv. Projectmanagement", "e.g. Project Management")}
                 className={`${inputClass} flex-1`}
                 style={inputStyle}
             />
             <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-black whitespace-nowrap">Niveau:</span>
+                <span className="text-xs font-bold text-black whitespace-nowrap">{t(uiLanguage, "Niveau:", "Level:")}</span>
                 <Controller
                     control={control}
                     name={`skills.${index}.level`}
@@ -341,9 +364,9 @@ function SkillItem({ index, control, register, onRemove }: {
                                     type="button"
                                     onClick={() => field.onChange(level)}
                                     className={`w-5 h-5 border border-slate-300 rounded-full transition-all hover:scale-110 ${
-                                        (field.value || 3) >= level ? 'bg-pink-500' : 'bg-white'
+                                        (field.value || 3) >= level ? "bg-pink-500" : "bg-white"
                                     }`}
-                                    title={`Niveau ${level}`}
+                                    title={t(uiLanguage, `Niveau ${level}`, `Level ${level}`)}
                                 />
                             ))}
                         </div>
@@ -361,7 +384,7 @@ function SkillItem({ index, control, register, onRemove }: {
     );
 }
 
-export function SkillsSection({ control, register }: SectionProps) {
+export function SkillsSection({ control, register, uiLanguage = "nl" }: SectionProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "skills",
@@ -372,7 +395,7 @@ export function SkillsSection({ control, register }: SectionProps) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                        Vaardigheden
+                        {t(uiLanguage, "Vaardigheden", "Skills")}
                     </span>
                 </h2>
                 <button
@@ -380,7 +403,7 @@ export function SkillsSection({ control, register }: SectionProps) {
                     onClick={() => append({ name: "", level: 3 })}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
-                    + Toevoegen
+                    {t(uiLanguage, "+ Toevoegen", "+ Add")}
                 </button>
             </div>
             <div className="space-y-3">
@@ -391,30 +414,30 @@ export function SkillsSection({ control, register }: SectionProps) {
                         control={control}
                         register={register}
                         onRemove={() => remove(index)}
+                        uiLanguage={uiLanguage}
                     />
                 ))}
             </div>
             {fields.length === 0 && (
                 <p className="text-sm text-slate-600 font-medium bg-slate-50 p-3 border border-dashed border-slate-300 rounded-xl">
-                    Voeg vaardigheden toe met een niveau (1-5 bolletjes).
+                    {t(uiLanguage, "Voeg vaardigheden toe met een niveau (1-5 bolletjes).", "Add skills with a level (1-5 dots).")}
                 </p>
             )}
         </section>
     );
 }
 
-export function LanguagesSection({ control, register }: SectionProps) {
+export function LanguagesSection({ control, register, uiLanguage = "nl" }: SectionProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "languages",
     });
 
-    // Support both Dutch and English language levels (for uploaded CVs in either language)
     const levels = [
-        { value: "Moedertaal", label: "Moedertaal / Native" },
-        { value: "Vloeiend", label: "Vloeiend / Fluent" },
-        { value: "Goed", label: "Goed / Good" },
-        { value: "Basis", label: "Basis / Basic" },
+        { value: "Moedertaal", label: uiLanguage === "en" ? "Native" : "Moedertaal / Native" },
+        { value: "Vloeiend", label: uiLanguage === "en" ? "Fluent" : "Vloeiend / Fluent" },
+        { value: "Goed", label: uiLanguage === "en" ? "Good" : "Goed / Good" },
+        { value: "Basis", label: uiLanguage === "en" ? "Basic" : "Basis / Basic" },
     ];
 
     return (
@@ -422,7 +445,7 @@ export function LanguagesSection({ control, register }: SectionProps) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                        Talen
+                        {t(uiLanguage, "Talen", "Languages")}
                     </span>
                 </h2>
                 <button
@@ -430,7 +453,7 @@ export function LanguagesSection({ control, register }: SectionProps) {
                     onClick={() => append({ name: "", level: "Goed" })}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
-                    + Toevoegen
+                    {t(uiLanguage, "+ Toevoegen", "+ Add")}
                 </button>
             </div>
             <div className="space-y-3">
@@ -438,7 +461,7 @@ export function LanguagesSection({ control, register }: SectionProps) {
                     <div key={item.id} className="flex gap-3 items-center bg-slate-50 p-3 border border-slate-200 rounded-xl">
                         <input
                             {...register(`languages.${index}.name`)}
-                            placeholder="bv. Engels"
+                            placeholder={t(uiLanguage, "bv. Engels", "e.g. English")}
                             className={`${inputClass} flex-1`}
                             style={inputStyle}
                         />
@@ -463,14 +486,14 @@ export function LanguagesSection({ control, register }: SectionProps) {
             </div>
             {fields.length === 0 && (
                 <p className="text-sm text-slate-600 font-medium bg-slate-50 p-3 border border-dashed border-slate-300 rounded-xl">
-                    Voeg talen toe met niveau (Moedertaal, Vloeiend, Goed, Basis).
+                    {t(uiLanguage, "Voeg talen toe met niveau (Moedertaal, Vloeiend, Goed, Basis).", "Add languages with a level (Native, Fluent, Good, Basic).")}
                 </p>
             )}
         </section>
     )
 }
 
-export function InterestsSection({ control, register }: SectionProps) {
+export function InterestsSection({ control, register, uiLanguage = "nl" }: SectionProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "interests" as any,
@@ -481,7 +504,7 @@ export function InterestsSection({ control, register }: SectionProps) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                        Interesses
+                        {t(uiLanguage, "Interesses", "Interests")}
                     </span>
                 </h2>
                 <button
@@ -489,7 +512,7 @@ export function InterestsSection({ control, register }: SectionProps) {
                     onClick={() => append("" as any)}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
-                    + Toevoegen
+                    {t(uiLanguage, "+ Toevoegen", "+ Add")}
                 </button>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -497,7 +520,7 @@ export function InterestsSection({ control, register }: SectionProps) {
                     <div key={item.id} className="flex gap-1 items-center bg-lime-200 px-3 py-2 border border-slate-300">
                         <input
                             {...register(`interests.${index}` as any)}
-                            placeholder="bv. Lezen"
+                            placeholder={t(uiLanguage, "bv. Lezen", "e.g. Reading")}
                             className="bg-transparent border-none outline-none text-sm font-medium w-24"
                         />
                         <button
@@ -512,14 +535,14 @@ export function InterestsSection({ control, register }: SectionProps) {
             </div>
             {fields.length === 0 && (
                 <p className="text-sm text-slate-600 font-medium bg-slate-50 p-3 border border-dashed border-slate-300 rounded-xl">
-                    Voeg interesses toe zoals &quot;Lezen&quot;, &quot;Reizen&quot;, &quot;Sport&quot;.
+                    {t(uiLanguage, "Voeg interesses toe zoals \"Lezen\", \"Reizen\", \"Sport\".", "Add interests such as \"Reading\", \"Travel\", or \"Sports\".")}
                 </p>
             )}
         </section>
     )
 }
 
-export function CoursesSection({ control, register }: SectionProps) {
+export function CoursesSection({ control, register, uiLanguage = "nl" }: SectionProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "courses",
@@ -530,7 +553,7 @@ export function CoursesSection({ control, register }: SectionProps) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                        Cursussen & Certificaten
+                        {t(uiLanguage, "Cursussen & Certificaten", "Courses & Certifications")}
                     </span>
                 </h2>
                 <button
@@ -546,19 +569,19 @@ export function CoursesSection({ control, register }: SectionProps) {
                     <div key={item.id} className="flex gap-3 items-center bg-slate-50 p-3 border border-slate-200 rounded-xl">
                         <input
                             {...register(`courses.${index}.name`)}
-                            placeholder="Cursus naam"
+                            placeholder={t(uiLanguage, "Naam van cursus", "Course name")}
                             className={`${inputClass} flex-1`}
                             style={inputStyle}
                         />
                         <input
                             {...register(`courses.${index}.institution`)}
-                            placeholder="Instituut"
+                            placeholder={t(uiLanguage, "Instituut", "Institution")}
                             className={`${inputClass} w-32`}
                             style={inputStyle}
                         />
                         <input
                             {...register(`courses.${index}.year`)}
-                            placeholder="Jaar"
+                            placeholder={t(uiLanguage, "Jaar", "Year")}
                             className={`${inputClass} w-20`}
                             style={inputStyle}
                         />
@@ -574,14 +597,14 @@ export function CoursesSection({ control, register }: SectionProps) {
             </div>
             {fields.length === 0 && (
                 <p className="text-sm text-slate-600 font-medium bg-slate-50 p-3 border border-dashed border-slate-300 rounded-xl">
-                    Voeg cursussen of certificaten toe.
+                    {t(uiLanguage, "Voeg cursussen of certificaten toe.", "Add courses or certifications.")}
                 </p>
             )}
         </section>
     )
 }
 
-export function AwardsSection({ control, register }: SectionProps) {
+export function AwardsSection({ control, register, uiLanguage = "nl" }: SectionProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "awards" as any,
@@ -592,7 +615,7 @@ export function AwardsSection({ control, register }: SectionProps) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                        Prijzen & Onderscheidingen
+                        {t(uiLanguage, "Prijzen & Onderscheidingen", "Awards & Achievements")}
                     </span>
                 </h2>
                 <button
@@ -609,7 +632,7 @@ export function AwardsSection({ control, register }: SectionProps) {
                         <span className="text-black mt-2">🏆</span>
                         <textarea
                             {...register(`awards.${index}` as any)}
-                            placeholder="Beschrijf een prijs, certificaat of bijzondere prestatie..."
+                            placeholder={t(uiLanguage, "Beschrijf een prijs, certificaat of bijzondere prestatie...", "Describe an award, certificate, or notable achievement...")}
                             className={`${inputClass} min-h-[50px] flex-1`}
                             style={inputStyle}
                         />
@@ -625,14 +648,14 @@ export function AwardsSection({ control, register }: SectionProps) {
             </div>
             {fields.length === 0 && (
                 <p className="text-sm text-slate-600 font-medium bg-slate-50 p-3 border border-dashed border-slate-300 rounded-xl">
-                    Voeg prijzen, certificaten of bijzondere prestaties toe.
+                    {t(uiLanguage, "Voeg prijzen, certificaten of bijzondere prestaties toe.", "Add awards, certifications, or notable achievements.")}
                 </p>
             )}
         </section>
     )
 }
 
-export function PropertiesSection({ control, register }: SectionProps) {
+export function PropertiesSection({ control, register, uiLanguage = "nl" }: SectionProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "properties" as any,
@@ -643,7 +666,7 @@ export function PropertiesSection({ control, register }: SectionProps) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                        Eigenschappen
+                        {t(uiLanguage, "Eigenschappen", "Strengths")}
                     </span>
                 </h2>
                 <button
@@ -651,7 +674,7 @@ export function PropertiesSection({ control, register }: SectionProps) {
                     onClick={() => append("" as any)}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
-                    + Toevoegen
+                    {t(uiLanguage, "+ Toevoegen", "+ Add")}
                 </button>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -659,7 +682,7 @@ export function PropertiesSection({ control, register }: SectionProps) {
                     <div key={item.id} className="flex gap-1 items-center bg-sky-100 px-3 py-2 border border-slate-300">
                         <input
                             {...register(`properties.${index}` as any)}
-                            placeholder="bv. Proactief"
+                            placeholder={t(uiLanguage, "bv. Proactief", "e.g. Proactive")}
                             className="bg-transparent border-none outline-none text-sm font-medium w-28"
                         />
                         <button
@@ -674,14 +697,14 @@ export function PropertiesSection({ control, register }: SectionProps) {
             </div>
             {fields.length === 0 && (
                 <p className="text-sm text-slate-600 font-medium bg-slate-50 p-3 border border-dashed border-slate-300 rounded-xl">
-                    Voeg persoonlijke eigenschappen toe zoals &quot;Nauwkeurig&quot; of &quot;Leergierig&quot;.
+                    {t(uiLanguage, "Voeg persoonlijke eigenschappen toe zoals \"Nauwkeurig\" of \"Leergierig\".", "Add personal strengths such as \"Accurate\" or \"Eager to learn\".")}
                 </p>
             )}
         </section>
     )
 }
 
-export function ReferencesSection({ control, register }: SectionProps) {
+export function ReferencesSection({ control, register, uiLanguage = "nl" }: SectionProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "references" as any,
@@ -692,7 +715,7 @@ export function ReferencesSection({ control, register }: SectionProps) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                        Referenties
+                        {t(uiLanguage, "Referenties", "References")}
                     </span>
                 </h2>
                 <button
@@ -700,7 +723,7 @@ export function ReferencesSection({ control, register }: SectionProps) {
                     onClick={() => append({ name: "", role: "", company: "", email: "", phone: "" } as any)}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
-                    + Toevoegen
+                    {t(uiLanguage, "+ Toevoegen", "+ Add")}
                 </button>
             </div>
 
@@ -711,25 +734,25 @@ export function ReferencesSection({ control, register }: SectionProps) {
                             type="button"
                             onClick={() => remove(index)}
                             className="absolute top-2 right-2 bg-white text-rose-700 font-semibold px-2 py-1 text-xs border border-rose-200 rounded-md opacity-0 group-hover:opacity-100 hover:bg-rose-50 transition-colors"
-                            title="Verwijderen"
+                            title={t(uiLanguage, "Verwijderen", "Remove")}
                         >
                             ✕
                         </button>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Naam</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Naam", "Name")}</label>
                                 <input
                                     {...register(`references.${index}.name` as any)}
-                                    placeholder="bv. Jan Jansen"
+                                    placeholder={t(uiLanguage, "bv. Jan Jansen", "e.g. Jane Smith")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
                             </div>
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Functie</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Functie", "Role")}</label>
                                 <input
                                     {...register(`references.${index}.role` as any)}
-                                    placeholder="bv. Teamlead Engineering"
+                                    placeholder={t(uiLanguage, "bv. Teamlead Engineering", "e.g. Engineering Manager")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
@@ -737,10 +760,10 @@ export function ReferencesSection({ control, register }: SectionProps) {
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Bedrijf</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Bedrijf", "Company")}</label>
                                 <input
                                     {...register(`references.${index}.company` as any)}
-                                    placeholder="bv. Tech BV"
+                                    placeholder={t(uiLanguage, "bv. Tech BV", "e.g. Tech BV")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
@@ -755,10 +778,10 @@ export function ReferencesSection({ control, register }: SectionProps) {
                                 />
                             </div>
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Telefoon</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Telefoon", "Phone")}</label>
                                 <input
                                     {...register(`references.${index}.phone` as any)}
-                                    placeholder="06 12345678"
+                                    placeholder={t(uiLanguage, "06 12345678", "+31 6 12345678")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
@@ -770,14 +793,14 @@ export function ReferencesSection({ control, register }: SectionProps) {
 
             {fields.length === 0 && (
                 <p className="text-sm text-slate-600 font-medium bg-slate-50 p-3 border border-dashed border-slate-300 rounded-xl">
-                    Voeg referenties toe die werkgevers mogen benaderen.
+                    {t(uiLanguage, "Voeg referenties toe die werkgevers mogen benaderen.", "Add references employers may contact.")}
                 </p>
             )}
         </section>
     );
 }
 
-export function SideActivitiesSection({ control, register }: SectionProps) {
+export function SideActivitiesSection({ control, register, uiLanguage = "nl" }: SectionProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "sideActivities" as any,
@@ -788,7 +811,7 @@ export function SideActivitiesSection({ control, register }: SectionProps) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                        Nevenactiviteiten
+                        {t(uiLanguage, "Nevenactiviteiten", "Side Activities")}
                     </span>
                 </h2>
                 <button
@@ -796,7 +819,7 @@ export function SideActivitiesSection({ control, register }: SectionProps) {
                     onClick={() => append({ title: "", organization: "", start: "", end: "", description: "" } as any)}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
-                    + Toevoegen
+                    {t(uiLanguage, "+ Toevoegen", "+ Add")}
                 </button>
             </div>
 
@@ -807,25 +830,25 @@ export function SideActivitiesSection({ control, register }: SectionProps) {
                             type="button"
                             onClick={() => remove(index)}
                             className="absolute top-2 right-2 bg-white text-rose-700 font-semibold px-2 py-1 text-xs border border-rose-200 rounded-md opacity-0 group-hover:opacity-100 hover:bg-rose-50 transition-colors"
-                            title="Verwijderen"
+                            title={t(uiLanguage, "Verwijderen", "Remove")}
                         >
                             ✕
                         </button>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Rol of activiteit</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Rol of activiteit", "Role or activity")}</label>
                                 <input
                                     {...register(`sideActivities.${index}.title` as any)}
-                                    placeholder="bv. Vrijwilliger evenementen"
+                                    placeholder={t(uiLanguage, "bv. Vrijwilliger evenementen", "e.g. Volunteer events coordinator")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
                             </div>
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Organisatie</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Organisatie", "Organization")}</label>
                                 <input
                                     {...register(`sideActivities.${index}.organization` as any)}
-                                    placeholder="bv. Stichting X"
+                                    placeholder={t(uiLanguage, "bv. Stichting X", "e.g. Foundation X")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
@@ -833,29 +856,29 @@ export function SideActivitiesSection({ control, register }: SectionProps) {
                         </div>
                         <div className="grid grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Start</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Start", "Start")}</label>
                                 <input
                                     {...register(`sideActivities.${index}.start` as any)}
-                                    placeholder="jan 2022"
+                                    placeholder={t(uiLanguage, "jan 2022", "Jan 2022")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
                             </div>
                             <div>
-                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Eind</label>
+                                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Eind", "End")}</label>
                                 <input
                                     {...register(`sideActivities.${index}.end` as any)}
-                                    placeholder="heden"
+                                    placeholder={t(uiLanguage, "heden", "Present")}
                                     className={inputClass}
                                     style={inputStyle}
                                 />
                             </div>
                         </div>
                         <div>
-                            <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Omschrijving</label>
+                            <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Omschrijving", "Description")}</label>
                             <textarea
                                 {...register(`sideActivities.${index}.description` as any)}
-                                placeholder="Beschrijf je bijdrage of resultaten..."
+                                placeholder={t(uiLanguage, "Beschrijf je bijdrage of resultaten...", "Describe your contribution or results...")}
                                 className={`${inputClass} min-h-[60px]`}
                                 style={inputStyle}
                             />
@@ -866,18 +889,19 @@ export function SideActivitiesSection({ control, register }: SectionProps) {
 
             {fields.length === 0 && (
                 <p className="text-sm text-slate-600 font-medium bg-slate-50 p-3 border border-dashed border-slate-300 rounded-xl">
-                    Voeg nevenactiviteiten toe zoals vrijwilligerswerk, bestuur of verenigingen.
+                    {t(uiLanguage, "Voeg nevenactiviteiten toe zoals vrijwilligerswerk, bestuur of verenigingen.", "Add side activities such as volunteering, board roles, or associations.")}
                 </p>
             )}
         </section>
     );
 }
 
-function CustomSectionItem({ sectionIndex, control, register, onRemoveSection }: {
+function CustomSectionItem({ sectionIndex, control, register, onRemoveSection, uiLanguage }: {
     sectionIndex: number;
     control: Control<CVData>;
     register: UseFormRegister<CVData>;
     onRemoveSection: () => void;
+    uiLanguage: UiLanguage;
 }) {
     const { fields, append, remove } = useFieldArray({
         control,
@@ -890,16 +914,16 @@ function CustomSectionItem({ sectionIndex, control, register, onRemoveSection }:
                 type="button"
                 onClick={onRemoveSection}
                 className="absolute top-2 right-2 bg-white text-rose-700 font-semibold px-2 py-1 text-xs border border-rose-200 rounded-md opacity-0 group-hover:opacity-100 hover:bg-rose-50 transition-colors"
-                title="Verwijderen"
+                title={t(uiLanguage, "Verwijderen", "Remove")}
             >
                 ✕
             </button>
 
             <div className="mb-4">
-                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">Titel onderdeel</label>
+                <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide mb-1.5">{t(uiLanguage, "Titel onderdeel", "Section title")}</label>
                 <input
                     {...register(`customSections.${sectionIndex}.title` as any)}
-                    placeholder="bv. Publicaties"
+                    placeholder={t(uiLanguage, "bv. Publicaties", "e.g. Publications")}
                     className={inputClass}
                     style={inputStyle}
                 />
@@ -907,13 +931,13 @@ function CustomSectionItem({ sectionIndex, control, register, onRemoveSection }:
 
             <div>
                 <div className="flex justify-between items-center mb-2">
-                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Inhoud</label>
+                    <label className="block text-[11px] font-semibold text-slate-500 uppercase tracking-wide">{t(uiLanguage, "Inhoud", "Content")}</label>
                     <button
                         type="button"
                         onClick={() => append("" as any)}
                         className="text-xs bg-sky-100 text-sky-900 font-semibold px-2 py-1 rounded-md border border-sky-300 hover:bg-sky-200 transition-colors"
                     >
-                        + Punt
+                        {t(uiLanguage, "+ Punt", "+ Bullet")}
                     </button>
                 </div>
                 <div className="space-y-2">
@@ -922,7 +946,7 @@ function CustomSectionItem({ sectionIndex, control, register, onRemoveSection }:
                             <span className="text-black mt-2">•</span>
                             <textarea
                                 {...register(`customSections.${sectionIndex}.items.${itemIndex}` as any)}
-                                placeholder="Voeg detail toe..."
+                                placeholder={t(uiLanguage, "Voeg detail toe...", "Add detail...")}
                                 className={`${inputClass} min-h-[50px] flex-1`}
                                 style={inputStyle}
                             />
@@ -941,7 +965,7 @@ function CustomSectionItem({ sectionIndex, control, register, onRemoveSection }:
     );
 }
 
-export function CustomSectionsSection({ control, register }: SectionProps) {
+export function CustomSectionsSection({ control, register, uiLanguage = "nl" }: SectionProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "customSections" as any,
@@ -952,7 +976,7 @@ export function CustomSectionsSection({ control, register }: SectionProps) {
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-slate-900">
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                        Eigen onderdeel
+                        {t(uiLanguage, "Eigen onderdeel", "Custom Section")}
                     </span>
                 </h2>
                 <button
@@ -960,7 +984,7 @@ export function CustomSectionsSection({ control, register }: SectionProps) {
                     onClick={() => append({ title: "", items: [] } as any)}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
-                    + Onderdeel
+                    {t(uiLanguage, "+ Onderdeel", "+ Section")}
                 </button>
             </div>
 
@@ -972,13 +996,14 @@ export function CustomSectionsSection({ control, register }: SectionProps) {
                         control={control}
                         register={register}
                         onRemoveSection={() => remove(index)}
+                        uiLanguage={uiLanguage}
                     />
                 ))}
             </div>
 
             {fields.length === 0 && (
                 <p className="text-sm text-slate-600 font-medium bg-slate-50 p-3 border border-dashed border-slate-300 rounded-xl">
-                    Maak een vrij onderdeel zoals Publicaties, Projecten of Lidmaatschappen.
+                    {t(uiLanguage, "Maak een vrij onderdeel zoals Publicaties, Projecten of Lidmaatschappen.", "Create a free section such as Publications, Projects, or Memberships.")}
                 </p>
             )}
         </section>

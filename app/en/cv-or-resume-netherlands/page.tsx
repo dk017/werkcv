@@ -121,7 +121,7 @@ export default function CvOrResumeNetherlandsPage() {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Link href="/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
+          <Link href="/en/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
             Start Your CV
           </Link>
           <Link href="/en" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">

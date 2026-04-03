@@ -1,6 +1,7 @@
 import { CVData } from "@/lib/cv";
 import { ColorTheme } from "@/lib/templates";
 import { LinkText } from "./link-utils";
+import { formatGender, formatMaritalStatus, resumeText } from "@/lib/resume-language";
 
 interface TemplateProps {
     data: CVData;
@@ -55,7 +56,7 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
                     {data.personal.photo ? (
                         <img
                             src={data.personal.photo}
-                            alt={data.personal.name || 'Profielfoto'}
+                            alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
                             className="w-28 h-28 rounded-lg object-cover border-4 border-white/20"
                         />
                     ) : (
@@ -71,7 +72,7 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
                 {/* Name on sidebar */}
                 <div className="text-center">
                     <h1 className="text-xl font-bold uppercase tracking-wide">
-                        {data.personal.name || "Naam"}
+                        {data.personal.name || resumeText(data, "nameFallback")}
                     </h1>
                     {data.personal.title && (
                         <p className="text-xs mt-1 opacity-80">{data.personal.title}</p>
@@ -80,9 +81,7 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
 
                 {/* Personalia */}
                 <div>
-                    <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70">
-                        Personalia
-                    </h2>
+                    <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70">{resumeText(data, "personalDetails")}</h2>
                     <div className="space-y-2 text-xs opacity-90">
                         {data.personal.address && (
                             <div>
@@ -96,33 +95,33 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
                         {data.personal.phone && <div>{data.personal.phone}</div>}
                         {(data.personal.birthDate || data.personal.birthPlace) && (
                             <div className="pt-2">
-                                <div className="font-semibold opacity-70">Geboortedatum</div>
+                                <div className="font-semibold opacity-70">{resumeText(data, "birthDate")}</div>
                                 <div>{data.personal.birthDate}</div>
                                 {data.personal.birthPlace && <div>{data.personal.birthPlace}</div>}
                             </div>
                         )}
                         {data.personal.nationality && (
                             <div className="pt-1">
-                                <div className="font-semibold opacity-70">Nationaliteit</div>
+                                <div className="font-semibold opacity-70">{resumeText(data, "nationality")}</div>
                                 <div>{data.personal.nationality}</div>
                             </div>
                         )}
                         {data.personal.driversLicense && (
                             <div className="pt-1">
-                                <div className="font-semibold opacity-70">Rijbewijs</div>
+                                <div className="font-semibold opacity-70">{resumeText(data, "driversLicense")}</div>
                                 <div>{data.personal.driversLicense}</div>
                             </div>
                         )}
-                        {data.personal.gender && (
+                        {formatGender(data.personal.gender, data) && (
                             <div className="pt-1">
-                                <div className="font-semibold opacity-70">Geslacht</div>
-                                <div>{data.personal.gender}</div>
+                                <div className="font-semibold opacity-70">{resumeText(data, "gender")}</div>
+                                <div>{formatGender(data.personal.gender, data)}</div>
                             </div>
                         )}
-                        {data.personal.maritalStatus && (
+                        {formatMaritalStatus(data.personal.maritalStatus, data) && (
                             <div className="pt-1">
-                                <div className="font-semibold opacity-70">Burgerlijke staat</div>
-                                <div>{data.personal.maritalStatus}</div>
+                                <div className="font-semibold opacity-70">{resumeText(data, "maritalStatus")}</div>
+                                <div>{formatMaritalStatus(data.personal.maritalStatus, data)}</div>
                             </div>
                         )}
                         {data.personal.linkedIn && (
@@ -137,9 +136,7 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
                 {/* Skills with progress bars */}
                 {data.skills.length > 0 && (
                     <div>
-                        <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70">
-                            Vaardigheden
-                        </h2>
+                        <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70">{resumeText(data, "skills")}</h2>
                         <div className="space-y-3">
                             {data.skills.map((skill, i) => (
                                 <div key={i}>
@@ -156,9 +153,7 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
                 {/* Languages with visual bars */}
                 {data.languages.length > 0 && (
                     <div>
-                        <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70">
-                            Talen
-                        </h2>
+                        <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70">{resumeText(data, "languages")}</h2>
                         <div className="space-y-3">
                             {data.languages.map((lang, i) => (
                                 <div key={i}>
@@ -177,9 +172,7 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
                 {/* Interests */}
                 {data.interests && data.interests.length > 0 && (
                     <div>
-                        <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70">
-                            Interesses
-                        </h2>
+                        <h2 className="text-xs font-bold uppercase tracking-widest mb-3 opacity-70">{resumeText(data, "interests")}</h2>
                         <div className="flex flex-wrap gap-1">
                             {data.interests.map((interest, i) => (
                                 <span
@@ -202,9 +195,7 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-xs font-bold uppercase tracking-widest mb-1"
                         style={{ color: theme.primary }}
-                    >
-                        Profiel
-                    </h2>
+                    >{resumeText(data, "profile")}</h2>
                     <div
                         className="w-12 h-1 mb-3"
                         style={{ backgroundColor: theme.primary }}
@@ -224,9 +215,7 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-xs font-bold uppercase tracking-widest mb-1"
                             style={{ color: theme.primary }}
-                        >
-                            Werkervaring
-                        </h2>
+                        >{resumeText(data, "experience")}</h2>
                         <div
                             className="w-12 h-1 mb-4"
                             style={{ backgroundColor: theme.primary }}
@@ -278,9 +267,7 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-xs font-bold uppercase tracking-widest mb-1"
                             style={{ color: theme.primary }}
-                        >
-                            Stages
-                        </h2>
+                        >{resumeText(data, "internships")}</h2>
                         <div
                             className="w-12 h-1 mb-4"
                             style={{ backgroundColor: theme.primary }}
@@ -326,9 +313,7 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-xs font-bold uppercase tracking-widest mb-1"
                             style={{ color: theme.primary }}
-                        >
-                            Opleidingen
-                        </h2>
+                        >{resumeText(data, "education")}</h2>
                         <div
                             className="w-12 h-1 mb-4"
                             style={{ backgroundColor: theme.primary }}
@@ -362,9 +347,7 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-xs font-bold uppercase tracking-widest mb-1"
                             style={{ color: theme.primary }}
-                        >
-                            Cursussen & Certificaten
-                        </h2>
+                        >{resumeText(data, "courses")}</h2>
                         <div
                             className="w-12 h-1 mb-4"
                             style={{ backgroundColor: theme.primary }}
@@ -387,9 +370,7 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-xs font-bold uppercase tracking-widest mb-1"
                             style={{ color: theme.primary }}
-                        >
-                            Prijzen & Prestaties
-                        </h2>
+                        >{resumeText(data, "awards")}</h2>
                         <div
                             className="w-12 h-1 mb-4"
                             style={{ backgroundColor: theme.primary }}
@@ -408,3 +389,6 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
         </div>
     );
 }
+
+
+

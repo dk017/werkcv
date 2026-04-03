@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { CVData } from "@/lib/cv";
+import { UiLanguage } from "@/lib/ui-language";
 
 interface KeywordResult {
     keyword: string;
@@ -9,9 +10,11 @@ interface KeywordResult {
 
 interface KeywordScannerWidgetProps {
     data: CVData;
+    uiLanguage?: UiLanguage;
 }
 
-export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps) {
+export default function KeywordScannerWidget({ data, uiLanguage = "nl" }: KeywordScannerWidgetProps) {
+    const isEnglish = uiLanguage === "en";
     const [expanded, setExpanded] = useState(false);
     const [jobDescription, setJobDescription] = useState('');
     const [results, setResults] = useState<KeywordResult[] | null>(null);
@@ -24,7 +27,7 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
 
     async function handleScan() {
         if (!jobDescription.trim() || jobDescription.trim().length < 20) {
-            setError('Plak de volledige vacaturetekst (minimaal 20 tekens).');
+            setError(isEnglish ? 'Paste the full vacancy text (at least 20 characters).' : 'Plak de volledige vacaturetekst (minimaal 20 tekens).');
             return;
         }
         setError('');
@@ -40,14 +43,14 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
 
             if (!res.ok) {
                 const body = await res.json().catch(() => ({}));
-                setError(body.error ?? 'Analyse mislukt. Probeer het opnieuw.');
+                setError(body.error ?? (isEnglish ? 'Analysis failed. Please try again.' : 'Analyse mislukt. Probeer het opnieuw.'));
                 return;
             }
 
             const json = await res.json();
             setResults(json.keywords ?? []);
         } catch {
-            setError('Verbindingsfout. Controleer je internet en probeer opnieuw.');
+            setError(isEnglish ? 'Connection error. Check your internet and try again.' : 'Verbindingsfout. Controleer je internet en probeer opnieuw.');
         } finally {
             setIsLoading(false);
         }
@@ -88,18 +91,18 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
 
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
-                        <span className="text-[11px] font-bold uppercase tracking-wide text-slate-500">Vacature Scanner</span>
-                        <span className="text-[10px] font-bold bg-[#4ECDC4]/20 text-teal-700 px-1.5 py-0.5 rounded-full">NIEUW</span>
+                        <span className="text-[11px] font-bold uppercase tracking-wide text-slate-500">{isEnglish ? "Job Scanner" : "Vacature Scanner"}</span>
+                        <span className="text-[10px] font-bold bg-[#4ECDC4]/20 text-teal-700 px-1.5 py-0.5 rounded-full">{isEnglish ? "NEW" : "NIEUW"}</span>
                     </div>
                     {results ? (
                         <p className="text-sm font-semibold text-slate-800">
                             {missing.length === 0
-                                ? '🎉 Alle keywords aanwezig!'
-                                : <><span className="text-red-600">{missing.length} keywords ontbreken</span> · {found.length} gevonden</>
+                                ? (isEnglish ? "All keywords found." : '🎉 Alle keywords aanwezig!')
+                                : <><span className="text-red-600">{isEnglish ? `${missing.length} keywords missing` : `${missing.length} keywords ontbreken`}</span> · {isEnglish ? `${found.length} found` : `${found.length} gevonden`}</>
                             }
                         </p>
                     ) : (
-                        <p className="text-sm text-slate-500">Plak een vacature en zie welke keywords ontbreken</p>
+                        <p className="text-sm text-slate-500">{isEnglish ? "Paste a vacancy and see which keywords are missing." : "Plak een vacature en zie welke keywords ontbreken"}</p>
                     )}
                 </div>
 
@@ -131,12 +134,12 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                         <>
                             <div>
                                 <label className="block text-[11px] font-bold uppercase tracking-wide text-slate-500 mb-1.5">
-                                    Vacaturetekst
+                                    {isEnglish ? "Job description" : "Vacaturetekst"}
                                 </label>
                                 <textarea
                                     value={jobDescription}
                                     onChange={e => { setJobDescription(e.target.value); setError(''); }}
-                                    placeholder="Plak hier de volledige vacaturetekst..."
+                                    placeholder={isEnglish ? "Paste the full job description here..." : "Plak hier de volledige vacaturetekst..."}
                                     rows={6}
                                     className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 resize-none font-medium"
                                 />
@@ -156,7 +159,7 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                                         </svg>
-                                        Analyseren...
+                                        {isEnglish ? "Analyzing..." : "Analyseren..."}
                                     </>
                                 ) : (
                                     <>
@@ -164,7 +167,7 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
                                                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                         </svg>
-                                        Analyseer vacature
+                                        {isEnglish ? "Analyze job description" : "Analyseer vacature"}
                                     </>
                                 )}
                             </button>
@@ -180,13 +183,13 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                                 <div>
                                     <div className="flex items-center justify-between mb-2">
                                         <span className="text-[11px] font-bold uppercase tracking-wide text-red-600">
-                                            ❌ Ontbreekt in je CV ({missing.length})
+                                            {isEnglish ? `Missing from your CV (${missing.length})` : `❌ Ontbreekt in je CV (${missing.length})`}
                                         </span>
                                         <button
                                             onClick={handleCopyMissing}
                                             className="text-[11px] font-bold text-teal-600 hover:text-teal-800 transition-colors"
                                         >
-                                            {copied ? '✓ Gekopieerd!' : 'Kopieer alles'}
+                                            {copied ? (isEnglish ? "Copied." : '✓ Gekopieerd!') : (isEnglish ? "Copy all" : 'Kopieer alles')}
                                         </button>
                                     </div>
                                     <div className="flex flex-wrap gap-1.5">
@@ -200,8 +203,17 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                                         ))}
                                     </div>
                                     <p className="text-[11px] text-slate-500 mt-2 leading-snug">
-                                        Voeg deze keywords toe aan je werkervaring, vaardigheden of profieltekst. Of gebruik{' '}
-                                        <span className="font-bold text-sky-700">ATS Rewrite</span> om ze automatisch te verwerken.
+                                        {isEnglish ? (
+                                            <>
+                                                Add these keywords to your experience, skills, or profile summary. Or use{" "}
+                                                <span className="font-bold text-sky-700">ATS Rewrite</span> to process them automatically.
+                                            </>
+                                        ) : (
+                                            <>
+                                                Voeg deze keywords toe aan je werkervaring, vaardigheden of profieltekst. Of gebruik{" "}
+                                                <span className="font-bold text-sky-700">ATS Rewrite</span> om ze automatisch te verwerken.
+                                            </>
+                                        )}
                                     </p>
                                 </div>
                             )}
@@ -210,7 +222,7 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                             {found.length > 0 && (
                                 <div>
                                     <span className="text-[11px] font-bold uppercase tracking-wide text-emerald-600 block mb-2">
-                                        ✅ Aanwezig in je CV ({found.length})
+                                        {isEnglish ? `Found in your CV (${found.length})` : `✅ Aanwezig in je CV (${found.length})`}
                                     </span>
                                     <div className="flex flex-wrap gap-1.5">
                                         {found.map(r => (
@@ -228,7 +240,7 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                             {/* All found */}
                             {missing.length === 0 && (
                                 <p className="text-sm font-semibold text-emerald-700 text-center py-2">
-                                    🎉 Je CV bevat alle keywords uit deze vacature!
+                                    {isEnglish ? "Your CV contains all keywords from this vacancy." : "🎉 Je CV bevat alle keywords uit deze vacature!"}
                                 </p>
                             )}
 
@@ -237,7 +249,7 @@ export default function KeywordScannerWidget({ data }: KeywordScannerWidgetProps
                                 onClick={handleReset}
                                 className="w-full py-2 text-xs font-semibold text-slate-500 hover:text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
                             >
-                                Nieuwe vacature analyseren
+                                {isEnglish ? "Analyze another vacancy" : "Nieuwe vacature analyseren"}
                             </button>
                         </div>
                     )}

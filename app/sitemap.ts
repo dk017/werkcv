@@ -474,6 +474,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.8,
         },
         {
+            url: `${baseUrl}/en/templates`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.79,
+        },
+        {
             url: `${baseUrl}/en/dutch-cv-template`,
             lastModified: new Date(),
             changeFrequency: 'monthly',

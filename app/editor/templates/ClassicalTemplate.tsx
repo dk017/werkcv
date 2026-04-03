@@ -1,6 +1,7 @@
 import { CVData } from "@/lib/cv";
 import { ColorTheme } from "@/lib/templates";
 import { LinkText } from "./link-utils";
+import { formatGender, formatLanguageLevel, formatMaritalStatus, resumeText } from "@/lib/resume-language";
 
 interface TemplateProps {
     data: CVData;
@@ -35,13 +36,13 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                 {data.personal.photo && (
                     <img
                         src={data.personal.photo}
-                        alt={data.personal.name || 'Profielfoto'}
+                        alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
                         className="w-20 h-20 rounded-full object-cover mx-auto mb-3"
                         style={{ border: `3px solid ${theme.primary}` }}
                     />
                 )}
                 <h1 className="text-3xl font-bold tracking-wide mb-1">
-                    {data.personal.name || "Naam"}
+                    {data.personal.name || resumeText(data, "nameFallback")}
                 </h1>
                 {data.personal.title && (
                     <p className="text-lg" style={{ color: theme.textMuted }}>
@@ -62,28 +63,28 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
             <div className="grid grid-cols-3 gap-6 mb-6 text-xs" style={{ color: theme.textMuted }}>
                 {data.personal.birthDate && (
                     <div>
-                        <span className="font-semibold" style={{ color: theme.text }}>Geboortedatum:</span> {data.personal.birthDate}
+                        <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "birthDate")}:</span> {data.personal.birthDate}
                         {data.personal.birthPlace && `, ${data.personal.birthPlace}`}
                     </div>
                 )}
                 {data.personal.nationality && (
                     <div>
-                        <span className="font-semibold" style={{ color: theme.text }}>Nationaliteit:</span> {data.personal.nationality}
+                        <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "nationality")}:</span> {data.personal.nationality}
                     </div>
                 )}
                 {data.personal.driversLicense && (
                     <div>
-                        <span className="font-semibold" style={{ color: theme.text }}>Rijbewijs:</span> {data.personal.driversLicense}
+                        <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "driversLicense")}:</span> {data.personal.driversLicense}
                     </div>
                 )}
-                {data.personal.gender && (
+                {formatGender(data.personal.gender, data) && (
                     <div>
-                        <span className="font-semibold" style={{ color: theme.text }}>Geslacht:</span> {data.personal.gender}
+                        <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "gender")}:</span> {formatGender(data.personal.gender, data)}
                     </div>
                 )}
-                {data.personal.maritalStatus && (
+                {formatMaritalStatus(data.personal.maritalStatus, data) && (
                     <div>
-                        <span className="font-semibold" style={{ color: theme.text }}>Burgerlijke staat:</span> {data.personal.maritalStatus}
+                        <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "maritalStatus")}:</span> {formatMaritalStatus(data.personal.maritalStatus, data)}
                     </div>
                 )}
                 {data.personal.linkedIn && (
@@ -99,9 +100,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-2"
                         style={{ color: theme.primary }}
-                    >
-                        Profiel
-                    </h2>
+                    >{resumeText(data, "profile")}</h2>
                     <p className="text-sm leading-relaxed whitespace-pre-wrap">
                         {data.personal.summary}
                     </p>
@@ -114,9 +113,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Werkervaring
-                    </h2>
+                    >{resumeText(data, "experience")}</h2>
                     <div className="space-y-4">
                         {data.experience.map((exp, i) => (
                             <div key={i}>
@@ -156,9 +153,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Stages
-                    </h2>
+                    >{resumeText(data, "internships")}</h2>
                     <div className="space-y-3">
                         {data.internships.map((intern, i) => (
                             <div key={i}>
@@ -198,9 +193,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Opleidingen
-                    </h2>
+                    >{resumeText(data, "education")}</h2>
                     <div className="space-y-3">
                         {data.education.map((edu, i) => (
                             <div key={i} className="flex justify-between items-baseline">
@@ -230,9 +223,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Cursussen & Certificaten
-                    </h2>
+                    >{resumeText(data, "courses")}</h2>
                     <div className="space-y-1">
                         {data.courses.map((course, i) => (
                             <div key={i} className="flex justify-between text-xs">
@@ -251,9 +242,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Prijzen & Prestaties
-                    </h2>
+                    >{resumeText(data, "awards")}</h2>
                     <ul className="space-y-1">
                         {data.awards.map((award, i) => (
                             <li key={i} className="text-xs flex items-start gap-2">
@@ -273,9 +262,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
                             style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                        >
-                            Vaardigheden
-                        </h2>
+                        >{resumeText(data, "skills")}</h2>
                         <div className="space-y-2">
                             {data.skills.map((skill, i) => (
                                 <div key={i} className="flex justify-between items-center">
@@ -298,9 +285,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
                             style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                        >
-                            Talen
-                        </h2>
+                        >{resumeText(data, "languages")}</h2>
                         <div className="space-y-1">
                             {data.languages.map((lang, i) => (
                                 <div key={i}>
@@ -308,9 +293,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                                         {typeof lang === 'object' ? lang.name : lang}
                                     </div>
                                     {typeof lang === 'object' && lang.level && (
-                                        <div className="text-xs" style={{ color: theme.textMuted }}>
-                                            {lang.level}
-                                        </div>
+                                        <div className="text-xs" style={{ color: theme.textMuted }}>{formatLanguageLevel(lang.level, data)}</div>
                                     )}
                                 </div>
                             ))}
@@ -324,9 +307,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
                             style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
-                        >
-                            Interesses
-                        </h2>
+                        >{resumeText(data, "interests")}</h2>
                         <div className="flex flex-wrap gap-1">
                             {data.interests.map((interest, i) => (
                                 <span
@@ -347,3 +328,6 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
         </div>
     );
 }
+
+
+

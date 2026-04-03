@@ -1,6 +1,7 @@
 import { CVData } from "@/lib/cv";
 import { ColorTheme } from "@/lib/templates";
 import { LinkText } from "./link-utils";
+import { formatGender, formatLanguageLevel, formatMaritalStatus, formatSkillLevel, resumeText } from "@/lib/resume-language";
 
 interface TemplateProps {
     data: CVData;
@@ -8,9 +9,8 @@ interface TemplateProps {
 }
 
 // Simple skill indicator (text-based)
-function SkillLevel({ level }: { level: number }) {
-    const labels = ['Basis', 'Gemiddeld', 'Goed', 'Zeer goed', 'Uitstekend'];
-    return <span className="text-xs opacity-60">({labels[level - 1] || 'Goed'})</span>;
+function SkillLevel({ level, data }: { level: number; data: CVData }) {
+    return <span className="text-xs opacity-60">({formatSkillLevel(level, data)})</span>;
 }
 
 export default function SimpleTemplate({ data, theme }: TemplateProps) {
@@ -24,7 +24,7 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
                 <div className="flex items-start justify-between gap-4">
                     <div>
                         <h1 className="text-3xl font-bold mb-1">
-                            {data.personal.name || "Naam"}
+                            {data.personal.name || resumeText(data, "nameFallback")}
                         </h1>
                         {data.personal.title && (
                             <p className="text-lg" style={{ color: theme.textMuted }}>
@@ -35,7 +35,7 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
                     {data.personal.photo && (
                         <img
                             src={data.personal.photo}
-                            alt={data.personal.name || 'Profielfoto'}
+                            alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
                             className="w-16 h-16 rounded-full object-cover"
                             style={{ border: `3px solid ${theme.primary}` }}
                         />
@@ -54,19 +54,19 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
             {/* Personal details row */}
             <div className="flex flex-wrap gap-x-6 gap-y-1 mb-6 text-xs" style={{ color: theme.textMuted }}>
                 {data.personal.birthDate && (
-                    <span><strong style={{ color: theme.text }}>Geboren:</strong> {data.personal.birthDate}{data.personal.birthPlace && `, ${data.personal.birthPlace}`}</span>
+                    <span><strong style={{ color: theme.text }}>{resumeText(data, "birthDateAndPlace")}:</strong> {data.personal.birthDate}{data.personal.birthPlace && `, ${data.personal.birthPlace}`}</span>
                 )}
                 {data.personal.nationality && (
-                    <span><strong style={{ color: theme.text }}>Nationaliteit:</strong> {data.personal.nationality}</span>
+                    <span><strong style={{ color: theme.text }}>{resumeText(data, "nationality")}:</strong> {data.personal.nationality}</span>
                 )}
                 {data.personal.driversLicense && (
-                    <span><strong style={{ color: theme.text }}>Rijbewijs:</strong> {data.personal.driversLicense}</span>
+                    <span><strong style={{ color: theme.text }}>{resumeText(data, "driversLicense")}:</strong> {data.personal.driversLicense}</span>
                 )}
-                {data.personal.gender && (
-                    <span><strong style={{ color: theme.text }}>Geslacht:</strong> {data.personal.gender}</span>
+                {formatGender(data.personal.gender, data) && (
+                    <span><strong style={{ color: theme.text }}>{resumeText(data, "gender")}:</strong> {formatGender(data.personal.gender, data)}</span>
                 )}
-                {data.personal.maritalStatus && (
-                    <span><strong style={{ color: theme.text }}>Burgerlijke staat:</strong> {data.personal.maritalStatus}</span>
+                {formatMaritalStatus(data.personal.maritalStatus, data) && (
+                    <span><strong style={{ color: theme.text }}>{resumeText(data, "maritalStatus")}:</strong> {formatMaritalStatus(data.personal.maritalStatus, data)}</span>
                 )}
                 {data.personal.linkedIn && (
                     <span><strong style={{ color: theme.text }}>LinkedIn:</strong> <LinkText value={data.personal.linkedIn} /></span>
@@ -88,9 +88,7 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-xs font-bold uppercase tracking-widest mb-3 pb-2"
                         style={{ borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Werkervaring
-                    </h2>
+                    >{resumeText(data, "experience")}</h2>
                     <div className="space-y-4">
                         {data.experience.map((exp, i) => (
                             <div key={i}>
@@ -130,9 +128,7 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-xs font-bold uppercase tracking-widest mb-3 pb-2"
                         style={{ borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Stages
-                    </h2>
+                    >{resumeText(data, "internships")}</h2>
                     <div className="space-y-3">
                         {data.internships.map((intern, i) => (
                             <div key={i}>
@@ -172,9 +168,7 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-xs font-bold uppercase tracking-widest mb-3 pb-2"
                         style={{ borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Opleidingen
-                    </h2>
+                    >{resumeText(data, "education")}</h2>
                     <div className="space-y-3">
                         {data.education.map((edu, i) => (
                             <div key={i} className="flex justify-between items-baseline">
@@ -204,9 +198,7 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-xs font-bold uppercase tracking-widest mb-3 pb-2"
                         style={{ borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Cursussen & Certificaten
-                    </h2>
+                    >{resumeText(data, "courses")}</h2>
                     <div className="space-y-1">
                         {data.courses.map((course, i) => (
                             <div key={i} className="flex justify-between text-xs">
@@ -225,9 +217,7 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
                     <h2
                         className="text-xs font-bold uppercase tracking-widest mb-3 pb-2"
                         style={{ borderBottom: `1px solid ${theme.border}` }}
-                    >
-                        Prijzen & Prestaties
-                    </h2>
+                    >{resumeText(data, "awards")}</h2>
                     <ul className="space-y-1">
                         {data.awards.map((award, i) => (
                             <li key={i} className="text-xs flex items-start gap-2">
@@ -246,15 +236,13 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-xs font-bold uppercase tracking-widest mb-3 pb-2"
                             style={{ borderBottom: `1px solid ${theme.border}` }}
-                        >
-                            Vaardigheden
-                        </h2>
+                        >{resumeText(data, "skills")}</h2>
                         <ul className="space-y-1 text-xs">
                             {data.skills.map((skill, i) => (
                                 <li key={i} className="flex justify-between items-center">
                                     <span>{typeof skill === 'object' ? skill.name : skill}</span>
                                     {typeof skill === 'object' && (
-                                        <SkillLevel level={skill.level} />
+                                        <SkillLevel level={skill.level} data={data} />
                                     )}
                                 </li>
                             ))}
@@ -267,14 +255,12 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-xs font-bold uppercase tracking-widest mb-3 pb-2"
                             style={{ borderBottom: `1px solid ${theme.border}` }}
-                        >
-                            Talen
-                        </h2>
+                        >{resumeText(data, "languages")}</h2>
                         <ul className="space-y-1 text-xs">
                             {data.languages.map((lang, i) => (
                                 <li key={i}>
                                     {typeof lang === 'object' ? (
-                                        <span>{lang.name} <span className="opacity-60">({lang.level})</span></span>
+                                        <span>{lang.name} <span className="opacity-60">({formatLanguageLevel(lang.level, data)})</span></span>
                                     ) : lang}
                                 </li>
                             ))}
@@ -287,9 +273,7 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
                         <h2
                             className="text-xs font-bold uppercase tracking-widest mb-3 pb-2"
                             style={{ borderBottom: `1px solid ${theme.border}` }}
-                        >
-                            Interesses
-                        </h2>
+                        >{resumeText(data, "interests")}</h2>
                         <p className="text-xs">
                             {data.interests.join(', ')}
                         </p>
@@ -299,3 +283,6 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
         </div>
     );
 }
+
+
+
