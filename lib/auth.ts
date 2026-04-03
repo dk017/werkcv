@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { AttributionSnapshot } from '@/lib/attribution';
+import { resolvePartnerPilotForSignup } from '@/lib/partner-pilot';
 
 const SESSION_COOKIE_NAME = 'werkcv_session';
 const LOGIN_CODE_TTL_MINUTES = 15;
@@ -123,12 +124,50 @@ export async function verifyEmailLoginCode(
         where: { email },
     });
     const isNewUser = !existingUser;
+    const partnerPilot = isNewUser ? resolvePartnerPilotForSignup(attribution, now) : null;
     const user = existingUser || await prisma.user.create({
         data: {
             email,
             ...buildUserAttributionData(attribution),
         },
     });
+
+    if (partnerPilot) {
+        try {
+            const expiresAt = new Date(now.getTime() + partnerPilot.durationDays * 24 * 60 * 60 * 1000);
+
+            await prisma.pilotAccess.upsert({
+                where: { userId: user.id },
+                update: {
+                    expiresAt,
+                    notes: partnerPilot.notes,
+                },
+                create: {
+                    userId: user.id,
+                    expiresAt,
+                    notes: partnerPilot.notes,
+                },
+            });
+
+            await prisma.analyticsEvent.create({
+                data: {
+                    event: 'partner_pilot_granted',
+                    path: attribution?.firstTouchPath || null,
+                    cluster: attribution?.firstTouchCluster || null,
+                    properties: {
+                        userId: user.id,
+                        utmSource: attribution?.utmSource || '',
+                        utmCampaign: attribution?.utmCampaign || '',
+                        durationDays: partnerPilot.durationDays,
+                        expiresAt: expiresAt.toISOString(),
+                    } as Prisma.InputJsonValue,
+                    attribution: (attribution || undefined) as Prisma.InputJsonValue | undefined,
+                },
+            });
+        } catch (error) {
+            console.error('partner_pilot_grant_failed', error);
+        }
+    }
 
     await prisma.loginCode.update({
         where: { id: record.id },
