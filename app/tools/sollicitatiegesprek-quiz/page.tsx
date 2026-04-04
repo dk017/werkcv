@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import SollicitatieQuizTool from './SollicitatieQuizTool';
 
 export const metadata: Metadata = {
-    title: 'Sollicitatiegesprek Voorbereiding — 8 Oefenvragen met Antwoorden | WerkCV.nl',
+    title: 'Sollicitatiegesprek Voorbereiding — 8 Oefenvragen met Antwoorden | WerkCV',
     description: 'Bereid je voor op je sollicitatiegesprek met 8 op maat gemaakte vragen voor jouw functie. Inclusief antwoordtips en voorbeeldantwoorden.',
     keywords: ['sollicitatiegesprek voorbereiding', 'sollicitatievragen oefenen', 'interview vragen', 'sollicitatie vragen'],
 };
@@ -62,6 +62,52 @@ export default function SollicitatieQuizPage() {
                                 <p className="text-xs font-black text-slate-900">{word}</p>
                                 <p className="text-xs text-slate-500 mt-0.5">{desc}</p>
                             </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="mt-10 bg-white border-2 border-black p-6">
+                    <h2 className="font-black text-slate-900 mb-3">Meer hulp bij je sollicitatiegesprek</h2>
+                    <p className="text-sm text-slate-600 mb-5">
+                        Gebruik deze gidsen als je naast oefenen ook je voorbereiding, kledingkeuze en eigen vragen wilt aanscherpen.
+                    </p>
+
+                    <div className="grid gap-3 sm:grid-cols-2">
+                        {[
+                            {
+                                href: "/cv-tips/sollicitatiegesprek-voorbereiden",
+                                title: "Sollicitatiegesprek voorbereiden",
+                                description: "Volledig stappenplan voor bedrijfsonderzoek, STAR-antwoorden, lichaamstaal en follow-up.",
+                            },
+                            {
+                                href: "/cv-tips/sollicitatievragen",
+                                title: "Sollicitatievragen",
+                                description: "Begrijp de belangrijkste vraagtypen en bereid per categorie sterkere antwoorden voor.",
+                            },
+                            {
+                                href: "/cv-tips/meest-gestelde-sollicitatievragen",
+                                title: "Meest gestelde sollicitatievragen",
+                                description: "Snelle lijst met de vragen die in Nederlandse gesprekken het vaakst terugkomen.",
+                            },
+                            {
+                                href: "/cv-tips/vragen-stellen-sollicitatiegesprek",
+                                title: "Vragen stellen in een sollicitatiegesprek",
+                                description: "Voorbeelden van sterke vragen aan je interviewer aan het einde van het gesprek.",
+                            },
+                            {
+                                href: "/cv-tips/sollicitatiegesprek-kleding",
+                                title: "Kleding voor je sollicitatiegesprek",
+                                description: "Kies een outfit die past bij corporate, zorg, retail, tech of een creatief bedrijf.",
+                            },
+                        ].map(({ href, title, description }) => (
+                            <Link
+                                key={href}
+                                href={href}
+                                className="block border-2 border-slate-200 hover:border-black p-4 transition-colors"
+                            >
+                                <p className="font-black text-slate-900">{title}</p>
+                                <p className="text-sm text-slate-600 mt-1">{description}</p>
+                            </Link>
                         ))}
                     </div>
                 </div>

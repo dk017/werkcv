@@ -62,6 +62,7 @@ const dutchSeeds: DutchSeed[] = [
     { slug: 'cv-voorbeeld-productiemedewerker', keyword: 'cv voorbeeld productiemedewerker', role: 'productiemedewerker', painPoint: 'werktempo en betrouwbaarheid goed te onderbouwen' },
     { slug: 'cv-voorbeeld-schoonmaakmedewerker', keyword: 'cv voorbeeld schoonmaakmedewerker', role: 'schoonmaakmedewerker', painPoint: 'nauwkeurigheid en zelfstandigheid professioneel te verwoorden' },
     { slug: 'cv-voorbeeld-bezorger', keyword: 'cv voorbeeld bezorger', role: 'bezorger', painPoint: 'service, punctualiteit en route-efficientie te laten terugkomen' },
+    { slug: 'cv-voorbeeld-zzper', keyword: 'cv voorbeeld zzp\'er', role: 'ZZP\'er / freelancer', painPoint: 'opdrachten, opdrachtgevers en resultaten overtuigend te structureren' },
     { slug: 'cv-voorbeeld-zonder-ervaring', keyword: 'cv zonder ervaring', role: 'starter', painPoint: 'relevantie te tonen zonder formele werkervaring' },
     { slug: 'cv-voorbeeld-magazijnmedewerker-zonder-ervaring', keyword: 'cv magazijnmedewerker zonder ervaring', role: 'magazijnmedewerker starter', painPoint: 'praktische inzet en leerbaarheid te bewijzen zonder direct magazijnverleden' },
     { slug: 'cv-voorbeeld-magazijnmedewerker-parttime', keyword: 'cv magazijnmedewerker parttime', role: 'magazijnmedewerker parttime', painPoint: 'beperkte uren, shiftbeschikbaarheid en betrouwbaarheid overtuigend te combineren' },
@@ -1819,6 +1820,124 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
             },
         },
     },
+    'cv-voorbeeld-zzper': {
+        title: 'CV voorbeeld zzp\'er (2026)',
+        description: 'Praktische gids voor een ZZP-CV met opdrachtstructuur, opdrachtgevercontext, profieltekst, NDA-aanpak en recruiterproof voorbeeldbullets.',
+        metaTitle: 'CV voorbeeld zzp\'er (2026) | WerkCV',
+        metaDesc: 'Gebruik dit CV voorbeeld voor zzp\'ers en freelancers. Met opdrachtstructuur, profieltekst, NDA-opdrachten, intermediairproof bullets en voorbeeldformuleringen.',
+        keywords: [
+            'cv voorbeeld zzp\'er',
+            'zzp cv voorbeeld',
+            'cv freelancer voorbeeld',
+            'cv als zelfstandige voorbeeld',
+            'freelance cv voorbeeld',
+        ],
+        intro: 'Een ZZP-CV werkt anders dan een standaard loondienst-CV. Opdrachtgevers en intermediairs willen in enkele seconden zien wat je specialisme is, voor wie je hebt gewerkt en welk resultaat je levert per opdracht. Deze pagina helpt je dat voorbeeldmatig neer te zetten.',
+        checklist: [
+            'Profieltekst noemt niche, type opdracht en beschikbaarheid.',
+            'Opdrachten staan per opdrachtgever of sector, niet als vage freelance periode zonder structuur.',
+            'Per opdracht zijn 2-3 resultaatgerichte bullets zichtbaar.',
+            'Bekende opdrachtgevers of duidelijke sectorcontext versterken direct je geloofwaardigheid.',
+            'NDA-opdrachten zijn professioneel verwerkt zonder te veel informatie weg te laten.',
+            'Tarief staat niet in het CV zelf.',
+            'Het document voelt als een gerichte opdrachtversie, niet als een rommige masterlijst.',
+        ],
+        relatedLinks: [
+            {
+                href: '/cv-tips/freelance-cv-maken',
+                title: 'ZZP CV maken: complete gids',
+                description: 'Gebruik de lange gids als je niet alleen een voorbeeld zoekt, maar ook strategie voor tarief, intermediairs en meerdere CV-versies.',
+            },
+            {
+                href: '/tools/profieltekst-generator',
+                title: 'Profieltekst generator',
+                description: 'Maak sneller een eerste profieltekst voor je niche, doelgroep en type opdracht.',
+            },
+            {
+                href: '/tools/werkervaring-bullets',
+                title: 'Werkervaring bullets tool',
+                description: 'Zet losse opdrachtinformatie om naar compactere, resultaatgerichte bullets.',
+            },
+        ],
+        ctaTitle: 'Maak je ZZP-CV direct af',
+        ctaText: 'Gebruik dit voorbeeld in een rustige template, zet je opdrachtstructuur strak neer en exporteer daarna een professionele PDF voor intermediairs en opdrachtgevers.',
+        ctaHref: '/templates',
+        sectionOverrides: {
+            'recruiter-scan': {
+                paragraphs: [
+                    'Intermediairs en opdrachtgevers zoeken op een ZZP-CV niet eerst naar werkgeversnamen, maar naar specialisme, opdrachtcontext en snelheid van vertrouwen. Ze willen direct zien of jij qua niche, senioriteit en soort projecten aansluit op de opdracht.',
+                    'De grootste fout is meestal dat zelfstandigen hun hele freelanceperiode als een blok beschrijven. Daardoor blijft onduidelijk voor wie je werkte, wat je rol was en welke resultaten jij per opdracht hebt geleverd.',
+                    'Een sterk ZZP-CV leest daarom eerder als een compacte opdrachtportfolio dan als een klassiek dienstverbandsoverzicht.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-tips/freelance-cv-maken',
+                        label: 'Lees eerst de complete gids voor een ZZP-CV',
+                        description: 'Handig als je behalve een voorbeeld ook de bredere strategie wilt rond intermediairs, NDA-opdrachten en meerdere versies.',
+                    },
+                ],
+            },
+            profieltekst: {
+                exampleItems: [
+                    'Freelance projectmanager gespecialiseerd in ERP- en procesimplementaties bij middelgrote organisaties. Stuurt op scope, stakeholderafstemming en voorspelbare oplevering. Beschikbaar voor interimopdrachten vanaf 24 uur per week.',
+                    'Zelfstandig content- en SEO-specialist voor B2B SaaS en zakelijke dienstverlening. Verbindt contentstrategie aan organische groei, leadkwaliteit en duidelijke rapportage voor marketingteams.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/tools/profieltekst-generator',
+                        label: 'Maak sneller een profieltekst voor je ZZP-specialisme',
+                        description: 'Gebruik de generator als je niche, doelgroep of beschikbaarheidszin nog niet scherp is.',
+                    },
+                ],
+            },
+            werkervaring: {
+                exampleItems: [
+                    'Opdracht bij logistieke scale-up: fulfilmentproces heringericht, waardoor foutieve zendingen met 18% daalden binnen 4 maanden.',
+                    'Interim marketingopdracht voor SaaS-bedrijf: contentflow en SEO-structuur herbouwd, met 31% meer organische demo-aanvragen in 2 kwartalen.',
+                    'Vertrouwelijke finance-opdracht: rapportage- en forecastritme gestandaardiseerd, wat directie sneller besluitbaar inzicht gaf per maandafsluiting.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/tools/werkervaring-bullets',
+                        label: 'Zet losse opdrachten om naar sterkere resultaatbullets',
+                        description: 'Handig als je projectbeschrijvingen nu nog te taakgericht of te lang zijn.',
+                    },
+                ],
+            },
+            ats: {
+                bullets: [
+                    'Belangrijke termen voor dit type CV: interim, opdracht, opdrachtgever, implementatie, stakeholdermanagement, freelance, zelfstandige.',
+                    'Gebruik herkenbare functietitels per opdracht, niet alleen "eigenaar" of "ondernemer".',
+                    'Voeg sectorcontext toe bij minder bekende opdrachtgevers of NDA-projecten.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/templates',
+                        label: 'Kies een rustige template voor een opdrachtgever-proof ZZP-CV',
+                        description: 'Gebruik een layout waarin profiel, recente opdrachten en kernskills direct bovenaan staan.',
+                    },
+                ],
+            },
+        },
+        faq: [
+            {
+                question: 'Hoe verschilt een zzp CV voorbeeld van een gewoon CV voorbeeld?',
+                answer: 'Een ZZP-CV laat opdrachten per opdrachtgever zien in plaats van functies per werkgever. Daardoor draait de structuur meer om projecten, duur, sectorcontext en concrete resultaten.',
+            },
+            {
+                question: 'Moet ik mijn tarief of KvK-nummer in een zzp CV voorbeeld opnemen?',
+                answer: 'Je tarief niet. Een KvK-nummer kan handig zijn voor intermediairs, maar is niet verplicht in elke versie van je CV. Focus in het document eerst op specialisme en resultaat.',
+            },
+            {
+                question: 'Hoe ga ik om met vertrouwelijke opdrachten?',
+                answer: 'Noem dan de sector, het type opdrachtgever en het resultaat, zonder de naam prijs te geven. Een duidelijke NDA-omschrijving is sterker dan een volledig onduidelijke regel.',
+            },
+            {
+                question: 'Moet een zzp CV ook per opdracht worden aangepast?',
+                answer: 'Ja. De sterkste freelancers werken met een master-CV en maken per type opdracht een compactere, gerichte versie met de meest relevante cases.',
+            },
+        ],
+    },
 };
 
 const englishBespokeOverrides: Record<string, GuideOverride> = {
@@ -1867,7 +1986,7 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                         description: 'Use the English template flow if you want Dutch structure with cleaner recruiter presentation.',
                     },
                     {
-                        href: '/templates',
+                        href: '/en/templates',
                         label: 'Browse CV templates before deciding on photo placement',
                         description: 'Compare layouts that keep the focus on achievements first and visuals second.',
                     },
@@ -1881,7 +2000,7 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                         description: 'Start from a template where the top half page stays focused on role fit, not visuals.',
                     },
                     {
-                        href: '/templates',
+                        href: '/en/templates',
                         label: 'Choose a cleaner template if your current CV feels too image-led',
                         description: 'Switch to layouts that leave more room for summary, experience, and keywords.',
                     },
@@ -1905,7 +2024,7 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                         description: 'Use the expat-facing template route if you want the right section order from the start.',
                     },
                     {
-                        href: '/templates',
+                        href: '/en/templates',
                         label: 'Browse CV templates that fit Dutch recruiter expectations',
                         description: 'Compare layouts before you commit to the final structure and visual style.',
                     },
@@ -1919,7 +2038,7 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                 ],
                 intentLinks: [
                     {
-                        href: '/engels-cv-template',
+                        href: '/en/templates',
                         label: 'Choose an English CV template with stronger ATS readability',
                         description: 'Start from a cleaner base before refining vacancy-specific wording.',
                     },
@@ -1954,7 +2073,7 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                         description: 'Use the English template flow once your sections and wording are reorganized.',
                     },
                     {
-                        href: '/templates',
+                        href: '/en/templates',
                         label: 'Compare templates before finalizing your Dutch-format CV',
                         description: 'Pick the layout that best matches the role and the amount of experience you have.',
                     },
@@ -2011,7 +2130,7 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                         description: 'Start from a layout that keeps keywords readable for both parsers and recruiters.',
                     },
                     {
-                        href: '/templates',
+                        href: '/en/templates',
                         label: 'Choose a cleaner template before optimizing keywords',
                         description: 'Fix structure first, then layer vacancy language onto the strongest layout.',
                     },
@@ -2025,7 +2144,7 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                 ],
                 intentLinks: [
                     {
-                        href: '/engels-cv-template',
+                        href: '/en/templates',
                         label: 'Switch to an English CV template built for cleaner keyword placement',
                         description: 'Use a simpler structure if your current CV makes ATS optimization harder than it should be.',
                     },
@@ -2085,7 +2204,7 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                 ],
                 intentLinks: [
                     {
-                        href: '/templates',
+                        href: '/en/templates',
                         label: 'Browse templates that suit a tighter LinkedIn-to-CV conversion',
                         description: 'Choose a layout that keeps summary, top bullets, and skills above the fold.',
                     },
@@ -2234,7 +2353,7 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                         description: 'Use the expat-facing template flow to keep projects, internships, and part-time work in the right order.',
                     },
                     {
-                        href: '/templates',
+                        href: '/en/templates',
                         label: 'Browse templates that fit early-career and student profiles',
                         description: 'Choose a layout that leaves enough room for education, projects, and practical evidence.',
                     },
@@ -2248,7 +2367,7 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                 ],
                 intentLinks: [
                     {
-                        href: '/engels-cv-template',
+                        href: '/en/templates',
                         label: 'Start from an English CV template if you want a one-page student version',
                         description: 'Use a cleaner base before tailoring it to internships, part-time roles, or graduate jobs.',
                     },
@@ -2485,58 +2604,199 @@ function getDutchRelatedLinks(seed: DutchSeed): SeoGuidePage['relatedLinks'] {
 }
 
 function getEnglishRelatedLinks(seed: EnglishSeed): SeoGuidePage['relatedLinks'] {
-    const base = [
+    const defaultLinks: SeoGuidePage['relatedLinks'] = [
         {
             href: '/en/guides/dutch-cv-for-expats',
             title: 'Dutch CV for expats',
             description: 'Core structure and positioning principles for international candidates.',
         },
         {
-            href: '/en/guides/netherlands-cv-keywords-ats',
-            title: 'ATS keyword guide',
-            description: 'How to align vacancy language with your CV without keyword stuffing.',
-        },
-        {
-            href: '/en/guides/translate-resume-to-dutch-format',
-            title: 'Translate resume to Dutch format',
-            description: 'Convert US/UK resume style into Dutch recruiter-friendly presentation.',
-        },
-    ];
-
-    const extra = [
-        {
             href: '/en/guides/cv-format-netherlands-english',
             title: 'CV format Netherlands (English)',
-            description: 'Section order and writing style that matches Dutch recruiter scanning behavior.',
+            description: 'Use the Dutch recruiter-friendly section order and writing style in English.',
         },
         {
-            href: '/en/guides/netherlands-cover-letter-basics',
-            title: 'Netherlands cover letter basics',
-            description: 'Keep your cover letter concise, relevant, and aligned with your CV evidence.',
-        },
-        {
-            href: '/en/guides/one-page-cv-netherlands',
-            title: 'One-page CV in the Netherlands',
-            description: 'Decide what to keep, cut, and emphasize for faster recruiter review.',
+            href: '/en/guides/netherlands-cv-keywords-ats',
+            title: 'ATS keyword guide',
+            description: 'Align vacancy language with your CV without sounding robotic.',
         },
     ];
 
-    const filtered = [...base, ...extra].filter((link) => !link.href.endsWith(`/${seed.slug}`));
-    const deduped = filtered.filter(
-        (link, idx, arr) => arr.findIndex((item) => item.href === link.href) === idx
-    );
-    if (seed.slug === 'netherlands-cover-letter-basics') {
-        return [
-            ...deduped.slice(0, 2),
+    const contextualLinks: Record<string, SeoGuidePage['relatedLinks']> = {
+        'dutch-cv-for-expats': [
             {
                 href: '/en/guides/cv-format-netherlands-english',
-                title: 'English CV format in NL',
-                description: 'Keep cover letter language and CV structure aligned for better interview conversion.',
+                title: 'CV format Netherlands (English)',
+                description: 'Lock in the section order and writing style Dutch recruiters expect.',
             },
-        ];
-    }
+            {
+                href: '/en/guides/netherlands-cv-keywords-ats',
+                title: 'ATS keyword guide',
+                description: 'Add vacancy terms without making the CV feel stuffed or generic.',
+            },
+            {
+                href: '/en/guides/netherlands-cover-letter-basics',
+                title: 'Netherlands cover letter basics',
+                description: 'Keep your letter short, specific, and aligned with your CV evidence.',
+            },
+        ],
+        'netherlands-cv-photo-rules': [
+            {
+                href: '/en/guides/dutch-cv-for-expats',
+                title: 'Dutch CV for expats',
+                description: 'Use a content-first Dutch structure before worrying about optional photo choices.',
+            },
+            {
+                href: '/en/guides/one-page-cv-netherlands',
+                title: 'One-page CV in the Netherlands',
+                description: 'Keep the top half of page one focused on role fit and measurable proof.',
+            },
+            {
+                href: '/en/guides/cv-format-netherlands-english',
+                title: 'CV format Netherlands (English)',
+                description: 'Match photo decisions to the broader layout recruiters scan first.',
+            },
+        ],
+        'cv-format-netherlands-english': [
+            {
+                href: '/en/guides/dutch-cv-for-expats',
+                title: 'Dutch CV for expats',
+                description: 'Start with the broader expat positioning logic behind the structure.',
+            },
+            {
+                href: '/en/guides/netherlands-cv-keywords-ats',
+                title: 'ATS keyword guide',
+                description: 'Once format is right, layer in vacancy language and ATS-safe wording.',
+            },
+            {
+                href: '/en/guides/one-page-cv-netherlands',
+                title: 'One-page CV in the Netherlands',
+                description: 'Decide how much experience to keep once your structure is fixed.',
+            },
+        ],
+        'netherlands-cv-without-dutch-language': [
+            {
+                href: '/en/guides/dutch-cv-for-expats',
+                title: 'Dutch CV for expats',
+                description: 'Use the broader expat playbook for positioning, structure, and local role fit.',
+            },
+            {
+                href: '/en/guides/translate-resume-to-dutch-format',
+                title: 'Translate resume to Dutch format',
+                description: 'Reshape an existing English resume into Dutch recruiter logic before tailoring language lines.',
+            },
+            {
+                href: '/en/english-speaking-companies-netherlands',
+                title: 'English-speaking companies in the Netherlands',
+                description: 'Find employer contexts where English-first applications are more realistic.',
+            },
+        ],
+        'translate-resume-to-dutch-format': [
+            {
+                href: '/en/guides/cv-format-netherlands-english',
+                title: 'CV format Netherlands (English)',
+                description: 'Check your translated draft against the Dutch recruiter-preferred section order.',
+            },
+            {
+                href: '/en/guides/netherlands-cv-keywords-ats',
+                title: 'ATS keyword guide',
+                description: 'Tighten vacancy language after the core structure has been converted.',
+            },
+            {
+                href: '/en/guides/linkedin-to-cv-netherlands',
+                title: 'LinkedIn to CV Netherlands',
+                description: 'Use this if your source material is a LinkedIn profile rather than a classic resume.',
+            },
+        ],
+        'netherlands-cover-letter-basics': [
+            {
+                href: '/en/guides/cv-format-netherlands-english',
+                title: 'CV format Netherlands (English)',
+                description: 'Keep CV structure and letter tone aligned for better interview conversion.',
+            },
+            {
+                href: '/en/guides/dutch-cv-for-expats',
+                title: 'Dutch CV for expats',
+                description: 'Match your letter to the wider Dutch-market positioning of your CV.',
+            },
+            {
+                href: '/en/guides/one-page-cv-netherlands',
+                title: 'One-page CV in the Netherlands',
+                description: 'Use a tighter CV if you want your letter and resume package to scan faster together.',
+            },
+        ],
+        'cv-for-international-students-netherlands': [
+            {
+                href: '/en/guides/dutch-cv-for-expats',
+                title: 'Dutch CV for expats',
+                description: 'Use the broader Dutch-market logic behind English CVs for internationals.',
+            },
+            {
+                href: '/en/guides/one-page-cv-netherlands',
+                title: 'One-page CV in the Netherlands',
+                description: 'Keep student, internship, and part-time evidence tight and recruiter-friendly.',
+            },
+            {
+                href: '/en/guides/netherlands-cv-keywords-ats',
+                title: 'ATS keyword guide',
+                description: 'Translate coursework, tools, and project work into the vacancy language.',
+            },
+        ],
+        'netherlands-cv-keywords-ats': [
+            {
+                href: '/en/guides/cv-format-netherlands-english',
+                title: 'CV format Netherlands (English)',
+                description: 'Fix the structure first so ATS and recruiters can actually parse your keywords.',
+            },
+            {
+                href: '/en/guides/translate-resume-to-dutch-format',
+                title: 'Translate resume to Dutch format',
+                description: 'Reshape an old resume before you optimize wording for vacancy match.',
+            },
+            {
+                href: '/en/guides/one-page-cv-netherlands',
+                title: 'One-page CV in the Netherlands',
+                description: 'Keep the final document tight once your highest-value keywords are in place.',
+            },
+        ],
+        'linkedin-to-cv-netherlands': [
+            {
+                href: '/en/guides/translate-resume-to-dutch-format',
+                title: 'Translate resume to Dutch format',
+                description: 'Use this route if you also need to convert old resume structure into Dutch format.',
+            },
+            {
+                href: '/en/guides/netherlands-cv-keywords-ats',
+                title: 'ATS keyword guide',
+                description: 'Turn LinkedIn language into vacancy-specific CV keywords that still feel credible.',
+            },
+            {
+                href: '/en/guides/cv-format-netherlands-english',
+                title: 'CV format Netherlands (English)',
+                description: 'Move your best LinkedIn proof into the order Dutch recruiters scan fastest.',
+            },
+        ],
+        'one-page-cv-netherlands': [
+            {
+                href: '/en/guides/cv-format-netherlands-english',
+                title: 'CV format Netherlands (English)',
+                description: 'Start from the right section order before cutting content down to one page.',
+            },
+            {
+                href: '/en/guides/netherlands-cv-keywords-ats',
+                title: 'ATS keyword guide',
+                description: 'Preserve your highest-value vacancy terms while shrinking the CV.',
+            },
+            {
+                href: '/en/guides/cv-for-international-students-netherlands',
+                title: 'CV for international students',
+                description: 'Useful if you need a tighter one-page version for student or early-career applications.',
+            },
+        ],
+    };
 
-    return deduped.slice(0, 3);
+    const selected = contextualLinks[seed.slug] ?? defaultLinks;
+    return selected.filter((link) => !link.href.endsWith(`/${seed.slug}`)).slice(0, 3);
 }
 
 function toDutchGuide(seed: DutchSeed): SeoGuidePage {
@@ -2787,8 +3047,8 @@ function toEnglishGuide(seed: EnglishSeed): SeoGuidePage {
         ],
         relatedLinks: getEnglishRelatedLinks(seed),
         ctaTitle: 'Build your Dutch-style CV now',
-        ctaText: 'Apply this framework directly in our editor and export a clean, ATS-friendly PDF.',
-        ctaHref: '/templates',
+        ctaText: 'Apply this framework inside the English template flow and export a clean, ATS-friendly A4 PDF for jobs in the Netherlands.',
+        ctaHref: '/en/templates',
     };
 
     return applyGuideOverride(page, englishBespokeOverrides[seed.slug]);

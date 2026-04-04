@@ -107,7 +107,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Aanmaken - Snel een Eerste Professionele Versie Starten | WerkCV.nl",
+  title: "CV Aanmaken - Snel een Eerste Professionele Versie Starten | WerkCV",
   description:
     "CV aanmaken in een paar duidelijke stappen. Start gratis, vul direct je eerste professionele versie in en werk daarna verder in de editor.",
   keywords: [
@@ -207,6 +207,17 @@ export default function CvAanmakenPage() {
               neerzetten die professioneel oogt en later verder kan worden verfijnd.
               Deze pagina helpt je die eerste stap compact en logisch te zetten,
               zonder dat je direct verdwaalt in design, details of te veel opties.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Zie dit als de snelle start-route. Voor de volledige aanpak rond
+              structuur, vacatureaanpassing en ATS-logica gebruik je daarna beter{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                de hoofdgids CV maken
+              </Link>
+              .
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link

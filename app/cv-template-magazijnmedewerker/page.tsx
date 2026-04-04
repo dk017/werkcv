@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import RoleCvTemplatePage from "@/components/seo/RoleCvTemplatePage";
 
 export const metadata: Metadata = {
-  title: "CV Template Magazijnmedewerker | WerkCV.nl",
+  title: "CV Template Magazijnmedewerker | WerkCV",
   description:
     "Gebruik een sterk CV template voor magazijnmedewerker. Inclusief profieltekst, logistieke voorbeeld bullets, checklist en links naar magazijn-CV en sollicitatiebrief routes.",
   keywords: [

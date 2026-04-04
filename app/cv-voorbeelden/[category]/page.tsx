@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { getAllCategories, getCategoryBySlug, getExamplesByCategory } from '@/lib/cv-voorbeelden/registry';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { SampleCVPreview } from '@/components/seo/SampleCVPreview';
+import { normalizeBrandCopy } from '@/lib/seo-branding';
 
 interface PageProps {
     params: Promise<{ category: string }>;
@@ -20,17 +21,20 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const category = getCategoryBySlug(categorySlug);
 
     if (!category) {
-        return { title: 'Pagina niet gevonden | WerkCV.nl' };
+        return { title: 'Pagina niet gevonden | WerkCV' };
     }
+    const metaTitle = normalizeBrandCopy(category.metaTitle);
+    const metaDesc = normalizeBrandCopy(category.metaDesc);
 
     return {
-        title: category.metaTitle,
-        description: category.metaDesc,
+        title: metaTitle,
+        description: metaDesc,
         keywords: category.keywords,
         openGraph: {
-            title: category.metaTitle,
-            description: category.metaDesc,
+            title: metaTitle,
+            description: metaDesc,
             type: 'website',
+            siteName: 'WerkCV',
             locale: 'nl_NL',
         },
     };
@@ -43,6 +47,7 @@ export default async function CategoryPage({ params }: PageProps) {
     if (!category) {
         notFound();
     }
+    const metaDesc = normalizeBrandCopy(category.metaDesc);
 
     const examples = getExamplesByCategory(categorySlug);
 
@@ -57,10 +62,10 @@ export default async function CategoryPage({ params }: PageProps) {
         '@context': 'https://schema.org',
         '@type': 'CollectionPage',
         name: category.heroTitle,
-        description: category.metaDesc,
+        description: metaDesc,
         publisher: {
             '@type': 'Organization',
-            name: 'WerkCV.nl',
+            name: 'WerkCV',
         },
     };
 

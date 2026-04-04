@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 
 interface MatchResult {
@@ -173,6 +174,32 @@ export default function CvVacatureMatchTool() {
                     <div className="bg-slate-50 border-2 border-slate-300 p-4">
                         <h3 className="font-black text-slate-800 text-sm mb-1">Aanbeveling</h3>
                         <p className="text-sm text-slate-600">{result.aanbeveling}</p>
+                    </div>
+
+                    <div className="bg-[#FFF7D6] border-2 border-black p-4 sm:p-5">
+                        <p className="text-xs font-black uppercase tracking-wide text-slate-600 mb-2">
+                            Volgende stap
+                        </p>
+                        <h3 className="text-lg font-black text-slate-900 mb-2">
+                            Verwerk deze keywords direct in je CV
+                        </h3>
+                        <p className="text-sm text-slate-700 leading-relaxed mb-4">
+                            Open de editor om ontbrekende termen, sterkere bullets en een duidelijkere profieltekst meteen in je CV te zetten.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-3">
+                            <Link
+                                href="/editor"
+                                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            >
+                                Verbeter mijn CV in de editor →
+                            </Link>
+                            <Link
+                                href="/templates"
+                                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-50 transition-colors"
+                            >
+                                Bekijk ATS-vriendelijke templates
+                            </Link>
+                        </div>
                     </div>
 
                     <button

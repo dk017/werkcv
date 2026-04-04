@@ -297,7 +297,7 @@ const sections: ToolSection[] = [
 const totalTools = new Set(sections.flatMap((section) => section.tools.map((tool) => tool.href))).size;
 
 export const metadata: Metadata = {
-    title: `${totalTools} Gratis CV, Sollicitatie & Werk Tools | WerkCV.nl`,
+    title: `${totalTools} Gratis CV, Sollicitatie & Werk Tools | WerkCV`,
     description: `${totalTools} gratis tools voor CV, sollicitatie en werken in Nederland: netto-bruto, parttime salaris, vakantiedagen, verlofuren, WW, transitievergoeding, salaris, 30%-regeling, ATS check en meer.`,
     keywords: [
         "cv tools gratis",

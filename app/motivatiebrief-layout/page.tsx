@@ -111,7 +111,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Motivatiebrief Layout - Opmaak, Structuur en Voorbeeld | WerkCV.nl",
+  title: "Motivatiebrief Layout - Opmaak, Structuur en Voorbeeld | WerkCV",
   description:
     "Zoek je motivatiebrief layout of opmaak? Bekijk praktische regels voor lettertype, witruimte, structuur en PDF-opmaak. Direct toepassen in je brief en CV-flow.",
   keywords: [

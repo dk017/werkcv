@@ -180,7 +180,7 @@ const officeTemplateIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Template Office Manager - Operationsgericht en Sollicitatieklaar | WerkCV.nl",
+  title: "CV Template Office Manager - Operationsgericht en Sollicitatieklaar | WerkCV",
   description:
     "Gebruik het beste CV template voor office manager. Inclusief profieltekst voorbeelden, operationele KPI-bullets, skills en ATS-keywords. Start gratis in de editor.",
   keywords: [

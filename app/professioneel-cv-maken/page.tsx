@@ -88,7 +88,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Professioneel CV Maken - Rustig, Zakelijk en Recruiter-proof | WerkCV.nl",
+  title: "Professioneel CV Maken - Rustig, Zakelijk en Recruiter-proof | WerkCV",
   description:
     "Professioneel cv maken? Kies een rustige zakelijke template, schrijf concreet en bouw een recruiter-proof CV dat ook ATS goed kan lezen.",
   keywords: [

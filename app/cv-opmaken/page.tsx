@@ -68,7 +68,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Opmaken - Professionele Layout Tips en Voorbeelden | WerkCV.nl",
+  title: "CV Opmaken - Professionele Layout Tips en Voorbeelden | WerkCV",
   description:
     "CV opmaken zonder rommelige layout? Leer hoe je je CV professioneel, ATS-vriendelijk en scanbaar opmaakt en pas het direct toe in de editor.",
   keywords: [
@@ -167,6 +167,18 @@ export default function CvOpmakenPage() {
               betrouwbaarder. De meeste kandidaten verliezen niet op inhoud, maar op
               onrustige opmaak. Hier zie je hoe je die fout voorkomt en hoe je die
               verbeteringen direct toepast in WerkCV.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Deze route gaat bewust over layout en visuele rust, niet over de hele
+              schrijfstrategie. Voor de algemene workflow rond inhoud, structuur en
+              sub-intents gebruik je{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                de CV maken gids
+              </Link>
+              .
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link

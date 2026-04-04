@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Nederlandse CV Gids 2026 | WerkCV.nl",
+    title: "Nederlandse CV Gids 2026 | WerkCV",
     description:
       "De centrale hub voor cv maken, voorbeelden, templates en schrijfadvies in Nederland.",
     type: "website",

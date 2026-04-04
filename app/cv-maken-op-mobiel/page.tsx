@@ -52,7 +52,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken op Mobiel - Snel Je CV Bouwen op Telefoon | WerkCV.nl",
+  title: "CV Maken op Mobiel - Snel Je CV Bouwen op Telefoon | WerkCV",
   description:
     "CV maken op mobiel of telefoon? Werk sneller vanuit een vaste template, pas je profiel en ervaring direct aan en download daarna je PDF.",
   keywords: [
@@ -153,6 +153,18 @@ export default function CvMakenOpMobielPage() {
               sollicitatieversie starten. Deze pagina laat zien hoe je dat praktisch
               en zonder rommelige flow doet.
             </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Deze pagina gaat dus over apparaatkeuze en snelheid, niet over de hele
+              CV-strategie. Voor de brede workflow rond inhoud, structuur en ATS gebruik
+              je beter de{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                algemene CV maken gids
+              </Link>
+              .
+            </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/editor"
@@ -217,9 +229,9 @@ export default function CvMakenOpMobielPage() {
               body: "Zet je mobiele versie daarna stabiel om naar de eind-PDF.",
             },
             {
-              href: "/cv-aanmaken",
-              title: "CV aanmaken",
-              body: "Voor gebruikers die vooral snel een eerste basisversie willen.",
+              href: "/cv-maken",
+              title: "Algemene CV-workflow",
+              body: "Gebruik de hoofdgids als je naast mobiel gemak ook inhoud, structuur en ATS-stappen wilt aanscherpen.",
             },
           ].map((item) => (
             <Link

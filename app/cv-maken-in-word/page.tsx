@@ -60,7 +60,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken in Word - Kies Templates en Download Daarna als PDF | WerkCV.nl",
+  title: "CV Maken in Word - Kies Templates en Download Daarna als PDF | WerkCV",
   description:
     "CV maken in Word? WerkCV is een sneller alternatief: kies een template, vul online in en download daarna als stabiele PDF. Geen Word-opmaakstress.",
   keywords: [
@@ -160,6 +160,17 @@ export default function CvMakenInWordPage() {
               WerkCV is geen Word-export tool, maar een sneller alternatief: je kiest
               een template, werkt online in de editor en downloadt daarna een stabiele
               PDF zonder te worstelen met tabellen, marges en schuivende koppen.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Zie deze route als een Word-specifieke beslispagina. Zoek je niet per se
+              naar Word, maar gewoon naar de beste algemene aanpak? Dan is{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                CV maken
+              </Link>{" "}
+              de bredere hoofdroute.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link

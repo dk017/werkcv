@@ -52,7 +52,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Stage CV Maken - Sterk CV voor Stageplek en Afstudeerstage | WerkCV.nl",
+  title: "Stage CV Maken - Sterk CV voor Stageplek en Afstudeerstage | WerkCV",
   description:
     "Stage cv maken? Zet opleiding, projecten, stage-intentie en vaardigheden om in een sterk stage-CV. Start gratis in de editor en download later als PDF.",
   keywords: [

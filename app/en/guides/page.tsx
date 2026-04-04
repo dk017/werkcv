@@ -18,6 +18,28 @@ export const metadata = buildEnglishMetadata({
 
 export default function EnglishGuidesHubPage() {
     const pages = getEnglishWavePages();
+    const startPaths = [
+        {
+            href: '/en/guides/dutch-cv-for-expats',
+            title: 'Need the big picture first?',
+            description: 'Start with the expat overview if you want the Dutch recruiter logic behind English CVs.',
+        },
+        {
+            href: '/en/guides/cv-for-international-students-netherlands',
+            title: 'Student or graduate profile?',
+            description: 'Use this route for internships, part-time work, projects, and first full-time applications.',
+        },
+        {
+            href: '/en/guides/netherlands-cv-keywords-ats',
+            title: 'Low interview rate?',
+            description: 'Go here if structure is okay but your wording, keywords, or ATS match is weak.',
+        },
+        {
+            href: '/en/guides/netherlands-cover-letter-basics',
+            title: 'Need the cover letter too?',
+            description: 'Use this when your CV is mostly ready but your application package still feels incomplete.',
+        },
+    ];
     const expatTools = [
         {
             href: '/en/english-speaking-companies-netherlands',
@@ -64,6 +86,33 @@ export default function EnglishGuidesHubPage() {
             </section>
 
             <section className="max-w-6xl mx-auto px-6 py-10">
+                <div className="mb-10 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="max-w-3xl">
+                        <h2 className="text-3xl font-black text-gray-900 mb-3">
+                            Choose the guide that matches your real blocker
+                        </h2>
+                        <p className="text-lg text-gray-700">
+                            These pages work best when you enter by problem, not by random topic order.
+                            Pick the guide that matches what is actually slowing down your next application.
+                        </p>
+                    </div>
+
+                    <div className="mt-6 grid md:grid-cols-2 xl:grid-cols-4 gap-5">
+                        {startPaths.map((path) => (
+                            <Link
+                                key={path.href}
+                                href={path.href}
+                                className="group block bg-[#FFF7E8] border-3 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            >
+                                <h3 className="font-black text-lg mb-2 group-hover:text-[#0ea5e9] transition-colors">
+                                    {path.title}
+                                </h3>
+                                <p className="text-sm text-gray-600">{path.description}</p>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {pages.map((page) => (
                         <Link
@@ -104,6 +153,27 @@ export default function EnglishGuidesHubPage() {
                             </Link>
                         ))}
                     </div>
+                </div>
+
+                <div className="mt-10 flex flex-wrap gap-3">
+                    <Link
+                        href="/en/templates"
+                        className="inline-block bg-black text-white font-bold px-5 py-3 border-4 border-black"
+                    >
+                        Open English templates
+                    </Link>
+                    <Link
+                        href="/en/editor"
+                        className="inline-block bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black"
+                    >
+                        Open English editor
+                    </Link>
+                    <Link
+                        href="/en"
+                        className="inline-block bg-white text-black font-bold px-5 py-3 border-4 border-black"
+                    >
+                        Back to English hub
+                    </Link>
                 </div>
             </section>
         </main>

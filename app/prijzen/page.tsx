@@ -3,7 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-    title: "Prijzen - CV Maken Kosten | WerkCV.nl",
+    title: "Prijzen - CV Maken Kosten | WerkCV",
     description: "Maak gratis je CV en betaal eenmalig €4,99 per CV. Daarna kun je dat CV blijven bewerken, van template wisselen en opnieuw downloaden. Geen abonnement.",
     keywords: [
         "cv maken kosten",

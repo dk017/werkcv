@@ -89,7 +89,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Mooie CV Maken - Verzorgde Opmaak Zonder Overdesign | WerkCV.nl",
+  title: "Mooie CV Maken - Verzorgde Opmaak Zonder Overdesign | WerkCV",
   description:
     "Mooie cv maken? Kies een stijlvolle template met rust, hiërarchie en verzorgde opmaak zodat je CV mooi oogt zonder recruiter-focus te verliezen.",
   keywords: [
@@ -188,6 +188,18 @@ export default function MooieCvMakenPage() {
               layout nodig hebt. Het betekent dat je CV verzorgd, samenhangend en
               prettig leesbaar voelt, met genoeg stijl om professioneel over te
               komen zonder de inhoud te overschaduwen.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Deze pagina pakt vooral de vraag aan hoe je CV verzorgd en
+              aantrekkelijk oogt. Voor het bredere stappenplan rond inhoud,
+              structuur en vacatureaanpassing gebruik je beter de{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                hoofdgids CV maken
+              </Link>
+              .
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -314,9 +326,9 @@ export default function MooieCvMakenPage() {
               body: "Ga dieper op ontwerpkeuzes in als layout, stijl en uitstraling je hoofdvraag zijn.",
             },
             {
-              href: "/modern-cv-voorbeeld",
-              title: "Modern CV voorbeeld",
-              body: "Bekijk eerst hoe een frisse, visueel sterke layout inhoudelijk werkt in de praktijk.",
+              href: "/cv-maken",
+              title: "CV maken",
+              body: "Gebruik daarna het brede stappenplan als je behalve uitstraling ook inhoud en vacaturematch wilt verbeteren.",
             },
             {
               href: "/cv-opmaken",

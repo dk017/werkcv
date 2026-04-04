@@ -41,7 +41,7 @@ const cvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-    title: "Minimumloon Checker 2026 - Gratis Tool | WerkCV.nl",
+    title: "Minimumloon Checker 2026 - Gratis Tool | WerkCV",
     description: "Controleer het wettelijke minimumloon per leeftijd in 2026. Inclusief vergelijking met je bruto uurloon en een maandindicatie op basis van je contracturen.",
     keywords: [
         "minimumloon checker",

@@ -51,7 +51,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Korte Motivatiebrief Voorbeeld - Compact en Overtuigend | WerkCV.nl",
+  title: "Korte Motivatiebrief Voorbeeld - Compact en Overtuigend | WerkCV",
   description:
     "Zoek je een korte motivatiebrief voorbeeld? Bekijk compacte voorbeeldbrieven, wanneer kort beter werkt en hoe je in weinig regels toch overtuigt.",
   keywords: [

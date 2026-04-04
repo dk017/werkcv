@@ -2,14 +2,14 @@ import { BlogArticle } from '../types';
 
 export const sollicitatiebriefTips: BlogArticle = {
     slug: 'sollicitatiebrief-tips',
-    title: 'Sollicitatiebrief Schrijven: Tips, Structuur en Voorbeelden voor 2026',
-    description: 'Schrijf een overtuigende sollicitatiebrief die recruiters aanspreekt. Ontdek de ideale structuur, statistieken, veelgemaakte fouten en voorbeelden voor 2026.',
+    title: 'Sollicitatiebrief tips in 2026: structuur, fouten en ATS-aanpak',
+    description: 'Ontdek de strategische laag achter een sterke sollicitatiebrief: structuur, fouten, e-mailaanpak, open sollicitaties en ATS-tips voor 2026.',
     publishedAt: '2025-02-10',
-    updatedAt: '2026-02-19',
+    updatedAt: '2026-04-04',
 
-    metaTitle: 'Sollicitatiebrief Schrijven: Structuur, Tips en Voorbeelden [2026] | WerkCV.nl',
-    metaDesc: 'Hoe schrijf je een overtuigende sollicitatiebrief? Ontdek de juiste structuur, veelgemaakte fouten, concrete voorbeelden en ATS-tips voor 2026.',
-    keywords: ['sollicitatiebrief schrijven', 'sollicitatiebrief voorbeeld', 'motivatiebrief tips', 'sollicitatiebrief structuur', 'hoe schrijf je een sollicitatiebrief'],
+    metaTitle: 'Sollicitatiebrief tips in 2026: structuur, fouten en ATS | WerkCV',
+    metaDesc: 'Lees de belangrijkste sollicitatiebrief tips voor 2026: structuur, openingsfouten, open sollicitaties, startersaanpak en ATS-vriendelijke keuzes.',
+    keywords: ['sollicitatiebrief tips', 'sollicitatiebrief schrijven', 'motivatiebrief tips', 'sollicitatiebrief structuur', 'ats sollicitatiebrief'],
 
     readingTime: 11,
     category: 'solliciteren',
@@ -51,6 +51,13 @@ export const sollicitatiebriefTips: BlogArticle = {
                 'Afsluiting (1 alinea): samenvatting match + actieve uitnodiging tot gesprek + contactgegevens',
                 'Lengte: maximaal 1 A4, lettergrootte 11, marges 2,5 cm, zelfde lettertype als je cv',
             ],
+            intentLinks: [
+                {
+                    href: '/motivatiebrief-schrijven',
+                    label: 'Gebruik de praktische schrijfworkflow voor je hele brief',
+                    description: 'Handig als je na deze tips direct per alinea wilt schrijven in een vaste volgorde.',
+                },
+            ],
         },
         {
             id: 'pakkende-opening',
@@ -60,6 +67,13 @@ export const sollicitatiebriefTips: BlogArticle = {
                 'De eerste zin van je sollicitatiebrief is cruciaal. Dit is het moment waarop de recruiter beslist of hij of zij verder leest. Vermijd standaardopeningen zoals "Hierbij solliciteer ik op de functie van..." of "Met veel interesse las ik uw vacature." Deze zinnen zijn zo voorspelbaar dat ze de lezer direct vervelen. Een recruiter die 50 brieven op een dag beoordeelt, haakt bij de tweede zo een standaardzin al af.',
                 'Begin in plaats daarvan met iets dat de aandacht grijpt. Verwijs naar een recent project of nieuws van het bedrijf dat je aanspreekt, noem een gezamenlijke connectie, of open met een krachtige uitspraak over je vakgebied. Bijvoorbeeld: "Toen ik las dat jullie team de komende twee jaar gaat verdubbelen, wist ik dat ik mijn ervaring in het opschalen van engineering-teams hier wil inzetten." Of: "De beslissing om volledig over te stappen op duurzame verpakkingen doet precies waarvoor ik bij FMCG werk — dat wil ik mede realiseren."',
                 'Een sterke opening laat niet alleen zien dat je geinteresseerd bent, maar ook dat je je hebt verdiept in het bedrijf. Dit soort voorbereiding valt altijd positief op en onderscheidt je direct van de massa standaardbrieven. Op vacatures reageren 100 tot 250 kandidaten (Glassdoor 2024) — een persoonlijke, specifieke opening is de snelste manier om boven die stapel uit te steken.',
+            ],
+            intentLinks: [
+                {
+                    href: '/sollicitatiebrief-beginnen',
+                    label: 'Bekijk sterke openingszinnen voor je sollicitatiebrief',
+                    description: 'Gebruik deze route als je vooral vastloopt op de eerste zin of openingsalinea.',
+                },
             ],
         },
         {
@@ -111,6 +125,13 @@ export const sollicitatiebriefTips: BlogArticle = {
                 'Doe grondig vooronderzoek: lees recente nieuwsberichten over het bedrijf, bestudeer hun producten of diensten en bekijk hun LinkedIn-pagina voor recente updates. Benoem specifiek wat je aanspreekt en hoe jouw expertise aansluit bij hun werkgebied. "Ik las dat jullie organisatie in 2025 een nieuw AI-platform hebben gelanceerd — op basis van mijn 5 jaar ervaring in AI-productmanagement zie ik direct waar ik kan bijdragen" is veel sterker dan een generiek verzoek.',
                 'Richt je brief indien mogelijk aan een specifieke persoon: de teammanager of directeur van de afdeling waar je wilt werken. Gebruik LinkedIn om de juiste naam te vinden. Een open sollicitatie gericht aan een specifiek persoon heeft aantoonbaar meer kans om gelezen en beantwoord te worden dan een brief gericht aan "de afdeling HR" of "werving en selectie".',
             ],
+            intentLinks: [
+                {
+                    href: '/open-sollicitatie-brief',
+                    label: 'Gebruik de aparte gids voor open sollicitatie schrijven',
+                    description: 'Handig als je zonder concrete vacature een gerichtere brief per bedrijf wilt bouwen.',
+                },
+            ],
         },
         {
             id: 'veelgemaakte-fouten',
@@ -139,6 +160,13 @@ export const sollicitatiebriefTips: BlogArticle = {
                 'Als starter of recent afgestudeerde heb je misschien weinig werkervaring om in je brief te benoemen — maar dat betekent niet dat je brief zwak hoeft te zijn. Focus op je sterkste stage-ervaringen, studieprojecten en extracurriculaire activiteiten. Koppel ze direct aan de vacature-eisen en maak duidelijk welke overdraagbare vaardigheden je meebrengt.',
                 'Je motivatie voor de organisatie en het vakgebied is voor starters extra belangrijk. Een recruiter die een starter aanneemt, investeert in potentieel — niet in een bewezen trackrecord. Toon dus duidelijk waarom je voor dit vakgebied hebt gekozen, welke waarden je deelt met de organisatie en hoe jouw specifieke opleiding of stages aansluiten op hun werk.',
                 'Houd je starter-sollicitatiebrief nog beknopter dan de standaard — maximaal een halve A4 tot drie kwart. Recruiters die starters zoeken, weten dat er minder te vertellen valt. Een to-the-point brief met drie sterke punten overtuigt meer dan een volgeschreven A4 dat is gevuld met algemeenheden.',
+            ],
+            intentLinks: [
+                {
+                    href: '/motivatiebrief-zonder-werkervaring',
+                    label: 'Schrijf een starterbrief zonder werkervaring',
+                    description: 'Gebruik deze route als je brief vooral moet steunen op studie, stage of projecten.',
+                },
             ],
         },
         {

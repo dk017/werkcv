@@ -180,7 +180,7 @@ const nurseTemplateIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Template Verpleegkundige - BIG-proof en Sollicitatieklaar | WerkCV.nl",
+  title: "CV Template Verpleegkundige - BIG-proof en Sollicitatieklaar | WerkCV",
   description:
     "Gebruik het beste CV template voor verpleegkundige. Inclusief BIG-check, profieltekst voorbeelden, zorg-bullets, ATS-keywords en startertips. Start gratis in de editor.",
   keywords: [

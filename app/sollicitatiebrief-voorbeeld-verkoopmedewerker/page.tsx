@@ -107,7 +107,7 @@ const sourceLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Sollicitatiebrief Voorbeeld Verkoopmedewerker | WerkCV.nl",
+  title: "Sollicitatiebrief Voorbeeld Verkoopmedewerker | WerkCV",
   description:
     "Gebruik een sterk sollicitatiebrief voorbeeld voor verkoopmedewerker. Inclusief KPI-gedreven voorbeeldzinnen, retail checklist, ATS-termen en FAQ. Start direct in de generator.",
   keywords: [

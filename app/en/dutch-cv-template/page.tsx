@@ -116,16 +116,19 @@ export default function DutchCvTemplatePage() {
         </div>
 
         <div className="bg-white border-4 border-black p-6">
-          <h2 className="text-2xl font-black mb-3">Related Dutch examples</h2>
+          <h2 className="text-2xl font-black mb-3">Best next English routes</h2>
           <div className="flex flex-wrap gap-3">
-            <Link href="/cv-voorbeelden/technologie-en-ict/software-ontwikkelaar" className="underline font-bold">
-              Software Developer Example
+            <Link href="/en/netherlands-cv-format" className="underline font-bold">
+              Netherlands CV format
             </Link>
-            <Link href="/cv-voorbeelden/studenten-en-starters/student-cv" className="underline font-bold">
-              Student Example
+            <Link href="/en/dutch-cv-examples" className="underline font-bold">
+              Dutch CV examples in English
             </Link>
-            <Link href="/cv-voorbeelden/zorg-en-welzijn/verpleegkundige" className="underline font-bold">
-              Nurse Example
+            <Link href="/en/guides/dutch-cv-for-expats" className="underline font-bold">
+              Dutch CV for expats
+            </Link>
+            <Link href="/en/guides/netherlands-cv-keywords-ats" className="underline font-bold">
+              ATS keyword guide
             </Link>
           </div>
         </div>
@@ -133,6 +136,9 @@ export default function DutchCvTemplatePage() {
         <div className="flex flex-wrap gap-3">
           <Link href="/en/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
             Start with a Template
+          </Link>
+          <Link href="/en/editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+            Open English editor
           </Link>
           <Link href="/en" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
             Back to English Guides

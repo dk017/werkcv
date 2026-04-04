@@ -6,6 +6,7 @@ import CtaExperiment from '@/components/seo/CtaExperiment';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import ResumeTranslator from '@/components/translate/ResumeTranslator';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
+import { normalizeBrandCopy } from '@/lib/seo-branding';
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -18,13 +19,16 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params;
     const page = getEnglishWavePage(slug);
-    if (!page) return { title: 'Page not found | WerkCV.nl' };
+    if (!page) return { title: 'Page not found | WerkCV' };
 
     const path = `/en/guides/${page.slug}`;
+    const imageUrl = `https://werkcv.nl${path}/opengraph-image`;
+    const metaTitle = normalizeBrandCopy(page.metaTitle);
+    const metaDesc = normalizeBrandCopy(page.metaDesc);
 
     return {
-        title: page.metaTitle,
-        description: page.metaDesc,
+        title: metaTitle,
+        description: metaDesc,
         keywords: page.keywords,
         alternates: {
             canonical: `https://werkcv.nl${path}`,
@@ -35,11 +39,27 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             },
         },
         openGraph: {
-            title: page.metaTitle,
-            description: page.metaDesc,
+            title: metaTitle,
+            description: metaDesc,
             type: 'article',
+            siteName: 'WerkCV',
             locale: 'en_NL',
             url: `https://werkcv.nl${path}`,
+            images: [
+                {
+                    url: imageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: page.title,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            site: '@werkcvnl',
+            title: metaTitle,
+            description: metaDesc,
+            images: [imageUrl],
         },
     };
 }
@@ -48,15 +68,18 @@ export default async function EnglishWavePage({ params }: PageProps) {
     const { slug } = await params;
     const page = getEnglishWavePage(slug);
     if (!page) notFound();
+    const metaDesc = normalizeBrandCopy(page.metaDesc);
+    const primaryGuideHref = page.ctaHref || '/en/templates';
+    const primaryGuideLabel = primaryGuideHref === '/en/editor' ? 'Open English editor' : 'Open English templates';
 
     const jsonLd = {
         '@context': 'https://schema.org',
         '@type': 'Article',
         headline: page.title,
-        description: page.metaDesc,
+        description: metaDesc,
         inLanguage: 'en-NL',
         mainEntityOfPage: `https://werkcv.nl/en/guides/${page.slug}`,
-        author: { '@type': 'Organization', name: 'WerkCV.nl' },
+        author: { '@type': 'Organization', name: 'WerkCV' },
     };
     const faqJsonLd = page.faq.length
         ? {
@@ -75,6 +98,7 @@ export default async function EnglishWavePage({ params }: PageProps) {
 
     const breadcrumbItems = [
         { label: 'Home', href: '/' },
+        { label: 'English Hub', href: '/en' },
         { label: 'Expat CV Guides', href: '/en/guides' },
         { label: page.title, href: `/en/guides/${page.slug}` },
     ];
@@ -103,22 +127,26 @@ export default async function EnglishWavePage({ params }: PageProps) {
                 <div className="max-w-4xl mx-auto px-6 py-12">
                     <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">{page.title}</h1>
                     <p className="text-lg text-gray-700">{page.intro}</p>
-                    {page.slug === 'netherlands-cv-photo-rules' && (
-                        <div className="mt-8 flex flex-wrap gap-3">
-                            <Link
-                                href="/en/editor"
-                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-black text-white font-black text-sm border-3 border-black hover:bg-slate-900 transition-colors"
-                            >
-                                Build your CV in the editor
-                            </Link>
-                            <Link
-                                href="/en/templates"
-                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-black font-black text-sm border-3 border-black hover:bg-slate-100 transition-colors"
-                            >
-                                Browse CV templates
-                            </Link>
-                        </div>
-                    )}
+                    <div className="mt-8 flex flex-wrap gap-3">
+                        <Link
+                            href={primaryGuideHref}
+                            className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-black text-white font-black text-sm border-3 border-black hover:bg-slate-900 transition-colors"
+                        >
+                            {primaryGuideLabel}
+                        </Link>
+                        <Link
+                            href="/en/editor"
+                            className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-black font-black text-sm border-3 border-black hover:bg-slate-100 transition-colors"
+                        >
+                            Open English editor
+                        </Link>
+                        <Link
+                            href="/en/guides"
+                            className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-black font-black text-sm border-3 border-black hover:bg-slate-100 transition-colors"
+                        >
+                            Browse all expat guides
+                        </Link>
+                    </div>
                 </div>
             </section>
 
@@ -220,7 +248,7 @@ export default async function EnglishWavePage({ params }: PageProps) {
                     href={page.ctaHref}
                     defaultTitle={page.ctaTitle}
                     defaultText={page.ctaText}
-                    defaultButtonLabel="Open CV templates"
+                    defaultButtonLabel="Open English templates"
                 />
             </article>
         </main>

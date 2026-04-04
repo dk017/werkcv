@@ -5,9 +5,9 @@ export const profieltekstSchrijven: BlogArticle = {
     title: 'Profieltekst CV Schrijven: Voorbeelden en Tips voor 2026',
     description: 'Schrijf een sterke profieltekst voor je CV met onze stap-voor-stap aanpak, voorbeelden per vakgebied en statistieken. ATS-geoptimaliseerd voor 2026.',
     publishedAt: '2025-01-20',
-    updatedAt: '2026-02-19',
+    updatedAt: '2026-04-04',
 
-    metaTitle: 'Profieltekst CV: Voorbeelden & Tips [2026] | WerkCV.nl',
+    metaTitle: 'Profieltekst CV: voorbeelden en tips in 2026 | WerkCV',
     metaDesc: 'Schrijf een sterke profieltekst voor je CV. Ontdek 5+ voorbeelden per vakgebied, een duidelijke structuur en tips om direct op te vallen bij recruiters in 2026.',
     keywords: ['profieltekst cv', 'profieltekst cv voorbeeld', 'samenvatting cv', 'persoonlijk profiel cv', 'cv profiel schrijven', 'cv samenvatting schrijven'],
 
@@ -64,6 +64,11 @@ export const profieltekstSchrijven: BlogArticle = {
                     href: '/gratis-cv-maken',
                     label: 'Gratis CV maken zonder eerst zelf een indeling te verzinnen',
                     description: 'Gebruik een basisflow waarin je profieltekst, ervaring en opleiding al in de juiste volgorde staan.',
+                },
+                {
+                    href: '/cv-tips/gat-in-cv-uitleggen',
+                    label: 'Profieltekst schrijven na een gat in je cv',
+                    description: 'Gebruik deze route als je opening sterk moet blijven terwijl je een onderbreking kort wilt verklaren.',
                 },
             ],
         },
@@ -236,6 +241,6 @@ export const profieltekstSchrijven: BlogArticle = {
         },
     ],
 
-    relatedArticleSlugs: ['cv-schrijven-tips', 'cv-werkervaring-beschrijven', 'cv-fouten'],
+    relatedArticleSlugs: ['cv-schrijven-tips', 'cv-werkervaring-beschrijven', 'gat-in-cv-uitleggen', 'cv-fouten'],
     relatedExampleSlugs: ['studenten-en-starters/afgestudeerde-cv', 'zorg-en-welzijn/verpleegkundige', 'technologie-en-ict/software-ontwikkelaar'],
 };

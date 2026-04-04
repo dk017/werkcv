@@ -82,7 +82,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Ontwerpen - Stijl, Hiërarchie en Layout die Werken | WerkCV.nl",
+  title: "CV Ontwerpen - Stijl, Hiërarchie en Layout die Werken | WerkCV",
   description:
     "CV ontwerpen zonder rommelig resultaat. Kies een template met sterke hiërarchie, passende stijl en rustige layout voor een verzorgd ontwerp.",
   keywords: [
@@ -181,6 +181,18 @@ export default function CvOntwerpenPage() {
               hiërarchie, passende stijl en een layout die je inhoud laat winnen.
               Deze pagina helpt je om designkeuzes functioneel te maken in plaats
               van decoratief.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Deze route gaat specifiek over layout, hiërarchie en stijlkeuzes.
+              Zoek je eerst het brede stappenplan voor inhoud, vacaturematch en
+              ATS-structuur? Gebruik dan de{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                hoofdgids CV maken
+              </Link>
+              .
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -309,8 +321,8 @@ export default function CvOntwerpenPage() {
             },
             {
               href: "/professioneel-cv-maken",
-              title: "Professioneel CV maken",
-              body: "Kies deze vervolgstap als je ontwerp iets rustiger en zakelijker moet worden.",
+              title: "CV maken",
+              body: "Ga daarna naar de brede hoofdgids als je naast design ook inhoud, ATS en vacaturematch wilt aanscherpen.",
             },
           ].map((item) => (
             <Link

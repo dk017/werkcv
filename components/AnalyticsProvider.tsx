@@ -39,7 +39,10 @@ export default function AnalyticsProvider() {
             if (url.origin !== window.location.origin) return;
 
             const toPath = url.pathname;
-            const isFunnelCtaTarget = toPath.startsWith('/editor') || toPath.startsWith('/tools/sollicitatiebrief-generator');
+            const isFunnelCtaTarget =
+                toPath.startsWith('/editor') ||
+                toPath.startsWith('/templates') ||
+                toPath.startsWith('/tools/sollicitatiebrief-generator');
             if (!isFunnelCtaTarget) return;
 
             const label =

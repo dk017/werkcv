@@ -6,7 +6,7 @@ import ToolEmbedShell, {
 import VakantiegeldTool from "@/app/tools/vakantiegeld-berekenen/VakantiegeldTool";
 
 export const metadata: Metadata = {
-  title: "Vakantiegeld calculator embed | WerkCV.nl",
+  title: "Vakantiegeld calculator embed | WerkCV",
   description: "Embedversie van de WerkCV vakantiegeld calculator.",
   robots: { index: false, follow: false },
 };

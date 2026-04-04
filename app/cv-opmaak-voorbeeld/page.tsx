@@ -140,7 +140,7 @@ const sources = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Opmaak Voorbeeld - Rustige, Professionele Layout Tips | WerkCV.nl",
+  title: "CV Opmaak Voorbeeld - Rustige, Professionele Layout Tips | WerkCV",
   description:
     "Zoek je een CV opmaak voorbeeld? Bekijk goede en slechte opmaak, praktische layoutregels en ATS-veilige keuzes. Start direct in de editor.",
   keywords: [

@@ -2,13 +2,13 @@ import { BlogArticle } from '../types';
 
 export const salarisverwachtingCv: BlogArticle = {
     slug: 'salarisverwachting-cv',
-    title: 'Salarisverwachting bij je Sollicitatie: Wanneer en Hoe Vermeldt je Die?',
-    description: 'Vanaf 2026 verplicht de EU loontransparantierichtlijn werkgevers om salarisranges te publiceren. Leer hoe je als kandidaat slim omgaat met salarisverwachting in je sollicitatie.',
+    title: 'Salarisverwachting vermelden bij een sollicitatie: brief, formulier of niet?',
+    description: 'Leer waar je salarisverwachting wel en niet thuishoort bij een sollicitatie, en hoe je onderscheid maakt tussen cv, motivatiebrief en verplichte salarisvelden.',
     publishedAt: '2026-02-19',
-    updatedAt: '2026-02-19',
+    updatedAt: '2026-04-04',
 
-    metaTitle: 'Salarisverwachting in CV of Sollicitatiebrief: Tips 2026 | WerkCV.nl',
-    metaDesc: 'Hoe vermeld je je salarisverwachting bij een sollicitatie? In je CV, je brief of helemaal niet? Met de EU loontransparantiewet 2026 uitgelegd en concrete formuleringsvoorbeelden.',
+    metaTitle: 'Salarisverwachting vermelden bij een sollicitatie | WerkCV',
+    metaDesc: 'Waar zet je je salarisverwachting bij een sollicitatie: nergens, in je brief of in een formulier? Met voorbeelden en onderscheid tussen cv, motivatiebrief en salarisvelden.',
     keywords: [
         'salarisverwachting cv',
         'salarisverwachting vermelden',
@@ -66,6 +66,13 @@ export const salarisverwachtingCv: BlogArticle = {
                 'Ten tweede bij online sollicitatieformulieren met een verplicht salarisveld. Als het veld vrije tekst toelaat, schrijf dan "€X.XXX–€X.XXX bruto p/m, bespreekbaar" of "Marktconform, graag in overleg te bespreken." Als het een numeriek veld is, vul je het midden van je range in.',
                 'Ten derde vragen intermediairs en recruitmentbureaus je salarisverwachting bijna altijd al vroeg in het proces — soms al in het eerste telefonische gesprek. Dit is hun manier om te toetsen of ze je kunnen matchen. Geef een mondelinge range en vraag tegelijkertijd naar de salarisschaal die de opdrachtgever voor ogen heeft. Informatie uitwisselen is hier de norm.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/gewenst-salaris-invullen',
+                    label: 'Gebruik de aparte gids voor het invullen van gewenste salarisvelden',
+                    description: 'Handig als je vooral vastloopt op een verplicht veld in een sollicitatieformulier.',
+                },
+            ],
         },
         {
             id: 'range-bepalen',
@@ -101,6 +108,18 @@ export const salarisverwachtingCv: BlogArticle = {
                 'Vul nooit je minimaal-acceptabele salaris in als startpunt — dat geeft de werkgever een anker dat hij in de onderhandeling zal gebruiken. Vul ook niet je droomsalaris in zonder onderbouwing, want dat kan je direct diskwalificeren als het buiten de schaal valt. Het midden van een marktconform-onderzochte range is het veiligste startpunt.',
                 'Als een platform of formulier vraagt naar je "huidig salaris" in plaats van je verwachting, hoef je dat wettelijk gezien niet te delen. Vul dan in: "Niet van toepassing" of "Op aanvraag" — of geef je verwachting voor de nieuwe functie in plaats van je huidige salaris. De Europese loontransparantierichtlijn verbiedt werkgevers straks expliciet om naar je huidige salaris te vragen.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/gewenst-salaris-invullen',
+                    label: 'Bekijk concrete voorbeelden voor het salarisveld zelf',
+                    description: 'Gebruik deze route als je wilt weten wat je letterlijk invult bij vrije tekst of een numeriek veld.',
+                },
+                {
+                    href: '/tools/salaris-calculator',
+                    label: 'Schat eerst een realistischer bedrag met de salaris calculator',
+                    description: 'Handig als je nog geen range hebt voor sector, regio en niveau.',
+                },
+            ],
         },
         {
             id: 'secundaire-arbeidsvoorwaarden',
@@ -120,6 +139,13 @@ export const salarisverwachtingCv: BlogArticle = {
                 'Veel vacatures in Nederland vermelden nog steeds geen salarisrange — ook al wordt dit steeds zeldzamer door de komende loontransparantiewet. Als een vacature geen range vermeldt en er niet om vraagt, noem je zelf ook geen salaris in je brief of CV. Je hebt nog te weinig informatie om een goede inschatting te maken.',
                 'Gebruik het eerste gesprek om de vraag te stellen. "Kunt u iets zeggen over de salarisschaal voor deze functie?" is een volkomen normale en professionele vraag. Wacht hier niet mee tot het vierde gesprek — het is relevante informatie om te weten voordat je verdere energie in het proces investeert. Een werkgever die wil dat je er een week full-time aan besteedt, mag ook vertellen wat ze betalen.',
                 'Sommige werkgevers weigeren een range te geven tot ze zeker weten dat ze je willen aannemen. In dat geval is het acceptabel om je eigen range te noemen als de conversatie ernaar vraagt: "Ik ga ervan uit dat dit een marktconforme positie is; mijn verwachting ligt rond de €X–€Y. Klopt dat richting?" Dit is assertief maar niet agressief, en geeft de werkgever ruimte om te reageren zonder dat je het gesprek blokkeert.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/salaris-bespreken-sollicitatie',
+                    label: 'Bereid voor hoe je die range mondeling bespreekt',
+                    description: 'Handig als je na het formulier of de brief alsnog in het gesprek moet toelichten wat je verwacht.',
+                },
             ],
         },
         {
@@ -175,7 +201,7 @@ export const salarisverwachtingCv: BlogArticle = {
         },
     ],
 
-    relatedArticleSlugs: ['salarisverwachting-bepalen', 'sollicitatiebrief-tips', 'sollicitatiegesprek-voorbereiden'],
+    relatedArticleSlugs: ['salarisverwachting-bepalen', 'gewenst-salaris-invullen', 'salaris-bespreken-sollicitatie', 'sollicitatiegesprek-voorbereiden'],
     relatedExampleSlugs: [
         'zakelijk-en-financieel/accountant',
         'technologie-en-ict/software-ontwikkelaar',

@@ -79,9 +79,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Motivatiebrief Schrijven - Uitleg, Structuur en Voorbeelden | WerkCV.nl",
+  title: "Motivatiebrief schrijven in 5 stappen: praktische workflow | WerkCV",
   description:
-    "Zoek je hulp bij motivatiebrief schrijven? Gebruik een duidelijke structuur, voorbeeldzinnen en praktische stappen om sneller een overtuigende brief te maken.",
+    "Leer motivatiebrief schrijven met een praktische 5-stappen workflow, voorbeeldzinnen per alinea en directe generatorflow. Schrijf daarna vacaturegericht verder.",
   keywords: [
     "motivatiebrief schrijven",
     "hoe schrijf je een motivatiebrief",
@@ -185,10 +185,10 @@ export default function MotivatiebriefSchrijvenPage() {
                 Schrijf direct in generator
               </Link>
               <Link
-                href="/motivatiebrief-voorbeeld"
+                href="/sollicitatiebrief-beginnen"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Eerst voorbeelden bekijken
+                Eerst je opening aanscherpen
               </Link>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -217,10 +217,10 @@ export default function MotivatiebriefSchrijvenPage() {
             </p>
             <div className="mt-6 border-t-4 border-black pt-5">
               <Link
-                href="/motivatiebrief-layout"
+                href="/sollicitatiebrief-beginnen"
                 className="text-sm font-black text-black underline decoration-2 underline-offset-4"
               >
-                Bekijk ook: motivatiebrief layout
+                Bekijk ook: sollicitatiebrief beginnen
               </Link>
             </div>
           </div>
@@ -287,19 +287,24 @@ export default function MotivatiebriefSchrijvenPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
-                  href: "/motivatiebrief-voorbeeld",
-                  title: "Motivatiebrief voorbeelden",
-                  body: "Vergelijk complete voorbeeldalinea&apos;s zodra je de structuur begrijpt.",
+                  href: "/sollicitatiebrief-beginnen",
+                  title: "Sollicitatiebrief beginnen",
+                  body: "Scherp eerst je eerste zin aan als je brief nog te standaard of te vlak opent.",
                 },
                 {
-                  href: "/korte-motivatiebrief-voorbeeld",
-                  title: "Korte motivatiebrief voorbeeld",
-                  body: "Handig als je je brief compacter wilt houden zonder te vaag te worden.",
+                  href: "/motivatiebrief-zonder-werkervaring",
+                  title: "Motivatiebrief zonder werkervaring",
+                  body: "Gebruik deze route als je vooral wilt leunen op studie, stage of projecten.",
+                },
+                {
+                  href: "/motivatiebrief-voorbeeld",
+                  title: "Motivatiebrief voorbeelden",
+                  body: "Vergelijk complete voorbeeldalinea&apos;s zodra je de schrijfstructuur begrijpt.",
                 },
                 {
                   href: "/sollicitatiebrief-voorbeeld",
-                  title: "Sollicitatiebrief voorbeeld",
-                  body: "Gebruik deze route als je motivatie en vacaturefit in dezelfde brief wilt uitwerken.",
+                  title: "Sollicitatiebrief voorbeelden",
+                  body: "Gebruik deze route als je opening, midden en afsluiting als complete brief wilt zien.",
                 },
                 {
                   href: "/tools/sollicitatiebrief-generator",

@@ -77,7 +77,7 @@ const modernIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Modern CV Template - Strak en Professioneel CV Ontwerp | WerkCV.nl",
+  title: "Modern CV Template - Strak en Professioneel CV Ontwerp | WerkCV",
   description:
     "Zoek je een modern CV template? Kies een strakke, professionele layout voor marketing, sales, tech en zakelijke functies. Begin gratis in de editor en download pas als je tevreden bent.",
   keywords: [

@@ -274,22 +274,39 @@ export default function AtsCheckerTool() {
                         </p>
                     )}
 
-                    {/* CTAs */}
-                    <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                        <a
-                            href="/templates"
-                            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-[#4ECDC4] text-slate-900 font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
-                            style={{ borderWidth: '3px' }}
-                        >
-                            Maak ATS-vriendelijk CV →
-                        </a>
-                        <button
-                            onClick={() => { setResult(null); setFile(null); setCvText(''); setError(''); }}
-                            className="flex-1 py-3 px-4 text-sm font-bold text-slate-600 border-2 border-slate-300 hover:bg-slate-50 rounded-lg transition-colors"
-                        >
-                            Ander CV analyseren
-                        </button>
+                    <div className="bg-[#FFF7D6] border-2 border-black p-4 sm:p-5">
+                        <p className="text-xs font-black uppercase tracking-wide text-slate-600 mb-2">
+                            Volgende stap
+                        </p>
+                        <h3 className="text-lg font-black text-slate-900 mb-2">
+                            Werk je verbeterpunten direct uit in een sterker CV
+                        </h3>
+                        <p className="text-sm text-slate-700 leading-relaxed mb-4">
+                            Gebruik je ATS-check als checklist en pas je profiel, secties en werkervaring meteen aan in de editor of start met een ATS-vriendelijke template.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-3">
+                            <a
+                                href="/editor"
+                                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-[#4ECDC4] text-slate-900 font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                                style={{ borderWidth: '3px' }}
+                            >
+                                Verbeter mijn CV in de editor →
+                            </a>
+                            <a
+                                href="/templates"
+                                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-50 transition-colors"
+                            >
+                                Bekijk ATS-vriendelijke templates
+                            </a>
+                        </div>
                     </div>
+
+                    <button
+                        onClick={() => { setResult(null); setFile(null); setCvText(''); setError(''); }}
+                        className="w-full py-3 px-4 text-sm font-bold text-slate-600 border-2 border-slate-300 hover:bg-slate-50 rounded-lg transition-colors"
+                    >
+                        Ander CV analyseren
+                    </button>
                 </div>
             )}
         </div>

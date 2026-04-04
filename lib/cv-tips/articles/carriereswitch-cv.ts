@@ -5,9 +5,9 @@ export const carriereswitchCv: BlogArticle = {
     title: 'CV voor een Carrièreswitch: Zo Maak je de Overstap',
     description: 'Een carrièreswitch maken? Leer hoe je je CV aanpast voor een nieuw vakgebied. Tips voor overdraagbare vaardigheden, het juiste cv-format, profieltekst en hoe ATS-systemen ermee omgaan.',
     publishedAt: '2025-03-20',
-    updatedAt: '2026-02-19',
+    updatedAt: '2026-04-04',
 
-    metaTitle: 'CV Carrièreswitch: Tips voor de Overstap [2026]',
+    metaTitle: 'CV carrièreswitch in 2026: tips voor de overstap | WerkCV',
     metaDesc: 'Maak een overtuigend CV voor je carrièreswitch. Tips voor overdraagbare vaardigheden, functioneel cv-format, motivatiebrief en ATS-systemen.',
     keywords: ['carriereswitch cv', 'cv carriere verandering', 'overstappen cv', 'omscholing cv', 'cv ander vakgebied', 'functioneel cv', 'overdraagbare vaardigheden'],
 
@@ -80,6 +80,13 @@ export const carriereswitchCv: BlogArticle = {
                 'Wel schrijven: "[Overgedragen vaardigheid] in combinatie met [recent certificaat/project]"',
                 'Wel schrijven: "Op zoek naar een rol als [nieuwe functietitel] bij [type organisatie]"',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/profieltekst-schrijven',
+                    label: 'Werk je switch-profieltekst daarna nog scherper uit',
+                    description: 'Gebruik de profieltekstgids als je de overstap goed wilt uitleggen zonder te algemeen te worden.',
+                },
+            ],
         },
         {
             id: 'ervaring-herformuleren',
@@ -125,6 +132,18 @@ export const carriereswitchCv: BlogArticle = {
                 'Een gat in je cv is bij een switch vaker aanwezig dan bij een reguliere sollicitatie. Misschien hebt u uw vorige baan verlaten om u volledig te kunnen wijden aan een bootcamp, omscholingstraject of zelfstudie. Dit is geen zwakte — het is een bewuste investering. Randstad (2024) rapporteert dat 91% van recruiters een gat van minder dan 6 maanden niet als problematisch beschouwt als het contextueel wordt toegelicht.',
                 'De aanpak: vermeld de periode als een actieve entry in je werkervaring-sectie, met een heldere omschrijving. Schrijf: "2025 - heden: Gerichte loopbaantransitie naar [nieuw vakgebied] — intensieve omscholing, netwerkontwikkeling en freelance projectervaring opgedaan." Dit geeft het gat een actieve invulling en toont initiatief.',
                 'Als de switchperiode langer dan 12 maanden duurt, is een proactieve toelichting in de motivatiebrief aan te raden. Beschrijf de stappen die u heeft gezet: cursussen afgerond, projecten uitgevoerd, netwerk opgebouwd. UWV (2024) geeft aan dat kandidaten die een switchperiode transparant toelichten gemiddeld 40% hogere gespreksconversiescores behalen dan kandidaten die het gat verzwijgen.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/gat-in-cv-uitleggen',
+                    label: 'Gebruik de brede gat-in-cv gids voor neutrale formuleringen',
+                    description: 'Handig als je omscholingsperiode inhoudelijk klopt maar nog te zwaar of te lang geformuleerd voelt.',
+                },
+                {
+                    href: '/tools/career-change-advisor',
+                    label: 'Gebruik de career-change advisor bij je overstap',
+                    description: 'Verbind je periode van oriëntatie direct aan een concretere volgende richting.',
+                },
             ],
         },
         {
@@ -204,6 +223,6 @@ export const carriereswitchCv: BlogArticle = {
         },
     ],
 
-    relatedArticleSlugs: ['cv-schrijven-tips', 'profieltekst-schrijven', 'cv-vaardigheden-kiezen'],
+    relatedArticleSlugs: ['gat-in-cv-uitleggen', 'profieltekst-schrijven', 'cv-vaardigheden-kiezen', 'cv-na-loopbaanonderbreking'],
     relatedExampleSlugs: ['studenten-en-starters/eerste-baan-starter', 'zakelijk-en-financieel/bedrijfsadviseur', 'marketing-en-communicatie/content-schrijver'],
 };

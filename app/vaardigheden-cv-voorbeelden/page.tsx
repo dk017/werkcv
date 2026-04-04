@@ -149,7 +149,7 @@ const skillsIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Vaardigheden Voor CV - Voorbeelden per Functie | WerkCV.nl",
+  title: "Vaardigheden Voor CV - Voorbeelden per Functie | WerkCV",
   description:
     "Zoek je vaardigheden voor cv of voorbeelden per functie? Bekijk sterke hard en soft skills, een heldere checklist en direct toepassen in je CV.",
   keywords: [

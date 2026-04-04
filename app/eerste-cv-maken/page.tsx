@@ -87,7 +87,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Eerste CV Maken - Zonder Ervaring Toch Serieus Overkomen | WerkCV.nl",
+  title: "Eerste CV Maken - Zonder Ervaring Toch Serieus Overkomen | WerkCV",
   description:
     "Eerste cv maken zonder veel werkervaring? Bouw een rustige, geloofwaardige eerste versie met school, projecten, bijbanen en een duidelijke profieltekst.",
   keywords: [

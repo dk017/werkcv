@@ -2,17 +2,18 @@ import { BlogArticle } from '../types';
 
 export const sollicitatiegesprekVoorbereiden: BlogArticle = {
     slug: 'sollicitatiegesprek-voorbereiden',
-    title: 'Sollicitatiegesprek Voorbereiden: Complete Gids voor 2026',
-    description: 'Bereid je optimaal voor op je sollicitatiegesprek. Veelgestelde vragen, STAR-methode, lichaamstaal, online gesprekken en concrete statistieken voor 2026.',
+    title: 'Sollicitatiegesprek voorbereiden in 2026: complete gids + checklist',
+    description: 'Bereid je sollicitatiegesprek stap voor stap voor met een praktische checklist, voorbeeldvragen, STAR-tips, kledingadvies en een quiz om te oefenen.',
     publishedAt: '2025-02-20',
-    updatedAt: '2026-02-19',
+    updatedAt: '2026-04-04',
 
-    metaTitle: 'Sollicitatiegesprek Voorbereiden: Complete Gids [2026] | WerkCV.nl',
-    metaDesc: 'Hoe bereid je je voor op een sollicitatiegesprek? Tips voor veelgestelde vragen, STAR-methode, kleding, lichaamstaal en online gesprekken in 2026.',
-    keywords: ['sollicitatiegesprek voorbereiden', 'sollicitatiegesprek tips', 'sollicitatievragen', 'voorbereiding sollicitatie', 'sollicitatiegesprek vragen'],
+    metaTitle: 'Sollicitatiegesprek voorbereiden in 2026: complete gids + checklist | WerkCV',
+    metaDesc: 'Bereid je sollicitatiegesprek voor met een praktisch stappenplan, voorbeeldvragen, STAR-structuur, kledingtips en een quiz om je antwoorden te oefenen.',
+    keywords: ['sollicitatiegesprek voorbereiden', 'sollicitatiegesprek voorbereiding', 'sollicitatiegesprek tips', 'sollicitatievragen', 'sollicitatiegesprek vragen'],
 
     readingTime: 11,
     category: 'solliciteren',
+    featured: true,
     order: 7,
 
     keyTakeaways: [
@@ -32,6 +33,18 @@ export const sollicitatiegesprekVoorbereiden: BlogArticle = {
                 'Een goede voorbereiding is het verschil tussen een zenuwachtig en een zelfverzekerd sollicitatiegesprek. Kandidaten die goed voorbereid zijn, komen professioneler over, geven betere antwoorden en stellen relevantere vragen. Uit onderzoek van Randstad (2024) wordt 33% van de recruiters binnen de eerste 90 seconden beinvloed in hun oordeel — nog voor je een woord hebt gesproken over je ervaring.',
                 'Voorbereiding gaat ook verder dan het gesprek zelf. Kandidaten die hun antwoorden voorbereiden met de STAR-methode (Situatie, Taak, Actie, Resultaat) worden door 73% van de recruiters als aanzienlijk sterker beoordeeld dan kandidaten die vaag en improviserend antwoorden (LinkedIn Talent Solutions 2024). Concrete voorbereiding vertaalt zich direct in betere antwoorden en meer zelfvertrouwen.',
                 'Goed nieuws: de meeste sollicitatievragen zijn voorspelbaar. Dezelfde vragen komen terug in elk gesprek — alleen de context verschilt. Door ze vooraf te oefenen, ook hardop, zet je jezelf in de sterkst mogelijke positie. Goede voorbereiding kost 2 tot 4 uur en kan het verschil maken tussen een ja en een nee.',
+            ],
+            intentLinks: [
+                {
+                    href: '/tools/sollicitatiegesprek-quiz',
+                    label: 'Oefen je voorbereiding direct met de sollicitatiegesprek quiz',
+                    description: 'Gebruik de quiz om je belangrijkste vraagtypen meteen hardop te trainen.',
+                },
+                {
+                    href: '/cv-tips/sollicitatievragen',
+                    label: 'Bekijk ook de gids met sollicitatievragen en antwoordstructuren',
+                    description: 'Handig als je naast voorbereiding ook je concrete antwoorden wilt aanscherpen.',
+                },
             ],
         },
         {
@@ -73,6 +86,23 @@ export const sollicitatiegesprekVoorbereiden: BlogArticle = {
                 '"Hoe ga je om met druk of tegenslagen?" — STAR-voorbeeld van een concrete uitdaging en aanpak',
                 '"Heb je nog vragen voor ons?" — altijd ja, minimaal 3 voorbereide vragen (zie verderop)',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/meest-gestelde-sollicitatievragen',
+                    label: 'Bekijk de 15 meest gestelde sollicitatievragen als snelle lijst',
+                    description: 'Gebruik de aparte lijstpagina als je direct de meest terugkerende vragen wilt oefenen.',
+                },
+                {
+                    href: '/cv-tips/sollicitatievragen',
+                    label: 'Ga dieper met de brede gids over sollicitatievragen',
+                    description: 'Daar zie je welke vraagtypen achter deze lijst zitten en hoe je je antwoorden structureert.',
+                },
+                {
+                    href: '/tools/sollicitatiegesprek-quiz',
+                    label: 'Oefen deze vragen meteen in de sollicitatiegesprek quiz',
+                    description: 'Laat de standaardvragen omzetten naar een oefensessie voor jouw rol en niveau.',
+                },
+            ],
         },
         {
             id: 'star-methode',
@@ -90,6 +120,18 @@ export const sollicitatiegesprekVoorbereiden: BlogArticle = {
                 'R — Resultaat: het meetbare of aantoonbare resultaat — altijd eindigen met een positief effect',
                 'Tijdsduur: 1,5 tot 2 minuten per antwoord — genoeg detail, niet te uitgebreid',
                 'Vermijden: "we deden" — gebruik altijd "ik" om jouw eigen bijdrage duidelijk te maken',
+            ],
+            intentLinks: [
+                {
+                    href: '/tools/sollicitatiegesprek-quiz',
+                    label: 'Train STAR-antwoorden in de sollicitatiegesprek quiz',
+                    description: 'Handig als je voorbeelden wilt oefenen in spreektaal in plaats van alleen te lezen.',
+                },
+                {
+                    href: '/cv-tips/sollicitatievragen',
+                    label: 'Verbind STAR aan de belangrijkste sollicitatievragen',
+                    description: 'Zo zie je bij welke vraagtypen je STAR-verhalen het meest nodig hebt.',
+                },
             ],
         },
         {
@@ -109,6 +151,13 @@ export const sollicitatiegesprekVoorbereiden: BlogArticle = {
                 '"Wat is de aanleiding voor deze vacature — is het een nieuwe rol of vervanging?"',
                 'Vermijden in eerste gesprek: salaris, vakantiedagen, pensioen, thuiswerkregeling',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/vragen-stellen-sollicitatiegesprek',
+                    label: 'Gebruik de aparte gids met sterke vragen voor je interviewer',
+                    description: 'Daar vind je voorbeeldvragen per situatie, teamfase en gespreksronde.',
+                },
+            ],
         },
         {
             id: 'kleding-en-voorkomen',
@@ -126,6 +175,13 @@ export const sollicitatiegesprekVoorbereiden: BlogArticle = {
                 'Creatief/media: je stijl mag zichtbaar zijn, maar kies verzorgd — geen sportkleding',
                 'Zorg en onderwijs: schoon en professioneel — kies voor praktisch en gepast',
                 'Online gesprek: bovenste helft formeel — dezelfde norm als bij een fysiek gesprek',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/sollicitatiegesprek-kleding',
+                    label: 'Lees de aparte gids over kleding voor je sollicitatiegesprek',
+                    description: 'Handig als je wilt bepalen wat past bij corporate, zorg, retail of een creatief bedrijf.',
+                },
             ],
         },
         {
@@ -214,6 +270,11 @@ export const sollicitatiegesprekVoorbereiden: BlogArticle = {
         },
     ],
 
-    relatedArticleSlugs: ['sollicitatiebrief-tips', 'salarisverwachting-bepalen', 'linkedin-profiel-optimaliseren'],
+    relatedArticleSlugs: [
+        'sollicitatievragen',
+        'meest-gestelde-sollicitatievragen',
+        'vragen-stellen-sollicitatiegesprek',
+        'sollicitatiegesprek-kleding',
+    ],
     relatedExampleSlugs: ['zakelijk-en-financieel/hr-medewerker', 'technologie-en-ict/software-ontwikkelaar', 'marketing-en-communicatie/marketing-manager'],
 };

@@ -8,6 +8,7 @@ import { TableOfContents, TableOfContentsMobile } from '@/components/seo/TableOf
 import { ContentSection, ExampleBlock } from '@/components/seo/ContentSection';
 import { UseExampleButton } from '@/components/cv-voorbeelden/UseExampleButton';
 import { BlankTemplateButton } from '@/components/cv-voorbeelden/BlankTemplateButton';
+import { normalizeBrandCopy } from '@/lib/seo-branding';
 
 interface PageProps {
     params: Promise<{ category: string; slug: string }>;
@@ -22,27 +23,47 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const example = getExampleBySlug(category, slug);
 
     if (!example) {
-        return { title: 'Pagina niet gevonden | WerkCV.nl' };
+        return { title: 'Pagina niet gevonden | WerkCV' };
     }
+    const pageUrl = `https://werkcv.nl/cv-voorbeelden/${category}/${example.slug}`;
+    const imageUrl = `${pageUrl}/opengraph-image`;
+    const metaTitle = normalizeBrandCopy(example.metaTitle);
+    const metaDesc = normalizeBrandCopy(example.metaDesc);
 
     return {
-        title: example.metaTitle,
-        description: example.metaDesc,
+        title: metaTitle,
+        description: metaDesc,
         keywords: example.keywords,
         alternates: {
-            canonical: `https://werkcv.nl/cv-voorbeelden/${category}/${example.slug}`,
+            canonical: pageUrl,
             languages: {
-                'nl-NL': `https://werkcv.nl/cv-voorbeelden/${category}/${example.slug}`,
+                'nl-NL': pageUrl,
                 'en-NL': 'https://werkcv.nl/en/dutch-cv-examples',
-                'x-default': `https://werkcv.nl/cv-voorbeelden/${category}/${example.slug}`,
+                'x-default': pageUrl,
             },
         },
         openGraph: {
-            title: example.metaTitle,
-            description: example.metaDesc,
+            title: metaTitle,
+            description: metaDesc,
             type: 'article',
+            siteName: 'WerkCV',
             locale: 'nl_NL',
-            url: `https://werkcv.nl/cv-voorbeelden/${category}/${example.slug}`,
+            url: pageUrl,
+            images: [
+                {
+                    url: imageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: example.name,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            site: '@werkcvnl',
+            title: metaTitle,
+            description: metaDesc,
+            images: [imageUrl],
         },
     };
 }
@@ -67,6 +88,7 @@ export default async function ExamplePage({ params }: PageProps) {
     const relatedExamples = getRelatedExamples(example, 3);
     const relatedGuide = getRelatedGuideLink(example);
     const cvData = example.sampleCV;
+    const metaDesc = normalizeBrandCopy(example.metaDesc);
 
     const breadcrumbItems = [
         { label: 'Home', href: '/' },
@@ -80,14 +102,14 @@ export default async function ExamplePage({ params }: PageProps) {
         '@context': 'https://schema.org',
         '@type': 'Article',
         headline: example.heroTitle,
-        description: example.metaDesc,
+        description: metaDesc,
         author: {
             '@type': 'Organization',
-            name: 'WerkCV.nl',
+            name: 'WerkCV',
         },
         publisher: {
             '@type': 'Organization',
-            name: 'WerkCV.nl',
+            name: 'WerkCV',
             logo: {
                 '@type': 'ImageObject',
                 url: 'https://werkcv.nl/logo.png',

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import RoleCoverLetterPage from "@/components/seo/RoleCoverLetterPage";
 
 export const metadata: Metadata = {
-  title: "Sollicitatiebrief Voorbeeld Horeca Medewerker | WerkCV.nl",
+  title: "Sollicitatiebrief Voorbeeld Horeca Medewerker | WerkCV",
   description:
     "Gebruik een sterk sollicitatiebrief voorbeeld voor horeca medewerker. Inclusief openingszinnen, servicegerichte voorbeeldalinea's, checklist en directe koppeling naar je horeca-CV.",
   keywords: [

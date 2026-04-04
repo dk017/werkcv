@@ -6,7 +6,7 @@ import ToolEmbedShell, {
 import MinimumloonCheckerTool from "@/app/tools/minimumloon-checker/MinimumloonCheckerTool";
 
 export const metadata: Metadata = {
-  title: "Minimumloon checker embed | WerkCV.nl",
+  title: "Minimumloon checker embed | WerkCV",
   description: "Embedversie van de WerkCV minimumloon checker.",
   robots: { index: false, follow: false },
 };

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import RoleCoverLetterPage from "@/components/seo/RoleCoverLetterPage";
 
 export const metadata: Metadata = {
-  title: "Sollicitatiebrief Voorbeeld Magazijnmedewerker | WerkCV.nl",
+  title: "Sollicitatiebrief Voorbeeld Magazijnmedewerker | WerkCV",
   description:
     "Gebruik een sterk sollicitatiebrief voorbeeld voor magazijnmedewerker. Inclusief logistieke openingszinnen, betrouwbaarheidssignalen, checklist en koppeling naar je magazijn-CV.",
   keywords: [

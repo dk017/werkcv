@@ -95,7 +95,7 @@ const sourceLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Sollicitatiebrief Voorbeeld Verpleegkundige | WerkCV.nl",
+  title: "Sollicitatiebrief Voorbeeld Verpleegkundige | WerkCV",
   description:
     "Gebruik een sterk sollicitatiebrief voorbeeld voor verpleegkundige. Inclusief BIG-proof openingszinnen, klinische voorbeeldblokken en praktische checklist. Start direct in de generator.",
   keywords: [

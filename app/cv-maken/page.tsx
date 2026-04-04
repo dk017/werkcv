@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
 import { templateList } from "@/lib/templates/registry";
 
 const featuredTemplates = templateList.filter((template) =>
@@ -161,10 +162,45 @@ const faqs = [
   },
 ];
 
+const pageUrl = "https://werkcv.nl/cv-maken";
+
+const workflowHowToSteps = [
+  {
+    name: "Kies je doelrol en vacaturetype",
+    text: workflowSteps[0].body,
+  },
+  {
+    name: "Schrijf je profieltekst",
+    text: workflowSteps[1].body,
+  },
+  {
+    name: "Bouw werkervaring met resultaatgerichte bullets",
+    text: workflowSteps[2].body,
+  },
+  {
+    name: "Selecteer relevante vaardigheden",
+    text: workflowSteps[3].body,
+  },
+  {
+    name: "Kies een template die de inhoud ondersteunt",
+    text: workflowSteps[4].body,
+  },
+  {
+    name: "Controleer ATS-woorden en leesbaarheid",
+    text: workflowSteps[5].body,
+  },
+  {
+    name: "Maak een versie per vacature",
+    text: workflowSteps[6].body,
+  },
+];
+
 export const metadata: Metadata = {
-  title: "CV Maken - Stap-voor-Stap een Sterk CV in 2026 | WerkCV.nl",
+  title: {
+    absolute: "CV Maken in 7 Stappen: Praktische Workflow voor 2026 | WerkCV",
+  },
   description:
-    "CV maken in 2026? Gebruik ons stap-voor-stap plan, copy-ready voorbeelden en ATS tips. Maak direct online je CV en betaal alleen bij download.",
+    "Leer CV maken met een praktische 7-stappen workflow, copy-ready voorbeelden en ATS-tips. Gratis starten in de editor. | WerkCV",
   keywords: [
     "cv maken",
     "curriculum vitae maken",
@@ -179,28 +215,39 @@ export const metadata: Metadata = {
     "gratis cv maken",
   ],
   alternates: {
-    canonical: "https://werkcv.nl/cv-maken",
+    canonical: pageUrl,
     languages: {
-      "nl-NL": "https://werkcv.nl/cv-maken",
-      "x-default": "https://werkcv.nl/cv-maken",
+      "nl-NL": pageUrl,
+      "x-default": pageUrl,
     },
+  },
+  openGraph: {
+    title: "CV Maken in 7 Stappen: Praktische Workflow voor 2026 | WerkCV",
+    description:
+      "Leer CV maken met een praktische 7-stappen workflow, copy-ready voorbeelden en ATS-tips. Gratis starten in de editor.",
+    url: pageUrl,
+    siteName: "WerkCV",
+    locale: "nl_NL",
+    type: "article",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "WerkCV - CV maken in 7 stappen",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CV Maken in 7 Stappen: Praktische Workflow voor 2026 | WerkCV",
+    description:
+      "Leer CV maken met een praktische 7-stappen workflow, copy-ready voorbeelden en ATS-tips. Gratis starten in de editor.",
+    images: ["/opengraph-image"],
   },
 };
 
 export default function CvMakenPage() {
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  };
-
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -211,27 +258,14 @@ export default function CvMakenPage() {
         name: "Home",
         item: "https://werkcv.nl",
       },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "CV Maken",
-        item: "https://werkcv.nl/cv-maken",
-      },
-    ],
-  };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "CV maken in 7 stappen",
-    description: "Praktische workflow om snel een sterk en scanbaar CV te maken.",
-    totalTime: "PT45M",
-    step: workflowSteps.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "CV Maken",
+          item: pageUrl,
+        },
+      ],
+    };
 
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
@@ -263,6 +297,9 @@ export default function CvMakenPage() {
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Een sterk CV maken betekent keuzes maken: relevante inhoud, heldere structuur en een layout die recruiters in seconden kunnen scannen. Op deze pagina krijg je een praktische workflow,
               copy-ready voorbeelden en concrete cv maken tips die je meteen kunt toepassen. Begin gratis in de editor, optimaliseer per vacature en download pas als je tevreden bent.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Deze pagina is de brede hoofdgids voor algemeen CV maken. Zoek je iets specifiekers, zoals gratis starten, Engels, student of Word? Dan verwijzen we je hieronder door naar die smallere routes.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -582,11 +619,14 @@ export default function CvMakenPage() {
           </div>
           <div className="border-4 border-black bg-white p-6">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Slimme vervolgstappen
+              Specifieke subroutes
             </p>
             <h2 className="mt-2 text-2xl font-black text-black">
-              Verdiep je CV stap voor stap
+              Kies een smallere route als je zoekintentie specifieker is
             </h2>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Deze pagina blijft de algemene workflowgids. De routes hieronder zijn bewust smaller opgezet voor specifieke situaties zoals gratis starten, een eerste CV, Engels, Word of extra focus op opmaak.
+            </p>
             <div className="mt-4 space-y-4">
               {[
                 {
@@ -711,17 +751,15 @@ export default function CvMakenPage() {
         </section>
       </main>
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      <FAQJsonLd questions={faqs} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+      <HowToJsonLd
+        name="CV maken in 7 stappen"
+        description="Praktische workflow om snel een sterk, duidelijk en sollicitatieklaar CV te maken."
+        steps={workflowHowToSteps}
       />
 
       <Footer />

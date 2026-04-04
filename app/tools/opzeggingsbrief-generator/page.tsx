@@ -5,7 +5,7 @@ import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import OpzeggingsbriefTool from "./OpzeggingsbriefTool";
 
 export const metadata: Metadata = {
-    title: "Opzeggingsbrief Generator - Gratis Ontslagbrief | WerkCV.nl",
+    title: "Opzeggingsbrief Generator - Gratis Ontslagbrief | WerkCV",
     description: "Genereer in seconden een professionele opzeggingsbrief. Vul naam, werkgever en einddatum in en download je brief direct.",
     keywords: [
         "opzeggingsbrief",

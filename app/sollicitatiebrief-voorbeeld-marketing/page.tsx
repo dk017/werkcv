@@ -111,7 +111,7 @@ const sourceLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Sollicitatiebrief Voorbeeld Marketing | WerkCV.nl",
+  title: "Sollicitatiebrief Voorbeeld Marketing | WerkCV",
   description:
     "Gebruik een sterk sollicitatiebrief voorbeeld voor marketing. Inclusief KPI-gedreven voorbeeldzinnen, kanaalgerichte formuleringen, checklist en FAQ. Start direct in de generator.",
   keywords: [

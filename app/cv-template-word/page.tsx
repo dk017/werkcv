@@ -71,7 +71,7 @@ const wordIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Template Word - Beter Alternatief Voor Word Sjablonen | WerkCV.nl",
+  title: "CV Template Word - Beter Alternatief Voor Word Sjablonen | WerkCV",
   description:
     "Zoek je een CV template voor Word? Vergelijk Word-sjablonen met een sneller online alternatief. Start gratis met een professioneel CV template en download pas als je tevreden bent.",
   keywords: [

@@ -151,7 +151,7 @@ const sources = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Opstellen - Juiste Structuur, Volgorde en Voorbeelden | WerkCV.nl",
+  title: "CV Opstellen - Juiste Structuur, Volgorde en Voorbeelden | WerkCV",
   description:
     "CV opstellen in 2026? Gebruik de juiste volgorde, structuurvarianten en voorbeelden per sectie. Bouw direct in de editor en betaal alleen bij download.",
   keywords: [
@@ -249,6 +249,18 @@ export default function CvOpstellenPage() {
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Veel kandidaten weten wat ze willen vertellen, maar niet hoe ze hun CV logisch moeten opstellen. Op deze pagina krijg je een duidelijk opbouwmodel, voorbeelden per sectie en
               varianten voor starter, medior en carriere switch. Zo zet je snel een CV neer dat zowel recruiters als ATS-systemen goed kunnen lezen.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Deze pagina bezit dus vooral de structuur- en volgorde-intentie. Voor
+              de bredere route met ook templatekeuze, gratis starten en andere sub-intents
+              ga je terug naar{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                CV maken
+              </Link>
+              .
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link

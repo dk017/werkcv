@@ -44,7 +44,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV.nl Opzeggen - Officiele Stappen + Alternatief | WerkCV.nl",
+  title: "CV.nl Opzeggen - Officiele Stappen + Alternatief | WerkCV",
   description:
     "Zoek je hoe je CV.nl opzegt? Bekijk de officiele stappen uit de CV.nl FAQ, wat de voorwaarden zeggen over opzeggen en vergelijk daarna een alternatief zonder abonnement.",
   keywords: [

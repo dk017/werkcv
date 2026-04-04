@@ -180,7 +180,7 @@ const salesTemplateIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Template Verkoopmedewerker - Retail CV met KPI-Impact | WerkCV.nl",
+  title: "CV Template Verkoopmedewerker - Retail CV met KPI-Impact | WerkCV",
   description:
     "Gebruik het beste CV template voor verkoopmedewerker. Inclusief profieltekst voorbeelden, retail KPI-bullets, skills en ATS-keywords. Start gratis in de editor.",
   keywords: [

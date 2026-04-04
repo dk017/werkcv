@@ -106,16 +106,16 @@ export default function AtsResumeNetherlandsPage() {
         </div>
 
         <div className="bg-white border-4 border-black p-6">
-          <h2 className="text-2xl font-black mb-3">Related Dutch pages</h2>
+          <h2 className="text-2xl font-black mb-3">Related English routes</h2>
           <div className="flex flex-wrap gap-3">
-            <Link href="/cv-tips/ats-vriendelijk-cv" className="underline font-bold">
-              ATS-friendly CV Article (Dutch)
+            <Link href="/en/guides/netherlands-cv-keywords-ats" className="underline font-bold">
+              ATS keyword guide
             </Link>
-            <Link href="/en/templates" className="underline font-bold">
-              ATS Template Options
+            <Link href="/en/netherlands-cv-format" className="underline font-bold">
+              Netherlands CV format
             </Link>
-            <Link href="/cv-voorbeelden/technologie-en-ict/software-ontwikkelaar" className="underline font-bold">
-              Tech Example CV
+            <Link href="/en/dutch-cv-template" className="underline font-bold">
+              Dutch CV template
             </Link>
           </div>
         </div>
@@ -124,7 +124,10 @@ export default function AtsResumeNetherlandsPage() {
           <Link href="/en/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
             Build ATS-safe CV
           </Link>
-          <Link href="/en" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
+          <Link href="/en/editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+            Open English editor
+          </Link>
+          <Link href="/en/guides" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
             Back to English Guides
           </Link>
         </div>

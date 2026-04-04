@@ -107,7 +107,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Curriculum Vitae Maken - Professioneel en Zakelijk Opgebouwd | WerkCV.nl",
+  title: "Curriculum Vitae Maken - Professioneel en Zakelijk Opgebouwd | WerkCV",
   description:
     "Curriculum vitae maken in een professionele editor. Gebruik een formele, recruiter-proof structuur, kies een passende template en betaal alleen bij PDF-download.",
   keywords: [
@@ -208,6 +208,17 @@ export default function CurriculumVitaeMakenPage() {
               overzichtelijk en recruiter-proof CV. Op deze pagina vertalen we die
               formele zoekintentie naar een moderne opbouw, passende templates en een
               duidelijke route naar de editor.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Zie deze route als de formele taalvariant van de algemene CV-flow. Voor
+              de brede, minder formele hoofdpagina gebruik je{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                CV maken
+              </Link>
+              .
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link

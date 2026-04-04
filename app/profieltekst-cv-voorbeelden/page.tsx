@@ -137,7 +137,7 @@ const profileIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Voorbeeld Profiel CV - Profieltekst Voorbeelden per Functie | WerkCV.nl",
+  title: "Voorbeeld Profiel CV - Profieltekst Voorbeelden per Functie | WerkCV",
   description:
     "Zoek je een voorbeeld profiel cv of profiel in cv voorbeeld? Bekijk profieltekst voorbeelden per functie, plus structuur, zinsstarters en foutencheck. Direct toepassen in je CV.",
   keywords: [

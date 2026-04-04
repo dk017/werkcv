@@ -149,7 +149,7 @@ const sourceLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Sollicitatiebrief Voorbeeld Software Ontwikkelaar | WerkCV.nl",
+  title: "Sollicitatiebrief Voorbeeld Software Ontwikkelaar | WerkCV",
   description:
     "Gebruik een sterk sollicitatiebrief voorbeeld voor software ontwikkelaar. Inclusief tech-specifieke voorbeeldzinnen, ATS-termen, startertips en interne links naar CV template en editor.",
   keywords: [

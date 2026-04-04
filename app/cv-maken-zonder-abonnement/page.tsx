@@ -25,7 +25,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken Zonder Abonnement | Eenmalig Betalen bij WerkCV.nl",
+  title: "CV Maken Zonder Abonnement | Eenmalig Betalen bij WerkCV",
   description:
     "Maak je CV zonder abonnement. WerkCV laat je gratis starten en pas eenmalig betalen bij download. Vergelijk het eerlijke prijsmodel, templates en ATS-focus.",
   keywords: [

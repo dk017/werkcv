@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import WerkervaringTool from "./WerkervaringTool";
 
 export const metadata: Metadata = {
-    title: "Werkervaring Bullets Generator - CV Bullet Points | WerkCV.nl",
+    title: "Werkervaring Bullets Generator - CV Bullet Points | WerkCV",
     description: "Zet je werkervaring om in krachtige CV-bullets. Onze AI schrijft sterke, resultaatgerichte bullet points die opvallen bij recruiters.",
     keywords: [
         "cv bullets",

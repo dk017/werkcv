@@ -38,7 +38,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Curriculum Vitae Template - Formele CV Layouts Vergelijken | WerkCV.nl",
+  title: "Curriculum Vitae Template - Formele CV Layouts Vergelijken | WerkCV",
   description:
     "Zoek je een curriculum vitae template? Vergelijk formele, rustige en ATS-vriendelijke CV-layouts voor Nederlandse sollicitaties en kies de beste template voor jouw rol.",
   keywords: [

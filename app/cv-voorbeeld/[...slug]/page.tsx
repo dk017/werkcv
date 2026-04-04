@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     if (!category) {
         return {
-            title: 'Pagina niet gevonden | WerkCV.nl',
+            title: 'Pagina niet gevonden | WerkCV',
         };
     }
 

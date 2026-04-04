@@ -170,7 +170,7 @@ const adminTemplateIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Template Administratief Medewerker - Direct Sollicitatieklaar | WerkCV.nl",
+  title: "CV Template Administratief Medewerker - Direct Sollicitatieklaar | WerkCV",
   description:
     "Gebruik het beste CV template voor administratief medewerker. Inclusief profieltekst voorbeelden, werkervaring bullets, ATS-keywords en startertips. Start gratis in de editor.",
   keywords: [

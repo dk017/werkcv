@@ -101,7 +101,7 @@ const summaryIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Samenvatting Voorbeelden - Sterke Profielteksten per Functie | WerkCV.nl",
+  title: "CV Samenvatting Voorbeelden - Sterke Profielteksten per Functie | WerkCV",
   description:
     "Zoek je cv samenvatting voorbeelden? Bekijk sterke profielteksten voor starters, ervaren professionals en carrièreswitchers. Inclusief structuur, checklist en direct toepasbare voorbeelden.",
   keywords: [

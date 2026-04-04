@@ -180,7 +180,7 @@ const marketingTemplateIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Template Marketing Medewerker - KPI-gedreven Sollicitatieklaar | WerkCV.nl",
+  title: "CV Template Marketing Medewerker - KPI-gedreven Sollicitatieklaar | WerkCV",
   description:
     "Gebruik het beste CV template voor marketing medewerker. Inclusief profieltekst voorbeelden, campagne-KPI bullets, skills en ATS-keywords. Start gratis in de editor.",
   keywords: [

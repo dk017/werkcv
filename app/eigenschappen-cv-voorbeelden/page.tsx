@@ -60,7 +60,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Eigenschappen Op CV - Goede Eigenschappen en Sterke Punten | WerkCV.nl",
+  title: "Eigenschappen Op CV - Goede Eigenschappen en Sterke Punten | WerkCV",
   description:
     "Zoek je goede eigenschappen voor op je CV? Bekijk sterke eigenschappen en sterke punten per rol, plus het verschil met competenties en vaardigheden.",
   keywords: [

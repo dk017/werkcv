@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Handige tools voor je carrière | WerkCV.nl",
+  title: "Handige tools voor je carrière | WerkCV",
   description:
     "Handige tools en websites die je helpen bij het maken van een professioneel CV en het verbeteren van je baankansen.",
   alternates: {

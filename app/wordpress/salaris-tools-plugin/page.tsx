@@ -42,7 +42,7 @@ const pluginUseCases = [
 ];
 
 export const metadata: Metadata = {
-  title: "WerkCV Salaris Tools plugin voor WordPress | WerkCV.nl",
+  title: "WerkCV Salaris Tools plugin voor WordPress | WerkCV",
   description:
     "WordPress-plugin van WerkCV.nl voor Nederlandse salaris-tools zoals netto-bruto, vakantiegeld en minimumloon. Hosted embeds, eenvoudige installatie en privacy-info.",
   alternates: {

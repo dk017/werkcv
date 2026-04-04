@@ -122,7 +122,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Voor coaches en loopbaanbegeleiders | WerkCV.nl",
+  title: "Voor coaches en loopbaanbegeleiders | WerkCV",
   description:
     "WerkCV.nl voor loopbaancoaches, jobcoaches en re-integratie. Verwijs cliënten naar Nederlandse CV-templates, gidsen en praktische sollicitatietools.",
   keywords: [

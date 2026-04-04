@@ -42,7 +42,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Modern CV Voorbeeld - Voorbeeld van een Strakke Moderne Layout | WerkCV.nl",
+  title: "Modern CV Voorbeeld - Voorbeeld van een Strakke Moderne Layout | WerkCV",
   description:
     "Bekijk een modern CV voorbeeld voor marketing, sales, tech en andere moderne functies. Zie hoe een frisse, professionele layout eruitziet en start direct in de editor.",
   keywords: [

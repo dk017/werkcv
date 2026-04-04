@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-    title: 'Contact | WerkCV.nl',
+    title: 'Contact | WerkCV',
     description: 'Neem contact op met WerkCV.nl. Heb je een vraag of feedback? We helpen je graag.',
 };
 

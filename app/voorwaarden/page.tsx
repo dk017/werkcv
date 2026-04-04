@@ -3,7 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-    title: "Algemene Voorwaarden - WerkCV.nl",
+    title: "Algemene Voorwaarden - WerkCV",
     description: "Lees de algemene voorwaarden van WerkCV.nl. Informatie over onze dienst, prijzen, betaling en aansprakelijkheid.",
 };
 

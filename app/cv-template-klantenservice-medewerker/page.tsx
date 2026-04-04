@@ -165,7 +165,7 @@ const supportTemplateIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Template Klantenservice Medewerker - Direct Sollicitatieklaar | WerkCV.nl",
+  title: "CV Template Klantenservice Medewerker - Direct Sollicitatieklaar | WerkCV",
   description:
     "Gebruik het beste CV template voor klantenservice medewerker. Inclusief profieltekst voorbeelden, KPI-bullets, ATS-keywords en startertips. Start gratis in de editor.",
   keywords: [

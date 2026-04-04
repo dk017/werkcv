@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import AtsCheckerTool from "./AtsCheckerTool";
 
 export const metadata: Metadata = {
-    title: "ATS CV Checker - Gratis ATS Score Berekenen | WerkCV.nl",
+    title: "ATS CV Checker - Gratis ATS Score Berekenen | WerkCV",
     description: "Check je CV op ATS-compatibiliteit. Upload je PDF of plak je tekst en ontvang direct je ATS-score met concrete verbeterpunten.",
     keywords: [
         "ats cv checker",

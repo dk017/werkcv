@@ -107,7 +107,7 @@ const sourceLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Sollicitatiebrief Voorbeeld Office Manager | WerkCV.nl",
+  title: "Sollicitatiebrief Voorbeeld Office Manager | WerkCV",
   description:
     "Gebruik een sterk sollicitatiebrief voorbeeld voor office manager. Inclusief operationele voorbeeldzinnen, checklist, ATS-termen en FAQ. Start direct in de generator.",
   keywords: [

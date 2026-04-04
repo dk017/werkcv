@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import ProfieltekstTool from "./ProfieltekstTool";
 
 export const metadata: Metadata = {
-    title: "Profieltekst Generator - Schrijf je CV Profiel | WerkCV.nl",
+    title: "Profieltekst Generator - Schrijf je CV Profiel | WerkCV",
     description: "Genereer een sterke profieltekst voor je CV met AI. Vul je functie en competenties in en krijg direct een professioneel persoonlijk profiel.",
     keywords: [
         "profieltekst generator",

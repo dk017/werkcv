@@ -50,7 +50,7 @@ const orientationCvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-    title: "Zoekjaar Checker Netherlands 2026 | WerkCV.nl",
+    title: "Zoekjaar Checker Netherlands 2026 | WerkCV",
     description: "Check whether you still fit the Dutch orientation year (zoekjaar) route in 2026. Covers the IND 3-year window, foreign university rules, research basis and repeat-use limits.",
     keywords: [
         "zoekjaar checker netherlands",

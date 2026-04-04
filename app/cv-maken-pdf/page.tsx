@@ -53,7 +53,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken PDF - Maak Eerst Goed, Download Daarna Stabiel | WerkCV.nl",
+  title: "CV Maken PDF - Maak Eerst Goed, Download Daarna Stabiel | WerkCV",
   description:
     "CV maken als PDF? Leer waarom PDF de beste eindvorm is voor sollicitaties en bouw je CV eerst rustig op in de editor voordat je downloadt.",
   keywords: [
@@ -153,6 +153,17 @@ export default function CvMakenPdfPage() {
               eindvorm, maar niet de slimste startvorm. WerkCV laat je eerst opbouwen,
               daarna pas stabiel downloaden.
             </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Deze route gaat daarom vooral over export en eindformaat. Voor de brede
+              schrijf- en structuurflow gebruik je beter{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                de algemene CV maken pagina
+              </Link>
+              .
+            </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/editor"
@@ -221,6 +232,11 @@ export default function CvMakenPdfPage() {
         <section className="mb-14 grid gap-4 md:grid-cols-3">
           {[
             {
+              href: "/cv-maken",
+              title: "Algemene CV-workflow",
+              body: "Gebruik eerst het hoofd-stappenplan als je inhoud, structuur en ATS-logica nog moet opbouwen.",
+            },
+            {
               href: "/cv-maken-in-word",
               title: "CV maken in Word",
               body: "Zie waarom Word vaak vooral een tussenstap is richting PDF.",
@@ -229,11 +245,6 @@ export default function CvMakenPdfPage() {
               href: "/online-cv-maken",
               title: "Online CV maken",
               body: "Bouw eerst flexibel online voordat je de eindversie vastzet.",
-            },
-            {
-              href: "/cv-maken-op-mobiel",
-              title: "CV maken op mobiel",
-              body: "Controleer ook of je CV-flow goed werkt op je telefoon.",
             },
           ].map((item) => (
             <Link

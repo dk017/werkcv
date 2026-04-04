@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import SollicitatiebriefTool from "./SollicitatiebriefTool";
 
 export const metadata: Metadata = {
-    title: "Sollicitatiebrief Generator - Gratis AI Sollicitatiebrief | WerkCV.nl",
+    title: "Sollicitatiebrief Generator - Gratis AI Sollicitatiebrief | WerkCV",
     description: "Schrijf in seconden een persoonlijke sollicitatiebrief met AI. Vul je motivatie in en ontvang een professionele, op maat gemaakte brief.",
     keywords: [
         "sollicitatiebrief schrijven",
@@ -49,20 +49,20 @@ export default function SollicitatiebriefGeneratorPage() {
                             Bekijk sollicitatiebrief voorbeelden
                         </Link>
                         {" "}of{" "}
-                        <Link href="/motivatiebrief-voorbeeld" className="underline decoration-2 underline-offset-2 text-slate-900">
-                            motivatiebrief voorbeelden
-                        </Link>
-                        {" "}of{" "}
                         <Link href="/motivatiebrief-schrijven" className="underline decoration-2 underline-offset-2 text-slate-900">
                             motivatiebrief schrijven
                         </Link>
                         {" "}of{" "}
-                        <Link href="/korte-motivatiebrief-voorbeeld" className="underline decoration-2 underline-offset-2 text-slate-900">
-                            korte motivatiebrief
+                        <Link href="/sollicitatiebrief-beginnen" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            sollicitatiebrief beginnen
                         </Link>
                         {" "}of{" "}
-                        <Link href="/motivatiebrief-layout" className="underline decoration-2 underline-offset-2 text-slate-900">
-                            motivatiebrief layout
+                        <Link href="/motivatiebrief-zonder-werkervaring" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            motivatiebrief zonder werkervaring
+                        </Link>
+                        {" "}of{" "}
+                        <Link href="/open-sollicitatie-brief" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            open sollicitatie schrijven
                         </Link>
                         {" "}of{" "}
                         <Link href="/sollicitatiebrief-in-engels" className="underline decoration-2 underline-offset-2 text-slate-900">
@@ -72,6 +72,29 @@ export default function SollicitatiebriefGeneratorPage() {
                 </div>
 
                 <SollicitatiebriefTool />
+
+                <section className="mt-8 rounded-2xl border-2 border-slate-200 bg-white p-5">
+                    <h2 className="text-lg font-black text-slate-900">Meer briefhulp</h2>
+                    <p className="mt-2 text-sm text-slate-600">
+                        Gebruik deze gidsen als je niet vastloopt op de hele brief, maar op een specifiek onderdeel zoals de opening, een starteraanpak of een open sollicitatie.
+                    </p>
+                    <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                        {[
+                            ["/sollicitatiebrief-beginnen", "Sterke openingszinnen", "Voor als je eerste alinea vlak of generiek voelt."],
+                            ["/motivatiebrief-zonder-werkervaring", "Zonder werkervaring", "Gebruik studie, stage en projecten als geloofwaardig bewijs."],
+                            ["/open-sollicitatie-brief", "Open sollicitatie", "Schrijf een gerichte brief zonder bestaande vacature."],
+                        ].map(([href, title, body]) => (
+                            <Link
+                                key={href}
+                                href={href}
+                                className="rounded-xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:border-slate-300 hover:bg-slate-100"
+                            >
+                                <p className="text-sm font-black text-slate-900">{title}</p>
+                                <p className="mt-1 text-xs leading-relaxed text-slate-600">{body}</p>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
 
                 <div className="mt-10 space-y-6">
                     <h2 className="text-xl font-black text-slate-900">Wat maakt een goede sollicitatiebrief?</h2>

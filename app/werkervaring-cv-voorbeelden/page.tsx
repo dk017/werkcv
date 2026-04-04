@@ -140,7 +140,7 @@ const experienceIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Werkervaring CV Voorbeelden - Sterke Bullet Points met Resultaat | WerkCV.nl",
+  title: "Werkervaring CV Voorbeelden - Sterke Bullet Points met Resultaat | WerkCV",
   description:
     "Zoek je werkervaring cv voorbeelden? Bekijk sterke bullet points per functie met actie + resultaat. Inclusief formule, foutencheck en direct toepassen in editor.",
   keywords: [

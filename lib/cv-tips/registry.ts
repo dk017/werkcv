@@ -13,7 +13,15 @@ import { cvVaardighedenKiezen } from './articles/cv-vaardigheden-kiezen';
 import { cvZonderWerkervaring } from './articles/cv-zonder-werkervaring';
 import { sollicitatiebriefTips } from './articles/sollicitatiebrief-tips';
 import { sollicitatiegesprekVoorbereiden } from './articles/sollicitatiegesprek-voorbereiden';
+import { sollicitatievragen } from './articles/sollicitatievragen';
+import { meestGesteldeSollicitatievragen } from './articles/meest-gestelde-sollicitatievragen';
+import { sollicitatiegesprekKleding } from './articles/sollicitatiegesprek-kleding';
+import { vragenStellenSollicitatiegesprek } from './articles/vragen-stellen-sollicitatiegesprek';
 import { linkedinProfielOptimaliseren } from './articles/linkedin-profiel-optimaliseren';
+import { linkedinProfielMaken } from './articles/linkedin-profiel-maken';
+import { linkedinSamenvattingSchrijven } from './articles/linkedin-samenvatting-schrijven';
+import { linkedinKopregelVoorbeeld } from './articles/linkedin-kopregel-voorbeeld';
+import { gatInCvUitleggen } from './articles/gat-in-cv-uitleggen';
 import { cvFouten } from './articles/cv-fouten';
 import { atsVriendelijkCv } from './articles/ats-vriendelijk-cv';
 import { cvOpleidingVermelden } from './articles/cv-opleiding-vermelden';
@@ -21,6 +29,8 @@ import { carriereswitchCv } from './articles/carriereswitch-cv';
 import { cvHobbysBelangen } from './articles/cv-hobbys-belangen';
 import { cvTemplateKiezen } from './articles/cv-template-kiezen';
 import { salarisverwachtingBepalen } from './articles/salarisverwachting-bepalen';
+import { salarisBesprekenSollicitatie } from './articles/salaris-bespreken-sollicitatie';
+import { gewenstSalarisInvullen } from './articles/gewenst-salaris-invullen';
 import { freelanceCvMaken } from './articles/freelance-cv-maken';
 import { fotoOpJeCv } from './articles/foto-op-je-cv';
 import { linkedinNaarCv } from './articles/linkedin-naar-cv';
@@ -51,7 +61,15 @@ const allArticles: BlogArticle[] = [
     cvZonderWerkervaring,
     sollicitatiebriefTips,
     sollicitatiegesprekVoorbereiden,
+    sollicitatievragen,
+    meestGesteldeSollicitatievragen,
+    sollicitatiegesprekKleding,
+    vragenStellenSollicitatiegesprek,
     linkedinProfielOptimaliseren,
+    linkedinProfielMaken,
+    linkedinSamenvattingSchrijven,
+    linkedinKopregelVoorbeeld,
+    gatInCvUitleggen,
     cvFouten,
     atsVriendelijkCv,
     cvOpleidingVermelden,
@@ -59,6 +77,8 @@ const allArticles: BlogArticle[] = [
     cvHobbysBelangen,
     cvTemplateKiezen,
     salarisverwachtingBepalen,
+    salarisBesprekenSollicitatie,
+    gewenstSalarisInvullen,
     freelanceCvMaken,
     fotoOpJeCv,
     linkedinNaarCv,

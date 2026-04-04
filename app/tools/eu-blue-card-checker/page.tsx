@@ -50,7 +50,7 @@ const blueCardCvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-    title: "EU Blue Card Checker Netherlands 2026 | WerkCV.nl",
+    title: "EU Blue Card Checker Netherlands 2026 | WerkCV",
     description: "Check whether a Dutch job offer broadly fits the EU Blue Card route in 2026. Includes current salary threshold, 6-month contract rule and qualification check.",
     keywords: [
         "eu blue card netherlands 2026",

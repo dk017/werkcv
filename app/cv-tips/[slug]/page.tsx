@@ -6,9 +6,15 @@ import { getExampleBySlug } from '@/lib/cv-voorbeelden/registry';
 import { articleCategoryLabels, articleCategoryColors } from '@/lib/cv-tips/types';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
+import { normalizeBrandCopy } from '@/lib/seo-branding';
 
 interface PageProps {
     params: Promise<{ slug: string }>;
+}
+
+function toSchemaDate(date: string) {
+    const parsed = new Date(`${date}T00:00:00.000Z`);
+    return Number.isNaN(parsed.getTime()) ? date : parsed.toISOString();
 }
 
 export function generateStaticParams() {
@@ -20,29 +26,52 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const article = getArticleBySlug(slug);
 
     if (!article) {
-        return { title: 'Pagina niet gevonden | WerkCV.nl' };
+        return { title: 'Pagina niet gevonden | WerkCV' };
     }
 
+    const articleUrl = `https://werkcv.nl/cv-tips/${article.slug}`;
+    const articleImageUrl = `${articleUrl}/opengraph-image`;
+    const publishedTime = toSchemaDate(article.publishedAt);
+    const modifiedTime = article.updatedAt ? toSchemaDate(article.updatedAt) : undefined;
+    const metaTitle = normalizeBrandCopy(article.metaTitle);
+    const metaDesc = normalizeBrandCopy(article.metaDesc);
+
     return {
-        title: article.metaTitle,
-        description: article.metaDesc,
+        title: metaTitle,
+        description: metaDesc,
         keywords: article.keywords,
         alternates: {
-            canonical: `https://werkcv.nl/cv-tips/${article.slug}`,
+            canonical: articleUrl,
             languages: {
-                'nl-NL': `https://werkcv.nl/cv-tips/${article.slug}`,
+                'nl-NL': articleUrl,
                 'en-NL': 'https://werkcv.nl/en/guides',
-                'x-default': `https://werkcv.nl/cv-tips/${article.slug}`,
+                'x-default': articleUrl,
             },
         },
         openGraph: {
-            title: article.metaTitle,
-            description: article.metaDesc,
+            title: metaTitle,
+            description: metaDesc,
             type: 'article',
+            siteName: 'WerkCV',
             locale: 'nl_NL',
-            url: `https://werkcv.nl/cv-tips/${article.slug}`,
-            publishedTime: article.publishedAt,
-            ...(article.updatedAt ? { modifiedTime: article.updatedAt } : {}),
+            url: articleUrl,
+            publishedTime,
+            ...(modifiedTime ? { modifiedTime } : {}),
+            images: [
+                {
+                    url: articleImageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: article.title,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            site: '@werkcvnl',
+            title: metaTitle,
+            description: metaDesc,
+            images: [articleImageUrl],
         },
     };
 }
@@ -56,6 +85,11 @@ export default async function ArticlePage({ params }: PageProps) {
     }
 
     const relatedArticles = getRelatedArticles(article, 3);
+    const articleUrl = `https://werkcv.nl/cv-tips/${article.slug}`;
+    const articleImageUrl = `${articleUrl}/opengraph-image`;
+    const publishedTime = toSchemaDate(article.publishedAt);
+    const modifiedTime = article.updatedAt ? toSchemaDate(article.updatedAt) : undefined;
+    const metaDesc = normalizeBrandCopy(article.metaDesc);
 
     // Resolve related CV examples
     const relatedExamples = article.relatedExampleSlugs
@@ -70,16 +104,24 @@ export default async function ArticlePage({ params }: PageProps) {
         '@context': 'https://schema.org',
         '@type': 'Article',
         headline: article.title,
-        description: article.metaDesc,
-        datePublished: article.publishedAt,
-        ...(article.updatedAt ? { dateModified: article.updatedAt } : {}),
+        description: metaDesc,
+        url: articleUrl,
+        datePublished: publishedTime,
+        ...(modifiedTime ? { dateModified: modifiedTime } : {}),
+        image: [articleImageUrl],
+        inLanguage: 'nl-NL',
+        isAccessibleForFree: true,
+        articleSection: articleCategoryLabels[article.category],
+        keywords: article.keywords.join(', '),
         author: {
             '@type': 'Organization',
-            name: 'WerkCV.nl',
+            name: 'WerkCV',
+            url: 'https://werkcv.nl',
         },
         publisher: {
             '@type': 'Organization',
-            name: 'WerkCV.nl',
+            name: 'WerkCV',
+            url: 'https://werkcv.nl',
             logo: {
                 '@type': 'ImageObject',
                 url: 'https://werkcv.nl/logo.png',
@@ -87,7 +129,7 @@ export default async function ArticlePage({ params }: PageProps) {
         },
         mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id': `https://werkcv.nl/cv-tips/${article.slug}`,
+            '@id': articleUrl,
         },
     };
 
@@ -111,17 +153,6 @@ export default async function ArticlePage({ params }: PageProps) {
         { label: article.title, href: `/cv-tips/${article.slug}` },
     ];
 
-    // JSON-LD BreadcrumbList schema
-    const breadcrumbJsonLd = {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://werkcv.nl' },
-            { '@type': 'ListItem', position: 2, name: 'CV Tips', item: 'https://werkcv.nl/cv-tips' },
-            { '@type': 'ListItem', position: 3, name: article.title, item: `https://werkcv.nl/cv-tips/${article.slug}` },
-        ],
-    };
-
     return (
         <main className="min-h-screen bg-[#FFFEF9]">
             {/* JSON-LD */}
@@ -135,10 +166,6 @@ export default async function ArticlePage({ params }: PageProps) {
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
                 />
             )}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-            />
 
             {/* Breadcrumbs */}
             <div className="border-b-4 border-black bg-white">
@@ -181,8 +208,11 @@ export default async function ArticlePage({ params }: PageProps) {
                     <div className="max-w-4xl mx-auto px-6 py-8">
                         <div className="bg-[#4ECDC4]/10 border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                             <h2 className="text-lg font-black mb-4 flex items-center gap-2">
-                                <span className="w-8 h-8 bg-[#4ECDC4] border-2 border-black flex items-center justify-center text-sm">
-                                    &#x2713;
+                                <span
+                                    aria-hidden="true"
+                                    className="w-8 h-8 bg-[#4ECDC4] border-2 border-black flex items-center justify-center"
+                                >
+                                    <span className="h-3 w-3 rounded-full bg-black" />
                                 </span>
                                 Kernpunten
                             </h2>

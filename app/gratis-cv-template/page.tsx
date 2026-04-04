@@ -72,7 +72,7 @@ const freeTemplateIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Gratis CV Template - Professioneel CV Maken Zonder Abonnement | WerkCV.nl",
+  title: "Gratis CV Template - Professioneel CV Maken Zonder Abonnement | WerkCV",
   description:
     "Zoek je een gratis CV template? Vergelijk 13+ professionele CV sjablonen, kies een ATS-vriendelijke layout en maak gratis je CV. Betaal alleen bij PDF-download.",
   keywords: [

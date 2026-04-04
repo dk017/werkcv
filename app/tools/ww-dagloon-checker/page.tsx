@@ -26,7 +26,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
-  title: "WW Dagloon Checker 2026 - Gratis Tool | WerkCV.nl",
+  title: "WW Dagloon Checker 2026 - Gratis Tool | WerkCV",
   description: "Bereken een sterke indicatie van je WW-dagloon voor 2026. Inclusief snelle salarisroute, geavanceerde SV-loon invoer, maximum dagloon en WW-bedrag in de eerste 2 maanden.",
   keywords: [
     "ww dagloon checker",

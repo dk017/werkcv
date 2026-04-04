@@ -2,17 +2,18 @@ import { BlogArticle } from '../types';
 
 export const linkedinProfielOptimaliseren: BlogArticle = {
     slug: 'linkedin-profiel-optimaliseren',
-    title: 'LinkedIn Profiel Optimaliseren: Tips voor Meer Bereik in 2026',
-    description: 'Optimaliseer je LinkedIn profiel om gevonden te worden door recruiters in 2026. Tips voor headline, About-sectie, vaardigheden, aanbevelingen en activiteit.',
+    title: 'LinkedIn profiel optimaliseren in 2026: complete gids voor recruiters',
+    description: 'Optimaliseer je LinkedIn-profiel voor recruiters met betere zoekwoorden, headline, samenvatting, skills, aanbevelingen en profielactiviteit.',
     publishedAt: '2025-03-01',
-    updatedAt: '2026-02-19',
+    updatedAt: '2026-04-04',
 
-    metaTitle: 'LinkedIn Profiel Optimaliseren: Complete Gids [2026] | WerkCV.nl',
-    metaDesc: 'Hoe optimaliseer je je LinkedIn-profiel voor recruiters in 2026? Tips voor headline, foto, About-sectie, vaardigheden en activiteit. Met statistieken en concrete voorbeelden.',
+    metaTitle: 'LinkedIn profiel optimaliseren in 2026: complete gids | WerkCV',
+    metaDesc: 'Optimaliseer je LinkedIn-profiel voor recruiters met tips voor kopregel, samenvatting, vaardigheden, aanbevelingen en zichtbaarheid. Inclusief LinkedIn naar cv-route.',
     keywords: ['linkedin profiel optimaliseren', 'linkedin tips', 'linkedin profiel verbeteren', 'linkedin headline', 'linkedin samenvatting', 'linkedin recruiter zichtbaarheid'],
 
     readingTime: 11,
     category: 'solliciteren',
+    featured: true,
     order: 8,
 
     keyTakeaways: [
@@ -32,6 +33,18 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
                 'LinkedIn is met 11+ miljoen Nederlandse gebruikers het grootste professionele netwerk van het land (LinkedIn 2024). Recruiters gebruiken LinkedIn dagelijks om kandidaten te zoeken, te beoordelen en te benaderen. Uit onderzoek van LinkedIn Talent Solutions (2024) gebruikt 87% van de recruiters LinkedIn als primaire sourcing-tool voor kandidaten. Een geoptimaliseerd profiel is daarmee niet optioneel — het is je professionele identiteit online.',
                 'Je LinkedIn-profiel is als een uitgebreide versie van je cv, maar dan dynamisch en vindbaar. Je kunt er meer kwijt dan op een cv: media, aanbevelingen, publicaties, vrijwilligerswerk en een persoonlijk verhaal in de About-sectie. Tegelijkertijd bekijkt 72% van de recruiters het LinkedIn-profiel van een kandidaat na het lezen van het cv (LinkedIn 2024) — je profiel bevestigt of weerlegt wat op je cv staat.',
                 'Het cruciale verschil: een cv stuur je actief toe; LinkedIn brengt kansen naar jou. Mensen met een volledig ingevuld profiel hebben 40x meer kansen om een baan te vinden via LinkedIn dan mensen met een onvolledig profiel (LinkedIn 2024). Zelfs als je niet actief zoekt, kan een geoptimaliseerd profiel leiden tot interessante benaderingen van recruiters en potentiele werkgevers.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/linkedin-profiel-maken',
+                    label: 'Begin eerst met LinkedIn profiel maken als je nog geen sterke basis hebt',
+                    description: 'Gebruik die gids voor setup, foto, headline, URL en eerste profielinvulling.',
+                },
+                {
+                    href: '/cv-tips/linkedin-naar-cv',
+                    label: 'Gebruik LinkedIn daarna als bron voor je cv',
+                    description: 'Zodra je profiel klopt, kun je de inhoud slimmer doorvertalen naar een sollicitatie-cv.',
+                },
             ],
         },
         {
@@ -69,6 +82,18 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
                 'Voorbeeld sterk: "Data Engineer | Python & Spark | Azure Databricks | Schaalbare pipelines"',
                 'Vermijden: "Gepassioneerd professional", "Op zoek naar uitdaging" — dit heeft nul zoekwaarde',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/linkedin-kopregel-voorbeeld',
+                    label: 'Bekijk headline- en kopregelvoorbeelden per rol',
+                    description: 'Handig als je headline nog te intern, te breed of te algemeen voelt.',
+                },
+                {
+                    href: '/tools/job-title-translator',
+                    label: 'Check functietitels en zoekwoorden met de job title translator',
+                    description: 'Gebruik markttermen die recruiters echt herkennen in plaats van interne titels.',
+                },
+            ],
         },
         {
             id: 'samenvatting-schrijven',
@@ -79,6 +104,18 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
                 'Gebruik de eerste 3 regels strategisch — dit is wat zichtbaar is zonder te klikken. Begin met je sterkste claim: je functietitel, je specialisatie, je meest indrukwekkende prestatie of je unieke aanpak. Daarna beschrijf je je expertise, je werkwijze en wat je drijft. Sluit af met een concrete call-to-action: nodig mensen uit om contact op te nemen voor specifieke redenen.',
                 'Schrijf in de eerste persoon ("Ik ben", "Ik help", "Ik geloof") — niet in de derde persoon ("Jan is een..."). De derde persoon klinkt afstandelijk en formeel; de eerste persoon is authentiek en direct. Voeg 3 tot 5 relevante zoekwoorden op een natuurlijke manier in — deze worden meegenomen in het zoekalgoritme van LinkedIn.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/linkedin-samenvatting-schrijven',
+                    label: 'Gebruik de aparte gids voor een sterkere LinkedIn samenvatting',
+                    description: 'Daar vind je een vaste formule, openingstips en een directe vertaalslag naar je cv-profiel.',
+                },
+                {
+                    href: '/cv-tips/linkedin-naar-cv',
+                    label: 'Vertaal je About-sectie daarna naar een cv-profiel',
+                    description: 'Zo gebruik je dezelfde kernpositie zonder LinkedIn letterlijk te kopieren.',
+                },
+            ],
         },
         {
             id: 'ervaring-invullen',
@@ -88,6 +125,18 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
                 'Behandel je LinkedIn-werkervaring als een uitgebreide versie van je cv-werkervaring. Voeg per functie een beschrijving toe met je verantwoordelijkheden, prestaties en gebruikte tools of methoden. Gebruik resultaatgerichte bullet points met concrete cijfers — precies zoals op je cv. Recruiters die je profiel scannen, besteden meer tijd aan een profiel met concrete resultaten dan aan een profiel met taakomschrijvingen.',
                 'Voeg media toe aan je ervaringen: een PowerPoint-presentatie die je hebt gegeven, een artikel dat je hebt gepubliceerd, een project dat je hebt geleid, een link naar een product of platform dat je hebt gebouwd. Dit maakt je profiel rijker en geeft bezoekers een direct bewijs van je werk. LinkedIn ondersteunt documenten (PDF), links, afbeeldingen en video.',
                 'Let op consistentie: de functies, datums en bedrijfsnamen op LinkedIn moeten overeenkomen met je cv. Recruiters vergelijken de twee en inconsistenties roepen vragen op. Gebruik bij voorkeur dezelfde functietitels als op je cv. Als je een interne titel had die afwijkt van wat de markt begrijpt, overweeg dan de marktnorm te gebruiken op LinkedIn (terwijl je je interne titel vermeldt op je cv voor verificatie).',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/linkedin-naar-cv',
+                    label: 'Gebruik je LinkedIn-ervaring daarna als cv-bron',
+                    description: 'Handig als je werkervaring nu eerst online wilt opschonen en daarna naar een cv wilt vertalen.',
+                },
+                {
+                    href: '/editor',
+                    label: 'Open de editor en zet je beste LinkedIn-ervaring om naar cv-bullets',
+                    description: 'Zo maak je sneller een sollicitatieversie met dezelfde kerninhoud.',
+                },
             ],
         },
         {
@@ -200,6 +249,11 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
         },
     ],
 
-    relatedArticleSlugs: ['cv-schrijven-tips', 'sollicitatiebrief-tips', 'profieltekst-schrijven'],
+    relatedArticleSlugs: [
+        'linkedin-profiel-maken',
+        'linkedin-samenvatting-schrijven',
+        'linkedin-kopregel-voorbeeld',
+        'linkedin-naar-cv',
+    ],
     relatedExampleSlugs: ['technologie-en-ict/data-engineer', 'marketing-en-communicatie/social-media-specialist', 'zakelijk-en-financieel/bedrijfsadviseur'],
 };

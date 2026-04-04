@@ -89,7 +89,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Makkelijk CV Maken - Minder Gedoe, Sneller Een Goede Basis | WerkCV.nl",
+  title: "Makkelijk CV Maken - Minder Gedoe, Sneller Een Goede Basis | WerkCV",
   description:
     "Makkelijk cv maken zonder te worstelen met layout of een leeg document. Gebruik een simpele template en bouw stap voor stap een nette basisversie.",
   keywords: [
@@ -189,6 +189,18 @@ export default function MakkelijkCvMakenPage() {
               route naar een nette eerste versie die later verder kan worden
               aangescherpt.
             </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Deze route is bedoeld voor minder frictie en sneller beginnen, niet
+              voor de volledige sollicitatiestrategie. Wil je daarna dieper werken
+              aan inhoud, profieltekst en ATS-structuur, pak dan de{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                hoofdgids CV maken
+              </Link>
+              .
+            </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/editor"
@@ -197,10 +209,10 @@ export default function MakkelijkCvMakenPage() {
                 Maak makkelijk je CV
               </Link>
               <Link
-                href="/cv-aanmaken"
+                href="/cv-maken"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Bekijk snelle basisroute
+                Bekijk hoofdgids
               </Link>
             </div>
           </div>

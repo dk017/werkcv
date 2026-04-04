@@ -7,7 +7,7 @@ export const linkedinNaarCv: BlogArticle = {
     publishedAt: '2026-02-19',
     updatedAt: '2026-02-19',
 
-    metaTitle: 'LinkedIn naar CV Omzetten: Stap-voor-Stap Gids 2026 | WerkCV.nl',
+    metaTitle: 'LinkedIn naar CV omzetten: stap-voor-stap gids 2026 | WerkCV',
     metaDesc: 'Hoe zet je je LinkedIn-profiel om naar een sterk CV? Leer welke informatie je overneemt, hoe je herschrijft en welke tools helpen. Met stap-voor-stap aanpak.',
     keywords: [
         'linkedin naar cv',
@@ -46,6 +46,18 @@ export const linkedinNaarCv: BlogArticle = {
                 'LinkedIn is een netwerk- en vindbaarheidsplatform. Je profiel is breed, volledig en permanent. Je zet er alles op: elke functie die je hebt gehad, alle vaardigheden, elke opleiding, certificeringen, aanbevelingen en gepubliceerde artikelen. Hoe meer informatie, hoe beter je vindbaar bent voor recruiters. Het algoritme beloont volledigheid.',
                 'Een CV is het tegenovergestelde: selectief, gericht en maximaal twee pagina\'s. Elke zin heeft een functie. Informatie die niet bijdraagt aan de boodschap "ik ben de juiste kandidaat voor déze functie" hoort er niet in. Een CV wordt één keer gelezen — in 6 tot 30 seconden — door iemand die wil weten of jij de shortlist haalt. Je LinkedIn-profiel staat open voor iedereen die meer wil weten.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/linkedin-profiel-optimaliseren',
+                    label: 'Zorg eerst dat je LinkedIn-profiel inhoudelijk klopt',
+                    description: 'Gebruik de optimalisatiegids als je profiel nog te dun of te breed is voordat je gaat omzetten.',
+                },
+                {
+                    href: '/cv-tips/linkedin-profiel-maken',
+                    label: 'Begin met LinkedIn profiel maken als je nog geen goede basis hebt',
+                    description: 'Handig als je nog voor de setupfase zit en nog niet echt kunt omzetten.',
+                },
+            ],
         },
         {
             id: 'linkedin-pdf-beperkingen',
@@ -73,6 +85,13 @@ export const linkedinNaarCv: BlogArticle = {
                 'Neem je volledige werkervaring als startpunt, maar schrap direct wat niet relevant is voor de vacature waarvoor je solliciteert. Als je solliciteert als projectmanager, zijn bijbaantjes in de horeca van tien jaar geleden niet relevant — tenzij je daarin leidinggevende ervaring hebt opgedaan. Wees meedogenloos selectief. Recruiters die 87% van de gevallen je LinkedIn controleren naast je CV (LinkedIn Talent Solutions, 2024), verwachten consistentie — niet identieke teksten.',
                 'Je opleidingen neem je volledig over maar in gecomprimeerde vorm. Op LinkedIn schrijf je soms een alinea over je scriptie of vakken. Op je CV: "MSc Bedrijfskunde, Universiteit van Amsterdam, 2019." Meer heb je niet nodig, tenzij je pas afgestudeerd bent en de studieinhoud direct relevant is voor de baan.',
             ],
+            intentLinks: [
+                {
+                    href: '/tools/job-title-translator',
+                    label: 'Vergelijk functietitels voordat je ze naar je cv overneemt',
+                    description: 'Gebruik markttermen die zowel op LinkedIn als op je cv logisch werken.',
+                },
+            ],
         },
         {
             id: 'profieltekst-comprimeren',
@@ -82,6 +101,18 @@ export const linkedinNaarCv: BlogArticle = {
                 'Je LinkedIn-samenvatting mag 2.600 tekens lang zijn. Je CV-profieltekst mag maximaal 80 woorden bevatten. Dat is de grootste herschrijvingsopdracht bij het omzetten van LinkedIn naar CV — en meteen de meest impactvolle, want de profieltekst is het eerste wat een recruiter leest.',
                 'De aanpak: lees je LinkedIn-samenvatting door en markeer de drie sterkste zinnen. Dat zijn je startpunt. Alles wat je op LinkedIn schrijft voor context, storytelling of achtergrond laat je weg — dat hoort in een sollicitatiebrief. Je CV-profiel beantwoordt drie vragen: Wat doe ik? Hoeveel ervaring heb ik? Wat is mijn grootste onderscheidende kwaliteit?',
                 'Schrijf je profieltekst in de derde persoon ("Ervaren UX-ontwerper met...") voor een professionele toon, of in de eerste persoon als dat beter bij je sector past. Sluit af met je beschikbaarheid of je locatie als dat relevant is. Vermijd de LinkedIn-buzzwords die je profiel vol mee hebt staan: "passionately driven", "results-oriented visionary", "innovative leader". Schrijf gewoon, direct en concreet.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/linkedin-samenvatting-schrijven',
+                    label: 'Verbeter eerst je LinkedIn samenvatting',
+                    description: 'Een sterkere About-sectie maakt de vertaalslag naar je cv-profiel veel makkelijker.',
+                },
+                {
+                    href: '/editor',
+                    label: 'Open de editor en maak er direct een cv-profiel van',
+                    description: 'Handig als je niet alleen wilt lezen maar meteen wilt herschrijven.',
+                },
             ],
         },
         {
@@ -139,6 +170,13 @@ export const linkedinNaarCv: BlogArticle = {
                 'Enhancv (betaald): meerdere templates, meer controle, nog steeds herschrijving vereist',
                 'WerkCV.nl CV-builder: handmatige invoer, volledige controle, ATS-vriendelijke opmaak',
             ],
+            intentLinks: [
+                {
+                    href: '/editor',
+                    label: 'Open de editor en bouw direct je cv vanuit LinkedIn',
+                    description: 'Gebruik LinkedIn als inhoudsbron en werk je sollicitatieversie daarna gericht uit.',
+                },
+            ],
         },
         {
             id: 'linkedin-url-cv',
@@ -183,7 +221,12 @@ export const linkedinNaarCv: BlogArticle = {
         },
     ],
 
-    relatedArticleSlugs: ['profieltekst-schrijven', 'cv-werkervaring-beschrijven', 'linkedin-profiel-optimaliseren'],
+    relatedArticleSlugs: [
+        'linkedin-profiel-optimaliseren',
+        'linkedin-profiel-maken',
+        'linkedin-samenvatting-schrijven',
+        'linkedin-kopregel-voorbeeld',
+    ],
     relatedExampleSlugs: [
         'marketing-en-communicatie/content-marketeer',
         'technologie-en-ict/software-ontwikkelaar',

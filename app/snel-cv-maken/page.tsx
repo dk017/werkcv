@@ -83,7 +83,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Snel CV Maken - In Korte Tijd Een Verzendbare Versie | WerkCV.nl",
+  title: "Snel CV Maken - In Korte Tijd Een Verzendbare Versie | WerkCV",
   description:
     "Snel cv maken zonder opmaakgedoe. Kies een rustige template, bouw in minuten een nette basisversie en download wanneer de kern klopt.",
   keywords: [
@@ -183,6 +183,18 @@ export default function SnelCvMakenPage() {
               eerst neer en werk vanuit een versie die al binnen minuten serieus
               genoeg voelt om op verder te bouwen.
             </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Gebruik deze route als tijd je hoofdprobleem is. Voor het volledige
+              traject rond inhoud, structuur en ATS-logica ga je daarna verder met
+              de{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                hoofdgids CV maken
+              </Link>
+              .
+            </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/editor"
@@ -191,10 +203,10 @@ export default function SnelCvMakenPage() {
                 Start direct
               </Link>
               <Link
-                href="/cv-aanmaken"
+                href="/cv-maken"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Eerst de basisroute
+                Bekijk hoofdgids
               </Link>
             </div>
           </div>
@@ -307,9 +319,9 @@ export default function SnelCvMakenPage() {
         <section className="mb-14 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {[
             {
-              href: "/cv-aanmaken",
-              title: "CV aanmaken",
-              body: "Voor de kortste route naar een complete eerste versie zonder omwegen.",
+              href: "/cv-maken",
+              title: "CV maken",
+              body: "Gebruik dit brede stappenplan als snelheid niet je enige vraag is en je inhoud ook scherper moet worden.",
             },
             {
               href: "/cv-maken-op-mobiel",

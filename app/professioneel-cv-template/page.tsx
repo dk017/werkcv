@@ -77,7 +77,7 @@ const professionalIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Professioneel CV Template - Zakelijk en Strak CV Ontwerp | WerkCV.nl",
+  title: "Professioneel CV Template - Zakelijk en Strak CV Ontwerp | WerkCV",
   description:
     "Zoek je een professioneel CV template? Kies een zakelijke, strakke layout voor administratie, finance, HR en operations. Start gratis in de editor en download pas als je tevreden bent.",
   keywords: [

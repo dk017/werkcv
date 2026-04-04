@@ -107,7 +107,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Gratis CV Maken - Start Gratis, Betaal Alleen Bij Download | WerkCV.nl",
+  title: "Gratis CV Maken - Start Gratis, Betaal Alleen Bij Download | WerkCV",
   description:
     "Gratis CV maken in een professionele editor? Start gratis, vergelijk templates en betaal alleen bij PDF-download. Geen abonnement, wel een serieuze CV-builder.",
   keywords: [
@@ -208,6 +208,17 @@ export default function GratisCvMakenPage() {
               de inhoud echt klaar is. WerkCV laat je precies dat doen: gratis
               bouwen, verbeteren en vergelijken, daarna eenmalig afrekenen als je
               PDF klaar is.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Deze pagina focust bewust op gratis starten en het prijsmodel. Zoek je
+              vooral de brede workflow voor inhoud, structuur en ATS? Gebruik dan de{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                algemene CV maken gids
+              </Link>
+              .
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -386,17 +397,17 @@ export default function GratisCvMakenPage() {
                 {
                   href: "/cv-aanmaken",
                   title: "CV aanmaken",
-                  body: "Sterke vervolgroute voor mensen die vooral zo snel mogelijk willen starten met een eerste versie.",
+                  body: "Sterke vervolgroute voor mensen die vooral zo snel mogelijk een eerste versie willen openen, zonder direct over prijs of PDF na te denken.",
                 },
                 {
-                  href: "/curriculum-vitae-maken",
-                  title: "Curriculum vitae maken",
-                  body: "Formelere variant van dezelfde intentie, vooral bruikbaar voor zakelijke of formele zoekers.",
+                  href: "/templates",
+                  title: "CV templates",
+                  body: "Sterke vervolgroute voor mensen die nu vooral willen vergelijken welke layout het beste past voordat ze later downloaden.",
                 },
                 {
-                  href: "/online-cv-maken",
-                  title: "Online CV maken",
-                  body: "Logische vervolgstap voor bezoekers die snelheid, online bewerken en meerdere versies willen.",
+                  href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+                  title: "Zonder abonnement vergelijken",
+                  body: "Vergelijk WerkCV met andere routes als je expliciet zoekt naar een no-subscription model.",
                 },
                 {
                   href: "/prijzen",

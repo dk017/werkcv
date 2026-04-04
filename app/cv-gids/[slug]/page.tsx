@@ -5,6 +5,7 @@ import { getDutchWavePage, getDutchWavePages } from '@/lib/seo-wave/data';
 import CtaExperiment from '@/components/seo/CtaExperiment';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
+import { normalizeBrandCopy } from '@/lib/seo-branding';
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -17,12 +18,15 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { slug } = await params;
     const page = getDutchWavePage(slug);
-    if (!page) return { title: 'Pagina niet gevonden | WerkCV.nl' };
+    if (!page) return { title: 'Pagina niet gevonden | WerkCV' };
     const path = `/cv-gids/${page.slug}`;
+    const imageUrl = `https://werkcv.nl${path}/opengraph-image`;
+    const metaTitle = normalizeBrandCopy(page.metaTitle);
+    const metaDesc = normalizeBrandCopy(page.metaDesc);
 
     return {
-        title: page.metaTitle,
-        description: page.metaDesc,
+        title: metaTitle,
+        description: metaDesc,
         keywords: page.keywords,
         alternates: {
             canonical: `https://werkcv.nl${path}`,
@@ -33,11 +37,27 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             },
         },
         openGraph: {
-            title: page.metaTitle,
-            description: page.metaDesc,
+            title: metaTitle,
+            description: metaDesc,
             type: 'article',
+            siteName: 'WerkCV',
             locale: 'nl_NL',
             url: `https://werkcv.nl${path}`,
+            images: [
+                {
+                    url: imageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: page.title,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            site: '@werkcvnl',
+            title: metaTitle,
+            description: metaDesc,
+            images: [imageUrl],
         },
     };
 }
@@ -46,6 +66,7 @@ export default async function DutchWavePage({ params }: PageProps) {
     const { slug } = await params;
     const page = getDutchWavePage(slug);
     if (!page) notFound();
+    const metaDesc = normalizeBrandCopy(page.metaDesc);
     const heroProofPoints = [
         'Maak dit CV in 5 minuten',
         'ATS-vriendelijke templates',
@@ -61,16 +82,16 @@ export default async function DutchWavePage({ params }: PageProps) {
         '@context': 'https://schema.org',
         '@type': 'Article',
         headline: page.title,
-        description: page.metaDesc,
+        description: metaDesc,
         inLanguage: 'nl-NL',
         mainEntityOfPage: {
             '@type': 'WebPage',
             '@id': `https://werkcv.nl/cv-gids/${page.slug}`,
         },
-        author: { '@type': 'Organization', name: 'WerkCV.nl', url: 'https://werkcv.nl' },
+        author: { '@type': 'Organization', name: 'WerkCV', url: 'https://werkcv.nl' },
         publisher: {
             '@type': 'Organization',
-            name: 'WerkCV.nl',
+            name: 'WerkCV',
             logo: {
                 '@type': 'ImageObject',
                 url: 'https://werkcv.nl/logo.png',
@@ -98,16 +119,6 @@ export default async function DutchWavePage({ params }: PageProps) {
         { label: page.title, href: `/cv-gids/${page.slug}` },
     ];
 
-    const breadcrumbJsonLd = {
-        '@context': 'https://schema.org',
-        '@type': 'BreadcrumbList',
-        itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://werkcv.nl' },
-            { '@type': 'ListItem', position: 2, name: 'CV Gidsen', item: 'https://werkcv.nl/cv-gids' },
-            { '@type': 'ListItem', position: 3, name: page.title, item: `https://werkcv.nl/cv-gids/${page.slug}` },
-        ],
-    };
-
     return (
         <main className="min-h-screen bg-[#FFFEF9]">
             <script
@@ -120,10 +131,6 @@ export default async function DutchWavePage({ params }: PageProps) {
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
                 />
             )}
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
-            />
 
             {/* Breadcrumbs */}
             <div className="border-b-4 border-black bg-white">

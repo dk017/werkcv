@@ -52,7 +52,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken 16 Jarige - Eerste CV voor Bijbaan, Winkel of Horeca | WerkCV.nl",
+  title: "CV Maken 16 Jarige - Eerste CV voor Bijbaan, Winkel of Horeca | WerkCV",
   description:
     "CV maken als 16-jarige? Zet school, beschikbaarheid, eerste ervaring en werkhouding om in een sterk eerste CV voor bijbaan of stage. Start gratis in de editor.",
   keywords: [

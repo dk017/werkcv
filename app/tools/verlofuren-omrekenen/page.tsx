@@ -26,7 +26,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
-  title: "Verlofuren Omrekenen 2026 - Gratis Tool | WerkCV.nl",
+  title: "Verlofuren Omrekenen 2026 - Gratis Tool | WerkCV",
   description: "Reken verlofuren om naar dagen of dagen naar uren. Handig voor parttime contracten, 36-urige werkweken en HR-systemen die anders registreren dan je contract.",
   keywords: [
     "verlofuren omrekenen",

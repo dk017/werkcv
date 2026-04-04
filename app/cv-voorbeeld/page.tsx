@@ -6,7 +6,7 @@ import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
-    title: 'CV Voorbeelden per Beroep | WerkCV.nl',
+    title: 'CV Voorbeelden per Beroep | WerkCV',
     description: 'Bekijk professionele CV voorbeelden voor jouw beroep. Van ICT tot Zorg, van Logistiek tot Administratie. Start direct met een perfect CV template.',
     keywords: ['cv voorbeeld', 'cv template', 'cv maken', 'curriculum vitae', 'sollicitatie'],
 };

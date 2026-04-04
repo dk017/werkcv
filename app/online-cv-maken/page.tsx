@@ -101,7 +101,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Online CV Maken - Snel, Professioneel en Zonder Opmaakstress | WerkCV.nl",
+  title: "Online CV Maken - Snel, Professioneel en Zonder Opmaakstress | WerkCV",
   description:
     "Online cv maken in een paar stappen. Gebruik templates, copy-ready voorbeelden en ATS tips. Start gratis en betaal alleen bij PDF-download.",
   keywords: [
@@ -198,6 +198,17 @@ export default function OnlineCvMakenPage() {
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Wie online een CV wil maken zoekt vooral snelheid en controle: snel starten, inhoud per vacature aanpassen en pas op het einde beslissen over download. Op deze pagina krijg je een
               direct toepasbare workflow, voorbeelden en keuzes die je helpen om online een sterk CV te bouwen dat recruiter-proof en ATS-vriendelijk blijft.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Deze route focust op werken in-browser en snel itereren. Zoek je het
+              breedste stappenplan ongeacht kanaal of device? Dan blijft{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                CV maken
+              </Link>{" "}
+              de parent-pagina.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link

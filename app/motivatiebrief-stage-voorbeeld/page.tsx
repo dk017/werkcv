@@ -51,7 +51,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Motivatiebrief Stage Voorbeeld - Sterke Stagebrief + Structuur | WerkCV.nl",
+  title: "Motivatiebrief Stage Voorbeeld - Sterke Stagebrief + Structuur | WerkCV",
   description:
     "Zoek je een motivatiebrief stage voorbeeld? Bekijk sterke stagebrief-voorbeelden, een korte checklist en hoe je opleiding, projecten en motivatie goed combineert.",
   keywords: [

@@ -3,7 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-    title: "Privacybeleid - WerkCV.nl",
+    title: "Privacybeleid - WerkCV",
     description: "Hoe WerkCV.nl omgaat met je persoonsgegevens. Lees ons privacybeleid over gegevensverzameling, AVG-rechten en beveiliging.",
 };
 

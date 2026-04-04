@@ -152,7 +152,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Partners | WerkCV.nl voor coaches, scholen en communities",
+  title: "Partners | WerkCV voor coaches, scholen en communities",
   description:
     "Werk samen met WerkCV.nl als coach, school, community of career service. Deel Nederlandse CV-tools, gidsen en praktische sollicitatiehulp.",
   keywords: [

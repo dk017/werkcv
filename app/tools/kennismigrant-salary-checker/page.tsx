@@ -50,7 +50,7 @@ const migrationCvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-    title: "Highly Skilled Migrant Salary Checker Netherlands 2026 | WerkCV.nl",
+    title: "Highly Skilled Migrant Salary Checker Netherlands 2026 | WerkCV",
     description: "Check the IND 2026 salary thresholds for the Dutch highly skilled migrant route. Includes under-30, 30+ and reduced salary criterion checks.",
     keywords: [
         "highly skilled migrant salary 2026",

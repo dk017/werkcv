@@ -50,7 +50,7 @@ const cvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-    title: "Netto Bruto Calculator 2026 - Bruto Naar Netto & Netto Naar Bruto | WerkCV.nl",
+    title: "Netto Bruto Calculator 2026 - Bruto Naar Netto & Netto Naar Bruto | WerkCV",
     description: "Bereken bruto naar netto en netto naar bruto voor 2026. Inclusief loonheffingskorting, vakantiegeld en actuele Belastingdienst-tarieven als duidelijke indicatie voor loondienst.",
     keywords: [
         "netto bruto calculator",

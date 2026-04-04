@@ -48,7 +48,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CVster Opzeggen - Officiele Stappen + Alternatief | WerkCV.nl",
+  title: "CVster Opzeggen - Officiele Stappen + Alternatief | WerkCV",
   description:
     "Zoek je hoe je CVster opzegt? Bekijk de officiele stappen van CVster, wat het helpcentrum zegt over annuleren en vergelijk daarna een alternatief zonder abonnement.",
   keywords: [

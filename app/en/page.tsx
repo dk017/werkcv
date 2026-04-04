@@ -2,9 +2,9 @@ import Link from "next/link";
 import { buildEnglishMetadata } from "./metadata";
 
 export const metadata = buildEnglishMetadata({
-  title: "English CV Guides for the Netherlands",
+  title: "Build a Dutch-Style CV in English",
   description:
-    "English resources for writing a Dutch-style CV: templates, format guidance, ATS tips, and role-based examples for job seekers in the Netherlands.",
+    "Build a Dutch-style CV in English with templates, format guides, ATS tips, and examples for jobs in the Netherlands.",
   path: "/en",
   nlPath: "/",
   keywords: [
@@ -77,12 +77,35 @@ const expatTools = [
   },
 ];
 
+const startPaths = [
+  {
+    href: "/en/guides/dutch-cv-for-expats",
+    title: "Start from Dutch CV basics",
+    description: "Best first stop if you need the overall Dutch recruiter logic before choosing a template.",
+  },
+  {
+    href: "/en/guides/cv-for-international-students-netherlands",
+    title: "Student or graduate route",
+    description: "Use the student guide if your profile depends on projects, internships, and part-time work.",
+  },
+  {
+    href: "/en/guides/netherlands-cv-keywords-ats",
+    title: "ATS and keyword route",
+    description: "Useful if your CV gets views but not callbacks and you suspect wording or structure issues.",
+  },
+  {
+    href: "/en/guides/linkedin-to-cv-netherlands",
+    title: "LinkedIn to CV route",
+    description: "Best if your profile is stronger on LinkedIn than in your current resume or CV document.",
+  },
+];
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
-  name: "English CV Guides for the Netherlands",
+  name: "Build a Dutch-Style CV in English",
   description:
-    "English resources for writing a Dutch-style CV for jobs in the Netherlands.",
+    "English resources for building a Dutch-style CV for jobs in the Netherlands.",
   url: "https://werkcv.nl/en",
   inLanguage: "en-NL",
   isPartOf: {
@@ -116,6 +139,31 @@ export default function EnglishHubPage() {
       </section>
 
       <section className="max-w-5xl mx-auto px-6 py-12">
+        <div className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-black text-gray-900 mb-3">
+              Start with the route that matches your situation
+            </h2>
+            <p className="text-gray-700 text-lg">
+              The English section works best when you enter through the job you actually need done:
+              structure, ATS fixes, student positioning, or LinkedIn-to-CV conversion.
+            </p>
+          </div>
+
+          <div className="mt-6 grid md:grid-cols-2 gap-5">
+            {startPaths.map((path) => (
+              <Link
+                key={path.href}
+                href={path.href}
+                className="block border-4 border-black bg-[#FFF7E8] p-5 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all"
+              >
+                <h3 className="text-xl font-black mb-2 text-gray-900">{path.title}</h3>
+                <p className="text-gray-700">{path.description}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+
         <div className="grid md:grid-cols-2 gap-5">
           {pages.map((page) => (
             <Link
@@ -156,10 +204,10 @@ export default function EnglishHubPage() {
 
         <div className="mt-10 flex flex-wrap gap-3">
           <Link
-            href="/en/english-speaking-companies-netherlands"
+            href="/en/editor"
             className="inline-block bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black"
           >
-            English-Speaking Companies
+            Open English editor
           </Link>
           <Link
             href="/en/templates"
@@ -168,10 +216,10 @@ export default function EnglishHubPage() {
             Open CV Templates
           </Link>
           <Link
-            href="/cv-voorbeelden"
+            href="/en/dutch-cv-examples"
             className="inline-block bg-white text-black font-bold px-5 py-3 border-4 border-black"
           >
-            Dutch CV Examples
+            English CV examples
           </Link>
         </div>
       </section>

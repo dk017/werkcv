@@ -2,23 +2,23 @@ import { BlogArticle } from '../types';
 
 export const cvNaLoopbaanonderbreking: BlogArticle = {
     slug: 'cv-na-loopbaanonderbreking',
-    title: 'CV na Loopbaanonderbreking: Gaten Uitleggen en Sterker Terugkeren',
-    description: 'Hoe verwerk je een cv-gat na burnout, ziekte, ouderschapsverlof of werkloosheid? Complete gids met concrete voorbeelden, de wet Poortwachter uitgelegd en tips voor eerlijk én sterk solliciteren.',
-    metaTitle: 'CV na Loopbaanonderbreking: Gat Uitleggen en Sterk Terugkeren | WerkCV.nl',
-    metaDesc: 'CV-gat na burnout, ziekte of zwangerschapsverlof? Leer hoe je een loopbaanonderbreking professioneel vermeldt, je profieltekst aanpast en sterk terugkeert op de arbeidsmarkt.',
+    title: 'CV na loopbaanonderbreking in 2026: terugkeren na burnout, ziekte of verlof',
+    description: 'Hoe verwerk je een loopbaanonderbreking na burnout, ziekte, ouderschapsverlof of mantelzorg? Gebruik concrete formuleringen, tijdlijnvoorbeelden en een sterke terugkeerstrategie.',
+    metaTitle: 'CV na loopbaanonderbreking in 2026: burnout, ziekte of verlof | WerkCV',
+    metaDesc: 'CV na loopbaanonderbreking? Leer hoe je burnout, ziekte, zwangerschapsverlof of mantelzorg professioneel verwerkt met tijdlijnvoorbeelden en profielteksttips.',
     category: 'schrijven',
     keywords: [
-        'cv gat',
         'cv na loopbaanonderbreking',
         'cv na burnout',
+        'cv na ziekte',
         'cv na zwangerschapsverlof',
-        'werkloosheid cv',
-        'cv na ontslag',
+        'cv na ouderschapsverlof',
+        'mantelzorg cv',
         're-integratie cv',
-        'cv gat uitleggen',
+        'terugkeer arbeidsmarkt',
     ],
     publishedAt: '2026-02-19',
-    updatedAt: '2026-02-19',
+    updatedAt: '2026-04-04',
     readingTime: 11,
     featured: false,
     order: 21,
@@ -40,6 +40,13 @@ export const cvNaLoopbaanonderbreking: BlogArticle = {
                 'Een loopbaanonderbreking voelt persoonlijk, maar voor recruiters is het een zakelijk feit. Volgens LinkedIn Talent Solutions (2024) geeft 82% van de Nederlandse recruiters aan dat een eerlijk benoemd gat hun vertrouwen in een kandidaat vergroot — niet verkleint. Verhulling of vage omschrijvingen wekken juist achterdocht.',
                 'Gaten van minder dan zes maanden worden door 91% van de ondervraagde recruiters als niet-problematisch beschouwd (Randstad Werkmonitor 2024). Bij langere onderbrekingen — denk aan een jaar of meer — verwacht een recruiter meer context, maar nog steeds geen volledige verklaring.',
                 'Zo\'n 25% van de Nederlandse beroepsbevolking heeft ooit een langdurige loopbaanonderbreking gehad (CBS 2024). Burnout treft 1 op de 6 werknemers (TNO NEA 2024). Ouderschapsverlof, mantelzorg, ziekte of onvrijwillig ontslag zijn normale levensfasen. De vraag is niet of je een gat hebt, maar hoe je het positioneert.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/gat-in-cv-uitleggen',
+                    label: 'Lees eerst de brede gids over een gat in je cv',
+                    description: 'Gebruik die pagina als je nog zoekt naar de beste algemene uitleg en formulering.',
+                },
             ],
         },
         {
@@ -76,6 +83,18 @@ export const cvNaLoopbaanonderbreking: BlogArticle = {
                 'Je profieltekst is het eerste dat een recruiter leest na je naam. Dit is niet de plek voor uitleg of verontschuldiging — het is je sterkste verkoopargument. Schrijf vanuit wie je nu bent, niet wat er de afgelopen maanden is gebeurd.',
                 'Verwerk je terugkeermotivatie in één korte, zelfverzekerde zin als je dat relevant vindt. Iets als "Na een periode van persoonlijk herstel ben ik beschikbaar voor nieuwe uitdagingen als [rol]" is helder en positief. De rest van de profieltekst draait om je ervaring, vaardigheden en wat je bijdraagt.',
                 'Recruiters die een gat zien in je cv kijken daarna altijd naar je profieltekst om te bepalen of je jezelf presenteert als iemand die klaar is voor de volgende stap. Krachtige, actieve taal ("ik lever", "ik breng", "ik heb bewezen") geeft vertrouwen. Passieve taal ("ik heb geprobeerd", "ik hoop") ondermijnt dat meteen.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/profieltekst-schrijven',
+                    label: 'Werk je profieltekst daarna apart verder uit',
+                    description: 'Gebruik de profieltekstgids als je terugkeerzin staat maar je opening nog overtuigender moet worden.',
+                },
+                {
+                    href: '/cv-tips/gat-in-cv-uitleggen',
+                    label: 'Vergelijk je formulering met de brede gat-in-cv gids',
+                    description: 'Handig als je wilt checken of je uitleg kort genoeg en professioneel genoeg is.',
+                },
             ],
         },
         {
@@ -191,8 +210,8 @@ export const cvNaLoopbaanonderbreking: BlogArticle = {
         },
     ],
     relatedArticleSlugs: [
-        'cv-schrijven-tips',
-        'cv-werkervaring-beschrijven',
+        'gat-in-cv-uitleggen',
+        'cv-na-ontslag',
         'carriereswitch-cv',
         'profieltekst-schrijven',
         'sollicitatiebrief-tips',

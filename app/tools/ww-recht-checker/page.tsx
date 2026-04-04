@@ -26,7 +26,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
-    title: "WW Recht Checker - Gratis Tool | WerkCV.nl",
+    title: "WW Recht Checker - Gratis Tool | WerkCV",
     description: "Controleer snel of je waarschijnlijk recht hebt op WW. Inclusief urenverlies, wekeneis, beschikbaarheid en basischeck op verwijtbare werkloosheid.",
     keywords: [
         "ww recht checker",

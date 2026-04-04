@@ -43,7 +43,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Engels CV Template - Professioneel English Resume Voor Nederland | WerkCV.nl",
+  title: "Engels CV Template - Professioneel English Resume Voor Nederland | WerkCV",
   description:
     "Zoek je een Engels CV template voor Nederland? Kies een professioneel English resume format, schrijf vacaturegericht en start gratis in de editor. Download pas als je tevreden bent.",
   keywords: [

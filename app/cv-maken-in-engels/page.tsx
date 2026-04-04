@@ -133,7 +133,7 @@ const sources = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken in Engels - Voorbeelden, Structuur en Tips | WerkCV.nl",
+  title: "CV Maken in Engels - Voorbeelden, Structuur en Tips | WerkCV",
   description:
     "CV maken in Engels? Gebruik een duidelijke opbouw, Engelse voorbeeldzinnen en fout-naar-goed correcties. Start direct in de editor.",
   keywords: [
@@ -230,6 +230,24 @@ export default function CvMakenInEngelsPage() {
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Een goed Engels CV is niet je Nederlandse CV in Google Translate. Je hebt een directere toon, duidelijke impact-bullets en internationale terminologie nodig. Op deze pagina krijg je een
               complete workflow, copy-ready Engelse voorbeelden en fouten die je direct kunt corrigeren.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Deze pagina is bedoeld voor Nederlandse zoekers die een Engelstalig CV
+              willen schrijven. Zoek je juist de brede Nederlandse CV-workflow? Gebruik{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                CV maken
+              </Link>
+              . Wil je direct in een Engelstalige interface werken? Ga dan naar{" "}
+              <Link
+                href="/en"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                /en
+              </Link>
+              .
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link

@@ -52,7 +52,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken 15 Jarige - Eerste CV voor Bijbaan of Schoolverlater | WerkCV.nl",
+  title: "CV Maken 15 Jarige - Eerste CV voor Bijbaan of Schoolverlater | WerkCV",
   description:
     "CV maken als 15-jarige? Bouw een kort, netjes en betrouwbaar eerste CV voor bijbaan, supermarkt, horeca of winkelwerk. Start gratis in de editor.",
   keywords: [

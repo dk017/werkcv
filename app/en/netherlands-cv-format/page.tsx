@@ -117,16 +117,16 @@ export default function NetherlandsCvFormatPage() {
         </div>
 
         <div className="bg-white border-4 border-black p-6">
-          <h2 className="text-2xl font-black mb-3">Deep-dive Dutch guides</h2>
+          <h2 className="text-2xl font-black mb-3">English next steps</h2>
           <div className="flex flex-wrap gap-3">
-            <Link href="/cv-tips/cv-schrijven-tips" className="underline font-bold">
-              CV Writing Tips (Dutch)
+            <Link href="/en/guides/cv-format-netherlands-english" className="underline font-bold">
+              Format guide for expats
             </Link>
-            <Link href="/cv-tips/cv-fouten" className="underline font-bold">
-              Common CV Mistakes (Dutch)
+            <Link href="/en/guides/netherlands-cv-keywords-ats" className="underline font-bold">
+              ATS keyword guide
             </Link>
-            <Link href="/cv-tips/cv-template-kiezen" className="underline font-bold">
-              Choosing a Template (Dutch)
+            <Link href="/en/guides/one-page-cv-netherlands" className="underline font-bold">
+              One-page CV guide
             </Link>
           </div>
         </div>
@@ -134,6 +134,9 @@ export default function NetherlandsCvFormatPage() {
         <div className="flex flex-wrap gap-3">
           <Link href="/en/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
             Open CV Builder
+          </Link>
+          <Link href="/en/editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+            Open English editor
           </Link>
           <Link href="/en" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
             Back to English Guides

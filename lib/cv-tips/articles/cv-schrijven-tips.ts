@@ -7,8 +7,8 @@ export const cvSchrijvenTips: BlogArticle = {
     publishedAt: '2025-01-15',
     updatedAt: '2026-02-19',
 
-    metaTitle: 'CV schrijven in 2026: 10 tips + voorbeelden | WerkCV.nl',
-    metaDesc: 'Wil je een goed cv schrijven? Ontdek 10 praktische tips voor structuur, profieltekst, werkervaring en ATS. Met Nederlandse voorbeelden en directe vervolgstappen.',
+    metaTitle: 'CV Schrijven in 2026: 10 Tips + Voorbeelden voor een Sterk CV | WerkCV',
+    metaDesc: 'Leer hoe je een sterk cv schrijft met 10 praktische tips, Nederlandse voorbeelden en ATS-advies voor 2026. Gratis verder in de WerkCV editor.',
     keywords: ['cv schrijven', 'cv maken', 'cv tips', 'curriculum vitae schrijven', 'hoe schrijf je een cv', 'hoe schrijf je een goed cv', 'cv schrijven tips', 'goed cv schrijven', 'cv 2026'],
 
     readingTime: 10,

@@ -58,7 +58,7 @@ const cvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-    title: "Vakantiegeld Berekenen 2026 - Bruto Tool + Netto Uitleg | WerkCV.nl",
+    title: "Vakantiegeld Berekenen 2026 - Bruto Tool + Netto Uitleg | WerkCV",
     description: "Bereken je bruto vakantiegeld voor 2026 en lees direct hoe bruto, netto, loonheffing en 13e maand van elkaar verschillen. Praktische tool voor Nederlandse werknemers.",
     keywords: [
         "vakantiegeld berekenen",

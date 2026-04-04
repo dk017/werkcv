@@ -42,7 +42,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Professioneel CV Voorbeeld - Rustig en Zakelijk CV Voorbeeld | WerkCV.nl",
+  title: "Professioneel CV Voorbeeld - Rustig en Zakelijk CV Voorbeeld | WerkCV",
   description:
     "Bekijk een professioneel CV voorbeeld voor administratie, finance, HR en operations. Zie hoe een rustige, zakelijke layout eruitziet en start direct in de editor.",
   keywords: [

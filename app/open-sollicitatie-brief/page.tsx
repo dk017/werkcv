@@ -52,9 +52,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Open Sollicitatie Brief - Voorbeelden en Structuur | WerkCV.nl",
+  title: "Open sollicitatie schrijven in 2026: brief, aanpak en voorbeelden | WerkCV",
   description:
-    "Zoek je een open sollicitatie brief voorbeeld? Bekijk sterke voorbeeldbrieven, een korte checklist en hoe je zonder vacature toch overtuigend schrijft.",
+    "Leer open sollicitatie schrijven met een gerichte bedrijfsfit, voorbeeldblokken en een praktische aanpak voor situaties zonder concrete vacature.",
   keywords: [
     "open sollicitatie brief",
     "open sollicitatiebrief",
@@ -129,12 +129,12 @@ export default function OpenSollicitatieBriefPage() {
               Intent: open sollicitatie brief
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              Open sollicitatie brief voorbeelden die niet generiek aanvoelen
+              Open sollicitatie schrijven zonder generieke brief
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Een open sollicitatie wint niet op volume, maar op scherpte. Je reageert zonder
-              concrete vacature, dus je brief moet sneller duidelijk maken waarom juist dit bedrijf,
-              deze richting en jouw profiel logisch samenkomen.
+              Zonder concrete vacature moet je brief sneller duidelijk maken waarom juist dit
+              bedrijf, deze richting en jouw profiel logisch samenkomen. Een open sollicitatie wint
+              niet op volume, maar op gerichte bedrijfsfit en een heldere volgende stap.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -172,7 +172,7 @@ export default function OpenSollicitatieBriefPage() {
             Copy-ready voorbeelden
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            Open sollicitatie brief voorbeelden per situatie
+            Open sollicitatie voorbeelden per situatie
           </h2>
           <div className="mt-6 space-y-5">
             {examples.map((example) => (
@@ -207,14 +207,24 @@ export default function OpenSollicitatieBriefPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
-                  href: "/sollicitatiebrief-voorbeeld",
-                  title: "Sollicitatiebrief voorbeelden",
-                  body: "Gebruik extra openings- en afsluitzinnen als je je open brief wilt aanscherpen.",
+                  href: "/sollicitatiebrief-beginnen",
+                  title: "Sollicitatiebrief beginnen",
+                  body: "Gebruik een sterkere openingszin als je open brief nog te algemeen start.",
                 },
                 {
                   href: "/motivatiebrief-schrijven",
                   title: "Motivatiebrief schrijven",
                   body: "Handig als je eerst de opbouw en logica van je brief wilt verbeteren.",
+                },
+                {
+                  href: "/sollicitatiebrief-voorbeeld",
+                  title: "Sollicitatiebrief voorbeelden",
+                  body: "Vergelijk extra openings- en afsluitzinnen als je je open brief wilt aanscherpen.",
+                },
+                {
+                  href: "/motivatiebrief-zonder-werkervaring",
+                  title: "Motivatiebrief zonder werkervaring",
+                  body: "Gebruik deze route als je open brief vooral moet steunen op studie, stage of projecten.",
                 },
                 {
                   href: "/tools/sollicitatiebrief-generator",

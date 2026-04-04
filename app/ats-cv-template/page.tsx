@@ -43,7 +43,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "ATS CV Template voor Nederlandse Sollicitaties | WerkCV.nl",
+  title: "ATS CV Template voor Nederlandse Sollicitaties | WerkCV",
   description:
     "Zoek je een ATS CV template? Kies een rustige ATS-vriendelijke template voor Nederlandse sollicitaties, start gratis in de editor en download pas als je CV klaar is.",
   keywords: [

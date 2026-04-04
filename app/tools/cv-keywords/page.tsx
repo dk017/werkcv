@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import CvKeywordsTool from "./CvKeywordsTool";
 
 export const metadata: Metadata = {
-    title: "CV Keywords Generator - ATS Trefwoorden voor je CV | WerkCV.nl",
+    title: "CV Keywords Generator - ATS Trefwoorden voor je CV | WerkCV",
     description: "Ontdek welke keywords je CV moet bevatten voor jouw functie. Verhoog je ATS-score en val op bij recruiters met de juiste trefwoorden.",
     keywords: [
         "cv keywords",

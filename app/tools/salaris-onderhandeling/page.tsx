@@ -4,8 +4,8 @@ import Footer from '@/components/Footer';
 import SalarisOnderhandelingTool from './SalarisOnderhandelingTool';
 
 export const metadata: Metadata = {
-    title: 'Salaris Onderhandeling Script Generator — Gratis | WerkCV.nl',
-    description: 'Genereer een persoonlijk salarisonderhandelingsscript met AI. Inclusief e-mailsjabloon, argumenten en hoe je reageert op bezwaren.',
+    title: 'Salaris onderhandeling script generator | WerkCV',
+    description: 'Genereer een persoonlijk salarisonderhandelingsscript met AI. Inclusief reacties op lage aanbiedingen, bezwaren en salarisonderhandeling in sollicitatiegesprekken.',
     keywords: ['salaris onderhandelen', 'salarisverhoging vragen', 'onderhandeling script', 'salaris negotiation'],
 };
 
@@ -39,6 +39,20 @@ export default function SalarisOnderhandelingPage() {
                     <p className="text-lg text-slate-600 font-medium">
                         Vul je situatie in en ontvang een persoonlijk onderhandelingsscript — inclusief e-mail, argumenten en hoe je omgaat met bezwaren.
                     </p>
+                    <p className="mt-3 text-sm font-bold text-slate-700">
+                        Liever eerst je range scherper krijgen?{" "}
+                        <Link href="/cv-tips/salarisverwachting-bepalen" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            Bepaal je salarisverwachting
+                        </Link>
+                        {" "}of{" "}
+                        <Link href="/cv-tips/salaris-bespreken-sollicitatie" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            bereid je salarisgesprek voor
+                        </Link>
+                        {" "}of{" "}
+                        <Link href="/cv-tips/gewenst-salaris-invullen" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            vul een salarisveld slimmer in
+                        </Link>
+                    </p>
                 </div>
 
                 <div className="grid grid-cols-3 gap-4 mb-8">
@@ -57,6 +71,30 @@ export default function SalarisOnderhandelingPage() {
                 <div className="bg-white border-2 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-6 sm:p-8">
                     <SalarisOnderhandelingTool />
                 </div>
+
+                <section className="mt-8 rounded-2xl border-2 border-slate-200 bg-white p-5">
+                    <h2 className="text-lg font-black text-slate-900">Meer salarishulp</h2>
+                    <p className="mt-2 text-sm text-slate-600">
+                        Gebruik deze routes als je nog niet bij het onderhandelingsscript bent, maar eerst je range, netto effect of formulierantwoord wilt aanscherpen.
+                    </p>
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                        {[
+                            ["/cv-tips/salarisverwachting-bepalen", "Salarisverwachting bepalen", "Onderbouw eerst je range met marktdata, timing en scripts."],
+                            ["/cv-tips/salaris-bespreken-sollicitatie", "Salaris bespreken", "Voor recruiter-calls, interviewvragen en te lage budgetten."],
+                            ["/cv-tips/gewenst-salaris-invullen", "Gewenst salaris invullen", "Voor verplichte salarisvelden in formulieren en ATS-portals."],
+                            ["/tools/netto-bruto-calculator", "Netto bruto calculator", "Controleer wat een bruto aanbod maandelijks echt betekent."],
+                        ].map(([href, title, body]) => (
+                            <Link
+                                key={href}
+                                href={href}
+                                className="rounded-xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:border-slate-300 hover:bg-slate-100"
+                            >
+                                <p className="text-sm font-black text-slate-900">{title}</p>
+                                <p className="mt-1 text-xs leading-relaxed text-slate-600">{body}</p>
+                            </Link>
+                        ))}
+                    </div>
+                </section>
             </div>
 
             <Footer />

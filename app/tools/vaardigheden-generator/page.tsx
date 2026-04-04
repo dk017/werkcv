@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import VaardigheidsTool from "./VaardigheidsTool";
 
 export const metadata: Metadata = {
-    title: "Vaardigheden Generator - Gratis CV Vaardigheden | WerkCV.nl",
+    title: "Vaardigheden Generator - Gratis CV Vaardigheden | WerkCV",
     description: "Genereer relevante hard en soft skills voor jouw functie. Voeg de juiste vaardigheden toe aan je CV en val op bij recruiters.",
     keywords: [
         "cv vaardigheden",

@@ -48,7 +48,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Motivatiebrief Voorbeeld - Praktische Voorbeelden + Opbouw | WerkCV.nl",
+  title: "Motivatiebrief Voorbeeld - Praktische Voorbeelden + Opbouw | WerkCV",
   description:
     "Zoek je een motivatiebrief voorbeeld? Bekijk sterke voorbeeldalinea's, een duidelijke opbouw en een checklist voor een overtuigende brief. Pas direct toe in de generator.",
   keywords: [

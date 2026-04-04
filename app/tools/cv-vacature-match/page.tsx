@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import CvVacatureMatchTool from './CvVacatureMatchTool';
 
 export const metadata: Metadata = {
-    title: 'CV vs Vacature Match Checker — Gratis ATS Match Score | WerkCV.nl',
+    title: 'CV vs Vacature Match Checker — Gratis ATS Match Score | WerkCV',
     description: 'Plak je CV en een vacature en zie direct hoe goed ze bij elkaar passen. Ontdek ontbrekende keywords en verbeterpunten om meer interviews te scoren.',
     keywords: ['cv vacature match', 'cv checker vacature', 'ats match score', 'cv vergelijken vacature'],
 };

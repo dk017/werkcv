@@ -183,7 +183,7 @@ const developerTemplateIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Template Software Ontwikkelaar - ATS-proof en Sollicitatieklaar | WerkCV.nl",
+  title: "CV Template Software Ontwikkelaar - ATS-proof en Sollicitatieklaar | WerkCV",
   description:
     "Gebruik het beste CV template voor software ontwikkelaar. Inclusief profieltekst voorbeelden, project-bullets met metrics, stack-opbouw en ATS-keywords. Start gratis in de editor.",
   keywords: [

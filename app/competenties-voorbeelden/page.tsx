@@ -60,7 +60,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Competenties Voorbeelden - Sterke Competenties voor je CV | WerkCV.nl",
+  title: "Competenties Voorbeelden - Sterke Competenties voor je CV | WerkCV",
   description:
     "Zoek je competenties voorbeelden voor je CV? Bekijk sterke competenties per rol, het verschil met vaardigheden en hoe je ze geloofwaardig op je CV zet.",
   keywords: [

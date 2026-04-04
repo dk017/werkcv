@@ -6,7 +6,7 @@ import ToolEmbedShell, {
 import NettoBrutoTool from "@/app/tools/netto-bruto-calculator/NettoBrutoTool";
 
 export const metadata: Metadata = {
-  title: "Netto bruto calculator embed | WerkCV.nl",
+  title: "Netto bruto calculator embed | WerkCV",
   description: "Embedversie van de WerkCV netto bruto calculator.",
   robots: { index: false, follow: false },
 };

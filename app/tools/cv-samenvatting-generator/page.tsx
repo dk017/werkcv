@@ -22,7 +22,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
-    title: "CV Samenvatting Generator - Gratis Tool | WerkCV.nl",
+    title: "CV Samenvatting Generator - Gratis Tool | WerkCV",
     description: "Genereer een sterke cv-samenvatting voor de Nederlandse arbeidsmarkt. Vul je functie, doelrol, vaardigheden en resultaat in en krijg direct een recruiter-vriendelijke intro.",
     keywords: [
         "cv samenvatting generator",

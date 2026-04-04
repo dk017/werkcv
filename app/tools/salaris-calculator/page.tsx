@@ -29,7 +29,7 @@ const cvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-    title: "Salaris Calculator Nederland 2026 - Wat Verdien Jij? | WerkCV.nl",
+    title: "Salaris Calculator Nederland 2026 - Wat Verdien Jij? | WerkCV",
     description: "Bereken je marktsalaris op basis van sector, ervaringsniveau en regio. Gratis salarisindicatie voor de Nederlandse arbeidsmarkt.",
     keywords: [
         "salaris calculator nederland",

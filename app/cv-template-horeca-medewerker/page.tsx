@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import RoleCvTemplatePage from "@/components/seo/RoleCvTemplatePage";
 
 export const metadata: Metadata = {
-  title: "CV Template Horeca Medewerker | WerkCV.nl",
+  title: "CV Template Horeca Medewerker | WerkCV",
   description:
     "Gebruik een sterk CV template voor horeca medewerker. Inclusief profieltekst, voorbeeld bullets, checklist en links naar horeca-CV en sollicitatiebrief routes.",
   keywords: [

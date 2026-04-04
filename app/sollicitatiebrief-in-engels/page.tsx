@@ -126,7 +126,7 @@ const sources = [
 ];
 
 export const metadata: Metadata = {
-  title: "Sollicitatiebrief in Engels - Voorbeelden + Opbouw | WerkCV.nl",
+  title: "Sollicitatiebrief in Engels - Voorbeelden + Opbouw | WerkCV",
   description:
     "Schrijf een sterke sollicitatiebrief in Engels met copy-ready voorbeelden, structuur per alinea en veelgemaakte fouten met verbeterde versies.",
   keywords: [

@@ -7,7 +7,7 @@ import CvGrid from './CvGrid';
 import LogoutButton from './LogoutButton';
 
 export const metadata = {
-    title: 'Mijn CV\'s | WerkCV.nl',
+    title: 'Mijn CV\'s | WerkCV',
 };
 
 export default async function MijnCvsPage() {

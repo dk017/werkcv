@@ -2,13 +2,13 @@ import { BlogArticle } from '../types';
 
 export const freelanceCvMaken: BlogArticle = {
     slug: 'freelance-cv-maken',
-    title: 'Freelance CV Maken als ZZP\'er: De Complete Gids voor 2026',
-    description: 'Nederland telt 1,2 miljoen ZZP\'ers. Een freelance CV werkt anders dan een gewoon CV — opdrachten, opdrachtgevers en resultaten staan centraal. Leer precies hoe je het aanpakt.',
+    title: 'ZZP CV maken in 2026: opdrachten, profieltekst en voorbeelden',
+    description: 'Leer hoe je als zzp\'er of freelancer een sterk CV maakt met opdrachtstructuur, profieltekst, NDA-aanpak, intermediairproof bullets en gerichte voorbeeldroutes.',
     publishedAt: '2026-02-19',
-    updatedAt: '2026-02-19',
+    updatedAt: '2026-04-04',
 
-    metaTitle: 'Freelance CV Maken als ZZP\'er: Gids + Voorbeeld 2026 | WerkCV.nl',
-    metaDesc: 'Hoe maak je een sterk CV als ZZP\'er of freelancer? Leer hoe je opdrachten, opdrachtgevers en resultaten verwerkt. Met concrete voorbeelden voor intermediairs en platforms.',
+    metaTitle: 'ZZP CV maken in 2026: freelance CV, opdrachten en voorbeeld | WerkCV',
+    metaDesc: 'Maak een sterk ZZP-CV met opdrachtstructuur, profieltekst, NDA-opdrachten en voorbeeldroutes voor intermediairs, platforms en opdrachtgevers.',
     keywords: [
         'freelance cv',
         'zzp cv',
@@ -46,6 +46,13 @@ export const freelanceCvMaken: BlogArticle = {
                 'Het fundamentele verschil zit in de werkervaring-sectie. In een gewoon CV beschrijf je een functie bij één werkgever over een aaneengesloten periode. Als freelancer heb je in vier jaar misschien twaalf opdrachten bij acht opdrachtgevers gedaan. Die presenteer je als afzonderlijke projecten — elk met een eigen opdrachtgever, rol, duur en resultaat. Dit vereist een andere structuur en een andere schrijfaanpak.',
                 'Intermediairs en opdrachtgevers bekijken een freelance CV gemiddeld in minder dan 30 seconden (brancheonderzoek ZZP Barometer, 2024). In die tijd moeten ze kunnen zien: wat is je specialisme, voor wie heb je gewerkt en wat heb je opgeleverd? Als die drie vragen niet direct beantwoord worden, gaat je CV de prullenbak in — hoeveel ervaring je ook hebt.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-gids/cv-voorbeeld-zzper',
+                    label: 'Bekijk een concreet CV voorbeeld voor zzp\'ers',
+                    description: 'Handig als je naast de uitleg ook wilt zien hoe opdrachtstructuur en voorbeelden er op paginaniveau uitzien.',
+                },
+            ],
         },
         {
             id: 'profieltekst-zzp',
@@ -55,6 +62,13 @@ export const freelanceCvMaken: BlogArticle = {
                 'Je profieltekst is het eerste — en soms het enige — dat een opdrachtgever echt leest. Voor freelancers is die tekst nóg kritischer dan voor loondienst-kandidaten, omdat je je eigen brand bent. Je hebt geen bekend bedrijfslogo boven je naam staan; je naam en je profieltekst moeten het werk doen.',
                 'De sterkste freelance profielteksten zijn specifiek over niche, doelgroep en resultaat. Niet: "Ervaren projectmanager met oog voor detail en sterke communicatieve vaardigheden." Maar: "Freelance projectmanager gespecialiseerd in ERP-implementaties bij middelgrote productiebedrijven. Acht jaar ervaring, altijd binnen budget opgeleverd. Beschikbaar voor opdrachten in de Randstad en remote." Dat is in drie zinnen duidelijk wie je bent, voor wie je werkt en wat je te bieden hebt.',
                 'Sluit je profieltekst af met je beschikbaarheid en werkgebied. Opdrachtgevers willen weten of je beschikbaar bent voor de duur van hun opdracht en of je geografisch bereikbaar bent. Vermeld dit altijd expliciet: "Beschikbaar per 1 maart 2026, 32-40 uur per week, regio Utrecht/Amsterdam of remote."',
+            ],
+            intentLinks: [
+                {
+                    href: '/tools/profieltekst-generator',
+                    label: 'Maak sneller een profieltekst voor je zzp-specialisme',
+                    description: 'Gebruik de generator als je niche, doelgroep of beschikbaarheidszin nog te algemeen voelt.',
+                },
             ],
         },
         {
@@ -72,6 +86,18 @@ export const freelanceCvMaken: BlogArticle = {
                 'Periode: "maart 2024 – november 2024 (8 maanden)"',
                 'Resultaat 1: kwantitatief — omzet, tijdwinst, kostenreductie, conversie, NPS',
                 'Resultaat 2: kwalitatief als kwantitatief niet mogelijk is — maar zo concreet mogelijk',
+            ],
+            intentLinks: [
+                {
+                    href: '/tools/werkervaring-bullets',
+                    label: 'Zet losse opdrachten om naar sterkere resultaatbullets',
+                    description: 'Handig als je cases nu nog te taakgericht of te lang geformuleerd zijn.',
+                },
+                {
+                    href: '/cv-gids/cv-voorbeeld-zzper',
+                    label: 'Vergelijk je opdrachtstructuur met een zzp-CV voorbeeld',
+                    description: 'Gebruik deze route als je wilt zien hoe meerdere opdrachten compact op een CV kunnen staan.',
+                },
             ],
         },
         {
@@ -133,6 +159,13 @@ export const freelanceCvMaken: BlogArticle = {
                 'Die gerichte versie selecteert de acht tot tien meest relevante opdrachten, past de profieltekst aan op de specifieke vraag en benadrukt de vaardigheden die de opdrachtgever het meest nodig heeft. Een digitale marketeer die solliciteert op een SEO-opdracht heeft een ander CV dan wanneer hij solliciteert op een e-mailmarketing-opdracht — ook al is het dezelfde persoon met hetzelfde trackrecord.',
                 'Bewaar je gerichte versies per sector of per opdrachttype. Zo bouw je over tijd een bibliotheek van CV-varianten op die je snel kunt aanpassen. De meeste ZZP\'ers hebben drie tot vijf vaste varianten: één voor hun primaire specialisme, één voor een aangrenzend vakgebied, en één voor opdrachten waarbij seniority en leidinggevende ervaring centraal staan.',
             ],
+            intentLinks: [
+                {
+                    href: '/templates',
+                    label: 'Bouw je gerichte zzp-versie in een rustige template',
+                    description: 'Gebruik een template pas nadat je master-CV is teruggebracht naar een opdrachtgerichte versie van 1 tot 2 pagina\'s.',
+                },
+            ],
         },
         {
             id: 'platforms-intermediairs',
@@ -177,7 +210,7 @@ export const freelanceCvMaken: BlogArticle = {
         },
     ],
 
-    relatedArticleSlugs: ['cv-schrijven-tips', 'profieltekst-schrijven', 'ats-vriendelijk-cv'],
+    relatedArticleSlugs: ['profieltekst-schrijven', 'ats-vriendelijk-cv', 'cv-voor-uitzendbureau'],
     relatedExampleSlugs: [
         'technologie-en-ict/software-ontwikkelaar',
         'marketing-en-communicatie/content-marketeer',

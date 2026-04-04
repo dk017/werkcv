@@ -106,16 +106,16 @@ export default function CvOrResumeNetherlandsPage() {
         </div>
 
         <div className="bg-white border-4 border-black p-6">
-          <h2 className="text-2xl font-black mb-3">Useful Dutch resources</h2>
+          <h2 className="text-2xl font-black mb-3">Useful English next steps</h2>
           <div className="flex flex-wrap gap-3">
-            <Link href="/cv-tips/cv-schrijven-tips" className="underline font-bold">
-              CV Writing Tips (Dutch)
+            <Link href="/en/netherlands-cv-format" className="underline font-bold">
+              Netherlands CV format
             </Link>
-            <Link href="/cv-tips/profieltekst-schrijven" className="underline font-bold">
-              Profile Summary Tips (Dutch)
+            <Link href="/en/dutch-cv-examples" className="underline font-bold">
+              Dutch CV examples in English
             </Link>
-            <Link href="/cv-voorbeelden" className="underline font-bold">
-              CV Examples (Dutch)
+            <Link href="/en/guides/dutch-cv-for-expats" className="underline font-bold">
+              Dutch CV for expats
             </Link>
           </div>
         </div>
@@ -123,6 +123,9 @@ export default function CvOrResumeNetherlandsPage() {
         <div className="flex flex-wrap gap-3">
           <Link href="/en/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
             Start Your CV
+          </Link>
+          <Link href="/en/editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+            Open English editor
           </Link>
           <Link href="/en" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
             Back to English Guides

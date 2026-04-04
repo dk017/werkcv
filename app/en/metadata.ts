@@ -21,16 +21,21 @@ export function buildEnglishMetadata({
 }: BuildEnglishMetadataInput): Metadata {
   const canonical = `${BASE_URL}${path}`;
   const dutchUrl = `${BASE_URL}${nlPath}`;
-  const fullTitle = `${title} | WerkCV.nl`;
+  const fullTitle = `${title} | WerkCV`;
+  const ogImageUrl = `${BASE_URL}/opengraph-image`;
 
   return {
-    title: fullTitle,
+    title: {
+      absolute: fullTitle,
+    },
     description,
     keywords,
     alternates: {
       canonical,
       languages: {
+        en: canonical,
         "en-NL": canonical,
+        nl: dutchUrl,
         "nl-NL": dutchUrl,
         "x-default": canonical,
       },
@@ -39,14 +44,24 @@ export function buildEnglishMetadata({
       title: fullTitle,
       description,
       url: canonical,
-      siteName: "WerkCV.nl",
+      siteName: "WerkCV",
       locale: "en_NL",
       type,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
+      site: "@werkcvnl",
       title: fullTitle,
       description,
+      images: [ogImageUrl],
     },
   };
 }

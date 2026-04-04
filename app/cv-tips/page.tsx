@@ -5,7 +5,7 @@ import { articleCategoryLabels, articleCategoryColors } from '@/lib/cv-tips/type
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 
 export const metadata: Metadata = {
-    title: 'CV Tips & Advies | Alles over CV Schrijven | WerkCV.nl',
+    title: 'CV Tips & Advies | Alles over CV Schrijven | WerkCV',
     description: 'Ontdek de beste tips voor het schrijven van een professioneel CV. Van profieltekst tot vaardigheden, van opmaak tot sollicitatieadvies.',
     keywords: ['cv tips', 'cv schrijven', 'cv advies', 'cv maken tips', 'sollicitatietips', 'cv hulp'],
     alternates: {
@@ -17,7 +17,7 @@ export const metadata: Metadata = {
         },
     },
     openGraph: {
-        title: 'CV Tips & Advies | WerkCV.nl',
+        title: 'CV Tips & Advies | WerkCV',
         description: 'Ontdek de beste tips voor het schrijven van een professioneel CV.',
         type: 'website',
         locale: 'nl_NL',

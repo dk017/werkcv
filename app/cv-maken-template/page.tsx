@@ -64,7 +64,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken Template - Kies de Beste CV Layout voor Jouw Sollicitatie | WerkCV.nl",
+  title: "CV Maken Template - Kies de Beste CV Layout voor Jouw Sollicitatie | WerkCV",
   description:
     "Zoek je een CV maken template? Vergelijk rustige, moderne en ATS-vriendelijke layouts, kies de beste template voor jouw rol en start gratis in de editor.",
   keywords: [
@@ -164,6 +164,18 @@ export default function CvMakenTemplatePage() {
               helpen we je de beste CV-template selecteren op basis van rol,
               uitstraling en scanbaarheid, zodat je daarna direct kunt starten in
               de editor.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Zie dit als de keuzehulp voor layout- en template-intentie. Voor het
+              volledige stappenplan rond inhoud, schrijfkwaliteit en vacaturematch
+              gebruik je daarna beter de{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                hoofdgids CV maken
+              </Link>
+              .
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -302,19 +314,14 @@ export default function CvMakenTemplatePage() {
               body: "Dezelfde cluster in meer sjabloon-taal en met extra keuzehulp.",
             },
             {
+              href: "/cv-maken",
+              title: "CV maken",
+              body: "Ga hierna verder als de layout gekozen is en je de inhoud recruiter-proof wilt aanscherpen.",
+            },
+            {
               href: "/cv-opmaken",
               title: "CV opmaken",
-              body: "Verbeter de layout nadat je de juiste template hebt gekozen.",
-            },
-            {
-              href: "/modern-cv-voorbeeld",
-              title: "Modern CV voorbeeld",
-              body: "Zie wanneer een frissere uitstraling beter past dan een klassieke layout.",
-            },
-            {
-              href: "/professioneel-cv-voorbeeld",
-              title: "Professioneel CV voorbeeld",
-              body: "Bekijk een rustiger voorbeeld voor zakelijke en brede functies.",
+              body: "Verbeter de layout verder nadat je de juiste template hebt gekozen.",
             },
           ].map((item) => (
             <Link

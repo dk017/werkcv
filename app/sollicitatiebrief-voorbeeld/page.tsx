@@ -48,9 +48,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Sollicitatiebrief Voorbeeld - Sterke Voorbeelden + Structuur | WerkCV.nl",
+  title: "Sollicitatiebrief voorbeeld in 2026: opening, midden en afsluiting | WerkCV",
   description:
-    "Zoek je een sollicitatiebrief voorbeeld? Gebruik sterke openingszinnen, voorbeeldalinea's en een heldere structuur. Schrijf sneller met onze voorbeelden en start direct in de generator.",
+    "Zoek je een sollicitatiebrief voorbeeld? Bekijk sterke openingszinnen, voorbeeldalinea's en een heldere briefstructuur. Gebruik voorbeelden als basis en schrijf daarna vacaturegericht verder.",
   keywords: [
     "sollicitatiebrief voorbeeld",
     "motivatiebrief voorbeeld",
@@ -232,69 +232,34 @@ export default function SollicitatiebriefVoorbeeldPage() {
                   body: "Gebruik deze route als je eerst de schrijfstructuur en opbouw wilt aanscherpen.",
                 },
                 {
-                  href: "/korte-motivatiebrief-voorbeeld",
-                  title: "Korte motivatiebrief voorbeeld",
-                  body: "Vergelijk compacte voorbeeldbrieven die sneller tot de kern komen.",
+                  href: "/sollicitatiebrief-beginnen",
+                  title: "Sollicitatiebrief beginnen",
+                  body: "Scherp eerst je eerste zin aan als je voorbeeldbrief nog te standaard opent.",
                 },
                 {
-                  href: "/motivatiebrief-stage-voorbeeld",
-                  title: "Motivatiebrief stage voorbeeld",
-                  body: "Gebruik stagegerichte voorbeeldblokken als je vooral opleiding, projecten en leerdoelen wilt laten landen.",
-                },
-                {
-                  href: "/sollicitatiebrief-voorbeeld-horeca-medewerker",
-                  title: "Sollicitatiebrief horeca medewerker",
-                  body: "Gebruik servicegerichte voorbeeldzinnen voor bediening, allround horeca en bijbanen met piekdrukte.",
-                },
-                {
-                  href: "/sollicitatiebrief-voorbeeld-magazijnmedewerker",
-                  title: "Sollicitatiebrief magazijnmedewerker",
-                  body: "Gebruik logistieke voorbeeldzinnen voor tempo, discipline en praktische inzetbaarheid.",
-                },
-                {
-                  href: "/sollicitatiebrief-voorbeeld-administratief-medewerker",
-                  title: "Sollicitatiebrief administratief medewerker",
-                  body: "Gebruik een role-specifiek voorbeeld met administratieve zinnen, resultaten en structuur.",
-                },
-                {
-                  href: "/sollicitatiebrief-voorbeeld-klantenservice",
-                  title: "Sollicitatiebrief klantenservice",
-                  body: "Bekijk servicegerichte voorbeeldzinnen met KPI-focus voor customer support vacatures.",
-                },
-                {
-                  href: "/sollicitatiebrief-voorbeeld-verpleegkundige",
-                  title: "Sollicitatiebrief verpleegkundige",
-                  body: "Gebruik zorgspecifieke voorbeeldzinnen met BIG- en kwaliteitsfocus.",
-                },
-                {
-                  href: "/sollicitatiebrief-voorbeeld-marketing",
-                  title: "Sollicitatiebrief marketing",
-                  body: "Gebruik KPI-gedreven voorbeeldzinnen voor online marketing, content en performance rollen.",
-                },
-                {
-                  href: "/sollicitatiebrief-voorbeeld-office-manager",
-                  title: "Sollicitatiebrief office manager",
-                  body: "Gebruik operationsgerichte voorbeeldzinnen met planning, procesregie en stakeholdercoördinatie.",
-                },
-                {
-                  href: "/sollicitatiebrief-voorbeeld-verkoopmedewerker",
-                  title: "Sollicitatiebrief verkoopmedewerker",
-                  body: "Gebruik retail voorbeeldzinnen met klantadvies, KPI-focus en commerciële resultaten.",
-                },
-                {
-                  href: "/sollicitatiebrief-voorbeeld-software-ontwikkelaar",
-                  title: "Sollicitatiebrief software ontwikkelaar",
-                  body: "Gebruik developer-specifieke voorbeeldzinnen met stackmatch, technische impact en teamfit.",
-                },
-                {
-                  href: "/sollicitatiebrief-in-engels",
-                  title: "Sollicitatiebrief in Engels",
-                  body: "Solliciteer je internationaal? Gebruik de Engelse opbouw met copy-ready voorbeelden.",
+                  href: "/motivatiebrief-zonder-werkervaring",
+                  title: "Motivatiebrief zonder werkervaring",
+                  body: "Gebruik deze route als je vooral studie, stage, projecten of bijbaan als bewijs wilt gebruiken.",
                 },
                 {
                   href: "/open-sollicitatie-brief",
-                  title: "Open sollicitatie brief",
-                  body: "Gebruik deze route als je zonder vacature toch een scherpe brief wilt sturen naar een specifiek bedrijf.",
+                  title: "Open sollicitatie schrijven",
+                  body: "Gebruik een andere briefaanpak als je zonder concrete vacature schrijft.",
+                },
+                {
+                  href: "/sollicitatiebrief-voorbeeld-administratief-medewerker",
+                  title: "Voorbeeld administratief medewerker",
+                  body: "Bekijk een role-specifiek voorbeeld met administratieve zinnen, resultaten en structuur.",
+                },
+                {
+                  href: "/sollicitatiebrief-voorbeeld-verpleegkundige",
+                  title: "Voorbeeld verpleegkundige",
+                  body: "Gebruik zorgspecifieke voorbeeldzinnen met BIG- en kwaliteitsfocus.",
+                },
+                {
+                  href: "/sollicitatiebrief-voorbeeld-software-ontwikkelaar",
+                  title: "Voorbeeld software ontwikkelaar",
+                  body: "Gebruik developer-specifieke voorbeeldzinnen met stackmatch, technische impact en teamfit.",
                 },
                 {
                   href: "/motivatiebrief-voorbeeld",
@@ -302,29 +267,9 @@ export default function SollicitatiebriefVoorbeeldPage() {
                   body: "Gebruik extra voorbeeldalinea's als je focus meer op motivatie en fit ligt.",
                 },
                 {
-                  href: "/motivatiebrief-layout",
-                  title: "Motivatiebrief layout",
-                  body: "Gebruik deze route als je vooral opmaak, witruimte en een nette briefstructuur wilt aanscherpen.",
-                },
-                {
                   href: "/tools/sollicitatiebrief-generator",
                   title: "Sollicitatiebrief generator",
                   body: "Gebruik deze voorbeelden direct in de tool en pas ze aan op jouw vacature.",
-                },
-                {
-                  href: "/cv-template-word",
-                  title: "CV template Word alternatief",
-                  body: "Combineer je brief met een strak CV zonder opmaakstress.",
-                },
-                {
-                  href: "/professioneel-cv-template",
-                  title: "Professioneel CV template",
-                  body: "Maak je CV net zo overtuigend en zakelijk als je brief.",
-                },
-                {
-                  href: "/prijzen",
-                  title: "Prijzen",
-                  body: "Start gratis en betaal alleen wanneer je je CV wilt downloaden.",
                 },
               ].map((item) => (
                 <Link

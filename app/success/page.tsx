@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-    title: "Betaling Geslaagd - WerkCV.nl",
+    title: "Betaling Geslaagd - WerkCV",
     description: "Je betaling is geslaagd. Download nu je professionele CV als PDF.",
     robots: { index: false, follow: false },
 };

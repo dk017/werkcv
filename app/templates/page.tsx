@@ -3,9 +3,14 @@ import Link from "next/link";
 import { templateList } from "@/lib/templates/registry";
 import TemplateGallery from "./gallery";
 
+const pageUrl = "https://werkcv.nl/templates";
+
 export const metadata: Metadata = {
-  title: "CV Templates Kiezen - 13+ Professionele Ontwerpen | WerkCV.nl",
-  description: "Vergelijk 13+ ATS-vriendelijke CV templates voor Nederlandse sollicitaties. Start gratis, wissel later van template en betaal eenmalig per CV als je downloadt.",
+  title: {
+    absolute: "ATS-vriendelijke CV Templates voor Nederlandse Vacatures | WerkCV",
+  },
+  description:
+    "Vergelijk ATS-vriendelijke CV templates voor Nederlandse vacatures. Kies rustig, modern of strikt ATS, start gratis en betaal pas bij PDF-download. | WerkCV",
   keywords: [
     "cv template",
     "cv ontwerp",
@@ -19,12 +24,36 @@ export const metadata: Metadata = {
     "gratis cv template",
   ],
   alternates: {
-    canonical: "https://werkcv.nl/templates",
+    canonical: pageUrl,
     languages: {
-      "nl-NL": "https://werkcv.nl/templates",
+      "nl-NL": pageUrl,
       "en-NL": "https://werkcv.nl/en/templates",
-      "x-default": "https://werkcv.nl/templates",
+      "x-default": pageUrl,
     },
+  },
+  openGraph: {
+    title: "ATS-vriendelijke CV Templates voor Nederlandse Vacatures | WerkCV",
+    description:
+      "Vergelijk ATS-vriendelijke CV templates voor Nederlandse vacatures. Kies rustig, modern of strikt ATS, start gratis en betaal pas bij PDF-download.",
+    url: pageUrl,
+    siteName: "WerkCV",
+    locale: "nl_NL",
+    type: "website",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "WerkCV - ATS-vriendelijke CV templates",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ATS-vriendelijke CV Templates voor Nederlandse Vacatures | WerkCV",
+    description:
+      "Vergelijk ATS-vriendelijke CV templates voor Nederlandse vacatures. Kies rustig, modern of strikt ATS, start gratis en betaal pas bij PDF-download.",
+    images: ["/opengraph-image"],
   },
 };
 
@@ -38,10 +67,13 @@ export default function TemplatesPage() {
               Voor Nederlandse sollicitaties
             </p>
             <h2 className="text-2xl font-black text-black sm:text-3xl">
-              Vergelijk ATS-vriendelijke CV templates zonder abonnementsmodel
+              Vergelijk templates en kies de stijl die past bij jouw vacature
             </h2>
             <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700 sm:text-base">
               WerkCV.nl helpt je eerst gratis vergelijken, daarna pas beslissen. Kies een rustige of moderne layout, wissel later nog van template of kleur en betaal eenmalig per CV wanneer je wilt downloaden.
+            </p>
+            <p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-slate-600">
+              Gebruik de hulplinks hieronder alleen als je naast een template ook nog zoekt naar uitleg over de workflow, gratis opties, Engels of het prijsmodel.
             </p>
             <div className="mt-4 flex flex-wrap gap-2 text-xs font-black uppercase tracking-[0.18em] text-black">
               <span className="border-2 border-black bg-white px-3 py-1">ATS-vriendelijk</span>
@@ -55,31 +87,13 @@ export default function TemplatesPage() {
               href="/cv-maken"
               className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
             >
-              CV maken stappenplan
-            </Link>
-            <Link
-              href="/online-cv-maken"
-              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
-            >
-              Online CV maken
-            </Link>
-            <Link
-              href="/cv-opstellen"
-              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
-            >
-              CV opstellen
+              Hoe werkt CV maken?
             </Link>
             <Link
               href="/cv-maken-in-engels"
               className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
             >
-              CV maken in Engels
-            </Link>
-            <Link
-              href="/cv-opmaak-voorbeeld"
-              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
-            >
-              CV opmaak voorbeeld
+              Voor Engelstalige CVs
             </Link>
             <Link
               href="/cv-maken-zonder-abonnement"
@@ -88,22 +102,22 @@ export default function TemplatesPage() {
               Zonder abonnement
             </Link>
             <Link
-              href="/beste-cv-maker-nederland"
-              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
-            >
-              Beste CV maker NL
-            </Link>
-            <Link
               href="/gratis-cv-template"
               className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
-              Bekijk gratis opties
+              Gratis template opties
             </Link>
             <Link
               href="/cv-tips/cv-template-kiezen"
               className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
             >
-              Template kiezen
+              Hulp bij template kiezen
+            </Link>
+            <Link
+              href="/cv-opmaak-voorbeeld"
+              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+            >
+              Goede CV opmaak
             </Link>
           </div>
         </div>
@@ -132,7 +146,7 @@ export default function TemplatesPage() {
                 href="/beste-cv-maker-nederland"
                 className="border-2 border-black bg-white px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors"
               >
-                Beste CV maker NL
+                CV builders vergelijken
               </Link>
               <Link
                 href="/cv-gids/welke-cv-builder-past-bij-jou-in-nederland"
@@ -144,7 +158,7 @@ export default function TemplatesPage() {
                 href="/cv-gids/beste-cv-builder-zonder-abonnement"
                 className="border-2 border-black bg-yellow-200 px-3 py-2 text-sm font-black text-black hover:bg-yellow-300 transition-colors"
               >
-                Beste zonder abonnement
+                Vergelijk prijsmodellen
               </Link>
               <Link
                 href="/cv-gids/canva-vs-cv-builder-voor-sollicitaties"
@@ -156,7 +170,7 @@ export default function TemplatesPage() {
                 href="/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures"
                 className="border-2 border-black bg-white px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors"
               >
-                ATS-vriendelijke builder
+                ATS-veilige builders
               </Link>
             </div>
           </div>

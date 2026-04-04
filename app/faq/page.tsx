@@ -3,7 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-    title: "Veelgestelde Vragen (FAQ) - CV Maken | WerkCV.nl",
+    title: "Veelgestelde Vragen (FAQ) - CV Maken | WerkCV",
     description: "Antwoorden op veelgestelde vragen over WerkCV.nl. Alles over CV maken, betaling, templates, ATS-optimalisatie en meer.",
     keywords: [
         "cv maken vragen",

@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import CareerChangeAdvisorTool from './CareerChangeAdvisorTool';
 
 export const metadata: Metadata = {
-    title: 'Carrièreswitch Advisor — Gratis AI Loopbaanadvies | WerkCV.nl',
+    title: 'Carrièreswitch Advisor — Gratis AI Loopbaanadvies | WerkCV',
     description: 'Overweeg je een carrièreswitch? Ontvang gratis AI-advies: haalbaarheid, overdraagbare vaardigheden, kennishiaten en een concreet actieplan.',
     keywords: ['carrièreswitch', 'loopbaanadvies', 'van baan wisselen', 'carriere veranderen', 'career change'],
 };

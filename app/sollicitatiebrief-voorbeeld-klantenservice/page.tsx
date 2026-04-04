@@ -96,7 +96,7 @@ const sourceLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Sollicitatiebrief Voorbeeld Klantenservice | WerkCV.nl",
+  title: "Sollicitatiebrief Voorbeeld Klantenservice | WerkCV",
   description:
     "Gebruik een sterk sollicitatiebrief voorbeeld voor klantenservice. Inclusief openingszinnen, KPI-voorbeelden, checklist en copy-ready blokken. Start direct in de generator.",
   keywords: [

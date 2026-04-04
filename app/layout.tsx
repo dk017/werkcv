@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AnalyticsProvider from "@/components/AnalyticsProvider";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
-import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/seo/JsonLd";
+import { SharedSiteJsonLd } from "@/components/seo/JsonLd";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://werkcv.nl'),
   title: {
-    default: "WerkCV.nl - Professioneel CV Maken | Online CV Builder",
-    template: "%s | WerkCV.nl",
+    default: "WerkCV - Professioneel CV Maken | Online CV Builder",
+    template: "%s",
   },
   description: "Maak binnen 5 minuten een professioneel CV. Kies uit 13+ ATS-vriendelijke templates, vul je gegevens in en download als PDF. Eenmalig €4,99, geen abonnement.",
   keywords: [
@@ -39,10 +39,10 @@ export const metadata: Metadata = {
     "cv nederland",
   ],
   openGraph: {
-    title: "WerkCV.nl - Professioneel CV Maken | Online CV Builder",
+    title: "WerkCV - Professioneel CV Maken | Online CV Builder",
     description: "Maak binnen 5 minuten een professioneel CV. Kies uit 13+ ATS-vriendelijke templates en download als PDF. Eenmalig €4,99.",
     url: "https://werkcv.nl",
-    siteName: "WerkCV.nl",
+    siteName: "WerkCV",
     locale: "nl_NL",
     type: "website",
     images: [
@@ -50,19 +50,24 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "WerkCV.nl – Professioneel CV Maken",
+        alt: "WerkCV - Professioneel CV Maken",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "WerkCV.nl - Professioneel CV Maken",
+    site: "@werkcvnl",
+    title: "WerkCV - Professioneel CV Maken",
     description: "Maak binnen 5 minuten een professioneel CV. 13+ templates, eenmalig €4,99, geen abonnement.",
     images: ["/opengraph-image"],
   },
   alternates: {
     canonical: "https://werkcv.nl",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#4ECDC4",
 };
 
 export default function RootLayout({
@@ -74,8 +79,7 @@ export default function RootLayout({
     <html lang="nl" suppressHydrationWarning translate="no">
       <head>
         <meta name="google" content="notranslate" />
-        <OrganizationJsonLd />
-        <WebsiteJsonLd />
+        <SharedSiteJsonLd />
         {/* Google Analytics — inline so Google's detector finds it in page source */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-PCC26F3HBJ" />
         <script

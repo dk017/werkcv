@@ -65,7 +65,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken Sjabloon - Kies een Rustig en Professioneel CV-Sjabloon | WerkCV.nl",
+  title: "CV Maken Sjabloon - Kies een Rustig en Professioneel CV-Sjabloon | WerkCV",
   description:
     "Zoek je een cv maken sjabloon? Vergelijk rustige en moderne CV-sjablonen, kies de beste structuur voor jouw sollicitatie en start gratis in de editor.",
   keywords: [
@@ -165,6 +165,18 @@ export default function CvMakenSjabloonPage() {
               professioneel CV opbouwt. WerkCV laat je meerdere sjablonen gratis
               vergelijken en pas op het einde beslissen welke versie je als PDF
               downloadt.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Dit is de sjabloon-route binnen de cluster: gericht op vaste layouts
+              en snelle structuur. Voor het bredere stappenplan rond inhoud,
+              profieltekst en vacaturematch gebruik je daarna beter de{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                hoofdgids CV maken
+              </Link>
+              .
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -276,9 +288,9 @@ export default function CvMakenSjabloonPage() {
               body: "Voor een rustige, zakelijke indruk in brede Nederlandse functies.",
             },
             {
-              href: "/gratis-cv-template",
-              title: "Gratis CV template",
-              body: "Zie hoe gratis starten werkt en welke templates daarvoor handig zijn.",
+              href: "/cv-maken",
+              title: "CV maken",
+              body: "Ga hierna verder als je behalve het sjabloon ook inhoud, structuur en vacaturematch wilt aanscherpen.",
             },
             {
               href: "/cv-opmaken",

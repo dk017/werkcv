@@ -153,7 +153,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Agency CV Formatting Pilot | WerkCV.nl voor recruiters",
+  title: "Agency CV Formatting Pilot | WerkCV voor recruiters",
   description:
     "WerkCV Agency is een pilot voor solo recruiters, boutique bureaus en outplacement. Laat kandidaat-CV's sneller in jouw stijl zetten met onboarding, factuur en fair-use vanaf EUR249 per maand.",
   keywords: [

@@ -5,9 +5,9 @@ export const cvNaOntslag: BlogArticle = {
     title: 'CV na Ontslag: Hoe Ga Je Om met de Gap en Kom je Sterker Terug?',
     description: 'Ontslagen en nu een nieuw CV schrijven? Leer hoe je een ontslagperiode eerlijk maar strategisch vermeldt, je profieltekst herschrijft en je verhaal consistent houdt bij de sollicitatie.',
     publishedAt: '2026-02-25',
-    updatedAt: '2026-02-25',
+    updatedAt: '2026-04-04',
 
-    metaTitle: 'CV na Ontslag (2026) – Hoe Vermeld je een Gap en Kom je Sterker Terug?',
+    metaTitle: 'CV na ontslag in 2026: gap verwerken en sterker terugkomen | WerkCV',
     metaDesc: 'CV maken na ontslag? Stap-voor-stap: hoe je de gap eerlijk maar sterk vermeldt, je profieltekst herschrijft, referenties regelt en je sollicitatieverhaal consistent houdt.',
     keywords: [
         'cv na ontslag',
@@ -73,6 +73,13 @@ export const cvNaOntslag: BlogArticle = {
                 'Mantelzorg of gezinszorg → "Intensieve mantelzorgperiode, [periode]" is volledig legitiem',
                 'Actief netwerken, oriënterende gesprekken → noem het in de brief, niet in je CV',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/gat-in-cv-uitleggen',
+                    label: 'Gebruik de brede gids voor een gat in je cv als basis',
+                    description: 'Handig als je eerst de algemene formuleringen en timing van een cv-gap wilt scherpstellen.',
+                },
+            ],
         },
         {
             id: 'profieltekst',
@@ -82,6 +89,13 @@ export const cvNaOntslag: BlogArticle = {
                 'Veel mensen laten na ontslag hun profieltekst staan zoals die was — gericht op de baan die ze verloren hebben. Dat is een gemiste kans. De profieltekst is het enige plek in je CV waar je zelf het narratief bepaalt. Gebruik het om te omschrijven waar je nu staat en waar je naartoe wil.',
                 'Een profieltekst na ontslag hoeft niet te verwijzen naar ontslag. Schrijf hem zoals je hem zou schrijven als je uit eigen beweging op zoek was: "Ervaren projectmanager met 8 jaar ervaring in de FMCG-sector, gespecialiseerd in supply chain optimalisatie. Na het afronden van een PRINCE2-certificering zoek ik een nieuwe uitdaging waarbij ik mijn leiderschapservaring inzet in een internationale omgeving."',
                 'Wat hier niet staat: waarom je wegging, dat je ontslagen bent, dat je "beschikbaar" bent. Dat spreekt voor zich — je solliciteert, dus je bent beschikbaar. De profieltekst positioneert je als een professional met een richting, niet als iemand die werk zoekt uit noodzaak.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/profieltekst-schrijven',
+                    label: 'Werk je profieltekst verder uit zonder defensieve toon',
+                    description: 'Gebruik de profieltekstgids om je opening weer te laten draaien om waarde en richting.',
+                },
             ],
         },
         {
@@ -102,6 +116,13 @@ export const cvNaOntslag: BlogArticle = {
                 'Werkgevers waarderen mensen die tegenslag omzetten in actie. Als je in de periode na je ontslag een cursus hebt gevolgd, je netwerk hebt uitgebouwd, freelance werk hebt gedaan of zelfs gewoon je huis hebt verbouwd — dit zijn signalen van proactiviteit, eigenaarschap en veerkracht. Dat zijn precies de eigenschappen waar werkgevers in gesprekken op letten.',
                 'Voeg concrete activiteiten uit je ontslagperiode toe aan je CV als ze relevant zijn. Een LinkedIn Learning-cursus, een online certificering, een workshop via NOLOC of een coaches-traject: dit zijn allemaal legitieme toevoegingen die een gap actief kleuren. Ze tonen dat je de periode hebt benut, niet alleen afgewacht.',
                 'In gesprekken kun je openhartig zijn over wat de ontslagperiode je heeft gebracht. "Het gaf me de ruimte om te reflecteren op wat ik echt wil en om een gerichte stap te zetten" is een antwoord dat kracht uitstraalt, geen zwakte. Bereid dit verhaal voor zodat het consistent is met wat er in je CV staat.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/carriereswitch-cv',
+                    label: 'Gebruik een andere aanpak als ontslag leidde tot een carrièreswitch',
+                    description: 'Handig als je periode zonder werk tegelijk een nieuwe richting of omscholing heeft opgeleverd.',
+                },
             ],
         },
         {
@@ -168,6 +189,7 @@ export const cvNaOntslag: BlogArticle = {
     ],
 
     relatedArticleSlugs: [
+        'gat-in-cv-uitleggen',
         'cv-na-loopbaanonderbreking',
         'carriereswitch-cv',
         'profieltekst-schrijven',

@@ -125,15 +125,33 @@ export default function DutchCvExamplesPage() {
           </ul>
         </div>
 
+        <div className="bg-white border-4 border-black p-6">
+          <h2 className="text-2xl font-black mb-3">Use examples inside the English guide flow</h2>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/en/netherlands-cv-format" className="underline font-bold">
+              Netherlands CV format
+            </Link>
+            <Link href="/en/ats-resume-netherlands" className="underline font-bold">
+              ATS resume guide
+            </Link>
+            <Link href="/en/guides/dutch-cv-for-expats" className="underline font-bold">
+              Dutch CV for expats
+            </Link>
+          </div>
+        </div>
+
         <div className="flex flex-wrap gap-3">
-          <Link href="/en/english-speaking-companies-netherlands" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
-            English-Speaking Companies
+          <Link href="/en/templates" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+            Open English templates
           </Link>
-          <Link href="/cv-voorbeelden" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
+          <Link href="/en/guides" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
+            English guide hub
+          </Link>
+          <Link href="/cv-voorbeelden" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
             Browse All Dutch Examples
           </Link>
-          <Link href="/en" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
-            Back to English Guides
+          <Link href="/en/editor" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
+            Open English editor
           </Link>
         </div>
       </section>

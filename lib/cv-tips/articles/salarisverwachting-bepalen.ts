@@ -2,13 +2,13 @@ import { BlogArticle } from '../types';
 
 export const salarisverwachtingBepalen: BlogArticle = {
     slug: 'salarisverwachting-bepalen',
-    title: 'Salarisverwachting Bepalen en Bespreken: De Complete Gids',
-    description: 'Leer hoe je een realistische salarisverwachting bepaalt in 2026. Met EU loontransparantiewet, Loonwijzer-data, concrete onderhandelscripts en een volledig overzicht van secundaire arbeidsvoorwaarden.',
+    title: 'Salarisverwachting bepalen in 2026: marktdata, range en onderhandeling',
+    description: 'Leer hoe je een realistische salarisverwachting bepaalt met marktdata, een verdedigbare range en een duidelijke aanpak voor gesprekken, formulieren en aanbiedingen.',
     publishedAt: '2025-09-12',
-    updatedAt: '2026-02-19',
+    updatedAt: '2026-04-04',
 
-    metaTitle: 'Salarisverwachting Bepalen en Bespreken [2026] | WerkCV.nl',
-    metaDesc: 'Hoe bepaal je je salarisverwachting in 2026? EU loontransparantiewet, marktcijfers, onderhandelscripts en secundaire arbeidsvoorwaarden volledig uitgelegd.',
+    metaTitle: 'Salarisverwachting bepalen in 2026: range, marktdata en timing | WerkCV',
+    metaDesc: 'Bepaal je salarisverwachting met marktdata, een sterke range en heldere scripts voor sollicitatiegesprekken, formulieren en aanbiedingen.',
     keywords: ['salarisverwachting', 'salaris onderhandelen', 'salarisverwachting bepalen', 'salarisonderhandeling tips', 'loononderhandeling', 'eu loontransparantiewet', 'marktconform salaris'],
 
     readingTime: 12,
@@ -53,6 +53,18 @@ export const salarisverwachtingBepalen: BlogArticle = {
                 'LinkedIn Salary Insights — inzicht in salarissen op basis van LinkedIn-profieldata',
                 'Nationaal Salaris Onderzoek — jaarlijks rapport van Intermediair/SD Worx',
             ],
+            intentLinks: [
+                {
+                    href: '/tools/salaris-calculator',
+                    label: 'Gebruik de salaris calculator om je marktband sneller te schatten',
+                    description: 'Handig als je eerst een ruwe range per sector, regio en niveau wilt bepalen.',
+                },
+                {
+                    href: '/tools/netto-bruto-calculator',
+                    label: 'Vertaal je bruto range direct naar netto',
+                    description: 'Gebruik deze stap als je wilt weten wat een aanbod maandelijks echt betekent.',
+                },
+            ],
         },
         {
             id: 'eu-loontransparantie',
@@ -83,6 +95,18 @@ export const salarisverwachtingBepalen: BlogArticle = {
                 'Als er in de vacaturetekst gevraagd wordt om je salarisverwachting in de sollicitatiebrief te vermelden, kun je er niet omheen. Noem dan een ruime bandbreedte aan het einde van de brief, na je motivatie en kwalificaties. Formuleer het als: "Mijn salarisverwachting ligt tussen X en Y euro bruto per jaar, afhankelijk van het totale pakket arbeidsvoorwaarden — ik bespreek dit graag nader."',
                 'Als salaris al in het eerste telefonische screeningsgesprek ter sprake komt, probeert de recruiter te controleren of je verwachtingen binnen het budget passen. Geef een indicatie van je bandbreedte, maar voeg toe: "Ik wil de volledige functie-inhoud begrijpen voor ik een definitieve verwachting uitspreek." Dit is professioneel en houdt de onderhandelingspositie open.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/salaris-bespreken-sollicitatie',
+                    label: 'Oefen hoe je salaris in het sollicitatiegesprek bespreekt',
+                    description: 'Gebruik deze route als je vooral wilt weten wat je letterlijk zegt zodra de recruiter ernaar vraagt.',
+                },
+                {
+                    href: '/cv-tips/sollicitatiegesprek-voorbereiden',
+                    label: 'Neem salaris mee in je volledige gesprekvoorbereiding',
+                    description: 'Handig als je naast salaris ook vragen, kleding en gesprekstructuur wilt voorbereiden.',
+                },
+            ],
         },
         {
             id: 'salarisverwachting-communiceren',
@@ -99,6 +123,13 @@ export const salarisverwachtingBepalen: BlogArticle = {
                 'Script 3 (brief): "Mijn salarisverwachting ligt tussen €X en €Y bruto per jaar, afhankelijk van het totale arbeidsvoorwaardenpakket."',
                 'Script 4 (bij huidige salaris-vraag): "Ik richt me liever op mijn marktwaarde voor deze rol — mijn verwachting is €X tot €Y."',
                 'Script 5 (bij te laag eerste aanbod): "Ik ben enthousiast over de functie. Op basis van [marktcijfer/ervaring] vraag ik me af of er ruimte is richting €Y."',
+            ],
+            intentLinks: [
+                {
+                    href: '/tools/salaris-onderhandeling',
+                    label: 'Zet je range om naar een concreet onderhandelingsscript',
+                    description: 'Gebruik de tool als je al weet welke bandbreedte je wilt noemen en alleen nog je formulering wilt aanscherpen.',
+                },
             ],
         },
         {
@@ -173,6 +204,18 @@ export const salarisverwachtingBepalen: BlogArticle = {
                 'Gebruik de bedenktijd om het totale pakket te evalueren. Bereken het netto maandsalaris met een salarisberekening-tool (Berekenhet.nl). Voeg de monetaire waarde toe van secundaire voorwaarden: pensioen, vakantiedagen, bonuspercentage, thuiswerktoeslag, kilometervergoeding. Vergelijk dit totaal met je marktonderzoek. Bespreek het aanbod eventueel met een vertrouwde mentor in je sector.',
                 'Als je wilt onderhandelen, doe dit telefonisch — niet per e-mail. Een telefoongesprek is persoonlijker en geeft je de mogelijkheid om direct te reageren op argumenten. Bereid drie specifieke punten voor: het gewenste salaris op basis van marktcijfers, de aanvullende voorwaarden die je wilt bespreken, en een concreet tegenvoorstel. Randstad (2024) bevestigt dat 87% van werkgevers een goed onderbouwd tegenvoorstel respecteert, ook als ze het niet volledig inwilligen.',
             ],
+            intentLinks: [
+                {
+                    href: '/cv-tips/gewenst-salaris-invullen',
+                    label: 'Vul daarna ook verplichte salarisvelden slimmer in',
+                    description: 'Handig als het proces deels via een formulier loopt en je je range daar ook goed wilt invullen.',
+                },
+                {
+                    href: '/tools/netto-bruto-calculator',
+                    label: 'Check het netto effect van een aanbod voordat je reageert',
+                    description: 'Gebruik dit als je bruto cijfers al hebt maar het maandbedrag wilt begrijpen.',
+                },
+            ],
         },
     ],
 
@@ -211,6 +254,6 @@ export const salarisverwachtingBepalen: BlogArticle = {
         },
     ],
 
-    relatedArticleSlugs: ['sollicitatiegesprek-voorbereiden', 'sollicitatiebrief-tips', 'carriereswitch-cv'],
+    relatedArticleSlugs: ['salaris-bespreken-sollicitatie', 'gewenst-salaris-invullen', 'salarisverwachting-cv', 'sollicitatiegesprek-voorbereiden'],
     relatedExampleSlugs: ['zakelijk-en-financieel/financieel-analist', 'technologie-en-ict/software-ontwikkelaar', 'juridisch-en-overheid/advocaat-stagiair'],
 };

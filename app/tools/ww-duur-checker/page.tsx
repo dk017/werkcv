@@ -22,7 +22,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
-    title: "WW Duur Checker - Gratis Tool | WerkCV.nl",
+    title: "WW Duur Checker - Gratis Tool | WerkCV",
     description: "Bereken hoe lang je WW waarschijnlijk duurt. Inclusief basischeck op wekeneis, jareneis en extra duur bij langer arbeidsverleden.",
     keywords: [
         "ww duur checker",

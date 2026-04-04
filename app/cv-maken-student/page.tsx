@@ -60,7 +60,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken Student - Sterk Student-CV voor Stage, Bijbaan en Starter | WerkCV.nl",
+  title: "CV Maken Student - Sterk Student-CV voor Stage, Bijbaan en Starter | WerkCV",
   description:
     "CV maken als student? Bouw snel een sterk student-CV met stage, projecten, bijbaan en profieltekst. Start gratis in de editor en download later als PDF.",
   keywords: [
@@ -159,6 +159,17 @@ export default function CvMakenStudentPage() {
               slim laten zien wat je al hebt gedaan: stage, schoolprojecten, bijbaan,
               bestuur, vrijwilligerswerk en vaardigheden. WerkCV helpt je die
               ervaring om te zetten in een rustige, recruiter-proof versie.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
+              Deze route is specifiek voor stage, bijbaan, trainee en starter-intentie.
+              Zoek je eerst het brede stappenplan voor een algemeen CV? Gebruik dan de{" "}
+              <Link
+                href="/cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                hoofdgids CV maken
+              </Link>
+              .
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link

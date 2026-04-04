@@ -56,7 +56,7 @@ const expatCvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "30%-Regeling Checker 2026 - Gratis Tool | WerkCV.nl",
+  title: "30%-Regeling Checker 2026 - Gratis Tool | WerkCV",
   description: "Check de 30%-regeling voor 2026 met actuele Belastingdienst-drempels. Vergelijk je salaris, maanden in de regeling en basisvoorwaarden voor expats in Nederland.",
   keywords: [
     "30 regeling checker",

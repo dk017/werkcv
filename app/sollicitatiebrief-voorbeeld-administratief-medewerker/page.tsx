@@ -96,7 +96,7 @@ const sourceLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Sollicitatiebrief Voorbeeld Administratief Medewerker | WerkCV.nl",
+  title: "Sollicitatiebrief Voorbeeld Administratief Medewerker | WerkCV",
   description:
     "Gebruik een sterk sollicitatiebrief voorbeeld voor administratief medewerker. Inclusief opening, kernalinea's, checklist en copy-ready zinnen. Start direct in de generator.",
   keywords: [
