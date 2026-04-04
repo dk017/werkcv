@@ -89,6 +89,7 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 # Chromium needs a writable HOME for its crashpad database
 ENV HOME=/tmp
+ENV NODE_PATH=/usr/local/lib/node_modules
 
 # Non-root user for security
 RUN groupadd --system --gid 1001 nodejs \
