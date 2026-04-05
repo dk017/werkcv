@@ -574,6 +574,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.82,
         },
         {
+            url: `${baseUrl}/tools/cv-score/methodologie`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.62,
+        },
+        {
             url: `${baseUrl}/en`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -742,6 +748,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         '30-procent-regeling-checker',
         'ats-cv-checker',
         'career-change-advisor',
+        'cv-score',
         'cv-keywords',
         'cv-samenvatting-generator',
         'cv-vacature-match',

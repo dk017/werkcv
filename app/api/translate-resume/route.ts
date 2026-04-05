@@ -3,6 +3,8 @@ import { prisma } from '@/lib/prisma';
 import { parseCV } from '@/lib/cv-parser';
 import { formatCvForDutch } from '@/lib/format-resume-dutch';
 import { CVData } from '@/lib/cv';
+import { sanitizeAttribution } from '@/lib/attribution';
+import { Prisma } from '@prisma/client';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -19,8 +21,19 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
+    const attributionRaw = formData.get('attribution');
     const templateIdEntry = formData.get('templateId');
     const colorThemeEntry = formData.get('colorThemeId');
+    let attribution = null;
+
+    if (typeof attributionRaw === 'string') {
+      try {
+        attribution = sanitizeAttribution(JSON.parse(attributionRaw));
+      } catch {
+        attribution = null;
+      }
+    }
+
     const templateId =
       typeof templateIdEntry === 'string' && templateIdEntry.trim()
         ? templateIdEntry.trim()
@@ -64,9 +77,12 @@ export async function POST(request: NextRequest) {
           data: translatedCv as CVData,
           templateId,
           colorThemeId,
+          attribution: attribution as unknown as Prisma.InputJsonValue | undefined,
+          sourceCluster: attribution?.firstTouchCluster || null,
+          sourceLocale: attribution?.locale || null,
           startSource: 'resume_translate',
           userId: user.id,
-        },
+        } as unknown as Prisma.CVDocumentCreateInput,
       });
     } catch (error) {
       console.error('Translate resume create failed, retrying simplified:', error);

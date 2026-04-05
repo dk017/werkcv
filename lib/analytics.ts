@@ -80,7 +80,19 @@ export type AnalyticsEvent =
     | { event: 'onboarding_dismissed'; properties: { action: 'start_typing' | 'upload_cv' } }
     | { event: 'section_expanded'; properties: { section: string } }
     | { event: 'cta_viewed'; properties: { location: string; variant: string; slug?: string; locale?: 'nl' | 'en' } }
-    | { event: 'cta_clicked'; properties: { location: string; label: string } };
+    | { event: 'cta_clicked'; properties: { location: string; label: string } }
+    // CV score tool
+    | { event: 'cv_score_tool_viewed'; properties: Record<string, never> }
+    | { event: 'cv_score_input_provided'; properties: { input_type: 'file' | 'text' } }
+    | {
+          event: 'cv_score_result_shown';
+          properties: {
+              total_score: number;
+              score_band: 'critical' | 'fair' | 'good' | 'excellent';
+              top_issue_dimension: string;
+          };
+      }
+    | { event: 'cv_score_cta_clicked'; properties: { button: 'editor' | 'templates' } };
 
 // ============================================================
 // Core track function

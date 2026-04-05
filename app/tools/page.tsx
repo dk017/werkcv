@@ -192,6 +192,13 @@ const sections: ToolSection[] = [
                 badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
             },
             {
+                href: "/tools/cv-score",
+                title: "Nederlandse CV score checker",
+                description: "Ontvang een totaalscore op 6 Nederlandse CV-criteria, inclusief profieltekst, werkervaring en volledigheid.",
+                badge: "AI",
+                badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
+            },
+            {
                 href: "/tools/cv-vacature-match",
                 title: "CV vs Vacature Match",
                 description: "Vergelijk je CV met een vacature en zie waar je match of keywords mist.",

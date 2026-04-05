@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { getStoredAttribution } from '@/lib/analytics';
 
 type TranslateResult = {
   cvId: string;
@@ -34,6 +35,10 @@ export default function ResumeTranslator() {
 
     const formData = new FormData();
     formData.append('file', file);
+    const attribution = getStoredAttribution();
+    if (attribution) {
+      formData.append('attribution', JSON.stringify(attribution));
+    }
 
     try {
       const response = await fetch('/api/translate-resume', {
@@ -115,13 +120,13 @@ export default function ResumeTranslator() {
           )}
           <div className="flex flex-wrap gap-3">
             <Link
-              href={`/editor?id=${encodeURIComponent(result.cvId)}`}
+              href={`/en/editor?id=${encodeURIComponent(result.cvId)}`}
               className="px-4 py-2 bg-black text-white font-bold text-sm border-3 border-black"
             >
               Open translated CV
             </Link>
             <Link
-              href="/templates"
+              href="/en/templates"
               className="px-4 py-2 bg-white text-black font-bold text-sm border-3 border-black"
             >
               Choose a different template
