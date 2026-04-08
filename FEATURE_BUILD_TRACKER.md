@@ -1,6 +1,6 @@
 # Feature Build Tracker
 
-Last updated: 2026-04-05
+Last updated: 2026-04-07
 
 This tracker is for non-SEO product features so we can keep scope, status, and follow-up work in one place.
 
@@ -19,6 +19,12 @@ This tracker is for non-SEO product features so we can keep scope, status, and f
 | Nederlandse CV Kwaliteitsscore | `/tools/cv-score` | `done` | Free tool that scores a CV against Dutch hiring conventions across 6 dimensions, returns structured feedback, and pushes users into WerkCV conversion paths. | `app/tools/cv-score/*`, `app/api/tools/cv-score/route.ts`, `lib/tools/cv-score.ts`, `lib/analytics.ts`, `app/tools/page.tsx`, `app/sitemap.ts` |
 | WerkCV CV Quality Standard v1 | `/tools/cv-score/methodologie` | `done` | Public methodology page that explains how the score is calculated, what is rule-based vs AI-assisted, and what the score does and does not claim. | `app/tools/cv-score/methodologie/page.tsx`, `app/tools/cv-score/page.tsx`, `app/sitemap.ts` |
 | English resume translator handoff | `/en/guides/translate-resume-to-dutch-format` | `done` | Keeps translated-resume users inside the English experience by routing post-translation CTAs to `/en/editor` and `/en/templates`. | `components/translate/ResumeTranslator.tsx`, `app/api/translate-resume/route.ts` |
+| CV maken eenmalig betalen landing-page lift | `/cv-maken-zonder-abonnement` | `done` | Rebuilt the route as a bespoke commercial page around the exact `cv maken eenmalig betalen` intent, added a comparison table, stronger FAQ schema, and exact-anchor internal links from key pages. | `app/cv-maken-zonder-abonnement/page.tsx`, `app/cv-maken/page.tsx`, `app/gratis-cv-maken/page.tsx`, `app/templates/page.tsx`, `components/HomePageClient.tsx` |
+| Kilometervergoeding berekenen | `/tools/kilometervergoeding-berekenen` | `done` | Salary/benefits calculator for woon-werkverkeer with 2026 tax-free km rules, monthly/yearly outputs, and conversion CTA into the CV funnel. | `app/tools/kilometervergoeding-berekenen/*`, `lib/tools/moat-calculators.ts`, `app/tools/page.tsx`, `app/sitemap.ts` |
+| Ziekengeld berekenen | `/tools/ziekengeld-berekenen` | `done` | NL sickness-pay calculator for year 1 vs year 2 loondoorbetaling with 70% legal minimum framing and next-step CTA into CV + employment tools. | `app/tools/ziekengeld-berekenen/*`, `lib/tools/moat-calculators.ts`, `app/tools/page.tsx`, `app/sitemap.ts` |
+| Thuiswerkvergoeding berekenen | `/tools/thuiswerkvergoeding-berekenen` | `done` | Home-office allowance calculator for the 2026 tax-free day rate with monthly/yearly output and taxable-excess comparison. | `app/tools/thuiswerkvergoeding-berekenen/*`, `lib/tools/moat-calculators.ts`, `app/tools/page.tsx`, `app/sitemap.ts` |
+| Salaris vergelijker | `/tools/salaris-vergelijker` | `done` | Side-by-side offer comparison that converts salary, bonus, travel, home office, and vacation days into a single monthly net-equivalent decision number. | `app/tools/salaris-vergelijker/*`, `lib/tools/moat-calculators.ts`, `lib/tools/netto-bruto.ts`, `app/tools/page.tsx`, `app/sitemap.ts` |
+| Overuren berekenen | `/tools/overuren-berekenen` | `done` | Overtime calculator that values extra hours with or without contract/Cao surcharge and pushes users into salary/CV next steps. | `app/tools/overuren-berekenen/*`, `lib/tools/moat-calculators.ts`, `app/tools/page.tsx`, `app/sitemap.ts` |
 
 ## Locked decisions
 

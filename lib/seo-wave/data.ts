@@ -1977,6 +1977,28 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
         ],
     },
     'netherlands-cv-photo-rules': {
+        title: 'CV Photo Rules in the Netherlands: Should You Add a Photo?',
+        description: 'Clear guidance for expats on when a CV photo helps, when to leave it out, and how Dutch recruiters usually interpret it.',
+        metaTitle: 'CV Photo Rules in the Netherlands (2026) | WerkCV',
+        metaDesc: 'Should you add a photo to a CV in the Netherlands? Learn when it helps, when to leave it out, and how Dutch hiring norms differ from US and UK resumes.',
+        intro: 'In the Netherlands, a photo on your CV is usually optional, not mandatory. The right choice depends on the employer, the role, and whether the company follows Dutch or more international hiring norms. This guide translates those expectations into a practical decision so you can keep page one recruiter-focused instead of appearance-led.',
+        sources: [
+            {
+                label: 'NVP Recruitment Code (Sollicitatiecode)',
+                href: 'https://www.nvp-hrnetwerk.nl/nl/sollicitatiecode',
+                note: 'Official NVP guidance describing the Dutch recruitment code as the standard for fair and transparent hiring. Checked April 2026.',
+            },
+            {
+                label: 'Dutch Government: Equal treatment in hiring',
+                href: 'https://www.rijksoverheid.nl/onderwerpen/gelijke-behandeling-op-het-werk/vraag-en-antwoord/mag-een-werkgever-onderscheid-maken-tussen-sollicitanten',
+                note: 'Official government guidance on when employers may or may not make distinctions between applicants. Checked April 2026.',
+            },
+            {
+                label: 'Netherlands Institute for Human Rights: Recruitment and selection',
+                href: 'https://www.mensenrechten.nl/themas/digitalisering/werving-en-selectie',
+                note: 'Official guidance on fair hiring and how applicants can question opaque or potentially discriminatory selection processes. Checked April 2026.',
+            },
+        ],
         sectionOverrides: {
             layout: {
                 intentLinks: [

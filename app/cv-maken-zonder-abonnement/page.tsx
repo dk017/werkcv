@@ -1,117 +1,341 @@
 import type { Metadata } from "next";
-import IntentLandingPage from "@/components/seo/IntentLandingPage";
+import Link from "next/link";
+import Footer from "@/components/Footer";
+import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
+import { FAQJsonLd } from "@/components/seo/JsonLd";
+
+const pageUrl = "https://werkcv.nl/cv-maken-zonder-abonnement";
 
 const faqs = [
   {
-    question: "Kan ik bij WerkCV echt een CV maken zonder abonnement?",
+    question: "Kan ik bij WerkCV echt een CV maken met eenmalig betalen?",
     answer:
-      "Ja. Je start gratis, bouwt je CV op en betaalt alleen eenmalig wanneer je de PDF wilt downloaden. Er is geen maandelijkse verlenging nodig.",
+      "Ja. Je betaalt eenmalig €4,99 per CV bij de eerste PDF-download. Daarna kun je hetzelfde CV altijd opnieuw bewerken en downloaden zonder opnieuw te betalen. Er is geen abonnement en geen automatische verlenging.",
   },
   {
-    question: "Waarom zoeken mensen op cv maken zonder abonnement?",
+    question: "Wat zijn de voordelen van eenmalig betalen voor een CV?",
     answer:
-      "Veel mensen willen geen doorlopend bedrag betalen voor iets wat ze meestal maar kort nodig hebben. Die zoekintentie is dus sterk commercieel en draait vooral om eerlijk prijsmodel.",
+      "Je betaalt alleen voor wat je gebruikt. Een CV-builder heb je meestal tijdelijk nodig - bij een nieuwe baan zoeken, een promotie of na ontslag. Eenmalig €4,99 is eerlijker dan €10-25 per maand die blijven doorlopen.",
   },
   {
-    question: "Is een eenmalige CV-builder minder professioneel?",
+    question: "Welke CV-builders werken met eenmalig betalen in Nederland?",
     answer:
-      "Nee. De kwaliteit hangt af van templates, ATS-veiligheid en gebruiksgemak, niet van het feit of een tool met abonnement werkt. WerkCV combineert eenmalige betaling met Nederlandse sollicitatie-focus.",
+      "WerkCV.nl is de bekendste Nederlandse CV-builder met een eenmalig betaalmodel. De meeste andere grote builders zoals CVmaker, CV.nl en CVster werken met een maandabonnement.",
   },
   {
-    question: "Kan ik na betaling later nog terug naar hetzelfde CV?",
+    question: "Is een CV met eenmalig betalen net zo professioneel als een abonnementsbuilder?",
     answer:
-      "Ja. Je kunt hetzelfde betaalde CV later opnieuw openen, bewerken en opnieuw downloaden zonder opnieuw voor datzelfde document te betalen.",
+      "Ja. De kwaliteit van het eindresultaat hangt af van templates, ATS-optimalisatie en gebruiksgemak - niet van het prijsmodel. WerkCV biedt 13+ ATS-vriendelijke templates specifiek voor de Nederlandse arbeidsmarkt.",
   },
 ];
 
+const comparisonRows = [
+  ["Prijsmodel", "Eenmalig €4,99", "Abonnement ~€10/mnd", "Abonnement ~€15/mnd", "Abonnement ~€12/mnd"],
+  ["Gratis starten", "✓", "✓", "✓", "✓"],
+  ["Opzeggen nodig", "Nee", "Ja", "Ja", "Ja"],
+  ["Later opnieuw downloaden", "✓", "Niet altijd", "Niet altijd", "Niet altijd"],
+  ["ATS-vriendelijk", "✓", "✓", "Gedeeltelijk", "✓"],
+  ["Nederlandse markt focus", "✓", "✓", "✓", "Gedeeltelijk"],
+];
+
 export const metadata: Metadata = {
-  title: "CV Maken Zonder Abonnement | Eenmalig Betalen bij WerkCV",
+  title: {
+    absolute: "CV Maken Eenmalig Betalen - Geen Abonnement, Wel Resultaat | WerkCV",
+  },
   description:
-    "Maak je CV zonder abonnement. WerkCV laat je gratis starten en pas eenmalig betalen bij download. Vergelijk het eerlijke prijsmodel, templates en ATS-focus.",
+    "CV maken met eenmalig betalen van €4,99. Geen abonnement, geen verlenging. Gratis starten, ATS-vriendelijke templates, later opnieuw downloaden.",
   keywords: [
+    "cv maken eenmalig betalen",
     "cv maken zonder abonnement",
-    "cv zonder abonnement",
     "cv eenmalig betalen",
     "cv builder zonder abonnement",
-    "goedkope cv maker nederland",
+    "geen abonnement cv maker",
   ],
   alternates: {
-    canonical: "https://werkcv.nl/cv-maken-zonder-abonnement",
+    canonical: pageUrl,
     languages: {
-      "nl-NL": "https://werkcv.nl/cv-maken-zonder-abonnement",
-      "x-default": "https://werkcv.nl/cv-maken-zonder-abonnement",
+      "nl-NL": pageUrl,
+      "x-default": pageUrl,
     },
+  },
+  openGraph: {
+    title: "CV Maken Eenmalig Betalen - Geen Abonnement, Wel Resultaat | WerkCV",
+    description:
+      "CV maken met eenmalig betalen van €4,99. Geen abonnement, geen verlenging. Gratis starten, ATS-vriendelijke templates, later opnieuw downloaden.",
+    url: pageUrl,
+    siteName: "WerkCV",
+    locale: "nl_NL",
+    type: "article",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "WerkCV - CV maken met eenmalig betalen",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CV Maken Eenmalig Betalen - Geen Abonnement, Wel Resultaat | WerkCV",
+    description:
+      "CV maken met eenmalig betalen van €4,99. Geen abonnement, geen verlenging. Gratis starten, ATS-vriendelijke templates, later opnieuw downloaden.",
+    images: ["/opengraph-image"],
   },
 };
 
 export default function CvMakenZonderAbonnementPage() {
   return (
-    <IntentLandingPage
-      breadcrumbItems={[
-        { label: "Home", href: "/" },
-        { label: "CV maken zonder abonnement", href: "/cv-maken-zonder-abonnement" },
-      ]}
-      eyebrow="Commerciële zoekintentie"
-      title="CV maken zonder abonnement en zonder maandelijkse verrassing"
-      description="Deze zoekopdracht heeft duidelijke koopintentie: je wilt een CV-tool die werkt, maar zonder vast te zitten aan een abonnement voor iets dat je vaak maar tijdelijk nodig hebt. WerkCV speelt daar direct op in met een eenmalig model, Nederlandse templates en een ATS-vriendelijke editorflow."
-      badges={["Eenmalig €4,99", "Geen abonnement", "ATS-vriendelijk", "NL vacatures"]}
-      primaryCta={{ href: "/editor", label: "Start gratis zonder abonnement" }}
-      secondaryCta={{ href: "/prijzen", label: "Bekijk prijsmodel" }}
-      sidebarTitle="Waarom deze route commercieel sterk is"
-      sidebarItems={[
-        "Je wilt eerst bouwen en pas bij download betalen.",
-        "Je wilt geen maandlast voor een tijdelijk sollicitatieproces.",
-        "Je zoekt een CV-tool die ook na betaling praktisch bruikbaar blijft.",
-        "Je wilt templates en ATS-veiligheid zonder enterprise-achtig prijsmodel.",
-      ]}
-      cardsTitle="Wat WerkCV op deze zoekintentie anders maakt"
-      cards={[
-        {
-          title: "Gratis starten, pas later beslissen",
-          body: "Je kunt eerst je inhoud schrijven, template kiezen en finetunen voordat er sprake is van betaling. Dat verlaagt de drempel voor bezoekers die prijsbewust zoeken.",
-        },
-        {
-          title: "Eenmalig betalen past beter bij sollicitatiegedrag",
-          body: "Een CV-builder is voor veel mensen geen maandelijkse tool. Daarom sluit een eenmalig downloadmodel beter aan op hoe jobzoekers de tool echt gebruiken.",
-        },
-        {
-          title: "Nederlandse sollicitatie-focus in plaats van generieke builder",
-          body: "WerkCV is gericht op Nederlandse vacatures, ATS-vriendelijke output en praktische flows voor CV, profieltekst en sollicitatie.",
-        },
-        {
-          title: "Later nog terug kunnen naar hetzelfde CV",
-          body: "Voor hetzelfde betaalde document kun je blijven terugkomen, bewerken en opnieuw downloaden. Dat maakt het model eerlijker én nuttiger.",
-        },
-      ]}
-      relatedTitle="Vergelijk direct de beste vervolgpagina's"
-      relatedDescription="Gebruik deze routes als je nog specifieker wilt vergelijken op prijsmodel, builder-keuze of templates."
-      relatedLinks={[
-        {
-          href: "/prijzen",
-          label: "Prijzen",
-          body: "Bekijk precies hoe het eenmalige prijsmodel werkt en wat je daarvoor krijgt.",
-        },
-        {
-          href: "/cv-gids/beste-cv-builder-zonder-abonnement",
-          label: "Beste cv builder zonder abonnement",
-          body: "Vergelijk de bredere markt voor eenmalige CV-builders en prijsmodellen.",
-        },
-        {
-          href: "/beste-cv-maker-nederland",
-          label: "Beste CV maker Nederland",
-          body: "Gebruik deze route als je ook templates, ATS en totaalwaarde wilt vergelijken.",
-        },
-        {
-          href: "/templates",
-          label: "Templates vergelijken",
-          body: "Ga direct van prijsintentie naar het kiezen van een passende CV-layout.",
-        },
-      ]}
-      faqs={faqs}
-      footerTitle="Maak je CV zonder vast te zitten aan een abonnement"
-      footerBody="Start gratis, werk alles uit in de editor en betaal pas wanneer je de definitieve versie wilt downloaden. Geen maandelijkse verrassing, wel een serieuze sollicitatieflow."
-      footerPrimaryCta={{ href: "/editor", label: "Open editor" }}
-      footerSecondaryCta={{ href: "/templates", label: "Bekijk templates" }}
-    />
+    <div className="min-h-screen bg-[#FFFEF0]">
+      <FAQJsonLd questions={faqs} />
+
+      <header className="border-b-4 border-black bg-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="text-2xl font-black tracking-tight text-black">
+              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
+            </span>
+          </Link>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="/prijzen"
+              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+            >
+              Bekijk prijsmodel
+            </Link>
+            <Link
+              href="/editor"
+              className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
+            >
+              Start gratis
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-6xl px-6 py-10">
+        <div className="mb-8">
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "CV maken eenmalig betalen", href: "/cv-maken-zonder-abonnement" },
+            ]}
+          />
+        </div>
+
+        <section className="mb-12 grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+          <div>
+            <div className="mb-4 flex flex-wrap gap-2">
+              {["Eenmalig €4,99", "Geen abonnement", "Later opnieuw downloaden", "ATS-vriendelijk"].map((badge) => (
+                <span
+                  key={badge}
+                  className="border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-black"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+            <h1 className="max-w-4xl text-4xl font-black leading-tight text-black md:text-5xl">
+              CV maken met eenmalig betalen - geen abonnement, geen verrassing
+            </h1>
+            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
+              CV maken met eenmalig betalen van €4,99 - dat is het hele model van WerkCV. Je start gratis, bouwt je CV op in de editor en betaalt alleen als je de PDF wilt downloaden. Daarna kun je datzelfde CV altijd opnieuw openen, bewerken en opnieuw downloaden zonder extra kosten. Geen abonnement, geen automatische verlenging, geen gedoe bij opzeggen.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/editor"
+                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              >
+                Start gratis in de editor
+              </Link>
+              <Link
+                href="/templates"
+                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+              >
+                Vergelijk templates
+              </Link>
+            </div>
+
+            <div className="mt-8 overflow-x-auto border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+              <table className="min-w-full border-collapse text-sm">
+                <thead>
+                  <tr className="bg-black text-white">
+                    {["", "WerkCV", "CVmaker", "CV.nl", "CVster"].map((heading) => (
+                      <th
+                        key={heading || "feature"}
+                        className="border-b-2 border-white/20 px-4 py-3 text-left font-black"
+                      >
+                        {heading}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {comparisonRows.map((row) => (
+                    <tr key={row[0]} className="odd:bg-[#FFF9D9]">
+                      {row.map((cell, index) => (
+                        <td
+                          key={`${row[0]}-${cell}`}
+                          className={`border-t-2 border-black px-4 py-3 align-top ${
+                            index === 0 ? "font-black text-black" : "font-medium text-slate-700"
+                          }`}
+                        >
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="border-t-2 border-black bg-[#FFF4D6] px-4 py-3 text-xs font-medium text-slate-600">
+                Indicatieve vergelijking op basis van publieke prijsmodellen. Controleer actuele voorwaarden altijd zelf voordat je kiest.
+              </p>
+            </div>
+          </div>
+
+          <aside className="h-fit border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Waarom deze pagina converteert
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              De intentie is niet gratis, maar eerlijk geprijsd
+            </h2>
+            <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
+              <p>Deze zoekopdracht komt van mensen die willen betalen, maar niet vast willen zitten aan een maandbedrag voor een tijdelijke tool.</p>
+              <p>WerkCV sluit daar direct op aan: eerst bouwen, daarna pas betalen, en geen automatische verlenging die blijft doorlopen.</p>
+              <p>Zo past het prijsmodel beter bij hoe sollicitanten een CV-builder echt gebruiken: intensief voor even, niet als doorlopend abonnement.</p>
+            </div>
+            <div className="mt-6 border-t-4 border-black pt-5">
+              <Link
+                href="/cv-gids/beste-cv-builder-zonder-abonnement"
+                className="text-sm font-black text-black underline decoration-2 underline-offset-4"
+              >
+                Vergelijk ook builders zonder abonnement
+              </Link>
+            </div>
+          </aside>
+        </section>
+
+        <section className="mb-12 grid gap-5 md:grid-cols-3">
+          {[
+            {
+              title: "Betaal alleen als je CV echt klaar is",
+              body: "Schrijf, herschrijf en vergelijk templates eerst gratis. De betaling zit alleen op de PDF-download van het document dat je wilt versturen.",
+            },
+            {
+              title: "Geen opzegstress of verborgen verlenging",
+              body: "Je hoeft nergens een maandplan stop te zetten. Voor hetzelfde betaalde CV kun je later terugkomen, bewerken en opnieuw downloaden zonder extra kosten.",
+            },
+            {
+              title: "Zelfde kwaliteit, beter prijsmodel",
+              body: "Het eindresultaat hangt af van templates, ATS-veiligheid en gebruiksgemak. WerkCV koppelt die kwaliteit aan een prijsmodel dat logischer voelt voor Nederlandse sollicitanten.",
+            },
+          ].map((card) => (
+            <article
+              key={card.title}
+              className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+            >
+              <h2 className="text-xl font-black text-black">{card.title}</h2>
+              <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{card.body}</p>
+            </article>
+          ))}
+        </section>
+
+        <section className="mb-12 border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
+            Handige vervolgroutes
+          </p>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            {[
+              {
+                href: "/prijzen",
+                title: "Bekijk precies hoe het prijsmodel werkt",
+                body: "Ga naar prijzen als je wilt zien wat je krijgt voor €4,99 en wanneer je precies betaalt.",
+              },
+              {
+                href: "/templates",
+                title: "Vergelijk ATS-vriendelijke templates",
+                body: "Gebruik eerst de template-overzichtspagina als je wilt zien welke layout het best past bij jouw vacaturetype.",
+              },
+              {
+                href: "/cv-maken",
+                title: "Lees de hoofdgids over CV maken",
+                body: "Handig als je behalve het prijsmodel ook je inhoud, opbouw en ATS-aanpak wilt aanscherpen.",
+              },
+              {
+                href: "/gratis-cv-maken",
+                title: "Gratis starten en later beslissen",
+                body: "Goede vervolgstap voor bezoekers die eerst zonder drempel willen bouwen en pas later over de PDF beslissen.",
+              },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="block border-2 border-white bg-white/10 p-4 transition-colors hover:bg-white hover:text-black"
+              >
+                <p className="text-sm font-black">{item.title}</p>
+                <p className="mt-1 text-sm font-medium leading-relaxed text-slate-200 hover:text-slate-700">
+                  {item.body}
+                </p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-12">
+          <h2 className="text-center text-3xl font-black text-black">
+            Veelgestelde vragen over cv maken met eenmalig betalen
+          </h2>
+          <div className="mx-auto mt-8 max-w-4xl space-y-4">
+            {faqs.map((faq) => (
+              <details
+                key={faq.question}
+                className="group border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              >
+                <summary className="flex cursor-pointer items-center justify-between p-4 text-left text-base font-black text-black">
+                  {faq.question}
+                  <span className="ml-3 text-xl transition-transform group-open:rotate-45">+</span>
+                </summary>
+                <div className="border-t-2 border-black px-4 pb-4 pt-3 text-sm font-medium leading-relaxed text-slate-700">
+                  {faq.answer}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <section className="border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+            <div className="max-w-3xl">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
+                Klaar om zonder abonnement te starten?
+              </p>
+              <h2 className="mt-2 text-3xl font-black text-black">
+                Bouw gratis, betaal later eenmalig en hou daarna toegang tot hetzelfde CV
+              </h2>
+              <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
+                Dat maakt WerkCV logisch voor tijdelijke sollicitatie-intentie: je betaalt voor een resultaat, niet voor een maandabonnement.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/editor"
+                className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+              >
+                Open editor
+              </Link>
+              <Link
+                href="/templates"
+                className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
+              >
+                Bekijk templates
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
   );
 }

@@ -72,6 +72,16 @@ export default function TemplatesPage() {
             <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700 sm:text-base">
               WerkCV.nl helpt je eerst gratis vergelijken, daarna pas beslissen. Kies een rustige of moderne layout, wissel later nog van template of kleur en betaal eenmalig per CV wanneer je wilt downloaden.
             </p>
+            <p className="mt-2 max-w-2xl text-sm font-medium leading-relaxed text-slate-700">
+              Wil je vooral weten hoe{" "}
+              <Link
+                href="/cv-maken-zonder-abonnement"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                eenmalig betalen
+              </Link>{" "}
+              precies werkt? Gebruik dan eerst die prijsuitlegpagina.
+            </p>
             <p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-slate-600">
               Gebruik de hulplinks hieronder alleen als je naast een template ook nog zoekt naar uitleg over de workflow, gratis opties, Engels of het prijsmodel.
             </p>

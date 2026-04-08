@@ -1,8 +1,20 @@
+import {
+  estimateNetFromGross,
+  estimateNetFromTaxableIncome,
+  type TaxAgeProfile,
+} from "@/lib/tools/netto-bruto";
+
 export const WW_MAX_DAGLOON_2026 = 304.25;
 export const THIRTY_PERCENT_GENERAL_THRESHOLD_2026 = 48013;
 export const THIRTY_PERCENT_YOUNG_MASTER_THRESHOLD_2026 = 36497;
 export const THIRTY_PERCENT_MAX_ALLOWANCE_2026 = 78600;
+export const TAX_FREE_KILOMETER_RATE_2026 = 0.23;
+export const TAX_FREE_HOME_OFFICE_RATE_2026 = 2.35;
 const AVERAGE_WORKDAYS_PER_MONTH = 261 / 12;
+const WEEKS_PER_YEAR = 52;
+const MONTHS_PER_YEAR = 12;
+const STANDARD_VACATION_DAYS = 20;
+const DEFAULT_HOLIDAY_ALLOWANCE_PERCENTAGE = 8;
 
 function round2(value: number): number {
   return Math.round(value * 100) / 100;
@@ -260,6 +272,279 @@ export function calculateParttimeSalary(input: ParttimeSalaryInput): ParttimeSal
         annualGross: round2(annualGross),
       };
     }),
+  };
+}
+
+function getWeeksInSelectedPeriod(monthsPerYear: number): number {
+  return WEEKS_PER_YEAR * (monthsPerYear / MONTHS_PER_YEAR);
+}
+
+function getMonthlyOccurrences(perWeek: number): number {
+  return perWeek * (WEEKS_PER_YEAR / MONTHS_PER_YEAR);
+}
+
+export type KilometervergoedingInput = {
+  oneWayKilometers: number;
+  workDaysPerWeek: number;
+  monthsPerYear: number;
+  employerRatePerKilometer: number;
+};
+
+export type KilometervergoedingResult = {
+  returnKilometersPerDay: number;
+  workDaysPerMonth: number;
+  workDaysInPeriod: number;
+  reimbursementPerDay: number;
+  reimbursementPerMonth: number;
+  reimbursementPerYear: number;
+  taxFreePerMonth: number;
+  taxFreePerYear: number;
+  taxablePerMonth: number;
+  taxablePerYear: number;
+  annualKilometers: number;
+  withinTaxFreeLimit: boolean;
+};
+
+export function calculateKilometervergoeding(
+  input: KilometervergoedingInput,
+): KilometervergoedingResult {
+  const returnKilometersPerDay = input.oneWayKilometers * 2;
+  const workDaysPerMonth = getMonthlyOccurrences(input.workDaysPerWeek);
+  const workDaysInPeriod = input.workDaysPerWeek * getWeeksInSelectedPeriod(input.monthsPerYear);
+  const annualKilometers = returnKilometersPerDay * workDaysInPeriod;
+  const reimbursementPerDay = returnKilometersPerDay * input.employerRatePerKilometer;
+  const reimbursementPerMonth = reimbursementPerDay * workDaysPerMonth;
+  const reimbursementPerYear = reimbursementPerDay * workDaysInPeriod;
+  const taxFreeRate = Math.min(input.employerRatePerKilometer, TAX_FREE_KILOMETER_RATE_2026);
+  const taxableRate = Math.max(0, input.employerRatePerKilometer - TAX_FREE_KILOMETER_RATE_2026);
+
+  return {
+    returnKilometersPerDay: round2(returnKilometersPerDay),
+    workDaysPerMonth: round2(workDaysPerMonth),
+    workDaysInPeriod: round2(workDaysInPeriod),
+    reimbursementPerDay: round2(reimbursementPerDay),
+    reimbursementPerMonth: round2(reimbursementPerMonth),
+    reimbursementPerYear: round2(reimbursementPerYear),
+    taxFreePerMonth: round2(workDaysPerMonth * returnKilometersPerDay * taxFreeRate),
+    taxFreePerYear: round2(annualKilometers * taxFreeRate),
+    taxablePerMonth: round2(workDaysPerMonth * returnKilometersPerDay * taxableRate),
+    taxablePerYear: round2(annualKilometers * taxableRate),
+    annualKilometers: round2(annualKilometers),
+    withinTaxFreeLimit: input.employerRatePerKilometer <= TAX_FREE_KILOMETER_RATE_2026,
+  };
+}
+
+export type ZiekengeldInput = {
+  monthlyGrossSalary: number;
+  illnessYear: 1 | 2;
+  employerCoveragePercentage: number;
+};
+
+export type ZiekengeldResult = {
+  legalMinimumPercentage: number;
+  selectedCoveragePercentage: number;
+  expectedGrossPerMonth: number;
+  legalMinimumGrossPerMonth: number;
+  differenceWithCurrentSalary: number;
+  differenceVsLegalMinimum: number;
+  annualizedGross: number;
+};
+
+export function calculateZiekengeld(input: ZiekengeldInput): ZiekengeldResult {
+  const legalMinimumPercentage = 70;
+  const expectedGrossPerMonth = input.monthlyGrossSalary * (input.employerCoveragePercentage / 100);
+  const legalMinimumGrossPerMonth = input.monthlyGrossSalary * (legalMinimumPercentage / 100);
+
+  return {
+    legalMinimumPercentage,
+    selectedCoveragePercentage: round2(input.employerCoveragePercentage),
+    expectedGrossPerMonth: round2(expectedGrossPerMonth),
+    legalMinimumGrossPerMonth: round2(legalMinimumGrossPerMonth),
+    differenceWithCurrentSalary: round2(input.monthlyGrossSalary - expectedGrossPerMonth),
+    differenceVsLegalMinimum: round2(expectedGrossPerMonth - legalMinimumGrossPerMonth),
+    annualizedGross: round2(expectedGrossPerMonth * 12),
+  };
+}
+
+export type ThuiswerkvergoedingInput = {
+  homeDaysPerWeek: number;
+  monthsPerYear: number;
+  employerRatePerDay: number;
+};
+
+export type ThuiswerkvergoedingResult = {
+  homeDaysPerMonth: number;
+  homeDaysInPeriod: number;
+  maximumTaxFreePerMonth: number;
+  maximumTaxFreePerYear: number;
+  actualPerMonth: number;
+  actualPerYear: number;
+  taxablePerMonth: number;
+  taxablePerYear: number;
+  withinTaxFreeLimit: boolean;
+};
+
+export function calculateThuiswerkvergoeding(
+  input: ThuiswerkvergoedingInput,
+): ThuiswerkvergoedingResult {
+  const homeDaysPerMonth = getMonthlyOccurrences(input.homeDaysPerWeek);
+  const homeDaysInPeriod = input.homeDaysPerWeek * getWeeksInSelectedPeriod(input.monthsPerYear);
+  const taxableRate = Math.max(0, input.employerRatePerDay - TAX_FREE_HOME_OFFICE_RATE_2026);
+
+  return {
+    homeDaysPerMonth: round2(homeDaysPerMonth),
+    homeDaysInPeriod: round2(homeDaysInPeriod),
+    maximumTaxFreePerMonth: round2(homeDaysPerMonth * TAX_FREE_HOME_OFFICE_RATE_2026),
+    maximumTaxFreePerYear: round2(homeDaysInPeriod * TAX_FREE_HOME_OFFICE_RATE_2026),
+    actualPerMonth: round2(homeDaysPerMonth * input.employerRatePerDay),
+    actualPerYear: round2(homeDaysInPeriod * input.employerRatePerDay),
+    taxablePerMonth: round2(homeDaysPerMonth * taxableRate),
+    taxablePerYear: round2(homeDaysInPeriod * taxableRate),
+    withinTaxFreeLimit: input.employerRatePerDay <= TAX_FREE_HOME_OFFICE_RATE_2026,
+  };
+}
+
+export type OvertimeInput = {
+  monthlyGrossSalary: number;
+  contractHoursPerWeek: number;
+  extraHoursThisMonth: number;
+  overtimePremiumPercentage: number;
+};
+
+export type OvertimeResult = {
+  contractualHoursPerMonth: number;
+  hourlyRate: number;
+  grossOvertimeValue: number;
+  grossOvertimeWithPremium: number;
+  premiumValue: number;
+  recurringAnnualValue: number;
+};
+
+export function calculateOveruren(input: OvertimeInput): OvertimeResult {
+  const contractualHoursPerMonth = input.contractHoursPerWeek * (WEEKS_PER_YEAR / MONTHS_PER_YEAR);
+  const hourlyRate = input.monthlyGrossSalary / contractualHoursPerMonth;
+  const grossOvertimeValue = hourlyRate * input.extraHoursThisMonth;
+  const grossOvertimeWithPremium = grossOvertimeValue * (1 + (input.overtimePremiumPercentage / 100));
+
+  return {
+    contractualHoursPerMonth: round2(contractualHoursPerMonth),
+    hourlyRate: round2(hourlyRate),
+    grossOvertimeValue: round2(grossOvertimeValue),
+    grossOvertimeWithPremium: round2(grossOvertimeWithPremium),
+    premiumValue: round2(grossOvertimeWithPremium - grossOvertimeValue),
+    recurringAnnualValue: round2(grossOvertimeWithPremium * 12),
+  };
+}
+
+export type SalaryOfferInput = {
+  monthlyGrossSalary: number;
+  holidayAllowanceOnTop: boolean;
+  holidayAllowancePercentage?: number;
+  travelReimbursementMonthly: number;
+  homeOfficeDaysPerWeek: number;
+  annualBonusGross: number;
+  vacationDaysPerYear: number;
+  applyTaxCredits?: boolean;
+  ageProfile?: TaxAgeProfile;
+};
+
+export type SalaryOfferResult = {
+  regularMonthlyNet: number;
+  netAnnualSalaryIncludingHoliday: number;
+  netAnnualSalaryIncludingBonus: number;
+  holidayAllowanceNet: number;
+  annualBonusNet: number;
+  monthlyTravelReimbursement: number;
+  annualTravelReimbursement: number;
+  monthlyHomeOfficeAllowance: number;
+  annualHomeOfficeAllowance: number;
+  extraVacationDays: number;
+  dailyNetValue: number;
+  vacationDaysValueNet: number;
+  totalNetEquivalentMonthly: number;
+  totalNetEquivalentAnnual: number;
+  effectiveNetRatio: number;
+};
+
+export type SalaryComparisonResult = {
+  offerA: SalaryOfferResult;
+  offerB: SalaryOfferResult;
+  winner: "offer_a" | "offer_b" | "tie";
+  monthlyDifference: number;
+};
+
+function calculateSalaryOffer(input: SalaryOfferInput): SalaryOfferResult {
+  const holidayAllowancePercentage =
+    input.holidayAllowancePercentage ?? DEFAULT_HOLIDAY_ALLOWANCE_PERCENTAGE;
+  const applyTaxCredits = input.applyTaxCredits ?? true;
+  const ageProfile = input.ageProfile ?? "under_aow";
+  const salaryEstimate = estimateNetFromGross({
+    monthlyGross: input.monthlyGrossSalary,
+    holidayAllowancePercentage,
+    includeHolidayAllowance: input.holidayAllowanceOnTop,
+    applyTaxCredits,
+    ageProfile,
+  });
+  const packageEstimate = estimateNetFromTaxableIncome({
+    taxableAnnualIncome: salaryEstimate.taxableAnnualIncome + input.annualBonusGross,
+    applyTaxCredits,
+    ageProfile,
+  });
+  const homeOfficeAllowance = calculateThuiswerkvergoeding({
+    homeDaysPerWeek: input.homeOfficeDaysPerWeek,
+    monthsPerYear: 12,
+    employerRatePerDay: TAX_FREE_HOME_OFFICE_RATE_2026,
+  });
+  const dailyNetValue = salaryEstimate.netAnnualIncome / 261;
+  const extraVacationDays = input.vacationDaysPerYear - STANDARD_VACATION_DAYS;
+  const vacationDaysValueNet = dailyNetValue * extraVacationDays;
+  const annualTravelReimbursement = input.travelReimbursementMonthly * 12;
+  const totalNetEquivalentAnnual =
+    packageEstimate.netAnnualIncome +
+    annualTravelReimbursement +
+    homeOfficeAllowance.maximumTaxFreePerYear +
+    vacationDaysValueNet;
+
+  return {
+    regularMonthlyNet: round2(salaryEstimate.regularMonthlyNet),
+    netAnnualSalaryIncludingHoliday: round2(salaryEstimate.netAnnualIncome),
+    netAnnualSalaryIncludingBonus: round2(packageEstimate.netAnnualIncome),
+    holidayAllowanceNet: round2(salaryEstimate.holidayAllowanceNet),
+    annualBonusNet: round2(packageEstimate.netAnnualIncome - salaryEstimate.netAnnualIncome),
+    monthlyTravelReimbursement: round2(input.travelReimbursementMonthly),
+    annualTravelReimbursement: round2(annualTravelReimbursement),
+    monthlyHomeOfficeAllowance: round2(homeOfficeAllowance.maximumTaxFreePerMonth),
+    annualHomeOfficeAllowance: round2(homeOfficeAllowance.maximumTaxFreePerYear),
+    extraVacationDays,
+    dailyNetValue: round2(dailyNetValue),
+    vacationDaysValueNet: round2(vacationDaysValueNet),
+    totalNetEquivalentMonthly: round2(totalNetEquivalentAnnual / 12),
+    totalNetEquivalentAnnual: round2(totalNetEquivalentAnnual),
+    effectiveNetRatio: round2(packageEstimate.effectiveNetRatio),
+  };
+}
+
+export function compareSalaryOffers(
+  offerA: SalaryOfferInput,
+  offerB: SalaryOfferInput,
+): SalaryComparisonResult {
+  const calculatedOfferA = calculateSalaryOffer(offerA);
+  const calculatedOfferB = calculateSalaryOffer(offerB);
+  const monthlyDifference = round2(
+    Math.abs(calculatedOfferA.totalNetEquivalentMonthly - calculatedOfferB.totalNetEquivalentMonthly),
+  );
+  const winner: SalaryComparisonResult["winner"] =
+    monthlyDifference < 0.01
+      ? "tie"
+      : calculatedOfferA.totalNetEquivalentMonthly > calculatedOfferB.totalNetEquivalentMonthly
+        ? "offer_a"
+        : "offer_b";
+
+  return {
+    offerA: calculatedOfferA,
+    offerB: calculatedOfferB,
+    winner,
+    monthlyDifference,
   };
 }
 

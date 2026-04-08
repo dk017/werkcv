@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const mainLinks = [
@@ -19,12 +20,12 @@ const mainLinks = [
 
 const toolLinks = [
     { href: "/tools/netto-bruto-calculator", label: "Netto-bruto" },
+    { href: "/tools/salaris-calculator", label: "Salaris check" },
     { href: "/tools/transitievergoeding-berekenen", label: "Transitievergoeding" },
     { href: "/tools/vakantiegeld-berekenen", label: "Vakantiegeld" },
     { href: "/tools/uurloon-calculator", label: "Uurloon" },
     { href: "/tools/minimumloon-checker", label: "Minimumloon" },
     { href: "/tools/ww-recht-checker", label: "WW-recht" },
-    { href: "/tools/zoekjaar-checker", label: "Zoekjaar" },
     { href: "/tools/cv-samenvatting-generator", label: "CV samenvatting" },
 ];
 
@@ -62,11 +63,12 @@ export default function Footer() {
                             rel="noopener noreferrer"
                             className="mt-4 inline-flex items-center rounded-md border-2 border-black bg-black p-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
                         >
-                            <img
+                            <Image
                                 src="https://neeed.directory/badges/neeed-badge-light.svg"
                                 alt="Featured on neeed.directory"
-                                width="139"
-                                height="40"
+                                width={139}
+                                height={40}
+                                unoptimized
                             />
                         </a>
                     </div>

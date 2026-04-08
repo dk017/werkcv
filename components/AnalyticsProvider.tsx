@@ -42,6 +42,7 @@ export default function AnalyticsProvider() {
             const isFunnelCtaTarget =
                 toPath.startsWith('/editor') ||
                 toPath.startsWith('/templates') ||
+                toPath.startsWith('/prijzen') ||
                 toPath.startsWith('/tools/sollicitatiebrief-generator');
             if (!isFunnelCtaTarget) return;
 

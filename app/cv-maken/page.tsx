@@ -298,6 +298,16 @@ export default function CvMakenPage() {
               Een sterk CV maken betekent keuzes maken: relevante inhoud, heldere structuur en een layout die recruiters in seconden kunnen scannen. Op deze pagina krijg je een praktische workflow,
               copy-ready voorbeelden en concrete cv maken tips die je meteen kunt toepassen. Begin gratis in de editor, optimaliseer per vacature en download pas als je tevreden bent.
             </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Wil je liever{" "}
+              <Link
+                href="/cv-maken-zonder-abonnement"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                eenmalig betalen
+              </Link>{" "}
+              in plaats van een maandabonnement? Bekijk hoe WerkCV dat prijsmodel uitlegt.
+            </p>
             <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
               Deze pagina is de brede hoofdgids voor algemeen CV maken. Zoek je iets specifiekers, zoals gratis starten, Engels, student of Word? Dan verwijzen we je hieronder door naar die smallere routes.
             </p>

@@ -84,6 +84,41 @@ const newLiveTools: ToolCard[] = [
         badge: "NL wetgeving",
         badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
     },
+    {
+        href: "/tools/kilometervergoeding-berekenen",
+        title: "Kilometervergoeding berekenen",
+        description: "Bereken je woon-werkvergoeding met het belastingvrije tarief van €0,23 per kilometer in 2026.",
+        badge: "Geld",
+        badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
+    },
+    {
+        href: "/tools/ziekengeld-berekenen",
+        title: "Ziekengeld berekenen",
+        description: "Schat hoeveel bruto loon je ontvangt in jaar 1 en jaar 2 van ziekte.",
+        badge: "NL wetgeving",
+        badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
+    },
+    {
+        href: "/tools/thuiswerkvergoeding-berekenen",
+        title: "Thuiswerkvergoeding berekenen",
+        description: "Bereken het belastingvrije maximum van €2,35 per thuiswerkdag in 2026.",
+        badge: "Geld",
+        badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
+    },
+    {
+        href: "/tools/salaris-vergelijker",
+        title: "Salaris vergelijker",
+        description: "Vergelijk twee aanbiedingen op netto-equivalent, vergoedingen, bonus en vakantiedagen.",
+        badge: "Geld",
+        badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
+    },
+    {
+        href: "/tools/overuren-berekenen",
+        title: "Overuren berekenen",
+        description: "Reken uit wat extra uren waard zijn met of zonder overwerktoeslag.",
+        badge: "Geld",
+        badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
+    },
 ];
 
 const sections: ToolSection[] = [
@@ -140,7 +175,7 @@ const sections: ToolSection[] = [
             {
                 href: "/tools/salaris-calculator",
                 title: "Salaris calculator 2026",
-                description: "Bereken je marktsalaris op basis van sector, niveau en regio in Nederland.",
+                description: "Check je salaris tegen CBS-loonpercentielen per beroep en urennorm.",
                 badge: "Geld",
                 badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
             },
@@ -176,6 +211,11 @@ const sections: ToolSection[] = [
                 badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
             },
             newLiveTools[0],
+            newLiveTools[3],
+            newLiveTools[4],
+            newLiveTools[5],
+            newLiveTools[6],
+            newLiveTools[7],
             newLiveTools[2],
         ],
     },

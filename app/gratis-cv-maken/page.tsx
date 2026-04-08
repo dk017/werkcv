@@ -311,6 +311,19 @@ export default function GratisCvMakenPage() {
           ))}
         </section>
 
+        <section className="mb-14 border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-sm font-medium leading-relaxed text-slate-700">
+            Gratis starten is stap 1. Wil je daarna expliciet weten hoe{" "}
+            <Link
+              href="/cv-maken-zonder-abonnement"
+              className="font-black text-black underline decoration-2 underline-offset-4"
+            >
+              cv maken zonder abonnement
+            </Link>{" "}
+            werkt en waarom WerkCV met eenmalig betalen rekent, dan is dat de beste vervolgpagina.
+          </p>
+        </section>
+
         <section className="mb-14">
           <div className="mb-6 flex items-end justify-between gap-4">
             <div>

@@ -24,6 +24,24 @@ export interface SalaryEstimateResult {
     effectiveTaxRate: number;
 }
 
+export interface AnnualTaxEstimateInput {
+    taxableAnnualIncome: number;
+    applyTaxCredits: boolean;
+    ageProfile: TaxAgeProfile;
+}
+
+export interface AnnualTaxEstimateResult {
+    taxableAnnualIncome: number;
+    grossTax: number;
+    generalTaxCredit: number;
+    labourTaxCredit: number;
+    taxCreditsApplied: number;
+    taxDue: number;
+    netAnnualIncome: number;
+    effectiveTaxRate: number;
+    effectiveNetRatio: number;
+}
+
 const BOX_ONE_BRACKETS = {
     under_aow: [
         { limit: 38883, rate: 0.3575 },
@@ -129,12 +147,8 @@ function calculateLabourTaxCredit(income: number, ageProfile: TaxAgeProfile): nu
     return 0;
 }
 
-export function estimateNetFromGross(input: SalaryEstimateInput): SalaryEstimateResult {
-    const baseAnnualGross = roundCurrency(input.monthlyGross * 12);
-    const holidayAllowanceGross = input.includeHolidayAllowance
-        ? roundCurrency(baseAnnualGross * (input.holidayAllowancePercentage / 100))
-        : 0;
-    const taxableAnnualIncome = roundCurrency(baseAnnualGross + holidayAllowanceGross);
+export function estimateNetFromTaxableIncome(input: AnnualTaxEstimateInput): AnnualTaxEstimateResult {
+    const taxableAnnualIncome = roundCurrency(Math.max(0, input.taxableAnnualIncome));
     const grossTax = calculateBoxOneTax(taxableAnnualIncome, input.ageProfile);
 
     const generalTaxCredit = input.applyTaxCredits
@@ -147,17 +161,14 @@ export function estimateNetFromGross(input: SalaryEstimateInput): SalaryEstimate
     const taxCreditsApplied = roundCurrency(generalTaxCredit + labourTaxCredit);
     const taxDue = roundCurrency(clampZero(grossTax - taxCreditsApplied));
     const netAnnualIncome = roundCurrency(clampZero(taxableAnnualIncome - taxDue));
-    const effectiveNetRatio = taxableAnnualIncome > 0 ? netAnnualIncome / taxableAnnualIncome : 0;
-    const regularMonthlyNet = roundCurrency(input.monthlyGross * effectiveNetRatio);
-    const holidayAllowanceNet = roundCurrency(holidayAllowanceGross * effectiveNetRatio);
+    const effectiveNetRatio = taxableAnnualIncome > 0
+        ? netAnnualIncome / taxableAnnualIncome
+        : 0;
     const effectiveTaxRate = taxableAnnualIncome > 0
         ? roundCurrency((taxDue / taxableAnnualIncome) * 100)
         : 0;
 
     return {
-        monthlyGross: roundCurrency(input.monthlyGross),
-        baseAnnualGross,
-        holidayAllowanceGross,
         taxableAnnualIncome,
         grossTax,
         generalTaxCredit,
@@ -165,9 +176,38 @@ export function estimateNetFromGross(input: SalaryEstimateInput): SalaryEstimate
         taxCreditsApplied,
         taxDue,
         netAnnualIncome,
+        effectiveTaxRate,
+        effectiveNetRatio,
+    };
+}
+
+export function estimateNetFromGross(input: SalaryEstimateInput): SalaryEstimateResult {
+    const baseAnnualGross = roundCurrency(input.monthlyGross * 12);
+    const holidayAllowanceGross = input.includeHolidayAllowance
+        ? roundCurrency(baseAnnualGross * (input.holidayAllowancePercentage / 100))
+        : 0;
+    const annualTaxEstimate = estimateNetFromTaxableIncome({
+        taxableAnnualIncome: baseAnnualGross + holidayAllowanceGross,
+        applyTaxCredits: input.applyTaxCredits,
+        ageProfile: input.ageProfile,
+    });
+    const regularMonthlyNet = roundCurrency(input.monthlyGross * annualTaxEstimate.effectiveNetRatio);
+    const holidayAllowanceNet = roundCurrency(holidayAllowanceGross * annualTaxEstimate.effectiveNetRatio);
+
+    return {
+        monthlyGross: roundCurrency(input.monthlyGross),
+        baseAnnualGross,
+        holidayAllowanceGross,
+        taxableAnnualIncome: annualTaxEstimate.taxableAnnualIncome,
+        grossTax: annualTaxEstimate.grossTax,
+        generalTaxCredit: annualTaxEstimate.generalTaxCredit,
+        labourTaxCredit: annualTaxEstimate.labourTaxCredit,
+        taxCreditsApplied: annualTaxEstimate.taxCreditsApplied,
+        taxDue: annualTaxEstimate.taxDue,
+        netAnnualIncome: annualTaxEstimate.netAnnualIncome,
         regularMonthlyNet,
         holidayAllowanceNet,
-        effectiveTaxRate,
+        effectiveTaxRate: annualTaxEstimate.effectiveTaxRate,
     };
 }
 

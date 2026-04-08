@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
-import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import VakantiegeldTool from "./VakantiegeldTool";
@@ -31,6 +31,29 @@ const faqItems = [
     {
         question: "Is vakantiegeld hetzelfde als een 13e maand?",
         answer: "Nee. Vakantiegeld is meestal minimaal 8% van loon dat je opbouwt. Een 13e maand is een aparte arbeidsvoorwaarde die niet automatisch voor iedereen geldt.",
+    },
+];
+
+const howToSteps = [
+    {
+        name: "Vul je bruto salaris in",
+        text: "Start met je bruto maandloon of een andere loonbasis die past bij je situatie. Gebruik bij twijfel het vaste loon dat normaal meetelt voor vakantiegeld.",
+    },
+    {
+        name: "Kies de opbouwperiode",
+        text: "Selecteer over hoeveel maanden je vakantiegeld is opgebouwd. Voor de meeste werknemers gaat het om de periode sinds de vorige uitbetaling in mei of juni.",
+    },
+    {
+        name: "Controleer het vakantiegeldpercentage",
+        text: "Gebruik meestal 8 procent als basisregel. Alleen als je cao of contract afwijkt, pas je dit percentage aan.",
+    },
+    {
+        name: "Neem structurele extra looncomponenten mee",
+        text: "Voeg structurele toeslagen of provisie alleen toe als die normaal als loon meetellen voor vakantiegeld. Eenmalige bonussen en onkostenvergoedingen laat je buiten beschouwing.",
+    },
+    {
+        name: "Vergelijk bruto uitkomst met je loonstrook",
+        text: "Gebruik de bruto uitkomst als controle voor je loonstrook of budget. Houd er rekening mee dat de netto uitbetaling lager kan zijn door loonheffing en regels voor bijzondere beloningen.",
     },
 ];
 
@@ -78,6 +101,11 @@ export default function VakantiegeldBerekenenPage() {
     return (
         <div className="min-h-screen bg-[#FFFEF9]">
             <FAQJsonLd questions={faqItems} />
+            <HowToJsonLd
+                name="Vakantiegeld berekenen"
+                description="Bereken stap voor stap je bruto vakantiegeld en controleer welke looncomponenten meestal meetellen."
+                steps={howToSteps}
+            />
 
             <header className="border-b-4 border-black bg-white">
                 <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">

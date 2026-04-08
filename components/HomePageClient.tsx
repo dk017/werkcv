@@ -460,7 +460,13 @@ export default function HomePageClient() {
                             </h1>
                             <p className="text-lg md:text-xl font-medium text-gray-700 mb-8 max-w-xl mx-auto lg:mx-0">
                                 WerkCV.nl helpt je snel een professioneel CV op te bouwen met {templateCount}+ templates die rustig, recruiter-proof en ATS-vriendelijk blijven.{" "}
-                                <span className="bg-blue-200 px-1">Start gratis, betaal eenmalig €4,99 per CV en download later opnieuw zonder abonnement.</span>
+                                <span className="bg-blue-200 px-1">
+                                    Start gratis, betaal{" "}
+                                    <Link href="/cv-maken-zonder-abonnement" className="underline decoration-2 underline-offset-2">
+                                        eenmalig
+                                    </Link>{" "}
+                                    €4,99 per CV en download later opnieuw zonder abonnement.
+                                </span>
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                                 <Link
@@ -861,10 +867,10 @@ export default function HomePageClient() {
                     </div>
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                         {[
+                            { href: "/tools/salaris-calculator", title: "Salaris check", desc: "Vergelijk je salaris met CBS-marktdata per beroep.", badge: "Geld" },
                             { href: "/tools/netto-bruto-calculator", title: "Netto-Bruto", desc: "Bereken bruto naar netto en netto naar bruto voor 2026.", badge: "Geld" },
                             { href: "/tools/vakantiegeld-berekenen", title: "Vakantiegeld", desc: "Bereken je bruto vakantiegeld op basis van 8% en je loon.", badge: "Geld" },
                             { href: "/tools/ww-recht-checker", title: "WW-recht", desc: "Controleer snel de basisvoorwaarden voor WW.", badge: "NL wetgeving" },
-                            { href: "/tools/parttime-salaris-calculator", title: "Parttime salaris", desc: "Vergelijk direct wat 24, 32 of 36 uur bruto betekent.", badge: "Geld" },
                         ].map((tool) => (
                             <Link
                                 key={tool.href}

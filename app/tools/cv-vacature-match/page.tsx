@@ -5,7 +5,7 @@ import CvVacatureMatchTool from './CvVacatureMatchTool';
 
 export const metadata: Metadata = {
     title: 'CV vs Vacature Match Checker — Gratis ATS Match Score | WerkCV',
-    description: 'Plak je CV en een vacature en zie direct hoe goed ze bij elkaar passen. Ontdek ontbrekende keywords en verbeterpunten om meer interviews te scoren.',
+    description: 'Upload je CV of plak je tekst, vergelijk die met een vacature en zie direct hoe goed ze bij elkaar passen. Ontdek ontbrekende keywords en verbeterpunten.',
     keywords: ['cv vacature match', 'cv checker vacature', 'ats match score', 'cv vergelijken vacature'],
 };
 
@@ -37,7 +37,13 @@ export default function CvVacatureMatchPage() {
                         CV vs Vacature Match Checker
                     </h1>
                     <p className="text-lg text-slate-600 font-medium">
-                        Plak je CV en de vacaturetekst. Ontvang direct een matchscore, ontbrekende keywords en concrete verbeterpunten.
+                        Upload je CV of plak de tekst, vergelijk die met de vacature en ontvang direct een matchscore, ontbrekende keywords en concrete verbeterpunten.
+                    </p>
+                    <p className="mt-3 text-sm font-bold text-slate-700">
+                        Wil je eerst weten wat het kost?{' '}
+                        <Link href="/prijzen" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            Bekijk prijzen
+                        </Link>
                     </p>
                 </div>
 
@@ -61,10 +67,10 @@ export default function CvVacatureMatchPage() {
                 <div className="mt-10 bg-slate-50 border-2 border-slate-200 p-6">
                     <h2 className="font-black text-slate-900 mb-3">Hoe werkt de match checker?</h2>
                     <ol className="space-y-2 text-sm text-slate-600">
-                        <li className="flex gap-2"><span className="font-black text-teal-600">1.</span> Kopieer de volledige tekst van je CV en plak die in het linker veld.</li>
-                        <li className="flex gap-2"><span className="font-black text-teal-600">2.</span> Kopieer de vacaturetekst (inclusief vereisten) en plak die rechts.</li>
-                        <li className="flex gap-2"><span className="font-black text-teal-600">3.</span> De AI analyseert beide teksten en geeft een matchscore van 0–100%.</li>
-                        <li className="flex gap-2"><span className="font-black text-teal-600">4.</span> Voeg de ontbrekende keywords toe aan je CV en verhoog je kans op een interview.</li>
+                        <li className="flex gap-2"><span className="font-black text-teal-600">1.</span> Upload je CV als PDF of Word, of plak de tekst direct in het linker veld.</li>
+                        <li className="flex gap-2"><span className="font-black text-teal-600">2.</span> Kopieer de vacaturetekst inclusief eisen en verantwoordelijkheden naar het rechter veld.</li>
+                        <li className="flex gap-2"><span className="font-black text-teal-600">3.</span> De AI analyseert beide teksten en geeft een matchscore van 0–100% plus ontbrekende keywords.</li>
+                        <li className="flex gap-2"><span className="font-black text-teal-600">4.</span> Werk je CV direct bij in de editor, bekijk templates of check eerst de prijs voor je download.</li>
                     </ol>
                 </div>
             </div>

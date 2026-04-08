@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 interface MatchResult {
     matchScore: number;
@@ -21,12 +21,38 @@ const kleurMap = {
     groen: { ring: 'stroke-teal-500', text: 'text-teal-600', bg: 'bg-teal-50 border-teal-300' },
 };
 
+const ALLOWED_FILE_TYPES = [
+    'application/pdf',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/msword',
+];
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
 export default function CvVacatureMatchTool() {
+    const [cvInputMode, setCvInputMode] = useState<'upload' | 'text'>('upload');
+    const [cvFile, setCvFile] = useState<File | null>(null);
     const [cvText, setCvText] = useState('');
     const [vacatureText, setVacatureText] = useState('');
+    const [isDragging, setIsDragging] = useState(false);
     const [result, setResult] = useState<MatchResult | null>(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    function handleCvFile(file: File) {
+        if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+            setError('Upload een PDF of Word document.');
+            return;
+        }
+
+        if (file.size > MAX_FILE_SIZE) {
+            setError('Bestand is te groot. Maximale grootte is 10MB.');
+            return;
+        }
+
+        setError(null);
+        setCvFile(file);
+    }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -35,11 +61,29 @@ export default function CvVacatureMatchTool() {
         setLoading(true);
 
         try {
-            const res = await fetch('/api/tools/cv-vacature-match', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ cvText, vacatureText }),
-            });
+            let res: Response;
+
+            if (cvInputMode === 'upload') {
+                if (!cvFile) {
+                    throw new Error('Upload eerst je CV als PDF of Word-bestand.');
+                }
+
+                const formData = new FormData();
+                formData.append('cvFile', cvFile);
+                formData.append('vacatureText', vacatureText);
+
+                res = await fetch('/api/tools/cv-vacature-match', {
+                    method: 'POST',
+                    body: formData,
+                });
+            } else {
+                res = await fetch('/api/tools/cv-vacature-match', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cvText, vacatureText }),
+                });
+            }
+
             const data = await res.json();
             if (!res.ok) throw new Error(data.error || 'Analyse mislukt.');
             setResult(data);
@@ -52,25 +96,96 @@ export default function CvVacatureMatchTool() {
 
     const kleur = result ? kleurMap[result.labelKleur] : null;
     const circumference = 2 * Math.PI * 36;
+    const hasValidCvInput = cvInputMode === 'upload' ? Boolean(cvFile) : cvText.length >= 50;
 
     return (
         <div className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-black text-slate-900 mb-1">
-                            Jouw CV tekst <span className="text-red-500">*</span>
+                        <label className="block text-sm font-black text-slate-900 mb-2">
+                            Jouw CV <span className="text-red-500">*</span>
                         </label>
-                        <textarea
-                            value={cvText}
-                            onChange={e => setCvText(e.target.value)}
-                            placeholder="Plak hier de tekst van je CV…"
-                            rows={12}
-                            required
-                            minLength={50}
-                            className="w-full border-2 border-black p-3 text-sm font-mono resize-y focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100"
-                        />
-                        <p className="text-xs text-slate-400 mt-1">{cvText.length} tekens</p>
+                        <div className="flex border-2 border-black overflow-hidden mb-3">
+                            <button
+                                type="button"
+                                onClick={() => { setCvInputMode('upload'); setError(null); }}
+                                className={`flex-1 py-2 text-xs font-black uppercase tracking-wide transition-colors ${
+                                    cvInputMode === 'upload' ? 'bg-black text-white' : 'bg-white text-slate-600 hover:bg-slate-50'
+                                }`}
+                            >
+                                Upload CV
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => { setCvInputMode('text'); setError(null); }}
+                                className={`flex-1 py-2 text-xs font-black uppercase tracking-wide transition-colors ${
+                                    cvInputMode === 'text' ? 'bg-black text-white' : 'bg-white text-slate-600 hover:bg-slate-50'
+                                }`}
+                            >
+                                Plak tekst
+                            </button>
+                        </div>
+
+                        {cvInputMode === 'upload' ? (
+                            <div
+                                onDragOver={e => { e.preventDefault(); setIsDragging(true); }}
+                                onDragLeave={() => setIsDragging(false)}
+                                onDrop={e => {
+                                    e.preventDefault();
+                                    setIsDragging(false);
+                                    const file = e.dataTransfer.files?.[0];
+                                    if (file) handleCvFile(file);
+                                }}
+                                onClick={() => fileInputRef.current?.click()}
+                                className={`border-2 border-dashed p-6 text-center cursor-pointer transition-colors ${
+                                    isDragging
+                                        ? 'border-teal-500 bg-teal-50'
+                                        : cvFile
+                                        ? 'border-emerald-500 bg-emerald-50'
+                                        : 'border-black bg-slate-50 hover:bg-slate-100'
+                                }`}
+                            >
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept=".pdf,.doc,.docx"
+                                    className="hidden"
+                                    onChange={e => {
+                                        const file = e.target.files?.[0];
+                                        if (file) handleCvFile(file);
+                                    }}
+                                />
+                                {cvFile ? (
+                                    <>
+                                        <div className="text-2xl mb-2">📄</div>
+                                        <p className="text-sm font-black text-emerald-800">{cvFile.name}</p>
+                                        <p className="text-xs text-emerald-700 mt-1">
+                                            {(cvFile.size / 1024).toFixed(0)} KB • klik om te vervangen
+                                        </p>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="text-3xl mb-2">☁</div>
+                                        <p className="text-sm font-black text-slate-900">Sleep je CV hier of klik om te uploaden</p>
+                                        <p className="text-xs text-slate-500 mt-1">PDF of Word • max 10MB</p>
+                                    </>
+                                )}
+                            </div>
+                        ) : (
+                            <>
+                                <textarea
+                                    value={cvText}
+                                    onChange={e => setCvText(e.target.value)}
+                                    placeholder="Plak hier de tekst van je CV…"
+                                    rows={12}
+                                    required={cvInputMode === 'text'}
+                                    minLength={50}
+                                    className="w-full border-2 border-black p-3 text-sm font-mono resize-y focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100"
+                                />
+                                <p className="text-xs text-slate-400 mt-1">{cvText.length} tekens</p>
+                            </>
+                        )}
                     </div>
                     <div>
                         <label className="block text-sm font-black text-slate-900 mb-1">
@@ -97,7 +212,7 @@ export default function CvVacatureMatchTool() {
 
                 <button
                     type="submit"
-                    disabled={loading || cvText.length < 50 || vacatureText.length < 50}
+                    disabled={loading || !hasValidCvInput || vacatureText.length < 50}
                     className="w-full bg-[#4ECDC4] text-slate-900 font-black py-3 border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {loading ? 'Analyseren…' : 'Analyseer match →'}
@@ -200,10 +315,13 @@ export default function CvVacatureMatchTool() {
                                 Bekijk ATS-vriendelijke templates
                             </Link>
                         </div>
+                        <p className="mt-3 text-xs text-slate-600">
+                            Eenmalig <Link href="/prijzen" className="font-black underline decoration-2 underline-offset-2 text-slate-900">€4,99 bij download</Link>, geen abonnement.
+                        </p>
                     </div>
 
                     <button
-                        onClick={() => { setResult(null); setCvText(''); setVacatureText(''); }}
+                        onClick={() => { setResult(null); setCvText(''); setCvFile(null); setVacatureText(''); setError(null); }}
                         className="text-sm font-bold text-slate-500 hover:text-slate-700 underline"
                     >
                         Nieuwe analyse →

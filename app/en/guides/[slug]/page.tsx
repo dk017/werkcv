@@ -127,6 +127,12 @@ export default async function EnglishWavePage({ params }: PageProps) {
                 <div className="max-w-4xl mx-auto px-6 py-12">
                     <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">{page.title}</h1>
                     <p className="text-lg text-gray-700">{page.intro}</p>
+                    {page.sources && page.sources.length > 0 && (
+                        <div className="mt-4 inline-flex items-center gap-2 bg-white border-3 border-black px-3 py-2 text-sm font-bold text-gray-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                            <span className="h-2.5 w-2.5 rounded-full bg-[#4ECDC4] border border-black" />
+                            Based on Dutch hiring guidance and official sources
+                        </div>
+                    )}
                     <div className="mt-8 flex flex-wrap gap-3">
                         <Link
                             href={primaryGuideHref}
@@ -241,6 +247,28 @@ export default async function EnglishWavePage({ params }: PageProps) {
                         ))}
                     </div>
                 </section>
+
+                {page.sources && page.sources.length > 0 && (
+                    <section className="mt-12">
+                        <h2 className="text-2xl font-black mb-4 text-gray-900">Sources</h2>
+                        <div className="space-y-4">
+                            {page.sources.map((source) => (
+                                <a
+                                    key={source.href}
+                                    href={source.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block bg-white border-3 border-black p-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-transform"
+                                >
+                                    <h3 className="font-black text-sm text-gray-900 mb-1">{source.label}</h3>
+                                    {source.note && (
+                                        <p className="text-sm text-gray-700">{source.note}</p>
+                                    )}
+                                </a>
+                            ))}
+                        </div>
+                    </section>
+                )}
 
                 <CtaExperiment
                     locale="en"
