@@ -21,6 +21,7 @@ const mainLinks = [
 const toolLinks = [
     { href: "/tools/netto-bruto-calculator", label: "Netto-bruto" },
     { href: "/tools/salaris-calculator", label: "Salaris check" },
+    { href: "/salaris", label: "Salaris per beroep" },
     { href: "/tools/transitievergoeding-berekenen", label: "Transitievergoeding" },
     { href: "/tools/vakantiegeld-berekenen", label: "Vakantiegeld" },
     { href: "/tools/uurloon-calculator", label: "Uurloon" },

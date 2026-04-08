@@ -5,6 +5,7 @@ import { getAllCategories, getAllExamples } from '@/lib/cv-voorbeelden/registry'
 import { getAllArticles } from '@/lib/cv-tips/registry';
 import { getDutchWavePages, getEnglishWavePages, getPilotRoleGuidePages } from '@/lib/seo-wave/data';
 import { extraDutchEditorialPages } from '@/lib/seo-wave/extra-dutch-pages';
+import { salaryRolePages } from '@/lib/tools/salary-role-pages';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
@@ -152,6 +153,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.55,
+        },
+        {
+            url: `${baseUrl}/salaris`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.8,
         },
         {
             url: `${baseUrl}/curriculum-vitae-maken`,
@@ -792,6 +799,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.72,
     })));
 
+    const salaryRolePagesSitemap: MetadataRoute.Sitemap = await Promise.all(salaryRolePages.map(async (page) => ({
+        url: `${baseUrl}/salaris/${page.slug}`,
+        lastModified: await getLatestExistingLastModified([
+            'app/salaris/[slug]/page.tsx',
+            'lib/tools/salary-role-pages.ts',
+            'lib/tools/salary-benchmark.ts',
+        ]),
+        changeFrequency: 'monthly' as const,
+        priority: 0.71,
+    })));
+
     // =========================================================================
     // NEW: /cv-voorbeelden/ pages (TS-based)
     // =========================================================================
@@ -849,6 +867,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return [
         ...staticPagesWithLastModified,
         ...toolPages,
+        ...salaryRolePagesSitemap,
         ...newCategoryPages,
         ...newExamplePages,
         ...articlePages,

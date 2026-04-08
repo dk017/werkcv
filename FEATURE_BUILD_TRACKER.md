@@ -25,6 +25,7 @@ This tracker is for non-SEO product features so we can keep scope, status, and f
 | Thuiswerkvergoeding berekenen | `/tools/thuiswerkvergoeding-berekenen` | `done` | Home-office allowance calculator for the 2026 tax-free day rate with monthly/yearly output and taxable-excess comparison. | `app/tools/thuiswerkvergoeding-berekenen/*`, `lib/tools/moat-calculators.ts`, `app/tools/page.tsx`, `app/sitemap.ts` |
 | Salaris vergelijker | `/tools/salaris-vergelijker` | `done` | Side-by-side offer comparison that converts salary, bonus, travel, home office, and vacation days into a single monthly net-equivalent decision number. | `app/tools/salaris-vergelijker/*`, `lib/tools/moat-calculators.ts`, `lib/tools/netto-bruto.ts`, `app/tools/page.tsx`, `app/sitemap.ts` |
 | Overuren berekenen | `/tools/overuren-berekenen` | `done` | Overtime calculator that values extra hours with or without contract/Cao surcharge and pushes users into salary/CV next steps. | `app/tools/overuren-berekenen/*`, `lib/tools/moat-calculators.ts`, `app/tools/page.tsx`, `app/sitemap.ts` |
+| Salaris kompas refresh | `/tools/salaris-calculator` | `done` | Reworked the salary checker into a guided 3-step salary-kompas flow using CBS occupational data plus explicit experience, education, and region heuristics with a stronger visual result state. | `app/tools/salaris-calculator/*`, `lib/tools/salary-benchmark.ts` |
 
 ## Locked decisions
 

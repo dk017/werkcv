@@ -461,11 +461,11 @@ export default function HomePageClient() {
                             <p className="text-lg md:text-xl font-medium text-gray-700 mb-8 max-w-xl mx-auto lg:mx-0">
                                 WerkCV.nl helpt je snel een professioneel CV op te bouwen met {templateCount}+ templates die rustig, recruiter-proof en ATS-vriendelijk blijven.{" "}
                                 <span className="bg-blue-200 px-1">
-                                    Start gratis, betaal{" "}
+                                    Start gratis, kies voor{" "}
                                     <Link href="/cv-maken-zonder-abonnement" className="underline decoration-2 underline-offset-2">
-                                        eenmalig
+                                        eenmalig betalen
                                     </Link>{" "}
-                                    €4,99 per CV en download later opnieuw zonder abonnement.
+                                    van €4,99 per CV en download later opnieuw zonder abonnement.
                                 </span>
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">

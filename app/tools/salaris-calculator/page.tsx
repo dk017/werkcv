@@ -10,19 +10,19 @@ import SalarisCalculatorTool from "./SalarisCalculatorTool";
 const faqItems = [
   {
     question: "Wat vul ik in bij mijn salaris in deze tool?",
-    answer: "Gebruik je bruto maandsalaris exclusief vakantiegeld, bonus, 13e maand en pensioeninhouding. Zo vergelijk je zo eerlijk mogelijk met het CBS-uurloon per beroep.",
+    answer: "Gebruik je bruto maandsalaris exclusief vakantiegeld, bonus, 13e maand en pensioeninhouding. Zo kan WerkCV je loon eerlijk vergelijken met de CBS-benchmark en daarna corrigeren voor ervaring, regio en opleiding.",
   },
   {
     question: "Waarom gebruikt WerkCV CBS 2024 data op een pagina in 2026?",
-    answer: "CBS publiceert deze beroepsspecifieke loonpercentielen met vertraging. Op 7 april 2026 is 2024 het nieuwste beschikbare CBS-jaar in deze dataset, en dat is duidelijker dan doen alsof er al officiële 2026 beroepsdata is.",
+    answer: "CBS publiceert deze beroepsspecifieke loonpercentielen met vertraging. Op 8 april 2026 is 2024 het nieuwste beschikbare CBS-jaar in deze dataset. WerkCV gebruikt die feitelijke basis en past daarna een transparante profielcorrectie toe in plaats van te doen alsof er al officiële 2026 beroepsdata is.",
   },
   {
     question: "Waarom kan mijn echte salaris toch afwijken?",
-    answer: "Je werkelijke loon hangt ook af van CAO-inschaling, bedrijfsgrootte, regio, ploegendienst, bonus, toeslagen, pensioen en de exacte functiezwaarte binnen dezelfde beroepsgroep.",
+    answer: "Je werkelijke loon hangt ook af van CAO-inschaling, bedrijfsgrootte, regio, ploegendienst, bonus, toeslagen, pensioen en de exacte functiezwaarte binnen dezelfde beroepsgroep. Daarom is dit een salaris kompas en geen loonstrookvoorspelling.",
   },
   {
     question: "Is dit een netto calculator?",
-    answer: "Nee. Dit is een bruto salarischeck tegen CBS-benchmarks per beroep. Voor bruto naar netto of netto naar bruto gebruik je daarna de netto-bruto calculator.",
+    answer: "Nee. Dit is een bruto salaris kompas tegen CBS-benchmarks per beroep, met profielcorrecties voor ervaring, opleiding en regio. Voor bruto naar netto of netto naar bruto gebruik je daarna de netto-bruto calculator.",
   },
 ];
 
@@ -50,10 +50,11 @@ const cvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Salaris Check 2026 - Check Je Salaris Met CBS Data | WerkCV",
-  description: "Vergelijk je bruto maandsalaris met CBS 2024 loonpercentielen per beroep. Check of je onder, rond of boven de mediaan zit en koppel je salarischeck aan netto, onderhandeling en je CV.",
+  title: "Salaris Kompas 2026 - Check Je Salaris Met CBS Data | WerkCV",
+  description: "Gebruik een guided salaris kompas op basis van CBS 2024 loonpercentielen per beroep. WerkCV corrigeert voor ervaring, regio en opleiding en laat zien of je marktconform zit.",
   keywords: [
     "salaris check",
+    "salaris kompas",
     "salaris calculator nederland",
     "check je salaris",
     "marktconform salaris",
@@ -97,14 +98,14 @@ export default function SalarisCalculatorPage() {
                 Geld
               </span>
               <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                Bijgewerkt 7 april 2026
+                Bijgewerkt 8 april 2026
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-              Salaris check 2026
+              Salaris kompas 2026
             </h1>
             <p className="text-lg text-slate-600 font-medium max-w-3xl">
-              Vergelijk je bruto salaris met de nieuwste beschikbare CBS-benchmark per beroep. WerkCV rekent de officiële 2024 uurloonpercentielen om naar jouw urennorm, zodat je sneller ziet of je onder, rond of boven de markt zit.
+              Vergelijk je bruto salaris met de nieuwste beschikbare CBS-benchmark per beroep, maar dan in een guided kompasflow. WerkCV start met de officiële 2024 uurloonpercentielen en corrigeert daarna transparant voor ervaring, opleiding en regio.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
@@ -141,12 +142,13 @@ export default function SalarisCalculatorPage() {
               Waarom deze tool beter is
             </p>
             <div className="space-y-3 text-sm text-slate-600">
-              <p>De oude versie gaf een generieke sectorrange. Deze versie vergelijkt op CBS-uurloon per concreet beroep.</p>
-              <p>Daardoor kun je je huidige loon realistischer toetsen voordat je gaat onderhandelen of reageren op een aanbod.</p>
-              <p>En omdat de uitkomst direct linkt naar netto, onderhandeling en CV-pagina&apos;s past dit perfect in de WerkCV-funnel.</p>
-            </div>
-          </aside>
-        </section>
+                            <p>De oude versie gaf een generieke sectorrange. Deze versie vergelijkt op CBS-uurloon per concreet beroep.</p>
+                            <p>Daardoor kun je je huidige loon realistischer toetsen voordat je gaat onderhandelen of reageren op een aanbod.</p>
+                            <p>Met ervaring, opleiding en regio als expliciete profielstappen voelt dit meer als een salaris kompas dan als een kale lookup.</p>
+                            <p>En omdat de uitkomst direct linkt naar netto, onderhandeling en CV-pagina&apos;s past dit perfect in de WerkCV-funnel.</p>
+                        </div>
+                    </aside>
+                </section>
 
         <section className="mb-12">
           <SalarisCalculatorTool />
@@ -158,12 +160,12 @@ export default function SalarisCalculatorPage() {
               Wat deze salarischeck bewust wel meeneemt
             </h2>
             <ul className="space-y-2 text-sm text-slate-700">
-              <li>Officiële CBS-loonpercentielen per beroep in plaats van een losse sectorinschatting.</li>
-              <li>Vergelijking op uurloon, daarna omgerekend naar jouw wekelijkse urennorm.</li>
-              <li>Een duidelijke mediaan plus onder- en bovenkant van de marktband.</li>
-              <li>Een directe vertaalslag naar de volgende stap: netto, onderhandeling of sollicitatie.</li>
-            </ul>
-          </div>
+                            <li>Officiële CBS-loonpercentielen per beroep in plaats van een losse sectorinschatting.</li>
+                            <li>Vergelijking op uurloon, daarna omgerekend naar jouw wekelijkse urennorm.</li>
+                            <li>Een duidelijke profielband met aanpassing voor ervaring, opleiding en regio.</li>
+                            <li>Een directe vertaalslag naar de volgende stap: netto, onderhandeling of sollicitatie.</li>
+                        </ul>
+                    </div>
           <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h2 className="text-2xl font-black text-slate-900 mb-4">
               Wat je nog steeds zelf moet controleren
@@ -172,10 +174,11 @@ export default function SalarisCalculatorPage() {
               <li>Je CAO-schaal, trede en eventuele periodieken.</li>
               <li>Bonus, ploegentoeslag, 13e maand, ORT of andere extra looncomponenten.</li>
               <li>Regionale verschillen, bedrijfsgrootte en specialistische nichekennis.</li>
-              <li>De exacte functie-inhoud: niet elke titel binnen één CBS-groep is even zwaar.</li>
-            </ul>
-          </div>
-        </section>
+                            <li>De exacte functie-inhoud: niet elke titel binnen één CBS-groep is even zwaar.</li>
+                            <li>De grens tussen een heuristische profielcorrectie en een echte cao-inschaling.</li>
+                        </ul>
+                    </div>
+                </section>
 
         <RelatedToolsSection
           title="Verdiep je salarischeck"
@@ -277,7 +280,8 @@ export default function SalarisCalculatorPage() {
             </li>
           </ul>
           <p className="mt-4 text-xs text-slate-500 leading-relaxed">
-            Deze pagina is bijgewerkt op <span className="font-black text-slate-900">7 april 2026</span>. De beroepsspecifieke benchmark gebruikt de nieuwste beschikbare CBS-jaargang in deze dataset: <span className="font-black text-slate-900">2024 voorlopige cijfers</span>.
+            Deze pagina is bijgewerkt op <span className="font-black text-slate-900">8 april 2026</span>. De beroepsspecifieke benchmark gebruikt de nieuwste beschikbare CBS-jaargang in deze dataset: <span className="font-black text-slate-900">2024 voorlopige cijfers</span>.
+            De profielstappen voor ervaring, regio en opleiding zijn WerkCV-heuristieken bovenop die CBS-basis.
           </p>
         </section>
       </main>

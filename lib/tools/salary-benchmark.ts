@@ -30,6 +30,17 @@ export type SalaryComparisonStatus =
   | "above_median"
   | "above_p75";
 
+export type SalaryExperienceLevel = "starter" | "medior" | "senior" | "lead";
+export type SalaryEducationLevel = "mbo" | "hbo" | "wo";
+export type SalaryRegionBand = "gemiddeld" | "randstad" | "brabant" | "noord_oost" | "remote";
+
+type SalaryModifierOption<T extends string> = {
+  id: T;
+  label: string;
+  description: string;
+  multiplier: number;
+};
+
 export type SalaryBenchmark = {
   id: SalaryBenchmarkId;
   group: string;
@@ -49,23 +60,37 @@ export type SalaryBenchmark = {
 export type SalaryBenchmarkCalculationInput = {
   benchmarkId: SalaryBenchmarkId;
   weeklyHours: number;
+  experienceLevel: SalaryExperienceLevel;
+  educationLevel: SalaryEducationLevel;
+  regionBand: SalaryRegionBand;
   currentMonthlyGross?: number | null;
 };
 
 export type SalaryBenchmarkCalculationResult = {
   benchmark: SalaryBenchmark;
   weeklyHours: number;
+  experienceLevel: SalaryExperienceLevel;
+  educationLevel: SalaryEducationLevel;
+  regionBand: SalaryRegionBand;
   monthlyP25: number;
   monthlyMedian: number;
   monthlyP75: number;
   annualP25: number;
   annualMedian: number;
   annualP75: number;
+  baseMonthlyP25: number;
+  baseMonthlyMedian: number;
+  baseMonthlyP75: number;
+  baseAnnualP25: number;
+  baseAnnualMedian: number;
+  baseAnnualP75: number;
   currentMonthlyGross: number | null;
   currentHourlyGross: number | null;
   monthlyDifferenceFromMedian: number | null;
   hourlyDifferenceFromMedian: number | null;
   percentDifferenceFromMedian: number | null;
+  totalAdjustmentMultiplier: number;
+  totalAdjustmentPercentage: number;
   status: SalaryComparisonStatus | null;
 };
 
@@ -84,6 +109,91 @@ function monthlyFromHourly(hourly: number, weeklyHours: number): number {
 function hourlyFromMonthly(monthly: number, weeklyHours: number): number {
   return roundMoney((monthly * 12) / (weeklyHours * 52));
 }
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
+}
+
+export const salaryExperienceOptions: SalaryModifierOption<SalaryExperienceLevel>[] = [
+  {
+    id: "starter",
+    label: "Starter (0-2 jaar)",
+    description: "Je zit nog dicht bij de onderkant van de marktband en groeit vaak nog snel door.",
+    multiplier: 0.9,
+  },
+  {
+    id: "medior",
+    label: "Medior (3-5 jaar)",
+    description: "Je profiel ligt rond de standaard CBS-benchmark voor deze beroepsgroep.",
+    multiplier: 1,
+  },
+  {
+    id: "senior",
+    label: "Senior (6-9 jaar)",
+    description: "Je neemt meer verantwoordelijkheid en hoort meestal duidelijk boven de basisbenchmark te zitten.",
+    multiplier: 1.12,
+  },
+  {
+    id: "lead",
+    label: "Lead / expert (10+ jaar)",
+    description: "Je combineert ervaring met domeinkennis, ownership of aansturing.",
+    multiplier: 1.22,
+  },
+];
+
+export const salaryEducationOptions: SalaryModifierOption<SalaryEducationLevel>[] = [
+  {
+    id: "mbo",
+    label: "MBO / praktijkgericht",
+    description: "Goede basis voor veel operationele en vakinhoudelijke rollen.",
+    multiplier: 0.98,
+  },
+  {
+    id: "hbo",
+    label: "HBO",
+    description: "Neutrale middenwaarde voor veel zakelijke en specialistische beroepen.",
+    multiplier: 1,
+  },
+  {
+    id: "wo",
+    label: "WO / specialistisch",
+    description: "Voor functies waar academische vorming of theoretische diepgang vaker doorwerkt in het loon.",
+    multiplier: 1.04,
+  },
+];
+
+export const salaryRegionOptions: SalaryModifierOption<SalaryRegionBand>[] = [
+  {
+    id: "gemiddeld",
+    label: "Gemiddelde regio NL",
+    description: "Gebruik dit als neutrale middenwaarde wanneer locatie geen groot thema is.",
+    multiplier: 1,
+  },
+  {
+    id: "randstad",
+    label: "Randstad",
+    description: "Amsterdam, Utrecht, Rotterdam en Den Haag liggen vaak boven het nationale midden.",
+    multiplier: 1.06,
+  },
+  {
+    id: "brabant",
+    label: "Eindhoven / Brabant",
+    description: "Tech, industrie en high-end supply chain trekken de benchmark iets omhoog.",
+    multiplier: 1.03,
+  },
+  {
+    id: "noord_oost",
+    label: "Noord / Oost / buitenstedelijk",
+    description: "In veel regio's buiten de grote stedelijke gebieden ligt het loon iets lager.",
+    multiplier: 0.97,
+  },
+  {
+    id: "remote",
+    label: "Remote / landelijk zoekgebied",
+    description: "Handig als je bewust meerdere regio's of remote-first werkgevers vergelijkt.",
+    multiplier: 1,
+  },
+];
 
 export const salaryBenchmarks: SalaryBenchmark[] = [
   {
@@ -457,58 +567,99 @@ export function getSalaryBenchmarkById(id: SalaryBenchmarkId): SalaryBenchmark {
   return benchmark;
 }
 
+function getExperienceOption(level: SalaryExperienceLevel) {
+  return salaryExperienceOptions.find((option) => option.id === level) ?? salaryExperienceOptions[1];
+}
+
+function getEducationOption(level: SalaryEducationLevel) {
+  return salaryEducationOptions.find((option) => option.id === level) ?? salaryEducationOptions[1];
+}
+
+function getRegionOption(regionBand: SalaryRegionBand) {
+  return salaryRegionOptions.find((option) => option.id === regionBand) ?? salaryRegionOptions[0];
+}
+
 export function calculateSalaryBenchmark(
   input: SalaryBenchmarkCalculationInput,
 ): SalaryBenchmarkCalculationResult {
   const benchmark = getSalaryBenchmarkById(input.benchmarkId);
   const weeklyHours = roundMoney(input.weeklyHours);
+  const experienceOption = getExperienceOption(input.experienceLevel);
+  const educationOption = getEducationOption(input.educationLevel);
+  const regionOption = getRegionOption(input.regionBand);
+  const totalAdjustmentMultiplier = clamp(
+    experienceOption.multiplier * educationOption.multiplier * regionOption.multiplier,
+    0.82,
+    1.35,
+  );
   const currentMonthlyGross = typeof input.currentMonthlyGross === "number"
     ? roundMoney(input.currentMonthlyGross)
     : null;
 
-  const monthlyP25 = monthlyFromHourly(benchmark.hourlyP25, weeklyHours);
-  const monthlyMedian = monthlyFromHourly(benchmark.hourlyMedian, weeklyHours);
-  const monthlyP75 = monthlyFromHourly(benchmark.hourlyP75, weeklyHours);
-  const annualP25 = annualFromHourly(benchmark.hourlyP25, weeklyHours);
-  const annualMedian = annualFromHourly(benchmark.hourlyMedian, weeklyHours);
-  const annualP75 = annualFromHourly(benchmark.hourlyP75, weeklyHours);
+  const baseMonthlyP25 = monthlyFromHourly(benchmark.hourlyP25, weeklyHours);
+  const baseMonthlyMedian = monthlyFromHourly(benchmark.hourlyMedian, weeklyHours);
+  const baseMonthlyP75 = monthlyFromHourly(benchmark.hourlyP75, weeklyHours);
+  const baseAnnualP25 = annualFromHourly(benchmark.hourlyP25, weeklyHours);
+  const baseAnnualMedian = annualFromHourly(benchmark.hourlyMedian, weeklyHours);
+  const baseAnnualP75 = annualFromHourly(benchmark.hourlyP75, weeklyHours);
+
+  const adjustedHourlyP25 = roundMoney(benchmark.hourlyP25 * totalAdjustmentMultiplier);
+  const adjustedHourlyMedian = roundMoney(benchmark.hourlyMedian * totalAdjustmentMultiplier);
+  const adjustedHourlyP75 = roundMoney(benchmark.hourlyP75 * totalAdjustmentMultiplier);
+  const monthlyP25 = monthlyFromHourly(adjustedHourlyP25, weeklyHours);
+  const monthlyMedian = monthlyFromHourly(adjustedHourlyMedian, weeklyHours);
+  const monthlyP75 = monthlyFromHourly(adjustedHourlyP75, weeklyHours);
+  const annualP25 = annualFromHourly(adjustedHourlyP25, weeklyHours);
+  const annualMedian = annualFromHourly(adjustedHourlyMedian, weeklyHours);
+  const annualP75 = annualFromHourly(adjustedHourlyP75, weeklyHours);
 
   if (currentMonthlyGross === null) {
     return {
       benchmark,
       weeklyHours,
+      experienceLevel: input.experienceLevel,
+      educationLevel: input.educationLevel,
+      regionBand: input.regionBand,
       monthlyP25,
       monthlyMedian,
       monthlyP75,
       annualP25,
       annualMedian,
       annualP75,
+      baseMonthlyP25,
+      baseMonthlyMedian,
+      baseMonthlyP75,
+      baseAnnualP25,
+      baseAnnualMedian,
+      baseAnnualP75,
       currentMonthlyGross: null,
       currentHourlyGross: null,
       monthlyDifferenceFromMedian: null,
       hourlyDifferenceFromMedian: null,
       percentDifferenceFromMedian: null,
+      totalAdjustmentMultiplier: roundMoney(totalAdjustmentMultiplier),
+      totalAdjustmentPercentage: roundMoney((totalAdjustmentMultiplier - 1) * 100),
       status: null,
     };
   }
 
   const currentHourlyGross = hourlyFromMonthly(currentMonthlyGross, weeklyHours);
-  const hourlyDifferenceFromMedian = roundMoney(currentHourlyGross - benchmark.hourlyMedian);
+  const hourlyDifferenceFromMedian = roundMoney(currentHourlyGross - adjustedHourlyMedian);
   const monthlyDifferenceFromMedian = roundMoney(currentMonthlyGross - monthlyMedian);
-  const percentDifferenceFromMedian = benchmark.hourlyMedian > 0
-    ? roundMoney((hourlyDifferenceFromMedian / benchmark.hourlyMedian) * 100)
+  const percentDifferenceFromMedian = adjustedHourlyMedian > 0
+    ? roundMoney((hourlyDifferenceFromMedian / adjustedHourlyMedian) * 100)
     : null;
 
-  const aroundMedianThreshold = benchmark.hourlyMedian * 0.05;
+  const aroundMedianThreshold = adjustedHourlyMedian * 0.05;
   let status: SalaryComparisonStatus;
 
-  if (currentHourlyGross < benchmark.hourlyP25) {
+  if (currentHourlyGross < adjustedHourlyP25) {
     status = "below_p25";
-  } else if (currentHourlyGross < benchmark.hourlyMedian - aroundMedianThreshold) {
+  } else if (currentHourlyGross < adjustedHourlyMedian - aroundMedianThreshold) {
     status = "below_median";
-  } else if (currentHourlyGross <= benchmark.hourlyMedian + aroundMedianThreshold) {
+  } else if (currentHourlyGross <= adjustedHourlyMedian + aroundMedianThreshold) {
     status = "around_median";
-  } else if (currentHourlyGross <= benchmark.hourlyP75) {
+  } else if (currentHourlyGross <= adjustedHourlyP75) {
     status = "above_median";
   } else {
     status = "above_p75";
@@ -517,17 +668,28 @@ export function calculateSalaryBenchmark(
   return {
     benchmark,
     weeklyHours,
+    experienceLevel: input.experienceLevel,
+    educationLevel: input.educationLevel,
+    regionBand: input.regionBand,
     monthlyP25,
     monthlyMedian,
     monthlyP75,
     annualP25,
     annualMedian,
     annualP75,
+    baseMonthlyP25,
+    baseMonthlyMedian,
+    baseMonthlyP75,
+    baseAnnualP25,
+    baseAnnualMedian,
+    baseAnnualP75,
     currentMonthlyGross,
     currentHourlyGross,
     monthlyDifferenceFromMedian,
     hourlyDifferenceFromMedian,
     percentDifferenceFromMedian,
+    totalAdjustmentMultiplier: roundMoney(totalAdjustmentMultiplier),
+    totalAdjustmentPercentage: roundMoney((totalAdjustmentMultiplier - 1) * 100),
     status,
   };
 }

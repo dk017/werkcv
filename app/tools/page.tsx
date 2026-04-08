@@ -174,8 +174,15 @@ const sections: ToolSection[] = [
         tools: [
             {
                 href: "/tools/salaris-calculator",
-                title: "Salaris calculator 2026",
-                description: "Check je salaris tegen CBS-loonpercentielen per beroep en urennorm.",
+                title: "Salaris kompas 2026",
+                description: "Gebruik een guided salarischeck op basis van CBS-beroepsdata plus ervaring, opleiding en regio.",
+                badge: "Geld",
+                badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
+            },
+            {
+                href: "/salaris",
+                title: "Salaris per beroep 2026",
+                description: "Open vaste salarispagina's per beroep met CBS-mediaan, salarisband en vervolgstappen naar netto en CV.",
                 badge: "Geld",
                 badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
             },

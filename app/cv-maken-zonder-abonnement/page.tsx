@@ -2,48 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
-import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { comparisonRows, faqs } from "./content";
 
 const pageUrl = "https://werkcv.nl/cv-maken-zonder-abonnement";
 
-const faqs = [
-  {
-    question: "Kan ik bij WerkCV echt een CV maken met eenmalig betalen?",
-    answer:
-      "Ja. Je betaalt eenmalig €4,99 per CV bij de eerste PDF-download. Daarna kun je hetzelfde CV altijd opnieuw bewerken en downloaden zonder opnieuw te betalen. Er is geen abonnement en geen automatische verlenging.",
-  },
-  {
-    question: "Wat zijn de voordelen van eenmalig betalen voor een CV?",
-    answer:
-      "Je betaalt alleen voor wat je gebruikt. Een CV-builder heb je meestal tijdelijk nodig - bij een nieuwe baan zoeken, een promotie of na ontslag. Eenmalig €4,99 is eerlijker dan €10-25 per maand die blijven doorlopen.",
-  },
-  {
-    question: "Welke CV-builders werken met eenmalig betalen in Nederland?",
-    answer:
-      "WerkCV.nl is de bekendste Nederlandse CV-builder met een eenmalig betaalmodel. De meeste andere grote builders zoals CVmaker, CV.nl en CVster werken met een maandabonnement.",
-  },
-  {
-    question: "Is een CV met eenmalig betalen net zo professioneel als een abonnementsbuilder?",
-    answer:
-      "Ja. De kwaliteit van het eindresultaat hangt af van templates, ATS-optimalisatie en gebruiksgemak - niet van het prijsmodel. WerkCV biedt 13+ ATS-vriendelijke templates specifiek voor de Nederlandse arbeidsmarkt.",
-  },
-];
-
-const comparisonRows = [
-  ["Prijsmodel", "Eenmalig €4,99", "Abonnement ~€10/mnd", "Abonnement ~€15/mnd", "Abonnement ~€12/mnd"],
-  ["Gratis starten", "✓", "✓", "✓", "✓"],
-  ["Opzeggen nodig", "Nee", "Ja", "Ja", "Ja"],
-  ["Later opnieuw downloaden", "✓", "Niet altijd", "Niet altijd", "Niet altijd"],
-  ["ATS-vriendelijk", "✓", "✓", "Gedeeltelijk", "✓"],
-  ["Nederlandse markt focus", "✓", "✓", "✓", "Gedeeltelijk"],
-];
-
 export const metadata: Metadata = {
   title: {
-    absolute: "CV Maken Eenmalig Betalen - Geen Abonnement, Wel Resultaat | WerkCV",
+    absolute: "CV Maken Eenmalig Betalen? Geen Abonnement | WerkCV",
   },
   description:
-    "CV maken met eenmalig betalen van €4,99. Geen abonnement, geen verlenging. Gratis starten, ATS-vriendelijke templates, later opnieuw downloaden.",
+    "Zoek je een CV builder zonder abonnement? Vergelijk WerkCV met CVmaker, CV.nl en CVster. Start gratis en betaal bij WerkCV eenmalig €4,99 per CV.",
   keywords: [
     "cv maken eenmalig betalen",
     "cv maken zonder abonnement",
@@ -59,9 +27,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "CV Maken Eenmalig Betalen - Geen Abonnement, Wel Resultaat | WerkCV",
+    title: "CV Maken Eenmalig Betalen? Geen Abonnement | WerkCV",
     description:
-      "CV maken met eenmalig betalen van €4,99. Geen abonnement, geen verlenging. Gratis starten, ATS-vriendelijke templates, later opnieuw downloaden.",
+      "Zoek je een CV builder zonder abonnement? Vergelijk WerkCV met CVmaker, CV.nl en CVster. Start gratis en betaal bij WerkCV eenmalig €4,99 per CV.",
     url: pageUrl,
     siteName: "WerkCV",
     locale: "nl_NL",
@@ -77,9 +45,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "CV Maken Eenmalig Betalen - Geen Abonnement, Wel Resultaat | WerkCV",
+    title: "CV Maken Eenmalig Betalen? Geen Abonnement | WerkCV",
     description:
-      "CV maken met eenmalig betalen van €4,99. Geen abonnement, geen verlenging. Gratis starten, ATS-vriendelijke templates, later opnieuw downloaden.",
+      "Zoek je een CV builder zonder abonnement? Vergelijk WerkCV met CVmaker, CV.nl en CVster. Start gratis en betaal bij WerkCV eenmalig €4,99 per CV.",
     images: ["/opengraph-image"],
   },
 };
@@ -87,8 +55,6 @@ export const metadata: Metadata = {
 export default function CvMakenZonderAbonnementPage() {
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
-      <FAQJsonLd questions={faqs} />
-
       <header className="border-b-4 border-black bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2">
@@ -136,10 +102,10 @@ export default function CvMakenZonderAbonnementPage() {
               ))}
             </div>
             <h1 className="max-w-4xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV maken met eenmalig betalen - geen abonnement, geen verrassing
+              CV maken met eenmalig betalen zonder abonnement
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              CV maken met eenmalig betalen van €4,99 - dat is het hele model van WerkCV. Je start gratis, bouwt je CV op in de editor en betaalt alleen als je de PDF wilt downloaden. Daarna kun je datzelfde CV altijd opnieuw openen, bewerken en opnieuw downloaden zonder extra kosten. Geen abonnement, geen automatische verlenging, geen gedoe bij opzeggen.
+              Je zoekt geen gratis proefperiode die later verandert in een maandabonnement. Je zoekt een CV-builder waarmee je je CV maakt, een keer betaalt en klaar bent. WerkCV is gebouwd voor precies dat moment: start gratis, betaal pas €4,99 bij je eerste PDF-download en open datzelfde CV later opnieuw zonder extra kosten of opzeggedoe.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
@@ -157,6 +123,17 @@ export default function CvMakenZonderAbonnementPage() {
             </div>
 
             <div className="mt-8 overflow-x-auto border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+              <div className="border-b-4 border-black bg-[#FFF4D6] px-4 py-4">
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">
+                  Direct vergelijken
+                </p>
+                <h2 className="mt-1 text-2xl font-black text-black">
+                  WerkCV vs CVmaker vs CV.nl vs CVster
+                </h2>
+                <p className="mt-2 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+                  Als je al weet dat je geen abonnement wilt, gaat de keuze meestal over prijsmodel, opnieuw kunnen downloaden en hoeveel gedoe je later nog hebt.
+                </p>
+              </div>
               <table className="min-w-full border-collapse text-sm">
                 <thead>
                   <tr className="bg-black text-white">

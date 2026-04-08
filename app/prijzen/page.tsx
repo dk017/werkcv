@@ -87,6 +87,16 @@ export default function PrijzenPage() {
                     <p className="text-lg font-medium text-black max-w-2xl mx-auto">
                         Maak je CV helemaal gratis. Betaal eenmalig per CV zodra je tevreden bent, en blijf datzelfde CV daarna gewoon bewerken en downloaden.
                     </p>
+                    <p className="text-sm font-medium text-gray-700 max-w-2xl mx-auto mt-3">
+                        Wil je eerst precies zien hoe{" "}
+                        <Link
+                            href="/cv-maken-zonder-abonnement"
+                            className="font-black text-black underline decoration-2 underline-offset-4"
+                        >
+                            eenmalig betalen
+                        </Link>{" "}
+                        zich verhoudt tot abonnementen? Bekijk dan eerst de vergelijking.
+                    </p>
                 </div>
 
                 {/* Pricing Card */}
