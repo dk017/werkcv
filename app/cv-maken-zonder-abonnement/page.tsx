@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
+import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { comparisonRows, faqs } from "./content";
 
 const pageUrl = "https://werkcv.nl/cv-maken-zonder-abonnement";
@@ -55,6 +56,8 @@ export const metadata: Metadata = {
 export default function CvMakenZonderAbonnementPage() {
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
+      <FAQJsonLd questions={[...faqs]} />
+
       <header className="border-b-4 border-black bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2">
