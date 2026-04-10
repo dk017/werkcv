@@ -7,7 +7,6 @@ export const metadata = buildEnglishMetadata({
     description:
         'Focused English guides for expats and international job seekers building Dutch-style CVs.',
     path: '/en/guides',
-    nlPath: '/cv-gids',
     keywords: [
         'netherlands cv guide',
         'expat cv netherlands',

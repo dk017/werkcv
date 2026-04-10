@@ -6,7 +6,7 @@ type BuildEnglishMetadataInput = {
   title: string;
   description: string;
   path: `/en${string}`;
-  nlPath: `/${string}` | "/";
+  nlPath?: `/${string}` | "/";
   keywords: string[];
   type?: "website" | "article";
 };
@@ -20,7 +20,7 @@ export function buildEnglishMetadata({
   type = "website",
 }: BuildEnglishMetadataInput): Metadata {
   const canonical = `${BASE_URL}${path}`;
-  const dutchUrl = `${BASE_URL}${nlPath}`;
+  const dutchUrl = nlPath ? `${BASE_URL}${nlPath}` : null;
   const fullTitle = `${title} | WerkCV`;
   const ogImageUrl = `${BASE_URL}/opengraph-image`;
 
@@ -35,8 +35,12 @@ export function buildEnglishMetadata({
       languages: {
         en: canonical,
         "en-NL": canonical,
-        nl: dutchUrl,
-        "nl-NL": dutchUrl,
+        ...(dutchUrl
+          ? {
+              nl: dutchUrl,
+              "nl-NL": dutchUrl,
+            }
+          : {}),
         "x-default": canonical,
       },
     },

@@ -1,6 +1,6 @@
 # SEO Audit Tracker
 
-Last updated: 2026-04-04
+Last updated: 2026-04-08
 
 This tracker reflects the actual state of the codebase, not just the raw audit output.
 
@@ -35,6 +35,55 @@ This tracker reflects the actual state of the codebase, not just the raw audit o
 | Long-term | Custom OG images for key pages | `done` | Global and dynamic OG image routes already exist. | `app/opengraph-image.tsx`, `app/cv-tips/[slug]/opengraph-image.tsx`, `app/cv-gids/[slug]/opengraph-image.tsx` |
 | Long-term | Author bios on `cv-tips` | `later` | Only worth doing once there is a real, defensible author model. | `app/cv-tips/[slug]/page.tsx` |
 | Long-term | Build links to the tools section | `next` | Worth doing selectively for the strongest rule-based calculators/checkers, not for the whole tool set. | `app/tools/page.tsx`, selected `app/tools/*/page.tsx` |
+
+## 2026-04-08 audit findings
+
+This pass was based on the live repo state plus current Google Search Central guidance.
+The goal was to separate real implementation work from weak or risky SEO assumptions.
+
+### Immediate decisions
+
+| Priority | Item | Status | Notes | Main files |
+| --- | --- | --- | --- | --- |
+| Critical | Homepage FAQ content + FAQ schema | `done` | Added visible homepage FAQ blocks and homepage FAQ JSON-LD from a shared source so content and schema stay aligned. | `app/page.tsx`, `components/HomePageClient.tsx`, `lib/site-content.ts` |
+| Critical | AggregateRating on homepage and `/faq` | `in_progress` | Still blocked on a real, visible rating source. Added a single shared config hook in code so `AggregateRating` can be enabled safely once real review data exists. | `app/page.tsx`, `app/faq/page.tsx`, `lib/site-content.ts` |
+| Critical | Hreflang only for true Dutch-English pairs | `done` | Removed the broad `cv-tips` and `cv-gids` cross-language mappings and made English alternates optional so only audited page pairs keep hreflang. | `app/en/metadata.ts`, `app/cv-gids/*`, `app/cv-tips/*`, `app/templates/page.tsx`, `app/page.tsx`, `app/engelstalige-bedrijven-in-nederland/page.tsx` |
+| High | `/over-ons` price inconsistency | `done` | `/over-ons` now renders the shared price constant, and the current live search result check did not show a conflicting `€5` source for this route. Any stale SERP cache would now be a recrawl issue, not a page-source mismatch. | `app/over-ons/page.tsx`, `lib/site-content.ts` |
+| High | `/sollicitatiebrief-maken` hub | `done` | Added a real cluster-owner page with route selection, a visible writing workflow, FAQ + HowTo schema, sitemap inclusion, and internal links from the main brief pages and generator route. | `app/sollicitatiebrief-maken/page.tsx`, `app/sitemap.ts`, core brief cluster routes |
+| High | Cannibalization: `/gratis-cv-maken` vs `/cv-aanmaken` | `done` | The split is now explicit in H1, meta, intro copy, FAQ copy, and key internal links. `/gratis-cv-maken` owns free-start / payment-timing intent, while `/cv-aanmaken` owns from-scratch / first-version intent. | `app/gratis-cv-maken/page.tsx`, `app/cv-aanmaken/page.tsx`, `app/cv-maken/page.tsx`, key internal linking surfaces |
+| High | Jobs strategy: remove from index entirely | `in_progress` | Public jobs route files have now been removed, so old jobs URLs fall through to site-wide `404` handling. The repo cleanup is also done for scripts, datasets, components, and app-layer jobs helpers. Remaining work is external: confirm live responses and use Search Console removals if stale jobs URLs still appear. | removed `app/jobs*`, removed `app/vacatures*`, `package.json`, removed jobs code/data directories |
+
+### Safe hreflang pairs
+
+- `/` and `/en`
+- `/templates` and `/en/templates`
+- `/engelstalige-bedrijven-in-nederland` and `/en/english-speaking-companies-netherlands`
+
+### Hreflang mappings to remove or review
+
+- `/cv-tips` to `/en/guides`
+- `/cv-tips/[slug]` to `/en/guides`
+- `/cv-gids` to `/en/guides`
+- `/cv-gids/[slug]` to `/en/guides/[slug]` hub fallback
+- English guide pages that currently point to broad Dutch pages instead of true translated equivalents
+
+### Jobs-layer reality check
+
+- The dedicated route files for `/jobs`, `/jobs/[...slug]`, `/jobs-preview`, `/vacatures`, and `/vacatures/[slug]` have now been removed from the repo.
+- The dormant jobs pipeline has also been removed at the script, data, component, and app-helper layer.
+- The remaining risk is old indexed URLs, internal code/data residue, and any historical discovery already in Google.
+- Follow-up sequence:
+- Keep removed URLs returning `404` or `410`.
+- Do not block them in `robots.txt` before Google sees the removal response.
+- Use Search Console removals for stale indexed job URLs after the live responses are verified.
+- Remove leftover jobs code, page payload generation, and raw/derived jobs datasets once the product decision is final.
+
+### Content quality rule for future pages
+
+- No new page unless the user job is genuinely different.
+- Prefer pages with first-hand product knowledge, official-source support, or practical workflow value over synonym pages.
+- Use official and current sources when the topic is temporal or trust-sensitive.
+- Treat generic head-term coverage without unique value as a cannibalization risk, not a content win.
 
 ## Best next implementation order
 

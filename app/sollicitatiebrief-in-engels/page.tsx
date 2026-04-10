@@ -353,11 +353,19 @@ export default function SollicitatiebriefInEngelsPage() {
             </ul>
             <div className="mt-6 border-t-2 border-black pt-4">
               <Link
-                href="/sollicitatiebrief-voorbeeld"
+                href="/sollicitatiebrief-maken"
                 className="text-sm font-black text-black underline decoration-2 underline-offset-4"
               >
-                Bekijk ook NL sollicitatiebrief voorbeelden
+                Bekijk ook de centrale sollicitatiebrief hub
               </Link>
+              <div className="mt-3">
+                <Link
+                  href="/sollicitatiebrief-voorbeeld"
+                  className="text-sm font-black text-black underline decoration-2 underline-offset-4"
+                >
+                  Bekijk ook NL sollicitatiebrief voorbeelden
+                </Link>
+              </div>
               <div className="mt-3">
                 <Link
                   href="/cv-maken-in-engels"
@@ -375,7 +383,7 @@ export default function SollicitatiebriefInEngelsPage() {
             Bronnen en checkdatum
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            Richtlijnen gecheckt op 8 maart 2026
+            Richtlijnen gecheckt op 8 april 2026
           </h2>
           <div className="mt-6 space-y-3">
             {sources.map((source) => (

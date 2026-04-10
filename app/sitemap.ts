@@ -497,6 +497,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.84,
         },
         {
+            url: `${baseUrl}/sollicitatiebrief-maken`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.85,
+        },
+        {
             url: `${baseUrl}/sollicitatiebrief-beginnen`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -753,6 +759,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const toolSlugs = [
         'aanzegvergoeding-checker',
         '30-procent-regeling-checker',
+        'aow-leeftijd-checker',
         'ats-cv-checker',
         'career-change-advisor',
         'cv-score',
@@ -764,6 +771,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'job-title-translator',
         'kilometervergoeding-berekenen',
         'kennismigrant-salary-checker',
+        'loonstrook-uitleggen',
         'minimumloon-checker',
         'netto-bruto-calculator',
         'opzegtermijn-berekenen',
@@ -790,6 +798,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'ww-recht-checker',
         'zoekjaar-checker',
         'ziekengeld-berekenen',
+        'studieschuld-berekenen',
+        'zwangerschapsverlof-berekenen',
+        'zzp-uurtarief-berekenen',
     ];
 
     const toolPages: MetadataRoute.Sitemap = await Promise.all(toolSlugs.map(async (slug) => ({

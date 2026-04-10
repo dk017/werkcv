@@ -6,7 +6,6 @@ export const metadata = buildEnglishMetadata({
   description:
     "Learn the standard CV format used in the Netherlands: section order, ideal length, language choices, and practical formatting rules.",
   path: "/en/netherlands-cv-format",
-  nlPath: "/cv-tips/cv-schrijven-tips",
   keywords: [
     "netherlands cv format",
     "how to write cv in netherlands",

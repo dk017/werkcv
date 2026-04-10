@@ -256,6 +256,11 @@ export default function MotivatiebriefZonderWerkervaringPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
+                  href: "/sollicitatiebrief-maken",
+                  title: "Sollicitatiebrief maken",
+                  body: "Gebruik de centrale briefhub als je naast starterbewijs ook structuur, voorbeelden en vervolgroutes wilt vergelijken.",
+                },
+                {
                   href: "/motivatiebrief-schrijven",
                   title: "Motivatiebrief schrijven",
                   body: "Gebruik de volledige schrijfstructuur zodra je starterbewijs helder is.",

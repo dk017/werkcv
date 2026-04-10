@@ -227,6 +227,11 @@ export default function SollicitatiebriefVoorbeeldPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
+                  href: "/sollicitatiebrief-maken",
+                  title: "Sollicitatiebrief maken",
+                  body: "Start bij de centrale briefhub als je nog moet kiezen tussen voorbeelden, workflow en specialistische routes.",
+                },
+                {
                   href: "/motivatiebrief-schrijven",
                   title: "Motivatiebrief schrijven",
                   body: "Gebruik deze route als je eerst de schrijfstructuur en opbouw wilt aanscherpen.",

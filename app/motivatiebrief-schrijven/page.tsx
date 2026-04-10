@@ -287,6 +287,11 @@ export default function MotivatiebriefSchrijvenPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
+                  href: "/sollicitatiebrief-maken",
+                  title: "Sollicitatiebrief maken",
+                  body: "Gebruik de centrale briefhub als je nog moet kiezen tussen workflow, voorbeelden, Engels of open sollicitatie.",
+                },
+                {
                   href: "/sollicitatiebrief-beginnen",
                   title: "Sollicitatiebrief beginnen",
                   body: "Scherp eerst je eerste zin aan als je brief nog te standaard of te vlak opent.",

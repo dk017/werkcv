@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { cvDownloadPrice } from "@/lib/site-content";
 import { templateList } from "@/lib/templates/registry";
 
 const featuredTemplates = templateList.filter((template) =>
@@ -41,11 +42,11 @@ const quickStartSteps = [
 ];
 
 const fastBenefits = [
-  "Je begint vanuit een duidelijke template in plaats van een leeg document.",
-  "Je maakt snel een eerste versie die later per vacature verfijnd kan worden.",
+  "Je begint vanuit een duidelijke template in plaats van een leeg document of Word-bestand.",
+  "Je maakt snel een eerste versie die later per vacature verfijnd en herschreven kan worden.",
   "Je voorkomt opmaakstress in Word of losse design-tools.",
   "Je ziet direct welke vaste secties nog ontbreken.",
-  "Je werkt vanuit hetzelfde CV door naar een definitieve sollicitatieversie.",
+  "Je werkt vanuit dezelfde basisversie door naar een definitieve sollicitatieversie.",
 ];
 
 const audienceCards = [
@@ -80,9 +81,14 @@ const mistakes = [
 
 const faqs = [
   {
+    question: "Wat is het verschil tussen cv aanmaken en gratis cv maken?",
+    answer:
+      "Cv aanmaken draait vooral om vanaf nul snel een eerste bruikbare basisversie opzetten. Gratis cv maken draait meer om gratis starten, templates vergelijken en duidelijkheid over wanneer je wel of niet betaalt.",
+  },
+  {
     question: "Wat is het verschil tussen cv aanmaken en cv maken?",
     answer:
-      "Cv aanmaken draait vooral om snel een eerste bruikbare basisversie opzetten. Cv maken gaat daarna verder met aanscherpen, structureren en optimaliseren voor echte sollicitaties.",
+      "Cv aanmaken is de snelle start naar een eerste complete versie. Cv maken gaat daarna verder met aanscherpen, structureren en optimaliseren voor echte sollicitaties.",
   },
   {
     question: "Hoe maak ik snel een eerste CV aan?",
@@ -107,9 +113,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Aanmaken - Snel een Eerste Professionele Versie Starten | WerkCV",
+  title: "CV aanmaken vanaf nul: snel je eerste versie opzetten | WerkCV",
   description:
-    "CV aanmaken in een paar duidelijke stappen. Start gratis, vul direct je eerste professionele versie in en werk daarna verder in de editor.",
+    "CV aanmaken zonder blanco-pagina stress. Start gratis, zet je eerste basisversie op in duidelijke stappen en verfijn later per vacature of template.",
   keywords: [
     "cv aanmaken",
     "gratis cv aanmaken",
@@ -200,7 +206,7 @@ export default function CvAanmakenPage() {
               Start-intentie: cv aanmaken
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV aanmaken zonder vast te lopen op een lege pagina
+              CV aanmaken vanaf nul zonder vast te lopen op een lege pagina
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Zoekers op cv aanmaken willen meestal één ding: snel een eerste versie
@@ -209,8 +215,17 @@ export default function CvAanmakenPage() {
               zonder dat je direct verdwaalt in design, details of te veel opties.
             </p>
             <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
-              Zie dit als de snelle start-route. Voor de volledige aanpak rond
-              structuur, vacatureaanpassing en ATS-logica gebruik je daarna beter{" "}
+              Zie dit als de snelle start-route voor een eerste basisversie. Zoek je
+              vooral gratis starten en duidelijkheid over wanneer je betaalt?
+              Gebruik dan{" "}
+              <Link
+                href="/gratis-cv-maken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                Gratis CV maken
+              </Link>
+              . Voor de volledige aanpak rond structuur, vacatureaanpassing en
+              ATS-logica gebruik je daarna beter{" "}
               <Link
                 href="/cv-maken"
                 className="font-black text-black underline decoration-2 underline-offset-4"
@@ -317,7 +332,7 @@ export default function CvAanmakenPage() {
                 Beste starttemplates
               </p>
               <h2 className="text-3xl font-black text-black">
-                Templates waarmee je snel een eerste CV aanmaakt
+                Templates waarmee je vanaf nul snel een eerste CV aanmaakt
               </h2>
             </div>
             <Link
@@ -391,7 +406,7 @@ export default function CvAanmakenPage() {
                 {
                   href: "/gratis-cv-maken",
                   title: "Gratis CV maken",
-                  body: "Voor bezoekers die vooral geruststelling zoeken over prijs, gratis starten en het moment van betalen.",
+                  body: `Voor bezoekers die vooral duidelijkheid zoeken over gratis starten, ${cvDownloadPrice.display} bij download en het moment van betalen.`,
                 },
                 {
                   href: "/cv-maken",

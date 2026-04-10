@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { cvDownloadPrice } from "@/lib/site-content";
 import { templateList } from "@/lib/templates/registry";
 
 const featuredTemplates = templateList.filter((template) =>
@@ -44,6 +45,7 @@ const freeChecklist = [
   "Gratis starten in de editor",
   "Template vergelijken zonder direct te betalen",
   "Inhoud bewerken en aanscherpen per vacature",
+  "Meerdere versies bewaren voordat je downloadt",
   "Rustige, ATS-vriendelijke layouts kiezen",
   "Pas afrekenen wanneer je je PDF echt wilt downloaden",
 ];
@@ -54,8 +56,8 @@ const pricingCards = [
     body: "CV aanmaken, inhoud invullen, templates vergelijken en je versie verbeteren tot hij sollicitatieklaar is.",
   },
   {
-    title: "Eenmalig €4,99",
-    body: "Definitieve PDF-download zonder terugkerend abonnement of verborgen verlenging.",
+    title: `Eenmalig ${cvDownloadPrice.display}`,
+    body: "Definitieve PDF-download zonder terugkerend abonnement, proefperiode of verborgen verlenging.",
   },
   {
     title: "Geen abonnementsval",
@@ -79,6 +81,11 @@ const mistakes = [
 ];
 
 const faqs = [
+  {
+    question: "Wat is het verschil tussen gratis cv maken en cv aanmaken?",
+    answer:
+      "Gratis cv maken draait vooral om gratis starten, templates vergelijken, versies bewaren en pas later betalen bij download. Cv aanmaken draait juist om vanaf nul snel een eerste basisversie opzetten zonder blanco-pagina stress.",
+  },
   {
     question: "Kan ik echt gratis een CV maken op WerkCV?",
     answer:
@@ -107,9 +114,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Gratis CV Maken - Start Gratis, Betaal Alleen Bij Download | WerkCV",
+  title: "Gratis CV maken en pas betalen bij download | WerkCV",
   description:
-    "Gratis CV maken in een professionele editor? Start gratis, vergelijk templates en betaal alleen bij PDF-download. Geen abonnement, wel een serieuze CV-builder.",
+    "Gratis CV maken in een serieuze builder? Start gratis, vergelijk templates, bewaar versies en betaal pas bij PDF-download. Geen abonnement en geen proefperiode.",
   keywords: [
     "gratis cv maken",
     "cv maken gratis",
@@ -200,18 +207,26 @@ export default function GratisCvMakenPage() {
               Hoge intentie: gratis cv maken
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              Gratis CV maken zonder meteen vast te zitten aan een abonnement
+              Gratis CV maken en pas betalen als je PDF echt klaar is
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Wie zoekt op gratis cv maken wil vooral laagdrempelig starten,
-              meerdere templates vergelijken en pas beslissen over betaling wanneer
-              de inhoud echt klaar is. WerkCV laat je precies dat doen: gratis
-              bouwen, verbeteren en vergelijken, daarna eenmalig afrekenen als je
-              PDF klaar is.
+              meerdere templates vergelijken, versies bewaren en pas beslissen
+              over betaling wanneer de inhoud echt klaar is. WerkCV laat je precies
+              dat doen: gratis bouwen, verbeteren en vergelijken, daarna eenmalig
+              afrekenen als je PDF klaar is.
             </p>
             <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
-              Deze pagina focust bewust op gratis starten en het prijsmodel. Zoek je
-              vooral de brede workflow voor inhoud, structuur en ATS? Gebruik dan de{" "}
+              Deze pagina focust bewust op gratis starten, prijslogica en het moment
+              van betalen. Zoek je vooral een eerste basisversie vanaf nul? Gebruik
+              dan{" "}
+              <Link
+                href="/cv-aanmaken"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                CV aanmaken
+              </Link>
+              . Voor de brede workflow rond inhoud, structuur en ATS gebruik je de{" "}
               <Link
                 href="/cv-maken"
                 className="font-black text-black underline decoration-2 underline-offset-4"
@@ -410,7 +425,7 @@ export default function GratisCvMakenPage() {
                 {
                   href: "/cv-aanmaken",
                   title: "CV aanmaken",
-                  body: "Sterke vervolgroute voor mensen die vooral zo snel mogelijk een eerste versie willen openen, zonder direct over prijs of PDF na te denken.",
+                  body: "Sterke vervolgroute voor mensen die vooral vanaf nul snel een eerste basisversie willen openen, zonder dat prijs of download het hoofdonderwerp is.",
                 },
                 {
                   href: "/templates",

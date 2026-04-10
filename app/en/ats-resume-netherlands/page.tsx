@@ -6,7 +6,6 @@ export const metadata = buildEnglishMetadata({
   description:
     "Optimize your CV for ATS screening in the Netherlands using the right formatting, keyword alignment, and section structure.",
   path: "/en/ats-resume-netherlands",
-  nlPath: "/cv-tips/ats-vriendelijk-cv",
   keywords: [
     "ats resume netherlands",
     "ats cv netherlands",

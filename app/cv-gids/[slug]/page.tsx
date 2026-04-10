@@ -30,11 +30,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         keywords: page.keywords,
         alternates: {
             canonical: `https://werkcv.nl${path}`,
-            languages: {
-                'nl-NL': `https://werkcv.nl${path}`,
-                'en-NL': 'https://werkcv.nl/en/guides',
-                'x-default': `https://werkcv.nl${path}`,
-            },
         },
         openGraph: {
             title: metaTitle,

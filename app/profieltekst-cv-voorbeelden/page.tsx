@@ -379,12 +379,12 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                 {
                   href: "/cv-aanmaken",
                   title: "CV aanmaken",
-                  body: "Zet je profieltekst meteen boven een goed opgebouwde Nederlandse CV-structuur.",
+                  body: "Zet je profieltekst meteen boven een eerste Nederlandse basisversie als je nog vanaf nul begint.",
                 },
                 {
                   href: "/gratis-cv-maken",
                   title: "Gratis CV maken",
-                  body: "Begin gratis en werk je profieltekst verder uit zodra je hele sollicitatieversie staat.",
+                  body: "Begin gratis als je eerst wilt schrijven, vergelijken en pas bij download wilt betalen.",
                 },
                 {
                   href: "/cv-maken-student",

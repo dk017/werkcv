@@ -45,6 +45,10 @@ export default function SollicitatiebriefGeneratorPage() {
                     </p>
                     <p className="mt-3 text-sm font-bold text-slate-700">
                         Liever eerst inspiratie?{" "}
+                        <Link href="/sollicitatiebrief-maken" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            Bekijk de centrale briefhub
+                        </Link>
+                        {" "}of{" "}
                         <Link href="/sollicitatiebrief-voorbeeld" className="underline decoration-2 underline-offset-2 text-slate-900">
                             Bekijk sollicitatiebrief voorbeelden
                         </Link>
@@ -78,8 +82,9 @@ export default function SollicitatiebriefGeneratorPage() {
                     <p className="mt-2 text-sm text-slate-600">
                         Gebruik deze gidsen als je niet vastloopt op de hele brief, maar op een specifiek onderdeel zoals de opening, een starteraanpak of een open sollicitatie.
                     </p>
-                    <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                    <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                         {[
+                            ["/sollicitatiebrief-maken", "Briefhub", "Start hier als je nog moet kiezen tussen workflow, voorbeelden en specialistische routes."],
                             ["/sollicitatiebrief-beginnen", "Sterke openingszinnen", "Voor als je eerste alinea vlak of generiek voelt."],
                             ["/motivatiebrief-zonder-werkervaring", "Zonder werkervaring", "Gebruik studie, stage en projecten als geloofwaardig bewijs."],
                             ["/open-sollicitatie-brief", "Open sollicitatie", "Schrijf een gerichte brief zonder bestaande vacature."],

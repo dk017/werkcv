@@ -14,6 +14,7 @@ import { LinkTextProvider } from "@/app/editor/templates/link-utils";
 import { getAllArticles } from "@/lib/cv-tips/registry";
 import { getAllExamples, getAllCategories } from "@/lib/cv-voorbeelden/registry";
 import { getStoredAttribution, track } from "@/lib/analytics";
+import { homepageFaqItems } from "@/lib/site-content";
 
 // Computed stats from actual data
 const templateCount = templateList.length;
@@ -798,12 +799,12 @@ export default function HomePageClient() {
                             {
                                 href: "/gratis-cv-maken",
                                 title: "Gratis CV maken",
-                                body: "Voor bezoekers die eerst willen schrijven, vergelijken en pas bij download betalen.",
+                                body: "Voor bezoekers die gratis willen starten, templates willen vergelijken en pas bij download willen betalen.",
                             },
                             {
                                 href: "/cv-aanmaken",
                                 title: "CV aanmaken",
-                                body: "Voor snelle starters die zonder opmaakstress direct hun eerste versie willen opzetten.",
+                                body: "Voor snelle starters die vanaf nul zonder blanco-pagina stress hun eerste versie willen opzetten.",
                             },
                             {
                                 href: "/cv-maken-student",
@@ -839,6 +840,49 @@ export default function HomePageClient() {
                                 </p>
                             </Link>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            <section className="relative z-10 border-b-4 border-black bg-[#FFFEF0]">
+                <div className="max-w-4xl mx-auto px-6 py-16">
+                    <div className="max-w-3xl">
+                        <p className="text-xs font-black uppercase tracking-[0.3em] text-slate-600">
+                            Veelgestelde vragen
+                        </p>
+                        <h2 className="mt-3 text-3xl md:text-4xl font-black text-black">
+                            Eerst de basis helder, daarna pas je CV bouwen
+                        </h2>
+                        <p className="mt-4 text-base md:text-lg font-medium leading-relaxed text-gray-700">
+                            Deze vragen komen het vaakst terug bij bezoekers die eerst willen begrijpen hoe gratis
+                            starten, ATS-vriendelijke templates en later downloaden precies werken.
+                        </p>
+                    </div>
+
+                    <div className="mt-8 space-y-4">
+                        {homepageFaqItems.map((item) => (
+                            <details
+                                key={item.question}
+                                className="group border-4 border-black bg-white shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+                            >
+                                <summary className="flex cursor-pointer items-center justify-between p-5 text-left text-base font-black text-black">
+                                    <span className="pr-4">{item.question}</span>
+                                    <span className="text-xl transition-transform group-open:rotate-45">+</span>
+                                </summary>
+                                <div className="border-t-2 border-black px-5 pb-5 pt-4 text-sm font-medium leading-relaxed text-slate-700">
+                                    {item.answer}
+                                </div>
+                            </details>
+                        ))}
+                    </div>
+
+                    <div className="mt-6">
+                        <Link
+                            href="/faq"
+                            className="inline-flex border-4 border-black bg-white px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                        >
+                            Bekijk alle veelgestelde vragen
+                        </Link>
                     </div>
                 </div>
             </section>

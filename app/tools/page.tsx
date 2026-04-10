@@ -129,6 +129,27 @@ const sections: ToolSection[] = [
         tools: [
             featuredTools[0],
             {
+                href: "/tools/zwangerschapsverlof-berekenen",
+                title: "Zwangerschapsverlof berekenen",
+                description: "Bereken startdatum, duur en UWV-uitkering voor zwangere werknemers en partners.",
+                badge: "NL wetgeving",
+                badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
+            },
+            {
+                href: "/tools/aow-leeftijd-checker",
+                title: "AOW leeftijd checker",
+                description: "Bereken je exacte AOW-datum op basis van geboortedatum en de officiële SVB-tabel.",
+                badge: "NL wetgeving",
+                badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
+            },
+            {
+                href: "/tools/loonstrook-uitleggen",
+                title: "Loonstrook uitleggen",
+                description: "Begrijp elke regel op je salarisstrook in gewoon Nederlands.",
+                badge: "NL wetgeving",
+                badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
+            },
+            {
                 href: "/tools/opzegtermijn-berekenen",
                 title: "Opzegtermijn berekenen",
                 description: "Zie direct welke wettelijke opzegtermijn geldt voor jou en je werkgever.",
@@ -207,6 +228,20 @@ const sections: ToolSection[] = [
                 description: "Controleer het wettelijke minimumuurloon per leeftijd in 2026.",
                 badge: "NL wetgeving",
                 badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
+            },
+            {
+                href: "/tools/zzp-uurtarief-berekenen",
+                title: "ZZP uurtarief berekenen",
+                description: "Bereken je minimale uur- en dagtarief als freelancer op basis van gewenst netto inkomen.",
+                badge: "Geld",
+                badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
+            },
+            {
+                href: "/tools/studieschuld-berekenen",
+                title: "Studieschuld DUO berekenen",
+                description: "Bereken je maandelijkse DUO-aflossing voor oud en nieuw stelsel.",
+                badge: "Geld",
+                badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
             },
             featuredTools[3],
             featuredTools[5],
@@ -528,12 +563,12 @@ export default function ToolsPage() {
                             {
                                 href: "/gratis-cv-maken",
                                 title: "Gratis CV maken",
-                                description: "Sterk voor bezoekers die eerst willen schrijven en pas bij download betalen.",
+                                description: "Sterk voor bezoekers die gratis willen starten, vergelijken en pas betalen wanneer de PDF echt klaar is.",
                             },
                             {
                                 href: "/cv-aanmaken",
                                 title: "CV aanmaken",
-                                description: "Voor zoekers die snel een eerste versie willen opzetten zonder layoutgedoe.",
+                                description: "Voor zoekers die vooral van lege pagina naar een eerste complete basisversie willen zonder layoutgedoe.",
                             },
                             {
                                 href: "/cv-maken-op-mobiel",

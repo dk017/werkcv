@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { cvDownloadPrice } from "@/lib/site-content";
 
 const pageUrl = "https://werkcv.nl/over-ons";
 const contactEmail = "contact@werkcv.nl";
@@ -189,7 +190,7 @@ export default function OverOnsPage() {
           <div className="mt-6 flex flex-wrap gap-3 text-xs font-black uppercase tracking-[0.18em] text-black">
             <span className="border-2 border-black bg-[#FFFEF9] px-3 py-1">Nederlandse vacatures</span>
             <span className="border-2 border-black bg-[#FFFEF9] px-3 py-1">ATS-vriendelijke templates</span>
-            <span className="border-2 border-black bg-[#FFFEF9] px-3 py-1">Eenmalig €4,99 per CV</span>
+            <span className="border-2 border-black bg-[#FFFEF9] px-3 py-1">Eenmalig {cvDownloadPrice.display} per CV</span>
             <span className="border-2 border-black bg-[#FFFEF9] px-3 py-1">Contact binnen 1-2 werkdagen</span>
           </div>
         </section>

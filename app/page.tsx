@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import HomePageClient from "@/components/HomePageClient";
-import { HowToJsonLd } from "@/components/seo/JsonLd";
+import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
+import {
+  cvDownloadPrice,
+  homepageFaqItems,
+  siteAggregateRating,
+  siteName,
+  siteUrl,
+} from "@/lib/site-content";
 
 const homepageHowToSteps = [
   {
@@ -13,7 +20,7 @@ const homepageHowToSteps = [
   },
   {
     name: "Download als PDF",
-    text: "Start gratis en betaal eenmalig €4,99 wanneer je je CV als PDF wilt downloaden.",
+    text: `Start gratis en betaal eenmalig ${cvDownloadPrice.display} wanneer je je CV als PDF wilt downloaden.`,
   },
 ];
 
@@ -21,24 +28,24 @@ const homepageWebPageJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   name: "CV Maken voor Nederlandse Vacatures – Gratis Starten | WerkCV",
-  url: "https://werkcv.nl",
+  url: siteUrl,
   description:
     "Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig €4,99 bij download, geen abonnement.",
   inLanguage: "nl-NL",
   isPartOf: {
     "@type": "WebSite",
-    name: "WerkCV",
-    url: "https://werkcv.nl",
+    name: siteName,
+    url: siteUrl,
   },
 };
 
 const homepageSoftwareApplicationJsonLd = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "WerkCV",
+  name: siteName,
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
-  url: "https://werkcv.nl",
+  url: siteUrl,
   description:
     "Nederlandse CV builder waarmee je gratis start, ATS-vriendelijke templates kiest en een CV maakt voor Nederlandse vacatures.",
   inLanguage: "nl-NL",
@@ -48,10 +55,10 @@ const homepageSoftwareApplicationJsonLd = {
   },
   offers: {
     "@type": "Offer",
-    price: "4.99",
-    priceCurrency: "EUR",
+    price: cvDownloadPrice.value,
+    priceCurrency: cvDownloadPrice.currency,
     availability: "https://schema.org/InStock",
-    url: "https://werkcv.nl/prijzen",
+    url: `${siteUrl}/prijzen`,
   },
   featureList: [
     "ATS-vriendelijke CV templates",
@@ -62,9 +69,20 @@ const homepageSoftwareApplicationJsonLd = {
   ],
   provider: {
     "@type": "Organization",
-    name: "WerkCV",
-    url: "https://werkcv.nl",
+    name: siteName,
+    url: siteUrl,
   },
+  ...(siteAggregateRating
+    ? {
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: siteAggregateRating.ratingValue,
+          reviewCount: siteAggregateRating.reviewCount,
+          bestRating: siteAggregateRating.bestRating ?? 5,
+          worstRating: siteAggregateRating.worstRating ?? 1,
+        },
+      }
+    : {}),
 };
 
 export const metadata: Metadata = {
@@ -131,6 +149,7 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSoftwareApplicationJsonLd) }}
       />
+      <FAQJsonLd questions={homepageFaqItems} />
       <HowToJsonLd
         name="Hoe maak je een ATS-vriendelijk CV voor Nederlandse vacatures"
         description="Gebruik WerkCV om gratis te starten, een ATS-vriendelijke template te kiezen en later als PDF te downloaden."

@@ -6,7 +6,6 @@ export const metadata = buildEnglishMetadata({
   description:
     "Understand when to use a CV vs resume in the Netherlands, what Dutch recruiters expect, and how to pick the right format for international applications.",
   path: "/en/cv-or-resume-netherlands",
-  nlPath: "/cv-tips/cv-schrijven-tips",
   keywords: [
     "cv or resume netherlands",
     "difference cv and resume netherlands",

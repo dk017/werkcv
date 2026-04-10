@@ -17,11 +17,6 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: "https://werkcv.nl/cv-gids",
-    languages: {
-      "nl-NL": "https://werkcv.nl/cv-gids",
-      "en-NL": "https://werkcv.nl/en/guides",
-      "x-default": "https://werkcv.nl/cv-gids",
-    },
   },
   openGraph: {
     title: "Nederlandse CV Gids 2026 | WerkCV",

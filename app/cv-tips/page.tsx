@@ -10,11 +10,6 @@ export const metadata: Metadata = {
     keywords: ['cv tips', 'cv schrijven', 'cv advies', 'cv maken tips', 'sollicitatietips', 'cv hulp'],
     alternates: {
         canonical: 'https://werkcv.nl/cv-tips',
-        languages: {
-            'nl-NL': 'https://werkcv.nl/cv-tips',
-            'en-NL': 'https://werkcv.nl/en/guides',
-            'x-default': 'https://werkcv.nl/cv-tips',
-        },
     },
     openGraph: {
         title: 'CV Tips & Advies | WerkCV',

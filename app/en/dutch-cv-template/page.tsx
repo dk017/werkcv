@@ -6,7 +6,6 @@ export const metadata = buildEnglishMetadata({
   description:
     "Create a Dutch-style CV in English with ATS-friendly structure, practical section order, and the format commonly expected by employers in the Netherlands.",
   path: "/en/dutch-cv-template",
-  nlPath: "/templates",
   keywords: [
     "dutch cv template",
     "english cv netherlands",

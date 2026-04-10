@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import {
+    cvDownloadPrice,
+    siteAggregateRating,
+    siteName,
+    siteUrl,
+} from "@/lib/site-content";
+
+const pageUrl = `${siteUrl}/faq`;
 
 export const metadata: Metadata = {
     title: "Veelgestelde Vragen (FAQ) - CV Maken | WerkCV",
@@ -13,6 +21,9 @@ export const metadata: Metadata = {
         "cv template vragen",
         "werkcv hulp",
     ],
+    alternates: {
+        canonical: pageUrl,
+    },
 };
 
 const faqs = [
@@ -147,6 +158,32 @@ const comparisonGuides = [
 ];
 
 export default function FAQPage() {
+    const softwareApplicationJsonLd = siteAggregateRating
+        ? {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: siteName,
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web",
+            url: siteUrl,
+            inLanguage: "nl-NL",
+            offers: {
+                "@type": "Offer",
+                price: cvDownloadPrice.value,
+                priceCurrency: cvDownloadPrice.currency,
+                availability: "https://schema.org/InStock",
+                url: `${siteUrl}/prijzen`,
+            },
+            aggregateRating: {
+                "@type": "AggregateRating",
+                ratingValue: siteAggregateRating.ratingValue,
+                reviewCount: siteAggregateRating.reviewCount,
+                bestRating: siteAggregateRating.bestRating ?? 5,
+                worstRating: siteAggregateRating.worstRating ?? 1,
+            },
+        }
+        : null;
+
     return (
         <div className="min-h-screen bg-[#FFFEF0]">
             {/* Header */}
@@ -259,6 +296,12 @@ export default function FAQPage() {
                     }),
                 }}
             />
+            {softwareApplicationJsonLd && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareApplicationJsonLd) }}
+                />
+            )}
 
             <Footer />
         </div>

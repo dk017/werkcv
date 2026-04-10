@@ -207,6 +207,11 @@ export default function OpenSollicitatieBriefPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
+                  href: "/sollicitatiebrief-maken",
+                  title: "Sollicitatiebrief maken",
+                  body: "Gebruik de centrale briefhub als je eerst wilt bepalen of je open sollicitatie, voorbeeld of workflow-route nodig hebt.",
+                },
+                {
                   href: "/sollicitatiebrief-beginnen",
                   title: "Sollicitatiebrief beginnen",
                   body: "Gebruik een sterkere openingszin als je open brief nog te algemeen start.",

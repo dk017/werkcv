@@ -307,12 +307,12 @@ export default function CvSamenvattingVoorbeeldenPage() {
                 {
                   href: "/gratis-cv-maken",
                   title: "Gratis CV maken",
-                  body: "Zet je samenvatting direct in een complete Nederlandse CV-opbouw.",
+                  body: "Zet je samenvatting direct in een gratis startflow als je eerst wilt schrijven en later pas wilt downloaden.",
                 },
                 {
                   href: "/cv-aanmaken",
                   title: "CV aanmaken",
-                  body: "Gebruik een heldere structuur waarin je profieltekst meteen op de juiste plek staat.",
+                  body: "Gebruik een heldere eerste basisstructuur waarin je samenvatting meteen op de juiste plek staat.",
                 },
                 {
                   href: "/cv-maken-student",
