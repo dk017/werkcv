@@ -6,24 +6,24 @@ import { FAQJsonLd, OrganizationJsonLd } from "@/components/seo/JsonLd";
 
 const painPoints = [
   {
-    title: "Minder handmatig knip- en plakwerk",
+    title: "Word kost verborgen uren",
     body:
-      "Kleine bureaus verliezen snel uren aan opmaak, Word-fouten en het telkens opnieuw netjes zetten van bron-CV's voordat ze voorstelbaar zijn voor een opdrachtgever.",
+      "De grootste concurrent is meestal geen andere tool, maar het huidige proces in Word. Bron-CV's recht trekken, koppen herstellen en opmaak fixen kost ongemerkt veel tijd per kandidaat.",
   },
   {
-    title: "Klantklaar zonder rommelig bronbestand",
+    title: "Dutch-first in plaats van generiek",
     body:
-      "Opdrachtgevers willen geen rommelige PDF of losse Word-opmaak. Ze willen een rustige, professionele versie in jouw stijl of die van de klant.",
+      "WerkCV is gebouwd voor Nederlandse CV-conventies, taal en scanbaarheid. Dat is iets anders dan een generieke internationale builder of een losse creatieve template.",
   },
   {
-    title: "Privacy en redactie vooraf helder",
+    title: "Consistente output over het hele bureau",
     body:
-      "In de Nederlandse markt spelen contactgegevens, redactie en retentie vaak meteen mee. Daarom spreken we dat in de pilot vooraf expliciet af in plaats van het weg te wuiven.",
+      "Zonder vaste workflow krijgt iedere recruiter, coach of consultant net een andere versie van hetzelfde kandidaat-CV. WerkCV helpt die output standaardiseren.",
   },
   {
-    title: "Ook bruikbaar voor internationale kandidaten",
+    title: "ATS-proof zonder extra formatrondes",
     body:
-      "WerkCV heeft al Nederlandse en Engelstalige CV-routes. Dat helpt bureaus die zowel lokale kandidaten als internationals of expats voorstellen.",
+      "Het doel is niet nog een opmaaktool, maar een rustig Nederlands CV dat voorstelbaar blijft voor opdrachtgevers en leesbaar blijft in ATS-achtige workflows.",
   },
 ];
 
@@ -34,13 +34,59 @@ const pilotIncludes = [
   "Handmatige onboarding en eerste template-setup",
   "Factuur in plaats van consumenten-checkout",
   "Fair-use en retentie-afspraken vooraf",
-  "Support tijdens de pilot, zonder enterprise theater",
+  "Support tijdens de startfase, zonder enterprise theater",
 ];
 
-const responseExpectations = [
-  "Verwachte eerste reactie: binnen 1 tot 2 werkdagen",
-  "Geen generieke demo-sequence of automatische salesreeks",
-  "Bij duidelijke mismatch zeggen we dat ook snel en eerlijk",
+const replacementBullets = [
+  "van bron-CV of intake naar een vaste Nederlandse CV-structuur",
+  "minder handmatig formatteren in Word per kandidaat",
+  "consistente bureau-output in plaats van losse templatevarianten",
+];
+
+const workflowComparison = [
+  {
+    title: "Huidig proces in veel bureaus",
+    tone: "bg-rose-100",
+    items: [
+      "Kandidaat levert een bron-CV of losse intake aan in Word of PDF",
+      "Recruiter, coach of consultant trekt het document handmatig recht",
+      "Iedereen gebruikt net een andere template, stijl of volgorde",
+      "Eindresultaat kost tijd en oogt per dossier net anders",
+    ],
+  },
+  {
+    title: "Met WerkCV als vaste CV-workflow",
+    tone: "bg-sky-100",
+    items: [
+      "Broninformatie gaat in een vaste Dutch-first CV-structuur",
+      "Output blijft rustiger, consistenter en ATS-proof voor NL-context",
+      "Minder formatteren, meer tijd voor positionering en plaatsing",
+      "Het bureau levert herkenbare kandidaat-CV's in plaats van losse uitzonderingen",
+    ],
+  },
+];
+
+const differentiationPoints = [
+  {
+    title: "Niet nog een CV-builder",
+    body:
+      "De waarde zit niet in nog een toolvenster, maar in het vervangen van handmatige Word-stappen die nu tussen intake en voorstel zitten.",
+  },
+  {
+    title: "Gebouwd voor de Nederlandse markt",
+    body:
+      "WerkCV leunt op Nederlandse CV-conventies en Dutch-first output in plaats van generieke internationale templates.",
+  },
+  {
+    title: "ATS-proof als standaard, niet als extra check",
+    body:
+      "De structuur hoort vanaf het begin rustig en voorstelbaar te zijn. Dat voorkomt nabewerken aan het einde van de rit.",
+  },
+  {
+    title: "Consistentie over kandidaten heen",
+    body:
+      "Niet elk kandidaatdossier hoeft opnieuw uitgevonden te worden. WerkCV helpt bureaus een vaste outputlijn aan te houden.",
+  },
 ];
 
 const roiExamples = [
@@ -73,7 +119,7 @@ const fitCards = [
     tone: "bg-white",
   },
   {
-    title: "Nog geen fit voor deze pilot",
+    title: "Nog geen logische eerste stap",
     items: [
       "Enterprise aanbestedingen met uitgebreide security review",
       "Volledige ATS-integraties en multi-workspace beheer vanaf dag één",
@@ -96,7 +142,7 @@ const pilotSteps = [
       "Daarna richten we een eerste template-route in die past bij je bureau-uitstraling of die van de opdrachtgever, inclusief afspraken over redactie en output.",
   },
   {
-    title: "3. Pilot draaien met echte kandidaatcases",
+    title: "3. Echte kandidaatcases door de route laten lopen",
     body:
       "Je test de workflow met echte kandidaatcases in plaats van direct breed uit te rollen. Zo zien we waar de tijdswinst, kwaliteitswinst en frictie echt zitten.",
   },
@@ -114,9 +160,9 @@ const comparisonRows = [
       "Voor bureaus die nog niet weten of dit terugkerend werk is. Je test met echte dossiers en betaalt alleen voor client-ready output, zonder direct een maandmodel vast te trekken.",
   },
   {
-    title: "Als het terugkomt: pilot per maand",
+    title: "Als het terugkomt: vaste maandroute",
     body:
-      "Voor bureaus die elke maand hetzelfde opmaak- en klantpresentatiegedoe terugzien. Dan is een maandpilot logischer dan losse CV-prijzen, maar nog steeds zonder groot platformproject.",
+      "Voor bureaus die elke maand hetzelfde opmaak- en klantpresentatiegedoe terugzien. Dan is een vaste maandroute logischer dan losse CV-prijzen, maar nog steeds zonder groot platformproject.",
   },
 ];
 
@@ -124,12 +170,12 @@ const agencyProof = [
   {
     title: "Dutch-first templatebasis staat al live",
     body:
-      "WerkCV draait al op een Nederlandse CV-editor met ATS-vriendelijke templates. De agency-pilot gebruikt die bestaande basis in plaats van een losse demo zonder echte productlaag.",
+      "WerkCV draait al op een Nederlandse CV-editor met ATS-vriendelijke templates. Deze workflow leunt dus op een bestaande productbasis, niet op een losse demo zonder echte productlaag.",
   },
   {
     title: "Smalle use case in plaats van brede B2B-belofte",
     body:
-      "We focussen eerst op bron-CV naar client-ready document. Niet op een compleet ATS-vervangend platform. Dat maakt de pilot scherper en geloofwaardiger.",
+      "We focussen eerst op bron-CV naar client-ready document. Niet op een compleet ATS-vervangend platform. Dat maakt de propositie scherper en geloofwaardiger.",
   },
   {
     title: "Engelse en expat-routes zijn al aanwezig",
@@ -139,13 +185,13 @@ const agencyProof = [
   {
     title: "Privacy- en retentieafspraken horen bij de intake",
     body:
-      "In de pilot maken we vooraf expliciet afspraken over opslag, retentie en eventuele redactie van persoonsgegevens. Dat past beter bij de Nederlandse markt dan een vage 'komt goed'-belofte.",
+      "We maken vooraf expliciet afspraken over opslag, retentie en eventuele redactie van persoonsgegevens. Dat past beter bij de Nederlandse markt dan een vage 'komt goed'-belofte.",
   },
 ];
 
 const proofRoadmap = [
-  "Hoeveel kandidaat-CV's een pilotteam in de eerste maand echt door de route haalde",
-  "Of pay-per-CV of maandpilot beter aansloot op de workflow",
+  "Hoeveel kandidaat-CV's een eerste bureau in de eerste maand echt door de route haalde",
+  "Of pay-per-CV of een vaste maandroute beter aansloot op de workflow",
   "Welke redactie- en privacyafspraken vooraf cruciaal bleken",
   "Welke tijdswinst recruiters of consultants werkelijk terugzagen per dossier",
 ];
@@ -161,9 +207,9 @@ const agencyAudienceOptions = [
 
 const faqs = [
   {
-    question: "Is dit al een volledig self-serve agency-platform?",
+    question: "Is dit gewoon nog een CV-builder?",
     answer:
-      "Nee. Dit is bewust een pilot-aanpak. We starten klein met onboarding, een branded template en heldere afspraken, zodat we eerst echte betaalde vraag valideren.",
+      "Nee. Het doel is niet om nog een losse CV-tool naast Word te zetten. WerkCV is bedoeld als Dutch-first CV-workflow waarmee bureaus bron-CV's en intake-informatie sneller omzetten naar consistente, ATS-proof kandidaat-CV's.",
   },
   {
     question: "Kan ik klein beginnen zonder direct een maandabonnement?",
@@ -171,19 +217,19 @@ const faqs = [
       "Ja. Als je nog geen terugkerend volume durft vast te leggen, kunnen we eerst een kleinere volume-afspraak of pay-per-CV test bespreken. Het maandmodel is pas logisch als dit echt terugkomt in je workflow.",
   },
   {
-    question: "Voor wie is deze pilot het meest geschikt?",
+    question: "Voor wie is deze workflow het meest geschikt?",
     answer:
       "Voor boutique recruitmentbureaus, detacheerders, executive search en outplacementpartijen die bron-CV's sneller willen omzetten naar rustige, client-ready documenten.",
   },
   {
     question: "Doen jullie nu al automatische anonimisering?",
     answer:
-      "Nog niet als volledig productfeature. We kunnen in de pilot wel afspraken maken over handmatige redactie, welke gegevens zichtbaar mogen blijven en hoe output wordt opgeslagen. Automatische anonimisering bouwen we pas verder uit na betaalde vraag.",
+      "Nog niet als volledig productfeature. We kunnen wel afspraken maken over handmatige redactie, welke gegevens zichtbaar mogen blijven en hoe output wordt opgeslagen. Automatische anonimisering bouwen we pas verder uit na betaalde vraag.",
   },
   {
     question: "Hoe zit het met AVG en dataretentie?",
     answer:
-      "Tijdens de pilot maken we vooraf expliciete afspraken over opslag, retentie en eventuele extra privacy-eisen. Voor zwaardere eisen of enterprise-behoeften is aanvullend productwerk nodig.",
+      "Vooraf maken we expliciete afspraken over opslag, retentie en eventuele extra privacy-eisen. Voor zwaardere eisen of enterprise-behoeften is aanvullend productwerk nodig.",
   },
   {
     question: "Hoe snel reageren jullie op een agency aanvraag?",
@@ -193,10 +239,12 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Kandidaat-CV's sneller klantklaar | WerkCV Agency",
+  title: "Vervang Word in je kandidaat-CV workflow | WerkCV Agency",
   description:
-    "WerkCV Agency is een pilot voor recruiters, detacheerders en outplacement. Zet bron-CV's sneller om naar client-ready documenten met onboarding, factuur en fair-use vanaf EUR249 per maand.",
+    "Dutch-first CV-workflow voor recruiters, detacheerders en outplacement. Zet bron-CV's sneller om naar consistente, ATS-proof Nederlandse kandidaat-CV's zonder handmatig formatteren in Word.",
   keywords: [
+    "word alternatief recruitment",
+    "cv workflow bureau",
     "cv formatteren recruitment bureau",
     "client-ready kandidaat cv",
     "cv formatting software recruiters",
@@ -268,25 +316,24 @@ export default function AgencyPage() {
           <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr]">
             <div>
               <div className="mb-4 inline-block border-2 border-black bg-sky-200 px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-black">
-                WerkCV Agency Pilot
+                Dutch-first CV workflow
               </div>
               <h1 className="mb-4 text-4xl font-black text-black md:text-5xl">
-                Kandidaat-CV&apos;s sneller klantklaar zonder Word-chaos
+                Vervang Word in je kandidaat-CV workflow
               </h1>
               <p className="max-w-3xl text-lg font-medium leading-relaxed text-black">
-                WerkCV Agency is een kleine pilot voor boutique recruiters, detacheerders,
-                executive search en outplacementpartijen die bron-CV&apos;s sneller willen omzetten
-                naar rustige, client-ready documenten. Geen zwaar ATS-project of vage
-                enterprise-praat, maar een praktische eerste stap met onboarding, factuur en
-                duidelijke fair-use- en retentieafspraken.
+                WerkCV helpt recruiters, detacheerders en outplacementpartijen om van bron-CV of
+                intake naar een consistent, ATS-proof Nederlands kandidaat-CV te gaan zonder
+                handmatig formatteren in Word. Geen generieke internationale builder, maar een
+                vaste workflow voor bureaus die sneller en consistenter willen leveren.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3 text-sm font-black text-black">
                 <span className="border-2 border-black bg-white px-3 py-1">Vanaf EUR249 p/m</span>
                 <span className="border-2 border-black bg-white px-3 py-1">Of vanaf EUR5 per CV</span>
-                <span className="border-2 border-black bg-white px-3 py-1">1 branded route</span>
-                <span className="border-2 border-black bg-white px-3 py-1">Factuur + onboarding</span>
-                <span className="border-2 border-black bg-white px-3 py-1">Pilot met fair use</span>
+                <span className="border-2 border-black bg-white px-3 py-1">Dutch-first output</span>
+                <span className="border-2 border-black bg-white px-3 py-1">ATS-proof structuur</span>
+                <span className="border-2 border-black bg-white px-3 py-1">Consistente bureau-output</span>
               </div>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
@@ -310,18 +357,19 @@ export default function AgencyPage() {
 
             <aside className="h-fit border-4 border-black bg-[#FFF4D6] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-                Korte pilot, heldere verwachting
+                Waarom dit anders is
               </p>
               <h2 className="mt-2 text-2xl font-black text-black">
-                Eerst fit checken, daarna pas bouwen
+                Je vervangt vooral Word, losse templates en status quo
               </h2>
               <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
-                Deze route is bedoeld voor teams die terugkerend opmaakwerk of client-ready
-                redactie voelen, niet voor een grote softwareselectie. Daarom sturen we eerst op
-                fit, snelheid en een kleine pilot in plaats van op een brede demo.
+                De echte concurrent is meestal geen andere software. Het is jullie huidige
+                gewoonte: bron-CV binnenkrijgen, in Word recht trekken, per consultant net anders
+                formatteren en hopen dat de output rustig genoeg oogt voor de opdrachtgever.
+                WerkCV vervangt precies die stap.
               </p>
               <div className="mt-5 space-y-3 text-sm font-bold leading-relaxed text-black">
-                {responseExpectations.map((item) => (
+                {replacementBullets.map((item) => (
                   <p key={item}>&bull; {item}</p>
                 ))}
               </div>
@@ -342,35 +390,48 @@ export default function AgencyPage() {
         <section className="mb-10 space-y-6">
           <article className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Indicatief dossier
+              Niet nog een CV-builder
             </p>
             <h2 className="mt-2 text-3xl font-black text-black">
-              Van bron-CV naar client-ready voorstel
+              Dit is de workflow die WerkCV vervangt
             </h2>
             <p className="mt-4 text-sm font-medium leading-relaxed text-gray-700">
-              Geen glanzende enterprise-demo, maar een realistische sample van
-              het type dossier waar deze pilot op mikt: een bruikbare
-              Nederlandse kandidaat met inhoud die nog te rommelig binnenkomt
-              voor directe klantpresentatie.
+              De meeste bureaus gebruiken al iets om CV&apos;s te maken: Word, een eigen template of
+              een handmatige combinatie van intake, copy-paste en redactie. Dat voelt goedkoop
+              omdat iedereen het al heeft, maar het kost tijd, maakt output inconsistent en
+              schaalt slecht zodra meerdere kandidaten tegelijk lopen.
             </p>
-            <div className="mt-6 max-w-3xl space-y-4">
-              <p className="text-sm font-bold leading-relaxed text-black">
-                Wat er in zo&apos;n eerste stap meestal verandert:
-              </p>
-              <ul className="space-y-2 text-sm font-medium leading-relaxed text-slate-700">
-                <li>&bull; minder ruis bovenaan: geen overvolle persoonsgegevens of losse details</li>
-                <li>&bull; scherpere positionering: van breed bronverhaal naar rustige voorsteltekst</li>
-                <li>&bull; scanbare werkervaring: korter, consistenter en sneller leesbaar voor opdrachtgever</li>
-              </ul>
-              <p className="text-sm font-medium leading-relaxed text-slate-700">
-                Een echte before/after sample komt pas terug op deze pagina zodra de definitieve
-                versie sterk genoeg is om echt als verkoopbewijs te dienen.
-              </p>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              {workflowComparison.map((column) => (
+                <article
+                  key={column.title}
+                  className={`border-4 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${column.tone}`}
+                >
+                  <h3 className="text-xl font-black text-black">{column.title}</h3>
+                  <ul className="mt-4 space-y-2 text-sm font-bold leading-relaxed text-black">
+                    {column.items.map((item) => (
+                      <li key={item}>&bull; {item}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+            <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+              {differentiationPoints.map((point) => (
+                <article key={point.title} className="border-2 border-black bg-[#FFFEF0] p-4">
+                  <h3 className="text-sm font-black uppercase tracking-[0.08em] text-black">
+                    {point.title}
+                  </h3>
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+                    {point.body}
+                  </p>
+                </article>
+              ))}
             </div>
             <p className="mt-5 text-xs font-medium leading-relaxed text-slate-600">
-              Indicatief, geanonimiseerd voorbeeld van het type transformatie
-              dat we in een pilot willen testen. Geen claim over volledige
-              automatisering of anonieme bulkverwerking vanaf dag één.
+              Daarom positioneert WerkCV zich hier niet als nog een builder, maar als vaste
+              CV-workflow voor bureaus die Nederlandse kandidaat-CV&apos;s sneller en consistenter
+              willen opleveren.
             </p>
           </article>
 
@@ -441,25 +502,25 @@ export default function AgencyPage() {
 
         <section className="mb-10 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="mb-4 text-3xl font-black text-black">Wat de pilot nu wel bevat</h2>
+            <h2 className="mb-4 text-3xl font-black text-black">Wat je nu concreet krijgt</h2>
             <ul className="space-y-3 text-sm font-bold leading-relaxed text-black">
               {pilotIncludes.map((item) => (
                 <li key={item}>&bull; {item}</li>
               ))}
             </ul>
             <p className="mt-5 text-sm font-medium leading-relaxed text-gray-700">
-              De pilot is bedoeld om echte betaalde vraag te toetsen. Daarom houden we de
-              propositie scherp en geloofwaardig in plaats van direct een vol enterprise-platform
-              te beloven.
+              De samenwerking start bewust klein. Zo blijft de propositie scherp en geloofwaardig,
+              zonder meteen een vol enterprise-platform te beloven voordat de workflow echt in een
+              bureaucontext is gevalideerd.
             </p>
           </div>
 
           <div className="border-4 border-black bg-sky-200 p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="mb-4 text-2xl font-black text-black">Waarom nu klein starten</h2>
+            <h2 className="mb-4 text-2xl font-black text-black">Waarom we klein starten</h2>
             <p className="text-sm font-medium leading-relaxed text-black">
               Jouw eerste doel is niet twintig agencies tegelijk. Jouw eerste doel is één betalende
-              pilot die laat zien welke workflow, prijs en privacy-afspraken echt belangrijk zijn.
-              Dat voorkomt een dure B2B-bouwronde zonder bewijs.
+              samenwerking die laat zien welke workflow, prijs en privacy-afspraken echt belangrijk
+              zijn. Dat voorkomt een dure B2B-bouwronde zonder bewijs.
             </p>
           </div>
         </section>
@@ -485,10 +546,10 @@ export default function AgencyPage() {
             Proof block
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            Hier komt usageproof zodra de eerste pilot draait
+            Hier komt usageproof zodra de eerste bureaus live zijn
           </h2>
           <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-gray-700">
-            We vullen deze sectie pas met echte usagedata zodra de eerste pilot live draait.
+            We vullen deze sectie pas met echte usagedata zodra de eerste bureaus live zijn.
             Liever nog geen opgepoetste testimonial dan een halfzachte claim. Wat we hier straks
             geanonimiseerd willen laten zien:
           </p>
@@ -505,7 +566,7 @@ export default function AgencyPage() {
         </section>
 
         <section className="mb-10">
-          <h2 className="mb-6 text-3xl font-black text-black">Hoe de pilot werkt</h2>
+          <h2 className="mb-6 text-3xl font-black text-black">Hoe de samenwerking start</h2>
           <div className="grid gap-6 md:grid-cols-2">
             {pilotSteps.map((step) => (
               <article
@@ -561,7 +622,7 @@ export default function AgencyPage() {
                 Als er echte betaalde vraag is, moet de eerste stap niet een losse demo-call zijn
                 maar een bruikbare intake. Stuur je doelgroep, volume, huidige bronbestanden en of
                 je vooral snelheid, privacy/redactie of klantpresentatie wilt verbeteren. Dan
-                reageren we met de kleinste pilotroute die nu geloofwaardig te testen is.
+                reageren we met de kleinste werkbare route die nu geloofwaardig te testen is.
               </p>
             </div>
 
@@ -583,7 +644,7 @@ export default function AgencyPage() {
                 <li>&bull; Hoe kandidaten nu hun bron-CV&apos;s aanleveren</li>
                 <li>&bull; Of je output in bureau- of opdrachtgeverstijl nodig hebt</li>
                 <li>&bull; Of contactgegevens of andere persoonsgegevens aangepast moeten worden</li>
-                <li>&bull; Of je klein wilt starten per CV of liever meteen een maandpilot test</li>
+                <li>&bull; Of je klein wilt starten per CV of liever meteen een vaste maandroute wilt</li>
               </ul>
             </div>
           </div>
@@ -591,8 +652,8 @@ export default function AgencyPage() {
           <B2BLeadForm
             pageType="agency"
             pagePath="/agency"
-            title="Vraag een agency pilot-intake aan"
-            description="Geen generieke salesform. We willen genoeg context om terug te komen met een kleine pilot of volume-afspraak die echt past bij jouw kandidaatflow."
+            title="Vraag een agency intake aan"
+            description="Geen generieke salesform. We willen genoeg context om terug te komen met een kleine werkbare route of volume-afspraak die echt past bij jouw kandidaatflow."
             submitLabel="Stuur agency intake"
             audienceLabel="Type organisatie"
             audienceOptions={agencyAudienceOptions}
