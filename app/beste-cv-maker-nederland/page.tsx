@@ -92,6 +92,11 @@ export default function BesteCvMakerNederlandPage() {
           body: "Gebruik deze route als prijsmodel en eenmalig betalen voor jou doorslaggevend zijn.",
         },
         {
+          href: "/goedkoopste-cv-maker-nederland",
+          label: "Goedkoopste CV maker",
+          body: "Vergelijk gratis opties, proefprijzen en eenmalig betalen op basis van werkelijke kosten per CV.",
+        },
+        {
           href: "/cv-gids/werkcv-vs-cvmaker",
           label: "WerkCV vs CVMaker",
           body: "Vergelijk WerkCV met een grote abonnementsgerichte speler.",

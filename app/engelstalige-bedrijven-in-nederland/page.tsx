@@ -88,6 +88,11 @@ export default function EngelstaligeBedrijvenInNederlandPage() {
       relatedDescription="Gebruik deze routes als je verder wilt van oriëntatie naar concrete sollicitatie- of verhuisstappen."
       relatedLinks={[
         {
+          href: "/cv-tips/cv-schrijven-buitenlander-nederland",
+          label: "CV schrijven als buitenlander in Nederland",
+          body: "Lees hoe Nederlandse werkgevers kijken naar foto, taalkeuze, persoonsgegevens en vertaalde functietitels op een CV van een internationale kandidaat.",
+        },
+        {
           href: "/en",
           label: "English guide hub",
           body: "De hoofdroute voor CV, ATS en Nederlandse sollicitatieverwachtingen in het Engels.",

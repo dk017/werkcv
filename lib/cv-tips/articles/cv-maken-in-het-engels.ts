@@ -262,9 +262,10 @@ export const cvMakenInHetEngels: BlogArticle = {
     ],
 
     relatedArticleSlugs: [
+        'cv-schrijven-buitenlander-nederland',
         'linkedin-naar-cv',
-        'cv-schrijven-tips',
         'ats-vriendelijk-cv',
+        'cv-schrijven-tips',
     ],
     relatedExampleSlugs: [
         'technologie-en-ict/software-ontwikkelaar',

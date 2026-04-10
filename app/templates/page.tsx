@@ -159,6 +159,12 @@ export default function TemplatesPage() {
                 CV builders vergelijken
               </Link>
               <Link
+                href="/goedkoopste-cv-maker-nederland"
+                className="border-2 border-black bg-white px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors"
+              >
+                Goedkoopste CV maker
+              </Link>
+              <Link
                 href="/cv-gids/welke-cv-builder-past-bij-jou-in-nederland"
                 className="border-2 border-black bg-blue-200 px-3 py-2 text-sm font-black text-black hover:bg-blue-300 transition-colors"
               >

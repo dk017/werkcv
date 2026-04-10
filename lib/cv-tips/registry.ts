@@ -48,6 +48,7 @@ import { cvNaOntslag } from './articles/cv-na-ontslag';
 import { cv50Plus } from './articles/cv-50-plus';
 import { cvSchrijvenMetAi } from './articles/cv-schrijven-met-ai';
 import { cvBijwerken } from './articles/cv-bijwerken';
+import { cvSchrijvenBuitenlanderNederland } from './articles/cv-schrijven-buitenlander-nederland';
 
 // ============================================================================
 // DATA COLLECTION
@@ -96,6 +97,7 @@ const allArticles: BlogArticle[] = [
     cv50Plus,
     cvSchrijvenMetAi,
     cvBijwerken,
+    cvSchrijvenBuitenlanderNederland,
 ].sort((a, b) => a.order - b.order);
 
 // ============================================================================

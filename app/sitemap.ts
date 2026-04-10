@@ -701,6 +701,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.82,
         },
         {
+            url: `${baseUrl}/goedkoopste-cv-maker-nederland`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.81,
+        },
+        {
             url: `${baseUrl}/engelstalige-bedrijven-in-nederland`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
