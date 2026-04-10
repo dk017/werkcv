@@ -50,7 +50,7 @@ const samples = {
 };
 
 const tabButtonClassName =
-  "border-4 px-4 py-3 text-left text-sm font-black transition-all md:px-5 md:py-4 md:text-base";
+  "border-2 px-4 py-3 text-left text-sm font-black transition-all md:px-5 md:py-4 md:text-base";
 
 export default function AgencyCvSamplePair() {
   const [activeSample, setActiveSample] = useState<SampleKey>("after");
@@ -70,7 +70,7 @@ export default function AgencyCvSamplePair() {
               aria-pressed={isActive}
               className={`${tabButtonClassName} ${
                 isActive
-                  ? "border-black bg-yellow-400 text-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+                  ? "border-black bg-yellow-400 text-black"
                   : "border-black bg-white text-slate-700 hover:bg-slate-50"
               }`}
             >
@@ -89,75 +89,72 @@ export default function AgencyCvSamplePair() {
       </div>
 
       <article
-        className={`border-4 border-black p-4 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:p-5 ${sample.accentClassName}`}
+        className={`border-4 border-black p-5 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:p-6 ${sample.accentClassName}`}
       >
-        <div className="flex flex-col gap-4 border-4 border-black bg-white p-4 md:p-5">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div className="max-w-3xl">
-              <p
-                className={`inline-block border px-2 py-1 text-xs font-black uppercase tracking-[0.18em] ${sample.badgeClassName}`}
-              >
-                {sample.kicker}
-              </p>
-              <h3 className="mt-3 text-2xl font-black text-black md:text-3xl">{sample.title}</h3>
-              <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700 md:text-base">
-                {sample.description}
-              </p>
-            </div>
-
-            <a
-              href={sample.pdfHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block border-4 border-black bg-yellow-400 px-4 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="max-w-3xl">
+            <p
+              className={`inline-block border px-2 py-1 text-xs font-black uppercase tracking-[0.18em] ${sample.badgeClassName}`}
             >
-              {sample.buttonLabel}
-            </a>
+              {sample.kicker}
+            </p>
+            <h3 className="mt-3 text-2xl font-black text-black md:text-3xl">{sample.title}</h3>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700 md:text-base">
+              {sample.description}
+            </p>
           </div>
 
           <a
             href={sample.pdfHref}
             target="_blank"
             rel="noopener noreferrer"
-            className="mx-auto block w-full max-w-3xl border-4 border-black bg-white shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+            className="inline-block border-3 border-black bg-yellow-400 px-4 py-3 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
-            <Image
-              src={sample.previewSrc}
-              alt={sample.previewAlt}
-              width={1310}
-              height={1853}
-              className="h-auto w-full"
-              sizes="(min-width: 1280px) 52rem, (min-width: 768px) 80vw, 100vw"
-              priority
-            />
+            {sample.buttonLabel}
           </a>
+        </div>
 
-          <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="border-3 border-black bg-[#FFFEF0] p-4">
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">
-                Wat je hier ziet
-              </p>
-              <ul className="mt-3 space-y-2 text-sm font-bold leading-relaxed text-black">
-                {sample.bullets.map((item) => (
-                  <li key={item}>&bull; {item}</li>
-                ))}
-              </ul>
-            </div>
+        <a
+          href={sample.pdfHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 block"
+        >
+          <Image
+            src={sample.previewSrc}
+            alt={sample.previewAlt}
+            width={1310}
+            height={1853}
+            className="mx-auto h-auto w-full max-w-3xl shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-transform hover:-translate-y-1"
+            sizes="(min-width: 1280px) 52rem, (min-width: 768px) 80vw, 100vw"
+            priority
+          />
+        </a>
 
-            <div className="border-3 border-black bg-white p-4">
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">
-                Waarom dit telt
-              </p>
-              <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                Op een agency-pagina moet het verschil in één oogopslag zichtbaar zijn. Daarom
-                krijgt elke preview hier de volle breedte in plaats van twee kleine thumbnails
-                naast elkaar.
-              </p>
-              <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                Fictieve maar realistische Nederlandse kandidaat: Sanne Vermeer, HR-adviseur.
-                Gemaakt als agency sample, niet als klantcase.
-              </p>
-            </div>
+        <div className="mt-6 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">
+              Wat je hier ziet
+            </p>
+            <ul className="mt-3 space-y-2 text-sm font-bold leading-relaxed text-black">
+              {sample.bullets.map((item) => (
+                <li key={item}>&bull; {item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="border-t-4 border-black pt-4">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">
+              Waarom dit telt
+            </p>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              De preview krijgt nu de volle breedte zodat het document zelf het verhaal vertelt,
+              in plaats van extra UI die om aandacht vraagt.
+            </p>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Fictieve maar realistische Nederlandse kandidaat: Sanne Vermeer, HR-adviseur.
+              Gemaakt als agency sample, niet als klantcase.
+            </p>
           </div>
         </div>
       </article>
