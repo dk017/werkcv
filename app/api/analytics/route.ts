@@ -20,6 +20,9 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'b2b_form_started',
     'b2b_form_submitted',
     'b2b_form_failed',
+    'contact_form_started',
+    'contact_form_submitted',
+    'contact_form_failed',
 ]);
 
 type PrismaWithOptionalAnalytics = typeof prisma & {

@@ -75,6 +75,9 @@ export type AnalyticsEvent =
           event: 'b2b_form_failed';
           properties: { pageType: 'agency' | 'coach' | 'partner'; path: string; reason: string };
       }
+    | { event: 'contact_form_started'; properties: { path: string } }
+    | { event: 'contact_form_submitted'; properties: { path: string; subject: string } }
+    | { event: 'contact_form_failed'; properties: { path: string; reason: string } }
     // Engagement
     | { event: 'onboarding_shown'; properties: Record<string, never> }
     | { event: 'onboarding_dismissed'; properties: { action: 'start_typing' | 'upload_cv' } }
