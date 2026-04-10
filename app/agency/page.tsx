@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import AgencyCvSamplePair from "@/components/agency/AgencyCvSamplePair";
 import B2BLeadForm from "@/components/b2b/B2BLeadForm";
 import { FAQJsonLd, OrganizationJsonLd } from "@/components/seo/JsonLd";
 
@@ -354,7 +353,20 @@ export default function AgencyPage() {
               Nederlandse kandidaat met inhoud die nog te rommelig binnenkomt
               voor directe klantpresentatie.
             </p>
-            <AgencyCvSamplePair />
+            <div className="mt-6 max-w-3xl space-y-4">
+              <p className="text-sm font-bold leading-relaxed text-black">
+                Wat er in zo&apos;n eerste stap meestal verandert:
+              </p>
+              <ul className="space-y-2 text-sm font-medium leading-relaxed text-slate-700">
+                <li>&bull; minder ruis bovenaan: geen overvolle persoonsgegevens of losse details</li>
+                <li>&bull; scherpere positionering: van breed bronverhaal naar rustige voorsteltekst</li>
+                <li>&bull; scanbare werkervaring: korter, consistenter en sneller leesbaar voor opdrachtgever</li>
+              </ul>
+              <p className="text-sm font-medium leading-relaxed text-slate-700">
+                Een echte before/after sample komt pas terug op deze pagina zodra de definitieve
+                versie sterk genoeg is om echt als verkoopbewijs te dienen.
+              </p>
+            </div>
             <p className="mt-5 text-xs font-medium leading-relaxed text-slate-600">
               Indicatief, geanonimiseerd voorbeeld van het type transformatie
               dat we in een pilot willen testen. Geen claim over volledige
