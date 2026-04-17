@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { estimateNetFromTaxableIncome } from "@/lib/tools/netto-bruto";
 import VakantiegeldTool from "./VakantiegeldTool";
 
 const faqItems = [
@@ -14,7 +15,7 @@ const faqItems = [
     },
     {
         question: "Hoe bereken je netto vakantiegeld?",
-        answer: "Deze tool rekent je bruto vakantiegeld uit. Voor netto vakantiegeld houdt je werkgever loonheffing in. Die inhouding hangt af van je situatie en de regels voor bijzondere beloningen, waardoor netto per persoon kan verschillen.",
+        answer: "Deze pagina rekent eerst je bruto vakantiegeld uit en geeft daarna een ruwe netto-indicatie op basis van 2026-loonheffingsaannames voor een werknemer onder AOW-leeftijd met loonheffingskorting. Je echte netto uitbetaling kan afwijken door bijzondere-beloningstabellen, pensioeninhouding en je persoonlijke situatie.",
     },
     {
         question: "Wanneer wordt vakantiegeld meestal uitbetaald?",
@@ -26,11 +27,23 @@ const faqItems = [
     },
     {
         question: "Is dit bedrag bruto of netto?",
-        answer: "Deze tool rekent bruto. De netto uitbetaling hangt af van loonheffing en je persoonlijke situatie.",
+        answer: "De hoofduitkomst blijft bruto. Daarnaast tonen we een ruwe netto-indicatie zodat je beter begrijpt wat er ongeveer op je rekening kan landen, maar je loonstrook en werkgever blijven leidend.",
     },
     {
         question: "Is vakantiegeld hetzelfde als een 13e maand?",
         answer: "Nee. Vakantiegeld is meestal minimaal 8% van loon dat je opbouwt. Een 13e maand is een aparte arbeidsvoorwaarde die niet automatisch voor iedereen geldt.",
+    },
+    {
+        question: "Krijg ik vakantiegeld als ik parttime werk?",
+        answer: "Ja. Ook bij parttime werk bouw je normaal vakantiegeld op over het loon dat je verdient. Het bedrag is lager dan bij fulltime werk omdat je bruto loonbasis lager is, maar de 8%-logica blijft meestal hetzelfde.",
+    },
+    {
+        question: "Wat gebeurt er met vakantiegeld als ik uit dienst ga?",
+        answer: "Bij uitdiensttreding wordt opgebouwd maar nog niet uitbetaald vakantiegeld meestal afgerekend op je eindafrekening. Controleer je contract, cao en loonstrook als je wilt zien over welke periode je nog opbouw hebt staan.",
+    },
+    {
+        question: "Is vakantiegeld hetzelfde als vakantietoeslag?",
+        answer: "Meestal wel. In Nederland worden vakantiegeld en vakantietoeslag vaak als dezelfde arbeidsvoorwaarde gebruikt: meestal minimaal 8% extra boven op je loon, vaak uitbetaald in mei of juni.",
     },
 ];
 
@@ -80,12 +93,59 @@ const cvIntentLinks = [
   },
 ];
 
+const euroFormatter = new Intl.NumberFormat("nl-NL", {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+});
+
+const holidayExamples = [2500, 3500, 4500].map((monthlyGross) => {
+    const annualGross = monthlyGross * 12;
+    const holidayAllowanceGross = annualGross * 0.08;
+    const taxEstimate = estimateNetFromTaxableIncome({
+        taxableAnnualIncome: annualGross + holidayAllowanceGross,
+        applyTaxCredits: true,
+        ageProfile: "under_aow",
+    });
+
+    return {
+        monthlyGross,
+        holidayAllowanceGross,
+        holidayAllowanceNet: Math.round(holidayAllowanceGross * taxEstimate.effectiveNetRatio),
+    };
+});
+
+const comparisonRows = [
+    {
+        term: "Vakantiegeld",
+        meaning: "Meestal minimaal 8% extra over je brutoloon.",
+        timing: "Vaak uitbetaling in mei of juni.",
+    },
+    {
+        term: "Vakantietoeslag",
+        meaning: "In de praktijk vaak hetzelfde begrip als vakantiegeld.",
+        timing: "Meestal hetzelfde uitbetaalmoment als vakantiegeld.",
+    },
+    {
+        term: "Vakantiedagen",
+        meaning: "Betaalde verlofdagen, geen extra looncomponent.",
+        timing: "Neem je op in uren of dagen, niet als apart salarisbedrag.",
+    },
+    {
+        term: "13e maand",
+        meaning: "Aparte arbeidsvoorwaarde naast vakantiegeld, vaak rond 8,33% of een extra maandloon.",
+        timing: "Vaak in december of volgens cao/contract.",
+    },
+];
+
 export const metadata: Metadata = {
-    title: "Vakantiegeld Berekenen 2026 - Bruto Tool + Netto Uitleg | WerkCV",
-    description: "Bereken je bruto vakantiegeld voor 2026 en lees direct hoe bruto, netto, loonheffing en 13e maand van elkaar verschillen. Praktische tool voor Nederlandse werknemers.",
+    title: "Vakantiegeld Berekenen 2026 | 8% Tool + Bruto Netto Uitleg | WerkCV",
+    description: "Bereken je vakantiegeld in 2026 met de Nederlandse 8%-regel. Zie direct je bruto vakantiegeld, een ruwe netto-indicatie en het verschil met vakantietoeslag, vakantiedagen en 13e maand.",
     keywords: [
         "vakantiegeld berekenen",
         "vakantie geld berekenen",
+        "vakantietoeslag berekenen",
         "vakantiegeld berekenen bruto netto",
         "bruto netto vakantiegeld",
         "netto vakantiegeld berekenen",
@@ -94,7 +154,12 @@ export const metadata: Metadata = {
         "8 procent vakantiegeld",
         "bruto vakantiegeld berekenen",
         "vakantiegeld calculator",
+        "vakantiegeld parttime",
+        "vakantiegeld bij uit dienst",
     ],
+    alternates: {
+        canonical: "https://werkcv.nl/tools/vakantiegeld-berekenen",
+    },
 };
 
 export default function VakantiegeldBerekenenPage() {
@@ -136,41 +201,20 @@ export default function VakantiegeldBerekenenPage() {
                                 Geld
                             </span>
                             <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                                Bijgewerkt 1 april 2026
+                                Bijgewerkt 17 april 2026
                             </span>
                         </div>
                         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-                            Vakantiegeld berekenen: bruto tool met netto uitleg
+                            Vakantiegeld berekenen in 2026
                         </h1>
                         <p className="text-lg text-slate-600 font-medium max-w-3xl">
-                            Simpel, snel en bruikbaar. Deze tool rekent met de Nederlandse basisregel van minimaal 8% en laat direct zien wat je bruto vakantiegeld ongeveer is over de periode die je hebt opgebouwd. Daaronder zie je ook hoe bruto, netto, belasting en 13e maand van elkaar verschillen.
+                            Simpel, snel en bruikbaar voor werknemers in loondienst. Deze tool rekent met de Nederlandse basisregel van meestal minimaal 8% en laat direct zien wat je bruto vakantiegeld ongeveer is over de periode die je hebt opgebouwd. Daarna zie je ook een ruwe netto-indicatie en lees je waar het verschil tussen bruto en netto vakantiegeld meestal vandaan komt.
                         </p>
-                        <div className="mt-6 flex flex-wrap gap-3">
-                            <Link
-                                href="/editor"
-                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
-                            >
-                                Maak gratis je CV
-                            </Link>
-                            <Link
-                                href="/cv-maken-zonder-abonnement"
-                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
-                            >
-                                CV zonder abonnement
-                            </Link>
-                            <Link
-                                href="/beste-cv-maker-nederland"
-                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
-                            >
-                                Beste CV maker NL
-                            </Link>
-                        </div>
-
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
                             {[
                                 ["Basisregel", "Minimaal 8%", "voor veel reguliere werknemers"],
                                 ["Uitbetaling", "Mei of juni", "meestal, tenzij contract/cao anders zegt"],
-                                ["Uitkomst", "Bruto eerst", "netto hangt af van loonheffing en inhouding"],
+                                ["Uitkomst", "Bruto + netto indicatie", "netto blijft een schatting door loonheffing en inhoudingen"],
                             ].map(([label, value, note]) => (
                                 <div key={label} className="bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                                     <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">{label}</p>
@@ -186,15 +230,116 @@ export default function VakantiegeldBerekenenPage() {
                             Waarom dit nuttig is
                         </p>
                         <div className="space-y-3 text-sm text-slate-600">
-                            <p>Veel mensen kennen de 8%-regel, maar niet welk loon precies meetelt.</p>
-                            <p>WerkCV rekent met bruto loon in de opgebouwde periode plus optionele structurele extra componenten.</p>
-                            <p>Daardoor krijg je een betere indicatie voor loonstrookcontrole, budgetplanning of de stap van bruto vakantiegeld naar wat er netto op je rekening komt.</p>
+                            <p>Veel mensen zoeken op vakantiegeld bruto netto, maar krijgen alleen een kale 8%-formule zonder context.</p>
+                            <p>WerkCV rekent met bruto loon in de opgebouwde periode plus optionele structurele extra componenten en geeft daarna een ruwe netto-indicatie op basis van 2026-aannames.</p>
+                            <p>Daardoor krijg je een betere indicatie voor loonstrookcontrole, budgetplanning en het verschil tussen gewone maandloonheffing en bijzondere beloningen.</p>
                         </div>
                     </aside>
                 </section>
 
+                <section className="mb-8 bg-[#FFF7E8] border-4 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">
+                        In het kort
+                    </p>
+                    <div className="mt-3 grid gap-3 md:grid-cols-2">
+                        <div>
+                            <p className="text-sm font-black text-slate-900">Hoe bereken je vakantiegeld?</p>
+                            <p className="mt-1 text-sm text-slate-700 leading-relaxed">
+                                Meestal met deze basisformule: bruto loon in de opbouwperiode x 8%. Deze pagina rekent dat direct voor je door en laat daarna ook een ruwe netto-indicatie zien.
+                            </p>
+                        </div>
+                        <div>
+                            <p className="text-sm font-black text-slate-900">Wat is het niet?</p>
+                            <p className="mt-1 text-sm text-slate-700 leading-relaxed">
+                                Vakantiegeld is niet hetzelfde als vakantiedagen of een 13e maand. Vakantietoeslag wordt in Nederland meestal wel als hetzelfde begrip gebruikt als vakantiegeld.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
                 <section className="mb-12">
                     <VakantiegeldTool />
+                </section>
+
+                <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="mb-5">
+                        <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+                            Voorbeelden 2026
+                        </p>
+                        <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
+                            Voorbeelden vakantiegeld bruto netto in 2026
+                        </h2>
+                        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
+                            Dit zijn snelle rekenvoorbeelden bij een volledig opbouwjaar, 8% vakantiegeld,
+                            werknemer onder AOW-leeftijd en loonheffingskorting aan. Gebruik ze als grove
+                            oriëntatie, niet als vervanging van je loonstrook.
+                        </p>
+                    </div>
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full border-collapse text-sm">
+                            <thead>
+                                <tr className="border-b-2 border-black text-left">
+                                    <th className="px-3 py-2 font-black text-slate-900">Bruto maandloon</th>
+                                    <th className="px-3 py-2 font-black text-slate-900">Bruto vakantiegeld</th>
+                                    <th className="px-3 py-2 font-black text-slate-900">Ruwe netto-indicatie</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {holidayExamples.map((example) => (
+                                    <tr key={example.monthlyGross} className="border-b border-slate-200">
+                                        <td className="px-3 py-2 font-medium text-slate-700">
+                                            {euroFormatter.format(example.monthlyGross)}
+                                        </td>
+                                        <td className="px-3 py-2 font-medium text-slate-700">
+                                            {euroFormatter.format(example.holidayAllowanceGross)}
+                                        </td>
+                                        <td className="px-3 py-2 font-medium text-slate-700">
+                                            {euroFormatter.format(example.holidayAllowanceNet)}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <p className="mt-4 text-xs leading-relaxed text-slate-500">
+                        Netto-indicatie gebaseerd op dezelfde standaardaannames als de calculator op
+                        deze pagina. Pensioenpremie, cao-afspraken en persoonlijke inhoudingen kunnen de
+                        echte uitbetaling merkbaar veranderen.
+                    </p>
+                </section>
+
+                <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="mb-5">
+                        <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+                            Vergelijking
+                        </p>
+                        <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
+                            Vakantiegeld, vakantietoeslag, vakantiedagen en 13e maand
+                        </h2>
+                        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
+                            Veel zoekopdrachten lopen door elkaar. Dit is het praktische verschil tussen de termen die werknemers het vaakst samen zoeken.
+                        </p>
+                    </div>
+                    <div className="overflow-x-auto">
+                        <table className="min-w-full border-collapse text-sm">
+                            <thead>
+                                <tr className="border-b-2 border-black text-left">
+                                    <th className="px-3 py-2 font-black text-slate-900">Term</th>
+                                    <th className="px-3 py-2 font-black text-slate-900">Betekenis</th>
+                                    <th className="px-3 py-2 font-black text-slate-900">Hoe of wanneer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {comparisonRows.map((row) => (
+                                    <tr key={row.term} className="border-b border-slate-200">
+                                        <td className="px-3 py-2 font-black text-slate-900">{row.term}</td>
+                                        <td className="px-3 py-2 font-medium text-slate-700">{row.meaning}</td>
+                                        <td className="px-3 py-2 font-medium text-slate-700">{row.timing}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </section>
 
                 <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
@@ -227,17 +372,19 @@ export default function VakantiegeldBerekenenPage() {
                         </h2>
                         <div className="space-y-3 text-sm text-slate-700 leading-relaxed">
                             <p>
-                                Deze tool rekent je bruto vakantiegeld uit. Op je loonstrook kan het netto bedrag lager uitvallen
-                                omdat je werkgever loonheffing inhoudt. Vakantiegeld valt vaak onder de regels voor bijzondere
-                                beloningen, waardoor de inhouding anders kan voelen dan bij een gewone maand.
+                                Deze tool rekent eerst je bruto vakantiegeld uit en geeft daarna een ruwe netto-indicatie.
+                                Op je loonstrook kan het netto bedrag alsnog anders uitvallen omdat je werkgever loonheffing
+                                inhoudt via de tabellen voor bijzondere beloningen. Daardoor voelt vakantiegeld vaak zwaarder
+                                belast dan een normale salarismaand.
                             </p>
                             <p>
-                                Gebruik je bruto uitkomst daarom vooral als basis voor controle en vergelijking. Wil je daarna
-                                beter snappen wat bruto en netto in jouw situatie betekenen, ga dan verder met de{" "}
+                                Gebruik je bruto uitkomst daarom vooral als basis voor controle en vergelijking, en gebruik
+                                de netto-indicatie als tussenstap. Wil je daarna beter snappen wat bruto en netto in jouw
+                                situatie betekenen, ga dan verder met de{" "}
                                 <Link href="/tools/netto-bruto-calculator" className="font-black underline decoration-2 underline-offset-2 text-slate-900">
                                     netto bruto calculator
                                 </Link>
-                                .
+                                {" "}of vergelijk direct met de inhouding op je eigen loonstrook.
                             </p>
                         </div>
                     </div>
@@ -264,9 +411,21 @@ export default function VakantiegeldBerekenenPage() {
                 </section>
 
                 <RelatedToolsSection
-                    title="Meer salaris- en loonchecks"
-                    description="Gebruik deze tools samen als je salaris, uurloon en minimumgrenzen in Nederland wilt controleren."
+                    title="Meer rond loon, verlof en parttime"
+                    description="Vakantiegeld staat zelden op zichzelf. Meestal wil je daarna ook je verlofdagen, parttime scenario of netto loonimpact controleren."
                     tools={[
+                        {
+                            href: "/tools/vakantiedagen-berekenen",
+                            title: "Vakantiedagen berekenen",
+                            description: "Bekijk hoeveel verlofdagen of uren je opbouwt naast je vakantiegeld.",
+                            badge: "Verlof",
+                        },
+                        {
+                            href: "/tools/parttime-salaris-calculator",
+                            title: "Parttime salaris calculator",
+                            description: "Reken door wat minder uren betekenen voor maandloon, jaarloon en vakantiegeld.",
+                            badge: "Geld",
+                        },
                         {
                             href: "/tools/netto-bruto-calculator",
                             title: "Netto bruto calculator",
@@ -278,18 +437,6 @@ export default function VakantiegeldBerekenenPage() {
                             title: "Uurloon calculator",
                             description: "Reken je bruto maand- of jaarsalaris om naar een bruikbaar bruto uurloon.",
                             badge: "Geld",
-                        },
-                        {
-                            href: "/tools/minimumloon-checker",
-                            title: "Minimumloon checker",
-                            description: "Controleer het wettelijke minimumuurloon per leeftijd in 2026.",
-                            badge: "NL wetgeving",
-                        },
-                        {
-                            href: "/tools/salaris-onderhandeling",
-                            title: "Salaris onderhandeling",
-                            description: "Zet je salarischeck om in een concreet script of e-mail.",
-                            badge: "AI",
                         },
                     ]}
                 />

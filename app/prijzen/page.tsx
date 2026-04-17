@@ -3,31 +3,46 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-    title: "Prijzen - CV Maken Kosten | WerkCV",
-    description: "Maak gratis je CV en betaal eenmalig €4,99 per CV-download. Daarna kun je dat CV blijven bewerken, van template wisselen en opnieuw downloaden. Geen abonnement.",
+    title: "CV Maken Kosten? Eenmalig €4,99, Geen Abonnement | WerkCV",
+    description: "Maak gratis je CV en download voor €4,99 per CV. Geen abonnement, geen automatische verlenging. Voor hetzelfde betaalde CV kun je later opnieuw bewerken en downloaden.",
     keywords: [
         "cv maken kosten",
         "cv maker prijs",
         "cv downloaden prijs",
         "cv maken betaald",
         "cv betalen per download",
+        "cv.nl kosten",
         "goedkoop cv maken",
         "cv builder kosten",
         "professioneel cv prijs",
         "cv pdf kosten",
         "cv zonder abonnement",
+        "eenmalig betalen cv",
     ],
+    alternates: {
+        canonical: "https://werkcv.nl/prijzen",
+        languages: {
+            "nl-NL": "https://werkcv.nl/prijzen",
+            "x-default": "https://werkcv.nl/prijzen",
+        },
+    },
 };
+
+const priceBadges = [
+    "Eenmalig €4,99",
+    "Geen abonnement",
+    "Later opnieuw downloaden",
+] as const;
 
 const pricingIntentCards = [
     {
-        title: "CV maken betaald: wat mensen daar meestal mee bedoelen",
-        body: "Deze zoekterm betekent zelden dat iemand per se een duur platform zoekt. Meestal zoekt iemand een serieuze betaalde route waarbij het duidelijk is wanneer je betaalt, wat je krijgt en of er daarna nog maandkosten volgen.",
+        title: "CV maken betaald zonder maandabonnement",
+        body: "Deze zoekterm gaat meestal niet over duur, maar over duidelijk. Mensen willen weten wat een CV kost, wanneer ze betalen en of er daarna nog maandkosten of verlengingen volgen.",
         href: "/goedkoopste-cv-maker-nederland",
         label: "Vergelijk betaalde routes",
     },
     {
-        title: "CV betalen per download: hoe werkt dat bij WerkCV?",
+        title: "CV betalen per download in plaats van per maand",
         body: "Bij WerkCV zit de betaling op de definitieve PDF-download van het CV dat je wilt versturen. Je start gratis, bouwt je inhoud op, vergelijkt templates en betaalt pas wanneer je die versie echt wilt downloaden.",
         href: "/cv-maken-zonder-abonnement",
         label: "Lees hoe eenmalig betalen werkt",
@@ -35,9 +50,11 @@ const pricingIntentCards = [
 ] as const;
 
 const pricingFaqs = [
+    { q: "Wat kost WerkCV precies?", a: "WerkCV kost €4,99 per CV-download. Je start gratis, bouwt je CV op en betaalt pas wanneer je die definitieve PDF wilt downloaden." },
     { q: "Moet ik betalen om mijn CV te maken?", a: "Nee, het aanmaken en bewerken van je CV is volledig gratis. Je betaalt pas als je dat CV als PDF wilt downloaden." },
     { q: "Wat betekent cv maken betaald meestal?", a: "Meestal zoekt iemand een betaalde CV-tool met duidelijke kosten en zonder verrassingen achteraf. Voor WerkCV betekent dat: gratis starten en pas betalen wanneer je jouw definitieve PDF wilt downloaden." },
     { q: "Kan ik mijn CV per download betalen?", a: "Ja. Bij WerkCV betaal je eenmalig per CV wanneer je die definitieve PDF-download wilt doen. Voor datzelfde betaalde CV kun je later terugkomen, bewerken en opnieuw downloaden zonder opnieuw te betalen." },
+    { q: "Wat zijn CV.nl kosten volgens de publieke prijzenpagina?", a: "Volgens de publieke prijzenpagina van CV.nl kost de instaproute 14 dagen €0,99 en daarna €19,99 per maand met automatische verlenging. Gecheckt op 17 april 2026. Controleer actuele voorwaarden altijd zelf op hun officiële pricingpagina." },
     { q: "Is het een abonnement?", a: "Nee. Het is een eenmalige betaling van €4,99 per CV. Geen automatische verlengingen en geen verborgen kosten." },
     { q: "Kan ik mijn CV later nog bewerken?", a: "Ja. Na betaling blijft dat CV in je account staan en kun je het later opnieuw openen, bewerken, van template of kleur wisselen en opnieuw downloaden zonder opnieuw te betalen." },
     { q: "Wanneer betaal ik opnieuw?", a: "Alleen als je een nieuw CV als apart document aanmaakt. Voor een CV waarvoor je al hebt betaald, hoef je niet opnieuw te betalen om later nog een PDF te downloaden." },
@@ -108,11 +125,21 @@ export default function PrijzenPage() {
             <main className="relative z-10 max-w-4xl mx-auto px-6 py-16">
                 {/* Hero */}
                 <div className="text-center mb-12">
+                    <div className="flex flex-wrap justify-center gap-2 mb-4">
+                        {priceBadges.map((badge) => (
+                            <span
+                                key={badge}
+                                className="border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-black"
+                            >
+                                {badge}
+                            </span>
+                        ))}
+                    </div>
                     <h1 className="text-4xl md:text-5xl font-black text-black mb-4">
-                        Simpel & eerlijk geprijsd
+                        CV maken kosten: eenmalig €4,99 per CV, geen abonnement
                     </h1>
                     <p className="text-lg font-medium text-black max-w-2xl mx-auto">
-                        Maak je CV helemaal gratis. Betaal eenmalig per CV zodra je tevreden bent, en blijf datzelfde CV daarna gewoon bewerken en downloaden.
+                        WerkCV kost €4,99 per CV-download. Je start gratis, betaalt pas wanneer je wilt downloaden en kunt datzelfde betaalde CV later opnieuw bewerken en downloaden zonder extra maandkosten.
                     </p>
                     <p className="text-sm font-medium text-gray-700 max-w-2xl mx-auto mt-3">
                         Wil je eerst precies zien hoe{" "}
@@ -123,6 +150,9 @@ export default function PrijzenPage() {
                             eenmalig betalen
                         </Link>{" "}
                         zich verhoudt tot abonnementen? Bekijk dan eerst de vergelijking.
+                    </p>
+                    <p className="text-sm font-medium text-gray-700 max-w-2xl mx-auto mt-2">
+                        Zoek je vooral op <span className="font-black text-black">cv maken betaald</span> of <span className="font-black text-black">cv betalen per download</span>? Dan is dit precies de pagina waar het prijsmodel wordt uitgelegd.
                     </p>
                 </div>
 
@@ -169,6 +199,59 @@ export default function PrijzenPage() {
                         </div>
                     </div>
                 </div>
+
+                <section className="mb-16 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-600">
+                        Publieke prijscheck
+                    </p>
+                    <h2 className="mt-2 text-3xl font-black text-black">
+                        Zoek je op &quot;cv.nl kosten&quot;?
+                    </h2>
+                    <p className="mt-3 text-sm md:text-base font-medium leading-relaxed text-gray-700">
+                        Volgens de publieke prijzenpagina van CV.nl kost de instaproute 14 dagen €0,99 en daarna €19,99 per maand met automatische verlenging. Gecheckt op 17 april 2026. WerkCV gebruikt een ander model: gratis starten en €4,99 eenmalig per CV-download.
+                    </p>
+                    <div className="mt-6 grid gap-4 md:grid-cols-2">
+                        <div className="border-4 border-black bg-[#FFF4D6] p-5">
+                            <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-600">
+                                CV.nl
+                            </p>
+                            <ul className="mt-3 space-y-2 text-sm font-medium text-gray-700">
+                                <li>&bull; 14 dagen voor €0,99</li>
+                                <li>&bull; Daarna €19,99 per maand</li>
+                                <li>&bull; Automatische verlenging volgens pricingpagina</li>
+                            </ul>
+                        </div>
+                        <div className="border-4 border-black bg-yellow-300 p-5">
+                            <p className="text-xs font-black uppercase tracking-[0.18em] text-black">
+                                WerkCV
+                            </p>
+                            <ul className="mt-3 space-y-2 text-sm font-black text-black">
+                                <li>&bull; Gratis starten</li>
+                                <li>&bull; €4,99 per CV-download</li>
+                                <li>&bull; Geen abonnement of automatische verlenging</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div className="mt-5 flex flex-wrap gap-3">
+                        <Link
+                            href="/cv-gids/werkcv-vs-cv-nl"
+                            className="border-2 border-black bg-yellow-200 px-3 py-2 text-sm font-black text-black hover:bg-yellow-300 transition-colors"
+                        >
+                            Vergelijk WerkCV met CV.nl
+                        </Link>
+                        <a
+                            href="https://www.cv.nl/pricing"
+                            target="_blank"
+                            rel="noreferrer"
+                            className="border-2 border-black bg-white px-3 py-2 text-sm font-black text-black hover:bg-gray-100 transition-colors"
+                        >
+                            Open officiële CV.nl prijzen
+                        </a>
+                    </div>
+                    <p className="mt-4 text-xs font-medium leading-relaxed text-gray-600">
+                        Controleer actuele voorwaarden en prijzen altijd zelf op de officiële pricingpagina van CV.nl.
+                    </p>
+                </section>
 
                 <div className="mb-16 grid gap-6 md:grid-cols-2">
                     {pricingIntentCards.map((card) => (
