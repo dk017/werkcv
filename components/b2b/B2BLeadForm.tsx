@@ -17,6 +17,12 @@ type B2BLeadFormProps = {
   submitLabel: string;
   audienceLabel: string;
   audienceOptions: SelectOption[];
+  volumeLabel?: string;
+  volumeOptions?: SelectOption[];
+  goalLabel?: string;
+  goalPlaceholder?: string;
+  notesPlaceholder?: string;
+  successMessage?: string;
 };
 
 type FormState = {
@@ -34,7 +40,7 @@ type FormState = {
 
 type FieldErrors = Partial<Record<keyof FormState | "form", string[]>>;
 
-const volumeOptions: SelectOption[] = [
+const defaultVolumeOptions: SelectOption[] = [
   { value: "under-10", label: "Minder dan 10 per maand" },
   { value: "10-30", label: "10 tot 30 per maand" },
   { value: "31-75", label: "31 tot 75 per maand" },
@@ -75,6 +81,12 @@ export default function B2BLeadForm({
   submitLabel,
   audienceLabel,
   audienceOptions,
+  volumeLabel = "Volume of bereik",
+  volumeOptions = defaultVolumeOptions,
+  goalLabel = "Wat wil je opzetten?",
+  goalPlaceholder = "Beschrijf kort je doelgroep, huidige werkwijze en wat je wilt testen of lanceren.",
+  notesPlaceholder = "Optioneel: links, doelgroepdetails of vragen.",
+  successMessage = "Ontvangen. We reageren normaal binnen 1 tot 2 werkdagen met een concrete vervolgstap.",
 }: B2BLeadFormProps) {
   const [formState, setFormState] = useState<FormState>(initialState);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
@@ -151,7 +163,7 @@ export default function B2BLeadForm({
 
       {isSuccess ? (
         <div className="border-2 border-black bg-emerald-200 p-4 text-sm font-bold text-black">
-          Ontvangen. We reageren normaal binnen 1 tot 2 werkdagen met een concrete vervolgstap.
+          {successMessage}
         </div>
       ) : null}
 
@@ -274,7 +286,7 @@ export default function B2BLeadForm({
           </label>
 
           <label className="block">
-            <span className="mb-2 block text-sm font-black text-black">Volume of bereik</span>
+            <span className="mb-2 block text-sm font-black text-black">{volumeLabel}</span>
             <select
               required
               value={formState.monthlyVolume}
@@ -298,7 +310,7 @@ export default function B2BLeadForm({
         </div>
 
         <label className="block">
-          <span className="mb-2 block text-sm font-black text-black">Wat wil je opzetten?</span>
+          <span className="mb-2 block text-sm font-black text-black">{goalLabel}</span>
           <textarea
             required
             rows={5}
@@ -306,7 +318,7 @@ export default function B2BLeadForm({
             onFocus={handleFieldFocus}
             onChange={(event) => handleChange("goal", event.target.value)}
             className="w-full border-2 border-black bg-[#FFFEF0] px-4 py-3 text-sm font-medium text-black outline-none transition-colors focus:bg-white"
-            placeholder="Beschrijf kort je doelgroep, huidige werkwijze en wat je wilt testen of lanceren."
+            placeholder={goalPlaceholder}
           />
           {getErrorMessage(fieldErrors, "goal") ? (
             <span className="mt-2 block text-xs font-bold text-red-700">
@@ -343,12 +355,12 @@ export default function B2BLeadForm({
             <span className="mb-2 block text-sm font-black text-black">Extra context</span>
             <textarea
               rows={3}
-              value={formState.notes}
-              onFocus={handleFieldFocus}
-              onChange={(event) => handleChange("notes", event.target.value)}
-              className="w-full border-2 border-black bg-[#FFFEF0] px-4 py-3 text-sm font-medium text-black outline-none transition-colors focus:bg-white"
-              placeholder="Optioneel: links, doelgroepdetails of vragen."
-            />
+            value={formState.notes}
+            onFocus={handleFieldFocus}
+            onChange={(event) => handleChange("notes", event.target.value)}
+            className="w-full border-2 border-black bg-[#FFFEF0] px-4 py-3 text-sm font-medium text-black outline-none transition-colors focus:bg-white"
+            placeholder={notesPlaceholder}
+          />
             {getErrorMessage(fieldErrors, "notes") ? (
               <span className="mt-2 block text-xs font-bold text-red-700">
                 {getErrorMessage(fieldErrors, "notes")}

@@ -5,6 +5,32 @@ import { cvSchema, CVData, defaultCV } from '@/lib/cv'
 import { buildCheckoutURL, CheckoutAddon, parseCheckoutAddons } from '@/lib/polar'
 import { getCurrentUser } from '@/lib/auth'
 
+const userCVListSelect = {
+    id: true,
+    title: true,
+    templateId: true,
+    colorThemeId: true,
+    data: true,
+    updatedAt: true,
+};
+
+const paidOrderSelect = {
+    cvId: true,
+};
+
+type UserCVListItem = {
+    id: string;
+    title: string;
+    templateId: string;
+    colorThemeId: string | null;
+    data: unknown;
+    updatedAt: Date;
+};
+
+type PaidOrderItem = {
+    cvId: string | null;
+};
+
 export async function createCV(templateId: string = 'professional', colorThemeId: string = 'classic-blue', initialData?: CVData) {
     const user = await getCurrentUser();
     if (!user) {
@@ -119,24 +145,19 @@ export async function getUserCVs() {
     const cvs = await prisma.cVDocument.findMany({
         where: { userId: user.id },
         orderBy: { updatedAt: 'desc' },
-        select: {
-            id: true,
-            title: true,
-            templateId: true,
-            colorThemeId: true,
-            data: true,
-            updatedAt: true,
-        },
+        select: userCVListSelect,
     });
 
-    const cvIds = cvs.map((cv) => cv.id);
+    const cvIds = cvs.map((cv: UserCVListItem) => cv.id);
     const paidOrders = await prisma.order.findMany({
         where: { cvId: { in: cvIds }, paidAt: { not: null } },
-        select: { cvId: true },
+        select: paidOrderSelect,
     });
-    const paidCvIds = new Set(paidOrders.map((o) => o.cvId));
+    const paidCvIds = new Set(
+        paidOrders.flatMap((order: PaidOrderItem) => (order.cvId ? [order.cvId] : []))
+    );
 
-    return cvs.map((cv) => ({
+    return cvs.map((cv: UserCVListItem) => ({
         ...cv,
         isPaid: paidCvIds.has(cv.id),
     }));

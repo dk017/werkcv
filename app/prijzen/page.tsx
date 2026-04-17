@@ -4,11 +4,13 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
     title: "Prijzen - CV Maken Kosten | WerkCV",
-    description: "Maak gratis je CV en betaal eenmalig €4,99 per CV. Daarna kun je dat CV blijven bewerken, van template wisselen en opnieuw downloaden. Geen abonnement.",
+    description: "Maak gratis je CV en betaal eenmalig €4,99 per CV-download. Daarna kun je dat CV blijven bewerken, van template wisselen en opnieuw downloaden. Geen abonnement.",
     keywords: [
         "cv maken kosten",
         "cv maker prijs",
         "cv downloaden prijs",
+        "cv maken betaald",
+        "cv betalen per download",
         "goedkoop cv maken",
         "cv builder kosten",
         "professioneel cv prijs",
@@ -16,6 +18,31 @@ export const metadata: Metadata = {
         "cv zonder abonnement",
     ],
 };
+
+const pricingIntentCards = [
+    {
+        title: "CV maken betaald: wat mensen daar meestal mee bedoelen",
+        body: "Deze zoekterm betekent zelden dat iemand per se een duur platform zoekt. Meestal zoekt iemand een serieuze betaalde route waarbij het duidelijk is wanneer je betaalt, wat je krijgt en of er daarna nog maandkosten volgen.",
+        href: "/goedkoopste-cv-maker-nederland",
+        label: "Vergelijk betaalde routes",
+    },
+    {
+        title: "CV betalen per download: hoe werkt dat bij WerkCV?",
+        body: "Bij WerkCV zit de betaling op de definitieve PDF-download van het CV dat je wilt versturen. Je start gratis, bouwt je inhoud op, vergelijkt templates en betaalt pas wanneer je die versie echt wilt downloaden.",
+        href: "/cv-maken-zonder-abonnement",
+        label: "Lees hoe eenmalig betalen werkt",
+    },
+] as const;
+
+const pricingFaqs = [
+    { q: "Moet ik betalen om mijn CV te maken?", a: "Nee, het aanmaken en bewerken van je CV is volledig gratis. Je betaalt pas als je dat CV als PDF wilt downloaden." },
+    { q: "Wat betekent cv maken betaald meestal?", a: "Meestal zoekt iemand een betaalde CV-tool met duidelijke kosten en zonder verrassingen achteraf. Voor WerkCV betekent dat: gratis starten en pas betalen wanneer je jouw definitieve PDF wilt downloaden." },
+    { q: "Kan ik mijn CV per download betalen?", a: "Ja. Bij WerkCV betaal je eenmalig per CV wanneer je die definitieve PDF-download wilt doen. Voor datzelfde betaalde CV kun je later terugkomen, bewerken en opnieuw downloaden zonder opnieuw te betalen." },
+    { q: "Is het een abonnement?", a: "Nee. Het is een eenmalige betaling van €4,99 per CV. Geen automatische verlengingen en geen verborgen kosten." },
+    { q: "Kan ik mijn CV later nog bewerken?", a: "Ja. Na betaling blijft dat CV in je account staan en kun je het later opnieuw openen, bewerken, van template of kleur wisselen en opnieuw downloaden zonder opnieuw te betalen." },
+    { q: "Wanneer betaal ik opnieuw?", a: "Alleen als je een nieuw CV als apart document aanmaakt. Voor een CV waarvoor je al hebt betaald, hoef je niet opnieuw te betalen om later nog een PDF te downloaden." },
+    { q: "Welke betaalmethoden accepteren jullie?", a: "We accepteren iDEAL, creditcard, Bancontact en andere gangbare betaalmethoden via onze betalingspartner." },
+] as const;
 
 // Keep this date in sync with the currently advertised price period.
 const productJsonLd = {
@@ -143,6 +170,23 @@ export default function PrijzenPage() {
                     </div>
                 </div>
 
+                <div className="mb-16 grid gap-6 md:grid-cols-2">
+                    {pricingIntentCards.map((card) => (
+                        <article key={card.title} className="bg-white border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                            <h2 className="text-2xl font-black text-black">{card.title}</h2>
+                            <p className="mt-3 text-sm font-medium leading-relaxed text-gray-700">
+                                {card.body}
+                            </p>
+                            <Link
+                                href={card.href}
+                                className="mt-5 inline-block border-2 border-black bg-yellow-200 px-3 py-2 text-sm font-black text-black hover:bg-yellow-300 transition-colors"
+                            >
+                                {card.label}
+                            </Link>
+                        </article>
+                    ))}
+                </div>
+
                 {/* Comparison */}
                 <div className="mb-16">
                     <h2 className="text-2xl font-black text-black text-center mb-8">Waarom WerkCV.nl?</h2>
@@ -248,13 +292,7 @@ export default function PrijzenPage() {
                 <div>
                     <h2 className="text-2xl font-black text-black text-center mb-8">Veelgestelde vragen over prijzen</h2>
                     <div className="space-y-4 max-w-2xl mx-auto">
-                        {[
-                            { q: 'Moet ik betalen om mijn CV te maken?', a: 'Nee, het aanmaken en bewerken van je CV is volledig gratis. Je betaalt pas als je dat CV als PDF wilt downloaden.' },
-                            { q: 'Is het een abonnement?', a: 'Nee. Het is een eenmalige betaling van €4,99 per CV. Geen automatische verlengingen en geen verborgen kosten.' },
-                            { q: 'Kan ik mijn CV later nog bewerken?', a: 'Ja. Na betaling blijft dat CV in je account staan en kun je het later opnieuw openen, bewerken, van template of kleur wisselen en opnieuw downloaden zonder opnieuw te betalen.' },
-                            { q: 'Wanneer betaal ik opnieuw?', a: 'Alleen als je een nieuw CV als apart document aanmaakt. Voor een CV waarvoor je al hebt betaald, hoef je niet opnieuw te betalen om later nog een PDF te downloaden.' },
-                            { q: 'Welke betaalmethoden accepteren jullie?', a: 'We accepteren iDEAL, creditcard, Bancontact en andere gangbare betaalmethoden via onze betalingspartner.' },
-                        ].map((faq, i) => (
+                        {pricingFaqs.map((faq, i) => (
                             <details key={i} className="bg-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group">
                                 <summary className="p-4 font-black text-black cursor-pointer flex items-center justify-between">
                                     {faq.q}
