@@ -122,14 +122,14 @@ export default function LinkedInToCvImporter({
         </p>
         <h2 className="text-2xl font-black text-gray-900">
           {tr(
-            'Zet je LinkedIn-profiel om naar een Nederlands CV-format',
-            'Turn your LinkedIn profile into a Dutch-format CV',
+            'LinkedIn-profiel naar cv omzetten',
+            'LinkedIn to CV converter',
           )}
         </h2>
         <p className="mt-2 text-sm text-slate-600">
           {tr(
-            'Plak je profieltekst of upload je LinkedIn-PDF. WerkCV houdt de brontaal vast, zet je inhoud in Nederlandse CV-structuur en opent daarna automatisch de juiste editor.',
-            'Paste your profile text or upload your LinkedIn PDF export. WerkCV keeps the source language, rewrites the structure for Dutch applications, and then opens the right editor automatically.',
+            'Plak je profieltekst of upload je LinkedIn-PDF om een cv te maken vanuit LinkedIn. WerkCV houdt de brontaal vast, zet je inhoud in Nederlandse cv-structuur en opent daarna automatisch de juiste editor.',
+            'Paste your profile text or upload your LinkedIn PDF export to convert LinkedIn content into a Dutch-format CV. WerkCV keeps the source language, rewrites the structure for Dutch applications, and then opens the right editor automatically.',
           )}
         </p>
       </div>

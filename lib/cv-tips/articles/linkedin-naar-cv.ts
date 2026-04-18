@@ -5,21 +5,25 @@ export const linkedinNaarCv: BlogArticle = {
     title: 'LinkedIn naar CV Omzetten: Zo Maak je er een Sterk Sollicitatiedocument van',
     description: 'LinkedIn heeft 11 miljoen Nederlandse gebruikers — maar een LinkedIn-export is geen CV. Leer hoe je je profiel slim omzet naar een gericht, professioneel CV dat wél wordt gelezen.',
     publishedAt: '2026-02-19',
-    updatedAt: '2026-02-19',
+    updatedAt: '2026-04-18',
 
-    metaTitle: 'LinkedIn naar CV omzetten: stap-voor-stap gids 2026 | WerkCV',
-    metaDesc: 'Hoe zet je je LinkedIn-profiel om naar een sterk CV? Leer welke informatie je overneemt, hoe je herschrijft en welke tools helpen. Met stap-voor-stap aanpak.',
+    metaTitle: 'LinkedIn-profiel naar cv omzetten: gids + export 2026 | WerkCV',
+    metaDesc: 'LinkedIn-profiel naar cv omzetten? Leer hoe je LinkedIn naar cv exporteert, je LinkedIn-cv downloadt in Nederland en er een sterk sollicitatie-cv van maakt.',
     keywords: [
         'linkedin naar cv',
         'linkedin profiel naar cv',
+        'linkedin profiel naar cv omzetten',
         'cv maken van linkedin',
+        'cv maken vanuit linkedin',
         'linkedin cv exporteren',
+        'linkedin naar cv exporteren',
         'linkedin cv omzetten',
         'linkedin samenvatting cv',
         'linkedin werkervaring cv',
         'cv maken linkedin profiel',
         'linkedin pdf cv',
         'linkedin cv download',
+        'linkedin cv downloaden nederland',
     ],
 
     readingTime: 9,
@@ -150,9 +154,9 @@ export const linkedinNaarCv: BlogArticle = {
             title: 'LinkedIn PDF exporteren: stap voor stap',
             answerCapsule: 'Ga naar je LinkedIn-profiel → Meer (3 puntjes) → Profiel opslaan als PDF. Gebruik dit als ruwe data, niet als eindproduct. Controleer altijd welke informatie in de export ontbreekt.',
             content: [
-                'Als je toch de LinkedIn-export wilt gebruiken als startpunt, doe je dat als volgt. Ga naar je LinkedIn-profiel. Klik op het icoontje met drie stipjes (…) rechts naast de "Connect"-knop of "Bericht sturen". Kies "Profiel opslaan als PDF". LinkedIn genereert direct een PDF van je profiel.',
-                'Gebruik deze PDF als checklist: verifieer welke functies, periodes en vaardigheden erin staan. Controleer meteen ook wat ontbreekt: aanbevelingen staan er niet in, media-bijlagen ontbreken, en veel certificeringen worden niet meegenomen. Dit geeft je een beeld van wat je nog handmatig moet toevoegen.',
-                'Kopieer de teksten uit de LinkedIn-PDF nooit direct naar je CV. Exporteer de data, maar herschrijf alles in de structuur en taal van een professioneel CV. Gebruik een CV-builder of tekstverwerker voor opmaak, lengte en volgorde. De LinkedIn-PDF is je inhoudelijke bron — het eindproduct maak je zelf.',
+                'Veel mensen zoeken op "LinkedIn naar cv exporteren" of "LinkedIn cv downloaden Nederland", maar in de praktijk download je eerst je LinkedIn-profiel als PDF en zet je die daarna om naar een echt cv. Als je de LinkedIn-export wilt gebruiken als startpunt, doe je dat als volgt. Ga naar je LinkedIn-profiel. Klik op het icoontje met drie stipjes (…) rechts naast de "Connect"-knop of "Bericht sturen". Kies "Profiel opslaan als PDF". LinkedIn genereert direct een PDF van je profiel.',
+                'Gebruik deze PDF als checklist: verifieer welke functies, periodes en vaardigheden erin staan. Controleer meteen ook wat ontbreekt: aanbevelingen staan er niet in, media-bijlagen ontbreken, en veel certificeringen worden niet meegenomen. Dit geeft je een beeld van wat je nog handmatig moet toevoegen voordat je je LinkedIn-profiel naar cv omzet.',
+                'Kopieer de teksten uit de LinkedIn-PDF nooit direct naar je CV. Exporteer de data, maar herschrijf alles in de structuur en taal van een professioneel CV. Gebruik een CV-builder of tekstverwerker voor opmaak, lengte en volgorde. Wil je een cv maken vanuit LinkedIn, gebruik die PDF dan als inhoudelijke bron — het eindproduct maak je zelf.',
             ],
         },
         {
@@ -192,6 +196,10 @@ export const linkedinNaarCv: BlogArticle = {
 
     faq: [
         {
+            question: 'Hoe zet ik mijn LinkedIn-profiel om naar een cv?',
+            answer: 'Download eerst je LinkedIn-profiel als PDF of kopieer de relevante profieltekst. Gebruik die informatie daarna als bron voor een echt cv: korte profieltekst, geselecteerde werkervaring, relevante vaardigheden en een ATS-vriendelijke opmaak. De kern is niet het downloaden zelf, maar het herschrijven en inkorten.',
+        },
+        {
             question: 'Kan ik mijn LinkedIn-PDF gebruiken als CV?',
             answer: 'Nee. De LinkedIn-export is een onopgemaakt document met standaard blauw LinkedIn-design, te lang, en mist aanbevelingen en media. Gebruik de export alleen als ruwe data terwijl je je echte CV bouwt in een CV-builder. Verstuur de LinkedIn-PDF nooit rechtstreeks als sollicitatie-CV.',
         },
@@ -210,6 +218,10 @@ export const linkedinNaarCv: BlogArticle = {
         {
             question: 'Kan ik LinkedIn Premium gebruiken om een beter CV te exporteren?',
             answer: 'LinkedIn Premium geeft geen betere CV-exportfunctie. De exportfunctie is identiek voor gratis en Premium-gebruikers. Het voordeel van LinkedIn Premium zit in andere functies: wie je profiel heeft bekeken, prioriteit bij recruiters, en InMail-credits. Voor CV-creatie is een goede CV-builder effectiever dan Premium.',
+        },
+        {
+            question: 'Kan ik een cv maken vanuit LinkedIn zonder alles opnieuw te typen?',
+            answer: 'Ja, maar gebruik LinkedIn alleen als databron. Neem functietitels, werkgevers, periodes, opleidingen en kernvaardigheden over, en herschrijf daarna de samenvatting en werkervaring voor de vacature waarop je solliciteert. Zo bespaar je tijd zonder een ruwe LinkedIn-dump als eindversie te versturen.',
         },
         {
             question: 'Wat als mijn LinkedIn-profiel minder compleet is dan mijn CV?',
