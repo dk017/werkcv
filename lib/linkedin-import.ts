@@ -73,9 +73,13 @@ Critical rules:
 
 Critical rules for personal.summary:
 - personal.summary MUST be a concise top-of-CV profile summary, not copied raw LinkedIn body text.
-- Write 2 to 4 sentences and keep it roughly 30 to 120 words.
+- Write 2 to 4 sentences and keep it roughly 35 to 90 words.
 - If an About/Summary section exists, compress it into recruiter-ready CV language in the same source language.
 - If no About/Summary section exists, synthesize a brief summary from explicit facts only: role, domain, technologies, and strongest focus areas.
+- Lead with a precise professional identity and 1 or 2 concrete differentiators from the source.
+- Avoid generic filler such as "proven track record", "strong focus", "results-driven", "motivated professional", or "passionate" unless the sentence also contains specific evidence.
+- Avoid generic closing lines about being driven, motivated, passionate, or eager unless that wording is explicitly supported and still adds concrete value.
+- Every sentence should add recruiter-relevant information, not personality filler.
 - Never put numbered projects, "Project 1", "Environment:", "Client:", raw tech-stack dumps, or long responsibility lists in personal.summary.
 
 Critical rules for experience:
@@ -87,7 +91,7 @@ Critical rules for experience:
 
 Return ONLY JSON.`;
 
-const LINKEDIN_SUMMARY_REPAIR_PROMPT = `You repair the top profile summary of a CV created from LinkedIn data.
+const LINKEDIN_SUMMARY_REPAIR_PROMPT = `You write the final top profile summary of a CV created from LinkedIn data.
 
 Return ONLY JSON in this format:
 {
@@ -96,9 +100,18 @@ Return ONLY JSON in this format:
 
 Rules:
 - Keep the original language exactly as requested.
-- Write 2 to 4 sentences and keep it roughly 30 to 120 words.
+- Write 2 to 4 sentences and keep it roughly 35 to 90 words.
 - Use explicit facts from the provided CV data and source text only.
-- Make it suitable for the top of a CV: role focus, domain, strongest expertise, and value or target direction when explicit.
+- Make it suitable for the top of a strong CV: clear role focus, niche/domain, strongest expertise, and concrete value.
+- Make it feel recruiter-ready and shortlist-worthy, but never salesy or exaggerated.
+- Lead with a precise professional identity, not a vague adjective pile.
+- Include 1 or 2 specific differentiators grounded in the input, such as domain focus, core technologies, project type, or kind of problem solved.
+- Prefer specificity over generic claims.
+- Avoid filler like "proven track record", "strong focus", "results-driven", "motivated professional", "passionate", or similar empty phrasing unless the sentence also contains concrete evidence.
+- Avoid generic closing lines about being driven, motivated, passionate, eager, or improving things unless that sentence still carries concrete recruiter-relevant information.
+- Every sentence must add specific value for a recruiter.
+- Do not mention years of experience unless explicitly supported by the input.
+- Do not mention goals, job-seeking intent, or target role unless explicit in the source.
 - Never include numbered projects, "Project 1", "Environment:", "Client:", raw tech-stack dumps, long lists, or contact details.
 - Do not invent years, seniority, or achievements that are not supported by the input.
 - Return JSON only.`;
@@ -162,10 +175,6 @@ export async function parseLinkedInProfileText(
 }
 
 export async function repairLinkedInSummary(rawText: string, cvData: CVData): Promise<CVData> {
-  if (!needsLinkedInSummaryRepair(cvData.personal.summary)) {
-    return cvData;
-  }
-
   const language = cvData.personal.resumeLanguage === "en" ? "en" : "nl";
 
   try {
@@ -177,7 +186,16 @@ export async function repairLinkedInSummary(rawText: string, cvData: CVData): Pr
         { role: "system", content: LINKEDIN_SUMMARY_REPAIR_PROMPT },
         {
           role: "user",
-          content: `Required language: ${language}\n\nSource LinkedIn text:\n${rawText}\n\nCurrent CV JSON:\n${JSON.stringify(cvData)}`,
+          content: `Required language: ${language}
+
+Current summary:
+${cvData.personal.summary || "(empty)"}
+
+Source LinkedIn text:
+${rawText}
+
+Current CV JSON:
+${JSON.stringify(cvData)}`,
         },
       ],
     });
