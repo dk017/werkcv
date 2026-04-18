@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
-import { extractTextFromPDF, parseCVText } from '@/lib/cv-parser';
+import { extractTextFromPDF } from '@/lib/cv-parser';
 import { formatCvForDutch } from '@/lib/format-resume-dutch';
 import { CVData } from '@/lib/cv';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { getCurrentUserFromRequest } from '@/lib/auth';
+import { parseLinkedInProfileText, repairLinkedInSummary } from '@/lib/linkedin-import';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const MAX_TEXT_LENGTH = 50000;
@@ -91,11 +92,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const parsedCv = await parseCVText(rawText);
+    const parsedCv = await parseLinkedInProfileText(rawText);
     const formattedCv = await formatCvForDutch(parsedCv);
-    const documentLanguage = formattedCv.personal.resumeLanguage === 'en' ? 'en' : 'nl';
-    const baseTitle = formattedCv.personal.name
-      ? `LinkedIn import - ${formattedCv.personal.name}`
+    const finalizedCv = await repairLinkedInSummary(rawText, formattedCv);
+    const documentLanguage = finalizedCv.personal.resumeLanguage === 'en' ? 'en' : 'nl';
+    const baseTitle = finalizedCv.personal.name
+      ? `LinkedIn import - ${finalizedCv.personal.name}`
       : 'LinkedIn import';
 
     let cv;
@@ -103,7 +105,7 @@ export async function POST(request: NextRequest) {
       cv = await prisma.cVDocument.create({
         data: {
           title: baseTitle,
-          data: formattedCv as CVData,
+          data: finalizedCv as CVData,
           templateId,
           colorThemeId,
           attribution: attribution as unknown as Prisma.InputJsonValue | undefined,
@@ -118,7 +120,7 @@ export async function POST(request: NextRequest) {
       cv = await prisma.cVDocument.create({
         data: {
           title: baseTitle,
-          data: formattedCv as CVData,
+          data: finalizedCv as CVData,
           templateId,
           colorThemeId,
           userId: user.id,
@@ -135,7 +137,7 @@ export async function POST(request: NextRequest) {
       documentLanguage,
       templateId: cv.templateId,
       colorThemeId: cv.colorThemeId,
-      data: formattedCv,
+      data: finalizedCv,
     });
   } catch (error) {
     console.error('LinkedIn import error:', error);
