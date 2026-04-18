@@ -6,6 +6,7 @@ import { getExampleBySlug } from '@/lib/cv-voorbeelden/registry';
 import { articleCategoryLabels, articleCategoryColors } from '@/lib/cv-tips/types';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { HowToJsonLd } from '@/components/seo/JsonLd';
+import LinkedInToCvImporter from '@/components/translate/LinkedInToCvImporter';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
 import { normalizeBrandCopy } from '@/lib/seo-branding';
 
@@ -235,6 +236,17 @@ export default async function ArticlePage({ params }: PageProps) {
                                 ))}
                             </ul>
                         </div>
+                    </div>
+                </section>
+            )}
+
+            {article.slug === 'linkedin-naar-cv' && (
+                <section className="border-b-4 border-black bg-white">
+                    <div className="max-w-4xl mx-auto px-6 py-10">
+                        <LinkedInToCvImporter
+                            uiLanguage="nl"
+                            sourcePath="/cv-tips/linkedin-naar-cv"
+                        />
                     </div>
                 </section>
             )}

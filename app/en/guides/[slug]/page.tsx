@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getEnglishWavePage, getEnglishWavePages } from '@/lib/seo-wave/data';
 import CtaExperiment from '@/components/seo/CtaExperiment';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import LinkedInToCvImporter from '@/components/translate/LinkedInToCvImporter';
 import ResumeTranslator from '@/components/translate/ResumeTranslator';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
 import { normalizeBrandCopy } from '@/lib/seo-branding';
@@ -154,6 +155,15 @@ export default async function EnglishWavePage({ params }: PageProps) {
             {page.slug === 'translate-resume-to-dutch-format' && (
                 <div className="max-w-4xl mx-auto px-6 py-10">
                     <ResumeTranslator />
+                </div>
+            )}
+
+            {page.slug === 'linkedin-to-cv-netherlands' && (
+                <div className="max-w-4xl mx-auto px-6 py-10">
+                    <LinkedInToCvImporter
+                        uiLanguage="en"
+                        sourcePath="/en/guides/linkedin-to-cv-netherlands"
+                    />
                 </div>
             )}
 

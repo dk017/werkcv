@@ -1,4 +1,5 @@
-import { CVData, cvSchema } from './cv';
+import { CVData } from './cv';
+import { normalizeParsedCv } from './cv-normalize';
 import openai from './openai-client';
 
 const systemPrompt = `
@@ -32,25 +33,9 @@ export async function formatCvForDutch(cvData: CVData): Promise<CVData> {
     }
 
     const parsed = JSON.parse(content);
-    const personalData = parsed.personal || {};
-    const result = cvSchema.safeParse(parsed);
-    if (result.success) {
-      return {
-        ...result.data,
-        personal: {
-          ...result.data.personal,
-          resumeLanguage: result.data.personal.resumeLanguage || cvData.personal.resumeLanguage,
-        },
-      };
-    }
-
-    console.error('Dutch formatter validation failed:', result.error);
-    return cvSchema.parse({
-      ...parsed,
-      personal: {
-        ...personalData,
-        resumeLanguage: personalData.resumeLanguage || cvData.personal.resumeLanguage,
-      },
+    return normalizeParsedCv(parsed, {
+      fallbackLanguage: cvData.personal.resumeLanguage || 'nl',
+      sourceText: JSON.stringify(parsed),
     });
   } catch (error) {
     console.error('Dutch format request failed:', error);

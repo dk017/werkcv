@@ -1,5 +1,7 @@
 import mammoth from 'mammoth';
-import { CVData, cvSchema } from './cv';
+import { CVData } from './cv';
+import { detectResumeLanguage, ResumeLanguage } from './cv-language';
+import { normalizeParsedCv } from './cv-normalize';
 import openai from './openai-client';
 
 // pdfjs-dist types
@@ -71,7 +73,10 @@ export async function extractTextFromFile(buffer: Buffer, filename: string): Pro
     }
 }
 
-export async function parseCVWithAI(text: string): Promise<CVData> {
+export async function parseCVWithAI(
+    text: string,
+    options: { fallbackLanguage?: ResumeLanguage } = {}
+): Promise<CVData> {
     const systemPrompt = `You are a CV parser. Extract structured data from CV text and return ONLY valid JSON.
 
 CRITICAL: Capture ALL information from the CV. Do not summarize or truncate. Include EVERY bullet point, tech stack detail, and achievement.
@@ -175,26 +180,11 @@ CRITICAL RULES:
     }
 
     const parsed = JSON.parse(content);
-
-    // Validate and provide defaults
-    const result = cvSchema.safeParse(parsed);
-    if (!result.success) {
-        console.error('CV parsing validation errors:', result.error);
-        // Return parsed data anyway, schema defaults will fill gaps
-        return cvSchema.parse({
-            personal: parsed.personal || {},
-            experience: parsed.experience || [],
-            education: parsed.education || [],
-            skills: parsed.skills || [],
-            languages: parsed.languages || [],
-            internships: parsed.internships || [],
-            interests: parsed.interests || [],
-            courses: parsed.courses || [],
-            awards: parsed.awards || [],
-        });
-    }
-
-    return result.data;
+    const fallbackLanguage = options.fallbackLanguage || detectResumeLanguage(text, 'nl');
+    return normalizeParsedCv(parsed, {
+        fallbackLanguage,
+        sourceText: text,
+    });
 }
 
 export async function parseCV(buffer: Buffer, filename: string): Promise<CVData> {
@@ -204,5 +194,17 @@ export async function parseCV(buffer: Buffer, filename: string): Promise<CVData>
         throw new Error('Could not extract text from file');
     }
 
-    return parseCVWithAI(text);
+    return parseCVWithAI(text, {
+        fallbackLanguage: detectResumeLanguage(text, 'nl'),
+    });
+}
+
+export async function parseCVText(text: string, fallbackLanguage?: ResumeLanguage): Promise<CVData> {
+    if (!text.trim()) {
+        throw new Error('Could not extract text from input');
+    }
+
+    return parseCVWithAI(text, {
+        fallbackLanguage: fallbackLanguage || detectResumeLanguage(text, 'nl'),
+    });
 }
