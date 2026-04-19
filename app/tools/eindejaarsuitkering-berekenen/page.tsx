@@ -34,8 +34,8 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
-  title: "Eindejaarsuitkering Berekenen 2026 | Netto, Belasting & 13e Maand",
-  description: "Bereken direct je eindejaarsuitkering of 13e maand in 2026. Inclusief pro rata, netto-uitleg, belastingcontext en directe link naar je netto schatting.",
+  title: "Eindejaarsuitkering Berekenen 2026 | 13e Maand, Pro Rata, Belasting",
+  description: "Bereken direct je eindejaarsuitkering of 13e maand in 2026. Inclusief pro rata, december-uitbetaling, bruto indicatie en uitleg over belasting en bijzondere beloningen.",
   keywords: [
     "eindejaarsuitkering berekenen",
     "eindejaarsuitkering calculator",
@@ -49,7 +49,12 @@ export const metadata: Metadata = {
     "bruto naar netto eindejaarsuitkering",
     "eindejaarsuitkering belasting berekenen",
     "eindejaarsuitkering en 13e maand",
+    "wanneer eindejaarsuitkering",
+    "bijzonder tarief eindejaarsuitkering",
   ],
+  alternates: {
+    canonical: "https://werkcv.nl/tools/eindejaarsuitkering-berekenen",
+  },
 };
 
 export default function EindejaarsuitkeringBerekenenPage() {
@@ -86,14 +91,14 @@ export default function EindejaarsuitkeringBerekenenPage() {
                 Geld
               </span>
               <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                Bijgewerkt 19 maart 2026
+                Bijgewerkt 17 april 2026
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
               Eindejaarsuitkering berekenen: 13e maand en pro rata
             </h1>
             <p className="text-lg text-slate-600 font-medium max-w-3xl">
-              Bereken direct je bruto eindejaarsuitkering of 13e maand. Vul je maandsalaris, percentage en gewerkte maanden in en zie meteen wat je pro-rata bruto bedrag ongeveer wordt. Daarna kun je ook beter inschatten waarom netto en belasting op je loonstrook anders kunnen uitpakken.
+              Bereken direct je bruto eindejaarsuitkering of 13e maand. Vul je maandsalaris, percentage en gewerkte maanden in en zie meteen wat je pro-rata bruto bedrag ongeveer wordt. Daarna kun je ook beter inschatten wanneer uitbetaling meestal plaatsvindt en waarom belasting op je loonstrook anders kan aanvoelen.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
@@ -123,6 +128,26 @@ export default function EindejaarsuitkeringBerekenenPage() {
                 </div>
               ))}
             </div>
+
+            <div className="mt-6 border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">
+                In het kort
+              </p>
+              <div className="mt-3 grid gap-3 md:grid-cols-2">
+                <div>
+                  <p className="text-sm font-black text-slate-900">13e maand vs eindejaarsuitkering</p>
+                  <p className="mt-1 text-sm text-slate-700 leading-relaxed">
+                    Een 13e maand is meestal een vast extra bruto maandloon. Een eindejaarsuitkering is vaker een percentage van je jaarsalaris, vaak rond 4% tot 8,33%.
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm font-black text-slate-900">Wanneer krijg je die meestal?</p>
+                  <p className="mt-1 text-sm text-slate-700 leading-relaxed">
+                    Vaak in december, soms al in november. Of je recht hebt op uitbetaling en hoe pro rata werkt, hangt af van je cao, contract en werkgeversregeling.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
 
           <aside className="bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
@@ -134,7 +159,26 @@ export default function EindejaarsuitkeringBerekenenPage() {
               <p>Deze tool rekent snel door wat een 13e maand of eindejaarspercentage ongeveer doet op je jaarsalaris en decemberloon.</p>
               <p>Voor gesprekken over aanbod, baanwissel of budgetteren geeft dat sneller houvast dan alleen een regel in je contract.</p>
             </div>
+            <div className="mt-5 border-t-2 border-black pt-4">
+              <p className="text-xs font-black uppercase tracking-wide text-slate-500 mb-2">
+                Calculator-intent
+              </p>
+              <ul className="space-y-2 text-sm text-slate-600">
+                <li>Bereken direct een bruto indicatie.</li>
+                <li>Check pro rata als je later in het jaar bent gestart.</li>
+                <li>Gebruik daarna de netto-bruto calculator voor je loonstrook-effect.</li>
+              </ul>
+            </div>
           </aside>
+        </section>
+
+        <section className="mb-8 bg-[#FFF7E8] border-4 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-2xl font-black text-slate-900 mb-3">
+            Eerst berekenen, daarna pas de nuance
+          </h2>
+          <p className="text-sm md:text-base text-slate-700 leading-relaxed">
+            De snelste route is simpel: bereken eerst je bruto eindejaarsuitkering of 13e maand, kijk daarna of jouw werkgever werkt met een vast maandloon of percentage, en check pas daarna de belasting- en netto-uitleg. Zo krijg je sneller antwoord op de hoofdvraag achter deze zoekopdracht.
+          </p>
         </section>
 
         <section className="mb-12">

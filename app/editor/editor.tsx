@@ -182,6 +182,10 @@ export default function Editor({
             "Professionele PDF-opmaak voor sollicitaties",
             "Veilige checkout via onze betaalpartner",
         ];
+    const supportNotifiedMessage = tr(
+        "We hebben een technisch probleem aan onze kant gedetecteerd. Ons team is op de hoogte en bekijkt dit zo snel mogelijk. Als het nodig is, nemen we contact op via je e-mailadres.",
+        "We hit a technical issue on our side. Our team has been notified and will review it shortly. If needed, we will contact you at your email address."
+    );
     const {
         register,
         control,
@@ -456,9 +460,21 @@ export default function Editor({
         setIsCheckoutRedirecting(true);
         track('checkout_start', { cvId: id });
         try {
-            const checkoutUrl = await getCheckoutURL(id, undefined, []);
+            const checkoutResult = await getCheckoutURL(id, undefined, []);
+            if (!checkoutResult.ok) {
+                track('checkout_failed', {
+                    cvId: id,
+                    reason: checkoutResult.reason || checkoutResult.code,
+                });
+                alert(checkoutResult.supportNotified ? supportNotifiedMessage : tr(
+                    "Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.",
+                    "Payment could not be started. Check the payment configuration and try again."
+                ));
+                setIsCheckoutRedirecting(false);
+                return;
+            }
             track('checkout_started', { cvId: id });
-            window.location.href = checkoutUrl;
+            window.location.href = checkoutResult.url;
         } catch (error) {
             track('checkout_failed', { cvId: id, reason: getCheckoutFailureReason(error) });
             alert(tr("Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.", "Payment could not be started. Check the payment configuration and try again."));
@@ -612,7 +628,9 @@ export default function Editor({
                 if (errorData?.code === 'PAYMENT_REQUIRED') {
                     setShowCheckoutModal(true);
                 } else if (errorData?.code === 'PDF_ERROR') {
-                    alert(tr("Er ging iets mis bij het genereren van de PDF. Probeer het opnieuw.", "Something went wrong while generating the PDF. Please try again."));
+                    alert(errorData?.supportNotified
+                        ? supportNotifiedMessage
+                        : tr("Er ging iets mis bij het genereren van de PDF. Probeer het opnieuw.", "Something went wrong while generating the PDF. Please try again."));
                 } else {
                     alert(tr("Er ging iets mis bij het downloaden.", "Something went wrong while downloading."));
                 }

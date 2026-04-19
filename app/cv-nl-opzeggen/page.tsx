@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import Footer from "@/components/Footer";
+import OpzeggenConversionSection from "@/components/opzeggen/OpzeggenConversionSection";
 
 const sourceLinks = [
   {
     label: "CV.nl FAQ",
     href: "https://www.cv.nl/faq",
+  },
+  {
+    label: "CV.nl contact",
+    href: "https://www.cv.nl/contact",
   },
   {
     label: "CV.nl algemene voorwaarden",
@@ -37,6 +43,16 @@ const faqs = [
       "Volgens de CV.nl FAQ en voorwaarden is het abonnement de eerste 14 dagen gratis, waarna maandelijks kosten in rekening worden gebracht.",
   },
   {
+    question: "Hoe werkt cv nl opzeggen contact?",
+    answer:
+      "Op de officiele contactpagina van CV.nl staat een contactformulier met het onderwerp 'Lidmaatschap opzeggen'. Op dezelfde pagina staat ook een directe knop naar 'Lidmaatschap opzeggen' en het adres Overschiestraat 63, 1062 XD Amsterdam.",
+  },
+  {
+    question: "Wat gebeurt er na opzeggen van het CV.nl abonnement?",
+    answer:
+      "Volgens de FAQ ontvang je na opzeggen een bevestiging per e-mail. In de algemene voorwaarden staat daarnaast dat vooruitbetaalde bedragen niet worden terugbetaald en dat na einde van het abonnement de rechten op sollicitatiebrieven en de vormgeving van gegenereerde CV's beperkt zijn, tenzij die rechten apart zijn afgekocht.",
+  },
+  {
     question: "Waarom zoeken mensen op cv.nl opzeggen?",
     answer:
       "Deze zoekopdracht is meestal geen informatievraag alleen, maar een signaal dat iemand weg wil van een abonnement en openstaat voor een alternatief met een eenvoudiger prijsmodel.",
@@ -44,13 +60,14 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV.nl Opzeggen - Officiele Stappen + Alternatief | WerkCV",
+  title: "CV.nl Opzeggen? Officiele Stappen, Contact + Alternatief | WerkCV",
   description:
-    "Zoek je hoe je CV.nl opzegt? Bekijk de officiele stappen uit de CV.nl FAQ, wat de voorwaarden zeggen over opzeggen en vergelijk daarna een alternatief zonder abonnement.",
+    "Zoek je hoe je CV.nl opzegt? Bekijk de officiele stappen uit de CV.nl FAQ, de contactroute, wat de voorwaarden zeggen over opzeggen en vergelijk daarna een alternatief zonder abonnement.",
   keywords: [
     "cv.nl opzeggen",
     "cv nl opzeggen",
     "cv.nl abonnement opzeggen",
+    "cv nl opzeggen contact",
     "abonnement cv.nl stoppen",
     "cv.nl account opzeggen",
   ],
@@ -105,12 +122,14 @@ export default function CvNlOpzeggenPage() {
               Werk<span className="bg-yellow-400 px-1">CV</span>.nl
             </span>
           </Link>
-          <Link
+          <TrackedLandingLink
             href="/cv-maken-zonder-abonnement"
+            trackingLocation="cv-nl-opzeggen:header_primary"
+            trackingLabel="Alternatief zonder abonnement"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
-            Zonder abonnement
-          </Link>
+            Alternatief zonder abonnement
+          </TrackedLandingLink>
         </div>
       </header>
 
@@ -125,25 +144,24 @@ export default function CvNlOpzeggenPage() {
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Deze pagina vat samen wat CV.nl zelf publiceert over opzeggen. Dat maakt de intentie
-              handig voor mensen die een lopend account willen stoppen en daarna willen vergelijken
-              of een eenvoudiger prijsmodel beter past.
+              handig voor mensen die een lopend account willen stoppen en daarna vooral willen weten
+              of een eenvoudiger model zonder maandelijkse verlenging beter past.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link
+              <TrackedLandingLink
                 href="/cv-maken-zonder-abonnement"
+                trackingLocation="cv-nl-opzeggen:hero_primary"
+                trackingLabel="Bekijk alternatief zonder abonnement"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 Bekijk alternatief zonder abonnement
-              </Link>
-              <Link
-                href="/cv-gids/werkcv-vs-cv-nl"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Vergelijk WerkCV vs CV.nl
-              </Link>
+              </TrackedLandingLink>
             </div>
+            <p className="mt-3 text-sm font-medium text-slate-600">
+              Wil je pas daarna inhoudelijk vergelijken? De vergelijking met WerkCV staat lager op deze pagina.
+            </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
-              Officiele bronnen gecheckt op 1 april 2026.
+              Officiele bronnen gecheckt op 17 april 2026.
             </p>
           </div>
 
@@ -180,67 +198,128 @@ export default function CvNlOpzeggenPage() {
           </div>
         </section>
 
-        <section className="mb-14 grid gap-6 md:grid-cols-2">
-          <div className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
-              Wat opvalt in de voorwaarden
+        <section className="mb-14 grid gap-6 lg:grid-cols-2">
+          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              CV.nl abonnement opzeggen
             </p>
-            <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-200">
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Directe opzegroute via je account
+            </h2>
+            <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
               <p>
-                In de voorwaarden staat dat het abonnement automatisch loopt vanaf het account en
-                na 14 dagen vooraf maandelijks wordt afgeschreven.
+                De officiele FAQ van CV.nl zegt dat je het abonnement via je account opzegt:
+                inloggen, via het profielicoon naar Instellingen, daar op Opzeggen klikken en
+                daarna controleren of je een bevestiging per e-mail hebt ontvangen.
               </p>
               <p>
-                Ook staat daar dat je in ieder geval voor de dag van de nieuwe periode moet opzeggen
-                om verlenging te voorkomen.
-              </p>
-              <p>
-                Daarnaast vermelden de voorwaarden dat na einde van het abonnement rechten op
-                sollicitatiebrieven en de vormgeving van gegenereerde CV&apos;s beperkt zijn, tenzij die
-                rechten apart zijn afgekocht. Dat is een belangrijk verschil met een eenmalig model.
+                In de voorwaarden staat daarnaast dat je in ieder geval voor de dag van de nieuwe
+                periode moet opzeggen om verlenging te voorkomen.
               </p>
             </div>
           </div>
 
-          <div className="border-4 border-black bg-white p-6">
+          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Relevante vervolgstappen
+              cv nl opzeggen contact
             </p>
-            <div className="mt-4 space-y-4">
-              {[
-                {
-                  href: "/cv-maken-zonder-abonnement",
-                  title: "CV maken zonder abonnement",
-                  body: "Gebruik deze route als je na opzeggen vooral een prijsmodel zonder maandelijkse verlenging zoekt.",
-                },
-                {
-                  href: "/cv-gids/werkcv-vs-cv-nl",
-                  title: "WerkCV vs CV.nl",
-                  body: "Vergelijk prijsmodel, use case en sollicitatiefocus naast elkaar.",
-                },
-                {
-                  href: "/beste-cv-maker-nederland",
-                  title: "Beste CV maker Nederland",
-                  body: "Brede vergelijking als je meer tools naast elkaar wilt afwegen.",
-                },
-                {
-                  href: "/prijzen",
-                  title: "WerkCV prijzen",
-                  body: "Bekijk het eenmalige model van WerkCV als alternatief voor abonnementsplatformen.",
-                },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block border-2 border-black bg-[#FFFEF0] p-4 transition-colors hover:bg-yellow-100"
-                >
-                  <p className="text-sm font-black text-black">{item.title}</p>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
-                </Link>
-              ))}
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Contactpagina en fallback als je vastloopt
+            </h2>
+            <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
+              <p>
+                Op de officiele contactpagina van CV.nl staat een contactformulier met het onderwerp
+                <span className="font-black text-black"> Lidmaatschap opzeggen</span>. Op diezelfde
+                pagina staat ook een directe knop naar <span className="font-black text-black">Lidmaatschap opzeggen</span>.
+              </p>
+              <p>
+                Contactadres volgens de contactpagina: CV.nl, Overschiestraat 63, 1062 XD Amsterdam,
+                Nederland.
+              </p>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <a
+                href="https://www.cv.nl/contact"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-block border-2 border-black bg-yellow-200 px-4 py-2 text-sm font-black text-black hover:bg-yellow-300"
+              >
+                Open officiele contactpagina
+              </a>
+              <a
+                href="https://www.cv.nl/faq"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-block border-2 border-black bg-white px-4 py-2 text-sm font-black text-black hover:bg-slate-100"
+              >
+                Open officiele FAQ
+              </a>
             </div>
           </div>
         </section>
+
+        <section className="mb-10 border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
+            Wat opvalt in de voorwaarden
+          </p>
+          <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-200">
+            <p>
+              In de voorwaarden staat dat het abonnement automatisch loopt vanaf het account en
+              na 14 dagen vooraf maandelijks wordt afgeschreven.
+            </p>
+            <p>
+              Ook staat daar dat je in ieder geval voor de dag van de nieuwe periode moet opzeggen
+              om verlenging te voorkomen.
+            </p>
+            <p>
+              Daarnaast vermelden de voorwaarden dat na einde van het abonnement rechten op
+              sollicitatiebrieven en de vormgeving van gegenereerde CV&apos;s beperkt zijn, tenzij die
+              rechten apart zijn afgekocht. Dat is een belangrijk verschil met een eenmalig model.
+            </p>
+          </div>
+        </section>
+
+        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Wat gebeurt er na opzeggen?
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            Bevestiging, verlenging en wat de voorwaarden daarna zeggen
+          </h2>
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            <div className="border-3 border-black bg-[#FFFEF0] p-4" style={{ borderWidth: "3px" }}>
+              <p className="text-sm font-black text-black">1. Bevestiging per e-mail</p>
+              <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+                Volgens de FAQ stuurt CV.nl na opzeggen automatisch een bevestiging per e-mail.
+              </p>
+            </div>
+            <div className="border-3 border-black bg-[#FFFEF0] p-4" style={{ borderWidth: "3px" }}>
+              <p className="text-sm font-black text-black">2. Te laat opzeggen voorkomt geen verlenging</p>
+              <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+                Volgens de voorwaarden moet je in ieder geval voor de nieuwe periode opzeggen om verlenging te voorkomen.
+              </p>
+            </div>
+            <div className="border-3 border-black bg-[#FFFEF0] p-4" style={{ borderWidth: "3px" }}>
+              <p className="text-sm font-black text-black">3. Vooruitbetaald bedrag niet terug</p>
+              <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+                In de voorwaarden staat dat bij opzegging van het abonnement het vooruitbetaalde bedrag niet wordt terugbetaald.
+              </p>
+            </div>
+          </div>
+          <p className="mt-5 text-sm font-medium leading-relaxed text-slate-700">
+            De voorwaarden noemen daarnaast nog een extra punt dat voor gebruikers relevant kan zijn:
+            na het einde van het abonnement ben je volgens CV.nl niet langer gerechtigd om de
+            sollicitatiebrieven en de vormgeving van gegenereerde CV&apos;s te gebruiken, tenzij die
+            rechten apart zijn afgekocht.
+          </p>
+        </section>
+
+        <OpzeggenConversionSection
+          pageKey="cv-nl-opzeggen"
+          compareHref="/cv-gids/werkcv-vs-cv-nl"
+          compareTitle="WerkCV vs CV.nl"
+          compareBody="Vergelijk prijsmodel en sollicitatiefocus pas nadat je de no-subscription route hebt bekeken."
+        />
 
         <section className="mb-14">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
@@ -297,12 +376,14 @@ export default function CvNlOpzeggenPage() {
                 Kijk of een eenmalig CV-model beter past bij jouw sollicitatieproces
               </h2>
             </div>
-            <Link
+            <TrackedLandingLink
               href="/cv-maken-zonder-abonnement"
+              trackingLocation="cv-nl-opzeggen:footer_primary"
+              trackingLabel="Bekijk alternatief"
               className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >
               Bekijk alternatief
-            </Link>
+            </TrackedLandingLink>
           </div>
         </section>
       </main>

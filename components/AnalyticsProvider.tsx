@@ -24,6 +24,7 @@ export default function AnalyticsProvider() {
             const target = event.target as HTMLElement | null;
             const anchor = target?.closest('a[href]') as HTMLAnchorElement | null;
             if (!anchor) return;
+            if (anchor.dataset.trackCta === 'manual') return;
 
             const href = anchor.getAttribute('href');
             if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
@@ -43,6 +44,7 @@ export default function AnalyticsProvider() {
                 toPath.startsWith('/editor') ||
                 toPath.startsWith('/templates') ||
                 toPath.startsWith('/prijzen') ||
+                toPath.startsWith('/cv-maken-zonder-abonnement') ||
                 toPath.startsWith('/tools/sollicitatiebrief-generator');
             if (!isFunnelCtaTarget) return;
 

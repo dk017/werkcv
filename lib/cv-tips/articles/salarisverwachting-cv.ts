@@ -5,7 +5,7 @@ export const salarisverwachtingCv: BlogArticle = {
     title: 'Salarisverwachting vermelden bij een sollicitatie: brief, formulier of niet?',
     description: 'Leer waar je salarisverwachting wel en niet thuishoort bij een sollicitatie, en hoe je onderscheid maakt tussen cv, motivatiebrief en verplichte salarisvelden.',
     publishedAt: '2026-02-19',
-    updatedAt: '2026-04-04',
+    updatedAt: '2026-04-15',
 
     metaTitle: 'Salarisverwachting vermelden bij een sollicitatie | WerkCV',
     metaDesc: 'Waar zet je je salarisverwachting bij een sollicitatie: nergens, in je brief of in een formulier? Met voorbeelden en onderscheid tussen cv, motivatiebrief en salarisvelden.',
@@ -129,6 +129,18 @@ export const salarisverwachtingCv: BlogArticle = {
                 'Je salarisverwachting is meer dan je bruto maandsalaris. Het totaalpakket bepaalt de werkelijke waarde van een aanbod. Belangrijke secundaire componenten: vakantiegeld (wettelijk 8% van het jaarsalaris, uitbetaald in mei/juni), het aantal vakantiedagen (wettelijk 20 bij 40 uur, marktstandaard 25-28), de werkgeversbijdrage aan je pensioen, en de thuiswerktoeslag.',
                 'De belastingvrije thuiswerktoeslag bedraagt in 2026 maximaal €2,35 per thuiswerkdag (Belastingdienst, 2026). Bij drie thuiswerkdagen per week is dit €7,05 per week, circa €340 netto per jaar. Opleidingsbudgetten (marktstandaard €1.000-€3.000 per jaar), reiskostenvergoeding en een auto van de zaak zijn andere componenten die je moet meewegen.',
                 'Een werkgever die €200 minder per maand betaalt dan je verwacht, maar 28 vakantiedagen geeft in plaats van 20, een volledig pensioen opbouwt en een jaarlijks opleidingsbudget van €2.500 biedt, geeft je netto méér dan een hogere bieder zonder die secondaire voorwaarden. Maak die vergelijking expliciet in je hoofd voordat je een aanbod accepteert of afwijst.',
+            ],
+            intentLinks: [
+                {
+                    href: '/tools/vakantiegeld-berekenen',
+                    label: 'Reken vakantiegeld bruto netto door voordat je een aanbod vergelijkt',
+                    description: 'Handig als een formulier of recruiter je alleen een bruto maandbedrag noemt en jij het totale pakket wilt begrijpen.',
+                },
+                {
+                    href: '/tools/netto-bruto-calculator',
+                    label: 'Vertaal daarna het maandloon naar netto',
+                    description: 'Gebruik deze stap als je bruto per maand al hebt en het effect op je bankrekening wilt zien.',
+                },
             ],
         },
         {

@@ -6,17 +6,35 @@ import { getTemplateConfig } from "@/lib/templates/registry";
 const atsTemplate = getTemplateConfig("ats");
 
 const atsChecklist = [
-  "Gebruik duidelijke koppen zoals Profiel, Werkervaring, Opleiding en Vaardigheden.",
-  "Kies een enkel-koloms of zeer rustige layout zonder decoratieve blokken die tekst verstoppen.",
-  "Verwerk keywords uit de vacature letterlijk in je werkervaring en vaardigheden.",
-  "Exporteer als nette PDF nadat je de opmaak volledig hebt gecontroleerd.",
+  "Gebruik standaardkoppen zoals Profiel, Werkervaring, Opleiding en Vaardigheden.",
+  "Kies een enkel-koloms layout zonder tabellen, tekstvakken, zijbalken of decoratieve blokken.",
+  "Zet contactgegevens in de hoofdtekst en verwerk vacature-keywords letterlijk in je ervaring en vaardigheden.",
+  "Exporteer als nette PDF en controleer daarna met de ATS checker of je structuur goed leesbaar blijft.",
 ];
 
 const commonMistakes = [
-  "Te veel design-elementen die scanners verwarren.",
+  "Te veel design-elementen, kolommen of zijbalken die scanners verwarren.",
   "Vage functietitels zonder herkenbare zoekwoorden.",
-  "Losse tekstvakken of tabellen uit Word die verschuiven bij export.",
+  "Tekstvakken, tabellen of contactgegevens in kop- en voetteksten.",
   "Een CV dat mooi oogt, maar niet aansluit op de vacaturetaal.",
+];
+
+const parserSignals = [
+  {
+    title: "Kolommen, tabellen en headers geven parsing-risico",
+    body:
+      "Bekende ATS-documentatie zoals Greenhouse noemt complexe layouts, tabellen, headers en footers als veelvoorkomende oorzaak van mislukte resume parsing.",
+  },
+  {
+    title: "Taal is minder vaak het probleem dan structuur",
+    body:
+      "Ook niet-Engelse cv's kunnen door moderne ATS-systemen worden gelezen. Voor Nederlandse sollicitaties is een rustige, voorspelbare layout meestal belangrijker dan de taal zelf.",
+  },
+  {
+    title: "Deze pagina is voor templatekeuze, niet voor alle ATS-regels",
+    body:
+      "Wil je de volledige ATS-logica, keyword-aanpak en PDF-keuzes begrijpen, ga dan door naar de uitgebreide ATS-gids. Wil je een bestaand cv testen, gebruik de checker.",
+  },
 ];
 
 const faqs = [
@@ -40,12 +58,22 @@ const faqs = [
     answer:
       "Ja. Gebruik de ATS CV checker en de CV keywords tool om je inhoud te controleren op structuur, match met de vacature en ontbrekende zoekwoorden.",
   },
+  {
+    question: "Mag ik tabellen, tekstvakken of een zijbalk gebruiken?",
+    answer:
+      "Beter niet als je maximale ATS-compatibiliteit wilt. Een rustige enkel-koloms layout met standaardkoppen is veiliger dan tabellen, tekstvakken, zijbalken en contactgegevens in de kop- of voettekst.",
+  },
+  {
+    question: "Kan een Nederlands cv door ATS-software worden gelezen?",
+    answer:
+      "Ja, moderne ATS-systemen kunnen ook Nederlandse cv's verwerken. In de praktijk gaat het vaker mis door de documentstructuur dan door de taal, dus een voorspelbare template is belangrijker dan extra design.",
+  },
 ];
 
 export const metadata: Metadata = {
-  title: "ATS CV Template voor Nederlandse Sollicitaties | WerkCV",
+  title: "ATS CV Template Nederland | Rustige Eenkoloms Layout | WerkCV",
   description:
-    "Zoek je een ATS CV template? Kies een rustige ATS-vriendelijke template voor Nederlandse sollicitaties, start gratis in de editor en download pas als je CV klaar is.",
+    "Zoek je een ATS CV template voor Nederland? Kies een rustige eenkoloms layout met standaardkoppen, zonder tabellen of tekstvakken. Start gratis en download pas als je CV klaar is.",
   keywords: [
     "ats cv template",
     "ats cv template nederland",
@@ -55,6 +83,8 @@ export const metadata: Metadata = {
     "ats template sollicitatie",
     "ats proof cv template",
     "ats resume template nederland",
+    "ats template een kolom",
+    "ats template zonder tabellen",
   ],
   alternates: {
     canonical: "https://werkcv.nl/ats-cv-template",
@@ -126,8 +156,8 @@ export default function AtsCvTemplatePage() {
               ATS CV template voor Nederlandse sollicitaties
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Deze pagina is voor je templatekeuze. Met de {atsTemplate.nameDutch.toLowerCase()}e template van WerkCV kies je een rustige layout die recruiters snel kunnen scannen en
-              sollicitatiesoftware goed kan uitlezen. Wil je eerst de regels achter een ATS-vriendelijke cv begrijpen of builders vergelijken, gebruik dan de gidslinks hieronder.
+              Deze pagina is voor je templatekeuze. Met de {atsTemplate.nameDutch.toLowerCase()}e template van WerkCV kies je een rustige eenkoloms layout met standaardkoppen, zonder
+              tabellen, tekstvakken of zijbalken die parsing kunnen verstoren. Wil je eerst alle ATS-regels begrijpen of juist je bestaande cv testen, gebruik dan de routes hieronder.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -165,8 +195,8 @@ export default function AtsCvTemplatePage() {
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               {[
-                "Rustige ATS-layout",
-                "Keywords beter scanbaar",
+                "Eenkoloms ATS-layout",
+                "Standaardkoppen, geen text boxes",
                 "Gratis starten, later downloaden",
               ].map((item) => (
                 <div
@@ -183,8 +213,8 @@ export default function AtsCvTemplatePage() {
           <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <h2 className="text-xl font-black text-black">Waarom recruiters en ATS rustige templates verkiezen</h2>
             <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
-              Veel gratis CV sjablonen zien er mooi uit, maar verliezen punten zodra ze door een parser worden gelezen. Onnodige grafische elementen, creatieve kolommen en slecht geplaatste
-              tekstvakken maken je CV minder betrouwbaar voor software.
+              Veel gratis CV sjablonen zien er mooi uit, maar verliezen punten zodra ze door een parser worden gelezen. Onnodige grafische elementen, creatieve kolommen, headers, footers en
+              slecht geplaatste tekstvakken maken je CV minder betrouwbaar voor software.
             </p>
             <div className="mt-5 border-t-4 border-black pt-5">
               <h3 className="text-sm font-black uppercase tracking-[0.18em] text-slate-700">
@@ -194,6 +224,71 @@ export default function AtsCvTemplatePage() {
                 ATS staat voor Applicant Tracking System: software die CV&apos;s scant op structuur, relevante termen en leesbaarheid voordat een recruiter alles handmatig beoordeelt.
               </p>
             </div>
+          </div>
+        </section>
+
+        <section className="mb-14 grid gap-6 md:grid-cols-2">
+          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Juiste route
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Wanneer deze pagina wel of niet de juiste route is
+            </h2>
+            <div className="mt-5 space-y-4 text-sm font-medium leading-relaxed text-slate-700">
+              <div className="border-2 border-black bg-[#FFFEF0] p-4">
+                <p className="font-black text-black">Gebruik deze pagina als je een template zoekt</p>
+                <p className="mt-1">
+                  Kies hier een ATS-veilige layout als je vooral wilt weten welke structuur, kolomopbouw en sectiekoppen het veiligst zijn.
+                </p>
+              </div>
+              <div className="border-2 border-black bg-white p-4">
+                <p className="font-black text-black">Ga naar de gids als je de regels wilt begrijpen</p>
+                <p className="mt-1">
+                  Gebruik de ATS-gids voor de bredere uitleg over keywords, PDF-keuzes, parsing en veelgemaakte ATS-fouten.
+                </p>
+              </div>
+              <div className="border-2 border-black bg-white p-4">
+                <p className="font-black text-black">Ga naar de checker als je al een cv hebt</p>
+                <p className="mt-1">
+                  Test je huidige cv meteen als je vooral wilt weten of je document nu al scanbaar genoeg is voor recruiters en portals.
+                </p>
+              </div>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link
+                href="/cv-tips/ats-vriendelijk-cv"
+                className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+              >
+                Lees de ATS-gids
+              </Link>
+              <Link
+                href="/tools/ats-cv-checker"
+                className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
+              >
+                Open de ATS checker
+              </Link>
+            </div>
+          </div>
+
+          <div className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
+              Bron-signalen
+            </p>
+            <h2 className="mt-2 text-3xl font-black">
+              Wat bekende ATS-documentatie laat zien
+            </h2>
+            <div className="mt-5 space-y-4">
+              {parserSignals.map((item) => (
+                <div key={item.title} className="border-2 border-yellow-300/70 bg-black/40 p-4">
+                  <p className="text-sm font-black text-white">{item.title}</p>
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-200">{item.body}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-5 text-xs font-medium leading-relaxed text-slate-300">
+              Gebaseerd op officiële Greenhouse support-documentatie over mislukte resume parsing en parsing van niet-Engelse cv&apos;s.
+            </p>
           </div>
         </section>
 
@@ -215,7 +310,8 @@ export default function AtsCvTemplatePage() {
               </p>
               <ul className="mt-4 space-y-2 text-sm font-medium leading-relaxed text-slate-700">
                 <li>Enkel-koloms layout voor maximale leesbaarheid.</li>
-                <li>Veilige structuur voor systemen die op vaste secties vertrouwen.</li>
+                <li>Standaardkoppen voor systemen die op vaste secties vertrouwen.</li>
+                <li>Geen tabellen, tekstvakken of contactgegevens in kop- en voettekst nodig.</li>
                 <li>Perfect als je solliciteert via grotere werkgevers, bureaus of corporate portals.</li>
               </ul>
               <div className="mt-5 flex flex-wrap gap-3">
@@ -266,12 +362,12 @@ export default function AtsCvTemplatePage() {
                 </p>
               </Link>
               <Link
-                href="/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures"
+                href="/cv-tips/ats-vriendelijk-cv"
                 className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-colors hover:bg-yellow-100"
               >
                 <p className="text-sm font-black text-black">Lees de ATS gids</p>
                 <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
-                  Verdiep je in de regels achter ATS-vriendelijke builders, layouts en parsing voor Nederlandse sollicitaties.
+                  Verdiep je in de bredere regels achter ATS-vriendelijke cv&apos;s, keywords, parsing en PDF-keuzes voor Nederlandse sollicitaties.
                 </p>
               </Link>
             </div>

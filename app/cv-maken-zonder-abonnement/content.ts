@@ -5,9 +5,24 @@ export const faqs = [
       "Ja. Je betaalt eenmalig €4,99 per CV bij de eerste PDF-download. Daarna kun je hetzelfde CV altijd opnieuw bewerken en downloaden zonder opnieuw te betalen. Er is geen abonnement en geen automatische verlenging.",
   },
   {
+    question: "Is WerkCV ook een cv maker zonder proefperiode?",
+    answer:
+      "Ja. Je kunt gratis starten zonder eerst een proefabonnement te activeren. De betaling volgt alleen wanneer je jouw definitieve CV als PDF wilt downloaden.",
+  },
+  {
     question: "Wat zijn de voordelen van eenmalig betalen voor een CV?",
     answer:
       "Je betaalt alleen voor wat je gebruikt. Een CV-builder heb je meestal tijdelijk nodig - bij een nieuwe baan zoeken, een promotie of na ontslag. Eenmalig €4,99 is eerlijker dan €10-25 per maand die blijven doorlopen.",
+  },
+  {
+    question: "Wat bedoelen mensen met een 'geen abonnement cv maker'?",
+    answer:
+      "Meestal bedoelen ze een CV-tool waarbij je niet eerst een maandplan of proefperiode hoeft te starten. WerkCV laat je gratis bouwen en vraagt alleen een eenmalige betaling per CV-download.",
+  },
+  {
+    question: "Kan ik bij WerkCV een cv maken, geen abonnement?",
+    answer:
+      "Ja. Dat is precies het model: je bouwt je CV gratis op, vergelijkt templates en betaalt pas eenmalig wanneer je jouw definitieve PDF wilt downloaden. Er is geen doorlopend abonnement nodig om je CV af te maken.",
   },
   {
     question: "Welke CV-builders werken met eenmalig betalen in Nederland?",

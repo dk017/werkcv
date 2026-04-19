@@ -4,6 +4,42 @@ import { prisma } from '@/lib/prisma'
 import { cvSchema, CVData, defaultCV } from '@/lib/cv'
 import { buildCheckoutURL, CheckoutAddon, parseCheckoutAddons } from '@/lib/polar'
 import { getCurrentUser } from '@/lib/auth'
+import { reportOpsIncident } from '@/lib/ops-alerts'
+
+const userCVListSelect = {
+    id: true,
+    title: true,
+    templateId: true,
+    colorThemeId: true,
+    data: true,
+    updatedAt: true,
+};
+
+const paidOrderSelect = {
+    cvId: true,
+};
+
+type UserCVListItem = {
+    id: string;
+    title: string;
+    templateId: string;
+    colorThemeId: string | null;
+    data: unknown;
+    updatedAt: Date;
+};
+
+type PaidOrderItem = {
+    cvId: string | null;
+};
+
+export type CheckoutUrlResult =
+    | { ok: true; url: string }
+    | {
+        ok: false;
+        code: 'AUTH_REQUIRED' | 'NOT_FOUND' | 'CHECKOUT_FAILED';
+        reason?: string;
+        supportNotified?: boolean;
+    };
 
 export async function createCV(templateId: string = 'professional', colorThemeId: string = 'classic-blue', initialData?: CVData) {
     const user = await getCurrentUser();
@@ -119,24 +155,19 @@ export async function getUserCVs() {
     const cvs = await prisma.cVDocument.findMany({
         where: { userId: user.id },
         orderBy: { updatedAt: 'desc' },
-        select: {
-            id: true,
-            title: true,
-            templateId: true,
-            colorThemeId: true,
-            data: true,
-            updatedAt: true,
-        },
+        select: userCVListSelect,
     });
 
-    const cvIds = cvs.map((cv) => cv.id);
+    const cvIds = cvs.map((cv: UserCVListItem) => cv.id);
     const paidOrders = await prisma.order.findMany({
         where: { cvId: { in: cvIds }, paidAt: { not: null } },
-        select: { cvId: true },
+        select: paidOrderSelect,
     });
-    const paidCvIds = new Set(paidOrders.map((o) => o.cvId));
+    const paidCvIds = new Set(
+        paidOrders.flatMap((order: PaidOrderItem) => (order.cvId ? [order.cvId] : []))
+    );
 
-    return cvs.map((cv) => ({
+    return cvs.map((cv: UserCVListItem) => ({
         ...cv,
         isPaid: paidCvIds.has(cv.id),
     }));
@@ -154,19 +185,51 @@ export async function getCheckoutURL(
     cvId: string,
     email?: string,
     addons: CheckoutAddon[] = []
-): Promise<string> {
+): Promise<CheckoutUrlResult> {
     const user = await getCurrentUser();
     if (!user) {
-        throw new Error('AUTH_REQUIRED');
+        return { ok: false, code: 'AUTH_REQUIRED' };
     }
     const owned = await prisma.cVDocument.findFirst({
         where: { id: cvId, userId: user.id },
-        select: { id: true },
+        select: {
+            id: true,
+            sourceCluster: true,
+            sourceLocale: true,
+            startSource: true,
+        },
     });
     if (!owned) {
-        throw new Error('NOT_FOUND');
+        return { ok: false, code: 'NOT_FOUND' };
     }
 
     const safeAddons = parseCheckoutAddons(addons);
-    return buildCheckoutURL(cvId, email, safeAddons)
+    try {
+        const url = await buildCheckoutURL(cvId, email || user.email, safeAddons);
+        return { ok: true, url };
+    } catch (error) {
+        const { supportNotified } = await reportOpsIncident({
+            event: 'ops_checkout_create_failed',
+            route: '/app/actions#getCheckoutURL',
+            stage: 'polar_checkout_create',
+            error,
+            cvId,
+            userId: user.id,
+            userEmail: user.email,
+            cluster: owned.sourceCluster,
+            startSource: owned.startSource,
+            locale: owned.sourceLocale === 'en' ? 'en' : 'nl',
+            notifyUser: true,
+            context: {
+                addons: safeAddons,
+            },
+        });
+
+        return {
+            ok: false,
+            code: 'CHECKOUT_FAILED',
+            reason: error instanceof Error ? error.message.slice(0, 160) : 'unknown',
+            supportNotified,
+        };
+    }
 }

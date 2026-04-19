@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useState } from "react";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
+import { estimateNetFromTaxableIncome } from "@/lib/tools/netto-bruto";
 
 type Result = {
     earnedGross: number;
     holidayAllowance: number;
+    holidayAllowanceNetEstimate: number;
     monthlyAccrual: number;
     monthlyBase: number;
     percentage: number;
@@ -51,11 +53,19 @@ export default function VakantiegeldTool() {
         const monthlyBase = salary + extras;
         const earnedGross = monthlyBase * months;
         const holidayAllowance = earnedGross * (rate / 100);
+        const annualMonthlyBase = monthlyBase * 12;
+        const annualHolidayAllowance = annualMonthlyBase * (rate / 100);
+        const taxEstimate = estimateNetFromTaxableIncome({
+            taxableAnnualIncome: annualMonthlyBase + annualHolidayAllowance,
+            applyTaxCredits: true,
+            ageProfile: "under_aow",
+        });
 
         setError("");
         setResult({
             earnedGross,
             holidayAllowance,
+            holidayAllowanceNetEstimate: holidayAllowance * taxEstimate.effectiveNetRatio,
             monthlyAccrual: holidayAllowance / months,
             monthlyBase,
             percentage: rate,
@@ -142,7 +152,7 @@ export default function VakantiegeldTool() {
                 <div className="space-y-5">
                     <div className="bg-emerald-50 border-2 border-emerald-300 rounded-xl p-5">
                         <p className="text-xs font-black uppercase tracking-wide text-emerald-700 mb-2">
-                            Jouw indicatie
+                            Jouw bruto vakantiegeld
                         </p>
                         <p className="text-4xl font-black text-emerald-900 mb-2">
                             {formatEuro(result.holidayAllowance)}
@@ -150,12 +160,28 @@ export default function VakantiegeldTool() {
                         <p className="text-sm text-slate-700 leading-relaxed">
                             Dit is {result.percentage}% over {formatEuro(result.earnedGross)} bruto loon dat je in deze periode hebt opgebouwd.
                         </p>
+                        <div className="mt-4 rounded-lg border border-emerald-200 bg-white p-3">
+                            <p className="text-[11px] font-black uppercase tracking-wide text-slate-500">
+                                Ruwe netto-indicatie
+                            </p>
+                            <p className="mt-1 text-xl font-black text-slate-900">
+                                {formatEuro(result.holidayAllowanceNetEstimate)}
+                            </p>
+                            <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                                Op basis van standaard 2026-loonheffingsaannames voor een werknemer
+                                onder AOW-leeftijd met loonheffingskorting. Je echte loonstrook kan afwijken.
+                            </p>
+                        </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
                             <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">Bruto loon in periode</p>
                             <p className="text-xl font-black text-slate-900">{formatEuro(result.earnedGross)}</p>
+                        </div>
+                        <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                            <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">Netto indicatie</p>
+                            <p className="text-xl font-black text-slate-900">{formatEuro(result.holidayAllowanceNetEstimate)}</p>
                         </div>
                         <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
                             <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">Gemiddelde opbouw per maand</p>
@@ -175,18 +201,19 @@ export default function VakantiegeldTool() {
                             <li>Vakantiegeld wordt meestal in mei of juni uitbetaald, maar je cao of contract kan een andere maand noemen.</li>
                             <li>Een reguliere werknemer krijgt minimaal 8%, maar werkgevers mogen meer betalen.</li>
                             <li>Eenmalige beloningen en onkostenvergoedingen tellen meestal niet standaard mee in deze eenvoudige indicatie.</li>
+                            <li>De netto-indicatie gaat uit van standaard loondienst onder AOW-leeftijd met loonheffingskorting aan.</li>
                         </ul>
                         <div className="mt-4 rounded-lg border border-slate-200 bg-white p-3">
                             <p className="text-[11px] font-black uppercase tracking-wide text-slate-500">
                                 Bruto naar netto
                             </p>
                             <p className="mt-1 text-sm text-slate-700 leading-relaxed">
-                                Je netto uitbetaling kan lager uitvallen door loonheffing op bijzondere beloningen.
+                                Je netto uitbetaling kan lager of anders uitvallen door loonheffing op bijzondere beloningen.
                                 Gebruik je bruto uitkomst als basis en vergelijk daarna met de{" "}
                                 <Link href="/tools/netto-bruto-calculator" className="font-bold text-slate-900 underline decoration-2 underline-offset-2">
                                     netto bruto calculator
                                 </Link>
-                                .
+                                {" "}of je eigen loonstrook.
                             </p>
                         </div>
                     </div>

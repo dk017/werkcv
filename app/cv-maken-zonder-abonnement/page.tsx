@@ -12,10 +12,11 @@ export const metadata: Metadata = {
     absolute: "CV Maken Eenmalig Betalen? Geen Abonnement | WerkCV",
   },
   description:
-    "Zoek je een CV builder zonder abonnement? Vergelijk WerkCV met CVmaker, CV.nl en CVster. Start gratis en betaal bij WerkCV eenmalig €4,99 per CV.",
+    "Zoek je een CV builder zonder abonnement? Wil je een cv maken, geen abonnement? Vergelijk WerkCV met CVmaker, CV.nl en CVster. Start gratis en betaal bij WerkCV eenmalig €4,99 per CV.",
   keywords: [
     "cv maken eenmalig betalen",
     "cv maken zonder abonnement",
+    "cv maken geen abonnement",
     "cv eenmalig betalen",
     "cv builder zonder abonnement",
     "geen abonnement cv maker",
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "CV Maken Eenmalig Betalen? Geen Abonnement | WerkCV",
     description:
-      "Zoek je een CV builder zonder abonnement? Vergelijk WerkCV met CVmaker, CV.nl en CVster. Start gratis en betaal bij WerkCV eenmalig €4,99 per CV.",
+      "Zoek je een CV builder zonder abonnement? Wil je een cv maken, geen abonnement? Vergelijk WerkCV met CVmaker, CV.nl en CVster. Start gratis en betaal bij WerkCV eenmalig €4,99 per CV.",
     url: pageUrl,
     siteName: "WerkCV",
     locale: "nl_NL",
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "CV Maken Eenmalig Betalen? Geen Abonnement | WerkCV",
     description:
-      "Zoek je een CV builder zonder abonnement? Vergelijk WerkCV met CVmaker, CV.nl en CVster. Start gratis en betaal bij WerkCV eenmalig €4,99 per CV.",
+      "Zoek je een CV builder zonder abonnement? Wil je een cv maken, geen abonnement? Vergelijk WerkCV met CVmaker, CV.nl en CVster. Start gratis en betaal bij WerkCV eenmalig €4,99 per CV.",
     images: ["/opengraph-image"],
   },
 };
@@ -221,6 +222,64 @@ export default function CvMakenZonderAbonnementPage() {
           ))}
         </section>
 
+        <section className="mb-12 grid gap-6 lg:grid-cols-3">
+          <article className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="text-xl font-black text-black">
+              CV eenmalig betalen: logisch als je maar een paar versies nodig hebt
+            </h2>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Voor de meeste sollicitanten is een CV-builder geen tool die maandenlang open hoeft
+              te blijven staan. Je gebruikt hem intensief voor een of enkele sollicitatierondes,
+              downloadt je PDF en bent klaar.
+            </p>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Juist dan voelt een eenmalige betaling logischer dan een maandmodel. Je betaalt voor
+              een concreet resultaat, niet voor doorlopende toegang die je later weer moet stoppen.
+            </p>
+          </article>
+
+          <article className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="text-xl font-black text-black">
+              Geen abonnement cv maker: wat mensen daar meestal mee bedoelen
+            </h2>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Deze zoekterm gaat meestal niet over gratis. Hij gaat over prijsrust. Mensen willen
+              eerst bouwen, daarna pas beslissen, en niet onthouden wanneer een proef of
+              maandbedrag straks automatisch doorloopt.
+            </p>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              De intentie achter <strong>&quot;cv maken, geen abonnement&quot;</strong> is meestal simpel:
+              wel een nette cv-PDF willen, maar niet nog een extra billinglaag of proefperiode
+              om dat resultaat heen.
+            </p>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Daarom werkt deze pagina goed voor bezoekers die wel willen betalen voor een nette
+              CV-PDF, maar geen abonnementslaag om dat resultaat heen willen.
+            </p>
+          </article>
+
+          <article className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="text-xl font-black text-black">
+              Geen proefperiode die later doorloopt: zelfde behoefte, minder billinggedoe
+            </h2>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Wie op een cv maker zonder proefperiode zoekt, zoekt meestal dezelfde uitkomst:
+              geen trial die later omslaat in een maandabonnement, maar een rustige route waarbij
+              de betaling pas op de uiteindelijke download zit.
+            </p>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Wil je die behoefte eerst naast andere no-subscription opties leggen, gebruik dan ook
+              de vergelijking voor builders zonder abonnement.
+            </p>
+            <Link
+              href="/cv-gids/beste-cv-builder-zonder-abonnement"
+              className="mt-4 inline-block text-sm font-black text-black underline decoration-2 underline-offset-4"
+            >
+              Vergelijk builders zonder abonnement
+            </Link>
+          </article>
+        </section>
+
         <section className="mb-12 border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
             Handige vervolgroutes
@@ -246,6 +305,11 @@ export default function CvMakenZonderAbonnementPage() {
                 href: "/gratis-cv-maken",
                 title: "Gratis starten en later beslissen",
                 body: "Goede vervolgstap voor bezoekers die eerst zonder drempel willen bouwen en pas later over de PDF beslissen.",
+              },
+              {
+                href: "/goedkoopste-cv-maker-nederland",
+                title: "Vergelijk gratis, betaald en proefmodellen",
+                body: "Gebruik deze route als je prijsmodellen naast elkaar wilt zien op basis van wat een eerste download je echt kost.",
               },
             ].map((item) => (
               <Link

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import Footer from "@/components/Footer";
+import OpzeggenConversionSection from "@/components/opzeggen/OpzeggenConversionSection";
 
 const sourceLinks = [
   {
@@ -109,12 +111,14 @@ export default function CvsterOpzeggenPage() {
               Werk<span className="bg-yellow-400 px-1">CV</span>.nl
             </span>
           </Link>
-          <Link
+          <TrackedLandingLink
             href="/cv-maken-zonder-abonnement"
+            trackingLocation="cvster-opzeggen:header_primary"
+            trackingLabel="Alternatief zonder abonnement"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
-            Zonder abonnement
-          </Link>
+            Alternatief zonder abonnement
+          </TrackedLandingLink>
         </div>
       </header>
 
@@ -129,23 +133,22 @@ export default function CvsterOpzeggenPage() {
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Deze pagina vat samen wat CVster zelf publiceert over annuleren. Dat maakt de intentie
-              handig voor mensen die een lopend account willen stoppen en daarna willen vergelijken
-              of een eenvoudiger prijsmodel beter past.
+              handig voor mensen die een lopend account willen stoppen en daarna vooral willen weten
+              of een eenvoudiger model zonder maandelijkse verlenging beter past.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link
+              <TrackedLandingLink
                 href="/cv-maken-zonder-abonnement"
+                trackingLocation="cvster-opzeggen:hero_primary"
+                trackingLabel="Bekijk alternatief zonder abonnement"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 Bekijk alternatief zonder abonnement
-              </Link>
-              <Link
-                href="/cv-gids/werkcv-vs-cvster"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Vergelijk WerkCV vs CVster
-              </Link>
+              </TrackedLandingLink>
             </div>
+            <p className="mt-3 text-sm font-medium text-slate-600">
+              Wil je pas daarna inhoudelijk vergelijken? De vergelijking met WerkCV staat lager op deze pagina.
+            </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
               Officiele bronnen gecheckt op 1 april 2026.
             </p>
@@ -184,67 +187,33 @@ export default function CvsterOpzeggenPage() {
           </div>
         </section>
 
-        <section className="mb-14 grid gap-6 md:grid-cols-2">
-          <div className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
-              Wat opvalt in het helpcentrum
+        <section className="mb-10 border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
+            Wat opvalt in het helpcentrum
+          </p>
+          <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-200">
+            <p>
+              CVster maakt annuleren relatief praktisch: volgens het helpcentrum kun je het zowel
+              in je account als via de contactpagina regelen als je niet kunt inloggen.
             </p>
-            <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-200">
-              <p>
-                CVster maakt annuleren relatief praktisch: volgens het helpcentrum kun je het zowel
-                in je account als via de contactpagina regelen als je niet kunt inloggen.
-              </p>
-              <p>
-                Ook belangrijk is wat er na annuleren gebeurt. CVster zegt expliciet dat premium niet
-                direct verdwijnt, maar nog doorloopt tot het einde van je laatste maand- of proefbetaling.
-              </p>
-              <p>
-                De officiele facturatie-uitleg zegt daarnaast dat een proefperiode na 7 dagen automatisch
-                overgaat in premium als je niet op tijd annuleert. CVster zegt er wel bij dat prijzen per
-                regio of ouder prijsmodel kunnen verschillen, dus controleer altijd je eigen checkoutdetails.
-              </p>
-            </div>
-          </div>
-
-          <div className="border-4 border-black bg-white p-6">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Relevante vervolgstappen
+            <p>
+              Ook belangrijk is wat er na annuleren gebeurt. CVster zegt expliciet dat premium niet
+              direct verdwijnt, maar nog doorloopt tot het einde van je laatste maand- of proefbetaling.
             </p>
-            <div className="mt-4 space-y-4">
-              {[
-                {
-                  href: "/cv-maken-zonder-abonnement",
-                  title: "CV maken zonder abonnement",
-                  body: "Gebruik deze route als je na opzeggen vooral een prijsmodel zonder maandelijkse verlenging zoekt.",
-                },
-                {
-                  href: "/cv-gids/werkcv-vs-cvster",
-                  title: "WerkCV vs CVster",
-                  body: "Vergelijk prijsmodel, use case en suite-omvang naast elkaar.",
-                },
-                {
-                  href: "/beste-cv-maker-nederland",
-                  title: "Beste CV maker Nederland",
-                  body: "Brede vergelijking als je meer CV-tools naast elkaar wilt afwegen.",
-                },
-                {
-                  href: "/prijzen",
-                  title: "WerkCV prijzen",
-                  body: "Bekijk het eenmalige model van WerkCV als alternatief voor proef- en premiumplatformen.",
-                },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block border-2 border-black bg-[#FFFEF0] p-4 transition-colors hover:bg-yellow-100"
-                >
-                  <p className="text-sm font-black text-black">{item.title}</p>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
-                </Link>
-              ))}
-            </div>
+            <p>
+              De officiele facturatie-uitleg zegt daarnaast dat een proefperiode na 7 dagen automatisch
+              overgaat in premium als je niet op tijd annuleert. CVster zegt er wel bij dat prijzen per
+              regio of ouder prijsmodel kunnen verschillen, dus controleer altijd je eigen checkoutdetails.
+            </p>
           </div>
         </section>
+
+        <OpzeggenConversionSection
+          pageKey="cvster-opzeggen"
+          compareHref="/cv-gids/werkcv-vs-cvster"
+          compareTitle="WerkCV vs CVster"
+          compareBody="Vergelijk prijsmodel, use case en suite-omvang pas nadat je het no-subscription alternatief hebt gezien."
+        />
 
         <section className="mb-14">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
@@ -301,12 +270,14 @@ export default function CvsterOpzeggenPage() {
                 Kijk of een eenmalig CV-model beter past bij jouw sollicitatieproces
               </h2>
             </div>
-            <Link
+            <TrackedLandingLink
               href="/cv-maken-zonder-abonnement"
+              trackingLocation="cvster-opzeggen:footer_primary"
+              trackingLabel="Bekijk alternatief"
               className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >
               Bekijk alternatief
-            </Link>
+            </TrackedLandingLink>
           </div>
         </section>
       </main>

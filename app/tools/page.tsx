@@ -138,7 +138,7 @@ const sections: ToolSection[] = [
             {
                 href: "/tools/aow-leeftijd-checker",
                 title: "AOW leeftijd checker",
-                description: "Bereken je exacte AOW-datum op basis van geboortedatum en de officiële SVB-tabel.",
+                description: "Check je AOW-datum en zie direct hoe AOW-leeftijd zich verhoudt tot je bredere pensioenleeftijd.",
                 badge: "NL wetgeving",
                 badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
             },
@@ -211,7 +211,7 @@ const sections: ToolSection[] = [
             {
                 href: "/tools/vakantiegeld-berekenen",
                 title: "Vakantiegeld berekenen",
-                description: "Reken met de 8%-basisregel en structurele looncomponenten voor een betere bruto indicatie.",
+                description: "Bereken vakantiegeld bruto netto met een bruto uitkomst plus ruwe netto-indicatie en uitleg over loonheffing.",
                 badge: "Geld",
                 badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
             },

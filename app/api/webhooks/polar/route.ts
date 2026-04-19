@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { validateEvent, WebhookVerificationError } from '@polar-sh/sdk/webhooks';
+import { reportOpsIncident } from '@/lib/ops-alerts';
 
 const WEBHOOK_SECRET = process.env.POLAR_WEBHOOK_SECRET;
 const SUPPORTED_ADDONS = new Set(['ats-rewrite', 'cover-letter', 'localization-polish']);
@@ -47,6 +48,13 @@ export async function POST(request: NextRequest) {
 
     if (!WEBHOOK_SECRET) {
         console.error('POLAR_WEBHOOK_SECRET is not configured');
+        await reportOpsIncident({
+            event: 'ops_payment_webhook_failed',
+            route: '/api/webhooks/polar',
+            stage: 'missing_webhook_secret',
+            error: new Error('POLAR_WEBHOOK_SECRET is not configured'),
+            notifyUser: false,
+        });
         return NextResponse.json(
             { error: 'Webhook not configured' },
             { status: 500 }
@@ -80,6 +88,18 @@ export async function POST(request: NextRequest) {
 
     if (!cvId) {
         console.error('No cv_id found in Polar order metadata');
+        await reportOpsIncident({
+            event: 'ops_payment_webhook_failed',
+            route: '/api/webhooks/polar',
+            stage: 'missing_cv_id_metadata',
+            error: new Error('Missing cv_id metadata'),
+            userEmail: email,
+            notifyUser: false,
+            context: {
+                polarOrderId: externalOrderId,
+                metadata,
+            },
+        });
         return NextResponse.json({ error: 'Missing cv_id metadata' }, { status: 400 });
     }
 
@@ -115,7 +135,23 @@ export async function POST(request: NextRequest) {
                 paidAt: new Date(),
             },
         });
-    } catch {
+    } catch (error) {
+        await reportOpsIncident({
+            event: 'ops_payment_webhook_failed',
+            route: '/api/webhooks/polar',
+            stage: 'order_create_fallback',
+            error,
+            cvId,
+            userEmail: email,
+            cluster: cvDocument?.sourceCluster || null,
+            notifyUser: false,
+            context: {
+                polarOrderId: externalOrderId,
+                amountCents,
+                currency,
+                addons,
+            },
+        });
         order = await prisma.order.create({
             data: {
                 email,
@@ -149,6 +185,20 @@ export async function POST(request: NextRequest) {
         });
     } catch (error) {
         console.error('paid_event_persist_failed', error);
+        await reportOpsIncident({
+            event: 'ops_payment_webhook_failed',
+            route: '/api/webhooks/polar',
+            stage: 'paid_event_persist_failed',
+            error,
+            cvId,
+            orderId: order.id,
+            userEmail: email,
+            cluster: cvDocument?.sourceCluster || null,
+            notifyUser: false,
+            context: {
+                polarOrderId: externalOrderId,
+            },
+        });
     }
 
     try {
@@ -164,6 +214,20 @@ export async function POST(request: NextRequest) {
         });
     } catch (error) {
         console.error('checkout_completed_event_persist_failed', error);
+        await reportOpsIncident({
+            event: 'ops_payment_webhook_failed',
+            route: '/api/webhooks/polar',
+            stage: 'checkout_completed_event_persist_failed',
+            error,
+            cvId,
+            orderId: order.id,
+            userEmail: email,
+            cluster: cvDocument?.sourceCluster || null,
+            notifyUser: false,
+            context: {
+                polarOrderId: externalOrderId,
+            },
+        });
     }
 
     console.log(

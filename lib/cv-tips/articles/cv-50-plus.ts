@@ -5,12 +5,13 @@ export const cv50Plus: BlogArticle = {
     title: 'CV als 50-Plusser: Hoe Je Leeftijdsbias Omzeilt en Sterk Overkomt',
     description: 'CV maken als 50-plusser? Leer hoe je je werkervaring strak houdt, leeftijdsneutrale keuzes maakt, digitale vaardigheden toont en je ervaring als troef inzet in plaats van excuus.',
     publishedAt: '2026-02-25',
-    updatedAt: '2026-02-25',
+    updatedAt: '2026-04-15',
 
     metaTitle: 'CV 50-Plusser (2026) – Leeftijdsbias Omzeilen & Professioneel Overkomen',
     metaDesc: 'CV maken als 50-plusser of ouder dan 50? Ontdek hoe je werkervaring beknopt houdt, leeftijdssignalen vermijdt, digitale skills toont en je enorme ervaring laat werken in je voordeel.',
     keywords: [
         'cv 50 plus',
+        'cv 50 plus nederland',
         'cv ouder dan 50',
         'cv 50 jaar',
         'cv als 50 plusser',
@@ -43,6 +44,7 @@ export const cv50Plus: BlogArticle = {
             answerCapsule: 'Leeftijdsdiscriminatie bestaat in de Nederlandse arbeidsmarkt, maar een strak, modern CV dat ervaring als troef presenteert vergroot je kansen aanzienlijk.',
             content: [
                 'Als 50-plusser op de arbeidsmarkt heb je te maken met een paradox: je hebt meer ervaring dan ooit, maar een deel van de arbeidsmarkt lijkt daar niet op te zitten wachten. Onderzoek van TNO (2024) laat zien dat 39% van de 55-plussers in Nederland aangeeft te maken te hebben gehad met leeftijdsdiscriminatie bij sollicitaties. Dat is bijna 4 op de 10 — een reëele uitdaging die je niet kunt negeren.',
+                'Wie zoekt op cv 50 plus Nederland zoekt meestal niet naar een heel ander documenttype, maar naar een manier om Nederlandse recruiterverwachtingen te combineren met minder leeftijdssignalen en meer recente relevantie. Dat vraagt vooral om selectie, inkorting en een modernere bovenkant van je cv.',
                 'Maar er is ook goed nieuws. Dezelfde TNO-studie laat zien dat 50-plussers die een gericht, modern CV inzetten — zonder overbodige leeftijdssignalen, met focus op recente relevante ervaring — significant vaker doorstromen naar een eerste gesprek. Het CV is het moment waarop jij bepaalt hoe oud je "lijkt" op papier. En dat is voor een groot deel te sturen.',
                 'In deze gids leer je exact welke keuzes je in je CV maakt om leeftijdsbias te minimaliseren en je jarenlange ervaring als echte troef te presenteren — niet als ballast. Want dat is het: decennia aan ervaring, netwerk en probleemoplossend vermogen zijn iets wat geen starter je nadoet.',
             ],
@@ -150,6 +152,13 @@ export const cv50Plus: BlogArticle = {
                 'Je CV-design spreekt namens jou voordat een recruiter ook maar één woord heeft gelezen. Een verouderd design — drukke lay-out, dik lettertype, zwarte blokken met witte tekst — verraadt dat je al een tijdje geen CV meer hebt bijgewerkt. Dat is een subtiel maar reëel signaal. Een clean, modern design toont het tegendeel.',
                 'Kies een template met voldoende witruimte, een schoon sans-serif lettertype (Calibri, Arial) en subtiel gebruik van kleur. Geen flashy design, maar ook geen museum-stuk uit 2005. WerkCV.nl biedt meerdere templates die precies in die sweet spot zitten: professioneel, modern en ATS-leesbaar.',
                 'Eenmalig €4,99 en je hebt een professioneel PDF-CV dat je kunt aanpassen per sollicitatie. Bewaar een versie voor directe sollicitaties, een voor uitzendbureaus en een voor interim-aanvragen. Drie versies, één basis — dat is hoe je als 50-plusser de markt efficiënt bestrijkt. Begin vandaag: de helft van je concurrenten heeft zijn CV al twee jaar niet bijgewerkt.',
+            ],
+            intentLinks: [
+                {
+                    href: '/tools/aow-leeftijd-checker',
+                    label: 'Check ook je AOW-leeftijd als je beschikbaarheid richting pensioen wilt plannen',
+                    description: 'Relevant voor 50-plussers die hun loopbaanstap, overbrugging of gesprek over langetermijninzet concreet willen onderbouwen.',
+                },
             ],
         },
     ],

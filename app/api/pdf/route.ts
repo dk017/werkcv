@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { generatePDF } from '@/lib/pdf';
 import { CVData } from '@/lib/cv';
 import { getCurrentUserFromRequest } from '@/lib/auth';
+import { reportOpsIncident } from '@/lib/ops-alerts';
 
 export async function GET(request: NextRequest) {
     const user = await getCurrentUserFromRequest(request);
@@ -69,8 +70,27 @@ export async function GET(request: NextRequest) {
         );
     } catch (error) {
         console.error('PDF generation failed:', error);
+        const cvData = cv.data as CVData;
+        const locale = cvData.personal?.resumeLanguage === 'en' ? 'en' : 'nl';
+        const { supportNotified } = await reportOpsIncident({
+            event: 'ops_pdf_generation_failed',
+            route: '/api/pdf',
+            stage: 'generate_pdf',
+            error,
+            cvId: cv.id,
+            userId: user.id,
+            userEmail: user.email,
+            cluster: cv.sourceCluster,
+            startSource: cv.startSource,
+            locale,
+            notifyUser: true,
+            context: {
+                templateId: cv.templateId,
+                colorThemeId: cv.colorThemeId ?? 'classic-blue',
+            },
+        });
         return NextResponse.json(
-            { error: 'PDF generation failed', code: 'PDF_ERROR' },
+            { error: 'PDF generation failed', code: 'PDF_ERROR', supportNotified },
             { status: 500 }
         );
     }

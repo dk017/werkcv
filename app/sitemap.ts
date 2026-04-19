@@ -731,6 +731,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.74,
         },
         {
+            url: `${baseUrl}/resume-io-opzeggen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.74,
+        },
+        {
+            url: `${baseUrl}/zety-opzeggen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.74,
+        },
+        {
+            url: `${baseUrl}/novoresume-opzeggen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.74,
+        },
+        {
+            url: `${baseUrl}/livecareer-opzeggen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.74,
+        },
+        {
             url: `${baseUrl}/faq`,
             lastModified: new Date(),
             changeFrequency: 'monthly',

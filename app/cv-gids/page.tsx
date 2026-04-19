@@ -64,6 +64,7 @@ const guideGroups = [
       { href: "/stage-cv-maken", label: "Stage CV maken" },
       { href: "/eerste-cv-maken", label: "Eerste CV maken" },
       { href: "/cv-maken-16-jarige", label: "CV maken 16-jarige" },
+      { href: "/cv-gids/cv-na-vaststellingsovereenkomst", label: "CV na vaststellingsovereenkomst" },
       { href: "/cv-maken-pdf", label: "CV maken PDF" },
       { href: "/cv-maken-op-mobiel", label: "CV maken op mobiel" },
       { href: "/cv-maken-in-engels", label: "CV maken in Engels" },
@@ -90,11 +91,24 @@ const comparisonGuideGroups = [
     links: [
       { href: "/cv-gids/werkcv-vs-cvmaker", label: "WerkCV vs CVMaker" },
       { href: "/cv-gids/werkcv-vs-cv-nl", label: "WerkCV vs CV.nl" },
+      { href: "/cv-gids/werkcv-vs-zety", label: "WerkCV vs Zety" },
+      { href: "/cv-gids/werkcv-vs-resume-io", label: "WerkCV vs Resume.io" },
       { href: "/cv-gids/werkcv-vs-cvwizard", label: "WerkCV vs CVwizard" },
       { href: "/cv-gids/werkcv-vs-cvster", label: "WerkCV vs CVster" },
       { href: "/cv-gids/werkcv-vs-europass", label: "WerkCV vs Europass" },
       { href: "/cv-gids/werkcv-vs-resumaker", label: "WerkCV vs Resumaker" },
       { href: "/cv-gids/werkcv-vs-maakeencv", label: "WerkCV vs maakeencv.nl" },
+    ],
+  },
+  {
+    title: "Opzeggen en overstappen",
+    description:
+      "Gebruik deze pagina's als je huidige vraag eigenlijk begint bij cancelen, billing of de overstap naar een rustiger alternatief.",
+    links: [
+      { href: "/resume-io-opzeggen", label: "Resume.io opzeggen" },
+      { href: "/zety-opzeggen", label: "Zety opzeggen" },
+      { href: "/novoresume-opzeggen", label: "Novoresume opzeggen" },
+      { href: "/livecareer-opzeggen", label: "LiveCareer opzeggen" },
     ],
   },
 ];

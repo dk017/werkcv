@@ -6,66 +6,70 @@ import OpzeggenConversionSection from "@/components/opzeggen/OpzeggenConversionS
 
 const sourceLinks = [
   {
-    label: "CVMaker prijzen",
-    href: "https://www.cvmaker.nl/prijzen",
+    label: "Zety contact",
+    href: "https://zety.com/contact",
   },
   {
-    label: "CVMaker contact",
-    href: "https://www.cvmaker.nl/contact",
+    label: "Zety pricing",
+    href: "https://zety.com/pricing",
+  },
+  {
+    label: "Zety terms of service",
+    href: "https://zety.com/terms-of-service",
   },
 ];
 
 const steps = [
-  "Log in bij CVMaker en klik rechtsboven op je naam.",
-  "Open Accountinstellingen en ga naar Abonnement.",
-  "Gebruik daar de knop om je abonnement direct te annuleren, of neem contact op met de helpdesk.",
-  "Controleer de bevestiging per e-mail en let op de datum tot wanneer je nog toegang hebt.",
+  "Log in op Zety en open in je accountdashboard de sectie 'My Plan' als je de self-serve route wilt gebruiken.",
+  "Kun je daar niet verder, gebruik dan de officiele contactpagina en annuleer via chat of via de klantenservice.",
+  "Controleer daarna of je een bevestiging met cancellation number of andere bevestigingsmail ontvangt en bewaar die.",
+  "Check ook welk plan actief was: trial of jaarplan, zodat je weet welke verlengmomenten en betaalcyclus op jouw account van toepassing zijn.",
 ];
 
 const faqs = [
   {
-    question: "Hoe zeg je CVMaker op?",
+    question: "Hoe zeg je Zety op?",
     answer:
-      "Volgens de officiele CVMaker prijzenpagina log je in, klik je rechtsboven op je naam, ga je naar Accountinstellingen en vervolgens naar Abonnement om direct te annuleren. CVMaker noemt ook de helpdesk als alternatief.",
+      "Volgens de officiele contactpagina kun je Zety het makkelijkst opzeggen via de supportchat of klantenservice. Diezelfde pagina noemt ook de self-serve route via de accountdashboardsectie 'My Plan'. De terms of service verwijzen daarnaast naar de online cancel page onder je instellingen.",
   },
   {
-    question: "Wat gebeurt er na opzeggen bij CVMaker?",
+    question: "Heeft Zety een abonnement?",
     answer:
-      "De officiele prijzenpagina zegt dat je na opzeggen geen verdere bedragen meer hoeft te betalen en dat je toegang behoudt tot de datum die in je bevestigingsmail staat.",
+      "De officiele Zety.com-pricingpagina laat een 14-daagse pro trial zien die daarna automatisch verlengt per vier weken, plus een jaarpakket dat jaarlijks automatisch verlengt. Zety zegt erbij dat je altijd kunt annuleren; prijzen en voorwaarden kunnen per markt verschillen.",
   },
   {
-    question: "Heeft CVMaker een proefperiode of abonnement?",
+    question: "Wat gebeurt er na opzeggen bij Zety?",
     answer:
-      "Ja. De officiele prijzenpagina noemt CVMaker Pro voor EUR1,99 voor 14 dagen en daarna EUR21,99 per maand met automatische verlenging totdat je opzegt.",
+      "De terms of service zeggen dat Zety een bevestiging met cancellation number stuurt voor een cancellation request. De exacte toegang na opzeggen hangt samen met het plan en de billing terms van de offer page waarop je hebt gekocht.",
   },
   {
-    question: "Waarom zoeken mensen op cvmaker opzeggen?",
+    question: "Waarom zoeken mensen op zety opzeggen?",
     answer:
-      "Die zoekterm is meestal geen losse informatievraag, maar een signaal dat iemand een abonnementsplatform wil stoppen en openstaat voor een eenvoudiger alternatief zonder maandelijkse verlenging.",
+      "Die intentie is meestal commercieel: mensen willen niet alleen stoppen, maar ook begrijpen of een rustiger alternatief zonder trial- of verlengfrictie beter past bij Nederlandse sollicitaties.",
   },
 ];
 
 export const metadata: Metadata = {
-  title: "CVMaker Opzeggen - Officiele Stappen + Alternatief | WerkCV",
+  title: "Zety Opzeggen - Officiele Stappen + Alternatief | WerkCV",
   description:
-    "Zoek je hoe je CVMaker opzegt? Bekijk de officiele stappen van CVMaker, wat de prijzenpagina zegt over annuleren en vergelijk daarna een alternatief zonder abonnement.",
+    "Zoek je hoe je Zety opzegt? Bekijk de officiele cancel-routes via support en My Plan, wat de pricingpagina zegt over verlenging en vergelijk daarna een alternatief voor Nederlandse sollicitaties.",
   keywords: [
-    "cvmaker opzeggen",
-    "cvmaker abonnement opzeggen",
-    "cv maker opzeggen",
-    "cvmaker annuleren",
-    "cvmaker stoppen",
+    "zety opzeggen",
+    "zety abonnement opzeggen",
+    "zety cancel subscription",
+    "zety trial opzeggen",
+    "zety alternatief nederland",
   ],
   alternates: {
-    canonical: "https://werkcv.nl/cvmaker-opzeggen",
+    canonical: "https://werkcv.nl/zety-opzeggen",
     languages: {
-      "nl-NL": "https://werkcv.nl/cvmaker-opzeggen",
-      "x-default": "https://werkcv.nl/cvmaker-opzeggen",
+      "nl-NL": "https://werkcv.nl/zety-opzeggen",
+      "x-default": "https://werkcv.nl/zety-opzeggen",
     },
   },
 };
 
-export default function CvmakerOpzeggenPage() {
+export default function ZetyOpzeggenPage() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -92,8 +96,8 @@ export default function CvmakerOpzeggenPage() {
       {
         "@type": "ListItem",
         position: 2,
-        name: "CVMaker opzeggen",
-        item: "https://werkcv.nl/cvmaker-opzeggen",
+        name: "Zety opzeggen",
+        item: "https://werkcv.nl/zety-opzeggen",
       },
     ],
   };
@@ -109,7 +113,7 @@ export default function CvmakerOpzeggenPage() {
           </Link>
           <TrackedLandingLink
             href="/cv-maken-zonder-abonnement"
-            trackingLocation="cvmaker-opzeggen:header_primary"
+            trackingLocation="zety-opzeggen:header_primary"
             trackingLabel="Alternatief zonder abonnement"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
@@ -122,20 +126,21 @@ export default function CvmakerOpzeggenPage() {
         <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
             <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Intent: cvmaker opzeggen
+              Intent: zety opzeggen
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CVMaker opzeggen: wat de officiele prijzenpagina zegt
+              Zety opzeggen: wat de officiele contact- en terms-pagina zeggen
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Deze pagina vat samen wat CVMaker zelf publiceert over annuleren. Dat maakt de intentie
-              handig voor mensen die een lopend account willen stoppen en daarna vooral willen weten
-              of een eenvoudiger model zonder maandelijkse verlenging beter past.
+              Deze pagina vat samen wat Zety zelf publiceert over cancellation,
+              billing en verlenging. Dat is vooral nuttig voor mensen die niet alleen
+              willen stoppen, maar ook willen weten of een Nederlandse route zonder
+              trial- of verlengfrictie beter past.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink
                 href="/cv-maken-zonder-abonnement"
-                trackingLocation="cvmaker-opzeggen:hero_primary"
+                trackingLocation="zety-opzeggen:hero_primary"
                 trackingLabel="Bekijk alternatief zonder abonnement"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
@@ -146,27 +151,27 @@ export default function CvmakerOpzeggenPage() {
               Wil je pas daarna inhoudelijk vergelijken? De vergelijking met WerkCV staat lager op deze pagina.
             </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
-              Officiele bronnen gecheckt op 1 april 2026.
+              Officiele bronnen gecheckt op 19 april 2026.
             </p>
           </div>
 
           <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <h2 className="text-xl font-black text-black">Kernpunten uit de officiele bronnen</h2>
             <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-              <li>CVMaker zegt dat opzeggen via Accountinstellingen &gt; Abonnement kan.</li>
-              <li>De prijzenpagina noemt ook contact met de helpdesk als route om te annuleren.</li>
-              <li>CVMaker noemt EUR1,99 voor 14 dagen en daarna EUR21,99 per maand met automatische verlenging.</li>
-              <li>Na annuleren blijven kosten stoppen en houd je toegang tot de datum uit je bevestigingsmail.</li>
+              <li>De officiele contactpagina noemt support bellen of chatten als makkelijkste cancel-route.</li>
+              <li>Dezelfde pagina noemt ook een self-serve route via de dashboardsectie &quot;My Plan&quot;.</li>
+              <li>De terms zeggen dat Zety een e-mail met cancellation number stuurt om de request te bevestigen.</li>
+              <li>De pricingpagina toont een trial- en jaarplanstructuur met automatische verlenging; prijzen kunnen per markt verschillen.</li>
             </ul>
           </div>
         </section>
 
         <section className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Op basis van de CVMaker prijzenpagina
+            Op basis van de officiele Zety-pagina&apos;s
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            Stappen om CVMaker op te zeggen
+            Stappen om Zety op te zeggen
           </h2>
           <div className="mt-6 space-y-4">
             {steps.map((step, index) => (
@@ -185,30 +190,34 @@ export default function CvmakerOpzeggenPage() {
 
         <section className="mb-10 border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
-            Wat opvalt op de prijzenpagina
+            Wat opvalt op de officiele pricing- en cancelpagina&apos;s
           </p>
           <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-200">
             <p>
-              CVMaker koppelt annuleren direct aan het abonnementsmodel: EUR1,99 voor 14 dagen en
-              daarna EUR21,99 per maand zolang Pro actief blijft.
+              Zety maakt cancellation vrij duidelijk, maar koppelt die direct aan een
+              bredere pricingstructuur. Op de officiele Zety.com-pricingpagina staat
+              een 14-daagse trial voor USD 1,95 die daarna automatisch verlengt tegen
+              USD 25,95 per vier weken, plus een jaarpakket van USD 71,40 dat jaarlijks
+              automatisch verlengt. Zety zegt er ook bij dat je altijd kunt annuleren.
             </p>
             <p>
-              Dezelfde pagina zegt dat je zelf kunt annuleren via Accountinstellingen of via de
-              helpdesk, wat een nuttig detail is als je niet meteen de juiste accountroute vindt.
+              Voor Nederlandse zoekers is de belangrijkste nuance dat marktprijzen kunnen
+              verschillen. Daarom is het slim om niet alleen naar de headlineprijs te kijken,
+              maar ook naar de officiele offer page en de bevestiging na aankoop.
             </p>
             <p>
-              Ook belangrijk: CVMaker zegt dat je na annuleren geen extra bedragen meer betaalt,
-              maar wel toegang houdt tot de datum in je bevestigingsmail. Dat is precies het punt
-              waar veel mensen willen vergelijken met een eenmalig model.
+              De cancel-flow zelf is volgens Zety dubbel afgedekt: via chat of support,
+              of via &quot;My Plan&quot; in je account. De terms voegen daaraan toe dat je een
+              cancellation number per e-mail hoort te krijgen.
             </p>
           </div>
         </section>
 
         <OpzeggenConversionSection
-          pageKey="cvmaker-opzeggen"
-          compareHref="/cv-gids/werkcv-vs-cvmaker"
-          compareTitle="WerkCV vs CVMaker"
-          compareBody="Vergelijk prijsmodel, use case en productscope pas nadat je het alternatief zonder abonnement hebt gezien."
+          pageKey="zety-opzeggen"
+          compareHref="/cv-gids/werkcv-vs-zety"
+          compareTitle="WerkCV vs Zety"
+          compareBody="Vergelijk een rustige Nederlandse no-subscription route met Zety's bredere internationale suite en verlengmodel."
         />
 
         <section className="mb-14">
@@ -216,7 +225,7 @@ export default function CvmakerOpzeggenPage() {
             Bronnen
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            Officiele CVMaker pagina&apos;s
+            Officiele Zety pagina&apos;s
           </h2>
           <div className="mt-6 space-y-3">
             {sourceLinks.map((source) => (
@@ -236,7 +245,7 @@ export default function CvmakerOpzeggenPage() {
 
         <section className="mb-14">
           <h2 className="text-center text-3xl font-black text-black">
-            Veelgestelde vragen over CVMaker opzeggen
+            Veelgestelde vragen over Zety opzeggen
           </h2>
           <div className="mx-auto mt-8 max-w-3xl space-y-4">
             {faqs.map((faq) => (
@@ -260,15 +269,15 @@ export default function CvmakerOpzeggenPage() {
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div className="max-w-3xl">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
-                Klaar met abonnementen?
+                Klaar met trialfrictie?
               </p>
               <h2 className="mt-2 text-3xl font-black text-black">
-                Kijk of een eenmalig CV-model beter past bij jouw sollicitatieproces
+                Kijk of een directe Nederlandse cv-route beter past bij jouw sollicitatieproces
               </h2>
             </div>
             <TrackedLandingLink
               href="/cv-maken-zonder-abonnement"
-              trackingLocation="cvmaker-opzeggen:footer_primary"
+              trackingLocation="zety-opzeggen:footer_primary"
               trackingLabel="Bekijk alternatief"
               className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >
