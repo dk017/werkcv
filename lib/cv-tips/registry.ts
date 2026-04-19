@@ -44,6 +44,7 @@ import { cvMakenAlsStudent } from './articles/cv-maken-als-student';
 import { cvMakenInHetEngels } from './articles/cv-maken-in-het-engels';
 import { cvMakenInWord } from './articles/cv-maken-in-word';
 import { cvVoorUitzendbureau } from './articles/cv-voor-uitzendbureau';
+import { cvVoorDetachering } from './articles/cv-voor-detachering';
 import { cvNaOntslag } from './articles/cv-na-ontslag';
 import { cv50Plus } from './articles/cv-50-plus';
 import { cvSchrijvenMetAi } from './articles/cv-schrijven-met-ai';
@@ -93,6 +94,7 @@ const allArticles: BlogArticle[] = [
     cvMakenInHetEngels,
     cvMakenInWord,
     cvVoorUitzendbureau,
+    cvVoorDetachering,
     cvNaOntslag,
     cv50Plus,
     cvSchrijvenMetAi,

@@ -5,7 +5,7 @@ export const salarisverwachtingBepalen: BlogArticle = {
     title: 'Salarisverwachting bepalen in 2026: marktdata, range en onderhandeling',
     description: 'Leer hoe je een realistische salarisverwachting bepaalt met marktdata, een verdedigbare range en een duidelijke aanpak voor gesprekken, formulieren en aanbiedingen.',
     publishedAt: '2025-09-12',
-    updatedAt: '2026-04-04',
+    updatedAt: '2026-04-15',
 
     metaTitle: 'Salarisverwachting bepalen in 2026: range, marktdata en timing | WerkCV',
     metaDesc: 'Bepaal je salarisverwachting met marktdata, een sterke range en heldere scripts voor sollicitatiegesprekken, formulieren en aanbiedingen.',
@@ -173,6 +173,18 @@ export const salarisverwachtingBepalen: BlogArticle = {
                 'Telefoon en laptop: zakelijk apparaat of bring-your-own-device vergoeding',
                 'Kinderopvang: kinderopvangtoeslag-aanvulling of bedrijfskinderopvang',
                 'Collectieve ziektekostenverzekering: korting van €5-€30 per maand',
+            ],
+            intentLinks: [
+                {
+                    href: '/tools/vakantiegeld-berekenen',
+                    label: 'Bereken vakantiegeld bruto netto als onderdeel van je totale pakket',
+                    description: 'Handig als je een aanbod wilt vergelijken op salaris plus vakantietoeslag in plaats van alleen op het kale maandbedrag.',
+                },
+                {
+                    href: '/tools/kilometervergoeding-berekenen',
+                    label: 'Controleer ook de waarde van je kilometervergoeding',
+                    description: 'Gebruik dit als woon-werkverkeer en onbelaste vergoedingen een zichtbaar deel van je aanbod vormen.',
+                },
             ],
         },
         {

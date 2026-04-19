@@ -339,24 +339,275 @@ export type AowAgeLookup = {
   note: string | null;
 };
 
-export function lookupAowAge(birthYear: number): AowAgeLookup {
-  if (birthYear <= 1947) return { years: 65, months: 0, note: null };
-  if (birthYear === 1948) return { years: 65, months: 3, note: null };
-  if (birthYear === 1949) return { years: 65, months: 6, note: null };
-  if (birthYear === 1950) return { years: 65, months: 9, note: null };
-  if (birthYear === 1951) return { years: 66, months: 0, note: null };
-  if (birthYear === 1952) return { years: 66, months: 3, note: null };
-  if (birthYear === 1953) return { years: 66, months: 6, note: null };
-  if (birthYear === 1954) return { years: 66, months: 9, note: null };
-  if (birthYear === 1955) return { years: 66, months: 10, note: null };
-  if (birthYear === 1956) return { years: 66, months: 10, note: null };
-  if (birthYear === 1957) return { years: 67, months: 0, note: null };
+type AowAgeRange = {
+  label: string;
+  startKey: number;
+  endKey: number | null;
+  years: number;
+  months: number;
+  note: string | null;
+  expected: boolean;
+};
 
-  return {
+const AOW_EXPECTED_NOTE =
+  "Voor geboorte vanaf 1 oktober 1964 publiceert de SVB alleen een verwachte AOW-leeftijd. Die kan later nog wijzigen.";
+const AOW_BEYOND_PUBLISHED_NOTE =
+  "Voor geboorte na 31 december 2000 publiceert de SVB nog geen verdere verwachte AOW-leeftijd. WerkCV rekent daarom met 70 jaar als minimale projectie. Controleer altijd de SVB voor de actuele verwachting.";
+
+export const AOW_AGE_RANGES: readonly AowAgeRange[] = [
+  {
+    label: "t/m 31 dec 1947",
+    startKey: 0,
+    endKey: 19471231,
+    years: 65,
+    months: 0,
+    note: null,
+    expected: false,
+  },
+  {
+    label: "1 jan 1948 t/m 30 nov 1948",
+    startKey: 19480101,
+    endKey: 19481130,
+    years: 65,
+    months: 1,
+    note: null,
+    expected: false,
+  },
+  {
+    label: "1 dec 1948 t/m 31 okt 1949",
+    startKey: 19481201,
+    endKey: 19491031,
+    years: 65,
+    months: 2,
+    note: null,
+    expected: false,
+  },
+  {
+    label: "1 nov 1949 t/m 30 sep 1950",
+    startKey: 19491101,
+    endKey: 19500930,
+    years: 65,
+    months: 3,
+    note: null,
+    expected: false,
+  },
+  {
+    label: "1 okt 1950 t/m 30 jun 1951",
+    startKey: 19501001,
+    endKey: 19510630,
+    years: 65,
+    months: 6,
+    note: null,
+    expected: false,
+  },
+  {
+    label: "1 jul 1951 t/m 31 mrt 1952",
+    startKey: 19510701,
+    endKey: 19520331,
+    years: 65,
+    months: 9,
+    note: null,
+    expected: false,
+  },
+  {
+    label: "1 apr 1952 t/m 31 dec 1952",
+    startKey: 19520401,
+    endKey: 19521231,
+    years: 66,
+    months: 0,
+    note: null,
+    expected: false,
+  },
+  {
+    label: "1 jan 1953 t/m 31 aug 1955",
+    startKey: 19530101,
+    endKey: 19550831,
+    years: 66,
+    months: 4,
+    note: null,
+    expected: false,
+  },
+  {
+    label: "1 sep 1955 t/m 31 mei 1956",
+    startKey: 19550901,
+    endKey: 19560531,
+    years: 66,
+    months: 7,
+    note: null,
+    expected: false,
+  },
+  {
+    label: "1 jun 1956 t/m 28 feb 1957",
+    startKey: 19560601,
+    endKey: 19570228,
+    years: 66,
+    months: 10,
+    note: null,
+    expected: false,
+  },
+  {
+    label: "1 mrt 1957 t/m 31 dec 1960",
+    startKey: 19570301,
+    endKey: 19601231,
     years: 67,
     months: 0,
-    note:
-      "Voor mensen geboren na 1957 is de AOW-leeftijd momenteel 67 jaar. De overheid kan dit verhogen als de levensverwachting stijgt. Per 2026 is er geen verhoging vastgesteld voor de komende jaren.",
+    note: null,
+    expected: false,
+  },
+  {
+    label: "1 jan 1961 t/m 30 sep 1964",
+    startKey: 19610101,
+    endKey: 19640930,
+    years: 67,
+    months: 3,
+    note: null,
+    expected: false,
+  },
+  {
+    label: "1 okt 1964 t/m 30 sep 1966",
+    startKey: 19641001,
+    endKey: 19660930,
+    years: 67,
+    months: 3,
+    note: AOW_EXPECTED_NOTE,
+    expected: true,
+  },
+  {
+    label: "1 okt 1966 t/m 30 jun 1970",
+    startKey: 19661001,
+    endKey: 19700630,
+    years: 67,
+    months: 6,
+    note: AOW_EXPECTED_NOTE,
+    expected: true,
+  },
+  {
+    label: "1 jul 1970 t/m 31 mrt 1973",
+    startKey: 19700701,
+    endKey: 19730331,
+    years: 67,
+    months: 9,
+    note: AOW_EXPECTED_NOTE,
+    expected: true,
+  },
+  {
+    label: "1 apr 1973 t/m 31 dec 1975",
+    startKey: 19730401,
+    endKey: 19751231,
+    years: 68,
+    months: 0,
+    note: AOW_EXPECTED_NOTE,
+    expected: true,
+  },
+  {
+    label: "1 jan 1976 t/m 30 sep 1978",
+    startKey: 19760101,
+    endKey: 19780930,
+    years: 68,
+    months: 3,
+    note: AOW_EXPECTED_NOTE,
+    expected: true,
+  },
+  {
+    label: "1 okt 1978 t/m 30 jun 1982",
+    startKey: 19781001,
+    endKey: 19820630,
+    years: 68,
+    months: 6,
+    note: AOW_EXPECTED_NOTE,
+    expected: true,
+  },
+  {
+    label: "1 jul 1982 t/m 31 mrt 1985",
+    startKey: 19820701,
+    endKey: 19850331,
+    years: 68,
+    months: 9,
+    note: AOW_EXPECTED_NOTE,
+    expected: true,
+  },
+  {
+    label: "1 apr 1985 t/m 31 dec 1988",
+    startKey: 19850401,
+    endKey: 19881231,
+    years: 69,
+    months: 0,
+    note: AOW_EXPECTED_NOTE,
+    expected: true,
+  },
+  {
+    label: "1 jan 1989 t/m 30 sep 1991",
+    startKey: 19890101,
+    endKey: 19910930,
+    years: 69,
+    months: 3,
+    note: AOW_EXPECTED_NOTE,
+    expected: true,
+  },
+  {
+    label: "1 okt 1991 t/m 30 jun 1995",
+    startKey: 19911001,
+    endKey: 19950630,
+    years: 69,
+    months: 6,
+    note: AOW_EXPECTED_NOTE,
+    expected: true,
+  },
+  {
+    label: "1 jul 1995 t/m 31 mrt 1999",
+    startKey: 19950701,
+    endKey: 19990331,
+    years: 69,
+    months: 9,
+    note: AOW_EXPECTED_NOTE,
+    expected: true,
+  },
+  {
+    label: "1 apr 1999 t/m 31 dec 2000",
+    startKey: 19990401,
+    endKey: 20001231,
+    years: 70,
+    months: 0,
+    note: AOW_EXPECTED_NOTE,
+    expected: true,
+  },
+  {
+    label: "vanaf 1 jan 2001",
+    startKey: 20010101,
+    endKey: null,
+    years: 70,
+    months: 0,
+    note: AOW_BEYOND_PUBLISHED_NOTE,
+    expected: true,
+  },
+] as const;
+
+function getDateKey(date: Date): number {
+  return (
+    date.getUTCFullYear() * 10000 +
+    (date.getUTCMonth() + 1) * 100 +
+    date.getUTCDate()
+  );
+}
+
+export function lookupAowAge(birthDate: Date): AowAgeLookup {
+  const birthDateKey = getDateKey(birthDate);
+  const matchingRange = AOW_AGE_RANGES.find((range) => {
+    if (birthDateKey < range.startKey) {
+      return false;
+    }
+
+    return range.endKey === null || birthDateKey <= range.endKey;
+  });
+
+  if (!matchingRange) {
+    return { years: 65, months: 0, note: null };
+  }
+
+  return {
+    years: matchingRange.years,
+    months: matchingRange.months,
+    note: matchingRange.note,
   };
 }
 
@@ -378,7 +629,7 @@ export function calculateAowDate(birthDate: Date, ageYears: number, ageMonths: n
 }
 
 export function calculateAowResult(birthDate: Date, today = new Date()): AowResult {
-  const lookup = lookupAowAge(birthDate.getUTCFullYear());
+  const lookup = lookupAowAge(birthDate);
   const aowDate = calculateAowDate(birthDate, lookup.years, lookup.months);
   const todayUtc = startOfUtcDay(today);
   const reached = aowDate.getTime() <= todayUtc.getTime();

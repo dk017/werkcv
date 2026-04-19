@@ -6,66 +6,70 @@ import OpzeggenConversionSection from "@/components/opzeggen/OpzeggenConversionS
 
 const sourceLinks = [
   {
-    label: "CVMaker prijzen",
-    href: "https://www.cvmaker.nl/prijzen",
+    label: "LiveCareer Nederland contact",
+    href: "https://www.livecareer.nl/contact",
   },
   {
-    label: "CVMaker contact",
-    href: "https://www.cvmaker.nl/contact",
+    label: "LiveCareer Nederland gebruiksvoorwaarden",
+    href: "https://www.livecareer.nl/gebruiksvoorwaarden",
+  },
+  {
+    label: "LiveCareer Nederland homepage",
+    href: "https://www.livecareer.nl/",
   },
 ];
 
 const steps = [
-  "Log in bij CVMaker en klik rechtsboven op je naam.",
-  "Open Accountinstellingen en ga naar Abonnement.",
-  "Gebruik daar de knop om je abonnement direct te annuleren, of neem contact op met de helpdesk.",
-  "Controleer de bevestiging per e-mail en let op de datum tot wanneer je nog toegang hebt.",
+  "Log in op LiveCareer en ga via Mijn account en Mijn instellingen naar de online opzegpagina als je de self-serve route wilt gebruiken.",
+  "Werkt dat niet, neem dan contact op met de klantenservice zoals de officiele voorwaarden aangeven.",
+  "Controleer of je een bevestigingsmail met opzeggingsnummer ontvangt en bewaar die goed.",
+  "Ontvang je geen bevestiging, neem dan opnieuw direct contact op via klantenservice@livecareer.com of het contactformulier.",
 ];
 
 const faqs = [
   {
-    question: "Hoe zeg je CVMaker op?",
+    question: "Hoe zeg je LiveCareer op?",
     answer:
-      "Volgens de officiele CVMaker prijzenpagina log je in, klik je rechtsboven op je naam, ga je naar Accountinstellingen en vervolgens naar Abonnement om direct te annuleren. CVMaker noemt ook de helpdesk als alternatief.",
+      "Volgens de officiele Nederlandse gebruiksvoorwaarden kun je je abonnement op elk moment opzeggen via de online opzegpagina onder Mijn account en Mijn instellingen, of door contact op te nemen met de klantenservice.",
   },
   {
-    question: "Wat gebeurt er na opzeggen bij CVMaker?",
+    question: "Wat gebeurt er na opzeggen bij LiveCareer?",
     answer:
-      "De officiele prijzenpagina zegt dat je na opzeggen geen verdere bedragen meer hoeft te betalen en dat je toegang behoudt tot de datum die in je bevestigingsmail staat.",
+      "De officiele Nederlandse gebruiksvoorwaarden zeggen dat het abonnement na opzeggen actief blijft tot het einde van de lopende factureringsperiode. LiveCareer zegt ook dat je een bevestigingsmail met opzeggingsnummer hoort te ontvangen.",
   },
   {
-    question: "Heeft CVMaker een proefperiode of abonnement?",
+    question: "Kan ik LiveCareer per direct stopzetten?",
     answer:
-      "Ja. De officiele prijzenpagina noemt CVMaker Pro voor EUR1,99 voor 14 dagen en daarna EUR21,99 per maand met automatische verlenging totdat je opzegt.",
+      "De voorwaarden zeggen dat je het abonnement kosteloos kunt opzeggen met ingang van het einde van de lopende factureringsperiode. Dus wel op elk moment annuleren, maar niet per se met directe stop van toegang.",
   },
   {
-    question: "Waarom zoeken mensen op cvmaker opzeggen?",
+    question: "Waarom zoeken mensen op livecareer opzeggen?",
     answer:
-      "Die zoekterm is meestal geen losse informatievraag, maar een signaal dat iemand een abonnementsplatform wil stoppen en openstaat voor een eenvoudiger alternatief zonder maandelijkse verlenging.",
+      "De intentie is meestal dubbel: een lopend abonnement willen stoppen en tegelijk willen weten of een eenvoudiger Nederlands alternatief zonder maandelijkse structuur beter past.",
   },
 ];
 
 export const metadata: Metadata = {
-  title: "CVMaker Opzeggen - Officiele Stappen + Alternatief | WerkCV",
+  title: "LiveCareer Opzeggen - Officiele Stappen + Alternatief | WerkCV",
   description:
-    "Zoek je hoe je CVMaker opzegt? Bekijk de officiele stappen van CVMaker, wat de prijzenpagina zegt over annuleren en vergelijk daarna een alternatief zonder abonnement.",
+    "Zoek je hoe je LiveCareer opzegt? Bekijk wat de officiele Nederlandse voorwaarden en contactpagina zeggen over opzeggen, opzeggingsnummer en het einde van de factureringsperiode.",
   keywords: [
-    "cvmaker opzeggen",
-    "cvmaker abonnement opzeggen",
-    "cv maker opzeggen",
-    "cvmaker annuleren",
-    "cvmaker stoppen",
+    "livecareer opzeggen",
+    "livecareer abonnement opzeggen",
+    "livecareer annuleren",
+    "livecareer klantenservice",
+    "livecareer alternatief",
   ],
   alternates: {
-    canonical: "https://werkcv.nl/cvmaker-opzeggen",
+    canonical: "https://werkcv.nl/livecareer-opzeggen",
     languages: {
-      "nl-NL": "https://werkcv.nl/cvmaker-opzeggen",
-      "x-default": "https://werkcv.nl/cvmaker-opzeggen",
+      "nl-NL": "https://werkcv.nl/livecareer-opzeggen",
+      "x-default": "https://werkcv.nl/livecareer-opzeggen",
     },
   },
 };
 
-export default function CvmakerOpzeggenPage() {
+export default function LivecareerOpzeggenPage() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -92,8 +96,8 @@ export default function CvmakerOpzeggenPage() {
       {
         "@type": "ListItem",
         position: 2,
-        name: "CVMaker opzeggen",
-        item: "https://werkcv.nl/cvmaker-opzeggen",
+        name: "LiveCareer opzeggen",
+        item: "https://werkcv.nl/livecareer-opzeggen",
       },
     ],
   };
@@ -109,7 +113,7 @@ export default function CvmakerOpzeggenPage() {
           </Link>
           <TrackedLandingLink
             href="/cv-maken-zonder-abonnement"
-            trackingLocation="cvmaker-opzeggen:header_primary"
+            trackingLocation="livecareer-opzeggen:header_primary"
             trackingLabel="Alternatief zonder abonnement"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
@@ -122,20 +126,20 @@ export default function CvmakerOpzeggenPage() {
         <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
             <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Intent: cvmaker opzeggen
+              Intent: livecareer opzeggen
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CVMaker opzeggen: wat de officiele prijzenpagina zegt
+              LiveCareer opzeggen: wat de officiele NL-voorwaarden zeggen
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Deze pagina vat samen wat CVMaker zelf publiceert over annuleren. Dat maakt de intentie
-              handig voor mensen die een lopend account willen stoppen en daarna vooral willen weten
-              of een eenvoudiger model zonder maandelijkse verlenging beter past.
+              Deze pagina vat samen wat LiveCareer Nederland zelf publiceert over
+              opzeggen, bevestigingsmails en het einde van de factureringsperiode.
+              Dat is precies de informatie waar cancel-intentiezoekers meestal op vastlopen.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink
                 href="/cv-maken-zonder-abonnement"
-                trackingLocation="cvmaker-opzeggen:hero_primary"
+                trackingLocation="livecareer-opzeggen:hero_primary"
                 trackingLabel="Bekijk alternatief zonder abonnement"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
@@ -143,30 +147,30 @@ export default function CvmakerOpzeggenPage() {
               </TrackedLandingLink>
             </div>
             <p className="mt-3 text-sm font-medium text-slate-600">
-              Wil je pas daarna inhoudelijk vergelijken? De vergelijking met WerkCV staat lager op deze pagina.
+              Wil je pas daarna inhoudelijk vergelijken? De volgende stap staat lager op deze pagina.
             </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
-              Officiele bronnen gecheckt op 1 april 2026.
+              Officiele bronnen gecheckt op 19 april 2026.
             </p>
           </div>
 
           <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <h2 className="text-xl font-black text-black">Kernpunten uit de officiele bronnen</h2>
             <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-              <li>CVMaker zegt dat opzeggen via Accountinstellingen &gt; Abonnement kan.</li>
-              <li>De prijzenpagina noemt ook contact met de helpdesk als route om te annuleren.</li>
-              <li>CVMaker noemt EUR1,99 voor 14 dagen en daarna EUR21,99 per maand met automatische verlenging.</li>
-              <li>Na annuleren blijven kosten stoppen en houd je toegang tot de datum uit je bevestigingsmail.</li>
+              <li>De Nederlandse voorwaarden zeggen dat opzeggen via Mijn account en Mijn instellingen kan.</li>
+              <li>LiveCareer noemt klantenservice als alternatieve route als je vastloopt.</li>
+              <li>De voorwaarden zeggen dat je een bevestiging met opzeggingsnummer hoort te ontvangen.</li>
+              <li>Na opzeggen blijft het abonnement volgens de voorwaarden actief tot het einde van de lopende factureringsperiode.</li>
             </ul>
           </div>
         </section>
 
         <section className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Op basis van de CVMaker prijzenpagina
+            Op basis van de officiele NL-voorwaarden
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            Stappen om CVMaker op te zeggen
+            Stappen om LiveCareer op te zeggen
           </h2>
           <div className="mt-6 space-y-4">
             {steps.map((step, index) => (
@@ -185,30 +189,32 @@ export default function CvmakerOpzeggenPage() {
 
         <section className="mb-10 border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
-            Wat opvalt op de prijzenpagina
+            Wat opvalt in de Nederlandse voorwaarden
           </p>
           <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-200">
             <p>
-              CVMaker koppelt annuleren direct aan het abonnementsmodel: EUR1,99 voor 14 dagen en
-              daarna EUR21,99 per maand zolang Pro actief blijft.
+              LiveCareer maakt in de Nederlandse gebruiksvoorwaarden twee dingen heel
+              duidelijk: je mag op elk moment opzeggen, maar het effect is in principe
+              aan het einde van de lopende factureringsperiode.
             </p>
             <p>
-              Dezelfde pagina zegt dat je zelf kunt annuleren via Accountinstellingen of via de
-              helpdesk, wat een nuttig detail is als je niet meteen de juiste accountroute vindt.
+              Daarnaast legt LiveCareer de nadruk op de bevestiging. Volgens de voorwaarden
+              hoort de aanbieder een e-mail met opzeggingsnummer te sturen. Ontvang je die
+              niet, dan moet je opnieuw contact opnemen met de klantenservice.
             </p>
             <p>
-              Ook belangrijk: CVMaker zegt dat je na annuleren geen extra bedragen meer betaalt,
-              maar wel toegang houdt tot de datum in je bevestigingsmail. Dat is precies het punt
-              waar veel mensen willen vergelijken met een eenmalig model.
+              Voor Nederlandse bezoekers is ook de lokale contactpagina nuttig, omdat die
+              de route via klantenservice@livecareer.com en het contactformulier expliciet
+              noemt. Daarmee heb je naast de accountroute ook een duidelijke fallback.
             </p>
           </div>
         </section>
 
         <OpzeggenConversionSection
-          pageKey="cvmaker-opzeggen"
-          compareHref="/cv-gids/werkcv-vs-cvmaker"
-          compareTitle="WerkCV vs CVMaker"
-          compareBody="Vergelijk prijsmodel, use case en productscope pas nadat je het alternatief zonder abonnement hebt gezien."
+          pageKey="livecareer-opzeggen"
+          compareHref="/cv-gids/beste-cv-builder-zonder-abonnement"
+          compareTitle="Beste builder zonder abonnement"
+          compareBody="Gebruik deze vergelijking als je vooral weg wilt van maandelijkse billing en naar een rustiger Nederlands model zoekt."
         />
 
         <section className="mb-14">
@@ -216,7 +222,7 @@ export default function CvmakerOpzeggenPage() {
             Bronnen
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            Officiele CVMaker pagina&apos;s
+            Officiele LiveCareer pagina&apos;s
           </h2>
           <div className="mt-6 space-y-3">
             {sourceLinks.map((source) => (
@@ -236,7 +242,7 @@ export default function CvmakerOpzeggenPage() {
 
         <section className="mb-14">
           <h2 className="text-center text-3xl font-black text-black">
-            Veelgestelde vragen over CVMaker opzeggen
+            Veelgestelde vragen over LiveCareer opzeggen
           </h2>
           <div className="mx-auto mt-8 max-w-3xl space-y-4">
             {faqs.map((faq) => (
@@ -260,15 +266,15 @@ export default function CvmakerOpzeggenPage() {
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div className="max-w-3xl">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
-                Klaar met abonnementen?
+                Klaar met doorlopende billing?
               </p>
               <h2 className="mt-2 text-3xl font-black text-black">
-                Kijk of een eenmalig CV-model beter past bij jouw sollicitatieproces
+                Kijk of een directe Nederlandse cv-builder beter past bij jouw volgende sollicitatie
               </h2>
             </div>
             <TrackedLandingLink
               href="/cv-maken-zonder-abonnement"
-              trackingLocation="cvmaker-opzeggen:footer_primary"
+              trackingLocation="livecareer-opzeggen:footer_primary"
               trackingLabel="Bekijk alternatief"
               className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >

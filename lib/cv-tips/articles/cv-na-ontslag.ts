@@ -12,11 +12,13 @@ export const cvNaOntslag: BlogArticle = {
     keywords: [
         'cv na ontslag',
         'cv na ontslag maken',
+        'cv na lange werkloosheid',
         'ontslag gap cv',
         'cv na ontslag schrijven',
         'cv werkloosheid',
         'cv periode zonder werk',
         'cv na reorganisatie',
+        'cv maken na reorganisatie',
         'cv na collectief ontslag',
         'cv ontslag tips',
         'solliciteren na ontslag',
@@ -43,6 +45,7 @@ export const cvNaOntslag: BlogArticle = {
             answerCapsule: 'Ontslagen zijn is geen CV-ramp — het is een situatie die duizenden Nederlanders meemaken. Je CV bepaalt niet of je ontslagen bent; het bepaalt waar je naartoe gaat.',
             content: [
                 'Ontslag voelt voor veel mensen als een persoonlijk falen. Dat gevoel is begrijpelijk, maar het klopt niet — en zeker niet in de huidige arbeidsmarkt. Volgens het UWV werden in 2024 meer dan 480.000 ontslagaanvragen ingediend in Nederland. Reorganisaties, faillissementen, einde contracten: ontslag overkomt mensen in alle sectoren en op alle niveaus.',
+                'Dat geldt ook als je specifiek een cv maakt na reorganisatie of na lange werkloosheid. De onderliggende cv-logica blijft hetzelfde: tijdlijn eerlijk houden, resultaten zichtbaar maken en je volgende stap sterker formuleren dan je terugblik.',
                 'Recruiters weten dit ook. Een ervaren recruiter ziet dagelijks CV\'s van mensen die tussen banen zitten. Een ontslagperiode op zichzelf is geen rode vlag. Wat wél opvalt: een CV dat de periode probeert te verbergen of te omzeilen op een manier die niet klopt, of een kandidaat die in het gesprek een ander verhaal vertelt dan het CV laat zien.',
                 'In deze gids leer je hoe je een ontslag eerlijk maar strategisch verwerkt in je CV — zodat je de periode overbrugt zonder je kansen te schaden, en zo snel mogelijk weer aan het werk bent in een functie die bij jou past.',
             ],

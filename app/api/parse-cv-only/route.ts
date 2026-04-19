@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { parseCV } from '@/lib/cv-parser';
+import { getCvParsePublicMessage, recordCvParseFailure } from '@/lib/cv-upload-observability';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 
 /**
@@ -7,16 +8,23 @@ import { getCurrentUserFromRequest } from '@/lib/auth';
  * WITHOUT saving to the database. Used by the editor upload feature.
  */
 export async function POST(request: NextRequest) {
+    let file: File | null = null;
+    let userId: string | null = null;
+    let stage = 'auth';
+
     try {
-        if (!(await getCurrentUserFromRequest(request))) {
+        const user = await getCurrentUserFromRequest(request);
+        if (!user) {
             return NextResponse.json(
                 { error: 'Authentication required', code: 'AUTH_REQUIRED' },
                 { status: 401 }
             );
         }
+        userId = user.id;
 
+        stage = 'read_form_data';
         const formData = await request.formData();
-        const file = formData.get('file') as File | null;
+        file = formData.get('file') as File | null;
 
         if (!file) {
             return NextResponse.json(
@@ -53,6 +61,7 @@ export async function POST(request: NextRequest) {
         const buffer = Buffer.from(bytes);
 
         // Parse CV with OpenAI
+        stage = 'parse_cv';
         const cvData = await parseCV(buffer, file.name);
 
         return NextResponse.json({
@@ -62,9 +71,17 @@ export async function POST(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('CV parse error:', error);
+        console.error('CV parse error:', { stage, userId, fileName: file?.name, error });
+        await recordCvParseFailure({
+            route: '/api/parse-cv-only',
+            stage,
+            userId,
+            file,
+            error,
+        });
 
-        const message = error instanceof Error ? error.message : 'Kon CV niet verwerken';
+        const locale = request.headers.get('referer')?.includes('/en/') ? 'en' : 'nl';
+        const message = getCvParsePublicMessage(error, locale);
 
         return NextResponse.json(
             { error: message },

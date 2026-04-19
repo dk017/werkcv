@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { parseCV } from '@/lib/cv-parser';
+import { getCvParsePublicMessage, recordCvParseFailure } from '@/lib/cv-upload-observability';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { Prisma } from '@prisma/client';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
+    let file: File | null = null;
+    let userId: string | null = null;
+    let stage = 'auth';
+
     try {
         const user = await getCurrentUserFromRequest(request);
         if (!user) {
@@ -14,9 +19,11 @@ export async function POST(request: NextRequest) {
                 { status: 401 }
             );
         }
+        userId = user.id;
 
+        stage = 'read_form_data';
         const formData = await request.formData();
-        const file = formData.get('file') as File | null;
+        file = formData.get('file') as File | null;
         const attributionRaw = formData.get('attribution');
         let attribution = null;
         if (typeof attributionRaw === 'string') {
@@ -62,9 +69,11 @@ export async function POST(request: NextRequest) {
         const buffer = Buffer.from(bytes);
 
         // Parse CV
+        stage = 'parse_cv';
         const cvData = await parseCV(buffer, file.name);
 
         // Create CV document in database
+        stage = 'create_cv_document';
         const baseData = {
             title: cvData.personal.name ? `CV - ${cvData.personal.name}` : 'Geüpload CV',
             data: cvData,
@@ -100,9 +109,17 @@ export async function POST(request: NextRequest) {
         });
 
     } catch (error) {
-        console.error('CV parse error:', error);
+        console.error('CV parse error:', { stage, userId, fileName: file?.name, error });
+        await recordCvParseFailure({
+            route: '/api/parse-cv',
+            stage,
+            userId,
+            file,
+            error,
+        });
 
-        const message = error instanceof Error ? error.message : 'Failed to parse CV';
+        const locale = request.headers.get('referer')?.includes('/en/') ? 'en' : 'nl';
+        const message = getCvParsePublicMessage(error, locale);
 
         return NextResponse.json(
             { error: message },

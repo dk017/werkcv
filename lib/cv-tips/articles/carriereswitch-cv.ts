@@ -3,13 +3,13 @@ import { BlogArticle } from '../types';
 export const carriereswitchCv: BlogArticle = {
     slug: 'carriereswitch-cv',
     title: 'CV voor een Carrièreswitch: Zo Maak je de Overstap',
-    description: 'Een carrièreswitch maken? Leer hoe je je CV aanpast voor een nieuw vakgebied. Tips voor overdraagbare vaardigheden, het juiste cv-format, profieltekst en hoe ATS-systemen ermee omgaan.',
+    description: 'Een carrièreswitch maken? Leer hoe je een cv maakt voor een nieuw vakgebied. Tips voor overdraagbare vaardigheden, het juiste cv-format, profieltekst en hoe ATS-systemen ermee omgaan.',
     publishedAt: '2025-03-20',
     updatedAt: '2026-04-04',
 
     metaTitle: 'CV carrièreswitch in 2026: tips voor de overstap | WerkCV',
-    metaDesc: 'Maak een overtuigend CV voor je carrièreswitch. Tips voor overdraagbare vaardigheden, functioneel cv-format, motivatiebrief en ATS-systemen.',
-    keywords: ['carriereswitch cv', 'cv carriere verandering', 'overstappen cv', 'omscholing cv', 'cv ander vakgebied', 'functioneel cv', 'overdraagbare vaardigheden'],
+    metaDesc: 'CV maken bij een carrièreswitch? Gebruik deze gids voor overdraagbare vaardigheden, cv-format, profieltekst, motivatiebrief en ATS-termen voor je nieuwe vakgebied.',
+    keywords: ['carriereswitch cv', 'cv maken carrièreswitch', 'cv maken voor carrièreswitch', 'cv carriere verandering', 'overstappen cv', 'omscholing cv', 'cv ander vakgebied', 'functioneel cv', 'overdraagbare vaardigheden'],
 
     readingTime: 11,
     category: 'carriere',
@@ -212,6 +212,10 @@ export const carriereswitchCv: BlogArticle = {
         {
             question: 'Hoe leg ik een carrièreswitch uit in een sollicitatiegesprek?',
             answer: 'Wees positief en toekomstgericht. Vertel wat je aantrekt in het nieuwe vakgebied, welke concrete stappen je hebt gezet (cursussen, projecten) en wat je vanuit je vorige loopbaan meebrengt. Vermijd negativiteit over je vorige baan. Oefen het verhaal zodat het in 90 seconden vlot en overtuigend klinkt.',
+        },
+        {
+            question: 'Hoe pak ik cv maken bij een carrièreswitch het slimst aan?',
+            answer: 'Begin niet met je oude functietitels, maar met je nieuwe richting. Kies eerst het gewenste doelprofiel, verzamel daarna overdraagbare vaardigheden en concrete resultaten uit je vorige werk, en herschrijf pas dan je profieltekst en bullets in de taal van het nieuwe vakgebied.',
         },
         {
             question: 'Welk cv-format werkt het beste bij een carrièreswitch?',

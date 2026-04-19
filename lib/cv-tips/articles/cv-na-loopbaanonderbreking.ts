@@ -15,6 +15,7 @@ export const cvNaLoopbaanonderbreking: BlogArticle = {
         'cv na ouderschapsverlof',
         'mantelzorg cv',
         're-integratie cv',
+        'cv maken na re-integratie',
         'terugkeer arbeidsmarkt',
     ],
     publishedAt: '2026-02-19',
@@ -146,10 +147,11 @@ export const cvNaLoopbaanonderbreking: BlogArticle = {
         },
         {
             id: 'reintegratie-uwv',
-            title: 'Re-integratie en UWV: wat vermeld je in je cv?',
+            title: 'CV maken na re-integratie: wat vermeld je over UWV en trajecten?',
             answerCapsule: 'UWV-re-integratietrajecten en WW-periodes vermeld je niet in je cv; focus op de competenties en activiteiten die je tijdens die periode deed.',
             content: [
                 'Als je een UWV-re-integratietraject hebt doorlopen — via de Wet werk en inkomen naar arbeidsvermogen (WIA), de Wet poortwachter of via de WW — hoef je dat niet in je cv te zetten. Het is een administratief feit, geen prestatie of werkervaring. Recruiters zijn niet geïnteresseerd in de uitkeringsgeschiedenis; ze willen weten wat je kunt.',
+                'Wie zoekt op cv maken na re-integratie zoekt meestal vooral houvast over dit punt: moet het traject zelf op de pagina? Het korte antwoord is nee. Wat telt is niet het label van het traject, maar de inhoud van wat jij in die periode hebt opgebouwd, hervat of geactualiseerd.',
                 'Wat je wél kunt vermelden zijn activiteiten die je via re-integratie hebt gedaan: een werkplek via een re-integratiebedrijf, vrijwilligerswerk dat het UWV faciliteerde, of cursussen die via een re-integratiebudget zijn betaald. Vermeld die op hun inhoud, niet als "re-integratieactiviteit".',
                 'De Wet poortwachter verplicht werkgevers en werknemers tot een re-integratieplan bij langdurige ziekte. Als je dit traject hebt doorlopen, is dat bewijs dat je zelfstandig en samen met anderen aan herstel hebt gewerkt — een soft-skill signaal dat professionals die dit kennen, direct zullen herkennen.',
             ],

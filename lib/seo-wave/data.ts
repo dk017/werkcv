@@ -3796,6 +3796,480 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ctaHref: '/templates',
     },
     {
+        slug: 'werkcv-vs-zety',
+        locale: 'nl',
+        title: 'WerkCV vs Zety: wat is het beste Zety alternatief voor Nederland?',
+        description: 'Eerlijke vergelijking tussen WerkCV en Zety voor Nederlandse sollicitanten. Vergelijk prijsmodel, abonnement, templates, taal en welke route beter past bij Nederlandse vacatures.',
+        metaTitle: 'Zety alternatief Nederland (2026) | WerkCV vs Zety | WerkCV.nl',
+        metaDesc: 'Zoek je een Zety alternatief in Nederland? Vergelijk WerkCV en Zety op prijsmodel, templates, ATS-focus, taal en welke route beter past bij Nederlandse sollicitaties.',
+        keywords: [
+            'zety alternatief nederland',
+            'werkcv vs zety',
+            'zety alternatief',
+            'zety nederland alternatief',
+            'cv builder zonder abonnement',
+            'werkcv of zety',
+        ],
+        intro: 'Zoek je een Zety alternatief voor Nederland, dan is de kernvraag meestal niet of Zety goed is, maar of het past bij jouw sollicitatiestijl. Wil je vooral snel een Nederlands cv afronden zonder abonnement, dan past WerkCV meestal beter. Wil je een grotere internationale cv- en cover-letter-suite met veel kant-en-klare content en bredere Engelstalige begeleiding, dan kan Zety beter passen.',
+        sections: [
+            {
+                id: 'direct-antwoord',
+                title: 'Direct antwoord: wanneer WerkCV beter past en wanneer Zety beter past',
+                paragraphs: [
+                    'WerkCV en Zety lossen niet exact hetzelfde probleem op. WerkCV is bewust smal gehouden: rustig cv bouwen voor de Nederlandse markt, met duidelijke eenmalige betaling per document. Zety is een grotere internationale builder-suite met cv, cover letter, resume check, job matches en veel voorgeschreven contentblokken.',
+                    'Daardoor is de beste keuze minder afhankelijk van design dan van context. Solliciteer je vooral op Nederlandse vacatures en wil je prijsrust zonder trial of doorlopend abonnement, dan is WerkCV meestal logischer. Werk je vooral in het Engels, wil je een bredere set templates en schrijfondersteuning, en vind je een trial- of abonnementsmodel acceptabel, dan is Zety een serieuzere kandidaat.',
+                ],
+                comparisonTable: {
+                    columns: ['Situatie', 'WerkCV', 'Zety'],
+                    rows: [
+                        {
+                            label: 'Je wilt snel een Nederlands cv afronden zonder abonnement',
+                            primary: 'Sterkste keuze, omdat je gratis kunt starten en pas eenmalig betaalt wanneer je jouw PDF wilt downloaden.',
+                            secondary: 'Minder passend als je juist trial- of abonnementsfrictie wilt vermijden.',
+                        },
+                        {
+                            label: 'Je zoekt een Engelstalige cv- en cover-letter-suite',
+                            primary: 'Kan nog steeds werken, maar WerkCV is compacter en minder suite-gedreven.',
+                            secondary: 'Sterk als je veel waarde ziet in ready-made content, cover-letter flow en bredere internationale begeleiding.',
+                        },
+                        {
+                            label: 'Je wilt vooral prijsrust en geen opzegfrictie',
+                            primary: 'Sterk, omdat hetzelfde betaalde cv later opnieuw te openen en opnieuw te downloaden blijft zonder abonnement.',
+                            secondary: 'Minder sterk als je geen trial- of doorlopende premiumstructuur wilt beheren.',
+                        },
+                    ],
+                },
+                intentLinks: [
+                    {
+                        href: '/prijzen',
+                        label: 'Bekijk eerst hoe WerkCV-pricing precies werkt',
+                        description: 'Handig als prijsmodel en billingrust voor jou het belangrijkste verschil zijn.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Vergelijk eerst rustig de WerkCV templates',
+                        description: 'Zo zie je direct of de smallere Nederlandse route al genoeg is voor jouw sollicitaties.',
+                    },
+                ],
+            },
+            {
+                id: 'vergelijking',
+                title: 'WerkCV vs Zety in één oogopslag',
+                paragraphs: [
+                    'Op productniveau is het verschil helder. WerkCV is gebouwd rond een rustige cv-flow met nadruk op Nederlandse sollicitaties, transparante pricing en een beperkt aantal scherpe keuzes. Zety positioneert zich als een bredere builder met cv-maker, cover-letter-builder, resume check, job matches en veel voorgeschreven content.',
+                    'Dat maakt Zety niet automatisch beter. Voor veel mensen is minder juist beter: een kleinere flow, minder billingcomplexiteit en een duidelijker Nederlands gebruiksscenario. Voor anderen is de extra breedte van Zety juist nuttig, vooral als zij Engelstalige documenten, cover letters en een grotere internationale contentlaag willen combineren.',
+                ],
+                comparisonTable: {
+                    columns: ['Onderdeel', 'WerkCV', 'Zety'],
+                    rows: [
+                        {
+                            label: 'Prijsmodel',
+                            primary: 'Gratis starten, daarna eenmalig EUR4,99 per cv als je wilt downloaden.',
+                            secondary: 'Volgens de officiële Zety.com-pricingpagina: gratis starten, daarna trial vanaf USD1,95 voor 14 dagen; daarna automatische verlenging tegen een hoger premiumtarief. Prijzen kunnen per markt verschillen.',
+                        },
+                        {
+                            label: 'Productscope',
+                            primary: 'Gefocust op cv bouwen, vergelijken, afronden en hetzelfde document later opnieuw downloaden.',
+                            secondary: 'Grotere suite met cv builder, cover letter builder, resume check, job matches en extra contentlagen.',
+                        },
+                        {
+                            label: 'Templates',
+                            primary: 'Selectie gericht op rustige, recruiter-veilige templates voor Nederlandse sollicitaties.',
+                            secondary: 'Officiële Zety CV-maker en templates-pagina noemen 18+ cv-templates met bredere personalisatie-opties.',
+                        },
+                        {
+                            label: 'Documentfocus',
+                            primary: 'Nederlands cv eerst; Engels mogelijk via aparte Engelse routes.',
+                            secondary: 'Internationale en Engelstalige focus met veel standaard content en matching cover-letter-flow.',
+                        },
+                        {
+                            label: 'Na betaling',
+                            primary: 'Hetzelfde betaalde cv kun je later opnieuw openen, wijzigen en opnieuw downloaden zonder opnieuw voor dat document te betalen.',
+                            secondary: 'Toegang en downloadrechten hangen samen met het gekozen premiumplan en de verlenging daarvan.',
+                        },
+                        {
+                            label: 'Beste voor',
+                            primary: 'Mensen die een directe Nederlandse cv-route zonder abonnement willen.',
+                            secondary: 'Mensen die een bredere, meer internationale builder-suite willen en trial/abonnement acceptabel vinden.',
+                        },
+                    ],
+                },
+            },
+            {
+                id: 'kies-werkcv',
+                title: 'Kies WerkCV als je vooral Nederlandse sollicitaties en prijsrust belangrijk vindt',
+                paragraphs: [
+                    'WerkCV wint wanneer je vooral een cv nodig hebt en geen volledige sollicitatiesuite. Dat geldt extra voor mensen die meerdere Nederlandse vacatures willen bedienen vanuit één rustig basisdocument, maar niet willen vastzitten aan een maandmodel.',
+                    'Ook de lokale focus helpt. WerkCV praat in de taal van Nederlandse sollicitanten: ATS-rust, eenmalig betalen, later opnieuw downloaden van hetzelfde document en templates die gericht zijn op een scanbare sollicitatie-PDF in plaats van een bredere internationale suite-ervaring.',
+                ],
+                bullets: [
+                    'Je wilt zonder abonnement een cv maken en afronden.',
+                    'Je solliciteert vooral op Nederlandse vacatures en wilt een rustige Nederlandse workflow.',
+                    'Je hebt niet per se een aparte cover-letter-suite of job-matchlaag nodig.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-maken-zonder-abonnement',
+                        label: 'Bekijk de no-subscription route achter WerkCV',
+                        description: 'Handig als juist het prijsmodel je reden is om naar een alternatief voor Zety te zoeken.',
+                    },
+                    {
+                        href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                        label: 'Vergelijk WerkCV ook met andere no-subscription opties',
+                        description: 'Zo zie je of je probleem echt Zety is, of vooral abonnementen in het algemeen.',
+                    },
+                ],
+            },
+            {
+                id: 'kies-zety',
+                title: 'Kies Zety als je de grotere internationale suite ook echt gebruikt',
+                paragraphs: [
+                    'Zety is logischer als je niet alleen een cv-builder zoekt, maar een bredere internationale sollicitatietool met cover-letter-ondersteuning, veel ready-made content, resume check en extra job-tooling. Zeker voor Engelstalige sollicitaties kan die bredere laag aantrekkelijk zijn.',
+                    'De belangrijkste nuance is dat die extra breedte alleen waardevol is als je haar ook gebruikt. Als je uiteindelijk vooral één of twee sterke cv-versies nodig hebt, dan betaal je al snel voor meer product dan je werkelijk benut.',
+                ],
+                bullets: [
+                    'Je werkt vooral in het Engels of zoekt een internationaal ogende builder-suite.',
+                    'Je wilt veel kant-en-klare contentblokken en een geïntegreerde cover-letter-flow.',
+                    'Je vindt een trial- of abonnementsmodel acceptabel zolang de suite breed genoeg is.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-maken-in-het-engels',
+                        label: 'Gebruik WerkCV als je vooral een Engels cv voor Nederland wilt maken',
+                        description: 'Handig als je niet per se een internationale suite nodig hebt, maar wel een Engelstalig sollicitatiedocument.',
+                    },
+                ],
+            },
+            {
+                id: 'wanneer-niet',
+                title: 'Wanneer WerkCV niet de beste keuze is',
+                paragraphs: [
+                    'WerkCV is niet de beste keuze als jouw echte behoefte juist buiten het cv zelf ligt. Als je vooral zoekt naar een grote internationale builder met veel voorgeschreven content, geïntegreerde cover letters en bredere job-tooling, dan is WerkCV bewust smaller.',
+                    'Die smalle focus is een voordeel voor wie minder frictie wil. Maar als jij juist brede suite-functionaliteit wilt en prijsmodel minder zwaar weegt, dan kan Zety inhoudelijk beter aansluiten.',
+                ],
+                bullets: [
+                    'Niet kiezen voor WerkCV als je vooral een grotere internationale suite zoekt in plaats van een directe cv-oplossing.',
+                    'Niet kiezen voor WerkCV als een cover-letter-builder en extra job-tools voor jou essentieel zijn.',
+                    'Wel kiezen voor WerkCV als je van Zety af wilt vanwege trial-, prijs- of abonnementfrictie.',
+                ],
+            },
+            {
+                id: 'beste-route',
+                title: 'Beste keuze voor de meeste Nederlandse sollicitanten die op “Zety alternatief Nederland” zoeken',
+                paragraphs: [
+                    'Voor de meeste Nederlandse gebruikers die specifiek op “Zety alternatief Nederland” zoeken, is WerkCV de logischere uitkomst. Niet omdat Zety slecht is, maar omdat deze zoekterm meestal wordt ingegeven door een lokale behoefte: Nederlands solliciteren, minder billinggedoe en een directere cv-route.',
+                    'De praktische aanpak is daarom simpel: begin met een WerkCV template, kijk of de Nederlandse flow en prijsrust al genoeg zijn, en stap pas naar een grotere suite over als je merkt dat je echt die extra breedte nodig hebt.',
+                ],
+                exampleTitle: 'Snelle beslisregel',
+                exampleItems: [
+                    'Kies WerkCV als je vooral zonder abonnement een sterk Nederlands cv wilt maken.',
+                    'Kies Zety als je bewust een bredere internationale cv- en cover-letter-suite zoekt.',
+                    'Twijfel je nog? Open eerst de WerkCV templates en kijk of de smallere route je probleem al oplost.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/templates',
+                        label: 'Start direct met een WerkCV template',
+                        description: 'De snelste manier om te testen of het Zety-alternatief in de praktijk al genoeg is.',
+                    },
+                    {
+                        href: '/prijzen',
+                        label: 'Controleer nog één keer het eenmalige model',
+                        description: 'Voor veel bezoekers is dit uiteindelijk de echte reden om een alternatief te zoeken.',
+                    },
+                ],
+            },
+        ],
+        checklist: [
+            'Je weet of je een Nederlandse cv-flow zoekt of een bredere internationale suite.',
+            'Je weet of trial- of abonnementsbilling voor jou acceptabel is.',
+            'Je begrijpt dat meer templates en extra tooling niet automatisch beter zijn voor een simpele cv-taak.',
+            'Je kiest op basis van je sollicitatiegedrag, niet alleen op basis van merkbekendheid.',
+            'Je hebt bepaald of cover-letter- en job-tools voor jou echt essentieel zijn.',
+        ],
+        faq: [
+            {
+                question: 'Wat is het beste Zety alternatief in Nederland?',
+                answer: 'Voor veel Nederlandse sollicitanten is WerkCV het logischste alternatief, omdat het een rustige Nederlandse cv-flow biedt zonder trial- of maandabonnement. Zety blijft vooral sterk voor mensen die een grotere internationale suite met cover-letter-builder en meer ready-made content willen.',
+            },
+            {
+                question: 'Is Zety een abonnement?',
+                answer: 'Volgens de officiële Zety.com-pricingpagina werk je gratis aan je document, maar betaalde toegang loopt via een trial- of premiumstructuur met automatische verlenging. Exacte prijzen kunnen per markt verschillen.',
+            },
+            {
+                question: 'Wanneer is Zety logischer dan WerkCV?',
+                answer: 'Als je juist een grotere internationale builder-suite wilt met cover letters, resume check, job matches en veel voorgeschreven content, en je een trial- of abonnementsmodel acceptabel vindt.',
+            },
+            {
+                question: 'Wanneer is WerkCV slimmer dan Zety?',
+                answer: 'Als je vooral zonder abonnement een sterk cv voor Nederlandse vacatures wilt maken, met duidelijke pricing en minder productfrictie.',
+            },
+        ],
+        relatedLinks: [
+            {
+                href: '/cv-maken-zonder-abonnement',
+                title: 'CV maken zonder abonnement',
+                description: 'Gebruik deze pagina als alternatief-intentie vooral door abonnementsfrictie wordt gedreven.',
+            },
+            {
+                href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                title: 'Beste no-subscription builder',
+                description: 'Vergelijk WerkCV ook met andere no-subscription routes en niet alleen met Zety.',
+            },
+            {
+                href: '/cv-maken-in-het-engels',
+                title: 'Engels cv maken',
+                description: 'Handig als je Zety overwoog vanwege de Engelstalige builder-ervaring maar toch in Nederland solliciteert.',
+            },
+            {
+                href: '/zety-opzeggen',
+                title: 'Zety opzeggen',
+                description: 'Gebruik deze pagina als je eerst de officiele cancel-routes en billinglogica van Zety wilt checken.',
+            },
+        ],
+        sources: [
+            {
+                label: 'Zety pricing',
+                href: 'https://zety.com/pricing/',
+                note: 'Officiële Zety.com-pricingpagina met gratis start, trial vanaf USD1,95 voor 14 dagen en automatische verlenging; prijzen kunnen per markt verschillen. Gecontroleerd op 18 april 2026.',
+            },
+            {
+                label: 'Zety CV maker',
+                href: 'https://zety.com/cv-maker',
+                note: 'Officiële productpagina met cv-builder, PDF/DOC-download, role-specific content en bredere job-tooling. Gecontroleerd op 18 april 2026.',
+            },
+            {
+                label: 'Zety CV templates',
+                href: 'https://zety.com/cv-templates',
+                note: 'Officiële templates-pagina die 18+ cv-templates en bredere personalisatie benadrukt. Gecontroleerd op 18 april 2026.',
+            },
+            {
+                label: 'WerkCV prijzen',
+                href: 'https://werkcv.nl/prijzen',
+                note: 'Openbare WerkCV-prijzenpagina met eenmalige prijs per cv en uitleg over later opnieuw bewerken en downloaden.',
+            },
+        ],
+        ctaTitle: 'Zoek je vooral een alternatief voor trial- en abonnementsfrictie?',
+        ctaText: 'Open dan eerst de WerkCV templates en kijk of de Nederlandse no-subscription route jouw probleem al volledig oplost.',
+        ctaHref: '/templates',
+    },
+    {
+        slug: 'werkcv-vs-resume-io',
+        locale: 'nl',
+        title: 'WerkCV vs Resume.io: wat is het beste Resume.io alternatief voor Nederland?',
+        description: 'Eerlijke vergelijking tussen WerkCV en Resume.io voor Nederlandse sollicitanten. Vergelijk prijsmodel, planvariatie per land, productbreedte en welke route beter past bij een Nederlands cv.',
+        metaTitle: 'Resume.io alternatief Nederland (2026) | WerkCV vs Resume.io | WerkCV.nl',
+        metaDesc: 'Zoek je een Resume.io alternatief in Nederland? Vergelijk WerkCV en Resume.io op prijsmodel, subscriptions vs one-time access, suitebreedte en welke route beter past bij Nederlandse sollicitaties.',
+        keywords: [
+            'resume.io alternatief',
+            'resume io alternatief',
+            'resume.io alternatief nederland',
+            'werkcv vs resume.io',
+            'werkcv of resume.io',
+            'resume.io opzeggen',
+            'cv builder zonder abonnement',
+        ],
+        intro: 'Zoek je een Resume.io alternatief voor Nederland, dan is de kernvraag meestal niet alleen welke builder mooier oogt, maar welk model rustiger en voorspelbaarder past bij jouw sollicitatiegedrag. WerkCV is een smalle Nederlandse cv-route met een vaste eenmalige betaling per document. Resume.io is een bredere carrière-suite waarbij de officiële help- en pricingpagina\'s zelf aangeven dat planstructuren per land kunnen verschillen.',
+        sections: [
+            {
+                id: 'direct-antwoord',
+                title: 'Direct antwoord: wanneer WerkCV beter past en wanneer Resume.io beter past',
+                paragraphs: [
+                    'WerkCV en Resume.io lossen niet exact hetzelfde probleem op. WerkCV is een compacte Nederlandse cv-route: templates kiezen, inhoud invullen, cv afronden en later hetzelfde document opnieuw openen en downloaden. Resume.io positioneert zich veel breder als carrièreplatform met resume builder, cover letters, job tracker, AI interview prep en extra carrièretools.',
+                    'Voor veel Nederlandse sollicitanten is het echte verschil daarom niet design maar productomvang en billinglogica. Wil je vooral een rustig Nederlands cv afronden zonder wisselende plansoorten per land, dan past WerkCV meestal beter. Wil je juist een grotere internationale suite en vind je variabele planstructuren of accountlagen acceptabel, dan kan Resume.io beter aansluiten.',
+                ],
+                comparisonTable: {
+                    columns: ['Situatie', 'WerkCV', 'Resume.io'],
+                    rows: [
+                        {
+                            label: 'Je wilt snel een Nederlands cv afronden zonder planverwarring',
+                            primary: 'Sterkste keuze, omdat het model simpel blijft: gratis starten en daarna eenmalig per document betalen als je wilt downloaden.',
+                            secondary: 'Minder passend als je juist een vaste, altijd identieke planstructuur verwacht; Resume.io zegt zelf dat pricing en plans per locatie kunnen verschillen.',
+                        },
+                        {
+                            label: 'Je zoekt een bredere carrière-suite rond je cv',
+                            primary: 'Compacter en bewust smaller.',
+                            secondary: 'Sterker als je waarde ziet in extra lagen zoals cover letters, job tracker, AI interview prep en andere carrièretools.',
+                        },
+                        {
+                            label: 'Je wilt later hetzelfde document zonder abonnement blijven gebruiken',
+                            primary: 'Sterk, omdat hetzelfde betaalde cv later opnieuw te openen en opnieuw te downloaden blijft.',
+                            secondary: 'Hangt af van het plan dat je hebt gekozen; Resume.io noemt zelf verschillende modellen waaronder trial, meermaandsplannen en in sommige landen one-time payments.',
+                        },
+                    ],
+                },
+                intentLinks: [
+                    {
+                        href: '/prijzen',
+                        label: 'Bekijk eerst hoe WerkCV-pricing werkt',
+                        description: 'Handig als voorspelbaarheid van het prijsmodel voor jou het grootste verschil maakt.',
+                    },
+                    {
+                        href: '/resume-io-opzeggen',
+                        label: 'Lees ook de officiele cancel-samenvatting voor Resume.io',
+                        description: 'Relevant als je huidige vraag eigenlijk eerst over downgraden of stoppen gaat.',
+                    },
+                ],
+            },
+            {
+                id: 'vergelijking',
+                title: 'WerkCV vs Resume.io in één oogopslag',
+                paragraphs: [
+                    'Op productniveau staat WerkCV voor focus en Resume.io voor breedte. WerkCV houdt de route klein: rustig document opbouwen, recruiter-veilige templates, duidelijke Nederlandse positionering en een eenmalige downloadunlock. Resume.io laat op de eigen homepage en help-pagina\'s juist een bredere suite zien met builder, cover letters, extra carrièretools en meer accountlagen.',
+                    'Ook het prijsmodel verschilt fundamenteel. Resume.io zegt in het officiële helpcentrum expliciet dat plans kunnen variëren per locatie. Daar horen onder meer een 7-daagse trial, 6-maands- en jaarplannen en in sommige landen one-time payments bij. WerkCV gebruikt juist één eenvoudiger logica voor hetzelfde document: gratis opbouwen en eenmalig betalen zodra je wilt downloaden.',
+                ],
+                comparisonTable: {
+                    columns: ['Onderdeel', 'WerkCV', 'Resume.io'],
+                    rows: [
+                        {
+                            label: 'Prijsmodel',
+                            primary: 'Gratis starten, daarna eenmalig EUR4,99 per cv wanneer je wilt downloaden.',
+                            secondary: 'Officiële help- en pricingpagina\'s zeggen dat plans per locatie kunnen verschillen en onder meer trial, 6 maanden, 1 jaar en in sommige landen one-time payments kunnen omvatten.',
+                        },
+                        {
+                            label: 'Auto-renewal / cancel',
+                            primary: 'Geen maandabonnement voor hetzelfde betaalde cv.',
+                            secondary: 'Volgens het helpcentrum kan een 7-daagse trial automatisch verlengen; 6-maands- en jaarplannen verlengen niet automatisch; one-time payments in sommige landen verlengen ook niet automatisch.',
+                        },
+                        {
+                            label: 'Productscope',
+                            primary: 'Gefocust op cv bouwen, templates vergelijken, afronden en hetzelfde document later opnieuw gebruiken.',
+                            secondary: 'Breder platform met resume builder, cover letters, Job Tracker, AI Interview Prep, First 90 Day Plan, Career Pathways en meer.',
+                        },
+                        {
+                            label: 'Beste voor',
+                            primary: 'Mensen die vooral een rustige Nederlandse cv-route zonder billingfrictie willen.',
+                            secondary: 'Mensen die een grotere internationale carrière-suite willen en een meer gelaagde planstructuur acceptabel vinden.',
+                        },
+                    ],
+                },
+            },
+            {
+                id: 'kies-werkcv',
+                title: 'Kies WerkCV als je rust, voorspelbaarheid en Nederlandse focus zoekt',
+                paragraphs: [
+                    'WerkCV wint vooral voor mensen die geen platformrelatie zoeken, maar gewoon een goed cv willen maken en afronden. Voor dat type gebruiker is minder product vaak beter: minder accountgedoe, minder twijfel over welk plan actief is en een duidelijker pad naar een nette PDF voor Nederlandse vacatures.',
+                    'Die lokale focus helpt extra als je cv vooral recruiter-proof moet zijn in Nederland. WerkCV praat in de taal van Nederlandse sollicitanten: zonder abonnement, later opnieuw openen, rustige templates en weinig onnodige suite-lagen om het document heen.',
+                ],
+                bullets: [
+                    'Je wilt geen trial- of planverwarring per land hoeven uitzoeken.',
+                    'Je wilt hetzelfde cv later opnieuw kunnen openen en opnieuw downloaden.',
+                    'Je zoekt vooral een Nederlandse cv-route en geen bredere carrière-suite.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-maken-zonder-abonnement',
+                        label: 'Bekijk de no-subscription route achter WerkCV',
+                        description: 'Handig als jouw alternatief-intentie vooral door billingfrictie wordt gedreven.',
+                    },
+                    {
+                        href: '/templates',
+                        label: 'Open eerst de WerkCV templates',
+                        description: 'Zo test je meteen of de smallere route jouw probleem al oplost.',
+                    },
+                ],
+            },
+            {
+                id: 'kies-resumeio',
+                title: 'Kies Resume.io als je de bredere suite ook echt gebruikt',
+                paragraphs: [
+                    'Resume.io is logischer als je bewust meer zoekt dan alleen een cv-builder. De eigen homepage en help-content laten een veel bredere productlaag zien: cover letters, job tracker, AI interview prep, coaching-achtige functies en andere tools die verder gaan dan een los cv-document.',
+                    'Die breedte is alleen niet voor iedereen relevant. Als je uiteindelijk vooral één of twee sterke cv-versies wilt afronden, dan koop je al snel meer platform dan je daadwerkelijk gebruikt. Voor sommige mensen is dat prima; voor veel Nederlandse sollicitanten is het juist onnodige complexiteit.',
+                ],
+                bullets: [
+                    'Je wilt een bredere carrière-suite en niet alleen een cv-builder.',
+                    'Je gebruikt ook cover-letter- en extra job-tools actief.',
+                    'Je vindt het acceptabel dat pricing en planvormen per markt kunnen verschillen.',
+                ],
+            },
+            {
+                id: 'wanneer-niet',
+                title: 'Wanneer WerkCV niet de beste keuze is',
+                paragraphs: [
+                    'WerkCV is niet de beste keuze als je echte behoefte buiten het cv zelf ligt. Als je een groot internationaal platform wilt gebruiken waarin meerdere carrièretools samenkomen, dan is WerkCV bewust smaller opgezet.',
+                    'Die beperking is meestal juist een voordeel voor gebruikers die hun cv snel willen afronden. Maar als jij brede suitefunctionaliteit zoekt en dat zwaarder weegt dan eenvoudige billing, dan kan Resume.io inhoudelijk beter passen.',
+                ],
+                bullets: [
+                    'Niet kiezen voor WerkCV als je vooral extra carrièretools wilt buiten het cv-document.',
+                    'Niet kiezen voor WerkCV als een grotere internationale suite voor jou de hoofdreden is om te betalen.',
+                    'Wel kiezen voor WerkCV als je van Resume.io af wilt vanwege planfrictie of omdat je een rustigere Nederlandse route zoekt.',
+                ],
+            },
+        ],
+        checklist: [
+            'Je weet of je vooral een cv-builder zoekt of een bredere carrière-suite.',
+            'Je begrijpt dat Resume.io volgens de officiële help-pagina plans per locatie kan variëren.',
+            'Je weet welk model voor jou belangrijker is: vaste documentrust of bredere toolscope.',
+            'Je hebt bepaald of je hetzelfde cv later zonder abonnement wilt blijven kunnen gebruiken.',
+            'Je kiest op basis van je sollicitatiegedrag en niet alleen op merkbekendheid.',
+        ],
+        faq: [
+            {
+                question: 'Wat is het beste Resume.io alternatief in Nederland?',
+                answer: 'Voor veel Nederlandse sollicitanten is WerkCV het logischste alternatief, omdat het een smallere Nederlandse cv-flow met eenmalige documentbetaling biedt. Resume.io blijft vooral sterk voor mensen die een bredere carrière-suite zoeken en variabele planstructuren acceptabel vinden.',
+            },
+            {
+                question: 'Is Resume.io altijd een abonnement?',
+                answer: 'Nee, niet volgens de officiële help- en pricingpagina\'s. Resume.io zegt zelf dat planvormen per locatie kunnen verschillen en noemt onder meer een trial, 6-maands- en jaarplannen en in sommige landen one-time payments.',
+            },
+            {
+                question: 'Wanneer is Resume.io logischer dan WerkCV?',
+                answer: 'Als je juist een grotere internationale suite wilt met extra carrièretools zoals cover letters, Job Tracker, AI Interview Prep en andere aanvullende productlagen.',
+            },
+            {
+                question: 'Wanneer is WerkCV slimmer dan Resume.io?',
+                answer: 'Als je vooral zonder planverwarring een sterk cv voor Nederlandse vacatures wilt maken, met duidelijke pricing en dezelfde documentunlock die later opnieuw bruikbaar blijft.',
+            },
+        ],
+        relatedLinks: [
+            {
+                href: '/resume-io-opzeggen',
+                title: 'Resume.io opzeggen',
+                description: 'Gebruik deze pagina als je eerst de officiele cancel- en downgrade-informatie wilt checken.',
+            },
+            {
+                href: '/cv-maken-zonder-abonnement',
+                title: 'CV maken zonder abonnement',
+                description: 'Relevant als jouw alternatief-intentie vooral door billing- en planfrictie wordt gedreven.',
+            },
+            {
+                href: '/templates',
+                title: 'WerkCV templates',
+                description: 'De snelste manier om te testen of de smallere Nederlandse route in de praktijk al genoeg is.',
+            },
+        ],
+        sources: [
+            {
+                label: 'Resume.io pricing',
+                href: 'https://resume.io/pricing',
+                note: 'Officiële pricingpagina met actuele publieke trial-, kwartaal- en free-planvermelding op de internationale site. Gecontroleerd op 19 april 2026.',
+            },
+            {
+                label: 'Resume.io help - What can I do with a premium subscription?',
+                href: 'https://help.resume.io/en/articles/3785856',
+                note: 'Officiële help-pagina met 7-day trial, 6 months, 1 year, planvariatie per locatie en premium features zoals templates, Job Tracker en AI Interview Prep. Gecontroleerd op 19 april 2026.',
+            },
+            {
+                label: 'Resume.io help - cancel, downgrade or delete your account',
+                href: 'https://help.resume.io/en/articles/3784896',
+                note: 'Officiële help-pagina met cancel-flow via contact, e-mailbevestiging en gedrag na opzeggen. Gecontroleerd op 19 april 2026.',
+            },
+            {
+                label: 'Resume.io homepage',
+                href: 'https://resume.io/',
+                note: 'Officiële homepage gebruikt om de bredere suite-positionering te onderbouwen, waaronder job board, auto apply, interview prep en coaching-achtige functies. Gecontroleerd op 19 april 2026.',
+            },
+            {
+                label: 'WerkCV prijzen',
+                href: 'https://werkcv.nl/prijzen',
+                note: 'Openbare WerkCV-prijzenpagina met eenmalige prijs per cv en uitleg over later opnieuw bewerken en downloaden.',
+            },
+        ],
+        ctaTitle: 'Zoek je vooral een alternatief voor planverwarring en productbreedte?',
+        ctaText: 'Open dan eerst de WerkCV templates en kijk of de rustigere Nederlandse route jouw cv-probleem al volledig oplost.',
+        ctaHref: '/templates',
+    },
+    {
         slug: 'beste-cv-builder-zonder-abonnement',
         locale: 'nl',
         title: 'Beste CV builder zonder abonnement: welke opties zijn er echt?',
@@ -4104,6 +4578,252 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ],
         ctaTitle: 'Wil je een echte CV-builder zonder abonnement?',
         ctaText: 'Begin dan met een WerkCV template, bouw je versie gratis op en beslis pas op het einde of je jouw PDF wilt downloaden.',
+        ctaHref: '/templates',
+    },
+    {
+        slug: 'cv-na-vaststellingsovereenkomst',
+        locale: 'nl',
+        title: 'CV na vaststellingsovereenkomst: zo solliciteer je sterk verder',
+        description: 'Praktische gids voor werknemers die na een vaststellingsovereenkomst opnieuw gaan solliciteren. Leer wat je wel en niet op je cv zet, hoe je een gap uitlegt en welke afspraken eerst aandacht vragen.',
+        metaTitle: 'CV na vaststellingsovereenkomst (2026) | WW, referenties en sterke cv-opbouw | WerkCV.nl',
+        metaDesc: 'CV na vaststellingsovereenkomst? Leer wat je wel en niet op je cv zet, hoe je een gap uitlegt, wat je eerst checkt rond WW en opzegtermijn, en hoe je sterk verder solliciteert.',
+        keywords: [
+            'cv na vaststellingsovereenkomst',
+            'vaststellingsovereenkomst cv',
+            'vso cv',
+            'solliciteren na vaststellingsovereenkomst',
+            'cv na beeindigingsovereenkomst',
+            'cv na ontslag met wederzijds goedvinden',
+            'vso solliciteren',
+        ],
+        intro: 'Een vaststellingsovereenkomst verandert niet automatisch hoe je cv eruit moet zien, maar wél waar je eerst scherp op moet zijn. Zolang je overeenkomst juridisch klopt, hoeft je cv meestal geen uitlegdocument te worden. Je laatste functie blijft gewoon op je cv staan; de echte vraag is hoe je de periode erna positioneert, welke afspraken je eerst moet controleren en hoe je rustig verder solliciteert zonder jezelf onnodig te verzwakken.',
+        sections: [
+            {
+                id: 'direct-antwoord',
+                title: 'Direct antwoord: wat verandert er op je cv na een vaststellingsovereenkomst?',
+                paragraphs: [
+                    'Op je cv verandert vooral de context, niet de basisstructuur. Je laatste functie blijft vermeld met functietitel, werkgever en einddatum. Je hoeft niet letterlijk op je cv te zetten dat je een vaststellingsovereenkomst hebt getekend. Voor recruiters is vooral belangrijk dat je tijdlijn klopt en dat je verhaal in een gesprek rustig en consistent is.',
+                    'Het echte werk zit meestal vóórdat je je cv gaat herschrijven. Bij een vaststellingsovereenkomst moet je eerst zeker weten dat afspraken over WW, opzegtermijn, eventuele vergoeding, vrijstelling van werk en referenties logisch zijn vastgelegd. Pas daarna maak je je cv klaar voor de volgende stap.',
+                ],
+                comparisonTable: {
+                    columns: ['Onderdeel', 'Eerst checken in je vso', 'Voor je cv betekent dit'],
+                    rows: [
+                        {
+                            label: 'Initiatief voor ontslag',
+                            primary: 'Het moet duidelijk zijn dat het initiatief bij de werkgever ligt als je WW veilig wilt houden.',
+                            secondary: 'Niet letterlijk op je cv vermelden; wel belangrijk voor je sollicitatieverhaal en uitkeringspositie.',
+                        },
+                        {
+                            label: 'Opzegtermijn',
+                            primary: 'Controleer of de juiste opzegtermijn is opgenomen, omdat WW pas na die termijn ingaat.',
+                            secondary: 'Bepaalt of er een zichtbare periode tussen je einddatum en nieuwe sollicitaties kan ontstaan.',
+                        },
+                        {
+                            label: 'Referenties en getuigschrift',
+                            primary: 'Leg vast of je een neutrale referentie of getuigschrift krijgt.',
+                            secondary: 'Helpt je gesprek en vervolgstappen, maar hoeft niet als uitleg op je cv zelf te staan.',
+                        },
+                    ],
+                },
+                intentLinks: [
+                    {
+                        href: '/tools/ww-recht-checker',
+                        label: 'Controleer eerst je WW-recht',
+                        description: 'Handig als je wilt voorkomen dat een fout in de overeenkomst later je uitkering schaadt.',
+                    },
+                    {
+                        href: '/tools/opzegtermijn-berekenen',
+                        label: 'Check de juiste opzegtermijn',
+                        description: 'Relevant omdat een verkeerde termijn je WW-timing en planning beïnvloedt.',
+                    },
+                ],
+            },
+            {
+                id: 'wat-eerst-checken',
+                title: 'Wat je eerst in je vaststellingsovereenkomst moet checken voordat je gaat solliciteren',
+                paragraphs: [
+                    'Een vso is geen puur hr-document maar een bindende afspraak. Daarom is het onverstandig om direct naar je cv te springen zonder eerst de basis te controleren. Officiële UWV-informatie en de checklist van het Juridisch Loket leggen steeds dezelfde nadruk: controleer of het initiatief bij de werkgever ligt, of de ontslagreden neutraal is, of er geen dringende reden wordt genoemd, en of de juiste opzegtermijn is afgesproken.',
+                    'Extra opletpunt: als je ziek bent of in een re-integratietraject zit, is een vso veel risicovoller. UWV waarschuwt daar expliciet voor. In dat scenario hoort juridische controle vóór alles te gaan. Voor je cv betekent dit vooral dat je geen verhaal moet publiceren of herhalen zolang de juridische basis nog niet scherp is.',
+                ],
+                bullets: [
+                    'Controleer of jouw werkgever het initiatief tot beëindiging neemt.',
+                    'Controleer of de ontslagreden neutraal is en niet jouw schuld suggereert.',
+                    'Controleer de opzegtermijn, omdat WW pas daarna start.',
+                    'Controleer afspraken over vergoeding, vakantiedagen, bonus en vrijstelling van werk.',
+                    'Regel liefst ook een referentieafspraak of getuigschrift zolang de verhoudingen nog werkbaar zijn.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/tools/transitievergoeding-berekenen',
+                        label: 'Gebruik ook de transitievergoeding-check als referentiepunt',
+                        description: 'Handig om je onderhandelingspositie rond vergoeding beter te begrijpen.',
+                    },
+                ],
+            },
+            {
+                id: 'laatste-functie-op-cv',
+                title: 'Zo zet je je laatste functie op je cv na ontslag met wederzijds goedvinden',
+                paragraphs: [
+                    'Je laatste functie beschrijf je in principe hetzelfde als na elk ander einde van een dienstverband: rol, werkgever, periode en daarna je belangrijkste resultaten. De vaststellingsovereenkomst verandert niets aan wat je in die functie hebt gepresteerd. Vermijd daarom defensieve taal of indirecte uitleg in je werkervaring. Een recruiter wil eerst zien wat je hebt gedaan, niet onder welke juridische vorm je bent vertrokken.',
+                    'Als je direct door kunt solliciteren zonder zichtbare gap, is je cv vaak verrassend eenvoudig: niets extra uitleggen, gewoon je normale professionele verhaal laten staan. Pas als er later een periode tussen zit, ga je nadenken over een korte neutrale toelichting op je tijdlijn.',
+                ],
+                bullets: [
+                    'Laat je functietitel, bedrijfsnaam en periode normaal staan.',
+                    'Focus in bullets op resultaten, projecten en verantwoordelijkheid.',
+                    'Zet niet op je cv: "vertrokken via vso" of "ontslag met wederzijds goedvinden".',
+                    'Bewaar uitleg over vertrek voor het gesprek, niet voor je werkervaring-sectie.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-tips/cv-na-ontslag',
+                        label: 'Lees de bredere gids voor cv na ontslag',
+                        description: 'Handig als je naast de vso-vorm ook de emotionele en praktische doorstart wilt aanpakken.',
+                    },
+                ],
+            },
+            {
+                id: 'gap-en-profieltekst',
+                title: 'Vrijstelling van werk, opzegtermijn en een eventuele gap op je cv',
+                paragraphs: [
+                    'Een vso leidt vaak tot vrijstelling van werk of tot een periode waarin je niet meer actief werkt maar formeel nog wel in dienst bent. Daardoor ontstaat verwarring: welke datum zet je op je cv, en wanneer wordt het een gap? Voor recruiters is meestal alleen relevant wanneer je functie feitelijk of formeel eindigde en of jouw tijdlijn logisch leest. Je hoeft vrijstelling van werk niet als aparte entry op te nemen.',
+                    'Ontstaat er daarna een zichtbare zoekperiode, houd de uitleg kort. Bijvoorbeeld: gerichte oriëntatie, bijscholing of freelance opdrachten. Laat je profieltekst daarna vooral weer draaien om richting, specialisatie en inzetbaarheid. Je cv moet geen verlengstuk van de overeenkomst worden.',
+                ],
+                bullets: [
+                    'Vrijstelling van werk hoef je niet als aparte cv-regel te benoemen.',
+                    'Een korte zoekperiode hoeft vaak geen uitgebreide toelichting.',
+                    'Bij een langere periode noem je kort wat je deed: oriëntatie, cursus of projectwerk.',
+                    'Herschrijf je profieltekst naar je volgende stap, niet naar je vertrekregeling.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-tips/gat-in-cv-uitleggen',
+                        label: 'Gebruik de gat-in-cv gids voor je formulering',
+                        description: 'Nuttig als de periode na je vso zichtbaar wordt op je tijdlijn.',
+                    },
+                    {
+                        href: '/cv-tips/profieltekst-schrijven',
+                        label: 'Werk daarna je profieltekst weer scherp naar voren',
+                        description: 'Zo blijft de bovenkant van je cv toekomstgericht in plaats van verdedigend.',
+                    },
+                ],
+            },
+            {
+                id: 'gesprek-en-referenties',
+                title: 'Hoe leg je een vaststellingsovereenkomst uit in een gesprek?',
+                paragraphs: [
+                    'In gesprekken geldt hetzelfde principe als op je cv: rustig, feitelijk en zonder overuitleg. Een vaststellingsovereenkomst is voor recruiters geen exotisch begrip. Wat telt is dat jij kalm kunt uitleggen dat het dienstverband in onderling overleg is beëindigd, dat de situatie correct is afgerond en dat jij nu gericht verder kijkt.',
+                    'Sterker nog: de kwaliteit van je uitleg hangt vaak samen met de afspraken die je vooraf hebt vastgelegd. Als je al een neutrale referentie, een getuigschrift of een heldere einddatum hebt, wordt het sollicitatiegesprek automatisch simpeler. Daarom is de onderhandeling over je vertrekregeling direct verbonden aan je latere cv- en sollicitatiepositie.',
+                ],
+                bullets: [
+                    'Houd je uitleg in het gesprek kort en zakelijk.',
+                    'Leg de nadruk op afronding en je volgende stap, niet op conflict of details.',
+                    'Gebruik een referentie of getuigschrift als extra rustsignaal als dat geregeld is.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-tips/sollicitatiegesprek-voorbereiden',
+                        label: 'Bereid je gesprek daarna breder voor',
+                        description: 'Handig als je je vertrek rustig wilt kunnen toelichten zonder het gesprek te laten kantelen.',
+                    },
+                ],
+            },
+            {
+                id: 'extra-opletpunten',
+                title: 'Extra opletten bij ziekte, burnout of re-integratie',
+                paragraphs: [
+                    'Dit is het punt waar een vso snel geen gewone sollicitatievraag meer is maar een risicovolle juridische situatie. UWV en het Juridisch Loket zijn daar duidelijk over: als je ziek bent of korter dan twee jaar ziek bent geweest, is het meestal onverstandig om zomaar te tekenen. Een fout hier raakt niet alleen je cv, maar juist je loon- en uitkeringspositie.',
+                    'Voor de pagina-intentie betekent dit iets belangrijks: een sterk cv is niet de eerste stap als je nog in een ziekterisico of re-integratietraject zit. Dan moet eerst de overeenkomst juridisch kloppen. Pas daarna ga je verder met de normale sollicitatieroute.',
+                ],
+                bullets: [
+                    'Teken niet lichtzinnig als je ziek bent of nog in re-integratie zit.',
+                    'Laat juridische controle voorrang krijgen op cv-optimalisatie.',
+                    'Gebruik daarna pas de reguliere cv-routes als de basis veilig is.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-tips/cv-na-loopbaanonderbreking',
+                        label: 'Gebruik de terugkeergids als ziekte of herstel ook meespeelt',
+                        description: 'Handig wanneer je overeenkomst en je terugkeer op de arbeidsmarkt door elkaar lopen.',
+                    },
+                ],
+            },
+        ],
+        checklist: [
+            'Je hebt gecontroleerd of het initiatief in de vso bij de werkgever ligt.',
+            'Je hebt de opzegtermijn en WW-gevolgen gecontroleerd voordat je gaat tekenen.',
+            'Je laatste functie staat gewoon normaal op je cv, zonder juridische uitleg in de werkervaring.',
+            'Een eventuele zoekperiode is kort en neutraal geformuleerd.',
+            'Je hebt bedacht hoe je de vso in één rustig gespreksscript uitlegt.',
+        ],
+        faq: [
+            {
+                question: 'Moet ik op mijn cv zetten dat ik een vaststellingsovereenkomst heb getekend?',
+                answer: 'Nee. Op je cv vermeld je normaal gesproken alleen je functie, werkgever en einddatum. De vorm van het vertrek hoort meestal niet in je werkervaring-sectie thuis, maar komt hooguit later in een gesprek kort ter sprake.',
+            },
+            {
+                question: 'Krijg ik WW na een vaststellingsovereenkomst?',
+                answer: 'Dat kan, maar alleen als de overeenkomst correct is opgesteld. UWV benadrukt onder meer dat het initiatief bij de werkgever moet liggen, dat de ontslagreden neutraal moet zijn en dat de juiste opzegtermijn moet worden gerespecteerd.',
+            },
+            {
+                question: 'Wat als ik ziek ben en een vso krijg aangeboden?',
+                answer: 'Dan moet juridische controle voorrang krijgen. UWV en het Juridisch Loket waarschuwen dat tekenen tijdens ziekte of vóór afronding van een re-integratietraject je uitkerings- en loonpositie kan schaden.',
+            },
+            {
+                question: 'Hoe leg ik een vaststellingsovereenkomst uit in een sollicitatiegesprek?',
+                answer: 'Kort en zakelijk. Zeg bijvoorbeeld dat het dienstverband in onderling overleg is beëindigd, dat de situatie correct is afgerond en dat je nu gericht verder solliciteert. Vermijd lange uitleg of emotionele details.',
+            },
+        ],
+        relatedLinks: [
+            {
+                href: '/tools/ww-recht-checker',
+                title: 'WW-recht checker',
+                description: 'Gebruik deze check eerst als je wilt weten hoe sterk je uitkeringspositie na de overeenkomst waarschijnlijk is.',
+            },
+            {
+                href: '/tools/opzegtermijn-berekenen',
+                title: 'Opzegtermijn berekenen',
+                description: 'Controleer of de opgenomen termijn logisch is voordat je de overeenkomst tekent of je timing plant.',
+            },
+            {
+                href: '/cv-tips/cv-na-ontslag',
+                title: 'CV na ontslag',
+                description: 'Gebruik daarna deze gids voor de bredere cv-doorstart na je vertrek.',
+            },
+        ],
+        sources: [
+            {
+                label: 'UWV - Wanneer kan een werknemer worden ontslagen',
+                href: 'https://www.uwv.nl/nl/ontslag/werknemer-ontslaan',
+                note: 'Officiële UWV-pagina over ontslag, vaststellingsovereenkomst, WW-relevante afspraken en de rol van de opzegtermijn. Gecontroleerd op 18 april 2026.',
+            },
+            {
+                label: 'UWV - Wanneer heeft u recht op WW?',
+                href: 'https://www.uwv.nl/nl/ww/wanneer-recht-op-ww',
+                note: 'Officiële UWV-pagina die bevestigt dat werknemers met een getekende vaststellingsovereenkomst mogelijk recht op WW hebben als aan de voorwaarden is voldaan. Gecontroleerd op 18 april 2026.',
+            },
+            {
+                label: 'UWV - WW na ontslag',
+                href: 'https://www.uwv.nl/nl/ww/ww-na-ontslag',
+                note: 'Officiële UWV-pagina met uitleg over WW na ontslag door de werkgever en de rol van de vaststellingsovereenkomst. Gecontroleerd op 18 april 2026.',
+            },
+            {
+                label: 'Juridisch Loket - Checklist VSO',
+                href: 'https://media.juridischloket.nl/Checklist_vso_2025_bfcb492af0.pdf',
+                note: 'Officiële checklist met aandachtspunten zoals initiatief werkgever, neutrale ontslagreden, geen dringende reden, opzegtermijn en ziekte. Gecontroleerd op 18 april 2026.',
+            },
+            {
+                label: 'UWV - Ontslag tijdens ziekte',
+                href: 'https://www.uwv.nl/particulieren/ontslag/ik-word-ontslagen/detail/ontslag-wegens-langdurige-arbeidsongeschiktheid/hoe-gaat-de-ontslagprocedure-via-uwv-als-ik-ziek-ben',
+                note: 'Officiële UWV-pagina die expliciet waarschuwt voor het tekenen van een vaststellingsovereenkomst tijdens ziekte. Gecontroleerd op 18 april 2026.',
+            },
+            {
+                label: 'Indeed - Solliciteren na vaststellingsovereenkomst',
+                href: 'https://nl.indeed.com/carrieregids/ontwikkeling/solliciteren-na-vaststellingsovereenkomst',
+                note: 'Nederlandstalige sollicitatiecontext gebruikt als aanvullende bron voor de vertaalslag van overeenkomst naar sollicitatie-aanpak. Gecontroleerd op 18 april 2026.',
+            },
+        ],
+        ctaTitle: 'Is je overeenkomst inhoudelijk scherp genoeg? Ga daarna pas naar je cv',
+        ctaText: 'Als je vso klopt, is de volgende stap simpel: bouw een rustig, recruiter-proof cv en stuur je verhaal weer naar voren in plaats van naar je vertrekregeling.',
         ctaHref: '/templates',
     },
     {

@@ -1,6 +1,19 @@
 import type { Metadata } from "next";
+import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import { ToolPageShell } from "@/components/tools/ToolPageShell";
+import { AOW_AGE_RANGES } from "@/lib/tools/employment-tools";
 import AowLeeftijdTool from "./AowLeeftijdTool";
+
+const aowAgeRows = AOW_AGE_RANGES
+  .filter((range) => range.startKey >= 19530101 && range.startKey <= 19990401)
+  .map((range) => ({
+    birthWindow: range.label,
+    age:
+      range.months > 0
+        ? `${range.years} jaar en ${range.months} maanden`
+        : `${range.years} jaar`,
+    expected: range.expected,
+  }));
 
 const faqItems = [
   {
@@ -36,46 +49,193 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
-  title: "AOW Leeftijd Berekenen – Wanneer Kan Ik Met Pensioen? | WerkCV",
+  title: "Pensioenleeftijd Berekenen in 2026 | AOW-leeftijd en AOW-datum | WerkCV",
   description:
-    "Bereken je exacte AOW-leeftijd op basis van je geboortedatum. Inclusief pensioendatum, jaren tot AOW en effect van eerder stoppen met werken. Gebaseerd op officiële SVB-tabellen 2026.",
+    "Bereken je pensioenleeftijd via je AOW-leeftijd en AOW-datum. Inclusief verschil tussen AOW, aanvullend pensioen en eerder stoppen met werken. Gebaseerd op SVB-regels voor 2026.",
+  keywords: [
+    "pensioenleeftijd berekenen",
+    "pensioen leeftijd berekenen",
+    "aow leeftijd berekenen",
+    "wanneer met pensioen",
+    "aow datum berekenen",
+    "aow leeftijd 2026",
+    "wanneer krijg ik aow",
+  ],
 };
 
 export default function AowLeeftijdCheckerPage() {
   return (
     <ToolPageShell
       badge="NL wetgeving"
-      title="AOW leeftijd berekenen — wanneer kun je met pensioen?"
-      description="Vul je geboortedatum in en zie direct wanneer je AOW ingaat, hoeveel maanden je nog moet wachten en wat eerder stoppen financieel betekent."
-      toolLabel="AOW leeftijd checker"
+      title="Pensioenleeftijd berekenen: check je AOW-leeftijd en AOW-datum"
+      description="Vul je geboortedatum in en zie direct wanneer je AOW ingaat. Je ziet ook waarom AOW-leeftijd niet hetzelfde is als je volledige pensioenleeftijd en wat eerder stoppen financieel betekent."
+      toolLabel="Pensioenleeftijd berekenen"
       toolHref="/tools/aow-leeftijd-checker"
-      faqTitle="Veelgestelde vragen over AOW en pensioen"
+      faqTitle="Veelgestelde vragen over pensioenleeftijd en AOW"
       faqItems={faqItems}
       statPills={[
         {
-          label: "67 jaar",
-          value: "AOW-leeftijd voor na 1957 geborenen",
-          note: "momenteel vaste leeftijd vanaf 1958",
+          label: "AOW nu",
+          value: "67 jaar",
+          note: "voor 1 maart 1957 t/m 31 december 1960 vast, latere cohorten schuiven verder op",
         },
         {
-          label: "SVB-tabellen",
-          value: "officiële leeftijden per geboortejaar gebruikt",
-          note: "hardcoded volgens de opgegeven tabel",
+          label: "SVB bron",
+          value: "officiële AOW-leeftijd per geboortejaar",
+          note: "de tool rekent met de huidige SVB-stappen",
         },
         {
-          label: "CBS-koppeling",
-          value: "leeftijd stijgt mee met levensverwachting",
-          note: "kan later opnieuw worden aangepast",
+          label: "Breder dan AOW",
+          value: "pensioenleeftijd hangt ook van pensioenpot en werkgever af",
+          note: "AOW is alleen het wettelijke startpunt van de staatsuitkering",
         },
       ]}
-      asideTitle="Waarom dit meer is dan een pensioendatum"
+      asideTitle="AOW is niet je hele pensioen"
       asideParagraphs={[
-        "Voor veel mensen is de AOW-leeftijd het ankerpunt voor stoppen met werken, eerder afbouwen of een RVU-regeling.",
-        "Juist het verschil tussen AOW, aanvullend pensioen en eigen spaargeld zorgt vaak voor verwarring.",
-        "Deze checker laat daarom meteen zien hoeveel tijd en buffer je nodig hebt als je eerder wilt stoppen.",
+        "Veel zoekers typen pensioenleeftijd, maar bedoelen in de praktijk hun AOW-datum.",
+        "Die AOW-datum is het wettelijke startpunt van je staatsuitkering, niet automatisch de datum waarop je aanvullend pensioen ingaat.",
+        "Daarom laat deze pagina zowel je AOW-start als het effect van eerder stoppen met werken zien.",
       ]}
     >
-      <AowLeeftijdTool />
+      <>
+        <AowLeeftijdTool />
+
+        <section className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="mb-4 text-2xl font-black text-slate-900">
+              AOW-leeftijd en pensioenleeftijd zijn niet hetzelfde
+            </h2>
+            <div className="space-y-3 text-sm leading-relaxed text-slate-700">
+              <p>
+                De AOW-leeftijd bepaalt wanneer je wettelijke basisuitkering van de overheid start.
+                Dat is het deel waar deze checker direct antwoord op geeft.
+              </p>
+              <p>
+                Je echte pensioenleeftijd kan breder liggen. Aanvullend pensioen via een
+                pensioenfonds of werkgever kan soms eerder, later of in delen ingaan. Ook spaargeld,
+                RVU-regelingen of deeltijdpensioen kunnen invloed hebben op wanneer jij feitelijk stopt
+                met werken.
+              </p>
+              <p>
+                Zoek je dus op pensioenleeftijd berekenen, dan is je AOW-datum het eerste ankerpunt,
+                maar niet automatisch je volledige inkomensplaatje na werk.
+              </p>
+            </div>
+          </div>
+
+          <div className="border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="mb-4 text-2xl font-black text-slate-900">
+              Voor wie extra controle belangrijk is
+            </h2>
+            <ul className="space-y-2 text-sm text-slate-700">
+              <li>Werknemers die eerder willen stoppen en een overbrugging tot AOW nodig hebben.</li>
+              <li>Mensen die een deel van hun leven buiten Nederland hebben gewoond of gewerkt.</li>
+              <li>50-plussers die in gesprekken duidelijk willen zijn over beschikbaarheid tot AOW.</li>
+              <li>Werknemers met aanvullend pensioen dat niet exact op de AOW-datum start.</li>
+              <li>Iedereen die AOW, pensioenfonds en eigen spaargeld niet door elkaar wil halen.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section className="mt-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <div className="mb-5">
+            <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+              Snelle tabel
+            </p>
+            <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
+              AOW-leeftijd per geboortedatum
+            </h2>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="min-w-full border-collapse text-sm">
+              <thead>
+                <tr className="border-b-2 border-black text-left">
+                  <th className="px-3 py-2 font-black text-slate-900">Geboortedatum</th>
+                  <th className="px-3 py-2 font-black text-slate-900">AOW-leeftijd</th>
+                </tr>
+              </thead>
+              <tbody>
+                {aowAgeRows.map((row) => (
+                  <tr key={row.birthWindow} className="border-b border-slate-200">
+                    <td className="px-3 py-2 font-medium text-slate-700">{row.birthWindow}</td>
+                    <td className="px-3 py-2 font-medium text-slate-700">
+                      {row.age}
+                      {row.expected ? (
+                        <span className="ml-2 text-xs font-black uppercase tracking-wide text-amber-700">
+                          verwacht
+                        </span>
+                      ) : null}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-xs leading-relaxed text-slate-500">
+            Bron: SVB en Belastingdienst. Voor geboorte vanaf 1 oktober 1964 zijn dit verwachte
+            leeftijden, geen definitieve vaststellingen.
+          </p>
+        </section>
+
+        <RelatedToolsSection
+          title="Meer tools rond werk, inkomen en later stoppen"
+          description="Gebruik deze routes als je naast je AOW-datum ook je loon, ontslagsituatie of totale pakket wilt doorrekenen."
+          tools={[
+            {
+              href: "/tools/netto-bruto-calculator",
+              title: "Netto bruto calculator",
+              description: "Reken door wat je huidige bruto loon netto betekent zolang je nog werkt.",
+              badge: "Geld",
+            },
+            {
+              href: "/tools/transitievergoeding-berekenen",
+              title: "Transitievergoeding berekenen",
+              description: "Controleer of ontslag rond AOW of pensioen nog recht geeft op vergoeding.",
+              badge: "NL wetgeving",
+            },
+            {
+              href: "/tools/salaris-vergelijker",
+              title: "Salaris vergelijker",
+              description: "Vergelijk nog één keer twee pakketten als je richting afbouw of een laatste overstap kijkt.",
+              badge: "Geld",
+            },
+            {
+              href: "/tools/loonstrook-uitleggen",
+              title: "Loonstrook uitleggen",
+              description: "Handig als je wilt begrijpen hoe loonheffing, pensioenpremie en nettoloon nu opgebouwd zijn.",
+              badge: "NL wetgeving",
+            },
+          ]}
+        />
+
+        <section className="mt-12 border-2 border-slate-200 bg-slate-50 p-6">
+          <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+            Bronnen
+          </p>
+          <ul className="space-y-2 text-sm text-slate-600">
+            <li>
+              <a
+                href="https://www.svb.nl/nl/aow/aow-leeftijd/uw-aow-leeftijd"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-teal-700 hover:underline"
+              >
+                SVB - Uw AOW-leeftijd
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.svb.nl/nl/aow/bedragen-aow/aow-bedragen"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-teal-700 hover:underline"
+              >
+                SVB - AOW-bedragen
+              </a>
+            </li>
+          </ul>
+        </section>
+      </>
     </ToolPageShell>
   );
 }

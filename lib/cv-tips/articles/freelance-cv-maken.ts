@@ -15,6 +15,9 @@ export const freelanceCvMaken: BlogArticle = {
         'cv als zelfstandige',
         'cv freelancer',
         'zzp cv maken',
+        'cv maken zzp',
+        'zzp cv template',
+        'cv freelancer nederland',
         'zelfstandige cv voorbeeld',
         'opdrachten cv',
         'cv als ondernemer',
@@ -43,6 +46,7 @@ export const freelanceCvMaken: BlogArticle = {
             answerCapsule: 'Een freelance CV toont opdrachten in plaats van functies, vermeldt opdrachtgevers in plaats van werkgevers, en is gemiddeld langer omdat meerdere projecten elk apart beschreven worden.',
             content: [
                 'Nederland telt 1,2 miljoen ZZP\'ers (CBS, 2024) — een record. Als je als freelancer solliciteert op een opdracht, concurreer je met andere professionals die net zo\'n trackrecord hebben als jij. Wat je onderscheidt is niet alleen je expertise, maar hoe goed je die presenteert. Een CV dat geschreven is voor een loondienst-kandidaat werkt niet voor een ZZP\'er.',
+                'Wie zoekt op cv maken zzp of cv freelancer Nederland zoekt meestal niet naar nog een generieke template, maar naar een opbouw die opdrachtwerk, opdrachtgevercontext en resultaat logisch laat landen op de pagina. Dat is precies waar een freelance-cv van een standaard cv begint af te wijken.',
                 'Het fundamentele verschil zit in de werkervaring-sectie. In een gewoon CV beschrijf je een functie bij één werkgever over een aaneengesloten periode. Als freelancer heb je in vier jaar misschien twaalf opdrachten bij acht opdrachtgevers gedaan. Die presenteer je als afzonderlijke projecten — elk met een eigen opdrachtgever, rol, duur en resultaat. Dit vereist een andere structuur en een andere schrijfaanpak.',
                 'Intermediairs en opdrachtgevers bekijken een freelance CV gemiddeld in minder dan 30 seconden (brancheonderzoek ZZP Barometer, 2024). In die tijd moeten ze kunnen zien: wat is je specialisme, voor wie heb je gewerkt en wat heb je opgeleverd? Als die drie vragen niet direct beantwoord worden, gaat je CV de prullenbak in — hoeveel ervaring je ook hebt.',
             ],

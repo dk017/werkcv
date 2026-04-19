@@ -1,4 +1,6 @@
 import mammoth from 'mammoth';
+import { zodResponseFormat } from 'openai/helpers/zod';
+import { z } from 'zod';
 import { CVData } from './cv';
 import { detectResumeLanguage, ResumeLanguage } from './cv-language';
 import { normalizeParsedCv } from './cv-normalize';
@@ -23,6 +25,114 @@ type GetDocumentParams = {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let pdfjs: any = null;
+
+const aiParsedPersonalDefaults = {
+    name: "",
+    title: "",
+    resumeLanguage: "",
+    email: "",
+    phone: "",
+    location: "",
+    address: "",
+    postalCode: "",
+    summary: "",
+    birthDate: "",
+    birthPlace: "",
+    nationality: "",
+    driversLicense: "",
+    gender: "",
+    maritalStatus: "",
+    linkedIn: "",
+    github: "",
+    website: "",
+    photo: "",
+};
+
+const aiParsedCvSchema = z.object({
+    personal: z.object({
+        name: z.string().optional().default(""),
+        title: z.string().optional().default(""),
+        resumeLanguage: z.string().optional().default(""),
+        email: z.string().optional().default(""),
+        phone: z.string().optional().default(""),
+        location: z.string().optional().default(""),
+        address: z.string().optional().default(""),
+        postalCode: z.string().optional().default(""),
+        summary: z.string().optional().default(""),
+        birthDate: z.string().optional().default(""),
+        birthPlace: z.string().optional().default(""),
+        nationality: z.string().optional().default(""),
+        driversLicense: z.string().optional().default(""),
+        gender: z.string().optional().default(""),
+        maritalStatus: z.string().optional().default(""),
+        linkedIn: z.string().optional().default(""),
+        github: z.string().optional().default(""),
+        website: z.string().optional().default(""),
+        photo: z.string().optional().default(""),
+    }).optional().default(aiParsedPersonalDefaults),
+    experience: z.array(z.object({
+        role: z.string().optional().default(""),
+        company: z.string().optional().default(""),
+        location: z.string().optional().default(""),
+        start: z.string().optional().default(""),
+        end: z.string().optional().default(""),
+        description: z.string().optional().default(""),
+        highlights: z.array(z.string()).optional().default([]),
+    })).optional().default([]),
+    education: z.array(z.object({
+        degree: z.string().optional().default(""),
+        school: z.string().optional().default(""),
+        location: z.string().optional().default(""),
+        start: z.string().optional().default(""),
+        end: z.string().optional().default(""),
+        description: z.string().optional().default(""),
+    })).optional().default([]),
+    skills: z.array(z.object({
+        name: z.string().optional().default(""),
+        level: z.union([z.number(), z.string()]).optional().default(3),
+    })).optional().default([]),
+    languages: z.array(z.object({
+        name: z.string().optional().default(""),
+        level: z.string().optional().default("Goed"),
+    })).optional().default([]),
+    internships: z.array(z.object({
+        role: z.string().optional().default(""),
+        company: z.string().optional().default(""),
+        location: z.string().optional().default(""),
+        start: z.string().optional().default(""),
+        end: z.string().optional().default(""),
+        description: z.string().optional().default(""),
+        highlights: z.array(z.string()).optional().default([]),
+    })).optional().default([]),
+    interests: z.array(z.string()).optional().default([]),
+    properties: z.array(z.string()).optional().default([]),
+    courses: z.array(z.object({
+        name: z.string().optional().default(""),
+        institution: z.string().optional().default(""),
+        year: z.string().optional().default(""),
+    })).optional().default([]),
+    awards: z.array(z.string()).optional().default([]),
+    references: z.array(z.object({
+        name: z.string().optional().default(""),
+        role: z.string().optional().default(""),
+        company: z.string().optional().default(""),
+        email: z.string().optional().default(""),
+        phone: z.string().optional().default(""),
+    })).optional().default([]),
+    sideActivities: z.array(z.object({
+        title: z.string().optional().default(""),
+        organization: z.string().optional().default(""),
+        start: z.string().optional().default(""),
+        end: z.string().optional().default(""),
+        description: z.string().optional().default(""),
+    })).optional().default([]),
+    customSections: z.array(z.object({
+        title: z.string().optional().default(""),
+        items: z.array(z.string()).optional().default([]),
+    })).optional().default([]),
+});
+
+const CV_PARSER_MODELS = ['gpt-4o', 'gpt-4o-mini'] as const;
 
 async function getPdfjs() {
     if (!pdfjs) {
@@ -163,28 +273,41 @@ CRITICAL RULES:
 - For awards: Extract from "Awards", "Certificates", "Achievements", "Honors" sections
 - Internships separate from work experience
 - github: Extract GitHub profile URL if present`;
+    const fallbackLanguage = options.fallbackLanguage || detectResumeLanguage(text, 'nl');
+    let lastError: unknown = null;
 
-    const response = await openai.chat.completions.create({
-        model: 'gpt-4o',
-        messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: `Parse dit CV:\n\n${text}` }
-        ],
-        temperature: 0.1,
-        response_format: { type: 'json_object' },
-    });
+    for (const model of CV_PARSER_MODELS) {
+        try {
+            const response = await openai.chat.completions.parse({
+                model,
+                messages: [
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: `Parse dit CV:\n\n${text}` }
+                ],
+                temperature: 0.1,
+                response_format: zodResponseFormat(aiParsedCvSchema, 'werkcv_cv_parser'),
+            });
 
-    const content = response.choices[0]?.message?.content;
-    if (!content) {
-        throw new Error('No response from AI');
+            const parsed = response.choices[0]?.message?.parsed;
+            if (!parsed) {
+                throw new Error('No structured CV data in AI response');
+            }
+
+            return normalizeParsedCv(parsed, {
+                fallbackLanguage,
+                sourceText: text,
+            });
+        } catch (error) {
+            lastError = error;
+            console.error(`CV AI parse failed with ${model}:`, error);
+        }
     }
 
-    const parsed = JSON.parse(content);
-    const fallbackLanguage = options.fallbackLanguage || detectResumeLanguage(text, 'nl');
-    return normalizeParsedCv(parsed, {
-        fallbackLanguage,
-        sourceText: text,
-    });
+    throw new Error(
+        lastError instanceof Error && lastError.message
+            ? `Failed to parse CV structure: ${lastError.message}`
+            : 'Failed to parse CV structure'
+    );
 }
 
 export async function parseCV(buffer: Buffer, filename: string): Promise<CVData> {
