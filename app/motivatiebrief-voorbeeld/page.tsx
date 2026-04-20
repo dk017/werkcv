@@ -228,6 +228,11 @@ export default function MotivatiebriefVoorbeeldPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
+                  href: "/sollicitatiebrief-voorbeelden",
+                  title: "15 sollicitatiebrief voorbeelden",
+                  body: "Vergelijk eerst meerdere voorbeelden per functie en situatie als je een bredere startpagina zoekt.",
+                },
+                {
                   href: "/motivatiebrief-schrijven",
                   title: "Motivatiebrief schrijven",
                   body: "Gebruik deze route als je minder voorbeelden en meer stap-voor-stap schrijfstructuur zoekt.",

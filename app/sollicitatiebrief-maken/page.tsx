@@ -8,6 +8,11 @@ const pageUrl = `${siteUrl}/sollicitatiebrief-maken`;
 
 const routeCards = [
   {
+    href: "/sollicitatiebrief-voorbeelden",
+    title: "15 voorbeelden",
+    body: "Gebruik dit overzicht als je eerst snel per functie en situatie wilt vergelijken voordat je gaat schrijven.",
+  },
+  {
     href: "/motivatiebrief-schrijven",
     title: "Schrijfworkflow",
     body: "Gebruik deze route als je de hele brief stap voor stap wilt opbouwen en aanscherpen.",
