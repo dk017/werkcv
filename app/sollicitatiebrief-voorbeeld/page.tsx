@@ -227,6 +227,11 @@ export default function SollicitatiebriefVoorbeeldPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
+                  href: "/sollicitatiebrief-voorbeelden",
+                  title: "15 sollicitatiebrief voorbeelden",
+                  body: "Vergelijk eerst meerdere voorbeelden per functie en situatie als je nog niet weet welke route het best past.",
+                },
+                {
                   href: "/sollicitatiebrief-maken",
                   title: "Sollicitatiebrief maken",
                   body: "Start bij de centrale briefhub als je nog moet kiezen tussen voorbeelden, workflow en specialistische routes.",

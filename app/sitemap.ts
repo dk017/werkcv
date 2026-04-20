@@ -425,6 +425,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.84,
         },
         {
+            url: `${baseUrl}/sollicitatiebrief-voorbeelden`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.85,
+        },
+        {
             url: `${baseUrl}/sollicitatiebrief-voorbeeld-administratief-medewerker`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -663,6 +669,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.85,
+        },
+        {
+            url: `${baseUrl}/cv-gids/cv-builder-opzeggen-en-alternatieven`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.79,
+        },
+        {
+            url: `${baseUrl}/cv-gids/cv-voorbeelden-per-situatie`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.79,
         },
         {
             url: `${baseUrl}/partners`,

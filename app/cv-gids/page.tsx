@@ -60,6 +60,7 @@ const guideGroups = [
     description:
       "Deze routes pakken long-tail zoekintentie op voor studenten, stages, jongeren, mobiel, PDF en Engelstalige sollicitaties.",
     links: [
+      { href: "/cv-gids/cv-voorbeelden-per-situatie", label: "CV voorbeelden per situatie" },
       { href: "/cv-maken-student", label: "CV maken student" },
       { href: "/stage-cv-maken", label: "Stage CV maken" },
       { href: "/eerste-cv-maken", label: "Eerste CV maken" },
@@ -105,6 +106,7 @@ const comparisonGuideGroups = [
     description:
       "Gebruik deze pagina's als je huidige vraag eigenlijk begint bij cancelen, billing of de overstap naar een rustiger alternatief.",
     links: [
+      { href: "/cv-gids/cv-builder-opzeggen-en-alternatieven", label: "Alle opzegroutes + alternatieven" },
       { href: "/resume-io-opzeggen", label: "Resume.io opzeggen" },
       { href: "/zety-opzeggen", label: "Zety opzeggen" },
       { href: "/novoresume-opzeggen", label: "Novoresume opzeggen" },
