@@ -165,6 +165,26 @@ const localizationPack: ContentPack = {
 const dutchBespokeOverrides: Record<string, GuideOverride> = {
     'cv-voorbeeld-projectmanager': {
         intro: 'Een sterk projectmanager CV laat direct zien dat je grip hebt op scope, planning, budget en risico. Deze versie is geschreven voor recruiters die in 10 seconden willen zien of jij complexe trajecten echt kunt aansturen.',
+        relatedLinks: [
+            {
+                href: '/cv-template-projectmanager',
+                title: 'CV template projectmanager',
+                description: 'Gebruik een rustige template met ruimte voor projectomvang, governance en resultaatgedreven bullets.',
+            },
+            {
+                href: '/sollicitatiebrief-voorbeeld-projectmanager',
+                title: 'Sollicitatiebrief projectmanager',
+                description: 'Maak je brief logisch aansluitend op delivery, stakeholdermanagement en projectcontext.',
+            },
+            {
+                href: '/cv-voorbeelden/technologie-en-ict/ict-projectleider',
+                title: 'ICT projectleider CV voorbeeld',
+                description: 'Vergelijk je projectmanager versie met een technische variant voor delivery in IT-omgevingen.',
+            },
+        ],
+        ctaTitle: 'Bouw je projectmanager CV direct uit',
+        ctaText: 'Open de template, neem de sterkste projectbewijzen over en werk daarna je versie vacaturegericht af in de editor.',
+        ctaHref: '/cv-template-projectmanager',
         checklist: [
             'Projectomvang (budget, teamgrootte, looptijd) staat duidelijk benoemd.',
             'Per projectrol is impact zichtbaar op planning, kosten of kwaliteit.',

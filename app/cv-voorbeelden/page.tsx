@@ -88,6 +88,7 @@ const popularRoleLinks = [
     { label: 'CV voorbeeld stage', href: '/cv-voorbeelden/studenten-en-starters/stage-cv' },
     { label: 'CV voorbeeld verpleegkundige', href: '/cv-voorbeelden/zorg-en-welzijn/verpleegkundige' },
     { label: 'CV voorbeeld software ontwikkelaar', href: '/cv-voorbeelden/technologie-en-ict/software-ontwikkelaar' },
+    { label: 'CV voorbeeld projectmanager', href: '/cv-gids/cv-voorbeeld-projectmanager' },
     { label: 'CV voorbeeld systeembeheerder', href: '/cv-voorbeelden/technologie-en-ict/systeembeheerder' },
     { label: 'CV voorbeeld onderwijsassistent', href: '/cv-voorbeelden/onderwijs/onderwijsassistent' },
     { label: 'CV voorbeeld accountant', href: '/cv-voorbeelden/zakelijk-en-financieel/accountant' },

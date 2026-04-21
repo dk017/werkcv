@@ -263,6 +263,16 @@ const exactGuideLinks: Record<string, CVExampleInternalLink> = {
         title: 'CV voorbeeld receptionist',
         description: 'Relevant als ontvangst, reserveringen, administratie en servicegerichtheid je kernpunten zijn.',
     },
+    'technologie-en-ict/ict-projectleider': {
+        href: '/cv-gids/cv-voorbeeld-projectmanager',
+        title: 'CV voorbeeld projectmanager',
+        description: 'Gebruik de bredere projectmanager-gids voor sterkere formuleringen rond scope, governance en delivery.',
+    },
+    'bouw-en-techniek/projectleider-bouw': {
+        href: '/cv-gids/cv-voorbeeld-projectmanager',
+        title: 'CV voorbeeld projectmanager',
+        description: 'Handig als je bouw- of implementatierollen wilt vertalen naar een bredere projectmanagementpositie.',
+    },
     'horeca-en-detailhandel/ober-serveerster': {
         href: '/cv-gids/cv-voorbeeld-horeca-medewerker',
         title: 'CV voorbeeld horeca medewerker',
