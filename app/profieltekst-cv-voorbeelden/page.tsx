@@ -117,6 +117,12 @@ const profileIntentLinks = [
       "Gebruik een Nederlandse CV-opbouw waarin je opening, werkervaring en vaardigheden elkaar logisch versterken.",
   },
   {
+    href: "/templates",
+    label: "Vergelijk templates zodra je profieltekst inhoudelijk staat",
+    description:
+      "Kies daarna pas de layout die past bij je rol, zodat inhoud en opbouw elkaar versterken in plaats van concurreren.",
+  },
+  {
     href: "/gratis-cv-maken",
     label: "Gratis CV maken en je profieltekst daarna per vacature aanscherpen",
     description:
@@ -382,6 +388,11 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                   body: "Zet je profieltekst meteen boven een eerste Nederlandse basisversie als je nog vanaf nul begint.",
                 },
                 {
+                  href: "/templates",
+                  title: "Templates vergelijken",
+                  body: "Kies een layout zodra je profieltekst goed staat en laat daarna de rest van je CV op dezelfde toon aansluiten.",
+                },
+                {
                   href: "/gratis-cv-maken",
                   title: "Gratis CV maken",
                   body: "Begin gratis als je eerst wilt schrijven, vergelijken en pas bij download wilt betalen.",
@@ -453,10 +464,10 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                 Start profieltekst tool
               </Link>
               <Link
-                href="/cv-aanmaken"
+                href="/templates"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
-                CV aanmaken
+                Kies template voor je profieltekst
               </Link>
             </div>
           </div>

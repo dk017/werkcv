@@ -238,6 +238,11 @@ export default function CompetentiesVoorbeeldenPage() {
                 title: "CV voorbeelden",
                 body: "Zie hoe competenties geloofwaardig landen wanneer ze terugkomen in werkervaring en resultaatbulletpoints.",
               },
+              {
+                href: "/templates",
+                title: "Templates vergelijken",
+                body: "Kies een rustige template zodra je shortlist staat en je competenties logisch wilt laten landen in profieltekst, skills en werkervaring.",
+              },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -280,15 +285,23 @@ export default function CompetentiesVoorbeeldenPage() {
                 Klaar om competenties goed te plaatsen?
               </p>
               <h2 className="mt-2 text-3xl font-black text-black">
-                Kies je shortlist en zet die direct in je CV
+                Kies je shortlist en zet die daarna in een rustige CV-structuur
               </h2>
             </div>
-            <Link
-              href="/tools/vaardigheden-generator"
-              className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-            >
-              Start shortlist tool
-            </Link>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/tools/vaardigheden-generator"
+                className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+              >
+                Start shortlist tool
+              </Link>
+              <Link
+                href="/templates"
+                className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
+              >
+                Kies template
+              </Link>
+            </div>
           </div>
         </section>
       </main>

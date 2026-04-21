@@ -240,10 +240,10 @@ export default function CvOpmaakVoorbeeldPage() {
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                href="/editor"
+                href="/templates"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Pas je opmaak direct toe
+                Vergelijk templates met rustige opmaak
               </Link>
               <Link
                 href="/cv-opstellen"
@@ -366,8 +366,8 @@ export default function CvOpmaakVoorbeeldPage() {
                 Templates die opmaakproblemen voorkomen
               </h2>
             </div>
-            <Link href="/cv-maken-template" className="text-sm font-black text-black underline decoration-2 underline-offset-4">
-              Bekijk template-route
+            <Link href="/templates" className="text-sm font-black text-black underline decoration-2 underline-offset-4">
+              Bekijk alle templates
             </Link>
           </div>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
@@ -385,10 +385,10 @@ export default function CvOpmaakVoorbeeldPage() {
                 </p>
                 <div className="mt-auto pt-5">
                   <Link
-                    href="/cv-maken-template"
+                    href="/templates"
                     className="inline-block border-2 border-black bg-yellow-400 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-black"
                   >
-                    Kies template-route
+                    Vergelijk templates
                   </Link>
                 </div>
               </article>
@@ -510,21 +510,21 @@ export default function CvOpmaakVoorbeeldPage() {
                 Zet nu je inhoud in een opmaak die recruiters direct begrijpen
               </h2>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
-                Gebruik de regels op deze pagina, bouw in de editor, en download zodra je CV visueel en inhoudelijk klopt.
+                Gebruik de regels op deze pagina, kies daarna een rustige template en werk je CV vanuit daar verder uit.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
               <Link
-                href="/editor"
+                href="/templates"
                 className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Open editor
+                Vergelijk templates
               </Link>
               <Link
-                href="/prijzen"
+                href="/cv-aanmaken"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
-                Bekijk prijzen
+                Start met je basis-CV
               </Link>
             </div>
           </div>

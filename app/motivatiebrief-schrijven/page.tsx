@@ -316,6 +316,11 @@ export default function MotivatiebriefSchrijvenPage() {
                   title: "Sollicitatiebrief generator",
                   body: "Zet de schrijfregels direct om in een persoonlijke brief voor jouw vacature.",
                 },
+                {
+                  href: "/templates",
+                  title: "CV templates vergelijken",
+                  body: "Kies een rustige template zodra je briefinhoud staat en laat je CV dezelfde functierichting en toon volgen.",
+                },
               ].map((item) => (
                 <Link
                   key={item.href}
@@ -374,10 +379,10 @@ export default function MotivatiebriefSchrijvenPage() {
                 Start met brief
               </Link>
               <Link
-                href="/editor"
+                href="/templates"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
-                Bouw ook je CV
+                Kies CV template
               </Link>
             </div>
           </div>

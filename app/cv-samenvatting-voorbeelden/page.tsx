@@ -87,6 +87,12 @@ const summaryIntentLinks = [
       "Gebruik een Nederlandse opbouw waarin samenvatting, werkervaring en vaardigheden logisch op elkaar volgen.",
   },
   {
+    href: "/templates",
+    label: "Vergelijk templates zodra je samenvatting goed staat",
+    description:
+      "Kies daarna de layout die je opening, werkervaring en skills het best laat samenwerken in een scanbare sollicitatieversie.",
+  },
+  {
     href: "/cv-maken-student",
     label: "Studenten-CV maken als je samenvatting extra veel werk moet doen",
     description:
@@ -329,6 +335,11 @@ export default function CvSamenvattingVoorbeeldenPage() {
                   title: "CV maken met template",
                   body: "Kies een layout waarin je samenvatting, ervaring en skills direct goed uitlijnen.",
                 },
+                {
+                  href: "/templates",
+                  title: "Templates vergelijken",
+                  body: "Gebruik een directe templatekeuze zodra je opening inhoudelijk klopt en je vooral nog de juiste presentatie wilt kiezen.",
+                },
               ].map((item) => (
                 <Link
                   key={item.href}
@@ -378,12 +389,20 @@ export default function CvSamenvattingVoorbeeldenPage() {
                 Gebruik de formule, pas de voorbeelden aan op jouw rol en publiceer direct in de editor.
               </p>
             </div>
-            <Link
-              href="/tools/profieltekst-generator"
-              className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-            >
-              Start met profieltekst
-            </Link>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/tools/profieltekst-generator"
+                className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+              >
+                Start met profieltekst
+              </Link>
+              <Link
+                href="/templates"
+                className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
+              >
+                Kies template voor je samenvatting
+              </Link>
+            </div>
           </div>
         </section>
       </main>

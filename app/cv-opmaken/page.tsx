@@ -182,10 +182,10 @@ export default function CvOpmakenPage() {
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                href="/editor"
+                href="/templates"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Pas je opmaak direct toe
+                Start met een rustige template
               </Link>
               <Link
                 href="/cv-opmaak-voorbeeld"
@@ -303,16 +303,16 @@ export default function CvOpmakenPage() {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
-              href="/editor"
+              href="/templates"
               className="border-4 border-white bg-yellow-400 px-5 py-3 text-base font-black text-black"
             >
-              Start met opmaken
+              Vergelijk templates
             </Link>
             <Link
-              href="/prijzen"
+              href="/cv-aanmaken"
               className="border-4 border-white bg-transparent px-5 py-3 text-base font-black text-white"
             >
-              Bekijk prijzen
+              Start met je basis-CV
             </Link>
           </div>
         </section>

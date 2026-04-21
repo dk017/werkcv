@@ -228,6 +228,11 @@ export default function MotivatiebriefVoorbeeldPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
+                  href: "/sollicitatiebrief-voorbeelden",
+                  title: "15 sollicitatiebrief voorbeelden",
+                  body: "Vergelijk eerst meerdere voorbeelden per functie en situatie als je een bredere startpagina zoekt.",
+                },
+                {
                   href: "/motivatiebrief-schrijven",
                   title: "Motivatiebrief schrijven",
                   body: "Gebruik deze route als je minder voorbeelden en meer stap-voor-stap schrijfstructuur zoekt.",
@@ -308,9 +313,9 @@ export default function MotivatiebriefVoorbeeldPage() {
                   body: "Laat je brief en CV dezelfde professionele toon uitstralen.",
                 },
                 {
-                  href: "/prijzen",
-                  title: "Prijzen",
-                  body: "Start gratis en betaal alleen wanneer je je CV wilt downloaden.",
+                  href: "/templates",
+                  title: "CV templates vergelijken",
+                  body: "Kies een rustige template zodra je briefinhoud staat en laat je CV op dezelfde vacaturetoon aansluiten.",
                 },
               ].map((item) => (
                 <Link
@@ -361,12 +366,20 @@ export default function MotivatiebriefVoorbeeldPage() {
                 Gebruik de generator voor je brief en werk daarna je CV uit in dezelfde flow.
               </p>
             </div>
-            <Link
-              href="/tools/sollicitatiebrief-generator"
-              className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-            >
-              Start met motivatiebrief
-            </Link>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/tools/sollicitatiebrief-generator"
+                className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+              >
+                Start met motivatiebrief
+              </Link>
+              <Link
+                href="/templates"
+                className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
+              >
+                Kies template voor je CV
+              </Link>
+            </div>
           </div>
         </section>
       </main>

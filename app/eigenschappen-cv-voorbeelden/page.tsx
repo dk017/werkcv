@@ -232,6 +232,11 @@ export default function EigenschappenCvVoorbeeldenPage() {
                 title: "CV voorbeelden",
                 body: "Zie hoe eigenschappen geloofwaardig landen zodra ze terugkomen in bullets en resultaten.",
               },
+              {
+                href: "/templates",
+                title: "Templates vergelijken",
+                body: "Kies een rustige template zodra je sterke punten helder zijn en je ze logisch wilt verdelen over profieltekst, skills en werkervaring.",
+              },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -274,15 +279,23 @@ export default function EigenschappenCvVoorbeeldenPage() {
                 Klaar om je sterke punten scherper te formuleren?
               </p>
               <h2 className="mt-2 text-3xl font-black text-black">
-                Kies eigenschappen die passen bij de rol en bewijs ze direct in je CV
+                Kies eigenschappen die passen bij de rol en werk ze daarna uit in een rustige CV-structuur
               </h2>
             </div>
-            <Link
-              href="/tools/vaardigheden-generator"
-              className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-            >
-              Start shortlist tool
-            </Link>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/tools/vaardigheden-generator"
+                className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+              >
+                Start shortlist tool
+              </Link>
+              <Link
+                href="/templates"
+                className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
+              >
+                Kies template
+              </Link>
+            </div>
           </div>
         </section>
       </main>

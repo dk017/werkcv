@@ -8,6 +8,11 @@ const pageUrl = `${siteUrl}/sollicitatiebrief-maken`;
 
 const routeCards = [
   {
+    href: "/sollicitatiebrief-voorbeelden",
+    title: "15 voorbeelden",
+    body: "Gebruik dit overzicht als je eerst snel per functie en situatie wilt vergelijken voordat je gaat schrijven.",
+  },
+  {
     href: "/motivatiebrief-schrijven",
     title: "Schrijfworkflow",
     body: "Gebruik deze route als je de hele brief stap voor stap wilt opbouwen en aanscherpen.",
@@ -390,12 +395,12 @@ export default function SollicitatiebriefMakenPage() {
             </p>
             <div className="mt-5 space-y-4">
               <Link
-                href="/editor"
+                href="/templates"
                 className="block border-2 border-black bg-[#FFFEF0] p-4 transition-colors hover:bg-yellow-100"
               >
-                <p className="text-sm font-black text-black">Open CV editor</p>
+                <p className="text-sm font-black text-black">Kies CV template</p>
                 <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
-                  Bouw je CV direct naast je brief en stem beide documenten op elkaar af.
+                  Laat je CV dezelfde richting, toon en vacaturefocus volgen zodra je brief inhoudelijk klopt.
                 </p>
               </Link>
               <Link
@@ -477,10 +482,10 @@ export default function SollicitatiebriefMakenPage() {
                 Open generator
               </Link>
               <Link
-                href="/motivatiebrief-schrijven"
+                href="/templates"
                 className="border-4 border-black bg-white px-5 py-3 text-center text-base font-black text-black"
               >
-                Naar schrijfworkflow
+                Kies CV template
               </Link>
             </div>
           </div>

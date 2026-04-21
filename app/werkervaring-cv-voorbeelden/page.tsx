@@ -120,10 +120,10 @@ const experienceIntentLinks = [
       "Gebruik een structuur waarin recente functies en resultaat-bullets direct de meeste ruimte krijgen.",
   },
   {
-    href: "/cv-maken-template",
-    label: "CV maken met een template voor resultaatgedreven bullets",
+    href: "/templates",
+    label: "Vergelijk templates voor resultaatgedreven bullets",
     description:
-      "Kies een layout waarin prestaties en meetbare impact beter scannen dan taakomschrijvingen.",
+      "Kies een layout waarin prestaties, metrics en projectimpact sneller scannen dan taakomschrijvingen.",
   },
   {
     href: "/ats-cv-template",
@@ -392,6 +392,11 @@ export default function WerkervaringCvVoorbeeldenPage() {
                   body: "Zet je bullets in een layout die impact en scanbaarheid voorop zet.",
                 },
                 {
+                  href: "/templates",
+                  title: "Templates vergelijken",
+                  body: "Gebruik een directe templatekeuze zodra je bullets inhoudelijk sterk genoeg zijn en je vooral nog de juiste presentatie wilt kiezen.",
+                },
+                {
                   href: "/ats-cv-template",
                   title: "ATS CV template",
                   body: "Gebruik een template waarin functietitels, bullets en keywords schoon uitleesbaar blijven.",
@@ -458,10 +463,10 @@ export default function WerkervaringCvVoorbeeldenPage() {
                 Start bullets tool
               </Link>
               <Link
-                href="/cv-aanmaken"
+                href="/templates"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
-                CV aanmaken met je bullets
+                Kies template voor je bullets
               </Link>
             </div>
           </div>

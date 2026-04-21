@@ -123,8 +123,8 @@ const faqs = [
 
 const skillsIntentLinks = [
   {
-    href: "/cv-maken-template",
-    label: "CV maken met een template voor een heldere skillssectie",
+    href: "/templates",
+    label: "Vergelijk templates voor een heldere skillssectie",
     description:
       "Gebruik een layout waarin je belangrijkste hard en soft skills compact en scanbaar boven water blijven.",
   },
@@ -244,10 +244,10 @@ export default function VaardighedenCvVoorbeeldenPage() {
                 Genereer je vaardigheden
               </Link>
               <Link
-                href="/cv-maken-template"
+                href="/templates"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Zet dit in een CV-template
+                Vergelijk templates voor je skills
               </Link>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -421,9 +421,9 @@ export default function VaardighedenCvVoorbeeldenPage() {
                   body: "Maak direct een shortlist skills op basis van jouw doelrol.",
                 },
                 {
-                  href: "/cv-maken-template",
-                  title: "CV maken met template",
-                  body: "Gebruik een layout waarin je skills niet verdrinken tussen andere secties.",
+                  href: "/templates",
+                  title: "Templates vergelijken",
+                  body: "Gebruik een directe templatekeuze als je skillslijst inhoudelijk staat en je vooral nog een rustige, scanbare layout zoekt.",
                 },
                 {
                   href: "/ats-cv-template",
@@ -497,10 +497,10 @@ export default function VaardighedenCvVoorbeeldenPage() {
                 Start vaardigheden tool
               </Link>
               <Link
-                href="/cv-maken-template"
+                href="/templates"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
-                Kies een CV-template
+                Vergelijk templates voor je skills
               </Link>
             </div>
           </div>

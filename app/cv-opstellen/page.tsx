@@ -264,10 +264,10 @@ export default function CvOpstellenPage() {
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                href="/editor"
+                href="/templates"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Stel je CV direct op
+                Kies template voor je opbouw
               </Link>
               <Link
                 href="/cv-opmaak-voorbeeld"
@@ -431,10 +431,10 @@ export default function CvOpstellenPage() {
                 </p>
                 <div className="mt-auto pt-5">
                   <Link
-                    href="/editor"
+                    href="/templates"
                     className="inline-block border-2 border-black bg-yellow-400 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-black"
                   >
-                    Start in editor
+                    Vergelijk templates
                   </Link>
                 </div>
               </article>
@@ -616,21 +616,21 @@ export default function CvOpstellenPage() {
                 Zet de juiste structuur direct om naar je eigen CV
               </h2>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
-                Gebruik deze opbouw, pas hem aan op je vacature en rond af in de editor zonder opmaakgedoe.
+                Gebruik deze opbouw, kies daarna een rustige template en werk je CV zonder opmaakgedoe verder uit.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
               <Link
-                href="/editor"
+                href="/templates"
                 className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Open editor
+                Vergelijk templates
               </Link>
               <Link
-                href="/prijzen"
+                href="/cv-aanmaken"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
-                Bekijk prijzen
+                Start met je basis-CV
               </Link>
             </div>
           </div>
