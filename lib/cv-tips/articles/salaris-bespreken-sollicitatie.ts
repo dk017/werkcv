@@ -126,6 +126,11 @@ export const salarisBesprekenSollicitatie: BlogArticle = {
                     description: 'Gebruik deze stap om te zien wat een verschil in bruto salaris maandelijks echt doet.',
                 },
                 {
+                    href: '/tools/vakantiegeld-berekenen',
+                    label: 'Reken vakantiegeld bruto netto mee in je aanbodvergelijking',
+                    description: 'Handig als aanbiedingen dicht bij elkaar liggen en jij het totaalpakket eerlijk wilt vergelijken.',
+                },
+                {
                     href: '/tools/salaris-onderhandeling',
                     label: 'Genereer een tegenvoorstel of reactiescript',
                     description: 'Handig als je het gesprek wilt vervolgen met een concreet en rustig voorstel.',

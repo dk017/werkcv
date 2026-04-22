@@ -259,9 +259,9 @@ export default async function SalaryRolePage({ params }: PageProps) {
               badge: "Geld",
             },
             {
-              href: "/tools/salaris-calculator",
-              title: "Salaris check",
-              description: "Vergelijk dit beroep met andere rollen of pas uren, ervaring en regio aan.",
+              href: "/tools/vakantiegeld-berekenen",
+              title: "Vakantiegeld berekenen",
+              description: "Tel ook vakantietoeslag mee als je twee aanbiedingen eerlijk naast elkaar wilt leggen.",
               badge: "Geld",
             },
             {

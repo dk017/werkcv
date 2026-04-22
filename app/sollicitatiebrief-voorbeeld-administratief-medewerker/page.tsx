@@ -57,6 +57,12 @@ const mistakes = [
   "Te lange tekstblokken waardoor recruiters je kern missen.",
 ];
 
+const shortMotivationRules = [
+  "Open direct met functietitel, bedrijfsnaam en je sterkste administratieve pluspunt.",
+  "Noem één concreet resultaat, bijvoorbeeld minder fouten of snellere verwerking.",
+  "Houd de brief compact: 4 tot 6 zinnen is vaak genoeg voor een korte motivatiebrief.",
+];
+
 const faqs = [
   {
     question: "Wat moet in een sollicitatiebrief voor administratief medewerker staan?",
@@ -77,6 +83,11 @@ const faqs = [
     question: "Kan ik deze voorbeeldbrief direct kopiëren?",
     answer:
       "Gebruik de voorbeelden als structuur. Pas ze altijd aan op jouw ervaring, vacaturetaal en concrete resultaten voor een geloofwaardige sollicitatie.",
+  },
+  {
+    question: "Hoe schrijf ik een korte motivatiebrief voor administratief medewerker?",
+    answer:
+      "Houd hem bij 4 tot 6 zinnen. Noem de functietitel, één relevant administratief resultaat, de systemen of processen die je beheerst en sluit af met een rustige uitnodiging voor een gesprek.",
   },
 ];
 
@@ -105,6 +116,8 @@ export const metadata: Metadata = {
     "administratief medewerker sollicitatiebrief",
     "sollicitatiebrief administratie voorbeeld",
     "korte sollicitatiebrief administratief medewerker",
+    "administratief medewerker korte motivatiebrief voorbeeld",
+    "korte motivatiebrief administratief medewerker",
     "sollicitatiebrief administratieve functie",
   ],
   alternates: {
@@ -246,6 +259,45 @@ export default function SollicitatiebriefVoorbeeldAdministratiefMedewerkerPage()
                 <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{example.text}</p>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="mb-14 grid gap-6 md:grid-cols-2">
+          <div className="border-4 border-black bg-[#FFF4D6] p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Korte versie
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Korte motivatiebrief voorbeeld administratief medewerker
+            </h2>
+            <p className="mt-4 text-sm font-medium leading-relaxed text-slate-800">
+              Met interesse solliciteer ik naar de functie van administratief medewerker bij [Bedrijfsnaam].
+              In mijn huidige rol verwerk ik dossiers, facturen en planningen nauwkeurig en bracht ik de foutmarge
+              in rapportages met 26% terug door strakkere controles. Graag licht ik in een gesprek toe hoe ik met
+              structuur, softwarekennis en duidelijke opvolging uw team direct kan ondersteunen.
+            </p>
+          </div>
+
+          <div className="border-4 border-black bg-white p-6">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Wanneer kort werkt
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Zo houd je een administratieve motivatiebrief kort maar sterk
+            </h2>
+            <ul className="mt-4 space-y-2 text-sm font-medium leading-relaxed text-slate-700">
+              {shortMotivationRules.map((rule) => (
+                <li key={rule}>{rule}</li>
+              ))}
+            </ul>
+            <div className="mt-6 border-t-2 border-black pt-4">
+              <Link
+                href="/tools/sollicitatiebrief-generator"
+                className="text-sm font-black text-black underline decoration-2 underline-offset-4"
+              >
+                Maak hier direct je eigen korte versie
+              </Link>
+            </div>
           </div>
         </section>
 

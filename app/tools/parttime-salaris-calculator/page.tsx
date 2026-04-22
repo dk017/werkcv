@@ -186,7 +186,7 @@ export default function ParttimeSalarisCalculatorPage() {
 
         <RelatedToolsSection
           title="Gebruik deze salaristools samen"
-          description="Parttime vergelijken wordt sterker als je daarna doorrekent naar netto, uurloon en onderhandelingsruimte."
+          description="Parttime vergelijken wordt sterker als je daarna doorrekent naar netto, vakantiegeld en onderhandelingsruimte."
           tools={[
             {
               href: "/tools/netto-bruto-calculator",
@@ -201,10 +201,10 @@ export default function ParttimeSalarisCalculatorPage() {
               badge: "Geld",
             },
             {
-              href: "/tools/minimumloon-checker",
-              title: "Minimumloon checker",
-              description: "Check of je aanbod nog steeds ruim boven het wettelijke minimum ligt.",
-              badge: "NL wetgeving",
+              href: "/tools/vakantiegeld-berekenen",
+              title: "Vakantiegeld berekenen",
+              description: "Maak je parttime vergelijking compleet met een aparte bruto netto check van je vakantiegeld.",
+              badge: "Geld",
             },
             {
               href: "/tools/salaris-onderhandeling",
@@ -311,7 +311,15 @@ export default function ParttimeSalarisCalculatorPage() {
               </li>
             </ul>
             <p>
-              Voor netto loon, heffingskortingen en loonstrookcontrole hoort deze tool samen gebruikt te worden met de netto-bruto calculator.
+              Voor netto loon, heffingskortingen en loonstrookcontrole hoort deze tool samen gebruikt te worden met de{" "}
+              <Link href="/tools/netto-bruto-calculator" className="font-medium text-teal-700 hover:underline">
+                netto-bruto calculator
+              </Link>
+              . Wil je je parttime vergelijking compleet maken, reken dan ook je{" "}
+              <Link href="/tools/vakantiegeld-berekenen" className="font-medium text-teal-700 hover:underline">
+                vakantiegeld bruto netto
+              </Link>
+              {" "}door.
             </p>
           </div>
         </section>
