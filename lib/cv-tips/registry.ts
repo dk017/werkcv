@@ -44,11 +44,13 @@ import { cvMakenAlsStudent } from './articles/cv-maken-als-student';
 import { cvMakenInHetEngels } from './articles/cv-maken-in-het-engels';
 import { cvMakenInWord } from './articles/cv-maken-in-word';
 import { cvVoorUitzendbureau } from './articles/cv-voor-uitzendbureau';
+import { cvVoorDetachering } from './articles/cv-voor-detachering';
 import { cvNaOntslag } from './articles/cv-na-ontslag';
 import { cv50Plus } from './articles/cv-50-plus';
 import { cvSchrijvenMetAi } from './articles/cv-schrijven-met-ai';
 import { cvBijwerken } from './articles/cv-bijwerken';
 import { cvSchrijvenBuitenlanderNederland } from './articles/cv-schrijven-buitenlander-nederland';
+import { waaromCvAfgewezen } from './articles/waarom-cv-afgewezen';
 
 // ============================================================================
 // DATA COLLECTION
@@ -93,11 +95,13 @@ const allArticles: BlogArticle[] = [
     cvMakenInHetEngels,
     cvMakenInWord,
     cvVoorUitzendbureau,
+    cvVoorDetachering,
     cvNaOntslag,
     cv50Plus,
     cvSchrijvenMetAi,
     cvBijwerken,
     cvSchrijvenBuitenlanderNederland,
+    waaromCvAfgewezen,
 ].sort((a, b) => a.order - b.order);
 
 // ============================================================================
