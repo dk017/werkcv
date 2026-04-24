@@ -37,6 +37,52 @@ const templateCards = [
   },
 ];
 
+const adminVariantCards = [
+  {
+    title: "Algemeen administratief medewerker",
+    body:
+      "Leg de nadruk op foutarme verwerking, documentbeheer, planning, mailboxbeheer en opvolging van acties. Recruiters zoeken hier vooral betrouwbaarheid en rust.",
+  },
+  {
+    title: "Financieel administratief medewerker",
+    body:
+      "Laat facturatie, debiteurenbeheer, crediteuren, maandafsluiting en systemen zoals Exact, AFAS of SAP duidelijk terugkomen. Hier telt aantoonbare nauwkeurigheid extra zwaar.",
+  },
+  {
+    title: "Juridisch administratief medewerker",
+    body:
+      "Benadruk dossierkwaliteit, correspondentie, termijnbewaking en vertrouwelijkheid. Gebruik een rustiger template en laat zien dat je met gevoelige informatie zorgvuldig omgaat.",
+  },
+  {
+    title: "Starter / junior / zonder ervaring",
+    body:
+      "Gebruik stage, bijbaan, schooladministratie, vrijwilligerswerk of projectwerk als bewijs voor nauwkeurigheid, planning en softwarekennis. Resultaten mogen klein zijn, zolang ze concreet zijn.",
+  },
+];
+
+const adminRouteChoices = [
+  {
+    href: "/cv-gids/cv-voorbeeld-administratief-medewerker",
+    title: "Volledig CV voorbeeld administratief medewerker",
+    body: "Sterk als je eerst een compleet rolvoorbeeld wilt zien voordat je je eigen versie gaat aanpassen.",
+  },
+  {
+    href: "/cv-gids/cv-voorbeeld-administratief-medewerker-parttime",
+    title: "Administratief medewerker parttime",
+    body: "Gebruik deze route wanneer beschikbaarheid, parttime uren en overdracht van taken zwaarder meewegen.",
+  },
+  {
+    href: "/sollicitatiebrief-voorbeeld-administratief-medewerker",
+    title: "Sollicitatiebrief administratief medewerker",
+    body: "Logische vervolgstap als je CV-structuur al staat en je nu bijpassende briefcopy nodig hebt.",
+  },
+  {
+    href: "/salaris/administratief-medewerker",
+    title: "Salaris administratief medewerker",
+    body: "Handig wanneer je ervaringsniveau, marktpositie en senioriteit geloofwaardiger wilt positioneren.",
+  },
+];
+
 const profileExamples = [
   {
     title: "Algemeen administratief medewerker (medior)",
@@ -135,6 +181,11 @@ const faqs = [
     answer:
       "Een voorbeeld helpt je met inhoud en formuleringen. Een template helpt je met structuur en presentatie. De beste aanpak is beide combineren: begin met een template en gebruik voorbeelden voor tekst en bullets.",
   },
+  {
+    question: "Is dit template ook geschikt voor financieel of juridisch administratief medewerker?",
+    answer:
+      "Ja, zolang je de inhoud aanpast op het subdomein. Voor financieel administratief leg je meer nadruk op facturatie, debiteuren, crediteuren en afsluitingen. Voor juridisch administratief verschuift de focus naar dossierbeheer, termijnbewaking, correspondentie en vertrouwelijkheid.",
+  },
 ];
 
 const adminTemplateIntentLinks = [
@@ -180,6 +231,10 @@ export const metadata: Metadata = buildDutchMetadata({
     "administratief medewerker cv template",
     "cv voorbeeld administratief medewerker template",
     "financieel administratief medewerker cv",
+    "financieel administratief medewerker cv template",
+    "juridisch administratief medewerker cv",
+    "junior administratief medewerker cv",
+    "administratief medewerker cv zonder ervaring",
     "office support cv template",
     "secretarieel cv template",
     "administratief cv maken",
@@ -300,6 +355,47 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
               >
                 Controleer je vacaturematch met de CV keywords tool
               </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-14">
+          <div className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Subrol kiezen
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Welke administratieve variant probeer je te matchen?
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Dit template werkt breed, maar het overtuigt pas echt als je de inhoud aanpast op het soort administratie waar de vacature om vraagt. Veel kandidaten missen hier relevantie doordat ze een algemene admin-versie laten staan voor financieel, juridisch of secretarieel werk.
+            </p>
+            <div className="mt-6 grid gap-5 md:grid-cols-2">
+              {adminVariantCards.map((card) => (
+                <article
+                  key={card.title}
+                  className="border-2 border-black bg-[#FFFEF0] p-5"
+                >
+                  <h3 className="text-lg font-black text-black">{card.title}</h3>
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+                    {card.body}
+                  </p>
+                </article>
+              ))}
+            </div>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              {adminRouteChoices.map((choice) => (
+                <Link
+                  key={choice.href}
+                  href={choice.href}
+                  className="block border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
+                >
+                  <p className="text-sm font-black text-black">{choice.title}</p>
+                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
+                    {choice.body}
+                  </p>
+                </Link>
+              ))}
             </div>
           </div>
         </section>

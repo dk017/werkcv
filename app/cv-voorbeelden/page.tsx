@@ -10,11 +10,14 @@ export const metadata: Metadata = buildDutchMetadata({
     path: '/cv-voorbeelden',
     keywords: [
         'cv voorbeelden',
+        'voorbeeld cv',
         'cv voorbeeld per beroep',
+        'goed cv voorbeeld',
         'professioneel cv voorbeeld',
         'cv maken',
         'curriculum vitae voorbeeld',
         'cv voorbeeld nederland',
+        'perfect voorbeeld van een cv',
         'cv template',
     ],
     languages: {
@@ -53,6 +56,44 @@ const workflowSteps = [
     {
         title: '4) Zet je definitieve versie direct in de editor',
         text: 'Gebruik het voorbeeld als inhoudelijke basis en finaliseer in de editor met een rustige template. Dit voorkomt opmaakfouten en versnelt je workflow van concept naar een sollicitatieklaar PDF-CV.',
+    },
+];
+
+const quickUseCards = [
+    {
+        title: 'Gebruik een voorbeeld als structuur, niet als kopie',
+        text: 'Een goed voorbeeld CV helpt je vooral met volgorde, toon en bewijsvoering. Recruiters prikken snel door gekopieerde teksten heen.',
+    },
+    {
+        title: 'Kies eerst de juiste categorie of situatie',
+        text: 'Zoek niet blind op losse voorbeelden. Start bij de rol of situatie die het dichtst bij je vacature ligt en pas daarna de details aan op jouw ervaring.',
+    },
+    {
+        title: 'Finaliseer daarna in een template of editor',
+        text: 'Voorbeelden geven richting, maar je definitieve versie moet nog steeds scanbaar, rustig en ATS-vriendelijk worden opgebouwd.',
+    },
+];
+
+const routeChoiceCards = [
+    {
+        href: '/cv-gids/cv-voorbeelden-per-situatie',
+        title: 'CV voorbeelden per situatie',
+        body: 'Sterk als je niet op beroep zoekt maar op context, zoals zonder ervaring, carrièreswitch of parttime werk.',
+    },
+    {
+        href: '/cv-voorbeeld-student',
+        title: 'CV voorbeeld student',
+        body: 'Beste route als je vooral een starter-, stage- of studentgericht voorbeeld nodig hebt.',
+    },
+    {
+        href: '/templates',
+        title: 'Templates vergelijken',
+        body: 'Handig als je de inhoud al scherp hebt en nu vooral een recruiter-safe layout wilt kiezen.',
+    },
+    {
+        href: '/cv-maken',
+        title: 'CV maken stappenplan',
+        body: 'Kies deze route als je liever het volledige proces volgt van eerste opzet tot definitieve PDF.',
     },
 ];
 
@@ -107,6 +148,10 @@ const faqs = [
         answer: 'Een goed CV voorbeeld laat duidelijke structuur, relevante inhoud en concrete resultaten zien. Gebruik een voorbeeld dat past bij je functie en ervaringsniveau, en pas vervolgens tekst en vaardigheden aan op de vacature waarop je solliciteert.',
     },
     {
+        question: 'Wat is het verschil tussen een CV voorbeeld en een template?',
+        answer: 'Een CV voorbeeld helpt je vooral met inhoud, formuleringen en opbouw per functie. Een template helpt je met layout en presentatie. Het beste resultaat krijg je door eerst een relevant voorbeeld te kiezen en daarna te finaliseren in een rustige template.',
+    },
+    {
         question: 'Kan ik een CV voorbeeld letterlijk overnemen?',
         answer: 'Gebruik voorbeelden als basis, niet als eindversie. Recruiters herkennen gekopieerde teksten snel. De sterkste aanpak is: structuur overnemen, taal aanpassen aan de vacature en eigen resultaten toevoegen met concrete cijfers.',
     },
@@ -125,6 +170,10 @@ const faqs = [
     {
         question: 'Waar begin ik als ik snel een goed CV nodig heb?',
         answer: 'Start met een relevant voorbeeld op deze pagina, verbeter je profieltekst en werkervaring, en zet alles direct in de editor. Zo kun je snel van inspiratie naar een sollicitatieklaar CV gaan zonder opmaakstress.',
+    },
+    {
+        question: 'Welke pagina gebruik ik als ik geen beroep maar een situatie zoek?',
+        answer: 'Gebruik dan eerder de situatiehub of gerichte routes zoals student, starter, zonder ervaring of carrièreswitch. Die intenties zijn smaller dan deze brede voorbeeldenhub en geven sneller de juiste opbouw.',
     },
 ];
 
@@ -219,6 +268,41 @@ export default function CVVoorbeeldenOverview() {
                     <p className="mt-5 text-sm font-semibold text-gray-600">
                         Laatste inhoudelijke update: maart 2026
                     </p>
+                </div>
+            </section>
+
+            <section className="border-b-4 border-black bg-white">
+                <div className="max-w-6xl mx-auto px-6 py-14">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+                        Kort antwoord
+                    </p>
+                    <h2 className="mt-2 text-3xl font-black text-black">Wat is een goed CV voorbeeld?</h2>
+                    <p className="mt-3 max-w-5xl text-sm font-medium leading-relaxed text-slate-700">
+                        Een goed CV voorbeeld laat niet alleen zien hoe een CV eruitziet, maar vooral hoe het leest: duidelijke functietitel, relevante profieltekst, werkervaring met bewijs en een structuur die je snel kunt aanpassen op jouw vacature. Veel mensen zoeken op &ldquo;voorbeeld cv&rdquo;, maar bedoelen eigenlijk: welke opbouw en toon geven mij de snelste route naar een geloofwaardige sollicitatieversie?
+                    </p>
+                    <div className="mt-6 grid gap-5 md:grid-cols-3">
+                        {quickUseCards.map((card) => (
+                            <article
+                                key={card.title}
+                                className="border-2 border-black bg-[#FFFEF0] p-5"
+                            >
+                                <h3 className="text-lg font-black text-gray-900">{card.title}</h3>
+                                <p className="mt-2 text-sm leading-relaxed text-gray-700">{card.text}</p>
+                            </article>
+                        ))}
+                    </div>
+                    <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                        {routeChoiceCards.map((item) => (
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                className="border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
+                            >
+                                <p className="text-sm font-black text-gray-900">{item.title}</p>
+                                <p className="mt-2 text-sm leading-relaxed text-gray-700">{item.body}</p>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </section>
 
