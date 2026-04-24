@@ -88,10 +88,10 @@ const comparisonGuideGroups = [
     description:
       "Deze vergelijkingen zijn nuttig als je niet zomaar de bekendste tool wilt kiezen, maar het model en de use case van elk platform wilt afwegen.",
     links: [
-      { href: "/cv-gids/werkcv-vs-cvmaker", label: "WerkCV vs CVMaker" },
-      { href: "/cv-gids/werkcv-vs-cv-nl", label: "WerkCV vs CV.nl" },
+      { href: "/cv-gids/werkcv-vs-cvmaker", label: "CVMaker alternatief" },
+      { href: "/cv-gids/werkcv-vs-cv-nl", label: "CV.nl alternatief" },
       { href: "/cv-gids/werkcv-vs-cvwizard", label: "WerkCV vs CVwizard" },
-      { href: "/cv-gids/werkcv-vs-cvster", label: "WerkCV vs CVster" },
+      { href: "/cv-gids/werkcv-vs-cvster", label: "CVster alternatief" },
       { href: "/cv-gids/werkcv-vs-europass", label: "WerkCV vs Europass" },
       { href: "/cv-gids/werkcv-vs-resumaker", label: "WerkCV vs Resumaker" },
       { href: "/cv-gids/werkcv-vs-maakeencv", label: "WerkCV vs maakeencv.nl" },

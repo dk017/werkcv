@@ -97,12 +97,12 @@ export default function BesteCvMakerNederlandPage() {
         },
         {
           href: "/cv-gids/werkcv-vs-cvmaker",
-          label: "WerkCV vs CVMaker",
+          label: "CVMaker alternatief",
           body: "Vergelijk WerkCV met een grote abonnementsgerichte speler.",
         },
         {
           href: "/cv-gids/werkcv-vs-cv-nl",
-          label: "WerkCV vs CV.nl",
+          label: "CV.nl alternatief",
           body: "Bekijk de vergelijking met een dominante NL-speler in de markt.",
         },
         {

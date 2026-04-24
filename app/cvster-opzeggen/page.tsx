@@ -143,7 +143,7 @@ export default function CvsterOpzeggenPage() {
                 href="/cv-gids/werkcv-vs-cvster"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Vergelijk WerkCV vs CVster
+                Bekijk het CVster alternatief
               </Link>
             </div>
             <p className="mt-5 text-sm font-medium text-slate-600">
@@ -219,7 +219,7 @@ export default function CvsterOpzeggenPage() {
                 },
                 {
                   href: "/cv-gids/werkcv-vs-cvster",
-                  title: "WerkCV vs CVster",
+                  title: "CVster alternatief",
                   body: "Vergelijk prijsmodel, use case en suite-omvang naast elkaar.",
                 },
                 {

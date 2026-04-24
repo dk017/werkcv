@@ -3100,22 +3100,24 @@ const dutchEditorialPages: SeoGuidePage[] = [
     {
         slug: 'werkcv-vs-cvmaker',
         locale: 'nl',
-        title: 'WerkCV vs CVMaker: welke CV builder past beter bij jou?',
-        description: 'Eerlijke vergelijking tussen WerkCV en CVMaker voor Nederlandse werkzoekenden. Vergelijk prijsmodel, abonnement, templates, motivatiebrief-flow en beste use case.',
-        metaTitle: 'WerkCV vs CVMaker (2026) | Welke CV builder past beter? | WerkCV.nl',
-        metaDesc: 'WerkCV of CVMaker? Vergelijk eenmalige prijs vs abonnement, templates, motivatiebrief-tools, ATS-focus en downloadregels voor Nederlandse sollicitanten.',
+        title: 'CVMaker alternatief in Nederland: WerkCV vs CVMaker',
+        description: 'Zoek je een CVMaker alternatief? Eerlijke vergelijking tussen WerkCV en CVMaker voor Nederlandse werkzoekenden. Vergelijk abonnement, templates, motivatiebrief-flow en eenmalige CV-download.',
+        metaTitle: 'CVMaker alternatief Nederland (2026) | WerkCV vs CVMaker | WerkCV.nl',
+        metaDesc: 'Zoek je een CVMaker alternatief in Nederland? Vergelijk WerkCV en CVMaker op eenmalige prijs vs abonnement, templates, motivatiebrief-tools en ATS-focus.',
         keywords: [
             'werkcv vs cvmaker',
             'cvmaker alternatief',
+            'beste cvmaker alternatief',
+            'cvmaker alternatief nederland',
             'cvmaker abonnement',
             'cv builder zonder abonnement',
             'werkcv of cvmaker',
         ],
-        intro: 'Wil je vooral één sterk CV maken zonder vast te zitten aan maandkosten, dan past WerkCV meestal beter. Wil je een breder carrièreplatform met motivatiebriefsjablonen, vacaturetools en een doorlopend accountmodel, dan past CVMaker beter.',
+        intro: 'Zoek je een CVMaker alternatief, dan is de kernvraag meestal niet welke builder de meeste marketingclaims heeft, maar of je echt een breder carrièreplatform nodig hebt. WerkCV past meestal beter bij Nederlandse sollicitanten die zonder abonnement één sterk CV willen afronden. CVMaker past beter als je bewust een groter platform met motivatiebrieven, vacaturetools en doorlopende accounttoegang zoekt.',
         sections: [
             {
                 id: 'vergelijking',
-                title: 'WerkCV vs CVMaker in één oogopslag',
+                title: 'Direct antwoord: wanneer WerkCV een slimmer CVMaker alternatief is',
                 paragraphs: [
                     'Het grootste verschil zit niet in het idee van een online CV builder, maar in het verdienmodel en in de breedte van het product. WerkCV is gebouwd voor een snelle, transparante Nederlandse CV-flow zonder abonnement. CVMaker positioneert zich als een uitgebreider carrièreplatform met meer sjablonen, motivatiebrieven en aanvullende jobtools.',
                     'Daardoor is de keuze meestal eenvoudig: betaal je liever eenmalig voor een concreet CV-document, of werk je liever in een abonnement zolang je actief solliciteert?',
@@ -3267,37 +3269,37 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ],
         faq: [
             {
-                question: 'Is WerkCV goedkoper dan CVMaker?',
-                answer: 'Voor iemand die vooral een CV wil afronden wel meestal. WerkCV werkt met een eenmalige betaling per CV, terwijl CVMaker Pro volgens de officiële prijzenpagina werkt met EUR1,99 voor 14 dagen en daarna EUR21,99 per maand zolang het abonnement doorloopt.',
+                question: 'Wat is een goed CVMaker alternatief in Nederland?',
+                answer: 'Voor veel Nederlandse sollicitanten is WerkCV een logisch CVMaker alternatief, omdat het een smallere CV-flow met eenmalige documentbetaling biedt. CVMaker blijft vooral sterker als je bewust een breder carrièreplatform met motivatiebriefsjablonen en extra jobtools zoekt.',
             },
             {
                 question: 'Is CVMaker een abonnement?',
                 answer: 'Ja, het Pro-plan wordt volgens de officiële prijzenpagina na 14 dagen automatisch maandelijks verlengd, tenzij je opzegt.',
             },
             {
-                question: 'Kan ik bij WerkCV later opnieuw downloaden zonder opnieuw te betalen?',
-                answer: 'Ja, voor hetzelfde CV-document wel. Na betaling kun je datzelfde CV later opnieuw openen, aanpassen en opnieuw downloaden zonder opnieuw te betalen.',
+                question: 'Is WerkCV goedkoper dan CVMaker?',
+                answer: 'Voor iemand die vooral een CV wil afronden wel meestal. WerkCV werkt met een eenmalige betaling per CV, terwijl CVMaker Pro volgens de officiële prijzenpagina werkt met EUR1,99 voor 14 dagen en daarna EUR21,99 per maand zolang het abonnement doorloopt.',
             },
             {
-                question: 'Wanneer is CVMaker een betere keuze dan WerkCV?',
-                answer: 'Als je bewust een breder carrièreplatform zoekt met meer sjablonen, motivatiebriefsjablonen en extra sollicitatietools, en je een abonnement daarbij acceptabel vindt.',
+                question: 'Kan ik bij WerkCV later opnieuw downloaden zonder opnieuw te betalen?',
+                answer: 'Ja, voor hetzelfde CV-document wel. Na betaling kun je datzelfde CV later opnieuw openen, aanpassen en opnieuw downloaden zonder opnieuw te betalen.',
             },
         ],
         relatedLinks: [
             {
-                href: '/prijzen',
-                title: 'WerkCV prijzen',
-                description: 'Bekijk exact hoe het eenmalige WerkCV-model werkt en wat je na betaling nog kunt doen.',
+                href: '/cvmaker-opzeggen',
+                title: 'CVMaker opzeggen',
+                description: 'Gebruik deze pagina als je huidige vraag eerst over trial, verlenging of stopzetten gaat.',
             },
             {
                 href: '/templates',
                 title: 'WerkCV templates vergelijken',
-                description: 'Open de templates eerst gratis en kijk of de flow past bij jouw sollicitaties.',
+                description: 'Open de templates eerst gratis en kijk of de no-subscription flow al genoeg is voor jouw sollicitaties.',
             },
             {
-                href: '/faq',
-                title: 'Veelgestelde vragen over downloaden en bewerken',
-                description: 'Handig als je twijfelt over account, betaling of opnieuw downloaden.',
+                href: '/prijzen',
+                title: 'WerkCV prijzen',
+                description: 'Bekijk exact hoe het eenmalige WerkCV-model werkt en wat je na betaling nog kunt doen.',
             },
         ],
         sources: [
@@ -3322,29 +3324,31 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 note: 'Openbare FAQ met uitleg over account, betaling, opnieuw downloaden en verschillen met abonnementssites.',
             },
         ],
-        ctaTitle: 'Vergelijk niet langer op marketing, maar op het model dat bij je past',
-        ctaText: 'Als je vooral snel een recruiter-veilige CV-versie wilt maken zonder abonnement, open dan eerst de templates en bouw je versie gratis op.',
+        ctaTitle: 'Zoek je vooral een alternatief voor CVMaker-abonnementen?',
+        ctaText: 'Open dan eerst de WerkCV templates en kijk of de Nederlandse no-subscription route jouw CV-probleem al volledig oplost.',
         ctaHref: '/templates',
     },
     {
         slug: 'werkcv-vs-cv-nl',
         locale: 'nl',
-        title: 'WerkCV vs CV.nl: welke CV builder is slimmer voor jouw situatie?',
-        description: 'Eerlijke vergelijking tussen WerkCV en CV.nl voor Nederlandse werkzoekenden. Vergelijk abonnement, productbreedte, app, jobs, sollicitatietracker en eenmalig CV-model.',
-        metaTitle: 'WerkCV vs CV.nl (2026) | Welke CV builder past beter? | WerkCV.nl',
-        metaDesc: 'WerkCV of CV.nl? Vergelijk eenmalige prijs vs abonnement, CV-only flow vs breder platform met jobs en tracker, en kies de beste CV builder voor jouw situatie.',
+        title: 'CV.nl alternatief in Nederland: WerkCV vs CV.nl',
+        description: 'Zoek je een alternatief voor CV.nl? Eerlijke vergelijking tussen WerkCV en CV.nl voor Nederlandse werkzoekenden. Vergelijk abonnement, productbreedte, app, jobs en eenmalig CV-model.',
+        metaTitle: 'CV.nl alternatief Nederland (2026) | WerkCV vs CV.nl | WerkCV.nl',
+        metaDesc: 'Zoek je een CV.nl alternatief in Nederland? Vergelijk WerkCV en CV.nl op eenmalige prijs vs abonnement, compacte CV-flow vs breder platform met jobs en tracker.',
         keywords: [
             'werkcv vs cv.nl',
             'cv.nl alternatief',
+            'beste cv nl alternatief',
+            'cv.nl alternatief nederland',
             'cv nl abonnement',
             'beste cv builder zonder abonnement',
             'werkcv of cv nl',
         ],
-        intro: 'Wil je vooral snel een sterk CV maken zonder abonnement, dan past WerkCV meestal beter. Wil je een groter Nederlands sollicitatieplatform met vacatures, sollicitatietracker, app en doorlopende toegang, dan past CV.nl meestal beter.',
+        intro: 'Zoek je een alternatief voor CV.nl, dan draait de keuze meestal om productomvang en prijsrust. WerkCV past meestal beter als je zonder abonnement snel een sterk CV wilt afronden. CV.nl past beter als je juist een groter Nederlands sollicitatieplatform met vacatures, tracker, app en doorlopende toegang zoekt.',
         sections: [
             {
                 id: 'vergelijking',
-                title: 'WerkCV vs CV.nl in één oogopslag',
+                title: 'Direct antwoord: wanneer WerkCV een slimmer CV.nl alternatief is',
                 paragraphs: [
                     'WerkCV en CV.nl lossen niet precies hetzelfde probleem op. WerkCV is bewust smal gehouden: snel van inhoud naar een sterk CV, met een transparant eenmalig prijsmodel per document. CV.nl positioneert zich juist als een bredere sollicitatieomgeving met CV, sollicitatiebrief, vacaturedatabase, sollicitatietracker en mobiele app.',
                     'Daardoor zit het echte verschil niet alleen in templates of looks, maar in de vraag hoeveel platform je nodig hebt. Veel werkzoekenden hebben vooral een goed CV nodig. Anderen willen een langer lopend account waarin meer van hun sollicitatieproces samenkomt.',
@@ -3417,7 +3421,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                     },
                     {
                         href: '/cv-gids/werkcv-vs-cvmaker',
-                        label: 'Vergelijk ook WerkCV vs CVMaker',
+                        label: 'Vergelijk ook het CVMaker alternatief',
                         description: 'Handig als je twijfelt tussen meerdere abonnementsplatformen.',
                     },
                 ],
@@ -3496,6 +3500,10 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ],
         faq: [
             {
+                question: 'Wat is een goed alternatief voor CV.nl?',
+                answer: 'Voor veel Nederlandse sollicitanten is WerkCV een logisch alternatief voor CV.nl, omdat het een smallere CV-flow met eenmalige documentbetaling biedt. CV.nl blijft vooral sterker als je bewust vacatures, tracker, sollicitatiebrieven en app-functionaliteit in één groter platform wilt.',
+            },
+            {
                 question: 'Is CV.nl een abonnement?',
                 answer: 'Ja. Volgens de officiële pricingpagina werkt CV.nl met een proefperiode van EUR0,99 voor 14 dagen en daarna EUR19,99 per maand met automatische verlenging, tenzij je opzegt.',
             },
@@ -3514,9 +3522,9 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ],
         relatedLinks: [
             {
-                href: '/cv-gids/werkcv-vs-cvmaker',
-                title: 'WerkCV vs CVMaker',
-                description: 'Vergelijk WerkCV ook met een ander groot abonnementsplatform om het prijsmodel scherper te beoordelen.',
+                href: '/cv-nl-opzeggen',
+                title: 'CV.nl opzeggen',
+                description: 'Gebruik deze pagina als je eerst de trial- of abonnementsroute van CV.nl wilt checken.',
             },
             {
                 href: '/prijzen',
@@ -3551,29 +3559,31 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 note: 'Openbare WerkCV-prijzenpagina met eenmalige betaling per CV en uitleg over latere bewerkingen en downloads.',
             },
         ],
-        ctaTitle: 'Kies de route die past bij je echte sollicitatiegedrag',
-        ctaText: 'Als je vooral zonder abonnement snel een sterk CV wilt afronden, open dan eerst de WerkCV templates en bouw gratis je versie op.',
+        ctaTitle: 'Zoek je vooral een alternatief voor CV.nl-abonnementen?',
+        ctaText: 'Open dan eerst de WerkCV templates en kijk of de compactere Nederlandse route jouw sollicitatieprobleem al oplost.',
         ctaHref: '/templates',
     },
     {
         slug: 'werkcv-vs-cvster',
         locale: 'nl',
-        title: 'WerkCV vs CVster: welke CV builder is slimmer voor jouw sollicitaties?',
-        description: 'Eerlijke vergelijking tussen WerkCV en CVster. Vergelijk eenmalige prijs vs proefabonnement, ATS-checker, CV- en sollicitatiebrief-templates, downloads en beste use case.',
-        metaTitle: 'WerkCV vs CVster (2026) | Welke CV builder past beter? | WerkCV.nl',
-        metaDesc: 'WerkCV of CVster? Vergelijk prijsmodel, proefabonnement, ATS-checker, CV- en briefsuite, downloads en kies de beste CV builder voor jouw situatie.',
+        title: 'CVster alternatief in Nederland: WerkCV vs CVster',
+        description: 'Zoek je een CVster alternatief? Eerlijke vergelijking tussen WerkCV en CVster. Vergelijk eenmalige prijs vs proefabonnement, ATS-checker, CV- en sollicitatiebrief-templates en downloads.',
+        metaTitle: 'CVster alternatief Nederland (2026) | WerkCV vs CVster | WerkCV.nl',
+        metaDesc: 'Zoek je een CVster alternatief in Nederland? Vergelijk WerkCV en CVster op prijsmodel, proefabonnement, ATS-checker, CV- en briefsuite en downloads.',
         keywords: [
             'werkcv vs cvster',
             'cvster alternatief',
+            'beste cvster alternatief',
+            'cvster alternatief nederland',
             'cvster abonnement',
             'cv builder zonder abonnement',
             'werkcv of cvster',
         ],
-        intro: 'Wil je vooral zonder abonnement snel één sterk CV afronden, dan past WerkCV meestal beter. Wil je een grotere CV- en sollicitatiebriefsuite met ATS-checker, meerdere betaalopties en veel extra formats, dan past CVster meestal beter.',
+        intro: 'Zoek je een CVster alternatief, dan draait de keuze meestal om één vraag: heb je vooral een rustige Nederlandse CV-route nodig of juist een grotere suite met meer tools. WerkCV past meestal beter als je zonder abonnement snel één sterk CV wilt afronden. CVster past beter als je bewust een grotere CV- en sollicitatiebriefsuite met ATS-checker en meerdere betaalopties zoekt.',
         sections: [
             {
                 id: 'vergelijking',
-                title: 'WerkCV vs CVster in één oogopslag',
+                title: 'Direct antwoord: wanneer WerkCV een slimmer CVster alternatief is',
                 paragraphs: [
                     'WerkCV en CVster lijken op het eerste gezicht allebei een online CV builder, maar het productidee verschilt. WerkCV is een smallere Nederlandse CV-route met een duidelijke eenmalige betaling per document. CVster is onderdeel van de Resume.io-familie en positioneert zich als een veel bredere suite met CVs, sollicitatiebrieven, ATS-checking, meerdere betaalmodellen en meer bestandsopties.',
                     'Daardoor draait de keuze vooral om één vraag: heb je vooral een snelle en transparante CV-oplossing nodig, of wil je juist een uitgebreider platform voor meerdere sollicitatiedocumenten en extra tooling?',
@@ -3651,7 +3661,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                     },
                     {
                         href: '/cv-gids/werkcv-vs-cvmaker',
-                        label: 'Vergelijk ook WerkCV vs CVMaker',
+                        label: 'Vergelijk ook het CVMaker alternatief',
                         description: 'Handig als je meerdere abonnementsplatformen naast elkaar wilt leggen.',
                     },
                 ],
@@ -3730,6 +3740,10 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ],
         faq: [
             {
+                question: 'Wat is een goed CVster alternatief in Nederland?',
+                answer: 'Voor veel Nederlandse sollicitanten is WerkCV een logisch CVster alternatief, omdat het een smallere CV-flow met eenmalige documentbetaling biedt. CVster blijft vooral sterker als je juist een grotere suite wilt met sollicitatiebrief-templates, ATS-checking en meerdere downloadopties.',
+            },
+            {
                 question: 'Is CVster een abonnement?',
                 answer: 'CVster biedt meerdere betaalvormen. Volgens de officiële pricingpagina is er een 7-daagse proef voor EUR2,95 die daarna overgaat in een maandplan van EUR14,95 per 4 weken, naast 6-maanden- en jaaropties als eenmalige betaling.',
             },
@@ -3748,19 +3762,19 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ],
         relatedLinks: [
             {
-                href: '/cv-gids/werkcv-vs-cvmaker',
-                title: 'WerkCV vs CVMaker',
-                description: 'Vergelijk WerkCV ook met een ander groot abonnementsgedreven CV-platform.',
-            },
-            {
-                href: '/cv-gids/werkcv-vs-cv-nl',
-                title: 'WerkCV vs CV.nl',
-                description: 'Handig als je ook een Nederlandse platformspeler met breder sollicitatieaanbod wilt vergelijken.',
+                href: '/cvster-opzeggen',
+                title: 'CVster opzeggen',
+                description: 'Gebruik deze pagina als je eerst CVster billing, proefperiode of stopzetten wilt checken.',
             },
             {
                 href: '/ats-cv-template',
                 title: 'ATS CV template',
                 description: 'Start met een veilige ATS-vriendelijke route als je vooral scanbaarheid zoekt zonder extra suite.',
+            },
+            {
+                href: '/templates',
+                title: 'WerkCV templates vergelijken',
+                description: 'Open eerst de templates en kijk of de rustigere no-subscription route al genoeg is voor jouw sollicitaties.',
             },
         ],
         sources: [
@@ -3790,8 +3804,8 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 note: 'Openbare WerkCV-prijzenpagina met eenmalige betaling per CV en uitleg over later opnieuw bewerken en downloaden.',
             },
         ],
-        ctaTitle: 'Kies de kleinste tool die jouw probleem echt oplost',
-        ctaText: 'Als een rustige CV-builder zonder abonnement voor jou genoeg is, open dan eerst de WerkCV templates en bouw je versie gratis op.',
+        ctaTitle: 'Zoek je vooral een alternatief voor CVster premium?',
+        ctaText: 'Open dan eerst de WerkCV templates en kijk of de rustige Nederlandse route zonder proefabonnement jouw probleem al oplost.',
         ctaHref: '/templates',
     },
     {
@@ -3879,17 +3893,17 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 intentLinks: [
                     {
                         href: '/cv-gids/werkcv-vs-cvmaker',
-                        label: 'Bekijk WerkCV vs CVMaker',
+                        label: 'Bekijk het CVMaker alternatief',
                         description: 'Voor het sterkste voorbeeld van een eenmalig model versus proef- en maandabonnement.',
                     },
                     {
                         href: '/cv-gids/werkcv-vs-cv-nl',
-                        label: 'Bekijk WerkCV vs CV.nl',
+                        label: 'Bekijk het CV.nl alternatief',
                         description: 'Voor de vergelijking met een groter Nederlands sollicitatieplatform.',
                     },
                     {
                         href: '/cv-gids/werkcv-vs-cvster',
-                        label: 'Bekijk WerkCV vs CVster',
+                        label: 'Bekijk het CVster alternatief',
                         description: 'Voor de vergelijking met een grotere CV- en briefsuite inclusief ATS-checking.',
                     },
                 ],
@@ -4055,7 +4069,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
             },
             {
                 href: '/cv-gids/werkcv-vs-cvmaker',
-                title: 'WerkCV vs CVMaker',
+                title: 'CVMaker alternatief',
                 description: 'Sterke vervolgstap als je eenmalig betalen wilt vergelijken met een proef- en maandabonnement.',
             },
         ],
@@ -4222,17 +4236,17 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 intentLinks: [
                     {
                         href: '/cv-gids/werkcv-vs-cv-nl',
-                        label: 'Bekijk WerkCV vs CV.nl',
+                        label: 'Bekijk het CV.nl alternatief',
                         description: 'Voor de keuze tussen compacte CV-route en Nederlandse all-in-one sollicitatieomgeving.',
                     },
                     {
                         href: '/cv-gids/werkcv-vs-cvmaker',
-                        label: 'Bekijk WerkCV vs CVMaker',
+                        label: 'Bekijk het CVMaker alternatief',
                         description: 'Voor de keuze tussen eenmalig CV-model en breder carrièreplatform.',
                     },
                     {
                         href: '/cv-gids/werkcv-vs-cvster',
-                        label: 'Bekijk WerkCV vs CVster',
+                        label: 'Bekijk het CVster alternatief',
                         description: 'Voor de keuze tussen rustige builder en bredere suite met ATS-checker.',
                     },
                 ],
@@ -4335,12 +4349,12 @@ const dutchEditorialPages: SeoGuidePage[] = [
             },
             {
                 href: '/cv-gids/werkcv-vs-cv-nl',
-                title: 'WerkCV vs CV.nl',
+                title: 'CV.nl alternatief',
                 description: 'Voor de keuze tussen compacte builder en Nederlands all-in-one platform.',
             },
             {
                 href: '/cv-gids/werkcv-vs-cvster',
-                title: 'WerkCV vs CVster',
+                title: 'CVster alternatief',
                 description: 'Voor de keuze tussen rustige builder en grotere suite met ATS-checking.',
             },
         ],
@@ -4584,7 +4598,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
             },
             {
                 href: '/cv-gids/werkcv-vs-cvmaker',
-                title: 'WerkCV vs CVMaker',
+                title: 'CVMaker alternatief',
                 description: 'Vergelijk WerkCV ook met een ander groter platform met trial- en abonnementsmodel.',
             },
         ],
@@ -4823,7 +4837,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
             },
             {
                 href: '/cv-gids/werkcv-vs-cv-nl',
-                title: 'WerkCV vs CV.nl',
+                title: 'CV.nl alternatief',
                 description: 'Vergelijk WerkCV ook met een ander breder Nederlands sollicitatieplatform.',
             },
         ],

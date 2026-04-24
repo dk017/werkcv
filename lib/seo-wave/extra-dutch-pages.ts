@@ -228,7 +228,7 @@ export const extraDutchEditorialPages: SeoGuidePage[] = [
       },
       {
         href: "/cv-gids/werkcv-vs-cvmaker",
-        title: "WerkCV vs CVMaker",
+        title: "CVMaker alternatief",
         description:
           "Vergelijk WerkCV ook met een ander groter abonnementsplatform met bredere productscope.",
       },

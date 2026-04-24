@@ -139,7 +139,7 @@ export default function CvmakerOpzeggenPage() {
                 href="/cv-gids/werkcv-vs-cvmaker"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Vergelijk WerkCV vs CVMaker
+                Bekijk het CVMaker alternatief
               </Link>
             </div>
             <p className="mt-5 text-sm font-medium text-slate-600">
@@ -215,7 +215,7 @@ export default function CvmakerOpzeggenPage() {
                 },
                 {
                   href: "/cv-gids/werkcv-vs-cvmaker",
-                  title: "WerkCV vs CVMaker",
+                  title: "CVMaker alternatief",
                   body: "Vergelijk prijsmodel, use case en productscope naast elkaar.",
                 },
                 {

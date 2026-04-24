@@ -317,7 +317,7 @@ export default function CvNlOpzeggenPage() {
         <OpzeggenConversionSection
           pageKey="cv-nl-opzeggen"
           compareHref="/cv-gids/werkcv-vs-cv-nl"
-          compareTitle="WerkCV vs CV.nl"
+          compareTitle="CV.nl alternatief"
           compareBody="Vergelijk prijsmodel en sollicitatiefocus pas nadat je de no-subscription route hebt bekeken."
         />
 

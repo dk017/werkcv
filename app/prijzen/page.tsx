@@ -335,10 +335,10 @@ export default function PrijzenPage() {
                                 Beste zonder abonnement
                             </Link>
                             <Link href="/cv-gids/werkcv-vs-cvmaker" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                WerkCV vs CVMaker
+                                CVMaker alternatief
                             </Link>
                             <Link href="/cv-gids/werkcv-vs-cv-nl" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                WerkCV vs CV.nl
+                                CV.nl alternatief
                             </Link>
                             <Link href="/cv-gids/werkcv-vs-cvwizard" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
                                 WerkCV vs CVwizard
@@ -350,7 +350,7 @@ export default function PrijzenPage() {
                                 CVMaker opzeggen
                             </Link>
                             <Link href="/cv-gids/werkcv-vs-cvster" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                WerkCV vs CVster
+                                CVster alternatief
                             </Link>
                             <Link href="/cvster-opzeggen" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
                                 CVster opzeggen
