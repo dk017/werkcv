@@ -14,6 +14,7 @@ export function proxy(request: NextRequest) {
 
   const url = request.nextUrl.clone();
   url.hostname = PRIMARY_HOST;
+  url.port = "";
 
   return NextResponse.redirect(url, 308);
 }
