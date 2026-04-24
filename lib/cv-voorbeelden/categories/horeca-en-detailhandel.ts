@@ -10,6 +10,7 @@ export const horecaEnDetailhandel: CVExampleCategory = {
         'cv voorbeeld horeca',
         'cv kok',
         'cv ober',
+        'cv serveerster',
         'cv winkelmedewerker',
         'cv hotel receptionist',
         'cv filiaalmanager',

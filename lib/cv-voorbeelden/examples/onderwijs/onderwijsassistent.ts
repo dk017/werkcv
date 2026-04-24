@@ -8,10 +8,10 @@ export const onderwijsassistent: CVExample = {
     templateId: 'simple',
     colorThemeId: 'sage-green',
 
-    metaTitle: 'CV Voorbeeld Onderwijsassistent | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor onderwijsassistenten. Met voorbeeldteksten voor begeleiding, pedagogische vaardigheden en klasondersteuning. Maak direct je eigen CV.',
-    keywords: ['cv voorbeeld onderwijsassistent', 'cv klassenassistent', 'cv onderwijs MBO', 'cv leerlingbegeleiding'],
-    heroTitle: 'CV Voorbeeld Onderwijsassistent',
+    metaTitle: 'CV Voor Onderwijsassistent | WerkCV.nl',
+    metaDesc: 'Sterk cv voor onderwijsassistent nodig? Bekijk een professioneel voorbeeld met begeleiding, klasondersteuning, pedagogische vaardigheden en leerlingbegeleiding.',
+    keywords: ['cv voor onderwijsassistent', 'onderwijsassistent cv', 'cv voorbeeld onderwijsassistent', 'cv klassenassistent', 'cv onderwijs mbo', 'cv leerlingbegeleiding'],
+    heroTitle: 'CV voor onderwijsassistent',
     heroText: 'Als onderwijsassistent ondersteun je de leerkracht en begeleid je leerlingen die extra aandacht nodig hebben. Dit CV voorbeeld toont hoe je je pedagogische vaardigheden, begeleidingservaring en betrokkenheid professioneel presenteert.',
     tips: [
         'Vermeld je MBO-diploma Onderwijsassistent (niveau 4)',

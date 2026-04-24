@@ -11,6 +11,7 @@ export const vakmanschapEnLogistiek: CVExampleCategory = {
         'cv elektricien',
         'cv loodgieter',
         'cv chauffeur',
+        'cv vrachtwagenchauffeur voorbeeld',
         'cv magazijnmedewerker',
         'cv autotechnicus',
         'cv logistiek',

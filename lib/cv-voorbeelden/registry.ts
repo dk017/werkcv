@@ -45,6 +45,7 @@ import { systeembeheerder } from './examples/technologie-en-ict/systeembeheerder
 import { ictProjectleider } from './examples/technologie-en-ict/ict-projectleider';
 import { cybersecuritySpecialist } from './examples/technologie-en-ict/cybersecurity-specialist';
 import { technischeDienst } from './examples/technologie-en-ict/technische-dienst';
+import { ictMedewerker } from './examples/technologie-en-ict/ict-medewerker';
 
 // ============================================================================
 // EXAMPLE IMPORTS - Vakmanschap & Logistiek
@@ -153,6 +154,7 @@ const allExamples: CVExample[] = [
     ictProjectleider,
     cybersecuritySpecialist,
     technischeDienst,
+    ictMedewerker,
     // Vakmanschap & Logistiek
     autotechnicus,
     elektricien,
@@ -267,6 +269,11 @@ const exactGuideLinks: Record<string, CVExampleInternalLink> = {
         href: '/cv-gids/cv-voorbeeld-projectmanager',
         title: 'CV voorbeeld projectmanager',
         description: 'Gebruik de bredere projectmanager-gids voor sterkere formuleringen rond scope, governance en delivery.',
+    },
+    'technologie-en-ict/ict-medewerker': {
+        href: '/cv-tips/ats-vriendelijk-cv',
+        title: 'ATS-vriendelijk CV',
+        description: 'Relevante vervolgstap voor ICT support- en werkplekrollen waar scanbare structuur en herkenbare toolnamen zwaar meewegen.',
     },
     'bouw-en-techniek/projectleider-bouw': {
         href: '/cv-gids/cv-voorbeeld-projectmanager',

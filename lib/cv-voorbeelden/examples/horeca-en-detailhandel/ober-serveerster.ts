@@ -8,10 +8,10 @@ export const oberServeerster: CVExample = {
     templateId: 'jobboss',
     colorThemeId: 'modern-teal',
 
-    metaTitle: 'CV Voorbeeld Ober / Serveerster | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor obers en serveersters. Met voorbeeldteksten voor horecaservice, gastvrijheid en bediening. Maak direct je eigen CV.',
-    keywords: ['cv voorbeeld ober', 'cv serveerster', 'cv bediening', 'cv horeca service'],
-    heroTitle: 'CV Voorbeeld Ober / Serveerster',
+    metaTitle: 'CV Serveerster Voorbeeld | WerkCV.nl',
+    metaDesc: 'Sterk cv serveerster voorbeeld met bediening, gastvrijheid, wijnkennis en horecaservice. Gebruik dit voorbeeld als basis voor je eigen horeca-CV.',
+    keywords: ['cv serveerster', 'cv serveerster voorbeeld', 'cv voorbeeld ober', 'cv ober serveerster', 'cv bediening', 'cv horeca service'],
+    heroTitle: 'CV voorbeeld serveerster',
     heroText: 'Als ober of serveerster ben je het visitekaartje van het restaurant. Dit CV voorbeeld laat zien hoe je je gastvrijheid, service-ervaring en kennis van wijn en gerechten overtuigend presenteert aan horecawerkgevers.',
     tips: [
         'Benadruk je gastvrijheid en klantgerichtheid met concrete voorbeelden',

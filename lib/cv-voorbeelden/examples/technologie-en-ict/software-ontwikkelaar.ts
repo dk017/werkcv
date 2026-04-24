@@ -8,10 +8,10 @@ export const softwareOntwikkelaar: CVExample = {
     templateId: 'modern',
     colorThemeId: 'ocean-blue',
 
-    metaTitle: 'CV Voorbeeld Software Ontwikkelaar | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor software ontwikkelaars. Met voorbeeldteksten voor full-stack developers, tips en een gratis template. Maak direct je eigen CV.',
-    keywords: ['cv voorbeeld software ontwikkelaar', 'cv developer', 'cv programmeur', 'software engineer cv', 'full-stack developer cv'],
-    heroTitle: 'CV Voorbeeld Software Ontwikkelaar',
+    metaTitle: 'Softwareontwikkelaar CV Voorbeeld | WerkCV.nl',
+    metaDesc: 'Professioneel softwareontwikkelaar cv voorbeeld met TypeScript, React, Node.js, projectimpact en recruiter-proof bullets. Gebruik het als basis voor je eigen developer-CV.',
+    keywords: ['softwareontwikkelaar cv', 'cv softwareontwikkelaar', 'cv voorbeeld software ontwikkelaar', 'cv software ontwikkelaar', 'cv developer', 'cv programmeur', 'software engineer cv', 'full-stack developer cv'],
+    heroTitle: 'Softwareontwikkelaar CV voorbeeld',
     heroText: 'Als software ontwikkelaar is het belangrijk dat je CV zowel je technische expertise als je vermogen om in teamverband te werken laat zien. Dit voorbeeld toont hoe je projecten, technische vaardigheden en meetbare resultaten effectief presenteert aan recruiters en hiring managers.',
     tips: [
         'Vermeld je tech stack duidelijk: programmeertalen, frameworks en tools die je beheerst',
