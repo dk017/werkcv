@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import IntentLandingPage from "@/components/seo/IntentLandingPage";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 
 const faqs = [
   {
@@ -24,10 +25,11 @@ const faqs = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "Beste CV Maker Nederland | Templates, ATS en Prijs Vergelijken",
   description:
     "Vergelijk de beste CV makers in Nederland op prijs, templates, ATS-vriendelijkheid en gebruiksgemak. Ontdek wanneer WerkCV beter past dan abonnementsmodellen.",
+  path: "/beste-cv-maker-nederland",
   keywords: [
     "beste cv maker nederland",
     "cv maker vergelijken",
@@ -35,14 +37,11 @@ export const metadata: Metadata = {
     "cv tool vergelijken",
     "goedkoopste cv tool",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/beste-cv-maker-nederland",
-    languages: {
-      "nl-NL": "https://werkcv.nl/beste-cv-maker-nederland",
-      "x-default": "https://werkcv.nl/beste-cv-maker-nederland",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/beste-cv-maker-nederland",
+    "x-default": "https://werkcv.nl/beste-cv-maker-nederland",
   },
-};
+});
 
 export default function BesteCvMakerNederlandPage() {
   return (

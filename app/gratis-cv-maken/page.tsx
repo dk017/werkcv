@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { cvDownloadPrice } from "@/lib/site-content";
 import { templateList } from "@/lib/templates/registry";
 
@@ -113,10 +114,11 @@ const faqs = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "Gratis CV maken en pas betalen bij download | WerkCV",
   description:
     "Gratis CV maken in een serieuze builder? Start gratis, vergelijk templates, bewaar versies en betaal pas bij PDF-download. Geen abonnement en geen proefperiode.",
+  path: "/gratis-cv-maken",
   keywords: [
     "gratis cv maken",
     "cv maken gratis",
@@ -126,14 +128,11 @@ export const metadata: Metadata = {
     "cv maken gratis online",
     "curriculum vitae maken gratis",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/gratis-cv-maken",
-    languages: {
-      "nl-NL": "https://werkcv.nl/gratis-cv-maken",
-      "x-default": "https://werkcv.nl/gratis-cv-maken",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/gratis-cv-maken",
+    "x-default": "https://werkcv.nl/gratis-cv-maken",
   },
-};
+});
 
 export default function GratisCvMakenPage() {
   const faqSchema = {

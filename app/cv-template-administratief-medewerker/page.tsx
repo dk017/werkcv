@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { getTemplateConfig } from "@/lib/templates/registry";
 
 const professionalTemplate = getTemplateConfig("professional");
@@ -169,10 +170,11 @@ const adminTemplateIntentLinks = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "CV Template Administratief Medewerker - Direct Sollicitatieklaar | WerkCV",
   description:
     "Gebruik het beste CV template voor administratief medewerker. Inclusief profieltekst voorbeelden, werkervaring bullets, ATS-keywords en startertips. Start gratis in de editor.",
+  path: "/cv-template-administratief-medewerker",
   keywords: [
     "cv template administratief medewerker",
     "administratief medewerker cv template",
@@ -183,14 +185,11 @@ export const metadata: Metadata = {
     "administratief cv maken",
     "cv administratie voorbeeld",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/cv-template-administratief-medewerker",
-    languages: {
-      "nl-NL": "https://werkcv.nl/cv-template-administratief-medewerker",
-      "x-default": "https://werkcv.nl/cv-template-administratief-medewerker",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/cv-template-administratief-medewerker",
+    "x-default": "https://werkcv.nl/cv-template-administratief-medewerker",
   },
-};
+});
 
 export default function CvTemplateAdministratiefMedewerkerPage() {
   const faqSchema = {

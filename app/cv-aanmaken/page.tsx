@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { cvDownloadPrice } from "@/lib/site-content";
 import { templateList } from "@/lib/templates/registry";
 
@@ -112,10 +113,11 @@ const faqs = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "CV aanmaken vanaf nul: snel je eerste versie opzetten | WerkCV",
   description:
     "CV aanmaken zonder blanco-pagina stress. Start gratis, zet je eerste basisversie op in duidelijke stappen en verfijn later per vacature of template.",
+  path: "/cv-aanmaken",
   keywords: [
     "cv aanmaken",
     "gratis cv aanmaken",
@@ -125,14 +127,11 @@ export const metadata: Metadata = {
     "maak cv",
     "cv aanmaken gratis",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/cv-aanmaken",
-    languages: {
-      "nl-NL": "https://werkcv.nl/cv-aanmaken",
-      "x-default": "https://werkcv.nl/cv-aanmaken",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/cv-aanmaken",
+    "x-default": "https://werkcv.nl/cv-aanmaken",
   },
-};
+});
 
 export default function CvAanmakenPage() {
   const faqSchema = {

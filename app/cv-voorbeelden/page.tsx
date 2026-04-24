@@ -2,10 +2,12 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllCategories, getAllExamples, getExamplesByCategory } from '@/lib/cv-voorbeelden/registry';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { buildDutchMetadata } from '@/lib/page-metadata';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
     title: 'CV Voorbeelden per Beroep | Professionele Voorbeelden + Templates',
     description: 'Bekijk uitgebreide CV voorbeelden per beroep en sector. Inclusief structuur, checklist, veelgemaakte fouten en directe links naar templates, editor en voorbeeldteksten.',
+    path: '/cv-voorbeelden',
     keywords: [
         'cv voorbeelden',
         'cv voorbeeld per beroep',
@@ -15,15 +17,12 @@ export const metadata: Metadata = {
         'cv voorbeeld nederland',
         'cv template',
     ],
-    alternates: {
-        canonical: 'https://werkcv.nl/cv-voorbeelden',
-        languages: {
-            'nl-NL': 'https://werkcv.nl/cv-voorbeelden',
-            'en-NL': 'https://werkcv.nl/en/dutch-cv-examples',
-            'x-default': 'https://werkcv.nl/cv-voorbeelden',
-        },
+    languages: {
+        'nl-NL': 'https://werkcv.nl/cv-voorbeelden',
+        'en-NL': 'https://werkcv.nl/en/dutch-cv-examples',
+        'x-default': 'https://werkcv.nl/cv-voorbeelden',
     },
-};
+});
 
 const categoryAccents: Record<string, string> = {
     'studenten-en-starters': '#FFD700',

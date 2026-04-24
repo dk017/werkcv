@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { templateList } from "@/lib/templates/registry";
 
 const featuredTemplates = templateList.filter((template) =>
@@ -63,10 +64,11 @@ const faqs = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "CV Maken Template - Kies de Beste CV Layout voor Jouw Sollicitatie | WerkCV",
   description:
     "Zoek je een CV maken template? Vergelijk rustige, moderne en ATS-vriendelijke layouts, kies de beste template voor jouw rol en start gratis in de editor.",
+  path: "/cv-maken-template",
   keywords: [
     "cv maken template",
     "cv template maken",
@@ -75,14 +77,11 @@ export const metadata: Metadata = {
     "cv layout kiezen",
     "cv template online",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/cv-maken-template",
-    languages: {
-      "nl-NL": "https://werkcv.nl/cv-maken-template",
-      "x-default": "https://werkcv.nl/cv-maken-template",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/cv-maken-template",
+    "x-default": "https://werkcv.nl/cv-maken-template",
   },
-};
+});
 
 export default function CvMakenTemplatePage() {
   const faqSchema = {

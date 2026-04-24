@@ -2,14 +2,20 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { getPillarCategories } from '@/lib/categories';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { buildDutchMetadata } from '@/lib/page-metadata';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
     title: 'CV Voorbeelden per Beroep | WerkCV',
     description: 'Bekijk professionele CV voorbeelden voor jouw beroep. Van ICT tot Zorg, van Logistiek tot Administratie. Start direct met een perfect CV template.',
+    path: '/cv-voorbeeld',
     keywords: ['cv voorbeeld', 'cv template', 'cv maken', 'curriculum vitae', 'sollicitatie'],
-};
+    languages: {
+        'nl-NL': 'https://werkcv.nl/cv-voorbeeld',
+        'x-default': 'https://werkcv.nl/cv-voorbeeld',
+    },
+});
 
 export default async function CVVoorbeeldOverview() {
     const pillars = await getPillarCategories();

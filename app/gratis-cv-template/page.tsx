@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { templateList } from "@/lib/templates/registry";
 
 const featuredTemplates = templateList.filter((template) =>
@@ -71,10 +72,11 @@ const freeTemplateIntentLinks = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "Gratis CV Template - Professioneel CV Maken Zonder Abonnement | WerkCV",
   description:
     "Zoek je een gratis CV template? Vergelijk 13+ professionele CV sjablonen, kies een ATS-vriendelijke layout en maak gratis je CV. Betaal alleen bij PDF-download.",
+  path: "/gratis-cv-template",
   keywords: [
     "gratis cv template",
     "gratis cv sjabloon",
@@ -86,14 +88,11 @@ export const metadata: Metadata = {
     "modern cv template",
     "cv maken gratis",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/gratis-cv-template",
-    languages: {
-      "nl-NL": "https://werkcv.nl/gratis-cv-template",
-      "x-default": "https://werkcv.nl/gratis-cv-template",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/gratis-cv-template",
+    "x-default": "https://werkcv.nl/gratis-cv-template",
   },
-};
+});
 
 export default function GratisCvTemplatePage() {
   const faqSchema = {
