@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 
 const frameworkSteps = [
   "Open met je rol, ervaringsniveau en domein in 1 zin.",
@@ -142,10 +143,11 @@ const profileIntentLinks = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "Voorbeeld Profiel CV - Profieltekst Voorbeelden per Functie | WerkCV",
   description:
     "Zoek je een voorbeeld profiel cv of profiel in cv voorbeeld? Bekijk profieltekst voorbeelden per functie, plus structuur, zinsstarters en foutencheck. Direct toepassen in je CV.",
+  path: "/profieltekst-cv-voorbeelden",
   keywords: [
     "voorbeeld profiel cv",
     "profiel in cv voorbeeld",
@@ -158,14 +160,11 @@ export const metadata: Metadata = {
     "goede profieltekst cv",
     "profieltekst schrijven cv",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/profieltekst-cv-voorbeelden",
-    languages: {
-      "nl-NL": "https://werkcv.nl/profieltekst-cv-voorbeelden",
-      "x-default": "https://werkcv.nl/profieltekst-cv-voorbeelden",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/profieltekst-cv-voorbeelden",
+    "x-default": "https://werkcv.nl/profieltekst-cv-voorbeelden",
   },
-};
+});
 
 export default function ProfieltekstCvVoorbeeldenPage() {
   const faqSchema = {

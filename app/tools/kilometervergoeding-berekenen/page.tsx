@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import KilometervergoedingTool from "./KilometervergoedingTool";
 
 const faqItems = [
@@ -29,11 +30,19 @@ const faqItems = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "Kilometervergoeding Berekenen 2026 - Reiskosten Calculator | WerkCV",
   description:
     "Bereken je belastingvrije kilometervergoeding voor woon-werkverkeer. Gebaseerd op het 2026 tarief van €0,23 per km. Gratis en direct inzichtelijk.",
-};
+  path: "/tools/kilometervergoeding-berekenen",
+  keywords: [
+    "kilometervergoeding berekenen",
+    "reiskostenvergoeding 2026 berekenen",
+    "reiskosten woon werk 2026",
+    "kilometervergoeding woon-werk 2026",
+    "kilometervergoeding belastingvrij 2026",
+  ],
+});
 
 export default function KilometervergoedingBerekenenPage() {
   return (

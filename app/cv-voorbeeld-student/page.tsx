@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import IntentLandingPage from "@/components/seo/IntentLandingPage";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 
 const faqs = [
   {
@@ -24,10 +25,11 @@ const faqs = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "CV Voorbeeld Student | Sterke Opbouw voor Stage, Bijbaan en Eerste Baan",
   description:
     "Bekijk een sterk CV voorbeeld voor studenten. Inclusief opbouw, profieltekst, stage- en bijbaanlogica en de snelste route naar een professioneel student-CV.",
+  path: "/cv-voorbeeld-student",
   keywords: [
     "cv voorbeeld student",
     "student cv voorbeeld",
@@ -35,14 +37,11 @@ export const metadata: Metadata = {
     "studenten cv",
     "cv student voorbeeld",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/cv-voorbeeld-student",
-    languages: {
-      "nl-NL": "https://werkcv.nl/cv-voorbeeld-student",
-      "x-default": "https://werkcv.nl/cv-voorbeeld-student",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/cv-voorbeeld-student",
+    "x-default": "https://werkcv.nl/cv-voorbeeld-student",
   },
-};
+});
 
 export default function CvVoorbeeldStudentPage() {
   return (

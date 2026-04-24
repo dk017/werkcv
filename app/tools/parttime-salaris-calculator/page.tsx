@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import ParttimeSalarisTool from "./ParttimeSalarisTool";
 
 const faqItems = [
@@ -49,9 +50,11 @@ const parttimeCvIntentLinks = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "Parttime Salaris Berekenen | 24, 28, 32 of 36 Uur",
-  description: "Bereken direct je parttime salaris voor 24, 28, 32 of 36 uur. Vul fulltime salaris en uren in en zie bruto maandloon, jaarloon en vakantiegeld.",
+  description:
+    "Bereken direct je parttime salaris voor 24, 28, 32 of 36 uur. Vul fulltime salaris en uren in en zie bruto maandloon, jaarloon en vakantiegeld.",
+  path: "/tools/parttime-salaris-calculator",
   keywords: [
     "parttime salaris calculator",
     "parttime salaris berekenen",
@@ -62,7 +65,7 @@ export const metadata: Metadata = {
     "parttime loon berekenen",
     "fulltime naar parttime salaris",
   ],
-};
+});
 
 export default function ParttimeSalarisCalculatorPage() {
   return (

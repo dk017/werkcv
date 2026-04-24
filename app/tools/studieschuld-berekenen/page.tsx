@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ToolPageShell } from "@/components/tools/ToolPageShell";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import StudieschuldTool from "./StudieschuldTool";
 
 const faqItems = [
@@ -35,12 +36,21 @@ const faqItems = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title:
     "Studieschuld DUO Berekenen 2026 – Maandelijkse Aflossing Calculator | WerkCV",
   description:
     "Bereken hoeveel je maandelijks terugbetaalt aan DUO op basis van je inkomen. Voor oud stelsel (voor 2015) en nieuw stelsel (na 2015). Gratis en direct inzichtelijk.",
-};
+  path: "/tools/studieschuld-berekenen",
+  keywords: [
+    "studieschuld duo berekenen",
+    "duo maandlast berekenen",
+    "duo berekenen",
+    "maandbedrag berekenen duo",
+    "studieschuld berekenen",
+    "duo aflossing berekenen",
+  ],
+});
 
 export default function StudieschuldBerekenenPage() {
   return (

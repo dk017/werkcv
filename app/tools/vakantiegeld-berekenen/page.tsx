@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { estimateNetFromTaxableIncome } from "@/lib/tools/netto-bruto";
 import VakantiegeldTool from "./VakantiegeldTool";
 
@@ -143,9 +144,10 @@ const comparisonRows = [
     },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
     title: "Vakantiegeld Berekenen 2026 | 8% Tool + Bruto Netto Uitleg | WerkCV",
     description: "Bereken je vakantiegeld in 2026 met de Nederlandse 8%-regel. Zie direct je bruto vakantiegeld, een ruwe netto-indicatie en het verschil met vakantietoeslag, vakantiedagen en 13e maand.",
+    path: "/tools/vakantiegeld-berekenen",
     keywords: [
         "vakantiegeld berekenen",
         "vakantie geld berekenen",
@@ -163,10 +165,7 @@ export const metadata: Metadata = {
         "vakantiegeld parttime",
         "vakantiegeld bij uit dienst",
     ],
-    alternates: {
-        canonical: "https://werkcv.nl/tools/vakantiegeld-berekenen",
-    },
-};
+});
 
 export default function VakantiegeldBerekenenPage() {
     return (

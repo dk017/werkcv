@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import UurloonCalculatorTool from "./UurloonCalculatorTool";
 
 const faqItems = [
@@ -49,9 +50,10 @@ const cvIntentLinks = [
     },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
     title: "Uurloon Calculator 2026 | Uurloon Naar Maandloon & Bruto Uurloon",
     description: "Bereken bruto uurloon vanuit maand- of jaarsalaris, of reken je uurloon terug naar maandloon. Inclusief vergelijking met uurloon mét vakantiegeld.",
+    path: "/tools/uurloon-calculator",
     keywords: [
         "uurloon berekenen",
         "bruto uurloon berekenen",
@@ -63,7 +65,7 @@ export const metadata: Metadata = {
         "netto uurloon uitrekenen",
         "bruto netto uurloon omrekenen",
     ],
-};
+});
 
 export default function UurloonCalculatorPage() {
     return (

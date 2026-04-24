@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import NettoBrutoTool from "./NettoBrutoTool";
 
 const faqItems = [
@@ -49,9 +50,10 @@ const cvIntentLinks = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
     title: "Netto Bruto Calculator 2026 - Bruto Naar Netto & Netto Naar Bruto | WerkCV",
     description: "Bereken bruto naar netto en netto naar bruto voor 2026. Inclusief loonheffingskorting, vakantiegeld en actuele Belastingdienst-tarieven als duidelijke indicatie voor loondienst.",
+    path: "/tools/netto-bruto-calculator",
     keywords: [
         "netto bruto calculator",
         "bruto naar netto 2026",
@@ -60,7 +62,7 @@ export const metadata: Metadata = {
         "loonheffingskorting calculator",
         "netto salaris berekenen",
     ],
-};
+});
 
 export default function NettoBrutoCalculatorPage() {
     return (

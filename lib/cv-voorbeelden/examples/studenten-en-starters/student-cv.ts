@@ -8,9 +8,9 @@ export const studentCv: CVExample = {
     templateId: 'jobboss',
     colorThemeId: 'modern-teal',
 
-    metaTitle: 'CV Voorbeeld Student & Afgestudeerde | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor studenten en afgestudeerden. Met voorbeeldteksten, tips en een gratis template. Maak direct je eigen CV.',
-    keywords: ['cv voorbeeld student', 'cv afgestudeerde', 'student cv maken', 'cv zonder werkervaring'],
+    metaTitle: 'Student CV Voorbeeld voor Afgestudeerden en Starters | WerkCV.nl',
+    metaDesc: 'Volledig student CV voorbeeld voor studenten en recent afgestudeerden. Met voorbeeldteksten, tips en een gratis template voor stage, bijbaan of eerste baan.',
+    keywords: ['student cv voorbeeld', 'cv afgestudeerde', 'student cv maken', 'cv zonder werkervaring', 'afgestudeerde cv voorbeeld'],
     heroTitle: 'CV Voorbeeld Student & Afgestudeerde',
     heroText: 'Als student of recent afgestudeerde heb je misschien weinig werkervaring, maar dat maakt niet uit. Dit CV voorbeeld laat zien hoe je met je opleiding, stages en extracurriculaire activiteiten een sterk CV maakt.',
     tips: [

@@ -39,12 +39,8 @@ export const metadata: Metadata = {
     "cv nederland",
   ],
   openGraph: {
-    title: "WerkCV - Professioneel CV Maken | Online CV Builder",
-    description: "Maak binnen 5 minuten een professioneel CV. Kies uit 13+ ATS-vriendelijke templates en download als PDF. Eenmalig €4,99.",
-    url: "https://werkcv.nl",
     siteName: "WerkCV",
     locale: "nl_NL",
-    type: "website",
     images: [
       {
         url: "/opengraph-image",
@@ -57,12 +53,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@werkcvnl",
-    title: "WerkCV - Professioneel CV Maken",
-    description: "Maak binnen 5 minuten een professioneel CV. 13+ templates, eenmalig €4,99, geen abonnement.",
     images: ["/opengraph-image"],
-  },
-  alternates: {
-    canonical: "https://werkcv.nl",
   },
 };
 

@@ -6,6 +6,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import { formatEuro } from "@/lib/tools/calculator-utils";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import {
   getSalaryRolePageBySlug,
   getSalaryRolePageLinks,
@@ -40,13 +41,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const benchmark = resolveSalaryRoleBenchmark(page);
-  const canonical = `https://werkcv.nl/salaris/${page.slug}`;
+  const title = `Salaris ${page.roleLabel} 2026 - CBS Mediaan en Salarisband | WerkCV`;
+  const description =
+    `Bekijk voor ${page.roleLabel} in Nederland de CBS-salarisband voor 32, 36 en 40 uur. ` +
+    `Zie direct de 25e percentiel, mediaan en bovenkant van de markt op basis van ${benchmark.dataYear} data.`;
 
-  return {
-    title: `Salaris ${page.roleLabel} 2026 - CBS Mediaan en Salarisband | WerkCV`,
-    description:
-      `Bekijk voor ${page.roleLabel} in Nederland de CBS-salarisband voor 32, 36 en 40 uur. ` +
-      `Zie direct de 25e percentiel, mediaan en bovenkant van de markt op basis van ${benchmark.dataYear} data.`,
+  return buildDutchMetadata({
+    title,
+    description,
+    path: `/salaris/${page.slug}`,
     keywords: [
       `salaris ${page.roleLabel}`,
       `wat verdient een ${page.roleLabel}`,
@@ -54,10 +57,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       `${page.roleLabel} salaris 2026`,
       `marktconform salaris ${page.roleLabel}`,
     ],
-    alternates: {
-      canonical,
-    },
-  };
+  });
 }
 
 export default async function SalaryRolePage({ params }: PageProps) {

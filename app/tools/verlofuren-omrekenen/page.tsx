@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import VerlofurenOmrekenenTool from "./VerlofurenOmrekenenTool";
 
 const faqItems = [
@@ -25,17 +26,20 @@ const faqItems = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "Verlofuren Omrekenen 2026 - Gratis Tool | WerkCV",
-  description: "Reken verlofuren om naar dagen of dagen naar uren. Handig voor parttime contracten, 36-urige werkweken en HR-systemen die anders registreren dan je contract.",
+  description:
+    "Reken verlofuren om naar dagen of dagen naar uren. Handig voor parttime contracten, 36-urige werkweken en HR-systemen die anders registreren dan je contract.",
+  path: "/tools/verlofuren-omrekenen",
   keywords: [
     "verlofuren omrekenen",
+    "verlof omrekenen van uur naar dagen",
     "vakantie uren naar dagen",
     "dagen naar uren verlof",
     "verlof in uren berekenen",
     "parttime verlofuren",
   ],
-};
+});
 
 export default function VerlofurenOmrekenenPage() {
   return (
