@@ -6,6 +6,7 @@ import { formatGender, formatLanguageLevel, formatMaritalStatus, resumeText } fr
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
 // Elegant skill bars component
@@ -25,7 +26,8 @@ function SkillBars({ level, color }: { level: number; color: string }) {
     );
 }
 
-export default function ElegantTemplate({ data, theme }: TemplateProps) {
+export default function ElegantTemplate({ data, theme, nameTag = 'h1' }: TemplateProps) {
+    const NameTag = nameTag;
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto flex"
@@ -35,9 +37,9 @@ export default function ElegantTemplate({ data, theme }: TemplateProps) {
             <div className="w-[60%] p-10 space-y-5">
                 {/* Header with decorative line */}
                 <div className="text-center mb-8">
-                    <h1 className="text-3xl font-serif font-bold tracking-wide">
+                    <NameTag className="text-3xl font-serif font-bold tracking-wide">
                         {data.personal.name || resumeText(data, "nameFallback")}
-                    </h1>
+                    </NameTag>
                     {data.personal.title && (
                         <p
                             className="text-base mt-2 font-serif italic"

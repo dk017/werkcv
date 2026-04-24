@@ -192,7 +192,7 @@ function RichTemplatePreview({
           width: `${100 / 0.24}%`,
         }}
       >
-        <TemplateComponent data={data} theme={theme} />
+        <TemplateComponent data={data} theme={theme} nameTag="div" />
       </div>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-white via-white/95 to-transparent" />
     </div>

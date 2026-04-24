@@ -6,6 +6,7 @@ import { formatGender, formatLanguageLevel, formatMaritalStatus, resumeText } fr
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
 // Skill level indicator (horizontal bars)
@@ -25,7 +26,8 @@ function SkillLevel({ level, color }: { level: number; color: string }) {
     );
 }
 
-export default function ClassicalTemplate({ data, theme }: TemplateProps) {
+export default function ClassicalTemplate({ data, theme, nameTag = 'h1' }: TemplateProps) {
+    const NameTag = nameTag;
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto p-10"
@@ -41,9 +43,9 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                         style={{ border: `3px solid ${theme.primary}` }}
                     />
                 )}
-                <h1 className="text-3xl font-bold tracking-wide mb-1">
+                <NameTag className="text-3xl font-bold tracking-wide mb-1">
                     {data.personal.name || resumeText(data, "nameFallback")}
-                </h1>
+                </NameTag>
                 {data.personal.title && (
                     <p className="text-lg" style={{ color: theme.textMuted }}>
                         {data.personal.title}

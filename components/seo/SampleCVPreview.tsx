@@ -38,7 +38,7 @@ export function SampleCVPreview({
             >
                 <div className="pointer-events-none">
                     <LinkTextProvider disableAnchors>
-                        <TemplateComponent data={data} theme={theme} />
+                        <TemplateComponent data={data} theme={theme} nameTag="div" />
                     </LinkTextProvider>
                 </div>
             </div>

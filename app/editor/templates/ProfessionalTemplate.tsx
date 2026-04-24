@@ -5,6 +5,7 @@ import { formatGender, formatLanguageLevel, formatMaritalStatus, resumeText } fr
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
 // Skill level dots component
@@ -24,7 +25,8 @@ function SkillDots({ level, color }: { level: number; color: string }) {
     );
 }
 
-export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
+export default function ProfessionalTemplate({ data, theme, nameTag = 'h1' }: TemplateProps) {
+    const NameTag = nameTag;
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto shadow-lg"
@@ -193,9 +195,9 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                 <div className="flex-1 p-8 space-y-6">
                     {/* Header */}
                     <div className="pb-4 border-b-2" style={{ borderColor: theme.primary }}>
-                        <h1 className="text-3xl font-bold" style={{ color: theme.primary }}>
+                        <NameTag className="text-3xl font-bold" style={{ color: theme.primary }}>
                             {data.personal.name || resumeText(data, "nameFallback")}
-                        </h1>
+                        </NameTag>
                         {data.personal.title && (
                             <p className="text-lg mt-1" style={{ color: theme.textMuted }}>
                                 {data.personal.title}

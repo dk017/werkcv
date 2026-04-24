@@ -6,6 +6,7 @@ import { resumeText } from "@/lib/resume-language";
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
 // Skill progress bar
@@ -40,7 +41,8 @@ function LanguageBar({ level, color }: { level: string; color: string }) {
     );
 }
 
-export default function RobustTemplate({ data, theme }: TemplateProps) {
+export default function RobustTemplate({ data, theme, nameTag = 'h1' }: TemplateProps) {
+    const NameTag = nameTag;
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto"
@@ -67,9 +69,9 @@ export default function RobustTemplate({ data, theme }: TemplateProps) {
                         </div>
                     )}
                     <div className="text-white flex-1">
-                        <h1 className="text-2xl font-bold uppercase tracking-wide">
+                        <NameTag className="text-2xl font-bold uppercase tracking-wide">
                             {data.personal.name || resumeText(data, "nameFallback")}
-                        </h1>
+                        </NameTag>
                         {data.personal.title && (
                             <p className="text-sm opacity-90">{data.personal.title}</p>
                         )}

@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react-hooks/static-components */
 
 import { useState } from "react";
 import { templateList, getThemeById } from "@/lib/templates/registry";
@@ -111,7 +112,7 @@ function TemplateCard({
       <div className="mb-2 flex h-[200px] items-start justify-center overflow-hidden rounded-lg border border-gray-100 bg-gray-50">
         <div style={{ zoom: 0.22, pointerEvents: "none", flexShrink: 0 }}>
           <LinkTextProvider disableAnchors>
-            <TemplateComponent data={sampleCV} theme={theme} />
+            <TemplateComponent data={sampleCV} theme={theme} nameTag="div" />
           </LinkTextProvider>
         </div>
       </div>

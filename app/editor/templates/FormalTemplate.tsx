@@ -6,6 +6,7 @@ import { formatGender, formatLanguageLevel, formatMaritalStatus, resumeText } fr
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
 // Skill level dots component (white version for dark sidebar)
@@ -25,7 +26,8 @@ function SkillDots({ level }: { level: number }) {
     );
 }
 
-export default function FormalTemplate({ data, theme }: TemplateProps) {
+export default function FormalTemplate({ data, theme, nameTag = 'h1' }: TemplateProps) {
+    const NameTag = nameTag;
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto flex"
@@ -35,12 +37,12 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
             <div className="w-[65%] p-10 space-y-5">
                 {/* Header */}
                 <div className="mb-6">
-                    <h1
+                    <NameTag
                         className="text-3xl font-bold mb-1"
                         style={{ color: theme.primary }}
                     >
                         {data.personal.name || resumeText(data, "nameFallback")}
-                    </h1>
+                    </NameTag>
                     {data.personal.title && (
                         <p className="text-lg" style={{ color: theme.textMuted }}>
                             {data.personal.title}

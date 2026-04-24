@@ -6,6 +6,7 @@ import { resumeText } from "@/lib/resume-language";
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
 // Skill bar for remarkable template
@@ -40,7 +41,8 @@ function LanguageBar({ level, color }: { level: string; color: string }) {
     );
 }
 
-export default function RemarkableTemplate({ data, theme }: TemplateProps) {
+export default function RemarkableTemplate({ data, theme, nameTag = 'h1' }: TemplateProps) {
+    const NameTag = nameTag;
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto flex"
@@ -78,9 +80,9 @@ export default function RemarkableTemplate({ data, theme }: TemplateProps) {
 
                 {/* Name */}
                 <div className="text-center">
-                    <h1 className="text-lg font-bold">
+                    <NameTag className="text-lg font-bold">
                         {data.personal.name || resumeText(data, "nameFallback")}
-                    </h1>
+                    </NameTag>
                     {data.personal.title && (
                         <p className="text-xs mt-1" style={{ color: theme.primary }}>
                             {data.personal.title}

@@ -6,10 +6,12 @@ import { formatLanguageLevel, resumeText } from "@/lib/resume-language";
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
 // ATS-Friendly Template - Single column, no graphics, optimized for Applicant Tracking Systems
-export default function ATSTemplate({ data, theme }: TemplateProps) {
+export default function ATSTemplate({ data, theme, nameTag = 'h1' }: TemplateProps) {
+    const NameTag = nameTag;
     const contactItems = [
         data.personal.email,
         data.personal.phone,
@@ -26,9 +28,9 @@ export default function ATSTemplate({ data, theme }: TemplateProps) {
         >
             {/* Header - Name and Contact */}
             <div className="text-center mb-6 pb-4" style={{ borderBottom: `2px solid ${theme.primary}` }}>
-                <h1 className="text-2xl font-bold uppercase tracking-wide mb-2">
+                <NameTag className="text-2xl font-bold uppercase tracking-wide mb-2">
                     {data.personal.name || resumeText(data, "nameFallback")}
-                </h1>
+                </NameTag>
                 {data.personal.title && (
                     <p className="text-base mb-3" style={{ color: theme.textMuted }}>
                         {data.personal.title}

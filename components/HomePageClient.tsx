@@ -179,7 +179,7 @@ function HomeTemplatePreviewInner({ templateId, colorThemeId }: { templateId: st
                 }}
             >
                 <LinkTextProvider disableAnchors>
-                    <TemplateComponent data={homepageTemplatePreviewData} theme={theme} />
+                    <TemplateComponent data={homepageTemplatePreviewData} theme={theme} nameTag="div" />
                 </LinkTextProvider>
             </div>
             <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-white via-white/95 to-transparent pointer-events-none" />
@@ -239,7 +239,7 @@ function HeroCarouselInner() {
                                     style={{ transform: `scale(${HERO_SCALE})`, width: `${100 / HERO_SCALE}%` }}
                                 >
                                     <LinkTextProvider disableAnchors>
-                                        <TemplateComponent data={homepageTemplatePreviewData} theme={theme} />
+                                        <TemplateComponent data={homepageTemplatePreviewData} theme={theme} nameTag="div" />
                                     </LinkTextProvider>
                                 </div>
                             </div>

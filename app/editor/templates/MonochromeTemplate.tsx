@@ -6,9 +6,11 @@ import { formatLanguageLevel, resumeText } from "@/lib/resume-language";
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
-export default function MonochromeTemplate({ data, theme }: TemplateProps) {
+export default function MonochromeTemplate({ data, theme, nameTag = 'h1' }: TemplateProps) {
+    const NameTag = nameTag;
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto p-10"
@@ -18,9 +20,9 @@ export default function MonochromeTemplate({ data, theme }: TemplateProps) {
             <div className="mb-6 pb-4" style={{ borderBottom: `3px solid ${theme.text}` }}>
                 <div className="flex items-start justify-between">
                     <div>
-                        <h1 className="text-3xl font-black uppercase tracking-tight mb-1">
+                        <NameTag className="text-3xl font-black uppercase tracking-tight mb-1">
                             {data.personal.name || resumeText(data, "nameFallback")}
-                        </h1>
+                        </NameTag>
                         {data.personal.title && (
                             <p className="text-base font-light tracking-wide" style={{ color: theme.textMuted }}>
                                 {data.personal.title}

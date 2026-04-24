@@ -25,6 +25,7 @@ import ATSTemplate from './ATSTemplate';
 export interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
 // Map of all template components

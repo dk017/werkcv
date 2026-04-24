@@ -6,6 +6,7 @@ import { formatLanguageLevel, resumeText } from "@/lib/resume-language";
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
 // Skill stars component
@@ -21,7 +22,8 @@ function SkillStars({ level }: { level: number }) {
     );
 }
 
-export default function SepiaTemplate({ data, theme }: TemplateProps) {
+export default function SepiaTemplate({ data, theme, nameTag = 'h1' }: TemplateProps) {
+    const NameTag = nameTag;
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto flex"
@@ -57,9 +59,9 @@ export default function SepiaTemplate({ data, theme }: TemplateProps) {
 
                 {/* Name */}
                 <div className="text-center text-white">
-                    <h1 className="text-lg font-serif font-bold">
+                    <NameTag className="text-lg font-serif font-bold">
                         {data.personal.name || resumeText(data, "nameFallback")}
-                    </h1>
+                    </NameTag>
                     {data.personal.title && (
                         <p className="text-xs mt-1 opacity-80 font-serif italic">
                             {data.personal.title}

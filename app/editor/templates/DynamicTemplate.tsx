@@ -6,6 +6,7 @@ import { resumeText } from "@/lib/resume-language";
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
 // Skill level dots component (filled circles)
@@ -58,7 +59,8 @@ function SkillBar({ level, color }: { level: number; color: string }) {
     );
 }
 
-export default function DynamicTemplate({ data, theme }: TemplateProps) {
+export default function DynamicTemplate({ data, theme, nameTag = 'h1' }: TemplateProps) {
+    const NameTag = nameTag;
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto"
@@ -87,9 +89,9 @@ export default function DynamicTemplate({ data, theme }: TemplateProps) {
                         </div>
                     )}
                     <div className="text-white">
-                        <h1 className="text-3xl font-bold tracking-wide">
+                        <NameTag className="text-3xl font-bold tracking-wide">
                             {data.personal.name || resumeText(data, "nameFallback")}
-                        </h1>
+                        </NameTag>
                         {data.personal.title && (
                             <p className="text-lg mt-1 opacity-90">{data.personal.title}</p>
                         )}

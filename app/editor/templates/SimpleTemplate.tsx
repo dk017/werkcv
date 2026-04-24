@@ -6,6 +6,7 @@ import { formatGender, formatLanguageLevel, formatMaritalStatus, formatSkillLeve
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
 // Simple skill indicator (text-based)
@@ -13,7 +14,8 @@ function SkillLevel({ level, data }: { level: number; data: CVData }) {
     return <span className="text-xs opacity-60">({formatSkillLevel(level, data)})</span>;
 }
 
-export default function SimpleTemplate({ data, theme }: TemplateProps) {
+export default function SimpleTemplate({ data, theme, nameTag = 'h1' }: TemplateProps) {
+    const NameTag = nameTag;
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto p-12"
@@ -23,9 +25,9 @@ export default function SimpleTemplate({ data, theme }: TemplateProps) {
             <div className="mb-8">
                 <div className="flex items-start justify-between gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold mb-1">
+                        <NameTag className="text-3xl font-bold mb-1">
                             {data.personal.name || resumeText(data, "nameFallback")}
-                        </h1>
+                        </NameTag>
                         {data.personal.title && (
                             <p className="text-lg" style={{ color: theme.textMuted }}>
                                 {data.personal.title}

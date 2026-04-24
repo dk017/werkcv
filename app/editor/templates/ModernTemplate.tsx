@@ -6,6 +6,7 @@ import { formatGender, formatMaritalStatus, resumeText } from "@/lib/resume-lang
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
+    nameTag?: 'h1' | 'div';
 }
 
 // Progress bar skill indicator
@@ -40,7 +41,8 @@ function LanguageBar({ level }: { level: string }) {
     );
 }
 
-export default function ModernTemplate({ data, theme }: TemplateProps) {
+export default function ModernTemplate({ data, theme, nameTag = 'h1' }: TemplateProps) {
+    const NameTag = nameTag;
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto flex"
@@ -71,9 +73,9 @@ export default function ModernTemplate({ data, theme }: TemplateProps) {
 
                 {/* Name on sidebar */}
                 <div className="text-center">
-                    <h1 className="text-xl font-bold uppercase tracking-wide">
+                    <NameTag className="text-xl font-bold uppercase tracking-wide">
                         {data.personal.name || resumeText(data, "nameFallback")}
-                    </h1>
+                    </NameTag>
                     {data.personal.title && (
                         <p className="text-xs mt-1 opacity-80">{data.personal.title}</p>
                     )}
