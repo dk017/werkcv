@@ -80,6 +80,44 @@ const intentMatches = [
   },
 ];
 
+const quickAnswerCards = [
+  {
+    title: "Begin met rol + niveau",
+    text: "Open je profieltekst met je functietitel, senioriteit en context. Zo snapt een recruiter in 1 regel welk profiel hij voor zich heeft.",
+  },
+  {
+    title: "Maak je profielschets concreet",
+    text: "Noem meteen 2 of 3 vaardigheden en koppel ze aan bewijs. Een profielschets zonder resultaat of context voelt snel generiek.",
+  },
+  {
+    title: "Sluit af met richting",
+    text: "Een korte afsluitzin werkt alleen als die laat zien waar je nu naartoe wilt: type rol, sector of bijdrage die je zoekt.",
+  },
+];
+
+const routeChoiceCards = [
+  {
+    href: "/tools/profieltekst-generator",
+    title: "Profieltekst generator",
+    body: "Beste route als je snel een eerste versie wilt maken op basis van functie, ervaring en vacaturetoon.",
+  },
+  {
+    href: "/cv-samenvatting-voorbeelden",
+    title: "CV samenvatting voorbeelden",
+    body: "Handig als je zoekt op samenvatting, profielschets of introductie en die termen door elkaar gebruikt.",
+  },
+  {
+    href: "/templates",
+    title: "Templates vergelijken",
+    body: "Gebruik deze stap zodra je profieltekst inhoudelijk staat en je een rustige recruiter-safe layout wilt kiezen.",
+  },
+  {
+    href: "/cv-aanmaken",
+    title: "CV aanmaken",
+    body: "Kies dit pad als je de opening meteen boven een volledige Nederlandse CV-versie wilt zetten.",
+  },
+];
+
 const mistakes = [
   "Te algemeen: motivatiewoorden zonder bewijs of context.",
   "Te lang: profieltekst van 120+ woorden wordt vaak overgeslagen.",
@@ -104,9 +142,19 @@ const faqs = [
       "In de praktijk worden beide termen vaak door elkaar gebruikt. Het gaat in beide gevallen om de korte introductie bovenaan je CV die direct duidelijk maakt waarom jij relevant bent.",
   },
   {
+    question: "Wat zet je in een profielschets op je CV?",
+    answer:
+      "Zet in je profielschets altijd vier dingen: je rol, je relevante kernvaardigheden, een kort bewijs of resultaat en de richting van je volgende stap. Daarmee voelt je opening meteen concreet in plaats van algemeen.",
+  },
+  {
     question: "Moet ik mijn profieltekst per vacature aanpassen?",
     answer:
       "Ja. Pas functietitel, kernvaardigheden en impactzinnen aan op de vacaturetaal. Dat verhoogt zowel recruiter-relevantie als ATS-match.",
+  },
+  {
+    question: "Heb ik een afsluitzin nodig in mijn profieltekst?",
+    answer:
+      "Ja, maar houd hem functioneel. Een korte afsluitzin werkt goed als die duidelijk maakt welke rol, sector of bijdrage je zoekt. Vermijd open deuren zoals dat je gemotiveerd bent of klaar bent voor een nieuwe uitdaging.",
   },
 ];
 
@@ -155,6 +203,10 @@ export const metadata: Metadata = buildDutchMetadata({
     "profieltekst cv voorbeelden",
     "persoonlijk profiel cv voorbeeld",
     "cv profieltekst voorbeeld",
+    "profielschets cv voorbeelden",
+    "tekst profiel cv tips",
+    "profielschets cv voorbeelden afsluitzin",
+    "voorbeelden profieltekstje cv",
     "profieltekst op cv",
     "cv introductie voorbeelden",
     "goede profieltekst cv",
@@ -281,6 +333,41 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                 Lees ook: profieltekst schrijven
               </Link>
             </div>
+          </div>
+        </section>
+
+        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Kort antwoord
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            CV profieltekst voorbeeld: wat zet je daar precies?
+          </h2>
+          <p className="mt-3 max-w-4xl text-sm font-medium leading-relaxed text-slate-700">
+            Wie zoekt op <strong>cv profieltekst voorbeeld</strong> of <strong>profielschets cv voorbeelden</strong>{" "}
+            wil meestal geen losse slogans, maar een korte opening die meteen laat zien wie je bent, wat je kunt en
+            waar je naartoe wilt. Zie profieltekst, profielschets en CV-samenvatting daarom als varianten van dezelfde
+            bloktekst: compact, bewijsgericht en afgestemd op je vacature.
+          </p>
+          <div className="mt-6 grid gap-5 md:grid-cols-3">
+            {quickAnswerCards.map((card) => (
+              <article key={card.title} className="border-2 border-black bg-[#FFFEF0] p-5">
+                <h3 className="text-lg font-black text-black">{card.title}</h3>
+                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">{card.text}</p>
+              </article>
+            ))}
+          </div>
+          <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {routeChoiceCards.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="block border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
+              >
+                <p className="text-sm font-black text-black">{item.title}</p>
+                <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
+              </Link>
+            ))}
           </div>
         </section>
 

@@ -54,6 +54,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       `salaris ${page.roleLabel}`,
       `wat verdient een ${page.roleLabel}`,
       `gemiddeld salaris ${page.roleLabel}`,
+      `bruto salaris ${page.roleLabel}`,
+      `${page.roleLabel} bruto per maand`,
+      `bruto maandloon ${page.roleLabel}`,
       `${page.roleLabel} salaris 2026`,
       `marktconform salaris ${page.roleLabel}`,
     ],
@@ -77,6 +80,7 @@ export default async function SalaryRolePage({ params }: PageProps) {
     monthlyP75: monthlyFromHourly(benchmark.hourlyP75, weeklyHours),
     annualMedian: annualFromHourly(benchmark.hourlyMedian, weeklyHours),
   }));
+  const thirtySixHourRow = hoursRows[1];
   const fortyHourRow = hoursRows[2];
   const faqItems = [
     {
@@ -95,6 +99,12 @@ export default async function SalaryRolePage({ params }: PageProps) {
       question: "Waarom gebruikt WerkCV CBS 2024 data op een 2026-pagina?",
       answer:
         "Omdat dit op 8 april 2026 het nieuwste officiele CBS-jaar is in deze beroepsdataset. WerkCV noemt dat expliciet, zodat je weet op welk bronjaar de vergelijking rust.",
+    },
+    {
+      question: `Wat verdient een ${page.roleLabel} bruto per maand?`,
+      answer:
+        `Voor een fulltime indicatie van 40 uur ligt de mediaan op deze pagina rond ${formatEuro(fortyHourRow.monthlyMedian)} bruto per maand. ` +
+        `Werk je eerder 36 uur, dan ligt dezelfde mediaan rond ${formatEuro(thirtySixHourRow.monthlyMedian)} bruto per maand.`,
     },
     {
       question: `Hoe gebruik ik deze salarisrange als ${page.roleLabel} in een nieuwe baan?`,
@@ -187,6 +197,43 @@ export default async function SalaryRolePage({ params }: PageProps) {
               <p className="mt-1 text-xs text-slate-500">werknemers in deze CBS-beroepsgroep</p>
             </div>
           </aside>
+        </section>
+
+        <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Kort antwoord</p>
+          <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
+            Wat verdient een {page.roleLabel} per maand?
+          </h2>
+          <p className="mt-3 max-w-4xl text-sm leading-relaxed text-slate-600">
+            Wie zoekt op <strong>salaris {page.roleLabel}</strong> of <strong>wat verdient een {page.roleLabel}</strong>{" "}
+            wil meestal snel een bruikbare bruto indicatie voor een gesprek, offercheck of overstap. Op basis van deze
+            CBS-benchmark ligt de mediaan bij 40 uur rond <strong>{formatEuro(fortyHourRow.monthlyMedian)}</strong> bruto
+            per maand. De marktband loopt grofweg van <strong>{formatEuro(fortyHourRow.monthlyP25)}</strong> tot{" "}
+            <strong>{formatEuro(fortyHourRow.monthlyP75)}</strong>.
+          </p>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            <article className="border-2 border-black bg-[#FFFEF0] p-5">
+              <p className="text-[11px] font-black uppercase tracking-wide text-slate-500">Mediaan 40 uur</p>
+              <p className="mt-2 text-2xl font-black text-slate-900">{formatEuro(fortyHourRow.monthlyMedian)}</p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                De meest bruikbare fulltime indicatie als je een vacature of aanbod op 40 uur vergelijkt.
+              </p>
+            </article>
+            <article className="border-2 border-black bg-[#FFFEF0] p-5">
+              <p className="text-[11px] font-black uppercase tracking-wide text-slate-500">Mediaan 36 uur</p>
+              <p className="mt-2 text-2xl font-black text-slate-900">{formatEuro(thirtySixHourRow.monthlyMedian)}</p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                Relevanter als jouw sector vaker rond 36 uur werkt of als je aanbiedingen in minder uren naast elkaar legt.
+              </p>
+            </article>
+            <article className="border-2 border-black bg-[#FFFEF0] p-5">
+              <p className="text-[11px] font-black uppercase tracking-wide text-slate-500">Belangrijk</p>
+              <p className="mt-2 text-lg font-black text-slate-900">Bruto, geen netto</p>
+              <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                Vakantiegeld, toeslagen en belasting zitten hier nog niet in. Gebruik daarna de netto-bruto calculator voor je echte besteedbare indicatie.
+              </p>
+            </article>
+          </div>
         </section>
 
         <section className="mb-12 border-2 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
