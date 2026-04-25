@@ -58,20 +58,30 @@ export default function Footer() {
                         <p className="text-sm text-gray-600 leading-relaxed">
                             CV-builder, sollicitatiehulp en praktische tools voor werken in Nederland.
                         </p>
-                        <a
-                            href="https://neeed.directory/products/werkcv?utm_source=werkcv"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="mt-4 inline-flex items-center rounded-md border-2 border-black bg-black p-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-                        >
-                            <Image
-                                src="https://neeed.directory/badges/neeed-badge-light.svg"
-                                alt="Featured on neeed.directory"
-                                width={139}
-                                height={40}
-                                unoptimized
-                            />
-                        </a>
+                        <div className="mt-4 flex flex-wrap items-center gap-3">
+                            <a
+                                href="https://neeed.directory/products/werkcv?utm_source=werkcv"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center rounded-md border-2 border-black bg-black p-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+                            >
+                                <Image
+                                    src="https://neeed.directory/badges/neeed-badge-light.svg"
+                                    alt="Featured on neeed.directory"
+                                    width={139}
+                                    height={40}
+                                    unoptimized
+                                />
+                            </a>
+                            <a
+                                href="https://wired.business"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex min-h-11 items-center rounded-md border-2 border-black bg-white px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+                            >
+                                Listed on Wired Business
+                            </a>
+                        </div>
                     </div>
 
                     <div>
