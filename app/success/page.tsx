@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getCV } from "@/app/actions";
+import { getEditorPathForLanguage } from "@/lib/editor-path";
+import { getResumeLanguage, ResumeLanguage } from "@/lib/resume-language";
 
 export const metadata: Metadata = {
     title: "Betaling Geslaagd - WerkCV",
@@ -10,9 +13,19 @@ export const metadata: Metadata = {
 export default async function SuccessPage({
     searchParams,
 }: {
-    searchParams: Promise<{ cvId?: string }>;
+    searchParams: Promise<{ cvId?: string; lang?: string }>;
 }) {
-    const { cvId } = await searchParams;
+    const { cvId, lang } = await searchParams;
+    let uiLanguage: ResumeLanguage | null = lang === "en" || lang === "nl" ? lang : null;
+
+    if (!uiLanguage && cvId) {
+        const cv = await getCV(cvId);
+        uiLanguage = getResumeLanguage(cv);
+    }
+
+    const resolvedLanguage = uiLanguage ?? "nl";
+    const tr = (dutch: string, english: string) => (resolvedLanguage === "en" ? english : dutch);
+    const editorPath = cvId ? getEditorPathForLanguage(resolvedLanguage, cvId) : "/";
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
@@ -34,11 +47,14 @@ export default async function SuccessPage({
                 </div>
 
                 <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                    Betaling geslaagd!
+                    {tr("Betaling geslaagd!", "Payment successful!")}
                 </h1>
 
                 <p className="text-gray-600 mb-8">
-                    Bedankt voor je aankoop. Je kunt nu je CV downloaden als PDF.
+                    {tr(
+                        "Bedankt voor je aankoop. Je kunt nu je CV downloaden als PDF.",
+                        "Thanks for your purchase. You can now download your CV as a PDF."
+                    )}
                 </p>
 
                 <div className="space-y-4">
@@ -47,20 +63,23 @@ export default async function SuccessPage({
                             href={`/api/pdf?cvId=${cvId}`}
                             className="block w-full bg-gray-900 hover:bg-black text-white px-6 py-3 rounded-full font-bold text-sm shadow-md transition"
                         >
-                            Download PDF
+                            {tr("Download PDF", "Download PDF")}
                         </a>
                     )}
 
                     <Link
-                        href={cvId ? `/editor?id=${encodeURIComponent(cvId)}` : "/"}
+                        href={editorPath}
                         className="block w-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-full font-bold text-sm transition"
                     >
-                        Terug naar editor
+                        {tr("Terug naar editor", "Back to editor")}
                     </Link>
                 </div>
 
                 <p className="text-xs text-gray-400 mt-8">
-                    Je kunt je CV altijd opnieuw downloaden door terug te gaan naar de editor.
+                    {tr(
+                        "Je kunt je CV altijd opnieuw downloaden door terug te gaan naar de editor.",
+                        "You can always download your CV again by going back to the editor."
+                    )}
                 </p>
             </div>
         </div>

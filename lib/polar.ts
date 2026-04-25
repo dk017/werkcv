@@ -1,3 +1,6 @@
+import { getEditorPathForLanguage, getSuccessPathForLanguage } from "@/lib/editor-path";
+import { ResumeLanguage } from "@/lib/resume-language";
+
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 const POLAR_ACCESS_TOKEN = process.env.POLAR_ACCESS_TOKEN;
 const POLAR_PRODUCT_ID =
@@ -34,7 +37,8 @@ export function parseCheckoutAddons(input: unknown): CheckoutAddon[] {
 export async function buildCheckoutURL(
     cvId: string,
     email?: string,
-    selectedAddons: CheckoutAddon[] = []
+    selectedAddons: CheckoutAddon[] = [],
+    resumeLanguage: ResumeLanguage = "nl"
 ): Promise<string> {
     if (!POLAR_ACCESS_TOKEN) {
         throw new Error('POLAR_ACCESS_TOKEN is not configured');
@@ -51,8 +55,8 @@ export async function buildCheckoutURL(
     }
 
     const body: Record<string, unknown> = {
-        success_url: `${APP_URL}/success?cvId=${encodeURIComponent(cvId)}`,
-        return_url: `${APP_URL}/editor?id=${encodeURIComponent(cvId)}`,
+        success_url: `${APP_URL}${getSuccessPathForLanguage(resumeLanguage, cvId)}`,
+        return_url: `${APP_URL}${getEditorPathForLanguage(resumeLanguage, cvId)}`,
         currency: POLAR_CHECKOUT_CURRENCY,
         metadata,
     };

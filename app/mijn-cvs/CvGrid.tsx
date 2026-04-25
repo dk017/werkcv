@@ -7,6 +7,7 @@ import { CVData } from '@/lib/cv';
 import { SampleCVPreview } from '@/components/seo/SampleCVPreview';
 import { deleteCV } from '@/app/actions';
 import { getTemplateConfig } from '@/lib/templates/registry';
+import { getEditorPathForCv } from '@/lib/editor-path';
 
 interface CvItem {
     id: string;
@@ -33,6 +34,7 @@ function CvCard({ cv }: { cv: CvItem }) {
 
     const templateConfig = getTemplateConfig(cv.templateId);
     const displayName = cv.data.personal.name || cv.title || 'Naamloos CV';
+    const editorPath = getEditorPathForCv(cv.data, cv.id);
 
     const handleDelete = async () => {
         setDeleting(true);
@@ -43,7 +45,7 @@ function CvCard({ cv }: { cv: CvItem }) {
     return (
         <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
             {/* Mini CV preview */}
-            <Link href={`/editor?id=${cv.id}`} className="block h-[220px] overflow-hidden bg-slate-50 border-b border-slate-200">
+            <Link href={editorPath} className="block h-[220px] overflow-hidden bg-slate-50 border-b border-slate-200">
                 <SampleCVPreview
                     data={cv.data}
                     templateId={cv.templateId}
@@ -69,7 +71,7 @@ function CvCard({ cv }: { cv: CvItem }) {
 
                 <div className="flex items-center gap-2 mt-auto">
                     <Link
-                        href={`/editor?id=${cv.id}`}
+                        href={editorPath}
                         className="flex-1 text-center bg-emerald-600 text-white text-xs font-semibold py-2 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                     >
                         Bewerken

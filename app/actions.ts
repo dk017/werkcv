@@ -5,6 +5,7 @@ import { cvSchema, CVData, defaultCV } from '@/lib/cv'
 import { buildCheckoutURL, CheckoutAddon, parseCheckoutAddons } from '@/lib/polar'
 import { getCurrentUser } from '@/lib/auth'
 import { reportOpsIncident } from '@/lib/ops-alerts'
+import { getResumeLanguage } from '@/lib/resume-language'
 
 const userCVListSelect = {
     id: true,
@@ -194,6 +195,7 @@ export async function getCheckoutURL(
         where: { id: cvId, userId: user.id },
         select: {
             id: true,
+            data: true,
             sourceCluster: true,
             sourceLocale: true,
             startSource: true,
@@ -204,8 +206,9 @@ export async function getCheckoutURL(
     }
 
     const safeAddons = parseCheckoutAddons(addons);
+    const resumeLanguage = getResumeLanguage(owned.data as CVData);
     try {
-        const url = await buildCheckoutURL(cvId, email || user.email, safeAddons);
+        const url = await buildCheckoutURL(cvId, email || user.email, safeAddons, resumeLanguage);
         return { ok: true, url };
     } catch (error) {
         const { supportNotified } = await reportOpsIncident({
