@@ -60,6 +60,7 @@ const guideGroups = [
     description:
       "Deze routes pakken long-tail zoekintentie op voor studenten, stages, jongeren, mobiel, PDF en Engelstalige sollicitaties.",
     links: [
+      { href: "/cv-gids/cv-voorbeelden-per-situatie", label: "CV voorbeelden per situatie" },
       { href: "/cv-maken-student", label: "CV maken student" },
       { href: "/stage-cv-maken", label: "Stage CV maken" },
       { href: "/eerste-cv-maken", label: "Eerste CV maken" },
@@ -89,12 +90,13 @@ const comparisonGuideGroups = [
     description:
       "Deze vergelijkingen zijn nuttig als je niet zomaar de bekendste tool wilt kiezen, maar het model en de use case van elk platform wilt afwegen.",
     links: [
-      { href: "/cv-gids/werkcv-vs-cvmaker", label: "WerkCV vs CVMaker" },
-      { href: "/cv-gids/werkcv-vs-cv-nl", label: "WerkCV vs CV.nl" },
+      { href: "/cv-gids/werkcv-vs-cvmaker", label: "CVMaker alternatief" },
+      { href: "/cv-gids/werkcv-vs-cv-nl", label: "CV.nl alternatief" },
+      { href: "/cv-gids/werkcv-vs-livecareer", label: "LiveCareer alternatief" },
       { href: "/cv-gids/werkcv-vs-zety", label: "WerkCV vs Zety" },
-      { href: "/cv-gids/werkcv-vs-resume-io", label: "WerkCV vs Resume.io" },
+      { href: "/cv-gids/werkcv-vs-resume-io", label: "Resume.io alternatief" },
       { href: "/cv-gids/werkcv-vs-cvwizard", label: "WerkCV vs CVwizard" },
-      { href: "/cv-gids/werkcv-vs-cvster", label: "WerkCV vs CVster" },
+      { href: "/cv-gids/werkcv-vs-cvster", label: "CVster alternatief" },
       { href: "/cv-gids/werkcv-vs-europass", label: "WerkCV vs Europass" },
       { href: "/cv-gids/werkcv-vs-resumaker", label: "WerkCV vs Resumaker" },
       { href: "/cv-gids/werkcv-vs-maakeencv", label: "WerkCV vs maakeencv.nl" },
@@ -105,6 +107,7 @@ const comparisonGuideGroups = [
     description:
       "Gebruik deze pagina's als je huidige vraag eigenlijk begint bij cancelen, billing of de overstap naar een rustiger alternatief.",
     links: [
+      { href: "/cv-gids/cv-builder-opzeggen-en-alternatieven", label: "Alle opzegroutes + alternatieven" },
       { href: "/resume-io-opzeggen", label: "Resume.io opzeggen" },
       { href: "/zety-opzeggen", label: "Zety opzeggen" },
       { href: "/novoresume-opzeggen", label: "Novoresume opzeggen" },

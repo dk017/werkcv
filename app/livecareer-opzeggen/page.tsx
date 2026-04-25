@@ -150,7 +150,7 @@ export default function LivecareerOpzeggenPage() {
               Wil je pas daarna inhoudelijk vergelijken? De volgende stap staat lager op deze pagina.
             </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
-              Officiele bronnen gecheckt op 19 april 2026.
+              Officiele bronnen gecheckt op 25 april 2026.
             </p>
           </div>
 
@@ -212,9 +212,9 @@ export default function LivecareerOpzeggenPage() {
 
         <OpzeggenConversionSection
           pageKey="livecareer-opzeggen"
-          compareHref="/cv-gids/beste-cv-builder-zonder-abonnement"
-          compareTitle="Beste builder zonder abonnement"
-          compareBody="Gebruik deze vergelijking als je vooral weg wilt van maandelijkse billing en naar een rustiger Nederlands model zoekt."
+          compareHref="/cv-gids/werkcv-vs-livecareer"
+          compareTitle="LiveCareer alternatief"
+          compareBody="Gebruik deze vergelijking als je na cancel-intentie ook inhoudelijk wilt bepalen of WerkCV of LiveCareer beter past bij jouw volgende CV."
         />
 
         <section className="mb-14">
