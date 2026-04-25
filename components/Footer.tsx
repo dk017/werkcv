@@ -77,9 +77,17 @@ export default function Footer() {
                                 href="https://wired.business"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex min-h-11 items-center rounded-md border-2 border-black bg-white px-4 py-2 text-sm font-black uppercase tracking-[0.18em] text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+                                aria-label="Featured on Wired Business"
+                                className="inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
                             >
-                                Listed on Wired Business
+                                <Image
+                                    src="https://wired.business/badge0-dark.svg"
+                                    alt="Featured on Wired Business"
+                                    width={200}
+                                    height={54}
+                                    className="block h-auto w-[200px]"
+                                    unoptimized
+                                />
                             </a>
                         </div>
                     </div>
