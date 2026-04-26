@@ -73,6 +73,18 @@ export default function CvVacatureMatchPage() {
                         <li className="flex gap-2"><span className="font-black text-teal-600">4.</span> Werk je CV direct bij in de editor, bekijk templates of check eerst de prijs voor je download.</li>
                     </ol>
                 </div>
+
+                <div className="mt-8 rounded-3xl border-2 border-slate-200 bg-white p-6">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Vervolgroute</p>
+                    <h2 className="mt-2 text-xl font-black text-slate-900">Na de vacaturematch verder optimaliseren?</h2>
+                    <p className="mt-3 text-sm text-slate-600 leading-relaxed">
+                        Gebruik daarna{" "}
+                        <Link href="/cv-optimaliseren" className="font-black underline decoration-2 underline-offset-4">
+                            cv optimaliseren
+                        </Link>
+                        {" "}als je de matchscore wilt vertalen naar ATS-verbeteringen, profieltekst-updates en een sterkere eindversie van je cv.
+                    </p>
+                </div>
             </div>
 
             <Footer />

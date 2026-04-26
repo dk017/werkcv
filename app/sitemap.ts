@@ -647,6 +647,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.75,
         },
         {
+            url: `${baseUrl}/en/resume-optimizer-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.75,
+        },
+        {
             url: `${baseUrl}/en/cv-or-resume-netherlands`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
@@ -729,6 +735,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.81,
+        },
+        {
+            url: `${baseUrl}/cv-optimaliseren`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/cv-verbeteren`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/cv-checken`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/cv-nakijken`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.79,
         },
         {
             url: `${baseUrl}/beste-cv-maker-nederland`,

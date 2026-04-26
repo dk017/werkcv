@@ -46,6 +46,11 @@ export default function AnalyticsProvider() {
                 toPath.startsWith('/prijzen') ||
                 toPath.startsWith('/cv-maken-zonder-abonnement') ||
                 toPath.startsWith('/cv-maken-eenmalig-betalen') ||
+                toPath.startsWith('/cv-optimaliseren') ||
+                toPath.startsWith('/cv-verbeteren') ||
+                toPath.startsWith('/cv-checken') ||
+                toPath.startsWith('/cv-nakijken') ||
+                toPath.startsWith('/en/resume-optimizer-netherlands') ||
                 toPath.startsWith('/tools/sollicitatiebrief-generator');
             if (!isFunnelCtaTarget) return;
 

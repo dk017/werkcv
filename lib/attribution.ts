@@ -39,7 +39,16 @@ function cleanPath(path: string): string {
 export function getPathCluster(pathname: string): string {
     const path = cleanPath(pathname);
     if (path === '/') return 'home';
+    if (path === '/en/resume-optimizer-netherlands') return 'resume-optimizer-en';
     if (path.startsWith('/en')) return 'en-guides';
+    if (
+        path === '/cv-optimaliseren' ||
+        path === '/cv-verbeteren' ||
+        path === '/cv-checken' ||
+        path === '/cv-nakijken'
+    ) {
+        return 'cv-improvement';
+    }
     if (path === '/cvster-opzeggen' || path === '/cv-nl-opzeggen' || path === '/cvmaker-opzeggen') {
         return 'opzeggen';
     }

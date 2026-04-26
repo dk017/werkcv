@@ -37,7 +37,12 @@ export type NamedLandingCtaEvent =
     | 'cta_cvster_cancel_hero'
     | 'cta_cvster_cancel_after_steps'
     | 'cta_cvster_cancel_bottom'
-    | 'cta_cvster_cancel_sticky';
+    | 'cta_cvster_cancel_sticky'
+    | 'cta_cv_optimaliseren_hero'
+    | 'cta_cv_verbeteren_hero'
+    | 'cta_cv_checken_hero'
+    | 'cta_cv_nakijken_hero'
+    | 'cta_resume_optimizer_en_hero';
 
 // ============================================================
 // Event types — exhaustive list of all tracked interactions
