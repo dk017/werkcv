@@ -13,6 +13,57 @@ export type OptimizerLinkCard = {
   body: string;
 };
 
+export function CvCheckStartBlock({
+  buttonHref,
+  trackingLocation,
+  ctaEventName,
+}: {
+  buttonHref: string;
+  trackingLocation: string;
+  ctaEventName?: "cta_cv_optimaliseren_hero" | "cta_cv_verbeteren_hero" | "cta_cv_checken_hero" | "cta_cv_nakijken_hero";
+}) {
+  return (
+    <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+      <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+        Gratis cv-check starten
+      </p>
+      <h2 className="mt-2 text-3xl font-black text-black">Gratis cv-check starten</h2>
+      <ol className="mt-5 grid gap-3 md:grid-cols-2">
+        {[
+          "Plak je cv-tekst",
+          "Voeg eventueel een vacature toe",
+          "Bekijk verbeterpunten",
+          "Maak direct een betere cv-versie",
+        ].map((step, index) => (
+          <li
+            key={step}
+            className="flex items-start gap-3 border-2 border-black bg-[#E9FFFC] p-4 text-sm font-medium leading-relaxed text-slate-700"
+          >
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center border-2 border-black bg-white text-xs font-black text-black">
+              {index + 1}
+            </span>
+            <span>{step}</span>
+          </li>
+        ))}
+      </ol>
+      <div className="mt-5 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <TrackedLandingLink
+          href={buttonHref}
+          trackingLocation={trackingLocation}
+          trackingLabel="Start gratis cv-check"
+          ctaEventName={ctaEventName}
+          className="inline-block border-4 border-black bg-[#4ECDC4] px-5 py-3 text-base font-black text-black"
+        >
+          Start gratis cv-check
+        </TrackedLandingLink>
+        <p className="text-sm font-medium leading-relaxed text-slate-700">
+          Geen abonnement. Betaal alleen als je later een PDF downloadt.
+        </p>
+      </div>
+    </section>
+  );
+}
+
 const whyWerkCvBullets = {
   nl: [
     "Gebouwd voor de Nederlandse arbeidsmarkt",

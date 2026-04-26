@@ -5,6 +5,7 @@ import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import {
+  CvCheckStartBlock,
   FaqCardSection,
   FinalCtaSection,
   LinkCardSection,
@@ -200,6 +201,10 @@ export default function CvVerbeterenPage() {
             <p className="mt-3 text-sm font-medium text-slate-700">
               Handig als je je huidige cv eerst wilt aanscherpen voordat je een nieuwe versie downloadt.
             </p>
+            <CvCheckStartBlock
+              buttonHref="/tools/cv-score"
+              trackingLocation="cv-verbeteren:above_fold_check_block"
+            />
           </div>
 
           <aside className="h-fit border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
@@ -272,6 +277,50 @@ export default function CvVerbeterenPage() {
                 <p className="mt-2 text-sm font-medium leading-relaxed text-slate-100">{pair.strong}</p>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            CV verbeteren per beroep
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            CV verbeteren per beroep
+          </h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            <article className="border-2 border-black bg-[#E9FFFC] p-4">
+              <h3 className="text-sm font-black text-black">Administratief medewerker</h3>
+              <p className="mt-3 text-sm font-black text-black">Zwak:</p>
+              <p className="text-sm font-medium leading-relaxed text-slate-700">
+                Verantwoordelijk voor administratie.
+              </p>
+              <p className="mt-3 text-sm font-black text-black">Sterker:</p>
+              <p className="text-sm font-medium leading-relaxed text-slate-700">
+                Verwerkte dagelijks klantgegevens, facturen en correspondentie en hield dossiers actueel.
+              </p>
+            </article>
+            <article className="border-2 border-black bg-[#FFF4D6] p-4">
+              <h3 className="text-sm font-black text-black">Klantenservice</h3>
+              <p className="mt-3 text-sm font-black text-black">Zwak:</p>
+              <p className="text-sm font-medium leading-relaxed text-slate-700">
+                Klanten geholpen.
+              </p>
+              <p className="mt-3 text-sm font-black text-black">Sterker:</p>
+              <p className="text-sm font-medium leading-relaxed text-slate-700">
+                Behandelde 40+ klantvragen per dag via telefoon en e-mail en zorgde voor duidelijke opvolging in het CRM.
+              </p>
+            </article>
+            <article className="border-2 border-black bg-[#E9FFFC] p-4">
+              <h3 className="text-sm font-black text-black">Software ontwikkelaar</h3>
+              <p className="mt-3 text-sm font-black text-black">Zwak:</p>
+              <p className="text-sm font-medium leading-relaxed text-slate-700">
+                Gewerkt aan backend.
+              </p>
+              <p className="mt-3 text-sm font-black text-black">Sterker:</p>
+              <p className="text-sm font-medium leading-relaxed text-slate-700">
+                Ontwikkelde Java/Spring Boot API&apos;s, verbeterde queryperformance en schreef unit tests voor kritieke flows.
+              </p>
+            </article>
           </div>
         </section>
 

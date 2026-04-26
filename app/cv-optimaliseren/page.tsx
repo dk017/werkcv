@@ -5,6 +5,7 @@ import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import {
+  CvCheckStartBlock,
   FaqCardSection,
   FinalCtaSection,
   LinkCardSection,
@@ -184,6 +185,10 @@ export default function CvOptimaliserenPage() {
             <p className="mt-3 text-sm font-medium text-slate-700">
               Start met de check en werk daarna direct verder aan een sterkere versie.
             </p>
+            <CvCheckStartBlock
+              buttonHref="/tools/cv-score"
+              trackingLocation="cv-optimaliseren:above_fold_check_block"
+            />
           </div>
 
           <aside className="h-fit border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">

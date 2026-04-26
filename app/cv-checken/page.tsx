@@ -5,6 +5,7 @@ import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import {
+  CvCheckStartBlock,
   FaqCardSection,
   FinalCtaSection,
   LinkCardSection,
@@ -166,11 +167,11 @@ export default function CvCheckenPage() {
               <TrackedLandingLink
                 href="/tools/cv-score"
                 trackingLocation="cv-checken:hero_primary"
-                trackingLabel="Check mijn cv"
+                trackingLabel="Check mijn cv gratis"
                 ctaEventName="cta_cv_checken_hero"
                 className="border-4 border-black bg-[#4ECDC4] px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Check mijn cv
+                Check mijn cv gratis
               </TrackedLandingLink>
               <Link
                 href="/cv-maken"
@@ -180,8 +181,12 @@ export default function CvCheckenPage() {
               </Link>
             </div>
             <p className="mt-3 text-sm font-medium text-slate-700">
-              Start met een snelle check en werk daarna direct aan een duidelijkere versie.
+              Geen account nodig om te starten. Betaal alleen als je later een PDF downloadt.
             </p>
+            <CvCheckStartBlock
+              buttonHref="/tools/cv-score"
+              trackingLocation="cv-checken:above_fold_check_block"
+            />
           </div>
 
           <aside className="h-fit border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">

@@ -250,6 +250,35 @@ export default function ResumeOptimizerNetherlandsPage() {
           </p>
         </section>
 
+        <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Common resume issues for Dutch applications
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            Common resume issues for Dutch applications
+          </h2>
+          <div className="mt-6 overflow-hidden border-2 border-black">
+            <div className="grid grid-cols-2 bg-black text-sm font-black text-white">
+              <div className="border-r border-white px-4 py-3">International resume issue</div>
+              <div className="px-4 py-3">Better for the Netherlands</div>
+            </div>
+            {[
+              ["Too design-heavy", "Clean, simple CV layout"],
+              ["Long summary", "Short profile focused on role fit"],
+              ["Generic responsibilities", "Concrete bullets with results"],
+              ["Missing location/work eligibility", "Clear contact and availability details"],
+            ].map(([left, right], index) => (
+              <div
+                key={left}
+                className={`grid grid-cols-2 text-sm ${index % 2 === 0 ? "bg-[#E9FFFC]" : "bg-white"}`}
+              >
+                <div className="border-r border-black px-4 py-3 font-medium text-slate-800">{left}</div>
+                <div className="px-4 py-3 font-medium text-slate-800">{right}</div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="mb-12 grid gap-6 lg:grid-cols-2">
           <article className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">

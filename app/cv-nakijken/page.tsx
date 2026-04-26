@@ -5,6 +5,7 @@ import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import {
+  CvCheckStartBlock,
   FaqCardSection,
   FinalCtaSection,
   LinkCardSection,
@@ -175,6 +176,10 @@ export default function CvNakijkenPage() {
             <p className="mt-4 border-2 border-black bg-white px-4 py-3 text-sm font-medium leading-relaxed text-slate-700">
               WerkCV is geen persoonlijke loopbaancoach en vervangt geen menselijke review. De check helpt je wel om veelvoorkomende fouten snel te vinden.
             </p>
+            <CvCheckStartBlock
+              buttonHref="/tools/ats-cv-checker"
+              trackingLocation="cv-nakijken:above_fold_check_block"
+            />
           </div>
 
           <aside className="h-fit border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
@@ -280,6 +285,26 @@ export default function CvNakijkenPage() {
               <p className="mt-2 text-sm font-medium leading-relaxed text-slate-200 hover:text-slate-700">
                 Handig als je de check wilt combineren met vacaturematch en relevante keywords.
               </p>
+            </Link>
+          </div>
+        </section>
+
+        <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Wil je menselijke hulp bij je cv?
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            Wil je menselijke hulp bij je cv?
+          </h2>
+          <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
+            WerkCV helpt met een automatische eerste check. Werk je met een loopbaancoach of re-integratiebegeleider? Dan kun je de verbeterde versie eenvoudig delen of samen verder aanscherpen.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link href="/for-coaches" className="border-2 border-black bg-[#E9FFFC] px-4 py-2 text-sm font-black text-black">
+              Voor coaches
+            </Link>
+            <Link href="/partners" className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black">
+              Samenwerken met WerkCV
             </Link>
           </div>
         </section>
