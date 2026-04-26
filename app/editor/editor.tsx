@@ -171,16 +171,16 @@ export default function Editor({
     ];
     const checkoutBenefits = isEnglish
         ? [
-            "Download instantly after payment",
-            "Your CV stays editable in your account for free",
-            "Professional PDF formatting for job applications",
-            "Secure checkout via our payment partner",
+            "One-time €4.99 payment for this CV",
+            "No subscription or automatic renewal",
+            "Edit this CV later and re-download it for free",
+            "Professional PDF available immediately",
         ]
         : [
-            "Direct downloaden na betaling",
-            "Je CV blijft gratis bewerkbaar in je account",
-            "Professionele PDF-opmaak voor sollicitaties",
-            "Veilige checkout via onze betaalpartner",
+            "Eenmalig €4,99 voor dit CV",
+            "Geen abonnement of automatische verlenging",
+            "Dit CV later gratis aanpassen en opnieuw downloaden",
+            "Professionele PDF direct beschikbaar",
         ];
     const supportNotifiedMessage = tr(
         "We hebben een technisch probleem aan onze kant gedetecteerd. Ons team is op de hoogte en bekijkt dit zo snel mogelijk. Als het nodig is, nemen we contact op via je e-mailadres.",
@@ -1307,10 +1307,10 @@ export default function Editor({
                                 </button>
                             </div>
                             <h3 className="mt-4 text-2xl font-black text-black sm:text-[2rem]">
-                                {tr("Download direct je professionele CV als PDF", "Download your professional CV as a PDF instantly")}
+                                {tr("Betaal eenmalig en download je CV als PDF", "Pay once and download your CV as a PDF")}
                             </h3>
                             <p className="mt-2 text-sm font-medium text-slate-700">
-                                {tr("Klaar om te versturen, netjes opgemaakt en direct beschikbaar na betaling.", "Ready to send, professionally formatted, and available right after payment.")}
+                                {tr("Geen abonnement. Geen verborgen kosten. Je PDF is direct beschikbaar na betaling.", "No subscription. No hidden costs. Your PDF is available immediately after payment.")}
                             </p>
                         </div>
 
@@ -1319,7 +1319,7 @@ export default function Editor({
                                 <div>
                                     <p className="font-black text-black">{tr("CV als PDF", "CV as PDF")}</p>
                                     <p className="text-xs font-semibold text-slate-600">
-                                        {tr("Geen abonnement, geen verborgen kosten", "No subscription, no hidden costs")}
+                                        {tr("Inclusief later opnieuw downloaden", "Includes future re-downloads")}
                                     </p>
                                 </div>
                                 <div className="text-right">
@@ -1342,7 +1342,7 @@ export default function Editor({
                             </ul>
 
                             <div className="mb-5 rounded-md border border-slate-300 bg-slate-50 px-3 py-3 text-xs font-semibold text-slate-700">
-                                {tr("Je gegevens en CV blijven opgeslagen. Je kunt later altijd verder bewerken.", "Your details and CV stay saved. You can continue editing later at any time.")}
+                                {tr("Na betaling kun je ditzelfde CV later opnieuw openen, aanpassen en downloaden zonder opnieuw te betalen.", "After payment, you can reopen, edit, and download this same CV later without paying again.")}
                             </div>
 
                             <div className="grid gap-3 sm:grid-cols-2">
@@ -1351,19 +1351,19 @@ export default function Editor({
                                     disabled={isCheckoutRedirecting}
                                     className="px-4 py-3 border-2 border-black font-bold text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    {tr("Nog even niet", "Maybe later")}
+                                    {tr("Nog even bewerken", "Keep editing")}
                                 </button>
                                 <button
                                     onClick={startCheckout}
                                     disabled={isCheckoutRedirecting}
                                     className="px-5 py-3 border-2 border-black font-black text-sm bg-yellow-400 hover:bg-yellow-500 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
-                                    {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr('Ga veilig naar betaling', 'Continue to secure payment')}
+                                    {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr('Betaal €4,99 en download PDF', 'Pay €4.99 and download PDF')}
                                 </button>
                             </div>
 
                             <p className="mt-3 text-center text-[11px] font-medium text-slate-500">
-                                {tr("Na betaling kun je je PDF direct downloaden.", "After payment you can download your PDF immediately.")}
+                                {tr("Veilige betaling via onze betaalpartner.", "Secure payment via our payment partner.")}
                             </p>
                         </div>
                     </div>
