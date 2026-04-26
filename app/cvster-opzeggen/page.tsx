@@ -260,12 +260,9 @@ export default function CvsterOpzeggenPage() {
           <h2 className="mt-2 text-3xl font-black text-black">
             Geen nieuw proefabonnement nodig
           </h2>
-          <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
+          <ul className="mt-5 list-disc space-y-3 pl-5 text-sm font-medium leading-relaxed text-slate-700 marker:text-black">
             {differenceBullets.map((bullet) => (
-              <li key={bullet} className="flex gap-3">
-                <span className="shrink-0 font-black text-black">-</span>
-                <span>{bullet}</span>
-              </li>
+              <li key={bullet}>{bullet}</li>
             ))}
           </ul>
           <TrackedLandingLink

@@ -57,22 +57,22 @@ const explanationCards = [
     body: "Je hoeft nergens een maandplan stop te zetten. Voor hetzelfde betaalde cv kun je later terugkomen, bewerken en opnieuw downloaden zonder extra kosten.",
   },
   {
-    title: "Zelfde doel, rustiger prijsmodel",
-    body: "Het eindresultaat hangt af van templates, ATS-veiligheid en gebruiksgemak. WerkCV koppelt die kwaliteit aan een prijsmodel dat beter past bij tijdelijk solliciteren.",
+    title: "Zelfde doel, zonder maandstress",
+    body: "Het eindresultaat hangt af van templates, ATS-veiligheid en gebruiksgemak. WerkCV koppelt die kwaliteit aan een model zonder abonnement, zodat tijdelijk solliciteren geen doorlopende kosten oplevert.",
   },
 ];
 
 const intentCards = [
   {
-    title: "Eenmalig betalen past bij tijdelijk gebruik",
-    body: "Voor de meeste sollicitanten is een cv-builder geen tool die maandenlang open hoeft te blijven. Je gebruikt hem intensief voor een sollicitatieronde, downloadt je PDF en bent klaar.",
+    title: "Zonder abonnement past bij tijdelijk gebruik",
+    body: "Voor de meeste sollicitanten is een cv-builder iets voor een sollicitatieronde, niet voor een doorlopend maandabonnement. Je gebruikt hem intensief, downloadt je PDF en bent klaar.",
   },
   {
     title: "Geen abonnement betekent vooral prijsrust",
     body: "Deze zoekterm gaat meestal niet over gratis. Hij gaat over eerst bouwen, daarna pas beslissen, en geen maandbedrag hoeven onthouden dat later automatisch doorloopt.",
   },
   {
-    title: "Geen proefperiode betekent minder billinggedoe",
+    title: "Geen proefperiode betekent minder abonnementsstress",
     body: "Wie zoekt op een cv-maker zonder proefperiode zoekt meestal dezelfde uitkomst: geen trial die omslaat in een abonnement, maar een rustige route waarbij je pas betaalt op de uiteindelijke download.",
   },
 ];

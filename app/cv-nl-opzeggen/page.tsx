@@ -335,12 +335,9 @@ export default function CvNlOpzeggenPage() {
           <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
             Veel mensen hebben een CV-builder maar kort nodig: cv maken, downloaden en solliciteren. Daarom werkt WerkCV anders.
           </p>
-          <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
+          <ul className="mt-5 list-disc space-y-3 pl-5 text-sm font-medium leading-relaxed text-slate-700 marker:text-black">
             {nextCvBullets.map((bullet) => (
-              <li key={bullet} className="flex gap-3">
-                <span className="shrink-0 font-black text-black">-</span>
-                <span>{bullet}</span>
-              </li>
+              <li key={bullet}>{bullet}</li>
             ))}
           </ul>
           <TrackedLandingLink
