@@ -21,6 +21,24 @@ const COMPLETION_TRACKED_PREFIX = 'werkcv_complete_cv_tracked_';
 const EDITOR_STARTED_TRACKED_PREFIX = 'werkcv_editor_started_tracked_';
 const PREVIOUS_PATH_SESSION_KEY = 'werkcv_previous_path_v1';
 
+export type NamedLandingCtaEvent =
+    | 'cta_no_subscription_hero'
+    | 'cta_no_subscription_comparison'
+    | 'cta_no_subscription_bottom'
+    | 'cta_no_subscription_sticky'
+    | 'cta_one_time_payment_hero'
+    | 'cta_one_time_payment_mid'
+    | 'cta_one_time_payment_bottom'
+    | 'cta_one_time_payment_sticky'
+    | 'cta_cvnl_cancel_hero'
+    | 'cta_cvnl_cancel_after_steps'
+    | 'cta_cvnl_cancel_bottom'
+    | 'cta_cvnl_cancel_sticky'
+    | 'cta_cvster_cancel_hero'
+    | 'cta_cvster_cancel_after_steps'
+    | 'cta_cvster_cancel_bottom'
+    | 'cta_cvster_cancel_sticky';
+
 // ============================================================
 // Event types — exhaustive list of all tracked interactions
 // ============================================================
@@ -84,6 +102,7 @@ export type AnalyticsEvent =
     | { event: 'section_expanded'; properties: { section: string } }
     | { event: 'cta_viewed'; properties: { location: string; variant: string; slug?: string; locale?: 'nl' | 'en' } }
     | { event: 'cta_clicked'; properties: { location: string; label: string } }
+    | { event: NamedLandingCtaEvent; properties: Record<string, never> }
     // CV score tool
     | { event: 'cv_score_tool_viewed'; properties: Record<string, never> }
     | { event: 'cv_score_input_provided'; properties: { input_type: 'file' | 'text' } }

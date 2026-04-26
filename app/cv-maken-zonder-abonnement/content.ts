@@ -1,46 +1,42 @@
 export const faqs = [
   {
-    question: "Kan ik bij WerkCV echt een CV maken met eenmalig betalen?",
+    question: "Kan ik echt gratis starten?",
     answer:
-      "Ja. Je betaalt eenmalig €4,99 per CV bij de eerste PDF-download. Daarna kun je hetzelfde CV altijd opnieuw bewerken en downloaden zonder opnieuw te betalen. Er is geen abonnement en geen automatische verlenging.",
+      "Ja. Je kunt je cv gratis maken, aanpassen en bekijken. Je betaalt alleen wanneer je jouw definitieve cv als PDF wilt downloaden.",
   },
   {
-    question: "Is WerkCV ook een cv maker zonder proefperiode?",
+    question: "Is er een abonnement of proefperiode?",
     answer:
-      "Ja. Je kunt gratis starten zonder eerst een proefabonnement te activeren. De betaling volgt alleen wanneer je jouw definitieve CV als PDF wilt downloaden.",
+      "Nee. WerkCV werkt zonder abonnement en zonder proefperiode. Er is geen automatische verlenging en niets om later op te zeggen.",
   },
   {
-    question: "Wat zijn de voordelen van eenmalig betalen voor een CV?",
+    question: "Wanneer betaal ik €4,99?",
     answer:
-      "Je betaalt alleen voor wat je gebruikt. Een CV-builder heb je meestal tijdelijk nodig - bij een nieuwe baan zoeken, een promotie of na ontslag. Eenmalig €4,99 is eerlijker dan €10-25 per maand die blijven doorlopen.",
+      "Je betaalt pas bij de eerste PDF-download van je cv. Daarna kun je hetzelfde cv opnieuw openen, aanpassen en downloaden zonder extra abonnement.",
   },
   {
-    question: "Wat bedoelen mensen met een 'geen abonnement cv maker'?",
+    question: "Waarom is een eenmalige betaling logischer voor een cv?",
     answer:
-      "Meestal bedoelen ze een CV-tool waarbij je niet eerst een maandplan of proefperiode hoeft te starten. WerkCV laat je gratis bouwen en vraagt alleen een eenmalige betaling per CV-download.",
+      "De meeste mensen gebruiken een CV-builder tijdelijk tijdens een sollicitatieronde. Daarom betaal je bij WerkCV voor het resultaat: de definitieve cv-PDF.",
   },
   {
-    question: "Kan ik bij WerkCV een cv maken, geen abonnement?",
+    question: "Kan ik bij WerkCV een cv maken zonder abonnement?",
     answer:
-      "Ja. Dat is precies het model: je bouwt je CV gratis op, vergelijkt templates en betaalt pas eenmalig wanneer je jouw definitieve PDF wilt downloaden. Er is geen doorlopend abonnement nodig om je CV af te maken.",
+      "Ja. Je bouwt je cv gratis op, vergelijkt templates en betaalt alleen wanneer je de definitieve PDF wilt downloaden. Er is geen doorlopend abonnement nodig om je cv af te maken.",
   },
   {
-    question: "Welke CV-builders werken met eenmalig betalen in Nederland?",
+    question: "Welke cv-builder werkt met een eenvoudig eenmalig model?",
     answer:
-      "WerkCV.nl is de bekendste Nederlandse CV-builder met een eenmalig betaalmodel. De meeste andere grote builders zoals CVmaker, CV.nl en CVster werken met een maandabonnement.",
-  },
-  {
-    question: "Is een CV met eenmalig betalen net zo professioneel als een abonnementsbuilder?",
-    answer:
-      "Ja. De kwaliteit van het eindresultaat hangt af van templates, ATS-optimalisatie en gebruiksgemak - niet van het prijsmodel. WerkCV biedt 13+ ATS-vriendelijke templates specifiek voor de Nederlandse arbeidsmarkt.",
+      "WerkCV.nl is een Nederlandse CV-builder met een eenvoudig eenmalig betaalmodel. Je start gratis en betaalt pas bij PDF-download van je cv.",
   },
 ] as const;
 
 export const comparisonRows = [
   ["Prijsmodel", "Eenmalig €4,99", "Abonnement ~€10/mnd", "Abonnement ~€15/mnd", "Abonnement ~€12/mnd"],
-  ["Gratis starten", "✓", "✓", "✓", "✓"],
+  ["Gratis starten", "Ja", "Ja", "Ja", "Ja"],
+  ["Automatische verlenging", "Nee", "Ja", "Ja", "Ja"],
   ["Opzeggen nodig", "Nee", "Ja", "Ja", "Ja"],
-  ["Later opnieuw downloaden", "✓", "Niet altijd", "Niet altijd", "Niet altijd"],
-  ["ATS-vriendelijk", "✓", "✓", "Gedeeltelijk", "✓"],
-  ["Nederlandse markt focus", "✓", "✓", "✓", "Gedeeltelijk"],
+  ["Later opnieuw downloaden", "Ja, voor hetzelfde cv", "Niet altijd", "Niet altijd", "Niet altijd"],
+  ["ATS-vriendelijk", "Ja", "Ja", "Gedeeltelijk", "Ja"],
+  ["Nederlandse markt focus", "Ja", "Ja", "Ja", "Gedeeltelijk"],
 ] as const;

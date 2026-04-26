@@ -407,6 +407,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.84,
         },
         {
+            url: `${baseUrl}/cv-template-projectmanager`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.84,
+        },
+        {
             url: `${baseUrl}/cv-template-horeca-medewerker`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -423,6 +429,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.84,
+        },
+        {
+            url: `${baseUrl}/sollicitatiebrief-voorbeelden`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.85,
         },
         {
             url: `${baseUrl}/sollicitatiebrief-voorbeeld-administratief-medewerker`,
@@ -450,6 +462,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/sollicitatiebrief-voorbeeld-office-manager`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.84,
+        },
+        {
+            url: `${baseUrl}/sollicitatiebrief-voorbeeld-projectmanager`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.84,
@@ -665,6 +683,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.85,
         },
         {
+            url: `${baseUrl}/cv-gids/cv-builder-opzeggen-en-alternatieven`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.79,
+        },
+        {
+            url: `${baseUrl}/cv-gids/cv-voorbeelden-per-situatie`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.79,
+        },
+        {
             url: `${baseUrl}/partners`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
@@ -693,6 +723,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.82,
+        },
+        {
+            url: `${baseUrl}/cv-maken-eenmalig-betalen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.81,
         },
         {
             url: `${baseUrl}/beste-cv-maker-nederland`,

@@ -3,13 +3,14 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { track } from "@/lib/analytics";
+import { track, type NamedLandingCtaEvent } from "@/lib/analytics";
 
 type TrackedLandingLinkProps = {
   href: string;
   className?: string;
   trackingLocation: string;
   trackingLabel: string;
+  ctaEventName?: NamedLandingCtaEvent;
   children: ReactNode;
 };
 
@@ -26,6 +27,7 @@ export default function TrackedLandingLink({
   className,
   trackingLocation,
   trackingLabel,
+  ctaEventName,
   children,
 }: TrackedLandingLinkProps) {
   const pathname = usePathname();
@@ -38,6 +40,9 @@ export default function TrackedLandingLink({
       className={className}
       data-track-cta="manual"
       onClick={() => {
+        if (ctaEventName) {
+          track(ctaEventName, {});
+        }
         track("cta_clicked", {
           location: trackingLocation,
           label: trackingLabel,

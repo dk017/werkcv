@@ -45,6 +45,7 @@ export default function AnalyticsProvider() {
                 toPath.startsWith('/templates') ||
                 toPath.startsWith('/prijzen') ||
                 toPath.startsWith('/cv-maken-zonder-abonnement') ||
+                toPath.startsWith('/cv-maken-eenmalig-betalen') ||
                 toPath.startsWith('/tools/sollicitatiebrief-generator');
             if (!isFunnelCtaTarget) return;
 
