@@ -94,7 +94,7 @@ function decodeXml(value: string): string {
 }
 
 function extractUrlsFromSitemap(xml: string): string[] {
-  const matches = xml.matchAll(/<loc>(.*?)<\/loc>/gsi);
+  const matches = xml.matchAll(/<loc>([\s\S]*?)<\/loc>/gi);
   const urls: string[] = [];
 
   for (const match of matches) {
