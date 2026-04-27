@@ -60,6 +60,21 @@ export default function Footer() {
                         </p>
                         <div className="mt-4 flex flex-wrap items-center gap-3">
                             <a
+                                href="https://www.betterlaunch.co"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+                            >
+                                <Image
+                                    src="https://www.betterlaunch.co/badge-dark.svg"
+                                    alt="Featured on Better Launch"
+                                    width={200}
+                                    height={54}
+                                    className="block h-auto w-[200px]"
+                                    unoptimized
+                                />
+                            </a>
+                            <a
                                 href="https://neeed.directory/products/werkcv?utm_source=werkcv"
                                 target="_blank"
                                 rel="noopener noreferrer"
