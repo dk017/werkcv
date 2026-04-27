@@ -68,9 +68,25 @@ export default function Footer() {
                                 <Image
                                     src="https://www.betterlaunch.co/badge-dark.svg"
                                     alt="Featured on Better Launch"
-                                    width={200}
-                                    height={54}
-                                    className="block h-auto w-[200px]"
+                                    width={170}
+                                    height={46}
+                                    className="block h-auto w-[170px]"
+                                    unoptimized
+                                />
+                            </a>
+                            <a
+                                href="https://www.scrolllaunch.com/products/werkcv?utm_source=badge&utm_medium=embed&utm_campaign=werkcv&ref=scrolllaunch"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+                            >
+                                <Image
+                                    src="https://www.scrolllaunch.com/api/badge/werkcv"
+                                    alt="Featured on ScrollLaunch"
+                                    width={170}
+                                    height={37}
+                                    className="block h-auto w-[170px]"
+                                    loading="lazy"
                                     unoptimized
                                 />
                             </a>
@@ -98,9 +114,9 @@ export default function Footer() {
                                 <Image
                                     src="https://wired.business/badge0-dark.svg"
                                     alt="Featured on Wired Business"
-                                    width={200}
-                                    height={54}
-                                    className="block h-auto w-[200px]"
+                                    width={170}
+                                    height={46}
+                                    className="block h-auto w-[170px]"
                                     unoptimized
                                 />
                             </a>
