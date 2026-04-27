@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { templateList } from "@/lib/templates/registry";
 
 const featuredTemplates = templateList.filter((template) =>
@@ -43,6 +44,61 @@ const workflowSteps = [
   {
     title: "7) Maak een versie per vacature",
     body: "Een cv maken voor 2026 betekent varianten bouwen. Pas per vacature titel, profieltekst en kernbullets aan voor hogere respons.",
+  },
+];
+
+const quickAnswerSteps = [
+  {
+    title: "Kies eerst de vacature waarop je nu mikt",
+    body: "Een goed CV begint met richting. Bepaal je doelrol en laat daarna alleen ervaring, vaardigheden en voorbeelden zien die die vacature sterker maken.",
+  },
+  {
+    title: "Zet bovenaan een korte profieltekst",
+    body: "Vat in 3 of 4 zinnen samen wie je bent, waar je goed in bent en wat je zoekt. Daarmee begrijpt een recruiter je profiel binnen seconden.",
+  },
+  {
+    title: "Schrijf werkervaring in bullets met bewijs",
+    body: "Gebruik geen losse takenlijst. Laat actie, context en resultaat zien, liefst met aantallen, tijdswinst, omzet of kwaliteitsverbetering.",
+  },
+  {
+    title: "Kies daarna pas je template en finaliseer",
+    body: "Als de inhoud staat, kun je templates eerlijk vergelijken. Zo kies je de layout op scanbaarheid en geloofwaardigheid, niet op gevoel alleen.",
+  },
+];
+
+const routeCards = [
+  {
+    href: "/cv-aanmaken",
+    title: "CV aanmaken",
+    body: "Beste route als je nog vanaf nul begint en vooral snel een eerste complete basisversie wilt neerzetten.",
+  },
+  {
+    href: "/gratis-cv-maken",
+    title: "Gratis CV maken",
+    body: "Gebruik deze route als je eerst gratis wilt starten, templates wilt vergelijken en pas later wilt beslissen over download.",
+  },
+  {
+    href: "/templates",
+    title: "Templates vergelijken",
+    body: "Sterk als je inhoud grotendeels helder is en je vooral de rustigste of meest ATS-veilige layout wilt kiezen.",
+  },
+];
+
+const formatChoices = [
+  {
+    href: "/online-cv-maken",
+    title: "Online CV maken",
+    body: "Snelste route als je meerdere vacatureversies wilt maken zonder gedoe met opmaakbestanden.",
+  },
+  {
+    href: "/cv-maken-template",
+    title: "CV maken met template",
+    body: "Handig als je eerst wilt kiezen welke layout het beste past bij je rol en sollicitatiestijl.",
+  },
+  {
+    href: "/cv-maken-in-word",
+    title: "CV maken in Word",
+    body: "Alleen logisch als je bewust handmatig wilt opmaken en zelf alle PDF- en layoutproblemen wilt beheren.",
   },
 ];
 
@@ -131,6 +187,11 @@ const mistakeFixes = [
 
 const faqs = [
   {
+    question: "Hoe maak je een goed cv?",
+    answer:
+      "Begin met een duidelijke doelrol, schrijf een korte profieltekst, zet werkervaring neer in resultaatgerichte bullets en kies daarna een rustige template. Werk vervolgens vacaturegericht af in de editor zodat je CV niet generiek blijft.",
+  },
+  {
     question: "Hoe kan ik snel een goed cv maken?",
     answer:
       "Begin met een duidelijke doelrol, schrijf een korte profieltekst, voeg resultaatgerichte werkervaring toe en kies daarna een rustige template. Werk vervolgens vacaturegericht af in de editor.",
@@ -195,15 +256,16 @@ const workflowHowToSteps = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: {
-    absolute: "CV Maken in 7 Stappen: Praktische Workflow voor 2026 | WerkCV",
-  },
+export const metadata: Metadata = buildDutchMetadata({
+  title: "CV Maken in 7 Stappen: Praktische Workflow voor 2026 | WerkCV",
   description:
-    "Leer CV maken met een praktische 7-stappen workflow, copy-ready voorbeelden en ATS-tips. Gratis starten in de editor. | WerkCV",
+    "Leer CV maken met een praktische 7-stappen workflow, copy-ready voorbeelden en ATS-tips. Start gratis in de editor en werk daarna vacaturegericht af.",
+  path: "/cv-maken",
   keywords: [
     "cv maken",
     "curriculum vitae maken",
+    "hoe maak je een cv",
+    "hoe een goed cv maken",
     "een cv maken",
     "maken cv",
     "cv maken tips",
@@ -214,38 +276,12 @@ export const metadata: Metadata = {
     "cv maken gratis",
     "gratis cv maken",
   ],
-  alternates: {
-    canonical: pageUrl,
-    languages: {
-      "nl-NL": pageUrl,
-      "x-default": pageUrl,
-    },
+  type: "article",
+  languages: {
+    "nl-NL": pageUrl,
+    "x-default": pageUrl,
   },
-  openGraph: {
-    title: "CV Maken in 7 Stappen: Praktische Workflow voor 2026 | WerkCV",
-    description:
-      "Leer CV maken met een praktische 7-stappen workflow, copy-ready voorbeelden en ATS-tips. Gratis starten in de editor.",
-    url: pageUrl,
-    siteName: "WerkCV",
-    locale: "nl_NL",
-    type: "article",
-    images: [
-      {
-        url: "/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "WerkCV - CV maken in 7 stappen",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "CV Maken in 7 Stappen: Praktische Workflow voor 2026 | WerkCV",
-    description:
-      "Leer CV maken met een praktische 7-stappen workflow, copy-ready voorbeelden en ATS-tips. Gratis starten in de editor.",
-    images: ["/opengraph-image"],
-  },
-};
+});
 
 export default function CvMakenPage() {
   const breadcrumbSchema = {
@@ -292,7 +328,7 @@ export default function CvMakenPage() {
               Kernintentie: CV maken
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV maken dat direct duidelijk, professioneel en sollicitatieklaar is
+              CV maken in 7 stappen voor een duidelijk en professioneel resultaat
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Een sterk CV maken betekent keuzes maken: relevante inhoud, heldere structuur en een layout die recruiters in seconden kunnen scannen. Op deze pagina krijg je een praktische workflow,
@@ -307,6 +343,16 @@ export default function CvMakenPage() {
                 eenmalig betalen
               </Link>{" "}
               in plaats van een maandabonnement? Bekijk hoe WerkCV dat prijsmodel uitlegt.
+            </p>
+            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Heb je je basis al op LinkedIn staan? Gebruik dan eerst{" "}
+              <Link
+                href="/tools/linkedin-naar-cv"
+                className="font-black text-black underline decoration-2 underline-offset-4"
+              >
+                LinkedIn-profiel omzetten naar cv
+              </Link>
+              {" "}om sneller van profieltekst naar een Nederlandse cv-structuur te gaan.
             </p>
             <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
               Deze pagina is de brede hoofdgids voor algemeen CV maken. Zoek je iets specifiekers, zoals gratis starten, Engels, student of Word? Dan verwijzen we je hieronder door naar die smallere routes.
@@ -370,6 +416,47 @@ export default function CvMakenPage() {
         </section>
 
         <section className="mb-14">
+          <div className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Kort antwoord
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Hoe maak je een goed CV?
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Kies eerst je doelrol, schrijf daarna een korte profieltekst, bouw werkervaring op met resultaatgerichte bullets en kies pas op het einde een rustige template. Dat is de kortste route naar een CV dat recruiter en ATS allebei begrijpen.
+            </p>
+            <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+              {quickAnswerSteps.map((step) => (
+                <article
+                  key={step.title}
+                  className="border-2 border-black bg-[#FFFEF0] p-4"
+                >
+                  <h3 className="text-base font-black text-black">{step.title}</h3>
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+                    {step.body}
+                  </p>
+                </article>
+              ))}
+            </div>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {routeCards.map((card) => (
+                <Link
+                  key={card.href}
+                  href={card.href}
+                  className="block border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
+                >
+                  <p className="text-sm font-black text-black">{card.title}</p>
+                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
+                    {card.body}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-14">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
             Praktische aanpak
           </p>
@@ -386,6 +473,34 @@ export default function CvMakenPage() {
                 <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{step.body}</p>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="mb-14">
+          <div className="border-4 border-black bg-[#FFF7E8] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Startpunt kiezen
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Online CV maken, in Word of met een template?
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Deze varianten lijken op elkaar, maar de intentie erachter is anders. Kies de route die past bij jouw echte startpunt, dan kom je sneller bij een sollicitatieklare versie uit.
+            </p>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {formatChoices.map((choice) => (
+                <Link
+                  key={choice.href}
+                  href={choice.href}
+                  className="block border-2 border-black bg-white p-5 transition-colors hover:bg-yellow-100"
+                >
+                  <h3 className="text-lg font-black text-black">{choice.title}</h3>
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+                    {choice.body}
+                  </p>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
 

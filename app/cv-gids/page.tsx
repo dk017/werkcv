@@ -134,6 +134,11 @@ const contentBlocks = [
     body: "Voor skillssecties die logisch matchen met de vacature.",
   },
   {
+    href: "/tools/linkedin-naar-cv",
+    title: "LinkedIn naar CV omzetten",
+    body: "Voor een snelle route van LinkedIn-profieltekst naar een Nederlandse cv-structuur die je daarna verder kunt aanscherpen.",
+  },
+  {
     href: "/cv-voorbeelden",
     title: "CV voorbeelden per beroep",
     body: "Voor rolgerichte inhoud, structuur en voorbeeldprofielen.",

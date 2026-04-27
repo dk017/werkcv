@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import SollicitatiebriefTool from "./SollicitatiebriefTool";
 
 export const metadata: Metadata = {
@@ -124,6 +125,13 @@ export default function SollicitatiebriefGeneratorPage() {
                         </ol>
                     </div>
                 </div>
+
+                <ToolToCvCTA
+                    toolName="sollicitatiebrief-generator"
+                    title="Maak ook een cv die past bij je brief"
+                    description="Een sterke sollicitatiebrief werkt beter met een duidelijke, professionele cv erbij."
+                    primaryLabel="Maak bijpassende cv"
+                />
             </div>
 
             <Footer />

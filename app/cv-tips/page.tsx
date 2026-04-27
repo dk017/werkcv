@@ -70,6 +70,13 @@ export default function CVTipsHub() {
                         Alles wat je moet weten om een professioneel CV te schrijven dat opvalt.
                         Van structuur en inhoud tot opmaak en sollicitatietips.
                     </p>
+                    <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-gray-700">
+                        Heb je je basis al op LinkedIn staan? Gebruik dan ook{" "}
+                        <Link href="/tools/linkedin-naar-cv" className="font-black underline">
+                            LinkedIn naar cv omzetten
+                        </Link>
+                        {" "}om sneller van profiel naar sollicitatieversie te gaan.
+                    </p>
                 </div>
             </section>
 

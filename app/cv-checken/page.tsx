@@ -286,7 +286,11 @@ export default function CvCheckenPage() {
               <Link href="/tools/cv-vacature-match" className="font-black underline">
                 cv-vacature-match
               </Link>
-              {" "}als je je huidige cv naast een specifieke vacature wilt leggen.
+              {" "}als je je huidige cv naast een specifieke vacature wilt leggen. Werk je nog vanuit LinkedIn-tekst? Gebruik dan ook{" "}
+              <Link href="/tools/linkedin-naar-cv" className="font-black underline">
+                LinkedIn naar cv omzetten
+              </Link>
+              .
             </p>
           </article>
         </section>

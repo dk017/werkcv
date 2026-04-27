@@ -376,6 +376,10 @@ export default function CvVerbeterenPage() {
               <Link href="/tools/vaardigheden-generator" className="font-black underline">
                 vaardigheden
               </Link>
+              . Kom je vooral vanaf LinkedIn, gebruik dan eerst{" "}
+              <Link href="/tools/linkedin-naar-cv" className="font-black underline">
+                LinkedIn-profiel omzetten naar cv
+              </Link>
               . Daarna zet je alles om in een nieuwe versie via{" "}
               <Link href="/cv-maken" className="font-black underline">
                 cv maken

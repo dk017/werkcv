@@ -131,6 +131,12 @@ export default function CvSamenvattingGeneratorPage() {
                             badge: "AI",
                         },
                         {
+                            href: "/tools/linkedin-naar-cv",
+                            title: "LinkedIn naar cv",
+                            description: "Handig als je eerst je LinkedIn-profieltekst wilt structureren voordat je je samenvatting aanscherpt.",
+                            badge: "AI",
+                        },
+                        {
                             href: "/tools/cv-keywords",
                             title: "CV keywords optimizer",
                             description: "Voeg de termen toe die recruiters en ATS in jouw vakgebied verwachten.",

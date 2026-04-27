@@ -891,6 +891,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'job-title-translator',
         'kilometervergoeding-berekenen',
         'kennismigrant-salary-checker',
+        'linkedin-naar-cv',
         'loonstrook-uitleggen',
         'minimumloon-checker',
         'netto-bruto-calculator',

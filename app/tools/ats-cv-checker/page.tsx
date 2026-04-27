@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import AtsCheckerTool from "./AtsCheckerTool";
 
 const faqItems = [
@@ -220,6 +221,15 @@ export default function AtsCvCheckerPage() {
                                 </p>
                             </Link>
                             <Link
+                                href="/tools/linkedin-naar-cv"
+                                className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:bg-slate-100"
+                            >
+                                <p className="text-sm font-black text-slate-900">Maak een cv van je LinkedIn-profiel</p>
+                                <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                                    Handig als je bestaande LinkedIn-tekst eerst wilt omzetten naar een rustigere cv-opbouw voordat je ATS-risico&apos;s oplost.
+                                </p>
+                            </Link>
+                            <Link
                                 href="/cv-optimaliseren"
                                 className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:bg-slate-100"
                             >
@@ -231,23 +241,12 @@ export default function AtsCvCheckerPage() {
                         </div>
                     </section>
 
-                    <div className="text-center">
-                        <p className="text-sm text-slate-500 mb-3">Wil je een CV dat wél door ATS komt én inhoudelijk sterker is?</p>
-                        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                            <Link
-                                href="/templates"
-                                className="inline-flex items-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
-                            >
-                                Maak ATS-vriendelijk CV →
-                            </Link>
-                            <Link
-                                href="/tools/cv-score"
-                                className="inline-flex items-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-50 transition-colors"
-                            >
-                                Doe ook een CV beoordeling →
-                            </Link>
-                        </div>
-                    </div>
+                    <ToolToCvCTA
+                        toolName="ats-cv-checker"
+                        title="Los ATS-risico&apos;s direct op in je cv"
+                        description="Als je cv lastig te lezen is voor ATS-systemen, maak dan een schonere versie met een eenvoudige Nederlandse template."
+                        primaryLabel="Maak een ATS-vriendelijke cv"
+                    />
                 </div>
             </div>
 

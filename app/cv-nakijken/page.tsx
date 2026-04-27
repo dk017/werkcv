@@ -286,6 +286,15 @@ export default function CvNakijkenPage() {
                 Handig als je de check wilt combineren met vacaturematch en relevante keywords.
               </p>
             </Link>
+            <Link
+              href="/tools/linkedin-naar-cv"
+              className="block border-2 border-white bg-white/10 p-4 transition-colors hover:bg-white hover:text-black"
+            >
+              <p className="text-sm font-black">Zet LinkedIn om naar cv-basis</p>
+              <p className="mt-2 text-sm font-medium leading-relaxed text-slate-200 hover:text-slate-700">
+                Handig als je profielinformatie nu vooral op LinkedIn staat en je die eerst wilt structureren.
+              </p>
+            </Link>
           </div>
         </section>
 

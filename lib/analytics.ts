@@ -55,6 +55,14 @@ export type CareerTransitionCtaEvent =
     | 'cta_transitievergoeding_tool_click'
     | 'cta_transitievergoeding_cv_click';
 
+export type LinkedinToCvEvent =
+    | 'linkedin_to_cv_tool_view'
+    | 'linkedin_to_cv_submit'
+    | 'linkedin_to_cv_output_generated'
+    | 'linkedin_to_cv_copy_section'
+    | 'linkedin_to_cv_cta_editor_click'
+    | 'linkedin_to_cv_cta_templates_click';
+
 // ============================================================
 // Event types — exhaustive list of all tracked interactions
 // ============================================================
@@ -121,6 +129,33 @@ export type AnalyticsEvent =
     | { event: NamedLandingCtaEvent; properties: Record<string, never> }
     | {
           event: CareerTransitionCtaEvent;
+          properties: { page_path: string; cta_location: string; cta_text: string };
+      }
+    | {
+          event: 'tool_to_cv_cta_click';
+          properties: {
+              tool_name: string;
+              page_path: string;
+              cta_variant: 'primary' | 'secondary';
+              cta_text: string;
+          };
+      }
+    | { event: 'linkedin_to_cv_tool_view'; properties: { page_path: string } }
+    | {
+          event: 'linkedin_to_cv_submit';
+          properties: { page_path: string; target_role?: string; language: 'nl' | 'en' };
+      }
+    | {
+          event: 'linkedin_to_cv_output_generated';
+          properties: { page_path: string; language: 'nl' | 'en'; sections_generated: number };
+      }
+    | { event: 'linkedin_to_cv_copy_section'; properties: { page_path: string; section: string } }
+    | {
+          event: 'linkedin_to_cv_cta_editor_click';
+          properties: { page_path: string; cta_location: string; cta_text: string };
+      }
+    | {
+          event: 'linkedin_to_cv_cta_templates_click';
           properties: { page_path: string; cta_location: string; cta_text: string };
       }
     // CV score tool

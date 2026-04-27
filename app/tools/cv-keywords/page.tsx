@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import CvKeywordsTool from "./CvKeywordsTool";
 
 const faqItems = [
@@ -169,6 +170,15 @@ export default function CvKeywordsPage() {
                                 </p>
                             </Link>
                             <Link
+                                href="/tools/linkedin-naar-cv"
+                                className="rounded-2xl border border-slate-300 bg-white p-4 transition-colors hover:bg-slate-50"
+                            >
+                                <p className="text-sm font-black text-slate-900">LinkedIn-profiel omzetten naar cv</p>
+                                <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                                    Gebruik deze route als je je LinkedIn-tekst eerst wilt structureren en daarna de juiste vacaturekeywords wilt toevoegen.
+                                </p>
+                            </Link>
+                            <Link
                                 href="/templates"
                                 className="rounded-2xl border-2 border-black bg-[#4ECDC4] p-4 text-slate-900 transition-transform hover:-translate-y-0.5"
                             >
@@ -204,6 +214,13 @@ export default function CvKeywordsPage() {
                             {" "}als je die termen meteen wilt combineren met ATS, vacaturematch en inhoudelijke verbeterpunten.
                         </p>
                     </section>
+
+                    <ToolToCvCTA
+                        toolName="cv-keywords"
+                        title="Gebruik deze keywords direct in je cv"
+                        description="Verwerk de belangrijkste vacature-keywords in je profiel, werkervaring en vaardigheden."
+                        primaryLabel="Maak cv met deze keywords"
+                    />
                 </div>
             </div>
 

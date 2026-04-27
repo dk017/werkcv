@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import VaardigheidsTool from "./VaardigheidsTool";
 
 export const metadata: Metadata = {
@@ -48,6 +49,10 @@ export default function VaardigheidGeneratorPage() {
                         <Link href="/vaardigheden-cv-voorbeelden" className="underline decoration-2 underline-offset-2 text-slate-900">
                             Bekijk vaardigheden CV voorbeelden
                         </Link>
+                        {" "}of{" "}
+                        <Link href="/tools/linkedin-naar-cv" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            LinkedIn-profiel omzetten naar cv
+                        </Link>
                     </p>
                 </div>
 
@@ -87,6 +92,13 @@ export default function VaardigheidGeneratorPage() {
                         </ul>
                     </div>
                 </div>
+
+                <ToolToCvCTA
+                    toolName="vaardigheden-generator"
+                    title="Gebruik deze vaardigheden in je cv"
+                    description="Voeg relevante vaardigheden toe aan een duidelijke, ATS-vriendelijke cv."
+                    primaryLabel="Maak cv met deze vaardigheden"
+                />
             </div>
 
             <Footer />

@@ -216,6 +216,10 @@ export default function CvOptimaliserenPage() {
               <Link href="/tools/cv-keywords" className="font-black underline">
                 cv-keywords
               </Link>
+              ,{" "}
+              <Link href="/tools/linkedin-naar-cv" className="font-black underline">
+                LinkedIn naar cv
+              </Link>
               .
             </div>
           </aside>
@@ -302,7 +306,11 @@ export default function CvOptimaliserenPage() {
               <Link href="/tools/cv-vacature-match" className="font-black underline">
                 cv-vacature-match
               </Link>
-              {" "}als je je hele cv naast de vacaturetekst wilt leggen.
+              {" "}als je je hele cv naast de vacaturetekst wilt leggen. Staat je basis vooral nog op LinkedIn, begin dan met{" "}
+              <Link href="/tools/linkedin-naar-cv" className="font-black underline">
+                LinkedIn-profiel omzetten naar cv
+              </Link>
+              .
             </p>
           </article>
         </section>

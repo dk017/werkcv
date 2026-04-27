@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import CvScoreTool from "./CvScoreTool";
 
 const faqItems = [
@@ -273,6 +274,15 @@ export default function CvScorePage() {
                 </p>
               </Link>
               <Link
+                href="/tools/linkedin-naar-cv"
+                className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:bg-slate-100"
+              >
+                <p className="text-sm font-black text-slate-900">LinkedIn-profiel omzetten naar cv</p>
+                <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                  Handig als je al veel profielinformatie op LinkedIn hebt staan en die sneller wilt omzetten naar een Nederlandse cv-structuur.
+                </p>
+              </Link>
+              <Link
                 href="/cv-optimaliseren"
                 className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:bg-slate-100"
               >
@@ -284,17 +294,12 @@ export default function CvScorePage() {
             </div>
           </section>
 
-          <section className="text-center">
-            <p className="text-sm text-slate-500 mb-3">
-              Klaar om je score direct om te zetten in een beter CV?
-            </p>
-            <Link
-              href="/templates"
-              className="inline-flex items-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
-            >
-              Vergelijk WerkCV templates →
-            </Link>
-          </section>
+          <ToolToCvCTA
+            toolName="cv-score"
+            title="Verbeter je cv-score direct"
+            description="Gebruik de score als checklist en maak daarna een sterkere cv-versie in WerkCV."
+            primaryLabel="Maak mijn verbeterde cv"
+          />
         </div>
       </div>
 

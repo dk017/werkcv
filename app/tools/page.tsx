@@ -309,6 +309,13 @@ const sections: ToolSection[] = [
                 badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
             },
             {
+                href: "/tools/linkedin-naar-cv",
+                title: "LinkedIn naar CV",
+                description: "Plak je LinkedIn-profieltekst en zet die om naar een Nederlandse cv-structuur als startpunt voor je sollicitatieversie.",
+                badge: "AI",
+                badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
+            },
+            {
                 href: "/tools/profieltekst-generator",
                 title: "Profieltekst generator",
                 description: "Schrijf sneller een overtuigende profieltekst voor bovenaan je CV.",

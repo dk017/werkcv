@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import { ToolToCvCTA } from '@/components/tools/ToolToCvCTA';
 import CvVacatureMatchTool from './CvVacatureMatchTool';
 
 export const metadata: Metadata = {
@@ -84,7 +85,21 @@ export default function CvVacatureMatchPage() {
                         </Link>
                         {" "}als je de matchscore wilt vertalen naar ATS-verbeteringen, profieltekst-updates en een sterkere eindversie van je cv.
                     </p>
+                    <p className="mt-3 text-sm text-slate-600 leading-relaxed">
+                        Heb je vooral veel profielinformatie op LinkedIn staan? Gebruik dan ook{" "}
+                        <Link href="/tools/linkedin-naar-cv" className="font-black underline decoration-2 underline-offset-4">
+                            LinkedIn naar cv omzetten
+                        </Link>
+                        {" "}om je basis eerst sneller in een Nederlandse cv-structuur te zetten.
+                    </p>
                 </div>
+
+                <ToolToCvCTA
+                    toolName="cv-vacature-match"
+                    title="Maak je cv passender voor deze vacature"
+                    description="Gebruik de match-analyse om je cv beter aan te sluiten op de functie waarop je solliciteert."
+                    primaryLabel="Pas mijn cv aan op deze vacature"
+                />
             </div>
 
             <Footer />

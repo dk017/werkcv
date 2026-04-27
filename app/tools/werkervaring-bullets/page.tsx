@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import WerkervaringTool from "./WerkervaringTool";
 
 export const metadata: Metadata = {
@@ -48,6 +49,10 @@ export default function WerkervaringBulletsPage() {
                         <Link href="/werkervaring-cv-voorbeelden" className="underline decoration-2 underline-offset-2 text-slate-900">
                             Bekijk werkervaring CV voorbeelden
                         </Link>
+                        {" "}of{" "}
+                        <Link href="/tools/linkedin-naar-cv" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            maak een cv van je LinkedIn-profiel
+                        </Link>
                     </p>
                 </div>
 
@@ -69,6 +74,13 @@ export default function WerkervaringBulletsPage() {
                         </div>
                     </div>
                 </div>
+
+                <ToolToCvCTA
+                    toolName="werkervaring-bullets"
+                    title="Gebruik deze bullets in je werkervaring"
+                    description="Zet je verbeterde werkervaring direct in een professionele cv-layout."
+                    primaryLabel="Maak cv met deze bullets"
+                />
             </div>
 
             <Footer />

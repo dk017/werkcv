@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import ProfieltekstTool from "./ProfieltekstTool";
 
 export const metadata: Metadata = {
@@ -52,6 +53,10 @@ export default function ProfieltekstGeneratorPage() {
                         <Link href="/cv-samenvatting-voorbeelden" className="underline decoration-2 underline-offset-2 text-slate-900">
                             CV samenvatting voorbeelden
                         </Link>
+                        {" "}of{" "}
+                        <Link href="/tools/linkedin-naar-cv" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            LinkedIn-profiel omzetten naar cv
+                        </Link>
                     </p>
                 </div>
 
@@ -80,6 +85,13 @@ export default function ProfieltekstGeneratorPage() {
                         </ul>
                     </div>
                 </div>
+
+                <ToolToCvCTA
+                    toolName="profieltekst-generator"
+                    title="Gebruik deze profieltekst in je cv"
+                    description="Plaats je profieltekst direct in een nette Nederlandse cv-template."
+                    primaryLabel="Maak cv met deze profieltekst"
+                />
             </div>
 
             <Footer />
