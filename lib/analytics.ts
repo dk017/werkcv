@@ -44,6 +44,17 @@ export type NamedLandingCtaEvent =
     | 'cta_cv_nakijken_hero'
     | 'cta_resume_optimizer_en_hero';
 
+export type CareerTransitionCtaEvent =
+    | 'cta_ontslagbrief_generator_click'
+    | 'cta_ontslagbrief_cv_click'
+    | 'cta_motivatiebrief_generator_click'
+    | 'cta_motivatiebrief_cv_click'
+    | 'cta_baan_wisselen_cv_click'
+    | 'cta_opzegtermijn_tool_click'
+    | 'cta_opzegtermijn_cv_click'
+    | 'cta_transitievergoeding_tool_click'
+    | 'cta_transitievergoeding_cv_click';
+
 // ============================================================
 // Event types — exhaustive list of all tracked interactions
 // ============================================================
@@ -108,6 +119,10 @@ export type AnalyticsEvent =
     | { event: 'cta_viewed'; properties: { location: string; variant: string; slug?: string; locale?: 'nl' | 'en' } }
     | { event: 'cta_clicked'; properties: { location: string; label: string } }
     | { event: NamedLandingCtaEvent; properties: Record<string, never> }
+    | {
+          event: CareerTransitionCtaEvent;
+          properties: { page_path: string; cta_location: string; cta_text: string };
+      }
     // CV score tool
     | { event: 'cv_score_tool_viewed'; properties: Record<string, never> }
     | { event: 'cv_score_input_provided'; properties: { input_type: 'file' | 'text' } }

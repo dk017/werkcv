@@ -84,6 +84,7 @@ export default function SollicitatiebriefGeneratorPage() {
                     </p>
                     <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                         {[
+                            ["/baan-wisselen", "Baan wisselen", "Handig als je brief, ontslagstappen en cv-update in een logische overstaproute wilt zetten."],
                             ["/sollicitatiebrief-maken", "Briefhub", "Start hier als je nog moet kiezen tussen workflow, voorbeelden en specialistische routes."],
                             ["/sollicitatiebrief-beginnen", "Sterke openingszinnen", "Voor als je eerste alinea vlak of generiek voelt."],
                             ["/motivatiebrief-zonder-werkervaring", "Zonder werkervaring", "Gebruik studie, stage en projecten als geloofwaardig bewijs."],

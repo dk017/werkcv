@@ -70,6 +70,18 @@ export default function OpzeggingsbriefGeneratorPage() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                         <Link
+                            href="/baan-wisselen"
+                            className="bg-[#FFF4D6] text-slate-900 border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                        >
+                            <p className="text-xs font-black uppercase tracking-wide text-amber-700 mb-1">
+                                Overstappen
+                            </p>
+                            <p className="font-black text-lg mb-2">Bekijk de baan-wisselen checklist</p>
+                            <p className="text-sm text-slate-700 leading-relaxed">
+                                Handig als je naast je brief ook je opzegtermijn, motivatiebrief en cv wilt meenemen.
+                            </p>
+                        </Link>
+                        <Link
                             href="/tools/opzegtermijn-berekenen"
                             className="bg-[#4ECDC4] text-slate-900 border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
                         >

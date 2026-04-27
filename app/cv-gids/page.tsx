@@ -69,6 +69,7 @@ const guideGroups = [
       { href: "/cv-maken-pdf", label: "CV maken PDF" },
       { href: "/cv-maken-op-mobiel", label: "CV maken op mobiel" },
       { href: "/cv-maken-in-engels", label: "CV maken in Engels" },
+      { href: "/baan-wisselen", label: "Baan wisselen checklist" },
     ],
   },
 ];

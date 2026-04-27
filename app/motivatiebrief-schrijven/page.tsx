@@ -1,392 +1,317 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
+import { FAQJsonLd } from "@/components/seo/JsonLd";
+import TrackedCareerLink from "@/components/analytics/TrackedCareerLink";
+import { CareerHubLinks, CareerToCvCTA, ToolCTA } from "@/components/landing/CareerTransitionSections";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 
-const writingSteps = [
-  {
-    title: "1) Begin met de functie en je directe match",
-    body: "Noem de functie, waarom die je aanspreekt en wat jouw eerste sterke match is. Vermijd standaardopeningen zonder context.",
-  },
-  {
-    title: "2) Kies 1 of 2 relevante prestaties",
-    body: "Een motivatiebrief overtuigt pas echt als je motivatie koppelt aan bewijs. Gebruik daarom concrete resultaten of voorbeelden uit stage, werk of projectervaring.",
-  },
-  {
-    title: "3) Verbind jezelf aan het bedrijf",
-    body: "Laat zien dat je niet alleen een baan zoekt, maar juist deze rol bij dit bedrijf. Gebruik taal uit de vacature en noem wat jou inhoudelijk aantrekt.",
-  },
-  {
-    title: "4) Houd je brief compact en scanbaar",
-    body: "Vier korte alinea's zijn meestal genoeg. Recruiters willen snel begrijpen waarom jij past, zonder een lange tekstmuur te lezen.",
-  },
-  {
-    title: "5) Sluit af met een rustige call-to-action",
-    body: "Bedank voor de tijd, nodig uit tot een gesprek en sluit professioneel af. Zelfverzekerd werkt beter dan overdreven enthousiast.",
-  },
-];
+const pageUrl = "https://werkcv.nl/motivatiebrief-schrijven";
 
-const paragraphBlocks = [
-  {
-    title: "Opening",
-    example:
-      "Met belangstelling solliciteer ik naar de functie van [functietitel] bij [bedrijfsnaam], omdat deze rol sterk aansluit op mijn ervaring in [domein] en mijn motivatie om [type bijdrage] te leveren.",
-  },
-  {
-    title: "Bewijs",
-    example:
-      "In mijn huidige rol heb ik [resultaat] bereikt door [aanpak]. Juist die combinatie van [vaardigheid] en [vaardigheid] wil ik inzetten in deze functie.",
-  },
-  {
-    title: "Bedrijfsfit",
-    example:
-      "Wat mij aanspreekt in [bedrijfsnaam] is [inhoudelijke reden uit vacature of missie]. Ik zie daarin een duidelijke match met hoe ik zelf werk en wil bijdragen.",
-  },
-  {
-    title: "Afsluiting",
-    example:
-      "Graag licht ik mijn motivatie en ervaring in een gesprek verder toe. Dank voor uw tijd en overweging.",
-  },
-];
-
-const mistakes = [
-  "De brief herhaalt alleen wat al in je CV staat.",
-  "Je gebruikt algemene woorden zoals gemotiveerd en leergierig zonder bewijs.",
-  "Je schrijft te lang door en verliest daardoor focus.",
-  "Je brief kan naar elk bedrijf gestuurd worden zonder aanpassing.",
-];
-
-const faqs = [
-  {
-    question: "Hoe schrijf je een goede motivatiebrief?",
-    answer:
-      "Een goede motivatiebrief legt in korte, duidelijke alinea's uit waarom deze functie bij je past, welke relevante ervaring je meebrengt en waarom juist dit bedrijf logisch is voor jouw volgende stap.",
-  },
+const faqItems = [
   {
     question: "Hoe lang moet een motivatiebrief zijn?",
     answer:
-      "Voor de meeste sollicitaties is een halve tot maximaal een hele A4 genoeg. Vier korte alinea's werken meestal beter dan een lange brief.",
+      "Meestal is een pagina genoeg. Houd de brief kort, specifiek en relevant voor de functie waarop je solliciteert.",
   },
   {
-    question: "Wat is het verschil tussen motivatiebrief schrijven en sollicitatiebrief schrijven?",
+    question: "Wat is het verschil tussen een motivatiebrief en sollicitatiebrief?",
     answer:
-      "In Nederland worden de termen vaak door elkaar gebruikt. In de praktijk gaat het meestal om dezelfde brief: motivatie plus geschiktheid voor een concrete vacature.",
+      "Een motivatiebrief legt vaak meer nadruk op waarom je de functie en werkgever wilt. Een sollicitatiebrief licht meestal ook sterker toe waarom je geschikt bent op basis van ervaring en vaardigheden. In de praktijk lopen die twee vaak in elkaar over.",
   },
   {
-    question: "Moet ik mijn motivatiebrief per vacature aanpassen?",
+    question: "Moet mijn motivatiebrief aansluiten op mijn cv?",
     answer:
-      "Ja. Pas functietitel, gebruikte vacaturetaal, bewijs en bedrijfsfit altijd aan. Dat maakt je brief relevanter voor recruiter en ATS.",
+      "Ja. Je brief en cv moeten elkaar versterken. De brief geeft motivatie en context, terwijl je cv je ervaring overzichtelijk laat zien.",
+  },
+  {
+    question: "Kan ik AI gebruiken voor mijn motivatiebrief?",
+    answer:
+      "Ja, als hulpmiddel. Controleer wel altijd of de uitkomst persoonlijk, correct en eerlijk blijft en goed past bij jouw situatie.",
   },
 ];
 
-export const metadata: Metadata = {
-  title: "Motivatiebrief schrijven in 5 stappen: praktische workflow | WerkCV",
+export const metadata: Metadata = buildDutchMetadata({
+  title: "Motivatiebrief schrijven? Voorbeeld, tips en generator | WerkCV",
   description:
-    "Leer motivatiebrief schrijven met een praktische 5-stappen workflow, voorbeeldzinnen per alinea en directe generatorflow. Schrijf daarna vacaturegericht verder.",
+    "Schrijf een sterke motivatiebrief met duidelijke structuur, voorbeelden en een gratis generator. Maak daarna ook een cv die past bij je sollicitatie.",
+  path: "/motivatiebrief-schrijven",
   keywords: [
     "motivatiebrief schrijven",
+    "motivatiebrief voorbeeld",
     "hoe schrijf je een motivatiebrief",
-    "goede motivatiebrief schrijven",
-    "motivatiebrief structuur",
-    "motivatiebrief opbouw",
+    "motivatiebrief generator",
     "motivatiebrief tips",
+    "sollicitatiebrief generator",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/motivatiebrief-schrijven",
-    languages: {
-      "nl-NL": "https://werkcv.nl/motivatiebrief-schrijven",
-      "x-default": "https://werkcv.nl/motivatiebrief-schrijven",
-    },
+  type: "article",
+  languages: {
+    "nl-NL": pageUrl,
+    "x-default": pageUrl,
   },
-};
+});
 
 export default function MotivatiebriefSchrijvenPage() {
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: faqs.map((faq) => ({
-      "@type": "Question",
-      name: faq.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: faq.answer,
-      },
-    })),
-  };
-
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://werkcv.nl",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Motivatiebrief Schrijven",
-        item: "https://werkcv.nl/motivatiebrief-schrijven",
-      },
-    ],
-  };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "Motivatiebrief schrijven in 5 stappen",
-    description: "Praktische stappen om een korte, overtuigende motivatiebrief te schrijven.",
-    totalTime: "PT20M",
-    step: writingSteps.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
-
   return (
-    <div className="min-h-screen bg-[#FFFEF0]">
-      <header className="relative z-10 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+    <div className="min-h-screen bg-[#FFFEF9]">
+      <FAQJsonLd questions={faqItems} />
+
+      <header className="border-b-4 border-black bg-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl font-black tracking-tight text-black">
-              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
+              Werk<span className="bg-[#4ECDC4] px-1">CV</span>.nl
             </span>
           </Link>
           <Link
             href="/tools/sollicitatiebrief-generator"
-            className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
+            className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
           >
             Open generator
           </Link>
         </div>
       </header>
 
-      <main className="relative z-10 mx-auto max-w-5xl px-6 py-14">
-        <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+      <main className="mx-auto max-w-6xl px-6 py-10">
+        <div className="mb-8">
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Motivatiebrief schrijven", href: "/motivatiebrief-schrijven" },
+            ]}
+          />
+        </div>
+
+        <section className="mb-12 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
-            <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Intent: motivatiebrief schrijven
-            </p>
-            <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              Motivatiebrief schrijven zonder in algemene tekst te blijven hangen
+            <div className="mb-4 flex flex-wrap gap-2">
+              {["Motivatie", "Structuur", "Voorbeelden", "Generator"].map((badge) => (
+                <span
+                  key={badge}
+                  className="border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-black"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+            <h1 className="max-w-4xl text-4xl font-black leading-tight text-black md:text-5xl">
+              Motivatiebrief schrijven: structuur, voorbeelden en gratis generator
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Wie zoekt op motivatiebrief schrijven wil meestal geen losse voorbeelden alleen,
-              maar een duidelijke manier van werken. Op deze pagina zie je welke opbouw goed
-              werkt, welke zinnen je echt nodig hebt en hoe je motivatie koppelt aan bewijs.
+              Een motivatiebrief laat zien waarom je voor een functie en werkgever kiest. Gebruik de uitleg, voorbeelden en generator om sneller een sterke brief te maken. Maak daarna ook een cv die past bij dezelfde sollicitatie.
             </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link
+            <div className="mt-6 flex flex-wrap gap-3">
+              <TrackedCareerLink
                 href="/tools/sollicitatiebrief-generator"
-                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                eventName="cta_motivatiebrief_generator_click"
+                ctaLocation="motivatiebrief:hero_generator"
+                ctaText="Maak mijn motivatiebrief"
+                className="border-4 border-black bg-[#4ECDC4] px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
               >
-                Schrijf direct in generator
-              </Link>
-              <Link
-                href="/sollicitatiebrief-beginnen"
+                Maak mijn motivatiebrief
+              </TrackedCareerLink>
+              <TrackedCareerLink
+                href="/cv-maken"
+                eventName="cta_motivatiebrief_cv_click"
+                ctaLocation="motivatiebrief:hero_cv"
+                ctaText="Maak bijpassende cv"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Eerst je opening aanscherpen
-              </Link>
+                Maak bijpassende cv
+              </TrackedCareerLink>
             </div>
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
-              {[
-                "Stap-voor-stap structuur",
-                "Voorbeeldzinnen per alinea",
-                "Direct toepasbaar in tool",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="border-3 border-black bg-white px-4 py-3 text-sm font-black text-black"
-                  style={{ borderWidth: "3px" }}
-                >
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">Snelle schrijfregel</h2>
-            <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
-              Een motivatiebrief is geen samenvatting van je CV. Het is een korte brug tussen
-              vacature, motivatie en bewijs. Recruiters willen snel zien waarom jij inhoudelijk
-              past, niet alleen dat je enthousiast bent.
+            <p className="mt-3 text-sm font-medium text-slate-700">
+              Gratis starten. Geen abonnement voor je cv, betaal alleen bij PDF-download.
             </p>
-            <div className="mt-6 border-t-4 border-black pt-5">
-              <Link
-                href="/sollicitatiebrief-beginnen"
-                className="text-sm font-black text-black underline decoration-2 underline-offset-4"
-              >
-                Bekijk ook: sollicitatiebrief beginnen
-              </Link>
-            </div>
           </div>
-        </section>
 
-        <section className="mb-14">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Workflow
-          </p>
-          <h2 className="mt-2 text-3xl font-black text-black">
-            Motivatiebrief schrijven in 5 praktische stappen
-          </h2>
-          <div className="mt-6 grid gap-5 md:grid-cols-2">
-            {writingSteps.map((step) => (
-              <article
-                key={step.title}
-                className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <h3 className="text-xl font-black text-black">{step.title}</h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{step.body}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Bouwblokken
-          </p>
-          <h2 className="mt-2 text-3xl font-black text-black">
-            Voorbeeldzinnen per briefonderdeel
-          </h2>
-          <div className="mt-6 grid gap-5 md:grid-cols-2">
-            {paragraphBlocks.map((item) => (
-              <article
-                key={item.title}
-                className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <h3 className="text-lg font-black text-black">{item.title}</h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{item.example}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14 grid gap-6 md:grid-cols-2">
-          <div className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
-              Veelgemaakte fouten
+          <aside className="h-fit border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Praktische focus
             </p>
-            <h2 className="mt-2 text-2xl font-black">
-              Waarom motivatiebrieven vaak zwak landen
+            <h2 className="mt-2 text-2xl font-black text-black">
+              Brief en cv moeten hetzelfde verhaal vertellen
             </h2>
-            <ul className="mt-4 space-y-2 text-sm font-medium leading-relaxed text-slate-200">
-              {mistakes.map((mistake) => (
-                <li key={mistake}>{mistake}</li>
+            <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
+              <p>1. Kies een opening die direct past bij de vacature.</p>
+              <p>2. Laat zien waarom je deze functie wilt, niet alleen dat je beschikbaar bent.</p>
+              <p>3. Koppel je motivatie aan voorbeelden uit werk, stage of projecten.</p>
+              <p>4. Zorg dat je cv dezelfde functierichting en keywords ondersteunt.</p>
+            </div>
+          </aside>
+        </section>
+
+        <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-3xl font-black text-black">Wat is een motivatiebrief?</h2>
+          <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
+            <p>
+              Een motivatiebrief legt uit waarom je voor een functie en werkgever kiest. Je stuurt die vaak samen met je cv mee als extra context bij je sollicitatie.
+            </p>
+            <p>
+              Een goede motivatiebrief is specifiek, persoonlijk en relevant. Het doel is niet om je cv te herhalen, maar om uit te leggen waarom deze stap logisch is en waarom jouw ervaring daarbij past.
+            </p>
+          </div>
+        </section>
+
+        <section className="mb-12 grid gap-6 lg:grid-cols-2">
+          <article className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="text-3xl font-black text-black">Motivatiebrief vs sollicitatiebrief</h2>
+            <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
+              Een motivatiebrief legt meestal meer nadruk op motivatie, bedrijfsmatch en waarom je de rol wilt. Een sollicitatiebrief laat vaak ook explicieter zien waarom je geschikt bent op basis van ervaring en resultaten.
+            </p>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              In de praktijk worden de termen vaak door elkaar gebruikt. Zie het vooral als een praktische brief die motivatie en geschiktheid combineert.
+            </p>
+          </article>
+
+          <article className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="text-3xl font-black text-black">Structuur van een motivatiebrief</h2>
+            <ol className="mt-4 space-y-2 text-sm font-medium leading-relaxed text-slate-700">
+              {[
+                "Contactgegevens",
+                "Aanhef",
+                "Sterke openingszin",
+                "Motivatie voor functie en bedrijf",
+                "Waarom jij past",
+                "Afsluiting met uitnodiging tot gesprek",
+                "Ondertekening",
+              ].map((item, index) => (
+                <li key={item}>
+                  {index + 1}. {item}
+                </li>
+              ))}
+            </ol>
+          </article>
+        </section>
+
+        <ToolCTA
+          title="Gratis motivatiebrief generator"
+          text="Gebruik de sollicitatiebrief-generator als basis voor je motivatiebrief. Dat is de snelste manier om een eerste versie te maken en daarna inhoudelijk op jouw vacature aan te scherpen."
+          buttonLabel="Open de motivatiebrief generator"
+          buttonHref="/tools/sollicitatiebrief-generator"
+          eventName="cta_motivatiebrief_generator_click"
+          ctaLocation="motivatiebrief:tool_block"
+        />
+
+        <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-3xl font-black text-black">Motivatiebrief voorbeeld</h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-3">
+            {[
+              {
+                title: "Starter of student",
+                body:
+                  "Geachte [naam],\nMet interesse reageer ik op de functie van [functie] bij [bedrijf]. Tijdens mijn studie en stage heb ik gemerkt dat ik energie krijg van [relevant werk]. Juist daarom spreekt deze rol mij aan. Met mijn ervaring in [project of stage] en mijn motivatie om snel te leren, wil ik graag bijdragen aan uw team.\nMet vriendelijke groet,\n[naam]",
+              },
+              {
+                title: "Ervaren kandidaat",
+                body:
+                  "Geachte [naam],\nDe functie van [functie] spreekt mij aan omdat deze goed aansluit op mijn ervaring in [vakgebied] en mijn wens om verder te groeien in [relevant domein]. In mijn huidige rol heb ik gewerkt aan [resultaat of verantwoordelijkheid], waardoor ik weet wat nodig is om in deze functie snel waarde toe te voegen. Graag licht ik mijn motivatie en ervaring verder toe in een gesprek.\nMet vriendelijke groet,\n[naam]",
+              },
+              {
+                title: "Carrièreswitch",
+                body:
+                  "Geachte [naam],\nMet deze brief solliciteer ik naar de functie van [functie]. Hoewel mijn achtergrond ligt in [huidig vakgebied], heb ik de afgelopen periode bewust gewerkt aan een overstap naar [nieuw vakgebied]. Via [cursus, project of praktijkervaring] heb ik relevante kennis opgebouwd. Deze rol spreekt mij aan omdat ik mijn ervaring in [overdraagbare vaardigheid] wil inzetten in een nieuwe richting.\nMet vriendelijke groet,\n[naam]",
+              },
+            ].map((example) => (
+              <article key={example.title} className="border-2 border-black bg-[#FFFEF9] p-4">
+                <h3 className="text-sm font-black text-black">{example.title}</h3>
+                <p className="mt-3 whitespace-pre-line text-sm font-medium leading-relaxed text-slate-700">
+                  {example.body}
+                </p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="mb-12 grid gap-6 lg:grid-cols-2">
+          <article className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
+            <h2 className="text-3xl font-black text-white">Openingszinnen voor een motivatiebrief</h2>
+            <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-200">
+              {[
+                "De combinatie van [functie] en de manier waarop [bedrijf] werkt, sluit sterk aan op waar ik de komende jaren aan wil bouwen.",
+                "Wat mij direct aansprak in deze vacature is de mix van [taak] en [taak], omdat ik juist daar mijn ervaring wil inzetten.",
+                "Met mijn achtergrond in [vakgebied] zie ik in deze functie een logische volgende stap richting [doel].",
+                "Ik reageer op deze functie omdat ik graag werk in een omgeving waar [relevante waarde of aanpak] centraal staat.",
+                "Deze vacature trok mijn aandacht omdat de gevraagde combinatie van [vaardigheid] en [vaardigheid] goed past bij mijn ervaring.",
+              ].map((item) => (
+                <li key={item}>{item}</li>
               ))}
             </ul>
-          </div>
-          <div className="border-4 border-black bg-white p-6">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Slimme vervolgstappen
-            </p>
-            <div className="mt-4 space-y-4">
+          </article>
+
+          <article className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="text-3xl font-black text-black">Veelgemaakte fouten</h2>
+            <ul className="mt-5 list-disc space-y-3 pl-5 text-sm font-medium leading-relaxed text-slate-700 marker:text-black">
               {[
-                {
-                  href: "/sollicitatiebrief-maken",
-                  title: "Sollicitatiebrief maken",
-                  body: "Gebruik de centrale briefhub als je nog moet kiezen tussen workflow, voorbeelden, Engels of open sollicitatie.",
-                },
-                {
-                  href: "/sollicitatiebrief-beginnen",
-                  title: "Sollicitatiebrief beginnen",
-                  body: "Scherp eerst je eerste zin aan als je brief nog te standaard of te vlak opent.",
-                },
-                {
-                  href: "/motivatiebrief-zonder-werkervaring",
-                  title: "Motivatiebrief zonder werkervaring",
-                  body: "Gebruik deze route als je vooral wilt leunen op studie, stage of projecten.",
-                },
-                {
-                  href: "/motivatiebrief-voorbeeld",
-                  title: "Motivatiebrief voorbeelden",
-                  body: "Vergelijk complete voorbeeldalinea&apos;s zodra je de schrijfstructuur begrijpt.",
-                },
-                {
-                  href: "/sollicitatiebrief-voorbeeld",
-                  title: "Sollicitatiebrief voorbeelden",
-                  body: "Gebruik deze route als je opening, midden en afsluiting als complete brief wilt zien.",
-                },
-                {
-                  href: "/tools/sollicitatiebrief-generator",
-                  title: "Sollicitatiebrief generator",
-                  body: "Zet de schrijfregels direct om in een persoonlijke brief voor jouw vacature.",
-                },
+                "Te algemeen schrijven",
+                "Het cv herhalen zonder motivatie",
+                "Geen link met bedrijf of functie",
+                "Te lange brief",
+                "Geen concrete voorbeelden geven",
               ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block border-2 border-black bg-[#FFFEF0] p-4 transition-colors hover:bg-yellow-100"
-                >
-                  <p className="text-sm font-black text-black">{item.title}</p>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
-                </Link>
+                <li key={item}>{item}</li>
               ))}
-            </div>
-          </div>
+            </ul>
+          </article>
         </section>
 
-        <section className="mb-14">
-          <h2 className="text-center text-3xl font-black text-black">
-            Veelgestelde vragen over motivatiebrief schrijven
-          </h2>
-          <div className="mx-auto mt-8 max-w-3xl space-y-4">
-            {faqs.map((faq) => (
-              <details
-                key={faq.question}
-                className="group border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <summary className="flex cursor-pointer items-center justify-between p-4 text-left text-base font-black text-black">
-                  {faq.question}
-                  <span className="ml-3 text-xl transition-transform group-open:rotate-45">+</span>
-                </summary>
-                <div className="border-t-2 border-black px-4 pb-4 pt-3 text-sm font-medium leading-relaxed text-slate-700">
-                  {faq.answer}
-                </div>
-              </details>
-            ))}
-          </div>
-        </section>
+        <CareerHubLinks
+          title="Meer routes rond solliciteren en cv bijwerken"
+          items={[
+            {
+              href: "/tools/sollicitatiebrief-generator",
+              title: "Sollicitatiebrief-generator",
+              body: "Gebruik de tool als snelle eerste versie voor een motivatiebrief of sollicitatiebrief.",
+            },
+            {
+              href: "/sollicitatiebrief-maken",
+              title: "Sollicitatiebrief maken",
+              body: "Lees de bredere hub als je nog twijfelt over opbouw, toon of type brief.",
+            },
+            {
+              href: "/sollicitatiebrief-voorbeelden",
+              title: "Sollicitatiebrief-voorbeelden",
+              body: "Vergelijk complete voorbeeldbrieven voor meer inspiratie per situatie.",
+            },
+            {
+              href: "/cv-maken",
+              title: "Cv maken",
+              body: "Bouw direct een cv die dezelfde vacature en functierichting ondersteunt.",
+            },
+            {
+              href: "/cv-checken",
+              title: "Cv checken",
+              body: "Controleer of je cv inhoudelijk sterk genoeg is voordat je solliciteert.",
+            },
+            {
+              href: "/cv-optimaliseren",
+              title: "Cv optimaliseren",
+              body: "Scherp je cv aan op ATS, vacaturekeywords en recruiterleesbaarheid.",
+            },
+            {
+              href: "/tools/cv-vacature-match",
+              title: "Cv-vacature-match",
+              body: "Vergelijk je cv met de vacaturetekst als je brief en cv dezelfde richting moeten volgen.",
+            },
+            {
+              href: "/tools/ats-cv-checker",
+              title: "ATS CV checker",
+              body: "Check of je cv technisch goed uitleesbaar blijft voor recruitersoftware.",
+            },
+          ]}
+        />
 
-        <section className="border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
-                Klaar om te schrijven?
-              </p>
-              <h2 className="mt-2 text-3xl font-black text-black">
-                Schrijf je motivatiebrief en koppel daarna een sterk CV
-              </h2>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
-                Gebruik de structuur op deze pagina, zet hem direct om in de generator en
-                laat daarna je CV op dezelfde vacature aansluiten.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/tools/sollicitatiebrief-generator"
-                className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Start met brief
-              </Link>
-              <Link
-                href="/editor"
-                className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
-              >
-                Bouw ook je CV
-              </Link>
-            </div>
-          </div>
-        </section>
+        <CareerToCvCTA
+          title="Maak ook een cv die past bij je motivatiebrief"
+          text="Een sterke motivatiebrief werkt beter met een duidelijke, professionele cv erbij. Gebruik WerkCV om een nette, ATS-vriendelijke cv te maken voor dezelfde vacature."
+          buttonLabel="Maak bijpassende cv"
+          buttonHref="/cv-maken"
+          supportLine="Gratis bouwen. Eenmalig EUR 4,99 bij PDF-download. Geen abonnement."
+          eventName="cta_motivatiebrief_cv_click"
+          ctaLocation="motivatiebrief:bottom_cv"
+        />
       </main>
-
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
 
       <Footer />
     </div>

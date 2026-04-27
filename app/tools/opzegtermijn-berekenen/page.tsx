@@ -56,6 +56,18 @@ export default function OpzegtermijnPage() {
                     </p>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <Link
+                            href="/baan-wisselen"
+                            className="bg-[#FFF4D6] text-slate-900 border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] transition-all"
+                        >
+                            <p className="text-xs font-black uppercase tracking-wide text-amber-700 mb-1">
+                                Overstappen
+                            </p>
+                            <p className="font-black text-lg mb-2">Bekijk baan wisselen</p>
+                            <p className="text-sm text-slate-700 leading-relaxed">
+                                Gebruik de checklist als je naast je termijn ook ontslagbrief, motivatiebrief en cv wilt plannen.
+                            </p>
+                        </Link>
+                        <Link
                             href="/tools/opzeggingsbrief-generator"
                             className="bg-black text-white border-2 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,0.3)] transition-all"
                         >

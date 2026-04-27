@@ -515,6 +515,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.84,
         },
         {
+            url: `${baseUrl}/ontslagbrief-schrijven`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.82,
+        },
+        {
+            url: `${baseUrl}/baan-wisselen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.82,
+        },
+        {
+            url: `${baseUrl}/opzegtermijn-berekenen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.78,
+        },
+        {
+            url: `${baseUrl}/transitievergoeding-berekenen`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.78,
+        },
+        {
             url: `${baseUrl}/sollicitatiebrief-maken`,
             lastModified: new Date(),
             changeFrequency: 'weekly',

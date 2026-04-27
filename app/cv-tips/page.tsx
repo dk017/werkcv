@@ -150,6 +150,16 @@ export default function CVTipsHub() {
             {/* CTA Section */}
             <section className="border-t-4 border-black bg-[#4ECDC4]">
                 <div className="max-w-6xl mx-auto px-6 py-16 text-center">
+                    <p className="mb-3 text-sm font-black uppercase tracking-[0.2em] text-black">
+                        Van tip naar overstap
+                    </p>
+                    <p className="mx-auto mb-6 max-w-3xl text-base font-medium text-black/80">
+                        Ga je niet alleen je cv verbeteren, maar ook echt van baan wisselen? Gebruik dan ook de{" "}
+                        <Link href="/baan-wisselen" className="font-black underline">
+                            baan-wisselen checklist
+                        </Link>
+                        {" "}voor ontslagbrief, opzegtermijn en sollicitatiestappen.
+                    </p>
                     <h2 className="text-4xl font-black mb-6">
                         Klaar om je CV te maken?
                     </h2>

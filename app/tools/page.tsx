@@ -186,6 +186,13 @@ const sections: ToolSection[] = [
                 badge: "AI",
                 badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
             },
+            {
+                href: "/baan-wisselen",
+                title: "Baan wisselen checklist",
+                description: "Gebruik de hub als je ontslagbrief, opzegtermijn, motivatiebrief en cv-update wilt combineren.",
+                badge: "Workflow",
+                badgeClass: "bg-amber-100 text-amber-800 border-amber-300",
+            },
         ],
     },
     {

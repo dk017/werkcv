@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import TransitievergoedingTool from "./TransitievergoedingTool";
 
 const faqItems = [
@@ -30,9 +31,10 @@ const breadcrumbItems = [
     { label: "Transitievergoeding berekenen", href: "/tools/transitievergoeding-berekenen" },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
     title: "Transitievergoeding Berekenen 2026 - Gratis Tool | WerkCV",
     description: "Bereken je transitievergoeding voor 2026. Check eerst of je waarschijnlijk recht hebt, tel vaste looncomponenten mee en zie direct een duidelijke indicatie.",
+    path: "/tools/transitievergoeding-berekenen",
     keywords: [
         "transitievergoeding berekenen",
         "transitievergoeding 2026",
@@ -41,7 +43,7 @@ export const metadata: Metadata = {
         "tijdelijk contract niet verlengd vergoeding",
         "transitievergoeding ontslag",
     ],
-};
+});
 
 export default function TransitievergoedingPage() {
     return (
@@ -262,6 +264,12 @@ export default function TransitievergoedingPage() {
                             </p>
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3">
+                            <Link
+                                href="/baan-wisselen"
+                                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#FFF4D6] text-slate-900 font-black text-sm border-2 border-white hover:bg-[#FFE7A8] transition-colors"
+                            >
+                                Bekijk baan wisselen
+                            </Link>
                             <Link
                                 href="/tools/opzegtermijn-berekenen"
                                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-white hover:bg-teal-300 transition-colors"
