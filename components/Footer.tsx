@@ -121,6 +121,17 @@ export default function Footer() {
                                 />
                             </a>
                         </div>
+                        <p className="mt-4 text-sm font-bold text-slate-700">
+                            Ook genoemd op{" "}
+                            <a
+                                href="https://dang.ai"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline decoration-2 underline-offset-4 hover:text-teal-700 transition-colors"
+                            >
+                                Dang.ai
+                            </a>
+                        </p>
                     </div>
 
                     <div>
