@@ -26,17 +26,17 @@ const faqs = [
   {
     question: "Hoe zeg je CVMaker op?",
     answer:
-      "Volgens de officiele CVMaker prijzenpagina log je in, klik je rechtsboven op je naam, ga je naar Accountinstellingen en vervolgens naar Abonnement om direct te annuleren. CVMaker noemt ook de helpdesk als alternatief.",
+      "Volgens de officiële CVMaker prijzenpagina log je in, klik je rechtsboven op je naam, ga je naar Accountinstellingen en vervolgens naar Abonnement om direct te annuleren. CVMaker noemt ook de helpdesk als alternatief.",
   },
   {
     question: "Wat gebeurt er na opzeggen bij CVMaker?",
     answer:
-      "De officiele prijzenpagina zegt dat je na opzeggen geen verdere bedragen meer hoeft te betalen en dat je toegang behoudt tot de datum die in je bevestigingsmail staat.",
+      "De officiële prijzenpagina zegt dat je na opzeggen geen verdere bedragen meer hoeft te betalen en dat je toegang behoudt tot de datum die in je bevestigingsmail staat.",
   },
   {
     question: "Heeft CVMaker een proefperiode of abonnement?",
     answer:
-      "Ja. De officiele prijzenpagina noemt CVMaker Pro voor EUR1,99 voor 14 dagen en daarna EUR21,99 per maand met automatische verlenging totdat je opzegt.",
+      "Ja. De officiële prijzenpagina noemt CVMaker Pro voor EUR1,99 voor 14 dagen en daarna EUR21,99 per maand met automatische verlenging totdat je opzegt.",
   },
   {
     question: "Waarom zoeken mensen op cvmaker opzeggen?",
@@ -46,9 +46,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CVMaker Opzeggen - Officiele Stappen + Alternatief | WerkCV",
+  title: "CVMaker Opzeggen - Officiële Stappen + Alternatief | WerkCV",
   description:
-    "Zoek je hoe je CVMaker opzegt? Bekijk de officiele stappen van CVMaker, wat de prijzenpagina zegt over annuleren en vergelijk daarna een alternatief zonder abonnement.",
+    "Zoek je hoe je CVMaker opzegt? Bekijk de officiële stappen van CVMaker, wat de prijzenpagina zegt over annuleren en vergelijk daarna een alternatief zonder abonnement.",
   keywords: [
     "cvmaker opzeggen",
     "cvmaker abonnement opzeggen",
@@ -125,7 +125,7 @@ export default function CvmakerOpzeggenPage() {
               Intent: cvmaker opzeggen
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CVMaker opzeggen: wat de officiele prijzenpagina zegt
+              CVMaker opzeggen: wat de officiële prijzenpagina zegt
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Deze pagina vat samen wat CVMaker zelf publiceert over annuleren. Dat maakt de intentie
@@ -146,12 +146,12 @@ export default function CvmakerOpzeggenPage() {
               Wil je pas daarna inhoudelijk vergelijken? De vergelijking met WerkCV staat lager op deze pagina.
             </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
-              Officiele bronnen gecheckt op 1 april 2026.
+              Officiële bronnen gecheckt op 1 april 2026.
             </p>
           </div>
 
           <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">Kernpunten uit de officiele bronnen</h2>
+            <h2 className="text-xl font-black text-black">Kernpunten uit de officiële bronnen</h2>
             <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
               <li>CVMaker zegt dat opzeggen via Accountinstellingen &gt; Abonnement kan.</li>
               <li>De prijzenpagina noemt ook contact met de helpdesk als route om te annuleren.</li>
@@ -163,7 +163,7 @@ export default function CvmakerOpzeggenPage() {
 
         <section className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Op basis van de CVMaker prijzenpagina
+            Op basis van de officiële CVMaker prijzenpagina
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
             Stappen om CVMaker op te zeggen
@@ -207,16 +207,44 @@ export default function CvmakerOpzeggenPage() {
         <OpzeggenConversionSection
           pageKey="cvmaker-opzeggen"
           compareHref="/cv-gids/werkcv-vs-cvmaker"
-          compareTitle="WerkCV vs CVMaker"
+          compareTitle="CVMaker alternatief"
           compareBody="Vergelijk prijsmodel, use case en productscope pas nadat je het alternatief zonder abonnement hebt gezien."
         />
+
+        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            CVMaker alternatief
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            CVMaker alternatief zonder maandabonnement
+          </h2>
+          <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Zoek je een CVMaker alternatief omdat je geen proefperiode of maandelijkse verlenging wilt? WerkCV laat je gratis bouwen en vraagt alleen een eenmalige betaling wanneer je de PDF downloadt.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <TrackedLandingLink
+              href="/editor"
+              trackingLocation="cvmaker-opzeggen:alternative_primary"
+              trackingLabel="Maak cv zonder abonnement"
+              className="inline-block border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            >
+              Maak cv zonder abonnement
+            </TrackedLandingLink>
+            <Link
+              href="/cv-gids/werkcv-vs-cvmaker"
+              className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+            >
+              Vergelijk WerkCV en CVMaker
+            </Link>
+          </div>
+        </section>
 
         <section className="mb-14">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
             Bronnen
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            Officiele CVMaker pagina&apos;s
+            Officiële CVMaker pagina&apos;s
           </h2>
           <div className="mt-6 space-y-3">
             {sourceLinks.map((source) => (

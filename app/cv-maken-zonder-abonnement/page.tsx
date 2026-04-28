@@ -47,6 +47,14 @@ const subscriptionChecks = [
   },
 ];
 
+const whyWerkCvBullets = [
+  "Gebouwd voor de Nederlandse arbeidsmarkt",
+  "ATS-vriendelijke templates zonder overbodige opmaak",
+  "Gratis starten, pas betalen bij PDF-download",
+  "Geen abonnement of automatische verlenging",
+  `Eén duidelijke prijs: ${cvDownloadPrice.display}`,
+];
+
 const explanationCards = [
   {
     title: "Betaal alleen als je cv echt klaar is",
@@ -73,7 +81,7 @@ const intentCards = [
   },
   {
     title: "Geen proefperiode betekent minder abonnementsstress",
-    body: "Wie zoekt op een cv-maker zonder proefperiode zoekt meestal dezelfde uitkomst: geen trial die omslaat in een abonnement, maar een rustige route waarbij je pas betaalt op de uiteindelijke download.",
+    body: "Wie zoekt op een cv-maker zonder proefperiode zoekt meestal dezelfde uitkomst: geen proefperiode die omslaat in een abonnement, maar een rustige route waarbij je pas betaalt op de uiteindelijke download.",
   },
 ];
 
@@ -97,6 +105,11 @@ const relatedLinks = [
     href: "/goedkoopste-cv-maker-nederland",
     title: "Vergelijk gratis, betaald en proefmodellen",
     body: "Gebruik deze route als je prijsmodellen naast elkaar wilt zien op basis van wat een eerste download je echt kost.",
+  },
+  {
+    href: "/cv-maken-zonder-verborgen-kosten",
+    title: "CV maken zonder verborgen kosten",
+    body: "Ga hierheen als je vooral wilt weten wanneer je betaalt en wat er niet stilletjes doorloopt.",
   },
 ];
 
@@ -338,7 +351,7 @@ export default function CvMakenZonderAbonnementPage() {
                 Maak gratis je cv, betaal pas bij downloaden
               </TrackedLandingLink>
               <p className="text-sm font-medium text-slate-700">
-                Geen trial. Geen automatische verlenging. Geen opzegstress.
+                Geen proefperiode. Geen automatische verlenging. Geen opzegstress.
               </p>
             </div>
           </div>
@@ -354,6 +367,46 @@ export default function CvMakenZonderAbonnementPage() {
               <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{card.body}</p>
             </article>
           ))}
+        </section>
+
+        <section className="mb-12 grid gap-6 lg:grid-cols-2">
+          <article className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Download-intentie
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              CV downloaden zonder abonnement
+            </h2>
+            <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
+              Als je zoekt op cv downloaden zonder abonnement, wil je meestal weten of je na betaling ergens aan vastzit. Bij WerkCV betaal je alleen voor de definitieve PDF-download. Er start geen maandplan en er is niets om later op te zeggen.
+            </p>
+            <TrackedLandingLink
+              href="/editor"
+              trackingLocation="cv-maken-zonder-abonnement:download_section_primary"
+              trackingLabel="Download je cv zonder maandkosten"
+              className="mt-5 inline-block border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            >
+              Download je cv zonder maandkosten
+            </TrackedLandingLink>
+          </article>
+
+          <article className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Alternatieve zoekterm
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              CV maken geen abonnement
+            </h2>
+            <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
+              Geen abonnement betekent bij WerkCV dat je gratis kunt bouwen, pas betaalt bij PDF-download en daarna geen automatische verlenging krijgt. Dat maakt de kosten vooraf duidelijker dan een proefperiode of maandmodel.
+            </p>
+            <Link
+              href="/cv-maken-zonder-verborgen-kosten"
+              className="mt-5 inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+            >
+              Bekijk verborgen-kosten uitleg
+            </Link>
+          </article>
         </section>
 
         <section className="mb-12 grid gap-6 lg:grid-cols-3">
@@ -410,15 +463,26 @@ export default function CvMakenZonderAbonnementPage() {
           </div>
         </section>
 
+        <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Waarom WerkCV?
+          </p>
+          <ul className="mt-4 list-disc space-y-3 pl-5 text-sm font-medium leading-relaxed text-slate-700 marker:text-black">
+            {whyWerkCvBullets.map((bullet) => (
+              <li key={bullet}>{bullet}</li>
+            ))}
+          </ul>
+        </section>
+
         <section className="border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div className="max-w-3xl">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
+              <h2 className="text-3xl font-black text-black">
                 Klaar om zonder abonnement te starten?
-              </p>
-              <h2 className="mt-2 text-3xl font-black text-black">
-                Bouw je cv gratis, betaal later éénmalig bij download en houd toegang tot hetzelfde cv.
               </h2>
+              <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
+                Bouw je cv gratis, betaal later éénmalig bij download en houd toegang tot hetzelfde cv.
+              </p>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
                 {supportLine}
               </p>

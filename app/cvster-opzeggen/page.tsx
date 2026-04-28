@@ -35,11 +35,19 @@ const differenceBullets = [
   `Eénmalig ${cvDownloadPrice.display} per cv-download`,
 ];
 
+const whyWerkCvBullets = [
+  "Gebouwd voor de Nederlandse arbeidsmarkt",
+  "ATS-vriendelijke templates zonder overbodige opmaak",
+  "Gratis starten, pas betalen bij PDF-download",
+  "Geen abonnement of automatische verlenging",
+  `Eén duidelijke prijs: ${cvDownloadPrice.display}`,
+];
+
 const faqs = [
   {
     question: "Hoe zeg je CVster op?",
     answer:
-      "Volgens de officiele help-pagina kun je in de app via Accountinstellingen je abonnement annuleren. CVster zegt ook dat je dit via de contactpagina kunt regelen als je niet kunt inloggen.",
+      "Volgens de officiële help-pagina kun je in de app via Accountinstellingen je abonnement annuleren. CVster zegt ook dat je dit via de contactpagina kunt regelen als je niet kunt inloggen.",
   },
   {
     question: "Wat gebeurt er na opzeggen bij CVster?",
@@ -54,7 +62,7 @@ const faqs = [
   {
     question: "Heeft CVster een proefperiode?",
     answer:
-      "Ja. De officiele facturatie-uitleg zegt dat een proefperiode na 7 dagen automatisch wordt omgezet in een premiumabonnement als je niet op tijd annuleert. CVster zegt er ook bij dat prijzen kunnen verschillen per regio of ouder prijsmodel.",
+      "Ja. De officiële facturatie-uitleg zegt dat een proefperiode na 7 dagen automatisch wordt omgezet in een premiumabonnement als je niet op tijd annuleert. CVster zegt er ook bij dat prijzen kunnen verschillen per regio of ouder prijsmodel.",
   },
   {
     question: "Is WerkCV een alternatief voor CVster?",
@@ -168,13 +176,16 @@ export default function CvsterOpzeggenPage() {
             <p className="mt-3 text-sm font-medium text-slate-600">
               Eénmalig betalen. Geen maandabonnement. Geen automatische verlenging.
             </p>
+            <p className="mt-4 border-2 border-black bg-white px-4 py-3 text-sm font-medium leading-relaxed text-slate-700">
+              Let op: WerkCV is niet verbonden aan CVster. We vatten hier openbare informatie samen en tonen daarna een alternatief zonder proefabonnement.
+            </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
-              Officiele bronnen gecheckt op 1 april 2026.
+              Officiële bronnen gecheckt op 1 april 2026.
             </p>
           </div>
 
           <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">Kernpunten uit de officiele bronnen</h2>
+            <h2 className="text-xl font-black text-black">Kernpunten uit de officiële bronnen</h2>
             <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
               <li>CVster zegt dat opzeggen via Accountinstellingen kan.</li>
               <li>Kun je niet inloggen, dan noemt CVster de contactpagina als alternatieve route.</li>
@@ -228,8 +239,36 @@ export default function CvsterOpzeggenPage() {
             </TrackedLandingLink>
           </div>
           <p className="mt-3 text-sm font-medium text-black">
-            Geen trial. Geen automatische verlenging. Geen opzegging achteraf.
+            Geen proefperiode. Geen automatische verlenging. Geen opzegging achteraf.
           </p>
+        </section>
+
+        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            CVster alternatief
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            CVster alternatief zonder proefabonnement
+          </h2>
+          <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Zoek je een CVster alternatief omdat je geen proefperiode of automatische verlenging wilt? WerkCV werkt met gratis bouwen en een eenmalige betaling bij PDF-download.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <TrackedLandingLink
+              href="/editor"
+              trackingLocation="cvster-opzeggen:alternative_primary"
+              trackingLabel="Maak cv zonder proefabonnement"
+              className="inline-block border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            >
+              Maak cv zonder proefabonnement
+            </TrackedLandingLink>
+            <Link
+              href="/cv-gids/werkcv-vs-cvster"
+              className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+            >
+              Vergelijk WerkCV en CVster
+            </Link>
+          </div>
         </section>
 
         <section className="mb-10 border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
@@ -246,7 +285,7 @@ export default function CvsterOpzeggenPage() {
               direct verdwijnt, maar nog doorloopt tot het einde van je laatste maand- of proefbetaling.
             </p>
             <p>
-              De officiele facturatie-uitleg zegt daarnaast dat een proefperiode na 7 dagen automatisch
+              De officiële facturatie-uitleg zegt daarnaast dat een proefperiode na 7 dagen automatisch
               overgaat in premium als je niet op tijd annuleert. CVster zegt er wel bij dat prijzen per
               regio of ouder prijsmodel kunnen verschillen, dus controleer altijd je eigen checkoutdetails.
             </p>
@@ -280,7 +319,7 @@ export default function CvsterOpzeggenPage() {
             Bronnen
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            Officiele CVster pagina&apos;s
+            Officiële CVster pagina&apos;s
           </h2>
           <div className="mt-6 space-y-3">
             {sourceLinks.map((source) => (
@@ -320,6 +359,40 @@ export default function CvsterOpzeggenPage() {
           </div>
         </section>
 
+        <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Waarom WerkCV?
+          </p>
+          <ul className="mt-4 list-disc space-y-3 pl-5 text-sm font-medium leading-relaxed text-slate-700 marker:text-black">
+            {whyWerkCvBullets.map((bullet) => (
+              <li key={bullet}>{bullet}</li>
+            ))}
+          </ul>
+          <p className="mt-5 text-sm font-medium leading-relaxed text-slate-700">
+            Lees ook meer over{" "}
+            <Link href="/cv-maken-zonder-abonnement" className="font-black text-black underline">
+              cv maken zonder abonnement
+            </Link>
+            ,{" "}
+            <Link href="/cv-maken-eenmalig-betalen" className="font-black text-black underline">
+              een cv maken met eenmalige betaling
+            </Link>
+            , ons{" "}
+            <Link href="/prijzen" className="font-black text-black underline">
+              prijsmodel
+            </Link>
+            , de vergelijking voor de{" "}
+            <Link href="/beste-cv-maker-nederland" className="font-black text-black underline">
+              beste cv-maker van Nederland
+            </Link>
+            {" "}en de gids over de{" "}
+            <Link href="/goedkoopste-cv-maker-nederland" className="font-black text-black underline">
+              goedkoopste cv-maker
+            </Link>
+            .
+          </p>
+        </section>
+
         <section className="border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div className="max-w-3xl">
@@ -333,7 +406,7 @@ export default function CvsterOpzeggenPage() {
                 Gebruik WerkCV als simpel alternatief: gratis bouwen, éénmalig betalen bij download en daarna klaar.
               </p>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black">
-                Geen trial. Geen automatische verlenging. Geen opzegging achteraf.
+                Geen proefperiode. Geen automatische verlenging. Geen opzegging achteraf.
               </p>
             </div>
             <TrackedLandingLink

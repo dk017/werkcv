@@ -761,6 +761,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.81,
         },
         {
+            url: `${baseUrl}/cv-maken-zonder-verborgen-kosten`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.81,
+        },
+        {
             url: `${baseUrl}/cv-optimaliseren`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -924,11 +930,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'zzp-uurtarief-berekenen',
     ];
 
+    const highIntentToolPriority: Record<string, number> = {
+        'ats-cv-checker': 0.82,
+        'cv-score': 0.82,
+    };
+
     const toolPages: MetadataRoute.Sitemap = await Promise.all(toolSlugs.map(async (slug) => ({
         url: `${baseUrl}/tools/${slug}`,
         lastModified: await getFirstExistingLastModified([`app/tools/${slug}/page.tsx`]),
         changeFrequency: 'monthly' as const,
-        priority: 0.72,
+        priority: highIntentToolPriority[slug] ?? 0.72,
     })));
 
     const salaryRolePagesSitemap: MetadataRoute.Sitemap = await Promise.all(salaryRolePages.map(async (page) => ({

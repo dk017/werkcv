@@ -39,6 +39,14 @@ const valueCards = [
   },
 ];
 
+const whyWerkCvBullets = [
+  "Gebouwd voor de Nederlandse arbeidsmarkt",
+  "ATS-vriendelijke templates zonder overbodige opmaak",
+  "Gratis starten, pas betalen bij PDF-download",
+  "Geen abonnement of automatische verlenging",
+  `Eén duidelijke prijs: ${cvDownloadPrice.display}`,
+];
+
 const faqs = [
   {
     question: "Kan ik eerst gratis beginnen?",
@@ -255,6 +263,32 @@ export default function CvMakenEenmaligBetalenPage() {
           ))}
         </section>
 
+        <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Geen verborgen kosten
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            Eénmalig betalen betekent ook: geen onverwachte maandkosten
+          </h2>
+          <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            WerkCV koppelt betalen aan de PDF-download, niet aan een doorlopend account. Je ziet dus vooraf waarvoor je betaalt en hoeft later geen abonnement te stoppen.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link
+              href="/cv-maken-zonder-verborgen-kosten"
+              className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+            >
+              Lees over verborgen kosten
+            </Link>
+            <Link
+              href="/cv-maken-zonder-abonnement"
+              className="inline-block border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black"
+            >
+              CV maken zonder abonnement
+            </Link>
+          </div>
+        </section>
+
         <section className="mb-12 border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
             Waarom dit model beter past
@@ -301,6 +335,17 @@ export default function CvMakenEenmaligBetalenPage() {
               </details>
             ))}
           </div>
+        </section>
+
+        <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Waarom WerkCV?
+          </p>
+          <ul className="mt-4 list-disc space-y-3 pl-5 text-sm font-medium leading-relaxed text-slate-700 marker:text-black">
+            {whyWerkCvBullets.map((bullet) => (
+              <li key={bullet}>{bullet}</li>
+            ))}
+          </ul>
         </section>
 
         <section className="border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">

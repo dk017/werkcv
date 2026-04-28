@@ -35,11 +35,19 @@ const nextCvBullets = [
   "Nederlandse, ATS-vriendelijke templates",
 ];
 
+const whyWerkCvBullets = [
+  "Gebouwd voor de Nederlandse arbeidsmarkt",
+  "ATS-vriendelijke templates zonder overbodige opmaak",
+  "Gratis starten, pas betalen bij PDF-download",
+  "Geen abonnement of automatische verlenging",
+  `Eén duidelijke prijs: ${cvDownloadPrice.display}`,
+];
+
 const faqs = [
   {
     question: "Hoe zeg je CV.nl op?",
     answer:
-      "Volgens de officiele CV.nl FAQ log je in, ga je via het profielicoon naar Instellingen en gebruik je daar de knop Opzeggen. CV.nl zegt erbij dat je automatisch een bevestiging per e-mail ontvangt.",
+      "Volgens de officiële CV.nl FAQ log je in, ga je via het profielicoon naar Instellingen en gebruik je daar de knop Opzeggen. CV.nl zegt erbij dat je automatisch een bevestiging per e-mail ontvangt.",
   },
   {
     question: "Moet je voor de volgende periode opzeggen?",
@@ -54,7 +62,7 @@ const faqs = [
   {
     question: "Hoe werkt cv nl opzeggen contact?",
     answer:
-      "Op de officiele contactpagina van CV.nl staat een contactformulier met het onderwerp 'Lidmaatschap opzeggen'. Op dezelfde pagina staat ook een directe knop naar 'Lidmaatschap opzeggen' en het adres Overschiestraat 63, 1062 XD Amsterdam.",
+      "Op de officiële contactpagina van CV.nl staat een contactformulier met het onderwerp 'Lidmaatschap opzeggen'. Op dezelfde pagina staat ook een directe knop naar 'Lidmaatschap opzeggen' en het adres Overschiestraat 63, 1062 XD Amsterdam.",
   },
   {
     question: "Wat gebeurt er na opzeggen van het CV.nl abonnement?",
@@ -174,13 +182,16 @@ export default function CvNlOpzeggenPage() {
             <p className="mt-3 text-sm font-medium text-slate-600">
               Geen proefperiode. Geen automatische verlenging. Geen opzegging nodig.
             </p>
+            <p className="mt-4 border-2 border-black bg-white px-4 py-3 text-sm font-medium leading-relaxed text-slate-700">
+              Let op: WerkCV is niet verbonden aan CV.nl. We verzamelen hier alleen openbare opzegstappen en tonen daarna een alternatief zonder abonnement.
+            </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
-              Officiele bronnen gecheckt op 17 april 2026.
+              Officiële bronnen gecheckt op 17 april 2026.
             </p>
           </div>
 
           <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">Kernpunten uit de officiele bronnen</h2>
+            <h2 className="text-xl font-black text-black">Kernpunten uit de officiële bronnen</h2>
             <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
               <li>CV.nl zegt in de FAQ dat opzeggen via Instellingen in je account gaat.</li>
               <li>Volgens dezelfde FAQ ontvang je daarna automatisch een bevestiging per e-mail.</li>
@@ -244,6 +255,34 @@ export default function CvNlOpzeggenPage() {
           </p>
         </section>
 
+        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            CV.nl alternatief
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            CV.nl alternatief zonder abonnement
+          </h2>
+          <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Zoek je een CV.nl alternatief omdat je geen maandabonnement of proefperiode wilt? WerkCV laat je gratis bouwen en vraagt alleen een eenmalige betaling bij PDF-download.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <TrackedLandingLink
+              href="/editor"
+              trackingLocation="cv-nl-opzeggen:alternative_primary"
+              trackingLabel="Maak cv zonder abonnement"
+              className="inline-block border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+            >
+              Maak cv zonder abonnement
+            </TrackedLandingLink>
+            <Link
+              href="/cv-gids/werkcv-vs-cv-nl"
+              className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+            >
+              Vergelijk WerkCV en CV.nl
+            </Link>
+          </div>
+        </section>
+
         <section className="mb-14 grid gap-6 lg:grid-cols-2">
           <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
@@ -254,7 +293,7 @@ export default function CvNlOpzeggenPage() {
             </h2>
             <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
               <p>
-                De officiele FAQ van CV.nl zegt dat je het abonnement via je account opzegt:
+                De officiële FAQ van CV.nl zegt dat je het abonnement via je account opzegt:
                 inloggen, via het profielicoon naar Instellingen, daar op Opzeggen klikken en
                 daarna controleren of je een bevestiging per e-mail hebt ontvangen.
               </p>
@@ -274,7 +313,7 @@ export default function CvNlOpzeggenPage() {
             </h2>
             <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
               <p>
-                Op de officiele contactpagina van CV.nl staat een contactformulier met het onderwerp
+                Op de officiële contactpagina van CV.nl staat een contactformulier met het onderwerp
                 <span className="font-black text-black"> Lidmaatschap opzeggen</span>. Op diezelfde
                 pagina staat ook een directe knop naar <span className="font-black text-black">Lidmaatschap opzeggen</span>.
               </p>
@@ -290,7 +329,7 @@ export default function CvNlOpzeggenPage() {
                 rel="noreferrer"
                 className="inline-block border-2 border-black bg-yellow-200 px-4 py-2 text-sm font-black text-black hover:bg-yellow-300"
               >
-                Open officiele contactpagina
+                Open officiële contactpagina
               </a>
               <a
                 href="https://www.cv.nl/faq"
@@ -298,7 +337,7 @@ export default function CvNlOpzeggenPage() {
                 rel="noreferrer"
                 className="inline-block border-2 border-black bg-white px-4 py-2 text-sm font-black text-black hover:bg-slate-100"
               >
-                Open officiele FAQ
+                Open officiële FAQ
               </a>
             </div>
           </div>
@@ -355,7 +394,7 @@ export default function CvNlOpzeggenPage() {
             Bronnen
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            Officiele CV.nl pagina&apos;s
+            Officiële CV.nl pagina&apos;s
           </h2>
           <div className="mt-6 space-y-3">
             {sourceLinks.map((source) => (
@@ -393,6 +432,40 @@ export default function CvNlOpzeggenPage() {
               </details>
             ))}
           </div>
+        </section>
+
+        <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Waarom WerkCV?
+          </p>
+          <ul className="mt-4 list-disc space-y-3 pl-5 text-sm font-medium leading-relaxed text-slate-700 marker:text-black">
+            {whyWerkCvBullets.map((bullet) => (
+              <li key={bullet}>{bullet}</li>
+            ))}
+          </ul>
+          <p className="mt-5 text-sm font-medium leading-relaxed text-slate-700">
+            Lees ook meer over{" "}
+            <Link href="/cv-maken-zonder-abonnement" className="font-black text-black underline">
+              cv maken zonder abonnement
+            </Link>
+            ,{" "}
+            <Link href="/cv-maken-eenmalig-betalen" className="font-black text-black underline">
+              een cv maken met eenmalige betaling
+            </Link>
+            , ons{" "}
+            <Link href="/prijzen" className="font-black text-black underline">
+              prijsmodel
+            </Link>
+            , de vergelijking voor de{" "}
+            <Link href="/beste-cv-maker-nederland" className="font-black text-black underline">
+              beste cv-maker van Nederland
+            </Link>
+            {" "}en de gids over de{" "}
+            <Link href="/goedkoopste-cv-maker-nederland" className="font-black text-black underline">
+              goedkoopste cv-maker
+            </Link>
+            .
+          </p>
         </section>
 
         <section className="border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
