@@ -51,6 +51,7 @@ const coachUseCases = [
 ];
 
 const resourceLinks = [
+  { href: "/loopbaancoach", label: "CV tool voor loopbaancoaches" },
   { href: "/gratis-cv-template", label: "Gratis CV template" },
   { href: "/cv-voorbeelden", label: "CV voorbeelden" },
   { href: "/cv-gids", label: "CV gidsen" },

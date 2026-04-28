@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { cvDownloadPrice } from "@/lib/site-content";
 
 export const metadata: Metadata = {
-    title: "CV Maken Kosten? Eenmalig €4,99, Geen Abonnement | WerkCV",
-    description: "Maak gratis je CV en download voor €4,99 per CV. Geen abonnement, geen automatische verlenging. Voor hetzelfde betaalde CV kun je later opnieuw bewerken en downloaden.",
+    title: `CV Maken Kosten? Eenmalig ${cvDownloadPrice.display}, Geen Abonnement | WerkCV`,
+    description: `Maak gratis je CV en download voor ${cvDownloadPrice.display} per CV. Geen abonnement, geen automatische verlenging. Voor hetzelfde betaalde CV kun je later opnieuw bewerken en downloaden.`,
     keywords: [
         "cv maken kosten",
         "cv maker prijs",
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 const priceBadges = [
-    "Eenmalig €4,99",
+    `Eenmalig ${cvDownloadPrice.display}`,
     "Geen abonnement",
     "Later opnieuw downloaden",
 ] as const;
@@ -50,12 +51,12 @@ const pricingIntentCards = [
 ] as const;
 
 const pricingFaqs = [
-    { q: "Wat kost WerkCV precies?", a: "WerkCV kost €4,99 per CV-download. Je start gratis, bouwt je CV op en betaalt pas wanneer je die definitieve PDF wilt downloaden." },
+    { q: "Wat kost WerkCV precies?", a: `WerkCV kost ${cvDownloadPrice.display} per CV-download. Je start gratis, bouwt je CV op en betaalt pas wanneer je die definitieve PDF wilt downloaden.` },
     { q: "Moet ik betalen om mijn CV te maken?", a: "Nee, het aanmaken en bewerken van je CV is volledig gratis. Je betaalt pas als je dat CV als PDF wilt downloaden." },
     { q: "Wat betekent cv maken betaald meestal?", a: "Meestal zoekt iemand een betaalde CV-tool met duidelijke kosten en zonder verrassingen achteraf. Voor WerkCV betekent dat: gratis starten en pas betalen wanneer je jouw definitieve PDF wilt downloaden." },
     { q: "Kan ik mijn CV per download betalen?", a: "Ja. Bij WerkCV betaal je eenmalig per CV wanneer je die definitieve PDF-download wilt doen. Voor datzelfde betaalde CV kun je later terugkomen, bewerken en opnieuw downloaden zonder opnieuw te betalen." },
     { q: "Wat zijn CV.nl kosten volgens de publieke prijzenpagina?", a: "Volgens de publieke prijzenpagina van CV.nl kost de instaproute 14 dagen €0,99 en daarna €19,99 per maand met automatische verlenging. Gecheckt op 17 april 2026. Controleer actuele voorwaarden altijd zelf op hun officiële pricingpagina." },
-    { q: "Is het een abonnement?", a: "Nee. Het is een eenmalige betaling van €4,99 per CV. Geen automatische verlengingen en geen verborgen kosten." },
+    { q: "Is het een abonnement?", a: `Nee. Het is een eenmalige betaling van ${cvDownloadPrice.display} per CV. Geen automatische verlengingen en geen verborgen kosten.` },
     { q: "Kan ik mijn CV later nog bewerken?", a: "Ja. Na betaling blijft dat CV in je account staan en kun je het later opnieuw openen, bewerken, van template of kleur wisselen en opnieuw downloaden zonder opnieuw te betalen." },
     { q: "Wanneer betaal ik opnieuw?", a: "Alleen als je een nieuw CV als apart document aanmaakt. Voor een CV waarvoor je al hebt betaald, hoef je niet opnieuw te betalen om later nog een PDF te downloaden." },
     { q: "Welke betaalmethoden accepteren jullie?", a: "We accepteren iDEAL, creditcard, Bancontact en andere gangbare betaalmethoden via onze betalingspartner." },
@@ -79,8 +80,8 @@ const productJsonLd = {
     "offers": {
         "@type": "Offer",
         "url": "https://werkcv.nl/prijzen",
-        "price": "4.99",
-        "priceCurrency": "EUR",
+        "price": cvDownloadPrice.value,
+        "priceCurrency": cvDownloadPrice.currency,
         "priceValidUntil": "2026-12-31",
         "availability": "https://schema.org/InStock",
         "itemCondition": "https://schema.org/NewCondition",
@@ -136,10 +137,10 @@ export default function PrijzenPage() {
                         ))}
                     </div>
                     <h1 className="text-4xl md:text-5xl font-black text-black mb-4">
-                        CV maken kosten: eenmalig €4,99 per CV, geen abonnement
+                        CV maken kosten: eenmalig {cvDownloadPrice.display} per CV, geen abonnement
                     </h1>
                     <p className="text-lg font-medium text-black max-w-2xl mx-auto">
-                        WerkCV kost €4,99 per CV-download. Je start gratis, betaalt pas wanneer je wilt downloaden en kunt datzelfde betaalde CV later opnieuw bewerken en downloaden zonder extra maandkosten.
+                        WerkCV kost {cvDownloadPrice.display} per CV-download. Je start gratis, betaalt pas wanneer je wilt downloaden en kunt datzelfde betaalde CV later opnieuw bewerken en downloaden zonder extra maandkosten.
                     </p>
                     <p className="text-sm font-medium text-gray-700 max-w-2xl mx-auto mt-3">
                         Wil je eerst precies zien hoe{" "}
@@ -164,7 +165,7 @@ export default function PrijzenPage() {
                         </div>
 
                         <div className="text-center pt-4">
-                            <div className="text-6xl font-black text-black mb-2">€4,99</div>
+                            <div className="text-6xl font-black text-black mb-2">{cvDownloadPrice.display}</div>
                             <p className="text-lg font-bold text-gray-600 mb-8">eenmalig per CV</p>
 
                             <ul className="text-left space-y-3 mb-8">
@@ -208,7 +209,7 @@ export default function PrijzenPage() {
                         Zoek je op &quot;cv.nl kosten&quot;?
                     </h2>
                     <p className="mt-3 text-sm md:text-base font-medium leading-relaxed text-gray-700">
-                        Volgens de publieke prijzenpagina van CV.nl kost de instaproute 14 dagen €0,99 en daarna €19,99 per maand met automatische verlenging. Gecheckt op 17 april 2026. WerkCV gebruikt een ander model: gratis starten en €4,99 eenmalig per CV-download.
+                        Volgens de publieke prijzenpagina van CV.nl kost de instaproute 14 dagen €0,99 en daarna €19,99 per maand met automatische verlenging. Gecheckt op 17 april 2026. WerkCV gebruikt een ander model: gratis starten en {cvDownloadPrice.display} eenmalig per CV-download.
                     </p>
                     <div className="mt-6 grid gap-4 md:grid-cols-2">
                         <div className="border-4 border-black bg-[#FFF4D6] p-5">
@@ -227,7 +228,7 @@ export default function PrijzenPage() {
                             </p>
                             <ul className="mt-3 space-y-2 text-sm font-black text-black">
                                 <li>&bull; Gratis starten</li>
-                                <li>&bull; €4,99 per CV-download</li>
+                                <li>&bull; {cvDownloadPrice.display} per CV-download</li>
                                 <li>&bull; Geen abonnement of automatische verlenging</li>
                             </ul>
                         </div>
@@ -295,7 +296,7 @@ export default function PrijzenPage() {
                             </div>
                             <h3 className="font-black text-black mb-2">WerkCV.nl</h3>
                             <ul className="space-y-2 text-sm font-black text-black">
-                                <li>&bull; Eenmalig €4,99 per CV</li>
+                                <li>&bull; Eenmalig {cvDownloadPrice.display} per CV</li>
                                 <li>&bull; Geen abonnement</li>
                                 <li>&bull; Later opnieuw bewerken en downloaden</li>
                                 <li>&bull; Eerlijk en transparant</li>

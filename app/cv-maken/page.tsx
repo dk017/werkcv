@@ -102,6 +102,24 @@ const formatChoices = [
   },
 ];
 
+const cityLinks = [
+  {
+    href: "/cv-maken-amsterdam",
+    title: "CV maken in Amsterdam",
+    body: "Voor sollicitaties in zakelijke dienstverlening, hospitality, tech, media en internationale teams.",
+  },
+  {
+    href: "/cv-maken-rotterdam",
+    title: "CV maken in Rotterdam",
+    body: "Voor haven, logistiek, techniek, operations, zorg en zakelijke dienstverlening.",
+  },
+  {
+    href: "/cv-maken-utrecht",
+    title: "CV maken in Utrecht",
+    body: "Voor zorg, onderwijs, overheid, IT, support en functies in Midden-Nederland.",
+  },
+];
+
 const profileExamples = [
   {
     title: "CV maken voorbeeld (medior, operations)",
@@ -497,6 +515,34 @@ export default function CvMakenPage() {
                   <h3 className="text-lg font-black text-black">{choice.title}</h3>
                   <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
                     {choice.body}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-14">
+          <div className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Lokale routes
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              CV maken per stad
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Solliciteer je in een specifieke stad? Gebruik deze lokale pagina&apos;s als startpunt en pas je cv daarna aan op de vacature.
+            </p>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {cityLinks.map((city) => (
+                <Link
+                  key={city.href}
+                  href={city.href}
+                  className="block border-2 border-black bg-[#FFFEF0] p-5 transition-colors hover:bg-yellow-100"
+                >
+                  <h3 className="text-lg font-black text-black">{city.title}</h3>
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+                    {city.body}
                   </p>
                 </Link>
               ))}

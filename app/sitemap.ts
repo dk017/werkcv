@@ -743,6 +743,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.64,
         },
         {
+            url: `${baseUrl}/loopbaancoach`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.78,
+        },
+        {
             url: `${baseUrl}/prijzen`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
@@ -765,6 +771,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.81,
+        },
+        {
+            url: `${baseUrl}/cv-maken-amsterdam`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.66,
+        },
+        {
+            url: `${baseUrl}/cv-maken-rotterdam`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.66,
+        },
+        {
+            url: `${baseUrl}/cv-maken-utrecht`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.66,
         },
         {
             url: `${baseUrl}/cv-optimaliseren`,
@@ -931,7 +955,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ];
 
     const highIntentToolPriority: Record<string, number> = {
-        'ats-cv-checker': 0.82,
+        'ats-cv-checker': 0.9,
         'cv-score': 0.82,
     };
 
