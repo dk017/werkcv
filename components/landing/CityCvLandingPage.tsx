@@ -14,6 +14,17 @@ type CityCvLandingPageProps = {
   angleBody: string;
   sectors: string[];
   examples: string[];
+  proofPoints?: string[];
+  profileExamples?: Array<{
+    title: string;
+    text: string;
+  }>;
+  bulletExamples?: Array<{
+    sector: string;
+    weak: string;
+    strong: string;
+  }>;
+  checklist?: string[];
   englishNote?: string;
 };
 
@@ -26,6 +37,10 @@ export default function CityCvLandingPage({
   angleBody,
   sectors,
   examples,
+  proofPoints = [],
+  profileExamples = [],
+  bulletExamples = [],
+  checklist = [],
   englishNote,
 }: CityCvLandingPageProps) {
   const faqItems = [
@@ -134,6 +149,74 @@ export default function CityCvLandingPage({
           ) : null}
         </section>
 
+        {proofPoints.length > 0 ? (
+          <section className="mb-12 border-4 border-black bg-[#FFF9D9] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Lokale context
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Wat betekent dit voor je cv?
+            </h2>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              {proofPoints.map((point) => (
+                <p
+                  key={point}
+                  className="border-2 border-black bg-white p-4 text-sm font-medium leading-relaxed text-slate-700"
+                >
+                  {point}
+                </p>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {profileExamples.length > 0 ? (
+          <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Copy-ready voorbeelden
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Voorbeeld profieltekst voor {city}
+            </h2>
+            <div className="mt-6 grid gap-5 md:grid-cols-2">
+              {profileExamples.map((example) => (
+                <article key={example.title} className="border-2 border-black bg-[#FFFEF0] p-5">
+                  <h3 className="text-lg font-black text-black">{example.title}</h3>
+                  <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+                    “{example.text}”
+                  </p>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
+        {bulletExamples.length > 0 ? (
+          <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Werkervaring verbeteren
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Zwakke vs sterke cv-bullets
+            </h2>
+            <div className="mt-6 space-y-4">
+              {bulletExamples.map((example) => (
+                <article key={example.sector} className="border-2 border-black bg-[#FFFEF0] p-5">
+                  <h3 className="text-lg font-black text-black">{example.sector}</h3>
+                  <div className="mt-3 grid gap-3 md:grid-cols-2">
+                    <p className="border-2 border-red-300 bg-white p-3 text-sm font-medium leading-relaxed text-slate-700">
+                      <span className="font-black text-black">Zwak:</span> {example.weak}
+                    </p>
+                    <p className="border-2 border-green-400 bg-white p-3 text-sm font-medium leading-relaxed text-slate-700">
+                      <span className="font-black text-black">Sterker:</span> {example.strong}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
+
         <section className="mb-12 grid gap-6 md:grid-cols-3">
           {examples.map((example) => (
             <article
@@ -147,6 +230,27 @@ export default function CityCvLandingPage({
             </article>
           ))}
         </section>
+
+        {checklist.length > 0 ? (
+          <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Checklist
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Controleer dit voordat je solliciteert in {city}
+            </h2>
+            <ul className="mt-5 grid gap-3 md:grid-cols-2">
+              {checklist.map((item) => (
+                <li
+                  key={item}
+                  className="border-2 border-black bg-[#FFF9D9] p-4 text-sm font-bold leading-relaxed text-black"
+                >
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
           <h2 className="text-3xl font-black text-black">
