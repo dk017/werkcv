@@ -46,6 +46,52 @@ const legalLinks = [
     { href: "/voorwaarden", label: "Algemene Voorwaarden" },
 ];
 
+const featuredBadges = [
+    {
+        href: "https://www.betterlaunch.co",
+        src: "https://www.betterlaunch.co/badge-dark.svg",
+        alt: "Featured on Better Launch",
+        width: 170,
+        height: 46,
+    },
+    {
+        href: "https://www.scrolllaunch.com/products/werkcv?utm_source=badge&utm_medium=embed&utm_campaign=werkcv&ref=scrolllaunch",
+        src: "https://www.scrolllaunch.com/api/badge/werkcv",
+        alt: "Featured on ScrollLaunch",
+        width: 170,
+        height: 37,
+    },
+    {
+        href: "https://neeed.directory/products/werkcv?utm_source=werkcv",
+        src: "https://neeed.directory/badges/neeed-badge-light.svg",
+        alt: "Featured on neeed.directory",
+        width: 139,
+        height: 40,
+        padded: true,
+    },
+    {
+        href: "https://wired.business",
+        src: "https://wired.business/badge0-dark.svg",
+        alt: "Featured on Wired Business",
+        width: 170,
+        height: 46,
+    },
+    {
+        href: "https://postyourstartup.co/startup/werkcv?ref=badge",
+        src: "https://postyourstartup.co/api/badge/werkcv?theme=dark",
+        alt: "Featured on PostYourStartup",
+        width: 170,
+        height: 44,
+    },
+    {
+        href: "https://dang.ai/",
+        src: "https://cdn.prod.website-files.com/63d8afd87da01fb58ea3fbcb/6487e2868c6c8f93b4828827_dang-badge.png",
+        alt: "Dang.ai",
+        width: 150,
+        height: 54,
+    },
+];
+
 export default function Footer() {
     return (
         <footer className="relative z-10 border-t-4 border-black bg-white mt-20">
@@ -58,104 +104,6 @@ export default function Footer() {
                         <p className="text-sm text-gray-600 leading-relaxed">
                             CV-builder, sollicitatiehulp en praktische tools voor werken in Nederland.
                         </p>
-                        <div className="mt-4 flex flex-wrap items-center gap-3">
-                            <a
-                                href="https://www.betterlaunch.co"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-                            >
-                                <Image
-                                    src="https://www.betterlaunch.co/badge-dark.svg"
-                                    alt="Featured on Better Launch"
-                                    width={170}
-                                    height={46}
-                                    className="block h-auto w-[170px]"
-                                    unoptimized
-                                />
-                            </a>
-                            <a
-                                href="https://www.scrolllaunch.com/products/werkcv?utm_source=badge&utm_medium=embed&utm_campaign=werkcv&ref=scrolllaunch"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-                            >
-                                <Image
-                                    src="https://www.scrolllaunch.com/api/badge/werkcv"
-                                    alt="Featured on ScrollLaunch"
-                                    width={170}
-                                    height={37}
-                                    className="block h-auto w-[170px]"
-                                    loading="lazy"
-                                    unoptimized
-                                />
-                            </a>
-                            <a
-                                href="https://neeed.directory/products/werkcv?utm_source=werkcv"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center rounded-md border-2 border-black bg-black p-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-                            >
-                                <Image
-                                    src="https://neeed.directory/badges/neeed-badge-light.svg"
-                                    alt="Featured on neeed.directory"
-                                    width={139}
-                                    height={40}
-                                    unoptimized
-                                />
-                            </a>
-                            <a
-                                href="https://wired.business"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label="Featured on Wired Business"
-                                className="inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-                            >
-                                <Image
-                                    src="https://wired.business/badge0-dark.svg"
-                                    alt="Featured on Wired Business"
-                                    width={170}
-                                    height={46}
-                                    className="block h-auto w-[170px]"
-                                    unoptimized
-                                />
-                            </a>
-                            <a
-                                href="https://postyourstartup.co/startup/werkcv?ref=badge"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-                            >
-                                <Image
-                                    src="https://postyourstartup.co/api/badge/werkcv?theme=dark"
-                                    alt="Featured on PostYourStartup"
-                                    width={170}
-                                    height={44}
-                                    className="block h-auto w-[170px]"
-                                    unoptimized
-                                />
-                            </a>
-                        </div>
-                        <p className="mt-4 text-sm font-bold text-slate-700">
-                            Ook genoemd op
-                        </p>
-                        <div className="mt-2">
-                            <a
-                                href="https://dang.ai/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-                            >
-                                <Image
-                                    src="https://cdn.prod.website-files.com/63d8afd87da01fb58ea3fbcb/6487e2868c6c8f93b4828827_dang-badge.png"
-                                    alt="Dang.ai"
-                                    width={150}
-                                    height={54}
-                                    className="block h-auto w-[150px]"
-                                    unoptimized
-                                />
-                            </a>
-                        </div>
                     </div>
 
                     <div>
@@ -195,6 +143,32 @@ export default function Footer() {
                                 </Link>
                             ))}
                         </div>
+                    </div>
+                </div>
+
+                <div className="mt-8 border-t-2 border-gray-200 pt-5">
+                    <p className="mb-3 text-center text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+                        Ook genoemd op
+                    </p>
+                    <div className="flex flex-wrap items-center justify-center gap-3">
+                        {featuredBadges.map((badge) => (
+                            <a
+                                key={badge.href}
+                                href={badge.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={`inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 ${badge.padded ? "items-center p-2" : ""}`}
+                            >
+                                <Image
+                                    src={badge.src}
+                                    alt={badge.alt}
+                                    width={badge.width}
+                                    height={badge.height}
+                                    className={`block h-auto ${badge.width === 139 ? "w-[139px]" : badge.width === 150 ? "w-[150px]" : "w-[170px]"}`}
+                                    unoptimized
+                                />
+                            </a>
+                        ))}
                     </div>
                 </div>
 
