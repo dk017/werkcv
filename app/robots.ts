@@ -1,22 +1,54 @@
 import { MetadataRoute } from 'next';
 
+const privatePaths = ['/api/', '/editor', '/en/editor', '/mijn-cvs', '/login', '/success'];
+
 export default function robots(): MetadataRoute.Robots {
     return {
         rules: [
             {
                 userAgent: '*',
                 allow: '/',
-                disallow: ['/api/', '/editor'],
+                disallow: privatePaths,
             },
             {
                 userAgent: 'OAI-SearchBot',
                 allow: '/',
-                disallow: ['/api/', '/editor'],
+                disallow: privatePaths,
+            },
+            {
+                userAgent: 'ChatGPT-User',
+                allow: '/',
+                disallow: privatePaths,
             },
             {
                 userAgent: 'GPTBot',
                 allow: '/',
-                disallow: ['/api/', '/editor'],
+                disallow: privatePaths,
+            },
+            {
+                userAgent: 'PerplexityBot',
+                allow: '/',
+                disallow: privatePaths,
+            },
+            {
+                userAgent: 'ClaudeBot',
+                allow: '/',
+                disallow: privatePaths,
+            },
+            {
+                userAgent: 'Claude-SearchBot',
+                allow: '/',
+                disallow: privatePaths,
+            },
+            {
+                userAgent: 'Claude-User',
+                allow: '/',
+                disallow: privatePaths,
+            },
+            {
+                userAgent: 'Google-Extended',
+                allow: '/',
+                disallow: privatePaths,
             },
         ],
         sitemap: 'https://werkcv.nl/sitemap.xml',

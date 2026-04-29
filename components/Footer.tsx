@@ -15,6 +15,7 @@ const mainLinks = [
     { href: "/prijzen", label: "Prijzen" },
     { href: "/faq", label: "FAQ" },
     { href: "/over-ons", label: "Over Ons" },
+    { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
 ];
 

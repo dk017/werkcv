@@ -79,6 +79,12 @@ export default function RootLayout({
     <html lang="nl" suppressHydrationWarning translate="no">
       <head>
         <meta name="google" content="notranslate" />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="WerkCV updates"
+          href="https://werkcv.nl/rss.xml"
+        />
         <SharedSiteJsonLd />
         {/* Google Analytics — inline so Google's detector finds it in page source */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-PCC26F3HBJ" />
