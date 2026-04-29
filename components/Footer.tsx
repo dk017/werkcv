@@ -137,16 +137,25 @@ export default function Footer() {
                             </a>
                         </div>
                         <p className="mt-4 text-sm font-bold text-slate-700">
-                            Ook genoemd op{" "}
+                            Ook genoemd op
+                        </p>
+                        <div className="mt-2">
                             <a
-                                href="https://dang.ai"
+                                href="https://dang.ai/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="underline decoration-2 underline-offset-4 hover:text-teal-700 transition-colors"
+                                className="inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
                             >
-                                Dang.ai
+                                <Image
+                                    src="https://cdn.prod.website-files.com/63d8afd87da01fb58ea3fbcb/6487e2868c6c8f93b4828827_dang-badge.png"
+                                    alt="Dang.ai"
+                                    width={150}
+                                    height={54}
+                                    className="block h-auto w-[150px]"
+                                    unoptimized
+                                />
                             </a>
-                        </p>
+                        </div>
                     </div>
 
                     <div>
