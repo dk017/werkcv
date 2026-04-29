@@ -120,6 +120,21 @@ export default function Footer() {
                                     unoptimized
                                 />
                             </a>
+                            <a
+                                href="https://postyourstartup.co/startup/werkcv?ref=badge"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+                            >
+                                <Image
+                                    src="https://postyourstartup.co/api/badge/werkcv?theme=dark"
+                                    alt="Featured on PostYourStartup"
+                                    width={170}
+                                    height={44}
+                                    className="block h-auto w-[170px]"
+                                    unoptimized
+                                />
+                            </a>
                         </div>
                         <p className="mt-4 text-sm font-bold text-slate-700">
                             Ook genoemd op{" "}
