@@ -155,6 +155,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.55,
         },
         {
+            url: `${baseUrl}/profielfoto-cv-maken`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.76,
+        },
+        {
             url: `${baseUrl}/salaris`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
