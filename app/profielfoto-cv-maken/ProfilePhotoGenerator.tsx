@@ -209,12 +209,7 @@ export default function ProfilePhotoGenerator() {
   }
 
   async function generatePhoto() {
-    if (!project || project.status !== "paid") {
-      setError("Koop eerst de AI-profielfoto add-on om te starten.");
-      return;
-    }
-
-    if (project.generationCount >= 1) {
+    if ((project?.generationCount ?? 0) >= 1) {
       setError("Je eerste set profielfoto's is al gemaakt. Gebruik verfijnen voor kleine aanpassingen.");
       return;
     }
@@ -237,7 +232,9 @@ export default function ProfilePhotoGenerator() {
       files.forEach((file) => {
         formData.append("photos", file);
       });
-      formData.append("projectId", project.id);
+      if (project?.id) {
+        formData.append("projectId", project.id);
+      }
       formData.append("style", style);
 
       const response = await fetch("/api/profile-photo", {
@@ -274,8 +271,8 @@ export default function ProfilePhotoGenerator() {
   }
 
   async function refinePhoto() {
-    if (!project || project.status !== "paid") {
-      setError("Koop eerst de AI-profielfoto add-on om te starten.");
+    if (!project) {
+      setError("Maak eerst je eerste set profielfoto's.");
       return;
     }
 
@@ -363,7 +360,16 @@ export default function ProfilePhotoGenerator() {
     });
   }
 
+  function getDownloadUrl(image: GeneratedImage): string {
+    return image.url.includes("?") ? `${image.url}&download=1` : `${image.url}?download=1`;
+  }
+
   async function startCheckout() {
+    if (!project?.id || images.length === 0) {
+      setError("Maak eerst je profielfoto-varianten. Je betaalt pas bij downloaden.");
+      return;
+    }
+
     setIsCheckoutRedirecting(true);
     setError(null);
     track("profile_photo_checkout_click", {
@@ -375,6 +381,8 @@ export default function ProfilePhotoGenerator() {
     try {
       const response = await fetch("/api/profile-photo/checkout", {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ projectId: project.id }),
       });
       const payload = (await response.json()) as { url?: string; error?: string };
 
@@ -419,47 +427,19 @@ export default function ProfilePhotoGenerator() {
         </div>
       )}
 
-      {authStatus === "authenticated" && (!project || project.status !== "paid") && (
-        <div className="rounded-3xl border-2 border-black bg-[#FFFEF9] p-6">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Eenmalige add-on</p>
-          <h2 className="mt-2 text-2xl font-black text-slate-950">AI-profielfoto voor cv en LinkedIn</h2>
-          <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-            Voor €9,99 krijg je één generatie met 4 professionele varianten en 2 inbegrepen verfijningen. Geen
-            abonnement; je gegenereerde foto&apos;s blijven beschikbaar in je account.
-          </p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-3">
-            {["4 startvarianten", "2 verfijningen", "Later downloaden"].map((item) => (
-              <div key={item} className="rounded-2xl border-2 border-black bg-white p-3 text-sm font-black">
-                {item}
-              </div>
-            ))}
-          </div>
-          {error && (
-            <div className="mt-5 rounded-2xl border-2 border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700">
-              {error}
-            </div>
-          )}
-          <button
-            type="button"
-            onClick={startCheckout}
-            disabled={isCheckoutRedirecting}
-            className="mt-5 inline-flex border-4 border-black bg-[#FFD166] px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {isCheckoutRedirecting ? "Checkout openen..." : "Koop AI-profielfoto voor €9,99"}
-          </button>
-        </div>
-      )}
-
-      {authStatus === "authenticated" && project?.status === "paid" && (
+      {authStatus === "authenticated" && (
       <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
         <div>
           <div className="mb-5 rounded-3xl border-2 border-black bg-[#E9FFFC] p-4">
-            <p className="text-sm font-black text-slate-950">Je AI-profielfoto add-on is actief</p>
+            <p className="text-sm font-black text-slate-950">
+              {project?.status === "paid" ? "Je AI-profielfoto add-on is actief" : "Maak eerst gratis je voorbeeldvarianten"}
+            </p>
             <p className="mt-1 text-xs font-bold text-slate-700">
-              Eén startgeneratie met 4 varianten. Nog {project.refinementsRemaining} van {project.maxRefinements} verfijningen over.
+              Log in, maak 4 voorbeeldvarianten en verfijn maximaal 2 keer. Je betaalt pas €9,99 als je wilt downloaden.
+              {project && ` Nog ${project.refinementsRemaining} van ${project.maxRefinements} verfijningen over.`}
             </p>
           </div>
-          {project.generationCount === 0 && (
+          {(project?.generationCount ?? 0) === 0 && (
           <div className="rounded-3xl border-2 border-dashed border-slate-300 bg-[#FFFEF9] p-5">
             <label className="block">
               <span className="text-sm font-black text-slate-900">Upload je bestaande foto</span>
@@ -511,7 +491,7 @@ export default function ProfilePhotoGenerator() {
           </div>
           )}
 
-          {project.generationCount === 0 && (
+          {(project?.generationCount ?? 0) === 0 && (
           <div className="mt-5">
             <p className="text-sm font-black text-slate-900">Kies uitstraling</p>
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
@@ -543,10 +523,10 @@ export default function ProfilePhotoGenerator() {
           <button
             type="button"
             onClick={generatePhoto}
-            disabled={isGenerating || project.generationCount >= 1}
+            disabled={isGenerating || (project?.generationCount ?? 0) >= 1}
             className="mt-5 w-full border-4 border-black bg-[#FFD166] px-5 py-4 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
           >
-            {project.generationCount >= 1
+            {(project?.generationCount ?? 0) >= 1
               ? "Eerste set is gemaakt"
               : isGenerating
                 ? "Profielfoto's worden gemaakt..."
@@ -554,7 +534,7 @@ export default function ProfilePhotoGenerator() {
           </button>
 
           <p className="mt-3 text-xs font-medium leading-relaxed text-slate-500">
-            Inbegrepen: 4 startvarianten en 2 verfijningen. Geen abonnement.
+            Voorbeelden maken kan na login. Downloaden kost éénmalig €9,99. Geen abonnement.
           </p>
         </div>
 
@@ -604,14 +584,25 @@ export default function ProfilePhotoGenerator() {
                       {selectedImageId === image.id ? "Geselecteerd voor aanpassing" : "Kies om aan te passen"}
                     </button>
                     <div className="mt-3 flex gap-2">
-                      <a
-                        href={image.url}
-                        download={`werkcv-profielfoto-${index + 1}.jpg`}
-                        onClick={() => trackDownload(image.id)}
-                        className="flex-1 rounded-full bg-black px-4 py-2 text-center text-xs font-black text-white"
-                      >
-                        Download
-                      </a>
+                      {project?.status === "paid" ? (
+                        <a
+                          href={getDownloadUrl(image)}
+                          download={`werkcv-profielfoto-${index + 1}.jpg`}
+                          onClick={() => trackDownload(image.id)}
+                          className="flex-1 rounded-full bg-black px-4 py-2 text-center text-xs font-black text-white"
+                        >
+                          Download
+                        </a>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={startCheckout}
+                          disabled={isCheckoutRedirecting}
+                          className="flex-1 rounded-full bg-black px-4 py-2 text-center text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                          {isCheckoutRedirecting ? "Checkout..." : "Betaal en download"}
+                        </button>
+                      )}
                       <Link
                         href="/editor"
                         onClick={() => trackEditorClick("generated_card")}
@@ -627,7 +618,7 @@ export default function ProfilePhotoGenerator() {
               <div className="mt-6 rounded-3xl border-2 border-black bg-white p-5">
                 <h3 className="text-lg font-black text-slate-900">Wil je iets aanpassen?</h3>
                 <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
-                  Kies eerst één foto hierboven en typ wat anders moet. Je hebt nog {project.refinementsRemaining} verfijningen over.
+                  Kies eerst één foto hierboven en typ wat anders moet. Je hebt nog {project?.refinementsRemaining ?? 2} verfijningen over.
                 </p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {refinementSuggestions.map((suggestion) => (
@@ -656,7 +647,7 @@ export default function ProfilePhotoGenerator() {
                   <button
                     type="button"
                     onClick={refinePhoto}
-                    disabled={isRefining || !selectedImageId || project.refinementsRemaining <= 0}
+                    disabled={isRefining || !selectedImageId || (project?.refinementsRemaining ?? 0) <= 0}
                     className="inline-flex items-center justify-center border-2 border-black bg-[#FFD166] px-4 py-3 text-sm font-black text-black disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {isRefining ? "Aangepaste variant maken..." : "Maak aangepaste variant"}

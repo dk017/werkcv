@@ -186,21 +186,22 @@ export async function POST(request: NextRequest) {
     const style = String(formData.get("style") ?? "executive");
     const refinement = String(formData.get("refinement") ?? "").trim();
 
-    if (!projectId) {
-      return NextResponse.json(
-        { error: "Koop eerst de AI-profielfoto add-on om te starten." },
-        { status: 402 }
-      );
-    }
+    const project = projectId
+      ? await prisma.profilePhotoProject.findFirst({
+          where: { id: projectId, userId: user.id },
+        })
+      : await prisma.profilePhotoProject.create({
+          data: {
+            userId: user.id,
+            status: "draft",
+            attribution: (user.attribution || undefined) as Prisma.InputJsonValue | undefined,
+          },
+        });
 
-    const project = await prisma.profilePhotoProject.findFirst({
-      where: { id: projectId, userId: user.id },
-    });
-
-    if (!project || project.status !== "paid") {
+    if (!project) {
       return NextResponse.json(
-        { error: "Je betaling is nog niet bevestigd. Vernieuw de pagina na de checkout." },
-        { status: 402 }
+        { error: "Project niet gevonden. Vernieuw de pagina en probeer opnieuw." },
+        { status: 404 }
       );
     }
 
@@ -389,6 +390,7 @@ export async function POST(request: NextRequest) {
         refinementCount: nextRefinementCount,
         refinementsRemaining: Math.max(0, MAX_REFINEMENTS - nextRefinementCount),
         maxRefinements: MAX_REFINEMENTS,
+        images: serializeImages(project.id, nextImages),
       },
     });
   } catch (error) {

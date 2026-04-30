@@ -26,6 +26,7 @@ export async function GET(
 
   const { imageId } = await context.params;
   const projectId = request.nextUrl.searchParams.get("projectId");
+  const isDownload = request.nextUrl.searchParams.get("download") === "1";
 
   if (!projectId) {
     return NextResponse.json({ error: "projectId ontbreekt" }, { status: 400 });
@@ -35,12 +36,15 @@ export async function GET(
     where: {
       id: projectId,
       userId: user.id,
-      status: "paid",
     },
   });
 
   if (!project) {
     return NextResponse.json({ error: "Niet gevonden" }, { status: 404 });
+  }
+
+  if (isDownload && project.status !== "paid") {
+    return NextResponse.json({ error: "Betaal eerst om je profielfoto te downloaden." }, { status: 402 });
   }
 
   const image = parseImages(project.images as Prisma.JsonValue | null).find((item) => item.id === imageId);
@@ -59,7 +63,7 @@ export async function GET(
     return new NextResponse(new Blob([new Uint8Array(buffer)], { type: "image/jpeg" }), {
       headers: {
         "Content-Type": "image/jpeg",
-        "Content-Disposition": `inline; filename="werkcv-profielfoto-${image.id}.jpg"`,
+        "Content-Disposition": `${isDownload ? "attachment" : "inline"}; filename="werkcv-profielfoto-${image.id}.jpg"`,
         "Cache-Control": "private, max-age=3600",
       },
     });

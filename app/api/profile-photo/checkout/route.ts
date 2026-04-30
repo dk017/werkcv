@@ -12,14 +12,31 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "AUTH_REQUIRED" }, { status: 401 });
   }
 
-  const project = await prisma.profilePhotoProject.create({
-    data: {
+  const body = await request.json().catch(() => ({})) as { projectId?: string };
+  const projectId = typeof body.projectId === "string" ? body.projectId : "";
+
+  if (!projectId) {
+    return NextResponse.json({ error: "PROJECT_REQUIRED" }, { status: 400 });
+  }
+
+  const project = await prisma.profilePhotoProject.findFirst({
+    where: {
+      id: projectId,
       userId: user.id,
-      status: "pending",
-      attribution: (user.attribution || undefined) as Prisma.InputJsonValue | undefined,
     },
-    select: { id: true },
   });
+
+  if (!project) {
+    return NextResponse.json({ error: "PROJECT_NOT_FOUND" }, { status: 404 });
+  }
+
+  if (project.status === "paid") {
+    return NextResponse.json({ error: "ALREADY_PAID" }, { status: 409 });
+  }
+
+  if (project.generationCount < 1) {
+    return NextResponse.json({ error: "GENERATE_FIRST" }, { status: 400 });
+  }
 
   try {
     const url = await buildProfilePhotoCheckoutURL(project.id, user.email);
