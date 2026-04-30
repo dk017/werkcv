@@ -63,6 +63,16 @@ export type LinkedinToCvEvent =
     | 'linkedin_to_cv_cta_editor_click'
     | 'linkedin_to_cv_cta_templates_click';
 
+export type ProfilePhotoEvent =
+    | 'profile_photo_tool_view'
+    | 'profile_photo_checkout_click'
+    | 'profile_photo_submit'
+    | 'profile_photo_generated'
+    | 'profile_photo_refine_submit'
+    | 'profile_photo_refined'
+    | 'profile_photo_download'
+    | 'profile_photo_cta_editor_click';
+
 // ============================================================
 // Event types — exhaustive list of all tracked interactions
 // ============================================================
@@ -156,6 +166,29 @@ export type AnalyticsEvent =
       }
     | {
           event: 'linkedin_to_cv_cta_templates_click';
+          properties: { page_path: string; cta_location: string; cta_text: string };
+      }
+    | { event: 'profile_photo_tool_view'; properties: { page_path: string } }
+    | {
+          event: 'profile_photo_checkout_click';
+          properties: { page_path: string; amount_cents: number; currency: string };
+      }
+    | { event: 'profile_photo_submit'; properties: { page_path: string; style: string } }
+    | {
+          event: 'profile_photo_generated';
+          properties: { page_path: string; style: string; images_generated: number };
+      }
+    | {
+          event: 'profile_photo_refine_submit';
+          properties: { page_path: string; style: string; refinement_length: number };
+      }
+    | {
+          event: 'profile_photo_refined';
+          properties: { page_path: string; style: string; images_generated: number };
+      }
+    | { event: 'profile_photo_download'; properties: { page_path: string; image_id: string; style: string } }
+    | {
+          event: 'profile_photo_cta_editor_click';
           properties: { page_path: string; cta_location: string; cta_text: string };
       }
     // CV score tool

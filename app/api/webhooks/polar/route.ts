@@ -34,6 +34,13 @@ function readCvId(metadata: Record<string, string | number | boolean>): string |
     return null;
 }
 
+function readMetadataString(metadata: Record<string, string | number | boolean>, key: string): string | null {
+    const raw = metadata[key];
+    if (typeof raw === 'string') return raw;
+    if (typeof raw === 'number') return String(raw);
+    return null;
+}
+
 function readAddons(metadata: Record<string, string | number | boolean>): string[] {
     const raw = metadata.addons_csv;
     if (typeof raw !== 'string' || !raw.trim()) return [];
@@ -80,11 +87,119 @@ export async function POST(request: NextRequest) {
 
     const externalOrderId = event.data.id;
     const metadata = event.data.metadata || {};
+    const product = readMetadataString(metadata, 'product');
+    const projectId = readMetadataString(metadata, 'project_id');
     const cvId = readCvId(metadata);
     const addons = readAddons(metadata);
     const email = event.data.customer.email;
     const amountCents = event.data.totalAmount;
     const currency = event.data.currency || 'EUR';
+
+    const existingOrder = await prisma.order.findUnique({
+        where: { lemonId: externalOrderId },
+    });
+
+    if (existingOrder) {
+        return NextResponse.json({ status: 'already_processed' });
+    }
+
+    if (product === 'profile-photo' || projectId) {
+        if (!projectId) {
+            console.error('No project_id found in Polar profile photo metadata');
+            await reportOpsIncident({
+                event: 'ops_payment_webhook_failed',
+                route: '/api/webhooks/polar',
+                stage: 'missing_profile_photo_project_id_metadata',
+                error: new Error('Missing project_id metadata'),
+                userEmail: email,
+                notifyUser: false,
+                context: {
+                    polarOrderId: externalOrderId,
+                    metadata,
+                },
+            });
+            return NextResponse.json({ error: 'Missing project_id metadata' }, { status: 400 });
+        }
+
+        const project = await prisma.profilePhotoProject.findUnique({
+            where: { id: projectId },
+            include: { user: true },
+        });
+
+        if (!project) {
+            await reportOpsIncident({
+                event: 'ops_payment_webhook_failed',
+                route: '/api/webhooks/polar',
+                stage: 'profile_photo_project_not_found',
+                error: new Error('Profile photo project not found'),
+                userEmail: email,
+                notifyUser: false,
+                context: {
+                    polarOrderId: externalOrderId,
+                    projectId,
+                    metadata,
+                },
+            });
+            return NextResponse.json({ error: 'Profile photo project not found' }, { status: 404 });
+        }
+
+        const order = await prisma.order.create({
+            data: {
+                email,
+                product: 'profile-photo',
+                amountCents,
+                currency,
+                attribution: (project.attribution || undefined) as unknown as Prisma.InputJsonValue | undefined,
+                sourceCluster: project.user.sourceCluster || null,
+                lemonId: externalOrderId,
+                paidAt: new Date(),
+            },
+        });
+
+        await prisma.profilePhotoProject.update({
+            where: { id: project.id },
+            data: {
+                status: 'paid',
+                orderId: order.id,
+            },
+        });
+
+        const paidProperties = {
+            projectId: project.id,
+            orderId: order.id,
+            amountCents,
+            currency,
+            polarOrderId: externalOrderId,
+            product: 'profile-photo',
+        };
+
+        try {
+            await prisma.analyticsEvent.create({
+                data: {
+                    event: 'profile_photo_paid',
+                    orderId: order.id,
+                    path: '/profielfoto-cv-maken',
+                    cluster: project.user.sourceCluster || null,
+                    properties: paidProperties as unknown as Prisma.InputJsonValue,
+                    attribution: (project.attribution || undefined) as unknown as Prisma.InputJsonValue | undefined,
+                },
+            });
+            await prisma.analyticsEvent.create({
+                data: {
+                    event: 'checkout_completed',
+                    orderId: order.id,
+                    path: '/profielfoto-cv-maken',
+                    cluster: project.user.sourceCluster || null,
+                    properties: paidProperties as unknown as Prisma.InputJsonValue,
+                    attribution: (project.attribution || undefined) as unknown as Prisma.InputJsonValue | undefined,
+                },
+            });
+        } catch (error) {
+            console.error('profile_photo_paid_event_persist_failed', error);
+        }
+
+        return NextResponse.json({ status: 'ok' });
+    }
 
     if (!cvId) {
         console.error('No cv_id found in Polar order metadata');
@@ -101,14 +216,6 @@ export async function POST(request: NextRequest) {
             },
         });
         return NextResponse.json({ error: 'Missing cv_id metadata' }, { status: 400 });
-    }
-
-    const existingOrder = await prisma.order.findUnique({
-        where: { lemonId: externalOrderId },
-    });
-
-    if (existingOrder) {
-        return NextResponse.json({ status: 'already_processed' });
     }
 
     const cvDocument = await prismaWithAttributionExtensions.cVDocument.findUnique({

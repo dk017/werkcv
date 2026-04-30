@@ -76,6 +76,7 @@ public/Keyword Stats 2026-03-08 at 08_01_42.csv
 data/jobs/raw/
 data/jobs/normalized/
 data/jobs/derived/
+local/profile-photos/
 chrome-extension/artifacts/
 
 __pycache__/

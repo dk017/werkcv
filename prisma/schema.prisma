@@ -18,6 +18,7 @@ model User {
   documents CVDocument[]
   sessions  Session[]
   pilotAccess PilotAccess?
+  profilePhotoProjects ProfilePhotoProject[]
 }
 
 model PilotAccess {
@@ -84,7 +85,7 @@ model Template {
 model Order {
   id        String   @id @default(uuid())
   email     String
-  cvId      String
+  cvId      String?
   product   String
   amountCents Int?
   currency  String?
@@ -94,6 +95,27 @@ model Order {
   lemonId   String?  @unique
   paidAt    DateTime?
   createdAt DateTime @default(now())
+  profilePhotoProject ProfilePhotoProject?
+}
+
+model ProfilePhotoProject {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderId   String?  @unique
+  order     Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  status    String   @default("pending")
+  style     String?
+  sourceImageCount Int @default(0)
+  generationCount Int @default(0)
+  refinementCount Int @default(0)
+  images    Json?
+  attribution Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, createdAt])
+  @@index([status])
 }
 
 model AnalyticsEvent {

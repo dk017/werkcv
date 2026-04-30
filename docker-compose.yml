@@ -27,6 +27,10 @@ services:
     environment:
       # Override DATABASE_URL to use the db service name (not localhost)
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-werkcv}
+      PROFILE_PHOTO_STORAGE_DIR: /app/storage/profile-photos
+    volumes:
+      - profile_photo_storage:/app/storage/profile-photos
 
 volumes:
   postgres_data:
+  profile_photo_storage:

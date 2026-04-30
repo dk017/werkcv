@@ -115,7 +115,8 @@ async function main() {
     return;
   }
 
-  const cvIds = [...new Set(orders.map((order) => order.cvId).filter(Boolean))];
+  const cvOrders = orders.filter((order): order is typeof order & { cvId: string } => Boolean(order.cvId));
+  const cvIds = [...new Set(cvOrders.map((order) => order.cvId))];
 
   const documents = await prisma.cVDocument.findMany({
     where: {
@@ -164,7 +165,7 @@ async function main() {
     checkoutPathByCvId.set(event.cvId, event.path || "");
   }
 
-  const rows: PaidOrderRow[] = orders
+  const rows: PaidOrderRow[] = cvOrders
     .filter((order): order is typeof order & { paidAt: Date } => !!order.paidAt)
     .map((order) => {
       const safeAttribution = sanitizeAttribution(order.attribution);

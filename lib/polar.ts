@@ -6,6 +6,8 @@ const POLAR_ACCESS_TOKEN = process.env.POLAR_ACCESS_TOKEN;
 const POLAR_PRODUCT_ID =
     process.env.POLAR_PRODUCT_ID_CV_DOWNLOAD || process.env.POLAR_PRODUCT_ID;
 const POLAR_PRICE_ID = process.env.POLAR_PRICE_ID_CV_DOWNLOAD;
+const POLAR_PRODUCT_ID_PROFILE_PHOTO =
+    process.env.POLAR_PRODUCT_ID_PROFILE_PHOTO || 'b60c9ea3-69ec-4c2b-aa2c-a0831a315e7c';
 const POLAR_CHECKOUT_CURRENCY = 'eur';
 const POLAR_SERVER = process.env.POLAR_SERVER === 'sandbox' ? 'sandbox' : 'production';
 
@@ -89,6 +91,49 @@ export async function buildCheckoutURL(
 
     if (!checkout.url) {
         throw new Error('Polar checkout URL is missing from response');
+    }
+
+    return checkout.url;
+}
+
+export async function buildProfilePhotoCheckoutURL(projectId: string, email: string): Promise<string> {
+    if (!POLAR_ACCESS_TOKEN) {
+        throw new Error('POLAR_ACCESS_TOKEN is not configured');
+    }
+    if (!POLAR_PRODUCT_ID_PROFILE_PHOTO) {
+        throw new Error('POLAR_PRODUCT_ID_PROFILE_PHOTO is not configured');
+    }
+
+    const body: Record<string, unknown> = {
+        success_url: `${APP_URL}/profielfoto-cv-maken?project=${encodeURIComponent(projectId)}&paid=1#profielfoto-tool`,
+        return_url: `${APP_URL}/profielfoto-cv-maken#profielfoto-tool`,
+        currency: POLAR_CHECKOUT_CURRENCY,
+        products: [POLAR_PRODUCT_ID_PROFILE_PHOTO],
+        customer_email: email,
+        metadata: {
+            product: 'profile-photo',
+            project_id: projectId,
+        },
+    };
+
+    const res = await fetch(`${POLAR_API_BASE}/v1/checkouts/`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${POLAR_ACCESS_TOKEN}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+        const error = await res.text();
+        throw new Error(`Polar profile photo checkout failed (${res.status}): ${error}`);
+    }
+
+    const checkout = await res.json() as { url?: string };
+
+    if (!checkout.url) {
+        throw new Error('Polar profile photo checkout URL is missing from response');
     }
 
     return checkout.url;

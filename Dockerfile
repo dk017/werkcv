@@ -90,10 +90,13 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 # Chromium needs a writable HOME for its crashpad database
 ENV HOME=/tmp
 ENV NODE_PATH=/usr/local/lib/node_modules
+ENV PROFILE_PHOTO_STORAGE_DIR=/app/storage/profile-photos
 
 # Non-root user for security
 RUN groupadd --system --gid 1001 nodejs \
     && useradd --system --uid 1001 --gid nodejs nextjs
+RUN mkdir -p /app/storage/profile-photos \
+    && chown -R nextjs:nodejs /app/storage
 
 # Copy the Next.js standalone output
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./

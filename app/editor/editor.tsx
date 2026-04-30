@@ -870,6 +870,22 @@ export default function Editor({
                                 </div>
                             </div>
 
+                            <div className="mb-6 rounded-xl border border-slate-200 bg-[#FFFEF9] p-3 text-sm text-slate-700">
+                                <span className="font-semibold">
+                                    {tr("Geen goede profielfoto?", "No good profile photo?")}
+                                </span>{" "}
+                                {tr(
+                                    "Maak een professionele AI-profielfoto voor je cv en LinkedIn.",
+                                    "Create a professional AI profile photo for your CV and LinkedIn."
+                                )}{" "}
+                                <Link
+                                    href="/profielfoto-cv-maken"
+                                    className="font-black underline decoration-2 underline-offset-4"
+                                >
+                                    {tr("Bekijk de add-on (€9,99)", "View the add-on (€9.99)")}
+                                </Link>
+                            </div>
+
                             {/* Contact Info */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                                 <div>
