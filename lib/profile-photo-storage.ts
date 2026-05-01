@@ -35,8 +35,12 @@ function safeSegment(value: string): string {
   return value.replace(/[^a-zA-Z0-9_-]/g, "-").slice(0, 120);
 }
 
+function safeFilename(value: string): string {
+  return value.replace(/[^a-zA-Z0-9._-]/g, "-").slice(0, 160);
+}
+
 export function getProfilePhotoStoragePath(userId: string, projectId: string, filename: string): string {
-  return path.join(getPrimaryStorageRoot(), safeSegment(userId), safeSegment(projectId), safeSegment(filename));
+  return path.join(getPrimaryStorageRoot(), safeSegment(userId), safeSegment(projectId), safeFilename(filename));
 }
 
 export async function saveProfilePhotoImage(params: {
@@ -61,7 +65,7 @@ export async function readProfilePhotoImage(params: {
   const relativeSegments = [
     safeSegment(params.userId),
     safeSegment(params.projectId),
-    safeSegment(params.filename),
+    safeFilename(params.filename),
   ];
 
   const attemptedPaths = getReadStorageRoots().map((root) => path.join(root, ...relativeSegments));
