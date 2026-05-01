@@ -12,15 +12,21 @@ export type StoredProfilePhotoImage = {
 
 const defaultStorageRoot = path.join(process.cwd(), "local", "profile-photos");
 const mountedStorageRoot = path.join(process.cwd(), "storage", "profile-photos");
+const dockerMountedStorageRoot = "/app/storage/profile-photos";
 
-function getStorageRoots(): string[] {
+function getPrimaryStorageRoot(): string {
+  return process.env.PROFILE_PHOTO_STORAGE_DIR || defaultStorageRoot;
+}
+
+function getReadStorageRoots(): string[] {
   return Array.from(
     new Set(
       [
-        process.env.PROFILE_PHOTO_STORAGE_DIR,
-        defaultStorageRoot,
+        getPrimaryStorageRoot(),
+        dockerMountedStorageRoot,
         mountedStorageRoot,
-      ].filter((root): root is string => Boolean(root))
+        defaultStorageRoot,
+      ]
     )
   );
 }
@@ -30,7 +36,7 @@ function safeSegment(value: string): string {
 }
 
 export function getProfilePhotoStoragePath(userId: string, projectId: string, filename: string): string {
-  return path.join(getStorageRoots()[0], safeSegment(userId), safeSegment(projectId), safeSegment(filename));
+  return path.join(getPrimaryStorageRoot(), safeSegment(userId), safeSegment(projectId), safeSegment(filename));
 }
 
 export async function saveProfilePhotoImage(params: {
@@ -39,7 +45,7 @@ export async function saveProfilePhotoImage(params: {
   imageId: string;
   base64: string;
 }): Promise<string> {
-  const directory = path.join(getStorageRoots()[0], safeSegment(params.userId), safeSegment(params.projectId));
+  const directory = path.join(getPrimaryStorageRoot(), safeSegment(params.userId), safeSegment(params.projectId));
   await fs.mkdir(directory, { recursive: true });
 
   const filename = `${safeSegment(params.imageId)}.jpg`;
@@ -58,7 +64,7 @@ export async function readProfilePhotoImage(params: {
     safeSegment(params.filename),
   ];
 
-  for (const root of getStorageRoots()) {
+  for (const root of getReadStorageRoots()) {
     try {
       return await fs.readFile(path.join(root, ...relativeSegments));
     } catch (error) {
@@ -69,5 +75,5 @@ export async function readProfilePhotoImage(params: {
     }
   }
 
-  return fs.readFile(path.join(getStorageRoots()[0], ...relativeSegments));
+  return fs.readFile(path.join(getPrimaryStorageRoot(), ...relativeSegments));
 }
