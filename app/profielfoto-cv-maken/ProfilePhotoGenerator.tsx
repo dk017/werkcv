@@ -124,6 +124,11 @@ export default function ProfilePhotoGenerator() {
     () => styleOptions.find((option) => option.id === style) ?? styleOptions[0],
     [style]
   );
+  const selectedImage = useMemo(
+    () => images.find((image) => image.id === selectedImageId) ?? images[0] ?? null,
+    [images, selectedImageId]
+  );
+  const selectedImageIndex = selectedImage ? images.findIndex((image) => image.id === selectedImage.id) : -1;
 
   useEffect(() => {
     track("profile_photo_tool_view", { page_path: "/profielfoto-cv-maken" });
@@ -302,8 +307,6 @@ export default function ProfilePhotoGenerator() {
       return;
     }
 
-    const selectedImage = images.find((image) => image.id === selectedImageId);
-
     if (!selectedImage?.url) {
       setError("Kies eerst één gegenereerde foto om aan te passen.");
       return;
@@ -386,6 +389,16 @@ export default function ProfilePhotoGenerator() {
     return image.url.includes("?") ? `${image.url}&download=1` : `${image.url}?download=1`;
   }
 
+  function selectImage(image: GeneratedImage, index: number) {
+    setSelectedImageId(image.id);
+    track("profile_photo_variant_selected", {
+      page_path: "/profielfoto-cv-maken",
+      image_id: image.id,
+      variant_position: index + 1,
+      style,
+    });
+  }
+
   async function startCheckout() {
     if (!project?.id || images.length === 0) {
       setError("Maak eerst je profielfoto-varianten. Je betaalt pas bij downloaden.");
@@ -450,259 +463,288 @@ export default function ProfilePhotoGenerator() {
       )}
 
       {authStatus === "authenticated" && (
-      <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-        <div>
-          <div className="mb-5 rounded-3xl border-2 border-black bg-[#E9FFFC] p-4">
+        <div className="space-y-6">
+          <div className="rounded-3xl border-2 border-black bg-[#E9FFFC] p-4">
             <p className="text-sm font-black text-slate-950">
               {project?.status === "paid" ? "Je AI-profielfoto add-on is actief" : "Maak eerst gratis je voorbeeldvarianten"}
             </p>
-            <p className="mt-1 text-xs font-bold text-slate-700">
+            <p className="mt-1 text-xs font-bold leading-relaxed text-slate-700">
               Log in, maak 4 voorbeeldvarianten en verfijn maximaal 2 keer. Je betaalt pas €9,99 als je wilt downloaden.
               {project && ` Nog ${project.refinementsRemaining} van ${project.maxRefinements} verfijningen over.`}
             </p>
           </div>
-          {(project?.generationCount ?? 0) === 0 && (
-          <div className="rounded-3xl border-2 border-dashed border-slate-300 bg-[#FFFEF9] p-5">
-            <label className="block">
-              <span className="text-sm font-black text-slate-900">Upload je bestaande foto</span>
-              <span className="mt-1 block text-sm font-medium leading-relaxed text-slate-600">
-                Upload 1 tot 4 duidelijke foto&apos;s. De eerste foto is de hoofdreferentie; extra foto&apos;s helpen met herkenbaarheid. Alleen JPG, PNG of WebP.
-              </span>
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                multiple
-                onChange={handleFileChange}
-                className="mt-4 block w-full text-sm font-bold text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-black file:px-4 file:py-2 file:text-sm file:font-black file:text-white"
-              />
-            </label>
 
-            {files.length > 0 && (
-              <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-3">
-                <p className="text-xs font-black uppercase tracking-wide text-slate-500">
-                  Gekozen foto&apos;s ({files.length}/{maxFiles})
-                </p>
-                <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                  {files.map((file, index) => (
-                    <div key={`${file.name}-${file.lastModified}`} className="flex items-center gap-3">
-                      {previewUrls[index] && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={previewUrls[index]}
-                          alt={`Preview van geüploade profielfoto ${index + 1}`}
-                          className="h-20 w-20 rounded-2xl object-cover"
-                        />
-                      )}
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-black text-slate-900">
-                          {index === 0 ? "Hoofdfoto: " : `Referentie ${index + 1}: `}
-                          {file.name}
-                        </p>
-                        <p className="text-xs font-medium text-slate-500">{formatFileSize(file.size)}</p>
-                      </div>
+          {(project?.generationCount ?? 0) === 0 && (
+            <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+              <div className="rounded-3xl border-2 border-dashed border-slate-300 bg-[#FFFEF9] p-5">
+                <label className="block">
+                  <span className="text-sm font-black text-slate-900">Upload je bestaande foto</span>
+                  <span className="mt-1 block text-sm font-medium leading-relaxed text-slate-600">
+                    Upload 1 tot 4 duidelijke foto&apos;s. De eerste foto is de hoofdreferentie; extra foto&apos;s helpen
+                    met herkenbaarheid. Alleen JPG, PNG of WebP.
+                  </span>
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    multiple
+                    onChange={handleFileChange}
+                    className="mt-4 block w-full text-sm font-bold text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-black file:px-4 file:py-2 file:text-sm file:font-black file:text-white"
+                  />
+                </label>
+
+                {files.length > 0 && (
+                  <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-3">
+                    <p className="text-xs font-black uppercase tracking-wide text-slate-500">
+                      Gekozen foto&apos;s ({files.length}/{maxFiles})
+                    </p>
+                    <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                      {files.map((file, index) => (
+                        <div key={`${file.name}-${file.lastModified}`} className="flex items-center gap-3">
+                          {previewUrls[index] && (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={previewUrls[index]}
+                              alt={`Preview van geüploade profielfoto ${index + 1}`}
+                              className="h-20 w-20 rounded-2xl object-cover"
+                            />
+                          )}
+                          <div className="min-w-0">
+                            <p className="truncate text-sm font-black text-slate-900">
+                              {index === 0 ? "Hoofdfoto: " : `Referentie ${index + 1}: `}
+                              {file.name}
+                            </p>
+                            <p className="text-xs font-medium text-slate-500">{formatFileSize(file.size)}</p>
+                          </div>
+                        </div>
+                      ))}
                     </div>
+                  </div>
+                )}
+
+                <p className="mt-4 text-xs font-medium leading-relaxed text-slate-500">
+                  Privacy: upload alleen foto&apos;s die je wilt gebruiken voor je sollicitatie. WerkCV vraagt niet om
+                  LinkedIn-login en bewaart alleen de gegenereerde output in je account.
+                </p>
+              </div>
+
+              <div>
+                <p className="text-sm font-black text-slate-900">Kies uitstraling</p>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  {styleOptions.map((option) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => setStyle(option.id)}
+                      className={`rounded-2xl border-2 p-4 text-left transition-colors ${
+                        style === option.id
+                          ? "border-black bg-[#4ECDC4] text-black"
+                          : "border-slate-200 bg-white text-slate-700 hover:border-black"
+                      }`}
+                    >
+                      <span className="block text-sm font-black">{option.label}</span>
+                      <span className="mt-1 block text-xs font-medium leading-relaxed">{option.description}</span>
+                    </button>
                   ))}
                 </div>
               </div>
-            )}
-
-            <p className="mt-4 text-xs font-medium leading-relaxed text-slate-500">
-              Privacy: plak of upload alleen informatie en foto&apos;s die je wilt gebruiken voor je sollicitatie.
-              WerkCV vraagt niet om LinkedIn-login en bewaart alleen de gegenereerde output in je account.
-            </p>
-          </div>
-          )}
-
-          {(project?.generationCount ?? 0) === 0 && (
-          <div className="mt-5">
-            <p className="text-sm font-black text-slate-900">Kies uitstraling</p>
-            <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              {styleOptions.map((option) => (
-                <button
-                  key={option.id}
-                  type="button"
-                  onClick={() => setStyle(option.id)}
-                  className={`rounded-2xl border-2 p-4 text-left transition-colors ${
-                    style === option.id
-                      ? "border-black bg-[#4ECDC4] text-black"
-                      : "border-slate-200 bg-white text-slate-700 hover:border-black"
-                  }`}
-                >
-                  <span className="block text-sm font-black">{option.label}</span>
-                  <span className="mt-1 block text-xs font-medium leading-relaxed">{option.description}</span>
-                </button>
-              ))}
             </div>
-          </div>
           )}
 
           {error && (
-            <div className="mt-5 rounded-2xl border-2 border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700">
+            <div className="rounded-2xl border-2 border-red-200 bg-red-50 p-4 text-sm font-bold text-red-700">
               {error}
             </div>
           )}
 
-          <button
-            type="button"
-            onClick={generatePhoto}
-            disabled={isGenerating || (project?.generationCount ?? 0) >= 1}
-            className="mt-5 w-full border-4 border-black bg-[#FFD166] px-5 py-4 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
-          >
-            {(project?.generationCount ?? 0) >= 1
-              ? "Eerste set is gemaakt"
-              : isGenerating
-                ? "Profielfoto's worden gemaakt..."
-                : "Maak 4 professionele varianten"}
-          </button>
-
-          <p className="mt-3 text-xs font-medium leading-relaxed text-slate-500">
-            Voorbeelden maken kan na login. Downloaden kost éénmalig €9,99. Geen abonnement.
-          </p>
-        </div>
-
-        <div className="rounded-3xl border-2 border-slate-200 bg-slate-50 p-5">
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Output</p>
-              <h2 className="mt-2 text-2xl font-black text-slate-900">Professionele varianten</h2>
-            </div>
-            <span className="rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-black text-slate-600">
-              {selectedStyle.label}
-            </span>
+          <div>
+            <button
+              type="button"
+              onClick={generatePhoto}
+              disabled={isGenerating || (project?.generationCount ?? 0) >= 1}
+              className="w-full border-4 border-black bg-[#FFD166] px-5 py-4 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+            >
+              {(project?.generationCount ?? 0) >= 1
+                ? "Eerste set is gemaakt"
+                : isGenerating
+                  ? "Profielfoto's worden gemaakt..."
+                  : "Maak 4 professionele varianten"}
+            </button>
+            <p className="mt-3 text-xs font-medium leading-relaxed text-slate-500">
+              Voorbeelden maken kan na login. Downloaden kost éénmalig €9,99. Geen abonnement.
+            </p>
           </div>
 
-          {images.length === 0 ? (
-            <div className="mt-6 flex min-h-[360px] items-center justify-center rounded-3xl border-2 border-dashed border-slate-300 bg-white p-8 text-center">
+          <div className="rounded-3xl border-2 border-slate-200 bg-slate-50 p-5">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="text-lg font-black text-slate-900">Nog geen varianten</p>
-                <p className="mt-2 max-w-sm text-sm font-medium leading-relaxed text-slate-600">
-                  Upload een duidelijke foto, kies een uitstraling en maak vier varianten die je kunt testen voor cv en LinkedIn.
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Output</p>
+                <h2 className="mt-2 text-2xl font-black text-slate-900">Professionele varianten</h2>
+                <p className="mt-2 text-sm font-medium text-slate-600">
+                  Kies één favoriet. Daarna kun je die ene foto verfijnen, downloaden of gebruiken bij je cv.
                 </p>
               </div>
+              <span className="w-fit rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-black text-slate-600">
+                {selectedStyle.label}
+              </span>
             </div>
-          ) : (
-            <>
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                {images.map((image, index) => (
-                  <div
-                    key={`${image.id}-${index}`}
-                    className={`rounded-3xl border-2 bg-white p-3 ${
-                      selectedImageId === image.id ? "border-[#4ECDC4] ring-4 ring-[#4ECDC4]/30" : "border-black"
-                    }`}
-                  >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                      src={image.url ?? ""}
-                      alt={`Gegenereerde profielfoto variant ${index + 1}`}
-                      className="aspect-square w-full rounded-2xl object-cover"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setSelectedImageId(image.id)}
-                      className={`mt-3 w-full rounded-full border-2 border-black px-4 py-2 text-xs font-black ${
-                        selectedImageId === image.id ? "bg-[#4ECDC4] text-black" : "bg-white text-black"
-                      }`}
-                    >
-                      {selectedImageId === image.id ? "Geselecteerd voor aanpassing" : "Kies om aan te passen"}
-                    </button>
-                    <div className="mt-3 flex gap-2">
-                      {project?.status === "paid" ? (
-                        <a
-                          href={getDownloadUrl(image)}
-                          download={`werkcv-profielfoto-${index + 1}.jpg`}
-                          onClick={() => trackDownload(image.id)}
-                          className="flex-1 rounded-full bg-black px-4 py-2 text-center text-xs font-black text-white"
+
+            {images.length === 0 ? (
+              <div className="mt-6 flex min-h-[260px] items-center justify-center rounded-3xl border-2 border-dashed border-slate-300 bg-white p-8 text-center">
+                <div>
+                  <p className="text-lg font-black text-slate-900">Nog geen varianten</p>
+                  <p className="mt-2 max-w-sm text-sm font-medium leading-relaxed text-slate-600">
+                    Upload een duidelijke foto, kies een uitstraling en maak vier varianten die je kunt testen voor cv
+                    en LinkedIn.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  {images.map((image, index) => {
+                    const isSelected = selectedImage?.id === image.id;
+
+                    return (
+                      <button
+                        key={`${image.id}-${index}`}
+                        type="button"
+                        onClick={() => selectImage(image, index)}
+                        className={`group rounded-3xl border-2 bg-white p-3 text-left transition-transform hover:-translate-y-0.5 ${
+                          isSelected ? "border-[#4ECDC4] ring-4 ring-[#4ECDC4]/30" : "border-slate-200 hover:border-black"
+                        }`}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={image.url ?? ""}
+                          alt={`Gegenereerde profielfoto variant ${index + 1}`}
+                          className="aspect-square w-full rounded-2xl object-cover"
+                        />
+                        <div className="mt-3 flex items-center justify-between gap-2">
+                          <span className="text-xs font-black text-slate-900">Variant {index + 1}</span>
+                          <span
+                            className={`rounded-full px-2 py-1 text-[10px] font-black ${
+                              isSelected ? "bg-[#4ECDC4] text-black" : "bg-slate-100 text-slate-500"
+                            }`}
+                          >
+                            {isSelected ? "Gekozen" : "Kies"}
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {selectedImage && (
+                  <div className="mt-6 grid gap-5 rounded-3xl border-2 border-black bg-white p-5 lg:grid-cols-[0.8fr_1.2fr]">
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">
+                        Geselecteerde foto
+                      </p>
+                      <h3 className="mt-2 text-xl font-black text-slate-900">
+                        Variant {selectedImageIndex + 1} gebruiken
+                      </h3>
+                      <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
+                        Deze keuze gebruik je voor downloaden en verfijnen. Je kunt altijd eerst een andere variant
+                        selecteren voordat je betaalt.
+                      </p>
+                      <div className="mt-4 flex flex-col gap-3">
+                        {project?.status === "paid" ? (
+                          <a
+                            href={getDownloadUrl(selectedImage)}
+                            download={`werkcv-profielfoto-${selectedImageIndex + 1}.jpg`}
+                            onClick={() => trackDownload(selectedImage.id)}
+                            className="inline-flex justify-center rounded-full bg-black px-5 py-3 text-sm font-black text-white"
+                          >
+                            Download geselecteerde foto
+                          </a>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={startCheckout}
+                            disabled={isCheckoutRedirecting}
+                            className="inline-flex justify-center rounded-full bg-black px-5 py-3 text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-60"
+                          >
+                            {isCheckoutRedirecting ? "Checkout openen..." : "Betaal €9,99 en download"}
+                          </button>
+                        )}
+                        <Link
+                          href="/editor"
+                          onClick={() => trackEditorClick("selected_photo_action")}
+                          className="inline-flex justify-center rounded-full border-2 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black"
                         >
-                          Download
-                        </a>
-                      ) : (
+                          Open cv-editor
+                        </Link>
+                      </div>
+                    </div>
+
+                    <div className="rounded-3xl border-2 border-slate-200 bg-[#FFFEF9] p-5">
+                      <h3 className="text-lg font-black text-slate-900">Wil je deze foto aanpassen?</h3>
+                      <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
+                        Beschrijf alleen wat anders moet. Je hebt nog {project?.refinementsRemaining ?? 2} verfijningen over.
+                      </p>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {refinementSuggestions.map((suggestion) => (
+                          <button
+                            key={suggestion}
+                            type="button"
+                            onClick={() => setRefinement(suggestion)}
+                            className="rounded-full border-2 border-black bg-white px-3 py-2 text-xs font-black text-black hover:bg-[#E9FFFC]"
+                          >
+                            {suggestion}
+                          </button>
+                        ))}
+                      </div>
+                      <label className="mt-4 block">
+                        <span className="text-sm font-black text-slate-900">Aanpassing</span>
+                        <textarea
+                          value={refinement}
+                          onChange={(event) => setRefinement(event.target.value.slice(0, 300))}
+                          rows={3}
+                          placeholder="Bijvoorbeeld: casual kleding, lichtere achtergrond, iets vriendelijker, meer LinkedIn-stijl..."
+                          className="mt-2 w-full rounded-2xl border-2 border-slate-300 bg-white p-3 text-sm font-medium text-slate-900 outline-none focus:border-black"
+                        />
+                      </label>
+                      <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <p className="text-xs font-medium text-slate-500">{refinement.length}/300 tekens</p>
                         <button
                           type="button"
-                          onClick={startCheckout}
-                          disabled={isCheckoutRedirecting}
-                          className="flex-1 rounded-full bg-black px-4 py-2 text-center text-xs font-black text-white disabled:cursor-not-allowed disabled:opacity-60"
+                          onClick={refinePhoto}
+                          disabled={isRefining || !selectedImage || (project?.refinementsRemaining ?? 0) <= 0}
+                          className="inline-flex items-center justify-center border-2 border-black bg-[#FFD166] px-4 py-3 text-sm font-black text-black disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                          {isCheckoutRedirecting ? "Checkout..." : "Betaal en download"}
+                          {isRefining ? "Aangepaste variant maken..." : "Maak aangepaste variant"}
                         </button>
-                      )}
-                      <Link
-                        href="/editor"
-                        onClick={() => trackEditorClick("generated_card")}
-                        className="flex-1 rounded-full border-2 border-black bg-[#4ECDC4] px-4 py-2 text-center text-xs font-black text-black"
-                      >
-                        Gebruik in mijn cv
-                      </Link>
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
+                )}
 
-              <div className="mt-6 rounded-3xl border-2 border-black bg-white p-5">
-                <h3 className="text-lg font-black text-slate-900">Wil je iets aanpassen?</h3>
-                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
-                  Kies eerst één foto hierboven en typ wat anders moet. Je hebt nog {project?.refinementsRemaining ?? 2} verfijningen over.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {refinementSuggestions.map((suggestion) => (
-                    <button
-                      key={suggestion}
-                      type="button"
-                      onClick={() => setRefinement(suggestion)}
-                      className="rounded-full border-2 border-black bg-[#FFFEF9] px-3 py-2 text-xs font-black text-black hover:bg-[#E9FFFC]"
+                <div className="mt-6 rounded-3xl border-2 border-black bg-[#FFFEF9] p-5">
+                  <h3 className="text-lg font-black text-slate-900">Maak er direct een complete cv van</h3>
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
+                    Gebruik je beste profielfoto samen met een nette Nederlandse cv-template. Gratis bouwen,
+                    éénmalig €4,99 bij PDF-download, geen abonnement.
+                  </p>
+                  <div className="mt-4 flex flex-col gap-3 sm:flex-row">
+                    <Link
+                      href="/editor"
+                      onClick={() => trackEditorClick("output_final_cta")}
+                      className="inline-flex flex-1 items-center justify-center border-2 border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-black"
                     >
-                      {suggestion}
-                    </button>
-                  ))}
+                      Maak mijn cv
+                    </Link>
+                    <Link
+                      href="/templates"
+                      className="inline-flex flex-1 items-center justify-center border-2 border-black bg-white px-4 py-3 text-sm font-black text-black"
+                    >
+                      Bekijk templates
+                    </Link>
+                  </div>
                 </div>
-                <label className="mt-4 block">
-                  <span className="text-sm font-black text-slate-900">Aanpassing</span>
-                  <textarea
-                    value={refinement}
-                    onChange={(event) => setRefinement(event.target.value.slice(0, 300))}
-                    rows={3}
-                    placeholder="Bijvoorbeeld: casual kleding, lichtere achtergrond, iets vriendelijker, meer LinkedIn-stijl..."
-                    className="mt-2 w-full rounded-2xl border-2 border-slate-300 bg-[#FFFEF9] p-3 text-sm font-medium text-slate-900 outline-none focus:border-black"
-                  />
-                </label>
-                <div className="mt-3 flex items-center justify-between gap-3">
-                  <p className="text-xs font-medium text-slate-500">{refinement.length}/300 tekens</p>
-                  <button
-                    type="button"
-                    onClick={refinePhoto}
-                    disabled={isRefining || !selectedImageId || (project?.refinementsRemaining ?? 0) <= 0}
-                    className="inline-flex items-center justify-center border-2 border-black bg-[#FFD166] px-4 py-3 text-sm font-black text-black disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {isRefining ? "Aangepaste variant maken..." : "Maak aangepaste variant"}
-                  </button>
-                </div>
-              </div>
-
-              <div className="mt-6 rounded-3xl border-2 border-black bg-[#FFFEF9] p-5">
-                <h3 className="text-lg font-black text-slate-900">Maak er direct een complete cv van</h3>
-                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
-                  Gebruik je beste profielfoto samen met een nette Nederlandse cv-template. Gratis bouwen,
-                  éénmalig €4,99 bij PDF-download, geen abonnement.
-                </p>
-                <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                  <Link
-                    href="/editor"
-                    onClick={() => trackEditorClick("output_final_cta")}
-                    className="inline-flex flex-1 items-center justify-center border-2 border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-black"
-                  >
-                    Maak mijn cv
-                  </Link>
-                  <Link
-                    href="/templates"
-                    className="inline-flex flex-1 items-center justify-center border-2 border-black bg-white px-4 py-3 text-sm font-black text-black"
-                  >
-                    Bekijk templates
-                  </Link>
-                </div>
-              </div>
-            </>
-          )}
+              </>
+            )}
+          </div>
         </div>
-      </div>
       )}
     </div>
   );

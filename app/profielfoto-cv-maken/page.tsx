@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import NavUserMenu from "@/components/NavUserMenu";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import ProfilePhotoGenerator from "./ProfilePhotoGenerator";
@@ -84,6 +85,7 @@ export default function ProfielfotoCvMakenPage() {
             <Link href="/tools" className="hover:text-slate-900">
               Tools
             </Link>
+            <NavUserMenu />
           </nav>
         </div>
       </header>

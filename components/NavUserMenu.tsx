@@ -33,6 +33,12 @@ export default function NavUserMenu() {
             >
                 Mijn CV&apos;s
             </Link>
+            <Link
+                href="/profielfoto-cv-maken"
+                className="font-bold text-sm text-black hover:text-yellow-600 transition-colors"
+            >
+                Profielfoto&apos;s
+            </Link>
             <button
                 onClick={handleLogout}
                 disabled={loggingOut}

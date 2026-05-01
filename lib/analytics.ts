@@ -68,6 +68,7 @@ export type ProfilePhotoEvent =
     | 'profile_photo_checkout_click'
     | 'profile_photo_submit'
     | 'profile_photo_generated'
+    | 'profile_photo_variant_selected'
     | 'profile_photo_refine_submit'
     | 'profile_photo_refined'
     | 'profile_photo_download'
@@ -177,6 +178,10 @@ export type AnalyticsEvent =
     | {
           event: 'profile_photo_generated';
           properties: { page_path: string; style: string; images_generated: number };
+      }
+    | {
+          event: 'profile_photo_variant_selected';
+          properties: { page_path: string; image_id: string; variant_position: number; style: string };
       }
     | {
           event: 'profile_photo_refine_submit';
