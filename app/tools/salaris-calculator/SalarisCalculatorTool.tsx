@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import SalaryResultCvCta from "@/components/tools/SalaryResultCvCta";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
 import {
   calculateSalaryBenchmark,
@@ -647,6 +648,12 @@ export default function SalarisCalculatorTool() {
               </div>
             </div>
           </div>
+
+          <SalaryResultCvCta
+            toolName="salaris-calculator"
+            title="Gebruik je salarischeck voor je volgende sollicitatie"
+            text="Zie je ruimte voor een betere functie of salarissprong? Werk je cv direct bij voor rollen die beter aansluiten op je benchmark."
+          />
 
           <button
             type="button"

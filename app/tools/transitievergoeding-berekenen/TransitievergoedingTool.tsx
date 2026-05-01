@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import SalaryResultCvCta from "@/components/tools/SalaryResultCvCta";
 
 type Situation =
     | "employer_ends"
@@ -588,6 +589,12 @@ export default function TransitievergoedingTool() {
                             </p>
                         )}
                     </div>
+
+                    <SalaryResultCvCta
+                        toolName="transitievergoeding-berekenen"
+                        title="Bereid je volgende sollicitatie direct voor"
+                        text="Als je transitievergoeding berekent, speelt vaak ook een volgende baan. Werk je cv bij voordat je opnieuw gaat solliciteren."
+                    />
 
                     <div className="flex flex-col sm:flex-row gap-3">
                         <a

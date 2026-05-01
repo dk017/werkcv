@@ -32,8 +32,8 @@ const breadcrumbItems = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-    title: "Transitievergoeding Berekenen 2026 - Gratis Tool | WerkCV",
-    description: "Bereken je transitievergoeding voor 2026. Check eerst of je waarschijnlijk recht hebt, tel vaste looncomponenten mee en zie direct een duidelijke indicatie.",
+    title: "Transitievergoeding Berekenen 2026 | Gratis Tool + Uitleg | WerkCV",
+    description: "Bereken je transitievergoeding in 2026. Vul dienstverband en loon in, krijg direct een indicatie en lees welke stappen je daarna kunt nemen.",
     path: "/tools/transitievergoeding-berekenen",
     keywords: [
         "transitievergoeding berekenen",

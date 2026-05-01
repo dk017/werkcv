@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import SalaryResultCvCta from "@/components/tools/SalaryResultCvCta";
 import { parseDecimal } from "@/lib/tools/calculator-utils";
 import { calculateVacationDays, type VacationDaysResult } from "@/lib/tools/moat-calculators";
 
@@ -265,6 +266,12 @@ export default function VakantiedagenTool() {
               </ul>
             </div>
           </div>
+
+          <SalaryResultCvCta
+            toolName="vakantiedagen-berekenen"
+            title="Gebruik je verlofinzicht voor je volgende stap"
+            text="Plan je verlof rond een baanwissel of nieuw aanbod? Zorg dat je cv klaarstaat voordat je actief gaat reageren."
+          />
 
           <button
             type="button"

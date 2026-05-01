@@ -50,8 +50,8 @@ const vacationCvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Vakantiedagen Berekenen 2026 - Gratis Tool | WerkCV",
-  description: "Bereken je wettelijke vakantiedagen en vakantie-uren in 2026. Vul contracturen, werkdagen, opbouwmaanden en opgenomen verlof in en zie direct wat je nog over hebt.",
+  title: "Vakantiedagen Berekenen 2026 | Dagen en Uren Tool | WerkCV",
+  description: "Bereken je vakantiedagen en vakantie-uren in 2026. Vul contracturen, werkdagen en opgenomen verlof in en zie direct wat je over hebt.",
   keywords: [
     "vakantiedagen berekenen",
     "vakantie uren berekenen",
@@ -60,6 +60,9 @@ export const metadata: Metadata = {
     "wettelijke vakantiedagen 2026",
     "verlofuren berekenen",
   ],
+  alternates: {
+    canonical: "https://werkcv.nl/tools/vakantiedagen-berekenen",
+  },
 };
 
 export default function VakantiedagenBerekenenPage() {

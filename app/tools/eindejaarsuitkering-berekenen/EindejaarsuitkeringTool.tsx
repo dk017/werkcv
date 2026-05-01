@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import SalaryResultCvCta from "@/components/tools/SalaryResultCvCta";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
 import { calculateYearEndBonus, type YearEndBonusResult } from "@/lib/tools/moat-calculators";
 
@@ -181,6 +182,12 @@ export default function EindejaarsuitkeringTool() {
               </ul>
             </div>
           </div>
+
+          <SalaryResultCvCta
+            toolName="eindejaarsuitkering-berekenen"
+            title="Gebruik je eindejaarsinzicht voor je volgende sollicitatie"
+            text="Een eindejaarsuitkering of 13e maand verandert hoe je een aanbod vergelijkt. Werk je cv bij als je wilt mikken op een beter totaalpakket."
+          />
 
           <button
             type="button"

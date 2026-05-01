@@ -50,8 +50,8 @@ const cvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Salaris Kompas 2026 - Check Je Salaris Met CBS Data | WerkCV",
-  description: "Gebruik een guided salaris kompas op basis van CBS 2024 loonpercentielen per beroep. WerkCV corrigeert voor ervaring, regio en opleiding en laat zien of je marktconform zit.",
+  title: "Salarischeck 2026 | Check Je Salaris Met CBS Data | WerkCV",
+  description: "Check je salaris met CBS-data per beroep. Vergelijk bruto maandloon, ervaring, regio en opleiding en zie of je marktconform zit.",
   keywords: [
     "salaris check",
     "salaris kompas",
@@ -62,6 +62,9 @@ export const metadata: Metadata = {
     "salaris vergelijking",
     "gemiddeld salaris per beroep",
   ],
+  alternates: {
+    canonical: "https://werkcv.nl/tools/salaris-calculator",
+  },
 };
 
 export default function SalarisCalculatorPage() {

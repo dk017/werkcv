@@ -342,6 +342,34 @@ export default async function ExamplePage({ params }: PageProps) {
                             </ContentSection>
                         )}
 
+                        {example.categorySlug === 'studenten-en-starters' && example.slug === 'student-cv' && (
+                            <div className="p-6 bg-[#E9FFFC] border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                                <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-600 mb-2">
+                                    Student cv direct maken
+                                </p>
+                                <h3 className="font-black text-xl mb-2 text-gray-900">
+                                    Zet dit voorbeeld om naar jouw eigen student cv
+                                </h3>
+                                <p className="text-gray-700 mb-4">
+                                    Start met deze structuur, vul je opleiding, bijbaan, stage of projecten in en download pas
+                                    als je tevreden bent met je PDF. Geen abonnement, éénmalig €4,99 bij download.
+                                </p>
+                                <div className="flex flex-wrap gap-3">
+                                    <UseExampleButton
+                                        templateId={example.templateId}
+                                        colorThemeId={example.colorThemeId}
+                                        sampleCV={example.sampleCV}
+                                    />
+                                    <Link
+                                        href="/cv-maken-student"
+                                        className="inline-flex items-center justify-center border-4 border-black bg-white px-5 py-3 text-sm font-black text-black"
+                                    >
+                                        Lees student cv gids
+                                    </Link>
+                                </div>
+                            </div>
+                        )}
+
                         {/* Inline CTA */}
                         <div className="p-6 bg-gradient-to-r from-[#FF6B6B]/10 to-[#FF8E8E]/10 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                             <h3 className="font-black text-xl mb-2 text-gray-900">

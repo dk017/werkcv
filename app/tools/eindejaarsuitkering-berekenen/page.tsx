@@ -34,8 +34,8 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
-  title: "Eindejaarsuitkering Berekenen 2026 | 13e Maand, Pro Rata, Belasting",
-  description: "Bereken direct je eindejaarsuitkering of 13e maand in 2026. Inclusief pro rata, december-uitbetaling, bruto indicatie en uitleg over belasting en bijzondere beloningen.",
+  title: "Eindejaarsuitkering Berekenen 2026 | 13e Maand Tool | WerkCV",
+  description: "Bereken je eindejaarsuitkering of 13e maand in 2026. Inclusief pro rata, bruto indicatie, decemberloon en uitleg over belasting.",
   keywords: [
     "eindejaarsuitkering berekenen",
     "eindejaarsuitkering calculator",

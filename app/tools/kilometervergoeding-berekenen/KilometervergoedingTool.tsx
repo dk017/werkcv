@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
+import SalaryResultCvCta from "@/components/tools/SalaryResultCvCta";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
 import {
   TAX_FREE_KILOMETER_RATE_2026,
@@ -204,30 +204,11 @@ export default function KilometervergoedingTool() {
             </p>
           </div>
 
-          <div className="border-2 border-black bg-black p-5 text-white">
-            <p className="text-sm font-black uppercase tracking-[0.16em] text-yellow-300">
-              Van baan wisselen?
-            </p>
-            <h3 className="mt-2 text-xl font-black">Zorg dat je CV klaar is.</h3>
-            <p className="mt-2 text-sm text-slate-300">
-              Reiskosten zijn vaak onderdeel van een nieuw aanbod. Trek dat moment door naar een CV
-              dat klaarstaat voor je volgende stap.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <Link
-                href="/editor"
-                className="border-2 border-white bg-[#4ECDC4] px-4 py-2 text-sm font-black text-slate-900"
-              >
-                Maak gratis een ATS-vriendelijk CV - eenmalig €4,99
-              </Link>
-              <Link
-                href="/tools/netto-bruto-calculator"
-                className="border-2 border-white bg-transparent px-4 py-2 text-sm font-black text-white"
-              >
-                Netto-bruto calculator
-              </Link>
-            </div>
-          </div>
+          <SalaryResultCvCta
+            toolName="kilometervergoeding-berekenen"
+            title="Gebruik je reiskosteninzicht voor je volgende stap"
+            text="Vergelijk je een aanbod of nieuwe baan? Zet je cv klaar terwijl salaris, reistijd en vergoeding nog vers in beeld zijn."
+          />
 
           <button
             type="button"

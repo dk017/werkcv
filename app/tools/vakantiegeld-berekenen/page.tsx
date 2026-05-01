@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { estimateNetFromTaxableIncome } from "@/lib/tools/netto-bruto";
 import VakantiegeldTool from "./VakantiegeldTool";
 
@@ -12,6 +13,10 @@ const faqItems = [
     {
         question: "Hoeveel vakantiegeld krijg ik in Nederland?",
         answer: "In Nederland krijg je als werknemer meestal minimaal 8% vakantiegeld over je brutoloon. Cao of arbeidsovereenkomst kan een hoger percentage geven.",
+    },
+    {
+        question: "Zoek je een tool om vakantiegeld netto te berekenen?",
+        answer: "Ja. Deze pagina werkt als vakantiegeld netto berekenen tool doordat hij eerst je bruto vakantiegeld uitrekent en daarna een ruwe netto-indicatie toont op basis van 2026-loonheffingsaannames. Je echte loonstrook kan nog afwijken door bijzondere beloningen, pensioen en persoonlijke inhoudingen.",
     },
     {
         question: "Hoe bereken je netto vakantiegeld?",
@@ -139,14 +144,17 @@ const comparisonRows = [
     },
 ];
 
-export const metadata: Metadata = {
-    title: "Vakantiegeld Berekenen 2026 | 8% Tool + Bruto Netto Uitleg | WerkCV",
-    description: "Bereken je vakantiegeld in 2026 met de Nederlandse 8%-regel. Zie direct je bruto vakantiegeld, een ruwe netto-indicatie en het verschil met vakantietoeslag, vakantiedagen en 13e maand.",
+export const metadata: Metadata = buildDutchMetadata({
+    title: "Vakantiegeld Berekenen 2026 | 8% Bruto/Netto Tool | WerkCV",
+    description: "Bereken direct je vakantiegeld in 2026 met de 8%-regel. Zie bruto vakantiegeld, ruwe netto-indicatie en uitleg over vakantietoeslag.",
+    path: "/tools/vakantiegeld-berekenen",
     keywords: [
         "vakantiegeld berekenen",
         "vakantie geld berekenen",
         "vakantietoeslag berekenen",
         "vakantiegeld berekenen bruto netto",
+        "vakantiegeld netto berekenen tool",
+        "vakantiegeld bruto netto",
         "bruto netto vakantiegeld",
         "netto vakantiegeld berekenen",
         "hoeveel vakantiegeld",
@@ -157,10 +165,7 @@ export const metadata: Metadata = {
         "vakantiegeld parttime",
         "vakantiegeld bij uit dienst",
     ],
-    alternates: {
-        canonical: "https://werkcv.nl/tools/vakantiegeld-berekenen",
-    },
-};
+});
 
 export default function VakantiegeldBerekenenPage() {
     return (
@@ -259,6 +264,44 @@ export default function VakantiegeldBerekenenPage() {
 
                 <section className="mb-12">
                     <VakantiegeldTool />
+                </section>
+
+                <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="mb-5">
+                        <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+                            Snelle zoekintenties
+                        </p>
+                        <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
+                            Vakantiegeld netto berekenen tool of vakantiegeld bruto netto?
+                        </h2>
+                        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
+                            Deze pagina is gebouwd voor beide varianten: eerst zie je je bruto vakantiegeld,
+                            daarna een ruwe netto-indicatie met uitleg waarom dat netto bedrag lager uitvalt
+                            dan veel mensen verwachten.
+                        </p>
+                    </div>
+                    <div className="grid gap-6 lg:grid-cols-2">
+                        <div className="border-2 border-black bg-[#FFF7E8] p-5">
+                            <h3 className="text-lg font-black text-slate-900">
+                                Vakantiegeld netto berekenen tool
+                            </h3>
+                            <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                                Zoek je vooral een tool die je netto vakantiegeld schat, dan zit je hier goed.
+                                WerkCV rekent eerst je bruto vakantiegeld uit en laat daarna direct zien wat er
+                                ongeveer netto kan overblijven na loonheffing.
+                            </p>
+                        </div>
+                        <div className="border-2 border-black bg-[#EFFCFB] p-5">
+                            <h3 className="text-lg font-black text-slate-900">
+                                Vakantiegeld bruto netto
+                            </h3>
+                            <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                                Wil je bruto en netto naast elkaar zien, gebruik dan de calculator samen met de
+                                voorbeelden hieronder. Zo zie je zowel de 8%-opbouw als het verschil tussen het
+                                bruto bedrag en wat er ongeveer op je rekening landt.
+                            </p>
+                        </div>
+                    </div>
                 </section>
 
                 <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
