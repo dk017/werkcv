@@ -53,21 +53,24 @@ export async function GET(
     return NextResponse.json({ error: "Afbeelding niet gevonden" }, { status: 404 });
   }
 
+  let buffer: Buffer;
+
   try {
-    const buffer = await readProfilePhotoImage({
+    buffer = await readProfilePhotoImage({
       userId: user.id,
       projectId: project.id,
       filename: image.filename,
     });
-
-    return new NextResponse(new Blob([new Uint8Array(buffer)], { type: "image/jpeg" }), {
-      headers: {
-        "Content-Type": "image/jpeg",
-        "Content-Disposition": `${isDownload ? "attachment" : "inline"}; filename="werkcv-profielfoto-${image.id}.jpg"`,
-        "Cache-Control": "private, max-age=3600",
-      },
-    });
   } catch {
     return NextResponse.json({ error: "Afbeelding niet gevonden" }, { status: 404 });
   }
+
+  return new NextResponse(new Uint8Array(buffer), {
+    headers: {
+      "Content-Type": "image/jpeg",
+      "Content-Length": String(buffer.length),
+      "Content-Disposition": `${isDownload ? "attachment" : "inline"}; filename="werkcv-profielfoto-${image.id}.jpg"`,
+      "Cache-Control": "private, max-age=3600",
+    },
+  });
 }
