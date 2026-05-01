@@ -47,6 +47,21 @@ const qualityChecks = [
   "De kleding en uitstraling passen bij de sector waarin je solliciteert.",
 ];
 
+const sampleTransformations = [
+  {
+    before: "Selfie met drukke achtergrond",
+    after: "Rustige LinkedIn-foto met neutrale achtergrond en professionele uitsnede",
+  },
+  {
+    before: "Goede foto, maar te casual",
+    after: "Nettere kledingstijl en belichting die beter past bij cv en sollicitatie",
+  },
+  {
+    before: "LinkedIn-foto voelt verouderd",
+    after: "Nieuwe variant met herkenbare uitstraling, direct oogcontact en moderne studio-look",
+  },
+];
+
 export const metadata: Metadata = buildDutchMetadata({
   title: "AI profielfoto maken voor CV en LinkedIn | €9,99 | WerkCV",
   description:
@@ -153,6 +168,44 @@ export default function ProfielfotoCvMakenPage() {
         </section>
 
         <section id="profielfoto-tool" className="mx-auto max-w-6xl px-6 py-12">
+          <section className="mb-8 rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+              <div>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+                  Eerst preview, dan betalen
+                </p>
+                <h2 className="mt-2 text-3xl font-black text-slate-950">
+                  Bekijk je varianten voordat je €9,99 betaalt
+                </h2>
+                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+                  Je logt in, maakt 4 voorbeeldvarianten en kiest de beste foto. Pas als je wilt downloaden start de
+                  eenmalige betaling. Zo betaal je niet blind voor een resultaat dat je nog niet hebt gezien.
+                </p>
+                <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                  {["4 startvarianten", "2 verfijningen", "Betalen bij download"].map((item) => (
+                    <div key={item} className="border-2 border-black bg-[#E9FFFC] p-3 text-sm font-black text-black">
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="grid gap-3">
+                {sampleTransformations.map((item) => (
+                  <div key={item.before} className="grid gap-3 rounded-2xl border-2 border-slate-200 bg-[#FFFEF9] p-4 sm:grid-cols-2">
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">Vaak nu</p>
+                      <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.before}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">Doeloutput</p>
+                      <p className="mt-1 text-sm font-black leading-relaxed text-slate-900">{item.after}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
           <ProfilePhotoGenerator />
         </section>
 

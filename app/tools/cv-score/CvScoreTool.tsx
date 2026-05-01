@@ -422,7 +422,7 @@ export default function CvScoreTool() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
               ["6 sec", "Een recruiter bekijkt je CV gemiddeld 6 seconden"],
-              ["70%", "CV's worden afgewezen door ATS vóór menselijke beoordeling"],
+              ["ATS + recruiter", "Check techniek én inhoud voordat je solliciteert"],
               ["6 dimensies", "Zo wordt jouw CV beoordeeld"],
             ].map(([value, copy]) => (
               <div key={value} className="rounded-2xl border-2 border-slate-200 bg-slate-50 p-4">
@@ -726,7 +726,7 @@ export default function CvScoreTool() {
 
           <section className="rounded-3xl border-4 border-black bg-[#FFF7D6] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600 mb-3">
-              Volgende stap
+              Direct verbeteren
             </p>
             <h3 className="text-2xl font-black text-slate-900">{result.cta.headline}</h3>
             <p className="mt-3 text-sm sm:text-base text-slate-700 leading-relaxed">
@@ -736,6 +736,11 @@ export default function CvScoreTool() {
               </Link>
               .
             </p>
+            <div className="mt-4 grid gap-3 text-sm font-medium text-slate-700 sm:grid-cols-3">
+              <div className="border-2 border-black bg-white p-3">Gebruik je score als checklist.</div>
+              <div className="border-2 border-black bg-white p-3">Maak direct een sterkere templateversie.</div>
+              <div className="border-2 border-black bg-white p-3">Betaal pas bij PDF-download.</div>
+            </div>
             <div className="mt-5 flex flex-col sm:flex-row gap-3">
               <Link
                 href={result.cta.primary_button_url}
@@ -753,6 +758,9 @@ export default function CvScoreTool() {
                 {result.cta.secondary_button_text}
               </Link>
             </div>
+            <p className="mt-3 text-xs font-bold text-slate-600">
+              Gratis bouwen. Eénmalig €4,99 bij PDF-download. Geen abonnement.
+            </p>
           </section>
 
           <button

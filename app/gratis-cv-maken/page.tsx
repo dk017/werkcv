@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import MoneyPageTrustBlock from "@/components/landing/MoneyPageTrustBlock";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import { cvDownloadPrice } from "@/lib/site-content";
 import { templateList } from "@/lib/templates/registry";
@@ -363,6 +364,56 @@ export default function GratisCvMakenPage() {
             </div>
           </div>
         </section>
+
+        <section className="mb-14">
+          <div className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Gratis vs betaald
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Wat is gratis en wanneer betaal je?
+            </h2>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              <div className="border-2 border-black bg-[#E9FFFC] p-5">
+                <h3 className="text-xl font-black text-black">Gratis</h3>
+                <ul className="mt-3 space-y-2 text-sm font-medium leading-relaxed text-slate-700">
+                  <li>Je cv aanmaken en invullen.</li>
+                  <li>Templates en kleuren vergelijken.</li>
+                  <li>Teksten verbeteren en later terugkomen.</li>
+                  <li>Voorbeeld bekijken voordat je beslist.</li>
+                </ul>
+              </div>
+              <div className="border-2 border-black bg-[#FFF7D6] p-5">
+                <h3 className="text-xl font-black text-black">Betaald</h3>
+                <ul className="mt-3 space-y-2 text-sm font-medium leading-relaxed text-slate-700">
+                  <li>Alleen de definitieve PDF-download.</li>
+                  <li>Eenmalig {cvDownloadPrice.display} per cv-document.</li>
+                  <li>Geen abonnement, proefperiode of automatische verlenging.</li>
+                  <li>Hetzelfde betaalde cv later opnieuw bewerken en downloaden.</li>
+                </ul>
+              </div>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/editor"
+                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              >
+                Start gratis met mijn cv
+              </Link>
+              <Link
+                href="/prijzen"
+                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+              >
+                Bekijk prijsmodel
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <MoneyPageTrustBlock
+          title="Waarom gratis starten bij WerkCV logisch is"
+          intro="Je ziet eerst of je cv-inhoud, template en PDF-route goed voelen. Pas als je tevreden bent met de definitieve versie betaal je voor de download."
+        />
 
         <section className="mb-14">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">

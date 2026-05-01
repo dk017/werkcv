@@ -154,7 +154,7 @@ export default function AtsCvCheckerPage() {
                     <section>
                         <h2 className="text-xl font-black text-slate-900">Wat is een ATS en waarom telt het?</h2>
                         <p className="mt-3 text-slate-600 text-sm leading-relaxed">
-                            Een ATS (Applicant Tracking System) is software die bedrijven gebruiken om CV&apos;s automatisch te filteren. Meer dan 70% van de grote werkgevers in Nederland gebruikt een ATS. Een CV dat er goed uitziet voor mensen, maar slecht leesbaar is voor software, wordt nooit door een recruiter gezien.
+                            Een ATS (Applicant Tracking System) is software die veel grotere werkgevers gebruiken om CV&apos;s te verwerken en te ordenen. Een CV dat er goed uitziet voor mensen, maar slecht leesbaar is voor software, kan daardoor onnodig zwak uit de eerste selectie komen.
                         </p>
                     </section>
 

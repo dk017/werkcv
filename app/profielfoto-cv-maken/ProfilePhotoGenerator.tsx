@@ -678,7 +678,7 @@ export default function ProfilePhotoGenerator() {
                           onClick={() => trackEditorClick("selected_photo_action")}
                           className="inline-flex justify-center rounded-full border-2 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black"
                         >
-                          Open cv-editor
+                          Maak cv met deze foto
                         </Link>
                       </div>
                     </div>

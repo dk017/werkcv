@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
+import TrackedToolLink from "@/components/analytics/TrackedToolLink";
 
 interface AtsCheck {
     id: string;
@@ -274,31 +275,43 @@ export default function AtsCheckerTool() {
                         </p>
                     )}
 
-                    <div className="bg-[#FFF7D6] border-2 border-black p-4 sm:p-5">
+                    <div className="bg-[#FFF7D6] border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:p-5">
                         <p className="text-xs font-black uppercase tracking-wide text-slate-600 mb-2">
-                            Volgende stap
+                            Direct oplossen
                         </p>
                         <h3 className="text-lg font-black text-slate-900 mb-2">
-                            Werk je verbeterpunten direct uit in een sterker CV
+                            Maak nu een ATS-vriendelijke versie van je cv
                         </h3>
                         <p className="text-sm text-slate-700 leading-relaxed mb-4">
-                            Gebruik je ATS-check als checklist en pas je profiel, secties en werkervaring meteen aan in de editor of start met een ATS-vriendelijke template.
+                            Gebruik deze check als prioriteitenlijst. Zet je profiel, secties en werkervaring meteen over naar een rustige Nederlandse template en betaal pas als je de PDF wilt downloaden.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
-                            <a
+                            <TrackedToolLink
                                 href="/editor"
-                                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-[#4ECDC4] text-slate-900 font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
-                                style={{ borderWidth: '3px' }}
+                                eventName="tool_to_cv_cta_click"
+                                toolName="ats-cv-checker"
+                                ctaVariant="primary"
+                                trackingLocation="ats-cv-checker:result_primary"
+                                trackingLabel="Maak een ATS-vriendelijke cv"
+                                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-[#4ECDC4] text-slate-900 font-black text-sm border-[3px] border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
                             >
-                                Verbeter mijn CV in de editor →
-                            </a>
-                            <a
+                                Maak een ATS-vriendelijke cv
+                            </TrackedToolLink>
+                            <TrackedToolLink
                                 href="/templates"
+                                eventName="tool_to_cv_cta_click"
+                                toolName="ats-cv-checker"
+                                ctaVariant="secondary"
+                                trackingLocation="ats-cv-checker:result_secondary"
+                                trackingLabel="Bekijk ATS-vriendelijke templates"
                                 className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-50 transition-colors"
                             >
                                 Bekijk ATS-vriendelijke templates
-                            </a>
+                            </TrackedToolLink>
                         </div>
+                        <p className="mt-3 text-xs font-bold text-slate-600">
+                            Gratis bouwen. Eénmalig €4,99 bij PDF-download. Geen abonnement.
+                        </p>
                     </div>
 
                     <button

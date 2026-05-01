@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import MoneyPageTrustBlock from "@/components/landing/MoneyPageTrustBlock";
 import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import { templateList } from "@/lib/templates/registry";
@@ -418,6 +419,11 @@ export default function CvMakenPage() {
           </div>
         </section>
 
+        <MoneyPageTrustBlock
+          title="Eerst zekerheid, daarna pas je PDF downloaden"
+          intro="Je hoeft niet te gokken of WerkCV bij je past. Start gratis, maak je inhoud af, vergelijk templates en betaal pas als je cv klaar is om als PDF te versturen."
+        />
+
         <section className="mb-14">
           <div className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
@@ -570,7 +576,7 @@ export default function CvMakenPage() {
                     href="/editor"
                     className="inline-block border-2 border-black bg-yellow-400 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-black"
                   >
-                    Start in editor
+                    Maak gratis je cv
                   </Link>
                 </div>
               </div>
@@ -894,7 +900,7 @@ export default function CvMakenPage() {
                 href="/editor"
                 className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Open editor
+                Maak gratis je cv, betaal pas bij downloaden
               </Link>
               <Link
                 href="/prijzen"
