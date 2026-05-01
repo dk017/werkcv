@@ -54,6 +54,11 @@ const routeLinks: OptimizerLinkCard[] = [
     title: "CV maken",
     body: "Ga direct verder in de editor als je na de review een nieuwe cv-versie wilt bouwen.",
   },
+  {
+    href: "/profielfoto-cv-maken",
+    title: "Profielfoto laten verbeteren",
+    body: "Sterk als je cv inhoudelijk klopt, maar je foto nog te casual, donker of onrustig oogt.",
+  },
 ];
 
 const faqItems: OptimizerFaqItem[] = [

@@ -57,6 +57,11 @@ export const linkedinNaarCv: BlogArticle = {
                     description: 'Gebruik de optimalisatiegids als je profiel nog te dun of te breed is voordat je gaat omzetten.',
                 },
                 {
+                    href: '/profielfoto-cv-maken',
+                    label: 'Maak ook je profielfoto consistent voor cv en LinkedIn',
+                    description: 'Gebruik dezelfde professionele uitstraling op je cv, LinkedIn-profiel en sollicitatieprofiel.',
+                },
+                {
                     href: '/cv-tips/linkedin-profiel-maken',
                     label: 'Begin met LinkedIn profiel maken als je nog geen goede basis hebt',
                     description: 'Handig als je nog voor de setupfase zit en nog niet echt kunt omzetten.',

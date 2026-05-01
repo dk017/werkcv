@@ -88,6 +88,11 @@ export const linkedinProfielMaken: BlogArticle = {
             ],
             intentLinks: [
                 {
+                    href: '/profielfoto-cv-maken',
+                    label: 'Maak een professionele profielfoto voor LinkedIn en cv',
+                    description: 'Handig als je nu alleen een selfie, vakantiefoto of rommelige achtergrond hebt.',
+                },
+                {
                     href: '/cv-tips/linkedin-kopregel-voorbeeld',
                     label: 'Bekijk sterke LinkedIn kopregel voorbeelden',
                     description: 'Gebruik voorbeelden per rol, carrierefase en switch-situatie.',

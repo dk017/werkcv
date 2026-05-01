@@ -64,6 +64,18 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
                 'Achtergrondafbeelding: vakgebied-gerelateerd of professioneel ontwerp — laat dit niet leeg',
                 'Bijwerken: elke 2-3 jaar — een verouderde foto schaadt je herkenbaarheid bij netwerkevenementen',
             ],
+            intentLinks: [
+                {
+                    href: '/profielfoto-cv-maken',
+                    label: 'Maak een professionele profielfoto voor cv en LinkedIn',
+                    description: 'Gebruik een bestaande selfie of foto als basis en maak varianten die passen bij je sollicitatieprofiel.',
+                },
+                {
+                    href: '/cv-tips/foto-op-je-cv',
+                    label: 'Lees wanneer een foto op je cv verstandig is',
+                    description: 'Handig als je twijfelt of je dezelfde foto ook op je Nederlandse cv moet gebruiken.',
+                },
+            ],
         },
         {
             id: 'headline-optimaliseren',

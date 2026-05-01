@@ -61,6 +61,11 @@ const routeLinks: OptimizerLinkCard[] = [
     title: "English resume optimizer",
     body: "Voor expats of internationale kandidaten die een English-language route voor Dutch job applications zoeken.",
   },
+  {
+    href: "/profielfoto-cv-maken",
+    title: "Profielfoto optimaliseren",
+    body: "Gebruik deze route als je naast inhoud en ATS ook je visuele eerste indruk wilt verbeteren.",
+  },
 ];
 
 const faqItems: OptimizerFaqItem[] = [

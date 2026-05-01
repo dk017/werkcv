@@ -82,6 +82,11 @@ const routeCards = [
     title: "Templates vergelijken",
     body: "Sterk als je inhoud grotendeels helder is en je vooral de rustigste of meest ATS-veilige layout wilt kiezen.",
   },
+  {
+    href: "/profielfoto-cv-maken",
+    title: "Profielfoto maken",
+    body: "Optioneel, maar nuttig als je een professionele foto wilt die ook op LinkedIn past.",
+  },
 ];
 
 const formatChoices = [

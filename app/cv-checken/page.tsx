@@ -61,6 +61,11 @@ const routeLinks: OptimizerLinkCard[] = [
     title: "ATS cv-template",
     body: "Gebruik een ATS-vriendelijk template als je technische leesbaarheid je grootste zorg is.",
   },
+  {
+    href: "/profielfoto-cv-maken",
+    title: "Profielfoto voor je cv",
+    body: "Rond je cv af met een rustige professionele foto als dat past bij je sector en vacature.",
+  },
 ];
 
 const faqItems: OptimizerFaqItem[] = [

@@ -79,6 +79,11 @@ const routeLinks: OptimizerLinkCard[] = [
     title: "CV-voorbeelden bekijken",
     body: "Handig als je naast de check ook concrete Nederlandse voorbeelden per functie wilt zien.",
   },
+  {
+    href: "/profielfoto-cv-maken",
+    title: "Profielfoto verbeteren",
+    body: "Maak van een gewone foto een professionelere cv- en LinkedIn-foto als je eerste indruk nog achterblijft.",
+  },
 ];
 
 const faqItems: OptimizerFaqItem[] = [

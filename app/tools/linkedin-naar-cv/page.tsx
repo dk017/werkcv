@@ -164,6 +164,7 @@ export default function LinkedinNaarCvPage() {
               { href: "/tools/profieltekst-generator", label: "Profieltekst generator" },
               { href: "/tools/werkervaring-bullets", label: "Werkervaring bullets" },
               { href: "/tools/vaardigheden-generator", label: "Vaardigheden generator" },
+              { href: "/profielfoto-cv-maken", label: "Profielfoto voor cv en LinkedIn" },
               { href: "/tools/ats-cv-checker", label: "ATS CV checker" },
             ].map((item) => (
               <Link
