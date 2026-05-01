@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import SalaryResultCvCta from "@/components/tools/SalaryResultCvCta";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
 import {
     estimateGrossFromTargetNet,
@@ -255,6 +256,11 @@ export default function NettoBrutoTool() {
                             <li>De maanduitkomst is een praktische verdeling van een jaarberekening en kan afwijken van je echte loonstrook.</li>
                         </ul>
                     </div>
+
+                    <SalaryResultCvCta
+                        toolName="netto-bruto-calculator"
+                        text="Vergelijk je salaris omdat je een aanbod hebt of wilt overstappen? Zet die energie direct om in een sterker cv voor je volgende sollicitatie."
+                    />
 
                     <button
                         type="button"

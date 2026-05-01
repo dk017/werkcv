@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import SalaryResultCvCta from "@/components/tools/SalaryResultCvCta";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
 
 type SalaryInputMode = "monthly" | "annual" | "hourly";
@@ -205,6 +206,11 @@ export default function UurloonCalculatorTool() {
                                 : "WerkCV rekent met bruto jaarsalaris gedeeld door 52 weken en je contracturen per week. Dit geeft je een bruikbare bruto uurprijs voor vergelijking, onderhandeling en controle tegen het minimumloon."}
                         </p>
                     </div>
+
+                    <SalaryResultCvCta
+                        toolName="uurloon-calculator"
+                        text="Gebruik je uurloonvergelijking niet alleen als rekensom. Als je een beter aanbod zoekt, maak dan meteen een cv dat past bij die volgende stap."
+                    />
 
                     <button
                         type="button"

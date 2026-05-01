@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { cvDownloadPrice } from "@/lib/site-content";
 import { templateList } from "@/lib/templates/registry";
 
@@ -38,6 +39,39 @@ const freeSteps = [
   {
     title: "5) Download alleen als je tevreden bent",
     body: "WerkCV laat je gratis bouwen en vergelijken. De eenmalige betaling zit alleen op de uiteindelijke PDF-download, niet op het schrijven zelf.",
+  },
+];
+
+const quickAnswerCards = [
+  {
+    title: "Start for free in the editor",
+    body: "You can build your CV, switch templates, and improve the content before paying anything.",
+  },
+  {
+    title: "Pay only when the PDF is ready",
+    body: "The paid step is the final download, not the writing and testing phase.",
+  },
+  {
+    title: "Use it as an online CV builder",
+    body: "This route is strongest if you want to make and edit your CV online instead of working in Word.",
+  },
+];
+
+const freeRouteChoices = [
+  {
+    href: "/gratis-cv-template",
+    title: "Gratis CV template",
+    body: "Best if you mainly want to compare layouts before you start writing.",
+  },
+  {
+    href: "/cv-aanmaken",
+    title: "CV aanmaken",
+    body: "Best if you mostly need a first complete version from scratch with as little friction as possible.",
+  },
+  {
+    href: "/cv-maken",
+    title: "CV maken",
+    body: "Best if you want the full workflow for structure, writing quality, ATS, and stronger final content.",
   },
 ];
 
@@ -82,6 +116,11 @@ const mistakes = [
 
 const faqs = [
   {
+    question: "Kan ik online gratis een CV maken en later pas downloaden?",
+    answer:
+      "Ja. WerkCV is juist bedoeld voor online gratis cv maken: je start in de editor, bewerkt je inhoud, vergelijkt templates en beslist pas op het einde of je de PDF wilt downloaden.",
+  },
+  {
     question: "Wat is het verschil tussen gratis cv maken en cv aanmaken?",
     answer:
       "Gratis cv maken draait vooral om gratis starten, templates vergelijken, versies bewaren en pas later betalen bij download. Cv aanmaken draait juist om vanaf nul snel een eerste basisversie opzetten zonder blanco-pagina stress.",
@@ -113,10 +152,11 @@ const faqs = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "Gratis CV maken en pas betalen bij download | WerkCV",
   description:
     "Gratis CV maken in een serieuze builder? Start gratis, vergelijk templates, bewaar versies en betaal pas bij PDF-download. Geen abonnement en geen proefperiode.",
+  path: "/gratis-cv-maken",
   keywords: [
     "gratis cv maken",
     "cv maken gratis",
@@ -126,14 +166,11 @@ export const metadata: Metadata = {
     "cv maken gratis online",
     "curriculum vitae maken gratis",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/gratis-cv-maken",
-    languages: {
-      "nl-NL": "https://werkcv.nl/gratis-cv-maken",
-      "x-default": "https://werkcv.nl/gratis-cv-maken",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/gratis-cv-maken",
+    "x-default": "https://werkcv.nl/gratis-cv-maken",
   },
-};
+});
 
 export default function GratisCvMakenPage() {
   const faqSchema = {
@@ -195,7 +232,7 @@ export default function GratisCvMakenPage() {
             href="/editor"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
-            Start in editor
+            Maak gratis je cv
           </Link>
         </div>
       </header>
@@ -240,13 +277,13 @@ export default function GratisCvMakenPage() {
                 href="/editor"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Begin gratis in editor
+                Maak gratis je cv, betaal pas bij downloaden
               </Link>
               <Link
                 href="/prijzen"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Bekijk hoe gratis werkt
+                Bekijk prijsmodel
               </Link>
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
@@ -282,6 +319,47 @@ export default function GratisCvMakenPage() {
               >
                 Vergelijk eerst alle CV templates
               </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-14">
+          <div className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Kort antwoord
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Kun je echt gratis online een CV maken?
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+              Ja. Op WerkCV kun je online gratis je CV maken, bewerken en templates vergelijken. De betaalde stap zit pas op de uiteindelijke PDF-download. Daarmee past deze route beter bij mensen die eerst willen testen en schrijven dan bij mensen die per se direct een gratis PDF verwachten.
+            </p>
+            <div className="mt-6 grid gap-5 md:grid-cols-3">
+              {quickAnswerCards.map((card) => (
+                <article
+                  key={card.title}
+                  className="border-2 border-black bg-[#FFFEF0] p-4"
+                >
+                  <h3 className="text-base font-black text-black">{card.title}</h3>
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+                    {card.body}
+                  </p>
+                </article>
+              ))}
+            </div>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {freeRouteChoices.map((choice) => (
+                <Link
+                  key={choice.href}
+                  href={choice.href}
+                  className="block border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
+                >
+                  <p className="text-sm font-black text-black">{choice.title}</p>
+                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
+                    {choice.body}
+                  </p>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
@@ -379,7 +457,7 @@ export default function GratisCvMakenPage() {
                     href="/editor"
                     className="inline-block border-2 border-black bg-yellow-400 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-black"
                   >
-                    Start gratis
+                    Maak gratis je cv
                   </Link>
                 </div>
               </div>
@@ -501,7 +579,7 @@ export default function GratisCvMakenPage() {
                 href="/editor"
                 className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Open editor
+                Maak gratis je cv
               </Link>
               <Link
                 href="/templates"

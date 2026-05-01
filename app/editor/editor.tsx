@@ -173,12 +173,14 @@ export default function Editor({
         ? [
             "One-time €4.99 payment for this CV",
             "No subscription or automatic renewal",
+            "You only pay for this PDF download",
             "Edit this CV later and re-download it for free",
             "Professional PDF available immediately",
         ]
         : [
             "Eenmalig €4,99 voor dit CV",
             "Geen abonnement of automatische verlenging",
+            "Je betaalt alleen voor deze PDF-download",
             "Dit CV later gratis aanpassen en opnieuw downloaden",
             "Professionele PDF direct beschikbaar",
         ];
@@ -233,6 +235,14 @@ export default function Editor({
     const [isCoverLetterDirty, setIsCoverLetterDirty] = useState(false);
     const desktopPreviewViewportRef = useRef<HTMLDivElement>(null);
     const mobilePreviewViewportRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('upload') === '1') {
+            setShowUploader(true);
+        }
+    }, []);
 
     const handlePageCountChange = useCallback((count: number) => {
         setPageCount(count);
@@ -1323,10 +1333,10 @@ export default function Editor({
                                 </button>
                             </div>
                             <h3 className="mt-4 text-2xl font-black text-black sm:text-[2rem]">
-                                {tr("Betaal eenmalig en download je CV als PDF", "Pay once and download your CV as a PDF")}
+                                {tr("Download je cv als PDF", "Download your CV as a PDF")}
                             </h3>
                             <p className="mt-2 text-sm font-medium text-slate-700">
-                                {tr("Geen abonnement. Geen verborgen kosten. Je PDF is direct beschikbaar na betaling.", "No subscription. No hidden costs. Your PDF is available immediately after payment.")}
+                                {tr("Eenmalig €4,99. Geen abonnement. Geen automatische verlenging. Je PDF is direct beschikbaar na betaling.", "One-time €4.99. No subscription. No automatic renewal. Your PDF is available immediately after payment.")}
                             </p>
                         </div>
 
@@ -1358,7 +1368,7 @@ export default function Editor({
                             </ul>
 
                             <div className="mb-5 rounded-md border border-slate-300 bg-slate-50 px-3 py-3 text-xs font-semibold text-slate-700">
-                                {tr("Na betaling kun je ditzelfde CV later opnieuw openen, aanpassen en downloaden zonder opnieuw te betalen.", "After payment, you can reopen, edit, and download this same CV later without paying again.")}
+                                {tr("Je betaalt alleen voor deze download. Na betaling kun je ditzelfde cv later opnieuw openen, aanpassen en downloaden zonder opnieuw te betalen.", "You only pay for this download. After payment, you can reopen, edit, and download this same CV later without paying again.")}
                             </div>
 
                             <div className="grid gap-3 sm:grid-cols-2">

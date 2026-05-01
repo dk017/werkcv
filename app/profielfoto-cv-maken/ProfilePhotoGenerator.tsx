@@ -6,7 +6,7 @@ import { track } from "@/lib/analytics";
 
 type GeneratedImage = {
   id: string;
-  url: string;
+  url?: string;
   kind?: "generated" | "refined";
 };
 
@@ -82,8 +82,28 @@ function formatFileSize(size: number): string {
   return `${(size / 1024 / 1024).toFixed(1)} MB`;
 }
 
-function normalizeGeneratedImages(images: GeneratedImage[]): GeneratedImage[] {
-  return images;
+function buildImageUrl(projectId: string, imageId: string): string {
+  return `/api/profile-photo/images/${encodeURIComponent(imageId)}?projectId=${encodeURIComponent(projectId)}`;
+}
+
+function normalizeGeneratedImages(images: GeneratedImage[], projectId?: string): GeneratedImage[] {
+  return images.map((image) => {
+    if (
+      image.url &&
+      (image.url.startsWith("/") ||
+        image.url.startsWith("http://") ||
+        image.url.startsWith("https://") ||
+        image.url.startsWith("data:") ||
+        image.url.startsWith("blob:"))
+    ) {
+      return image;
+    }
+
+    return {
+      ...image,
+      url: projectId ? buildImageUrl(projectId, image.id) : image.url,
+    };
+  });
 }
 
 export default function ProfilePhotoGenerator() {
@@ -133,7 +153,7 @@ export default function ProfilePhotoGenerator() {
         if (!isMounted) return;
         setAuthStatus(payload.authenticated ? "authenticated" : "anonymous");
         setProject(payload.project ?? null);
-        const savedImages = payload.project?.images ?? [];
+        const savedImages = normalizeGeneratedImages(payload.project?.images ?? [], payload.project?.id);
         setImages(savedImages);
         setSelectedImageId(savedImages[0]?.id ?? null);
       } catch {
@@ -252,7 +272,8 @@ export default function ProfilePhotoGenerator() {
         throw new Error(payload.error ?? "De profielfoto kon niet worden gemaakt.");
       }
 
-      const normalizedImages = normalizeGeneratedImages(payload.images);
+      const responseProjectId = payload.project?.id ?? project?.id;
+      const normalizedImages = normalizeGeneratedImages(payload.images, responseProjectId);
       setImages(normalizedImages);
       setSelectedImageId(normalizedImages[0]?.id ?? null);
       if (payload.project) {
@@ -283,7 +304,7 @@ export default function ProfilePhotoGenerator() {
 
     const selectedImage = images.find((image) => image.id === selectedImageId);
 
-    if (!selectedImage) {
+    if (!selectedImage?.url) {
       setError("Kies eerst één gegenereerde foto om aan te passen.");
       return;
     }
@@ -326,7 +347,7 @@ export default function ProfilePhotoGenerator() {
         throw new Error(payload.error ?? "De aangepaste profielfoto kon niet worden gemaakt.");
       }
 
-      const normalizedImages = normalizeGeneratedImages(payload.images);
+      const normalizedImages = normalizeGeneratedImages(payload.images, payload.project?.id ?? project.id);
       setImages((currentImages) => [...normalizedImages, ...currentImages]);
       setSelectedImageId(normalizedImages[0]?.id ?? selectedImage.id);
       if (payload.project) {
@@ -361,6 +382,7 @@ export default function ProfilePhotoGenerator() {
   }
 
   function getDownloadUrl(image: GeneratedImage): string {
+    if (!image.url) return "#";
     return image.url.includes("?") ? `${image.url}&download=1` : `${image.url}?download=1`;
   }
 
@@ -563,14 +585,14 @@ export default function ProfilePhotoGenerator() {
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 {images.map((image, index) => (
                   <div
-                    key={image.id}
+                    key={`${image.id}-${index}`}
                     className={`rounded-3xl border-2 bg-white p-3 ${
                       selectedImageId === image.id ? "border-[#4ECDC4] ring-4 ring-[#4ECDC4]/30" : "border-black"
                     }`}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
-                      src={image.url}
+                      src={image.url ?? ""}
                       alt={`Gegenereerde profielfoto variant ${index + 1}`}
                       className="aspect-square w-full rounded-2xl object-cover"
                     />

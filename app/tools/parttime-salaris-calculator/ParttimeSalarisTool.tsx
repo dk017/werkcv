@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import SalaryResultCvCta from "@/components/tools/SalaryResultCvCta";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
 import {
   calculateParttimeSalary,
@@ -268,6 +269,11 @@ export default function ParttimeSalarisTool() {
               })}
             </div>
           </div>
+
+          <SalaryResultCvCta
+            toolName="parttime-salaris-calculator"
+            text="Denk je door parttime werken ook na over een andere functie of betere voorwaarden? Werk je cv bij voor de rol die past bij je nieuwe werkweek."
+          />
 
           <button
             type="button"

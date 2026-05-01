@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import SalaryResultCvCta from "@/components/tools/SalaryResultCvCta";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
 import { estimateNetFromTaxableIncome } from "@/lib/tools/netto-bruto";
 
@@ -217,6 +218,11 @@ export default function VakantiegeldTool() {
                             </p>
                         </div>
                     </div>
+
+                    <SalaryResultCvCta
+                        toolName="vakantiegeld-berekenen"
+                        text="Gebruik je vakantiegeld of loonstrookmoment als aanleiding om vooruit te kijken. Solliciteer je op een betere functie? Werk je cv direct bij."
+                    />
 
                     <button
                         type="button"

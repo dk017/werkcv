@@ -275,9 +275,9 @@ const workflowHowToSteps = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "CV Maken in 7 Stappen: Praktische Workflow voor 2026 | WerkCV",
+  title: "CV Maken voor Nederlandse Vacatures - Gratis Starten | WerkCV",
   description:
-    "Leer CV maken met een praktische 7-stappen workflow, copy-ready voorbeelden en ATS-tips. Start gratis in de editor en werk daarna vacaturegericht af.",
+    "Maak gratis een professioneel Nederlands cv en betaal pas bij PDF-download. ATS-vriendelijke templates, upload bestaande cv en geen abonnement.",
   path: "/cv-maken",
   keywords: [
     "cv maken",
@@ -334,7 +334,7 @@ export default function CvMakenPage() {
             href="/editor"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
-            Start in editor
+            Maak gratis je cv
           </Link>
         </div>
       </header>
@@ -343,57 +343,37 @@ export default function CvMakenPage() {
         <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
             <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Kernintentie: CV maken
+              Gratis bouwen, betalen bij PDF-download
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV maken in 7 stappen voor een duidelijk en professioneel resultaat
+              CV maken voor Nederlandse vacatures
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Een sterk CV maken betekent keuzes maken: relevante inhoud, heldere structuur en een layout die recruiters in seconden kunnen scannen. Op deze pagina krijg je een praktische workflow,
-              copy-ready voorbeelden en concrete cv maken tips die je meteen kunt toepassen. Begin gratis in de editor, optimaliseer per vacature en download pas als je tevreden bent.
+              Maak gratis je cv, kies een rustige Nederlandse template en betaal pas éénmalig €4,99 wanneer je de PDF wilt downloaden. Geen abonnement, geen proefperiode en geen automatische verlenging.
             </p>
             <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
-              Wil je liever{" "}
-              <Link
-                href="/cv-maken-zonder-abonnement"
-                className="font-black text-black underline decoration-2 underline-offset-4"
-              >
-                eenmalig betalen
-              </Link>{" "}
-              in plaats van een maandabonnement? Bekijk hoe WerkCV dat prijsmodel uitlegt.
-            </p>
-            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
-              Heb je je basis al op LinkedIn staan? Gebruik dan eerst{" "}
-              <Link
-                href="/tools/linkedin-naar-cv"
-                className="font-black text-black underline decoration-2 underline-offset-4"
-              >
-                LinkedIn-profiel omzetten naar cv
-              </Link>
-              {" "}om sneller van profieltekst naar een Nederlandse cv-structuur te gaan.
-            </p>
-            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
-              Deze pagina is de brede hoofdgids voor algemeen CV maken. Zoek je iets specifiekers, zoals gratis starten, Engels, student of Word? Dan verwijzen we je hieronder door naar die smallere routes.
+              Begin vanaf nul, upload je bestaande cv of gebruik je LinkedIn-profiel als basis. WerkCV helpt je inhoud, opmaak en PDF-export op één plek af te ronden.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/editor"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Maak nu je CV
+                Maak gratis je cv, betaal pas bij downloaden
               </Link>
               <Link
-                href="/templates"
+                href="/editor?upload=1"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Vergelijk templates
+                Upload bestaand cv
               </Link>
             </div>
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+            <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                "Stap-voor-stap CV workflow",
-                "ATS + recruiter-proof aanpak",
-                "Start gratis, betaal bij download",
+                "Eenmalig €4,99",
+                "Geen abonnement",
+                "ATS-vriendelijk",
+                "PDF-download",
               ].map((item) => (
                 <div
                   key={item}
@@ -407,27 +387,27 @@ export default function CvMakenPage() {
           </div>
 
           <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">Wat recruiters direct checken in je CV</h2>
-            <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
+            <h2 className="text-xl font-black text-black">Snelste route naar een downloadbare cv</h2>
+            <ol className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
               <li>
-                <strong className="text-black">Relevantie:</strong> sluit je functietitel en profieltekst aan op de vacature?
+                <strong className="text-black">1. Start gratis:</strong> vul je gegevens in of upload je bestaande cv.
               </li>
               <li>
-                <strong className="text-black">Bewijs:</strong> laat je resultaten zien, niet alleen taken?
+                <strong className="text-black">2. Kies je template:</strong> gebruik een rustige layout die recruiters snel kunnen scannen.
               </li>
               <li>
-                <strong className="text-black">Scanbaarheid:</strong> is je opbouw logisch met duidelijke koppen en korte bullets?
+                <strong className="text-black">3. Controleer inhoud:</strong> profieltekst, werkervaring, vaardigheden en ATS-woorden.
               </li>
               <li>
-                <strong className="text-black">Consistency:</strong> zijn stijl, taal en datums helder en foutarm?
+                <strong className="text-black">4. Download PDF:</strong> betaal pas als je tevreden bent met je definitieve cv.
               </li>
-            </ul>
+            </ol>
             <div className="mt-6 border-t-4 border-black pt-5">
               <Link
-                href="/tools/cv-keywords"
+                href="/templates"
                 className="text-sm font-black text-black underline decoration-2 underline-offset-4"
               >
-                Check vacaturekeywords met de CV keywords tool
+                Vergelijk eerst de cv-templates
               </Link>
             </div>
           </div>

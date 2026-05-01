@@ -115,10 +115,10 @@ export default function PrijzenPage() {
                         </span>
                     </Link>
                     <Link
-                        href="/"
+                        href="/editor"
                         className="text-sm font-bold text-black bg-yellow-400 px-3 py-1 border-2 border-black hover:bg-yellow-300 transition-colors"
                     >
-                        CV Maken
+                        Maak gratis je cv
                     </Link>
                 </div>
             </header>
@@ -141,6 +141,9 @@ export default function PrijzenPage() {
                     </h1>
                     <p className="text-lg font-medium text-black max-w-2xl mx-auto">
                         WerkCV kost {cvDownloadPrice.display} per CV-download. Je start gratis, betaalt pas wanneer je wilt downloaden en kunt datzelfde betaalde CV later opnieuw bewerken en downloaden zonder extra maandkosten.
+                    </p>
+                    <p className="text-sm font-black text-black max-w-2xl mx-auto mt-3">
+                        Je betaalt alleen voor je definitieve PDF-download. Geen proefperiode, geen automatische verlenging en niets om later op te zeggen.
                     </p>
                     <p className="text-sm font-medium text-gray-700 max-w-2xl mx-auto mt-3">
                         Wil je eerst precies zien hoe{" "}
@@ -192,11 +195,14 @@ export default function PrijzenPage() {
                             </ul>
 
                             <Link
-                                href="/"
+                                href="/editor"
                                 className="block w-full bg-yellow-400 text-black py-4 font-black text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
                             >
-                                Begin nu gratis
+                                Maak gratis je cv
                             </Link>
+                            <p className="mt-3 text-xs font-bold text-gray-700">
+                                Afrekenen gebeurt pas wanneer je jouw PDF wilt downloaden.
+                            </p>
                         </div>
                     </div>
                 </div>
