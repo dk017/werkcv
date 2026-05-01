@@ -61,7 +61,15 @@ export async function GET(
       projectId: project.id,
       filename: image.filename,
     });
-  } catch {
+  } catch (error) {
+    console.error("[profile-photo-image] read failed", {
+      userId: user.id,
+      projectId: project.id,
+      imageId,
+      filename: image.filename,
+      error,
+    });
+
     return NextResponse.json({ error: "Afbeelding niet gevonden" }, { status: 404 });
   }
 

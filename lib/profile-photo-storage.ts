@@ -64,9 +64,11 @@ export async function readProfilePhotoImage(params: {
     safeSegment(params.filename),
   ];
 
-  for (const root of getReadStorageRoots()) {
+  const attemptedPaths = getReadStorageRoots().map((root) => path.join(root, ...relativeSegments));
+
+  for (const fullPath of attemptedPaths) {
     try {
-      return await fs.readFile(path.join(root, ...relativeSegments));
+      return await fs.readFile(fullPath);
     } catch (error) {
       const code = error && typeof error === "object" && "code" in error ? error.code : null;
       if (code !== "ENOENT") {
@@ -75,5 +77,5 @@ export async function readProfilePhotoImage(params: {
     }
   }
 
-  return fs.readFile(path.join(getPrimaryStorageRoot(), ...relativeSegments));
+  throw new Error(`Profile photo file not found. Attempted paths: ${attemptedPaths.join(", ")}`);
 }
