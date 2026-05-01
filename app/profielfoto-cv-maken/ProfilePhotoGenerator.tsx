@@ -556,23 +556,29 @@ export default function ProfilePhotoGenerator() {
             </div>
           )}
 
-          <div>
-            <button
-              type="button"
-              onClick={generatePhoto}
-              disabled={isGenerating || (project?.generationCount ?? 0) >= 1}
-              className="w-full border-4 border-black bg-[#FFD166] px-5 py-4 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
-            >
-              {(project?.generationCount ?? 0) >= 1
-                ? "Eerste set is gemaakt"
-                : isGenerating
-                  ? "Profielfoto's worden gemaakt..."
-                  : "Maak 4 professionele varianten"}
-            </button>
-            <p className="mt-3 text-xs font-medium leading-relaxed text-slate-500">
-              Voorbeelden maken kan na login. Downloaden kost éénmalig €9,99. Geen abonnement.
-            </p>
-          </div>
+          {(project?.generationCount ?? 0) === 0 ? (
+            <div>
+              <button
+                type="button"
+                onClick={generatePhoto}
+                disabled={isGenerating}
+                className="w-full border-4 border-black bg-[#FFD166] px-5 py-4 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
+              >
+                {isGenerating ? "Profielfoto's worden gemaakt..." : "Maak 4 professionele varianten"}
+              </button>
+              <p className="mt-3 text-xs font-medium leading-relaxed text-slate-500">
+                Voorbeelden maken kan na login. Downloaden kost éénmalig €9,99. Geen abonnement.
+              </p>
+            </div>
+          ) : (
+            <div className="rounded-3xl border-2 border-slate-200 bg-white p-4">
+              <p className="text-sm font-black text-slate-900">Je eerste set is klaar</p>
+              <p className="mt-1 text-xs font-medium leading-relaxed text-slate-600">
+                Kies hieronder je favoriete variant. Daarna kun je die foto verfijnen, gebruiken in je cv of
+                downloaden na de eenmalige betaling.
+              </p>
+            </div>
+          )}
 
           <div className="rounded-3xl border-2 border-slate-200 bg-slate-50 p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
