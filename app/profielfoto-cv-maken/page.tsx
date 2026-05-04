@@ -276,20 +276,19 @@ export default function ProfielfotoCvMakenPage() {
         <section className="border-y-4 border-black bg-slate-950 text-white">
           <div className="mx-auto grid max-w-6xl gap-8 px-6 py-12 lg:grid-cols-2 lg:items-center">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#4ECDC4]">Conversiehoek</p>
-              <h2 className="mt-3 text-3xl font-black leading-tight">Selfie omzetten naar sollicitatieprofiel</h2>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#4ECDC4]">Volgende stap</p>
+              <h2 className="mt-3 text-3xl font-black leading-tight">Maak je hele sollicitatieprofiel netjes</h2>
               <p className="mt-4 text-sm font-medium leading-relaxed text-slate-300">
-                De beste plek voor deze add-on is niet bovenaan de funnel, maar rond het moment dat iemand klaar
-                is met zijn cv of LinkedIn wil bijwerken. Dan is de vraag concreet: “ziet mijn eerste indruk er
-                professioneel genoeg uit?”
+                Een professionele foto helpt pas echt wanneer je CV en LinkedIn hetzelfde niveau uitstralen.
+                Gebruik je beste variant daarom direct met een rustige CV-template en een duidelijke profieltekst.
               </p>
             </div>
             <div className="grid gap-3">
               {[
-                "Na cv-upload: bestaande cv verbeteren en foto netjes maken.",
-                "Na PDF-download: LinkedIn en cv visueel consistent maken.",
-                "Voor coaches: cliënten met rommelige foto snel naar professioneel profiel brengen.",
-                "Bij foto-op-je-cv content: van uitleg naar directe actie.",
+                "Gebruik dezelfde foto op je CV en LinkedIn.",
+                "Werk je profieltekst bij zodat foto en verhaal kloppen.",
+                "Kies een rustige template die de foto niet te dominant maakt.",
+                "Download pas als je complete sollicitatieprofiel klaar is.",
               ].map((item) => (
                 <div key={item} className="border-2 border-white/20 bg-white/10 p-4 text-sm font-bold leading-relaxed">
                   {item}

@@ -10,8 +10,8 @@ type SalaryResultCvCtaProps = {
 
 export default function SalaryResultCvCta({
   toolName,
-  title = "Gebruik je salarisinzicht voor je volgende stap",
-  text = "Solliciteer je op een betere functie of vergelijk je een aanbod? Werk je cv direct bij terwijl je motivatie nog scherp is.",
+  title = "Gebruik dit inzicht voor je volgende sollicitatie",
+  text = "Ben je aan het vergelijken, onderhandelen of solliciteren? Zet je CV direct klaar voor de functie waar je meer uit wilt halen.",
 }: SalaryResultCvCtaProps) {
   return (
     <div className="rounded-2xl border-2 border-black bg-[#FFF7E8] p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -27,10 +27,10 @@ export default function SalaryResultCvCta({
           toolName={toolName}
           ctaVariant="primary"
           trackingLocation={`${toolName}:salary_result_cv`}
-          trackingLabel="Maak cv voor mijn volgende sollicitatie"
+          trackingLabel="Maak mijn cv sollicitatieklaar"
           className="inline-flex flex-1 items-center justify-center border-4 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
         >
-          Maak cv voor mijn volgende sollicitatie
+          Maak mijn CV sollicitatieklaar
         </TrackedToolLink>
         <TrackedToolLink
           href="/cv-maken-zonder-abonnement"
@@ -38,14 +38,14 @@ export default function SalaryResultCvCta({
           toolName={toolName}
           ctaVariant="secondary"
           trackingLocation={`${toolName}:salary_result_no_subscription`}
-          trackingLabel="Bekijk cv zonder abonnement"
+          trackingLabel="Bekijk prijs zonder abonnement"
           className="inline-flex flex-1 items-center justify-center border-4 border-black bg-white px-5 py-3 text-sm font-black text-black"
         >
-          Bekijk cv zonder abonnement
+          Bekijk hoe betalen werkt
         </TrackedToolLink>
       </div>
       <p className="mt-3 text-xs font-bold text-slate-600">
-        Gratis bouwen. Eénmalig €4,99 bij PDF-download. Geen abonnement.
+        Gratis bouwen en aanpassen. Eénmalig €4,99 bij PDF-download. Geen abonnement.
       </p>
     </div>
   );

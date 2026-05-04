@@ -25,12 +25,15 @@ export function ToolToCvCTA({
   return (
     <section className="mt-10 rounded-3xl border-4 border-black bg-[#FFF7E8] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
       <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-        Volgende stap
+        Volgende sollicitatiestap
       </p>
       <h2 className="mt-2 text-2xl font-black text-black">{title}</h2>
       <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
         {description}
       </p>
+      <div className="mt-4 border-2 border-black bg-white px-4 py-3 text-sm font-bold leading-relaxed text-slate-900">
+        Gebruik dit resultaat terwijl het nog vers is: maak je CV direct recruiter-proof en download pas wanneer je tevreden bent.
+      </div>
       <div className="mt-5 flex flex-wrap gap-3">
         <TrackedToolLink
           href={primaryHref}
@@ -56,7 +59,7 @@ export function ToolToCvCTA({
         </TrackedToolLink>
       </div>
       <p className="mt-3 text-sm font-medium text-slate-700">
-        Gratis starten. Eénmalig €4,99 bij PDF-download. Geen abonnement.
+        Gratis starten, templates vergelijken en pas betalen bij PDF-download. Eénmalig €4,99, geen abonnement.
       </p>
       <div className="mt-4 text-sm font-medium text-slate-700">
         Liever eerst lezen hoe WerkCV werkt?{" "}

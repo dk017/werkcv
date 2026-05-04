@@ -726,10 +726,10 @@ export default function ProfilePhotoGenerator() {
                 )}
 
                 <div className="mt-6 rounded-3xl border-2 border-black bg-[#FFFEF9] p-5">
-                  <h3 className="text-lg font-black text-slate-900">Maak er direct een complete cv van</h3>
+                  <h3 className="text-lg font-black text-slate-900">Gebruik deze foto direct op een sterk CV</h3>
                   <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
-                    Gebruik je beste profielfoto samen met een nette Nederlandse cv-template. Gratis bouwen,
-                    éénmalig €4,99 bij PDF-download, geen abonnement.
+                    Je profielfoto is maar één deel van je eerste indruk. Zet hem naast een nette Nederlandse
+                    cv-template en download pas wanneer je CV klaar is.
                   </p>
                   <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                     <Link
@@ -737,7 +737,7 @@ export default function ProfilePhotoGenerator() {
                       onClick={() => trackEditorClick("output_final_cta")}
                       className="inline-flex flex-1 items-center justify-center border-2 border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-black"
                     >
-                      Maak mijn cv
+                      Maak mijn CV met deze foto
                     </Link>
                     <Link
                       href="/templates"

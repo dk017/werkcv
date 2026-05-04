@@ -880,20 +880,26 @@ export default function Editor({
                                 </div>
                             </div>
 
-                            <div className="mb-6 rounded-xl border border-slate-200 bg-[#FFFEF9] p-3 text-sm text-slate-700">
-                                <span className="font-semibold">
-                                    {tr("Geen goede profielfoto?", "No good profile photo?")}
-                                </span>{" "}
-                                {tr(
-                                    "Maak een professionele AI-profielfoto voor je cv en LinkedIn.",
-                                    "Create a professional AI profile photo for your CV and LinkedIn."
-                                )}{" "}
-                                <Link
-                                    href="/profielfoto-cv-maken"
-                                    className="font-black underline decoration-2 underline-offset-4"
-                                >
-                                    {tr("Bekijk de add-on (€9,99)", "View the add-on (€9.99)")}
-                                </Link>
+                            <div className="mb-6 rounded-xl border-2 border-black bg-[#FFFEF9] p-4 text-sm text-slate-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                    <div>
+                                        <p className="font-black text-black">
+                                            {tr("Maak je sollicitatieprofiel compleet", "Complete your application profile")}
+                                        </p>
+                                        <p className="mt-1 font-medium leading-relaxed text-slate-700">
+                                            {tr(
+                                                "Geen goede foto? Maak een professionele AI-profielfoto voor je CV en LinkedIn.",
+                                                "No good photo? Create a professional AI profile photo for your CV and LinkedIn."
+                                            )}
+                                        </p>
+                                    </div>
+                                    <Link
+                                        href="/profielfoto-cv-maken"
+                                        className="inline-flex shrink-0 items-center justify-center border-2 border-black bg-[#4ECDC4] px-4 py-2 text-xs font-black text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                                    >
+                                        {tr("Maak profielfoto €9,99", "Create profile photo €9.99")}
+                                    </Link>
+                                </div>
                             </div>
 
                             {/* Contact Info */}
