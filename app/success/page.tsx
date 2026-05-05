@@ -27,6 +27,9 @@ export default async function SuccessPage({
     const tr = (dutch: string, english: string) => (resolvedLanguage === "en" ? english : dutch);
     const editorPath = cvId ? getEditorPathForLanguage(resolvedLanguage, cvId) : "/";
     const hasProfilePhotoBundle = bundle === "profile-photo";
+    const profilePhotoPath = resolvedLanguage === "en"
+        ? "/en/profile-photo#profielfoto-tool"
+        : "/profielfoto-cv-maken#profielfoto-tool";
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
@@ -74,7 +77,7 @@ export default async function SuccessPage({
 
                     {hasProfilePhotoBundle && (
                         <Link
-                            href="/profielfoto-cv-maken#profielfoto-tool"
+                            href={profilePhotoPath}
                             className="block w-full bg-teal-300 hover:bg-teal-400 text-gray-900 px-6 py-3 rounded-full font-bold text-sm shadow-md transition"
                         >
                             {tr("Maak mijn AI-profielfoto", "Create my AI profile photo")}

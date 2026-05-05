@@ -161,6 +161,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.76,
         },
         {
+            url: `${baseUrl}/en/profile-photo`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.72,
+        },
+        {
             url: `${baseUrl}/salaris`,
             lastModified: new Date(),
             changeFrequency: 'monthly',

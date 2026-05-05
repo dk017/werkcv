@@ -30,44 +30,52 @@ type ProfilePhotoStatusResponse = {
 type StyleOption = {
   id: string;
   label: string;
-  description: string;
+  descriptionNl: string;
+  descriptionEn: string;
 };
 
 const styleOptions: StyleOption[] = [
   {
     id: "executive",
     label: "Corporate executive",
-    description: "LinkedIn, executive bio, formele businesspresentatie.",
+    descriptionNl: "LinkedIn, executive bio, formele businesspresentatie.",
+    descriptionEn: "LinkedIn, executive bio and formal business presentation.",
   },
   {
     id: "creatief",
     label: "Creative professional",
-    description: "Portfolio, design, marketing, agency en creatieve profielen.",
+    descriptionNl: "Portfolio, design, marketing, agency en creatieve profielen.",
+    descriptionEn: "Portfolio, design, marketing, agency and creative profiles.",
   },
   {
     id: "tech",
     label: "Tech entrepreneur",
-    description: "Startups, product, software, founders en moderne businessrollen.",
+    descriptionNl: "Startups, product, software, founders en moderne businessrollen.",
+    descriptionEn: "Startups, product, software, founders and modern business roles.",
   },
   {
     id: "zorg",
     label: "Healthcare",
-    description: "Zorg, welzijn, medische praktijken en hulpverlenende rollen.",
+    descriptionNl: "Zorg, welzijn, medische praktijken en hulpverlenende rollen.",
+    descriptionEn: "Healthcare, wellbeing, medical practices and helping roles.",
   },
   {
     id: "consultant",
     label: "Academic / consultant",
-    description: "Consulting, onderwijs, universiteit en thought leadership.",
+    descriptionNl: "Consulting, onderwijs, universiteit en thought leadership.",
+    descriptionEn: "Consulting, education, university and thought leadership.",
   },
   {
     id: "client",
     label: "Sales / client-facing",
-    description: "Sales, klantenservice, HR, accountmanagement en servicefuncties.",
+    descriptionNl: "Sales, klantenservice, HR, accountmanagement en servicefuncties.",
+    descriptionEn: "Sales, customer support, HR, account management and service roles.",
   },
   {
     id: "linkedin",
     label: "Clean LinkedIn",
-    description: "Algemeen professioneel, veilig voor cv en LinkedIn.",
+    descriptionNl: "Algemeen professioneel, veilig voor cv en LinkedIn.",
+    descriptionEn: "Broadly professional, safe for CV and LinkedIn.",
   },
 ];
 
@@ -76,13 +84,13 @@ const maxFiles = 4;
 const maxTotalSize = 24 * 1024 * 1024;
 const allowedTypes = ["image/jpeg", "image/png", "image/webp"];
 const refinementSuggestions = [
-  "lichtere glimlach",
-  "minder formeel",
-  "meer casual kleding",
-  "lichtere achtergrond",
-  "donkere achtergrond",
-  "meer LinkedIn-stijl",
-  "meer cv-stijl",
+  { nl: "lichtere glimlach", en: "softer smile" },
+  { nl: "minder formeel", en: "less formal" },
+  { nl: "meer casual kleding", en: "more casual clothing" },
+  { nl: "lichtere achtergrond", en: "lighter background" },
+  { nl: "donkere achtergrond", en: "darker background" },
+  { nl: "meer LinkedIn-stijl", en: "more LinkedIn style" },
+  { nl: "meer cv-stijl", en: "more CV style" },
 ];
 
 const demoSamples = [
@@ -136,28 +144,50 @@ function normalizeGeneratedImages(images: GeneratedImage[], projectId?: string):
   });
 }
 
-function getStatusCopy(isPaid: boolean, hasBundle: boolean): { title: string; description: string } {
+function getStatusCopy(
+  isPaid: boolean,
+  hasBundle: boolean,
+  uiLanguage: "nl" | "en"
+): { title: string; description: string } {
+  const tr = (dutch: string, english: string) => (uiLanguage === "en" ? english : dutch);
+
   if (hasBundle) {
     return {
-      title: isPaid ? "Je profielfoto zit in je bundle" : "Je CV + profielfoto-bundle is actief",
-      description: `Maak 4 voorbeeldvarianten en kies je favoriet. De download is inbegrepen in je ${applicationBundlePrice.display}-bundle.`,
+      title: isPaid
+        ? tr("Je profielfoto zit in je bundle", "Your profile photo is included in your bundle")
+        : tr("Je CV + profielfoto-bundle is actief", "Your CV + profile photo bundle is active"),
+      description: tr(
+        `Maak 4 voorbeeldvarianten en kies je favoriet. De download is inbegrepen in je ${applicationBundlePrice.display}-bundle.`,
+        `Create 4 preview variants and choose your favorite. The download is included in your ${applicationBundlePrice.display} bundle.`
+      ),
     };
   }
 
   if (isPaid) {
     return {
-      title: "Je AI-profielfoto add-on is actief",
-      description: "Je kunt je gekozen profielfoto opnieuw downloaden zonder opnieuw te betalen.",
+      title: tr("Je AI-profielfoto add-on is actief", "Your AI profile photo add-on is active"),
+      description: tr(
+        "Je kunt je gekozen profielfoto opnieuw downloaden zonder opnieuw te betalen.",
+        "You can download your chosen profile photo again without paying again."
+      ),
     };
   }
 
   return {
-    title: "Maak eerst gratis je voorbeeldvarianten",
-    description: `Log in, maak 4 voorbeeldvarianten en verfijn maximaal 2 keer. Je betaalt pas ${profilePhotoPrice.display} als je wilt downloaden.`,
+    title: tr("Maak eerst gratis je voorbeeldvarianten", "Create your preview variants first"),
+    description: tr(
+      `Log in, maak 4 voorbeeldvarianten en verfijn maximaal 2 keer. Je betaalt pas ${profilePhotoPrice.display} als je wilt downloaden.`,
+      `Log in, create 4 preview variants and refine up to 2 times. You only pay ${profilePhotoPrice.display} when you want to download.`
+    ),
   };
 }
 
-export default function ProfilePhotoGenerator() {
+export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguage?: "nl" | "en" }) {
+  const tr = (dutch: string, english: string) => (uiLanguage === "en" ? english : dutch);
+  const pagePath = uiLanguage === "en" ? "/en/profile-photo" : "/profielfoto-cv-maken";
+  const pageAnchorPath = `${pagePath}#profielfoto-tool`;
+  const editorPath = uiLanguage === "en" ? "/en/editor" : "/editor";
+  const templatesPath = uiLanguage === "en" ? "/en/templates" : "/templates";
   const [authStatus, setAuthStatus] = useState<"loading" | "authenticated" | "anonymous">("loading");
   const [project, setProject] = useState<ProfilePhotoProject | null>(null);
   const [bundleIncluded, setBundleIncluded] = useState(false);
@@ -182,11 +212,11 @@ export default function ProfilePhotoGenerator() {
   );
   const selectedImageIndex = selectedImage ? images.findIndex((image) => image.id === selectedImage.id) : -1;
   const isProfilePhotoPaid = project?.status === "paid";
-  const statusCopy = getStatusCopy(isProfilePhotoPaid, bundleIncluded);
+  const statusCopy = getStatusCopy(isProfilePhotoPaid, bundleIncluded, uiLanguage);
 
   useEffect(() => {
-    track("profile_photo_tool_view", { page_path: "/profielfoto-cv-maken" });
-  }, []);
+    track("profile_photo_tool_view", { page_path: pagePath });
+  }, [pagePath]);
 
   useEffect(() => {
     let isMounted = true;
@@ -254,7 +284,7 @@ export default function ProfilePhotoGenerator() {
 
     if (selectedFiles.length > maxFiles) {
       setFiles([]);
-      setError(`Upload maximaal ${maxFiles} foto's.`);
+      setError(tr(`Upload maximaal ${maxFiles} foto's.`, `Upload up to ${maxFiles} photos.`));
       return;
     }
 
@@ -262,7 +292,7 @@ export default function ProfilePhotoGenerator() {
 
     if (invalidFile) {
       setFiles([]);
-      setError("Gebruik alleen JPG, PNG of WebP-afbeeldingen.");
+      setError(tr("Gebruik alleen JPG, PNG of WebP-afbeeldingen.", "Use JPG, PNG or WebP images only."));
       return;
     }
 
@@ -270,7 +300,7 @@ export default function ProfilePhotoGenerator() {
 
     if (oversizedFile) {
       setFiles([]);
-      setError("Eén van je foto's is te groot. Upload maximaal 8 MB per foto.");
+      setError(tr("Eén van je foto's is te groot. Upload maximaal 8 MB per foto.", "One of your photos is too large. Upload a maximum of 8 MB per photo."));
       return;
     }
 
@@ -278,7 +308,7 @@ export default function ProfilePhotoGenerator() {
 
     if (totalSize > maxTotalSize) {
       setFiles([]);
-      setError("Je foto's zijn samen te groot. Upload maximaal 24 MB totaal.");
+      setError(tr("Je foto's zijn samen te groot. Upload maximaal 24 MB totaal.", "Your photos are too large together. Upload a maximum of 24 MB total."));
       return;
     }
 
@@ -287,12 +317,12 @@ export default function ProfilePhotoGenerator() {
 
   async function generatePhoto() {
     if ((project?.generationCount ?? 0) >= 1) {
-      setError("Je eerste set profielfoto's is al gemaakt. Gebruik verfijnen voor kleine aanpassingen.");
+      setError(tr("Je eerste set profielfoto's is al gemaakt. Gebruik verfijnen voor kleine aanpassingen.", "Your first set of profile photos has already been created. Use refinement for small changes."));
       return;
     }
 
     if (files.length === 0) {
-      setError("Upload eerst minimaal één foto van jezelf.");
+      setError(tr("Upload eerst minimaal één foto van jezelf.", "Upload at least one photo of yourself first."));
       return;
     }
 
@@ -300,7 +330,7 @@ export default function ProfilePhotoGenerator() {
     setError(null);
     setImages([]);
     track("profile_photo_submit", {
-      page_path: "/profielfoto-cv-maken",
+      page_path: pagePath,
       style,
     });
 
@@ -326,7 +356,7 @@ export default function ProfilePhotoGenerator() {
       };
 
       if (!response.ok || !payload.images?.length) {
-        throw new Error(payload.error ?? "De profielfoto kon niet worden gemaakt.");
+        throw new Error(payload.error ?? tr("De profielfoto kon niet worden gemaakt.", "The profile photo could not be created."));
       }
 
       const responseProjectId = payload.project?.id ?? project?.id;
@@ -337,12 +367,12 @@ export default function ProfilePhotoGenerator() {
         setProject((currentProject) => currentProject ? { ...currentProject, ...payload.project, images: normalizedImages } : payload.project ?? null);
       }
       track("profile_photo_generated", {
-        page_path: "/profielfoto-cv-maken",
+        page_path: pagePath,
         style,
         images_generated: normalizedImages.length,
       });
     } catch (caughtError) {
-      setError(caughtError instanceof Error ? caughtError.message : "Er ging iets mis.");
+      setError(caughtError instanceof Error ? caughtError.message : tr("Er ging iets mis.", "Something went wrong."));
     } finally {
       setIsGenerating(false);
     }
@@ -350,29 +380,29 @@ export default function ProfilePhotoGenerator() {
 
   async function refinePhoto() {
     if (!project) {
-      setError("Maak eerst je eerste set profielfoto's.");
+      setError(tr("Maak eerst je eerste set profielfoto's.", "Create your first set of profile photos first."));
       return;
     }
 
     if (project.refinementsRemaining <= 0) {
-      setError("Je hebt de 2 inbegrepen verfijningen gebruikt.");
+      setError(tr("Je hebt de 2 inbegrepen verfijningen gebruikt.", "You have used the 2 included refinements."));
       return;
     }
 
     if (!selectedImage?.url) {
-      setError("Kies eerst één gegenereerde foto om aan te passen.");
+      setError(tr("Kies eerst één gegenereerde foto om aan te passen.", "Choose one generated photo to adjust first."));
       return;
     }
 
     if (refinement.trim().length < 3) {
-      setError("Beschrijf kort wat je wilt aanpassen.");
+      setError(tr("Beschrijf kort wat je wilt aanpassen.", "Briefly describe what you want to adjust."));
       return;
     }
 
     setIsRefining(true);
     setError(null);
     track("profile_photo_refine_submit", {
-      page_path: "/profielfoto-cv-maken",
+      page_path: pagePath,
       style,
       refinement_length: refinement.trim().length,
     });
@@ -399,7 +429,7 @@ export default function ProfilePhotoGenerator() {
       };
 
       if (!apiResponse.ok || !payload.images?.length) {
-        throw new Error(payload.error ?? "De aangepaste profielfoto kon niet worden gemaakt.");
+        throw new Error(payload.error ?? tr("De aangepaste profielfoto kon niet worden gemaakt.", "The adjusted profile photo could not be created."));
       }
 
       const normalizedImages = normalizeGeneratedImages(payload.images, payload.project?.id ?? project.id);
@@ -409,12 +439,12 @@ export default function ProfilePhotoGenerator() {
         setProject((currentProject) => currentProject ? { ...currentProject, ...payload.project, images: [...normalizedImages, ...(currentProject.images ?? [])] } : payload.project ?? null);
       }
       track("profile_photo_refined", {
-        page_path: "/profielfoto-cv-maken",
+        page_path: pagePath,
         style,
         images_generated: normalizedImages.length,
       });
     } catch (caughtError) {
-      setError(caughtError instanceof Error ? caughtError.message : "Er ging iets mis.");
+      setError(caughtError instanceof Error ? caughtError.message : tr("Er ging iets mis.", "Something went wrong."));
     } finally {
       setIsRefining(false);
     }
@@ -422,7 +452,7 @@ export default function ProfilePhotoGenerator() {
 
   function trackDownload(imageId: string) {
     track("profile_photo_download", {
-      page_path: "/profielfoto-cv-maken",
+      page_path: pagePath,
       image_id: imageId,
       style,
     });
@@ -430,9 +460,9 @@ export default function ProfilePhotoGenerator() {
 
   function trackEditorClick(location: string) {
     track("profile_photo_cta_editor_click", {
-      page_path: "/profielfoto-cv-maken",
+      page_path: pagePath,
       cta_location: location,
-      cta_text: "Gebruik in mijn cv",
+      cta_text: tr("Gebruik in mijn cv", "Use in my CV"),
     });
   }
 
@@ -444,7 +474,7 @@ export default function ProfilePhotoGenerator() {
   function selectImage(image: GeneratedImage, index: number) {
     setSelectedImageId(image.id);
     track("profile_photo_variant_selected", {
-      page_path: "/profielfoto-cv-maken",
+      page_path: pagePath,
       image_id: image.id,
       variant_position: index + 1,
       style,
@@ -453,14 +483,14 @@ export default function ProfilePhotoGenerator() {
 
   async function startCheckout() {
     if (!project?.id || images.length === 0) {
-      setError("Maak eerst je profielfoto-varianten. Je betaalt pas bij downloaden.");
+      setError(tr("Maak eerst je profielfoto-varianten. Je betaalt pas bij downloaden.", "Create your profile photo variants first. You only pay when downloading."));
       return;
     }
 
     setIsCheckoutRedirecting(true);
     setError(null);
     track("profile_photo_checkout_click", {
-      page_path: "/profielfoto-cv-maken",
+      page_path: pagePath,
       amount_cents: profilePhotoPrice.amountCents,
       currency: profilePhotoPrice.currency,
     });
@@ -474,17 +504,17 @@ export default function ProfilePhotoGenerator() {
       const payload = (await response.json()) as { url?: string; error?: string };
 
       if (response.status === 401) {
-        window.location.href = `/login?next=${encodeURIComponent("/profielfoto-cv-maken#profielfoto-tool")}`;
+        window.location.href = `/login?next=${encodeURIComponent(pageAnchorPath)}`;
         return;
       }
 
       if (!response.ok || !payload.url) {
-        throw new Error(payload.error ?? "Checkout kon niet worden gestart.");
+        throw new Error(payload.error ?? tr("Checkout kon niet worden gestart.", "Checkout could not be started."));
       }
 
       window.location.href = payload.url;
     } catch (caughtError) {
-      setError(caughtError instanceof Error ? caughtError.message : "Checkout kon niet worden gestart.");
+      setError(caughtError instanceof Error ? caughtError.message : tr("Checkout kon niet worden gestart.", "Checkout could not be started."));
       setIsCheckoutRedirecting(false);
     }
   }
@@ -493,23 +523,29 @@ export default function ProfilePhotoGenerator() {
     <div className="border-4 border-black bg-white p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] sm:p-6">
       {authStatus === "loading" && (
         <div className="rounded-3xl border-2 border-slate-200 bg-[#FFFEF9] p-6 text-sm font-black text-slate-700">
-          Accountstatus laden...
+          {tr("Accountstatus laden...", "Loading account status...")}
         </div>
       )}
 
       {authStatus === "anonymous" && (
         <div className="rounded-3xl border-2 border-black bg-[#FFFEF9] p-6">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Account nodig</p>
-          <h2 className="mt-2 text-2xl font-black text-slate-950">Log in om je profielfoto te maken</h2>
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+            {tr("Account nodig", "Account required")}
+          </p>
+          <h2 className="mt-2 text-2xl font-black text-slate-950">
+            {tr("Log in om je profielfoto te maken", "Log in to create your profile photo")}
+          </h2>
           <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-            Net als je cv bewaren we je betaalde output in je WerkCV-account, zodat je je profielfoto later opnieuw
-            kunt downloaden. Uploads worden alleen gebruikt voor de generatie.
+            {tr(
+              "Net als je cv bewaren we je betaalde output in je WerkCV-account, zodat je je profielfoto later opnieuw kunt downloaden. Uploads worden alleen gebruikt voor de generatie.",
+              "Just like your CV, we keep your paid output in your WerkCV account so you can download your profile photo again later. Uploads are only used for generation."
+            )}
           </p>
           <Link
-            href={`/login?next=${encodeURIComponent("/profielfoto-cv-maken#profielfoto-tool")}`}
+            href={`/login?next=${encodeURIComponent(pageAnchorPath)}`}
             className="mt-5 inline-flex border-4 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
           >
-            Log in en start
+            {tr("Log in en start", "Log in and start")}
           </Link>
         </div>
       )}
@@ -522,7 +558,11 @@ export default function ProfilePhotoGenerator() {
             </p>
             <p className="mt-1 text-xs font-bold leading-relaxed text-slate-700">
               {statusCopy.description}
-              {project && ` Nog ${project.refinementsRemaining} van ${project.maxRefinements} verfijningen over.`}
+              {project &&
+                tr(
+                  ` Nog ${project.refinementsRemaining} van ${project.maxRefinements} verfijningen over.`,
+                  ` ${project.refinementsRemaining} of ${project.maxRefinements} refinements remaining.`
+                )}
             </p>
           </div>
 
@@ -530,10 +570,14 @@ export default function ProfilePhotoGenerator() {
             <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
               <div className="rounded-3xl border-2 border-dashed border-slate-300 bg-[#FFFEF9] p-5">
                 <label className="block">
-                  <span className="text-sm font-black text-slate-900">Upload je bestaande foto</span>
+                  <span className="text-sm font-black text-slate-900">
+                    {tr("Upload je bestaande foto", "Upload your existing photo")}
+                  </span>
                   <span className="mt-1 block text-sm font-medium leading-relaxed text-slate-600">
-                    Upload 1 tot 4 duidelijke foto&apos;s. De eerste foto is de hoofdreferentie; extra foto&apos;s helpen
-                    met herkenbaarheid. Alleen JPG, PNG of WebP.
+                    {tr(
+                      "Upload 1 tot 4 duidelijke foto's. De eerste foto is de hoofdreferentie; extra foto's helpen met herkenbaarheid. Alleen JPG, PNG of WebP.",
+                      "Upload 1 to 4 clear photos. The first photo is the main reference; extra photos help with recognizability. JPG, PNG or WebP only."
+                    )}
                   </span>
                   <input
                     type="file"
@@ -547,7 +591,7 @@ export default function ProfilePhotoGenerator() {
                 {files.length > 0 && (
                   <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-3">
                     <p className="text-xs font-black uppercase tracking-wide text-slate-500">
-                      Gekozen foto&apos;s ({files.length}/{maxFiles})
+                      {tr("Gekozen foto's", "Selected photos")} ({files.length}/{maxFiles})
                     </p>
                     <div className="mt-3 grid gap-3 sm:grid-cols-2">
                       {files.map((file, index) => (
@@ -556,13 +600,16 @@ export default function ProfilePhotoGenerator() {
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
                               src={previewUrls[index]}
-                              alt={`Preview van geüploade profielfoto ${index + 1}`}
+                              alt={tr(
+                                `Preview van geüploade profielfoto ${index + 1}`,
+                                `Preview of uploaded profile photo ${index + 1}`
+                              )}
                               className="h-20 w-20 rounded-2xl object-cover"
                             />
                           )}
                           <div className="min-w-0">
                             <p className="truncate text-sm font-black text-slate-900">
-                              {index === 0 ? "Hoofdfoto: " : `Referentie ${index + 1}: `}
+                              {index === 0 ? tr("Hoofdfoto: ", "Main photo: ") : tr(`Referentie ${index + 1}: `, `Reference ${index + 1}: `)}
                               {file.name}
                             </p>
                             <p className="text-xs font-medium text-slate-500">{formatFileSize(file.size)}</p>
@@ -574,13 +621,17 @@ export default function ProfilePhotoGenerator() {
                 )}
 
                 <p className="mt-4 text-xs font-medium leading-relaxed text-slate-500">
-                  Privacy: upload alleen foto&apos;s die je wilt gebruiken voor je sollicitatie. WerkCV vraagt niet om
-                  LinkedIn-login en bewaart alleen de gegenereerde output in je account.
+                  {tr(
+                    "Privacy: upload alleen foto's die je wilt gebruiken voor je sollicitatie. WerkCV vraagt niet om LinkedIn-login en bewaart alleen de gegenereerde output in je account.",
+                    "Privacy: only upload photos you want to use for your application. WerkCV does not ask for your LinkedIn login and only stores the generated output in your account."
+                  )}
                 </p>
               </div>
 
               <div>
-                <p className="text-sm font-black text-slate-900">Kies uitstraling</p>
+                <p className="text-sm font-black text-slate-900">
+                  {tr("Kies uitstraling", "Choose a style")}
+                </p>
                 <div className="mt-3 grid gap-3 sm:grid-cols-2">
                   {styleOptions.map((option) => (
                     <button
@@ -594,7 +645,9 @@ export default function ProfilePhotoGenerator() {
                       }`}
                     >
                       <span className="block text-sm font-black">{option.label}</span>
-                      <span className="mt-1 block text-xs font-medium leading-relaxed">{option.description}</span>
+                      <span className="mt-1 block text-xs font-medium leading-relaxed">
+                        {uiLanguage === "en" ? option.descriptionEn : option.descriptionNl}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -616,20 +669,29 @@ export default function ProfilePhotoGenerator() {
                 disabled={isGenerating}
                 className="w-full border-4 border-black bg-[#FFD166] px-5 py-4 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
               >
-                {isGenerating ? "Profielfoto's worden gemaakt..." : "Maak 4 professionele varianten"}
+                {isGenerating
+                  ? tr("Profielfoto's worden gemaakt...", "Creating profile photos...")
+                  : tr("Maak 4 professionele varianten", "Create 4 professional variants")}
               </button>
               <p className="mt-3 text-xs font-medium leading-relaxed text-slate-500">
                 {bundleIncluded
-                  ? "Voorbeelden maken kan na login. Downloaden zit in je bundle."
-                  : `Voorbeelden maken kan na login. Downloaden kost éénmalig ${profilePhotoPrice.display}. Geen abonnement.`}
+                  ? tr("Voorbeelden maken kan na login. Downloaden zit in je bundle.", "You can create previews after login. Downloading is included in your bundle.")
+                  : tr(
+                    `Voorbeelden maken kan na login. Downloaden kost éénmalig ${profilePhotoPrice.display}. Geen abonnement.`,
+                    `You can create previews after login. Downloading is a one-time ${profilePhotoPrice.display}. No subscription.`
+                  )}
               </p>
             </div>
           ) : (
             <div className="rounded-3xl border-2 border-slate-200 bg-white p-4">
-              <p className="text-sm font-black text-slate-900">Je eerste set is klaar</p>
+              <p className="text-sm font-black text-slate-900">
+                {tr("Je eerste set is klaar", "Your first set is ready")}
+              </p>
               <p className="mt-1 text-xs font-medium leading-relaxed text-slate-600">
-                Kies hieronder je favoriete variant. Daarna kun je die foto verfijnen, gebruiken in je cv of
-                downloaden na de eenmalige betaling.
+                {tr(
+                  "Kies hieronder je favoriete variant. Daarna kun je die foto verfijnen, gebruiken in je cv of downloaden na de eenmalige betaling.",
+                  "Choose your favorite variant below. Then you can refine that photo, use it in your CV or download it after the one-time payment."
+                )}
               </p>
             </div>
           )}
@@ -637,10 +699,17 @@ export default function ProfilePhotoGenerator() {
           <div className="rounded-3xl border-2 border-slate-200 bg-slate-50 p-5">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Output</p>
-                <h2 className="mt-2 text-2xl font-black text-slate-900">Professionele varianten</h2>
+                <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+                  {tr("Output", "Output")}
+                </p>
+                <h2 className="mt-2 text-2xl font-black text-slate-900">
+                  {tr("Professionele varianten", "Professional variants")}
+                </h2>
                 <p className="mt-2 text-sm font-medium text-slate-600">
-                  Kies één favoriet. Daarna kun je die ene foto verfijnen, downloaden of gebruiken bij je cv.
+                  {tr(
+                    "Kies één favoriet. Daarna kun je die ene foto verfijnen, downloaden of gebruiken bij je cv.",
+                    "Choose one favorite. Then you can refine, download or use that photo with your CV."
+                  )}
                 </p>
               </div>
               <span className="w-fit rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-black text-slate-600">
@@ -651,10 +720,14 @@ export default function ProfilePhotoGenerator() {
             {images.length === 0 ? (
               <div className="mt-6 rounded-3xl border-2 border-dashed border-slate-300 bg-white p-5">
                 <div className="mx-auto max-w-xl text-center">
-                  <p className="text-lg font-black text-slate-900">Nog geen varianten</p>
+                  <p className="text-lg font-black text-slate-900">
+                    {tr("Nog geen varianten", "No variants yet")}
+                  </p>
                   <p className="mt-2 max-w-sm text-sm font-medium leading-relaxed text-slate-600">
-                    Upload een duidelijke foto, kies een uitstraling en maak vier varianten die je kunt testen voor cv
-                    en LinkedIn.
+                    {tr(
+                      "Upload een duidelijke foto, kies een uitstraling en maak vier varianten die je kunt testen voor cv en LinkedIn.",
+                      "Upload a clear photo, choose a style and create four variants you can test for your CV and LinkedIn."
+                    )}
                   </p>
                 </div>
                 <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -673,7 +746,10 @@ export default function ProfilePhotoGenerator() {
                   ))}
                 </div>
                 <p className="mt-4 text-center text-xs font-bold leading-relaxed text-slate-500">
-                  Voorbeelden zijn AI-demo&apos;s. Jouw output wordt gemaakt op basis van je eigen upload.
+                  {tr(
+                    "Voorbeelden zijn AI-demo's. Jouw output wordt gemaakt op basis van je eigen upload.",
+                    "Samples are AI demos. Your output is created from your own upload."
+                  )}
                 </p>
               </div>
             ) : (
@@ -694,17 +770,19 @@ export default function ProfilePhotoGenerator() {
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={image.url ?? ""}
-                          alt={`Gegenereerde profielfoto variant ${index + 1}`}
+                          alt={tr(`Gegenereerde profielfoto variant ${index + 1}`, `Generated profile photo variant ${index + 1}`)}
                           className="aspect-square w-full rounded-2xl object-cover"
                         />
                         <div className="mt-3 flex items-center justify-between gap-2">
-                          <span className="text-xs font-black text-slate-900">Variant {index + 1}</span>
+                          <span className="text-xs font-black text-slate-900">
+                            {tr("Variant", "Variant")} {index + 1}
+                          </span>
                           <span
                             className={`rounded-full px-2 py-1 text-[10px] font-black ${
                               isSelected ? "bg-[#4ECDC4] text-black" : "bg-slate-100 text-slate-500"
                             }`}
                           >
-                            {isSelected ? "Gekozen" : "Kies"}
+                            {isSelected ? tr("Gekozen", "Selected") : tr("Kies", "Choose")}
                           </span>
                         </div>
                       </button>
@@ -716,14 +794,19 @@ export default function ProfilePhotoGenerator() {
                   <div className="mt-6 grid gap-5 rounded-3xl border-2 border-black bg-white p-5 lg:grid-cols-[0.8fr_1.2fr]">
                     <div>
                       <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">
-                        Geselecteerde foto
+                        {tr("Geselecteerde foto", "Selected photo")}
                       </p>
                       <h3 className="mt-2 text-xl font-black text-slate-900">
-                        Variant {selectedImageIndex + 1} gebruiken
+                        {tr(
+                          `Variant ${selectedImageIndex + 1} gebruiken`,
+                          `Use variant ${selectedImageIndex + 1}`
+                        )}
                       </h3>
                       <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
-                        Deze keuze gebruik je voor downloaden en verfijnen. Je kunt altijd eerst een andere variant
-                        selecteren voordat je betaalt.
+                        {tr(
+                          "Deze keuze gebruik je voor downloaden en verfijnen. Je kunt altijd eerst een andere variant selecteren voordat je betaalt.",
+                          "This choice is used for downloading and refinement. You can always select another variant before you pay."
+                        )}
                       </p>
                       <div className="mt-4 flex flex-col gap-3">
                         {project?.status === "paid" ? (
@@ -733,7 +816,7 @@ export default function ProfilePhotoGenerator() {
                             onClick={() => trackDownload(selectedImage.id)}
                             className="inline-flex justify-center rounded-full bg-black px-5 py-3 text-sm font-black text-white"
                           >
-                            Download geselecteerde foto
+                            {tr("Download geselecteerde foto", "Download selected photo")}
                           </a>
                         ) : (
                           <button
@@ -742,55 +825,71 @@ export default function ProfilePhotoGenerator() {
                             disabled={isCheckoutRedirecting}
                             className="inline-flex justify-center rounded-full bg-black px-5 py-3 text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-60"
                           >
-                            {isCheckoutRedirecting ? "Checkout openen..." : `Betaal ${profilePhotoPrice.display} en download`}
+                            {isCheckoutRedirecting
+                              ? tr("Checkout openen...", "Opening checkout...")
+                              : tr(`Betaal ${profilePhotoPrice.display} en download`, `Pay ${profilePhotoPrice.display} and download`)}
                           </button>
                         )}
                         <Link
-                          href="/editor"
+                          href={editorPath}
                           onClick={() => trackEditorClick("selected_photo_action")}
                           className="inline-flex justify-center rounded-full border-2 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black"
                         >
-                          Maak cv met deze foto
+                          {tr("Maak cv met deze foto", "Create CV with this photo")}
                         </Link>
                       </div>
                     </div>
 
                     <div className="rounded-3xl border-2 border-slate-200 bg-[#FFFEF9] p-5">
-                      <h3 className="text-lg font-black text-slate-900">Wil je deze foto aanpassen?</h3>
+                      <h3 className="text-lg font-black text-slate-900">
+                        {tr("Wil je deze foto aanpassen?", "Want to adjust this photo?")}
+                      </h3>
                       <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
-                        Beschrijf alleen wat anders moet. Je hebt nog {project?.refinementsRemaining ?? 2} verfijningen over.
+                        {tr(
+                          `Beschrijf alleen wat anders moet. Je hebt nog ${project?.refinementsRemaining ?? 2} verfijningen over.`,
+                          `Only describe what should change. You have ${project?.refinementsRemaining ?? 2} refinements remaining.`
+                        )}
                       </p>
                       <div className="mt-4 flex flex-wrap gap-2">
                         {refinementSuggestions.map((suggestion) => (
                           <button
-                            key={suggestion}
+                            key={suggestion.nl}
                             type="button"
-                            onClick={() => setRefinement(suggestion)}
+                            onClick={() => setRefinement(uiLanguage === "en" ? suggestion.en : suggestion.nl)}
                             className="rounded-full border-2 border-black bg-white px-3 py-2 text-xs font-black text-black hover:bg-[#E9FFFC]"
                           >
-                            {suggestion}
+                            {uiLanguage === "en" ? suggestion.en : suggestion.nl}
                           </button>
                         ))}
                       </div>
                       <label className="mt-4 block">
-                        <span className="text-sm font-black text-slate-900">Aanpassing</span>
+                        <span className="text-sm font-black text-slate-900">
+                          {tr("Aanpassing", "Adjustment")}
+                        </span>
                         <textarea
                           value={refinement}
                           onChange={(event) => setRefinement(event.target.value.slice(0, 300))}
                           rows={3}
-                          placeholder="Bijvoorbeeld: casual kleding, lichtere achtergrond, iets vriendelijker, meer LinkedIn-stijl..."
+                          placeholder={tr(
+                            "Bijvoorbeeld: casual kleding, lichtere achtergrond, iets vriendelijker, meer LinkedIn-stijl...",
+                            "For example: casual clothing, lighter background, a bit friendlier, more LinkedIn style..."
+                          )}
                           className="mt-2 w-full rounded-2xl border-2 border-slate-300 bg-white p-3 text-sm font-medium text-slate-900 outline-none focus:border-black"
                         />
                       </label>
                       <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-xs font-medium text-slate-500">{refinement.length}/300 tekens</p>
+                        <p className="text-xs font-medium text-slate-500">
+                          {refinement.length}/300 {tr("tekens", "characters")}
+                        </p>
                         <button
                           type="button"
                           onClick={refinePhoto}
                           disabled={isRefining || !selectedImage || (project?.refinementsRemaining ?? 0) <= 0}
                           className="inline-flex items-center justify-center border-2 border-black bg-[#FFD166] px-4 py-3 text-sm font-black text-black disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                          {isRefining ? "Aangepaste variant maken..." : "Maak aangepaste variant"}
+                          {isRefining
+                            ? tr("Aangepaste variant maken...", "Creating adjusted variant...")
+                            : tr("Maak aangepaste variant", "Create adjusted variant")}
                         </button>
                       </div>
                     </div>
@@ -798,24 +897,28 @@ export default function ProfilePhotoGenerator() {
                 )}
 
                 <div className="mt-6 rounded-3xl border-2 border-black bg-[#FFFEF9] p-5">
-                  <h3 className="text-lg font-black text-slate-900">Gebruik deze foto direct op een sterk CV</h3>
+                  <h3 className="text-lg font-black text-slate-900">
+                    {tr("Gebruik deze foto direct op een sterk CV", "Use this photo directly on a strong CV")}
+                  </h3>
                   <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
-                    Je profielfoto is maar één deel van je eerste indruk. Zet hem naast een nette Nederlandse
-                    cv-template en download pas wanneer je CV klaar is.
+                    {tr(
+                      "Je profielfoto is maar één deel van je eerste indruk. Zet hem naast een nette Nederlandse cv-template en download pas wanneer je CV klaar is.",
+                      "Your profile photo is only one part of your first impression. Put it next to a clean CV template and only download when your CV is ready."
+                    )}
                   </p>
                   <div className="mt-4 flex flex-col gap-3 sm:flex-row">
                     <Link
-                      href="/editor"
+                      href={editorPath}
                       onClick={() => trackEditorClick("output_final_cta")}
                       className="inline-flex flex-1 items-center justify-center border-2 border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-black"
                     >
-                      Maak mijn CV met deze foto
+                      {tr("Maak mijn CV met deze foto", "Create my CV with this photo")}
                     </Link>
                     <Link
-                      href="/templates"
+                      href={templatesPath}
                       className="inline-flex flex-1 items-center justify-center border-2 border-black bg-white px-4 py-3 text-sm font-black text-black"
                     >
-                      Bekijk templates
+                      {tr("Bekijk templates", "View templates")}
                     </Link>
                   </div>
                 </div>

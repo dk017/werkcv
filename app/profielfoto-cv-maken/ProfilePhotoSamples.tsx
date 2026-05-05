@@ -14,10 +14,12 @@ export type ProfilePhotoSample = {
 type ProfilePhotoSamplesProps = {
   samples: ProfilePhotoSample[];
   mode: "hero" | "gallery";
+  uiLanguage?: "nl" | "en";
 };
 
-export default function ProfilePhotoSamples({ samples, mode }: ProfilePhotoSamplesProps) {
+export default function ProfilePhotoSamples({ samples, mode, uiLanguage = "nl" }: ProfilePhotoSamplesProps) {
   const [activeSample, setActiveSample] = useState<ProfilePhotoSample | null>(null);
+  const tr = (dutch: string, english: string) => (uiLanguage === "en" ? english : dutch);
 
   useEffect(() => {
     if (!activeSample) return;
@@ -50,14 +52,14 @@ export default function ProfilePhotoSamples({ samples, mode }: ProfilePhotoSampl
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-                Voorbeeldoutput
+                {tr("Voorbeeldoutput", "Sample output")}
               </p>
               <h2 className="mt-2 text-2xl font-black text-slate-950">
-                Realistisch genoeg voor cv en LinkedIn
+                {tr("Realistisch genoeg voor cv en LinkedIn", "Realistic enough for CV and LinkedIn")}
               </h2>
             </div>
             <span className="w-fit rounded-full border-2 border-black bg-[#E9FFFC] px-3 py-1 text-xs font-black text-black">
-              Klik om te bekijken
+              {tr("Klik om te bekijken", "Click to preview")}
             </span>
           </div>
           <div className="relative mt-5 aspect-square overflow-hidden rounded-3xl border-2 border-black bg-[#FFFEF9]">
@@ -76,11 +78,14 @@ export default function ProfilePhotoSamples({ samples, mode }: ProfilePhotoSampl
               <p className="text-xs font-bold text-slate-500">{sample.style}</p>
             </div>
             <p className="max-w-[15rem] text-right text-xs font-bold leading-relaxed text-slate-600">
-              AI-demo, geen klantfoto. Jouw output wordt gemaakt van je eigen upload.
+              {tr(
+                "AI-demo, geen klantfoto. Jouw output wordt gemaakt van je eigen upload.",
+                "AI demo, not a customer photo. Your output is created from your own upload."
+              )}
             </p>
           </div>
         </button>
-        <SampleModal sample={activeSample} onClose={() => setActiveSample(null)} />
+        <SampleModal sample={activeSample} uiLanguage={uiLanguage} onClose={() => setActiveSample(null)} />
       </>
     );
   }
@@ -114,26 +119,29 @@ export default function ProfilePhotoSamples({ samples, mode }: ProfilePhotoSampl
           </button>
         ))}
       </div>
-      <SampleModal sample={activeSample} onClose={() => setActiveSample(null)} />
+      <SampleModal sample={activeSample} uiLanguage={uiLanguage} onClose={() => setActiveSample(null)} />
     </>
   );
 }
 
 function SampleModal({
   sample,
+  uiLanguage,
   onClose,
 }: {
   sample: ProfilePhotoSample | null;
+  uiLanguage: "nl" | "en";
   onClose: () => void;
 }) {
   if (!sample) return null;
+  const tr = (dutch: string, english: string) => (uiLanguage === "en" ? english : dutch);
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4"
       role="dialog"
       aria-modal="true"
-      aria-label={`${sample.role} voorbeeldprofielfoto`}
+      aria-label={tr(`${sample.role} voorbeeldprofielfoto`, `${sample.role} sample profile photo`)}
       onClick={onClose}
     >
       <div
@@ -144,7 +152,7 @@ function SampleModal({
           type="button"
           onClick={onClose}
           className="absolute -right-3 -top-3 z-10 h-10 w-10 rounded-full border-2 border-black bg-white text-xl font-black text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-          aria-label="Sluit voorbeeld"
+          aria-label={tr("Sluit voorbeeld", "Close sample")}
         >
           ×
         </button>
@@ -160,14 +168,16 @@ function SampleModal({
           </div>
           <div className="p-2">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-              AI-demo voorbeeld
+              {tr("AI-demo voorbeeld", "AI demo sample")}
             </p>
             <h3 className="mt-2 text-3xl font-black leading-tight text-slate-950">{sample.role}</h3>
             <p className="mt-2 text-sm font-black text-[#00877D]">{sample.style}</p>
             <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">{sample.note}</p>
             <p className="mt-4 rounded-2xl border-2 border-black bg-[#E9FFFC] p-3 text-xs font-bold leading-relaxed text-slate-800">
-              Dit is geen klantfoto. Het laat zien welke richting WerkCV zoekt: natuurlijk, scherp en veilig voor een
-              Nederlandse sollicitatie.
+              {tr(
+                "Dit is geen klantfoto. Het laat zien welke richting WerkCV zoekt: natuurlijk, scherp en veilig voor een Nederlandse sollicitatie.",
+                "This is not a customer photo. It shows the direction WerkCV aims for: natural, sharp and safe for a Dutch job application."
+              )}
             </p>
           </div>
         </div>

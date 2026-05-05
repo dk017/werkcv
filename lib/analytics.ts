@@ -112,6 +112,27 @@ export type AnalyticsEvent =
     | { event: 'addon_selected'; properties: { cvId: string; addons: string[] } }
     | { event: 'checkout_modal_viewed'; properties: { cvId: string; source: 'pdf_download' } }
     | {
+          event: 'checkout_option_viewed';
+          properties: {
+              cvId: string;
+              product: string;
+              amountCents: number;
+              uiLanguage: 'nl' | 'en';
+              recommended: boolean;
+          };
+      }
+    | {
+          event: 'checkout_option_clicked';
+          properties: {
+              cvId: string;
+              product: string;
+              amountCents: number;
+              uiLanguage: 'nl' | 'en';
+              recommended: boolean;
+              ctaText: string;
+          };
+      }
+    | {
           event: 'checkout_modal_closed';
           properties: { cvId: string; reason: 'later_button' | 'close_button' | 'overlay' };
       }

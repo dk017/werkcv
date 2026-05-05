@@ -56,6 +56,8 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'editor_started',
     'complete_cv',
     'checkout_modal_viewed',
+    'checkout_option_viewed',
+    'checkout_option_clicked',
     'checkout_modal_closed',
     'checkout_start',
     'checkout_started',
