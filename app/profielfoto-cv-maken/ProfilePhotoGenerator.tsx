@@ -85,6 +85,29 @@ const refinementSuggestions = [
   "meer cv-stijl",
 ];
 
+const demoSamples = [
+  {
+    src: "/profile-photo-samples/dutch-consultant-man.jpg",
+    alt: "Voorbeeld van een AI-profielfoto voor een consultant",
+    label: "Consultant",
+  },
+  {
+    src: "/profile-photo-samples/dutch-hr-manager-woman.jpg",
+    alt: "Voorbeeld van een AI-profielfoto voor een HR manager",
+    label: "HR",
+  },
+  {
+    src: "/profile-photo-samples/dutch-starter-woman.jpg",
+    alt: "Voorbeeld van een AI-profielfoto voor een starter",
+    label: "Starter",
+  },
+  {
+    src: "/profile-photo-samples/dutch-healthcare-professional-woman.jpg",
+    alt: "Voorbeeld van een AI-profielfoto voor een zorgprofessional",
+    label: "Zorg",
+  },
+];
+
 function formatFileSize(size: number): string {
   return `${(size / 1024 / 1024).toFixed(1)} MB`;
 }
@@ -626,14 +649,32 @@ export default function ProfilePhotoGenerator() {
             </div>
 
             {images.length === 0 ? (
-              <div className="mt-6 flex min-h-[260px] items-center justify-center rounded-3xl border-2 border-dashed border-slate-300 bg-white p-8 text-center">
-                <div>
+              <div className="mt-6 rounded-3xl border-2 border-dashed border-slate-300 bg-white p-5">
+                <div className="mx-auto max-w-xl text-center">
                   <p className="text-lg font-black text-slate-900">Nog geen varianten</p>
                   <p className="mt-2 max-w-sm text-sm font-medium leading-relaxed text-slate-600">
                     Upload een duidelijke foto, kies een uitstraling en maak vier varianten die je kunt testen voor cv
                     en LinkedIn.
                   </p>
                 </div>
+                <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  {demoSamples.map((sample) => (
+                    <figure key={sample.src} className="overflow-hidden rounded-2xl border-2 border-slate-200 bg-[#FFFEF9]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={sample.src}
+                        alt={sample.alt}
+                        className="aspect-square w-full object-cover"
+                      />
+                      <figcaption className="border-t border-slate-200 bg-white px-2 py-2 text-center text-[11px] font-black text-slate-700">
+                        {sample.label}
+                      </figcaption>
+                    </figure>
+                  ))}
+                </div>
+                <p className="mt-4 text-center text-xs font-bold leading-relaxed text-slate-500">
+                  Voorbeelden zijn AI-demo&apos;s. Jouw output wordt gemaakt op basis van je eigen upload.
+                </p>
               </div>
             ) : (
               <>

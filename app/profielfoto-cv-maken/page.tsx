@@ -6,6 +6,7 @@ import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import { applicationBundlePrice, profilePhotoPrice } from "@/lib/site-content";
 import ProfilePhotoGenerator from "./ProfilePhotoGenerator";
+import ProfilePhotoSamples, { type ProfilePhotoSample } from "./ProfilePhotoSamples";
 
 const faqItems = [
   {
@@ -60,6 +61,72 @@ const sampleTransformations = [
   {
     before: "LinkedIn-foto voelt verouderd",
     after: "Nieuwe variant met herkenbare uitstraling, direct oogcontact en moderne studio-look",
+  },
+];
+
+const profilePhotoSamples: ProfilePhotoSample[] = [
+  {
+    src: "/profile-photo-samples/dutch-consultant-man.jpg",
+    alt: "AI-gegenereerde voorbeeldprofielfoto van een Nederlandse consultant",
+    role: "Consultant",
+    style: "Corporate executive",
+    note: "Een veilige zakelijke uitstraling voor consultants, finance, sales en kantoorfuncties waar vertrouwen belangrijk is.",
+  },
+  {
+    src: "/profile-photo-samples/dutch-tech-professional-man.jpg",
+    alt: "AI-gegenereerde voorbeeldprofielfoto van een Nederlandse tech professional",
+    role: "Tech professional",
+    style: "Clean LinkedIn",
+    note: "Professioneel zonder pak. Geschikt voor software, product, startups en moderne bedrijfsomgevingen.",
+  },
+  {
+    src: "/profile-photo-samples/dutch-hr-manager-woman.jpg",
+    alt: "AI-gegenereerde voorbeeldprofielfoto van een Nederlandse HR manager",
+    role: "HR manager",
+    style: "Zakelijk warm",
+    note: "Warm en betrouwbaar, zonder te informeel te worden. Past goed bij HR, coaching en klantgerichte rollen.",
+  },
+  {
+    src: "/profile-photo-samples/dutch-operations-manager-man.jpg",
+    alt: "AI-gegenereerde voorbeeldprofielfoto van een Nederlandse operations manager",
+    role: "Operations manager",
+    style: "Senior profiel",
+    note: "Rustige senior uitstraling voor management, operations, logistiek, projectleiding en zakelijke profielen.",
+  },
+  {
+    src: "/profile-photo-samples/dutch-starter-woman.jpg",
+    alt: "AI-gegenereerde voorbeeldprofielfoto van een Nederlandse starter",
+    role: "Starter",
+    style: "Smart casual",
+    note: "Toegankelijk en netjes voor starters, stages en eerste banen waar een te formele foto juist zwaar voelt.",
+  },
+  {
+    src: "/profile-photo-samples/dutch-healthcare-professional-woman.jpg",
+    alt: "AI-gegenereerde voorbeeldprofielfoto van een Nederlandse zorgprofessional",
+    role: "Zorgprofessional",
+    style: "Vertrouwd",
+    note: "Een zachte, professionele stijl voor zorg, welzijn, onderwijs en functies met veel persoonlijk contact.",
+  },
+  {
+    src: "/profile-photo-samples/dutch-university-student-man.jpg",
+    alt: "AI-gegenereerde voorbeeldprofielfoto van een Nederlandse universiteitsstudent",
+    role: "Universiteitsstudent",
+    style: "Stageproof",
+    note: "Jong en serieus genoeg voor LinkedIn, stages, bijbanen en traineeprogramma's zonder corporate overkill.",
+  },
+  {
+    src: "/profile-photo-samples/dutch-mbo-student-woman.jpg",
+    alt: "AI-gegenereerde voorbeeldprofielfoto van een Nederlandse mbo-student",
+    role: "MBO-student",
+    style: "Eerste baan",
+    note: "Vriendelijk en verzorgd voor leerwerkplekken, starterfuncties en praktische opleidingen.",
+  },
+  {
+    src: "/profile-photo-samples/international-student-netherlands-woman.jpg",
+    alt: "AI-gegenereerde voorbeeldprofielfoto van een internationale student in Nederland",
+    role: "International student",
+    style: "Netherlands-ready",
+    note: "Geschikt voor Engelstalige sollicitaties in Nederland, stages en expat-profielen op LinkedIn.",
   },
 ];
 
@@ -140,31 +207,34 @@ export default function ProfielfotoCvMakenPage() {
               </p>
             </div>
 
-            <div className="border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <ProfilePhotoSamples samples={profilePhotoSamples.slice(0, 1)} mode="hero" />
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-6 py-12">
+          <div className="mb-6 grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
+            <div>
               <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-                Positionering
+                Bekijk de stijlen
               </p>
-              <h2 className="mt-2 text-2xl font-black text-slate-950">
-                Niet zomaar een headshot, maar een sollicitatiefoto
+              <h2 className="mt-2 text-3xl font-black leading-tight text-slate-950">
+                Kies een foto die past bij je sollicitatie, niet alleen bij een fotoshoot
               </h2>
-              <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
-                Veel AI-headshot tools verkopen vooral veel varianten. WerkCV richt zich smaller op het moment
-                waarop iemand wil solliciteren: CV opmaken, LinkedIn netjes maken en de eerste indruk professioneel
-                afronden. Daarom krijg je minder ruis, duidelijke stijlen en twee gerichte verfijningen.
-              </p>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {[
-                  "Voor CV en LinkedIn",
-                  "Nederlandse sollicitatiecontext",
-                  "Herkenbaar en realistisch",
-                  "Later opnieuw downloaden",
-                ].map((item) => (
-                  <div key={item} className="rounded-2xl border-2 border-black bg-[#FFFEF9] p-3 text-sm font-black">
-                    {item}
-                  </div>
-                ))}
-              </div>
             </div>
+            <p className="text-sm font-medium leading-relaxed text-slate-700">
+              De beste profielfoto verschilt per situatie. Een starter wil vaak benaderbaar blijven, een consultant
+              moet direct vertrouwen geven en een zorgprofessional heeft baat bij een warmere uitstraling. Klik op een
+              voorbeeld om de stijl groter te bekijken.
+            </p>
+          </div>
+          <ProfilePhotoSamples samples={profilePhotoSamples.slice(1)} mode="gallery" />
+          <div className="mt-6 rounded-3xl border-2 border-black bg-[#E9FFFC] p-5">
+            <h3 className="text-lg font-black text-slate-950">Waarom deze voorbeelden helpen</h3>
+            <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+              Mensen vertrouwen een AI-fototool pas als ze zien welke richting het resultaat opgaat. Daarom tonen we
+              bewust meerdere Nederlandse sollicitatiecontexten: studenten, starters, zorg, tech, HR en senior rollen.
+              Dit zijn demo&apos;s, geen klantfoto&apos;s; jouw foto wordt apart gemaakt op basis van je eigen upload.
+            </p>
           </div>
         </section>
 
