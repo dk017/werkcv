@@ -8,6 +8,8 @@ const POLAR_PRODUCT_ID =
 const POLAR_PRICE_ID = process.env.POLAR_PRICE_ID_CV_DOWNLOAD;
 const POLAR_PRODUCT_ID_PROFILE_PHOTO =
     process.env.POLAR_PRODUCT_ID_PROFILE_PHOTO || 'b60c9ea3-69ec-4c2b-aa2c-a0831a315e7c';
+const POLAR_PRODUCT_ID_CV_PROFILE_BUNDLE = process.env.POLAR_PRODUCT_ID_CV_PROFILE_BUNDLE;
+const POLAR_PRICE_ID_CV_PROFILE_BUNDLE = process.env.POLAR_PRICE_ID_CV_PROFILE_BUNDLE;
 const POLAR_CHECKOUT_CURRENCY = 'eur';
 const POLAR_SERVER = process.env.POLAR_SERVER === 'sandbox' ? 'sandbox' : 'production';
 
@@ -17,9 +19,17 @@ const POLAR_API_BASE = POLAR_SERVER === 'sandbox'
 
 const SUPPORTED_ADDONS = ['ats-rewrite', 'cover-letter', 'localization-polish'] as const;
 export type CheckoutAddon = typeof SUPPORTED_ADDONS[number];
+export const CV_DOWNLOAD_PRODUCT = 'cv-download';
+export const CV_PROFILE_PHOTO_BUNDLE_PRODUCT = 'cv-profile-photo-bundle';
+const SUPPORTED_CHECKOUT_PRODUCTS = [CV_DOWNLOAD_PRODUCT, CV_PROFILE_PHOTO_BUNDLE_PRODUCT] as const;
+export type CheckoutProduct = typeof SUPPORTED_CHECKOUT_PRODUCTS[number];
 
 function isCheckoutAddon(value: string): value is CheckoutAddon {
     return SUPPORTED_ADDONS.includes(value as CheckoutAddon);
+}
+
+function isCheckoutProduct(value: string): value is CheckoutProduct {
+    return SUPPORTED_CHECKOUT_PRODUCTS.includes(value as CheckoutProduct);
 }
 
 function uniqueAddons(addons: CheckoutAddon[]): CheckoutAddon[] {
@@ -36,37 +46,73 @@ export function parseCheckoutAddons(input: unknown): CheckoutAddon[] {
     );
 }
 
+export function parseCheckoutProduct(input: unknown): CheckoutProduct {
+    if (typeof input !== 'string') return CV_DOWNLOAD_PRODUCT;
+    const trimmed = input.trim();
+    return isCheckoutProduct(trimmed) ? trimmed : CV_DOWNLOAD_PRODUCT;
+}
+
+function appendBundleSuccessParam(path: string, checkoutProduct: CheckoutProduct): string {
+    if (checkoutProduct !== CV_PROFILE_PHOTO_BUNDLE_PRODUCT) return path;
+
+    const [pathname, queryString = ''] = path.split('?');
+    const params = new URLSearchParams(queryString);
+    params.set('bundle', 'profile-photo');
+    return `${pathname}?${params.toString()}`;
+}
+
 export async function buildCheckoutURL(
     cvId: string,
     email?: string,
     selectedAddons: CheckoutAddon[] = [],
-    resumeLanguage: ResumeLanguage = "nl"
+    resumeLanguage: ResumeLanguage = "nl",
+    checkoutProduct: CheckoutProduct = CV_DOWNLOAD_PRODUCT
 ): Promise<string> {
     if (!POLAR_ACCESS_TOKEN) {
         throw new Error('POLAR_ACCESS_TOKEN is not configured');
     }
-    if (!POLAR_PRODUCT_ID && !POLAR_PRICE_ID) {
+    if (checkoutProduct === CV_DOWNLOAD_PRODUCT && !POLAR_PRODUCT_ID && !POLAR_PRICE_ID) {
         throw new Error('POLAR_PRODUCT_ID_CV_DOWNLOAD or POLAR_PRICE_ID_CV_DOWNLOAD is not configured');
+    }
+    if (
+        checkoutProduct === CV_PROFILE_PHOTO_BUNDLE_PRODUCT &&
+        !POLAR_PRODUCT_ID_CV_PROFILE_BUNDLE &&
+        !POLAR_PRICE_ID_CV_PROFILE_BUNDLE
+    ) {
+        throw new Error('POLAR_PRODUCT_ID_CV_PROFILE_BUNDLE or POLAR_PRICE_ID_CV_PROFILE_BUNDLE is not configured');
     }
 
     const addons = uniqueAddons(selectedAddons);
 
-    const metadata: Record<string, string> = { cv_id: cvId };
+    const metadata: Record<string, string> = { cv_id: cvId, product: checkoutProduct };
     if (addons.length > 0) {
         metadata.addons_csv = addons.join(',');
     }
 
+    const successPath = appendBundleSuccessParam(
+        getSuccessPathForLanguage(resumeLanguage, cvId),
+        checkoutProduct
+    );
     const body: Record<string, unknown> = {
-        success_url: `${APP_URL}${getSuccessPathForLanguage(resumeLanguage, cvId)}`,
+        success_url: `${APP_URL}${successPath}`,
         return_url: `${APP_URL}${getEditorPathForLanguage(resumeLanguage, cvId)}`,
         currency: POLAR_CHECKOUT_CURRENCY,
         metadata,
     };
 
-    if (POLAR_PRODUCT_ID) {
-        body.products = [POLAR_PRODUCT_ID];
+    const productId =
+        checkoutProduct === CV_PROFILE_PHOTO_BUNDLE_PRODUCT
+            ? POLAR_PRODUCT_ID_CV_PROFILE_BUNDLE
+            : POLAR_PRODUCT_ID;
+    const priceId =
+        checkoutProduct === CV_PROFILE_PHOTO_BUNDLE_PRODUCT
+            ? POLAR_PRICE_ID_CV_PROFILE_BUNDLE
+            : POLAR_PRICE_ID;
+
+    if (productId) {
+        body.products = [productId];
     } else {
-        body.product_price_id = POLAR_PRICE_ID;
+        body.product_price_id = priceId;
     }
 
     if (email) {

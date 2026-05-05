@@ -13,9 +13,9 @@ export const metadata: Metadata = {
 export default async function SuccessPage({
     searchParams,
 }: {
-    searchParams: Promise<{ cvId?: string; lang?: string }>;
+    searchParams: Promise<{ cvId?: string; lang?: string; bundle?: string }>;
 }) {
-    const { cvId, lang } = await searchParams;
+    const { cvId, lang, bundle } = await searchParams;
     let uiLanguage: ResumeLanguage | null = lang === "en" || lang === "nl" ? lang : null;
 
     if (!uiLanguage && cvId) {
@@ -26,6 +26,7 @@ export default async function SuccessPage({
     const resolvedLanguage = uiLanguage ?? "nl";
     const tr = (dutch: string, english: string) => (resolvedLanguage === "en" ? english : dutch);
     const editorPath = cvId ? getEditorPathForLanguage(resolvedLanguage, cvId) : "/";
+    const hasProfilePhotoBundle = bundle === "profile-photo";
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
@@ -52,8 +53,12 @@ export default async function SuccessPage({
 
                 <p className="text-gray-600 mb-8">
                     {tr(
-                        "Bedankt voor je aankoop. Je kunt nu je CV downloaden als PDF.",
-                        "Thanks for your purchase. You can now download your CV as a PDF."
+                        hasProfilePhotoBundle
+                            ? "Je CV is betaald en je AI-profielfoto zit in je bundle. Download eerst je PDF of maak direct je profielfoto."
+                            : "Bedankt voor je aankoop. Je kunt nu je CV downloaden als PDF.",
+                        hasProfilePhotoBundle
+                            ? "Your CV is paid and your AI profile photo is included in your bundle. Download your PDF first or create your profile photo now."
+                            : "Thanks for your purchase. You can now download your CV as a PDF."
                     )}
                 </p>
 
@@ -65,6 +70,15 @@ export default async function SuccessPage({
                         >
                             {tr("Download PDF", "Download PDF")}
                         </a>
+                    )}
+
+                    {hasProfilePhotoBundle && (
+                        <Link
+                            href="/profielfoto-cv-maken#profielfoto-tool"
+                            className="block w-full bg-teal-300 hover:bg-teal-400 text-gray-900 px-6 py-3 rounded-full font-bold text-sm shadow-md transition"
+                        >
+                            {tr("Maak mijn AI-profielfoto", "Create my AI profile photo")}
+                        </Link>
                     )}
 
                     <Link

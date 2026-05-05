@@ -26,6 +26,8 @@ import WelcomeOnboarding from "./WelcomeOnboarding";
 import CvScoreWidget from "./CvScoreWidget";
 import KeywordScannerWidget from "./KeywordScannerWidget";
 import PhotoUpload from "./PhotoUpload";
+import type { CheckoutProduct } from "@/lib/polar";
+import { applicationBundlePrice, cvDownloadPrice, profilePhotoPrice } from "@/lib/site-content";
 import {
     hasCompletionTracked,
     hasEditorStartedTracked,
@@ -171,14 +173,14 @@ export default function Editor({
     ];
     const checkoutBenefits = isEnglish
         ? [
-            "One-time €4.99 payment for this CV",
+            `One-time ${cvDownloadPrice.display.replace(",", ".")} payment for this CV`,
             "No subscription or automatic renewal",
             "You only pay for this PDF download",
             "Edit this CV later and re-download it for free",
             "Professional PDF available immediately",
         ]
         : [
-            "Eenmalig €4,99 voor dit CV",
+            `Eenmalig ${cvDownloadPrice.display} voor dit CV`,
             "Geen abonnement of automatische verlenging",
             "Je betaalt alleen voor deze PDF-download",
             "Dit CV later gratis aanpassen en opnieuw downloaden",
@@ -466,15 +468,19 @@ export default function Editor({
         track('cv_uploaded', { fileType: 'parsed' });
     };
 
-    const startCheckout = async () => {
+    const startCheckout = async (checkoutProduct: CheckoutProduct = "cv-download") => {
         setIsCheckoutRedirecting(true);
-        track('checkout_start', { cvId: id });
+        const amountCents = checkoutProduct === "cv-profile-photo-bundle"
+            ? applicationBundlePrice.amountCents
+            : cvDownloadPrice.amountCents;
+        track('checkout_start', { cvId: id, product: checkoutProduct, amountCents });
         try {
-            const checkoutResult = await getCheckoutURL(id, undefined, []);
+            const checkoutResult = await getCheckoutURL(id, undefined, [], checkoutProduct);
             if (!checkoutResult.ok) {
                 track('checkout_failed', {
                     cvId: id,
                     reason: checkoutResult.reason || checkoutResult.code,
+                    product: checkoutProduct,
                 });
                 alert(checkoutResult.supportNotified ? supportNotifiedMessage : tr(
                     "Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.",
@@ -483,10 +489,10 @@ export default function Editor({
                 setIsCheckoutRedirecting(false);
                 return;
             }
-            track('checkout_started', { cvId: id });
+            track('checkout_started', { cvId: id, product: checkoutProduct, amountCents });
             window.location.href = checkoutResult.url;
         } catch (error) {
-            track('checkout_failed', { cvId: id, reason: getCheckoutFailureReason(error) });
+            track('checkout_failed', { cvId: id, reason: getCheckoutFailureReason(error), product: checkoutProduct });
             alert(tr("Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.", "Payment could not be started. Check the payment configuration and try again."));
             setIsCheckoutRedirecting(false);
         }
@@ -1320,7 +1326,7 @@ export default function Editor({
                     onClick={() => closeCheckoutModal('overlay')}
                 >
                     <div
-                        className="w-full max-w-md overflow-hidden bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+                        className="w-full max-w-2xl overflow-hidden bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
                         onClick={(event) => event.stopPropagation()}
                     >
                         <div className="border-b-4 border-black bg-[#FFF3BF] px-5 py-5 sm:px-6">
@@ -1339,26 +1345,76 @@ export default function Editor({
                                 </button>
                             </div>
                             <h3 className="mt-4 text-2xl font-black text-black sm:text-[2rem]">
-                                {tr("Download je cv als PDF", "Download your CV as a PDF")}
+                                {tr("Rond je sollicitatieprofiel af", "Finish your application profile")}
                             </h3>
                             <p className="mt-2 text-sm font-medium text-slate-700">
-                                {tr("Eenmalig €4,99. Geen abonnement. Geen automatische verlenging. Je PDF is direct beschikbaar na betaling.", "One-time €4.99. No subscription. No automatic renewal. Your PDF is available immediately after payment.")}
+                                {tr(
+                                    `Kies alleen je CV of maak direct je CV + AI-profielfoto klaar. Beide zijn eenmalig, zonder abonnement.`,
+                                    `Choose only your CV or finish your CV + AI profile photo together. Both are one-time payments with no subscription.`
+                                )}
                             </p>
                         </div>
 
                         <div className="px-5 py-5 sm:px-6">
-                            <div className="mb-5 flex items-end justify-between gap-4 border-2 border-black bg-gray-50 p-4">
-                                <div>
-                                    <p className="font-black text-black">{tr("CV als PDF", "CV as PDF")}</p>
-                                    <p className="text-xs font-semibold text-slate-600">
-                                        {tr("Inclusief later opnieuw downloaden", "Includes future re-downloads")}
-                                    </p>
+                            <div className="mb-5 grid gap-4 lg:grid-cols-[1.08fr_0.92fr]">
+                                <div className="relative border-2 border-black bg-[#E9FFFC] p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                                    <div className="absolute -top-3 left-4 border-2 border-black bg-[#FFD166] px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-black">
+                                        {tr("Beste waarde", "Best value")}
+                                    </div>
+                                    <div className="flex items-start justify-between gap-4">
+                                        <div>
+                                            <p className="font-black text-black">{tr("CV + AI-profielfoto", "CV + AI profile photo")}</p>
+                                            <p className="mt-1 text-xs font-semibold leading-relaxed text-slate-700">
+                                                {tr(
+                                                    "Download je CV en maak daarna 4 professionele profielfoto-varianten voor CV en LinkedIn.",
+                                                    "Download your CV and then create 4 professional profile-photo variants for your CV and LinkedIn."
+                                                )}
+                                            </p>
+                                        </div>
+                                        <div className="shrink-0 text-right">
+                                            <p className="text-3xl font-black text-black">{applicationBundlePrice.display}</p>
+                                            <p className="text-[11px] font-black uppercase tracking-wide text-slate-600">
+                                                {tr("eenmalig", "one-time")}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 grid gap-2 text-xs font-bold text-slate-800 sm:grid-cols-2">
+                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("CV PDF direct beschikbaar", "CV PDF available immediately")}</span>
+                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("AI-profielfoto inbegrepen", "AI profile photo included")}</span>
+                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Bespaar " + applicationBundlePrice.savingsDisplay, "Save " + applicationBundlePrice.savingsDisplay.replace(",", "."))}</span>
+                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Geen abonnement", "No subscription")}</span>
+                                    </div>
+                                    <button
+                                        onClick={() => startCheckout("cv-profile-photo-bundle")}
+                                        disabled={isCheckoutRedirecting}
+                                        className="mt-4 w-full px-5 py-3 border-2 border-black font-black text-sm bg-yellow-400 hover:bg-yellow-500 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] disabled:opacity-60 disabled:cursor-not-allowed"
+                                    >
+                                        {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr(`Betaal ${applicationBundlePrice.display} voor CV + profielfoto`, `Pay ${applicationBundlePrice.display.replace(",", ".")} for CV + profile photo`)}
+                                    </button>
                                 </div>
-                                <div className="text-right">
-                                    <p className="text-3xl font-black text-black">€4,99</p>
-                                    <p className="text-[11px] font-black uppercase tracking-wide text-slate-600">
-                                        {tr("eenmalig", "one-time")}
-                                    </p>
+
+                                <div className="border-2 border-black bg-gray-50 p-4">
+                                    <div className="flex items-start justify-between gap-4">
+                                        <div>
+                                            <p className="font-black text-black">{tr("Alleen CV als PDF", "CV PDF only")}</p>
+                                            <p className="mt-1 text-xs font-semibold leading-relaxed text-slate-600">
+                                                {tr("Voor als je alleen deze sollicitatie-PDF nodig hebt.", "For when you only need this application PDF.")}
+                                            </p>
+                                        </div>
+                                        <div className="shrink-0 text-right">
+                                            <p className="text-3xl font-black text-black">{cvDownloadPrice.display}</p>
+                                            <p className="text-[11px] font-black uppercase tracking-wide text-slate-600">
+                                                {tr("eenmalig", "one-time")}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button
+                                        onClick={() => startCheckout("cv-download")}
+                                        disabled={isCheckoutRedirecting}
+                                        className="mt-4 w-full px-4 py-3 border-2 border-black font-bold text-sm bg-white hover:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed"
+                                    >
+                                        {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr(`Betaal ${cvDownloadPrice.display} en download PDF`, `Pay ${cvDownloadPrice.display.replace(",", ".")} and download PDF`)}
+                                    </button>
                                 </div>
                             </div>
 
@@ -1374,23 +1430,19 @@ export default function Editor({
                             </ul>
 
                             <div className="mb-5 rounded-md border border-slate-300 bg-slate-50 px-3 py-3 text-xs font-semibold text-slate-700">
-                                {tr("Je betaalt alleen voor deze download. Na betaling kun je ditzelfde cv later opnieuw openen, aanpassen en downloaden zonder opnieuw te betalen.", "You only pay for this download. After payment, you can reopen, edit, and download this same CV later without paying again.")}
+                                {tr(
+                                    `De profielfoto los kost ${profilePhotoPrice.display}. De bundle is bedoeld voor sollicitanten die hun CV en LinkedIn-presentatie in één keer netjes willen maken.`,
+                                    `The profile photo alone costs ${profilePhotoPrice.display.replace(",", ".")}. The bundle is for applicants who want to finish both their CV and LinkedIn presentation together.`
+                                )}
                             </div>
 
-                            <div className="grid gap-3 sm:grid-cols-2">
+                            <div className="flex">
                                 <button
                                     onClick={() => closeCheckoutModal('later_button')}
                                     disabled={isCheckoutRedirecting}
-                                    className="px-4 py-3 border-2 border-black font-bold text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-60 disabled:cursor-not-allowed"
+                                    className="w-full px-4 py-3 border-2 border-black font-bold text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
                                     {tr("Nog even bewerken", "Keep editing")}
-                                </button>
-                                <button
-                                    onClick={startCheckout}
-                                    disabled={isCheckoutRedirecting}
-                                    className="px-5 py-3 border-2 border-black font-black text-sm bg-yellow-400 hover:bg-yellow-500 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] disabled:opacity-60 disabled:cursor-not-allowed"
-                                >
-                                    {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr('Betaal €4,99 en download PDF', 'Pay €4.99 and download PDF')}
                                 </button>
                             </div>
 

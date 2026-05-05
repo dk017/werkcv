@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import NavUserMenu from "@/components/NavUserMenu";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { buildDutchMetadata } from "@/lib/page-metadata";
+import { applicationBundlePrice, profilePhotoPrice } from "@/lib/site-content";
 import ProfilePhotoGenerator from "./ProfilePhotoGenerator";
 
 const faqItems = [
@@ -35,7 +36,7 @@ const faqItems = [
   {
     question: "Wat gaat de profielfoto-tool kosten?",
     answer:
-      "De AI-profielfoto is een eenmalige add-on van €9,99. Je krijgt 4 startvarianten en 2 inbegrepen verfijningen. Er is geen abonnement.",
+      `De AI-profielfoto is een eenmalige add-on van ${profilePhotoPrice.display}. Je krijgt 4 startvarianten en 2 inbegrepen verfijningen. Combineer je hem met je CV, dan is de bundle ${applicationBundlePrice.display}. Er is geen abonnement.`,
   },
 ];
 
@@ -63,9 +64,9 @@ const sampleTransformations = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "AI profielfoto maken voor CV en LinkedIn | €9,99 | WerkCV",
+  title: `AI profielfoto maken voor CV en LinkedIn | ${profilePhotoPrice.display} | WerkCV`,
   description:
-    "Maak van een gewone foto een professionele AI-profielfoto voor je cv en LinkedIn. 4 varianten, 2 verfijningen en later downloaden. Eenmalig €9,99.",
+    `Maak van een gewone foto een professionele AI-profielfoto voor je cv en LinkedIn. 4 varianten, 2 verfijningen en later downloaden. Eenmalig ${profilePhotoPrice.display}.`,
   path: "/profielfoto-cv-maken",
   keywords: [
     "profielfoto cv maken",
@@ -116,9 +117,9 @@ export default function ProfielfotoCvMakenPage() {
                 Professionele profielfoto maken voor je cv en LinkedIn
               </h1>
               <p className="mt-5 text-lg font-medium leading-relaxed text-slate-700">
-                Upload een bestaande foto of selfie en maak er een nette, herkenbare AI-profielfoto van die past
-                bij je sollicitatie, cv en LinkedIn-profiel. Geen fotoshoot nodig; handig als laatste stap
-                nadat je cv klaar is of wanneer je LinkedIn-profiel nog rommelig oogt.
+                Upload een bestaande foto of selfie en maak er een realistische, herkenbare AI-profielfoto van die past
+                bij je sollicitatie, CV en LinkedIn-profiel. Geen fotoshoot nodig; handig als laatste stap
+                nadat je CV klaar is of wanneer je LinkedIn-profiel nog rommelig oogt.
               </p>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <Link
@@ -135,7 +136,7 @@ export default function ProfielfotoCvMakenPage() {
                 </Link>
               </div>
               <p className="mt-4 text-sm font-bold text-slate-700">
-                Eénmalig €9,99. Inclusief 4 startvarianten en 2 verfijningen. Geen abonnement.
+                Eénmalig {profilePhotoPrice.display}. Of samen met je CV voor {applicationBundlePrice.display}. Geen abonnement.
               </p>
             </div>
 
@@ -148,12 +149,12 @@ export default function ProfielfotoCvMakenPage() {
               </h2>
               <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
                 Veel AI-headshot tools verkopen vooral veel varianten. WerkCV richt zich smaller op het moment
-                waarop iemand wil solliciteren: cv opmaken, LinkedIn netjes maken en de eerste indruk professioneel
+                waarop iemand wil solliciteren: CV opmaken, LinkedIn netjes maken en de eerste indruk professioneel
                 afronden. Daarom krijg je minder ruis, duidelijke stijlen en twee gerichte verfijningen.
               </p>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {[
-                  "Voor cv en LinkedIn",
+                  "Voor CV en LinkedIn",
                   "Nederlandse sollicitatiecontext",
                   "Herkenbaar en realistisch",
                   "Later opnieuw downloaden",
@@ -175,7 +176,7 @@ export default function ProfielfotoCvMakenPage() {
                   Eerst preview, dan betalen
                 </p>
                 <h2 className="mt-2 text-3xl font-black text-slate-950">
-                  Bekijk je varianten voordat je €9,99 betaalt
+                  Bekijk je varianten voordat je {profilePhotoPrice.display} betaalt
                 </h2>
                 <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
                   Je logt in, maakt 4 voorbeeldvarianten en kiest de beste foto. Pas als je wilt downloaden start de

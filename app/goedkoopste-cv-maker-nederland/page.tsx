@@ -108,7 +108,7 @@ const faqs = [
   {
     question: "Wat is de goedkoopste manier om één professioneel CV te maken in Nederland?",
     answer:
-      "Als je puur naar euro's kijkt, is een volledig gratis optie zoals YoungCapital het goedkoopst. Wil je specifiek een betaalde route zonder abonnement en zonder doorlopende accountkosten, dan is WerkCV met een eenmalige betaling van €4,99 de goedkoopste duidelijke betaalde optie voor één nette CV-download.",
+      "Als je puur naar euro's kijkt, is een volledig gratis optie zoals YoungCapital het goedkoopst. Wil je specifiek een betaalde route zonder abonnement en zonder doorlopende accountkosten, dan is WerkCV met een eenmalige betaling van €7,99 de goedkoopste duidelijke betaalde optie voor één nette CV-download.",
   },
   {
     question: "Zijn gratis CV-makers echt gratis?",

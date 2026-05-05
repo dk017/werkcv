@@ -45,7 +45,7 @@ export default function SalaryResultCvCta({
         </TrackedToolLink>
       </div>
       <p className="mt-3 text-xs font-bold text-slate-600">
-        Gratis bouwen en aanpassen. Eénmalig €4,99 bij PDF-download. Geen abonnement.
+        Gratis bouwen en aanpassen. Eénmalig €7,99 bij PDF-download. Geen abonnement.
       </p>
     </div>
   );

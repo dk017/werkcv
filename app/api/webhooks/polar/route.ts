@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
 import { validateEvent, WebhookVerificationError } from '@polar-sh/sdk/webhooks';
 import { reportOpsIncident } from '@/lib/ops-alerts';
+import { CV_DOWNLOAD_PRODUCT, CV_PROFILE_PHOTO_BUNDLE_PRODUCT } from '@/lib/polar';
 
 const WEBHOOK_SECRET = process.env.POLAR_WEBHOOK_SECRET;
 const SUPPORTED_ADDONS = new Set(['ats-rewrite', 'cover-letter', 'localization-polish']);
@@ -226,13 +227,17 @@ export async function POST(request: NextRequest) {
         },
     });
 
+    const orderProduct = product === CV_PROFILE_PHOTO_BUNDLE_PRODUCT
+        ? CV_PROFILE_PHOTO_BUNDLE_PRODUCT
+        : CV_DOWNLOAD_PRODUCT;
+
     let order;
     try {
         order = await prismaWithAttributionExtensions.order.create({
             data: {
                 email,
                 cvId,
-                product: 'cv-download',
+                product: orderProduct,
                 amountCents,
                 currency,
                 addons,
@@ -257,13 +262,14 @@ export async function POST(request: NextRequest) {
                 amountCents,
                 currency,
                 addons,
+                product: orderProduct,
             },
         });
         order = await prisma.order.create({
             data: {
                 email,
                 cvId,
-                product: 'cv-download',
+                product: orderProduct,
                 lemonId: externalOrderId,
                 paidAt: new Date(),
             },
@@ -276,6 +282,7 @@ export async function POST(request: NextRequest) {
         amountCents,
         currency,
         addons,
+        product: orderProduct,
         polarOrderId: externalOrderId,
     };
 

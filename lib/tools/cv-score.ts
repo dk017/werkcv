@@ -353,7 +353,7 @@ const ENGLISH_FUNCTION_WORDS = [
 
 const CTA = {
   headline: "Verbeter je score met een WerkCV template",
-  subtext: "ATS-vriendelijk, geoptimaliseerd voor de Nederlandse markt. Eenmalig €4,99.",
+  subtext: "ATS-vriendelijk, geoptimaliseerd voor de Nederlandse markt. Eenmalig €7,99.",
   primary_button_text: "Begin in de editor →",
   primary_button_url: "/editor",
   secondary_button_text: "Vergelijk templates",

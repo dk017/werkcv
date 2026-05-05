@@ -179,7 +179,7 @@ export default function ThuiswerkvergoedingTool() {
                 href="/editor"
                 className="border-2 border-white bg-[#4ECDC4] px-4 py-2 text-sm font-black text-slate-900"
               >
-                Maak gratis een ATS-vriendelijk CV - eenmalig €4,99
+                Maak gratis een ATS-vriendelijk CV - eenmalig €7,99
               </Link>
               <Link
                 href="/tools/netto-bruto-calculator"

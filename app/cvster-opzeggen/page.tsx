@@ -74,7 +74,7 @@ const faqs = [
 export const metadata: Metadata = {
   title: "CVster opzeggen? Stappen + alternatief zonder proefabonnement",
   description:
-    "Bekijk hoe je CVster kunt opzeggen en maak daarna een cv zonder proefabonnement of automatische verlenging. WerkCV kost éénmalig €4,99 bij download.",
+    "Bekijk hoe je CVster kunt opzeggen en maak daarna een cv zonder proefabonnement of automatische verlenging. WerkCV kost éénmalig €7,99 bij download.",
   keywords: [
     "cvster opzeggen",
     "cvster abonnement opzeggen",

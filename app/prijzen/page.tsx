@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import { cvDownloadPrice } from "@/lib/site-content";
+import { applicationBundlePrice, cvDownloadPrice, profilePhotoPrice } from "@/lib/site-content";
 
 export const metadata: Metadata = {
-    title: `CV Maken Kosten? Eenmalig ${cvDownloadPrice.display}, Geen Abonnement | WerkCV`,
-    description: `Maak gratis je CV en download voor ${cvDownloadPrice.display} per CV. Geen abonnement, geen automatische verlenging. Voor hetzelfde betaalde CV kun je later opnieuw bewerken en downloaden.`,
+    title: `CV Maken Kosten? ${cvDownloadPrice.display} of bundle ${applicationBundlePrice.display} | WerkCV`,
+    description: `Maak gratis je CV en download voor ${cvDownloadPrice.display} per CV. Kies eventueel CV + AI-profielfoto voor ${applicationBundlePrice.display}. Geen abonnement of automatische verlenging.`,
     keywords: [
         "cv maken kosten",
         "cv maker prijs",
@@ -31,6 +31,7 @@ export const metadata: Metadata = {
 
 const priceBadges = [
     `Eenmalig ${cvDownloadPrice.display}`,
+    `CV + profielfoto ${applicationBundlePrice.display}`,
     "Geen abonnement",
     "Later opnieuw downloaden",
 ] as const;
@@ -52,6 +53,7 @@ const pricingIntentCards = [
 
 const pricingFaqs = [
     { q: "Wat kost WerkCV precies?", a: `WerkCV kost ${cvDownloadPrice.display} per CV-download. Je start gratis, bouwt je CV op en betaalt pas wanneer je die definitieve PDF wilt downloaden.` },
+    { q: "Wat kost de CV + profielfoto bundle?", a: `De bundle kost ${applicationBundlePrice.display}. Je krijgt de CV-download plus de AI-profielfoto add-on die los ${profilePhotoPrice.display} kost.` },
     { q: "Moet ik betalen om mijn CV te maken?", a: "Nee, het aanmaken en bewerken van je CV is volledig gratis. Je betaalt pas als je dat CV als PDF wilt downloaden." },
     { q: "Wat betekent cv maken betaald meestal?", a: "Meestal zoekt iemand een betaalde CV-tool met duidelijke kosten en zonder verrassingen achteraf. Voor WerkCV betekent dat: gratis starten en pas betalen wanneer je jouw definitieve PDF wilt downloaden." },
     { q: "Kan ik mijn CV per download betalen?", a: "Ja. Bij WerkCV betaal je eenmalig per CV wanneer je die definitieve PDF-download wilt doen. Voor datzelfde betaalde CV kun je later terugkomen, bewerken en opnieuw downloaden zonder opnieuw te betalen." },
@@ -140,7 +142,7 @@ export default function PrijzenPage() {
                         CV maken kosten: eenmalig {cvDownloadPrice.display} per CV, geen abonnement
                     </h1>
                     <p className="text-lg font-medium text-black max-w-2xl mx-auto">
-                        WerkCV kost {cvDownloadPrice.display} per CV-download. Je start gratis, betaalt pas wanneer je wilt downloaden en kunt datzelfde betaalde CV later opnieuw bewerken en downloaden zonder extra maandkosten.
+                        WerkCV kost {cvDownloadPrice.display} per CV-download. Wil je meteen je CV en LinkedIn-presentatie netjes maken, dan is er een CV + AI-profielfoto bundle voor {applicationBundlePrice.display}.
                     </p>
                     <p className="text-sm font-black text-black max-w-2xl mx-auto mt-3">
                         Je betaalt alleen voor je definitieve PDF-download. Geen proefperiode, geen automatische verlenging en niets om later op te zeggen.
@@ -161,14 +163,54 @@ export default function PrijzenPage() {
                 </div>
 
                 {/* Pricing Card */}
-                <div className="max-w-md mx-auto mb-16">
-                    <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
+                <div className="mx-auto mb-16 grid max-w-4xl gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+                    <div className="bg-[#E9FFFC] border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
                         <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 px-4 py-1 border-3 border-black font-black text-sm" style={{ borderWidth: '3px' }}>
-                            EENMALIGE BETALING
+                            BESTE WAARDE
                         </div>
 
                         <div className="text-center pt-4">
-                            <div className="text-6xl font-black text-black mb-2">{cvDownloadPrice.display}</div>
+                            <div className="text-5xl font-black text-black mb-2">{applicationBundlePrice.display}</div>
+                            <p className="text-lg font-bold text-gray-700 mb-2">CV + AI-profielfoto</p>
+                            <p className="mb-6 text-sm font-bold text-gray-700">
+                                Los samen {cvDownloadPrice.display} + {profilePhotoPrice.display}. Je bespaart {applicationBundlePrice.savingsDisplay}.
+                            </p>
+
+                            <ul className="text-left space-y-3 mb-8">
+                                {[
+                                    'Alles van de CV-download',
+                                    '4 AI-profielfoto startvarianten',
+                                    '2 inbegrepen verfijningen',
+                                    'Geschikt voor CV en LinkedIn',
+                                    'Geen abonnement of verborgen kosten',
+                                ].map((feature, i) => (
+                                    <li key={i} className="flex items-start gap-3">
+                                        <span className="bg-green-400 border-2 border-black w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span className="font-medium text-black">{feature}</span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <Link
+                                href="/editor"
+                                className="block w-full bg-yellow-400 text-black py-4 font-black text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
+                            >
+                                Start en kies bundle bij download
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 px-4 py-1 border-3 border-black font-black text-sm" style={{ borderWidth: '3px' }}>
+                            CV ONLY
+                        </div>
+
+                        <div className="text-center pt-4">
+                            <div className="text-5xl font-black text-black mb-2">{cvDownloadPrice.display}</div>
                             <p className="text-lg font-bold text-gray-600 mb-8">eenmalig per CV</p>
 
                             <ul className="text-left space-y-3 mb-8">

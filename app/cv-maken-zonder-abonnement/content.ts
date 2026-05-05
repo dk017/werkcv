@@ -10,7 +10,7 @@ export const faqs = [
       "Nee. WerkCV werkt zonder abonnement en zonder proefperiode. Er is geen automatische verlenging en niets om later op te zeggen.",
   },
   {
-    question: "Wanneer betaal ik €4,99?",
+    question: "Wanneer betaal ik €7,99?",
     answer:
       "Je betaalt pas bij de eerste PDF-download van je cv. Daarna kun je hetzelfde cv opnieuw openen, aanpassen en downloaden zonder extra abonnement.",
   },
@@ -32,7 +32,7 @@ export const faqs = [
 ] as const;
 
 export const comparisonRows = [
-  ["Prijsmodel", "Eenmalig €4,99", "Abonnement ~€10/mnd", "Abonnement ~€15/mnd", "Abonnement ~€12/mnd"],
+  ["Prijsmodel", "Eenmalig €7,99", "Abonnement ~€10/mnd", "Abonnement ~€15/mnd", "Abonnement ~€12/mnd"],
   ["Gratis starten", "Ja", "Ja", "Ja", "Ja"],
   ["Automatische verlenging", "Nee", "Ja", "Ja", "Ja"],
   ["Opzeggen nodig", "Nee", "Ja", "Ja", "Ja"],

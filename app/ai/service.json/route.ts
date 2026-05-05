@@ -20,7 +20,7 @@ export function GET() {
         "WerkCV helps users create, check and improve CVs for the Dutch job market. The individual job seeker model is free to start and uses a one-time payment at PDF download.",
       offers: {
         "@type": "Offer",
-        price: "4.99",
+        price: "7.99",
         priceCurrency: "EUR",
         description: "One-time payment for individual CV PDF download. No individual job seeker subscription.",
         url: `${siteBaseUrl}/prijzen`,

@@ -4,6 +4,8 @@ import { toFile } from "openai/uploads";
 import openai from "@/lib/openai-client";
 import { getCurrentUserFromRequest } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { CV_PROFILE_PHOTO_BUNDLE_PRODUCT } from "@/lib/polar";
+import { claimProfilePhotoBundle, hasAvailableProfilePhotoBundle } from "@/lib/profile-photo-entitlements";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
 import { saveProfilePhotoImage, StoredProfilePhotoImage } from "@/lib/profile-photo-storage";
 
@@ -67,12 +69,13 @@ function buildPrompt(style: string): string {
 
   return [
     "Preserve the exact facial features, skin tone, age, and likeness of the person in the reference image. Only modify lighting, background, attire context, composition, and color grading as described. The result must be photorealistic, not illustrated, stylized, painted, or synthetic-looking.",
+    "Target the quality of a real professional LinkedIn studio portrait: natural skin texture, realistic hair detail, clear eyes, clean background separation, and believable clothing fabric. The photo should look like it came from a good local business photographer, not an AI filter.",
     "If multiple images are provided, use the first image as the primary identity reference and the other images only as supporting references.",
     "Recompose the person into an upright, front-facing portrait even if the input photo is sideways, angled, turned away, or a casual selfie. The face must be centered and looking directly into the camera with both eyes visible.",
     "Do not preserve a side-facing pose from the input image. Correct head orientation, shoulder angle, and camera perspective into a professional front-facing studio portrait while preserving identity.",
     "Frame the subject from the chest up with ample headroom and negative space above the head. Ensure the top of the head is not cropped. Keep the head vertical, not tilted or rotated.",
     selectedStyle,
-    "Avoid glamour retouching, unrealistic beauty filters, logos, text, ID-photo stiffness, uniforms unless already present, and major changes to body, face, age, or ethnicity.",
+    "Avoid glamour retouching, overly perfect skin, influencer styling, unrealistic beauty filters, logos, text, ID-photo stiffness, uniforms unless already present, and major changes to body, face, age, or ethnicity.",
   ].join(" ");
 }
 
@@ -115,17 +118,34 @@ export async function GET(request: NextRequest) {
   if (!user) return NextResponse.json({ authenticated: false }, { status: 401 });
 
   const projectId = request.nextUrl.searchParams.get("projectId");
-  const project = projectId
+  let project = projectId
     ? await prisma.profilePhotoProject.findFirst({ where: { id: projectId, userId: user.id } })
     : await prisma.profilePhotoProject.findFirst({
         where: { userId: user.id },
         orderBy: { createdAt: "desc" },
       });
 
+  if (project && project.status !== "paid") {
+    const claim = await claimProfilePhotoBundle(user.email, project.id);
+    if (claim.claimed) {
+      project = await prisma.profilePhotoProject.findFirst({ where: { id: project.id, userId: user.id } });
+    }
+  }
+
+  let bundleIncluded = await hasAvailableProfilePhotoBundle(user.email);
+  if (project?.orderId) {
+    const order = await prisma.order.findUnique({
+      where: { id: project.orderId },
+      select: { product: true },
+    });
+    bundleIncluded = bundleIncluded || order?.product === CV_PROFILE_PHOTO_BUNDLE_PRODUCT;
+  }
+
   if (!project) {
     return NextResponse.json({
       authenticated: true,
       user: { email: user.email },
+      bundleIncluded,
       project: null,
     });
   }
@@ -135,6 +155,7 @@ export async function GET(request: NextRequest) {
   return NextResponse.json({
     authenticated: true,
     user: { email: user.email },
+    bundleIncluded,
     project: {
       id: project.id,
       status: project.status,
@@ -186,7 +207,7 @@ export async function POST(request: NextRequest) {
     const style = String(formData.get("style") ?? "executive");
     const refinement = String(formData.get("refinement") ?? "").trim();
 
-    const project = projectId
+    let project = projectId
       ? await prisma.profilePhotoProject.findFirst({
           where: { id: projectId, userId: user.id },
         })
@@ -203,6 +224,18 @@ export async function POST(request: NextRequest) {
         { error: "Project niet gevonden. Vernieuw de pagina en probeer opnieuw." },
         { status: 404 }
       );
+    }
+
+    if (project.status !== "paid") {
+      const claim = await claimProfilePhotoBundle(user.email, project.id);
+      if (claim.claimed) {
+        const claimedProject = await prisma.profilePhotoProject.findFirst({
+          where: { id: project.id, userId: user.id },
+        });
+        if (claimedProject) {
+          project = claimedProject;
+        }
+      }
     }
 
     if (mode !== "generate" && mode !== "refine") {
@@ -355,7 +388,7 @@ export async function POST(request: NextRequest) {
     const nextRefinementCount = project.refinementCount + (mode === "refine" ? 1 : 0);
     const nextGenerationCount = project.generationCount + (mode === "generate" ? 1 : 0);
 
-    await prisma.profilePhotoProject.update({
+    const updatedProject = await prisma.profilePhotoProject.update({
       where: { id: project.id },
       data: {
         style,
@@ -385,7 +418,7 @@ export async function POST(request: NextRequest) {
       images: serializeImages(project.id, storedImages),
       project: {
         id: project.id,
-        status: project.status,
+        status: updatedProject.status,
         generationCount: nextGenerationCount,
         refinementCount: nextRefinementCount,
         refinementsRemaining: Math.max(0, MAX_REFINEMENTS - nextRefinementCount),

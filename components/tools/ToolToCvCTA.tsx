@@ -59,7 +59,7 @@ export function ToolToCvCTA({
         </TrackedToolLink>
       </div>
       <p className="mt-3 text-sm font-medium text-slate-700">
-        Gratis starten, templates vergelijken en pas betalen bij PDF-download. Eénmalig €4,99, geen abonnement.
+        Gratis starten, templates vergelijken en pas betalen bij PDF-download. Eénmalig €7,99, geen abonnement.
       </p>
       <div className="mt-4 text-sm font-medium text-slate-700">
         Liever eerst lezen hoe WerkCV werkt?{" "}

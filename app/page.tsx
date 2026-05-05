@@ -30,7 +30,7 @@ const homepageWebPageJsonLd = {
   name: "CV Maken voor Nederlandse Vacatures – Gratis Starten | WerkCV",
   url: siteUrl,
   description:
-    "Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig €4,99 bij download, geen abonnement.",
+    "Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig €7,99 bij download, geen abonnement.",
   inLanguage: "nl-NL",
   isPartOf: {
     "@type": "WebSite",
@@ -90,7 +90,7 @@ export const metadata: Metadata = {
     absolute: "CV Maken voor Nederlandse Vacatures – Gratis Starten | WerkCV",
   },
   description:
-    "Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig €4,99 bij download, geen abonnement. | WerkCV",
+    "Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig €7,99 bij download, geen abonnement. | WerkCV",
   keywords: [
     "cv maken",
     "cv maken nederland",
@@ -114,7 +114,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "CV Maken voor Nederlandse Vacatures – Gratis Starten | WerkCV",
     description:
-      "Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig €4,99 bij download, geen abonnement.",
+      "Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig €7,99 bij download, geen abonnement.",
     url: "https://werkcv.nl",
     siteName: "WerkCV",
     locale: "nl_NL",
@@ -133,7 +133,7 @@ export const metadata: Metadata = {
     site: "@werkcvnl",
     title: "CV Maken voor Nederlandse Vacatures – Gratis Starten | WerkCV",
     description:
-      "Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig €4,99 bij download, geen abonnement.",
+      "Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig €7,99 bij download, geen abonnement.",
     images: ["/opengraph-image"],
   },
 };

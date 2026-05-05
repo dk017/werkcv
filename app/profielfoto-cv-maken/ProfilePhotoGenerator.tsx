@@ -3,6 +3,7 @@
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { track } from "@/lib/analytics";
+import { applicationBundlePrice, profilePhotoPrice } from "@/lib/site-content";
 
 type GeneratedImage = {
   id: string;
@@ -18,6 +19,12 @@ type ProfilePhotoProject = {
   refinementsRemaining: number;
   maxRefinements: number;
   images?: GeneratedImage[];
+};
+
+type ProfilePhotoStatusResponse = {
+  authenticated?: boolean;
+  bundleIncluded?: boolean;
+  project?: ProfilePhotoProject | null;
 };
 
 type StyleOption = {
@@ -106,9 +113,31 @@ function normalizeGeneratedImages(images: GeneratedImage[], projectId?: string):
   });
 }
 
+function getStatusCopy(isPaid: boolean, hasBundle: boolean): { title: string; description: string } {
+  if (hasBundle) {
+    return {
+      title: isPaid ? "Je profielfoto zit in je bundle" : "Je CV + profielfoto-bundle is actief",
+      description: `Maak 4 voorbeeldvarianten en kies je favoriet. De download is inbegrepen in je ${applicationBundlePrice.display}-bundle.`,
+    };
+  }
+
+  if (isPaid) {
+    return {
+      title: "Je AI-profielfoto add-on is actief",
+      description: "Je kunt je gekozen profielfoto opnieuw downloaden zonder opnieuw te betalen.",
+    };
+  }
+
+  return {
+    title: "Maak eerst gratis je voorbeeldvarianten",
+    description: `Log in, maak 4 voorbeeldvarianten en verfijn maximaal 2 keer. Je betaalt pas ${profilePhotoPrice.display} als je wilt downloaden.`,
+  };
+}
+
 export default function ProfilePhotoGenerator() {
   const [authStatus, setAuthStatus] = useState<"loading" | "authenticated" | "anonymous">("loading");
   const [project, setProject] = useState<ProfilePhotoProject | null>(null);
+  const [bundleIncluded, setBundleIncluded] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [style, setStyle] = useState("executive");
@@ -129,6 +158,8 @@ export default function ProfilePhotoGenerator() {
     [images, selectedImageId]
   );
   const selectedImageIndex = selectedImage ? images.findIndex((image) => image.id === selectedImage.id) : -1;
+  const isProfilePhotoPaid = project?.status === "paid";
+  const statusCopy = getStatusCopy(isProfilePhotoPaid, bundleIncluded);
 
   useEffect(() => {
     track("profile_photo_tool_view", { page_path: "/profielfoto-cv-maken" });
@@ -150,13 +181,11 @@ export default function ProfilePhotoGenerator() {
           return;
         }
 
-        const payload = (await response.json()) as {
-          authenticated?: boolean;
-          project?: ProfilePhotoProject | null;
-        };
+        const payload = (await response.json()) as ProfilePhotoStatusResponse;
 
         if (!isMounted) return;
         setAuthStatus(payload.authenticated ? "authenticated" : "anonymous");
+        setBundleIncluded(Boolean(payload.bundleIncluded));
         setProject(payload.project ?? null);
         const savedImages = normalizeGeneratedImages(payload.project?.images ?? [], payload.project?.id);
         setImages(savedImages);
@@ -409,8 +438,8 @@ export default function ProfilePhotoGenerator() {
     setError(null);
     track("profile_photo_checkout_click", {
       page_path: "/profielfoto-cv-maken",
-      amount_cents: 999,
-      currency: "EUR",
+      amount_cents: profilePhotoPrice.amountCents,
+      currency: profilePhotoPrice.currency,
     });
 
     try {
@@ -466,10 +495,10 @@ export default function ProfilePhotoGenerator() {
         <div className="space-y-6">
           <div className="rounded-3xl border-2 border-black bg-[#E9FFFC] p-4">
             <p className="text-sm font-black text-slate-950">
-              {project?.status === "paid" ? "Je AI-profielfoto add-on is actief" : "Maak eerst gratis je voorbeeldvarianten"}
+              {statusCopy.title}
             </p>
             <p className="mt-1 text-xs font-bold leading-relaxed text-slate-700">
-              Log in, maak 4 voorbeeldvarianten en verfijn maximaal 2 keer. Je betaalt pas €9,99 als je wilt downloaden.
+              {statusCopy.description}
               {project && ` Nog ${project.refinementsRemaining} van ${project.maxRefinements} verfijningen over.`}
             </p>
           </div>
@@ -567,7 +596,9 @@ export default function ProfilePhotoGenerator() {
                 {isGenerating ? "Profielfoto's worden gemaakt..." : "Maak 4 professionele varianten"}
               </button>
               <p className="mt-3 text-xs font-medium leading-relaxed text-slate-500">
-                Voorbeelden maken kan na login. Downloaden kost éénmalig €9,99. Geen abonnement.
+                {bundleIncluded
+                  ? "Voorbeelden maken kan na login. Downloaden zit in je bundle."
+                  : `Voorbeelden maken kan na login. Downloaden kost éénmalig ${profilePhotoPrice.display}. Geen abonnement.`}
               </p>
             </div>
           ) : (
@@ -670,7 +701,7 @@ export default function ProfilePhotoGenerator() {
                             disabled={isCheckoutRedirecting}
                             className="inline-flex justify-center rounded-full bg-black px-5 py-3 text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-60"
                           >
-                            {isCheckoutRedirecting ? "Checkout openen..." : "Betaal €9,99 en download"}
+                            {isCheckoutRedirecting ? "Checkout openen..." : `Betaal ${profilePhotoPrice.display} en download`}
                           </button>
                         )}
                         <Link

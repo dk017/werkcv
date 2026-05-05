@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { getCurrentUserFromRequest } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { buildProfilePhotoCheckoutURL } from "@/lib/polar";
+import { profilePhotoPrice } from "@/lib/site-content";
 import { reportOpsIncident } from "@/lib/ops-alerts";
 
 export async function POST(request: NextRequest) {
@@ -48,8 +49,8 @@ export async function POST(request: NextRequest) {
         properties: {
           projectId: project.id,
           product: "profile-photo",
-          amountCents: 999,
-          currency: "EUR",
+          amountCents: profilePhotoPrice.amountCents,
+          currency: profilePhotoPrice.currency,
         } as Prisma.InputJsonValue,
         attribution: (user.attribution || undefined) as Prisma.InputJsonValue | undefined,
       },

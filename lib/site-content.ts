@@ -2,8 +2,24 @@ export const siteUrl = "https://werkcv.nl";
 export const siteName = "WerkCV";
 
 export const cvDownloadPrice = {
-  display: "€4,99",
-  value: "4.99",
+  display: "€7,99",
+  value: "7.99",
+  amountCents: 799,
+  currency: "EUR",
+};
+
+export const profilePhotoPrice = {
+  display: "€9,99",
+  value: "9.99",
+  amountCents: 999,
+  currency: "EUR",
+};
+
+export const applicationBundlePrice = {
+  display: "€14,99",
+  value: "14.99",
+  amountCents: 1499,
+  savingsDisplay: "€2,99",
   currency: "EUR",
 };
 

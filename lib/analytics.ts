@@ -115,11 +115,11 @@ export type AnalyticsEvent =
           event: 'checkout_modal_closed';
           properties: { cvId: string; reason: 'later_button' | 'close_button' | 'overlay' };
       }
-    | { event: 'checkout_start'; properties: { cvId: string } }
-    | { event: 'checkout_started'; properties: { cvId: string } }
-    | { event: 'checkout_failed'; properties: { cvId: string; reason?: string } }
-    | { event: 'checkout_completed'; properties: { cvId: string; orderId?: string; amountCents?: number } }
-    | { event: 'paid'; properties: { cvId: string; orderId?: string; amountCents?: number } }
+    | { event: 'checkout_start'; properties: { cvId: string; product?: string; amountCents?: number } }
+    | { event: 'checkout_started'; properties: { cvId: string; product?: string; amountCents?: number } }
+    | { event: 'checkout_failed'; properties: { cvId: string; reason?: string; product?: string } }
+    | { event: 'checkout_completed'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } }
+    | { event: 'paid'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } }
     | { event: 'payment_completed'; properties: { cvId: string } }
     // B2B lead capture
     | { event: 'b2b_form_started'; properties: { pageType: 'agency' | 'coach' | 'partner'; path: string } }

@@ -2,7 +2,7 @@
 
 import { prisma } from '@/lib/prisma'
 import { cvSchema, CVData, defaultCV } from '@/lib/cv'
-import { buildCheckoutURL, CheckoutAddon, parseCheckoutAddons } from '@/lib/polar'
+import { buildCheckoutURL, CheckoutAddon, CheckoutProduct, parseCheckoutAddons, parseCheckoutProduct } from '@/lib/polar'
 import { getCurrentUser } from '@/lib/auth'
 import { reportOpsIncident } from '@/lib/ops-alerts'
 import { getResumeLanguage } from '@/lib/resume-language'
@@ -185,7 +185,8 @@ export async function deleteCV(id: string) {
 export async function getCheckoutURL(
     cvId: string,
     email?: string,
-    addons: CheckoutAddon[] = []
+    addons: CheckoutAddon[] = [],
+    checkoutProduct: CheckoutProduct = 'cv-download'
 ): Promise<CheckoutUrlResult> {
     const user = await getCurrentUser();
     if (!user) {
@@ -206,9 +207,10 @@ export async function getCheckoutURL(
     }
 
     const safeAddons = parseCheckoutAddons(addons);
+    const safeProduct = parseCheckoutProduct(checkoutProduct);
     const resumeLanguage = getResumeLanguage(owned.data as CVData);
     try {
-        const url = await buildCheckoutURL(cvId, email || user.email, safeAddons, resumeLanguage);
+        const url = await buildCheckoutURL(cvId, email || user.email, safeAddons, resumeLanguage, safeProduct);
         return { ok: true, url };
     } catch (error) {
         const { supportNotified } = await reportOpsIncident({
@@ -225,6 +227,7 @@ export async function getCheckoutURL(
             notifyUser: true,
             context: {
                 addons: safeAddons,
+                product: safeProduct,
             },
         });
 

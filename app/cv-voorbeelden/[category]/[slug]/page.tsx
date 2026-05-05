@@ -352,7 +352,7 @@ export default async function ExamplePage({ params }: PageProps) {
                                 </h3>
                                 <p className="text-gray-700 mb-4">
                                     Start met deze structuur, vul je opleiding, bijbaan, stage of projecten in en download pas
-                                    als je tevreden bent met je PDF. Geen abonnement, éénmalig €4,99 bij download.
+                                    als je tevreden bent met je PDF. Geen abonnement, éénmalig €7,99 bij download.
                                 </p>
                                 <div className="flex flex-wrap gap-3">
                                     <UseExampleButton
@@ -377,7 +377,7 @@ export default async function ExamplePage({ params }: PageProps) {
                             </h3>
                             <p className="text-gray-700 mb-4">
                                 Gebruik het voorbeeld hierboven als startpunt of begin met een leeg template.
-                                Binnen 5 minuten klaar, eenmalig €4,99.
+                                Binnen 5 minuten klaar, eenmalig €7,99.
                             </p>
                             <div className="flex flex-wrap gap-3">
                                 <UseExampleButton
@@ -486,7 +486,7 @@ export default async function ExamplePage({ params }: PageProps) {
                     </h2>
                     <p className="text-lg mb-6 max-w-2xl mx-auto text-gray-800">
                         Maak binnen 5 minuten een professioneel {example.name.toLowerCase()} CV
-                        met onze templates en voorbeeldteksten. Eenmalig €4,99, geen abonnement.
+                        met onze templates en voorbeeldteksten. Eenmalig €7,99, geen abonnement.
                     </p>
                     <Link
                         href="/templates"

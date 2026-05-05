@@ -265,7 +265,7 @@ export default function LinkedinToCvTool() {
               </TrackedToolLink>
             </div>
             <p className="mt-3 text-sm font-medium text-slate-200">
-              Gratis bouwen. Eénmalig €4,99 bij PDF-download. Geen abonnement.
+              Gratis bouwen. Eénmalig €7,99 bij PDF-download. Geen abonnement.
             </p>
           </div>
         </section>
