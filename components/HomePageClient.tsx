@@ -239,7 +239,7 @@ function HeroCarouselInner() {
                                     style={{ transform: `scale(${HERO_SCALE})`, width: `${100 / HERO_SCALE}%` }}
                                 >
                                     <LinkTextProvider disableAnchors>
-                                        <TemplateComponent data={homepageTemplatePreviewData} theme={theme} nameTag="div" />
+                                        <TemplateComponent data={homepageTemplatePreviewData} theme={theme} />
                                     </LinkTextProvider>
                                 </div>
                             </div>
