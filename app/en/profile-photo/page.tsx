@@ -89,7 +89,7 @@ const valueComparison = [
 ];
 
 const trustStats = [
-  "LinkedIn says profiles with a photo can get up to 2x more profile views and 3x more connection requests than profiles without one.",
+  "Widely cited LinkedIn data reports that profiles with a photo can receive up to 21x more profile views and 9x more connection requests than profiles without one.",
   "Preview variants first. Pay only if you choose to download.",
   "No LinkedIn login, no scraping and no subscription.",
 ];
@@ -98,15 +98,41 @@ export const metadata: Metadata = {
   title: `AI headshot generator Netherlands | CV & LinkedIn photo | ${profilePhotoPrice.display}`,
   description:
     `AI headshot generator for the Netherlands. Create a realistic profile photo for your Dutch CV and LinkedIn. Preview first, download for ${profilePhotoPrice.display}.`,
+  keywords: [
+    "ai headshot generator netherlands",
+    "linkedin profile photo netherlands",
+    "professional headshot ai",
+    "cv photo netherlands",
+    "ai profile photo maker",
+    "ai linkedin photo netherlands",
+  ],
   alternates: {
     canonical: "https://werkcv.nl/en/profile-photo",
   },
   openGraph: {
-    title: `AI profile photo for CV and LinkedIn | WerkCV`,
+    title: `AI headshot generator Netherlands | CV & LinkedIn photo | WerkCV`,
     description:
-      "Create a professional profile photo for Dutch job applications, CVs and LinkedIn. Preview first, pay only when downloading.",
+      `Create a professional AI profile photo for Dutch job applications, CVs and LinkedIn. Preview first, download for ${profilePhotoPrice.display}.`,
     url: "https://werkcv.nl/en/profile-photo",
+    siteName: "WerkCV",
+    locale: "en_NL",
     type: "website",
+    images: [
+      {
+        url: "https://werkcv.nl/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "AI headshot generator Netherlands for CV and LinkedIn",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@werkcvnl",
+    title: `AI headshot generator Netherlands | WerkCV`,
+    description:
+      `Create a realistic AI profile photo for your Dutch CV and LinkedIn. Preview first, download for ${profilePhotoPrice.display}.`,
+    images: ["https://werkcv.nl/opengraph-image"],
   },
 };
 
@@ -153,8 +179,8 @@ export default function EnglishProfilePhotoPage() {
               </p>
               <div className="mt-5 rounded-2xl border-2 border-black bg-white p-4">
                 <p className="text-sm font-black leading-relaxed text-slate-950">
-                  Your profile photo is not decoration. LinkedIn says profiles with a photo can get up to 2x more
-                  profile views and 3x more connection requests than profiles without one.
+                  Your profile photo is not decoration. Widely cited LinkedIn data reports that profiles with a photo
+                  can receive up to 21x more profile views and 9x more connection requests than profiles without one.
                 </p>
                 <p className="mt-2 text-xs font-bold leading-relaxed text-slate-600">
                   WerkCV focuses on a photo that still looks like you, but feels cleaner and safer for Dutch recruiters

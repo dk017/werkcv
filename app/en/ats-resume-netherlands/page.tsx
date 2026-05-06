@@ -47,7 +47,7 @@ const faqs = [
   {
     question: "Do Dutch employers use ATS systems?",
     answer:
-      "Many medium and large employers in the Netherlands use ATS systems for initial screening.",
+      "Yes. Many medium-sized companies, large employers, agencies and corporate career portals in the Netherlands use ATS software to collect, parse and route applications before a recruiter reviews them.",
   },
   {
     question: "What hurts ATS readability most?",
@@ -59,7 +59,31 @@ const faqs = [
     answer:
       "No. Keep wording natural and only include relevant terms that reflect your real experience.",
   },
+  {
+    question: "Should my CV be in English or Dutch for ATS screening?",
+    answer:
+      "Match the vacancy language. If the job post is English, use English keywords. If the vacancy is Dutch, use Dutch section headings and Dutch role terms unless the industry normally uses English tool names.",
+  },
+  {
+    question: "Is PDF safe for ATS systems in the Netherlands?",
+    answer:
+      "Usually yes, as long as the PDF contains selectable text and a simple structure. Avoid scanned images, decorative text boxes and contact details hidden in headers or footers.",
+  },
+  {
+    question: "What should I fix first if I already have a CV?",
+    answer:
+      "Fix the top third first: role title, profile summary, contact details and the first experience section. That is where both recruiters and ATS matching usually find the strongest signals.",
+  },
 ];
+
+const beforeAfterExample = {
+  vacancy:
+    "Vacancy signal: Customer Success Specialist in Amsterdam, SaaS onboarding, CRM, stakeholder communication, Dutch and English clients.",
+  before:
+    "Responsible for helping customers, answering questions and keeping systems updated.",
+  after:
+    "Customer Success Specialist supporting Dutch and English SaaS clients with onboarding, CRM follow-up and stakeholder communication across sales and support teams.",
+};
 
 const howToJsonLd = {
   "@context": "https://schema.org",
@@ -145,6 +169,57 @@ export default function AtsResumeNetherlandsPage() {
           </div>
         </div>
 
+        <div className="bg-black text-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(78,205,196,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-[#4ECDC4]">
+            Dutch ATS context
+          </p>
+          <h2 className="mt-2 text-3xl font-black mb-3">
+            Why ATS matters more in the Netherlands than many expats expect
+          </h2>
+          <div className="space-y-4 text-sm leading-relaxed text-slate-200">
+            <p>
+              Dutch applications often look personal and human on the surface, but the intake process is increasingly
+              structured. Job boards, recruitment agencies, corporate portals and HR platforms still need to parse your
+              CV into fields such as name, role, experience, education, skills and location.
+            </p>
+            <p>
+              That means a CV can lose clarity before a recruiter reads it. A two-column design, missing section
+              headings or broad wording like “helped customers” gives the system fewer reliable signals than a clean
+              CV that mirrors the actual vacancy language.
+            </p>
+            <p>
+              For international candidates, the biggest mistake is often mixing formats: an American-style resume,
+              Dutch vacancy keywords and a design-heavy template. Keep the layout simple and let your wording carry the
+              relevance.
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-white border-4 border-black p-6">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-600">
+            Worked example
+          </p>
+          <h2 className="mt-2 text-3xl font-black mb-3">Before and after: matching a Dutch vacancy</h2>
+          <p className="text-gray-700 mb-5">
+            A small rewrite can make the same experience easier for both ATS software and a Dutch recruiter to
+            understand.
+          </p>
+          <div className="grid gap-4 md:grid-cols-3">
+            <article className="border-2 border-black bg-[#E9FFFC] p-4">
+              <h3 className="font-black text-gray-900">Vacancy language</h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-700">{beforeAfterExample.vacancy}</p>
+            </article>
+            <article className="border-2 border-black bg-[#FFFEF9] p-4">
+              <h3 className="font-black text-gray-900">Before</h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-700">{beforeAfterExample.before}</p>
+            </article>
+            <article className="border-2 border-black bg-[#FFD166] p-4">
+              <h3 className="font-black text-gray-900">After</h3>
+              <p className="mt-2 text-sm font-bold leading-relaxed text-gray-900">{beforeAfterExample.after}</p>
+            </article>
+          </div>
+        </div>
+
         <div className="bg-white border-4 border-black p-6">
           <h2 className="text-2xl font-black mb-3">ATS checklist</h2>
           <ul className="list-disc list-inside space-y-2 text-gray-700">
@@ -165,6 +240,9 @@ export default function AtsResumeNetherlandsPage() {
             </Link>
             <Link href="/en/dutch-cv-template" className="underline font-bold">
               Dutch CV template
+            </Link>
+            <Link href="/en/profile-photo" className="underline font-bold">
+              AI profile photo
             </Link>
           </div>
         </div>

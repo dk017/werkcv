@@ -318,6 +318,23 @@ export default async function ArticlePage({ params }: PageProps) {
                                     </ul>
                                 )}
                                 <SectionIntentLinks links={section.intentLinks} locale="nl" />
+                                {article.slug === 'foto-op-je-cv' && section.id === 'juiste-foto-kiezen' && (
+                                    <div className="mt-6 border-4 border-black bg-[#FFD166] p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                                        <h3 className="text-xl font-black text-gray-900">
+                                            Geen professionele foto?
+                                        </h3>
+                                        <p className="mt-2 text-gray-800 font-semibold leading-relaxed">
+                                            Maak online in 2 minuten een nette profielfoto voor je CV en LinkedIn.
+                                            Je ziet eerst previewvarianten en betaalt pas bij downloaden.
+                                        </p>
+                                        <Link
+                                            href="/profielfoto-cv-maken"
+                                            className="mt-4 inline-block bg-black text-white font-bold px-5 py-3 border-3 border-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                                        >
+                                            Maak profielfoto voor €9,99
+                                        </Link>
+                                    </div>
+                                )}
                             </div>
                         </section>
                     ))}

@@ -114,6 +114,31 @@ export const metadata: Metadata = {
       "x-default": "https://werkcv.nl/ats-cv-template",
     },
   },
+  openGraph: {
+    title: "ATS CV Maken Nederland | ATS Template & Checker | WerkCV",
+    description:
+      "Maak een ATS-vriendelijk CV voor Nederlandse sollicitaties. Kies een rustige template, verwerk vacature-keywords en test je CV met de ATS checker.",
+    url: "https://werkcv.nl/ats-cv-template",
+    siteName: "WerkCV",
+    locale: "nl_NL",
+    type: "website",
+    images: [
+      {
+        url: "https://werkcv.nl/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "ATS CV maken Nederland met WerkCV template en checker",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@werkcvnl",
+    title: "ATS CV Maken Nederland | WerkCV",
+    description:
+      "Kies een rustige ATS-template, verwerk vacature-keywords en test je CV voordat je solliciteert.",
+    images: ["https://werkcv.nl/opengraph-image"],
+  },
 };
 
 export default function AtsCvTemplatePage() {

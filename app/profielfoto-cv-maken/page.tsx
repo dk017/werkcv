@@ -78,7 +78,7 @@ const valueComparison = [
 ];
 
 const trustStats = [
-  "LinkedIn geeft aan dat profielen met een foto tot 2x meer profielweergaven en 3x meer connectieverzoeken kunnen krijgen dan profielen zonder foto.",
+  "Veel geciteerde LinkedIn-data meldt dat profielen met foto tot 21x meer profielweergaven en 9x meer connectieverzoeken kunnen krijgen dan profielen zonder foto.",
   "Je betaalt pas als je een variant wilt downloaden; previewen kan eerst.",
   "Geen LinkedIn-login, geen scraping en geen abonnement.",
 ];
@@ -212,8 +212,8 @@ export default function ProfielfotoCvMakenPage() {
               </p>
               <div className="mt-5 rounded-2xl border-2 border-black bg-white p-4">
                 <p className="text-sm font-black leading-relaxed text-slate-950">
-                  Een profielfoto is geen detail. LinkedIn geeft aan dat profielen met een foto tot 2x meer
-                  profielweergaven en 3x meer connectieverzoeken kunnen krijgen dan profielen zonder foto.
+                  Een profielfoto is geen detail. Veel geciteerde LinkedIn-data meldt dat profielen met foto tot 21x
+                  meer profielweergaven en 9x meer connectieverzoeken kunnen krijgen dan profielen zonder foto.
                 </p>
                 <p className="mt-2 text-xs font-bold leading-relaxed text-slate-600">
                   Daarom focust WerkCV op een foto die herkenbaar blijft, professioneel oogt en past bij Nederlandse
