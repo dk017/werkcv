@@ -48,6 +48,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'profile_photo_checkout_click',
     'profile_photo_submit',
     'profile_photo_generated',
+    'profile_photo_variant_selected',
     'profile_photo_refine_submit',
     'profile_photo_refined',
     'profile_photo_download',
