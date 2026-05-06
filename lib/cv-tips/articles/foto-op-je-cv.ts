@@ -3,12 +3,12 @@ import { BlogArticle } from '../types';
 export const fotoOpJeCv: BlogArticle = {
     slug: 'foto-op-je-cv',
     title: 'Foto op je CV: Regels, Tips en Voorbeelden voor Nederland (2026)',
-    description: '72% van de Nederlandse sollicitanten plaatst een foto op hun CV. Maar welke foto, in welk formaat, en wanneer laat je hem beter weg? Alles over CV-foto\'s volgens de Nederlandse regels.',
+    description: 'Een foto op je CV is in Nederland niet verplicht, maar wel gebruikelijk in veel sectoren. Lees wanneer je wel of geen CV-foto gebruikt en hoe je een professionele foto kiest.',
     publishedAt: '2026-02-19',
-    updatedAt: '2026-02-19',
+    updatedAt: '2026-05-06',
 
     metaTitle: 'Foto op je CV: Regels en Tips voor Nederland 2026 | WerkCV.nl',
-    metaDesc: 'Moet je een foto op je CV zetten? In Nederland wel — maar dan de juiste. Leer welk formaat, welke achtergrond en wanneer je hem beter weglaat. Met NVP-regels uitgelegd.',
+    metaDesc: 'Moet je een foto op je CV zetten in Nederland? Niet verplicht, wel gebruikelijk. Lees wanneer een CV-foto slim is, wanneer je hem weglaat en welke foto werkt.',
     keywords: [
         'foto op cv',
         'pasfoto cv',
@@ -20,6 +20,8 @@ export const fotoOpJeCv: BlogArticle = {
         'cv foto regels nederland',
         'wel of geen foto cv',
         'pasfoto cv tips',
+        'foto op cv nederland',
+        'profielfoto maken cv linkedin',
     ],
 
     readingTime: 9,
@@ -28,8 +30,8 @@ export const fotoOpJeCv: BlogArticle = {
     order: 17,
 
     keyTakeaways: [
-        'In Nederland plaatst 72% van de sollicitanten een foto op hun CV — recruiters verwachten dit en ervaren het als professioneel signaal',
-        'Een werkgever mag wettelijk niet om een foto vragen (NVP-sollicitatiecode), maar jij mag hem altijd plaatsen',
+        'Een foto op je CV is in Nederland niet verplicht, maar wel gebruikelijk in veel sollicitatiecontexten',
+        'Een werkgever hoort volgens de NVP-sollicitatiecode terughoudend te zijn met het vragen om een foto; jij mag zelf kiezen of je er één plaatst',
         'Kies een pasfotoformaat (3,5 × 4,5 cm), neutrale achtergrond, zakelijke kleding en goede belichting',
         'Positioneer de foto rechtsboven of linksboven in je CV, nooit midden op de pagina',
         'Laat de foto weg bij internationale bedrijven, anoniem werven of sollicitaties in de VS/VK',
@@ -40,21 +42,21 @@ export const fotoOpJeCv: BlogArticle = {
         {
             id: 'foto-verplicht-nederland',
             title: 'Is een foto verplicht op je CV in Nederland?',
-            answerCapsule: 'Een foto op je CV is niet verplicht, maar wel de norm: 72% van de Nederlandse sollicitanten plaatst er een, en recruiters beschouwen het als een professioneel signaal.',
+            answerCapsule: 'Nee. Een foto op je CV is niet verplicht in Nederland. Het is wel gebruikelijk in veel sectoren, vooral als persoonlijk contact, vertrouwen of presentatie belangrijk is.',
             content: [
-                'Verplicht is het niet — maar het is de gewoonte. Onderzoek van Intermediair en JobAt laat zien dat ruim 72% van de Nederlandse sollicitanten een foto op hun CV plaatst. Recruiters in Nederland verwachten een foto en beschouwen de aanwezigheid ervan als een teken van volledigheid en professionaliteit. Een CV zonder foto valt op — maar niet altijd positief.',
-                'Dit staat in schril contrast met de VS, het VK en Canada, waar een foto op je CV sterk wordt afgeraden of zelfs verboden is vanwege antidiscriminatiewetgeving. In die landen kan een werkgever die een foto ziet in juridische problemen komen. In Nederland gelden andere normen: een foto is sociaal aanvaard en juridisch toegestaan, mits de werkgever hem niet als selectiecriterium gebruikt.',
-                'Volg altijd de instructies in de vacaturetekst. Als een werkgever vraagt om een CV "zonder foto" of "anoniem", dan laat je hem uiteraard weg. Maar bij een standaard sollicitatie in Nederland is een professionele pasfoto bijna altijd een pluspunt.',
+                'Verplicht is het niet. In Nederland mag je zelf kiezen of je een foto toevoegt aan je CV. In de praktijk zie je foto\'s vaak bij functies waarin persoonlijk contact, representatie of vertrouwen belangrijk is, zoals zorg, onderwijs, sales, hospitality, HR en klantgerichte kantoorfuncties.',
+                'Dat betekent niet dat iedere sollicitatie beter wordt met een foto. Een sterke, rustige foto kan je CV herkenbaarder maken. Een slechte foto, vakantiefoto, selfie of sterk bewerkte AI-foto kan juist afleiden en minder professioneel overkomen.',
+                'Volg altijd de instructies in de vacaturetekst. Als een werkgever vraagt om een CV "zonder foto" of "anoniem", laat je de foto weg. Twijfel je door een internationale werkgever of Angelsaksische recruitmentstijl, kies dan liever voor geen foto op het CV en zorg voor een nette LinkedIn-profielfoto.',
             ],
         },
         {
             id: 'nvp-sollicitatiecode-wet',
             title: 'NVP-sollicitatiecode en discriminatiewetgeving: wat zijn je rechten?',
-            answerCapsule: 'Volgens de NVP-sollicitatiecode mag een werkgever niet om een foto vragen. Jij mag er altijd één plaatsen. Discriminatie op basis van uiterlijk bij selectie is verboden onder de Algemene wet gelijke behandeling.',
+            answerCapsule: 'De NVP-sollicitatiecode is een gedragscode voor zorgvuldig werven en selecteren. Een werkgever hoort alleen informatie te vragen die relevant is voor de functie. Jij mag zelf kiezen of je een foto toevoegt.',
             content: [
-                'De Nederlandse Vereniging voor Personeelsmanagement & Organisatieontwikkeling (NVP) heeft een sollicitatiecode opgesteld die werkgevers richtlijnen geeft voor fair recruitment. Volgens deze code mag een werkgever niet verlangen dat een kandidaat een foto meestuurt — ongeacht wat er in de vacaturetekst staat. Dit is geen wettelijk verbod, maar een breed geaccepteerde branchenorm.',
-                'Tegelijkertijd biedt de Algemene wet gelijke behandeling (Awgb) bescherming tegen discriminatie op grond van ras, geslacht, nationaliteit, religie en andere kenmerken. Een werkgever die een kandidaat afwijst puur op basis van uiterlijk, handelt in strijd met de Awgb. Dit laat onverlet dat jij als kandidaat mag kiezen om een foto te plaatsen — de wet beschermt je tegen discriminatoire selectie, niet tegen het delen van je eigen foto.',
-                'De Wet toezicht gelijke kansen bij werving en selectie (in werking getreden in 2024) verplicht grote werkgevers en intermediairs om aantoonbaar objectief te werven en te selecteren. Sommige bedrijven hebben als gevolg hiervan een intern beleid om CV\'s in eerste instantie blind te beoordelen. Controleer de sollicitatie-instructies — soms staat er expliciet "voeg geen foto toe" voor het anonieme selectieproces.',
+                'De Nederlandse Vereniging voor Personeelsmanagement & Organisatieontwikkeling (NVP) heeft een sollicitatiecode opgesteld met basisregels voor eerlijk en zorgvuldig werven. De kern: een werkgever hoort informatie te vragen die nodig is om je geschiktheid voor de functie te beoordelen.',
+                'Een foto zegt meestal weinig over je inhoudelijke geschiktheid. Daarom is het verstandig om kritisch te zijn: voeg een foto alleen toe als die professioneel is en past bij de functie. Discriminatie op basis van uiterlijk, afkomst, geslacht, leeftijd of andere beschermde kenmerken is verboden.',
+                'Sommige organisaties kiezen bewust voor anoniem solliciteren of blind recruitment. Controleer daarom altijd de sollicitatie-instructies. Staat er "geen foto", "anoniem solliciteren" of "objectieve selectie", dan is geen foto de juiste keuze.',
             ],
         },
         {
@@ -68,8 +70,8 @@ export const fotoOpJeCv: BlogArticle = {
             ],
             bullets: [
                 'VS, VK, Canada, Australië: geen foto op je CV',
-                'Duitsland, België, Zwitserland: foto is standaard en verwacht',
-                'Nederland: foto is gebruikelijk en positief ontvangen, maar nooit verplicht',
+                'Duitsland, België, Zwitserland: foto is vaker gebruikelijk dan in Angelsaksische landen',
+                'Nederland: foto is gebruikelijk in veel sectoren, maar nooit verplicht',
                 'Anoniem werven: altijd de instructies van de werkgever volgen',
                 'Internationale bedrijven in NL: controleer het HR-beleid van het moederbedrijf',
             ],
@@ -82,6 +84,13 @@ export const fotoOpJeCv: BlogArticle = {
                 'Een goede CV-foto is professioneel, maar niet stijf. Je wilt overkomen als toegankelijk, betrouwbaar en competent. De meest effectieve profielfoto\'s worden gemaakt door een fotograaf, maar een goede foto met een moderne smartphone is ook prima — als je let op vier elementen: achtergrond, kleding, gezichtsuitdrukking en belichting.',
                 'Kies een neutrale achtergrond: wit, lichtgrijs of een zachte effen tint. Draag zakelijke kleding die past bij de sector: financiën en juridisch vereisen een blazer of pak, creatieve en digitale sectoren mogen informeler maar altijd netjes. Kijk recht in de camera en glimlach vriendelijk — niet gespannen, maar open. Goede belichting betekent daglicht van opzij, geen flitser die je gezicht plat maakt en geen tegenlicht vanuit een raam.',
                 'Een recente foto is essentieel. Als je er de afgelopen drie jaar significant anders bent gaan uitzien — ander kapsel, baard, gewicht, bril — maak dan een nieuwe foto. Een grote discrepantie tussen je CV-foto en je uiterlijk bij het gesprek veroorzaakt een ongemakkelijke herkenningsvraag. Dat wil je vermijden.',
+            ],
+            intentLinks: [
+                {
+                    href: '/profielfoto-cv-maken',
+                    label: 'Maak eerst een nette profielfoto voor CV en LinkedIn',
+                    description: 'Upload een bestaande foto, bekijk AI-previewvarianten en betaal pas als je wilt downloaden.',
+                },
             ],
         },
         {
@@ -115,16 +124,16 @@ export const fotoOpJeCv: BlogArticle = {
         {
             id: 'sectoren-foto',
             title: 'Sectoren: waar is een CV-foto wel of niet gebruikelijk?',
-            answerCapsule: 'In de meeste Nederlandse sectoren is een CV-foto de norm. Uitzonderingen zijn internationale tech-bedrijven, grote multinationals met eigen HR-beleid, en functies waarbij anoniem selecteren expliciet gevraagd wordt.',
+            answerCapsule: 'Een CV-foto is vooral gebruikelijk bij functies met veel persoonlijk contact. Bij internationale tech, grote multinationals en anoniem werven is geen foto vaak veiliger.',
             content: [
-                'In de meeste Nederlandse sectoren — overheid, zorg, onderwijs, financiële dienstverlening, logistiek, marketing — is een professionele pasfoto op je CV de norm en positief ontvangen. Recruiters in deze sectoren verwachten hem en beschouwen een fotoloos CV als minder compleet.',
-                'In de ICT-sector is er meer variatie. Bij startups, scale-ups en internationale techbedrijven (zeker als de recruitmentafdeling internationaal aangestuurd wordt) kan een no-photo-policy gelden. Bij Nederlandse ICT-bedrijven en uitzendkantoren in de ICT-sector is een foto echter nog steeds gebruikelijk.',
-                'Voor creatieve functies — grafisch ontwerper, fotograaf, art director — kan de foto een extra statement zijn. Hier mag je creatiever zijn met het formaat, de plaatsing of de stijl, zolang het professioneel en intentioneel oogt. Een CV met een impactvolle, stijlvolle foto kan de aandacht trekken — maar alleen als het bij jouw professionele identiteit past.',
+                'In Nederlandse sectoren met veel persoonlijk contact — zorg, onderwijs, hospitality, retail, sales, HR en klantenservice — kan een professionele foto logisch zijn. De foto helpt dan vooral als herkenbare, verzorgde eerste indruk.',
+                'In ICT, finance, consultancy en corporate functies verschilt het per werkgever. Bij Nederlandse organisaties zie je vaker CV\'s met foto; bij internationale bedrijven, scale-ups met Angelsaksische HR-processen of bedrijven met blind recruitment is geen foto vaak veiliger.',
+                'Voor creatieve functies — grafisch ontwerper, fotograaf, art director — kan de foto iets extra\'s zeggen over stijl en persoonlijkheid. Houd het professioneel: de foto mag je identiteit ondersteunen, maar moet niet de inhoud van je CV overschreeuwen.',
             ],
             bullets: [
-                'Foto verwacht: overheid, zorg, onderwijs, retail, logistiek, financiën (NL), juridisch',
-                'Foto gebruikelijk maar niet altijd: ICT, marketing, HR, consultancy',
-                'Foto zelden verwacht: multinationals met Angelsaksisch beleid, anoniem werven',
+                'Foto vaak logisch: zorg, onderwijs, hospitality, retail, sales, HR, klantcontact',
+                'Foto afhankelijk van werkgever: ICT, marketing, finance, consultancy, kantoorfuncties',
+                'Foto meestal weglaten: multinationals met Angelsaksisch beleid, anoniem werven',
                 'Foto nooit: sollicitaties naar VS/VK/Canada/Australië',
                 'Creatieve vrijheid: grafisch ontwerpers, fotografen, art directors',
             ],
@@ -132,11 +141,18 @@ export const fotoOpJeCv: BlogArticle = {
         {
             id: 'foto-linkedin-match',
             title: 'Je CV-foto en LinkedIn-foto: houd ze consistent',
-            answerCapsule: 'Gebruik bij voorkeur dezelfde foto op je CV en LinkedIn. Recruters vergelijken beide — inconsistentie wekt wantrouwen, consistentie vergroot herkenbaarheid en vertrouwen.',
+            answerCapsule: 'Gebruik bij voorkeur dezelfde of een vergelijkbare foto op je CV en LinkedIn. Consistentie maakt je herkenbaarder wanneer recruiters beide profielen bekijken.',
             content: [
-                'Bijna alle recruiters bezoeken je LinkedIn-profiel nadat ze je CV hebben gelezen. Als je foto op LinkedIn er significant anders uitziet dan op je CV — andere stijl, andere periode, ander uiterlijk — dan roept dat vragen op. Consistent zijn op beide platforms vergroot de herkenbaarheid en het gevoel van betrouwbaarheid.',
+                'Veel recruiters bekijken ook je LinkedIn-profiel nadat ze je CV hebben gelezen. Als je foto op LinkedIn er significant anders uitziet dan op je CV — andere stijl, andere periode, ander uiterlijk — dan kan dat onnodig afleiden. Consistent zijn op beide platforms vergroot de herkenbaarheid.',
                 'Gebruik idealiter dezelfde foto op je CV en LinkedIn, of in elk geval foto\'s uit dezelfde tijdsperiode met dezelfde professionele uitstraling. Je hoeft geen professionele fotosessie te boeken voor iedere platformupdate — maar als je een nieuwe foto maakt, update dan beide direct.',
                 'Stel op LinkedIn je persoonlijke profiel-URL in via de profielinstellingen: linkedin.com/in/jounaam. Een opgeschoonde URL zonder willekeurige nummers ziet er professioneel uit in je contactgegevens op je CV. Vermeld deze link altijd in je CV-header — zo geeft de foto op LinkedIn ook indirect informatie aan de recruiter die je CV leest.',
+            ],
+            intentLinks: [
+                {
+                    href: '/profielfoto-cv-maken',
+                    label: 'Maak een consistente profielfoto voor cv en LinkedIn',
+                    description: 'Gebruik dezelfde herkenbare foto op beide plekken. Preview eerst, downloaden kan voor €9,99.',
+                },
             ],
         },
         {
@@ -145,7 +161,7 @@ export const fotoOpJeCv: BlogArticle = {
             answerCapsule: 'Geen selfies, vakantiefoto\'s, groepsfoto\'s bijgesneden, foto\'s met glas in de hand, zonnebril, of foto\'s van meer dan drie jaar oud waarbij je er duidelijk anders uitziet.',
             content: [
                 'Een verkeerde foto schaadt meer dan geen foto. De meest gemaakte fouten: een vakantiefoto bijgesneden, een selfie met de typische hoge hoek, een groepsfoto waarbij de anderen zijn weggeretoucheerd, of een feestfoto waarop je een glas vasthoudt. Al deze foto\'s communiceren onbedoeld dat je het niet serieus neemt.',
-                'Gebruik ook geen sterk bewerkte of gefilterde foto. Instagram-filters, sterke Lightroom-bewerkingen of AI-gegenereerde "professionele" foto\'s zijn doorzichtig voor ervaren recruiters. Wat je wilt is een foto die een eerlijk, professioneel beeld geeft van hoe je eruitziet op het werk — niet een ideaalversie.',
+                'Gebruik ook geen sterk bewerkte of gefilterde foto. Instagram-filters, zware Lightroom-bewerkingen of overdreven AI-portretten vallen op. Wat je wilt is een foto die een eerlijk, professioneel beeld geeft van hoe je eruitziet op het werk — niet een ideaalversie.',
                 'Tot slot: gebruik geen verouderde foto. Als je er drie jaar geleden significant anders uitzag — ander kapsel, baard, gewicht, bril — maak dan een nieuwe foto. De onvermijdelijke schok van herkenning bij een persoonlijk gesprek ("oh, u ziet er heel anders uit dan op uw foto") is ongemakkelijk voor beide partijen.',
             ],
         },
@@ -154,11 +170,11 @@ export const fotoOpJeCv: BlogArticle = {
     faq: [
         {
             question: 'Moet ik een foto op mijn CV zetten in Nederland?',
-            answer: 'Het is niet verplicht, maar het is de norm. Ruim 72% van de Nederlandse sollicitanten plaatst een foto op hun CV en recruiters verwachten dit. Volg altijd de instructies in de vacaturetekst — als een werkgever vraagt om een CV zonder foto, laat hem dan weg.',
+            answer: 'Nee, het is niet verplicht. In Nederland is een foto wel gebruikelijk in veel sectoren, vooral bij functies met persoonlijk contact. Volg altijd de vacaturetekst: vraagt een werkgever om een CV zonder foto of om anoniem solliciteren, laat de foto weg.',
         },
         {
             question: 'Mag een werkgever een foto eisen in de vacaturetekst?',
-            answer: 'Nee. Volgens de NVP-sollicitatiecode mag een werkgever niet verlangen dat een kandidaat een foto meestuurt. Dit is geen wettelijk verbod, maar een breed geaccepteerde branchenorm. Jij als kandidaat mag altijd zelf kiezen om een foto te plaatsen.',
+            answer: 'Een werkgever hoort volgens de NVP-sollicitatiecode alleen informatie te vragen die relevant is voor de functie. Een foto is meestal niet nodig om je inhoudelijke geschiktheid te beoordelen. Jij mag zelf kiezen of je een foto plaatst, tenzij de vacature expliciet om een CV zonder foto vraagt.',
         },
         {
             question: 'Welke achtergrond is het beste voor een CV-foto?',
@@ -174,7 +190,7 @@ export const fotoOpJeCv: BlogArticle = {
         },
         {
             question: 'Is een LinkedIn-profielfoto een alternatief voor een CV-foto?',
-            answer: 'Niet volledig. Vermeld in je CV een link naar je LinkedIn-profiel — de recruiter ziet dan daar je foto. Maar dit vervangt een CV-foto niet. Als je een professionele foto hebt, is het sterkst om hem op beide platforms te gebruiken voor consistentie en herkenbaarheid.',
+            answer: 'Soms wel. Als je twijfelt over een foto op je CV, kun je de foto weglaten en wel een nette LinkedIn-link opnemen. Als je een professionele foto gebruikt, is het sterkst om dezelfde of een vergelijkbare foto op beide platforms te gebruiken voor consistentie en herkenbaarheid.',
         },
         {
             question: 'Wat is de ideale achtergrondkleur voor een CV-foto?',

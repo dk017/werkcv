@@ -12,6 +12,24 @@ const atsChecklist = [
   "Exporteer als nette PDF en controleer daarna met de ATS checker of je structuur goed leesbaar blijft.",
 ];
 
+const atsMakeFlow = [
+  {
+    title: "1. Kies eerst een scanbare layout",
+    body:
+      "Begin niet met een creatieve template als je via een corporate portal solliciteert. Start met een rustige eenkoloms opmaak waarin naam, contactgegevens, werkervaring en opleiding gewone tekst blijven.",
+  },
+  {
+    title: "2. Schrijf naar de vacaturetaal",
+    body:
+      "Een ATS-vriendelijk CV maken draait niet alleen om design. Neem relevante functietitels, tools, certificaten en vaardigheden letterlijk over uit de vacature als ze echt bij je ervaring passen.",
+  },
+  {
+    title: "3. Test voordat je downloadt",
+    body:
+      "Gebruik de checker om te zien of je secties, keywords en PDF-structuur logisch genoeg zijn. Zo voorkom je dat een nette template alsnog te algemeen blijft.",
+  },
+];
+
 const commonMistakes = [
   "Te veel design-elementen, kolommen of zijbalken die scanners verwarren.",
   "Vage functietitels zonder herkenbare zoekwoorden.",
@@ -71,10 +89,13 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "ATS CV Template Nederland | Rustige Eenkoloms Layout | WerkCV",
+  title: "ATS CV Maken Nederland | ATS Template & Checker | WerkCV",
   description:
-    "Zoek je een ATS CV template voor Nederland? Kies een rustige eenkoloms layout met standaardkoppen, zonder tabellen of tekstvakken. Start gratis en download pas als je CV klaar is.",
+    "ATS CV maken voor Nederlandse sollicitaties: kies een rustige template, verwerk vacature-keywords en test je CV met de ATS checker. Gratis starten.",
   keywords: [
+    "ats cv maken",
+    "ats cv maken nederland",
+    "ats proof cv maken",
     "ats cv template",
     "ats cv template nederland",
     "ats vriendelijke template",
@@ -150,14 +171,16 @@ export default function AtsCvTemplatePage() {
         <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
           <div>
             <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Template-intent
+              ATS CV maken
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              ATS CV template voor Nederlandse sollicitaties
+              ATS CV maken voor Nederlandse sollicitaties
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Deze pagina is voor je templatekeuze. Met de {atsTemplate.nameDutch.toLowerCase()}e template van WerkCV kies je een rustige eenkoloms layout met standaardkoppen, zonder
-              tabellen, tekstvakken of zijbalken die parsing kunnen verstoren. Wil je eerst alle ATS-regels begrijpen of juist je bestaande cv testen, gebruik dan de routes hieronder.
+              Een ATS-vriendelijk CV maken betekent drie dingen tegelijk goed doen: een rustige template kiezen,
+              vacature-keywords natuurlijk verwerken en je PDF controleren voordat je hem verstuurt. Met de{" "}
+              {atsTemplate.nameDutch.toLowerCase()}e template van WerkCV start je met een scanbare eenkoloms layout
+              zonder tabellen, tekstvakken of zijbalken die parsing kunnen verstoren.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
@@ -223,6 +246,46 @@ export default function AtsCvTemplatePage() {
               <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
                 ATS staat voor Applicant Tracking System: software die CV&apos;s scant op structuur, relevante termen en leesbaarheid voordat een recruiter alles handmatig beoordeelt.
               </p>
+            </div>
+          </div>
+        </section>
+
+        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+                Template + keywords + check
+              </p>
+              <h2 className="mt-2 text-3xl font-black leading-tight text-black">
+                De fout is denken dat “ATS-proof” alleen een template is
+              </h2>
+              <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
+                Een goede template voorkomt technische ruis, maar hij schrijft je CV niet automatisch sterker. De
+                beste route is: rustige opmaak kiezen, inhoud aanpassen aan de vacature en daarna controleren of je
+                CV nog steeds logisch leesbaar is.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/editor"
+                  className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
+                >
+                  Maak ATS CV
+                </Link>
+                <Link
+                  href="/tools/ats-cv-checker"
+                  className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+                >
+                  Eerst mijn CV testen
+                </Link>
+              </div>
+            </div>
+            <div className="grid gap-4">
+              {atsMakeFlow.map((item) => (
+                <article key={item.title} className="border-2 border-black bg-[#FFFEF0] p-4">
+                  <h3 className="text-sm font-black text-black">{item.title}</h3>
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
+                </article>
+              ))}
             </div>
           </div>
         </section>

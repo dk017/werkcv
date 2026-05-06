@@ -75,10 +75,29 @@ const faqItems = [
   },
 ];
 
+const valueComparison = [
+  {
+    label: "Traditional photoshoot",
+    price: "Often €95-€150+",
+    detail: "Best when you want full control over lighting, location, clothing and posing, but it usually requires planning a session.",
+  },
+  {
+    label: "WerkCV AI profile photo",
+    price: profilePhotoPrice.display,
+    detail: "A faster option when you already have a usable photo and need a cleaner CV, LinkedIn or application profile today.",
+  },
+];
+
+const trustStats = [
+  "LinkedIn says profiles with a photo can get up to 2x more profile views and 3x more connection requests than profiles without one.",
+  "Preview variants first. Pay only if you choose to download.",
+  "No LinkedIn login, no scraping and no subscription.",
+];
+
 export const metadata: Metadata = {
-  title: `AI profile photo for CV and LinkedIn | ${profilePhotoPrice.display} | WerkCV`,
+  title: `AI headshot generator Netherlands | CV & LinkedIn photo | ${profilePhotoPrice.display}`,
   description:
-    `Create a realistic AI profile photo for your CV and LinkedIn in the Netherlands. Preview first, then pay ${profilePhotoPrice.display} once if you want to download.`,
+    `AI headshot generator for the Netherlands. Create a realistic profile photo for your Dutch CV and LinkedIn. Preview first, download for ${profilePhotoPrice.display}.`,
   alternates: {
     canonical: "https://werkcv.nl/en/profile-photo",
   },
@@ -123,7 +142,7 @@ export default function EnglishProfilePhotoPage() {
           <div className="mx-auto grid max-w-6xl gap-10 px-6 py-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
             <div>
               <span className="inline-flex rounded-full border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-slate-900">
-                AI profile photo for Dutch applications
+                AI headshot generator Netherlands
               </span>
               <h1 className="mt-5 text-4xl font-black leading-tight text-slate-950 sm:text-5xl">
                 Create a professional profile photo for your CV and LinkedIn
@@ -132,6 +151,16 @@ export default function EnglishProfilePhotoPage() {
                 Upload an existing photo or selfie and turn it into a realistic, recognizable profile photo for your
                 Dutch CV, LinkedIn profile and job applications. Preview first, pay only when you want to download.
               </p>
+              <div className="mt-5 rounded-2xl border-2 border-black bg-white p-4">
+                <p className="text-sm font-black leading-relaxed text-slate-950">
+                  Your profile photo is not decoration. LinkedIn says profiles with a photo can get up to 2x more
+                  profile views and 3x more connection requests than profiles without one.
+                </p>
+                <p className="mt-2 text-xs font-bold leading-relaxed text-slate-600">
+                  WerkCV focuses on a photo that still looks like you, but feels cleaner and safer for Dutch recruiters
+                  who compare your CV and LinkedIn profile.
+                </p>
+              </div>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="#profielfoto-tool"
@@ -174,6 +203,31 @@ export default function EnglishProfilePhotoPage() {
         </section>
 
         <section id="profielfoto-tool" className="mx-auto max-w-6xl px-6 py-12">
+          <section className="mb-8 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="rounded-3xl border-4 border-black bg-[#FFD166] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-800">
+                Price anchor
+              </p>
+              <h2 className="mt-2 text-3xl font-black leading-tight text-black">
+                No full photoshoot needed when you only need a cleaner application photo
+              </h2>
+              <p className="mt-3 text-sm font-bold leading-relaxed text-slate-900">
+                A photographer is still the premium option for full personal branding. WerkCV is for the faster moment:
+                you already have a usable photo, but need it to look more professional for your CV, LinkedIn or Dutch
+                job application.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {valueComparison.map((item) => (
+                <article key={item.label} className="rounded-3xl border-2 border-black bg-white p-5">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">{item.label}</p>
+                  <p className="mt-2 text-3xl font-black text-slate-950">{item.price}</p>
+                  <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{item.detail}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
           <section className="mb-8 rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
             <div className="grid gap-5 md:grid-cols-3">
               {[
@@ -189,6 +243,24 @@ export default function EnglishProfilePhotoPage() {
           </section>
 
           <ProfilePhotoGenerator uiLanguage="en" />
+        </section>
+
+        <section className="mx-auto max-w-6xl px-6 pb-12">
+          <div className="rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+              Trust before upload
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-slate-950">
+              Why improve your profile photo first?
+            </h2>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {trustStats.map((stat) => (
+                <div key={stat} className="rounded-2xl border-2 border-slate-200 bg-[#FFFEF9] p-4 text-sm font-bold leading-relaxed text-slate-800">
+                  {stat}
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className="mx-auto max-w-6xl px-6 pb-12">

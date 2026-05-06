@@ -64,6 +64,25 @@ const sampleTransformations = [
   },
 ];
 
+const valueComparison = [
+  {
+    label: "Traditionele fotoshoot",
+    price: "Vaak €95-€150+",
+    detail: "Sterk als je volledige controle wilt over locatie, licht, houding en kleding, maar je moet meestal een afspraak plannen.",
+  },
+  {
+    label: "WerkCV AI-profielfoto",
+    price: profilePhotoPrice.display,
+    detail: "Snelle preview op basis van je eigen upload. Handig als je vandaag een nettere foto nodig hebt voor CV, LinkedIn of een sollicitatieprofiel.",
+  },
+];
+
+const trustStats = [
+  "LinkedIn geeft aan dat profielen met een foto tot 2x meer profielweergaven en 3x meer connectieverzoeken kunnen krijgen dan profielen zonder foto.",
+  "Je betaalt pas als je een variant wilt downloaden; previewen kan eerst.",
+  "Geen LinkedIn-login, geen scraping en geen abonnement.",
+];
+
 const profilePhotoSamples: ProfilePhotoSample[] = [
   {
     src: "/profile-photo-samples/dutch-consultant-man.jpg",
@@ -131,11 +150,14 @@ const profilePhotoSamples: ProfilePhotoSample[] = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: `AI profielfoto maken voor CV en LinkedIn | ${profilePhotoPrice.display} | WerkCV`,
+  title: `AI headshot generator Nederland | Profielfoto CV & LinkedIn | ${profilePhotoPrice.display}`,
   description:
-    `Maak van een gewone foto een professionele AI-profielfoto voor je cv en LinkedIn. 4 varianten, 2 verfijningen en later downloaden. Eenmalig ${profilePhotoPrice.display}.`,
+    `AI headshot generator voor Nederland: maak van een gewone foto een professionele profielfoto voor cv en LinkedIn. Preview eerst, download voor ${profilePhotoPrice.display}.`,
   path: "/profielfoto-cv-maken",
   keywords: [
+    "ai headshot generator nederland",
+    "ai headshot linkedin nederland",
+    "headshot generator nederland",
     "profielfoto cv maken",
     "ai profielfoto cv",
     "linkedin profielfoto maken",
@@ -178,7 +200,7 @@ export default function ProfielfotoCvMakenPage() {
           <div className="mx-auto grid max-w-6xl gap-10 px-6 py-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
             <div>
               <span className="inline-flex rounded-full border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-slate-900">
-                AI profielfoto voor sollicitaties
+                AI headshot generator Nederland
               </span>
               <h1 className="mt-5 text-4xl font-black leading-tight text-slate-950 sm:text-5xl">
                 Professionele profielfoto maken voor je cv en LinkedIn
@@ -188,6 +210,16 @@ export default function ProfielfotoCvMakenPage() {
                 bij je sollicitatie, CV en LinkedIn-profiel. Geen fotoshoot nodig; handig als laatste stap
                 nadat je CV klaar is of wanneer je LinkedIn-profiel nog rommelig oogt.
               </p>
+              <div className="mt-5 rounded-2xl border-2 border-black bg-white p-4">
+                <p className="text-sm font-black leading-relaxed text-slate-950">
+                  Een profielfoto is geen detail. LinkedIn geeft aan dat profielen met een foto tot 2x meer
+                  profielweergaven en 3x meer connectieverzoeken kunnen krijgen dan profielen zonder foto.
+                </p>
+                <p className="mt-2 text-xs font-bold leading-relaxed text-slate-600">
+                  Daarom focust WerkCV op een foto die herkenbaar blijft, professioneel oogt en past bij Nederlandse
+                  recruiters die je CV en LinkedIn naast elkaar bekijken.
+                </p>
+              </div>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="#profielfoto-tool"
@@ -239,6 +271,31 @@ export default function ProfielfotoCvMakenPage() {
         </section>
 
         <section id="profielfoto-tool" className="mx-auto max-w-6xl px-6 py-12">
+          <section className="mb-8 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+            <div className="rounded-3xl border-4 border-black bg-[#FFD166] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-800">
+                Prijsanker
+              </p>
+              <h2 className="mt-2 text-3xl font-black leading-tight text-black">
+                Geen afspraak van een uur als je alleen een nette sollicitatiefoto nodig hebt
+              </h2>
+              <p className="mt-3 text-sm font-bold leading-relaxed text-slate-900">
+                Een fotograaf blijft waardevol voor volledige personal branding. WerkCV is bedoeld voor het snellere
+                moment: je hebt al een bruikbare foto, maar je wilt hem vandaag professioneler maken voor je CV,
+                LinkedIn of sollicitatieprofiel.
+              </p>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {valueComparison.map((item) => (
+                <article key={item.label} className="rounded-3xl border-2 border-black bg-white p-5">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">{item.label}</p>
+                  <p className="mt-2 text-3xl font-black text-slate-950">{item.price}</p>
+                  <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{item.detail}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
           <section className="mb-8 rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
             <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
               <div>
@@ -278,6 +335,24 @@ export default function ProfielfotoCvMakenPage() {
           </section>
 
           <ProfilePhotoGenerator />
+        </section>
+
+        <section className="mx-auto max-w-6xl px-6 pb-12">
+          <div className="rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+              Vertrouwen voor upload
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-slate-950">
+              Waarom eerst je profielfoto verbeteren?
+            </h2>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {trustStats.map((stat) => (
+                <div key={stat} className="rounded-2xl border-2 border-slate-200 bg-[#FFFEF9] p-4 text-sm font-bold leading-relaxed text-slate-800">
+                  {stat}
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
 
         <section className="mx-auto grid max-w-6xl gap-6 px-6 pb-12 md:grid-cols-3">
