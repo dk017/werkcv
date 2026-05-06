@@ -1398,8 +1398,8 @@ export default function Editor({
                                             <p className="text-lg font-black text-black">{tr("CV + AI-profielfoto", "CV + AI profile photo")}</p>
                                             <p className="mt-1 text-sm font-semibold leading-relaxed text-slate-700">
                                                 {tr(
-                                                    "Voor als je dezelfde dag je CV én LinkedIn-presentatie netjes wilt hebben.",
-                                                    "For when you want your CV and LinkedIn presentation ready the same day."
+                                                    "Download je CV direct. Maak je AI-profielfoto meteen na betaling of later via je account.",
+                                                    "Download your CV immediately. Create your AI profile photo after payment or later from your account."
                                                 )}
                                             </p>
                                         </div>
@@ -1416,17 +1416,24 @@ export default function Editor({
                                         </p>
                                         <div className="mt-3 grid gap-2 text-xs font-bold text-slate-800 sm:grid-cols-2">
                                             <span className="border border-black/15 bg-[#FFFEF9] px-2 py-2">{tr("CV PDF direct downloaden", "Download your CV PDF now")}</span>
-                                            <span className="border border-black/15 bg-[#FFFEF9] px-2 py-2">{tr("4 AI-profielfoto varianten", "4 AI profile photo variants")}</span>
+                                            <span className="border border-black/15 bg-[#FFFEF9] px-2 py-2">{tr("AI-profielfoto inbegrepen", "AI profile photo included")}</span>
+                                            <span className="border border-black/15 bg-[#FFFEF9] px-2 py-2">{tr("4 voorbeeldvarianten", "4 preview variants")}</span>
                                             <span className="border border-black/15 bg-[#FFFEF9] px-2 py-2">{tr("2 verfijningen inbegrepen", "2 refinements included")}</span>
                                             <span className="border border-black/15 bg-[#FFFEF9] px-2 py-2">{tr("Bespaar " + applicationBundlePrice.savingsDisplay, "Save " + applicationBundlePrice.savingsDisplay.replace(",", "."))}</span>
                                         </div>
+                                    </div>
+                                    <div className="mt-3 rounded-2xl border-2 border-black bg-white px-3 py-3 text-xs font-bold leading-relaxed text-slate-700">
+                                        {tr(
+                                            "Nog geen profielfoto gemaakt? Geen probleem. Na betaling krijg je een duidelijke knop om hem te maken. Je kunt dit ook later doen zolang je met hetzelfde account bent ingelogd.",
+                                            "No profile photo created yet? No problem. After payment, you get a clear button to create it. You can also do this later while logged into the same account."
+                                        )}
                                     </div>
                                     <button
                                         onClick={() => handleCheckoutOptionClick("cv-profile-photo-bundle")}
                                         disabled={isCheckoutRedirecting}
                                         className="mt-4 w-full px-5 py-3 border-2 border-black font-black text-sm bg-yellow-400 hover:bg-yellow-500 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                                     >
-                                        {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr(`Kies CV + profielfoto voor ${applicationBundlePrice.display}`, `Choose CV + profile photo for ${applicationBundlePrice.display.replace(",", ".")}`)}
+                                        {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr(`Kies CV + AI-profielfoto voor ${applicationBundlePrice.display}`, `Choose CV + AI profile photo for ${applicationBundlePrice.display.replace(",", ".")}`)}
                                     </button>
                                     <p className="mt-3 text-center text-[11px] font-bold leading-relaxed text-slate-600">
                                         {tr(

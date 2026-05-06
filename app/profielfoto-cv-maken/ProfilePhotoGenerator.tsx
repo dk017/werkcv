@@ -3,7 +3,7 @@
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { track } from "@/lib/analytics";
-import { applicationBundlePrice, profilePhotoPrice } from "@/lib/site-content";
+import { profilePhotoPrice } from "@/lib/site-content";
 
 type GeneratedImage = {
   id: string;
@@ -157,8 +157,8 @@ function getStatusCopy(
         ? tr("Je profielfoto zit in je bundle", "Your profile photo is included in your bundle")
         : tr("Je CV + profielfoto-bundle is actief", "Your CV + profile photo bundle is active"),
       description: tr(
-        `Maak 4 voorbeeldvarianten en kies je favoriet. De download is inbegrepen in je ${applicationBundlePrice.display}-bundle.`,
-        `Create 4 preview variants and choose your favorite. The download is included in your ${applicationBundlePrice.display} bundle.`
+        "Upload je foto en maak 4 varianten. Downloaden is al inbegrepen in je bundle, dus je betaalt niet opnieuw.",
+        "Upload your photo and create 4 variants. Download is already included in your bundle, so you do not pay again."
       ),
     };
   }
@@ -482,6 +482,14 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
   }
 
   async function startCheckout() {
+    if (bundleIncluded) {
+      setError(tr(
+        "Je download zit in je bundle. Vernieuw de pagina als de downloadknop nog niet zichtbaar is.",
+        "Your download is included in your bundle. Refresh the page if the download button is not visible yet."
+      ));
+      return;
+    }
+
     if (!project?.id || images.length === 0) {
       setError(tr("Maak eerst je profielfoto-varianten. Je betaalt pas bij downloaden.", "Create your profile photo variants first. You only pay when downloading."));
       return;
@@ -675,7 +683,7 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
               </button>
               <p className="mt-3 text-xs font-medium leading-relaxed text-slate-500">
                 {bundleIncluded
-                  ? tr("Voorbeelden maken kan na login. Downloaden zit in je bundle.", "You can create previews after login. Downloading is included in your bundle.")
+                  ? tr("Downloaden zit al in je bundle. Maak je varianten en kies je favoriet.", "Downloading is already included in your bundle. Create your variants and choose your favorite.")
                   : tr(
                     `Voorbeelden maken kan na login. Downloaden kost éénmalig ${profilePhotoPrice.display}. Geen abonnement.`,
                     `You can create previews after login. Downloading is a one-time ${profilePhotoPrice.display}. No subscription.`
@@ -827,7 +835,9 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
                           >
                             {isCheckoutRedirecting
                               ? tr("Checkout openen...", "Opening checkout...")
-                              : tr(`Betaal ${profilePhotoPrice.display} en download`, `Pay ${profilePhotoPrice.display} and download`)}
+                              : bundleIncluded
+                                ? tr("Download zit in je bundle", "Download included in your bundle")
+                                : tr(`Betaal ${profilePhotoPrice.display} en download`, `Pay ${profilePhotoPrice.display} and download`)}
                           </button>
                         )}
                         <Link
