@@ -714,7 +714,7 @@ export default function Editor({
             {/* Left: Editor Form */}
             <div className="flex w-full lg:w-[54%] flex-col border-r-0 lg:border-r border-slate-200 bg-[#FFFEF9] z-10 h-screen">
                 {/* Toolbar */}
-                <div className="min-h-14 lg:h-16 border-b border-slate-200 flex flex-wrap items-center justify-between px-3 sm:px-5 py-2 lg:py-0 bg-white/95 backdrop-blur sticky top-0 z-20 gap-2">
+                <div className="min-h-14 border-b border-slate-200 flex flex-wrap items-center justify-between px-3 sm:px-5 py-2 bg-white/95 backdrop-blur sticky top-0 z-20 gap-2">
                     {/* Left side - Logo and tools */}
                     <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
                         <Link href="/" className="flex items-center gap-1">
@@ -750,10 +750,10 @@ export default function Editor({
                                 onSelectTheme={handleColorThemeChange}
                             />
                         </div>
-                        <div className="hidden md:block w-px h-6 bg-slate-300" />
+                        <div className="hidden xl:block w-px h-6 bg-slate-300" />
                         <button
                             onClick={() => setShowUploader(true)}
-                            className="hidden md:flex px-3 py-1.5 font-semibold text-xs border border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition-colors rounded-md items-center gap-1.5"
+                            className="hidden xl:flex px-3 py-1.5 font-semibold text-xs border border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition-colors rounded-md items-center gap-1.5"
                            
                             title={tr("Upload je bestaande CV", "Upload your existing CV")}
                         >
@@ -765,7 +765,7 @@ export default function Editor({
                         <button
                             onClick={handleAtsRewrite}
                             disabled={isAtsRewriting}
-                            className="hidden md:flex px-3 py-1.5 font-semibold text-xs border border-sky-300 bg-sky-50 text-sky-900 hover:bg-sky-100 transition-colors rounded-md items-center gap-1.5 disabled:opacity-60 disabled:cursor-not-allowed"
+                            className="hidden xl:flex px-3 py-1.5 font-semibold text-xs border border-sky-300 bg-sky-50 text-sky-900 hover:bg-sky-100 transition-colors rounded-md items-center gap-1.5 disabled:opacity-60 disabled:cursor-not-allowed"
                            
                             title="ATS Rewrite"
                         >
@@ -774,7 +774,7 @@ export default function Editor({
                         <button
                             onClick={handleGenerateCoverLetter}
                             disabled={isCoverLetterGenerating}
-                            className="hidden md:flex px-3 py-1.5 font-semibold text-xs border border-rose-300 bg-rose-50 text-rose-900 hover:bg-rose-100 transition-colors rounded-md items-center gap-1.5 disabled:opacity-60 disabled:cursor-not-allowed"
+                            className="hidden xl:flex px-3 py-1.5 font-semibold text-xs border border-rose-300 bg-rose-50 text-rose-900 hover:bg-rose-100 transition-colors rounded-md items-center gap-1.5 disabled:opacity-60 disabled:cursor-not-allowed"
                            
                             title={tr("Genereer sollicitatiebrief", "Generate cover letter")}
                         >
@@ -823,11 +823,11 @@ export default function Editor({
                     </div>
                 </div>
 
-                {/* Mobile Upload Button - shown below toolbar on small screens */}
-                <div className="md:hidden flex px-4 py-2 bg-white border-b border-slate-200">
+                {/* Secondary action row - prevents crowded toolbar wrapping on narrow editor panes */}
+                <div className="xl:hidden flex gap-2 px-4 py-3 bg-white border-b border-slate-200">
                     <button
                         onClick={() => setShowUploader(true)}
-                        className="flex-1 px-3 py-2 font-semibold text-xs rounded-md border border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition-colors flex items-center justify-center gap-2 mr-2"
+                        className="flex-1 px-3 py-2 font-semibold text-xs rounded-md border border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition-colors flex items-center justify-center gap-2"
                        
                     >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1423,9 +1423,22 @@ export default function Editor({
                                         </div>
                                     </div>
                                     <div className="mt-3 rounded-2xl border-2 border-black bg-white px-3 py-3 text-xs font-bold leading-relaxed text-slate-700">
-                                        {tr(
-                                            "Nog geen profielfoto gemaakt? Geen probleem. Na betaling krijg je een duidelijke knop om hem te maken. Je kunt dit ook later doen zolang je met hetzelfde account bent ingelogd.",
-                                            "No profile photo created yet? No problem. After payment, you get a clear button to create it. You can also do this later while logged into the same account."
+                                        {isEnglish ? (
+                                            <>
+                                                No profile photo created yet? No problem. After payment, you get a clear button to create it. You can also{" "}
+                                                <Link href="/en/profile-photo" className="text-teal-700 underline decoration-2 underline-offset-2 hover:text-teal-900">
+                                                    open the profile photo creator
+                                                </Link>{" "}
+                                                later while logged into the same account.
+                                            </>
+                                        ) : (
+                                            <>
+                                                Nog geen profielfoto gemaakt? Geen probleem. Na betaling krijg je een duidelijke knop om hem te maken. Je kunt de{" "}
+                                                <Link href="/profielfoto-cv-maken" className="text-teal-700 underline decoration-2 underline-offset-2 hover:text-teal-900">
+                                                    profielfoto maker
+                                                </Link>{" "}
+                                                ook later openen zolang je met hetzelfde account bent ingelogd.
+                                            </>
                                         )}
                                     </div>
                                     <button
