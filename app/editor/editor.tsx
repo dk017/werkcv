@@ -1377,116 +1377,82 @@ export default function Editor({
                                 </button>
                             </div>
                             <h3 className="mt-4 text-2xl font-black text-black sm:text-[2rem]">
-                                {tr("Je CV is klaar. Wil je je profiel ook afmaken?", "Your CV is ready. Want to finish your profile too?")}
+                                {tr("Je CV is klaar om te downloaden.", "Your CV is ready to download.")}
                             </h3>
                             <p className="mt-2 max-w-2xl text-sm font-medium leading-relaxed text-slate-700">
                                 {tr(
-                                    `Download alleen je CV voor ${cvDownloadPrice.display}, of pak direct de bundle met een professionele AI-profielfoto voor CV en LinkedIn. Geen abonnement, geen automatische verlenging.`,
-                                    `Download only your CV for ${cvDownloadPrice.display.replace(",", ".")}, or choose the bundle with a professional AI profile photo for your CV and LinkedIn. No subscription, no automatic renewal.`
+                                    `Download je PDF voor eenmalig ${cvDownloadPrice.display}. Geen abonnement, geen automatische verlenging.`,
+                                    `Download your PDF for a one-time ${cvDownloadPrice.display.replace(",", ".")} payment. No subscription, no automatic renewal.`
                                 )}
                             </p>
                         </div>
 
                         <div className="px-5 py-5 sm:px-6">
-                            <div className="mb-5 grid gap-4 lg:grid-cols-[1.12fr_0.88fr]">
-                                <div className="relative border-4 border-black bg-[#E9FFFC] p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-                                    <div className="absolute -top-4 left-4 border-2 border-black bg-[#FFD166] px-3 py-1 text-[10px] font-black uppercase tracking-wide text-black">
-                                        {tr("Aanbevolen", "Recommended")}
-                                    </div>
-                                    <div className="mt-2 flex items-start justify-between gap-4">
+                            <div className="mb-5 space-y-4">
+                                <div className="border-4 border-black bg-[#E9FFFC] p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+                                    <div className="flex items-start justify-between gap-4">
                                         <div>
-                                            <p className="text-lg font-black text-black">{tr("CV + AI-profielfoto", "CV + AI profile photo")}</p>
+                                            <p className="text-xl font-black text-black">{tr("Alleen CV als PDF", "CV PDF only")}</p>
                                             <p className="mt-1 text-sm font-semibold leading-relaxed text-slate-700">
-                                                {tr(
-                                                    "Download je CV direct. Maak je AI-profielfoto meteen na betaling of later via je account.",
-                                                    "Download your CV immediately. Create your AI profile photo after payment or later from your account."
-                                                )}
+                                                {tr("Voor als je nu alleen deze sollicitatie-PDF nodig hebt.", "For when you only need this application PDF now.")}
                                             </p>
                                         </div>
                                         <div className="shrink-0 text-right">
-                                            <p className="text-4xl font-black text-black">{applicationBundlePrice.display}</p>
+                                            <p className="text-4xl font-black text-black">{cvDownloadPrice.display}</p>
                                             <p className="text-[11px] font-black uppercase tracking-wide text-slate-600">
                                                 {tr("eenmalig", "one-time")}
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="mt-4 rounded-2xl border-2 border-black bg-white p-3">
-                                        <p className="text-xs font-black uppercase tracking-wide text-slate-500">
-                                            {tr("Wat je krijgt", "What you get")}
-                                        </p>
-                                        <div className="mt-3 grid gap-2 text-xs font-bold text-slate-800 sm:grid-cols-2">
-                                            <span className="border border-black/15 bg-[#FFFEF9] px-2 py-2">{tr("CV PDF direct downloaden", "Download your CV PDF now")}</span>
-                                            <span className="border border-black/15 bg-[#FFFEF9] px-2 py-2">{tr("AI-profielfoto inbegrepen", "AI profile photo included")}</span>
-                                            <span className="border border-black/15 bg-[#FFFEF9] px-2 py-2">{tr("4 voorbeeldvarianten", "4 preview variants")}</span>
-                                            <span className="border border-black/15 bg-[#FFFEF9] px-2 py-2">{tr("2 verfijningen inbegrepen", "2 refinements included")}</span>
-                                            <span className="border border-black/15 bg-[#FFFEF9] px-2 py-2">{tr("Bespaar " + applicationBundlePrice.savingsDisplay, "Save " + applicationBundlePrice.savingsDisplay.replace(",", "."))}</span>
-                                        </div>
-                                    </div>
-                                    <div className="mt-3 rounded-2xl border-2 border-black bg-white px-3 py-3 text-xs font-bold leading-relaxed text-slate-700">
-                                        {isEnglish ? (
-                                            <>
-                                                No profile photo created yet? No problem. After payment, you get a clear button to create it. You can also{" "}
-                                                <Link href="/en/profile-photo" className="text-teal-700 underline decoration-2 underline-offset-2 hover:text-teal-900">
-                                                    open the profile photo creator
-                                                </Link>{" "}
-                                                later while logged into the same account.
-                                            </>
-                                        ) : (
-                                            <>
-                                                Nog geen profielfoto gemaakt? Geen probleem. Na betaling krijg je een duidelijke knop om hem te maken. Je kunt de{" "}
-                                                <Link href="/profielfoto-cv-maken" className="text-teal-700 underline decoration-2 underline-offset-2 hover:text-teal-900">
-                                                    profielfoto maker
-                                                </Link>{" "}
-                                                ook later openen zolang je met hetzelfde account bent ingelogd.
-                                            </>
-                                        )}
+                                    <div className="mt-4 grid gap-2 text-xs font-bold text-slate-800 sm:grid-cols-3">
+                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Directe PDF-download", "Immediate PDF download")}</span>
+                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Later opnieuw downloaden", "Download again later")}</span>
+                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Geen abonnement", "No subscription")}</span>
                                     </div>
                                     <button
-                                        onClick={() => handleCheckoutOptionClick("cv-profile-photo-bundle")}
+                                        onClick={() => handleCheckoutOptionClick("cv-download")}
                                         disabled={isCheckoutRedirecting}
                                         className="mt-4 w-full px-5 py-3 border-2 border-black font-black text-sm bg-yellow-400 hover:bg-yellow-500 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                                     >
-                                        {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr(`Kies CV + AI-profielfoto voor ${applicationBundlePrice.display}`, `Choose CV + AI profile photo for ${applicationBundlePrice.display.replace(",", ".")}`)}
+                                        {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr(`Alleen CV downloaden voor ${cvDownloadPrice.display}`, `Download CV only for ${cvDownloadPrice.display.replace(",", ".")}`)}
                                     </button>
-                                    <p className="mt-3 text-center text-[11px] font-bold leading-relaxed text-slate-600">
-                                        {tr(
-                                            `Los gekocht: ${cvDownloadPrice.display} + ${profilePhotoPrice.display}. Bundle: ${applicationBundlePrice.display}.`,
-                                            `Bought separately: ${cvDownloadPrice.display.replace(",", ".")} + ${profilePhotoPrice.display.replace(",", ".")}. Bundle: ${applicationBundlePrice.display.replace(",", ".")}.`
-                                        )}
-                                    </p>
                                 </div>
 
                                 <div className="border-2 border-black bg-gray-50 p-4">
                                     <div className="flex items-start justify-between gap-4">
                                         <div>
-                                            <p className="font-black text-black">{tr("Alleen CV als PDF", "CV PDF only")}</p>
+                                            <p className="font-black text-black">{tr("Optioneel: CV + AI-profielfoto", "Optional: CV + AI profile photo")}</p>
                                             <p className="mt-1 text-xs font-semibold leading-relaxed text-slate-600">
-                                                {tr("Voor als je alleen deze sollicitatie-PDF nodig hebt.", "For when you only need this application PDF.")}
+                                                {tr(
+                                                    "Wil je ook meteen een professionele profielfoto voor je CV en LinkedIn? Kies dan de bundle.",
+                                                    "Want a professional profile photo for your CV and LinkedIn too? Choose the bundle."
+                                                )}
                                             </p>
                                         </div>
                                         <div className="shrink-0 text-right">
-                                            <p className="text-3xl font-black text-black">{cvDownloadPrice.display}</p>
+                                            <p className="text-3xl font-black text-black">{applicationBundlePrice.display}</p>
                                             <p className="text-[11px] font-black uppercase tracking-wide text-slate-600">
                                                 {tr("eenmalig", "one-time")}
                                             </p>
                                         </div>
                                     </div>
                                     <div className="mt-4 space-y-2 text-xs font-bold text-slate-700">
-                                        <p className="flex gap-2"><span>✓</span><span>{tr("Directe PDF-download", "Immediate PDF download")}</span></p>
-                                        <p className="flex gap-2"><span>✓</span><span>{tr("Later opnieuw downloaden", "Download again later")}</span></p>
-                                        <p className="flex gap-2"><span>✓</span><span>{tr("Geen abonnement", "No subscription")}</span></p>
+                                        <p className="flex gap-2"><span>✓</span><span>{tr("CV PDF direct downloaden", "Download your CV PDF now")}</span></p>
+                                        <p className="flex gap-2"><span>✓</span><span>{tr("AI-profielfoto inbegrepen", "AI profile photo included")}</span></p>
+                                        <p className="flex gap-2"><span>✓</span><span>{tr("4 voorbeeldvarianten en 2 verfijningen", "4 preview variants and 2 refinements")}</span></p>
+                                        <p className="flex gap-2"><span>✓</span><span>{tr("Bespaar " + applicationBundlePrice.savingsDisplay, "Save " + applicationBundlePrice.savingsDisplay.replace(",", "."))}</span></p>
                                     </div>
                                     <button
-                                        onClick={() => handleCheckoutOptionClick("cv-download")}
+                                        onClick={() => handleCheckoutOptionClick("cv-profile-photo-bundle")}
                                         disabled={isCheckoutRedirecting}
                                         className="mt-4 w-full px-4 py-3 border-2 border-black font-bold text-sm bg-white hover:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed"
                                     >
-                                        {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr(`Alleen CV downloaden voor ${cvDownloadPrice.display}`, `Download CV only for ${cvDownloadPrice.display.replace(",", ".")}`)}
+                                        {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr(`Kies CV + AI-profielfoto voor ${applicationBundlePrice.display}`, `Choose CV + AI profile photo for ${applicationBundlePrice.display.replace(",", ".")}`)}
                                     </button>
                                     <p className="mt-3 text-xs font-medium leading-relaxed text-slate-500">
                                         {tr(
-                                            "Je kunt de profielfoto later alsnog los kopen als je die nodig hebt.",
-                                            "You can still buy the profile photo separately later if you need it."
+                                            `Los gekocht: ${cvDownloadPrice.display} + ${profilePhotoPrice.display}. Bundle: ${applicationBundlePrice.display}. Je kunt de profielfoto ook later los kopen.`,
+                                            `Bought separately: ${cvDownloadPrice.display.replace(",", ".")} + ${profilePhotoPrice.display.replace(",", ".")}. Bundle: ${applicationBundlePrice.display.replace(",", ".")}. You can also buy the profile photo separately later.`
                                         )}
                                     </p>
                                 </div>
