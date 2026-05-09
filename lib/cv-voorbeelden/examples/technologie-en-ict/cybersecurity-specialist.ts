@@ -8,10 +8,10 @@ export const cybersecuritySpecialist: CVExample = {
     templateId: 'modern',
     colorThemeId: 'charcoal',
 
-    metaTitle: 'CV Voorbeeld Cybersecurity Specialist | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor cybersecurity specialisten. Met voorbeeldteksten voor informatiebeveiliging, pentesting en compliance. Maak direct je eigen CV.',
-    keywords: ['cv voorbeeld cybersecurity', 'cv informatiebeveiliging', 'cv security specialist', 'cybersecurity cv', 'ethical hacker cv'],
-    heroTitle: 'CV Voorbeeld Cybersecurity Specialist',
+    metaTitle: 'CV Voorbeeld Cyber Security Specialist | WerkCV.nl',
+    metaDesc: 'Professioneel cv voorbeeld voor cyber security specialist met informatiebeveiliging, pentesting, SIEM en compliance. Gebruik het als basis voor je eigen security-CV.',
+    keywords: ['cv cyber security specialist', 'cyber security specialist cv', 'cv voorbeeld cybersecurity', 'cv cybersecurity specialist', 'cv informatiebeveiliging', 'cv security specialist', 'cybersecurity cv', 'ethical hacker cv'],
+    heroTitle: 'CV voorbeeld cyber security specialist',
     heroText: 'Als cybersecurity specialist bescherm je organisaties tegen digitale dreigingen. Dit CV voorbeeld laat zien hoe je je technische beveiligingsexpertise, certificeringen en concrete resultaten overtuigend presenteert. Benadruk zowel je offensieve als defensieve vaardigheden en je kennis van compliance-frameworks.',
     tips: [
         'Zet je certificeringen prominent neer: CISSP, CEH, OSCP en CompTIA Security+ zijn zeer gewild',

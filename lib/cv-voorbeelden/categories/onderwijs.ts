@@ -10,6 +10,7 @@ export const onderwijs: CVExampleCategory = {
         'cv voorbeeld docent',
         'cv leerkracht',
         'cv onderwijsassistent',
+        'cv voor onderwijsassistent',
         'cv leraar',
         'cv basisschool docent',
         'cv onderwijs',

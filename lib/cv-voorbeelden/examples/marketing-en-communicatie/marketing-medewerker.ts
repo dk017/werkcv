@@ -1,0 +1,132 @@
+import { CVExample } from '../../types';
+
+export const marketingMedewerker: CVExample = {
+    slug: 'marketing-medewerker',
+    categorySlug: 'marketing-en-communicatie',
+    name: 'Marketing Medewerker',
+    description: 'CV voorbeeld voor marketing medewerkers. Laat campagnes, content, social media, e-mailmarketing, analytics en tools concreet zien.',
+    templateId: 'modern',
+    colorThemeId: 'modern-teal',
+
+    metaTitle: 'CV Voorbeeld Marketing Medewerker | WerkCV.nl',
+    metaDesc: 'Professioneel cv voorbeeld voor marketing medewerker. Met profieltekst, werkervaring, campagnes, content, social media, GA4, Mailchimp en vaardigheden.',
+    keywords: [
+        'cv voorbeeld marketing medewerker',
+        'marketing medewerker cv',
+        'cv marketing en communicatie',
+        'cv online marketing medewerker',
+        'cv marketing assistent',
+        'cv content marketing',
+        'cv social media marketing',
+    ],
+    heroTitle: 'CV Voorbeeld Marketing Medewerker',
+    heroText: 'Een sterk marketing CV laat zien welke kanalen je beheerst en wat je campagnes opleveren. Dit voorbeeld toont hoe je contentplanning, social media, e-mailmarketing, GA4, SEO, CMS en campagnecoördinatie concreet maakt zonder te vervallen in marketingjargon.',
+    tips: [
+        'Benoem je kanalen: website, SEO, social media, e-mail, events, advertenties, PR of offline materiaal',
+        'Maak resultaten meetbaar met bereik, engagement, CTR, leads, conversies, nieuwsbriefgroei of organisch verkeer',
+        'Vermeld tools zoals GA4, Google Search Console, Mailchimp, HubSpot, Canva, WordPress, Meta Business Suite of Looker Studio',
+        'Laat zien of je campagnes alleen uitvoerde, coördineerde met bureaus of zelf copy/design/rapportage verzorgde',
+        'Gebruik vacaturewoorden uit marketingrollen: contentkalender, campagneplanning, doelgroep, analyse, branding en conversie',
+    ],
+    relatedSlugs: [
+        'marketing-en-communicatie/marketing-manager',
+        'marketing-en-communicatie/social-media-specialist',
+        'marketing-en-communicatie/content-schrijver',
+    ],
+
+    sampleCV: {
+        personal: {
+            name: 'Rachid El Idrissi',
+            title: 'Marketing Medewerker',
+            email: 'rachid.elidrissi@email.nl',
+            phone: '06-56789012',
+            location: 'Amsterdam',
+            address: 'Wibautstraat 186',
+            postalCode: '1091 GR',
+            summary: 'Allround marketing medewerker met 4 jaar ervaring in content, social media, e-mailmarketing en campagnecoördinatie. Ervaren met GA4, Google Search Console, WordPress, Mailchimp, Canva en Meta Business Suite. Combineert creatieve uitvoering met duidelijke rapportages op bereik, klikken, leads en conversie. Sterk in plannen, schrijven en schakelen met sales, design en externe bureaus.',
+            birthDate: '29 augustus 1997',
+            birthPlace: 'Amsterdam',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: 'linkedin.com/in/rachidelidrissi',
+            github: '',
+            website: 'rachidmarketing.nl',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Marketing Medewerker',
+                company: 'Beter Bed',
+                location: 'Utrecht',
+                start: 'februari 2022',
+                end: 'heden',
+                description: 'Ondersteuning bij online campagnes, contentplanning, e-mailmarketing en rapportages voor retail- en e-commercekanalen.',
+                highlights: [
+                    'Contentkalender beheerd voor blog, nieuwsbrief en social media met wekelijkse afstemming met product en sales',
+                    'Nieuwsbriefcampagnes gebouwd in Mailchimp; gemiddelde klikratio verhoogd van 2,1% naar 3,4% door A/B-tests op onderwerpregels',
+                    'GA4- en Search Console-data vertaald naar maandelijkse rapportages met verbeterpunten voor landingspagina\'s',
+                    'Meta-campagnes ondersteund met doelgroepselectie, advertentieteksten en creatieve varianten in Canva',
+                ],
+            },
+            {
+                role: 'Junior Marketing Assistent',
+                company: 'Eventix',
+                location: 'Amsterdam',
+                start: 'september 2019',
+                end: 'januari 2022',
+                description: 'Ondersteuning van B2B-marketing, klantcases, eventcommunicatie en websitecontent.',
+                highlights: [
+                    '12 klantcases uitgewerkt met input van accountmanagers en klanten, gebruikt in salesgesprekken en nieuwsbrieven',
+                    'WordPress-pagina\'s bijgewerkt met SEO-titels, meta descriptions, interne links en beeldmateriaal',
+                    'Beursmateriaal, one-pagers en social posts voorbereid binnen huisstijlrichtlijnen',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'HBO Commerciële Economie',
+                school: 'Hogeschool van Amsterdam',
+                location: 'Amsterdam',
+                start: 'september 2015',
+                end: 'juli 2019',
+                description: 'Afstudeerrichting digital marketing met projecten rond consumentengedrag, campagnes en data-analyse.',
+            },
+        ],
+        skills: [
+            { name: 'Contentmarketing', level: 5 },
+            { name: 'GA4 & rapportage', level: 4 },
+            { name: 'E-mailmarketing', level: 4 },
+            { name: 'Social media campagnes', level: 4 },
+            { name: 'SEO basis', level: 4 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Vloeiend' },
+        ],
+        interests: ['Podcasts', 'Fotografie', 'Hardlopen'],
+        courses: [
+            { name: 'Google Analytics 4 Certification', institution: 'Google Skillshop', year: '2024' },
+            { name: 'SEO Fundamentals', institution: 'SEMrush Academy', year: '2023' },
+            { name: 'E-mailmarketing', institution: 'Frankwatching Academy', year: '2022' },
+        ],
+        internships: [
+            {
+                role: 'Marketing Stagiair',
+                company: 'Tony\'s Chocolonely',
+                location: 'Amsterdam',
+                start: 'februari 2019',
+                end: 'juli 2019',
+                description: 'Meewerken aan social content, marktonderzoek en activatiecampagnes tijdens de afstudeerstage.',
+                highlights: [
+                    'Social content voorbereid voor Instagram en LinkedIn binnen bestaande campagnerichtlijnen',
+                    'Concurrentieanalyse en doelgroepinzichten verwerkt in afstudeeradvies voor activatiecampagne',
+                ],
+            },
+        ],
+        awards: [
+            'Beste campagnebriefing van het kwartaal bij Beter Bed voor een briefing zonder extra correctierondes, 2023',
+        ],
+    },
+};

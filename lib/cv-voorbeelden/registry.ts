@@ -35,6 +35,7 @@ import { artsAnios } from './examples/zorg-en-welzijn/arts-anios';
 import { ggzMedewerker } from './examples/zorg-en-welzijn/ggz-medewerker';
 import { apotheekassistent } from './examples/zorg-en-welzijn/apotheekassistent';
 import { opticien } from './examples/zorg-en-welzijn/opticien';
+import { verzorgendeIg } from './examples/zorg-en-welzijn/verzorgende-ig';
 
 // ============================================================================
 // EXAMPLE IMPORTS - Technologie & ICT
@@ -45,6 +46,7 @@ import { systeembeheerder } from './examples/technologie-en-ict/systeembeheerder
 import { ictProjectleider } from './examples/technologie-en-ict/ict-projectleider';
 import { cybersecuritySpecialist } from './examples/technologie-en-ict/cybersecurity-specialist';
 import { technischeDienst } from './examples/technologie-en-ict/technische-dienst';
+import { ictMedewerker } from './examples/technologie-en-ict/ict-medewerker';
 
 // ============================================================================
 // EXAMPLE IMPORTS - Vakmanschap & Logistiek
@@ -55,6 +57,8 @@ import { loodgieter } from './examples/vakmanschap-en-logistiek/loodgieter';
 import { chauffeur } from './examples/vakmanschap-en-logistiek/chauffeur';
 import { magazijnmedewerker } from './examples/vakmanschap-en-logistiek/magazijnmedewerker';
 import { logistiekCoordinator } from './examples/vakmanschap-en-logistiek/logistiek-coordinator';
+import { schoonmaker } from './examples/vakmanschap-en-logistiek/schoonmaker';
+import { productiemedewerker } from './examples/vakmanschap-en-logistiek/productiemedewerker';
 
 // ============================================================================
 // EXAMPLE IMPORTS - Onderwijs
@@ -64,6 +68,7 @@ import { onderwijsassistent } from './examples/onderwijs/onderwijsassistent';
 import { docentVoortgezetOnderwijs } from './examples/onderwijs/docent-voortgezet-onderwijs';
 import { gymdocent } from './examples/onderwijs/gymdocent';
 import { speciaaalOnderwijs } from './examples/onderwijs/speciaal-onderwijs';
+import { pedagogischMedewerker } from './examples/onderwijs/pedagogisch-medewerker';
 
 // ============================================================================
 // EXAMPLE IMPORTS - Horeca & Detailhandel
@@ -74,6 +79,7 @@ import { hotelReceptionist } from './examples/horeca-en-detailhandel/hotel-recep
 import { winkelmedewerker } from './examples/horeca-en-detailhandel/winkelmedewerker';
 import { filiaalmanager } from './examples/horeca-en-detailhandel/filiaalmanager';
 import { cateringmedewerker } from './examples/horeca-en-detailhandel/cateringmedewerker';
+import { klantenserviceMedewerker } from './examples/horeca-en-detailhandel/klantenservice-medewerker';
 
 // ============================================================================
 // EXAMPLE IMPORTS - Zakelijk & Financieel
@@ -84,6 +90,10 @@ import { controller } from './examples/zakelijk-en-financieel/controller';
 import { bedrijfsadviseur } from './examples/zakelijk-en-financieel/bedrijfsadviseur';
 import { inkoper } from './examples/zakelijk-en-financieel/inkoper';
 import { hrMedewerker } from './examples/zakelijk-en-financieel/hr-medewerker';
+import { administratiefMedewerker } from './examples/zakelijk-en-financieel/administratief-medewerker';
+import { officeManager } from './examples/zakelijk-en-financieel/office-manager';
+import { receptionist } from './examples/zakelijk-en-financieel/receptionist';
+import { projectmanager } from './examples/zakelijk-en-financieel/projectmanager';
 
 // ============================================================================
 // EXAMPLE IMPORTS - Marketing & Communicatie
@@ -94,6 +104,7 @@ import { contentSchrijver } from './examples/marketing-en-communicatie/content-s
 import { prAdviseur } from './examples/marketing-en-communicatie/pr-adviseur';
 import { grafischOntwerper } from './examples/marketing-en-communicatie/grafisch-ontwerper';
 import { communicatieAdviseur } from './examples/marketing-en-communicatie/communicatie-adviseur';
+import { marketingMedewerker } from './examples/marketing-en-communicatie/marketing-medewerker';
 
 // ============================================================================
 // EXAMPLE IMPORTS - Juridisch & Overheid
@@ -146,6 +157,7 @@ const allExamples: CVExample[] = [
     ggzMedewerker,
     apotheekassistent,
     opticien,
+    verzorgendeIg,
     // Technologie & ICT
     softwareOntwikkelaar,
     dataEngineer,
@@ -153,6 +165,7 @@ const allExamples: CVExample[] = [
     ictProjectleider,
     cybersecuritySpecialist,
     technischeDienst,
+    ictMedewerker,
     // Vakmanschap & Logistiek
     autotechnicus,
     elektricien,
@@ -160,12 +173,15 @@ const allExamples: CVExample[] = [
     chauffeur,
     magazijnmedewerker,
     logistiekCoordinator,
+    schoonmaker,
+    productiemedewerker,
     // Onderwijs
     basisschoolDocent,
     onderwijsassistent,
     docentVoortgezetOnderwijs,
     gymdocent,
     speciaaalOnderwijs,
+    pedagogischMedewerker,
     // Horeca & Detailhandel
     kokChef,
     oberServeerster,
@@ -173,6 +189,7 @@ const allExamples: CVExample[] = [
     winkelmedewerker,
     filiaalmanager,
     cateringmedewerker,
+    klantenserviceMedewerker,
     // Zakelijk & Financieel
     accountant,
     financieelAnalist,
@@ -180,6 +197,10 @@ const allExamples: CVExample[] = [
     bedrijfsadviseur,
     inkoper,
     hrMedewerker,
+    administratiefMedewerker,
+    officeManager,
+    receptionist,
+    projectmanager,
     // Marketing & Communicatie
     marketingManager,
     socialMediaSpecialist,
@@ -187,6 +208,7 @@ const allExamples: CVExample[] = [
     prAdviseur,
     grafischOntwerper,
     communicatieAdviseur,
+    marketingMedewerker,
     // Juridisch & Overheid
     juridischMedewerker,
     beleidsadviseur,
@@ -253,6 +275,31 @@ const exactGuideLinks: Record<string, CVExampleInternalLink> = {
         title: 'CV voorbeeld verkoopmedewerker',
         description: 'Pak een commercielere variant als klantadvies, winkelvloer en verkoopresultaat belangrijk zijn.',
     },
+    'horeca-en-detailhandel/klantenservice-medewerker': {
+        href: '/cv-template-klantenservice-medewerker',
+        title: 'CV template klantenservice medewerker',
+        description: 'Gebruik de klantenservice-templatepagina als je een rustige support-layout zoekt met klantcontact, CRM en servicevaardigheden centraal.',
+    },
+    'zakelijk-en-financieel/administratief-medewerker': {
+        href: '/cv-template-administratief-medewerker',
+        title: 'CV template administratief medewerker',
+        description: 'Gebruik de administratieve templatepagina als je layout, opbouw en downloadroute voor kantoor- en backofficerollen wilt vergelijken.',
+    },
+    'zakelijk-en-financieel/office-manager': {
+        href: '/cv-template-office-manager',
+        title: 'CV template office manager',
+        description: 'Bekijk de office-manager templatepagina als je kantoororganisatie, directieondersteuning en operations overzichtelijk wilt presenteren.',
+    },
+    'zakelijk-en-financieel/receptionist': {
+        href: '/cv-gids/cv-voorbeeld-receptionist',
+        title: 'CV voorbeeld receptionist',
+        description: 'Gebruik de receptionist-gids als ontvangst, telefonie, planning en representatieve administratie de kern van je CV zijn.',
+    },
+    'zakelijk-en-financieel/projectmanager': {
+        href: '/cv-gids/cv-voorbeeld-projectmanager',
+        title: 'CV voorbeeld projectmanager',
+        description: 'Gebruik de projectmanager-gids voor sterkere formuleringen rond scope, budget, stakeholders en opleverresultaat.',
+    },
     'horeca-en-detailhandel/filiaalmanager': {
         href: '/cv-gids/cv-voorbeeld-verkoopmedewerker',
         title: 'CV voorbeeld verkoopmedewerker',
@@ -262,6 +309,31 @@ const exactGuideLinks: Record<string, CVExampleInternalLink> = {
         href: '/cv-gids/cv-voorbeeld-receptionist',
         title: 'CV voorbeeld receptionist',
         description: 'Relevant als ontvangst, reserveringen, administratie en servicegerichtheid je kernpunten zijn.',
+    },
+    'technologie-en-ict/ict-projectleider': {
+        href: '/cv-gids/cv-voorbeeld-projectmanager',
+        title: 'CV voorbeeld projectmanager',
+        description: 'Gebruik de bredere projectmanager-gids voor sterkere formuleringen rond scope, governance en delivery.',
+    },
+    'technologie-en-ict/ict-medewerker': {
+        href: '/cv-tips/ats-vriendelijk-cv',
+        title: 'ATS-vriendelijk CV',
+        description: 'Relevante vervolgstap voor ICT support- en werkplekrollen waar scanbare structuur en herkenbare toolnamen zwaar meewegen.',
+    },
+    'technologie-en-ict/software-ontwikkelaar': {
+        href: '/cv-template-software-ontwikkelaar',
+        title: 'CV template software ontwikkelaar',
+        description: 'Gebruik de developer-templatepagina als tech stack, projectimpact, GitHub en recruiter-proof bullets centraal moeten staan.',
+    },
+    'technologie-en-ict/systeembeheerder': {
+        href: '/ats-cv-template',
+        title: 'ATS CV template',
+        description: 'Kies een scanbare ATS-template voor systeembeheerrollen waar tools, certificaten en infrastructuurkeywords zwaar meetellen.',
+    },
+    'bouw-en-techniek/projectleider-bouw': {
+        href: '/cv-gids/cv-voorbeeld-projectmanager',
+        title: 'CV voorbeeld projectmanager',
+        description: 'Handig als je bouw- of implementatierollen wilt vertalen naar een bredere projectmanagementpositie.',
     },
     'horeca-en-detailhandel/ober-serveerster': {
         href: '/cv-gids/cv-voorbeeld-horeca-medewerker',
@@ -283,10 +355,55 @@ const exactGuideLinks: Record<string, CVExampleInternalLink> = {
         title: 'CV voorbeeld magazijnmedewerker zonder ervaring',
         description: 'Gebruik deze variant als je ook starters, zij-instromers of kandidaten zonder warehouseverleden wilt bedienen.',
     },
+    'vakmanschap-en-logistiek/schoonmaker': {
+        href: '/templates',
+        title: 'CV templates',
+        description: 'Kies een eenvoudige, scanbare template als hygiëne, betrouwbaarheid en beschikbaarheid snel zichtbaar moeten zijn.',
+    },
+    'vakmanschap-en-logistiek/productiemedewerker': {
+        href: '/cv-gids/cv-voorbeeld-productiemedewerker',
+        title: 'CV voorbeeld productiemedewerker',
+        description: 'Gebruik de productiegids voor sterkere formuleringen rond veiligheid, kwaliteit, output en ploegendienst.',
+    },
+    'onderwijs/pedagogisch-medewerker': {
+        href: '/profieltekst-cv-voorbeelden',
+        title: 'Profieltekst CV voorbeelden',
+        description: 'Scherp de openingsalinea aan als kindontwikkeling, veiligheid en oudercontact direct vertrouwen moeten geven.',
+    },
     'zorg-en-welzijn/verpleegkundige': {
         href: '/profieltekst-cv-voorbeelden',
         title: 'Profieltekst CV voorbeelden',
         description: 'Gebruik sterkere openingszinnen voor zorgrollen waar verantwoordelijkheid, samenwerking en patientgerichtheid snel zichtbaar moeten zijn.',
+    },
+    'zorg-en-welzijn/zorgmedewerker-helpende': {
+        href: '/profieltekst-cv-voorbeelden',
+        title: 'Profieltekst CV voorbeelden',
+        description: 'Scherp je zorgprofiel aan zodat ADL, betrouwbaarheid, cliëntcontact en rapportage direct zichtbaar zijn.',
+    },
+    'zorg-en-welzijn/verzorgende-ig': {
+        href: '/profieltekst-cv-voorbeelden',
+        title: 'Profieltekst CV voorbeelden',
+        description: 'Gebruik zorggerichte profielteksten om diploma, doelgroep, zorghandelingen en betrouwbaarheid direct te tonen.',
+    },
+    'onderwijs/onderwijsassistent': {
+        href: '/profieltekst-cv-voorbeelden',
+        title: 'Profieltekst CV voorbeelden',
+        description: 'Gebruik onderwijsgerichte profielteksten om leerlingbegeleiding, differentiatie en samenwerking sneller te laten landen.',
+    },
+    'marketing-en-communicatie/marketing-medewerker': {
+        href: '/cv-template-marketing-medewerker',
+        title: 'CV template marketing medewerker',
+        description: 'Gebruik de marketing-templatepagina als je campagnes, tools en meetbare resultaten overzichtelijk wilt presenteren.',
+    },
+    'zakelijk-en-financieel/hr-medewerker': {
+        href: '/cv-tips/cv-werkervaring-beschrijven',
+        title: 'Werkervaring op je CV beschrijven',
+        description: 'Gebruik deze gids om HR-processen, AFAS, verzuim, recruitment en vertrouwelijke dossiers concreet te bewijzen.',
+    },
+    'zakelijk-en-financieel/controller': {
+        href: '/cv-tips/cv-werkervaring-beschrijven',
+        title: 'Werkervaring op je CV beschrijven',
+        description: 'Gebruik deze gids om budgetscope, forecastresultaten, SAP/Power BI en business impact scherper te formuleren.',
     },
 };
 

@@ -101,7 +101,21 @@ export default async function CategoryPage({ params }: PageProps) {
 
             {/* Examples Grid */}
             <section className="max-w-6xl mx-auto px-6 py-12">
-                <h2 className="text-3xl font-black mb-8">Kies je CV voorbeeld</h2>
+                <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                    <div>
+                        <h2 className="text-3xl font-black">Kies je CV voorbeeld</h2>
+                        <p className="mt-2 max-w-3xl text-sm font-medium leading-relaxed text-gray-700">
+                            Gebruik een voorbeeld niet als tekst om letterlijk te kopieren. Gebruik het als structuur:
+                            profieltekst, werkervaring, vaardigheden en trefwoorden die passen bij jouw vacature.
+                        </p>
+                    </div>
+                    <Link
+                        href="/prijzen"
+                        className="inline-flex w-fit items-center justify-center border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+                    >
+                        Hoe werkt downloaden?
+                    </Link>
+                </div>
 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {examples.map((example) => (
@@ -164,6 +178,41 @@ export default async function CategoryPage({ params }: PageProps) {
                     </div>
                 </section>
             )}
+
+            <section className="border-t-4 border-black bg-[#FFF7E8]">
+                <div className="max-w-6xl mx-auto px-6 py-12">
+                    <div className="grid gap-6 md:grid-cols-[1fr_1fr]">
+                        <div>
+                            <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-600">
+                                Van voorbeeld naar sollicitatieversie
+                            </p>
+                            <h2 className="mt-2 text-3xl font-black text-gray-900">
+                                Maak eerst de inhoud sterk, kies daarna pas je downloadmoment
+                            </h2>
+                            <p className="mt-3 text-sm font-medium leading-relaxed text-gray-700">
+                                WerkCV laat je gratis starten met een voorbeeld of leeg template. Je betaalt pas wanneer je
+                                tevreden bent en de definitieve PDF wilt downloaden.
+                            </p>
+                        </div>
+                        <div className="grid gap-3 sm:grid-cols-2">
+                            <Link
+                                href="/templates"
+                                className="border-2 border-black bg-white p-4 hover:bg-yellow-100"
+                            >
+                                <p className="text-sm font-black text-black">Templates vergelijken</p>
+                                <p className="mt-1 text-sm font-medium text-gray-700">Kies de layout die past bij jouw rol.</p>
+                            </Link>
+                            <Link
+                                href="/cv-maken-zonder-abonnement"
+                                className="border-2 border-black bg-white p-4 hover:bg-yellow-100"
+                            >
+                                <p className="text-sm font-black text-black">Zonder abonnement</p>
+                                <p className="mt-1 text-sm font-medium text-gray-700">Lees hoe eenmalig downloaden werkt.</p>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
             {/* CTA Section */}
             <section className="border-t-4 border-black bg-[#4ECDC4]">

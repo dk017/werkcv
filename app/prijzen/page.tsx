@@ -163,55 +163,18 @@ export default function PrijzenPage() {
                 </div>
 
                 {/* Pricing Card */}
-                <div className="mx-auto mb-16 grid max-w-4xl gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-                    <div className="bg-[#E9FFFC] border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
+                <div className="mx-auto mb-16 grid max-w-4xl gap-6 lg:grid-cols-[1.08fr_0.92fr]">
+                    <div className="bg-yellow-300 border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
                         <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 px-4 py-1 border-3 border-black font-black text-sm" style={{ borderWidth: '3px' }}>
-                            BESTE WAARDE
-                        </div>
-
-                        <div className="text-center pt-4">
-                            <div className="text-5xl font-black text-black mb-2">{applicationBundlePrice.display}</div>
-                            <p className="text-lg font-bold text-gray-700 mb-2">CV + AI-profielfoto</p>
-                            <p className="mb-6 text-sm font-bold text-gray-700">
-                                Los samen {cvDownloadPrice.display} + {profilePhotoPrice.display}. Je bespaart {applicationBundlePrice.savingsDisplay}.
-                            </p>
-
-                            <ul className="text-left space-y-3 mb-8">
-                                {[
-                                    'Alles van de CV-download',
-                                    '4 AI-profielfoto startvarianten',
-                                    '2 inbegrepen verfijningen',
-                                    'Geschikt voor CV en LinkedIn',
-                                    'Geen abonnement of verborgen kosten',
-                                ].map((feature, i) => (
-                                    <li key={i} className="flex items-start gap-3">
-                                        <span className="bg-green-400 border-2 border-black w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
-                                        <span className="font-medium text-black">{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <Link
-                                href="/editor"
-                                className="block w-full bg-yellow-400 text-black py-4 font-black text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
-                            >
-                                Start en kies bundle bij download
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
-                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 px-4 py-1 border-3 border-black font-black text-sm" style={{ borderWidth: '3px' }}>
-                            CV ONLY
+                            MEEST GEKOZEN
                         </div>
 
                         <div className="text-center pt-4">
                             <div className="text-5xl font-black text-black mb-2">{cvDownloadPrice.display}</div>
-                            <p className="text-lg font-bold text-gray-600 mb-8">eenmalig per CV</p>
+                            <p className="text-lg font-bold text-gray-700 mb-2">Alleen je CV als PDF</p>
+                            <p className="mb-6 text-sm font-bold text-gray-700">
+                                Dit is de standaardroute: gratis bouwen, pas betalen wanneer je jouw definitieve CV wilt downloaden.
+                            </p>
 
                             <ul className="text-left space-y-3 mb-8">
                                 {[
@@ -240,10 +203,54 @@ export default function PrijzenPage() {
                                 href="/editor"
                                 className="block w-full bg-yellow-400 text-black py-4 font-black text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
                             >
-                                Maak gratis je cv
+                                Maak gratis je CV
                             </Link>
                             <p className="mt-3 text-xs font-bold text-gray-700">
                                 Afrekenen gebeurt pas wanneer je jouw PDF wilt downloaden.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
+                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white px-4 py-1 border-3 border-black font-black text-sm" style={{ borderWidth: '3px' }}>
+                            OPTIONELE UPSELL
+                        </div>
+
+                        <div className="text-center pt-4">
+                            <div className="text-5xl font-black text-black mb-2">{applicationBundlePrice.display}</div>
+                            <p className="text-lg font-bold text-gray-600 mb-2">CV + AI-profielfoto</p>
+                            <p className="mb-6 text-sm font-bold text-gray-700">
+                                Voor wie direct ook een nette profielfoto voor CV of LinkedIn wil. Los samen {cvDownloadPrice.display} + {profilePhotoPrice.display}.
+                            </p>
+
+                            <ul className="text-left space-y-3 mb-8">
+                                {[
+                                    'Alles van de CV-download',
+                                    '4 AI-profielfoto startvarianten',
+                                    '2 inbegrepen verfijningen',
+                                    'Geschikt voor CV en LinkedIn',
+                                    'Geen abonnement of verborgen kosten',
+                                    `Bundelvoordeel: ${applicationBundlePrice.savingsDisplay}`,
+                                ].map((feature, i) => (
+                                    <li key={i} className="flex items-start gap-3">
+                                        <span className="bg-green-400 border-2 border-black w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </span>
+                                        <span className="font-medium text-black">{feature}</span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <Link
+                                href="/editor"
+                                className="block w-full bg-white text-black py-4 font-black text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
+                            >
+                                Start en kies later
+                            </Link>
+                            <p className="mt-3 text-xs font-bold text-gray-700">
+                                Je hoeft de bundle niet vooraf te kiezen. De optie verschijnt pas bij downloaden.
                             </p>
                         </div>
                     </div>

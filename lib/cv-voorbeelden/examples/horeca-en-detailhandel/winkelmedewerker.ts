@@ -4,23 +4,23 @@ export const winkelmedewerker: CVExample = {
     slug: 'winkelmedewerker',
     categorySlug: 'horeca-en-detailhandel',
     name: 'Winkelmedewerker / Verkoper',
-    description: 'CV voorbeeld voor winkelmedewerkers en verkopers in de detailhandel. Laat zien hoe je je verkoopervaring, klantgerichtheid en productkennis presenteert.',
+    description: 'CV voorbeeld voor winkelmedewerkers en verkoopmedewerkers in retail. Laat verkoop, kassa, voorraad, klantadvies en beschikbaarheid concreet zien.',
     templateId: 'remarkable',
     colorThemeId: 'modern-teal',
 
-    metaTitle: 'CV Voorbeeld Winkelmedewerker | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor winkelmedewerkers en verkopers. Met voorbeeldteksten voor verkoopervaring, klantenservice en detailhandel. Maak direct je eigen CV.',
-    keywords: ['cv voorbeeld winkelmedewerker', 'cv verkoper', 'cv detailhandel', 'cv retail'],
+    metaTitle: 'CV Voorbeeld Winkelmedewerker | Verkoop & Retail | WerkCV.nl',
+    metaDesc: 'Professioneel cv voorbeeld voor winkelmedewerker en verkoopmedewerker. Met verkoopresultaten, kassasysteem, voorraadbeheer, klantadvies en beschikbaarheid.',
+    keywords: ['cv voorbeeld winkelmedewerker', 'cv verkoopmedewerker', 'winkelmedewerker cv', 'cv verkoper', 'cv detailhandel', 'cv retail', 'cv kassamedewerker'],
     heroTitle: 'CV Voorbeeld Winkelmedewerker',
-    heroText: 'Als winkelmedewerker ben je het gezicht van de winkel. Dit CV voorbeeld laat zien hoe je je verkoopvaardigheden, klantgerichtheid en productkennis overtuigend presenteert aan retailers en winkeleigenaren.',
+    heroText: 'Als winkelmedewerker moet je CV snel laten zien dat je klanten helpt, verkoopt, de winkel netjes houdt en betrouwbaar inzetbaar bent. Dit voorbeeld toont hoe je verkoopresultaten, kassasysteem, voorraadbeheer, visual merchandising en avond- of weekendbeschikbaarheid professioneel presenteert.',
     tips: [
-        'Benadruk je klantvriendelijkheid en verkoopresultaten met cijfers',
-        'Vermeld je ervaring met kassasystemen en voorraadbeheer',
-        'Geef aan dat je beschikbaar bent voor avond- en weekendwerk',
-        'Noem je ervaring met visual merchandising en etalage-inrichting',
-        'Toon je productkennis en adviesvaardigheden',
+        'Gebruik de functietitel uit de vacature: winkelmedewerker, verkoopmedewerker, kassamedewerker of retail medewerker',
+        'Benadruk klantadvies, bijverkoop, retouren, klachtenafhandeling en winkelpresentatie met concrete voorbeelden',
+        'Vermeld kassasystemen, pinbetalingen, dagafsluiting, voorraadbeheer, click & collect of omnichannel taken',
+        'Geef beschikbaarheid duidelijk aan: koopavond, weekend, vakanties, feestdagen of flexibele shifts',
+        'Maak verkoopresultaat meetbaar met targets, conversie, gemiddelde bonwaarde, klanttevredenheid of foutloze kassacontrole',
     ],
-    relatedSlugs: ['horeca-en-detailhandel/filiaalmanager', 'horeca-en-detailhandel/hotel-receptionist'],
+    relatedSlugs: ['horeca-en-detailhandel/filiaalmanager', 'horeca-en-detailhandel/klantenservice-medewerker', 'horeca-en-detailhandel/hotel-receptionist'],
 
     sampleCV: {
         personal: {
@@ -31,7 +31,7 @@ export const winkelmedewerker: CVExample = {
             location: 'Leiden',
             address: 'Breestraat 55',
             postalCode: '2311 CK',
-            summary: 'Klantgerichte en commercieel ingestelde winkelmedewerker met 4 jaar ervaring in de modedetailhandel. Sterk in persoonlijk advies, styling en het behalen van verkooptargets. Ervaren met kassabeheer, voorraadbeheer en visual merchandising. Enthousiast teamlid dat graag bijdraagt aan een positieve winkelbeleving.',
+            summary: 'Klantgerichte verkoopmedewerker met 4 jaar ervaring in mode- en warenhuisretail. Sterk in persoonlijk advies, bijverkoop, kassawerk, voorraadbeheer en visual merchandising. Ervaren met retouren, click & collect, piekdrukte en koopavonden. Beschikbaar voor avonden, weekenden en vakantieperiodes.',
             birthDate: '25 september 1999',
             birthPlace: 'Leiden',
             nationality: 'Nederlands',
@@ -52,9 +52,10 @@ export const winkelmedewerker: CVExample = {
                 end: 'heden',
                 description: 'Verkoop en klantadvies in een drukbezochte modezaak in het stadscentrum.',
                 highlights: [
-                    'Persoonlijke verkooptargets consistent met 15% overtroffen',
-                    'Visual merchandising en etalage-inrichting verzorgd volgens richtlijnen',
-                    'Nieuwe collega\'s ingewerkt op verkoopproces en kassasysteem',
+                    'Persoonlijke verkooptargets gemiddeld 15% overtroffen door actief klantadvies en stylingcombinaties',
+                    'Kassa, retouren, click & collect en voorraadchecks verzorgd tijdens drukke weekenddiensten',
+                    'Visual merchandising en etalage-inrichting uitgevoerd volgens campagne- en seizoensrichtlijnen',
+                    'Nieuwe collega\'s ingewerkt op verkoopproces, kassasysteem en klantbenadering op de winkelvloer',
                 ],
             },
             {
@@ -67,6 +68,7 @@ export const winkelmedewerker: CVExample = {
                 highlights: [
                     'Dagelijkse kassacontrole uitgevoerd met 100% nauwkeurigheid',
                     'Seizoenspresentaties mede-opgezet voor schoolseizoen en feestdagen',
+                    'Voorraad aangevuld en derving gesignaleerd bij food, cadeauartikelen en huishoudelijke producten',
                 ],
             },
         ],
@@ -85,7 +87,7 @@ export const winkelmedewerker: CVExample = {
             { name: 'Kassabeheer', level: 5 },
             { name: 'Visual Merchandising', level: 4 },
             { name: 'Voorraadbeheer', level: 4 },
-            { name: 'Stressbestendigheid', level: 4 },
+            { name: 'Retouren & klachten', level: 4 },
         ],
         languages: [
             { name: 'Nederlands', level: 'Moedertaal' },
@@ -94,6 +96,7 @@ export const winkelmedewerker: CVExample = {
         interests: ['Mode', 'Shoppen', 'Instagram', 'Fitness'],
         courses: [
             { name: 'Verkooptechnieken Masterclass', institution: 'Retail Academy', year: '2023' },
+            { name: 'Omgaan met klachten in de winkel', institution: 'HEMA Academy', year: '2021' },
         ],
         internships: [],
         awards: [],

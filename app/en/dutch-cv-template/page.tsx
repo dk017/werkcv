@@ -71,6 +71,12 @@ const routeChoices = [
   },
 ];
 
+const trustPoints = [
+  "Build and compare templates before paying.",
+  "Pay only when you want the final PDF download.",
+  "No subscription, no automatic renewal, no cancellation task.",
+];
+
 const faqs = [
   {
     question: "What is a Dutch CV template?",
@@ -214,6 +220,28 @@ export default function DutchCvTemplatePage() {
                 <p className="mt-2 text-sm leading-relaxed text-gray-700">{choice.body}</p>
               </Link>
             ))}
+          </div>
+        </div>
+
+        <div className="bg-white border-4 border-black p-6">
+          <h2 className="text-2xl font-black mb-3">How the download step works</h2>
+          <p className="text-gray-700 max-w-3xl">
+            WerkCV is useful when you need one strong CV for the Dutch market and do not want a resume-builder subscription. You can write, edit, compare templates, and only decide at the PDF download step.
+          </p>
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            {trustPoints.map((point) => (
+              <div key={point} className="border-2 border-black bg-[#FFFEF0] p-4 text-sm font-bold text-black">
+                {point}
+              </div>
+            ))}
+          </div>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link href="/en/editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+              Start in English
+            </Link>
+            <Link href="/prijzen" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
+              View pricing model
+            </Link>
           </div>
         </div>
 

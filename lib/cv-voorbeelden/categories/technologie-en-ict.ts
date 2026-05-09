@@ -8,10 +8,13 @@ export const technologieEnIct: CVExampleCategory = {
     metaDesc: 'Professionele CV voorbeelden voor ICT professionals. Software developer, data engineer, systeembeheerder en meer. ATS-vriendelijke templates met voorbeeldteksten.',
     keywords: [
         'cv voorbeeld ict',
+        'cv ict medewerker',
+        'softwareontwikkelaar cv',
         'cv developer',
         'cv software engineer',
         'cv data engineer',
         'cv systeembeheerder',
+        'cv cyber security specialist',
         'cv it professional',
         'tech cv maken',
         'cv cybersecurity',

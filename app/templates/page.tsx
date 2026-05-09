@@ -192,6 +192,54 @@ export default function TemplatesPage() {
           </div>
         </div>
       </section>
+      <section className="border-b-4 border-black bg-[#FFFEF0]">
+        <div className="mx-auto grid max-w-5xl gap-6 px-6 py-8 md:grid-cols-[1fr_1fr]">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Template + voorbeeldtekst
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Kies niet alleen een layout, kies ook de juiste inhoud
+            </h2>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+              Een template helpt met scanbaarheid, maar recruiters beoordelen vooral je profieltekst, werkervaring en relevante vaardigheden. Gebruik daarom een rolvoorbeeld als je sneller goede formuleringen wilt.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            {[
+              {
+                href: "/cv-voorbeelden",
+                title: "CV voorbeelden per beroep",
+                body: "Start met voorbeeldteksten voor rollen zoals zorg, logistiek, ICT, onderwijs, horeca en finance.",
+              },
+              {
+                href: "/cv-maken-zonder-abonnement",
+                title: "Zonder abonnement",
+                body: "Bekijk hoe gratis bouwen en eenmalig downloaden werkt voordat je begint.",
+              },
+              {
+                href: "/prijzen",
+                title: "Prijsmodel",
+                body: "Controleer wat je betaalt bij PDF-download en wat later opnieuw downloaden betekent.",
+              },
+              {
+                href: "/ats-cv-template",
+                title: "ATS template",
+                body: "Kies deze route als scanbaarheid en vacature-keywords belangrijker zijn dan design.",
+              },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
+              >
+                <p className="text-sm font-black text-black">{item.title}</p>
+                <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
       <TemplateGallery templates={templateList} />
     </main>
   );

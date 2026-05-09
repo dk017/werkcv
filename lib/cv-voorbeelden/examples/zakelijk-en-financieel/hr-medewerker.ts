@@ -4,23 +4,23 @@ export const hrMedewerker: CVExample = {
     slug: 'hr-medewerker',
     categorySlug: 'zakelijk-en-financieel',
     name: 'HR-medewerker / HR-adviseur',
-    description: 'CV voorbeeld voor HR-professionals. Laat zien hoe je je ervaring in werving, personeelsbeheer en arbeidsrecht effectief presenteert.',
+    description: 'CV voorbeeld voor HR-medewerkers en HR-adviseurs. Laat recruitment, AFAS, onboarding, verzuim, arbeidsrecht en HR-administratie concreet zien.',
     templateId: 'dynamic',
     colorThemeId: 'purple-royal',
 
-    metaTitle: 'CV Voorbeeld HR-medewerker & HR-adviseur | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor HR-medewerkers en HR-adviseurs. Met voorbeeldteksten voor werving & selectie, arbeidsrecht en personeelsbeleid.',
-    keywords: ['cv voorbeeld hr-medewerker', 'cv hr-adviseur', 'cv human resources', 'cv personeelszaken'],
+    metaTitle: 'CV Voorbeeld HR-medewerker | AFAS, Recruitment & Verzuim | WerkCV.nl',
+    metaDesc: 'Professioneel cv voorbeeld voor HR-medewerker en HR-adviseur. Met AFAS, recruitment, onboarding, verzuim, arbeidsrecht, AVG en HR-administratie.',
+    keywords: ['cv voorbeeld hr-medewerker', 'hr medewerker cv', 'cv hr-adviseur', 'cv human resources', 'cv personeelszaken', 'cv AFAS', 'cv recruitment', 'cv verzuim'],
     heroTitle: 'CV Voorbeeld HR-medewerker',
-    heroText: 'Als HR-professional ben je het visitekaartje van de organisatie. Dit CV voorbeeld laat zien hoe je je ervaring in werving & selectie, personeelsontwikkeling en HR-beleid overtuigend presenteert aan werkgevers.',
+    heroText: 'Als HR-professional moet je CV laten zien dat je zorgvuldig met mensen, data en processen omgaat. Dit voorbeeld toont hoe je recruitment, AFAS, onboarding, offboarding, verzuim, arbeidsrecht, AVG en HR-rapportages overtuigend presenteert.',
     tips: [
-        'Vermeld concrete resultaten: time-to-hire, medewerkerstevredenheid, verloop',
-        'Benadruk kennis van arbeidsrecht en CAO-regelgeving',
-        'Toon ervaring met HR-systemen (AFAS, Workday, SAP SuccessFactors)',
-        'Beschrijf je rol in organisatieontwikkeling en cultuurverandering',
-        'Laat zien dat je zowel operationeel als strategisch kunt werken',
+        'Vermeld scope: aantal medewerkers, afdelingen, vacatures, casussen of managers die je ondersteunt',
+        'Benoem HR-systemen en ATS-tools zoals AFAS, Visma Raet, Workday, Recruitee, LinkedIn Recruiter of Nmbrs',
+        'Maak processen concreet: onboarding, offboarding, contracten, mutaties, verzuim, personeelsdossiers en AVG',
+        'Laat resultaten zien met time-to-hire, medewerkerstevredenheid, procesdoorlooptijd of datakwaliteit',
+        'Toon dat je vertrouwelijkheid, arbeidsrecht, CAO-afspraken en gesprekstechniek professioneel beheerst',
     ],
-    relatedSlugs: ['zakelijk-en-financieel/bedrijfsadviseur', 'zakelijk-en-financieel/accountant'],
+    relatedSlugs: ['zakelijk-en-financieel/administratief-medewerker', 'zakelijk-en-financieel/office-manager', 'zakelijk-en-financieel/bedrijfsadviseur'],
 
     sampleCV: {
         personal: {
@@ -31,7 +31,7 @@ export const hrMedewerker: CVExample = {
             location: 'Den Haag',
             address: 'Laan van Meerdervoort 155',
             postalCode: '2517 AZ',
-            summary: 'Enthousiaste HR-adviseur met 4 jaar ervaring in werving & selectie, personeelsontwikkeling en HR-beleid. Ervaren in het adviseren van lijnmanagers over arbeidsrechtelijke vraagstukken en het implementeren van HR-processen. Passie voor het creeren van een positieve werkcultuur.',
+            summary: 'HR-adviseur met 4 jaar ervaring in recruitment, AFAS, onboarding, verzuimbegeleiding, personeelsadministratie en arbeidsrechtelijke ondersteuning. Ervaren in advies aan lijnmanagers, vertrouwelijke dossiers, HR-rapportages en procesverbetering. Werkt zorgvuldig, discreet en datagedreven met oog voor medewerker en organisatie.',
             birthDate: '8 maart 1995',
             birthPlace: 'Leiden',
             nationality: 'Nederlands',
@@ -55,6 +55,7 @@ export const hrMedewerker: CVExample = {
                     'Time-to-hire teruggebracht van 62 naar 38 dagen door procesoptimalisatie',
                     'Onboarding programma vernieuwd, medewerkerstevredenheid steeg naar 8.4',
                     'Geadviseerd bij 15+ arbeidsrechtelijke casussen (ziekte, ontslag, reorganisatie)',
+                    'Verzuimcases, contractmutaties en HR-rapportages afgestemd met managers, casemanager en payroll',
                 ],
             },
             {
@@ -67,6 +68,8 @@ export const hrMedewerker: CVExample = {
                 highlights: [
                     'Personeelsadministratie verzorgd voor 300+ medewerkers in AFAS',
                     'Recruitmentcampagnes gecoordineerd met gemiddeld 25 vacatures per kwartaal',
+                    'Arbeidsovereenkomsten, mutaties, indiensttreding en uitdiensttreding verwerkt met controle op datakwaliteit',
+                    'Sollicitatiegesprekken gepland en kandidaatcommunicatie bewaakt via ATS en Outlook',
                 ],
             },
         ],
@@ -83,10 +86,10 @@ export const hrMedewerker: CVExample = {
         skills: [
             { name: 'Werving & selectie', level: 5 },
             { name: 'Arbeidsrecht', level: 4 },
-            { name: 'AFAS / HR-systemen', level: 4 },
-            { name: 'Personeelsontwikkeling', level: 4 },
+            { name: 'AFAS & HR-administratie', level: 4 },
+            { name: 'Onboarding & offboarding', level: 5 },
             { name: 'Gespreksvoering', level: 5 },
-            { name: 'HR-analytics', level: 3 },
+            { name: 'Verzuimbegeleiding', level: 4 },
         ],
         languages: [
             { name: 'Nederlands', level: 'Moedertaal' },
@@ -96,6 +99,7 @@ export const hrMedewerker: CVExample = {
         courses: [
             { name: 'Arbeidsrecht Basis', institution: 'GITP', year: '2022' },
             { name: 'Competentiegericht Interviewen', institution: 'SHL', year: '2021' },
+            { name: 'AFAS HRM Beheer', institution: 'AFAS Academy', year: '2023' },
         ],
         internships: [],
         awards: [],

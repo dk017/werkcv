@@ -1,0 +1,132 @@
+import { CVExample } from '../../types';
+
+export const pedagogischMedewerker: CVExample = {
+    slug: 'pedagogisch-medewerker',
+    categorySlug: 'onderwijs',
+    name: 'Pedagogisch Medewerker',
+    description: 'CV voorbeeld voor pedagogisch medewerkers in kinderopvang, peuteropvang en BSO. Laat ontwikkeling, veiligheid, oudercontact en activiteiten concreet zien.',
+    templateId: 'modern',
+    colorThemeId: 'forest-green',
+
+    metaTitle: 'CV Voorbeeld Pedagogisch Medewerker | WerkCV.nl',
+    metaDesc: 'Professioneel cv voorbeeld voor pedagogisch medewerker kinderopvang. Met profieltekst, werkervaring, ontwikkeling, oudercontact, VVE, BSO en vaardigheden.',
+    keywords: [
+        'cv voorbeeld pedagogisch medewerker',
+        'pedagogisch medewerker cv',
+        'cv kinderopvang medewerker',
+        'cv pedagogisch medewerker kinderopvang',
+        'cv bso medewerker',
+        'cv peuteropvang',
+        'cv kinderdagverblijf',
+    ],
+    heroTitle: 'CV Voorbeeld Pedagogisch Medewerker',
+    heroText: 'Een sterk CV voor pedagogisch medewerker laat zien met welke leeftijdsgroepen je werkt, hoe je kinderen begeleidt en hoe je veiligheid, ontwikkeling en oudercontact combineert. Dit voorbeeld helpt je om kinderopvang, peuteropvang, VVE/VE en BSO-ervaring professioneel te verwoorden.',
+    tips: [
+        'Noem de leeftijdsgroep duidelijk: baby, dreumes, peuter, kleuter, BSO of 0-12 jaar',
+        'Laat pedagogische kwaliteit zien via observaties, activiteiten, sociaal-emotionele ontwikkeling en dagstructuur',
+        'Vermeld kwalificaties zoals MBO Pedagogisch Werk, VVE/VE, kinder-EHBO, BHV of babyscholing',
+        'Beschrijf oudercontact concreet: overdrachten, oudergesprekken, wennen, bijzonderheden en samenwerking',
+        'Koppel creativiteit aan ontwikkeling, bijvoorbeeld taal, motoriek, zelfstandigheid of samenspel',
+    ],
+    relatedSlugs: [
+        'onderwijs/onderwijsassistent',
+        'onderwijs/basisschool-docent',
+        'zorg-en-welzijn/zorgmedewerker-helpende',
+    ],
+
+    sampleCV: {
+        personal: {
+            name: 'Sanne de Groot',
+            title: 'Pedagogisch Medewerker Kinderopvang',
+            email: 'sanne.degroot@email.nl',
+            phone: '06-34567890',
+            location: 'Utrecht',
+            address: 'Vleutenseweg 41',
+            postalCode: '3532 HB',
+            summary: 'Betrokken pedagogisch medewerker met 6 jaar ervaring in kinderdagverblijf, peuteropvang en BSO. Sterk in het bieden van structuur, veiligheid en ontwikkelingsgerichte activiteiten voor kinderen van 0 tot 12 jaar. Ervaren met kindobservaties, ouderoverdracht, VVE-thema\'s, dagritmes en samenwerking binnen vaste teams. In bezit van kinder-EHBO en beschikbaar voor 28-32 uur.',
+            birthDate: '17 april 1994',
+            birthPlace: 'Utrecht',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: 'linkedin.com/in/sannedegroot',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Pedagogisch Medewerker Peuteropvang',
+                company: 'Kind & Co Ludens',
+                location: 'Utrecht',
+                start: 'januari 2021',
+                end: 'heden',
+                description: 'Begeleiding van peutergroepen met focus op taalontwikkeling, sociaal-emotionele groei en voorbereiding op de basisschool.',
+                highlights: [
+                    'Dagelijks ontwikkelingsgerichte activiteiten voorbereid rond taal, motoriek, tellen, samenspel en zelfstandigheid',
+                    'Observaties vastgelegd en besproken met collega\'s en ouders tijdens overdrachten en oudergesprekken',
+                    'VVE-thema\'s vertaald naar speelhoeken, kringmomenten en creatieve activiteiten voor peuters',
+                    'Nieuwe kinderen rustig laten wennen door duidelijke dagstructuur, vaste rituelen en nauwe oudercommunicatie',
+                ],
+            },
+            {
+                role: 'Pedagogisch Medewerker BSO',
+                company: 'Partou',
+                location: 'Nieuwegein',
+                start: 'augustus 2018',
+                end: 'december 2020',
+                description: 'Naschoolse opvang voor kinderen van 4 tot 12 jaar met sportieve, creatieve en sociale activiteiten.',
+                highlights: [
+                    'Activiteitenprogramma gemaakt voor groepen tot 22 kinderen, passend bij leeftijd en energie na schooltijd',
+                    'Conflicten tussen kinderen begeleid met rustige gespreksvoering en duidelijke groepsafspraken',
+                    'Contact onderhouden met ouders, leerkrachten en locatiecoördinator over bijzonderheden en planning',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 4 Gespecialiseerd Pedagogisch Medewerker',
+                school: 'ROC Midden Nederland',
+                location: 'Utrecht',
+                start: 'september 2014',
+                end: 'juli 2018',
+                description: 'Opleiding gericht op kinderopvang, ontwikkelingsstimulering, groepsbegeleiding en oudercommunicatie.',
+            },
+        ],
+        skills: [
+            { name: 'Kindontwikkeling 0-12', level: 5 },
+            { name: 'Oudercommunicatie', level: 5 },
+            { name: 'VVE/VE-activiteiten', level: 4 },
+            { name: 'Groepsbegeleiding', level: 5 },
+            { name: 'Observeren & rapporteren', level: 4 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+        ],
+        interests: ['Voorlezen', 'Creatieve activiteiten', 'Yoga'],
+        courses: [
+            { name: 'Kinder-EHBO', institution: 'Het Oranje Kruis', year: '2024' },
+            { name: 'VVE Uk & Puk', institution: 'CED-Groep', year: '2022' },
+            { name: 'BHV Kinderopvang', institution: 'NIBHV', year: '2021' },
+        ],
+        internships: [
+            {
+                role: 'Stagiair Pedagogisch Medewerker',
+                company: 'KDV De Kleine Wereld',
+                location: 'Utrecht',
+                start: 'februari 2017',
+                end: 'juni 2018',
+                description: 'Stage op baby- en peutergroepen met ondersteuning bij verzorging, spelbegeleiding en ouderoverdracht.',
+                highlights: [
+                    'Dagritme ondersteund met verzorging, eetmomenten, buitenspelen en rustige overgangsmomenten',
+                    'Observeren en overdracht geoefend onder begeleiding van vaste pedagogisch medewerkers',
+                ],
+            },
+        ],
+        awards: [
+            'Activiteitenidee opgenomen in locatieplanning van Kind & Co Ludens binnen het VVE-thema verkeer, 2023',
+        ],
+    },
+};

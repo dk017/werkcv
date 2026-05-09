@@ -4,23 +4,23 @@ export const onderwijsassistent: CVExample = {
     slug: 'onderwijsassistent',
     categorySlug: 'onderwijs',
     name: 'Onderwijsassistent',
-    description: 'CV voorbeeld voor onderwijsassistenten. Laat zien hoe je je MBO-diploma, begeleidingservaring en pedagogische vaardigheden presenteert.',
+    description: 'CV voorbeeld voor onderwijsassistenten. Laat begeleiding, klasondersteuning, leerlingvolgsysteem, differentiatie en pedagogische vaardigheden concreet zien.',
     templateId: 'simple',
     colorThemeId: 'sage-green',
 
-    metaTitle: 'CV Voorbeeld Onderwijsassistent | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor onderwijsassistenten. Met voorbeeldteksten voor begeleiding, pedagogische vaardigheden en klasondersteuning. Maak direct je eigen CV.',
-    keywords: ['cv voorbeeld onderwijsassistent', 'cv klassenassistent', 'cv onderwijs MBO', 'cv leerlingbegeleiding'],
-    heroTitle: 'CV Voorbeeld Onderwijsassistent',
-    heroText: 'Als onderwijsassistent ondersteun je de leerkracht en begeleid je leerlingen die extra aandacht nodig hebben. Dit CV voorbeeld toont hoe je je pedagogische vaardigheden, begeleidingservaring en betrokkenheid professioneel presenteert.',
+    metaTitle: 'CV Voor Onderwijsassistent | WerkCV.nl',
+    metaDesc: 'Sterk cv voor onderwijsassistent nodig? Bekijk een professioneel voorbeeld met klasondersteuning, differentiatie, ParnasSys, leerlingbegeleiding en pedagogiek.',
+    keywords: ['cv voor onderwijsassistent', 'onderwijsassistent cv', 'cv voorbeeld onderwijsassistent', 'cv klassenassistent', 'cv onderwijs mbo', 'cv leerlingbegeleiding', 'cv ParnasSys'],
+    heroTitle: 'CV voor onderwijsassistent',
+    heroText: 'Als onderwijsassistent ondersteun je de leerkracht en begeleid je leerlingen die extra aandacht nodig hebben. Dit CV voorbeeld toont hoe je differentiatie, kleine groepjes, remedial teaching, ParnasSys, sociaal-emotionele begeleiding en samenwerking met leerkrachten professioneel presenteert.',
     tips: [
         'Vermeld je MBO-diploma Onderwijsassistent (niveau 4)',
-        'Beschrijf je ervaring met het begeleiden van individuele leerlingen en kleine groepjes',
-        'Noem ervaring met speciale leerlingbehoeften (dyslexie, ADHD, hoogbegaafdheid)',
-        'Toon je samenwerking met leerkrachten, ouders en externe specialisten',
-        'Vermeld eventuele bijscholing op het gebied van pedagogiek of didactiek',
+        'Beschrijf je ervaring met individuele leerlingen, verlengde instructie en kleine groepjes',
+        'Noem ervaring met dyslexie, dyscalculie, ADHD, NT2, hoogbegaafdheid of sociaal-emotionele ondersteuning',
+        'Vermeld leerlingvolgsystemen zoals ParnasSys, Cito LVS of leerlingdossiers als je daarmee werkt',
+        'Laat samenwerking zien met leerkrachten, intern begeleider, ouders en externe specialisten',
     ],
-    relatedSlugs: ['onderwijs/basisschool-docent', 'onderwijs/speciaal-onderwijs'],
+    relatedSlugs: ['onderwijs/pedagogisch-medewerker', 'onderwijs/basisschool-docent', 'onderwijs/speciaal-onderwijs'],
 
     sampleCV: {
         personal: {
@@ -31,7 +31,7 @@ export const onderwijsassistent: CVExample = {
             location: 'Arnhem',
             address: 'Velperweg 33',
             postalCode: '6824 BG',
-            summary: 'Gedreven onderwijsassistent met 4 jaar ervaring in het basisonderwijs. Ervaren in het begeleiden van leerlingen met extra ondersteuningsbehoeften en het ondersteunen van leerkrachten bij de dagelijkse lespraktijk. Geduldig, creatief en altijd gericht op het welzijn van het kind.',
+            summary: 'Gedreven onderwijsassistent met 4 jaar ervaring in het basisonderwijs, groep 1 t/m 6. Ervaren in verlengde instructie, leesbegeleiding, remedial teaching, sociaal-emotionele ondersteuning en werken met ParnasSys. Geduldig, duidelijk en sterk in samenwerken met leerkrachten, intern begeleider en ouders.',
             birthDate: '12 oktober 1997',
             birthPlace: 'Nijmegen',
             nationality: 'Nederlands',
@@ -52,9 +52,10 @@ export const onderwijsassistent: CVExample = {
                 end: 'heden',
                 description: 'Ondersteuning van leerkrachten in groep 3 t/m 6 en begeleiding van leerlingen met een ontwikkelingsachterstand.',
                 highlights: [
-                    'Remedial teaching gegeven aan leerlingen met dyslexie en dyscalculie',
+                    'Remedial teaching gegeven aan leerlingen met dyslexie, dyscalculie en leesachterstand',
                     'Sociale vaardigheidstraining begeleid voor groepjes van 4-6 leerlingen',
                     'Lesmateriaal voorbereid en aangepast voor leerlingen met speciale behoeften',
+                    'Observaties en voortgang kort vastgelegd in ParnasSys voor overleg met leerkracht en intern begeleider',
                 ],
             },
             {
@@ -67,6 +68,7 @@ export const onderwijsassistent: CVExample = {
                 highlights: [
                     'Kleuters begeleid bij spelend leren en sociaal-emotionele ontwikkeling',
                     'Leesbegeleiding gegeven aan leerlingen uit groep 3 met een leesachterstand',
+                    'Kleine instructiegroepjes ondersteund bij rekenen, taal en woordenschatontwikkeling',
                 ],
             },
         ],
@@ -84,7 +86,7 @@ export const onderwijsassistent: CVExample = {
             { name: 'Leerlingbegeleiding', level: 5 },
             { name: 'Pedagogische vaardigheden', level: 4 },
             { name: 'Remedial teaching', level: 4 },
-            { name: 'Creatieve werkvormen', level: 4 },
+            { name: 'ParnasSys & leerlingdossier', level: 4 },
             { name: 'Samenwerking', level: 5 },
         ],
         languages: [
@@ -95,6 +97,7 @@ export const onderwijsassistent: CVExample = {
         courses: [
             { name: 'Omgaan met ADHD in de klas', institution: 'Seminarium voor Orthopedagogiek', year: '2023' },
             { name: 'EHBO bij kinderen', institution: 'Het Oranje Kruis', year: '2022' },
+            { name: 'Dyslexie signaleren en begeleiden', institution: 'Onderwijs Maak Je Samen', year: '2021' },
         ],
         internships: [],
         awards: [],

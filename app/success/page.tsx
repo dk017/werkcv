@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getCV } from "@/app/actions";
 import { getEditorPathForLanguage } from "@/lib/editor-path";
+import { prisma } from "@/lib/prisma";
 import { getResumeLanguage, ResumeLanguage } from "@/lib/resume-language";
+import PurchaseTracker from "./PurchaseTracker";
 
 export const metadata: Metadata = {
     title: "Betaling Geslaagd - WerkCV",
@@ -30,9 +32,31 @@ export default async function SuccessPage({
     const profilePhotoPath = resolvedLanguage === "en"
         ? "/en/profile-photo#profielfoto-tool"
         : "/profielfoto-cv-maken#profielfoto-tool";
+    const paidOrder = cvId
+        ? await prisma.order.findFirst({
+            where: {
+                cvId,
+                paidAt: { not: null },
+            },
+            orderBy: { paidAt: "desc" },
+            select: {
+                id: true,
+                product: true,
+                amountCents: true,
+                currency: true,
+            },
+        })
+        : null;
 
     return (
         <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-10">
+            <PurchaseTracker
+                orderId={paidOrder?.id}
+                cvId={cvId}
+                product={paidOrder?.product}
+                amountCents={paidOrder?.amountCents ?? undefined}
+                currency={paidOrder?.currency ?? undefined}
+            />
             <div className="max-w-xl w-full bg-white rounded-xl shadow-lg p-8 text-center">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <svg

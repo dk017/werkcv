@@ -74,7 +74,10 @@ const tocItems = [
     { id: 'werkervaring', label: 'Werkervaring' },
     { id: 'opleiding', label: 'Opleiding' },
     { id: 'vaardigheden', label: 'Vaardigheden' },
+    { id: 'ats-trefwoorden', label: 'ATS trefwoorden' },
+    { id: 'veelgemaakte-fouten', label: 'Veelgemaakte fouten' },
     { id: 'tips', label: 'Tips' },
+    { id: 'downloadklaar', label: 'Downloadklaar maken' },
 ];
 
 export default async function ExamplePage({ params }: PageProps) {
@@ -89,6 +92,17 @@ export default async function ExamplePage({ params }: PageProps) {
     const relatedGuide = getRelatedGuideLink(example);
     const cvData = example.sampleCV;
     const metaDesc = normalizeBrandCopy(example.metaDesc);
+    const roleName = example.name.toLowerCase();
+    const primarySkills = cvData.skills.slice(0, 8).map((skill) => skill.name);
+    const primaryKeywords = Array.from(
+        new Set([
+            ...primarySkills,
+            ...example.keywords
+                .map((keyword) => keyword.replace(/^cv voorbeeld\s+/i, '').replace(/^cv\s+/i, ''))
+                .filter((keyword) => keyword.length > 2),
+        ])
+    ).slice(0, 10);
+    const firstExperience = cvData.experience[0];
 
     const breadcrumbItems = [
         { label: 'Home', href: '/' },
@@ -320,6 +334,66 @@ export default async function ExamplePage({ params }: PageProps) {
                             )}
                         </ContentSection>
 
+                        <ContentSection id="ats-trefwoorden" title={`ATS trefwoorden voor een ${example.name} CV`}>
+                            <p>
+                                Veel werkgevers gebruiken software of vaste zoekfilters voordat een recruiter je CV leest.
+                                Gebruik daarom dezelfde vaktermen als in de vacature, maar alleen als ze echt bij jouw ervaring passen.
+                            </p>
+                            <p>
+                                Voor een {roleName} CV zijn dit logische trefwoorden om te controleren:
+                            </p>
+                            {primaryKeywords.length > 0 && (
+                                <ExampleBlock label="Trefwoorden om te overwegen">
+                                    <div className="flex flex-wrap gap-2">
+                                        {primaryKeywords.map((keyword) => (
+                                            <span
+                                                key={keyword}
+                                                className="border-2 border-black bg-yellow-100 px-3 py-1 text-sm font-bold text-black"
+                                            >
+                                                {keyword}
+                                            </span>
+                                        ))}
+                                    </div>
+                                </ExampleBlock>
+                            )}
+                            <p>
+                                Zet deze woorden niet los onder elkaar als vulling. Verwerk ze in je profieltekst,
+                                werkervaring en vaardigheden zodat duidelijk wordt waar je ze hebt toegepast.
+                            </p>
+                        </ContentSection>
+
+                        <ContentSection id="veelgemaakte-fouten" title={`Veelgemaakte fouten bij een ${example.name} CV`}>
+                            <div className="grid gap-4 md:grid-cols-2">
+                                {[
+                                    {
+                                        title: 'Te algemeen schrijven',
+                                        body: `Een goed ${roleName} CV laat niet alleen zien wat je functie was, maar ook welke taken, systemen, doelgroepen of resultaten belangrijk waren.`,
+                                    },
+                                    {
+                                        title: 'Geen vacaturetaal gebruiken',
+                                        body: 'Recruiters zoeken vaak op dezelfde termen die in de vacature staan. Neem relevante termen over als ze kloppen met je ervaring.',
+                                    },
+                                    {
+                                        title: 'Alleen verantwoordelijkheden noemen',
+                                        body: 'Maak bullet points sterker door resultaat, omvang of context toe te voegen. Denk aan aantallen, processen, tools of verbeteringen.',
+                                    },
+                                    {
+                                        title: 'Een te druk template kiezen',
+                                        body: 'Kies een layout die snel scanbaar blijft. Voor veel Nederlandse sollicitaties werkt rustig en duidelijk beter dan veel decoratie.',
+                                    },
+                                ].map((item) => (
+                                    <article
+                                        key={item.title}
+                                        className="border-3 border-black bg-white p-4"
+                                        style={{ borderWidth: '3px' }}
+                                    >
+                                        <h3 className="font-black text-gray-900">{item.title}</h3>
+                                        <p className="mt-2 text-sm leading-relaxed text-gray-700">{item.body}</p>
+                                    </article>
+                                ))}
+                            </div>
+                        </ContentSection>
+
                         {/* Section: Tips */}
                         {example.tips.length > 0 && (
                             <ContentSection id="tips" title={`Tips voor je ${example.name} CV`}>
@@ -341,6 +415,41 @@ export default async function ExamplePage({ params }: PageProps) {
                                 </div>
                             </ContentSection>
                         )}
+
+                        <ContentSection id="downloadklaar" title="Van voorbeeld naar downloadklare PDF">
+                            <p>
+                                Gebruik dit voorbeeld als structuur, maar maak de inhoud eerst specifiek voor jouw vacature.
+                                Controleer daarna of je profieltekst, laatste werkervaring en vaardigheden dezelfde richting op wijzen.
+                            </p>
+                            {firstExperience && (
+                                <ExampleBlock label="Laatste controle voor dit voorbeeld">
+                                    <ul className="list-disc space-y-2 pl-5 text-sm">
+                                        <li>
+                                            Past je profieltekst bij de functie <strong>{firstExperience.role}</strong> of bij de rol waarop je nu solliciteert?
+                                        </li>
+                                        <li>
+                                            Staan je belangrijkste {roleName} vaardigheden zichtbaar in de eerste helft van je CV?
+                                        </li>
+                                        <li>
+                                            Is je template rustig genoeg om snel te scannen en als PDF te versturen?
+                                        </li>
+                                    </ul>
+                                </ExampleBlock>
+                            )}
+                            <div className="mt-5 flex flex-wrap gap-3">
+                                <UseExampleButton
+                                    templateId={example.templateId}
+                                    colorThemeId={example.colorThemeId}
+                                    sampleCV={example.sampleCV}
+                                />
+                                <Link
+                                    href="/prijzen"
+                                    className="inline-flex items-center justify-center border-4 border-black bg-white px-5 py-3 text-sm font-black text-black"
+                                >
+                                    Bekijk downloadprijs
+                                </Link>
+                            </div>
+                        </ContentSection>
 
                         {example.categorySlug === 'studenten-en-starters' && example.slug === 'student-cv' && (
                             <div className="p-6 bg-[#E9FFFC] border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -377,7 +486,7 @@ export default async function ExamplePage({ params }: PageProps) {
                             </h3>
                             <p className="text-gray-700 mb-4">
                                 Gebruik het voorbeeld hierboven als startpunt of begin met een leeg template.
-                                Binnen 5 minuten klaar, eenmalig €7,99.
+                                Werk eerst gratis aan je inhoud en betaal pas als je de definitieve PDF wilt downloaden.
                             </p>
                             <div className="flex flex-wrap gap-3">
                                 <UseExampleButton
@@ -402,7 +511,7 @@ export default async function ExamplePage({ params }: PageProps) {
                             <div className="mt-6 p-5 bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E] border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                                 <h3 className="font-black text-white mb-2">Klaar om te beginnen?</h3>
                                 <p className="text-white/90 text-sm mb-4">
-                                    Maak nu je eigen professionele CV
+                                    Gebruik dit voorbeeld in de editor
                                 </p>
                                 <Link
                                     href="/templates"
@@ -486,7 +595,7 @@ export default async function ExamplePage({ params }: PageProps) {
                     </h2>
                     <p className="text-lg mb-6 max-w-2xl mx-auto text-gray-800">
                         Maak binnen 5 minuten een professioneel {example.name.toLowerCase()} CV
-                        met onze templates en voorbeeldteksten. Eenmalig €7,99, geen abonnement.
+                        met onze templates en voorbeeldteksten. Gratis starten, betalen pas bij PDF-download.
                     </p>
                     <Link
                         href="/templates"

@@ -4,23 +4,23 @@ export const magazijnmedewerker: CVExample = {
     slug: 'magazijnmedewerker',
     categorySlug: 'vakmanschap-en-logistiek',
     name: 'Magazijnmedewerker',
-    description: 'CV voorbeeld voor magazijnmedewerkers en orderpickers. Laat zien hoe je je heftruckcertificaat, WMS-ervaring en fysieke inzetbaarheid presenteert.',
+    description: 'CV voorbeeld voor magazijnmedewerkers, orderpickers en logistiek medewerkers. Laat WMS, scanner, heftruck, veiligheid en productiviteit concreet zien.',
     templateId: 'simple',
     colorThemeId: 'charcoal',
 
-    metaTitle: 'CV Voorbeeld Magazijnmedewerker | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor magazijnmedewerkers. Met voorbeeldteksten voor heftruckcertificaat, orderpicking en WMS-systemen. Maak direct je eigen CV.',
-    keywords: ['cv voorbeeld magazijnmedewerker', 'cv orderpicker', 'cv magazijn', 'cv logistiek medewerker'],
+    metaTitle: 'CV Voorbeeld Magazijnmedewerker | Orderpicker & WMS | WerkCV.nl',
+    metaDesc: 'Professioneel cv voorbeeld voor magazijnmedewerker, orderpicker en logistiek medewerker. Met WMS, scanner, heftruck, reachtruck, veiligheid en picksnelheid.',
+    keywords: ['cv voorbeeld magazijnmedewerker', 'magazijnmedewerker cv', 'cv orderpicker', 'cv logistiek medewerker', 'cv magazijn', 'cv heftruck', 'cv reachtruck', 'cv WMS'],
     heroTitle: 'CV Voorbeeld Magazijnmedewerker',
-    heroText: 'Als magazijnmedewerker ben je een belangrijke schakel in de logistieke keten. Dit CV voorbeeld laat zien hoe je je heftruckcertificaat, ervaring met WMS-systemen en fysieke inzetbaarheid professioneel presenteert.',
+    heroText: 'Als magazijnmedewerker ben je een belangrijke schakel in de logistieke keten. Dit CV voorbeeld laat zien hoe je orderpicking, WMS, scanners, heftruck/reachtruck, voorraadcontrole, veiligheid en ploegendienst professioneel presenteert.',
     tips: [
-        'Vermeld je heftruckcertificaat en het type (reachtruck, EPT, heftruck)',
-        'Noem ervaring met specifieke WMS-systemen (SAP, Navision, Picqer)',
-        'Geef aan dat je beschikbaar bent voor ploegendiensten of weekendwerk',
-        'Toon resultaten: picksnelheid, nauwkeurigheid, verbeterprojecten',
-        'Vermeld eventuele VCA-certificering en EHBO-diploma',
+        'Vermeld je certificaten met type: heftruck, reachtruck, EPT, VCA, BHV of ADR-basis',
+        'Noem WMS-, ERP- en scannersystemen zoals SAP EWM, Reflex, Navision, Picqer of voice picking',
+        'Geef aan of je ervaring hebt met inbound, outbound, retouren, voorraadcontrole, laden/lossen of crossdock',
+        'Maak productiviteit meetbaar met orderregels per uur, picknauwkeurigheid, palletvolume of foutreductie',
+        'Benoem beschikbaarheid voor 2- of 3-ploegendienst, nachtwerk, weekendwerk en fysieke belastbaarheid',
     ],
-    relatedSlugs: ['vakmanschap-en-logistiek/logistiek-coordinator', 'vakmanschap-en-logistiek/chauffeur'],
+    relatedSlugs: ['vakmanschap-en-logistiek/logistiek-coordinator', 'vakmanschap-en-logistiek/productiemedewerker', 'vakmanschap-en-logistiek/chauffeur'],
 
     sampleCV: {
         personal: {
@@ -31,7 +31,7 @@ export const magazijnmedewerker: CVExample = {
             location: 'Tilburg',
             address: 'Ringbaan Zuid 112',
             postalCode: '5021 DL',
-            summary: 'Hardwerkende en nauwkeurige magazijnmedewerker met 5 jaar ervaring in distributiecentra. In bezit van heftruckcertificaat en ervaren met WMS-systemen. Betrouwbaar teamspeler die ook zelfstandig goed functioneert. Beschikbaar voor ploegendiensten.',
+            summary: 'Nauwkeurige magazijnmedewerker en orderpicker met 5 jaar ervaring in e-commerce en retaildistributie. Ervaren met SAP EWM, handscanner, voice picking, inbound, outbound, voorraadcontrole en reachtruckwerk. Bekend om hoge picknauwkeurigheid, veilig werken en stabiele inzet in 2- en 3-ploegendienst.',
             birthDate: '27 augustus 1995',
             birthPlace: 'Tilburg',
             nationality: 'Nederlands',
@@ -53,8 +53,9 @@ export const magazijnmedewerker: CVExample = {
                 description: 'Orderpicking, inslag en uitslag van goederen in een grootschalig distributiecentrum.',
                 highlights: [
                     'Gemiddeld 150 orderregels per uur gepickt met 99,5% nauwkeurigheid',
-                    'Reachtruck bediend voor het plaatsen en ophalen van pallets op hoogte',
-                    'Nieuwe medewerkers ingewerkt op pickprocedures en veiligheidsprotocollen',
+                    'Reachtruck bediend voor palletplaatsing op hoogte, aanvullen van picklocaties en spoedorders',
+                    'SAP EWM en handscanner gebruikt voor orderpicking, voorraadcorrecties en locatiecontroles',
+                    'Nieuwe medewerkers ingewerkt op pickprocedures, looproutes, veiligheidsprotocollen en foutmeldingen',
                 ],
             },
             {
@@ -67,6 +68,7 @@ export const magazijnmedewerker: CVExample = {
                 highlights: [
                     'Dagelijks 80+ pallets verwerkt bij inslag en uitslag',
                     'Voorraadverschillen teruggebracht met 30% door nauwkeurige controle',
+                    'Retouren en beschadigde goederen gecontroleerd, gelabeld en correct geregistreerd in het WMS',
                 ],
             },
         ],
@@ -83,9 +85,9 @@ export const magazijnmedewerker: CVExample = {
         skills: [
             { name: 'Orderpicking', level: 5 },
             { name: 'Heftruck & Reachtruck', level: 5 },
-            { name: 'WMS-systemen', level: 4 },
+            { name: 'SAP EWM & scanners', level: 4 },
             { name: 'Voorraadbeheer', level: 4 },
-            { name: 'Fysieke belastbaarheid', level: 5 },
+            { name: 'Inbound & outbound', level: 5 },
         ],
         languages: [
             { name: 'Nederlands', level: 'Moedertaal' },
@@ -95,6 +97,7 @@ export const magazijnmedewerker: CVExample = {
         courses: [
             { name: 'Heftruckcertificaat (Reachtruck)', institution: 'BMWT', year: '2022' },
             { name: 'VCA-basis', institution: 'PBNA', year: '2021' },
+            { name: 'Voice picking en scannertraining', institution: 'Bol.com Academy', year: '2022' },
         ],
         internships: [],
         awards: [],

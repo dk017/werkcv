@@ -4,23 +4,23 @@ export const oberServeerster: CVExample = {
     slug: 'ober-serveerster',
     categorySlug: 'horeca-en-detailhandel',
     name: 'Ober / Serveerster',
-    description: 'CV voorbeeld voor obers en serveersters. Laat zien hoe je je service-ervaring, gastvrijheid en kennis van eten en drinken professioneel presenteert.',
+    description: 'CV voorbeeld voor obers, serveersters en bedieningsmedewerkers. Laat gastvrijheid, tempo, upselling, kassasysteem en beschikbaarheid concreet zien.',
     templateId: 'jobboss',
     colorThemeId: 'modern-teal',
 
-    metaTitle: 'CV Voorbeeld Ober / Serveerster | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor obers en serveersters. Met voorbeeldteksten voor horecaservice, gastvrijheid en bediening. Maak direct je eigen CV.',
-    keywords: ['cv voorbeeld ober', 'cv serveerster', 'cv bediening', 'cv horeca service'],
-    heroTitle: 'CV Voorbeeld Ober / Serveerster',
-    heroText: 'Als ober of serveerster ben je het visitekaartje van het restaurant. Dit CV voorbeeld laat zien hoe je je gastvrijheid, service-ervaring en kennis van wijn en gerechten overtuigend presenteert aan horecawerkgevers.',
+    metaTitle: 'CV Serveerster Voorbeeld | WerkCV.nl',
+    metaDesc: 'Sterk cv serveerster voorbeeld met bediening, gastvrijheid, kassasysteem, wijnkennis, terras, reserveringen en horecaservice.',
+    keywords: ['cv serveerster', 'cv serveerster voorbeeld', 'cv voorbeeld ober', 'cv bedieningsmedewerker', 'cv ober serveerster', 'cv bediening', 'cv horeca service', 'horeca cv'],
+    heroTitle: 'CV voorbeeld serveerster',
+    heroText: 'Als ober of serveerster ben je het visitekaartje van het restaurant. Dit CV voorbeeld laat zien hoe je gastvrijheid, tempo, kassasysteem, terrasbediening, upselling, wijnkennis en flexibele beschikbaarheid overtuigend presenteert aan horecawerkgevers.',
     tips: [
-        'Benadruk je gastvrijheid en klantgerichtheid met concrete voorbeelden',
-        'Vermeld je ervaring met kassasystemen en bestellingssoftware',
+        'Benoem het type horeca: à la carte, terras, hotel, banqueting, events, lunchroom, café of fine dining',
+        'Vermeld je ervaring met kassasystemen, handhelds, reserveringen, tafelindeling en allergenencommunicatie',
         'Noem eventuele wijn- of barista-cursussen die je hebt gevolgd',
-        'Geef aan dat je flexibel beschikbaar bent (avonden, weekenden, feestdagen)',
-        'Toon je talenkennis - meertaligheid is een grote plus in de horeca',
+        'Geef aan dat je flexibel beschikbaar bent voor avonden, weekenden, feestdagen en het terrasseizoen',
+        'Toon service-impact met gastbeoordelingen, gemiddelde couverts, upselling of het inwerken van collega’s',
     ],
-    relatedSlugs: ['horeca-en-detailhandel/kok-chef', 'horeca-en-detailhandel/hotel-receptionist'],
+    relatedSlugs: ['horeca-en-detailhandel/kok-chef', 'horeca-en-detailhandel/hotel-receptionist', 'horeca-en-detailhandel/cateringmedewerker'],
 
     sampleCV: {
         personal: {
@@ -31,7 +31,7 @@ export const oberServeerster: CVExample = {
             location: 'Maastricht',
             address: 'Wycker Brugstraat 38',
             postalCode: '6221 ED',
-            summary: 'Enthousiaste en gastvrije serveerster met 5 jaar ervaring in de horeca. Ervaren in à la carte bediening, banqueting en terrasservice. Bekend om een uitstekend geheugen voor gasten en hun voorkeuren. Flexibel inzetbaar en altijd gericht op een perfecte gastbeleving.',
+            summary: 'Gastvrije serveerster met 5 jaar ervaring in à la carte bediening, terras, banqueting en drukke avonddiensten. Ervaren met Lightspeed, handheld bestellingen, tafelindeling, wijnadvies en allergenencommunicatie. Bekend om rustig werken onder druk, persoonlijke aandacht en betrouwbare inzet in weekenden en feestdagen.',
             birthDate: '9 juni 1998',
             birthPlace: 'Sittard',
             nationality: 'Nederlands',
@@ -55,6 +55,7 @@ export const oberServeerster: CVExample = {
                     'Zaalverantwoordelijke op drukke avonden met een team van 4 bedieners',
                     'Wijnadvies gegeven aan gasten op basis van behaalde SDEN-certificering',
                     'Klanttevredenheidsscore verhoogd van 8,2 naar 8,7 door persoonlijke aandacht',
+                    'Reserveringen, tafelwissels en allergenenwensen afgestemd met keuken en bar tijdens piekdrukte',
                 ],
             },
             {
@@ -67,6 +68,7 @@ export const oberServeerster: CVExample = {
                 highlights: [
                     'Dagelijks gemiddeld 80 gasten bediend in een hoog tempo',
                     'Nieuwe medewerkers ingewerkt op kassasysteem en serviceprotocollen',
+                    'Terrasbediening en afrekenen via handheld verzorgd tijdens drukke zomerdiensten',
                 ],
             },
         ],
@@ -84,7 +86,7 @@ export const oberServeerster: CVExample = {
             { name: 'Gastvrijheid & Service', level: 5 },
             { name: 'Kassasystemen (Lightspeed)', level: 4 },
             { name: 'Wijnkennis', level: 4 },
-            { name: 'Stressbestendigheid', level: 5 },
+            { name: 'Terras & piekdrukte', level: 5 },
             { name: 'Teamwork', level: 4 },
         ],
         languages: [

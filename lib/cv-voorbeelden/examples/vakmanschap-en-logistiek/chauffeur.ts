@@ -8,10 +8,10 @@ export const chauffeur: CVExample = {
     templateId: 'ats',
     colorThemeId: 'charcoal',
 
-    metaTitle: 'CV Voorbeeld Vrachtwagenchauffeur | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor vrachtwagenchauffeurs. Met voorbeeldteksten voor CE-rijbewijs, ADR en internationaal transport. Maak direct je eigen CV.',
-    keywords: ['cv voorbeeld chauffeur', 'cv vrachtwagenchauffeur', 'cv transport', 'cv rijbewijs CE'],
-    heroTitle: 'CV Voorbeeld Vrachtwagenchauffeur',
+    metaTitle: 'CV Vrachtwagenchauffeur Voorbeeld | WerkCV.nl',
+    metaDesc: 'Professioneel cv vrachtwagenchauffeur voorbeeld met CE-rijbewijs, ADR, code 95 en internationaal transport. Gebruik het als basis voor je eigen chauffeur-CV.',
+    keywords: ['cv vrachtwagenchauffeur voorbeeld', 'vrachtwagenchauffeur cv voorbeeld', 'cv voorbeeld chauffeur', 'cv vrachtwagenchauffeur', 'cv transport', 'cv rijbewijs CE'],
+    heroTitle: 'CV voorbeeld vrachtwagenchauffeur',
     heroText: 'Als vrachtwagenchauffeur ben je de spil van de logistiek. Dit CV voorbeeld laat zien hoe je je rijbewijzen, ADR-certificaat en ervaring met internationaal transport overtuigend presenteert aan transportbedrijven.',
     tips: [
         'Vermeld al je rijbewijzen (C, CE, D) en de geldigheid van je bestuurderskaart',
