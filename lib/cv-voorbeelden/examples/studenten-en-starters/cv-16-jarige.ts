@@ -1,0 +1,116 @@
+import { CVExample } from '../../types';
+
+export const cv16Jarige: CVExample = {
+    slug: 'cv-16-jarige',
+    categorySlug: 'studenten-en-starters',
+    name: '16-jarige',
+    description: 'CV voorbeeld voor een 16-jarige scholier. Laat bijbaanervaring, school, beschikbaarheid, klantcontact en verantwoordelijkheid professioneel zien.',
+    templateId: 'ats',
+    colorThemeId: 'classic-blue',
+
+    metaTitle: 'CV Voorbeeld 16-jarige | Scholier Bijbaan CV | WerkCV.nl',
+    metaDesc: 'CV voorbeeld voor een 16-jarige scholier met bijbaan. Met profieltekst, school, beschikbaarheid, supermarkt, horeca, kassa en vaardigheden.',
+    keywords: [
+        'cv voorbeeld 16-jarige',
+        'cv 16 jarige',
+        'cv voorbeeld 16 jarige',
+        'cv maken 16 jaar',
+        'cv scholier 16 jaar',
+        'cv bijbaan 16 jaar',
+        'cv supermarkt 16 jaar',
+    ],
+    heroTitle: 'CV Voorbeeld 16-jarige',
+    heroText: 'Op je 16e kun je vaak al sterker solliciteren dan je denkt. Dit voorbeeld laat zien hoe je school, eerste bijbaanervaring, kassawerk, klantcontact, voorraad, sport en beschikbaarheid vertaalt naar een volwassen en scanbaar CV.',
+    tips: [
+        'Noem je beschikbaarheid met uren per week, schooldagen, zaterdag, zondag en vakanties',
+        'Zet eerste werkervaring concreet neer: kassa, vakkenvullen, afwassen, bediening, bezorgen, voorraad of schoonmaken',
+        'Laat zien dat je zelfstandig kunt werken, maar ook instructies opvolgt en vragen durft te stellen',
+        'Gebruik korte bullets met bewijs: drukke diensten, klanten geholpen, sluitronde, voorraad aangevuld of collega ingewerkt',
+        'Kies een rustige template; werkgevers voor bijbanen scannen vooral betrouwbaarheid, contactgegevens en beschikbaarheid',
+    ],
+    relatedSlugs: [
+        'studenten-en-starters/bijbaan-deeltijd-cv',
+        'studenten-en-starters/zonder-werkervaring',
+        'horeca-en-detailhandel/winkelmedewerker',
+    ],
+
+    sampleCV: {
+        personal: {
+            name: 'Emma Visser',
+            title: 'Scholier | Bijbaan supermarkt of horeca',
+            email: 'emma.visser@email.nl',
+            phone: '06-33445566',
+            location: 'Alkmaar',
+            address: 'Laat 122',
+            postalCode: '1811 EM',
+            summary: 'Betrouwbare scholier van 16 jaar met ervaring als vakkenvuller en kassamedewerker in de supermarkt. Klantvriendelijk, leergierig en gewend aan werken in avonden, weekenden en schoolvakanties. Beschikbaar voor 10-14 uur per week naast school, bij voorkeur in winkel, horeca of supermarkt.',
+            birthDate: '9 september 2010',
+            birthPlace: 'Alkmaar',
+            nationality: 'Nederlands',
+            driversLicense: '',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Vakkenvuller / Kassamedewerker',
+                company: 'PLUS',
+                location: 'Alkmaar',
+                start: 'oktober 2024',
+                end: 'heden',
+                description: 'Bijbaan in supermarkt tijdens avonden, weekenden en schoolvakanties.',
+                highlights: [
+                    'Schappen gevuld, producten gespiegeld en acties netjes gepresenteerd voor opening en piekmomenten',
+                    'Kassa ondersteund tijdens drukke diensten en klanten vriendelijk geholpen met vragen',
+                    'Voorraadtekorten en beschadigde producten gemeld aan teamleider',
+                    'Sluitronde meegedraaid met opruimen, schoonmaken en controleren van winkelpaden',
+                ],
+            },
+            {
+                role: 'Vrijwilliger Evenementen',
+                company: 'Stichting Sportweek Alkmaar',
+                location: 'Alkmaar',
+                start: 'juni 2023',
+                end: 'heden',
+                description: 'Helpen bij sportdagen en jeugdactiviteiten in vakantieperiodes.',
+                highlights: [
+                    'Deelnemers ontvangen, routes uitgelegd en materialen klaargezet voor activiteiten',
+                    'Samen met vrijwilligers gezorgd voor nette overdracht en veilige opruimronde',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'HAVO',
+                school: 'Stedelijk Dalton College Alkmaar',
+                location: 'Alkmaar',
+                start: 'september 2022',
+                end: 'heden',
+                description: 'Profiel Economie & Maatschappij. Relevante vakken: economie, Nederlands, Engels en wiskunde A.',
+            },
+        ],
+        skills: [
+            { name: 'Klantcontact', level: 4 },
+            { name: 'Kassawerk', level: 4 },
+            { name: 'Vakkenvullen & voorraad', level: 5 },
+            { name: 'Zelfstandig werken', level: 4 },
+            { name: 'Avond- en weekendwerk', level: 5 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+        ],
+        interests: ['Hockey', 'Bakken', 'Muziek', 'Fitness'],
+        courses: [
+            { name: 'Kassatraining', institution: 'PLUS', year: '2024' },
+        ],
+        internships: [],
+        awards: [
+            'Teamleidercompliment voor nette sluitronde tijdens drukke zaterdag, 2025',
+        ],
+    },
+};

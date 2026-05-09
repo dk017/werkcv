@@ -1,0 +1,117 @@
+import { CVExample } from '../../types';
+
+export const vakantiewerk: CVExample = {
+    slug: 'vakantiewerk',
+    categorySlug: 'studenten-en-starters',
+    name: 'Vakantiewerk',
+    description: 'CV voorbeeld voor vakantiewerk en zomerbaan. Laat tijdelijke beschikbaarheid, school, bijbaanervaring, horeca, retail of logistiek snel zien.',
+    templateId: 'simple',
+    colorThemeId: 'forest-green',
+
+    metaTitle: 'CV Voorbeeld Vakantiewerk | Zomerbaan voor Scholier of Student | WerkCV.nl',
+    metaDesc: 'CV voorbeeld voor vakantiewerk of zomerbaan. Met profieltekst, beschikbaarheid, school, horeca, retail, logistiek en tijdelijke werkervaring.',
+    keywords: [
+        'cv voorbeeld vakantiewerk',
+        'cv vakantiewerk',
+        'cv zomerbaan',
+        'cv vakantiebaantje',
+        'cv scholier vakantiewerk',
+        'cv student vakantiewerk',
+        'cv seizoenswerk',
+    ],
+    heroTitle: 'CV Voorbeeld Vakantiewerk',
+    heroText: 'Voor vakantiewerk moet je CV vooral snel duidelijk maken wanneer je beschikbaar bent, welk werk je aankunt en dat je betrouwbaar genoeg bent voor een tijdelijke planning. Dit voorbeeld past bij zomerbanen in horeca, supermarkt, recreatie, logistiek, schoonmaak of evenementen.',
+    tips: [
+        'Zet je vakantieperiode en aantal weken beschikbaarheid direct in je profieltekst',
+        'Benoem of je inzetbaar bent voor ochtenden, avonden, weekenden, feestdagen of fulltime in de vakantie',
+        'Laat zien dat je snel ingewerkt kunt worden: klantcontact, kassa, schoonmaken, voorraad, bediening of logistiek',
+        'Gebruik eerdere bijbaan, schoolprojecten, sport of vrijwilligerswerk als bewijs van werkhouding',
+        'Maak duidelijk of je na de vakantie eventueel beschikbaar blijft voor weekendwerk',
+    ],
+    relatedSlugs: [
+        'studenten-en-starters/bijbaan-deeltijd-cv',
+        'studenten-en-starters/cv-16-jarige',
+        'horeca-en-detailhandel/ober-serveerster',
+    ],
+
+    sampleCV: {
+        personal: {
+            name: 'Daan Koster',
+            title: 'Student | Beschikbaar voor vakantiewerk juni-augustus',
+            email: 'daan.koster@email.nl',
+            phone: '06-55667799',
+            location: 'Groningen',
+            address: 'Nieuwe Ebbingestraat 44',
+            postalCode: '9712 NN',
+            summary: 'Energieke student van 19 jaar, beschikbaar voor vakantiewerk van juni tot en met augustus voor 32-40 uur per week. Ervaring met horeca, kassawerk en evenementen via bijbaan en vrijwilligerswerk. Klantvriendelijk, fysiek fit en gewend aan wisselende diensten, weekenden en drukke periodes.',
+            birthDate: '13 juli 2007',
+            birthPlace: 'Groningen',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Horecamedewerker Vakantieperiode',
+                company: 'Paviljoen Paterswoldsemeer',
+                location: 'Haren',
+                start: 'juni 2024',
+                end: 'augustus 2024',
+                description: 'Tijdelijke zomerbaan in bediening, terras en afwas tijdens drukke vakantieperiode.',
+                highlights: [
+                    'Terrasbestellingen opgenomen, drankjes uitgeserveerd en tafels snel klaargemaakt voor nieuwe gasten',
+                    'Afwas en schoonmaak ondersteund tijdens piekuren om keuken en bediening door te laten lopen',
+                    'Extra weekenddiensten opgepakt tijdens warme dagen en evenementen aan het water',
+                    'Na korte inwerkperiode zelfstandig eenvoudige bestellingen en betalingen afgehandeld',
+                ],
+            },
+            {
+                role: 'Vrijwilliger Festivalopbouw',
+                company: 'Noorderzon',
+                location: 'Groningen',
+                start: 'augustus 2023',
+                end: 'augustus 2023',
+                description: 'Vrijwillige ondersteuning bij opbouw, publieksvragen en terrein netjes houden.',
+                highlights: [
+                    'Materialen verplaatst, bezoekers verwezen en terrein schoon gehouden tijdens drukke festivaldagen',
+                    'Samen met teamleiders gewerkt volgens duidelijke planning en veiligheidsafspraken',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'HBO Commerciële Economie',
+                school: 'Hanzehogeschool Groningen',
+                location: 'Groningen',
+                start: 'september 2025',
+                end: 'heden',
+                description: 'Eerstejaars student. Beschikbaar in zomervakantie en daarna eventueel op zaterdag of zondag.',
+            },
+        ],
+        skills: [
+            { name: 'Horeca & terras', level: 4 },
+            { name: 'Klantvriendelijkheid', level: 5 },
+            { name: 'Snel inwerken', level: 5 },
+            { name: 'Fysiek werk', level: 4 },
+            { name: 'Fulltime vakantieperiode', level: 5 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+            { name: 'Duits', level: 'Basis' },
+        ],
+        interests: ['Festivals', 'Fitness', 'Koken', 'Voetbal'],
+        courses: [
+            { name: 'Introductie Sociale Hygiëne', institution: 'Paviljoen Paterswoldsemeer', year: '2024' },
+        ],
+        internships: [],
+        awards: [
+            'Teruggevraagd voor tweede vakantieperiode vanwege betrouwbare inzet, 2024',
+        ],
+    },
+};

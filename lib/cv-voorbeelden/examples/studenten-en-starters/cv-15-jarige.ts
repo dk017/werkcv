@@ -1,0 +1,113 @@
+import { CVExample } from '../../types';
+
+export const cv15Jarige: CVExample = {
+    slug: 'cv-15-jarige',
+    categorySlug: 'studenten-en-starters',
+    name: '15-jarige',
+    description: 'CV voorbeeld voor een 15-jarige scholier. Laat school, beschikbaarheid, betrouwbaarheid, vrijwilligerswerk en eerste bijbaanervaring netjes zien.',
+    templateId: 'simple',
+    colorThemeId: 'modern-teal',
+
+    metaTitle: 'CV Voorbeeld 15-jarige | Bijbaan & Zonder Ervaring | WerkCV.nl',
+    metaDesc: 'CV voorbeeld voor een 15-jarige scholier. Met profieltekst, school, beschikbaarheid, vrijwilligerswerk, oppassen en eerste bijbaan voor supermarkt of horeca.',
+    keywords: [
+        'cv voorbeeld 15-jarige',
+        'cv 15 jarige',
+        'cv voorbeeld 15 jarige',
+        'cv maken 15 jaar',
+        'cv scholier 15 jaar',
+        'cv bijbaan 15 jaar',
+        'cv zonder werkervaring 15 jaar',
+    ],
+    heroTitle: 'CV Voorbeeld 15-jarige',
+    heroText: 'Als je 15 bent, hoef je nog geen lange werkervaring te hebben. Een goed CV laat vooral zien dat je betrouwbaar bent, beschikbaar bent op duidelijke momenten en al verantwoordelijkheid neemt via school, sport, oppassen, vrijwilligerswerk of kleine klusjes.',
+    tips: [
+        'Zet je beschikbaarheid heel duidelijk neer: woensdagmiddag, zaterdag, vakanties of een paar avonden',
+        'Gebruik school, sportteam, oppassen, huisdieren verzorgen of vrijwilligerswerk als bewijs van verantwoordelijkheid',
+        'Houd het CV kort en rustig; voor een 15-jarige is 1 pagina meer dan genoeg',
+        'Gebruik een volwassen e-mailadres en laat je telefoonnummer goed controleren',
+        'Schrijf eerlijk wat je zoekt: vakkenvullen, afwassen, helpen in de winkel, horeca, bezorging per fiets of oppaswerk',
+    ],
+    relatedSlugs: [
+        'studenten-en-starters/zonder-werkervaring',
+        'studenten-en-starters/bijbaan-deeltijd-cv',
+        'studenten-en-starters/student-cv',
+    ],
+
+    sampleCV: {
+        personal: {
+            name: 'Milan de Jong',
+            title: 'Scholier | Beschikbaar voor eerste bijbaan',
+            email: 'milan.dejong@email.nl',
+            phone: '06-22334455',
+            location: 'Amersfoort',
+            address: 'Kamp 31',
+            postalCode: '3811 AN',
+            summary: 'Gemotiveerde scholier van 15 jaar, op zoek naar een eerste bijbaan in supermarkt, winkel, horeca of afwas. Betrouwbaar, vriendelijk en gewend om afspraken na te komen via voetbaltraining, schoolprojecten en oppassen in de buurt. Beschikbaar op woensdagmiddag, zaterdag en in schoolvakanties.',
+            birthDate: '4 april 2011',
+            birthPlace: 'Amersfoort',
+            nationality: 'Nederlands',
+            driversLicense: '',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: '',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Oppas en kleine klusjes',
+                company: 'Buren en familie',
+                location: 'Amersfoort',
+                start: 'juni 2024',
+                end: 'heden',
+                description: 'Oppassen, boodschappen helpen opruimen en huisdieren verzorgen in de buurt.',
+                highlights: [
+                    'Vaste afspraken nagekomen en ouders duidelijk geïnformeerd over bijzonderheden',
+                    'Kinderen geholpen met spelletjes, eten en huiswerk onder toezicht van ouders',
+                    'Huisdieren verzorgd tijdens vakanties, inclusief voeren en schoonhouden',
+                ],
+            },
+            {
+                role: 'Vrijwilliger Jeugdteam',
+                company: 'Voetbalvereniging AFC Quick',
+                location: 'Amersfoort',
+                start: 'september 2023',
+                end: 'heden',
+                description: 'Helpen bij jeugdtrainingen en wedstrijddagen.',
+                highlights: [
+                    'Materialen klaargezet en opgeruimd voor trainingen van jongere teams',
+                    'Jongere spelers geholpen met oefeningen en uitleg van spelregels',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'VMBO-TL',
+                school: 'Het Nieuwe Eemland',
+                location: 'Amersfoort',
+                start: 'september 2023',
+                end: 'heden',
+                description: 'Relevante vakken: Nederlands, Engels, wiskunde en economie. Project: verkoopactie georganiseerd voor goed doel op school.',
+            },
+        ],
+        skills: [
+            { name: 'Betrouwbaarheid', level: 5 },
+            { name: 'Klantvriendelijkheid', level: 4 },
+            { name: 'Samenwerken', level: 4 },
+            { name: 'Op tijd komen', level: 5 },
+            { name: 'Snel leren', level: 5 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+        ],
+        interests: ['Voetbal', 'Fietsen', 'Koken', 'Gaming'],
+        courses: [],
+        internships: [],
+        awards: [
+            'Schoolcompliment voor inzet bij verkoopactie voor goed doel, 2025',
+        ],
+    },
+};

@@ -25,6 +25,11 @@ import { afgestudeerdeCv } from './examples/studenten-en-starters/afgestudeerde-
 import { eersteBaanStarter } from './examples/studenten-en-starters/eerste-baan-starter';
 import { stageCv } from './examples/studenten-en-starters/stage-cv';
 import { bijbaanDeeltijdCv } from './examples/studenten-en-starters/bijbaan-deeltijd-cv';
+import { zonderWerkervaring } from './examples/studenten-en-starters/zonder-werkervaring';
+import { cv15Jarige } from './examples/studenten-en-starters/cv-15-jarige';
+import { cv16Jarige } from './examples/studenten-en-starters/cv-16-jarige';
+import { parttimeBaan } from './examples/studenten-en-starters/parttime-baan';
+import { vakantiewerk } from './examples/studenten-en-starters/vakantiewerk';
 
 // ============================================================================
 // EXAMPLE IMPORTS - Zorg & Welzijn
@@ -59,6 +64,10 @@ import { magazijnmedewerker } from './examples/vakmanschap-en-logistiek/magazijn
 import { logistiekCoordinator } from './examples/vakmanschap-en-logistiek/logistiek-coordinator';
 import { schoonmaker } from './examples/vakmanschap-en-logistiek/schoonmaker';
 import { productiemedewerker } from './examples/vakmanschap-en-logistiek/productiemedewerker';
+import { orderpicker } from './examples/vakmanschap-en-logistiek/orderpicker';
+import { logistiekMedewerker } from './examples/vakmanschap-en-logistiek/logistiek-medewerker';
+import { bezorger } from './examples/vakmanschap-en-logistiek/bezorger';
+import { koerier } from './examples/vakmanschap-en-logistiek/koerier';
 
 // ============================================================================
 // EXAMPLE IMPORTS - Onderwijs
@@ -77,6 +86,8 @@ import { kokChef } from './examples/horeca-en-detailhandel/kok-chef';
 import { oberServeerster } from './examples/horeca-en-detailhandel/ober-serveerster';
 import { hotelReceptionist } from './examples/horeca-en-detailhandel/hotel-receptionist';
 import { winkelmedewerker } from './examples/horeca-en-detailhandel/winkelmedewerker';
+import { vakkenvuller } from './examples/horeca-en-detailhandel/vakkenvuller';
+import { kassamedewerker } from './examples/horeca-en-detailhandel/kassamedewerker';
 import { filiaalmanager } from './examples/horeca-en-detailhandel/filiaalmanager';
 import { cateringmedewerker } from './examples/horeca-en-detailhandel/cateringmedewerker';
 import { klantenserviceMedewerker } from './examples/horeca-en-detailhandel/klantenservice-medewerker';
@@ -150,6 +161,11 @@ const allExamples: CVExample[] = [
     eersteBaanStarter,
     stageCv,
     bijbaanDeeltijdCv,
+    zonderWerkervaring,
+    cv15Jarige,
+    cv16Jarige,
+    parttimeBaan,
+    vakantiewerk,
     // Zorg & Welzijn
     verpleegkundige,
     zorgmedewerkerHelpende,
@@ -175,6 +191,10 @@ const allExamples: CVExample[] = [
     logistiekCoordinator,
     schoonmaker,
     productiemedewerker,
+    orderpicker,
+    logistiekMedewerker,
+    bezorger,
+    koerier,
     // Onderwijs
     basisschoolDocent,
     onderwijsassistent,
@@ -187,6 +207,8 @@ const allExamples: CVExample[] = [
     oberServeerster,
     hotelReceptionist,
     winkelmedewerker,
+    vakkenvuller,
+    kassamedewerker,
     filiaalmanager,
     cateringmedewerker,
     klantenserviceMedewerker,
@@ -270,10 +292,45 @@ const exactGuideLinks: Record<string, CVExampleInternalLink> = {
         title: 'CV voorbeeld student bijbaan',
         description: 'Gebruik een korte, scanbare variant voor winkel-, horeca- of logistiek werk naast school of studie.',
     },
+    'studenten-en-starters/zonder-werkervaring': {
+        href: '/cv-tips/cv-zonder-werkervaring',
+        title: 'CV zonder werkervaring',
+        description: 'Gebruik deze gids als je school, projecten, vrijwilligerswerk en vaardigheden moet vertalen naar je eerste CV.',
+    },
+    'studenten-en-starters/cv-15-jarige': {
+        href: '/cv-maken-15-jarige',
+        title: 'CV maken als 15-jarige',
+        description: 'Gebruik de 15-jarige gids voor leeftijd, beschikbaarheid, bijbaanrichting en een korte eerste CV-opbouw.',
+    },
+    'studenten-en-starters/cv-16-jarige': {
+        href: '/cv-maken-16-jarige',
+        title: 'CV maken als 16-jarige',
+        description: 'Gebruik de 16-jarige gids voor bijbaanervaring, beschikbaarheid en een volwassen eerste werk-CV.',
+    },
+    'studenten-en-starters/parttime-baan': {
+        href: '/templates',
+        title: 'CV templates',
+        description: 'Kies een rustige template als beschikbaarheid, vaste dagen en relevante deeltijdervaring snel zichtbaar moeten zijn.',
+    },
+    'studenten-en-starters/vakantiewerk': {
+        href: '/cv-gids/cv-voorbeeld-student-bijbaan',
+        title: 'CV voorbeeld student bijbaan',
+        description: 'Gebruik de student-bijbaan gids als je vakantiewerk wilt combineren met weekendwerk of schoolrooster.',
+    },
     'horeca-en-detailhandel/winkelmedewerker': {
         href: '/cv-gids/cv-voorbeeld-verkoopmedewerker',
         title: 'CV voorbeeld verkoopmedewerker',
         description: 'Pak een commercielere variant als klantadvies, winkelvloer en verkoopresultaat belangrijk zijn.',
+    },
+    'horeca-en-detailhandel/vakkenvuller': {
+        href: '/cv-gids/cv-voorbeeld-student-bijbaan',
+        title: 'CV voorbeeld student bijbaan',
+        description: 'Gebruik de bijbaan-gids voor een korte, overtuigende supermarkt-CV met beschikbaarheid, werktempo en betrouwbaarheid centraal.',
+    },
+    'horeca-en-detailhandel/kassamedewerker': {
+        href: '/cv-gids/cv-voorbeeld-verkoopmedewerker',
+        title: 'CV voorbeeld verkoopmedewerker',
+        description: 'Gebruik de retail-gids als je kassa, klantcontact, retouren en winkelervaring sterker wilt combineren.',
     },
     'horeca-en-detailhandel/klantenservice-medewerker': {
         href: '/cv-template-klantenservice-medewerker',
@@ -355,6 +412,11 @@ const exactGuideLinks: Record<string, CVExampleInternalLink> = {
         title: 'CV voorbeeld magazijnmedewerker zonder ervaring',
         description: 'Gebruik deze variant als je ook starters, zij-instromers of kandidaten zonder warehouseverleden wilt bedienen.',
     },
+    'vakmanschap-en-logistiek/chauffeur': {
+        href: '/cv-tips/cv-voor-uitzendbureau',
+        title: 'CV voor uitzendbureau',
+        description: 'Gebruik deze gids om rijbewijs, Code 95, beschikbaarheid, route-ervaring en directe inzetbaarheid scherper te presenteren.',
+    },
     'vakmanschap-en-logistiek/schoonmaker': {
         href: '/templates',
         title: 'CV templates',
@@ -364,6 +426,26 @@ const exactGuideLinks: Record<string, CVExampleInternalLink> = {
         href: '/cv-gids/cv-voorbeeld-productiemedewerker',
         title: 'CV voorbeeld productiemedewerker',
         description: 'Gebruik de productiegids voor sterkere formuleringen rond veiligheid, kwaliteit, output en ploegendienst.',
+    },
+    'vakmanschap-en-logistiek/orderpicker': {
+        href: '/cv-template-magazijnmedewerker',
+        title: 'CV template magazijnmedewerker',
+        description: 'Gebruik de magazijn-templatepagina als orderpicking, WMS, scanner, EPT en ploegendienst overzichtelijk moeten landen.',
+    },
+    'vakmanschap-en-logistiek/logistiek-medewerker': {
+        href: '/cv-template-magazijnmedewerker',
+        title: 'CV template magazijnmedewerker',
+        description: 'Gebruik de logistieke template als inbound, outbound, voorraadcontrole en transportdocumenten strak moeten worden gepresenteerd.',
+    },
+    'vakmanschap-en-logistiek/bezorger': {
+        href: '/cv-tips/cv-voor-uitzendbureau',
+        title: 'CV voor uitzendbureau',
+        description: 'Gebruik deze gids als je bezorgervaring wilt vertalen naar directe inzetbaarheid voor transport, logistiek of horeca.',
+    },
+    'vakmanschap-en-logistiek/koerier': {
+        href: '/cv-tips/cv-voor-uitzendbureau',
+        title: 'CV voor uitzendbureau',
+        description: 'Gebruik deze gids om rijbewijs, beschikbaarheid, route-ervaring en directe inzetbaarheid sterker te presenteren.',
     },
     'onderwijs/pedagogisch-medewerker': {
         href: '/profieltekst-cv-voorbeelden',

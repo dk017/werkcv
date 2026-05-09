@@ -1,0 +1,117 @@
+import { CVExample } from '../../types';
+
+export const parttimeBaan: CVExample = {
+    slug: 'parttime-baan',
+    categorySlug: 'studenten-en-starters',
+    name: 'Parttime Baan',
+    description: 'CV voorbeeld voor een parttime baan. Laat beschikbaarheid, vaste dagen, relevante ervaring en betrouwbaarheid duidelijk zien.',
+    templateId: 'professional',
+    colorThemeId: 'classic-blue',
+
+    metaTitle: 'CV Voorbeeld Parttime Baan | Deeltijd CV Maken | WerkCV.nl',
+    metaDesc: 'CV voorbeeld voor een parttime baan of deeltijdwerk. Met profieltekst, beschikbaarheid, vaste dagen, werkervaring, klantcontact en vaardigheden.',
+    keywords: [
+        'cv voorbeeld parttime baan',
+        'cv parttime baan',
+        'cv deeltijd baan',
+        'cv voorbeeld deeltijd',
+        'parttime cv voorbeeld',
+        'cv beschikbaarheid',
+        'cv parttime medewerker',
+    ],
+    heroTitle: 'CV Voorbeeld Parttime Baan',
+    heroText: 'Bij een parttime baan wil een werkgever vooral weten wanneer je inzetbaar bent, hoeveel continuïteit je biedt en welke ervaring direct bruikbaar is. Dit voorbeeld laat zien hoe je vaste dagen, uren, klantcontact, administratie, planning en betrouwbaarheid professioneel presenteert.',
+    tips: [
+        'Zet je beschikbaarheid concreet neer: vaste dagen, aantal uren per week, avonden, weekenden of schooltijden',
+        'Maak duidelijk waarom parttime past, zonder te veel privé-uitleg te geven',
+        'Benadruk betrouwbaarheid: vaste diensten, overdracht, zelfstandig openen/sluiten of roosters nakomen',
+        'Gebruik relevante werkervaring, ook als die uit bijbaan, vrijwilligerswerk, tijdelijke baan of eerdere fulltime rol komt',
+        'Kies een rustige template en voorkom dat je CV leest als een algemene bijbaan-sollicitatie',
+    ],
+    relatedSlugs: [
+        'studenten-en-starters/bijbaan-deeltijd-cv',
+        'horeca-en-detailhandel/klantenservice-medewerker',
+        'zakelijk-en-financieel/administratief-medewerker',
+    ],
+
+    sampleCV: {
+        personal: {
+            name: 'Iris van Loon',
+            title: 'Parttime medewerker klantenservice | 24 uur per week',
+            email: 'iris.vanloon@email.nl',
+            phone: '06-44556677',
+            location: 'Breda',
+            address: 'Haagdijk 58',
+            postalCode: '4811 TT',
+            summary: 'Servicegerichte parttime medewerker met ervaring in klantcontact, administratie en planning. Beschikbaar voor 24 uur per week op maandag, dinsdag, donderdag en vrijdag. Sterk in rustig communiceren, afspraken vastleggen, klantvragen opvolgen en zelfstandig werken binnen vaste processen.',
+            birthDate: '22 mei 1994',
+            birthPlace: 'Breda',
+            nationality: 'Nederlands',
+            driversLicense: 'B',
+            gender: '',
+            maritalStatus: '',
+            linkedIn: 'linkedin.com/in/irisvanloon',
+            github: '',
+            website: '',
+            photo: '',
+        },
+        experience: [
+            {
+                role: 'Parttime Klantenservice Medewerker',
+                company: 'Coolblue',
+                location: 'Tilburg',
+                start: 'maart 2022',
+                end: 'heden',
+                description: 'Parttime klantcontact via telefoon, e-mail en chat voor bezorging, retouren en productvragen.',
+                highlights: [
+                    'Gemiddeld 45 klantvragen per dienst afgehandeld met duidelijke registratie in CRM',
+                    'Retouren, bezorgafspraken en klachten opgevolgd volgens vaste serviceprocessen',
+                    'Vaste overdracht gemaakt voor openstaande klantcases aan collega\'s in de avonddienst',
+                    'Roosterafspraken consequent nagekomen en extra diensten opgepakt tijdens vakantieperiodes',
+                ],
+            },
+            {
+                role: 'Administratief Medewerker',
+                company: 'Fysiopraktijk De Singel',
+                location: 'Breda',
+                start: 'januari 2019',
+                end: 'februari 2022',
+                description: 'Parttime administratie, balie en planning binnen een zorgpraktijk.',
+                highlights: [
+                    'Afspraken ingepland, telefoongesprekken beantwoord en patiëntgegevens zorgvuldig verwerkt',
+                    'Facturen voorbereid en ontbrekende gegevens gecontroleerd voor maandafsluiting',
+                    'Balie zelfstandig bemand op vaste ochtenden met aandacht voor privacy en gastvrijheid',
+                ],
+            },
+        ],
+        education: [
+            {
+                degree: 'MBO 4 Juridisch Administratief Dienstverlener',
+                school: 'Curio',
+                location: 'Breda',
+                start: 'september 2012',
+                end: 'juli 2016',
+                description: 'Opleiding met focus op administratie, klantcontact, dossiers en schriftelijke communicatie.',
+            },
+        ],
+        skills: [
+            { name: 'Klantcontact', level: 5 },
+            { name: 'CRM & administratie', level: 4 },
+            { name: 'Planning & afspraken', level: 4 },
+            { name: 'Zelfstandig werken', level: 5 },
+            { name: 'Vaste beschikbaarheid', level: 5 },
+        ],
+        languages: [
+            { name: 'Nederlands', level: 'Moedertaal' },
+            { name: 'Engels', level: 'Goed' },
+        ],
+        interests: ['Lezen', 'Wandelen', 'Koken'],
+        courses: [
+            { name: 'Professioneel klantcontact', institution: 'NCOI', year: '2023' },
+        ],
+        internships: [],
+        awards: [
+            'Compliment voor foutloze klantoverdracht tijdens drukke feestdagenperiode, 2023',
+        ],
+    },
+};
