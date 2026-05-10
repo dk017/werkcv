@@ -2,9 +2,9 @@ import Link from "next/link";
 import { buildEnglishMetadata } from "../metadata";
 
 export const metadata = buildEnglishMetadata({
-  title: "Dutch CV Template for English Speakers",
+  title: "Dutch-Style CV in English for Jobs in the Netherlands",
   description:
-    "Create a Dutch-style CV in English with ATS-friendly structure, practical section order, and the format commonly expected by employers in the Netherlands.",
+    "Create a Dutch-style CV in English for jobs in the Netherlands. Use local section order, ATS-friendly templates, clear language levels, and one-time PDF download pricing.",
   path: "/en/dutch-cv-template",
   nlPath: "/templates",
   keywords: [
@@ -21,9 +21,9 @@ export const metadata = buildEnglishMetadata({
 
 const steps = [
   "Choose a simple ATS-safe template.",
-  "Use a clear job title and profile summary for the Dutch market.",
+  "Use a clear job title and profile summary for the Dutch job market.",
   "Add measurable achievements under each role.",
-  "Keep language consistent (all English or all Dutch).",
+  "State English and Dutch language levels clearly.",
   "Export as PDF and tailor keywords to the vacancy.",
 ];
 
@@ -55,19 +55,19 @@ const dutchExpectations = [
 
 const routeChoices = [
   {
-    href: "/en/templates",
-    title: "English CV templates",
-    body: "Best if you want to compare layouts and start writing immediately inside the builder.",
+    href: "/en/cv-format-netherlands-english",
+    title: "CV format Netherlands English",
+    body: "Best if you need the section order and first-half-page logic before choosing a layout.",
   },
   {
-    href: "/en/netherlands-cv-format",
-    title: "Netherlands CV format",
-    body: "Best if you mostly want the full structure rules before choosing a template.",
+    href: "/en/dutch-cv-for-expats",
+    title: "Dutch CV for expats",
+    body: "Best if your international background needs local framing for recruiters in the Netherlands.",
   },
   {
-    href: "/en/dutch-cv-examples",
-    title: "Dutch CV examples",
-    body: "Best if you want to see how finished English CVs for the Netherlands actually read.",
+    href: "/en/english-cv-example-netherlands",
+    title: "English CV example Netherlands",
+    body: "Best if you want to see tone, summary style, and proof bullets before writing your version.",
   },
 ];
 
@@ -75,6 +75,12 @@ const trustPoints = [
   "Build and compare templates before paying.",
   "Pay only when you want the final PDF download.",
   "No subscription, no automatic renewal, no cancellation task.",
+];
+
+const packagePoints = [
+  "English wording with Dutch-market CV structure.",
+  "ATS-friendly A4 PDF for applications in the Netherlands.",
+  "One-time CV download when you are ready, not a resume subscription.",
 ];
 
 const faqs = [
@@ -144,14 +150,15 @@ export default function DutchCvTemplatePage() {
       <section className="border-b-4 border-black bg-gradient-to-br from-blue-50 via-cyan-50 to-white">
         <div className="max-w-5xl mx-auto px-6 py-14">
           <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-slate-700">
-            Near-BOFU English intent
+            English CV for the Dutch market
           </p>
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Dutch CV Template for English Speakers
+            Dutch-Style CV in English for Jobs in the Netherlands
           </h1>
           <p className="text-lg text-gray-700 max-w-3xl">
-            Use this structure if you are applying in the Netherlands and want
-            a professional, ATS-safe CV without guessing local expectations.
+            Use this route if you are applying in English, but want your CV to match
+            how recruiters in the Netherlands scan structure, language level, role fit,
+            and proof.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link href="/en/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
@@ -168,7 +175,7 @@ export default function DutchCvTemplatePage() {
         <div className="bg-white border-4 border-black p-6">
           <h2 className="text-2xl font-black mb-3">What makes a Dutch CV template different?</h2>
           <p className="text-gray-700 max-w-3xl">
-            A Dutch CV template is usually more direct and more structured than a generic international resume layout. Dutch recruiters tend to prefer a short summary, recent experience first, straightforward section labels, and a layout that feels professional rather than overly designed.
+            A Dutch CV template is usually more direct and more structured than a generic international resume layout. Dutch recruiters tend to prefer a short summary, recent experience first, straightforward section labels, and a layout that feels professional rather than overly designed. The writing can stay in English, but the structure should feel local.
           </p>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {quickAnswerCards.map((card) => (
@@ -188,6 +195,22 @@ export default function DutchCvTemplatePage() {
             <li>Work experience: reverse-chronological with bullet outcomes.</li>
             <li>Education, certificates, language skills, and key tools.</li>
           </ol>
+        </div>
+
+        <div className="bg-[#E9FFFC] border-4 border-black p-6">
+          <h2 className="text-2xl font-black mb-3">English CV for Dutch-market applications</h2>
+          <p className="text-gray-700 max-w-3xl">
+            Treat this as a focused application package, not a generic resume-builder flow.
+            You are building one clean English CV that follows Dutch-market expectations and
+            can be exported when you are ready.
+          </p>
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            {packagePoints.map((point) => (
+              <div key={point} className="border-2 border-black bg-white p-4 text-sm font-bold text-black">
+                {point}
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="bg-white border-4 border-black p-6">
@@ -251,6 +274,15 @@ export default function DutchCvTemplatePage() {
             <Link href="/en/netherlands-cv-format" className="underline font-bold">
               Netherlands CV format
             </Link>
+            <Link href="/en/cv-format-netherlands-english" className="underline font-bold">
+              CV format Netherlands English
+            </Link>
+            <Link href="/en/dutch-cv-for-expats" className="underline font-bold">
+              Dutch CV for expats
+            </Link>
+            <Link href="/en/english-cv-example-netherlands" className="underline font-bold">
+              English CV example Netherlands
+            </Link>
             <Link href="/en/dutch-cv-examples" className="underline font-bold">
               Dutch CV examples in English
             </Link>
@@ -274,7 +306,7 @@ export default function DutchCvTemplatePage() {
             Open English editor
           </Link>
           <Link href="/en" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
-            Back to English Guides
+            Back to English hub
           </Link>
         </div>
       </section>

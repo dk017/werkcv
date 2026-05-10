@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
 }
 
-const tocItems = [
+const baseTocItems = [
     { id: 'persoonlijke-gegevens', label: 'Persoonlijke gegevens' },
     { id: 'profieltekst', label: 'Profieltekst' },
     { id: 'werkervaring', label: 'Werkervaring' },
@@ -94,6 +94,17 @@ export default async function ExamplePage({ params }: PageProps) {
     const metaDesc = normalizeBrandCopy(example.metaDesc);
     const roleName = example.name.toLowerCase();
     const primarySkills = cvData.skills.slice(0, 8).map((skill) => skill.name);
+    const expertTocItems = example.expertContent ? [
+        { id: 'recruiter-check', label: 'Recruiter check' },
+        { id: 'voorbeeldzinnen', label: 'Voorbeeldzinnen' },
+        { id: 'fout-naar-goed', label: 'Fout naar goed' },
+        { id: 'vertrouwen', label: 'Vertrouwen' },
+    ] : [];
+    const tocItems = [
+        ...baseTocItems.slice(0, 5),
+        ...expertTocItems,
+        ...baseTocItems.slice(5),
+    ];
     const primaryKeywords = Array.from(
         new Set([
             ...primarySkills,
@@ -333,6 +344,101 @@ export default async function ExamplePage({ params }: PageProps) {
                                 </ExampleBlock>
                             )}
                         </ContentSection>
+
+                        {example.expertContent && (
+                            <>
+                                <ContentSection id="recruiter-check" title={`Waar recruiters op letten bij een ${example.name} CV`}>
+                                    <p>
+                                        Een sterke pagina met voorbeeldtekst is pas nuttig als je begrijpt waarom een recruiter
+                                        bepaalde informatie snel wil zien. Gebruik deze punten als laatste inhoudelijke check
+                                        voordat je je CV downloadt of meestuurt.
+                                    </p>
+                                    <div className="grid gap-3 mt-4">
+                                        {example.expertContent.recruiterFocus.map((focus, index) => (
+                                            <div
+                                                key={focus}
+                                                className="border-3 border-black bg-white p-4"
+                                                style={{ borderWidth: '3px' }}
+                                            >
+                                                <p className="text-xs font-black uppercase tracking-[0.16em] text-gray-500">
+                                                    Check {index + 1}
+                                                </p>
+                                                <p className="mt-1 text-gray-800">{focus}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </ContentSection>
+
+                                <ContentSection id="voorbeeldzinnen" title={`Copy-ready zinnen voor je ${example.name} CV`}>
+                                    <p>
+                                        Deze zinnen kun je aanpassen aan je eigen situatie. Kies alleen zinnen die je eerlijk
+                                        kunt uitleggen als een recruiter er later naar vraagt.
+                                    </p>
+                                    <ExampleBlock label="Sterke bullet points">
+                                        <ul className="list-disc space-y-2 pl-5 text-sm">
+                                            {example.expertContent.copyReadyBullets.map((bullet) => (
+                                                <li key={bullet}>{bullet}</li>
+                                            ))}
+                                        </ul>
+                                    </ExampleBlock>
+                                    {example.expertContent.noExperienceAdvice && (
+                                        <div className="mt-5 border-4 border-black bg-[#E9FFFC] p-5">
+                                            <h3 className="font-black text-gray-900">Als je nog weinig ervaring hebt</h3>
+                                            <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-gray-700">
+                                                {example.expertContent.noExperienceAdvice.map((advice) => (
+                                                    <li key={advice}>{advice}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </ContentSection>
+
+                                <ContentSection id="fout-naar-goed" title={`Van zwakke naar sterke ${example.name} tekst`}>
+                                    <p>
+                                        Veel CV&apos;s blijven te vaag. Het verschil zit meestal niet in mooiere woorden, maar in
+                                        concretere context: taak, situatie, systeem, tempo, resultaat of verantwoordelijkheid.
+                                    </p>
+                                    <div className="space-y-4">
+                                        {example.expertContent.rewriteExamples.map((rewrite) => (
+                                            <article
+                                                key={rewrite.bad}
+                                                className="border-4 border-black bg-white p-5"
+                                            >
+                                                <div className="grid gap-4 md:grid-cols-2">
+                                                    <div className="border-2 border-red-200 bg-red-50 p-4">
+                                                        <p className="text-xs font-black uppercase text-red-700">Te zwak</p>
+                                                        <p className="mt-2 text-sm text-gray-800">&ldquo;{rewrite.bad}&rdquo;</p>
+                                                    </div>
+                                                    <div className="border-2 border-green-200 bg-green-50 p-4">
+                                                        <p className="text-xs font-black uppercase text-green-700">Sterker</p>
+                                                        <p className="mt-2 text-sm text-gray-800">&ldquo;{rewrite.good}&rdquo;</p>
+                                                    </div>
+                                                </div>
+                                                <p className="mt-3 text-sm text-gray-600">{rewrite.reason}</p>
+                                            </article>
+                                        ))}
+                                    </div>
+                                </ContentSection>
+
+                                <ContentSection id="vertrouwen" title={`Vertrouwen opbouwen met je ${example.name} CV`}>
+                                    <p>
+                                        Zeker bij praktische functies wil een werkgever snel risico verminderen: kom je op tijd,
+                                        werk je netjes, begrijp je de werkvloer en kun je zonder veel uitleg meedraaien?
+                                    </p>
+                                    <div className="grid gap-3 md:grid-cols-2">
+                                        {example.expertContent.trustSignals.map((signal) => (
+                                            <div
+                                                key={signal}
+                                                className="border-3 border-black bg-yellow-50 p-4 text-sm text-gray-800"
+                                                style={{ borderWidth: '3px' }}
+                                            >
+                                                {signal}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </ContentSection>
+                            </>
+                        )}
 
                         <ContentSection id="ats-trefwoorden" title={`ATS trefwoorden voor een ${example.name} CV`}>
                             <p>

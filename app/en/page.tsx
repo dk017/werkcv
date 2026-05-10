@@ -20,7 +20,22 @@ const pages = [
   {
     href: "/en/dutch-cv-template",
     title: "Dutch CV Template",
-    description: "Use an ATS-safe Dutch-style CV template in English.",
+    description: "Use an ATS-safe Dutch-style CV template in English for jobs in the Netherlands.",
+  },
+  {
+    href: "/en/cv-format-netherlands-english",
+    title: "CV Format Netherlands English",
+    description: "Follow the section order and first-half-page logic Dutch recruiters scan fastest.",
+  },
+  {
+    href: "/en/dutch-cv-for-expats",
+    title: "Dutch CV for Expats",
+    description: "Localize international experience, language levels, and practical hiring signals.",
+  },
+  {
+    href: "/en/english-cv-example-netherlands",
+    title: "English CV Example Netherlands",
+    description: "See the tone, profile summary, and proof bullets before writing your own version.",
   },
   {
     href: "/en/netherlands-cv-format",
@@ -79,7 +94,7 @@ const expatTools = [
 
 const startPaths = [
   {
-    href: "/en/guides/dutch-cv-for-expats",
+    href: "/en/dutch-cv-for-expats",
     title: "Start from Dutch CV basics",
     description: "Best first stop if you need the overall Dutch recruiter logic before choosing a template.",
   },
@@ -220,6 +235,12 @@ export default function EnglishHubPage() {
             className="inline-block bg-white text-black font-bold px-5 py-3 border-4 border-black"
           >
             English CV examples
+          </Link>
+          <Link
+            href="/en/english-cv-example-netherlands"
+            className="inline-block bg-white text-black font-bold px-5 py-3 border-4 border-black"
+          >
+            Netherlands example
           </Link>
         </div>
       </section>

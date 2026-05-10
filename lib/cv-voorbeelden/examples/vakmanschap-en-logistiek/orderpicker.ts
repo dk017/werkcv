@@ -28,6 +28,44 @@ export const orderpicker: CVExample = {
         'Beschrijf het type magazijn: e-commerce, retail, food, koel/vries, pharma, crossdock of distributiecentrum',
         'Geef beschikbaarheid voor 2- of 3-ploegendienst, nachtwerk, weekendwerk en fysieke belasting duidelijk aan',
     ],
+    expertContent: {
+        recruiterFocus: [
+            'Een recruiter zoekt direct naar pickmethode, tempo en foutmarge. Zonder die context blijft "orderpicken" te algemeen.',
+            'Systemen en hulpmiddelen zijn belangrijk: handscanner, voice picking, WMS, SAP EWM, EPT, reachtruck of palletwagen.',
+            'Het type omgeving maakt verschil. E-commerce, retaildistributie, food, koel/vries en pharma vragen andere nauwkeurigheid en werkafspraken.',
+            'Beschikbaarheid voor ploegendienst, piekperiodes en fysiek werk moet expliciet zijn, zeker bij distributiecentra met vaste shifts.',
+        ],
+        copyReadyBullets: [
+            'Gemiddeld 150+ orderregels per uur gepickt met handscanner en WMS, met aandacht voor juiste locatie, aantal en artikelcode.',
+            'Voice picking gebruikt in 2-ploegendienst voor winkelorders, inclusief controle op houdbaarheid, schade en verzendklaarheid.',
+            'Voorraadverschillen, beschadigde artikelen en pickfouten direct geregistreerd en teruggekoppeld aan teamleider.',
+            'EPT en rolcontainers veilig gebruikt voor aanvullen van picklocaties en verplaatsen van goederen tijdens piekuren.',
+            'Nieuwe collega\'s ingewerkt op looproutes, scanproces, foutmeldingen en veiligheidsafspraken.',
+        ],
+        noExperienceAdvice: [
+            'Heb je nog geen magazijnervaring, benadruk dan fysieke inzetbaarheid, nauwkeurig werken en beschikbaarheid voor shifts.',
+            'Gebruik ervaring uit supermarkt, productie, pakketbezorging of horeca als bewijs voor tempo en discipline.',
+            'Zet certificaten of bereidheid tot EPT/heftrucktraining duidelijk in je vaardigheden of profieltekst.',
+        ],
+        rewriteExamples: [
+            {
+                bad: 'Ik pickte orders in het magazijn.',
+                good: 'Orders gepickt met handscanner en WMS, gemiddeld 150+ orderregels per uur met controle op artikelcode, aantal en locatie.',
+                reason: 'De sterke versie geeft methode, tempo en nauwkeurigheidscontext.',
+            },
+            {
+                bad: 'Ik kan goed werken onder druk.',
+                good: 'Tijdens feestdagenpiek extra shifts gedraaid en picklocaties aangevuld met EPT zonder veiligheidsmeldingen.',
+                reason: 'Druk aankunnen wordt concreet door piekperiode, extra inzet en veilig werken te benoemen.',
+            },
+        ],
+        trustSignals: [
+            'Pickmethode en WMS staan in profieltekst en werkervaring.',
+            'Tempo of nauwkeurigheid is meetbaar gemaakt met aantallen of foutmarge.',
+            'Ploegendienst, weekendwerk en fysieke inzetbaarheid zijn zichtbaar.',
+            'Veilig werken en afwijkingen melden worden expliciet genoemd.',
+        ],
+    },
     relatedSlugs: [
         'vakmanschap-en-logistiek/magazijnmedewerker',
         'vakmanschap-en-logistiek/logistiek-coordinator',

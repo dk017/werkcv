@@ -28,6 +28,44 @@ export const logistiekMedewerker: CVExample = {
         'Vermeld certificaten: heftruck, reachtruck, EPT, VCA, BHV, ADR-basis of veilig werken',
         'Benoem beschikbaarheid voor ploegendienst, weekend, piekperiodes en fysiek werk',
     ],
+    expertContent: {
+        recruiterFocus: [
+            'Een recruiter wil weten welk deel van de goederenstroom je beheerst: inbound, outbound, orderpicking, retouren, voorraadbeheer of expeditie.',
+            'Systemen en hulpmiddelen geven snel niveau aan. WMS, ERP, handscanner, EPT, labelprinter, heftruck en reachtruck horen concreet in je CV als je ermee werkt.',
+            'Logistieke werkgevers letten sterk op foutloos werken, schadecontrole, aantallen, overdracht en veilig intern transport.',
+            'Allround inzetbaarheid is waardevol, maar maak die niet te vaag. Koppel taken aan voorbeelden uit ontvangen, controleren, opslaan, picken of verzenden.',
+        ],
+        copyReadyBullets: [
+            'Inkomende goederen gecontroleerd op schade, aantallen en artikelcodes en geregistreerd in WMS.',
+            'Outbound zendingen verzendklaar gemaakt met labels, pakbonnen en eindcontrole op juiste klantorder.',
+            'Voorraadverschillen onderzocht en teruggekoppeld aan teamleider, planning en voorraadbeheer.',
+            'EPT, handscanner en labelprinter gebruikt voor locatiebeheer, aanvullen van picklocaties en transportklaar maken van pallets.',
+            'Nieuwe collega\'s ingewerkt op retourprocedure, veiligheidsregels en duidelijke overdracht tussen shifts.',
+        ],
+        noExperienceAdvice: [
+            'Kom je uit productie, supermarkt of bezorging, vertaal dat naar tempo, nauwkeurigheid, fysiek werk en samenwerken.',
+            'Noem logistieke basisbegrippen die je echt begrijpt, zoals inbound, outbound, voorraad, retouren of picklocaties.',
+            'Zet certificaten, veiligheidstrainingen of bereidheid tot heftruck/reachtrucktraining duidelijk op je CV.',
+        ],
+        rewriteExamples: [
+            {
+                bad: 'Ik deed logistieke werkzaamheden.',
+                good: 'Inkomende goederen ontvangen, gecontroleerd op schade en aantallen en geregistreerd in WMS voor opslag of verdere verwerking.',
+                reason: 'De sterke versie maakt duidelijk welk procesdeel je uitvoerde en hoe zorgvuldig je werkte.',
+            },
+            {
+                bad: 'Ik ben flexibel inzetbaar in het magazijn.',
+                good: 'Ingezet op inbound, retourverwerking en outbound zendingen, inclusief labels, pakbonnen en overdracht naar transport.',
+                reason: 'Flexibiliteit wordt sterker als je de concrete werkstations en taken noemt.',
+            },
+        ],
+        trustSignals: [
+            'Inbound, outbound, retouren of voorraadbeheer zijn concreet gescheiden.',
+            'WMS, scanner en intern transportmiddelen worden alleen genoemd waar ze echt passen.',
+            'Het CV laat zien hoe je fouten, schade en voorraadverschillen voorkomt of meldt.',
+            'Ploegendienst en fysieke inzetbaarheid zijn zichtbaar zonder overdreven claims.',
+        ],
+    },
     relatedSlugs: [
         'vakmanschap-en-logistiek/magazijnmedewerker',
         'vakmanschap-en-logistiek/orderpicker',

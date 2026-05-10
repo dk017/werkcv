@@ -28,6 +28,45 @@ export const zonderWerkervaring: CVExample = {
         'Maak algemene eigenschappen concreet: op tijd komen, afspraken nakomen, samenwerken, uitleg geven of verantwoordelijkheid nemen',
         'Houd het CV op 1 pagina en schrijf een profieltekst die duidelijk maakt welk type baan of stage je zoekt',
     ],
+    expertContent: {
+        recruiterFocus: [
+            'Een recruiter wil vooral bewijs zien dat je betrouwbaar bent, ook zonder betaalde werkervaring. Denk aan vaste afspraken, schoolprojecten, vrijwilligerswerk, oppassen of sportverantwoordelijkheid.',
+            'Je functierichting moet duidelijk zijn. Schrijf niet alleen dat je een eerste baan zoekt, maar benoem winkel, horeca, supermarkt, stage of administratieve ondersteuning als dat je doel is.',
+            'De eerste helft van je CV moet laten zien wanneer je beschikbaar bent, hoe je communiceert en welke praktische taken je al aankunt.',
+            'Schoolervaring telt mee als je die vertaalt naar gedrag: presenteren, samenwerken, plannen, materiaal voorbereiden of verantwoordelijkheid nemen voor een opdracht.',
+        ],
+        copyReadyBullets: [
+            'Vaste afspraken nagekomen voor oppassen, sportclub en schoolprojecten, met duidelijke communicatie naar ouders, begeleiders en teamgenoten.',
+            'Klanten, ouders of bezoekers vriendelijk geholpen door vragen rustig te beantwoorden en door te verwijzen wanneer nodig.',
+            'Schoolproject voorbereid, taken verdeeld en presentatie op tijd afgerond met aandacht voor samenwerking en planning.',
+            'Beschikbaar op avonden, zaterdagen en in schoolvakanties; gewend om afspraken te combineren met schoolwerk.',
+            'Nieuwe taken snel opgepakt door uitleg te vragen, stappen te noteren en feedback direct toe te passen.',
+        ],
+        noExperienceAdvice: [
+            'Maak een sectie "Ervaring en activiteiten" als "Werkervaring" te leeg voelt.',
+            'Gebruik maximaal 2-3 sterke activiteiten in plaats van een lange lijst losse hobby\'s.',
+            'Schrijf bij elke activiteit wat jij deed, niet alleen waar je bij hoorde.',
+            'Noem beschikbaarheid en soort baan duidelijk in je profieltekst.',
+        ],
+        rewriteExamples: [
+            {
+                bad: 'Ik heb nog geen werkervaring, maar ik ben gemotiveerd.',
+                good: 'Betrouwbare scholier die via oppassen, sportclub en schoolprojecten gewend is om afspraken na te komen, verantwoordelijkheid te nemen en vriendelijk te communiceren.',
+                reason: 'De sterke versie geeft bewijs voor motivatie en maakt duidelijk welk gedrag een werkgever kan verwachten.',
+            },
+            {
+                bad: 'Ik kan goed samenwerken.',
+                good: 'In schoolprojecten taken verdeeld, planning bijgehouden en eindpresentaties voorbereid met 3-4 klasgenoten.',
+                reason: 'Samenwerken wordt geloofwaardiger als je laat zien in welke situatie je het deed.',
+            },
+        ],
+        trustSignals: [
+            'Beschikbaarheid concreet genoemd: dagen, avonden, weekenden en vakanties.',
+            'School, vrijwilligerswerk of oppassen gebruikt als bewijs voor discipline.',
+            'Profieltekst noemt een duidelijke eerste baan of stage richting.',
+            'CV blijft kort en scanbaar, zodat gebrek aan ervaring niet extra opvalt.',
+        ],
+    },
     relatedSlugs: [
         'studenten-en-starters/student-cv',
         'studenten-en-starters/bijbaan-deeltijd-cv',

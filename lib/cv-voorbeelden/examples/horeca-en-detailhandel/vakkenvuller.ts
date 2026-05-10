@@ -28,6 +28,44 @@ export const vakkenvuller: CVExample = {
         'Noem ook klantcontact: producten aanwijzen, vragen beantwoorden en rustig blijven tijdens drukte',
         'Heb je weinig ervaring, gebruik schoolprojecten, sport, vrijwilligerswerk of thuisverantwoordelijkheid als bewijs voor discipline',
     ],
+    expertContent: {
+        recruiterFocus: [
+            'Een recruiter wil snel zien of je inzetbaar bent op de momenten waarop de winkel mensen nodig heeft: avonden, weekenden, vakanties en piekperiodes.',
+            'Werktempo moet concreet voelen. Benoem vullen, spiegelen, rolcontainers verwerken, actiekoppen of restanten controleren.',
+            'Klantcontact telt ook bij vakkenvullen. Laat zien dat je vragen kunt beantwoorden en netjes blijft werken terwijl klanten door het pad lopen.',
+            'Bij starters is betrouwbaarheid doorslaggevend: op tijd komen, vaste diensten volhouden, fysiek werk aankunnen en instructies opvolgen.',
+        ],
+        copyReadyBullets: [
+            'Schappen gevuld volgens FIFO, producten gespiegeld en paden netjes gehouden tijdens openingstijden.',
+            'Rolcontainers verwerkt, lege verpakkingen afgevoerd en winkelvloer veilig gehouden voor klanten en collega\'s.',
+            'Actiekoppen opgebouwd en prijskaartjes gecontroleerd zodat aanbiedingen duidelijk zichtbaar waren.',
+            'Klanten geholpen met productlocaties en vragen rustig doorverwezen naar teamleider of servicebalie.',
+            'Extra diensten overgenomen in weekenden en schoolvakanties tijdens drukke winkelperiodes.',
+        ],
+        noExperienceAdvice: [
+            'Gebruik sport, school of thuisverantwoordelijkheid als bewijs dat je fysiek werk en afspraken aankunt.',
+            'Noem beschikbaarheid concreet, want bij een eerste supermarktbijbaan weegt dat zwaar.',
+            'Laat zien dat je instructies kunt volgen: veiligheid, opruimen, netheid en samenwerken.',
+        ],
+        rewriteExamples: [
+            {
+                bad: 'Ik vulde vakken en hielp soms klanten.',
+                good: 'Schappen gevuld volgens FIFO, producten gespiegeld en klanten geholpen met productlocaties tijdens avond- en weekenddiensten.',
+                reason: 'De sterke versie combineert taak, methode, klantcontact en inzetbaarheid.',
+            },
+            {
+                bad: 'Ik ben een harde werker.',
+                good: 'Rolcontainers verwerkt, lege verpakkingen direct afgevoerd en winkelpaden veilig gehouden tijdens drukke vulmomenten.',
+                reason: 'Hard werken wordt geloofwaardiger als je laat zien welk fysiek werk je precies deed.',
+            },
+        ],
+        trustSignals: [
+            'Supermarkttermen zoals FIFO, spiegelen, actiekoppen en derving worden correct gebruikt.',
+            'Beschikbaarheid en extra diensten staan duidelijk in de eerste helft van het CV.',
+            'Het CV noemt zowel tempo als netheid, niet alleen motivatie.',
+            'Klantcontact wordt meegenomen zonder de functie groter te maken dan hij is.',
+        ],
+    },
     relatedSlugs: [
         'horeca-en-detailhandel/winkelmedewerker',
         'studenten-en-starters/bijbaan-deeltijd-cv',

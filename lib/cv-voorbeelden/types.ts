@@ -33,6 +33,7 @@ export interface CVExample {
     heroTitle: string;        // H1 for the example page
     heroText: string;         // Hero section description
     tips: string[];           // Specific tips for this job type
+    expertContent?: CVExampleExpertContent; // Optional deeper role-specific guidance
 
     // Internal linking
     relatedSlugs?: string[];  // Slugs of related examples (format: "category/slug")
@@ -42,6 +43,20 @@ export interface CVExampleInternalLink {
     href: string;
     title: string;
     description: string;
+}
+
+export interface CVExampleRewritePair {
+    bad: string;
+    good: string;
+    reason: string;
+}
+
+export interface CVExampleExpertContent {
+    recruiterFocus: string[];
+    copyReadyBullets: string[];
+    noExperienceAdvice?: string[];
+    rewriteExamples: CVExampleRewritePair[];
+    trustSignals: string[];
 }
 
 // Resolved example with category info (for page rendering)

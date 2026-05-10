@@ -49,10 +49,22 @@ export default function EnglishTemplatesPage() {
               Dutch CV template guide
             </Link>
             <Link
-              href="/en/netherlands-cv-format"
+              href="/en/cv-format-netherlands-english"
               className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
             >
-              Netherlands CV format
+              CV format
+            </Link>
+            <Link
+              href="/en/dutch-cv-for-expats"
+              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+            >
+              Expat CV
+            </Link>
+            <Link
+              href="/en/english-cv-example-netherlands"
+              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+            >
+              Example
             </Link>
             <Link
               href="/en/dutch-cv-examples"
@@ -88,6 +100,7 @@ export default function EnglishTemplatesPage() {
             <p className="mt-2 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
               This route is built for expats and international candidates applying in the Netherlands.
               Choose a layout first, then fill it in inside the English editor while keeping the Dutch-market CV structure.
+              Keep the same one-time PDF download model when you are ready.
             </p>
           </div>
         </div>

@@ -28,6 +28,44 @@ export const kassamedewerker: CVExample = {
         'Noem je inzetbaarheid voor koopavonden, weekenden, feestdagen en vakantieperiodes',
         'Maak bij weinig ervaring duidelijk dat je betrouwbaar bent met school, bijbaan, vrijwilligerswerk of verantwoordelijkheden thuis',
     ],
+    expertContent: {
+        recruiterFocus: [
+            'Een recruiter kijkt eerst of je met geld, klanten en drukte betrouwbaar omgaat. Nauwkeurigheid en rust zijn belangrijker dan lange verkooppraat.',
+            'Laat zien welke kassasituaties je kent: reguliere kassa, zelfscan, retouren, servicebalie, kortingsacties of dagafsluiting.',
+            'Beschikbaarheid is bij kassawerk een echte selectievoorwaarde. Zet avonden, weekenden, koopavonden en vakanties zichtbaar in je CV.',
+            'Bij weinig ervaring telt bewijs van verantwoordelijkheid: vaste shifts, schoolplanning, vrijwilligerswerk, klantcontact of hulp bij administratie.',
+        ],
+        copyReadyBullets: [
+            'Klanten vriendelijk geholpen bij kassa, zelfscan en servicebalie, ook tijdens drukke piekmomenten.',
+            'Pinbetalingen, contant geld, retouren en kortingsacties zorgvuldig verwerkt volgens winkelprocedure.',
+            'Kasverschillen voorkomen door bedragen, correcties en retourbonnen direct te controleren.',
+            'Wachtrijen verkort door klanten actief naar vrije kassa, zelfscan of servicebalie te begeleiden.',
+            'Nieuwe hulpkrachten geholpen met basisuitleg over klantbegroeting, kassawerk en retourprocedure.',
+        ],
+        noExperienceAdvice: [
+            'Gebruik school, vrijwilligerswerk of bijbaan zonder kassa als bewijs voor klantvriendelijkheid en betrouwbaarheid.',
+            'Noem dat je zorgvuldig met geld, cijfers of administratie kunt omgaan als je nog geen POS-ervaring hebt.',
+            'Zet je beschikbaarheid hoger dan normaal; dat kan bij starters belangrijker zijn dan ervaring.',
+        ],
+        rewriteExamples: [
+            {
+                bad: 'Ik heb achter de kassa gewerkt.',
+                good: 'Klanten snel en vriendelijk geholpen bij reguliere kassa en zelfscan, inclusief pinbetalingen, retouren en kortingsacties.',
+                reason: 'De sterke versie laat zien welke kassataken je beheerst en welke situaties je aankunt.',
+            },
+            {
+                bad: 'Ik ben klantvriendelijk en nauwkeurig.',
+                good: 'Kasverschillen voorkomen door contante betalingen, retourbonnen en correcties direct te controleren tijdens piekdrukte.',
+                reason: 'Nauwkeurigheid wordt sterker als je het koppelt aan geld, procedure en drukte.',
+            },
+        ],
+        trustSignals: [
+            'Ervaring met geld, retouren of servicebalie staat concreet genoemd.',
+            'Piekdrukte, wachtrijen en klantvragen worden niet vaag maar praktisch beschreven.',
+            'Beschikbaarheid voor avonden, weekenden en vakanties is zichtbaar.',
+            'De profieltekst noemt zowel klantcontact als nauwkeurigheid.',
+        ],
+    },
     relatedSlugs: [
         'horeca-en-detailhandel/winkelmedewerker',
         'horeca-en-detailhandel/klantenservice-medewerker',

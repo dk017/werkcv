@@ -1382,7 +1382,7 @@ export default function Editor({
                             <p className="mt-2 max-w-2xl text-sm font-medium leading-relaxed text-slate-700">
                                 {tr(
                                     `Download je PDF voor eenmalig ${cvDownloadPrice.display}. Geen abonnement, geen automatische verlenging.`,
-                                    `Download your PDF for a one-time ${cvDownloadPrice.display.replace(",", ".")} payment. No subscription, no automatic renewal.`
+                                    `Download your Dutch-market English CV PDF for a one-time ${cvDownloadPrice.display.replace(",", ".")} payment. No subscription, no automatic renewal.`
                                 )}
                             </p>
                         </div>
@@ -1394,7 +1394,7 @@ export default function Editor({
                                         <div>
                                             <p className="text-xl font-black text-black">{tr("Alleen CV als PDF", "CV PDF only")}</p>
                                             <p className="mt-1 text-sm font-semibold leading-relaxed text-slate-700">
-                                                {tr("Voor als je nu alleen deze sollicitatie-PDF nodig hebt.", "For when you only need this application PDF now.")}
+                                                {tr("Voor als je nu alleen deze sollicitatie-PDF nodig hebt.", "For when you only need this Dutch-market application PDF now.")}
                                             </p>
                                         </div>
                                         <div className="shrink-0 text-right">

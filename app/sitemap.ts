@@ -665,6 +665,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.75,
         },
         {
+            url: `${baseUrl}/en/cv-format-netherlands-english`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.74,
+        },
+        {
+            url: `${baseUrl}/en/dutch-cv-for-expats`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.74,
+        },
+        {
+            url: `${baseUrl}/en/english-cv-example-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.74,
+        },
+        {
             url: `${baseUrl}/en/netherlands-cv-format`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
