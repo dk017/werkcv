@@ -86,6 +86,12 @@ export default function RootLayout({
           href="https://werkcv.nl/rss.xml"
         />
         <SharedSiteJsonLd />
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "wpik4m2kyh");`,
+          }}
+        />
         {/* Google Analytics — inline so Google's detector finds it in page source */}
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-PCC26F3HBJ" />
         <script
