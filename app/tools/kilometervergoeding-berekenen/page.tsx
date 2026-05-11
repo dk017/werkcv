@@ -31,9 +31,9 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "Reiskostenvergoeding 2026 Berekenen | €0,23/km Tool | WerkCV",
+  title: "Reiskostenvergoeding 2026 Berekenen | Kilometer & OV | WerkCV",
   description:
-    "Bereken je reiskostenvergoeding voor woon-werkverkeer in 2026. Vul je eigen kilometertarief in, zoals €0,23 of €0,25 per km, en zie dag, maand en jaar.",
+    "Bereken je reiskostenvergoeding voor woon-werkverkeer in 2026. Reken met eigen kilometertarief of OV-ritprijs en zie dag, maand en jaar.",
   path: "/tools/kilometervergoeding-berekenen",
   keywords: [
     "kilometervergoeding berekenen",
@@ -41,6 +41,8 @@ export const metadata: Metadata = buildDutchMetadata({
     "reiskosten woon werk 2026",
     "kilometervergoeding woon-werk 2026",
     "kilometervergoeding belastingvrij 2026",
+    "ov vergoeding berekenen",
+    "ov reiskostenvergoeding berekenen",
   ],
 });
 
@@ -84,10 +86,10 @@ export default function KilometervergoedingBerekenenPage() {
               </span>
             </div>
             <h1 className="mb-4 text-3xl font-black leading-tight text-slate-900 sm:text-5xl">
-              Kilometervergoeding berekenen 2026
+              Reiskostenvergoeding berekenen 2026
             </h1>
             <p className="max-w-3xl text-lg font-medium text-slate-600">
-              Bereken je bruto reiskostenvergoeding op basis van de belastingvrije kilometervergoeding van 2026. Vul je woon-werkafstand, werkdagen en eigen kilometertarief in, bijvoorbeeld €0,23 of €0,25 per km, en zie direct wat je per dag, maand en jaar kunt verwachten.
+              Bereken je bruto reiskostenvergoeding op basis van kilometers of OV-ritprijs. Vul je woon-werkafstand, eigen kilometertarief of enkele OV-ritprijs in en zie direct wat je per dag, maand en jaar kunt verwachten.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
@@ -107,8 +109,8 @@ export default function KilometervergoedingBerekenenPage() {
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {[
                 ["Wettelijke grens", "€0,23 per km", "belastingvrij maximum in 2026"],
+                ["OV-formule", "Rit × 2 × dagen", "bijvoorbeeld 214 reisdagen per jaar"],
                 ["Rekenregel", "Heen + terug", "woon-werkverkeer telt beide richtingen"],
-                ["Tijdswinst", "Binnen 1 minuut", "direct maand en jaar in beeld"],
               ].map(([label, value, note]) => (
                 <div key={label} className="border-2 border-black bg-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                   <p className="mb-1 text-[11px] font-black uppercase tracking-wide text-slate-500">{label}</p>
@@ -140,7 +142,8 @@ export default function KilometervergoedingBerekenenPage() {
             <h2 className="mb-4 text-2xl font-black text-slate-900">Hoe deze berekening werkt</h2>
             <ul className="space-y-2 text-sm text-slate-700">
               <li>Je vult alleen kilometers enkele reis in.</li>
-              <li>De tool rekent automatisch heen en terug.</li>
+              <li>Voor eigen vervoer rekent de tool automatisch heen en terug.</li>
+              <li>Voor OV kun je een enkele ritprijs invullen, zoals €4,40.</li>
               <li>Werkdagen per week bepalen hoeveel ritten je maakt.</li>
               <li>Het opgegeven kilometertarief, zoals €0,23 of €0,25 per km, wordt vergeleken met de belastingvrije grens van 2026.</li>
             </ul>
