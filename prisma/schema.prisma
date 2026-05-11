@@ -134,6 +134,60 @@ model AnalyticsEvent {
   @@index([orderId])
 }
 
+model FollowupContact {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  source    String?
+  userId    String?
+  status    String   @default("active")
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([userId])
+}
+
+model FollowupTask {
+  id             String    @id @default(cuid())
+  email          String
+  type           String
+  status         String    @default("draft")
+  reason         String
+  draftSubject   String?
+  draftBody      String?   @db.Text
+  dueAt          DateTime
+  sentAt         DateTime?
+  skippedReason  String?
+  relatedUserId  String?
+  relatedCvId    String?
+  relatedOrderId String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([status, dueAt])
+  @@index([email])
+  @@index([type])
+  @@unique([email, type, relatedCvId])
+  @@unique([email, type, relatedOrderId])
+}
+
+model EmailMessage {
+  id          String    @id @default(cuid())
+  email       String
+  direction   String
+  subject     String?
+  bodyPreview String?   @db.Text
+  messageId   String?   @unique
+  inReplyTo   String?
+  sentAt      DateTime?
+  receivedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([email, receivedAt])
+  @@index([direction, receivedAt])
+}
+
 model JobSource {
   id                   String          @id @default(cuid())
   slug                 String          @unique
