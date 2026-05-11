@@ -33,7 +33,7 @@ const faqItems = [
 export const metadata: Metadata = buildDutchMetadata({
   title: "Reiskostenvergoeding 2026 Berekenen | €0,23/km Tool | WerkCV",
   description:
-    "Bereken je reiskostenvergoeding voor woon-werkverkeer in 2026. Gebruik het belastingvrije tarief van €0,23 per km en zie dag, maand en jaar.",
+    "Bereken je reiskostenvergoeding voor woon-werkverkeer in 2026. Vul je eigen kilometertarief in, zoals €0,23 of €0,25 per km, en zie dag, maand en jaar.",
   path: "/tools/kilometervergoeding-berekenen",
   keywords: [
     "kilometervergoeding berekenen",
@@ -87,7 +87,7 @@ export default function KilometervergoedingBerekenenPage() {
               Kilometervergoeding berekenen 2026
             </h1>
             <p className="max-w-3xl text-lg font-medium text-slate-600">
-              Bereken je bruto reiskostenvergoeding op basis van de belastingvrije kilometervergoeding van 2026. Vul je woon-werkafstand, werkdagen en kilometertarief in en zie direct wat je per dag, maand en jaar kunt verwachten.
+              Bereken je bruto reiskostenvergoeding op basis van de belastingvrije kilometervergoeding van 2026. Vul je woon-werkafstand, werkdagen en eigen kilometertarief in, bijvoorbeeld €0,23 of €0,25 per km, en zie direct wat je per dag, maand en jaar kunt verwachten.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
@@ -142,7 +142,7 @@ export default function KilometervergoedingBerekenenPage() {
               <li>Je vult alleen kilometers enkele reis in.</li>
               <li>De tool rekent automatisch heen en terug.</li>
               <li>Werkdagen per week bepalen hoeveel ritten je maakt.</li>
-              <li>Het opgegeven kilometertarief wordt vergeleken met de belastingvrije grens van 2026.</li>
+              <li>Het opgegeven kilometertarief, zoals €0,23 of €0,25 per km, wordt vergeleken met de belastingvrije grens van 2026.</li>
             </ul>
           </div>
           <div className="border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">

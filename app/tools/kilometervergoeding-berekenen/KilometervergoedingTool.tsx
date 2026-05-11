@@ -12,6 +12,12 @@ import {
 const inputClass =
   "w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 font-medium bg-white";
 
+const kilometerRatePresets = [
+  { label: "€0,23", value: "0,23", note: "belastingvrij maximum" },
+  { label: "€0,25", value: "0,25", note: "vaak deels belast" },
+  { label: "€0,30", value: "0,30", note: "eigen afspraak" },
+];
+
 export default function KilometervergoedingTool() {
   const [oneWayKilometers, setOneWayKilometers] = useState("24");
   const [workDaysPerWeek, setWorkDaysPerWeek] = useState("5");
@@ -105,8 +111,29 @@ export default function KilometervergoedingTool() {
                 inputMode="decimal"
               />
               <p className="mt-1 text-[11px] text-slate-500">
-                Tot {formatEuro(TAX_FREE_KILOMETER_RATE_2026)} per km is in 2026 belastingvrij.
+                Vul elk tarief in, bijvoorbeeld 0,25. Tot {formatEuro(TAX_FREE_KILOMETER_RATE_2026)} per km is in 2026 belastingvrij.
               </p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {kilometerRatePresets.map((preset) => (
+                  <button
+                    key={preset.value}
+                    type="button"
+                    onClick={() => {
+                      setEmployerRatePerKilometer(preset.value);
+                      setResult(null);
+                      setError("");
+                    }}
+                    className={`rounded-full border px-3 py-1.5 text-[11px] font-black transition-colors ${
+                      employerRatePerKilometer === preset.value
+                        ? "border-black bg-[#4ECDC4] text-black"
+                        : "border-slate-300 bg-slate-50 text-slate-700 hover:border-slate-500"
+                    }`}
+                    title={preset.note}
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -202,6 +229,12 @@ export default function KilometervergoedingTool() {
               {formatEuro(TAX_FREE_KILOMETER_RATE_2026)} per kilometer. Vergoedt je werkgever meer,
               dan is het meerdere belast als loon.
             </p>
+            {!result.withinTaxFreeLimit ? (
+              <p className="mt-2">
+                Bij het ingevulde tarief valt {formatEuro(result.taxablePerMonth)} per maand en{" "}
+                {formatEuro(result.taxablePerYear)} per jaar boven de belastingvrije grens.
+              </p>
+            ) : null}
           </div>
 
           <SalaryResultCvCta
