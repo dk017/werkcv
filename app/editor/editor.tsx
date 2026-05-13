@@ -27,7 +27,7 @@ import CvScoreWidget from "./CvScoreWidget";
 import KeywordScannerWidget from "./KeywordScannerWidget";
 import PhotoUpload from "./PhotoUpload";
 import type { CheckoutProduct } from "@/lib/polar";
-import { applicationBundlePrice, cvDownloadPrice, profilePhotoPrice } from "@/lib/site-content";
+import { applicationBundlePrice, cvDownloadPrice } from "@/lib/site-content";
 import {
     hasCompletionTracked,
     hasEditorStartedTracked,
@@ -1416,43 +1416,25 @@ export default function Editor({
                                     >
                                         {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr(`Alleen CV downloaden voor ${cvDownloadPrice.display}`, `Download CV only for ${cvDownloadPrice.display.replace(",", ".")}`)}
                                     </button>
-                                </div>
-
-                                <div className="border-2 border-black bg-gray-50 p-4">
-                                    <div className="flex items-start justify-between gap-4">
-                                        <div>
-                                            <p className="font-black text-black">{tr("Optioneel: CV + AI-profielfoto", "Optional: CV + AI profile photo")}</p>
-                                            <p className="mt-1 text-xs font-semibold leading-relaxed text-slate-600">
-                                                {tr(
-                                                    "Wil je ook meteen een professionele profielfoto voor je CV en LinkedIn? Kies dan de bundle.",
-                                                    "Want a professional profile photo for your CV and LinkedIn too? Choose the bundle."
-                                                )}
-                                            </p>
-                                        </div>
-                                        <div className="shrink-0 text-right">
-                                            <p className="text-3xl font-black text-black">{applicationBundlePrice.display}</p>
-                                            <p className="text-[11px] font-black uppercase tracking-wide text-slate-600">
-                                                {tr("eenmalig", "one-time")}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="mt-4 space-y-2 text-xs font-bold text-slate-700">
-                                        <p className="flex gap-2"><span>✓</span><span>{tr("CV PDF direct downloaden", "Download your CV PDF now")}</span></p>
-                                        <p className="flex gap-2"><span>✓</span><span>{tr("AI-profielfoto inbegrepen", "AI profile photo included")}</span></p>
-                                        <p className="flex gap-2"><span>✓</span><span>{tr("4 voorbeeldvarianten en 2 verfijningen", "4 preview variants and 2 refinements")}</span></p>
-                                        <p className="flex gap-2"><span>✓</span><span>{tr("Bespaar " + applicationBundlePrice.savingsDisplay, "Save " + applicationBundlePrice.savingsDisplay.replace(",", "."))}</span></p>
-                                    </div>
-                                    <button
-                                        onClick={() => handleCheckoutOptionClick("cv-profile-photo-bundle")}
-                                        disabled={isCheckoutRedirecting}
-                                        className="mt-4 w-full px-4 py-3 border-2 border-black font-bold text-sm bg-white hover:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed"
-                                    >
-                                        {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr(`Kies CV + AI-profielfoto voor ${applicationBundlePrice.display}`, `Choose CV + AI profile photo for ${applicationBundlePrice.display.replace(",", ".")}`)}
-                                    </button>
-                                    <p className="mt-3 text-xs font-medium leading-relaxed text-slate-500">
+                                    <p className="mt-3 text-xs font-semibold leading-relaxed text-slate-600">
                                         {tr(
-                                            `Los gekocht: ${cvDownloadPrice.display} + ${profilePhotoPrice.display}. Bundle: ${applicationBundlePrice.display}. Je kunt de profielfoto ook later los kopen.`,
-                                            `Bought separately: ${cvDownloadPrice.display.replace(",", ".")} + ${profilePhotoPrice.display.replace(",", ".")}. Bundle: ${applicationBundlePrice.display.replace(",", ".")}. You can also buy the profile photo separately later.`
+                                            "Optioneel: ",
+                                            "Optional: "
+                                        )}
+                                        <button
+                                            type="button"
+                                            onClick={() => handleCheckoutOptionClick("cv-profile-photo-bundle")}
+                                            disabled={isCheckoutRedirecting}
+                                            className="font-black text-black underline decoration-2 underline-offset-2 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                                        >
+                                            {tr(
+                                                `voeg een AI-profielfoto toe`,
+                                                `add an AI profile photo`
+                                            )}
+                                        </button>
+                                        {tr(
+                                            ` en betaal ${applicationBundlePrice.display} totaal voor CV + profielfoto.`,
+                                            ` and pay ${applicationBundlePrice.display.replace(",", ".")} total for CV + profile photo.`
                                         )}
                                     </p>
                                 </div>
