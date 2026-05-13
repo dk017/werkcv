@@ -176,6 +176,11 @@ model EmailMessage {
   id          String    @id @default(cuid())
   email       String
   direction   String
+  folder      String?
+  uid         Int?
+  uidValidity Int?
+  fromAddress String?
+  toAddress   String?
   subject     String?
   bodyPreview String?   @db.Text
   messageId   String?   @unique
@@ -186,6 +191,17 @@ model EmailMessage {
 
   @@index([email, receivedAt])
   @@index([direction, receivedAt])
+  @@index([folder, uid])
+}
+
+model MailboxSyncState {
+  id          String   @id @default(cuid())
+  folder      String   @unique
+  uidValidity Int?
+  lastUid     Int      @default(0)
+  lastSyncedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model JobSource {
