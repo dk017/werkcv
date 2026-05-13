@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
+import TrackedToolLink from "@/components/analytics/TrackedToolLink";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import UurloonCalculatorTool from "./UurloonCalculatorTool";
@@ -108,18 +109,29 @@ export default function UurloonCalculatorPage() {
                             Gebruik deze tool als je wilt weten wat je bruto uurloon is vanuit je maand- of jaarsalaris, of juist wat een uurloon betekent als bruto maandloon. Handig voor salarisvergelijking, onderhandelingen en controle tegen het minimumloon.
                         </p>
                         <div className="mt-6 flex flex-wrap gap-3">
-                            <Link
+                            <TrackedToolLink
                                 href="/editor"
+                                eventName="tool_to_cv_cta_click"
+                                toolName="uurloon-calculator"
+                                ctaIntent="salary"
+                                trackingLocation="uurloon-calculator:hero_salary_to_cv"
+                                trackingLabel="Maak CV voor beter betaalde functies"
                                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
                             >
-                                Maak gratis je CV
-                            </Link>
-                            <Link
+                                Maak CV voor beter betaalde functies
+                            </TrackedToolLink>
+                            <TrackedToolLink
                                 href="/cv-maken-zonder-abonnement"
+                                eventName="tool_to_cv_cta_click"
+                                toolName="uurloon-calculator"
+                                ctaVariant="secondary"
+                                ctaIntent="salary"
+                                trackingLocation="uurloon-calculator:hero_no_subscription"
+                                trackingLabel="CV maken zonder abonnement"
                                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
                             >
-                                Zonder abonnement
-                            </Link>
+                                CV zonder abonnement
+                            </TrackedToolLink>
                             <Link
                                 href="/beste-cv-maker-nederland"
                                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"

@@ -128,9 +128,15 @@ export default function SollicitatiebriefGeneratorPage() {
 
                 <ToolToCvCTA
                     toolName="sollicitatiebrief-generator"
-                    title="Maak ook een cv die past bij je brief"
-                    description="Een sterke sollicitatiebrief werkt beter met een duidelijke, professionele cv erbij."
-                    primaryLabel="Maak bijpassende cv"
+                    eyebrow="Bijpassende CV-PDF"
+                    title="Maak ook de CV die bij je brief past"
+                    description="Als je hier een sollicitatiebrief maakt, ben je al bezig met een concrete vacature. Zorg dat je CV dezelfde rol, toon en bewijzen laat zien."
+                    primaryLabel="Maak bijpassende CV-PDF"
+                    secondaryHref="/cv-maken-zonder-abonnement"
+                    secondaryLabel="Bekijk hoe betalen werkt"
+                    intent="cover_letter"
+                    insightText="Start gratis in de editor, kies een rustige Nederlandse template en betaal pas €4,99 als je de PDF echt wilt downloaden."
+                    proofItems={["Brief en CV sluiten beter op elkaar aan", "Gratis bewerken voor betaling", "Eenmalig €4,99", "Geen abonnement"]}
                 />
             </div>
 

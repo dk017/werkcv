@@ -12,6 +12,7 @@ import {
 const inputClass = "w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 font-medium bg-white";
 
 const targetHourPresets = [24, 28, 32, 36];
+const statutoryMinimumHourlyWage2026 = 14.71;
 
 function formatPercent(value: number): string {
   return new Intl.NumberFormat("nl-NL", {
@@ -137,6 +138,14 @@ export default function ParttimeSalarisTool() {
             </div>
           </div>
 
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-950">
+            <p className="font-black mb-1">Minimumloon-check 2026</p>
+            <p className="leading-relaxed">
+              Voor werknemers van 21 jaar en ouder is het wettelijk minimumuurloon per 1 januari 2026
+              {" "}{formatEuro(statutoryMinimumHourlyWage2026)} bruto per uur. Na het berekenen tonen we of je ingevoerde fulltime salaris daarboven zit.
+            </p>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-4 items-end">
             <div>
               <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
@@ -197,6 +206,24 @@ export default function ParttimeSalarisTool() {
             </p>
             <p className="text-sm text-slate-700 leading-relaxed">
               Dat is {formatPercent(result.targetFtePercentage)}% van fulltime, op basis van {targetHours} uur per week.
+            </p>
+          </div>
+
+          <div className={`border-2 rounded-xl p-4 ${
+            result.hourlyGross >= statutoryMinimumHourlyWage2026
+              ? "bg-emerald-50 border-emerald-200"
+              : "bg-amber-50 border-amber-300"
+          }`}>
+            <p className={`text-xs font-black uppercase tracking-wide mb-1 ${
+              result.hourlyGross >= statutoryMinimumHourlyWage2026 ? "text-emerald-700" : "text-amber-800"
+            }`}>
+              Minimumloon 2026
+            </p>
+            <p className="text-sm text-slate-700 leading-relaxed">
+              Je ingevoerde fulltime salaris komt neer op {formatEuro(result.hourlyGross)} bruto per uur. Voor 21 jaar en ouder is het wettelijke minimum per 1 januari 2026 {formatEuro(statutoryMinimumHourlyWage2026)} bruto per uur.
+              {result.hourlyGross >= statutoryMinimumHourlyWage2026
+                ? " Op basis van deze invoer zit je boven die grens."
+                : " Controleer je cao, leeftijd, contracturen en loonstrook, want deze invoer zit onder die grens voor 21 jaar en ouder."}
             </p>
           </div>
 
@@ -272,7 +299,11 @@ export default function ParttimeSalarisTool() {
 
           <SalaryResultCvCta
             toolName="parttime-salaris-calculator"
-            text="Denk je door parttime werken ook na over een andere functie of betere voorwaarden? Werk je cv bij voor de rol die past bij je nieuwe werkweek."
+            title="Gebruik je parttime uitkomst voor je volgende sollicitatie"
+            text="Denk je door parttime werken ook na over een andere functie, betere voorwaarden of een andere werkweek? Werk je CV bij voor de rol die past bij dat nieuwe salarisplaatje."
+            primaryLabel="Maak CV voor betere voorwaarden"
+            secondaryLabel="Bekijk CV zonder abonnement"
+            resultState={`${targetHours}_hours_result`}
           />
 
           <button

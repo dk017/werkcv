@@ -4,7 +4,9 @@ import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
+import TrackedToolLink from "@/components/analytics/TrackedToolLink";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import ParttimeSalarisTool from "./ParttimeSalarisTool";
 
 const faqItems = [
@@ -23,6 +25,14 @@ const faqItems = [
   {
     question: "Kan ik hiermee ook 24, 28, 32 of 36 uur vergelijken?",
     answer: "Ja. De tool laat naast je eigen invoer ook direct meerdere veelgekozen parttime scenario's zien, zodat je sneller kunt vergelijken.",
+  },
+  {
+    question: "Wat is het minimumloon bij parttime werken in 2026?",
+    answer: "Sinds 2024 is er geen vast wettelijk minimum maandloon meer. De wettelijke basis is een minimumuurloon. Per 1 januari 2026 is dat voor werknemers van 21 jaar en ouder 14,71 euro bruto per uur. Je maandloon hangt dus af van je gewerkte of afgesproken uren.",
+  },
+  {
+    question: "Is parttime salaris altijd precies naar rato?",
+    answer: "Bij dezelfde functie, schaal en arbeidsvoorwaarden is pro rata meestal de juiste rekensom. De echte loonstrook kan afwijken door cao-afspraken, toeslagen, een individueel keuzebudget, pensioenpremie, loonheffingskorting of wisselende maanduren.",
   },
 ];
 
@@ -49,20 +59,24 @@ const parttimeCvIntentLinks = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: "Parttime Salaris Berekenen | 24, 28, 32 of 36 Uur",
-  description: "Bereken direct je parttime salaris voor 24, 28, 32 of 36 uur. Vul fulltime salaris en uren in en zie bruto maandloon, jaarloon en vakantiegeld.",
+export const metadata: Metadata = buildDutchMetadata({
+  title: "Parttime Salaris Berekenen 2026 | 24, 28, 32 of 36 Uur",
+  description:
+    "Bereken direct je parttime salaris voor 24, 28, 32 of 36 uur. Zet fulltime loon om naar bruto maandloon, jaarloon, uurloon en vakantiegeld.",
+  path: "/tools/parttime-salaris-calculator",
   keywords: [
     "parttime salaris calculator",
     "parttime salaris berekenen",
+    "parttime salaris berekenen 2026",
     "32 uur salaris berekenen",
     "28 uur salaris berekenen",
     "24 uur salaris berekenen",
     "36 uur salaris berekenen",
     "parttime loon berekenen",
     "fulltime naar parttime salaris",
+    "minimumloon parttime 2026",
   ],
-};
+});
 
 export default function ParttimeSalarisCalculatorPage() {
   return (
@@ -98,28 +112,39 @@ export default function ParttimeSalarisCalculatorPage() {
                 Geld
               </span>
               <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                Bijgewerkt 12 maart 2026
+                Bijgewerkt 13 mei 2026
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-              Parttime salaris berekenen voor 24, 28, 32 of 36 uur
+              Parttime salaris berekenen voor 24, 28, 32 of 36 uur in 2026
             </h1>
             <p className="text-lg text-slate-600 font-medium max-w-3xl">
-              Bereken direct wat 24, 28, 32 of 36 uur bruto betekent. WerkCV zet je fulltime salaris om naar een bruikbare parttime indicatie met maandloon, jaarloon en vakantiegeld.
+              Bereken direct wat 24, 28, 32 of 36 uur bruto betekent. WerkCV zet je fulltime salaris om naar een parttime maandloon, jaarloon, uurloon en vakantiegeld-indicatie.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link
+              <TrackedToolLink
                 href="/editor"
+                eventName="tool_to_cv_cta_click"
+                toolName="parttime-salaris-calculator"
+                ctaIntent="salary"
+                trackingLocation="parttime-salaris-calculator:hero_salary_to_cv"
+                trackingLabel="Maak CV voor betere baan of urenafspraak"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
               >
-                Maak gratis je CV
-              </Link>
-              <Link
+                Maak CV voor betere baan of urenafspraak
+              </TrackedToolLink>
+              <TrackedToolLink
                 href="/cv-maken-zonder-abonnement"
+                eventName="tool_to_cv_cta_click"
+                toolName="parttime-salaris-calculator"
+                ctaVariant="secondary"
+                ctaIntent="salary"
+                trackingLocation="parttime-salaris-calculator:hero_no_subscription"
+                trackingLabel="CV maken zonder abonnement"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-200 transition-colors"
               >
-                Zonder abonnement
-              </Link>
+                CV zonder abonnement
+              </TrackedToolLink>
               <Link
                 href="/templates"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-200 transition-colors"
@@ -132,7 +157,7 @@ export default function ParttimeSalarisCalculatorPage() {
               {[
                 ["Basis", "Pro rata", "van fulltime naar gewenste uren"],
                 ["Veelgebruikte schema's", "24 / 28 / 32 / 36", "direct naast elkaar vergelijken"],
-                ["Output", "Maand + jaar", "plus jaarlijkse vakantiegeld-indicatie"],
+                ["Minimumloon", "2026-check", "op basis van bruto uurloon 21+"],
               ].map(([label, value, note]) => (
                 <div key={label} className="bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                   <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">{label}</p>
@@ -148,9 +173,9 @@ export default function ParttimeSalarisCalculatorPage() {
               Waarom deze tool sterk is
             </p>
             <div className="space-y-3 text-sm text-slate-600">
-              <p>Veel mensen zoeken niet naar een theoretische FTE-formule, maar naar een concreet antwoord op 32 uur of 36 uur.</p>
-              <p>Deze tool vertaalt dat meteen door naar maandloon, jaarloon en vakantiegeld, zodat je sneller kunt vergelijken of onderhandelen.</p>
-              <p>Daarmee is het een praktische brug tussen salaris-orientatie, netto-bruto en sollicitatiebeslissingen.</p>
+              <p>Veel mensen zoeken niet naar een theoretische FTE-formule, maar naar een concreet antwoord op 24, 28, 32 of 36 uur.</p>
+              <p>Deze tool vertaalt dat meteen door naar maandloon, jaarloon, vakantiegeld en bruto uurloon, zodat je sneller kunt vergelijken of onderhandelen.</p>
+              <p>Omdat het minimumloon sinds 2024 per uur geldt, is de uurloon-check belangrijker dan een vast maandbedrag.</p>
             </div>
           </aside>
         </section>
@@ -162,13 +187,13 @@ export default function ParttimeSalarisCalculatorPage() {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
           <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h2 className="text-2xl font-black text-slate-900 mb-4">
-              Wat deze berekening goed doet
+              Snel antwoord: zo werkt parttime salaris
             </h2>
             <ul className="space-y-2 text-sm text-slate-700">
-              <li>Rekent meteen van fulltime norm naar jouw gewenste uren per week.</li>
-              <li>Laat zien wat de nieuwe bruto maand- en jaarbedragen worden.</li>
-              <li>Toont de jaarlijkse vakantiegeld-opbouw apart, zodat je niet met kale maandbedragen blijft vergelijken.</li>
-              <li>Geeft ook het bruto uurloon en meerdere scenario&apos;s naast elkaar terug.</li>
+              <li>De basisformule is: fulltime salaris x gewenste uren / fulltime uren.</li>
+              <li>32 uur bij een fulltime norm van 40 uur is dus 80% van het fulltime salaris.</li>
+              <li>24 uur is 60%, 28 uur is 70% en 36 uur is 90% als fulltime 40 uur is.</li>
+              <li>De tool toont naast maand- en jaarloon ook vakantiegeld en bruto uurloon.</li>
             </ul>
           </div>
           <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -180,13 +205,41 @@ export default function ParttimeSalarisCalculatorPage() {
               <li>Je ontvangt ORT, ploegentoeslag, provisie of een bonusstructuur.</li>
               <li>Je hebt een IKB of vaste 13e maand die anders wordt berekend.</li>
               <li>Je werkgever gebruikt een andere fulltime norm, bijvoorbeeld 36 in plaats van 40 uur.</li>
+              <li>Je maand heeft meer of minder werkdagen, waardoor uurloon en maandloon niet altijd hetzelfde aanvoelen.</li>
             </ul>
+          </div>
+        </section>
+
+        <section className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-6 mb-12">
+          <div className="bg-[#FFF7D6] border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600 mb-2">
+              Voorbeeld
+            </p>
+            <h2 className="text-2xl font-black text-slate-900 mb-3">
+              32 uur salaris berekenen
+            </h2>
+            <p className="text-sm text-slate-700 leading-relaxed">
+              Stel: je fulltime salaris is 3.600 euro bruto per maand bij 40 uur. Bij 32 uur werk je 32 / 40 = 80%. Je parttime salaris wordt dan 2.880 euro bruto per maand, exclusief eventuele toeslagen of afwijkende cao-afspraken.
+            </p>
+          </div>
+          <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <h2 className="text-2xl font-black text-slate-900 mb-4">
+              Minimumloon bij parttime werken in 2026
+            </h2>
+            <div className="space-y-3 text-sm text-slate-700 leading-relaxed">
+              <p>
+                Sinds 2024 werkt Nederland met een wettelijk minimumuurloon. Volgens de Rijksoverheid is het minimumuurloon per 1 januari 2026 voor werknemers van 21 jaar en ouder 14,71 euro bruto per uur.
+              </p>
+              <p>
+                Daarom rekent deze tool ook je bruto uurloon uit. Voor een vaste maandafspraak blijft je cao of contract belangrijk, maar de minimumlooncontrole begint bij het uurloon.
+              </p>
+            </div>
           </div>
         </section>
 
         <RelatedToolsSection
           title="Gebruik deze salaristools samen"
-          description="Parttime vergelijken wordt sterker als je daarna doorrekent naar netto, uurloon en onderhandelingsruimte."
+          description="Parttime vergelijken wordt sterker als je daarna doorrekent naar netto, vakantiegeld en onderhandelingsruimte."
           tools={[
             {
               href: "/tools/netto-bruto-calculator",
@@ -201,10 +254,10 @@ export default function ParttimeSalarisCalculatorPage() {
               badge: "Geld",
             },
             {
-              href: "/tools/minimumloon-checker",
-              title: "Minimumloon checker",
-              description: "Check of je aanbod nog steeds ruim boven het wettelijke minimum ligt.",
-              badge: "NL wetgeving",
+              href: "/tools/vakantiegeld-berekenen",
+              title: "Vakantiegeld berekenen",
+              description: "Maak je parttime vergelijking compleet met een aparte bruto netto check van je vakantiegeld.",
+              badge: "Geld",
             },
             {
               href: "/tools/salaris-onderhandeling",
@@ -232,12 +285,17 @@ export default function ParttimeSalarisCalculatorPage() {
               >
                 Lees hoe je een sterk CV maakt
               </Link>
-              <Link
+              <TrackedToolLink
                 href="/editor"
+                eventName="tool_to_cv_cta_click"
+                toolName="parttime-salaris-calculator"
+                ctaIntent="salary"
+                trackingLocation="parttime-salaris-calculator:mid_salary_to_cv"
+                trackingLabel="Maak CV voor mijn volgende stap"
                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
               >
-                Maak gratis je CV
-              </Link>
+                Maak CV voor mijn volgende stap
+              </TrackedToolLink>
               <Link
                 href="/beste-cv-maker-nederland"
                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
@@ -286,7 +344,7 @@ export default function ParttimeSalarisCalculatorPage() {
           </p>
           <div className="space-y-3 text-sm text-slate-600 leading-relaxed">
             <p>
-              Deze tool gebruikt een pro-rata omzetting van fulltime naar parttime uren. De juridische basis voor het wijzigen van je arbeidsduur en de gevolgen voor je salaris liggen in de afspraken met je werkgever, cao en contract.
+              Deze tool gebruikt een pro-rata omzetting van fulltime naar parttime uren. De juridische basis voor het wijzigen van je arbeidsduur en de gevolgen voor je salaris liggen in de afspraken met je werkgever, cao en contract. Sinds 2024 is het minimumloon een uurloon; per 1 januari 2026 is het minimumuurloon voor werknemers van 21 jaar en ouder 14,71 euro bruto.
             </p>
             <ul className="space-y-2">
               <li>
@@ -311,7 +369,15 @@ export default function ParttimeSalarisCalculatorPage() {
               </li>
             </ul>
             <p>
-              Voor netto loon, heffingskortingen en loonstrookcontrole hoort deze tool samen gebruikt te worden met de netto-bruto calculator.
+              Voor netto loon, heffingskortingen en loonstrookcontrole hoort deze tool samen gebruikt te worden met de{" "}
+              <Link href="/tools/netto-bruto-calculator" className="font-medium text-teal-700 hover:underline">
+                netto-bruto calculator
+              </Link>
+              . Wil je je parttime vergelijking compleet maken, reken dan ook je{" "}
+              <Link href="/tools/vakantiegeld-berekenen" className="font-medium text-teal-700 hover:underline">
+                vakantiegeld bruto netto
+              </Link>
+              {" "}door.
             </p>
           </div>
         </section>

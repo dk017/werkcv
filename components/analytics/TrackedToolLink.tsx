@@ -18,6 +18,8 @@ type TrackedToolLinkProps = {
   eventName: ToolCtaEventName;
   toolName?: string;
   ctaVariant?: "primary" | "secondary";
+  ctaIntent?: "salary" | "legal" | "cv_content" | "cancellation" | "cover_letter" | "general";
+  resultState?: string;
   children: ReactNode;
 };
 
@@ -37,6 +39,8 @@ export default function TrackedToolLink({
   eventName,
   toolName,
   ctaVariant = "primary",
+  ctaIntent,
+  resultState,
   children,
 }: TrackedToolLinkProps) {
   const pathname = usePathname();
@@ -54,6 +58,10 @@ export default function TrackedToolLink({
             page_path: pathname,
             cta_variant: ctaVariant,
             cta_text: trackingLabel,
+            cta_location: trackingLocation,
+            cta_intent: ctaIntent,
+            cta_destination: toPath,
+            result_state: resultState,
           });
         } else {
           track(eventName, {

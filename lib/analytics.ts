@@ -38,6 +38,12 @@ export type NamedLandingCtaEvent =
     | 'cta_cvster_cancel_after_steps'
     | 'cta_cvster_cancel_bottom'
     | 'cta_cvster_cancel_sticky'
+    | 'cta_livecareer_cancel_header'
+    | 'cta_livecareer_cancel_hero'
+    | 'cta_livecareer_cancel_after_steps'
+    | 'cta_livecareer_cancel_why'
+    | 'cta_livecareer_cancel_footer'
+    | 'cta_livecareer_cancel_sticky'
     | 'cta_cv_optimaliseren_hero'
     | 'cta_cv_verbeteren_hero'
     | 'cta_cv_checken_hero'
@@ -170,6 +176,10 @@ export type AnalyticsEvent =
               page_path: string;
               cta_variant: 'primary' | 'secondary';
               cta_text: string;
+              cta_location?: string;
+              cta_intent?: 'salary' | 'legal' | 'cv_content' | 'cancellation' | 'cover_letter' | 'general';
+              cta_destination?: string;
+              result_state?: string;
           };
       }
     | { event: 'linkedin_to_cv_tool_view'; properties: { page_path: string } }

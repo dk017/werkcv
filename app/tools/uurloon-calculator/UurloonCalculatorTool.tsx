@@ -209,7 +209,11 @@ export default function UurloonCalculatorTool() {
 
                     <SalaryResultCvCta
                         toolName="uurloon-calculator"
-                        text="Gebruik je uurloonvergelijking niet alleen als rekensom. Als je een beter aanbod zoekt, maak dan meteen een cv dat past bij die volgende stap."
+                        title="Gebruik je uurlooncheck voor je volgende aanbod"
+                        text="Gebruik je uurloonvergelijking niet alleen als rekensom. Als je een beter aanbod zoekt, maak dan meteen een CV dat past bij functies die meer waard zijn dan je huidige situatie."
+                        primaryLabel="Maak CV voor beter betaalde functies"
+                        secondaryLabel="Bekijk CV zonder abonnement"
+                        resultState={result.inputMode === "hourly" ? "hourly_to_salary_result" : "salary_to_hourly_result"}
                     />
 
                     <button
