@@ -50,6 +50,7 @@ import { cv50Plus } from './articles/cv-50-plus';
 import { cvSchrijvenMetAi } from './articles/cv-schrijven-met-ai';
 import { cvBijwerken } from './articles/cv-bijwerken';
 import { cvSchrijvenBuitenlanderNederland } from './articles/cv-schrijven-buitenlander-nederland';
+import { professioneelCvOnderdelen } from './articles/professioneel-cv-onderdelen';
 
 // ============================================================================
 // DATA COLLECTION
@@ -100,6 +101,7 @@ const allArticles: BlogArticle[] = [
     cvSchrijvenMetAi,
     cvBijwerken,
     cvSchrijvenBuitenlanderNederland,
+    professioneelCvOnderdelen,
 ].sort((a, b) => a.order - b.order);
 
 // ============================================================================
