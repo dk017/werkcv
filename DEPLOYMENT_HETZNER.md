@@ -1,6 +1,6 @@
 # Hetzner Deployment
 
-Last verified: May 13, 2026
+Last verified: May 14, 2026
 
 This document describes the production deployment flow for `werkcv.nl`.
 
@@ -15,6 +15,15 @@ Default rule: **build in GitHub Actions, not on the Hetzner server**. The Hetzne
 - DB container: `werkcv-db-1`
 - Live app port mapping on server: `3001:3000`
 - Image registry: GitHub Container Registry (`ghcr.io`)
+- Canonical deploy branch: `main`
+- Current verified production commit: `84ba403243c54f985b0651bf261f72f8b98a6861`
+- Current verified image: `ghcr.io/dk017/werkcv-app:sha-84ba403243c54f985b0651bf261f72f8b98a6861`
+
+Branch history note:
+
+- On May 14, 2026, `main` was realigned to the deployed production line after it had diverged from the active deploy branch.
+- The old `main` pointer was preserved at `backup/main-before-production-realign-20260514`.
+- The expat CV deployment branch `deploy/expat-cv-pages-20260514` currently points at the same production lineage, but future normal deploys should use `main`.
 
 Important:
 
@@ -22,6 +31,8 @@ Important:
 - Do not run `next build` or `docker compose build app` on the VPS during normal deploys.
 - `/opt/werkcv/.env` remains the production environment source.
 - `docker-compose.ghcr.yml` is the image-based production compose file for the Actions deploy flow.
+- If a local branch other than `main` is checked out, confirm `git rev-parse HEAD` matches `git rev-parse origin/main` before pushing or deploying.
+- Do not force-push `main` unless a backup branch has been created and the production lineage has been reviewed.
 
 ## Why This Changed
 
@@ -56,7 +67,7 @@ GHCR_READ_TOKEN=<GitHub token with package read access>
 Use this for normal production releases.
 
 1. Commit the code you want to deploy.
-2. Push it to `main`.
+2. Confirm your deploy branch is `main`, or push the exact reviewed commit to `main`.
 3. Run the GitHub workflow: **Build app image**.
 4. Set:
    - `deploy`: `true`
@@ -65,6 +76,10 @@ Use this for normal production releases.
 From local CLI, if authenticated with `gh`:
 
 ```bash
+git fetch origin main
+git status --short
+git rev-parse HEAD
+git rev-parse origin/main
 git push origin main
 
 gh workflow run "Build app image" \
@@ -88,6 +103,8 @@ Expected result:
 - `werkcv-db-1` remains healthy.
 - No production build runs on the VPS.
 
+If you intentionally deploy from another branch, use the branch name in `--ref`, but still push or fast-forward `main` afterward so `main` remains the production source of truth.
+
 ## Manual Server Deploy From A Prebuilt Image
 
 Use this if the image already exists in GHCR and you want to pull it manually.
@@ -109,6 +126,18 @@ export APP_PORT=3001
 docker compose -p werkcv -f docker-compose.ghcr.yml pull app
 docker compose -p werkcv -f docker-compose.ghcr.yml up -d app
 docker compose -p werkcv ps
+```
+
+If the server already has the correct image and you only need to restart after an environment change:
+
+```bash
+cd /opt/werkcv
+
+export WERKCV_IMAGE=$(docker inspect --format='{{.Config.Image}}' werkcv-app-1)
+export APP_PORT=3001
+
+docker compose -p werkcv -f docker-compose.ghcr.yml up -d app
+docker compose -p werkcv -f docker-compose.ghcr.yml ps
 ```
 
 If GHCR requires login:
@@ -151,6 +180,13 @@ Example:
 
 ```bash
 curl -o /dev/null -s -w 'PUBLIC_KM=%{http_code}\n' https://werkcv.nl/tools/kilometervergoeding-berekenen
+```
+
+For checkout or pricing changes, also verify the live copy and checkout logs:
+
+```bash
+curl -s https://werkcv.nl/prijzen | grep -E '€4,99|Geen abonnement'
+ssh root@65.108.243.208 'docker logs werkcv-app-1 --tail 160 2>&1 | grep -Ei "checkout_failed|Polar checkout failed|Price is archived|checkout_started" | tail -60'
 ```
 
 ## Rollback
@@ -210,3 +246,6 @@ That can silently deploy local server-only changes and can overload the VPS.
 - A transient `Failed to find Server Action` log right after a deploy can happen if an older browser tab hits the new container with stale action IDs. That is not automatically a bad deploy.
 - The DB schema push currently runs inside the app container startup. Check logs if startup is slower than expected. Longer term, move schema changes into a separate deploy step.
 - If the app container is up but public checks fail, confirm nginx is active and the app is listening on port `3001`.
+- Checkout uses Polar. On May 14, 2026, `POLAR_PRICE_ID_CV_DOWNLOAD` in `/opt/werkcv/.env` pointed to an archived price and caused checkout creation to fail with `Polar checkout failed (422): Price is archived`.
+- The immediate fix was to comment out the archived `POLAR_PRICE_ID_CV_DOWNLOAD` line and restart the app so checkout used `POLAR_PRODUCT_ID_CV_DOWNLOAD`.
+- The code now includes a fallback from explicit Polar price ID to product ID, but production env should still avoid archived price IDs.
