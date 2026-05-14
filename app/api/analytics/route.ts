@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { classifyTrafficSource, parseUserAgent } from '@/lib/analytics-source';
+import { geolocateIp, getClientIp } from '@/lib/geoip';
 
 const PERSISTED_FUNNEL_EVENTS = new Set([
     'page_view',
@@ -127,6 +128,7 @@ export async function POST(request: NextRequest) {
                 ? safeProperties.referrer
                 : request.headers.get('referer') || safeAttribution?.firstTouchReferrer || '';
         const source = classifyTrafficSource(referrer, safeAttribution);
+        const geo = event === 'page_view' ? await geolocateIp(getClientIp(request)) : null;
         const enrichedProperties = {
             ...safeProperties,
             ...(typeof visitorId === 'string' ? { visitorId } : {}),
@@ -141,6 +143,18 @@ export async function POST(request: NextRequest) {
             deviceType: parsedUserAgent.deviceType,
             browserName: parsedUserAgent.browserName,
             osName: parsedUserAgent.osName,
+            ...(geo
+                ? {
+                    city: geo.city,
+                    region: geo.region,
+                    country: geo.country,
+                    countryCode: geo.countryCode,
+                    latitude: geo.latitude,
+                    longitude: geo.longitude,
+                    geoTimezone: geo.timezone,
+                    geoProvider: 'ip-api',
+                }
+                : {}),
         };
 
         if (PERSISTED_FUNNEL_EVENTS.has(event)) {

@@ -21,6 +21,7 @@ export type AnalyticsDashboardData = {
     signups: number;
   };
   liveVisitors: LiveVisitorRow[];
+  globePoints: GlobePointRow[];
   topPages: PageRow[];
   sources: SourceRow[];
   devices: DeviceRow[];
@@ -51,7 +52,26 @@ export type LiveVisitorRow = {
   deviceType: string;
   browserName: string;
   osName: string;
+  city: string;
+  country: string;
+  latitude: number | null;
+  longitude: number | null;
   lastSeen: Date;
+  eventCount: number;
+};
+
+export type GlobePointRow = {
+  id: string;
+  sessionId: string;
+  latitude: number;
+  longitude: number;
+  city: string;
+  country: string;
+  page: string;
+  sourceType: string;
+  sourceLabel: string;
+  lastSeen: Date;
+  isLive: boolean;
   eventCount: number;
 };
 
@@ -118,7 +138,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
   const since = new Date(generatedAt.getTime() - rangeHours[range] * 60 * 60 * 1000);
   const pageSql = eventPageSql();
 
-  const [summaryRows, liveVisitors, topPages, sources, devices, ctas, funnelPages] = await Promise.all([
+  const [summaryRows, liveVisitors, globePoints, topPages, sources, devices, ctas, funnelPages] = await Promise.all([
     prisma.$queryRaw<SummaryRow[]>`
       WITH events AS (
         SELECT *
@@ -172,6 +192,10 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
           COALESCE(NULLIF(properties->>'deviceType', ''), 'unknown') AS "deviceType",
           COALESCE(NULLIF(properties->>'browserName', ''), 'Unknown') AS "browserName",
           COALESCE(NULLIF(properties->>'osName', ''), 'Unknown') AS "osName",
+          COALESCE(NULLIF(properties->>'city', ''), '') AS city,
+          COALESCE(NULLIF(properties->>'country', ''), '') AS country,
+          CASE WHEN properties->>'latitude' IS NULL THEN NULL ELSE (properties->>'latitude')::float END AS latitude,
+          CASE WHEN properties->>'longitude' IS NULL THEN NULL ELSE (properties->>'longitude')::float END AS longitude,
           "createdAt" AS "lastSeen",
           COUNT(*) OVER (PARTITION BY properties->>'sessionId')::int AS "eventCount",
           ROW_NUMBER() OVER (PARTITION BY properties->>'sessionId' ORDER BY "createdAt" DESC) AS row_number
@@ -186,12 +210,55 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
         "deviceType",
         "browserName",
         "osName",
+        city,
+        country,
+        latitude,
+        longitude,
         "lastSeen",
         "eventCount"
       FROM ranked
       WHERE row_number = 1
       ORDER BY "lastSeen" DESC
       LIMIT 30
+    `,
+    prisma.$queryRaw<GlobePointRow[]>`
+      WITH latest_sessions AS (
+        SELECT
+          properties->>'sessionId' AS "sessionId",
+          COALESCE(NULLIF(properties->>'visitorId', ''), properties->>'sessionId') AS "visitorId",
+          ${pageSql} AS page,
+          COALESCE(NULLIF(properties->>'sourceType', ''), 'unknown') AS "sourceType",
+          COALESCE(NULLIF(properties->>'sourceLabel', ''), 'Unknown') AS "sourceLabel",
+          COALESCE(NULLIF(properties->>'city', ''), '') AS city,
+          COALESCE(NULLIF(properties->>'country', ''), '') AS country,
+          (properties->>'latitude')::float AS latitude,
+          (properties->>'longitude')::float AS longitude,
+          "createdAt" AS "lastSeen",
+          COUNT(*) OVER (PARTITION BY properties->>'sessionId')::int AS "eventCount",
+          ROW_NUMBER() OVER (PARTITION BY properties->>'sessionId' ORDER BY "createdAt" DESC) AS row_number
+        FROM "AnalyticsEvent"
+        WHERE "createdAt" >= ${since}
+          AND NULLIF(properties->>'sessionId', '') IS NOT NULL
+          AND properties->>'latitude' IS NOT NULL
+          AND properties->>'longitude' IS NOT NULL
+      )
+      SELECT
+        "visitorId" || '-' || "sessionId" AS id,
+        "sessionId",
+        latitude,
+        longitude,
+        city,
+        country,
+        page,
+        "sourceType",
+        "sourceLabel",
+        "lastSeen",
+        "lastSeen" >= ${new Date(generatedAt.getTime() - 5 * 60 * 1000)} AS "isLive",
+        "eventCount"
+      FROM latest_sessions
+      WHERE row_number = 1
+      ORDER BY "isLive" DESC, "lastSeen" DESC
+      LIMIT 90
     `,
     prisma.$queryRaw<PageRow[]>`
       SELECT
@@ -297,6 +364,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
       signups: 0,
     },
     liveVisitors,
+    globePoints,
     topPages,
     sources,
     devices,

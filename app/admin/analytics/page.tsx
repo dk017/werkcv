@@ -4,6 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { getAnalyticsDashboardData, parseAnalyticsRange } from "@/lib/admin-analytics";
 import { isAnalyticsAdminEmail } from "@/lib/admin-auth";
 import { getCurrentUser } from "@/lib/auth";
+import { AnalyticsGlobe } from "./AnalyticsGlobe";
 
 export const dynamic = "force-dynamic";
 
@@ -121,6 +122,8 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
           <StatCard label="Live now" value={number(data.liveVisitors.length)} detail="Sessions active in last 5 min" />
         </section>
 
+        <AnalyticsGlobe points={data.globePoints} generatedAt={dateTime(data.generatedAt)} />
+
         <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
           <div className="flex flex-col gap-1 border-b border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -137,13 +140,14 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
                   <th className="px-4 py-3">Page</th>
                   <th className="px-4 py-3">Source</th>
                   <th className="px-4 py-3">Device</th>
+                  <th className="px-4 py-3">Location</th>
                   <th className="px-4 py-3 text-right">Events</th>
                   <th className="px-4 py-3">Last seen</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {data.liveVisitors.length === 0 ? (
-                  <EmptyRow colSpan={6} />
+                  <EmptyRow colSpan={7} />
                 ) : (
                   data.liveVisitors.map((visitor) => (
                     <tr key={visitor.sessionId}>
@@ -157,6 +161,9 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
                       </td>
                       <td className="px-4 py-3 text-slate-600">
                         {visitor.deviceType} / {visitor.browserName} / {visitor.osName}
+                      </td>
+                      <td className="px-4 py-3 text-slate-600">
+                        {[visitor.city, visitor.country].filter(Boolean).join(", ") || "-"}
                       </td>
                       <td className="px-4 py-3 text-right tabular-nums">{number(visitor.eventCount)}</td>
                       <td className="px-4 py-3 text-slate-600">{dateTime(visitor.lastSeen)}</td>
