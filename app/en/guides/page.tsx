@@ -19,6 +19,11 @@ export default function EnglishGuidesHubPage() {
     const pages = getEnglishWavePages();
     const startPaths = [
         {
+            href: '/en/expat-cv-netherlands',
+            title: 'Expat and unsure where to start?',
+            description: 'Use the main decision page for CV language, work route wording, Dutch level, and personal details.',
+        },
+        {
             href: '/en/guides/dutch-cv-for-expats',
             title: 'Need the big picture first?',
             description: 'Start with the expat overview if you want the Dutch recruiter logic behind English CVs.',
@@ -40,6 +45,26 @@ export default function EnglishGuidesHubPage() {
         },
     ];
     const expatTools = [
+        {
+            href: '/en/expat-cv-netherlands',
+            title: 'Expat CV Netherlands',
+            description: 'One practical decision page for English vs Dutch, visa wording, language levels, and personal details.',
+        },
+        {
+            href: '/en/highly-skilled-migrant-cv-netherlands',
+            title: 'Highly Skilled Migrant CV',
+            description: 'CV guidance for sponsor-sensitive applications and IND salary-route preparation.',
+        },
+        {
+            href: '/en/english-cv-example-software-engineer-netherlands',
+            title: 'Software Engineer CV Example',
+            description: 'Practical English CV example for developers targeting Dutch tech roles.',
+        },
+        {
+            href: '/en/cv-netherlands-without-dutch-language',
+            title: 'CV Without Dutch',
+            description: 'Show language level honestly while targeting English-speaking roles.',
+        },
         {
             href: '/en/english-speaking-companies-netherlands',
             title: 'English-Speaking Companies',

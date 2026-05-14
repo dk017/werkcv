@@ -235,7 +235,7 @@ export default function EUBlueCardCheckerPage() {
                             </a>
                         </li>
                         <li>
-                            <a href="https://ind.nl/en/residence-permits/work/european-blue-card" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
+                            <a href="https://ind.nl/en/residence-permits/work/european-blue-card-residence-permit" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
                                 IND - European Blue Card
                             </a>
                         </li>

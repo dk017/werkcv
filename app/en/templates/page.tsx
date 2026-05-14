@@ -55,7 +55,7 @@ export default function EnglishTemplatesPage() {
               CV format
             </Link>
             <Link
-              href="/en/dutch-cv-for-expats"
+              href="/en/expat-cv-netherlands"
               className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
             >
               Expat CV

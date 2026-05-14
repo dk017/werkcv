@@ -230,7 +230,7 @@ export default function ZoekjaarCheckerPage() {
                     </p>
                     <ul className="space-y-2 text-sm text-slate-600">
                         <li>
-                            <a href="https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year-highly-educated-persons" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
+                            <a href="https://ind.nl/en/residence-permits/work/residence-permit-for-orientation-year" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
                                 IND - Residence permit for orientation year highly educated persons
                             </a>
                         </li>
