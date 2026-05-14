@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     absolute: "CV maken zonder verborgen kosten | Geen abonnement | WerkCV",
   },
   description:
-    "Maak gratis je cv en betaal pas éénmalig €7,99 bij PDF-download. Geen verborgen kosten, geen proefperiode, geen automatische verlenging en niets om op te zeggen.",
+    "Maak gratis je cv en betaal pas éénmalig €4,99 bij PDF-download. Geen verborgen kosten, geen proefperiode, geen automatische verlenging en niets om op te zeggen.",
   keywords: [
     "cv maken zonder verborgen kosten",
     "cv maken geen verborgen kosten",

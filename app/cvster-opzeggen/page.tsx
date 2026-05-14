@@ -7,24 +7,48 @@ import { cvDownloadPrice } from "@/lib/site-content";
 
 const sourceLinks = [
   {
+    label: "CVster direct opzegformulier",
+    href: "https://cvster.nl/contact/cancel-subscription",
+    note: "Officiele opzegpagina waar je met je registratie-e-mailadres het abonnement kunt opzeggen.",
+  },
+  {
     label: "CVster contact",
     href: "https://cvster.nl/contact",
+    note: "Contactpagina met onderwerp 'Abonnement annuleren' en verwijzing naar het directe opzeggingsformulier.",
   },
   {
-    label: "CVster help: hoe zeg ik mijn account op?",
-    href: "https://help.cvster.nl/nl/articles/3831424",
-  },
-  {
-    label: "CVster help: hoe werkt facturering?",
+    label: "CVster help: account annuleren, downgraden of verwijderen",
     href: "https://help.cvster.nl/nl/articles/3832256",
+    note: "Helpcentrumartikel over annuleren zonder app-login, annuleren via Accountinstellingen en accountverwijdering.",
+  },
+  {
+    label: "CVster help: gratis gebruik en proefabonnement",
+    href: "https://help.cvster.nl/nl/articles/3831424",
+    note: "Helpcentrumartikel over gratis functies, proefabonnement en automatische omzetting naar maandabonnement.",
   },
 ];
 
 const steps = [
-  "Open CVster en ga rechtsboven naar Account.",
-  "Ga naar Accountinstellingen en kies daar Annuleer abonnement.",
-  "Kun je niet inloggen? Gebruik dan de contactpagina van CVster om je account op te zoeken en alsnog te annuleren.",
-  "Controleer de bevestiging per e-mail en let op tot wanneer premium nog actief blijft.",
+  "Open het officiele CVster-opzegformulier via de contactpagina of rechtstreeks via cvster.nl/contact/cancel-subscription.",
+  "Vul het e-mailadres in waarmee je je bij CVster hebt geregistreerd of betaald.",
+  "Klik op Abonnement opzeggen en open daarna de bevestigingsmail die CVster stuurt.",
+  "Bevestig de annulering via de stappen in die e-mail. Zonder die bevestiging is de opzegging mogelijk nog niet afgerond.",
+  "Wordt je e-mailadres niet gevonden of komt de bevestigingsmail niet binnen, probeer een ander gebruikt e-mailadres, controleer spam of annuleer via Accountinstellingen in de app.",
+];
+
+const accountSteps = [
+  "Log in op CVster.nl.",
+  "Klik rechtsboven op Account.",
+  "Ga naar Accountinstellingen.",
+  "Kies Annuleer abonnement en bevestig de annulering in de volgende stap.",
+];
+
+const proofChecklist = [
+  "Bewaar de bevestigingsmail van CVster.",
+  "Maak een screenshot van het opzegformulier of van de accountinstellingen na annuleren.",
+  "Controleer je spammap en zoek op 'CVster.nl' als de bevestigingsmail niet direct verschijnt.",
+  "Noteer welk e-mailadres is gebruikt voor registratie, betaling of login.",
+  "Controleer na annuleren tot welke datum premium actief blijft.",
 ];
 
 const differenceBullets = [
@@ -47,7 +71,7 @@ const faqs = [
   {
     question: "Hoe zeg je CVster op?",
     answer:
-      "Volgens de officiële help-pagina kun je in de app via Accountinstellingen je abonnement annuleren. CVster zegt ook dat je dit via de contactpagina kunt regelen als je niet kunt inloggen.",
+      "Volgens de officiële help-pagina kun je een CVster-abonnement opzeggen via het opzegformulier op de contactpagina, zelfs zonder in te loggen op de app. Je zoekt je account op met je e-mailadres, klikt op Abonnement annuleren en bevestigt daarna via de e-mail die CVster stuurt.",
   },
   {
     question: "Wat gebeurt er na opzeggen bij CVster?",
@@ -58,6 +82,11 @@ const faqs = [
     question: "Heeft CVster een gratis account na opzeggen?",
     answer:
       "Ja. Volgens de help-pagina kun je na annuleren nog steeds inloggen, je cv bekijken en verder gebruiken binnen de gratis accountmogelijkheden.",
+  },
+  {
+    question: "Kan ik CVster opzeggen zonder in te loggen?",
+    answer:
+      "Ja. CVster zegt in het helpcentrum dat je een abonnement op de website kunt opzeggen zonder in te loggen op de app, via de contactpagina en de optie Abonnement opzeggen.",
   },
   {
     question: "Heeft CVster een proefperiode?",
@@ -72,9 +101,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CVster opzeggen? Stappen + alternatief zonder proefabonnement",
+  title: "CVster opzeggen? Directe stappen + alternatief",
   description:
-    "Bekijk hoe je CVster kunt opzeggen en maak daarna een cv zonder proefabonnement of automatische verlenging. WerkCV kost éénmalig €7,99 bij download.",
+    "CVster opzeggen? Gebruik het officiële opzegformulier, bevestig per e-mail en maak daarna eventueel een cv zonder proefabonnement.",
   keywords: [
     "cvster opzeggen",
     "cvster abonnement opzeggen",
@@ -151,12 +180,23 @@ export default function CvsterOpzeggenPage() {
               Intent: CVster opzeggen
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CVster opzeggen: stappen en alternatief zonder proefabonnement
+              CVster opzeggen: direct formulier, e-mailbevestiging en alternatief
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Wil je je CVster abonnement opzeggen? Hieronder vind je de stappen om je abonnement te controleren en stop te zetten. Zoek je daarna een cv-maker zonder proefperiode of maandelijkse verlenging? Met WerkCV maak je gratis je cv en betaal je alleen éénmalig {cvDownloadPrice.display} bij PDF-download.
+              Wil je je CVster abonnement opzeggen? Volgens het CVster-helpcentrum kan
+              dat via een opzegformulier op de website, zelfs zonder in te loggen op de
+              app. Je zoekt je account op met je e-mailadres en bevestigt de annulering
+              daarna via de e-mail die CVster stuurt.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href="https://cvster.nl/contact/cancel-subscription"
+                target="_blank"
+                rel="noreferrer"
+                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              >
+                Open CVster opzegformulier
+              </a>
               <TrackedLandingLink
                 href="/editor"
                 trackingLocation="cvster-opzeggen:hero_primary"
@@ -174,28 +214,31 @@ export default function CvsterOpzeggenPage() {
               </Link>
             </div>
             <p className="mt-3 text-sm font-medium text-slate-600">
-              Eénmalig betalen. Geen maandabonnement. Geen automatische verlenging.
+              Daarna opnieuw een cv nodig? WerkCV werkt met éénmalig betalen bij PDF-download.
             </p>
             <p className="mt-4 border-2 border-black bg-white px-4 py-3 text-sm font-medium leading-relaxed text-slate-700">
               Let op: WerkCV is niet verbonden aan CVster. We vatten hier openbare informatie samen en tonen daarna een alternatief zonder proefabonnement.
             </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
-              Officiële bronnen gecheckt op 1 april 2026.
+              Officiële bronnen gecheckt op 12 mei 2026. Het CVster-helpcentrum vermeldt
+              bij het opzegartikel: bewerkt op 6 maart 2025.
             </p>
           </div>
 
           <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <h2 className="text-xl font-black text-black">Kernpunten uit de officiële bronnen</h2>
             <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-              <li>CVster zegt dat opzeggen via Accountinstellingen kan.</li>
-              <li>Kun je niet inloggen, dan noemt CVster de contactpagina als alternatieve route.</li>
+              <li>CVster zegt dat opzeggen via de contactpagina kan zonder in te loggen op de app.</li>
+              <li>Je moet je account zoeken met het e-mailadres waarmee je bent geregistreerd.</li>
+              <li>Na het formulier stuurt CVster een e-mail waarmee je de annulering moet bevestigen.</li>
+              <li>Via Accountinstellingen annuleren blijft een fallback als het formulier niet lukt.</li>
               <li>Na annuleren blijft premium nog actief tot het einde van de lopende betaalperiode of proefperiode.</li>
               <li>Daarna schakelt het account terug naar gratis en kun je nog steeds inloggen.</li>
             </ul>
           </div>
         </section>
 
-        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+        <section id="stappen" className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
             Op basis van het CVster helpcentrum
           </p>
@@ -217,6 +260,39 @@ export default function CvsterOpzeggenPage() {
           </div>
         </section>
 
+        <section className="mb-14 grid gap-6 md:grid-cols-[0.95fr_1.05fr]">
+          <div className="border-4 border-black bg-yellow-400 p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
+              Als het formulier niet werkt
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Opzeggen via Accountinstellingen
+            </h2>
+            <ol className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-black">
+              {accountSteps.map((step, index) => (
+                <li key={step} className="flex gap-3">
+                  <span className="font-black">{index + 1}.</span>
+                  <span>{step}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              Bewijs bewaren
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-black">
+              Checklist na je opzegging
+            </h2>
+            <ul className="mt-5 list-disc space-y-3 pl-5 text-sm font-medium leading-relaxed text-slate-700 marker:text-black">
+              {proofChecklist.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         <section className="mb-14 border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
             Na het opzeggen
@@ -225,7 +301,7 @@ export default function CvsterOpzeggenPage() {
             Geen zin meer in proefperiodes of maandelijkse verlenging?
           </h2>
           <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-black sm:text-base">
-            WerkCV is gemaakt voor sollicitanten die gewoon één goede cv-PDF nodig hebben. Je start gratis, vult je gegevens in, bekijkt je cv en betaalt alleen als je de PDF wilt downloaden.
+            WerkCV is gemaakt voor sollicitanten die gewoon één goede cv-PDF nodig hebben. Je start gratis, vult je gegevens in, bekijkt je cv en betaalt alleen {cvDownloadPrice.display} als je de PDF wilt downloaden.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <TrackedLandingLink
@@ -277,15 +353,17 @@ export default function CvsterOpzeggenPage() {
           </p>
           <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-200">
             <p>
-              CVster maakt annuleren relatief praktisch: volgens het helpcentrum kun je het zowel
-              in je account als via de contactpagina regelen als je niet kunt inloggen.
+              CVster maakt annuleren relatief praktisch: volgens het helpcentrum kun je het
+              via de website regelen zonder eerst in te loggen op de app. De belangrijkste
+              stap is niet alleen het formulier invullen, maar ook de annulering bevestigen
+              via de e-mail die daarna wordt verstuurd.
             </p>
             <p>
               Ook belangrijk is wat er na annuleren gebeurt. CVster zegt expliciet dat premium niet
               direct verdwijnt, maar nog doorloopt tot het einde van je laatste maand- of proefbetaling.
             </p>
             <p>
-              De officiële facturatie-uitleg zegt daarnaast dat een proefperiode na 7 dagen automatisch
+              De officiële uitleg over gratis gebruik zegt daarnaast dat een proefperiode na 7 dagen automatisch
               overgaat in premium als je niet op tijd annuleert. CVster zegt er wel bij dat prijzen per
               regio of ouder prijsmodel kunnen verschillen, dus controleer altijd je eigen checkoutdetails.
             </p>
@@ -332,6 +410,7 @@ export default function CvsterOpzeggenPage() {
               >
                 <span className="font-black text-black">{source.label}</span>
                 <span className="mt-1 block break-all">{source.href}</span>
+                <span className="mt-2 block leading-relaxed">{source.note}</span>
               </a>
             ))}
           </div>

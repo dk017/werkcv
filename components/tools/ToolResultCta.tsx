@@ -29,7 +29,7 @@ export function ToolResultCta() {
       </div>
       <div className="mt-4 flex flex-wrap gap-3 text-xs font-black text-slate-300">
         <span>✓ Gratis starten</span>
-        <span>✓ Eenmalig €7,99</span>
+        <span>✓ Eenmalig €4,99</span>
         <span>✓ Geen abonnement</span>
       </div>
     </div>

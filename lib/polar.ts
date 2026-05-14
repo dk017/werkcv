@@ -109,10 +109,10 @@ export async function buildCheckoutURL(
             ? POLAR_PRICE_ID_CV_PROFILE_BUNDLE
             : POLAR_PRICE_ID;
 
-    if (productId) {
-        body.products = [productId];
-    } else {
+    if (priceId) {
         body.product_price_id = priceId;
+    } else {
+        body.products = [productId];
     }
 
     if (email) {

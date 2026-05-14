@@ -75,7 +75,7 @@ export const metadata: Metadata = {
     absolute: "CV maken en eenmalig betalen | Geen maandkosten | WerkCV",
   },
   description:
-    "Bouw gratis je cv en betaal pas €7,99 bij PDF-download. Geen maandabonnement, geen proefperiode en geen automatische verlenging.",
+    "Bouw gratis je cv en betaal pas €4,99 bij PDF-download. Geen maandabonnement, geen proefperiode en geen automatische verlenging.",
   keywords: [
     "cv maken eenmalig betalen",
     "cv eenmalig betalen",
@@ -93,7 +93,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "CV maken en eenmalig betalen | Geen maandkosten | WerkCV",
     description:
-      "Bouw gratis je cv en betaal pas €7,99 bij PDF-download. Geen maandabonnement, geen proefperiode en geen automatische verlenging.",
+      "Bouw gratis je cv en betaal pas €4,99 bij PDF-download. Geen maandabonnement, geen proefperiode en geen automatische verlenging.",
     url: pageUrl,
     siteName: "WerkCV",
     locale: "nl_NL",
@@ -111,7 +111,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "CV maken en eenmalig betalen | Geen maandkosten | WerkCV",
     description:
-      "Bouw gratis je cv en betaal pas €7,99 bij PDF-download. Geen maandabonnement, geen proefperiode en geen automatische verlenging.",
+      "Bouw gratis je cv en betaal pas €4,99 bij PDF-download. Geen maandabonnement, geen proefperiode en geen automatische verlenging.",
     images: ["/opengraph-image"],
   },
 };
@@ -188,7 +188,7 @@ export default function CvMakenEenmaligBetalenPage() {
                 ctaEventName="cta_one_time_payment_hero"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Maak je cv voor eenmalig €7,99
+                Maak je cv voor eenmalig €4,99
               </TrackedLandingLink>
               <Link
                 href="/templates"
@@ -307,7 +307,7 @@ export default function CvMakenEenmaligBetalenPage() {
               ctaEventName="cta_one_time_payment_mid"
               className="inline-block border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black"
             >
-              Maak mijn cv voor eenmalig €7,99
+              Maak mijn cv voor eenmalig €4,99
             </TrackedLandingLink>
             <p className="text-sm font-medium text-slate-200">
               Geen automatische verlenging. Geen opzegging nodig.
@@ -369,7 +369,7 @@ export default function CvMakenEenmaligBetalenPage() {
                 ctaEventName="cta_one_time_payment_bottom"
                 className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Maak je cv voor eenmalig €7,99
+                Maak je cv voor eenmalig €4,99
               </TrackedLandingLink>
               <Link
                 href="/prijzen"
@@ -385,7 +385,7 @@ export default function CvMakenEenmaligBetalenPage() {
       <Footer />
 
       <MobileStickyCta
-        text="Eenmalig €7,99 bij download"
+        text="Eenmalig €4,99 bij download"
         buttonLabel="Maak cv"
         href="/editor"
         trackingLocation="cv-maken-eenmalig-betalen:sticky_primary"

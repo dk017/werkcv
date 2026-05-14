@@ -176,7 +176,7 @@ export default function GratisCvTemplatePage() {
               {[
                 `${templateList.length} templates`,
                 "ATS-vriendelijke optie",
-                "Eenmalig €7,99 bij download",
+                "Eenmalig €4,99 bij download",
               ].map((item) => (
                 <div
                   key={item}

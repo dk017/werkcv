@@ -316,7 +316,7 @@ export default function CvVacatureMatchTool() {
                             </Link>
                         </div>
                         <p className="mt-3 text-xs text-slate-600">
-                            Eenmalig <Link href="/prijzen" className="font-black underline decoration-2 underline-offset-2 text-slate-900">€7,99 bij download</Link>, geen abonnement.
+                            Eenmalig <Link href="/prijzen" className="font-black underline decoration-2 underline-offset-2 text-slate-900">€4,99 bij download</Link>, geen abonnement.
                         </p>
                     </div>
 

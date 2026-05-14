@@ -108,7 +108,7 @@ const faqs = [
   {
     question: "Wat is de goedkoopste manier om één professioneel CV te maken in Nederland?",
     answer:
-      "Als je puur naar euro's kijkt, is een volledig gratis optie zoals YoungCapital het goedkoopst. Wil je specifiek een betaalde route zonder abonnement en zonder doorlopende accountkosten, dan is WerkCV met een eenmalige betaling van €7,99 de goedkoopste duidelijke betaalde optie voor één nette CV-download.",
+      "Als je puur naar euro's kijkt, is een volledig gratis optie zoals YoungCapital het goedkoopst. Wil je specifiek een betaalde route zonder abonnement en zonder doorlopende accountkosten, dan is WerkCV met een eenmalige betaling van €4,99 de goedkoopste duidelijke betaalde optie voor één nette CV-download.",
   },
   {
     question: "Zijn gratis CV-makers echt gratis?",
@@ -175,13 +175,13 @@ export default function GoedkoopsteCvMakerNederlandPage() {
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: "Goedkoopste CV maker in Nederland 2026: gratis t/m €5 vergeleken",
+    headline: "Goedkoopste CV maker in Nederland 2026: gratis, eenmalig en abonnement vergeleken",
     description:
       "Vergelijk gratis CV-makers, eenmalige betaling en proefabonnementen op basis van totale kosten voor één professioneel CV in Nederland.",
     inLanguage: "nl-NL",
     mainEntityOfPage: pageUrl,
     datePublished: "2026-04-10",
-    dateModified: "2026-04-10",
+    dateModified: "2026-05-10",
     author: {
       "@type": "Organization",
       name: "WerkCV",
@@ -239,7 +239,7 @@ export default function GoedkoopsteCvMakerNederlandPage() {
               Prijsvergelijking voor één CV
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              Goedkoopste CV maker in Nederland 2026: gratis t/m €5 vergeleken
+              Goedkoopste CV maker in Nederland 2026: gratis, eenmalig en abonnement vergeleken
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               De meeste mensen zoeken niet de goedkoopste CV-tool voor een jaar lang gebruik, maar

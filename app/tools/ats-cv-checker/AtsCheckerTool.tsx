@@ -310,7 +310,7 @@ export default function AtsCheckerTool() {
                             </TrackedToolLink>
                         </div>
                         <p className="mt-3 text-xs font-bold text-slate-600">
-                            Gratis bouwen. Eénmalig €7,99 bij PDF-download. Geen abonnement.
+                            Gratis bouwen. Eénmalig €4,99 bij PDF-download. Geen abonnement.
                         </p>
                     </div>
 

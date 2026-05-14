@@ -230,7 +230,9 @@ export default function PrijzenPage() {
                                     '2 inbegrepen verfijningen',
                                     'Geschikt voor CV en LinkedIn',
                                     'Geen abonnement of verborgen kosten',
-                                    `Bundelvoordeel: ${applicationBundlePrice.savingsDisplay}`,
+                                    applicationBundlePrice.savingsDisplay
+                                        ? `Bundelvoordeel: ${applicationBundlePrice.savingsDisplay}`
+                                        : 'CV en profielfoto in één checkout',
                                 ].map((feature, i) => (
                                     <li key={i} className="flex items-start gap-3">
                                         <span className="bg-green-400 border-2 border-black w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
