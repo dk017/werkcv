@@ -119,14 +119,27 @@ export async function buildCheckoutURL(
         body.customer_email = email;
     }
 
-    const res = await fetch(`${POLAR_API_BASE}/v1/checkouts/`, {
+    const createCheckout = (checkoutBody: Record<string, unknown>) => fetch(`${POLAR_API_BASE}/v1/checkouts/`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${POLAR_ACCESS_TOKEN}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(checkoutBody),
     });
+
+    let res = await createCheckout(body);
+    if (!res.ok && priceId && productId) {
+        const error = await res.text();
+        if (error.includes('Price is archived') || error.includes('product_price_id')) {
+            const fallbackBody = { ...body };
+            delete fallbackBody.product_price_id;
+            fallbackBody.products = [productId];
+            res = await createCheckout(fallbackBody);
+        } else {
+            throw new Error(`Polar checkout failed (${res.status}): ${error}`);
+        }
+    }
 
     if (!res.ok) {
         const error = await res.text();
