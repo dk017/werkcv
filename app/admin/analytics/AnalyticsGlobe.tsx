@@ -38,7 +38,17 @@ function project(
     y: centerY + y,
     z,
     visible: z > -radius * 0.22,
+    farSide: z <= -radius * 0.22,
   };
+}
+
+function initials(city: string, country: string): string {
+  const source = [city, country].filter(Boolean).join(" ") || "WV";
+  return source
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() || "")
+    .join("");
 }
 
 function drawGreatCircle(
@@ -168,26 +178,67 @@ export function AnalyticsGlobe({ points, generatedAt }: AnalyticsGlobeProps) {
 
       for (const point of normalizedPoints) {
         const projected = project(point.latitude, point.longitude, rotation, radius, centerX, centerY);
-        if (!projected.visible) continue;
-
         const color = sourceColors[point.sourceType] || sourceColors.unknown;
-        const size = point.isLive ? 5.8 : 3.8;
-        const alpha = Math.max(0.35, Math.min(1, (projected.z + radius) / (radius * 1.8)));
+        const size = point.isLive ? 18 : 14;
+        const depthAlpha = Math.max(0.22, Math.min(1, (projected.z + radius) / (radius * 1.8)));
+        const alpha = projected.farSide ? 0.34 : depthAlpha;
 
         drawingContext.globalAlpha = alpha;
-        drawingContext.fillStyle = color;
         drawingContext.shadowColor = color;
-        drawingContext.shadowBlur = point.isLive ? 18 : 9;
+        drawingContext.shadowBlur = point.isLive ? 22 : 10;
+
+        if (projected.farSide) {
+          drawingContext.setLineDash([4, 5]);
+          drawingContext.strokeStyle = color;
+          drawingContext.lineWidth = 1.2;
+          drawingContext.beginPath();
+          drawingContext.arc(projected.x, projected.y, size * 0.72, 0, Math.PI * 2);
+          drawingContext.stroke();
+          drawingContext.setLineDash([]);
+          continue;
+        }
+
+        drawingContext.fillStyle = "#0f172a";
         drawingContext.beginPath();
         drawingContext.arc(projected.x, projected.y, size, 0, Math.PI * 2);
         drawingContext.fill();
+
+        drawingContext.strokeStyle = color;
+        drawingContext.lineWidth = 2.8;
+        drawingContext.beginPath();
+        drawingContext.arc(projected.x, projected.y, size, 0, Math.PI * 2);
+        drawingContext.stroke();
+
+        drawingContext.fillStyle = color;
+        drawingContext.beginPath();
+        drawingContext.arc(projected.x + size * 0.58, projected.y - size * 0.58, 4.5, 0, Math.PI * 2);
+        drawingContext.fill();
+
+        drawingContext.shadowBlur = 0;
+        drawingContext.fillStyle = "#ffffff";
+        drawingContext.font = "700 10px Inter, system-ui, sans-serif";
+        drawingContext.textAlign = "center";
+        drawingContext.textBaseline = "middle";
+        drawingContext.fillText(initials(point.city, point.country), projected.x, projected.y + 0.5);
 
         if (point.isLive) {
           drawingContext.strokeStyle = color;
           drawingContext.lineWidth = 1.5;
           drawingContext.beginPath();
-          drawingContext.arc(projected.x, projected.y, size + 7 + Math.sin(rotation / 12) * 2, 0, Math.PI * 2);
+          drawingContext.arc(projected.x, projected.y, size + 8 + Math.sin(rotation / 12) * 2, 0, Math.PI * 2);
           drawingContext.stroke();
+        }
+
+        if (radius > 180) {
+          const label = [point.city, point.country].filter(Boolean).join(", ");
+          if (label) {
+            drawingContext.fillStyle = "rgba(15, 23, 42, 0.82)";
+            const labelWidth = Math.min(180, Math.max(72, label.length * 6.2));
+            drawingContext.fillRect(projected.x - labelWidth / 2, projected.y + size + 8, labelWidth, 22);
+            drawingContext.fillStyle = "#e2e8f0";
+            drawingContext.font = "600 11px Inter, system-ui, sans-serif";
+            drawingContext.fillText(label, projected.x, projected.y + size + 19);
+          }
         }
       }
 
@@ -226,6 +277,14 @@ export function AnalyticsGlobe({ points, generatedAt }: AnalyticsGlobeProps) {
             <p className="text-xs font-semibold uppercase tracking-wide text-cyan-200">Live visitor globe</p>
             <h2 className="mt-2 max-w-sm text-2xl font-semibold text-white">Where WerkCV visitors are coming from right now</h2>
           </div>
+          {normalizedPoints.length === 0 ? (
+            <div className="absolute inset-x-5 top-1/2 -translate-y-1/2 rounded-lg border border-slate-700 bg-slate-950/82 p-5 text-center">
+              <p className="text-sm font-semibold text-white">No mapped visitors yet</p>
+              <p className="mt-2 text-sm text-slate-300">
+                Pins appear after new page views include geolocation. The first visits after deployment may still be unmapped.
+              </p>
+            </div>
+          ) : null}
           <div className="pointer-events-none absolute bottom-4 left-5 flex flex-wrap gap-2 text-xs">
             {Object.entries(sourceColors).slice(0, 6).map(([source, color]) => (
               <span key={source} className="flex items-center gap-2 rounded-full bg-white/8 px-3 py-1 text-slate-200">
