@@ -14,7 +14,7 @@ on:
       deploy_dir:
         description: "Remote checkout directory"
         required: true
-        default: "/tmp/werkcv-deploy-8H4xPB"
+        default: "/opt/werkcv"
 
 jobs:
   build:
