@@ -60,4 +60,5 @@ export interface SeoGuidePage {
     ctaTitle: string;
     ctaText: string;
     ctaHref: string;
+    ctaButtonLabel?: string;
 }

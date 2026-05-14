@@ -40,6 +40,7 @@ type GuideOverride = {
     ctaTitle?: string;
     ctaText?: string;
     ctaHref?: string;
+    ctaButtonLabel?: string;
     sectionOverrides?: Record<string, SectionOverride>;
 };
 
@@ -2019,6 +2020,10 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                 note: 'Official guidance on fair hiring and how applicants can question opaque or potentially discriminatory selection processes. Checked April 2026.',
             },
         ],
+        ctaTitle: 'Choose the right Netherlands CV layout before you export',
+        ctaText: 'Use a Dutch-market English template, decide with or without photo, and keep recruiter focus on role fit, evidence, and clean PDF readability.',
+        ctaHref: '/en/templates',
+        ctaButtonLabel: 'Choose a CV template with or without photo',
         sectionOverrides: {
             layout: {
                 intentLinks: [
@@ -2528,6 +2533,7 @@ function applyGuideOverride(page: SeoGuidePage, override?: GuideOverride): SeoGu
         ctaTitle: override.ctaTitle ?? page.ctaTitle,
         ctaText: override.ctaText ?? page.ctaText,
         ctaHref: override.ctaHref ?? page.ctaHref,
+        ctaButtonLabel: override.ctaButtonLabel ?? page.ctaButtonLabel,
         sections: page.sections,
     };
 

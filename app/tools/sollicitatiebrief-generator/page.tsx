@@ -131,7 +131,7 @@ export default function SollicitatiebriefGeneratorPage() {
                     eyebrow="Bijpassende CV-PDF"
                     title="Maak ook de CV die bij je brief past"
                     description="Als je hier een sollicitatiebrief maakt, ben je al bezig met een concrete vacature. Zorg dat je CV dezelfde rol, toon en bewijzen laat zien."
-                    primaryLabel="Maak bijpassende CV-PDF"
+                    primaryLabel="Maak de CV die bij deze brief past"
                     secondaryHref="/cv-maken-zonder-abonnement"
                     secondaryLabel="Bekijk hoe betalen werkt"
                     intent="cover_letter"

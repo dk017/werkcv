@@ -209,7 +209,17 @@ export default function AowLeeftijdTool() {
           </div>
 
           <div className="mt-6">
-            <ToolResultCta />
+            <ToolResultCta
+              toolName="aow-leeftijd-checker"
+              ctaIntent="general"
+              eyebrow="Volgende werkfase"
+              title="Maak een 50-plus CV voor je volgende stap"
+              description="Gebruik je AOW-leeftijd niet als eindpunt, maar als planning. Solliciteer je door, verander je van rol of wil je minder uren werken? Maak een CV dat ervaring, energie en beschikbaarheid duidelijk maakt."
+              primaryLabel="Maak mijn 50-plus CV"
+              secondaryHref="/cv-tips/cv-50-plus"
+              secondaryLabel="Lees 50-plus CV tips"
+              proofItems={["Gratis starten", "Ervaring helder bovenaan", "Geen abonnement"]}
+            />
           </div>
         </>
       ) : null}

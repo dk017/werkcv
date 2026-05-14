@@ -906,7 +906,7 @@ export default function CvMakenPage() {
                 href="/prijzen"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
-                Bekijk prijzen
+                Bekijk €4,99 zonder abonnement
               </Link>
             </div>
           </div>

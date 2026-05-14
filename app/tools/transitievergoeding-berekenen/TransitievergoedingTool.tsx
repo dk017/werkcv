@@ -594,6 +594,8 @@ export default function TransitievergoedingTool() {
                         toolName="transitievergoeding-berekenen"
                         title="Bereid je volgende sollicitatie direct voor"
                         text="Als je transitievergoeding berekent, speelt vaak ook een volgende baan. Werk je cv bij voordat je opnieuw gaat solliciteren."
+                        primaryLabel="Maak CV voor mijn volgende baan"
+                        secondaryLabel="Bekijk CV zonder abonnement"
                     />
 
                     <div className="flex flex-col sm:flex-row gap-3">
@@ -609,7 +611,7 @@ export default function TransitievergoedingTool() {
                             className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-black text-white font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.35)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.35)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
                             style={{ borderWidth: "3px" }}
                         >
-                            Nieuwe stap? Maak je CV
+                            Maak CV voor je volgende stap
                         </a>
                     </div>
                 </div>

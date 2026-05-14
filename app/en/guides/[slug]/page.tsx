@@ -66,7 +66,9 @@ export default async function EnglishWavePage({ params }: PageProps) {
     if (!page) notFound();
     const metaDesc = normalizeBrandCopy(page.metaDesc);
     const primaryGuideHref = page.ctaHref || '/en/templates';
-    const primaryGuideLabel = primaryGuideHref === '/en/editor' ? 'Open English editor' : 'Open English templates';
+    const primaryGuideLabel =
+        page.ctaButtonLabel ||
+        (primaryGuideHref === '/en/editor' ? 'Open English editor' : 'Open English templates');
 
     const jsonLd = {
         '@context': 'https://schema.org',
@@ -281,7 +283,7 @@ export default async function EnglishWavePage({ params }: PageProps) {
                     href={page.ctaHref}
                     defaultTitle={page.ctaTitle}
                     defaultText={page.ctaText}
-                    defaultButtonLabel="Open English templates"
+                    defaultButtonLabel={page.ctaButtonLabel || 'Open English templates'}
                 />
             </article>
         </main>

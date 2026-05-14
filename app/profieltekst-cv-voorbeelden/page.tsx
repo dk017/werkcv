@@ -450,13 +450,13 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                 href="/tools/profieltekst-generator"
                 className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Start profieltekst tool
+                Schrijf mijn CV-profieltekst
               </Link>
               <Link
-                href="/cv-aanmaken"
+                href="/templates"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
-                CV aanmaken
+                Zet mijn profieltekst in een template
               </Link>
             </div>
           </div>

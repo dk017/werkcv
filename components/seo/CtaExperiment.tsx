@@ -50,9 +50,11 @@ function getVariantCopy(
 
     return {
         trust: {
-            title: 'Apply with more confidence',
-            text: 'Use a proven structure, highlight your strongest outcomes, and export a clean professional CV. One-time payment, no subscription.',
-            button: 'Build my CV',
+            title: fallbackTitle || 'Apply with more confidence',
+            text:
+                fallbackText ||
+                'Use a proven structure, highlight your strongest outcomes, and export a clean professional CV. One-time payment, no subscription.',
+            button: fallbackButtonLabel || 'Build my CV',
         },
         speed: {
             title: speedTitle,
