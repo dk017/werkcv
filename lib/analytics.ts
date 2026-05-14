@@ -20,6 +20,9 @@ const LANDING_TRACKED_SESSION_KEY = 'werkcv_landing_tracked_v1';
 const COMPLETION_TRACKED_PREFIX = 'werkcv_complete_cv_tracked_';
 const EDITOR_STARTED_TRACKED_PREFIX = 'werkcv_editor_started_tracked_';
 const PREVIOUS_PATH_SESSION_KEY = 'werkcv_previous_path_v1';
+const VISITOR_ID_STORAGE_KEY = 'werkcv_visitor_id_v1';
+const SESSION_ID_SESSION_KEY = 'werkcv_session_id_v1';
+const VISIT_COUNT_STORAGE_KEY = 'werkcv_visit_count_v1';
 
 export type NamedLandingCtaEvent =
     | 'cta_no_subscription_hero'
@@ -250,6 +253,7 @@ export function track<E extends AnalyticsEvent['event']>(
     // Never track during SSR
     if (typeof window === 'undefined') return;
     const attribution = getStoredAttribution();
+    const identity = getAnalyticsIdentity();
 
     const payload = {
         event,
@@ -257,6 +261,12 @@ export function track<E extends AnalyticsEvent['event']>(
         timestamp: new Date().toISOString(),
         url: window.location.pathname,
         userAgent: navigator.userAgent,
+        visitorId: identity.visitorId,
+        sessionId: identity.sessionId,
+        visitNumber: identity.visitNumber,
+        screen: `${window.screen.width}x${window.screen.height}`,
+        language: navigator.language,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
         attribution,
     };
 
@@ -369,6 +379,39 @@ export function getStoredAttribution(): AttributionSnapshot | null {
     } catch {
         return null;
     }
+}
+
+function createAnalyticsId(prefix: string): string {
+    const random =
+        typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function'
+            ? crypto.randomUUID()
+            : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+
+    return `${prefix}_${random}`;
+}
+
+function getAnalyticsIdentity(): { visitorId: string; sessionId: string; visitNumber: number } {
+    let visitorId = window.localStorage.getItem(VISITOR_ID_STORAGE_KEY);
+    if (!visitorId) {
+        visitorId = createAnalyticsId('v');
+        window.localStorage.setItem(VISITOR_ID_STORAGE_KEY, visitorId);
+    }
+
+    let sessionId = window.sessionStorage.getItem(SESSION_ID_SESSION_KEY);
+    let visitNumber = Number(window.localStorage.getItem(VISIT_COUNT_STORAGE_KEY) || '0');
+
+    if (!sessionId) {
+        sessionId = createAnalyticsId('s');
+        window.sessionStorage.setItem(SESSION_ID_SESSION_KEY, sessionId);
+        visitNumber += 1;
+        window.localStorage.setItem(VISIT_COUNT_STORAGE_KEY, String(visitNumber));
+    }
+
+    return {
+        visitorId,
+        sessionId,
+        visitNumber: Number.isFinite(visitNumber) && visitNumber > 0 ? visitNumber : 1,
+    };
 }
 
 export function markCompletionTracked(cvId: string): void {

@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { sanitizeAttribution } from '@/lib/attribution';
+import { classifyTrafficSource, parseUserAgent } from '@/lib/analytics-source';
 
 const PERSISTED_FUNNEL_EVENTS = new Set([
+    'page_view',
     'landing',
     'landing_cta_click',
     'landing_to_editor',
@@ -23,6 +25,12 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'cta_cvster_cancel_after_steps',
     'cta_cvster_cancel_bottom',
     'cta_cvster_cancel_sticky',
+    'cta_livecareer_cancel_header',
+    'cta_livecareer_cancel_hero',
+    'cta_livecareer_cancel_after_steps',
+    'cta_livecareer_cancel_why',
+    'cta_livecareer_cancel_footer',
+    'cta_livecareer_cancel_sticky',
     'cta_cv_optimaliseren_hero',
     'cta_cv_verbeteren_hero',
     'cta_cv_checken_hero',
@@ -48,6 +56,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'profile_photo_checkout_click',
     'profile_photo_submit',
     'profile_photo_generated',
+    'profile_photo_variant_selected',
     'profile_photo_refine_submit',
     'profile_photo_refined',
     'profile_photo_download',
@@ -100,7 +109,7 @@ export async function POST(request: NextRequest) {
         const prismaWithOptionalAnalytics = prisma as unknown as PrismaWithOptionalAnalytics;
         const body = await request.json();
 
-        const { event, properties, timestamp, url, attribution } = body;
+        const { event, properties, timestamp, url, attribution, visitorId, sessionId, visitNumber, screen, language, timezone, userAgent } = body;
 
         if (!event || typeof event !== 'string') {
             return NextResponse.json({ error: 'Missing event name' }, { status: 400 });
@@ -111,6 +120,28 @@ export async function POST(request: NextRequest) {
         const cvId = typeof safeProperties.cvId === 'string' ? safeProperties.cvId : null;
         const orderId = typeof safeProperties.orderId === 'string' ? safeProperties.orderId : null;
         const cluster = safeAttribution?.firstTouchCluster || null;
+        const requestUserAgent = typeof userAgent === 'string' ? userAgent : request.headers.get('user-agent') || '';
+        const parsedUserAgent = parseUserAgent(requestUserAgent);
+        const referrer =
+            typeof safeProperties.referrer === 'string'
+                ? safeProperties.referrer
+                : request.headers.get('referer') || safeAttribution?.firstTouchReferrer || '';
+        const source = classifyTrafficSource(referrer, safeAttribution);
+        const enrichedProperties = {
+            ...safeProperties,
+            ...(typeof visitorId === 'string' ? { visitorId } : {}),
+            ...(typeof sessionId === 'string' ? { sessionId } : {}),
+            ...(typeof visitNumber === 'number' ? { visitNumber } : {}),
+            ...(typeof screen === 'string' ? { screen } : {}),
+            ...(typeof language === 'string' ? { language } : {}),
+            ...(typeof timezone === 'string' ? { timezone } : {}),
+            sourceType: source.type,
+            sourceLabel: source.label,
+            ...(source.host ? { referrerHost: source.host } : {}),
+            deviceType: parsedUserAgent.deviceType,
+            browserName: parsedUserAgent.browserName,
+            osName: parsedUserAgent.osName,
+        };
 
         if (PERSISTED_FUNNEL_EVENTS.has(event)) {
             try {
@@ -121,7 +152,7 @@ export async function POST(request: NextRequest) {
                         orderId,
                         path: typeof url === 'string' ? url : null,
                         cluster,
-                        properties: safeProperties as unknown as Prisma.InputJsonValue,
+                        properties: enrichedProperties as unknown as Prisma.InputJsonValue,
                         attribution: (safeAttribution || undefined) as unknown as Prisma.InputJsonValue | undefined,
                     },
                 });
@@ -143,12 +174,11 @@ export async function POST(request: NextRequest) {
         console.log(JSON.stringify({
             type: 'analytics',
             event,
-            properties: safeProperties,
+            properties: enrichedProperties,
             attribution: safeAttribution,
             timestamp: timestamp || new Date().toISOString(),
             url: url || '',
-            ip: request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown',
-            ua: request.headers.get('user-agent') || '',
+            ua: requestUserAgent,
         }));
 
         return NextResponse.json({ ok: true }, { status: 200 });
