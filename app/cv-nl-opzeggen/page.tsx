@@ -77,9 +77,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV.nl opzeggen? Stappen + alternatief zonder abonnement",
+  title: "CV.nl opzeggen - Zo doe je het en wat je daarna nodig hebt",
   description:
-    "Bekijk hoe je CV.nl kunt opzeggen en ontdek een alternatief zonder maandabonnement. Met WerkCV betaal je alleen eenmalig bij PDF-download.",
+    "Bekijk hoe je CV.nl opzegt, wat er met je account gebeurt en hoe je daarna een cv maakt zonder maandabonnement.",
   keywords: [
     "cv.nl opzeggen",
     "cv nl opzeggen",

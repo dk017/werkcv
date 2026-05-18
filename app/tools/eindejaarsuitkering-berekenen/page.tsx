@@ -34,8 +34,8 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
-  title: "Eindejaarsuitkering Berekenen 2026 | 13e Maand Tool | WerkCV",
-  description: "Bereken je eindejaarsuitkering of 13e maand in 2026. Inclusief pro rata, bruto indicatie, decemberloon en uitleg over belasting.",
+  title: "Eindejaarsuitkering Berekenen 2026 | Netto vs Bruto | WerkCV",
+  description: "Bereken je eindejaarsuitkering of 13e maand in 2026. Vul salaris en maanden in en zie direct bruto, pro rata en netto-context.",
   keywords: [
     "eindejaarsuitkering berekenen",
     "eindejaarsuitkering calculator",
@@ -108,10 +108,10 @@ export default function EindejaarsuitkeringBerekenenPage() {
                 Schat netto effect
               </Link>
               <Link
-                href="/editor"
+                href="/cv-maken-zonder-abonnement"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
               >
-                Maak gratis je CV
+                CV maken zonder abonnement
               </Link>
             </div>
 
@@ -285,10 +285,10 @@ export default function EindejaarsuitkeringBerekenenPage() {
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
-                href="/editor"
+                href="/cv-maken-zonder-abonnement"
                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-white hover:bg-teal-300 transition-colors"
               >
-                Maak gratis je CV
+                CV zonder abonnement
               </Link>
               <Link
                 href="/cv-maken"

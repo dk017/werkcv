@@ -18,11 +18,19 @@ const faqItems = [
   },
   {
     question: "Wanneer vervallen wettelijke vakantiedagen meestal?",
-    answer: "Wettelijke vakantiedagen vervallen meestal 6 maanden na het kalenderjaar waarin je ze hebt opgebouwd. Voor bovenwettelijke dagen kunnen andere termijnen gelden.",
+    answer: "Wettelijke vakantiedagen vervallen meestal 6 maanden na het kalenderjaar waarin je ze hebt opgebouwd. Vakantie-uren die je in 2026 opbouwt, vervallen normaal gesproken op 1 juli 2027 als je ze kon opnemen. Voor bovenwettelijke dagen kunnen andere termijnen gelden.",
   },
   {
     question: "Bouw ik vakantiedagen op tijdens ziekte?",
     answer: "Ja, in principe bouw je tijdens ziekte wettelijke vakantiedagen op. Controleer bij bovenwettelijke dagen wel je cao of arbeidscontract.",
+  },
+  {
+    question: "Hoe bereken ik vakantiedagen bij 32 uur werken?",
+    answer: "Bij 32 uur per week is het wettelijke minimum 4 x 32 = 128 vakantie-uren per jaar. Werk je 4 dagen van 8 uur, dan is dat 16 wettelijke vakantiedagen per jaar.",
+  },
+  {
+    question: "Mag mijn werkgever wettelijke vakantiedagen uitbetalen?",
+    answer: "Tijdens je dienstverband mag je werkgever wettelijke vakantiedagen normaal niet zomaar uitbetalen. Bij einde dienstverband moeten niet-opgenomen vakantiedagen wel worden afgerekend. Bovenwettelijke dagen kunnen andere afspraken hebben.",
   },
 ];
 
@@ -50,15 +58,18 @@ const vacationCvIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Vakantiedagen Berekenen 2026 | Dagen en Uren Tool | WerkCV",
-  description: "Bereken je vakantiedagen en vakantie-uren in 2026. Vul contracturen, werkdagen en opgenomen verlof in en zie direct wat je over hebt.",
+  title: "Vakantiedagen Berekenen 2026 | Hoeveel Recht Heb Ik? | WerkCV",
+  description: "Bereken je wettelijke vakantiedagen en vakantie-uren in 2026. Vul contracturen in en zie direct waar je recht op hebt.",
   keywords: [
     "vakantiedagen berekenen",
     "vakantie uren berekenen",
     "hoeveel vakantiedagen heb ik",
     "parttime vakantiedagen berekenen",
+    "32 uur vakantiedagen berekenen",
+    "24 uur vakantiedagen berekenen",
     "wettelijke vakantiedagen 2026",
     "verlofuren berekenen",
+    "vakantiedagen vervallen 2026",
   ],
   alternates: {
     canonical: "https://werkcv.nl/tools/vakantiedagen-berekenen",
@@ -99,21 +110,21 @@ export default function VakantiedagenBerekenenPage() {
                 NL wetgeving
               </span>
               <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                Bijgewerkt 12 maart 2026
+                Bijgewerkt 13 mei 2026
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-              Vakantiedagen berekenen
+              Vakantiedagen berekenen in 2026
             </h1>
             <p className="text-lg text-slate-600 font-medium max-w-3xl">
-              Deze tool rekent niet in losse standaarddagen, maar in vakantie-uren op basis van jouw echte contract. Daardoor krijg je een bruikbare uitkomst voor fulltime, parttime en schema&apos;s met 3, 4 of 5 werkdagen.
+              Bereken hoeveel wettelijke vakantiedagen en vakantie-uren je opbouwt bij fulltime of parttime werk. Vul je contracturen, werkdagen, extra dagen en opgenomen verlof in en zie direct wat je overhoudt.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
               {[
                 ["Wettelijk minimum", "4x je weekuren", "de basisregel voor werknemers in Nederland"],
                 ["Parttime-proof", "Naar rato", "zelfde verlofrecht relatief gezien"],
-                ["Opbouw", "Tijdens ziekte ook", "wettelijke dagen lopen in principe door"],
+                ["Vervallen", "Meestal 1 juli", "wettelijke uren uit het vorige jaar"],
               ].map(([label, value, note]) => (
                 <div key={label} className="bg-white border-2 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                   <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">{label}</p>
@@ -129,9 +140,9 @@ export default function VakantiedagenBerekenenPage() {
               Waarom deze tool nuttig is
             </p>
             <div className="space-y-3 text-sm text-slate-600">
-              <p>Veel calculators rekenen alsof iedereen 5 dagen van 8 uur werkt. Dat is voor parttime of 4x9-schema&apos;s direct te grof.</p>
-              <p>WerkCV rekent eerst terug naar uren, daarna pas naar dagen. Dat sluit beter aan op hoe werkgevers en cao&apos;s verlof administreren.</p>
-              <p>Zo kun je sneller controleren wat er nog over is voordat je vrije dagen plant of van baan wisselt.</p>
+              <p>Veel calculators rekenen alsof iedereen 5 dagen van 8 uur werkt. Dat is voor 24, 32, 36 uur of 4x9-schema&apos;s te grof.</p>
+              <p>WerkCV rekent eerst in vakantie-uren en zet daarna om naar dagen op basis van jouw werkdag.</p>
+              <p>Zo controleer je sneller je saldo voordat je vrije dagen plant, verlof opneemt rond ontslag of een nieuwe baan start.</p>
             </div>
           </aside>
         </section>
@@ -143,13 +154,13 @@ export default function VakantiedagenBerekenenPage() {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
           <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h2 className="text-2xl font-black text-slate-900 mb-4">
-              Wat deze berekening wel meeneemt
+              Snel antwoord: wettelijke vakantiedagen
             </h2>
             <ul className="space-y-2 text-sm text-slate-700">
-              <li>Wettelijke opbouw van 4 keer je wekelijkse arbeidsduur.</li>
-              <li>Een andere lengte van werkdag bij 3-, 4- of 4,5-daagse werkweken.</li>
-              <li>Extra bovenwettelijke dagen uit cao of arbeidsovereenkomst.</li>
-              <li>De uren/dagen die je al hebt opgenomen in dezelfde opbouwperiode.</li>
+              <li>Het wettelijke minimum is 4 keer je wekelijkse arbeidsduur.</li>
+              <li>Werk je 40 uur per week, dan is dat 160 vakantie-uren per jaar.</li>
+              <li>Werk je 32 uur per week, dan is dat 128 vakantie-uren per jaar.</li>
+              <li>Parttimers bouwen dus naar rato op, maar relatief evenveel als fulltimers.</li>
             </ul>
           </div>
           <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -161,7 +172,38 @@ export default function VakantiedagenBerekenenPage() {
               <li>Specifieke regels voor ADV, roostervrije uren of tijd-voor-tijd.</li>
               <li>Of je werkgever met uren of met dagen administreert op je loonstrook of HR-portaal.</li>
               <li>Of er nog openstaande dagen uit vorige jaren apart meetellen.</li>
+              <li>Of feestdagen, ADV, roostervrije dagen of tijd-voor-tijd apart van vakantiedagen lopen.</li>
             </ul>
+          </div>
+        </section>
+
+        <section className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-6 mb-12">
+          <div className="bg-[#FFF7D6] border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600 mb-2">
+              Voorbeeld
+            </p>
+            <h2 className="text-2xl font-black text-slate-900 mb-3">
+              Vakantiedagen berekenen bij 32 uur
+            </h2>
+            <p className="text-sm text-slate-700 leading-relaxed">
+              Werk je 32 uur per week, dan is je wettelijke minimum 4 x 32 = 128 vakantie-uren per jaar. Werk je 4 dagen van 8 uur, dan is dat 16 wettelijke vakantiedagen. Werk je dezelfde 32 uur verdeeld over 5 kortere dagen, dan blijven het 128 uren, maar het aantal dagen hangt af van de lengte van je werkdag.
+            </p>
+          </div>
+          <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
+              Vervallen of meenemen
+            </p>
+            <h2 className="text-2xl font-black text-slate-900 mb-3">
+              Let op wettelijke en bovenwettelijke uren
+            </h2>
+            <div className="space-y-3 text-sm text-slate-700 leading-relaxed">
+              <p>
+                Wettelijke vakantiedagen vervallen meestal 6 maanden na het kalenderjaar waarin je ze hebt opgebouwd. Voor vakantie-uren uit 2026 is dat normaal 1 juli 2027.
+              </p>
+              <p>
+                Extra bovenwettelijke dagen kunnen langer blijven staan, maar cao, contract of personeelshandboek kunnen praktische afspraken bevatten. Controleer daarom altijd welk saldo wettelijk en welk saldo bovenwettelijk is.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -174,6 +216,12 @@ export default function VakantiedagenBerekenenPage() {
               title: "Vakantiegeld berekenen",
               description: "Bekijk wat je opgebouwde vakantiegeld ongeveer is naast je verlofuren.",
               badge: "Geld",
+            },
+            {
+              href: "/tools/verlofuren-omrekenen",
+              title: "Verlofuren omrekenen",
+              description: "Zet je verlofsaldo om van uren naar dagen of andersom voor je echte werkweek.",
+              badge: "Verlof",
             },
             {
               href: "/tools/parttime-salaris-calculator",
@@ -214,10 +262,10 @@ export default function VakantiedagenBerekenenPage() {
                 Lees hoe je een sterk CV maakt
               </Link>
               <Link
-                href="/editor"
+                href="/cv-maken-zonder-abonnement"
                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
               >
-                Maak gratis je CV
+                CV zonder abonnement
               </Link>
               <Link
                 href="/cv-maken-zonder-abonnement"
@@ -267,7 +315,7 @@ export default function VakantiedagenBerekenenPage() {
           </p>
           <div className="space-y-3 text-sm text-slate-600 leading-relaxed">
             <p>
-              Deze pagina is bijgewerkt op <span className="font-black text-slate-900">12 maart 2026</span> op basis van actuele informatie van de Rijksoverheid over het wettelijke minimum aan vakantiedagen en het opnemen, vervallen of meenemen van vakantie-uren.
+              Deze pagina is bijgewerkt op <span className="font-black text-slate-900">13 mei 2026</span> op basis van actuele informatie van de Rijksoverheid en Business.gov.nl over het wettelijke minimum aan vakantiedagen en het opnemen, vervallen of meenemen van vakantie-uren.
             </p>
             <ul className="space-y-2">
               <li>
@@ -288,6 +336,16 @@ export default function VakantiedagenBerekenenPage() {
                   className="font-medium text-teal-700 hover:underline"
                 >
                   Rijksoverheid - Hoe kan ik mijn vakantiedagen opnemen?
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://business.gov.nl/staff/terms-of-employment/statutory-holidays-what-you-need-to-know/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-teal-700 hover:underline"
+                >
+                  Business.gov.nl - Statutory holidays: what you need to know
                 </a>
               </li>
             </ul>

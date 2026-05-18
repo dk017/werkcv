@@ -260,6 +260,12 @@ export default function ParttimeSalarisCalculatorPage() {
               badge: "Geld",
             },
             {
+              href: "/tools/verlofuren-omrekenen",
+              title: "Verlofuren omrekenen",
+              description: "Reken parttime verlofuren terug naar dagen voor je echte rooster.",
+              badge: "Verlof",
+            },
+            {
               href: "/tools/salaris-onderhandeling",
               title: "Salaris onderhandeling",
               description: "Gebruik je uitkomst meteen als basis voor een loon- of urenonderhandeling.",

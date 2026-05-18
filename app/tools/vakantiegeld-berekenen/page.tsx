@@ -145,8 +145,8 @@ const comparisonRows = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-    title: "Vakantiegeld Berekenen 2026 | 8% Bruto/Netto Tool | WerkCV",
-    description: "Bereken direct je vakantiegeld in 2026 met de 8%-regel. Zie bruto vakantiegeld, ruwe netto-indicatie en uitleg over vakantietoeslag.",
+    title: "Netto Vakantiegeld Berekenen 2026 | Inclusief Loonheffing | WerkCV",
+    description: "Vul je bruto maandloon in en zie direct je netto vakantiegeld inclusief loonheffing. Bijgewerkt voor 2026 met bruto/netto uitleg.",
     path: "/tools/vakantiegeld-berekenen",
     keywords: [
         "vakantiegeld berekenen",
@@ -492,9 +492,10 @@ export default function VakantiegeldBerekenenPage() {
                         Gebruik je loonmoment om je volgende CV-versie klaar te zetten
                     </h2>
                     <p className="max-w-3xl text-sm text-slate-600 leading-relaxed">
+                        Solliciteren na je vakantiegeld? Maak je Nederlandse cv zonder abonnement:
+                        gratis starten, eenmalig betalen bij PDF-download en geen opzeggedoe.
                         Vakantiegeldvragen komen vaak samen met loonvergelijking, offerchecks
-                        en het gevoel dat een nieuwe stap financieel slimmer is. Zet dat moment
-                        meteen om in een CV dat je snel kunt gebruiken.
+                        en het gevoel dat een nieuwe stap financieel slimmer is.
                     </p>
                     <SectionIntentLinks links={cvIntentLinks} locale="nl" />
                 </section>
