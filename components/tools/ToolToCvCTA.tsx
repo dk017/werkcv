@@ -20,7 +20,7 @@ export function ToolToCvCTA({
   title,
   description,
   primaryLabel,
-  primaryHref = "/editor",
+  primaryHref = "/cv-maken-zonder-abonnement",
   secondaryHref = "/templates",
   secondaryLabel = "Bekijk cv-templates",
   eyebrow = "Volgende sollicitatiestap",
@@ -73,8 +73,8 @@ export function ToolToCvCTA({
       </p>
       <div className="mt-4 text-sm font-medium text-slate-700">
         Liever eerst lezen hoe WerkCV werkt?{" "}
-        <Link href="/cv-maken" className="font-black underline decoration-2 underline-offset-4">
-          Bekijk de cv-maakroute
+        <Link href="/cv-maken-zonder-abonnement" className="font-black underline decoration-2 underline-offset-4">
+          Bekijk de route zonder abonnement
         </Link>
         .
       </div>

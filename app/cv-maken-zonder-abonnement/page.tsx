@@ -124,6 +124,7 @@ export const metadata: Metadata = {
     "cv maken eenmalig betalen",
     "cv maken geen abonnement",
     "cv eenmalig betalen",
+    "cv maker eenmalig",
     "cv builder zonder abonnement",
     "geen abonnement cv maker",
   ],
@@ -141,7 +142,7 @@ export const metadata: Metadata = {
     url: pageUrl,
     siteName: "WerkCV",
     locale: "nl_NL",
-    type: "article",
+    type: "website",
     images: [
       {
         url: "/opengraph-image",
@@ -257,6 +258,19 @@ export default function CvMakenZonderAbonnementPage() {
               {supportLine}
             </p>
           </aside>
+        </section>
+
+        <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.22em] text-slate-600">
+            CV maker eenmalig
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            CV maker eenmalig betalen, zonder maandabonnement
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Zoek je een cv maker waarbij je niet vastzit aan een proefperiode of maandbedrag?
+            Bij WerkCV bouw je eerst gratis. Pas als je je cv als PDF downloadt betaal je eenmalig {cvDownloadPrice.display}.
+          </p>
         </section>
 
         <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
