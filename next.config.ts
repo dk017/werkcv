@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      {
+        source: '/cv.nl-opzeggen',
+        destination: '/cv-nl-opzeggen',
+        permanent: true,
+      },
+
       // =====================================================================
       // Old /cv-voorbeeld → new /cv-voorbeelden redirects (301 permanent)
       // =====================================================================

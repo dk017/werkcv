@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import EindejaarsuitkeringTool from "./EindejaarsuitkeringTool";
 
 const faqItems = [
@@ -33,9 +34,10 @@ const faqItems = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "Eindejaarsuitkering Berekenen 2026 | Netto vs Bruto | WerkCV",
   description: "Bereken je eindejaarsuitkering of 13e maand in 2026. Vul salaris en maanden in en zie direct bruto, pro rata en netto-context.",
+  path: "/tools/eindejaarsuitkering-berekenen",
   keywords: [
     "eindejaarsuitkering berekenen",
     "eindejaarsuitkering calculator",
@@ -52,10 +54,7 @@ export const metadata: Metadata = {
     "wanneer eindejaarsuitkering",
     "bijzonder tarief eindejaarsuitkering",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/tools/eindejaarsuitkering-berekenen",
-  },
-};
+});
 
 export default function EindejaarsuitkeringBerekenenPage() {
   return (
