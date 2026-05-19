@@ -19,6 +19,11 @@ const faqItems = [
       "Niet helemaal. Kilometervergoeding gaat vooral over eigen vervoer per kilometer. Reiskostenvergoeding is breder en kan ook OV-kosten, vaste woon-werkafspraken of een combinatie met thuiswerkvergoeding omvatten.",
   },
   {
+    question: "Hoe bereken ik OV-vergoeding bij hybride werken?",
+    answer:
+      "Gebruik het aantal dagen waarop je echt naar kantoor reist. Werk je bijvoorbeeld 3 dagen op kantoor en 2 dagen thuis, kies dan 3 reisdagen per week. De tool rekent enkele rit × 2 × reisdagen per week × 52 weken.",
+  },
+  {
     question: "Tellen heen- en terugreis allebei mee?",
     answer:
       "Ja. Voor woon-werkverkeer reken je meestal zowel de heenreis als de terugreis mee. Daarom vraagt deze tool om kilometers enkele reis en verdubbelt hij dat automatisch.",
@@ -114,7 +119,7 @@ export default function KilometervergoedingBerekenenPage() {
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {[
                 ["Wettelijke grens", "€0,23 per km", "belastingvrij maximum in 2026"],
-                ["OV-formule", "Rit × 2 × dagen", "bijvoorbeeld 214 reisdagen per jaar"],
+                ["OV-formule", "Rit × 2 × reisdagen", "handig bij hybride werken"],
                 ["Rekenregel", "Heen + terug", "woon-werkverkeer telt beide richtingen"],
               ].map(([label, value, note]) => (
                 <div key={label} className="border-2 border-black bg-white p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -149,7 +154,7 @@ export default function KilometervergoedingBerekenenPage() {
               <li>Je vult alleen kilometers enkele reis in.</li>
               <li>Voor eigen vervoer rekent de tool automatisch heen en terug.</li>
               <li>Voor OV kun je een enkele ritprijs invullen, zoals €4,40.</li>
-              <li>Werkdagen per week bepalen hoeveel ritten je maakt.</li>
+              <li>Voor OV kies je alleen de dagen waarop je echt naar werk reist.</li>
               <li>Het opgegeven kilometertarief, zoals €0,23 of €0,25 per km, wordt vergeleken met de belastingvrije grens van 2026.</li>
             </ul>
           </div>

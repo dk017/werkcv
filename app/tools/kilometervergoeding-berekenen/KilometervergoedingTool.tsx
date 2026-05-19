@@ -18,6 +18,8 @@ const kilometerRatePresets = [
   { label: "€0,30", value: "0,30", note: "eigen afspraak" },
 ];
 
+const WEEKS_PER_YEAR = 52;
+
 function formatTravelDays(days: number) {
   return Number.isInteger(days) ? String(days) : days.toLocaleString("nl-NL", { maximumFractionDigits: 1 });
 }
@@ -27,8 +29,7 @@ type TravelMode = "kilometers" | "public-transport";
 type PublicTransportResult = {
   singleTripPrice: number;
   returnTripPrice: number;
-  workDaysPerWeek: number;
-  fullTimeTravelDaysPerYear: number;
+  travelDaysPerWeek: number;
   travelDaysPerYear: number;
   monthsPerYear: number;
   reimbursementPerMonth: number;
@@ -42,7 +43,6 @@ export default function KilometervergoedingTool() {
   const [monthsPerYear, setMonthsPerYear] = useState("12");
   const [employerRatePerKilometer, setEmployerRatePerKilometer] = useState("0,23");
   const [singleTripPrice, setSingleTripPrice] = useState("4,40");
-  const [travelDaysPerYear, setTravelDaysPerYear] = useState("214");
   const [result, setResult] = useState<KilometervergoedingResult | null>(null);
   const [publicTransportResult, setPublicTransportResult] = useState<PublicTransportResult | null>(null);
   const [error, setError] = useState("");
@@ -50,7 +50,6 @@ export default function KilometervergoedingTool() {
   function handleCalculate() {
     if (travelMode === "public-transport") {
       const parsedSingleTripPrice = parseDecimal(singleTripPrice);
-      const parsedTravelDaysPerYear = parseDecimal(travelDaysPerYear);
       const parsedWorkDaysPerWeek = parseDecimal(workDaysPerWeek);
       const parsedMonthsPerYear = parseDecimal(monthsPerYear);
 
@@ -60,15 +59,6 @@ export default function KilometervergoedingTool() {
         parsedSingleTripPrice > 100
       ) {
         setError("Vul een realistische prijs voor een enkele OV-rit in.");
-        return;
-      }
-
-      if (
-        Number.isNaN(parsedTravelDaysPerYear) ||
-        parsedTravelDaysPerYear < 1 ||
-        parsedTravelDaysPerYear > 365
-      ) {
-        setError("Kies een aantal reisdagen tussen 1 en 365.");
         return;
       }
 
@@ -91,7 +81,7 @@ export default function KilometervergoedingTool() {
       }
 
       const returnTripPrice = parsedSingleTripPrice * 2;
-      const effectiveTravelDaysPerYear = parsedTravelDaysPerYear * (parsedWorkDaysPerWeek / 5);
+      const effectiveTravelDaysPerYear = parsedWorkDaysPerWeek * WEEKS_PER_YEAR;
       const reimbursementPerYear = returnTripPrice * effectiveTravelDaysPerYear;
 
       setError("");
@@ -99,8 +89,7 @@ export default function KilometervergoedingTool() {
       setPublicTransportResult({
         singleTripPrice: parsedSingleTripPrice,
         returnTripPrice,
-        workDaysPerWeek: parsedWorkDaysPerWeek,
-        fullTimeTravelDaysPerYear: parsedTravelDaysPerYear,
+        travelDaysPerWeek: parsedWorkDaysPerWeek,
         travelDaysPerYear: effectiveTravelDaysPerYear,
         monthsPerYear: parsedMonthsPerYear,
         reimbursementPerMonth: reimbursementPerYear / parsedMonthsPerYear,
@@ -173,7 +162,7 @@ export default function KilometervergoedingTool() {
             <div className="grid gap-2 sm:grid-cols-2">
               {[
                 { id: "kilometers" as const, label: "Eigen vervoer", detail: "km-vergoeding per kilometer" },
-                { id: "public-transport" as const, label: "OV ritprijs", detail: "enkele ritprijs × 2 × reisdagen × deeltijd" },
+                { id: "public-transport" as const, label: "OV ritprijs", detail: "enkele ritprijs × 2 × reisdagen per week" },
               ].map((option) => (
                 <button
                   key={option.id}
@@ -297,48 +286,32 @@ export default function KilometervergoedingTool() {
                 </div>
                 <div>
                   <label className="mb-1.5 block text-xs font-black uppercase tracking-wide text-slate-600">
-                    Fulltime reisdagen per jaar
+                    Reisdagen naar werk per week
                   </label>
-                  <input
-                    value={travelDaysPerYear}
-                    onChange={(event) => setTravelDaysPerYear(event.target.value)}
-                    placeholder="214"
-                    className={inputClass}
-                    inputMode="decimal"
-                  />
+                  <div className="flex flex-wrap gap-2">
+                    {[1, 2, 3, 4, 5].map((days) => (
+                      <button
+                        key={days}
+                        type="button"
+                        onClick={() => {
+                          setWorkDaysPerWeek(String(days));
+                          setPublicTransportResult(null);
+                          setError("");
+                        }}
+                        className={`border-2 border-black px-4 py-2 text-sm font-black ${
+                          workDaysPerWeek === String(days)
+                            ? "bg-[#4ECDC4] text-black"
+                            : "bg-white text-slate-700"
+                        }`}
+                      >
+                        {days} dag{days > 1 ? "en" : ""}
+                      </button>
+                    ))}
+                  </div>
                   <p className="mt-1 text-[11px] text-slate-500">
-                    214 wordt vaak gebruikt als fulltime jaarnorm. De tool past dit aan op je werkdagen per week.
+                    Kies alleen de dagen waarop je echt naar kantoor reist. Bijvoorbeeld 3 bij drie kantoordagen en twee thuiswerkdagen.
                   </p>
                 </div>
-              </div>
-
-              <div>
-                <label className="mb-1.5 block text-xs font-black uppercase tracking-wide text-slate-600">
-                  Werkdagen per week
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {[1, 2, 3, 4, 5].map((days) => (
-                    <button
-                      key={days}
-                      type="button"
-                      onClick={() => {
-                        setWorkDaysPerWeek(String(days));
-                        setPublicTransportResult(null);
-                        setError("");
-                      }}
-                      className={`border-2 border-black px-4 py-2 text-sm font-black ${
-                        workDaysPerWeek === String(days)
-                          ? "bg-[#4ECDC4] text-black"
-                          : "bg-white text-slate-700"
-                      }`}
-                    >
-                      {days} dag{days > 1 ? "en" : ""}
-                    </button>
-                  ))}
-                </div>
-                <p className="mt-1 text-[11px] text-slate-500">
-                  Bijvoorbeeld 3 dagen gebruikt 3/5 van de fulltime jaarnorm: 214 × 0,6.
-                </p>
               </div>
             </>
           )}
@@ -384,7 +357,7 @@ export default function KilometervergoedingTool() {
                 </p>
                 <p className="mt-2 text-sm text-slate-700">
                   Op basis van {formatEuro(publicTransportResult.singleTripPrice)} per enkele rit en{" "}
-                  {publicTransportResult.workDaysPerWeek} werkdagen per week.
+                  {publicTransportResult.travelDaysPerWeek} reisdagen naar werk per week.
                 </p>
               </div>
 
@@ -409,10 +382,9 @@ export default function KilometervergoedingTool() {
                 <p className="font-black text-slate-900">Berekening</p>
                 <p className="mt-2">
                   {formatEuro(publicTransportResult.singleTripPrice)} × 2 ={" "}
-                  {formatEuro(publicTransportResult.returnTripPrice)} per reisdag. Fulltime jaarnorm{" "}
-                  {publicTransportResult.fullTimeTravelDaysPerYear} ×{" "}
-                  {publicTransportResult.workDaysPerWeek}/5 ={" "}
-                  {formatTravelDays(publicTransportResult.travelDaysPerYear)} reisdagen.{" "}
+                  {formatEuro(publicTransportResult.returnTripPrice)} per reisdag.{" "}
+                  {publicTransportResult.travelDaysPerWeek} reisdagen per week × {WEEKS_PER_YEAR} weken ={" "}
+                  {formatTravelDays(publicTransportResult.travelDaysPerYear)} reisdagen per jaar.{" "}
                   {formatEuro(publicTransportResult.returnTripPrice)} ×{" "}
                   {formatTravelDays(publicTransportResult.travelDaysPerYear)} reisdagen ={" "}
                   {formatEuro(publicTransportResult.reimbursementPerYear)} per jaar. Gedeeld door{" "}
