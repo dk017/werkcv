@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import VakantiedagenTool from "./VakantiedagenTool";
 
 const faqItems = [
@@ -57,9 +58,10 @@ const vacationCvIntentLinks = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
   title: "Vakantiedagen Berekenen 2026 | Hoeveel Recht Heb Ik? | WerkCV",
   description: "Bereken je wettelijke vakantiedagen en vakantie-uren in 2026. Vul contracturen in en zie direct waar je recht op hebt.",
+  path: "/tools/vakantiedagen-berekenen",
   keywords: [
     "vakantiedagen berekenen",
     "vakantie uren berekenen",
@@ -71,10 +73,7 @@ export const metadata: Metadata = {
     "verlofuren berekenen",
     "vakantiedagen vervallen 2026",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/tools/vakantiedagen-berekenen",
-  },
-};
+});
 
 export default function VakantiedagenBerekenenPage() {
   return (

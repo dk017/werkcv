@@ -4,16 +4,21 @@ import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import WWDagloonTool from "./WWDagloonTool";
 
 const faqItems = [
   {
-    question: "Wat is het WW-dagloon?",
-    answer: "Het WW-dagloon is het loon dat UWV gemiddeld per dag voor je vaststelt. Daarmee berekent UWV daarna je WW-maandloon en de hoogte van je uitkering.",
+    question: "Hoe bereken je je WW-uitkering?",
+    answer: "Je start met je WW-dagloon. UWV rekent daarmee je WW-maandloon uit. De eerste 2 maanden is je bruto WW-uitkering meestal 75% van dat maandloon, daarna meestal 70%.",
   },
   {
     question: "Hoe hoog is de WW-uitkering in de eerste maanden?",
     answer: "De eerste 2 maanden is de bruto WW-uitkering meestal 75% van het WW-maandloon. Daarna is dit doorgaans 70%.",
+  },
+  {
+    question: "Is dit een WW-uitkering calculator of alleen een dagloon checker?",
+    answer: "Beide. De tool berekent eerst een dagloon-indicatie en vertaalt die daarna naar een bruto maandbedrag voor de eerste 2 maanden WW en voor de periode daarna.",
   },
   {
     question: "Waarom is het dagloon voor parttimers niet hetzelfde als wat zij per werkdag verdienen?",
@@ -25,18 +30,22 @@ const faqItems = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: "WW Dagloon Checker 2026 - Gratis Tool | WerkCV",
-  description: "Bereken een sterke indicatie van je WW-dagloon voor 2026. Inclusief snelle salarisroute, geavanceerde SV-loon invoer, maximum dagloon en WW-bedrag in de eerste 2 maanden.",
+export const metadata: Metadata = buildDutchMetadata({
+  title: "WW Uitkering Berekenen 2026 | Dagloon en Maandbedrag | WerkCV",
+  description: "Bereken je WW-uitkering in 2026 via dagloon, maandbedrag en 75%/70%-regel. Inclusief snelle salarisroute en SV-loon invoer.",
+  path: "/tools/ww-dagloon-checker",
   keywords: [
+    "ww uitkering berekenen",
+    "ww berekenen",
+    "hoogte ww uitkering",
+    "ww maandbedrag berekenen",
     "ww dagloon checker",
     "ww dagloon berekenen",
-    "hoogte ww uitkering",
     "ww maandloon berekenen",
     "maximum dagloon 2026",
     "sv loon ww berekenen",
   ],
-};
+});
 
 export default function WWDagloonCheckerPage() {
   return (
@@ -61,7 +70,7 @@ export default function WWDagloonCheckerPage() {
           <Breadcrumbs items={[
             { label: "Home", href: "/" },
             { label: "Tools", href: "/tools" },
-            { label: "WW dagloon checker", href: "/tools/ww-dagloon-checker" },
+            { label: "WW uitkering berekenen", href: "/tools/ww-dagloon-checker" },
           ]} />
         </div>
 
@@ -76,10 +85,10 @@ export default function WWDagloonCheckerPage() {
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-              WW dagloon checker
+              WW uitkering berekenen 2026
             </h1>
             <p className="text-lg text-slate-600 font-medium max-w-3xl">
-              Dit is de ontbrekende schakel tussen WW-recht, WW-duur en de vraag hoeveel bruto uitkering daar ongeveer bij hoort. WerkCV laat zowel een snelle salarisroute als een meer UWV-achtige invoer zien.
+              Bereken een bruto indicatie van je WW-uitkering per maand. WerkCV laat eerst je dagloon zien en vertaalt dat daarna naar de 75%-regel voor de eerste 2 maanden en de 70%-regel vanaf maand 3.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
@@ -102,9 +111,9 @@ export default function WWDagloonCheckerPage() {
               Waarom dit belangrijk is
             </p>
             <div className="space-y-3 text-sm text-slate-600">
-              <p>WW-recht hebben is nog niet hetzelfde als weten hoeveel je ongeveer gaat ontvangen.</p>
-              <p>Juist dat bedrag bepaalt of iemand zijn ontslagvergoeding, spaargeld of volgende sollicitatiestap anders moet plannen.</p>
-              <p>Deze tool maakt die sprong concreet zonder te doen alsof een eerste indicatie al een formele UWV-beschikking is.</p>
+              <p>Veel mensen zoeken niet alleen het dagloon, maar vooral het maandbedrag dat ze straks kunnen verwachten.</p>
+              <p>Dat bedrag bepaalt of je ontslagvergoeding, spaargeld of sollicitatieplanning anders moet bekijken.</p>
+              <p>Deze tool maakt die stap concreet zonder te doen alsof een indicatie al een formele UWV-beschikking is.</p>
             </div>
           </aside>
         </section>
@@ -116,18 +125,18 @@ export default function WWDagloonCheckerPage() {
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
           <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h2 className="text-2xl font-black text-slate-900 mb-4">
-              Wat de geavanceerde route beter benadert
+              Wat de maandbedragen betekenen
             </h2>
             <ul className="space-y-2 text-sm text-slate-700">
-              <li>SV-loon over de referteperiode in plaats van alleen een bruto maandsalaris.</li>
-              <li>Het onderscheid tussen uitbetaald en gereserveerd vakantiegeld of AVWB.</li>
-              <li>Het aantal dagloondagen, bijvoorbeeld 261 bij een volledig jaar met loon.</li>
-              <li>Het wettelijke maximum dagloon dat de uitkering kan afkappen.</li>
+              <li>De eerste 2 maanden liggen meestal op 75% van je WW-maandloon.</li>
+              <li>Vanaf maand 3 zakt dit meestal naar 70% van je WW-maandloon.</li>
+              <li>De tool toont bruto bedragen; loonheffing en persoonlijke inhoudingen zitten daar nog niet in.</li>
+              <li>Bij een hoog loon kan het wettelijke maximum dagloon je uitkering begrenzen.</li>
             </ul>
           </div>
           <div className="bg-white border-2 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h2 className="text-2xl font-black text-slate-900 mb-4">
-              Wanneer de echte uitkomst vaak anders wordt
+              Wanneer de UWV-uitkomst kan afwijken
             </h2>
             <ul className="space-y-2 text-sm text-slate-700">
               <li>Je loon wisselde sterk per maand of je had onregelmatige toeslagen.</li>
@@ -176,7 +185,7 @@ export default function WWDagloonCheckerPage() {
                 Van WW-check naar je volgende sollicitatie
               </h2>
               <p className="text-sm sm:text-base text-slate-300 max-w-2xl">
-                Als je ongeveer weet waar je financieel staat, kun je sneller door naar WW-duur, sollicitatiebrieven en een nieuw CV.
+                Als je ongeveer weet waar je financieel staat, kun je sneller door naar WW-duur, sollicitatiebrieven en een nieuw cv.
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3">
@@ -187,10 +196,10 @@ export default function WWDagloonCheckerPage() {
                 Bereken ook WW-duur
               </Link>
               <Link
-                href="/editor"
+                href="/cv-maken-zonder-abonnement"
                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
               >
-                Maak gratis je CV
+                Maak je cv zonder abonnement
               </Link>
             </div>
           </div>
@@ -202,7 +211,7 @@ export default function WWDagloonCheckerPage() {
               FAQ
             </p>
             <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">
-              Veelgestelde vragen over WW-dagloon
+              Veelgestelde vragen over WW-uitkering berekenen
             </h2>
           </div>
           <div className="bg-white border-2 border-black divide-y divide-slate-200">

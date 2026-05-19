@@ -16,11 +16,11 @@ type SalaryResultCvCtaProps = {
 export default function SalaryResultCvCta({
   toolName,
   title = "Gebruik dit inzicht voor je volgende sollicitatie",
-  text = "Ben je aan het vergelijken, onderhandelen of solliciteren? Zet je CV direct klaar voor de functie waar je meer uit wilt halen.",
-  primaryLabel = "Maak mijn CV sollicitatieklaar",
-  secondaryLabel = "Bekijk hoe betalen werkt",
-  primaryHref = "/editor",
-  secondaryHref = "/cv-maken-zonder-abonnement",
+  text = "Ben je aan het vergelijken, onderhandelen of solliciteren? Zet je cv direct klaar voor de functie waar je meer uit wilt halen.",
+  primaryLabel = "Start gratis zonder abonnement",
+  secondaryLabel = "Bekijk cv-templates",
+  primaryHref = "/cv-maken-zonder-abonnement",
+  secondaryHref = "/templates",
   resultState = "calculator_result",
 }: SalaryResultCvCtaProps) {
   return (

@@ -261,18 +261,18 @@ export default function WWDagloonTool() {
             className="w-full py-3 px-6 bg-[#4ECDC4] hover:bg-teal-500 text-slate-900 font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
             style={{ borderWidth: "3px" }}
           >
-            Bereken WW-dagloon indicatie
+            Bereken WW-uitkering indicatie
           </button>
 
           <p className="text-xs text-slate-500 text-center">
-            Maximum dagloon 2026: {formatEuro(WW_MAX_DAGLOON_2026)} bruto per dag. Deze tool geeft een sterke indicatie, geen definitieve UWV-beschikking.
+            Maximum dagloon 2026: {formatEuro(WW_MAX_DAGLOON_2026)} bruto per dag. Dit is een indicatie op basis van standaard Nederlandse regelgeving. Controleer je loonstrook of cao voor exacte bedragen.
           </p>
         </div>
       ) : (
         <div className="space-y-5">
           <div className={`border-2 rounded-xl p-5 ${result.capped ? "bg-amber-50 border-amber-300" : "bg-emerald-50 border-emerald-300"}`}>
             <p className={`text-xs font-black uppercase tracking-wide mb-2 ${result.capped ? "text-amber-700" : "text-emerald-700"}`}>
-              {result.capped ? "Dagloon begrensd door maximum" : "WW-dagloon indicatie"}
+              {result.capped ? "Uitkering begrensd door maximum dagloon" : "WW-uitkering indicatie"}
             </p>
             <p className={`text-4xl font-black mb-2 ${result.capped ? "text-amber-900" : "text-emerald-900"}`}>
               {formatEuro(result.dagloon)}
@@ -329,6 +329,10 @@ export default function WWDagloonTool() {
               </ul>
             </div>
           </div>
+
+          <p className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs font-medium leading-relaxed text-slate-600">
+            Dit is een indicatie op basis van standaard Nederlandse regelgeving. Controleer je loonstrook of cao voor exacte bedragen.
+          </p>
 
           <button
             type="button"

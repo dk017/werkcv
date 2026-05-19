@@ -14,6 +14,11 @@ const faqItems = [
       "In 2026 mag een werkgever maximaal €0,23 per kilometer belastingvrij vergoeden voor woon-werkverkeer en zakelijke kilometers. Betaalt de werkgever meer, dan is het meerdere in principe belast loon.",
   },
   {
+    question: "Is reiskostenvergoeding hetzelfde als kilometervergoeding?",
+    answer:
+      "Niet helemaal. Kilometervergoeding gaat vooral over eigen vervoer per kilometer. Reiskostenvergoeding is breder en kan ook OV-kosten, vaste woon-werkafspraken of een combinatie met thuiswerkvergoeding omvatten.",
+  },
+  {
     question: "Tellen heen- en terugreis allebei mee?",
     answer:
       "Ja. Voor woon-werkverkeer reken je meestal zowel de heenreis als de terugreis mee. Daarom vraagt deze tool om kilometers enkele reis en verdubbelt hij dat automatisch.",
@@ -70,7 +75,7 @@ export default function KilometervergoedingBerekenenPage() {
             items={[
               { label: "Home", href: "/" },
               { label: "Tools", href: "/tools" },
-              { label: "Kilometervergoeding berekenen", href: "/tools/kilometervergoeding-berekenen" },
+              { label: "Reiskostenvergoeding berekenen", href: "/tools/kilometervergoeding-berekenen" },
             ]}
           />
         </div>
@@ -93,10 +98,10 @@ export default function KilometervergoedingBerekenenPage() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
-                href="/editor"
+                href="/cv-maken-zonder-abonnement"
                 className="inline-flex items-center justify-center gap-2 border-2 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-slate-900 transition-colors hover:bg-teal-300"
               >
-                Maak gratis je CV
+                Cv maken zonder abonnement
               </Link>
               <Link
                 href="/tools/netto-bruto-calculator"
@@ -191,7 +196,7 @@ export default function KilometervergoedingBerekenenPage() {
           <div className="mb-5">
             <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-slate-500">FAQ</p>
             <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
-              Veelgestelde vragen over kilometervergoeding
+              Veelgestelde vragen over reiskostenvergoeding
             </h2>
           </div>
           <div className="divide-y divide-slate-200 border-2 border-black bg-white">

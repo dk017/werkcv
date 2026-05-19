@@ -3,6 +3,7 @@ import Link from "next/link";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import Footer from "@/components/Footer";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { cvDownloadPrice } from "@/lib/site-content";
 
 const sourceLinks = [
@@ -76,10 +77,11 @@ const faqs = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: "CV.nl opzeggen - Zo doe je het en wat je daarna nodig hebt",
+export const metadata: Metadata = buildDutchMetadata({
+  title: "CV.nl Opzeggen in 2026 - Stap voor Stap + Wat Daarna | WerkCV",
   description:
-    "Bekijk hoe je CV.nl opzegt, wat er met je account gebeurt en hoe je daarna een cv maakt zonder maandabonnement.",
+    "Bekijk hoe je CV.nl opzegt, wat er daarna gebeurt en hoe je een cv maakt zonder maandabonnement.",
+  path: "/cv-nl-opzeggen",
   keywords: [
     "cv.nl opzeggen",
     "cv nl opzeggen",
@@ -88,14 +90,11 @@ export const metadata: Metadata = {
     "abonnement cv.nl stoppen",
     "cv.nl account opzeggen",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/cv-nl-opzeggen",
-    languages: {
-      "nl-NL": "https://werkcv.nl/cv-nl-opzeggen",
-      "x-default": "https://werkcv.nl/cv-nl-opzeggen",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/cv-nl-opzeggen",
+    "x-default": "https://werkcv.nl/cv-nl-opzeggen",
   },
-};
+});
 
 export default function CvNlOpzeggenPage() {
   const faqSchema = {

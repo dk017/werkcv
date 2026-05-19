@@ -16,13 +16,13 @@ type ToolResultCtaProps = {
 
 export function ToolResultCta({
   eyebrow = "Zet je resultaat om in actie",
-  title = "Maak nu een CV dat klaar is om te versturen",
-  description = "Je hebt net inzicht gekregen. Gebruik dat moment om je CV direct scherper, rustiger en ATS-vriendelijker te maken.",
-  primaryHref = "/editor",
-  primaryLabel = "Verbeter mijn CV nu",
+  title = "Maak je cv zonder abonnement",
+  description = "Je hebt net inzicht gekregen. Gebruik dat moment om je cv scherper te maken, zonder maandabonnement of opzeggedoe.",
+  primaryHref = "/cv-maken-zonder-abonnement",
+  primaryLabel = "Start gratis",
   secondaryHref = "/templates",
   secondaryLabel = "Kies eerst een template",
-  proofItems = ["Gratis starten", "Eenmalig €4,99", "Geen abonnement"],
+  proofItems = ["Gratis starten", "Eenmalig €4,99 bij PDF-download", "Geen abonnement"],
   toolName = "tool-result",
   ctaIntent = "general",
   resultState = "calculator_result",
