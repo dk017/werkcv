@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma'
 import { cvSchema, CVData, defaultCV } from '@/lib/cv'
 import { buildCheckoutURL, CheckoutAddon, CheckoutProduct, parseCheckoutAddons, parseCheckoutProduct } from '@/lib/polar'
+import { buildDodoCheckoutURL, isDodoEnabledForCheckout } from '@/lib/dodo'
 import { getCurrentUser } from '@/lib/auth'
 import { reportOpsIncident } from '@/lib/ops-alerts'
 import { getResumeLanguage } from '@/lib/resume-language'
@@ -209,14 +210,17 @@ export async function getCheckoutURL(
     const safeAddons = parseCheckoutAddons(addons);
     const safeProduct = parseCheckoutProduct(checkoutProduct);
     const resumeLanguage = getResumeLanguage(owned.data as CVData);
+    const paymentProvider = isDodoEnabledForCheckout(safeProduct, safeAddons) ? 'dodo' : 'polar';
     try {
-        const url = await buildCheckoutURL(cvId, email || user.email, safeAddons, resumeLanguage, safeProduct);
+        const url = paymentProvider === 'dodo'
+            ? await buildDodoCheckoutURL(cvId, email || user.email, resumeLanguage)
+            : await buildCheckoutURL(cvId, email || user.email, safeAddons, resumeLanguage, safeProduct);
         return { ok: true, url };
     } catch (error) {
         const { supportNotified } = await reportOpsIncident({
             event: 'ops_checkout_create_failed',
             route: '/app/actions#getCheckoutURL',
-            stage: 'polar_checkout_create',
+            stage: `${paymentProvider}_checkout_create`,
             error,
             cvId,
             userId: user.id,
@@ -228,6 +232,7 @@ export async function getCheckoutURL(
             context: {
                 addons: safeAddons,
                 product: safeProduct,
+                paymentProvider,
             },
         });
 
