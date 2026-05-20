@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import SollicitatiebriefTool from "./SollicitatiebriefTool";
 
-export const metadata: Metadata = {
-    title: "Sollicitatiebrief Generator - Gratis AI Sollicitatiebrief | WerkCV",
-    description: "Schrijf in seconden een persoonlijke sollicitatiebrief met AI. Vul je motivatie in en ontvang een professionele, op maat gemaakte brief.",
+export const metadata: Metadata = buildDutchMetadata({
+    title: "Sollicitatiebrief Generator 2026 | Gratis Brief Maken | WerkCV",
+    description: "Maak gratis een sollicitatiebrief op basis van functie, vacature en motivatie. Krijg direct een professionele brief die je kunt aanpassen.",
+    path: "/tools/sollicitatiebrief-generator",
     keywords: [
         "sollicitatiebrief schrijven",
         "sollicitatiebrief generator",
@@ -15,7 +17,7 @@ export const metadata: Metadata = {
         "gratis sollicitatiebrief",
         "motivatiebrief generator",
     ],
-};
+});
 
 export default function SollicitatiebriefGeneratorPage() {
     return (
