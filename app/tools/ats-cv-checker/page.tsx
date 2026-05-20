@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import AtsCheckerTool from "./AtsCheckerTool";
 
 const faqItems = [
@@ -24,9 +25,10 @@ const faqItems = [
     },
 ];
 
-export const metadata: Metadata = {
-    title: "CV Scanner Online: Gratis ATS CV Check met AI | WerkCV",
-    description: "Gebruik deze cv scanner online en laat je CV door AI checken op ATS-fouten. Upload je CV en ontvang direct je ATS-score met concrete verbeterpunten.",
+export const metadata: Metadata = buildDutchMetadata({
+    title: "ATS CV Checker 2026 | Gratis CV Scanner Online | WerkCV",
+    description: "Check gratis of je cv goed leesbaar is voor ATS-software. Upload je cv en krijg direct concrete verbeterpunten voor structuur en opmaak.",
+    path: "/tools/ats-cv-checker",
     keywords: [
         "cv scanner online",
         "cv door ai laten checken",
@@ -36,23 +38,7 @@ export const metadata: Metadata = {
         "ats vriendelijk cv",
         "ats cv scanner",
     ],
-    alternates: {
-        canonical: "/tools/ats-cv-checker",
-    },
-    openGraph: {
-        title: "CV Scanner Online | Gratis ATS CV Check met AI",
-        description: "Check of recruitersoftware je CV goed leest en zie direct welke ATS-fouten je eerst moet oplossen.",
-        url: "https://werkcv.nl/tools/ats-cv-checker",
-        siteName: "WerkCV",
-        locale: "nl_NL",
-        type: "website",
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "CV Scanner Online | WerkCV",
-        description: "Laat je CV door AI checken op ATS-fouten en ontvang direct je verbeterpunten.",
-    },
-};
+});
 
 export default function AtsCvCheckerPage() {
     return (

@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import SollicitatiebriefTool from "./SollicitatiebriefTool";
 
-export const metadata: Metadata = {
-    title: "Sollicitatiebrief Generator - Gratis AI Sollicitatiebrief | WerkCV",
-    description: "Schrijf in seconden een persoonlijke sollicitatiebrief met AI. Vul je motivatie in en ontvang een professionele, op maat gemaakte brief.",
+export const metadata: Metadata = buildDutchMetadata({
+    title: "Sollicitatiebrief Generator 2026 | Gratis Brief Maken | WerkCV",
+    description: "Maak gratis een sollicitatiebrief op basis van functie, vacature en motivatie. Krijg direct een professionele brief die je kunt aanpassen.",
+    path: "/tools/sollicitatiebrief-generator",
     keywords: [
         "sollicitatiebrief schrijven",
         "sollicitatiebrief generator",
@@ -15,7 +17,7 @@ export const metadata: Metadata = {
         "gratis sollicitatiebrief",
         "motivatiebrief generator",
     ],
-};
+});
 
 export default function SollicitatiebriefGeneratorPage() {
     return (
@@ -131,7 +133,7 @@ export default function SollicitatiebriefGeneratorPage() {
                     eyebrow="Bijpassende CV-PDF"
                     title="Maak ook de CV die bij je brief past"
                     description="Als je hier een sollicitatiebrief maakt, ben je al bezig met een concrete vacature. Zorg dat je CV dezelfde rol, toon en bewijzen laat zien."
-                    primaryLabel="Maak bijpassende CV-PDF"
+                    primaryLabel="Maak de CV die bij deze brief past"
                     secondaryHref="/cv-maken-zonder-abonnement"
                     secondaryLabel="Bekijk hoe betalen werkt"
                     intent="cover_letter"

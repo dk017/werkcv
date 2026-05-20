@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import LinkedinToCvTool from "./LinkedinToCvTool";
 
@@ -34,9 +35,9 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "LinkedIn naar CV omzetten | Maak snel een professioneel cv",
+  title: "LinkedIn naar CV Omzetten 2026 | Gratis CV Maken | WerkCV",
   description:
-    "Zet je LinkedIn-profiel om naar een professioneel Nederlands cv. Plak je LinkedIn-tekst, controleer de inhoud en maak direct een ATS-vriendelijke cv in WerkCV.",
+    "Zet je LinkedIn-profiel om naar een professioneel Nederlands cv. Plak je LinkedIn-tekst, controleer de inhoud en maak gratis een ATS-vriendelijke cv.",
   path: "/tools/linkedin-naar-cv",
   keywords: [
     "linkedin naar cv",
@@ -45,7 +46,6 @@ export const metadata: Metadata = buildDutchMetadata({
     "linkedin profiel cv",
     "linkedin naar nederlands cv",
   ],
-  type: "article",
 });
 
 export default function LinkedinNaarCvPage() {
@@ -190,6 +190,18 @@ export default function LinkedinNaarCvPage() {
             ))}
           </div>
         </section>
+
+        <ToolToCvCTA
+          toolName="linkedin-naar-cv"
+          title="Maak van je LinkedIn-tekst een cv zonder abonnement"
+          description="Gebruik je LinkedIn-profiel als basis, scherp de tekst aan en download pas wanneer je cv klaar is om te versturen."
+          primaryLabel="Maak je cv zonder abonnement"
+          secondaryHref="/tools/ats-cv-checker"
+          secondaryLabel="Check daarna je ATS-score"
+          intent="cv_content"
+          insightText="Je kunt gratis starten en alles aanpassen. Je betaalt alleen eenmalig als je de definitieve cv als PDF wilt downloaden."
+          proofItems={["LinkedIn-tekst als basis", "Gratis bewerken", "Eenmalig €4,99", "Geen abonnement"]}
+        />
       </main>
 
       <Footer />

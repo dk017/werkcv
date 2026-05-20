@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import CvSamenvattingTool from "./CvSamenvattingTool";
 
 const faqItems = [
@@ -21,9 +22,10 @@ const faqItems = [
     },
 ];
 
-export const metadata: Metadata = {
-    title: "CV Samenvatting Generator - Gratis Tool | WerkCV",
-    description: "Genereer een sterke cv-samenvatting voor de Nederlandse arbeidsmarkt. Vul je functie, doelrol, vaardigheden en resultaat in en krijg direct een recruiter-vriendelijke intro.",
+export const metadata: Metadata = buildDutchMetadata({
+    title: "CV Samenvatting Generator 2026 | Sterke Profieltekst Maken | WerkCV",
+    description: "Maak gratis een sterke cv-samenvatting of profieltekst. Vul je functie, vaardigheden en resultaat in en krijg direct een recruiter-vriendelijke intro.",
+    path: "/tools/cv-samenvatting-generator",
     keywords: [
         "cv samenvatting generator",
         "cv samenvatting schrijven",
@@ -31,7 +33,7 @@ export const metadata: Metadata = {
         "persoonlijk profiel cv",
         "cv introductie maken",
     ],
-};
+});
 
 export default function CvSamenvattingGeneratorPage() {
     return (
@@ -188,16 +190,16 @@ export default function CvSamenvattingGeneratorPage() {
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3">
                             <Link
-                                href="/editor"
+                                href="/cv-maken-zonder-abonnement"
                                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-white hover:bg-teal-300 transition-colors"
                             >
-                                Open de editor
+                                Zet dit in je cv zonder abonnement
                             </Link>
                             <Link
-                                href="/templates"
+                                href="/editor"
                                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
                             >
-                                Bekijk templates
+                                Open editor direct
                             </Link>
                         </div>
                     </div>
