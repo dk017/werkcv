@@ -43,14 +43,13 @@ export async function buildDodoCheckoutURL(
     throw new Error("DODO_PRODUCT_ID is not configured");
   }
 
+  const isDutchCheckout = resumeLanguage === "nl";
   const body: Record<string, unknown> = {
     product_cart: [{ product_id: DODO_PRODUCT_ID, quantity: 1 }],
-    allowed_payment_method_types: ["ideal", "credit", "debit", "apple_pay", "google_pay"],
+    allowed_payment_method_types: isDutchCheckout
+      ? ["ideal", "credit", "debit", "apple_pay", "google_pay"]
+      : ["credit", "debit", "apple_pay", "google_pay"],
     billing_currency: "EUR",
-    billing_address: {
-      country: "NL",
-      zipcode: "1012JS",
-    },
     return_url: `${APP_URL}${getSuccessPathForLanguage(resumeLanguage, cvId)}`,
     cancel_url: `${APP_URL}${getEditorPathForLanguage(resumeLanguage, cvId)}`,
     metadata: {
@@ -69,6 +68,13 @@ export async function buildDodoCheckoutURL(
     },
     minimal_address: true,
   };
+
+  if (isDutchCheckout) {
+    body.billing_address = {
+      country: "NL",
+      zipcode: "1012JS",
+    };
+  }
 
   if (email) {
     body.customer = { email };
