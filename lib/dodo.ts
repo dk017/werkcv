@@ -45,8 +45,12 @@ export async function buildDodoCheckoutURL(
 
   const body: Record<string, unknown> = {
     product_cart: [{ product_id: DODO_PRODUCT_ID, quantity: 1 }],
-    allowed_payment_method_types: ["ideal", "credit", "debit"],
+    allowed_payment_method_types: ["ideal", "credit", "debit", "apple_pay", "google_pay"],
     billing_currency: "EUR",
+    billing_address: {
+      country: "NL",
+      zipcode: "1012JS",
+    },
     return_url: `${APP_URL}${getSuccessPathForLanguage(resumeLanguage, cvId)}`,
     cancel_url: `${APP_URL}${getEditorPathForLanguage(resumeLanguage, cvId)}`,
     metadata: {
@@ -62,8 +66,8 @@ export async function buildDodoCheckoutURL(
       allow_currency_selection: false,
       allow_discount_code: false,
       allow_phone_number_collection: false,
-      minimal_address: true,
     },
+    minimal_address: true,
   };
 
   if (email) {
