@@ -14,6 +14,7 @@ export type AnalyticsDashboardData = {
     events: number;
     ctaClicks: number;
     editorStarts: number;
+    checkoutModalViews: number;
     checkoutStarts: number;
     checkoutClicks: number;
     paidOrders: number;
@@ -21,7 +22,10 @@ export type AnalyticsDashboardData = {
     signups: number;
   };
   liveVisitors: LiveVisitorRow[];
-  globePoints: GlobePointRow[];
+  liveGlobePoints: GlobePointRow[];
+  visitorJourneys: VisitorJourneyRow[];
+  trends: TrendRow[];
+  insights: InsightRow[];
   topPages: PageRow[];
   sources: SourceRow[];
   devices: DeviceRow[];
@@ -36,6 +40,7 @@ type SummaryRow = {
   events: number;
   ctaClicks: number;
   editorStarts: number;
+  checkoutModalViews: number;
   checkoutStarts: number;
   checkoutClicks: number;
   paidOrders: number;
@@ -75,6 +80,54 @@ export type GlobePointRow = {
   eventCount: number;
 };
 
+export type VisitorJourneyEventRow = {
+  id: string;
+  event: string;
+  page: string;
+  createdAt: Date;
+  detail: string;
+};
+
+export type VisitorJourneyRow = {
+  sessionId: string;
+  visitorId: string;
+  page: string;
+  sourceType: string;
+  sourceLabel: string;
+  deviceType: string;
+  browserName: string;
+  osName: string;
+  city: string;
+  country: string;
+  latitude: number | null;
+  longitude: number | null;
+  firstSeen: Date;
+  lastSeen: Date;
+  eventCount: number;
+  stage: string;
+  journey: VisitorJourneyEventRow[];
+};
+
+export type TrendRow = {
+  bucket: Date;
+  visitors: number;
+  sessions: number;
+  pageViews: number;
+  ctaClicks: number;
+  editorStarts: number;
+  checkoutModalViews: number;
+  checkoutClicks: number;
+};
+
+export type InsightRow = {
+  id: string;
+  severity: "high" | "medium" | "low";
+  title: string;
+  evidence: string;
+  action: string;
+  page?: string;
+};
+
 export type PageRow = {
   page: string;
   pageViews: number;
@@ -108,8 +161,28 @@ export type FunnelPageRow = {
   sessions: number;
   ctaClicks: number;
   editorStarts: number;
+  checkoutModalViews: number;
   checkoutStarts: number;
   checkoutClicks: number;
+};
+
+type JourneyEventQueryRow = {
+  id: string;
+  sessionId: string;
+  visitorId: string;
+  event: string;
+  page: string;
+  sourceType: string;
+  sourceLabel: string;
+  deviceType: string;
+  browserName: string;
+  osName: string;
+  city: string;
+  country: string;
+  latitude: number | null;
+  longitude: number | null;
+  createdAt: Date;
+  detail: string;
 };
 
 const rangeHours: Record<AnalyticsRange, number> = {
@@ -136,9 +209,23 @@ function eventPageSql() {
 export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<AnalyticsDashboardData> {
   const generatedAt = new Date();
   const since = new Date(generatedAt.getTime() - rangeHours[range] * 60 * 60 * 1000);
+  const liveSince = new Date(generatedAt.getTime() - 15 * 60 * 1000);
+  const journeySince = new Date(generatedAt.getTime() - 2 * 60 * 60 * 1000);
+  const bucket = range === "24h" ? "hour" : "day";
   const pageSql = eventPageSql();
 
-  const [summaryRows, liveVisitors, globePoints, topPages, sources, devices, ctas, funnelPages] = await Promise.all([
+  const [
+    summaryRows,
+    liveVisitors,
+    liveGlobePoints,
+    journeyEvents,
+    trends,
+    topPages,
+    sources,
+    devices,
+    ctas,
+    funnelPages,
+  ] = await Promise.all([
     prisma.$queryRaw<SummaryRow[]>`
       WITH events AS (
         SELECT *
@@ -168,7 +255,8 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
             OR event LIKE 'cta_%'
         )::int AS "ctaClicks",
         COUNT(*) FILTER (WHERE event IN ('start_cv', 'editor_started', 'landing_to_editor'))::int AS "editorStarts",
-        COUNT(*) FILTER (WHERE event IN ('checkout_start', 'checkout_started', 'checkout_modal_viewed'))::int AS "checkoutStarts",
+        COUNT(*) FILTER (WHERE event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
+        COUNT(*) FILTER (WHERE event IN ('checkout_start', 'checkout_started'))::int AS "checkoutStarts",
         COUNT(*) FILTER (WHERE event = 'checkout_option_clicked')::int AS "checkoutClicks",
         (SELECT "paidOrders" FROM order_summary) AS "paidOrders",
         (SELECT "revenueCents" FROM order_summary) AS "revenueCents",
@@ -179,7 +267,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
       WITH recent AS (
         SELECT *
         FROM "AnalyticsEvent"
-        WHERE "createdAt" >= ${new Date(generatedAt.getTime() - 5 * 60 * 1000)}
+        WHERE "createdAt" >= ${liveSince}
           AND NULLIF(properties->>'sessionId', '') IS NOT NULL
       ),
       ranked AS (
@@ -222,43 +310,125 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
       LIMIT 30
     `,
     prisma.$queryRaw<GlobePointRow[]>`
-      WITH latest_sessions AS (
+      WITH active_sessions AS (
+        SELECT
+          properties->>'sessionId' AS "sessionId",
+          MAX("createdAt") AS "lastSeen"
+        FROM "AnalyticsEvent"
+        WHERE "createdAt" >= ${liveSince}
+          AND NULLIF(properties->>'sessionId', '') IS NOT NULL
+        GROUP BY properties->>'sessionId'
+      ),
+      latest_events AS (
         SELECT
           properties->>'sessionId' AS "sessionId",
           COALESCE(NULLIF(properties->>'visitorId', ''), properties->>'sessionId') AS "visitorId",
           ${pageSql} AS page,
           COALESCE(NULLIF(properties->>'sourceType', ''), 'unknown') AS "sourceType",
           COALESCE(NULLIF(properties->>'sourceLabel', ''), 'Unknown') AS "sourceLabel",
+          ROW_NUMBER() OVER (PARTITION BY properties->>'sessionId' ORDER BY "createdAt" DESC) AS row_number
+        FROM "AnalyticsEvent"
+        WHERE "createdAt" >= ${journeySince}
+          AND properties->>'sessionId' IN (SELECT "sessionId" FROM active_sessions)
+      ),
+      geocoded_events AS (
+        SELECT
+          properties->>'sessionId' AS "sessionId",
           COALESCE(NULLIF(properties->>'city', ''), '') AS city,
           COALESCE(NULLIF(properties->>'country', ''), '') AS country,
           (properties->>'latitude')::float AS latitude,
           (properties->>'longitude')::float AS longitude,
-          "createdAt" AS "lastSeen",
-          COUNT(*) OVER (PARTITION BY properties->>'sessionId')::int AS "eventCount",
           ROW_NUMBER() OVER (PARTITION BY properties->>'sessionId' ORDER BY "createdAt" DESC) AS row_number
         FROM "AnalyticsEvent"
-        WHERE "createdAt" >= ${since}
-          AND NULLIF(properties->>'sessionId', '') IS NOT NULL
+        WHERE "createdAt" >= ${journeySince}
+          AND properties->>'sessionId' IN (SELECT "sessionId" FROM active_sessions)
           AND properties->>'latitude' IS NOT NULL
           AND properties->>'longitude' IS NOT NULL
+      ),
+      event_counts AS (
+        SELECT
+          properties->>'sessionId' AS "sessionId",
+          COUNT(*)::int AS "eventCount"
+        FROM "AnalyticsEvent"
+        WHERE "createdAt" >= ${journeySince}
+          AND properties->>'sessionId' IN (SELECT "sessionId" FROM active_sessions)
+        GROUP BY properties->>'sessionId'
       )
       SELECT
-        "visitorId" || '-' || "sessionId" AS id,
-        "sessionId",
-        latitude,
-        longitude,
-        city,
-        country,
-        page,
-        "sourceType",
-        "sourceLabel",
-        "lastSeen",
-        "lastSeen" >= ${new Date(generatedAt.getTime() - 5 * 60 * 1000)} AS "isLive",
-        "eventCount"
-      FROM latest_sessions
-      WHERE row_number = 1
-      ORDER BY "isLive" DESC, "lastSeen" DESC
-      LIMIT 90
+        latest_events."visitorId" || '-' || active_sessions."sessionId" AS id,
+        active_sessions."sessionId",
+        geocoded_events.latitude,
+        geocoded_events.longitude,
+        geocoded_events.city,
+        geocoded_events.country,
+        latest_events.page,
+        latest_events."sourceType",
+        latest_events."sourceLabel",
+        active_sessions."lastSeen",
+        true AS "isLive",
+        event_counts."eventCount"
+      FROM active_sessions
+      JOIN latest_events ON latest_events."sessionId" = active_sessions."sessionId" AND latest_events.row_number = 1
+      JOIN geocoded_events ON geocoded_events."sessionId" = active_sessions."sessionId" AND geocoded_events.row_number = 1
+      JOIN event_counts ON event_counts."sessionId" = active_sessions."sessionId"
+      ORDER BY active_sessions."lastSeen" DESC
+      LIMIT 60
+    `,
+    prisma.$queryRaw<JourneyEventQueryRow[]>`
+      WITH active_sessions AS (
+        SELECT properties->>'sessionId' AS "sessionId"
+        FROM "AnalyticsEvent"
+        WHERE "createdAt" >= ${liveSince}
+          AND NULLIF(properties->>'sessionId', '') IS NOT NULL
+        GROUP BY properties->>'sessionId'
+      )
+      SELECT
+        id,
+        properties->>'sessionId' AS "sessionId",
+        COALESCE(NULLIF(properties->>'visitorId', ''), 'unknown') AS "visitorId",
+        event,
+        ${pageSql} AS page,
+        COALESCE(NULLIF(properties->>'sourceType', ''), 'unknown') AS "sourceType",
+        COALESCE(NULLIF(properties->>'sourceLabel', ''), 'Unknown') AS "sourceLabel",
+        COALESCE(NULLIF(properties->>'deviceType', ''), 'unknown') AS "deviceType",
+        COALESCE(NULLIF(properties->>'browserName', ''), 'Unknown') AS "browserName",
+        COALESCE(NULLIF(properties->>'osName', ''), 'Unknown') AS "osName",
+        COALESCE(NULLIF(properties->>'city', ''), '') AS city,
+        COALESCE(NULLIF(properties->>'country', ''), '') AS country,
+        CASE WHEN properties->>'latitude' IS NULL THEN NULL ELSE (properties->>'latitude')::float END AS latitude,
+        CASE WHEN properties->>'longitude' IS NULL THEN NULL ELSE (properties->>'longitude')::float END AS longitude,
+        "createdAt",
+        COALESCE(
+          NULLIF(properties->>'label', ''),
+          NULLIF(properties->>'cta_text', ''),
+          NULLIF(properties->>'ctaText', ''),
+          NULLIF(properties->>'toPath', ''),
+          NULLIF(properties->>'provider', ''),
+          ''
+        ) AS detail
+      FROM "AnalyticsEvent"
+      WHERE "createdAt" >= ${journeySince}
+        AND properties->>'sessionId' IN (SELECT "sessionId" FROM active_sessions)
+      ORDER BY properties->>'sessionId', "createdAt" ASC
+      LIMIT 600
+    `,
+    prisma.$queryRaw<TrendRow[]>`
+      SELECT
+        date_trunc(${bucket}, "createdAt") AS bucket,
+        COUNT(DISTINCT NULLIF(properties->>'visitorId', ''))::int AS visitors,
+        COUNT(DISTINCT NULLIF(properties->>'sessionId', ''))::int AS sessions,
+        COUNT(*) FILTER (WHERE event = 'page_view')::int AS "pageViews",
+        COUNT(*) FILTER (
+          WHERE event IN ('landing_cta_click', 'tool_to_cv_cta_click', 'cta_clicked')
+            OR event LIKE 'cta_%'
+        )::int AS "ctaClicks",
+        COUNT(*) FILTER (WHERE event IN ('start_cv', 'editor_started', 'landing_to_editor'))::int AS "editorStarts",
+        COUNT(*) FILTER (WHERE event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
+        COUNT(*) FILTER (WHERE event = 'checkout_option_clicked')::int AS "checkoutClicks"
+      FROM "AnalyticsEvent"
+      WHERE "createdAt" >= ${since}
+      GROUP BY bucket
+      ORDER BY bucket ASC
     `,
     prisma.$queryRaw<PageRow[]>`
       SELECT
@@ -331,7 +501,8 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
             OR event LIKE 'cta_%'
         )::int AS "ctaClicks",
         COUNT(*) FILTER (WHERE event IN ('start_cv', 'editor_started', 'landing_to_editor'))::int AS "editorStarts",
-        COUNT(*) FILTER (WHERE event IN ('checkout_start', 'checkout_started', 'checkout_modal_viewed'))::int AS "checkoutStarts",
+        COUNT(*) FILTER (WHERE event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
+        COUNT(*) FILTER (WHERE event IN ('checkout_start', 'checkout_started'))::int AS "checkoutStarts",
         COUNT(*) FILTER (WHERE event = 'checkout_option_clicked')::int AS "checkoutClicks"
       FROM "AnalyticsEvent"
       WHERE "createdAt" >= ${since}
@@ -346,29 +517,195 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
     `,
   ]);
 
+  const summary = summaryRows[0] || {
+    visitors: 0,
+    sessions: 0,
+    pageViews: 0,
+    events: 0,
+    ctaClicks: 0,
+    editorStarts: 0,
+    checkoutModalViews: 0,
+    checkoutStarts: 0,
+    checkoutClicks: 0,
+    paidOrders: 0,
+    revenueCents: 0,
+    signups: 0,
+  };
+  const visitorJourneys = buildVisitorJourneys(journeyEvents);
+  const insights = buildInsights(summary, funnelPages);
+
   return {
     range,
     since,
     generatedAt,
-    summary: summaryRows[0] || {
-      visitors: 0,
-      sessions: 0,
-      pageViews: 0,
-      events: 0,
-      ctaClicks: 0,
-      editorStarts: 0,
-      checkoutStarts: 0,
-      checkoutClicks: 0,
-      paidOrders: 0,
-      revenueCents: 0,
-      signups: 0,
-    },
+    summary,
     liveVisitors,
-    globePoints,
+    liveGlobePoints,
+    visitorJourneys,
+    trends,
+    insights,
     topPages,
     sources,
     devices,
     ctas,
     funnelPages,
   };
+}
+
+function buildVisitorJourneys(rows: JourneyEventQueryRow[]): VisitorJourneyRow[] {
+  const grouped = new Map<string, JourneyEventQueryRow[]>();
+  for (const row of rows) {
+    if (!row.sessionId) continue;
+    grouped.set(row.sessionId, [...(grouped.get(row.sessionId) || []), row]);
+  }
+
+  return Array.from(grouped.entries())
+    .map(([sessionId, events]) => {
+      const first = events[0];
+      const latest = events[events.length - 1];
+      const latestGeo = [...events]
+        .reverse()
+        .find((event) => event.latitude !== null && event.longitude !== null && (event.city || event.country));
+      const sourceEvent =
+        events.find((event) => event.sourceType !== "unknown" || event.sourceLabel !== "Unknown") || first;
+      const deviceEvent = [...events]
+        .reverse()
+        .find((event) => event.deviceType !== "unknown" || event.browserName !== "Unknown" || event.osName !== "Unknown");
+
+      return {
+        sessionId,
+        visitorId: latest.visitorId || first.visitorId || "unknown",
+        page: latest.page,
+        sourceType: sourceEvent.sourceType,
+        sourceLabel: sourceEvent.sourceLabel,
+        deviceType: deviceEvent?.deviceType || "unknown",
+        browserName: deviceEvent?.browserName || "Unknown",
+        osName: deviceEvent?.osName || "Unknown",
+        city: latestGeo?.city || latest.city || "",
+        country: latestGeo?.country || latest.country || "",
+        latitude: latestGeo?.latitude ?? latest.latitude,
+        longitude: latestGeo?.longitude ?? latest.longitude,
+        firstSeen: first.createdAt,
+        lastSeen: latest.createdAt,
+        eventCount: events.length,
+        stage: journeyStage(events.map((event) => event.event)),
+        journey: events.map((event) => ({
+          id: event.id,
+          event: event.event,
+          page: event.page,
+          createdAt: event.createdAt,
+          detail: event.detail,
+        })),
+      };
+    })
+    .sort((a, b) => b.lastSeen.getTime() - a.lastSeen.getTime())
+    .slice(0, 30);
+}
+
+function journeyStage(events: string[]): string {
+  if (events.some((event) => event === "payment_succeeded" || event === "order_paid")) return "Paid";
+  if (events.some((event) => event === "checkout_option_clicked")) return "Clicked checkout";
+  if (events.some((event) => event === "checkout_modal_viewed")) return "Saw checkout";
+  if (events.some((event) => event === "start_cv" || event === "editor_started" || event === "landing_to_editor")) {
+    return "Editor";
+  }
+  if (events.some((event) => event.includes("cta"))) return "Clicked CTA";
+  return "Browsing";
+}
+
+function buildInsights(summary: SummaryRow, funnelPages: FunnelPageRow[]): InsightRow[] {
+  const insights: InsightRow[] = [];
+  const pageMinimum = 8;
+
+  if (summary.checkoutModalViews >= 3 && summary.checkoutClicks === 0) {
+    insights.push({
+      id: "checkout-modal-no-clicks",
+      severity: "high",
+      title: "Checkout modal is being seen, but people are not choosing a payment option",
+      evidence: `${summary.checkoutModalViews} checkout modal views and 0 checkout option clicks in this range`,
+      action: "Review the modal copy, payment-method visibility, and trust cues before the payment button",
+    });
+  } else if (summary.checkoutClicks >= 3 && summary.paidOrders === 0) {
+    insights.push({
+      id: "checkout-clicks-no-paid-orders",
+      severity: "high",
+      title: "People are entering checkout but not completing payment",
+      evidence: `${summary.checkoutClicks} checkout option clicks and 0 paid orders in this range`,
+      action: "Check payment provider logs, iDEAL/card availability, return URLs, and checkout error states",
+    });
+  }
+
+  const moneyPages = funnelPages
+    .filter((row) => isMoneyPage(row.page))
+    .filter((row) => row.pageViews >= 3 && row.editorStarts + row.checkoutModalViews + row.checkoutClicks === 0)
+    .slice(0, 3);
+
+  for (const page of moneyPages) {
+    insights.push({
+      id: `money-drop-${page.page}`,
+      severity: "medium",
+      title: "Money page traffic is not moving into the product",
+      evidence: `${page.page} had ${page.pageViews} views and ${page.sessions} sessions, but no editor or checkout movement`,
+      action: "Tighten the above-the-fold promise, price reassurance, and primary CTA on this page",
+      page: page.page,
+    });
+  }
+
+  const weakToolPages = funnelPages
+    .filter((row) => row.page.startsWith("/tools/") && row.pageViews >= pageMinimum)
+    .map((row) => ({
+      ...row,
+      ctaRate: row.pageViews > 0 ? row.ctaClicks / row.pageViews : 0,
+    }))
+    .filter((row) => row.ctaRate < 0.015)
+    .slice(0, 4);
+
+  for (const page of weakToolPages) {
+    insights.push({
+      id: `tool-cta-${page.page}`,
+      severity: page.pageViews >= 30 ? "high" : "medium",
+      title: "Tool traffic is not being bridged to the CV funnel",
+      evidence: `${page.page} had ${page.pageViews} views and ${page.ctaClicks} CTA clicks`,
+      action: "Improve the tool-to-money CTA and route cold traffic through /cv-maken-zonder-abonnement",
+      page: page.page,
+    });
+  }
+
+  const highIntentNoCheckout = funnelPages
+    .filter((row) => row.ctaClicks >= 2 && row.checkoutModalViews + row.checkoutClicks === 0)
+    .slice(0, 3);
+
+  for (const page of highIntentNoCheckout) {
+    insights.push({
+      id: `cta-no-checkout-${page.page}`,
+      severity: "low",
+      title: "CTA clicks are not reaching checkout",
+      evidence: `${page.page} had ${page.ctaClicks} CTA clicks, but no checkout modal or checkout click`,
+      action: "Check whether this CTA lands in the editor/login flow cleanly and whether the next step is obvious",
+      page: page.page,
+    });
+  }
+
+  if (insights.length === 0) {
+    insights.push({
+      id: "no-critical-insight",
+      severity: "low",
+      title: "No obvious funnel leak in this range",
+      evidence: `${summary.sessions} sessions, ${summary.ctaClicks} CTA clicks, ${summary.checkoutClicks} checkout clicks`,
+      action: "Use the visitor journey panel to inspect individual sessions and wait for a larger sample before changing pricing or checkout",
+    });
+  }
+
+  return insights.slice(0, 8);
+}
+
+function isMoneyPage(page: string): boolean {
+  return (
+    page === "/" ||
+    page === "/prijzen" ||
+    page === "/cv-maken-zonder-abonnement" ||
+    page === "/ats-cv-template" ||
+    page === "/en/dutch-cv-template" ||
+    page.endsWith("-opzeggen")
+  );
 }

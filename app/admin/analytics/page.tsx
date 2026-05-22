@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import { getAnalyticsDashboardData, parseAnalyticsRange } from "@/lib/admin-analytics";
+import { getAnalyticsDashboardData, parseAnalyticsRange, type InsightRow } from "@/lib/admin-analytics";
 import { isAnalyticsAdminEmail } from "@/lib/admin-auth";
 import { getCurrentUser } from "@/lib/auth";
 import { AnalyticsGlobe } from "./AnalyticsGlobe";
@@ -82,6 +82,10 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
     data.summary.ctaClicks > 0 ? Math.round((data.summary.editorStarts / data.summary.ctaClicks) * 100) : 0;
   const checkoutToPaidRate =
     data.summary.checkoutClicks > 0 ? Math.round((data.summary.paidOrders / data.summary.checkoutClicks) * 100) : 0;
+  const checkoutChoiceRate =
+    data.summary.checkoutModalViews > 0
+      ? Math.round((data.summary.checkoutClicks / data.summary.checkoutModalViews) * 100)
+      : 0;
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
@@ -116,19 +120,86 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
           <StatCard label="Page views" value={number(data.summary.pageViews)} detail={`${number(data.summary.events)} total events`} />
           <StatCard label="CTA clicks" value={number(data.summary.ctaClicks)} detail={`${ctaToEditorRate}% CTA to editor/start`} />
           <StatCard label="Checkout clicks" value={number(data.summary.checkoutClicks)} detail={`${checkoutToPaidRate}% checkout click to paid`} />
-          <StatCard label="Editor starts" value={number(data.summary.editorStarts)} detail={`${number(data.summary.checkoutStarts)} checkout starts`} />
+          <StatCard
+            label="Checkout modal"
+            value={number(data.summary.checkoutModalViews)}
+            detail={`${checkoutChoiceRate}% chose a payment option`}
+          />
+          <StatCard label="Editor starts" value={number(data.summary.editorStarts)} detail={`${number(data.summary.checkoutStarts)} provider starts`} />
           <StatCard label="Paid orders" value={number(data.summary.paidOrders)} detail={money(data.summary.revenueCents)} />
           <StatCard label="Signups" value={number(data.summary.signups)} detail="New accounts in range" />
-          <StatCard label="Live now" value={number(data.liveVisitors.length)} detail="Sessions active in last 5 min" />
+          <StatCard label="Live now" value={number(data.liveVisitors.length)} detail="Sessions active in last 15 min" />
         </section>
 
-        <AnalyticsGlobe points={data.globePoints} generatedAt={dateTime(data.generatedAt)} />
+        <section className="grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <h2 className="text-base font-semibold text-slate-950">Action Queue</h2>
+                <p className="mt-1 text-sm text-slate-500">
+                  Funnel signals converted into the next thing worth checking.
+                </p>
+              </div>
+              <span className="rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">
+                {rangeLabels[range]}
+              </span>
+            </div>
+            <div className="mt-4 grid gap-3">
+              {data.insights.map((insight) => (
+                <InsightCard key={insight.id} insight={insight} />
+              ))}
+            </div>
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <h2 className="text-base font-semibold text-slate-950">Funnel Snapshot</h2>
+            <p className="mt-1 text-sm text-slate-500">Where the selected range loses momentum.</p>
+            <FunnelBars
+              rows={[
+                ["Views", data.summary.pageViews],
+                ["CTA", data.summary.ctaClicks],
+                ["Editor", data.summary.editorStarts],
+                ["Checkout modal", data.summary.checkoutModalViews],
+                ["Checkout click", data.summary.checkoutClicks],
+                ["Paid", data.summary.paidOrders],
+              ]}
+            />
+          </div>
+        </section>
+
+        <AnalyticsGlobe points={data.liveGlobePoints} visitors={data.visitorJourneys} generatedAt={dateTime(data.generatedAt)} />
+
+        <section className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <ChartHeader title="Visitor Trend" subtitle="Visitors, sessions, and page views over the selected range." />
+            <SparklineChart
+              rows={data.trends.map((row) => ({
+                label: dateTime(row.bucket),
+                primary: row.visitors,
+                secondary: row.pageViews,
+              }))}
+              primaryLabel="Visitors"
+              secondaryLabel="Page views"
+            />
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <ChartHeader title="CTA and Checkout Trend" subtitle="CTA clicks compared with checkout intent." />
+            <SparklineChart
+              rows={data.trends.map((row) => ({
+                label: dateTime(row.bucket),
+                primary: row.ctaClicks,
+                secondary: row.checkoutModalViews + row.checkoutClicks,
+              }))}
+              primaryLabel="CTA clicks"
+              secondaryLabel="Checkout events"
+            />
+          </div>
+        </section>
 
         <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
           <div className="flex flex-col gap-1 border-b border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-base font-semibold text-slate-950">Live Visitors</h2>
-              <p className="text-sm text-slate-500">Current page, source, and device for sessions active in the last 5 minutes.</p>
+              <p className="text-sm text-slate-500">Current page, source, and device for sessions active in the last 15 minutes.</p>
             </div>
             <p className="text-xs text-slate-500">Updated {dateTime(data.generatedAt)}</p>
           </div>
@@ -221,17 +292,18 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
         <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
           <TableHeader title="Page Funnel" subtitle="Where visitors move from page view into CTA, editor, and checkout actions." />
           <SimpleTable
-            headers={["Page", "Views", "Sessions", "CTA", "Editor", "Checkout", "Checkout clicks"]}
+            headers={["Page", "Views", "Sessions", "CTA", "Editor", "Modal", "Provider", "Checkout clicks"]}
             rows={data.funnelPages.map((row) => [
               row.page,
               number(row.pageViews),
               number(row.sessions),
               number(row.ctaClicks),
               number(row.editorStarts),
+              number(row.checkoutModalViews),
               number(row.checkoutStarts),
               number(row.checkoutClicks),
             ])}
-            alignRight={[1, 2, 3, 4, 5, 6]}
+            alignRight={[1, 2, 3, 4, 5, 6, 7]}
           />
         </section>
 
@@ -248,6 +320,114 @@ function TableHeader({ title, subtitle }: { title: string; subtitle: string }) {
     <div className="border-b border-slate-200 px-4 py-3">
       <h2 className="text-base font-semibold text-slate-950">{title}</h2>
       <p className="mt-1 text-sm text-slate-500">{subtitle}</p>
+    </div>
+  );
+}
+
+function InsightCard({ insight }: { insight: InsightRow }) {
+  const colors = {
+    high: "border-red-200 bg-red-50 text-red-800",
+    medium: "border-amber-200 bg-amber-50 text-amber-800",
+    low: "border-slate-200 bg-slate-50 text-slate-700",
+  };
+
+  return (
+    <div className="rounded-lg border border-slate-200 p-3">
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <h3 className="max-w-2xl text-sm font-semibold text-slate-950">{insight.title}</h3>
+        <span className={`rounded border px-2 py-1 text-xs font-semibold ${colors[insight.severity]}`}>
+          {insight.severity}
+        </span>
+      </div>
+      {insight.page ? (
+        <p className="mt-2 font-mono text-xs text-slate-500" title={insight.page}>
+          {insight.page}
+        </p>
+      ) : null}
+      <p className="mt-2 text-sm text-slate-600">{insight.evidence}</p>
+      <p className="mt-2 text-sm font-medium text-slate-900">{insight.action}</p>
+    </div>
+  );
+}
+
+function FunnelBars({ rows }: { rows: Array<[string, number]> }) {
+  const max = Math.max(...rows.map(([, value]) => value), 1);
+
+  return (
+    <div className="mt-5 space-y-3">
+      {rows.map(([label, value]) => (
+        <div key={label}>
+          <div className="mb-1 flex items-center justify-between gap-3 text-sm">
+            <span className="font-medium text-slate-700">{label}</span>
+            <span className="tabular-nums text-slate-500">{number(value)}</span>
+          </div>
+          <div className="h-2 overflow-hidden rounded-full bg-slate-100">
+            <div
+              className="h-full rounded-full bg-slate-950"
+              style={{ width: value === 0 ? "0%" : `${Math.max(3, Math.round((value / max) * 100))}%` }}
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ChartHeader({ title, subtitle }: { title: string; subtitle: string }) {
+  return (
+    <div>
+      <h2 className="text-base font-semibold text-slate-950">{title}</h2>
+      <p className="mt-1 text-sm text-slate-500">{subtitle}</p>
+    </div>
+  );
+}
+
+function SparklineChart({
+  rows,
+  primaryLabel,
+  secondaryLabel,
+}: {
+  rows: Array<{ label: string; primary: number; secondary: number }>;
+  primaryLabel: string;
+  secondaryLabel: string;
+}) {
+  const width = 620;
+  const height = 210;
+  const padding = 22;
+  const max = Math.max(...rows.flatMap((row) => [row.primary, row.secondary]), 1);
+  const points = rows.length > 1 ? rows : [...rows, ...(rows.length === 0 ? [{ label: "", primary: 0, secondary: 0 }] : [])];
+
+  const pathFor = (key: "primary" | "secondary") =>
+    points
+      .map((row, index) => {
+        const x = padding + (index / Math.max(points.length - 1, 1)) * (width - padding * 2);
+        const y = height - padding - (row[key] / max) * (height - padding * 2);
+        return `${index === 0 ? "M" : "L"} ${x.toFixed(1)} ${y.toFixed(1)}`;
+      })
+      .join(" ");
+
+  return (
+    <div className="mt-4">
+      <div className="flex flex-wrap gap-3 text-xs font-semibold text-slate-500">
+        <span className="inline-flex items-center gap-1">
+          <i className="h-2 w-2 rounded-full bg-emerald-500" />
+          {primaryLabel}
+        </span>
+        <span className="inline-flex items-center gap-1">
+          <i className="h-2 w-2 rounded-full bg-sky-500" />
+          {secondaryLabel}
+        </span>
+      </div>
+      <svg viewBox={`0 0 ${width} ${height}`} className="mt-3 h-56 w-full" role="img" aria-label={`${primaryLabel} and ${secondaryLabel}`}>
+        <rect x="0" y="0" width={width} height={height} rx="8" fill="#f8fafc" />
+        <line x1={padding} y1={height - padding} x2={width - padding} y2={height - padding} stroke="#cbd5e1" />
+        <path d={pathFor("secondary")} fill="none" stroke="#0ea5e9" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+        <path d={pathFor("primary")} fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+      <div className="mt-1 flex justify-between text-xs text-slate-400">
+        <span>{points[0]?.label || "-"}</span>
+        <span>{points[points.length - 1]?.label || "-"}</span>
+      </div>
     </div>
   );
 }
