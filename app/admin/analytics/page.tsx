@@ -26,6 +26,26 @@ const rangeLabels = {
   "30d": "Last 30 days",
 };
 
+type AnalyticsView = "overview" | "live" | "conversion" | "acquisition" | "checkout" | "raw";
+
+const viewLabels: Array<{ value: AnalyticsView; label: string; description: string }> = [
+  { value: "overview", label: "Overview", description: "Action queue, core metrics, and trends" },
+  { value: "live", label: "Live", description: "Live map, active sessions, and journeys" },
+  { value: "conversion", label: "Conversion", description: "Signup cohorts and user-level drop-off" },
+  { value: "acquisition", label: "Acquisition", description: "Sources, landing pages, and revenue" },
+  { value: "checkout", label: "Checkout", description: "Payment intent and checkout leaks" },
+  { value: "raw", label: "Raw tables", description: "Detailed event and funnel tables" },
+];
+
+function parseAnalyticsView(value: string | string[] | undefined): AnalyticsView {
+  const view = Array.isArray(value) ? value[0] : value;
+  return viewLabels.some((item) => item.value === view) ? (view as AnalyticsView) : "overview";
+}
+
+function dashboardHref(view: AnalyticsView, range: string): string {
+  return `/admin/analytics?view=${view}&range=${range}`;
+}
+
 function number(value: number): string {
   return new Intl.NumberFormat("nl-NL").format(value || 0);
 }
@@ -77,6 +97,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
 
   const resolvedSearchParams = await searchParams;
   const range = parseAnalyticsRange(resolvedSearchParams?.range);
+  const view = parseAnalyticsView(resolvedSearchParams?.view);
   const data = await getAnalyticsDashboardData(range);
   const ctaToEditorRate =
     data.summary.ctaClicks > 0 ? Math.round((data.summary.editorStarts / data.summary.ctaClicks) * 100) : 0;
@@ -102,7 +123,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
             {Object.entries(rangeLabels).map(([value, label]) => (
               <Link
                 key={value}
-                href={`/admin/analytics?range=${value}`}
+                href={dashboardHref(view, value)}
                 className={`rounded-md border px-3 py-2 text-sm font-medium ${
                   range === value
                     ? "border-slate-950 bg-slate-950 text-white"
@@ -115,6 +136,46 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
           </div>
         </header>
 
+        <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
+          <aside className="lg:sticky lg:top-6 lg:self-start">
+            <nav className="rounded-lg border border-slate-200 bg-white p-2 shadow-sm">
+              {viewLabels.map((item) => (
+                <Link
+                  key={item.value}
+                  href={dashboardHref(item.value, range)}
+                  className={`block rounded-md px-3 py-3 text-sm transition ${
+                    view === item.value
+                      ? "bg-slate-950 text-white"
+                      : "text-slate-700 hover:bg-slate-50 hover:text-slate-950"
+                  }`}
+                >
+                  <span className="font-semibold">{item.label}</span>
+                  <span className={`mt-0.5 block text-xs ${view === item.value ? "text-slate-300" : "text-slate-500"}`}>
+                    {item.description}
+                  </span>
+                </Link>
+              ))}
+            </nav>
+          </aside>
+
+          <div className="min-w-0 space-y-6">
+            <div className="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Current view</p>
+              <div className="mt-1 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <h2 className="text-xl font-semibold text-slate-950">
+                    {viewLabels.find((item) => item.value === view)?.label}
+                  </h2>
+                  <p className="text-sm text-slate-500">
+                    {viewLabels.find((item) => item.value === view)?.description}
+                  </p>
+                </div>
+                <p className="text-xs text-slate-500">Updated {dateTime(data.generatedAt)}</p>
+              </div>
+            </div>
+
+            {view === "overview" ? (
+              <>
         <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard label="Visitors" value={number(data.summary.visitors)} detail={`${number(data.summary.sessions)} sessions`} />
           <StatCard label="Page views" value={number(data.summary.pageViews)} detail={`${number(data.summary.events)} total events`} />
@@ -165,110 +226,12 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
             />
           </div>
         </section>
+              </>
+            ) : null}
 
+            {view === "live" ? (
+              <>
         <AnalyticsGlobe points={data.liveGlobePoints} visitors={data.visitorJourneys} generatedAt={dateTime(data.generatedAt)} />
-
-        <section className="grid gap-6 lg:grid-cols-2">
-          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-            <ChartHeader title="Visitor Trend" subtitle="Visitors, sessions, and page views over the selected range." />
-            <SparklineChart
-              rows={data.trends.map((row) => ({
-                label: dateTime(row.bucket),
-                primary: row.visitors,
-                secondary: row.pageViews,
-              }))}
-              primaryLabel="Visitors"
-              secondaryLabel="Page views"
-            />
-          </div>
-          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-            <ChartHeader title="CTA and Checkout Trend" subtitle="CTA clicks compared with checkout intent." />
-            <SparklineChart
-              rows={data.trends.map((row) => ({
-                label: dateTime(row.bucket),
-                primary: row.ctaClicks,
-                secondary: row.checkoutModalViews + row.checkoutClicks,
-              }))}
-              primaryLabel="CTA clicks"
-              secondaryLabel="Checkout events"
-            />
-          </div>
-        </section>
-
-        <section className="grid gap-6 lg:grid-cols-[minmax(320px,0.8fr)_minmax(0,1.2fr)]">
-          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-            <ChartHeader title="Signup Drop-off Cohorts" subtitle="Where new accounts stop after signup." />
-            <FunnelBars rows={data.signupCohorts.map((row) => [row.stage, row.users])} />
-            <div className="mt-4 space-y-2 border-t border-slate-100 pt-4">
-              {data.signupCohorts.map((row) => (
-                <p key={row.stage} className="text-xs text-slate-500">
-                  <span className="font-semibold text-slate-700">{row.stage}:</span> {row.description}
-                </p>
-              ))}
-            </div>
-          </div>
-          <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
-            <TableHeader
-              title="Source to Revenue"
-              subtitle="Signup sources connected to CV creation, checkout intent, and paid orders."
-            />
-            <SimpleTable
-              headers={["Source / landing page", "Signups", "CVs", "Modal", "Checkout", "Paid", "Revenue"]}
-              rows={data.sourceRevenue.map((row) => [
-                `${row.source} -> ${row.landingPage}`,
-                number(row.signups),
-                number(row.cvsCreated),
-                number(row.checkoutModalViews),
-                number(row.checkoutClicks),
-                number(row.paidOrders),
-                money(row.revenueCents),
-              ])}
-              alignRight={[1, 2, 3, 4, 5, 6]}
-            />
-          </div>
-        </section>
-
-        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-          <TableHeader
-            title="Recent Signup States"
-            subtitle="Every new signup in this range, with the exact stage where they stopped."
-          />
-          <SimpleTable
-            headers={["Email", "Signup", "Source", "Landing page", "Locale", "CVs", "Modal", "Checkout", "Paid", "Stopped at"]}
-            rows={data.recentSignups.map((row) => [
-              row.email,
-              dateTime(row.signupAt),
-              row.source,
-              row.landingPage,
-              row.locale,
-              number(row.cvCount),
-              number(row.checkoutModalViews),
-              number(row.checkoutClicks),
-              number(row.paidOrders),
-              row.stoppedAt,
-            ])}
-            alignRight={[5, 6, 7, 8]}
-          />
-        </section>
-
-        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-          <TableHeader
-            title="Checkout Diagnostics"
-            subtitle="Checkout modal visibility, payment-option clicks, and paid revenue by page/provider signal."
-          />
-          <SimpleTable
-            headers={["Page", "Provider / option", "Modal", "Checkout clicks", "Paid", "Revenue"]}
-            rows={data.checkoutDiagnostics.map((row) => [
-              row.page,
-              row.provider,
-              number(row.modalViews),
-              number(row.checkoutClicks),
-              number(row.paidOrders),
-              money(row.revenueCents),
-            ])}
-            alignRight={[2, 3, 4, 5]}
-          />
-        </section>
 
         <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
           <div className="flex flex-col gap-1 border-b border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
@@ -320,6 +283,100 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
             </table>
           </div>
         </section>
+              </>
+            ) : null}
+
+            {view === "overview" ? (
+        <section className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <ChartHeader title="Visitor Trend" subtitle="Visitors, sessions, and page views over the selected range." />
+            <SparklineChart
+              rows={data.trends.map((row) => ({
+                label: dateTime(row.bucket),
+                primary: row.visitors,
+                secondary: row.pageViews,
+              }))}
+              primaryLabel="Visitors"
+              secondaryLabel="Page views"
+            />
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <ChartHeader title="CTA and Checkout Trend" subtitle="CTA clicks compared with checkout intent." />
+            <SparklineChart
+              rows={data.trends.map((row) => ({
+                label: dateTime(row.bucket),
+                primary: row.ctaClicks,
+                secondary: row.checkoutModalViews + row.checkoutClicks,
+              }))}
+              primaryLabel="CTA clicks"
+              secondaryLabel="Checkout events"
+            />
+          </div>
+        </section>
+            ) : null}
+
+            {view === "conversion" ? (
+              <>
+        <section className="grid gap-6 lg:grid-cols-[minmax(320px,0.8fr)_minmax(0,1.2fr)]">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <ChartHeader title="Signup Drop-off Cohorts" subtitle="Where new accounts stop after signup." />
+            <FunnelBars rows={data.signupCohorts.map((row) => [row.stage, row.users])} />
+            <div className="mt-4 space-y-2 border-t border-slate-100 pt-4">
+              {data.signupCohorts.map((row) => (
+                <p key={row.stage} className="text-xs text-slate-500">
+                  <span className="font-semibold text-slate-700">{row.stage}:</span> {row.description}
+                </p>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Recent Signup States"
+            subtitle="Every new signup in this range, with the exact stage where they stopped."
+          />
+          <SimpleTable
+            headers={["Email", "Signup", "Source", "Landing page", "Locale", "CVs", "Modal", "Checkout", "Paid", "Stopped at"]}
+            rows={data.recentSignups.map((row) => [
+              row.email,
+              dateTime(row.signupAt),
+              row.source,
+              row.landingPage,
+              row.locale,
+              number(row.cvCount),
+              number(row.checkoutModalViews),
+              number(row.checkoutClicks),
+              number(row.paidOrders),
+              row.stoppedAt,
+            ])}
+            alignRight={[5, 6, 7, 8]}
+          />
+        </section>
+              </>
+            ) : null}
+
+            {view === "acquisition" ? (
+              <>
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Source to Revenue"
+            subtitle="Signup sources connected to CV creation, checkout intent, and paid orders."
+          />
+          <SimpleTable
+            headers={["Source / landing page", "Signups", "CVs", "Modal", "Checkout", "Paid", "Revenue"]}
+            rows={data.sourceRevenue.map((row) => [
+              `${row.source} -> ${row.landingPage}`,
+              number(row.signups),
+              number(row.cvsCreated),
+              number(row.checkoutModalViews),
+              number(row.checkoutClicks),
+              number(row.paidOrders),
+              money(row.revenueCents),
+            ])}
+            alignRight={[1, 2, 3, 4, 5, 6]}
+          />
+        </section>
 
         <section className="grid gap-6 lg:grid-cols-2">
           <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
@@ -344,7 +401,61 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
             />
           </div>
         </section>
+              </>
+            ) : null}
 
+            {view === "checkout" ? (
+              <>
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Checkout Diagnostics"
+            subtitle="Checkout modal visibility, payment-option clicks, and paid revenue by page/provider signal."
+          />
+          <SimpleTable
+            headers={["Page", "Provider / option", "Modal", "Checkout clicks", "Paid", "Revenue"]}
+            rows={data.checkoutDiagnostics.map((row) => [
+              row.page,
+              row.provider,
+              number(row.modalViews),
+              number(row.checkoutClicks),
+              number(row.paidOrders),
+              money(row.revenueCents),
+            ])}
+            alignRight={[2, 3, 4, 5]}
+          />
+        </section>
+
+        <section className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <ChartHeader title="CTA and Checkout Trend" subtitle="CTA clicks compared with checkout intent." />
+            <SparklineChart
+              rows={data.trends.map((row) => ({
+                label: dateTime(row.bucket),
+                primary: row.ctaClicks,
+                secondary: row.checkoutModalViews + row.checkoutClicks,
+              }))}
+              primaryLabel="CTA clicks"
+              secondaryLabel="Checkout events"
+            />
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <h2 className="text-base font-semibold text-slate-950">Funnel Snapshot</h2>
+            <p className="mt-1 text-sm text-slate-500">Payment path in the selected range.</p>
+            <FunnelBars
+              rows={[
+                ["Editor", data.summary.editorStarts],
+                ["Checkout modal", data.summary.checkoutModalViews],
+                ["Checkout click", data.summary.checkoutClicks],
+                ["Paid", data.summary.paidOrders],
+              ]}
+            />
+          </div>
+        </section>
+              </>
+            ) : null}
+
+            {view === "raw" ? (
+              <>
         <section className="grid gap-6 lg:grid-cols-2">
           <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
             <TableHeader title="CTA Performance" subtitle="Page-specific CTA clicks so weak conversion pages are visible." />
@@ -381,10 +492,14 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
             alignRight={[1, 2, 3, 4, 5, 6, 7]}
           />
         </section>
+              </>
+            ) : null}
 
         <p className="text-xs text-slate-500">
           Range starts {dateTime(data.since)}. Visitor and session IDs are anonymous browser IDs stored in local/session storage.
         </p>
+          </div>
+        </div>
       </div>
     </main>
   );
