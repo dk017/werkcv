@@ -26,6 +26,10 @@ export type AnalyticsDashboardData = {
   visitorJourneys: VisitorJourneyRow[];
   trends: TrendRow[];
   insights: InsightRow[];
+  signupCohorts: SignupCohortRow[];
+  sourceRevenue: SourceRevenueRow[];
+  recentSignups: RecentSignupRow[];
+  checkoutDiagnostics: CheckoutDiagnosticRow[];
   topPages: PageRow[];
   sources: SourceRow[];
   devices: DeviceRow[];
@@ -128,6 +132,45 @@ export type InsightRow = {
   page?: string;
 };
 
+export type SignupCohortRow = {
+  stage: string;
+  users: number;
+  description: string;
+};
+
+export type SourceRevenueRow = {
+  source: string;
+  landingPage: string;
+  signups: number;
+  cvsCreated: number;
+  checkoutModalViews: number;
+  checkoutClicks: number;
+  paidOrders: number;
+  revenueCents: number;
+};
+
+export type RecentSignupRow = {
+  email: string;
+  signupAt: Date;
+  source: string;
+  landingPage: string;
+  locale: string;
+  cvCount: number;
+  checkoutModalViews: number;
+  checkoutClicks: number;
+  paidOrders: number;
+  stoppedAt: string;
+};
+
+export type CheckoutDiagnosticRow = {
+  page: string;
+  provider: string;
+  modalViews: number;
+  checkoutClicks: number;
+  paidOrders: number;
+  revenueCents: number;
+};
+
 export type PageRow = {
   page: string;
   pageViews: number;
@@ -220,6 +263,10 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
     liveGlobePoints,
     journeyEvents,
     trends,
+    signupCohorts,
+    sourceRevenue,
+    recentSignups,
+    checkoutDiagnostics,
     topPages,
     sources,
     devices,
@@ -430,6 +477,220 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
       GROUP BY bucket
       ORDER BY bucket ASC
     `,
+    prisma.$queryRaw<SignupCohortRow[]>`
+      WITH users_in_range AS (
+        SELECT id, email
+        FROM "User"
+        WHERE "createdAt" >= ${since}
+      ),
+      user_cv AS (
+        SELECT
+          u.id AS "userId",
+          COUNT(cv.id)::int AS "cvCount",
+          COUNT(e.id) FILTER (WHERE e.event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
+          COUNT(e.id) FILTER (WHERE e.event = 'checkout_option_clicked')::int AS "checkoutClicks",
+          COUNT(o.id) FILTER (WHERE o."paidAt" IS NOT NULL)::int AS "paidOrders"
+        FROM users_in_range u
+        LEFT JOIN "CVDocument" cv ON cv."userId" = u.id
+        LEFT JOIN "AnalyticsEvent" e ON e."cvId" = cv.id
+          AND e."createdAt" >= ${since}
+          AND e.event IN ('checkout_modal_viewed', 'checkout_option_clicked')
+        LEFT JOIN "Order" o ON o."cvId" = cv.id
+          AND o."paidAt" IS NOT NULL
+          AND o."paidAt" >= ${since}
+        GROUP BY u.id
+      )
+      SELECT 'Signup only' AS stage,
+        COUNT(*) FILTER (WHERE "cvCount" = 0)::int AS users,
+        'Signed up but did not create a CV' AS description
+      FROM user_cv
+      UNION ALL
+      SELECT 'CV created, no checkout',
+        COUNT(*) FILTER (WHERE "cvCount" > 0 AND "checkoutModalViews" = 0 AND "paidOrders" = 0)::int,
+        'Created a CV but never opened the checkout modal'
+      FROM user_cv
+      UNION ALL
+      SELECT 'Checkout modal, no option',
+        COUNT(*) FILTER (WHERE "checkoutModalViews" > 0 AND "checkoutClicks" = 0 AND "paidOrders" = 0)::int,
+        'Saw checkout but did not choose a payment option'
+      FROM user_cv
+      UNION ALL
+      SELECT 'Checkout click, no paid',
+        COUNT(*) FILTER (WHERE "checkoutClicks" > 0 AND "paidOrders" = 0)::int,
+        'Clicked a checkout option but no paid order was recorded'
+      FROM user_cv
+      UNION ALL
+      SELECT 'Paid',
+        COUNT(*) FILTER (WHERE "paidOrders" > 0)::int,
+        'Completed at least one payment'
+      FROM user_cv
+    `,
+    prisma.$queryRaw<SourceRevenueRow[]>`
+      WITH signup_base AS (
+        SELECT
+          u.id,
+          u.email,
+          COALESCE(
+            NULLIF(u.attribution->>'utmSource', ''),
+            NULLIF(u.attribution->>'firstTouchReferrer', ''),
+            NULLIF(u."sourceCluster", ''),
+            'direct'
+          ) AS source,
+          COALESCE(NULLIF(u.attribution->>'firstTouchPath', ''), NULLIF(u."sourcePath", ''), '(unknown)') AS "landingPage"
+        FROM "User" u
+        WHERE u."createdAt" >= ${since}
+      ),
+      cv_base AS (
+        SELECT
+          cv.id,
+          cv."userId"
+        FROM "CVDocument" cv
+        WHERE cv."userId" IN (SELECT id FROM signup_base)
+      ),
+      event_base AS (
+        SELECT
+          cv."userId",
+          COUNT(*) FILTER (WHERE e.event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
+          COUNT(*) FILTER (WHERE e.event = 'checkout_option_clicked')::int AS "checkoutClicks"
+        FROM cv_base cv
+        JOIN "AnalyticsEvent" e ON e."cvId" = cv.id
+        WHERE e."createdAt" >= ${since}
+          AND e.event IN ('checkout_modal_viewed', 'checkout_option_clicked')
+        GROUP BY cv."userId"
+      ),
+      order_base AS (
+        SELECT
+          sb.id AS "userId",
+          COUNT(o.id) FILTER (WHERE o."paidAt" IS NOT NULL)::int AS "paidOrders",
+          COALESCE(SUM(o."amountCents") FILTER (WHERE o."paidAt" IS NOT NULL), 0)::int AS "revenueCents"
+        FROM signup_base sb
+        LEFT JOIN "Order" o ON o.email = sb.email
+          AND o."paidAt" IS NOT NULL
+          AND o."paidAt" >= ${since}
+        GROUP BY sb.id
+      )
+      SELECT
+        sb.source,
+        sb."landingPage",
+        COUNT(DISTINCT sb.id)::int AS signups,
+        COUNT(DISTINCT cv.id)::int AS "cvsCreated",
+        COALESCE(SUM(eb."checkoutModalViews"), 0)::int AS "checkoutModalViews",
+        COALESCE(SUM(eb."checkoutClicks"), 0)::int AS "checkoutClicks",
+        COALESCE(SUM(ob."paidOrders"), 0)::int AS "paidOrders",
+        COALESCE(SUM(ob."revenueCents"), 0)::int AS "revenueCents"
+      FROM signup_base sb
+      LEFT JOIN cv_base cv ON cv."userId" = sb.id
+      LEFT JOIN event_base eb ON eb."userId" = sb.id
+      LEFT JOIN order_base ob ON ob."userId" = sb.id
+      GROUP BY sb.source, sb."landingPage"
+      ORDER BY "revenueCents" DESC, signups DESC, "cvsCreated" DESC
+      LIMIT 20
+    `,
+    prisma.$queryRaw<RecentSignupRow[]>`
+      WITH recent_users AS (
+        SELECT
+          u.id,
+          u.email,
+          u."createdAt" AS "signupAt",
+          COALESCE(
+            NULLIF(u.attribution->>'utmSource', ''),
+            NULLIF(u.attribution->>'firstTouchReferrer', ''),
+            NULLIF(u."sourceCluster", ''),
+            'direct'
+          ) AS source,
+          COALESCE(NULLIF(u.attribution->>'firstTouchPath', ''), NULLIF(u."sourcePath", ''), '(unknown)') AS "landingPage",
+          COALESCE(NULLIF(u."sourceLocale", ''), NULLIF(u.attribution->>'locale', ''), 'unknown') AS locale
+        FROM "User" u
+        WHERE u."createdAt" >= ${since}
+      ),
+      cv_base AS (
+        SELECT id, "userId"
+        FROM "CVDocument"
+        WHERE "userId" IN (SELECT id FROM recent_users)
+      ),
+      event_base AS (
+        SELECT
+          cv."userId",
+          COUNT(*) FILTER (WHERE e.event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
+          COUNT(*) FILTER (WHERE e.event = 'checkout_option_clicked')::int AS "checkoutClicks"
+        FROM cv_base cv
+        JOIN "AnalyticsEvent" e ON e."cvId" = cv.id
+        WHERE e."createdAt" >= ${since}
+          AND e.event IN ('checkout_modal_viewed', 'checkout_option_clicked')
+        GROUP BY cv."userId"
+      ),
+      order_base AS (
+        SELECT
+          ru.id AS "userId",
+          COUNT(o.id) FILTER (WHERE o."paidAt" IS NOT NULL)::int AS "paidOrders"
+        FROM recent_users ru
+        LEFT JOIN "Order" o ON o.email = ru.email
+          AND o."paidAt" IS NOT NULL
+          AND o."paidAt" >= ${since}
+        GROUP BY ru.id
+      )
+      SELECT
+        ru.email,
+        ru."signupAt",
+        ru.source,
+        ru."landingPage",
+        ru.locale,
+        COUNT(cv.id)::int AS "cvCount",
+        COALESCE(MAX(eb."checkoutModalViews"), 0)::int AS "checkoutModalViews",
+        COALESCE(MAX(eb."checkoutClicks"), 0)::int AS "checkoutClicks",
+        COALESCE(MAX(ob."paidOrders"), 0)::int AS "paidOrders",
+        CASE
+          WHEN COALESCE(MAX(ob."paidOrders"), 0) > 0 THEN 'Paid'
+          WHEN COALESCE(MAX(eb."checkoutClicks"), 0) > 0 THEN 'Clicked checkout, no paid order'
+          WHEN COALESCE(MAX(eb."checkoutModalViews"), 0) > 0 THEN 'Saw checkout, no payment option'
+          WHEN COUNT(cv.id) > 0 THEN 'Created CV, no checkout'
+          ELSE 'Signup only'
+        END AS "stoppedAt"
+      FROM recent_users ru
+      LEFT JOIN cv_base cv ON cv."userId" = ru.id
+      LEFT JOIN event_base eb ON eb."userId" = ru.id
+      LEFT JOIN order_base ob ON ob."userId" = ru.id
+      GROUP BY ru.id, ru.email, ru."signupAt", ru.source, ru."landingPage", ru.locale
+      ORDER BY ru."signupAt" DESC
+      LIMIT 30
+    `,
+    prisma.$queryRaw<CheckoutDiagnosticRow[]>`
+      WITH checkout_events AS (
+        SELECT
+          COALESCE(NULLIF(properties->>'path', ''), NULLIF(properties->>'page_path', ''), NULLIF(path, ''), '(unknown)') AS page,
+          COALESCE(NULLIF(properties->>'provider', ''), NULLIF(properties->>'label', ''), NULLIF(properties->>'ctaText', ''), 'unknown') AS provider,
+          event
+        FROM "AnalyticsEvent"
+        WHERE "createdAt" >= ${since}
+          AND event IN ('checkout_modal_viewed', 'checkout_option_clicked')
+      ),
+      paid AS (
+        SELECT
+          COALESCE(NULLIF(attribution->>'lastTouchPath', ''), NULLIF(attribution->>'firstTouchPath', ''), '(unknown)') AS page,
+          COALESCE(NULLIF(product, ''), 'cv-download') AS provider,
+          COUNT(*)::int AS "paidOrders",
+          COALESCE(SUM("amountCents"), 0)::int AS "revenueCents"
+        FROM "Order"
+        WHERE "paidAt" IS NOT NULL
+          AND "paidAt" >= ${since}
+        GROUP BY page, provider
+      )
+      SELECT
+        COALESCE(e.page, p.page) AS page,
+        COALESCE(e.provider, p.provider) AS provider,
+        COUNT(*) FILTER (WHERE e.event = 'checkout_modal_viewed')::int AS "modalViews",
+        COUNT(*) FILTER (WHERE e.event = 'checkout_option_clicked')::int AS "checkoutClicks",
+        COALESCE(MAX(p."paidOrders"), 0)::int AS "paidOrders",
+        COALESCE(MAX(p."revenueCents"), 0)::int AS "revenueCents"
+      FROM checkout_events e
+      FULL OUTER JOIN paid p ON p.page = e.page
+      GROUP BY COALESCE(e.page, p.page), COALESCE(e.provider, p.provider)
+      HAVING COUNT(*) FILTER (WHERE e.event = 'checkout_modal_viewed') > 0
+          OR COUNT(*) FILTER (WHERE e.event = 'checkout_option_clicked') > 0
+          OR COALESCE(MAX(p."paidOrders"), 0) > 0
+      ORDER BY "checkoutClicks" DESC, "modalViews" DESC, "paidOrders" DESC
+      LIMIT 20
+    `,
     prisma.$queryRaw<PageRow[]>`
       SELECT
         ${pageSql} AS page,
@@ -532,7 +793,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
     signups: 0,
   };
   const visitorJourneys = buildVisitorJourneys(journeyEvents);
-  const insights = buildInsights(summary, funnelPages);
+  const insights = buildInsights(summary, funnelPages, signupCohorts, sourceRevenue, recentSignups);
 
   return {
     range,
@@ -544,6 +805,10 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
     visitorJourneys,
     trends,
     insights,
+    signupCohorts,
+    sourceRevenue,
+    recentSignups,
+    checkoutDiagnostics,
     topPages,
     sources,
     devices,
@@ -613,9 +878,16 @@ function journeyStage(events: string[]): string {
   return "Browsing";
 }
 
-function buildInsights(summary: SummaryRow, funnelPages: FunnelPageRow[]): InsightRow[] {
+function buildInsights(
+  summary: SummaryRow,
+  funnelPages: FunnelPageRow[],
+  signupCohorts: SignupCohortRow[],
+  sourceRevenue: SourceRevenueRow[],
+  recentSignups: RecentSignupRow[]
+): InsightRow[] {
   const insights: InsightRow[] = [];
   const pageMinimum = 8;
+  const cohortMap = new Map(signupCohorts.map((row) => [row.stage, row.users]));
 
   if (summary.checkoutModalViews >= 3 && summary.checkoutClicks === 0) {
     insights.push({
@@ -632,6 +904,34 @@ function buildInsights(summary: SummaryRow, funnelPages: FunnelPageRow[]): Insig
       title: "People are entering checkout but not completing payment",
       evidence: `${summary.checkoutClicks} checkout option clicks and 0 paid orders in this range`,
       action: "Check payment provider logs, iDEAL/card availability, return URLs, and checkout error states",
+    });
+  }
+
+  const signupOnly = cohortMap.get("Signup only") || 0;
+  if (signupOnly >= 2 && signupOnly >= Math.max(2, summary.signups * 0.4)) {
+    const examples = recentSignups
+      .filter((row) => row.stoppedAt === "Signup only")
+      .slice(0, 2)
+      .map((row) => row.landingPage)
+      .join(", ");
+    insights.push({
+      id: "signup-no-cv",
+      severity: "high",
+      title: "New signups are not creating CVs",
+      evidence: `${signupOnly} of ${summary.signups} signups stopped before CV creation${examples ? `; examples: ${examples}` : ""}`,
+      action: "Review the post-login handoff and make sure signup returns users directly to the intended editor/template flow",
+    });
+  }
+
+  const bestUnpaidSource = sourceRevenue.find((row) => row.signups >= 2 && row.paidOrders === 0);
+  if (bestUnpaidSource) {
+    insights.push({
+      id: `source-no-revenue-${bestUnpaidSource.source}-${bestUnpaidSource.landingPage}`,
+      severity: "medium",
+      title: "A source is producing signups but no revenue",
+      evidence: `${bestUnpaidSource.source} on ${bestUnpaidSource.landingPage} produced ${bestUnpaidSource.signups} signups, ${bestUnpaidSource.cvsCreated} CVs, and 0 paid orders`,
+      action: "Inspect this source/page pair: either the traffic intent is weak or the next step after signup is unclear",
+      page: bestUnpaidSource.landingPage,
     });
   }
 

@@ -195,6 +195,81 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
           </div>
         </section>
 
+        <section className="grid gap-6 lg:grid-cols-[minmax(320px,0.8fr)_minmax(0,1.2fr)]">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <ChartHeader title="Signup Drop-off Cohorts" subtitle="Where new accounts stop after signup." />
+            <FunnelBars rows={data.signupCohorts.map((row) => [row.stage, row.users])} />
+            <div className="mt-4 space-y-2 border-t border-slate-100 pt-4">
+              {data.signupCohorts.map((row) => (
+                <p key={row.stage} className="text-xs text-slate-500">
+                  <span className="font-semibold text-slate-700">{row.stage}:</span> {row.description}
+                </p>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
+            <TableHeader
+              title="Source to Revenue"
+              subtitle="Signup sources connected to CV creation, checkout intent, and paid orders."
+            />
+            <SimpleTable
+              headers={["Source / landing page", "Signups", "CVs", "Modal", "Checkout", "Paid", "Revenue"]}
+              rows={data.sourceRevenue.map((row) => [
+                `${row.source} -> ${row.landingPage}`,
+                number(row.signups),
+                number(row.cvsCreated),
+                number(row.checkoutModalViews),
+                number(row.checkoutClicks),
+                number(row.paidOrders),
+                money(row.revenueCents),
+              ])}
+              alignRight={[1, 2, 3, 4, 5, 6]}
+            />
+          </div>
+        </section>
+
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Recent Signup States"
+            subtitle="Every new signup in this range, with the exact stage where they stopped."
+          />
+          <SimpleTable
+            headers={["Email", "Signup", "Source", "Landing page", "Locale", "CVs", "Modal", "Checkout", "Paid", "Stopped at"]}
+            rows={data.recentSignups.map((row) => [
+              row.email,
+              dateTime(row.signupAt),
+              row.source,
+              row.landingPage,
+              row.locale,
+              number(row.cvCount),
+              number(row.checkoutModalViews),
+              number(row.checkoutClicks),
+              number(row.paidOrders),
+              row.stoppedAt,
+            ])}
+            alignRight={[5, 6, 7, 8]}
+          />
+        </section>
+
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Checkout Diagnostics"
+            subtitle="Checkout modal visibility, payment-option clicks, and paid revenue by page/provider signal."
+          />
+          <SimpleTable
+            headers={["Page", "Provider / option", "Modal", "Checkout clicks", "Paid", "Revenue"]}
+            rows={data.checkoutDiagnostics.map((row) => [
+              row.page,
+              row.provider,
+              number(row.modalViews),
+              number(row.checkoutClicks),
+              number(row.paidOrders),
+              money(row.revenueCents),
+            ])}
+            alignRight={[2, 3, 4, 5]}
+          />
+        </section>
+
         <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
           <div className="flex flex-col gap-1 border-b border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
