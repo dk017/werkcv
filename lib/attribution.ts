@@ -75,7 +75,7 @@ export function sanitizeAttribution(input: unknown): AttributionSnapshot | null 
     if (!firstTouchPath || !firstTouchAt) return null;
 
     const fallbackCluster = getPathCluster(firstTouchPath);
-    const locale = value.locale === 'en' ? 'en' : 'nl';
+    const locale = getLocaleFromPath(firstTouchPath) === 'en' || value.locale === 'en' ? 'en' : 'nl';
 
     return {
         version: 1,

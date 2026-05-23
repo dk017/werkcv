@@ -937,7 +937,7 @@ function buildInsights(
 
   const moneyPages = funnelPages
     .filter((row) => isMoneyPage(row.page))
-    .filter((row) => row.pageViews >= 3 && row.editorStarts + row.checkoutModalViews + row.checkoutClicks === 0)
+    .filter((row) => row.sessions >= 25 && row.editorStarts + row.checkoutModalViews + row.checkoutClicks === 0)
     .slice(0, 3);
 
   for (const page of moneyPages) {

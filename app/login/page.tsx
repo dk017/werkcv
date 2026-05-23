@@ -69,7 +69,7 @@ export default function LoginPage() {
                 setError(data?.error || "Code is ongeldig of verlopen.");
                 return;
             }
-            router.replace(next);
+            router.replace(typeof data?.redirectTo === "string" && data.redirectTo.startsWith("/") ? data.redirectTo : next);
         } finally {
             setLoading(false);
         }
