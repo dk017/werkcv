@@ -19,6 +19,7 @@ const kilometerRatePresets = [
 ];
 
 const WEEKS_PER_YEAR = 52;
+const MONTHS_PER_YEAR = 12;
 
 function formatTravelDays(days: number) {
   return Number.isInteger(days) ? String(days) : days.toLocaleString("nl-NL", { maximumFractionDigits: 1 });
@@ -30,10 +31,12 @@ type PublicTransportResult = {
   singleTripPrice: number;
   returnTripPrice: number;
   travelDaysPerWeek: number;
-  travelDaysPerYear: number;
+  homeDaysPerWeek: number;
+  travelDaysPerMonth: number;
+  travelDaysInPeriod: number;
   monthsPerYear: number;
   reimbursementPerMonth: number;
-  reimbursementPerYear: number;
+  reimbursementInPeriod: number;
 };
 
 export default function KilometervergoedingTool() {
@@ -81,8 +84,11 @@ export default function KilometervergoedingTool() {
       }
 
       const returnTripPrice = parsedSingleTripPrice * 2;
-      const effectiveTravelDaysPerYear = parsedWorkDaysPerWeek * WEEKS_PER_YEAR;
-      const reimbursementPerYear = returnTripPrice * effectiveTravelDaysPerYear;
+      const travelDaysPerMonth = parsedWorkDaysPerWeek * (WEEKS_PER_YEAR / MONTHS_PER_YEAR);
+      const weeksInSelectedPeriod = WEEKS_PER_YEAR * (parsedMonthsPerYear / MONTHS_PER_YEAR);
+      const travelDaysInPeriod = parsedWorkDaysPerWeek * weeksInSelectedPeriod;
+      const reimbursementPerMonth = returnTripPrice * travelDaysPerMonth;
+      const reimbursementInPeriod = returnTripPrice * travelDaysInPeriod;
 
       setError("");
       setResult(null);
@@ -90,10 +96,12 @@ export default function KilometervergoedingTool() {
         singleTripPrice: parsedSingleTripPrice,
         returnTripPrice,
         travelDaysPerWeek: parsedWorkDaysPerWeek,
-        travelDaysPerYear: effectiveTravelDaysPerYear,
+        homeDaysPerWeek: Math.max(0, 5 - parsedWorkDaysPerWeek),
+        travelDaysPerMonth,
+        travelDaysInPeriod,
         monthsPerYear: parsedMonthsPerYear,
-        reimbursementPerMonth: reimbursementPerYear / parsedMonthsPerYear,
-        reimbursementPerYear,
+        reimbursementPerMonth,
+        reimbursementInPeriod,
       });
       return;
     }
@@ -162,7 +170,7 @@ export default function KilometervergoedingTool() {
             <div className="grid gap-2 sm:grid-cols-2">
               {[
                 { id: "kilometers" as const, label: "Eigen vervoer", detail: "km-vergoeding per kilometer" },
-                { id: "public-transport" as const, label: "OV ritprijs", detail: "enkele ritprijs × 2 × reisdagen per week" },
+                { id: "public-transport" as const, label: "OV ritprijs", detail: "enkele ritprijs × 2 × kantoordagen per week" },
               ].map((option) => (
                 <button
                   key={option.id}
@@ -286,7 +294,7 @@ export default function KilometervergoedingTool() {
                 </div>
                 <div>
                   <label className="mb-1.5 block text-xs font-black uppercase tracking-wide text-slate-600">
-                    Reisdagen naar werk per week
+                    Kantoordagen met OV per week
                   </label>
                   <div className="flex flex-wrap gap-2">
                     {[1, 2, 3, 4, 5].map((days) => (
@@ -309,7 +317,7 @@ export default function KilometervergoedingTool() {
                     ))}
                   </div>
                   <p className="mt-1 text-[11px] text-slate-500">
-                    Kies alleen de dagen waarop je echt naar kantoor reist. Bijvoorbeeld 3 bij drie kantoordagen en twee thuiswerkdagen.
+                    Kies alleen de dagen waarop je echt naar kantoor reist. Bij 3 dagen kantoor en 2 dagen thuis kies je 3.
                   </p>
                 </div>
               </div>
@@ -357,7 +365,10 @@ export default function KilometervergoedingTool() {
                 </p>
                 <p className="mt-2 text-sm text-slate-700">
                   Op basis van {formatEuro(publicTransportResult.singleTripPrice)} per enkele rit en{" "}
-                  {publicTransportResult.travelDaysPerWeek} reisdagen naar werk per week.
+                  {publicTransportResult.travelDaysPerWeek} kantoordagen per week.
+                  {publicTransportResult.homeDaysPerWeek > 0
+                    ? ` Thuiswerkdagen zijn niet meegerekend.`
+                    : ""}
                 </p>
               </div>
 
@@ -365,9 +376,12 @@ export default function KilometervergoedingTool() {
                 {[
                   ["Enkele rit", formatEuro(publicTransportResult.singleTripPrice)],
                   ["Retour per dag", formatEuro(publicTransportResult.returnTripPrice)],
-                  ["Reisdagen/jaar", formatTravelDays(publicTransportResult.travelDaysPerYear)],
+                  ["Reisdagen/maand", formatTravelDays(publicTransportResult.travelDaysPerMonth)],
                   ["Per maand", formatEuro(publicTransportResult.reimbursementPerMonth)],
-                  ["Per jaar", formatEuro(publicTransportResult.reimbursementPerYear)],
+                  [
+                    publicTransportResult.monthsPerYear === 12 ? "Per jaar" : `Per ${formatTravelDays(publicTransportResult.monthsPerYear)} mnd`,
+                    formatEuro(publicTransportResult.reimbursementInPeriod),
+                  ],
                 ].map(([label, value]) => (
                   <div key={label} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                     <p className="mb-1 text-[11px] font-black uppercase tracking-wide text-slate-500">
@@ -383,13 +397,14 @@ export default function KilometervergoedingTool() {
                 <p className="mt-2">
                   {formatEuro(publicTransportResult.singleTripPrice)} × 2 ={" "}
                   {formatEuro(publicTransportResult.returnTripPrice)} per reisdag.{" "}
-                  {publicTransportResult.travelDaysPerWeek} reisdagen per week × {WEEKS_PER_YEAR} weken ={" "}
-                  {formatTravelDays(publicTransportResult.travelDaysPerYear)} reisdagen per jaar.{" "}
+                  {publicTransportResult.travelDaysPerWeek} kantoordagen per week is gemiddeld{" "}
+                  {formatTravelDays(publicTransportResult.travelDaysPerMonth)} reisdagen per maand.{" "}
                   {formatEuro(publicTransportResult.returnTripPrice)} ×{" "}
-                  {formatTravelDays(publicTransportResult.travelDaysPerYear)} reisdagen ={" "}
-                  {formatEuro(publicTransportResult.reimbursementPerYear)} per jaar. Gedeeld door{" "}
-                  {publicTransportResult.monthsPerYear} maanden is dat{" "}
-                  {formatEuro(publicTransportResult.reimbursementPerMonth)} per maand.
+                  {formatTravelDays(publicTransportResult.travelDaysPerMonth)} reisdagen ={" "}
+                  {formatEuro(publicTransportResult.reimbursementPerMonth)} per maand. Over{" "}
+                  {formatTravelDays(publicTransportResult.monthsPerYear)} maand(en) zijn dat{" "}
+                  {formatTravelDays(publicTransportResult.travelDaysInPeriod)} reisdagen en{" "}
+                  {formatEuro(publicTransportResult.reimbursementInPeriod)} totaal.
                 </p>
               </div>
             </>
