@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import { estimateNetFromTaxableIncome } from "@/lib/tools/netto-bruto";
 import VakantiegeldTool from "./VakantiegeldTool";
@@ -265,6 +266,18 @@ export default function VakantiegeldBerekenenPage() {
                 <section className="mb-12">
                     <VakantiegeldTool />
                 </section>
+
+                <ToolToCvCTA
+                    toolName="vakantiegeld-berekenen"
+                    eyebrow="Volgende stap na je berekening"
+                    title="Gebruik je vakantiegeldmoment om je cv klaar te zetten"
+                    description="Ben je je loon, vakantiegeld of voorwaarden aan het vergelijken? Zet dan ook je cv klaar zonder abonnement, zodat je snel kunt reageren als er een betere kans voorbij komt."
+                    insightText="Veel bezoekers gebruiken deze berekening om hun huidige pakket te checken. Als je merkt dat je verder wilt kijken, is een sterk Nederlands cv de logische volgende stap."
+                    primaryLabel="Maak je cv zonder abonnement"
+                    secondaryLabel="Bekijk eerst cv-templates"
+                    intent="salary"
+                    proofItems={["Gratis starten", "Eenmalig €4,99 bij PDF-download", "Geen abonnement"]}
+                />
 
                 <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                     <div className="mb-5">
