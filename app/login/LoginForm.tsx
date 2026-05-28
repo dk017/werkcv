@@ -9,7 +9,6 @@ const loginCopy = {
   nl: {
     title: "Log in om je cv op te slaan",
     intro: "Geen wachtwoord nodig. We sturen een eenmalige code naar je e-mailadres.",
-    reassurance: "Gratis starten. Je betaalt pas als je een PDF wilt downloaden.",
     emailLabel: "E-mailadres",
     emailPlaceholder: "jij@voorbeeld.nl",
     sendCode: "Stuur login code",
@@ -25,7 +24,6 @@ const loginCopy = {
   en: {
     title: "Log in to save your CV",
     intro: "No password needed. We will send a one-time code to your email address.",
-    reassurance: "Start for free. You only pay if you want to download a PDF.",
     emailLabel: "Email address",
     emailPlaceholder: "you@example.com",
     sendCode: "Send login code",
@@ -117,9 +115,6 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
           </Link>
           <h1 className="text-xl font-semibold text-slate-900 mt-3">{copy.title}</h1>
           <p className="text-sm text-slate-600 mt-1">{copy.intro}</p>
-          <p className="mt-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm font-medium text-emerald-900">
-            {copy.reassurance}
-          </p>
         </div>
 
         {step === "email" ? (
