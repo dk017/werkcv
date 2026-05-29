@@ -288,12 +288,16 @@ export type KilometervergoedingInput = {
   workDaysPerWeek: number;
   monthsPerYear: number;
   employerRatePerKilometer: number;
+  calculationMethod?: "actual-days" | "fixed-214-days";
 };
 
 export type KilometervergoedingResult = {
+  calculationMethod: "actual-days" | "fixed-214-days";
   returnKilometersPerDay: number;
   workDaysPerMonth: number;
   workDaysInPeriod: number;
+  fixedFullTimeDays: number;
+  fixedCorrectedDays: number;
   reimbursementPerDay: number;
   reimbursementPerMonth: number;
   reimbursementPerYear: number;
@@ -308,9 +312,15 @@ export type KilometervergoedingResult = {
 export function calculateKilometervergoeding(
   input: KilometervergoedingInput,
 ): KilometervergoedingResult {
+  const calculationMethod = input.calculationMethod || "actual-days";
   const returnKilometersPerDay = input.oneWayKilometers * 2;
-  const workDaysPerMonth = getMonthlyOccurrences(input.workDaysPerWeek);
-  const workDaysInPeriod = input.workDaysPerWeek * getWeeksInSelectedPeriod(input.monthsPerYear);
+  const fixedFullTimeDays = 214;
+  const fixedCorrectedDays = fixedFullTimeDays * (input.workDaysPerWeek / 5);
+  const workDaysInPeriod =
+    calculationMethod === "fixed-214-days"
+      ? fixedCorrectedDays * (input.monthsPerYear / MONTHS_PER_YEAR)
+      : input.workDaysPerWeek * getWeeksInSelectedPeriod(input.monthsPerYear);
+  const workDaysPerMonth = workDaysInPeriod / input.monthsPerYear;
   const annualKilometers = returnKilometersPerDay * workDaysInPeriod;
   const reimbursementPerDay = returnKilometersPerDay * input.employerRatePerKilometer;
   const reimbursementPerMonth = reimbursementPerDay * workDaysPerMonth;
@@ -319,9 +329,12 @@ export function calculateKilometervergoeding(
   const taxableRate = Math.max(0, input.employerRatePerKilometer - TAX_FREE_KILOMETER_RATE_2026);
 
   return {
+    calculationMethod,
     returnKilometersPerDay: round2(returnKilometersPerDay),
     workDaysPerMonth: round2(workDaysPerMonth),
     workDaysInPeriod: round2(workDaysInPeriod),
+    fixedFullTimeDays,
+    fixedCorrectedDays: round2(fixedCorrectedDays),
     reimbursementPerDay: round2(reimbursementPerDay),
     reimbursementPerMonth: round2(reimbursementPerMonth),
     reimbursementPerYear: round2(reimbursementPerYear),
