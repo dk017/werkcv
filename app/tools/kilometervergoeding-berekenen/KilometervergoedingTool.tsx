@@ -20,12 +20,14 @@ const kilometerRatePresets = [
 
 const WEEKS_PER_YEAR = 52;
 const MONTHS_PER_YEAR = 12;
+const FIXED_TRAVEL_DAYS_FULL_TIME = 214;
 
 function formatTravelDays(days: number) {
   return Number.isInteger(days) ? String(days) : days.toLocaleString("nl-NL", { maximumFractionDigits: 1 });
 }
 
 type TravelMode = "kilometers" | "public-transport";
+type KilometerCalculationMethod = "actual-days" | "fixed-214-days";
 
 type PublicTransportResult = {
   singleTripPrice: number;
@@ -41,6 +43,8 @@ type PublicTransportResult = {
 
 export default function KilometervergoedingTool() {
   const [travelMode, setTravelMode] = useState<TravelMode>("kilometers");
+  const [kilometerCalculationMethod, setKilometerCalculationMethod] =
+    useState<KilometerCalculationMethod>("actual-days");
   const [oneWayKilometers, setOneWayKilometers] = useState("24");
   const [workDaysPerWeek, setWorkDaysPerWeek] = useState("5");
   const [monthsPerYear, setMonthsPerYear] = useState("12");
@@ -155,6 +159,7 @@ export default function KilometervergoedingTool() {
         workDaysPerWeek: parsedWorkDaysPerWeek,
         monthsPerYear: parsedMonthsPerYear,
         employerRatePerKilometer: parsedEmployerRatePerKilometer,
+        calculationMethod: kilometerCalculationMethod,
       }),
     );
   }
@@ -194,6 +199,51 @@ export default function KilometervergoedingTool() {
 
           {travelMode === "kilometers" ? (
             <>
+              <div>
+                <p className="mb-2 text-xs font-black uppercase tracking-wide text-slate-600">
+                  Berekenmethode
+                </p>
+                <div className="grid gap-2 md:grid-cols-2">
+                  {[
+                    {
+                      id: "actual-days" as const,
+                      label: "Werkelijke reisdagen",
+                      detail: "werkdagen per week × 52 weken",
+                    },
+                    {
+                      id: "fixed-214-days" as const,
+                      label: "Vaste vergoeding",
+                      detail: "Belastingdienst 214-dagenregeling",
+                    },
+                  ].map((option) => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      onClick={() => {
+                        setKilometerCalculationMethod(option.id);
+                        setResult(null);
+                        setError("");
+                      }}
+                      className={`border-2 border-black p-3 text-left transition-colors ${
+                        kilometerCalculationMethod === option.id
+                          ? "bg-[#4ECDC4]"
+                          : "bg-white hover:bg-slate-50"
+                      }`}
+                    >
+                      <span className="block text-sm font-black text-slate-900">{option.label}</span>
+                      <span className="mt-1 block text-xs font-medium text-slate-600">{option.detail}</span>
+                    </button>
+                  ))}
+                </div>
+                {kilometerCalculationMethod === "fixed-214-days" ? (
+                  <p className="mt-2 text-xs leading-relaxed text-slate-600">
+                    Voor een onbelaste vaste vergoeding rekent de Belastingdienst met{" "}
+                    {FIXED_TRAVEL_DAYS_FULL_TIME} werkdagen per jaar bij 5 werkdagen per week. Bij parttime werk
+                    corrigeert de tool dit naar rato.
+                  </p>
+                ) : null}
+              </div>
+
               <div className="grid gap-4 md:grid-cols-2">
                 <div>
                   <label className="mb-1.5 block text-xs font-black uppercase tracking-wide text-slate-600">
@@ -419,6 +469,9 @@ export default function KilometervergoedingTool() {
             </p>
             <p className="mt-2 text-sm text-slate-700">
               Op basis van {workDaysPerWeek} werkdagen per week en {oneWayKilometers} km enkele reis.
+              {result.calculationMethod === "fixed-214-days"
+                ? " Berekend met de 214-dagenregeling voor een vaste vergoeding."
+                : ""}
             </p>
           </div>
 
@@ -440,6 +493,18 @@ export default function KilometervergoedingTool() {
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+            {result.calculationMethod === "fixed-214-days" ? (
+              <div className="mb-4 rounded-lg border border-slate-200 bg-white p-3">
+                <p className="font-black text-slate-900">214-dagenregeling</p>
+                <p className="mt-2">
+                  Fulltime rekent met {result.fixedFullTimeDays} dagen per jaar. Bij {workDaysPerWeek} werkdagen
+                  per week wordt dat {result.fixedFullTimeDays} × {workDaysPerWeek} / 5 ={" "}
+                  {formatTravelDays(result.fixedCorrectedDays)} dagen. De formule is{" "}
+                  {oneWayKilometers} km × 2 × {formatTravelDays(result.workDaysInPeriod)} dagen ×{" "}
+                  {formatEuro(parseDecimal(employerRatePerKilometer))} = {formatEuro(result.reimbursementPerYear)}.
+                </p>
+              </div>
+            ) : null}
             <p className="font-black text-slate-900">
               {result.withinTaxFreeLimit
                 ? "Je volledige vergoeding valt binnen de belastingvrije grens."
