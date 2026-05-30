@@ -267,18 +267,6 @@ export default function VakantiegeldBerekenenPage() {
                     <VakantiegeldTool />
                 </section>
 
-                <ToolToCvCTA
-                    toolName="vakantiegeld-berekenen"
-                    eyebrow="Volgende stap na je berekening"
-                    title="Gebruik je vakantiegeldmoment om je cv klaar te zetten"
-                    description="Ben je je loon, vakantiegeld of voorwaarden aan het vergelijken? Zet dan ook je cv klaar zonder abonnement, zodat je snel kunt reageren als er een betere kans voorbij komt."
-                    insightText="Veel bezoekers gebruiken deze berekening om hun huidige pakket te checken. Als je merkt dat je verder wilt kijken, is een sterk Nederlands cv de logische volgende stap."
-                    primaryLabel="Maak je cv zonder abonnement"
-                    secondaryLabel="Bekijk eerst cv-templates"
-                    intent="salary"
-                    proofItems={["Gratis starten", "Eenmalig €4,99 bij PDF-download", "Geen abonnement"]}
-                />
-
                 <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                     <div className="mb-5">
                         <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-slate-500">
@@ -531,6 +519,18 @@ export default function VakantiegeldBerekenenPage() {
                         ))}
                     </div>
                 </section>
+
+                <ToolToCvCTA
+                    toolName="vakantiegeld-berekenen"
+                    eyebrow="Volgende stap na je berekening"
+                    title="Gebruik je vakantiegeldmoment om je cv klaar te zetten"
+                    description="Ben je je loon, vakantiegeld of voorwaarden aan het vergelijken? Zet dan ook je cv klaar zonder abonnement, zodat je snel kunt reageren als er een betere kans voorbij komt."
+                    insightText="Veel bezoekers gebruiken deze berekening om hun huidige pakket te checken. Als je merkt dat je verder wilt kijken, is een sterk Nederlands cv de logische volgende stap."
+                    primaryLabel="Maak je cv zonder abonnement"
+                    secondaryLabel="Bekijk eerst cv-templates"
+                    intent="salary"
+                    proofItems={["Gratis starten", "Eenmalig €4,99 bij PDF-download", "Geen abonnement"]}
+                />
 
                 <section className="bg-slate-50 border-2 border-slate-200 p-6">
                     <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">

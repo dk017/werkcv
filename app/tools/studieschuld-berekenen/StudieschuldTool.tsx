@@ -299,7 +299,16 @@ export default function StudieschuldTool() {
           </div>
 
           <div className="mt-6">
-            <ToolResultCta />
+            <ToolResultCta
+              toolName="studieschuld-berekenen"
+              ctaIntent="salary"
+              eyebrow="Van studieschuld naar betere baan"
+              title="Gebruik je studieschuld-inzicht om gerichter te solliciteren"
+              description="Als je maandlast ruimte geeft of juist druk zet, is een beter betaalde functie vaak de praktische vervolgstap. Zet je CV klaar voor rollen die bij je gewenste inkomen passen."
+              primaryLabel="Maak CV voor beter betaalde functies"
+              secondaryHref="/cv-maken-zonder-abonnement"
+              secondaryLabel="Bekijk CV zonder abonnement"
+            />
           </div>
         </>
       ) : null}

@@ -221,7 +221,10 @@ export default function VakantiegeldTool() {
 
                     <SalaryResultCvCta
                         toolName="vakantiegeld-berekenen"
-                        text="Gebruik je vakantiegeld of loonstrookmoment als aanleiding om vooruit te kijken. Solliciteer je op een betere functie? Werk je cv direct bij."
+                        title="Gebruik je vakantiegeldmoment om vooruit te solliciteren"
+                        text="Vakantiegeld laat vaak zien wat je huidige beloning echt oplevert. Wil je meer ruimte na je volgende baan? Werk je CV bij voor functies met betere voorwaarden."
+                        primaryLabel="Maak CV voor betere voorwaarden"
+                        secondaryLabel="Bekijk CV zonder abonnement"
                     />
 
                     <button

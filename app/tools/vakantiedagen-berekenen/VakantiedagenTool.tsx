@@ -261,10 +261,19 @@ export default function VakantiedagenTool() {
               </p>
               <ul className="space-y-2 text-sm text-slate-700">
                 <li>Wettelijke vakantiedagen vervallen meestal 6 maanden na het kalenderjaar waarin je ze opbouwde.</li>
-                <li>Bovenwettelijke dagen kunnen andere verval- of verjaringstermijnen hebben in je cao of contract.</li>
+                <li>Bovenwettelijke dagen kunnen vaak langer blijven staan, maar controleer altijd je cao of contract.</li>
                 <li>Ook bij ziekte bouw je in principe wettelijke vakantiedagen op.</li>
               </ul>
             </div>
+          </div>
+
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+            <p className="text-xs font-black uppercase tracking-wide text-blue-800 mb-2">
+              Vervaldatum check
+            </p>
+            <p className="text-sm text-blue-950 leading-relaxed">
+              Wettelijke vakantie-uren die je in 2026 opbouwt, vervallen normaal gesproken op 1 juli 2027 als je ze wel had kunnen opnemen. Extra bovenwettelijke uren kunnen een andere termijn hebben.
+            </p>
           </div>
 
           <SalaryResultCvCta
