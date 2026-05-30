@@ -8,8 +8,8 @@ export const cybersecuritySpecialist: CVExample = {
     templateId: 'modern',
     colorThemeId: 'charcoal',
 
-    metaTitle: 'CV Voorbeeld Cyber Security Specialist | WerkCV.nl',
-    metaDesc: 'Professioneel cv voorbeeld voor cyber security specialist met informatiebeveiliging, pentesting, SIEM en compliance. Gebruik het als basis voor je eigen security-CV.',
+    metaTitle: 'CV Cyber Security Specialist Voorbeeld 2026 | Skills | WerkCV.nl',
+    metaDesc: 'Bekijk een cv cyber security specialist voorbeeld met pentesting, SIEM, ISO 27001, NIS2 en certificeringen. Gebruik de opzet voor je eigen cv.',
     keywords: ['cv cyber security specialist', 'cyber security specialist cv', 'cv voorbeeld cybersecurity', 'cv cybersecurity specialist', 'cv informatiebeveiliging', 'cv security specialist', 'cybersecurity cv', 'ethical hacker cv'],
     heroTitle: 'CV voorbeeld cyber security specialist',
     heroText: 'Als cybersecurity specialist bescherm je organisaties tegen digitale dreigingen. Dit CV voorbeeld laat zien hoe je je technische beveiligingsexpertise, certificeringen en concrete resultaten overtuigend presenteert. Benadruk zowel je offensieve als defensieve vaardigheden en je kennis van compliance-frameworks.',
@@ -21,6 +21,30 @@ export const cybersecuritySpecialist: CVExample = {
         'Vermeld je ervaring met security awareness-trainingen om je communicatieve vaardigheden te tonen',
     ],
     relatedSlugs: ['technologie-en-ict/systeembeheerder', 'technologie-en-ict/software-ontwikkelaar'],
+    expertContent: {
+        recruiterFocus: [
+            'Laat zien of je ervaring vooral offensief, defensief, governancegericht of een combinatie daarvan is.',
+            'Koppel tooling aan een resultaat: minder false positives, snellere incidentrespons of aantoonbaar opgeloste kwetsbaarheden.',
+            'Zet relevante certificeringen en frameworks zichtbaar neer, maar gebruik alleen termen die je in de praktijk beheerst.',
+        ],
+        copyReadyBullets: [
+            'SIEM-detectieregels in Splunk aangescherpt waardoor false positives met 40% afnamen en analisten sneller konden prioriteren.',
+            'Ruim 40 penetratietesten uitgevoerd en meer dan 200 kritieke kwetsbaarheden geidentificeerd voor productierelease.',
+            'Incidentresponsproces verbeterd waardoor de gemiddelde reactietijd van 45 naar 15 minuten daalde.',
+        ],
+        rewriteExamples: [
+            {
+                bad: 'Ervaring met security monitoring.',
+                good: 'SIEM-detectieregels in Splunk aangescherpt waardoor false positives met 40% afnamen.',
+                reason: 'De sterke versie koppelt tooling aan een meetbaar operationeel resultaat.',
+            },
+        ],
+        trustSignals: [
+            'Noem CISSP, OSCP, CEH of Security+ alleen met jaar van behalen en actuele status.',
+            'Maak sectorervaring zichtbaar wanneer je werkte met zorg, finance, overheid of kritieke infrastructuur.',
+            'Benoem ISO 27001, NIST, NIS2 en AVG waar je aantoonbaar met die kaders werkte.',
+        ],
+    },
 
     sampleCV: {
         personal: {

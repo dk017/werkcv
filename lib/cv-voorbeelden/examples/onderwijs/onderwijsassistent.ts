@@ -8,8 +8,8 @@ export const onderwijsassistent: CVExample = {
     templateId: 'simple',
     colorThemeId: 'sage-green',
 
-    metaTitle: 'CV Voor Onderwijsassistent | WerkCV.nl',
-    metaDesc: 'Sterk cv voor onderwijsassistent nodig? Bekijk een professioneel voorbeeld met klasondersteuning, differentiatie, ParnasSys, leerlingbegeleiding en pedagogiek.',
+    metaTitle: 'CV Voor Onderwijsassistent 2026 | Voorbeeld + Skills | WerkCV.nl',
+    metaDesc: 'Bekijk een cv voor onderwijsassistent met profieltekst, klasondersteuning, leerlingbegeleiding, differentiatie en ParnasSys. Gebruik de opzet direct.',
     keywords: ['cv voor onderwijsassistent', 'onderwijsassistent cv', 'cv voorbeeld onderwijsassistent', 'cv klassenassistent', 'cv onderwijs mbo', 'cv leerlingbegeleiding', 'cv ParnasSys'],
     heroTitle: 'CV voor onderwijsassistent',
     heroText: 'Als onderwijsassistent ondersteun je de leerkracht en begeleid je leerlingen die extra aandacht nodig hebben. Dit CV voorbeeld toont hoe je differentiatie, kleine groepjes, remedial teaching, ParnasSys, sociaal-emotionele begeleiding en samenwerking met leerkrachten professioneel presenteert.',
@@ -21,6 +21,30 @@ export const onderwijsassistent: CVExample = {
         'Laat samenwerking zien met leerkrachten, intern begeleider, ouders en externe specialisten',
     ],
     relatedSlugs: ['onderwijs/pedagogisch-medewerker', 'onderwijs/basisschool-docent', 'onderwijs/speciaal-onderwijs'],
+    expertContent: {
+        recruiterFocus: [
+            'Benoem met welke groepen, leeftijden en ondersteuningsvragen je ervaring hebt.',
+            'Maak duidelijk hoe je samenwerkt met leerkracht, intern begeleider en ouders.',
+            'Noem ParnasSys, Cito LVS of leerlingdossiers wanneer je observaties en voortgang zelfstandig vastlegt.',
+        ],
+        copyReadyBullets: [
+            'Verlengde instructie gegeven aan kleine groepjes leerlingen voor rekenen, taal en woordenschatontwikkeling.',
+            'Observaties en voortgang vastgelegd in ParnasSys voor overleg met leerkracht en intern begeleider.',
+            'Lesmateriaal aangepast voor leerlingen met dyslexie, dyscalculie en extra sociaal-emotionele ondersteuningsbehoeften.',
+        ],
+        rewriteExamples: [
+            {
+                bad: 'Leerlingen geholpen in de klas.',
+                good: 'Verlengde instructie gegeven aan groepjes van 4 tot 6 leerlingen met leesachterstand en voortgang vastgelegd in ParnasSys.',
+                reason: 'De sterke versie maakt doelgroep, groepsgrootte en werkwijze concreet.',
+            },
+        ],
+        trustSignals: [
+            'Vermeld je MBO 4-diploma Onderwijsassistent en relevante stages of schooltypes.',
+            'Noem ervaring met ADHD, NT2, dyslexie of speciaal onderwijs alleen wanneer je die echt hebt.',
+            'Laat zien dat je observaties zorgvuldig overdraagt en afspraken met de leerkracht consequent uitvoert.',
+        ],
+    },
 
     sampleCV: {
         personal: {

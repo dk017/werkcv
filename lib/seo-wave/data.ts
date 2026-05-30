@@ -237,7 +237,33 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
         },
     },
     'cv-voorbeeld-productmanager': {
+        title: 'CV productmanager: voorbeeld, profieltekst en sterke bullets',
+        description: 'Maak een sterk productmanager cv met een concrete profieltekst, meetbare productresultaten en ATS-termen voor discovery, roadmap en stakeholdermanagement.',
+        metaTitle: 'CV Productmanager Voorbeeld 2026 | Profieltekst + Bullets | WerkCV',
+        metaDesc: 'Bekijk een cv productmanager voorbeeld met profieltekst, roadmap, discovery, stakeholdermanagement en meetbare productresultaten. Start met sterke bullets.',
+        keywords: ['cv productmanager', 'cv voorbeeld productmanager', 'productmanager cv', 'product manager cv voorbeeld', 'profieltekst productmanager'],
         intro: 'Een productmanager CV moet bewijzen dat je keuzes maakt met impact: wat je prioriteerde, waarom, en wat het resultaat was voor gebruikers en business. Deze pagina richt zich op die bewijsvoering.',
+        ctaTitle: 'Maak je productmanager cv zonder abonnement',
+        ctaText: 'Gebruik de profieltekst en resultaatgerichte bullets als basis. Werk eerst gratis in de editor en betaal pas als je de definitieve PDF wilt downloaden.',
+        ctaHref: '/cv-maken-zonder-abonnement',
+        ctaButtonLabel: 'Start met je productmanager cv',
+        relatedLinks: [
+            {
+                href: '/templates',
+                title: 'Bekijk rustige cv templates',
+                description: 'Kies een scanbare layout die productresultaten en werkervaring centraal zet.',
+            },
+            {
+                href: '/profieltekst-cv-voorbeelden',
+                title: 'Bekijk meer profieltekst voorbeelden',
+                description: 'Gebruik een scherpe eerste alinea die rol, domein en impact samenvat.',
+            },
+            {
+                href: '/cv-maken-zonder-abonnement',
+                title: 'Maak je cv zonder abonnement',
+                description: 'Werk gratis aan je cv en betaal alleen wanneer je de PDF downloadt.',
+            },
+        ],
         sectionOverrides: {
             profieltekst: {
                 exampleItems: [

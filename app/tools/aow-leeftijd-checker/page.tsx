@@ -70,11 +70,11 @@ export default function AowLeeftijdCheckerPage() {
   return (
     <ToolPageShell
       badge="NL wetgeving"
-      title="Pensioenleeftijd berekenen: check je AOW-leeftijd en AOW-datum"
-      description="Vul je geboortedatum in en zie direct wanneer je AOW ingaat. Je ziet ook waarom AOW-leeftijd niet hetzelfde is als je volledige pensioenleeftijd en wat eerder stoppen financieel betekent."
-      toolLabel="Pensioenleeftijd berekenen"
+      title="AOW-leeftijd berekenen: check je AOW-datum"
+      description="Vul je geboortedatum in en zie direct wanneer je AOW ingaat. Je ziet ook waarom je AOW-leeftijd niet hetzelfde is als je volledige pensioenleeftijd en wat eerder stoppen financieel betekent."
+      toolLabel="AOW-leeftijd berekenen"
       toolHref="/tools/aow-leeftijd-checker"
-      faqTitle="Veelgestelde vragen over pensioenleeftijd en AOW"
+      faqTitle="Veelgestelde vragen over AOW-leeftijd berekenen"
       faqItems={faqItems}
       statPills={[
         {
@@ -95,9 +95,9 @@ export default function AowLeeftijdCheckerPage() {
       ]}
       asideTitle="AOW is niet je hele pensioen"
       asideParagraphs={[
-        "Veel zoekers typen pensioenleeftijd, maar bedoelen in de praktijk hun AOW-datum.",
+        "Je AOW-leeftijd is de wettelijke startdatum van je basispensioen van de overheid.",
         "Die AOW-datum is het wettelijke startpunt van je staatsuitkering, niet automatisch de datum waarop je aanvullend pensioen ingaat.",
-        "Daarom laat deze pagina zowel je AOW-start als het effect van eerder stoppen met werken zien.",
+        "Zoek je breder op pensioenleeftijd, gebruik dan eerst deze AOW-datum als ankerpunt en controleer daarna je aanvullende pensioenregeling.",
       ]}
       bottomCta={
         <ToolToCvCTA

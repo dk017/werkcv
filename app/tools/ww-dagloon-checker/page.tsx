@@ -26,6 +26,10 @@ const faqItems = [
     answer: "UWV vermeldt voor 2026 een maximumdagloon van EUR 304,25 bruto per dag, inclusief vakantiegeld. Is je berekende dagloon hoger, dan gebruikt UWV voor de uitkering dit maximum.",
   },
   {
+    question: "Wat is de maximale WW-uitkering in 2026?",
+    answer: "Bij het maximumdagloon van EUR 304,25 is het maximale WW-maandloon EUR 6.617,44 bruto. De maximale bruto WW-uitkering is daardoor ongeveer EUR 4.963,08 per maand in de eerste 2 maanden en EUR 4.632,21 vanaf maand 3. Eventuele inkomsten worden nog verrekend.",
+  },
+  {
     question: "Waarom is het dagloon voor parttimers niet hetzelfde als wat zij per werkdag verdienen?",
     answer: "UWV rekent het dagloon vanuit een fulltime werkweek. Daardoor kan het dagloon voor parttimers lager uitvallen dan wat zij feitelijk op een gewerkte dag verdienden.",
   },
@@ -47,7 +51,8 @@ export const metadata: Metadata = buildDutchMetadata({
     "ww dagloon checker",
     "ww dagloon berekenen",
     "ww maandloon berekenen",
-    "maximum dagloon 2026",
+    "maximum dagloon ww 2026",
+    "maximale ww uitkering 2026",
     "sv loon ww berekenen",
   ],
 });
@@ -86,7 +91,7 @@ export default function WWDagloonCheckerPage() {
                 NL wetgeving
               </span>
               <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                Bijgewerkt 12 maart 2026
+                Bijgewerkt 30 mei 2026
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
@@ -175,6 +180,13 @@ export default function WWDagloonCheckerPage() {
               </a>
               .
             </p>
+            <p>
+              UWV vermenigvuldigt het dagloon met 21,75 om het WW-maandloon te bepalen. Bij het
+              maximumdagloon komt dat uit op <strong>EUR 6.617,44 bruto per maand</strong>. De
+              maximale bruto WW-uitkering is daardoor ongeveer <strong>EUR 4.963,08</strong> in de
+              eerste 2 maanden en <strong>EUR 4.632,21</strong> vanaf maand 3. Eventuele inkomsten
+              worden nog met je uitkering verrekend.
+            </p>
           </div>
         </section>
 
@@ -244,7 +256,7 @@ export default function WWDagloonCheckerPage() {
           </p>
           <div className="space-y-3 text-sm text-slate-600 leading-relaxed">
             <p>
-              Deze pagina is bijgewerkt op <span className="font-black text-slate-900">12 maart 2026</span> op basis van actuele UWV-informatie over het berekenen van dagloon, de hoogte van WW en het wettelijke maximum dagloon van 2026.
+              Deze pagina is bijgewerkt op <span className="font-black text-slate-900">30 mei 2026</span> op basis van actuele UWV-informatie over het berekenen van dagloon, de hoogte van WW en het wettelijke maximum dagloon van 2026.
             </p>
             <ul className="space-y-2">
               <li>

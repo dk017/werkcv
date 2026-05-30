@@ -2,19 +2,20 @@ import { BlogArticle } from '../types';
 
 export const freelanceCvMaken: BlogArticle = {
     slug: 'freelance-cv-maken',
-    title: 'ZZP CV maken in 2026: opdrachten, profieltekst en voorbeelden',
-    description: 'Leer hoe je als zzp\'er of freelancer een sterk CV maakt met opdrachtstructuur, profieltekst, NDA-aanpak, intermediairproof bullets en gerichte voorbeeldroutes.',
+    title: 'ZZP CV schrijven in 2026: opdrachten, profieltekst en voorbeelden',
+    description: 'Leer hoe je als zzp\'er een sterk CV schrijft met opdrachtstructuur, profieltekst, NDA-aanpak, resultaatbullets en gerichte voorbeeldroutes.',
     publishedAt: '2026-02-19',
-    updatedAt: '2026-04-04',
+    updatedAt: '2026-05-30',
 
-    metaTitle: 'ZZP CV maken in 2026: freelance CV, opdrachten en voorbeeld | WerkCV',
-    metaDesc: 'Maak een sterk ZZP-CV met opdrachtstructuur, profieltekst, NDA-opdrachten en voorbeeldroutes voor intermediairs, platforms en opdrachtgevers.',
+    metaTitle: 'ZZP CV Schrijven 2026 - Opdrachten + Voorbeeld | WerkCV',
+    metaDesc: 'Schrijf een sterk zzp-CV met opdrachtstructuur, profieltekst, NDA-aanpak en resultaatbullets voor intermediairs, platforms en opdrachtgevers.',
     keywords: [
         'freelance cv',
         'zzp cv',
         'cv als zelfstandige',
         'cv freelancer',
         'zzp cv maken',
+        'zzp cv schrijven',
         'cv maken zzp',
         'zzp cv template',
         'cv freelancer nederland',
@@ -35,20 +36,20 @@ export const freelanceCvMaken: BlogArticle = {
         'Je profieltekst moet je specialisme, doelgroep en toegevoegde waarde in maximaal 5 zinnen samenvatten',
         'Kwantificeer elk project: omzetbesparing, conversieverbeteringen, opgeleverde deadlines — zonder getallen ben je inwisselbaar',
         'Vermeld je uurtarief nooit in je CV — dat hoort in een offerte of platformprofiel',
-        'Nederland telt 1,2 miljoen ZZP\'ers (CBS 2024) — een gerichte, professionele CV is je sterkste concurrentievoordeel',
+        'Nederland telde in 2024 bijna 1,3 miljoen ZZP\'ers met zzp-werk als hoofdbaan (CBS) — een gerichte CV helpt je sneller opvallen',
         'Pas je CV aan per opdracht via een base CV + gerichte versies per sector of opdrachttype',
     ],
 
     sections: [
         {
             id: 'verschil-freelance-loondienst',
-            title: 'Hoe verschilt een freelance CV van een gewoon CV?',
+            title: 'Hoe schrijf je een sterk ZZP CV?',
             answerCapsule: 'Een freelance CV toont opdrachten in plaats van functies, vermeldt opdrachtgevers in plaats van werkgevers, en is gemiddeld langer omdat meerdere projecten elk apart beschreven worden.',
             content: [
-                'Nederland telt 1,2 miljoen ZZP\'ers (CBS, 2024) — een record. Als je als freelancer solliciteert op een opdracht, concurreer je met andere professionals die net zo\'n trackrecord hebben als jij. Wat je onderscheidt is niet alleen je expertise, maar hoe goed je die presenteert. Een CV dat geschreven is voor een loondienst-kandidaat werkt niet voor een ZZP\'er.',
-                'Wie zoekt op cv maken zzp of cv freelancer Nederland zoekt meestal niet naar nog een generieke template, maar naar een opbouw die opdrachtwerk, opdrachtgevercontext en resultaat logisch laat landen op de pagina. Dat is precies waar een freelance-cv van een standaard cv begint af te wijken.',
+                'Nederland telde in 2024 bijna 1,3 miljoen mensen met een hoofdbaan als ZZP\'er (CBS). Als je als freelancer reageert op een opdracht, concurreer je met andere professionals die vaak een vergelijkbaar trackrecord hebben. Wat je onderscheidt is niet alleen je expertise, maar hoe helder je die presenteert. Een CV dat geschreven is voor een loondienst-kandidaat werkt niet vanzelf voor een ZZP\'er.',
+                'Wie zoekt op zzp cv schrijven, cv maken zzp of cv freelancer Nederland zoekt meestal niet naar nog een generieke template, maar naar een opbouw die opdrachtwerk, opdrachtgevercontext en resultaat logisch laat landen op de pagina. Dat is precies waar een freelance-cv van een standaard cv begint af te wijken.',
                 'Het fundamentele verschil zit in de werkervaring-sectie. In een gewoon CV beschrijf je een functie bij één werkgever over een aaneengesloten periode. Als freelancer heb je in vier jaar misschien twaalf opdrachten bij acht opdrachtgevers gedaan. Die presenteer je als afzonderlijke projecten — elk met een eigen opdrachtgever, rol, duur en resultaat. Dit vereist een andere structuur en een andere schrijfaanpak.',
-                'Intermediairs en opdrachtgevers bekijken een freelance CV gemiddeld in minder dan 30 seconden (brancheonderzoek ZZP Barometer, 2024). In die tijd moeten ze kunnen zien: wat is je specialisme, voor wie heb je gewerkt en wat heb je opgeleverd? Als die drie vragen niet direct beantwoord worden, gaat je CV de prullenbak in — hoeveel ervaring je ook hebt.',
+                'Intermediairs en opdrachtgevers scannen een freelance CV snel. Zij moeten direct kunnen zien: wat is je specialisme, voor wie heb je gewerkt en wat heb je opgeleverd? Als die drie vragen niet snel beantwoord worden, wordt je ervaring moeilijker op waarde geschat.',
             ],
             intentLinks: [
                 {
@@ -126,11 +127,11 @@ export const freelanceCvMaken: BlogArticle = {
         },
         {
             id: 'kvk-wtza-intermediairs',
-            title: 'KvK, Wtza en verplichte vermeldingen voor intermediairs',
-            answerCapsule: 'Intermediairs controleren of je als ZZP\'er ingeschreven staat bij de KvK. Vermeld je KvK-nummer in je contactgegevens of stuur het op aanvraag. In de zorg geldt de Wtza-registratieplicht.',
+            title: 'KvK, Wtza en praktische gegevens voor intermediairs',
+            answerCapsule: 'Intermediairs vragen vaak om je KvK-nummer. Werk je beroepsmatig als zzp\'er in de zorg, controleer dan ook of de Wtza-meldplicht voor jou geldt.',
             content: [
-                'Intermediairs en platforms zijn wettelijk verplicht te controleren of jij daadwerkelijk als zelfstandige ingeschreven staat bij de Kamer van Koophandel (KvK). Zorg dat je KvK-inschrijving actueel is en dat je snel je KvK-nummer kunt overleggen. Je hoeft het niet standaard in je CV te zetten, maar het versnelt het matchingproces als je het in je contactgegevens opneemt.',
-                'Werk je als ZZP\'er in de zorg — als verpleegkundige, fysiotherapeut, psycholoog of andere zorgprofessional — dan geldt de Wet toelating terbeschikkingstelling van arbeidskrachten (Wtza) die per 2024 van kracht is. Wtza verplicht zorginstellingen en bemiddelaars om uitsluitend te werken met geregistreerde zorgaanbieders. Vermeld je Wtza-registratie altijd in je zorg-CV om vertraging te voorkomen.',
+                'Intermediairs en platforms vragen vaak om je KvK-nummer wanneer zij je zelfstandigheid en bedrijfsgegevens controleren. Zorg dat je KvK-inschrijving actueel is en dat je het nummer snel kunt overleggen. Je hoeft het niet standaard in je CV te zetten, maar bij opdrachten via een intermediair kan vermelding in je contactgegevens het proces versnellen.',
+                'Werk je beroepsmatig als ZZP\'er in de zorg, dan kan de meldplicht uit de Wet toetreding zorgaanbieders (Wtza) voor jou gelden. De officiële Wtza-informatie vermeldt dat deze meldplicht ook geldt voor solisten en zzp\'ers die onder de regeling vallen. Controleer dit via de meldplichtcheck op toetredingzorgaanbieders.nl. Zet relevante registraties alleen in je zorg-CV als ze daadwerkelijk op jouw situatie van toepassing zijn.',
                 'Opdrachtgevers in de publieke sector vragen soms om een Verklaring Omtrent Gedrag (VOG). Als je in een sector werkt waar dit gebruikelijk is (overheid, onderwijs, kinderopvang, zorg), vermeld dan proactief dat je een recente VOG kunt overleggen. Dat versnelt het selectieproces en geeft vertrouwen.',
             ],
         },
