@@ -4,6 +4,7 @@ import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import Footer from "@/components/Footer";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import OpzeggenConversionSection from "@/components/opzeggen/OpzeggenConversionSection";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { cvDownloadPrice } from "@/lib/site-content";
 
 const sourceLinks = [
@@ -80,10 +81,11 @@ const faqs = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: "LiveCareer opzeggen? Officiele stappen + alternatief",
+export const metadata: Metadata = buildDutchMetadata({
+  title: "LiveCareer Opzeggen 2026 - Stappen + Alternatief | WerkCV",
   description:
-    "LiveCareer opzeggen? Bekijk de officiele route via accountinstellingen of klantenservice, wat je moet bewaren en hoe je daarna een cv zonder abonnement maakt.",
+    "LiveCareer opzeggen? Bekijk de officiele route via Mijn account of klantenservice, bewaar je bevestiging en kies eventueel een cv zonder abonnement.",
+  path: "/livecareer-opzeggen",
   keywords: [
     "livecareer opzeggen",
     "livecareer abonnement opzeggen",
@@ -91,14 +93,11 @@ export const metadata: Metadata = {
     "livecareer klantenservice",
     "livecareer alternatief",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/livecareer-opzeggen",
-    languages: {
-      "nl-NL": "https://werkcv.nl/livecareer-opzeggen",
-      "x-default": "https://werkcv.nl/livecareer-opzeggen",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/livecareer-opzeggen",
+    "x-default": "https://werkcv.nl/livecareer-opzeggen",
   },
-};
+});
 
 export default function LivecareerOpzeggenPage() {
   const faqSchema = {

@@ -2000,8 +2000,8 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
     'netherlands-cv-photo-rules': {
         title: 'CV Photo Rules in the Netherlands: Should You Add a Photo?',
         description: 'Clear guidance for expats on when a CV photo helps, when to leave it out, and how Dutch recruiters usually interpret it.',
-        metaTitle: 'CV Photo Rules in the Netherlands (2026) | WerkCV',
-        metaDesc: 'Should you add a photo to a CV in the Netherlands? Learn when it helps, when to leave it out, and how Dutch hiring norms differ from US and UK resumes.',
+        metaTitle: 'CV Photo Netherlands: Optional or Required? (2026) | WerkCV',
+        metaDesc: 'A CV photo is optional in the Netherlands. See when to include one, when to leave it out, and choose a Dutch-market English CV template.',
         intro: 'In the Netherlands, a photo on your CV is usually optional, not mandatory. The right choice depends on the employer, the role, and whether the company follows Dutch or more international hiring norms. This guide translates those expectations into a practical decision so you can keep page one recruiter-focused instead of appearance-led.',
         sources: [
             {
@@ -2056,13 +2056,66 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
         },
     },
     'cv-format-netherlands-english': {
-        intro: 'Use this as an execution blueprint for English CVs in the Netherlands: exact section order, concise writing style, and ATS-safe formatting that still reads naturally to humans.',
+        title: 'CV Format Netherlands in English: Section Order, Examples and ATS Rules',
+        description: 'A practical Netherlands CV format guide for English-speaking applicants. Learn section order, page length, Europass context, ATS-safe formatting, wording examples and final checks.',
+        metaTitle: 'CV Format Netherlands in English (2026) | Examples + ATS Rules',
+        metaDesc: 'Use the right CV format for English applications in the Netherlands: section order, Europass context, ATS-safe layout, examples, language levels and checklist.',
+        keywords: [
+            'cv format netherlands english',
+            'netherlands cv format english',
+            'dutch cv format in english',
+            'english cv format netherlands',
+            'cv layout netherlands english',
+            'dutch cv template english',
+            'netherlands resume format',
+        ],
+        intro: 'Applying in English in the Netherlands does not mean using a generic US or UK resume. The safest format is a Dutch-market CV in English: clear contact details, a short role-specific profile, reverse-chronological experience, explicit language levels, and ATS-safe formatting. Use this page as the practical order and quality checklist before you export.',
+        sources: [
+            {
+                label: 'Europass: Create your CV',
+                href: 'https://europass.europa.eu/nl/create-europass-cv',
+                note: 'Official Europass page describing CV creation, tailoring to the job, readable language, reverse-chronological order and CV storage/sharing in multiple languages. Checked May 2026.',
+            },
+            {
+                label: 'Rijksoverheid: What is Europass?',
+                href: 'https://www.rijksoverheid.nl/onderwerpen/onderwijs-en-internationalisering/vraag-en-antwoord/wat-is-europass-en-wat-kan-ik-er-mee',
+                note: 'Official Dutch government page explaining Europass as a European Commission initiative and a standard CV recognized across EU countries. Checked May 2026.',
+            },
+            {
+                label: 'Greenhouse Support: Unsuccessful resume parse',
+                href: 'https://support.greenhouse.io/hc/en-us/articles/200989175-Unsuccessful-resume-parse',
+                note: 'Official ATS support page listing parsing risks such as graphics, photos, image files, complex tables, headers, footers, text boxes, columns and unclear sections. Checked May 2026.',
+            },
+        ],
         sectionOverrides: {
-            layout: {
+            'recruiter-scan': {
+                title: 'What Dutch recruiters expect from an English CV',
+                paragraphs: [
+                    'The main job of your CV is not to look international. It is to make your fit clear in the first scan. Dutch recruiters usually need to see role focus, location context, language level, work authorization if relevant, and recent evidence before they read the full document.',
+                    'Europass is useful context because it is a recognized European standard, but recognition is not the same as the best format for every Dutch vacancy. For most private-sector applications, a compact Dutch-market CV in English is stronger than a long generic resume.',
+                    'Treat the first half page as the decision area: title, city, contact details, short profile, and the first recent role should already explain why you match this vacancy.',
+                ],
                 bullets: [
-                    'Header: name, city, contact info, LinkedIn, optional work permit line.',
-                    'Summary: 3-4 lines with role focus, years of experience, and strongest value.',
-                    'Experience: reverse-chronological, 3-5 impact bullets per recent role.',
+                    'Use English when the vacancy is in English or the company works internationally.',
+                    'Add Dutch language level honestly instead of hiding it or overstating it.',
+                    'Mention work authorization briefly when it reduces recruiter uncertainty.',
+                    'Keep personal storytelling short; use evidence, tools, scope and outcomes instead.',
+                ],
+            },
+            layout: {
+                title: 'Recommended Netherlands CV format in English',
+                paragraphs: [
+                    'Use a familiar reverse-chronological CV structure. Europass guidance also emphasizes tailoring the CV to the application, keeping language readable, and placing recent experience first.',
+                    'For the Dutch market, keep the document practical: one page for starters or early-career profiles, two pages only when the second page contains relevant work, projects, certifications or technical detail.',
+                    'A good section order is: contact details, role headline, profile summary, work experience, education, skills/tools, languages, certifications, and optional links such as LinkedIn or portfolio.',
+                ],
+                bullets: [
+                    'Header: name, city in the Netherlands or relocation context, phone, email, LinkedIn and optional portfolio.',
+                    'Headline: one target role such as Customer Success Manager, Data Analyst or Mechanical Engineer.',
+                    'Profile: 3-4 lines with role focus, years of experience, sector/tools and strongest proof.',
+                    'Experience: reverse-chronological, 3-5 impact bullets for recent relevant roles.',
+                    'Languages: separate English, Dutch and other languages with clear levels such as native, fluent, professional working proficiency or A2/B1/B2/C1.',
+                    'Optional line: work permit, EU citizenship or sponsorship context only when it helps the recruiter understand your eligibility.',
                 ],
                 intentLinks: [
                     {
@@ -2077,11 +2130,38 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                     },
                 ],
             },
-            'ats-keywords': {
+            wording: {
+                title: 'Example wording for an English CV in the Netherlands',
+                paragraphs: [
+                    'The strongest English CVs for the Netherlands avoid broad claims and translate experience into practical proof. Recruiters should not have to guess what you owned, which tools you used, or what changed because of your work.',
+                    'Write each recent-role bullet as action plus scope plus result. If you do not have exact metrics, use credible scope: team size, number of customers, process volume, tools, markets, deadlines or quality standard.',
+                ],
+                exampleTitle: 'Before and after examples',
+                exampleItems: [
+                    'Weak: Responsible for customer support. Stronger: Resolved 40-60 weekly B2B support tickets in Zendesk while maintaining clear escalation notes for sales and product teams.',
+                    'Weak: Worked on data reports. Stronger: Built weekly Power BI dashboards used by operations managers to track fulfilment delays and prioritize backlog.',
+                    'Weak: Good team player. Stronger: Coordinated planning between warehouse, customer service and transport teams during peak-volume weeks.',
+                ],
                 bullets: [
-                    'Use role terms from the vacancy in summary, recent role bullets, and skills.',
-                    'Avoid decorative CV elements that break text extraction in ATS parsing.',
-                    'Keep file naming clear: Firstname-Lastname-CV.pdf',
+                    'Start bullets with verbs such as improved, built, coordinated, reduced, analysed, implemented or supported.',
+                    'Use job-specific nouns from the vacancy: CRM, onboarding, payroll, SQL, stakeholder management, logistics planning, audit, quality control.',
+                    'Avoid empty adjectives unless you support them with evidence.',
+                ],
+            },
+            'ats-keywords': {
+                title: 'ATS-safe formatting and keyword strategy',
+                paragraphs: [
+                    'Many Dutch employers and international companies use applicant tracking systems. The safest CV is not the most designed CV; it is the clearest document with real text, normal section headings, and vacancy language used naturally.',
+                    'Greenhouse support documentation lists several parsing risks: graphics or photos, image-based resumes, complex tables, headers, footers, text boxes, columns, unclear sections and incomplete job titles. Those risks are exactly why a simple one-column structure is usually safer.',
+                    'Use keywords only where they describe real experience. The goal is semantic match, not repetition.',
+                ],
+                bullets: [
+                    'Use exact role terms from the vacancy in your headline, summary, recent-role bullets and skills section.',
+                    'Prefer one-column layout, plain headings and real selectable text.',
+                    'Avoid putting name or contact details only in a header, footer, image or text box.',
+                    'Avoid decorative charts, icons, tables and multi-column skill blocks in core content.',
+                    'Use clear job titles: Senior Account Executive is safer than unexplained abbreviations.',
+                    'Keep file naming clear: Firstname-Lastname-CV.pdf.',
                 ],
                 intentLinks: [
                     {
@@ -2096,7 +2176,84 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                     },
                 ],
             },
+            'special-case': {
+                title: 'Photo, Europass and final submission choices',
+                paragraphs: [
+                    'A photo is not a universal requirement in the Netherlands. If the job ad does not ask for it, treat it as optional and make sure it does not push role evidence down the page. For international or ATS-heavy roles, a no-photo layout is often the cleaner default.',
+                    'Europass can be useful for EU-standard applications, study or formal cross-border contexts because it is widely recognized. For many Dutch private-sector jobs, however, a tailored Dutch-market CV in English is usually easier to scan and more flexible.',
+                    'Before sending, compare your CV against the exact vacancy. If the first screen does not show the target role, relevant tools, language fit and recent proof, revise before exporting.',
+                ],
+                bullets: [
+                    'Use Europass when the employer, institution or application form asks for a standard European CV.',
+                    'Use a tailored Dutch-market CV when the vacancy values role fit, speed of scanning and ATS readability.',
+                    'Use a photo only when it is professional, role-appropriate and does not reduce content clarity.',
+                    'Export a clean PDF unless the employer specifically asks for another format.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/en/editor',
+                        label: 'Build the final English CV in WerkCV',
+                        description: 'Use a Dutch-market English flow and export a clean PDF when the structure is ready.',
+                    },
+                    {
+                        href: '/en/guides/netherlands-cv-photo-rules',
+                        label: 'Decide whether to include a CV photo',
+                        description: 'Use the photo guide if you are unsure whether image-based presentation helps or hurts.',
+                    },
+                ],
+            },
         },
+        checklist: [
+            'The first half page shows target role, city or relocation context, language level and strongest proof.',
+            'Experience is reverse-chronological and recent roles contain evidence bullets, not only task lists.',
+            'The CV is tailored to one vacancy and uses relevant vacancy terms naturally.',
+            'Dutch and English language levels are explicit and honest.',
+            'Work authorization or sponsorship context is included only when it reduces uncertainty.',
+            'Layout uses real text, clear headings and one-column structure for ATS readability.',
+            'The CV is exported as a clean PDF with a professional file name.',
+        ],
+        faq: [
+            {
+                question: 'What is the best CV format for the Netherlands in English?',
+                answer: 'Use a Dutch-market CV written in English: contact details, role headline, short profile, reverse-chronological work experience, education, skills, languages and relevant certificates. Keep it concise, practical and easy to scan.',
+            },
+            {
+                question: 'Should I use Europass for jobs in the Netherlands?',
+                answer: 'Use Europass when an employer, school or formal EU process asks for it. For many Dutch private-sector roles, a tailored one- or two-page CV in English is usually more flexible and easier to scan.',
+            },
+            {
+                question: 'Can I apply with an English CV in the Netherlands?',
+                answer: 'Yes, especially for international companies, tech roles, startups and vacancies written in English. If Dutch is required, state your current Dutch level clearly instead of hiding it.',
+            },
+            {
+                question: 'Should I include a photo on an English CV for the Netherlands?',
+                answer: 'Usually it is optional. If the vacancy does not request a photo, prioritize a clean content-first layout. Add a photo only if it is professional and does not hurt ATS readability or page-one clarity.',
+            },
+            {
+                question: 'How long should a Netherlands CV be?',
+                answer: 'One page is enough for starters and many early-career applicants. Two pages are fine when the extra content is relevant to the vacancy and still easy to scan.',
+            },
+        ],
+        relatedLinks: [
+            {
+                href: '/en/dutch-cv-template',
+                title: 'Dutch CV template in English',
+                description: 'Start from a template built for Dutch-market structure while keeping your CV in English.',
+            },
+            {
+                href: '/en/guides/netherlands-cv-keywords-ats',
+                title: 'Netherlands CV keywords and ATS',
+                description: 'Layer vacancy keywords onto the format once the structure is clean and readable.',
+            },
+            {
+                href: '/en/guides/netherlands-cv-photo-rules',
+                title: 'CV photo rules in the Netherlands',
+                description: 'Decide whether a photo belongs on your CV before exporting the final version.',
+            },
+        ],
+        ctaTitle: 'Ready to build a Netherlands-format CV in English?',
+        ctaText: 'Start with a clean Dutch-market structure, add your English content, and export a recruiter-friendly PDF without a subscription.',
+        ctaHref: '/en/editor',
     },
     'translate-resume-to-dutch-format': {
         intro: 'Upload your PDF resume with the translator below and WerkCV will reshape its sections, keywords, and emphasis into the Dutch structure featured on this page.',

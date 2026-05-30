@@ -5,6 +5,8 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import NettoBrutoTool from "./NettoBrutoTool";
 
 const faqItems = [
@@ -49,9 +51,10 @@ const cvIntentLinks = [
   },
 ];
 
-export const metadata: Metadata = {
+export const metadata: Metadata = buildDutchMetadata({
     title: "Netto Bruto Calculator 2026 - Bruto Naar Netto & Netto Naar Bruto | WerkCV",
     description: "Bereken bruto naar netto en netto naar bruto voor 2026. Inclusief loonheffingskorting, vakantiegeld en actuele Belastingdienst-tarieven als duidelijke indicatie voor loondienst.",
+    path: "/tools/netto-bruto-calculator",
     keywords: [
         "netto bruto calculator",
         "bruto naar netto 2026",
@@ -60,7 +63,7 @@ export const metadata: Metadata = {
         "loonheffingskorting calculator",
         "netto salaris berekenen",
     ],
-};
+});
 
 export default function NettoBrutoCalculatorPage() {
     return (
@@ -107,7 +110,7 @@ export default function NettoBrutoCalculatorPage() {
                         </p>
                         <div className="mt-6 flex flex-wrap gap-3">
                             <Link
-                                href="/editor"
+                                href="/cv-maken-zonder-abonnement"
                                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
                             >
                                 Maak gratis je CV
@@ -246,6 +249,16 @@ export default function NettoBrutoCalculatorPage() {
                         ))}
                     </div>
                 </section>
+
+                <ToolToCvCTA
+                    toolName="netto-bruto-calculator"
+                    eyebrow="Volgende stap na je looncheck"
+                    title="Vergelijk je nettoloon met een volgende baan"
+                    description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
+                    primaryLabel="Bekijk cv zonder abonnement"
+                    insightText="Gebruik je netto-indicatie wanneer je een aanbod vergelijkt, een salarisgesprek voorbereidt of gericht wilt solliciteren."
+                    intent="salary"
+                />
 
                 <section className="bg-slate-50 border-2 border-slate-200 p-6">
                     <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">

@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import TransitievergoedingTool from "./TransitievergoedingTool";
 
@@ -277,10 +278,10 @@ export default function TransitievergoedingPage() {
                                 Check je opzegtermijn
                             </Link>
                             <Link
-                                href="/editor"
+                                href="/cv-maken-zonder-abonnement"
                                 className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
                             >
-                                Maak gratis je CV
+                                Bekijk cv zonder abonnement
                             </Link>
                         </div>
                     </div>
@@ -304,6 +305,16 @@ export default function TransitievergoedingPage() {
                         ))}
                     </div>
                 </section>
+
+                <ToolToCvCTA
+                    toolName="transitievergoeding-berekenen"
+                    eyebrow="Volgende stap na contracteinde"
+                    title="Bereid je volgende sollicitatie voor zonder nieuw abonnement"
+                    description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
+                    primaryLabel="Bekijk cv zonder abonnement"
+                    insightText="Gebruik je transitievergoeding als financiële context en zet tegelijk een helder cv klaar voor je volgende stap."
+                    intent="legal"
+                />
 
                 <section className="bg-slate-50 border-2 border-slate-200 p-6">
                     <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">

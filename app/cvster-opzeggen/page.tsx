@@ -3,6 +3,7 @@ import Link from "next/link";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import Footer from "@/components/Footer";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { cvDownloadPrice } from "@/lib/site-content";
 
 const sourceLinks = [
@@ -100,10 +101,11 @@ const faqs = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: "CVster opzeggen? Directe stappen + alternatief",
+export const metadata: Metadata = buildDutchMetadata({
+  title: "CVster Opzeggen 2026 - Formulier + Alternatief | WerkCV",
   description:
-    "CVster opzeggen? Gebruik het officiële opzegformulier, bevestig per e-mail en maak daarna eventueel een cv zonder proefabonnement.",
+    "CVster opzeggen? Gebruik het officiele formulier, bevestig via e-mail en controleer wanneer premium stopt. Bekijk daarna een alternatief zonder abonnement.",
+  path: "/cvster-opzeggen",
   keywords: [
     "cvster opzeggen",
     "cvster abonnement opzeggen",
@@ -111,14 +113,11 @@ export const metadata: Metadata = {
     "cvster stoppen",
     "cvster premium opzeggen",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/cvster-opzeggen",
-    languages: {
-      "nl-NL": "https://werkcv.nl/cvster-opzeggen",
-      "x-default": "https://werkcv.nl/cvster-opzeggen",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/cvster-opzeggen",
+    "x-default": "https://werkcv.nl/cvster-opzeggen",
   },
-};
+});
 
 export default function CvsterOpzeggenPage() {
   const faqSchema = {

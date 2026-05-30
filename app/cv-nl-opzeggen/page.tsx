@@ -78,9 +78,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "CV.nl Opzeggen in 2026 - Stap voor Stap + Wat Daarna | WerkCV",
+  title: "CV.nl Opzeggen 2026 - Stappen + Alternatief | WerkCV",
   description:
-    "Bekijk hoe je CV.nl opzegt, wat er daarna gebeurt en hoe je een cv maakt zonder maandabonnement.",
+    "CV.nl opzeggen? Log in, open Instellingen en klik op Opzeggen. Controleer je bevestigingsmail en bekijk daarna een alternatief zonder abonnement.",
   path: "/cv-nl-opzeggen",
   keywords: [
     "cv.nl opzeggen",
@@ -160,6 +160,9 @@ export default function CvNlOpzeggenPage() {
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Wil je je CV.nl abonnement stopzetten? Hieronder vind je de stappen om je abonnement te controleren en op te zeggen. Wil je daarna opnieuw een cv maken zonder maandabonnement? Dan kun je WerkCV gebruiken met een eenmalige betaling van {cvDownloadPrice.display} per PDF-download.
+            </p>
+            <p className="mt-5 border-4 border-black bg-yellow-100 px-4 py-3 text-sm font-medium leading-relaxed text-slate-800">
+              <span className="font-black">Kort antwoord:</span> log in bij CV.nl, open via je profielicoon de pagina Instellingen en klik op Opzeggen. Controleer daarna of je de bevestiging per e-mail ontvangt.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink

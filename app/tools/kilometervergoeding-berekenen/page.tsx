@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import KilometervergoedingTool from "./KilometervergoedingTool";
 
@@ -224,6 +225,16 @@ export default function KilometervergoedingBerekenenPage() {
             ))}
           </div>
         </section>
+
+        <ToolToCvCTA
+          toolName="kilometervergoeding-berekenen"
+          eyebrow="Volgende stap na je aanbodcheck"
+          title="Vergelijk je reiskosten met je volgende baan"
+          description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
+          primaryLabel="Bekijk cv zonder abonnement"
+          insightText="Reiskosten zijn onderdeel van je totale pakket. Gebruik je uitkomst wanneer je een nieuwe rol of werkgever vergelijkt."
+          intent="salary"
+        />
 
         <section className="border-2 border-slate-200 bg-slate-50 p-6">
           <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Bronnen</p>

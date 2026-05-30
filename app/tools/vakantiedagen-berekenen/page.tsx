@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import VakantiedagenTool from "./VakantiedagenTool";
 
@@ -243,39 +244,6 @@ export default function VakantiedagenBerekenenPage() {
           ]}
         />
 
-        <section className="mt-12 mb-12 bg-black text-white p-8 border-4 border-black shadow-[6px_6px_0px_0px_rgba(78,205,196,1)]">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-6 items-center">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-black mb-3">
-                Baanwissel of nieuwe urenafspraak in zicht?
-              </h2>
-              <p className="text-sm sm:text-base text-slate-300 max-w-2xl">
-                Gebruik je verlof- en looncheck als basis en zet daarna direct de volgende stap in je sollicitatie of je nieuwe CV.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/cv-maken"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-white hover:bg-teal-300 transition-colors"
-              >
-                Lees hoe je een sterk CV maakt
-              </Link>
-              <Link
-                href="/cv-maken-zonder-abonnement"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
-              >
-                CV zonder abonnement
-              </Link>
-              <Link
-                href="/cv-maken-zonder-abonnement"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
-              >
-                Zonder abonnement
-              </Link>
-            </div>
-          </div>
-        </section>
-
         <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
             CV vervolgstap
@@ -307,6 +275,16 @@ export default function VakantiedagenBerekenenPage() {
             ))}
           </div>
         </section>
+
+        <ToolToCvCTA
+          toolName="vakantiedagen-berekenen"
+          eyebrow="Volgende stap na je verlofcheck"
+          title="Gebruik je verlofplanning voor je volgende baanstap"
+          description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
+          primaryLabel="Bekijk cv zonder abonnement"
+          insightText="Verlofuren, contracteinde en een baanwissel hangen vaak samen. Zet je cv klaar voordat je planning concreet wordt."
+          intent="legal"
+        />
 
         <section className="bg-slate-50 border-2 border-slate-200 p-6">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">

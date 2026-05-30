@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import { ToolPageShell } from "@/components/tools/ToolPageShell";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { AOW_AGE_RANGES } from "@/lib/tools/employment-tools";
 import AowLeeftijdTool from "./AowLeeftijdTool";
 
@@ -19,12 +21,12 @@ const faqItems = [
   {
     question: "Wanneer gaat mijn AOW in?",
     answer:
-      "Je AOW-uitkering gaat in op de dag dat je je AOW-leeftijd bereikt. Je ontvangt de eerste betaling in de maand erna. De SVB informeert je automatisch 4 maanden vóór je AOW-ingangsdatum — je hoeft niets zelf aan te vragen als je al in Nederland woont.",
+      "Je AOW-uitkering gaat in op de dag dat je je AOW-leeftijd bereikt. Woon je in Nederland, dan stuurt de SVB ongeveer 4 maanden daarvoor een brief. Vanaf dat moment kun je je AOW aanvragen; eerder aanvragen kan niet.",
   },
   {
     question: "Kan de overheid mijn AOW-leeftijd nog verhogen?",
     answer:
-      "Ja. De AOW-leeftijd is gekoppeld aan de levensverwachting via CBS-data. Als Nederlanders gemiddeld langer leven, kan de AOW-leeftijd stijgen. Verhogingen worden minimaal 5 jaar van tevoren aangekondigd. Per 2026 is voor de komende jaren geen verdere verhoging vastgesteld.",
+      "Ja. De AOW-leeftijd hangt samen met de levensverwachting. De SVB vermeldt dat de leeftijd definitief is vastgesteld voor iedereen die vóór 1 oktober 1964 is geboren. Voor mensen die op of na die datum zijn geboren, toont de SVB verwachte leeftijden die nog kunnen veranderen.",
   },
   {
     question: "Wat is het verschil tussen AOW en aanvullend pensioen?",
@@ -44,14 +46,15 @@ const faqItems = [
   {
     question: "Hoe hoog is de AOW-uitkering?",
     answer:
-      "De AOW-uitkering voor een alleenstaande is in 2026 circa €1.400 netto per maand (inclusief vakantiegeld). Voor gehuwden of samenwonenden is dit circa €960 netto per persoon per maand. De exacte bedragen worden elk halfjaar aangepast aan de minimumloonindex — raadpleeg svb.nl voor de actuele bedragen.",
+      "Vanaf 1 januari 2026 is de volledige AOW met loonheffingskorting volgens de SVB €1.558,15 netto per maand voor een alleenstaande en €1.067,70 netto per persoon voor gehuwden of samenwonenden. Vakantiegeld bouw je apart op. De bedragen wijzigen ieder halfjaar, dus controleer altijd svb.nl.",
   },
 ];
 
-export const metadata: Metadata = {
-  title: "Pensioenleeftijd Berekenen in 2026 | AOW-leeftijd en AOW-datum | WerkCV",
+export const metadata: Metadata = buildDutchMetadata({
+  title: "AOW-leeftijd Berekenen 2026 - Check je AOW-datum | WerkCV",
   description:
-    "Bereken je pensioenleeftijd via je AOW-leeftijd en AOW-datum. Inclusief verschil tussen AOW, aanvullend pensioen en eerder stoppen met werken. Gebaseerd op SVB-regels voor 2026.",
+    "Vul je geboortedatum in en zie direct je AOW-leeftijd en AOW-datum. Met uitleg over pensioenleeftijd, eerder stoppen en de actuele SVB-regels voor 2026.",
+  path: "/tools/aow-leeftijd-checker",
   keywords: [
     "pensioenleeftijd berekenen",
     "pensioen leeftijd berekenen",
@@ -61,7 +64,7 @@ export const metadata: Metadata = {
     "aow leeftijd 2026",
     "wanneer krijg ik aow",
   ],
-};
+});
 
 export default function AowLeeftijdCheckerPage() {
   return (
@@ -96,6 +99,17 @@ export default function AowLeeftijdCheckerPage() {
         "Die AOW-datum is het wettelijke startpunt van je staatsuitkering, niet automatisch de datum waarop je aanvullend pensioen ingaat.",
         "Daarom laat deze pagina zowel je AOW-start als het effect van eerder stoppen met werken zien.",
       ]}
+      bottomCta={
+        <ToolToCvCTA
+          toolName="aow-leeftijd-checker"
+          eyebrow="Volgende stap bij een nieuwe werkfase"
+          title="Nog een laatste overstap of nieuwe rol voor je AOW?"
+          description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
+          primaryLabel="Bekijk cv zonder abonnement"
+          insightText="Gebruik je AOW-check als ankerpunt als je nog solliciteert, minder uren wilt werken of een laatste overstap overweegt."
+          intent="legal"
+        />
+      }
     >
       <>
         <AowLeeftijdTool />

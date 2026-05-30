@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import WWDagloonTool from "./WWDagloonTool";
 
@@ -21,6 +22,10 @@ const faqItems = [
     answer: "Beide. De tool berekent eerst een dagloon-indicatie en vertaalt die daarna naar een bruto maandbedrag voor de eerste 2 maanden WW en voor de periode daarna.",
   },
   {
+    question: "Wat is het maximum dagloon voor WW in 2026?",
+    answer: "UWV vermeldt voor 2026 een maximumdagloon van EUR 304,25 bruto per dag, inclusief vakantiegeld. Is je berekende dagloon hoger, dan gebruikt UWV voor de uitkering dit maximum.",
+  },
+  {
     question: "Waarom is het dagloon voor parttimers niet hetzelfde als wat zij per werkdag verdienen?",
     answer: "UWV rekent het dagloon vanuit een fulltime werkweek. Daardoor kan het dagloon voor parttimers lager uitvallen dan wat zij feitelijk op een gewerkte dag verdienden.",
   },
@@ -31,8 +36,8 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "WW Uitkering Berekenen 2026 | Dagloon en Maandbedrag | WerkCV",
-  description: "Bereken je WW-uitkering in 2026 via dagloon, maandbedrag en 75%/70%-regel. Inclusief snelle salarisroute en SV-loon invoer.",
+  title: "WW Uitkering Berekenen 2026 - Maximum Dagloon | WerkCV",
+  description: "Bereken je WW-uitkering in 2026 via dagloon en maandbedrag. Inclusief maximum dagloon van EUR 304,25 en de 75%/70%-regel.",
   path: "/tools/ww-dagloon-checker",
   keywords: [
     "ww uitkering berekenen",
@@ -147,6 +152,32 @@ export default function WWDagloonCheckerPage() {
           </div>
         </section>
 
+        <section className="mb-12 border-2 border-black bg-[#FFF7D6] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600 mb-2">
+            Wettelijk maximum
+          </p>
+          <h2 className="text-2xl font-black text-slate-900 mb-3">
+            Maximum dagloon WW 2026: EUR 304,25 bruto per dag
+          </h2>
+          <div className="space-y-3 text-sm text-slate-700 leading-relaxed">
+            <p>
+              UWV gebruikt een maximumdagloon bij het berekenen van WW. Is je berekende dagloon hoger dan EUR 304,25 bruto per dag, dan wordt je uitkering begrensd op dit maximum.
+            </p>
+            <p>
+              Het maximumdagloon is inclusief vakantiegeld. Het ministerie kan het bedrag aanpassen op 1 januari en 1 juli. Controleer daarom altijd de actuele{" "}
+              <a
+                href="https://www.uwv.nl/nl/premies-bedragen/maximum-dagloon"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-teal-700 hover:underline"
+              >
+                UWV-pagina over het maximumdagloon
+              </a>
+              .
+            </p>
+          </div>
+        </section>
+
         <RelatedToolsSection
           title="Gebruik deze WW-cluster samen"
           description="Het dagloon is meestal pas stap 2. Daarna wil je weten of je recht hebt, hoe lang je WW ongeveer duurt en wat er rond contracteinde nog meespeelt."
@@ -178,33 +209,6 @@ export default function WWDagloonCheckerPage() {
           ]}
         />
 
-        <section className="mt-12 mb-12 bg-black text-white p-8 border-4 border-black shadow-[6px_6px_0px_0px_rgba(78,205,196,1)]">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-6 items-center">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-black mb-3">
-                Van WW-check naar je volgende sollicitatie
-              </h2>
-              <p className="text-sm sm:text-base text-slate-300 max-w-2xl">
-                Als je ongeveer weet waar je financieel staat, kun je sneller door naar WW-duur, sollicitatiebrieven en een nieuw cv.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/tools/ww-duur-checker"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-white hover:bg-teal-300 transition-colors"
-              >
-                Bereken ook WW-duur
-              </Link>
-              <Link
-                href="/cv-maken-zonder-abonnement"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
-              >
-                Maak je cv zonder abonnement
-              </Link>
-            </div>
-          </div>
-        </section>
-
         <section className="mt-12 mb-12">
           <div className="mb-5">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
@@ -223,6 +227,16 @@ export default function WWDagloonCheckerPage() {
             ))}
           </div>
         </section>
+
+        <ToolToCvCTA
+          toolName="ww-dagloon-checker"
+          eyebrow="Volgende stap na je WW-check"
+          title="Klaar om je volgende sollicitatie concreet te maken?"
+          description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
+          primaryLabel="Bekijk cv zonder abonnement"
+          insightText="Gebruik je WW-indicatie als planning, maar zet tegelijk je volgende sollicitatiestap klaar met een helder Nederlands cv."
+          intent="legal"
+        />
 
         <section className="bg-slate-50 border-2 border-slate-200 p-6">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">

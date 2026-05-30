@@ -25,6 +25,7 @@ type ToolPageShellProps = {
   asideTitle: string;
   asideParagraphs: string[];
   children: ReactNode;
+  bottomCta?: ReactNode;
 };
 
 function getBadgeClassName(badge: ToolBadge) {
@@ -51,6 +52,7 @@ export function ToolPageShell({
   asideTitle,
   asideParagraphs,
   children,
+  bottomCta,
 }: ToolPageShellProps) {
   return (
     <div className="min-h-screen bg-[#FFFEF9]">
@@ -139,6 +141,8 @@ export function ToolPageShell({
           </div>
           <ToolFaqAccordion items={faqItems} />
         </section>
+
+        {bottomCta}
       </main>
 
       <Footer />

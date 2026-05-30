@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import EindejaarsuitkeringTool from "./EindejaarsuitkeringTool";
 
@@ -272,33 +273,6 @@ export default function EindejaarsuitkeringBerekenenPage() {
           ]}
         />
 
-        <section className="mt-12 mb-12 bg-black text-white p-8 border-4 border-black shadow-[6px_6px_0px_0px_rgba(78,205,196,1)]">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_0.95fr] gap-6 items-center">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-black mb-3">
-                Gebruik je salarischeck direct voor je volgende stap
-              </h2>
-              <p className="text-sm sm:text-base text-slate-300 max-w-2xl">
-                Vergelijk je aanbod, check je totale pakket en zet daarna meteen een nieuw CV of sollicitatie klaar.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/cv-maken-zonder-abonnement"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-white hover:bg-teal-300 transition-colors"
-              >
-                CV zonder abonnement
-              </Link>
-              <Link
-                href="/cv-maken"
-                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
-              >
-                Lees CV tips
-              </Link>
-            </div>
-          </div>
-        </section>
-
         <section className="mt-12 mb-12">
           <div className="mb-5">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
@@ -317,6 +291,16 @@ export default function EindejaarsuitkeringBerekenenPage() {
             ))}
           </div>
         </section>
+
+        <ToolToCvCTA
+          toolName="eindejaarsuitkering-berekenen"
+          eyebrow="Volgende stap na je pakketcheck"
+          title="Vergelijk je totale pakket met je volgende baan"
+          description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
+          primaryLabel="Bekijk cv zonder abonnement"
+          insightText="Gebruik je eindejaarsuitkering samen met salaris, uren en vakantiegeld als je een aanbod vergelijkt of een nieuwe rol overweegt."
+          intent="salary"
+        />
 
         <section className="bg-slate-50 border-2 border-slate-200 p-6">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">

@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import SalarisCalculatorTool from "./SalarisCalculatorTool";
 
 const faqItems = [
@@ -245,6 +246,16 @@ export default function SalarisCalculatorPage() {
             ))}
           </div>
         </section>
+
+        <ToolToCvCTA
+          toolName="salaris-calculator"
+          eyebrow="Volgende stap na je salarisbenchmark"
+          title="Gebruik je marktcheck om gerichter te solliciteren"
+          description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
+          primaryLabel="Bekijk cv zonder abonnement"
+          insightText="Leg je benchmark naast je ervaring en vacaturedoel. Een helder cv helpt je om op het juiste niveau te solliciteren."
+          intent="salary"
+        />
 
         <section className="bg-slate-50 border-2 border-slate-200 p-6">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">

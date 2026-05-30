@@ -6,6 +6,7 @@ import { FAQJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import TrackedToolLink from "@/components/analytics/TrackedToolLink";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import UurloonCalculatorTool from "./UurloonCalculatorTool";
 
@@ -110,7 +111,7 @@ export default function UurloonCalculatorPage() {
                         </p>
                         <div className="mt-6 flex flex-wrap gap-3">
                             <TrackedToolLink
-                                href="/editor"
+                                href="/cv-maken-zonder-abonnement"
                                 eventName="tool_to_cv_cta_click"
                                 toolName="uurloon-calculator"
                                 ctaIntent="salary"
@@ -220,6 +221,16 @@ export default function UurloonCalculatorPage() {
                         ))}
                     </div>
                 </section>
+
+                <ToolToCvCTA
+                    toolName="uurloon-calculator"
+                    eyebrow="Volgende stap na je uurlooncheck"
+                    title="Past je uurloon niet meer bij het werk dat je zoekt?"
+                    description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
+                    primaryLabel="Bekijk cv zonder abonnement"
+                    insightText="Gebruik je uurlooncheck als startpunt voor een nieuwe sollicitatie, aanbodvergelijking of salarisonderhandeling."
+                    intent="salary"
+                />
             </main>
 
             <Footer />
