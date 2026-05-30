@@ -8,10 +8,11 @@ export const chauffeur: CVExample = {
     templateId: 'ats',
     colorThemeId: 'charcoal',
 
-    metaTitle: 'CV Voorbeeld Chauffeur | Transport & Code 95 | WerkCV.nl',
-    metaDesc: 'Professioneel cv voorbeeld voor chauffeur en vrachtwagenchauffeur. Met CE-rijbewijs, Code 95, ADR, tachograaf, routeplanning en schadevrije kilometers.',
+    metaTitle: 'CV Chauffeur Voorbeeld 2026 | Code 95 + Rijbewijs | WerkCV.nl',
+    metaDesc: 'Bekijk een cv chauffeur voorbeeld met CE-rijbewijs, Code 95, ADR, routeplanning en schadevrije kilometers. Gebruik de opzet voor je eigen cv.',
     keywords: [
         'cv voorbeeld chauffeur',
+        'cv buschauffeur',
         'cv vrachtwagenchauffeur voorbeeld',
         'vrachtwagenchauffeur cv voorbeeld',
         'chauffeur cv',
@@ -33,6 +34,30 @@ export const chauffeur: CVExample = {
         'vakmanschap-en-logistiek/koerier',
         'vakmanschap-en-logistiek/logistiek-medewerker',
     ],
+    expertContent: {
+        recruiterFocus: [
+            'Zet rijbewijzen, Code 95, bestuurderskaart en ADR direct bovenaan zodat een planner je inzetbaarheid snel kan beoordelen.',
+            'Maak je ervaring specifiek: distributie, koeltransport, stukgoed, internationaal transport, pendelritten of personenvervoer.',
+            'Onderbouw betrouwbaarheid met schadevrije kilometers, tijdige leveringen en correct afgehandelde documenten.',
+        ],
+        copyReadyBullets: [
+            'Meer dan 600.000 schadevrije kilometers gereden op internationale routes door Duitsland, Belgie, Frankrijk en Scandinavie.',
+            'Dagelijks 15 tot 20 afleveradressen bediend met correcte CMR-documentatie en tijdige levering volgens planning.',
+            'Ladingzekering, digitale tachograaf en routewijzigingen zelfstandig afgehandeld via boordcomputer.',
+        ],
+        rewriteExamples: [
+            {
+                bad: 'Veel gereden voor klanten.',
+                good: 'Dagelijks 15 tot 20 afleveradressen bediend met tijdige levering, correcte scanregistratie en professioneel klantcontact.',
+                reason: 'De sterke versie bewijst volume, nauwkeurigheid en klantgerichtheid.',
+            },
+        ],
+        trustSignals: [
+            'Vermeld geldigheidsdata van Code 95, ADR en bestuurderskaart wanneer een werkgever dit snel moet controleren.',
+            'Noem schadevrije kilometers of jaren zonder incidenten als je die aantoonbaar kunt onderbouwen.',
+            'Beschrijf ervaring met tachograaf, CMR, boordcomputer en ladingzekering om zelfstandigheid zichtbaar te maken.',
+        ],
+    },
 
     sampleCV: {
         personal: {

@@ -22,6 +22,8 @@ export type SalaryRoleBenchmark = {
 export type SalaryRolePage = {
   slug: string;
   roleLabel: string;
+  metaTitle?: string;
+  metaDescription?: string;
   benchmarkId?: SalaryBenchmarkId;
   benchmarkOverride?: SalaryRoleBenchmark;
   benchmarkNote?: string;
@@ -45,9 +47,9 @@ const defaultRoleLinks: SalaryRoleLink[] = [
     description: "Open de bredere salarischeck als je meerdere rollen of profielen wilt vergelijken.",
   },
   {
-    href: "/editor",
-    label: "Maak gratis een ATS-vriendelijk CV",
-    description: "Trek je salarisdoel direct door naar een sollicitatieklare CV-versie.",
+    href: "/cv-maken-zonder-abonnement",
+    label: "Maak een ATS-vriendelijk CV zonder abonnement",
+    description: "Trek je salarisdoel direct door naar een sollicitatieklare CV-versie zonder abonnementsval.",
   },
 ];
 
@@ -55,6 +57,9 @@ export const salaryRolePages: SalaryRolePage[] = [
   {
     slug: "tandarts",
     roleLabel: "tandarts",
+    metaTitle: "Salaris Tandarts 2026 - Bruto per Maand + Marktband | WerkCV",
+    metaDescription:
+      "Wat verdient een tandarts? Bekijk de brede CBS-benchmark Artsen voor 32, 36 en 40 uur, inclusief mediaan, marktband en duidelijke bronnuance.",
     benchmarkOverride: {
       group: "Zorg",
       label: "Artsen",
@@ -74,6 +79,11 @@ export const salaryRolePages: SalaryRolePage[] = [
         href: "/templates",
         label: "Bekijk CV templates voor zorg- en specialistische functies",
         description: "Handig als je na je salarischeck ook je positionering op papier wilt aanscherpen.",
+      },
+      {
+        href: "/salaris/verpleegkundige",
+        label: "Bekijk ook salaris verpleegkundige",
+        description: "Vergelijk met een andere zorgfunctie waarvoor CBS een directe beroepsregel publiceert.",
       },
     ],
   },
@@ -96,6 +106,33 @@ export const salaryRolePages: SalaryRolePage[] = [
         href: "/sollicitatiebrief-voorbeeld-software-ontwikkelaar",
         label: "Sollicitatiebrief software developer",
         description: "Gebruik je benchmark ook in de manier waarop je je overstap of groeistap verkoopt.",
+      },
+      {
+        href: "/salaris/systeembeheerder",
+        label: "Vergelijk met salaris systeembeheerder",
+        description: "Bekijk ook het marktloon voor infrastructuur- en beheerrollen.",
+      },
+    ],
+  },
+  {
+    slug: "systeembeheerder",
+    roleLabel: "systeembeheerder",
+    benchmarkId: "system-network-specialist",
+    benchmarkNote:
+      "Voor deze pagina gebruikt WerkCV de officiele CBS-regel Databank- en netwerkspecialisten. Die groep omvat systeembeheerders en verwante infrastructuurrollen. Zie de bedragen als marktindicatie voor het bredere vakgebied.",
+    metaTitle: "Salaris Systeembeheerder 2026 - Bruto per Maand | WerkCV",
+    metaDescription:
+      "Bekijk het salaris van een systeembeheerder in 2026 met CBS-data, bruto maandbedragen bij 32, 36 en 40 uur en uitleg over ervaring en specialisatie.",
+    relatedLinks: [
+      {
+        href: "/cv-voorbeelden/technologie-en-ict/systeembeheerder",
+        label: "CV voorbeeld systeembeheerder",
+        description: "Maak je beheerervaring en technische specialisaties zichtbaar.",
+      },
+      {
+        href: "/salaris/software-ontwikkelaar",
+        label: "Vergelijk met salaris software developer",
+        description: "Vergelijk het marktloon met een verwante ICT-functie.",
       },
     ],
   },
@@ -148,6 +185,33 @@ export const salaryRolePages: SalaryRolePage[] = [
         label: "Sollicitatiebrief administratief medewerker",
         description: "Koppel je salarischeck aan een nette sollicitatiebrief voor office- en supportfuncties.",
       },
+      {
+        href: "/salaris/salarisadministrateur",
+        label: "Vergelijk met salaris salarisadministrateur",
+        description: "Bekijk het marktloon voor een gespecialiseerde administratieve rol.",
+      },
+    ],
+  },
+  {
+    slug: "salarisadministrateur",
+    roleLabel: "salarisadministrateur",
+    benchmarkId: "payroll-bookkeeping",
+    benchmarkNote:
+      "CBS publiceert in deze dataset geen losse regel voor salarisadministrateurs. Daarom gebruikt WerkCV de bredere officiele groep Boekhoudkundig medewerkers. Zie de bedragen als marktindicatie voor salarisadministratie en verwante werkzaamheden.",
+    metaTitle: "Salaris Salarisadministrateur 2026 - Bruto per Maand | WerkCV",
+    metaDescription:
+      "Bekijk het salaris van een salarisadministrateur in 2026 met CBS-data, bruto maandbedragen bij 32, 36 en 40 uur en uitleg over ervaring en specialisatie.",
+    relatedLinks: [
+      {
+        href: "/cv-template-administratief-medewerker",
+        label: "CV template administratief medewerker",
+        description: "Gebruik een heldere basis voor administratieve ervaring en resultaten.",
+      },
+      {
+        href: "/salaris/administratief-medewerker",
+        label: "Vergelijk met salaris administratief medewerker",
+        description: "Vergelijk het marktloon met een bredere administratieve functie.",
+      },
     ],
   },
   {
@@ -164,6 +228,11 @@ export const salaryRolePages: SalaryRolePage[] = [
         href: "/sollicitatiebrief-voorbeeld-klantenservice",
         label: "Sollicitatiebrief klantenservice",
         description: "Gebruik een voorbeeldbrief die past bij service, escalaties en communicatieskills.",
+      },
+      {
+        href: "/salaris/administratief-medewerker",
+        label: "Vergelijk met salaris administratief medewerker",
+        description: "Bekijk ook een veelvoorkomende office- en supportfunctie.",
       },
     ],
   },
@@ -194,6 +263,11 @@ export const salaryRolePages: SalaryRolePage[] = [
         label: "CV voorbeeld leerkracht basisonderwijs",
         description: "Gebruik een onderwijs-CV dat pedagogiek, klasverantwoordelijkheid en teamfit direct laat zien.",
       },
+      {
+        href: "/salaris/docent-voortgezet-onderwijs",
+        label: "Vergelijk met salaris docent voortgezet onderwijs",
+        description: "Bekijk de marktband voor een verwante onderwijsfunctie.",
+      },
     ],
   },
   {
@@ -221,6 +295,9 @@ export const salaryRolePages: SalaryRolePage[] = [
   {
     slug: "verpleegkundige",
     roleLabel: "verpleegkundige",
+    metaTitle: "Salaris Verpleegkundige 2026 - Bruto per Maand | WerkCV",
+    metaDescription:
+      "Wat verdient een verpleegkundige? Bekijk de CBS-mediaan en salarisband voor 32, 36 en 40 uur. Vergelijk bruto maandloon en reken daarna netto door.",
     benchmarkId: "mbo-nurse",
     benchmarkNote:
       "Voor deze pagina gebruikt WerkCV de officiele CBS-regel Verpleegkundigen (mbo). Voor specialistische verpleegkundige rollen ligt de benchmark vaak hoger; bekijk daarvoor ook de aparte pagina voor gespecialiseerd verpleegkundigen.",
@@ -240,6 +317,11 @@ export const salaryRolePages: SalaryRolePage[] = [
         label: "Sollicitatiebrief verpleegkundige",
         description: "Handig als je overstapt en je gewenste niveau ook in je brief wilt laten terugkomen.",
       },
+      {
+        href: "/salaris/gespecialiseerd-verpleegkundige",
+        label: "Vergelijk met salaris gespecialiseerd verpleegkundige",
+        description: "Bekijk ook de hogere CBS-benchmark voor specialistische verpleegkundige rollen.",
+      },
     ],
   },
   {
@@ -257,6 +339,11 @@ export const salaryRolePages: SalaryRolePage[] = [
         label: "Sollicitatiebrief verkoopmedewerker",
         description: "Koppel je salarisvergelijking aan een sollicitatiebrief die direct commercieel overkomt.",
       },
+      {
+        href: "/salaris/klantenservice-medewerker",
+        label: "Vergelijk met salaris klantenservice medewerker",
+        description: "Bekijk ook een klantgerichte functie buiten de winkelvloer.",
+      },
     ],
   },
   {
@@ -268,6 +355,55 @@ export const salaryRolePages: SalaryRolePage[] = [
         href: "/cv-voorbeelden/vakmanschap-en-logistiek/chauffeur",
         label: "CV voorbeeld vrachtwagenchauffeur",
         description: "Gebruik een logistiek CV dat rijbewijzen, certificaten en betrouwbaarheid meteen duidelijk maakt.",
+      },
+      {
+        href: "/salaris/magazijnmedewerker",
+        label: "Vergelijk met salaris magazijnmedewerker",
+        description: "Bekijk ook het marktloon voor een logistieke functie op locatie.",
+      },
+    ],
+  },
+  {
+    slug: "magazijnmedewerker",
+    roleLabel: "magazijnmedewerker",
+    benchmarkId: "logistics-planner",
+    benchmarkNote:
+      "CBS publiceert in deze dataset geen losse regel voor magazijnmedewerkers. Daarom gebruikt WerkCV de bredere officiele groep Transportplanners en logistiek medewerkers. Zie de bedragen als marktindicatie voor logistieke functies.",
+    metaTitle: "Salaris Magazijnmedewerker 2026 - Bruto per Maand | WerkCV",
+    metaDescription:
+      "Bekijk het salaris van een magazijnmedewerker in 2026 met CBS-data, bruto maandbedragen bij 32, 36 en 40 uur en uitleg over toeslagen en ervaring.",
+    relatedLinks: [
+      {
+        href: "/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker",
+        label: "CV voorbeeld magazijnmedewerker",
+        description: "Laat je logistieke ervaring en certificaten helder terugkomen.",
+      },
+      {
+        href: "/salaris/vrachtwagenchauffeur",
+        label: "Vergelijk met salaris vrachtwagenchauffeur",
+        description: "Bekijk ook een verwante functie binnen transport en logistiek.",
+      },
+    ],
+  },
+  {
+    slug: "elektricien",
+    roleLabel: "elektricien",
+    benchmarkId: "electrician",
+    benchmarkNote:
+      "Voor deze pagina gebruikt WerkCV de officiele CBS-regel Elektriciens en elektronicamonteurs. De bedragen geven een marktindicatie voor monteurs met elektrotechnische werkzaamheden.",
+    metaTitle: "Salaris Elektricien 2026 - Bruto per Maand | WerkCV",
+    metaDescription:
+      "Bekijk het salaris van een elektricien in 2026 met CBS-data, bruto maandbedragen bij 32, 36 en 40 uur en uitleg over ervaring en vakgebied.",
+    relatedLinks: [
+      {
+        href: "/cv-voorbeelden/vakmanschap-en-logistiek/elektricien",
+        label: "CV voorbeeld elektricien",
+        description: "Zet je elektrotechnische kennis en certificaten duidelijk op je cv.",
+      },
+      {
+        href: "/tools/uurloon-calculator",
+        label: "Reken je uurloon om",
+        description: "Vergelijk een bruto uurloon met een maandbedrag.",
       },
     ],
   },

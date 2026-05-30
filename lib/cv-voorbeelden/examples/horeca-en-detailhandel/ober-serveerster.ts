@@ -8,8 +8,8 @@ export const oberServeerster: CVExample = {
     templateId: 'jobboss',
     colorThemeId: 'modern-teal',
 
-    metaTitle: 'CV Serveerster Voorbeeld | WerkCV.nl',
-    metaDesc: 'Sterk cv serveerster voorbeeld met bediening, gastvrijheid, kassasysteem, wijnkennis, terras, reserveringen en horecaservice.',
+    metaTitle: 'CV Serveerster Voorbeeld 2026 | Profieltekst + Skills | WerkCV.nl',
+    metaDesc: 'Bekijk een sterk cv serveerster voorbeeld met profieltekst, bediening, gastvrijheid, kassasysteem en flexibele beschikbaarheid.',
     keywords: ['cv serveerster', 'cv serveerster voorbeeld', 'cv voorbeeld ober', 'cv bedieningsmedewerker', 'cv ober serveerster', 'cv bediening', 'cv horeca service', 'horeca cv'],
     heroTitle: 'CV voorbeeld serveerster',
     heroText: 'Als ober of serveerster ben je het visitekaartje van het restaurant. Dit CV voorbeeld laat zien hoe je gastvrijheid, tempo, kassasysteem, terrasbediening, upselling, wijnkennis en flexibele beschikbaarheid overtuigend presenteert aan horecawerkgevers.',
@@ -21,6 +21,30 @@ export const oberServeerster: CVExample = {
         'Toon service-impact met gastbeoordelingen, gemiddelde couverts, upselling of het inwerken van collega’s',
     ],
     relatedSlugs: ['horeca-en-detailhandel/kok-chef', 'horeca-en-detailhandel/hotel-receptionist', 'horeca-en-detailhandel/cateringmedewerker'],
+    expertContent: {
+        recruiterFocus: [
+            'Maak direct duidelijk in welk type horeca je hebt gewerkt en hoeveel gasten of tafels je tijdens piekuren bediende.',
+            'Noem kassasysteem, handhelds, reserveringen en allergenencommunicatie als je daar zelfstandig mee werkte.',
+            'Zet beschikbaarheid voor avonden, weekenden en feestdagen zichtbaar neer als dat bij de vacature past.',
+        ],
+        copyReadyBullets: [
+            'Bediening verzorgd voor gemiddeld 80 gasten per dienst, inclusief bestellingen, uitserveren en afrekenen via handheld.',
+            'Nieuwe collega’s ingewerkt op kassasysteem, tafelindeling en serviceafspraken tijdens drukke weekenddiensten.',
+            'Allergenenwensen en tafelwissels afgestemd met keuken en bar zodat de service tijdens piekdrukte soepel bleef.',
+        ],
+        rewriteExamples: [
+            {
+                bad: 'Verantwoordelijk voor bediening.',
+                good: 'Gemiddeld 80 gasten per dienst bediend op terras en in restaurant, inclusief handheld bestellingen en afrekenen.',
+                reason: 'De sterke versie maakt werktempo, context en systeemervaring concreet.',
+            },
+        ],
+        trustSignals: [
+            'Noem sociale hygiene, wijnkennis of barista-certificaten als je die hebt.',
+            'Beschrijf hoe je rustig blijft bij piekdrukte, klachten of speciale dieetwensen.',
+            'Laat zien dat collega’s op je kunnen rekenen tijdens avonden, weekenden en het terrasseizoen.',
+        ],
+    },
 
     sampleCV: {
         personal: {

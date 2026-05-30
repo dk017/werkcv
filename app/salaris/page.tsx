@@ -177,9 +177,9 @@ export default function SalarisPerBeroepPage() {
               badge: "AI",
             },
             {
-              href: "/editor",
-              title: "Maak gratis je CV",
-              description: "Gebruik je salarisdoel meteen als input voor je volgende sollicitatiestap.",
+              href: "/cv-maken-zonder-abonnement",
+              title: "Maak je CV zonder abonnement",
+              description: "Gebruik je salarisdoel meteen als input voor je volgende sollicitatiestap. Je betaalt alleen bij downloaden.",
               badge: "CV",
             },
           ]}

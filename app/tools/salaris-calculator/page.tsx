@@ -6,6 +6,7 @@ import { FAQJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import SalarisCalculatorTool from "./SalarisCalculatorTool";
 
 const faqItems = [
@@ -24,6 +25,10 @@ const faqItems = [
   {
     question: "Is dit een netto calculator?",
     answer: "Nee. Dit is een bruto salaris kompas tegen CBS-benchmarks per beroep, met profielcorrecties voor ervaring, opleiding en regio. Voor bruto naar netto of netto naar bruto gebruik je daarna de netto-bruto calculator.",
+  },
+  {
+    question: "Hoe bepaal ik mijn marktloon?",
+    answer: "Kies je beroep en vergelijk je bruto uurloon met de CBS-band tussen het 25e, 50e en 75e percentiel. Gebruik de mediaan als nuchter startpunt. Weeg daarna ervaring, opleiding, regio, functiezwaarte en arbeidsvoorwaarden mee voordat je een salarisdoel bepaalt.",
   },
 ];
 
@@ -50,9 +55,10 @@ const cvIntentLinks = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: "Salarischeck 2026 | Check Je Salaris Met CBS Data | WerkCV",
-  description: "Check je salaris met CBS-data per beroep. Vergelijk bruto maandloon, ervaring, regio en opleiding en zie of je marktconform zit.",
+export const metadata: Metadata = buildDutchMetadata({
+  title: "Salarischeck 2026 - Bereken je Marktloon met CBS Data | WerkCV",
+  description: "Bereken je marktloon met CBS-data per beroep. Vergelijk bruto loon, ervaring, regio en opleiding en zie direct of je marktconform zit.",
+  path: "/tools/salaris-calculator",
   keywords: [
     "salaris check",
     "salaris kompas",
@@ -62,11 +68,11 @@ export const metadata: Metadata = {
     "wat verdien ik",
     "salaris vergelijking",
     "gemiddeld salaris per beroep",
+    "marktloon",
+    "marktloon berekenen",
+    "wat is mijn marktloon",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/tools/salaris-calculator",
-  },
-};
+});
 
 export default function SalarisCalculatorPage() {
   return (
@@ -156,6 +162,30 @@ export default function SalarisCalculatorPage() {
 
         <section className="mb-12">
           <SalarisCalculatorTool />
+        </section>
+
+        <section className="mb-12 border-2 border-black bg-[#FFF7D6] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Marktloon berekenen
+          </p>
+          <h2 className="mb-3 text-2xl font-black text-slate-900">
+            Wat is je marktloon?
+          </h2>
+          <div className="space-y-3 text-sm leading-relaxed text-slate-700">
+            <p>
+              Je marktloon is de salarisrange die past bij je beroep, ervaring en positie op de
+              arbeidsmarkt. Het is geen enkel vast bedrag. Een marktconform salaris ligt meestal
+              ergens binnen een bandbreedte, afhankelijk van je functiezwaarte, sector, regio en
+              arbeidsvoorwaarden.
+            </p>
+            <p>
+              Deze salarischeck gebruikt officiële CBS-uurloonpercentielen per beroep als basis.
+              Het 25e percentiel laat de onderkant van de marktband zien, de mediaan is het
+              nuchtere middenpunt en het 75e percentiel geeft de bovenkant weer. Gebruik die band
+              als startpunt voor een offercheck of salarisonderhandeling, niet als automatische
+              loonclaim.
+            </p>
+          </div>
         </section>
 
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
