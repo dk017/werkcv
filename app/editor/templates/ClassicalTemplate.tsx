@@ -26,6 +26,14 @@ function SkillLevel({ level, color }: { level: number; color: string }) {
 }
 
 export default function ClassicalTemplate({ data, theme }: TemplateProps) {
+    const contactItems = [
+        data.personal.email,
+        data.personal.phone,
+        data.personal.address,
+        data.personal.postalCode,
+        data.personal.location ? formatResumeInlineValue(data.personal.location, data) : "",
+    ].filter((value): value is string => Boolean(value && value.trim()));
+
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto p-10"
@@ -50,13 +58,11 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                     </p>
                 )}
                 {/* Contact Info Row */}
-                <div className="flex justify-center flex-wrap gap-4 mt-3 text-xs" style={{ color: theme.textMuted }}>
-                    {data.personal.email && <span>{data.personal.email}</span>}
-                    {data.personal.phone && <span>• {data.personal.phone}</span>}
-                    {data.personal.address && <span>• {data.personal.address}</span>}
-                    {data.personal.postalCode && <span>• {data.personal.postalCode}</span>}
-                    {data.personal.location && <span>• {formatResumeInlineValue(data.personal.location, data)}</span>}
-                </div>
+                {contactItems.length > 0 && (
+                    <p className="mt-3 text-[11px] leading-relaxed text-center" style={{ color: theme.textMuted }}>
+                        {contactItems.join(" • ")}
+                    </p>
+                )}
             </div>
 
             {/* Two column layout for personal details */}
@@ -119,7 +125,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                             <div key={i}>
                                 <div className="flex justify-between items-start gap-4 mb-1">
                                     <h3 className="text-sm font-bold">{exp.role}</h3>
-                                    <span className="text-xs shrink-0 text-right min-w-[88px]" style={{ color: theme.textMuted }}>
+                                    <span className="text-xs shrink-0 text-left w-[96px]" style={{ color: theme.textMuted }}>
                                         {formatResumeDateRange(exp.start, exp.end, data)}
                                     </span>
                                 </div>
@@ -159,7 +165,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                             <div key={i}>
                                 <div className="flex justify-between items-start gap-4 mb-1">
                                     <h3 className="text-sm font-bold">{intern.role}</h3>
-                                    <span className="text-xs shrink-0 text-right min-w-[88px]" style={{ color: theme.textMuted }}>
+                                    <span className="text-xs shrink-0 text-left w-[96px]" style={{ color: theme.textMuted }}>
                                         {formatResumeDateRange(intern.start, intern.end, data)}
                                     </span>
                                 </div>
@@ -208,7 +214,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                                         </p>
                                     )}
                                 </div>
-                                <span className="text-xs shrink-0 text-right min-w-[88px]" style={{ color: theme.textMuted }}>
+                                <span className="text-xs shrink-0 text-left w-[96px]" style={{ color: theme.textMuted }}>
                                     {formatResumeDateRange(edu.start, edu.end, data)}
                                 </span>
                             </div>

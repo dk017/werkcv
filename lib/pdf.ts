@@ -1007,7 +1007,6 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
         personalDetailItems.push(`Website: ${linkifyText(data.personal.website)}`);
     }
 
-    const headerContactGap = templateId === 'classical' ? '16px' : '14px';
     const headerHtml = `
         <div style="text-align: center; border-bottom: 2px solid ${theme.primary}; padding-bottom: 24px; margin-bottom: 24px;">
             ${data.personal.photo
@@ -1018,9 +1017,11 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
                 ${e(data.personal.name || rt('nameFallback'))}
             </h1>
             ${data.personal.title ? `<p style="font-size: 16px; margin: 0; color: ${theme.textMuted};">${e(data.personal.title)}</p>` : ''}
-            <div style="display: flex; justify-content: center; gap: ${headerContactGap}; margin-top: 16px; font-size: 13px; color: ${theme.textMuted}; flex-wrap: wrap;">
-                ${contactItems.map((item, index) => `<span style="white-space: nowrap;">${index > 0 ? '&#8226; ' : ''}${linkifyText(item)}</span>`).join('')}
-            </div>
+            ${contactItems.length > 0 ? `
+                <div style="margin-top: 16px; font-size: 11px; line-height: 1.5; color: ${theme.textMuted}; text-align: center;">
+                    ${contactItems.map((item) => linkifyText(item)).join(' &#8226; ')}
+                </div>
+            ` : ''}
             ${personalDetailItems.length > 0 ? `
                 <div style="display: flex; justify-content: center; gap: 18px; margin-top: 12px; font-size: 11px; color: ${theme.textMuted}; flex-wrap: wrap;">
                     ${personalDetailItems.map((item) => `<span style="white-space: nowrap;">${item}</span>`).join('')}
@@ -1047,7 +1048,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
                 <div class="cv-item" style="margin-bottom: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
                         <h3 style="font-weight: bold; font-size: 14px; margin: 0; color: ${theme.text};">${e(exp.role)}</h3>
-                        <span style="font-size: 12px; color: ${theme.textMuted}; white-space: nowrap; text-align: right; min-width: 88px;">${e(formatResumeDateRange(exp.start, exp.end, data))}</span>
+                        <span style="font-size: 12px; color: ${theme.textMuted}; white-space: nowrap; text-align: left; width: 96px; flex: 0 0 96px;">${e(formatResumeDateRange(exp.start, exp.end, data))}</span>
                     </div>
                     <div style="font-size: 13px; color: ${theme.secondary}; margin-top: 2px;">
                         ${e(exp.company)}${exp.location ? ` | ${e(exp.location)}` : ''}
@@ -1072,7 +1073,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
                 <div class="cv-item" style="margin-bottom: 16px;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
                         <h3 style="font-weight: bold; font-size: 13px; margin: 0; color: ${theme.text};">${e(intern.role)}</h3>
-                        <span style="font-size: 12px; color: ${theme.textMuted}; white-space: nowrap; text-align: right; min-width: 88px;">${e(formatResumeDateRange(intern.start, intern.end, data))}</span>
+                        <span style="font-size: 12px; color: ${theme.textMuted}; white-space: nowrap; text-align: left; width: 96px; flex: 0 0 96px;">${e(formatResumeDateRange(intern.start, intern.end, data))}</span>
                     </div>
                     <div style="font-size: 12px; color: ${theme.textMuted}; margin-top: 2px;">${e(intern.company)}</div>
                     ${intern.description ? `<p style="font-size: 12px; margin-top: 6px; line-height: 1.5; color: ${theme.textMuted};">${nl2brLinkified(intern.description)}</p>` : ''}
@@ -1098,7 +1099,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: stri
                         <div style="font-size: 12px; color: ${theme.textMuted}; margin-top: 2px;">${e(edu.school)}${edu.location ? `, ${e(formatResumeInlineValue(edu.location, data))}` : ''}</div>
                         ${edu.description ? `<p style="font-size: 12px; line-height: 1.5; color: ${theme.textMuted}; margin-top: 4px;">${nl2brLinkified(edu.description)}</p>` : ''}
                     </div>
-                    <span style="font-size: 12px; color: ${theme.textMuted}; white-space: nowrap; text-align: right; min-width: 88px;">${e(formatResumeDateRange(edu.start, edu.end, data))}</span>
+                    <span style="font-size: 12px; color: ${theme.textMuted}; white-space: nowrap; text-align: left; width: 96px; flex: 0 0 96px;">${e(formatResumeDateRange(edu.start, edu.end, data))}</span>
                 </div>
             `).join('')}
         </div>
