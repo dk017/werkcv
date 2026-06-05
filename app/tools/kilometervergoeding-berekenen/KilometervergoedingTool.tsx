@@ -475,11 +475,12 @@ export default function KilometervergoedingTool() {
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-6">
+          <div className="grid gap-4 md:grid-cols-7">
             {[
               ["Per dag", formatEuro(result.reimbursementPerDay)],
               ["Per maand", formatEuro(result.reimbursementPerMonth)],
               ["Per jaar", formatEuro(result.reimbursementPerYear)],
+              ["Totaal km/maand", formatTravelDays(result.monthlyKilometers)],
               ["Totaal km/jaar", formatTravelDays(result.annualKilometers)],
               ["Belastingvrij deel", formatEuro(result.taxFreePerYear)],
               ["Belastingplichtig deel", formatEuro(result.taxablePerYear)],
@@ -502,7 +503,8 @@ export default function KilometervergoedingTool() {
                   per week wordt dat {result.fixedFullTimeDays} × {workDaysPerWeek} / 5 ={" "}
                   {formatTravelDays(result.fixedCorrectedDays)} dagen. De formule is{" "}
                   {oneWayKilometers} km × 2 × {formatTravelDays(result.workDaysInPeriod)} dagen ={" "}
-                  {formatTravelDays(result.annualKilometers)} km totaal. Daarna ×{" "}
+                  {formatTravelDays(result.annualKilometers)} km per jaar, gemiddeld{" "}
+                  {formatTravelDays(result.monthlyKilometers)} km per maand. Daarna ×{" "}
                   {formatEuro(parseDecimal(employerRatePerKilometer))} = {formatEuro(result.reimbursementPerYear)}.
                 </p>
               </div>

@@ -305,6 +305,7 @@ export type KilometervergoedingResult = {
   taxFreePerYear: number;
   taxablePerMonth: number;
   taxablePerYear: number;
+  monthlyKilometers: number;
   annualKilometers: number;
   withinTaxFreeLimit: boolean;
 };
@@ -321,6 +322,7 @@ export function calculateKilometervergoeding(
       ? fixedCorrectedDays * (input.monthsPerYear / MONTHS_PER_YEAR)
       : input.workDaysPerWeek * getWeeksInSelectedPeriod(input.monthsPerYear);
   const workDaysPerMonth = workDaysInPeriod / input.monthsPerYear;
+  const monthlyKilometers = returnKilometersPerDay * workDaysPerMonth;
   const annualKilometers = returnKilometersPerDay * workDaysInPeriod;
   const reimbursementPerDay = returnKilometersPerDay * input.employerRatePerKilometer;
   const reimbursementPerMonth = reimbursementPerDay * workDaysPerMonth;
@@ -342,6 +344,7 @@ export function calculateKilometervergoeding(
     taxFreePerYear: round2(annualKilometers * taxFreeRate),
     taxablePerMonth: round2(workDaysPerMonth * returnKilometersPerDay * taxableRate),
     taxablePerYear: round2(annualKilometers * taxableRate),
+    monthlyKilometers: round2(monthlyKilometers),
     annualKilometers: round2(annualKilometers),
     withinTaxFreeLimit: input.employerRatePerKilometer <= TAX_FREE_KILOMETER_RATE_2026,
   };
