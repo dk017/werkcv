@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import { sanitizeAttribution } from '@/lib/attribution';
 
 const PERSISTED_FUNNEL_EVENTS = new Set([
+    'page_view',
     'landing',
     'landing_cta_click',
     'landing_to_editor',
@@ -70,6 +71,8 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'contact_form_started',
     'contact_form_submitted',
     'contact_form_failed',
+    'cta_clicked',
+    'cta_viewed',
 ]);
 
 type PrismaWithOptionalAnalytics = typeof prisma & {

@@ -20,6 +20,10 @@ const LANDING_TRACKED_SESSION_KEY = 'werkcv_landing_tracked_v1';
 const COMPLETION_TRACKED_PREFIX = 'werkcv_complete_cv_tracked_';
 const EDITOR_STARTED_TRACKED_PREFIX = 'werkcv_editor_started_tracked_';
 const PREVIOUS_PATH_SESSION_KEY = 'werkcv_previous_path_v1';
+const VISITOR_ID_STORAGE_KEY = 'werkcv_visitor_id_v1';
+const SESSION_ID_STORAGE_KEY = 'werkcv_session_id_v1';
+
+type AnalyticsSourceType = 'direct' | 'organic' | 'referral' | 'social' | 'email' | 'paid' | 'ai' | 'unknown';
 
 export type NamedLandingCtaEvent =
     | 'cta_no_subscription_hero'
@@ -250,10 +254,14 @@ export function track<E extends AnalyticsEvent['event']>(
     // Never track during SSR
     if (typeof window === 'undefined') return;
     const attribution = getStoredAttribution();
+    const context = getAnalyticsContext(attribution);
 
     const payload = {
         event,
-        properties,
+        properties: {
+            ...properties,
+            ...context,
+        },
         timestamp: new Date().toISOString(),
         url: window.location.pathname,
         userAgent: navigator.userAgent,
@@ -312,6 +320,126 @@ function sendToGA4(event: string, properties: Record<string, unknown>): void {
     if (typeof window.gtag === 'function') {
         window.gtag('event', event, properties);
     }
+}
+
+function getAnalyticsContext(attribution: AttributionSnapshot | null) {
+    const visitorId = getOrCreateStableId(VISITOR_ID_STORAGE_KEY);
+    const sessionId = getOrCreateStableId(SESSION_ID_STORAGE_KEY);
+    const source = getSourceContext(attribution);
+    const device = getDeviceContext();
+
+    return {
+        visitorId,
+        sessionId,
+        sourceType: source.sourceType,
+        sourceLabel: source.sourceLabel,
+        deviceType: device.deviceType,
+        browserName: device.browserName,
+        osName: device.osName,
+    };
+}
+
+function getOrCreateStableId(storageKey: string): string {
+    const existing = window.sessionStorage.getItem(storageKey) || window.localStorage.getItem(storageKey);
+    if (existing) return existing;
+
+    const nextId = generateId();
+    if (storageKey === SESSION_ID_STORAGE_KEY) {
+        window.sessionStorage.setItem(storageKey, nextId);
+    } else {
+        window.localStorage.setItem(storageKey, nextId);
+    }
+    return nextId;
+}
+
+function generateId(): string {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+        return crypto.randomUUID();
+    }
+
+    return `wkcv_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function getSourceContext(attribution: AttributionSnapshot | null): {
+    sourceType: AnalyticsSourceType;
+    sourceLabel: string;
+} {
+    const utmSource = (attribution?.utmSource || '').trim();
+    const referrer = (attribution?.firstTouchReferrer || '').trim();
+
+    if (utmSource) {
+        const normalized = utmSource.toLowerCase();
+        if (isAiSource(normalized)) return { sourceType: 'ai', sourceLabel: utmSource };
+        if (['google', 'bing', 'duckduckgo', 'yahoo', 'ecosia'].includes(normalized)) {
+            return { sourceType: 'organic', sourceLabel: utmSource };
+        }
+        if (['facebook', 'instagram', 'linkedin', 'x', 'twitter', 'tiktok', 'reddit', 'youtube'].includes(normalized)) {
+            return { sourceType: 'social', sourceLabel: utmSource };
+        }
+        if (['newsletter', 'email', 'mailchimp', 'convertkit'].includes(normalized)) {
+            return { sourceType: 'email', sourceLabel: utmSource };
+        }
+        if (
+            attribution?.gclid ||
+            attribution?.fbclid ||
+            attribution?.msclkid ||
+            (attribution?.utmMedium || '').toLowerCase().includes('cpc')
+        ) {
+            return { sourceType: 'paid', sourceLabel: utmSource };
+        }
+        return { sourceType: 'referral', sourceLabel: utmSource };
+    }
+
+    if (!referrer) {
+        return { sourceType: 'direct', sourceLabel: 'Direct' };
+    }
+
+    try {
+        const hostname = new URL(referrer).hostname.replace(/^www\./, '');
+        if (isAiSource(hostname)) return { sourceType: 'ai', sourceLabel: hostname };
+        if (/(google|bing|duckduckgo|yahoo|ecosia)\./.test(hostname)) return { sourceType: 'organic', sourceLabel: hostname };
+        if (/(facebook|instagram|linkedin|twitter|x\.com|tiktok|reddit|youtube)\./.test(hostname)) {
+            return { sourceType: 'social', sourceLabel: hostname };
+        }
+        return { sourceType: 'referral', sourceLabel: hostname };
+    } catch {
+        return { sourceType: 'referral', sourceLabel: referrer };
+    }
+}
+
+function isAiSource(value: string): boolean {
+    return /(chatgpt|openai|perplexity|claude|anthropic|gemini|copilot|mistral)/i.test(value);
+}
+
+function getDeviceContext(): {
+    deviceType: string;
+    browserName: string;
+    osName: string;
+} {
+    const userAgent = navigator.userAgent || '';
+    const lowered = userAgent.toLowerCase();
+
+    const deviceType = /mobile/i.test(userAgent)
+        ? 'mobile'
+        : /tablet|ipad/i.test(userAgent)
+          ? 'tablet'
+          : 'desktop';
+
+    let browserName = 'Unknown';
+    if (/edg\//i.test(userAgent)) browserName = 'Edge';
+    else if (/chrome\//i.test(userAgent) && !/edg\//i.test(userAgent)) browserName = 'Chrome';
+    else if (/safari\//i.test(userAgent) && !/chrome\//i.test(userAgent)) browserName = 'Safari';
+    else if (/firefox\//i.test(userAgent)) browserName = 'Firefox';
+    else if (/opr\//i.test(userAgent) || /opera/i.test(userAgent)) browserName = 'Opera';
+
+    let osName = 'Unknown';
+    if (lowered.includes('windows')) osName = 'Windows';
+    else if (lowered.includes('mac os') || lowered.includes('macintosh')) osName = 'macOS';
+    else if (lowered.includes('android')) osName = 'Android';
+    else if (/(iphone|ipad|ios)/i.test(userAgent)) osName = 'iOS';
+    else if (lowered.includes('linux')) osName = 'Linux';
+
+    return { deviceType, browserName, osName };
 }
 
 // ============================================================
