@@ -19,13 +19,15 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData();
     const file = formData.get('file') as File | null;
+    const templateIdValue = formData.get('templateId');
+    const colorThemeIdValue = formData.get('colorThemeId');
     const templateId =
-      typeof formData.get('templateId') === 'string' && formData.get('templateId')?.trim()
-        ? String(formData.get('templateId'))
+      typeof templateIdValue === 'string' && templateIdValue.trim()
+        ? templateIdValue
         : 'professional';
     const colorThemeId =
-      typeof formData.get('colorThemeId') === 'string' && formData.get('colorThemeId')?.trim()
-        ? String(formData.get('colorThemeId'))
+      typeof colorThemeIdValue === 'string' && colorThemeIdValue.trim()
+        ? colorThemeIdValue
         : 'classic-blue';
 
     if (!file) {
