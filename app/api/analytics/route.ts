@@ -4,19 +4,82 @@ import { prisma } from '@/lib/prisma';
 import { sanitizeAttribution } from '@/lib/attribution';
 
 const PERSISTED_FUNNEL_EVENTS = new Set([
+    'page_view',
     'landing',
     'landing_cta_click',
     'landing_to_editor',
+    'cta_no_subscription_hero',
+    'cta_no_subscription_comparison',
+    'cta_no_subscription_bottom',
+    'cta_no_subscription_sticky',
+    'cta_one_time_payment_hero',
+    'cta_one_time_payment_mid',
+    'cta_one_time_payment_bottom',
+    'cta_one_time_payment_sticky',
+    'cta_cvnl_cancel_hero',
+    'cta_cvnl_cancel_after_steps',
+    'cta_cvnl_cancel_bottom',
+    'cta_cvnl_cancel_sticky',
+    'cta_cvster_cancel_hero',
+    'cta_cvster_cancel_after_steps',
+    'cta_cvster_cancel_bottom',
+    'cta_cvster_cancel_sticky',
+    'cta_livecareer_cancel_header',
+    'cta_livecareer_cancel_hero',
+    'cta_livecareer_cancel_after_steps',
+    'cta_livecareer_cancel_why',
+    'cta_livecareer_cancel_footer',
+    'cta_livecareer_cancel_sticky',
+    'cta_cv_optimaliseren_hero',
+    'cta_cv_verbeteren_hero',
+    'cta_cv_checken_hero',
+    'cta_cv_nakijken_hero',
+    'cta_resume_optimizer_en_hero',
+    'cta_ontslagbrief_generator_click',
+    'cta_ontslagbrief_cv_click',
+    'cta_motivatiebrief_generator_click',
+    'cta_motivatiebrief_cv_click',
+    'cta_baan_wisselen_cv_click',
+    'cta_opzegtermijn_tool_click',
+    'cta_opzegtermijn_cv_click',
+    'cta_transitievergoeding_tool_click',
+    'cta_transitievergoeding_cv_click',
+    'tool_to_cv_cta_click',
+    'linkedin_to_cv_tool_view',
+    'linkedin_to_cv_submit',
+    'linkedin_to_cv_output_generated',
+    'linkedin_to_cv_copy_section',
+    'linkedin_to_cv_cta_editor_click',
+    'linkedin_to_cv_cta_templates_click',
+    'profile_photo_tool_view',
+    'profile_photo_checkout_click',
+    'profile_photo_submit',
+    'profile_photo_generated',
+    'profile_photo_variant_selected',
+    'profile_photo_refine_submit',
+    'profile_photo_refined',
+    'profile_photo_download',
+    'profile_photo_cta_editor_click',
     'start_cv',
     'editor_started',
     'complete_cv',
     'checkout_modal_viewed',
+    'checkout_option_viewed',
+    'checkout_option_clicked',
     'checkout_modal_closed',
     'checkout_start',
     'checkout_started',
     'checkout_failed',
     'checkout_completed',
     'paid',
+    'b2b_form_started',
+    'b2b_form_submitted',
+    'b2b_form_failed',
+    'contact_form_started',
+    'contact_form_submitted',
+    'contact_form_failed',
+    'cta_clicked',
+    'cta_viewed',
 ]);
 
 type PrismaWithOptionalAnalytics = typeof prisma & {
@@ -24,6 +87,15 @@ type PrismaWithOptionalAnalytics = typeof prisma & {
         create: (args: { data: Record<string, unknown> }) => Promise<unknown>;
     };
 };
+
+let hasLoggedAnalyticsDbWarning = false;
+
+function isDatabaseUnavailable(error: unknown) {
+    return (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'ECONNREFUSED'
+    );
+}
 
 /**
  * POST /api/analytics
@@ -64,7 +136,16 @@ export async function POST(request: NextRequest) {
                     },
                 });
             } catch (error) {
-                console.error('analytics_event_persist_failed', error);
+                if (isDatabaseUnavailable(error)) {
+                    if (!hasLoggedAnalyticsDbWarning) {
+                        console.warn(
+                            'analytics_event_persist_skipped: database unavailable, continuing without persistence'
+                        );
+                        hasLoggedAnalyticsDbWarning = true;
+                    }
+                } else {
+                    console.error('analytics_event_persist_failed', error);
+                }
             }
         }
 
