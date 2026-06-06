@@ -14,7 +14,7 @@ import { LinkTextProvider } from "@/app/editor/templates/link-utils";
 import { getAllArticles } from "@/lib/cv-tips/registry";
 import { getAllExamples, getAllCategories } from "@/lib/cv-voorbeelden/registry";
 import { getStoredAttribution, track } from "@/lib/analytics";
-import { applicationBundlePrice, cvDownloadPrice, homepageFaqItems, profilePhotoPrice } from "@/lib/site-content";
+import { coverLetterPackagePrice, cvDownloadPrice, homepageFaqItems } from "@/lib/site-content";
 
 // Computed stats from actual data
 const templateCount = templateList.length;
@@ -697,9 +697,12 @@ export default function HomePageClient() {
                                 ))}
                             </div>
                             <div className="mb-6 border-2 border-black bg-[#E9FFFC] p-3 text-left">
-                                <p className="text-xs font-black uppercase tracking-wide text-black">Nieuw</p>
+                                <p className="text-xs font-black uppercase tracking-wide text-black">Prijsmodel</p>
                                 <p className="mt-1 text-sm font-bold text-slate-800">
-                                    Maak je CV en AI-profielfoto samen voor {applicationBundlePrice.display}. De profielfoto los kost {profilePhotoPrice.display}.
+                                    Eerst de kern goed: maak je CV gratis, betaal eenmalig {cvDownloadPrice.display} bij PDF-download en vermijd abonnementen of automatische verlenging.
+                                </p>
+                                <p className="mt-2 text-sm font-medium text-slate-700">
+                                    We testen daarna een hoger pakket voor mensen die ook een sollicitatiebrief willen, waarschijnlijk rond {coverLetterPackagePrice.display}.
                                 </p>
                             </div>
                             <Link

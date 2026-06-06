@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import { applicationBundlePrice, cvDownloadPrice, profilePhotoPrice } from "@/lib/site-content";
+import { coverLetterPackagePrice, cvDownloadPrice } from "@/lib/site-content";
 
 export const metadata: Metadata = {
-    title: `CV Maken Kosten? ${cvDownloadPrice.display} of bundle ${applicationBundlePrice.display} | WerkCV`,
-    description: `Maak gratis je CV en download voor ${cvDownloadPrice.display} per CV. Kies eventueel CV + AI-profielfoto voor ${applicationBundlePrice.display}. Geen abonnement of automatische verlenging.`,
+    title: `CV Maken Kosten? Eenmalig ${cvDownloadPrice.display}, geen abonnement | WerkCV`,
+    description: `Maak gratis je CV en download voor ${cvDownloadPrice.display} per CV. Geen abonnement, geen automatische verlenging en een duidelijke eenmalige prijs.`,
     keywords: [
         "cv maken kosten",
         "cv maker prijs",
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
 
 const priceBadges = [
     `Eenmalig ${cvDownloadPrice.display}`,
-    `CV + profielfoto ${applicationBundlePrice.display}`,
     "Geen abonnement",
     "Later opnieuw downloaden",
+    "Betaal pas bij PDF-download",
 ] as const;
 
 const pricingIntentCards = [
@@ -53,7 +53,7 @@ const pricingIntentCards = [
 
 const pricingFaqs = [
     { q: "Wat kost WerkCV precies?", a: `WerkCV kost ${cvDownloadPrice.display} per CV-download. Je start gratis, bouwt je CV op en betaalt pas wanneer je die definitieve PDF wilt downloaden.` },
-    { q: "Wat kost de CV + profielfoto bundle?", a: `De bundle kost ${applicationBundlePrice.display}. Je krijgt de CV-download plus de AI-profielfoto add-on die los ${profilePhotoPrice.display} kost.` },
+    { q: "Kan ik ook meer krijgen dan alleen een CV-download?", a: `Ja, maar we houden de standaard checkout bewust simpel. Eerst staat de CV-download centraal voor ${cvDownloadPrice.display}. Daarnaast testen we een hoger pakket voor CV + sollicitatiebrief rond ${coverLetterPackagePrice.display}.` },
     { q: "Moet ik betalen om mijn CV te maken?", a: "Nee, het aanmaken en bewerken van je CV is volledig gratis. Je betaalt pas als je dat CV als PDF wilt downloaden." },
     { q: "Wat betekent cv maken betaald meestal?", a: "Meestal zoekt iemand een betaalde CV-tool met duidelijke kosten en zonder verrassingen achteraf. Voor WerkCV betekent dat: gratis starten en pas betalen wanneer je jouw definitieve PDF wilt downloaden." },
     { q: "Kan ik mijn CV per download betalen?", a: "Ja. Bij WerkCV betaal je eenmalig per CV wanneer je die definitieve PDF-download wilt doen. Voor datzelfde betaalde CV kun je later terugkomen, bewerken en opnieuw downloaden zonder opnieuw te betalen." },
@@ -142,7 +142,7 @@ export default function PrijzenPage() {
                         CV maken kosten: eenmalig {cvDownloadPrice.display} per CV, geen abonnement
                     </h1>
                     <p className="text-lg font-medium text-black max-w-2xl mx-auto">
-                        WerkCV kost {cvDownloadPrice.display} per CV-download. Wil je meteen je CV en LinkedIn-presentatie netjes maken, dan is er een CV + AI-profielfoto bundle voor {applicationBundlePrice.display}.
+                        WerkCV kost {cvDownloadPrice.display} per CV-download. De kernbelofte is simpel: eerst gratis bouwen, pas betalen wanneer je jouw definitieve PDF echt wilt downloaden.
                     </p>
                     <p className="text-sm font-black text-black max-w-2xl mx-auto mt-3">
                         Je betaalt alleen voor je definitieve PDF-download. Geen proefperiode, geen automatische verlenging en niets om later op te zeggen.
@@ -213,26 +213,24 @@ export default function PrijzenPage() {
 
                     <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
                         <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white px-4 py-1 border-3 border-black font-black text-sm" style={{ borderWidth: '3px' }}>
-                            OPTIONELE UPSELL
+                            PILOTTEST
                         </div>
 
                         <div className="text-center pt-4">
-                            <div className="text-5xl font-black text-black mb-2">{applicationBundlePrice.display}</div>
-                            <p className="text-lg font-bold text-gray-600 mb-2">CV + AI-profielfoto</p>
+                            <div className="text-5xl font-black text-black mb-2">{coverLetterPackagePrice.display}</div>
+                            <p className="text-lg font-bold text-gray-600 mb-2">CV + sollicitatiebrief</p>
                             <p className="mb-6 text-sm font-bold text-gray-700">
-                                Voor wie direct ook een nette profielfoto voor CV of LinkedIn wil. Los samen {cvDownloadPrice.display} + {profilePhotoPrice.display}.
+                                Dit is de volgende logische upsell die we willen testen voor mensen die na hun CV ook direct hun brief willen afronden.
                             </p>
 
                             <ul className="text-left space-y-3 mb-8">
                                 {[
                                     'Alles van de CV-download',
-                                    '4 AI-profielfoto startvarianten',
-                                    '2 inbegrepen verfijningen',
-                                    'Geschikt voor CV en LinkedIn',
-                                    'Geen abonnement of verborgen kosten',
-                                    applicationBundlePrice.savingsDisplay
-                                        ? `Bundelvoordeel: ${applicationBundlePrice.savingsDisplay}`
-                                        : 'CV en profielfoto in één checkout',
+                                    'Sollicitatiebrief in dezelfde flow',
+                                    'Gericht op hogere orderwaarde zonder extra checkout-ruis',
+                                    'Nog geen standaard checkoutoptie voor iedereen',
+                                    'We testen eerst interesse en gebruik',
+                                    `Doelprijs: ${coverLetterPackagePrice.display}`,
                                 ].map((feature, i) => (
                                     <li key={i} className="flex items-start gap-3">
                                         <span className="bg-green-400 border-2 border-black w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -245,14 +243,14 @@ export default function PrijzenPage() {
                                 ))}
                             </ul>
 
-                            <Link
-                                href="/editor"
+                            <a
+                                href="mailto:contact@werkcv.nl?subject=Interesse%20CV%20%2B%20sollicitatiebrief"
                                 className="block w-full bg-white text-black py-4 font-black text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
                             >
-                                Start en kies later
-                            </Link>
+                                Vraag pilottoegang
+                            </a>
                             <p className="mt-3 text-xs font-bold text-gray-700">
-                                Je hoeft de bundle niet vooraf te kiezen. De optie verschijnt pas bij downloaden.
+                                We vervangen de AI-bundle niet door nóg een afleidende checkoutkeuze. Eerst testen we of dit pakket echt wordt gevraagd.
                             </p>
                         </div>
                     </div>

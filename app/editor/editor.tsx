@@ -26,8 +26,7 @@ import WelcomeOnboarding from "./WelcomeOnboarding";
 import CvScoreWidget from "./CvScoreWidget";
 import KeywordScannerWidget from "./KeywordScannerWidget";
 import PhotoUpload from "./PhotoUpload";
-import type { CheckoutProduct } from "@/lib/polar";
-import { applicationBundlePrice, cvDownloadPrice } from "@/lib/site-content";
+import { cvDownloadPrice } from "@/lib/site-content";
 import {
     hasCompletionTracked,
     hasEditorStartedTracked,
@@ -175,16 +174,18 @@ export default function Editor({
         ? [
             `One-time ${cvDownloadPrice.display.replace(",", ".")} payment for this CV`,
             "No subscription or automatic renewal",
-            "You only pay for this PDF download",
-            "Edit this CV later and re-download it for free",
-            "Professional PDF available immediately",
+            "You only pay when you want this PDF download",
+            "Edit this paid CV later and re-download it for free",
+            "Professional PDF available immediately after payment",
+            "Most users choose the CV-only download first",
         ]
         : [
             `Eenmalig ${cvDownloadPrice.display} voor dit CV`,
             "Geen abonnement of automatische verlenging",
-            "Je betaalt alleen voor deze PDF-download",
-            "Dit CV later gratis aanpassen en opnieuw downloaden",
-            "Professionele PDF direct beschikbaar",
+            "Je betaalt alleen wanneer je deze PDF echt wilt downloaden",
+            "Dit betaalde CV later gratis aanpassen en opnieuw downloaden",
+            "Professionele PDF direct beschikbaar na betaling",
+            "De meeste gebruikers kiezen eerst alleen de CV-download",
         ];
     const supportNotifiedMessage = tr(
         "We hebben een technisch probleem aan onze kant gedetecteerd. Ons team is op de hoogte en bekijkt dit zo snel mogelijk. Als het nodig is, nemen we contact op via je e-mailadres.",
@@ -317,17 +318,10 @@ export default function Editor({
         track('checkout_modal_viewed', { cvId: id, source: 'pdf_download' });
         track('checkout_option_viewed', {
             cvId: id,
-            product: "cv-profile-photo-bundle",
-            amountCents: applicationBundlePrice.amountCents,
-            uiLanguage,
-            recommended: true,
-        });
-        track('checkout_option_viewed', {
-            cvId: id,
             product: "cv-download",
             amountCents: cvDownloadPrice.amountCents,
             uiLanguage,
-            recommended: false,
+            recommended: true,
         });
     }, [showCheckoutModal, id, uiLanguage]);
 
@@ -482,11 +476,10 @@ export default function Editor({
         track('cv_uploaded', { fileType: 'parsed' });
     };
 
-    const startCheckout = async (checkoutProduct: CheckoutProduct = "cv-download") => {
+    const startCheckout = async () => {
         setIsCheckoutRedirecting(true);
-        const amountCents = checkoutProduct === "cv-profile-photo-bundle"
-            ? applicationBundlePrice.amountCents
-            : cvDownloadPrice.amountCents;
+        const checkoutProduct = "cv-download";
+        const amountCents = cvDownloadPrice.amountCents;
         track('checkout_start', { cvId: id, product: checkoutProduct, amountCents });
         try {
             const checkoutResult = await getCheckoutURL(id, undefined, [], checkoutProduct);
@@ -512,22 +505,22 @@ export default function Editor({
         }
     };
 
-    const handleCheckoutOptionClick = (checkoutProduct: CheckoutProduct) => {
-        const isBundle = checkoutProduct === "cv-profile-photo-bundle";
-        const amountCents = isBundle ? applicationBundlePrice.amountCents : cvDownloadPrice.amountCents;
-        const ctaText = isBundle
-            ? tr(`Kies CV + profielfoto voor ${applicationBundlePrice.display}`, `Choose CV + profile photo for ${applicationBundlePrice.display.replace(",", ".")}`)
-            : tr(`Alleen CV downloaden voor ${cvDownloadPrice.display}`, `Download CV only for ${cvDownloadPrice.display.replace(",", ".")}`);
-
+    const handleCheckoutOptionClick = () => {
+        const checkoutProduct = "cv-download";
+        const amountCents = cvDownloadPrice.amountCents;
+        const ctaText = tr(
+            `Betaal ${cvDownloadPrice.display} en download PDF`,
+            `Pay ${cvDownloadPrice.display.replace(",", ".")} and download PDF`
+        );
         track('checkout_option_clicked', {
             cvId: id,
             product: checkoutProduct,
             amountCents,
             uiLanguage,
-            recommended: isBundle,
+            recommended: true,
             ctaText,
         });
-        startCheckout(checkoutProduct);
+        startCheckout();
     };
 
     const closeCheckoutModal = (reason: CheckoutModalCloseReason) => {
@@ -1358,7 +1351,7 @@ export default function Editor({
                     onClick={() => closeCheckoutModal('overlay')}
                 >
                     <div
-                        className="max-h-[92vh] w-full max-w-3xl overflow-y-auto bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+                        className="max-h-[92vh] w-full max-w-md overflow-y-auto bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
                         onClick={(event) => event.stopPropagation()}
                     >
                         <div className="border-b-4 border-black bg-[#FFF3BF] px-5 py-5 sm:px-6">
@@ -1377,92 +1370,73 @@ export default function Editor({
                                 </button>
                             </div>
                             <h3 className="mt-4 text-2xl font-black text-black sm:text-[2rem]">
-                                {tr("Je CV is klaar om te downloaden.", "Your CV is ready to download.")}
+                                {tr("Download je cv als PDF", "Download your CV as a PDF")}
                             </h3>
-                            <p className="mt-2 max-w-2xl text-sm font-medium leading-relaxed text-slate-700">
+                            <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
                                 {tr(
-                                    `Download je PDF voor eenmalig ${cvDownloadPrice.display}. Geen abonnement, geen automatische verlenging.`,
-                                    `Download your Dutch-market English CV PDF for a one-time ${cvDownloadPrice.display.replace(",", ".")} payment. No subscription, no automatic renewal.`
+                                    `Eenmalig ${cvDownloadPrice.display}. Geen abonnement. Geen automatische verlenging. Je betaalt alleen voor deze CV-download en kunt ditzelfde CV later gratis opnieuw downloaden.`,
+                                    `One-time ${cvDownloadPrice.display.replace(",", ".")}. No subscription. No automatic renewal. You only pay for this CV download and can re-download this same CV later for free.`
                                 )}
                             </p>
                         </div>
 
                         <div className="px-5 py-5 sm:px-6">
-                            <div className="mb-5 space-y-4">
-                                <div className="border-4 border-black bg-[#E9FFFC] p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-                                    <div className="flex items-start justify-between gap-4">
-                                        <div>
-                                            <p className="text-xl font-black text-black">{tr("Alleen CV als PDF", "CV PDF only")}</p>
-                                            <p className="mt-1 text-sm font-semibold leading-relaxed text-slate-700">
-                                                {tr("Voor als je nu alleen deze sollicitatie-PDF nodig hebt.", "For when you only need this Dutch-market application PDF now.")}
-                                            </p>
-                                        </div>
-                                        <div className="shrink-0 text-right">
-                                            <p className="text-4xl font-black text-black">{cvDownloadPrice.display}</p>
-                                            <p className="text-[11px] font-black uppercase tracking-wide text-slate-600">
-                                                {tr("eenmalig", "one-time")}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="mt-4 grid gap-2 text-xs font-bold text-slate-800 sm:grid-cols-3">
-                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Directe PDF-download", "Immediate PDF download")}</span>
-                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Later opnieuw downloaden", "Download again later")}</span>
-                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Geen abonnement", "No subscription")}</span>
-                                    </div>
-                                    <button
-                                        onClick={() => handleCheckoutOptionClick("cv-download")}
-                                        disabled={isCheckoutRedirecting}
-                                        className="mt-4 w-full px-5 py-3 border-2 border-black font-black text-sm bg-yellow-400 hover:bg-yellow-500 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-                                    >
-                                        {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr(`Alleen CV downloaden voor ${cvDownloadPrice.display}`, `Download CV only for ${cvDownloadPrice.display.replace(",", ".")}`)}
-                                    </button>
-                                    <p className="mt-3 text-xs font-semibold leading-relaxed text-slate-600">
-                                        {tr(
-                                            "Optioneel: ",
-                                            "Optional: "
-                                        )}
-                                        <button
-                                            type="button"
-                                            onClick={() => handleCheckoutOptionClick("cv-profile-photo-bundle")}
-                                            disabled={isCheckoutRedirecting}
-                                            className="font-black text-black underline decoration-2 underline-offset-2 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
-                                        >
-                                            {tr(
-                                                `voeg een AI-profielfoto toe`,
-                                                `add an AI profile photo`
-                                            )}
-                                        </button>
-                                        {tr(
-                                            ` en betaal ${applicationBundlePrice.display} totaal voor CV + profielfoto.`,
-                                            ` and pay ${applicationBundlePrice.display.replace(",", ".")} total for CV + profile photo.`
-                                        )}
+                            <div className="mb-5 flex items-end justify-between gap-4 border-2 border-black bg-gray-50 p-4">
+                                <div>
+                                    <p className="font-black text-black">{tr("CV als PDF", "CV as PDF")}</p>
+                                    <p className="text-xs font-semibold text-slate-600">
+                                        {tr("Inclusief later opnieuw downloaden", "Includes future re-downloads")}
+                                    </p>
+                                </div>
+                                <div className="text-right">
+                                    <p className="text-3xl font-black text-black">{cvDownloadPrice.display}</p>
+                                    <p className="text-[11px] font-black uppercase tracking-wide text-slate-600">
+                                        {tr("eenmalig", "one-time")}
                                     </p>
                                 </div>
                             </div>
 
-                            <div className="mb-5 grid gap-3 rounded-md border border-slate-300 bg-slate-50 px-3 py-3 text-xs font-semibold text-slate-700 sm:grid-cols-2">
-                                {checkoutBenefits.slice(0, 4).map((benefit) => (
-                                    <p key={benefit} className="flex items-start gap-2">
-                                        <span className="font-black text-emerald-700">✓</span>
-                                        <span>{benefit}</span>
-                                    </p>
+                            <ul className="mb-5 space-y-2.5">
+                                {checkoutBenefits.map((benefit) => (
+                                    <li key={benefit} className="flex items-start gap-3">
+                                        <span className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center border-2 border-black bg-green-300 font-black text-black">
+                                            ✓
+                                        </span>
+                                        <span className="text-sm font-semibold text-slate-800">{benefit}</span>
+                                    </li>
                                 ))}
-                            </div>
+                            </ul>
 
                             <div className="mb-5 rounded-md border border-slate-300 bg-white px-3 py-3 text-xs font-semibold text-slate-700">
                                 {tr(
-                                    "Betaal pas als je klaar bent met downloaden. Je CV blijft beschikbaar om later opnieuw te openen en opnieuw te downloaden.",
-                                    "Only pay when you are ready to download. Your CV stays available so you can open and download it again later."
+                                    "Je betaalt alleen voor deze download. Na betaling kun je ditzelfde cv later opnieuw openen, aanpassen en downloaden zonder opnieuw te betalen.",
+                                    "You only pay for this download. After payment, you can reopen, edit, and download this same CV later without paying again."
                                 )}
                             </div>
 
-                            <div className="flex">
+                            <div className="mb-5 rounded-md border border-slate-300 bg-slate-50 px-3 py-3 text-xs font-semibold text-slate-700">
+                                {tr(
+                                    "Wil je later ook een sollicitatiebrief toevoegen? We testen een CV + sollicitatiebrief pakket, maar houden deze checkout nu bewust simpel: eerst je CV-download, zonder extra afleiding.",
+                                    "Need a cover letter too? We are testing a CV + cover letter package, but we keep this checkout intentionally simple for now: first your CV download, without extra distractions."
+                                )}
+                            </div>
+
+                            <div className="grid gap-3 sm:grid-cols-2">
                                 <button
                                     onClick={() => closeCheckoutModal('later_button')}
                                     disabled={isCheckoutRedirecting}
-                                    className="w-full px-4 py-3 border-2 border-black font-bold text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-60 disabled:cursor-not-allowed"
+                                    className="px-4 py-3 border-2 border-black font-bold text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-60 disabled:cursor-not-allowed"
                                 >
                                     {tr("Nog even bewerken", "Keep editing")}
+                                </button>
+                                <button
+                                    onClick={handleCheckoutOptionClick}
+                                    disabled={isCheckoutRedirecting}
+                                    className="px-5 py-3 border-2 border-black font-black text-sm bg-yellow-400 hover:bg-yellow-500 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                                >
+                                    {isCheckoutRedirecting
+                                        ? tr('Bezig...', 'Working...')
+                                        : tr(`Betaal ${cvDownloadPrice.display} en download PDF`, `Pay ${cvDownloadPrice.display.replace(",", ".")} and download PDF`)}
                                 </button>
                             </div>
 
