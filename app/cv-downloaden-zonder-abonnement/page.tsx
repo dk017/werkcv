@@ -249,7 +249,7 @@ export default function CvDownloadenZonderAbonnementPage() {
                 href="/editor"
                 trackingLocation="cv-downloaden-zonder-abonnement:hero_primary"
                 trackingLabel="Maak gratis je cv, download later zonder abonnement"
-                ctaEventName="cta_download_no_subscription_hero"
+                ctaEventName="cta_no_subscription_hero"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 Maak gratis je cv, download later zonder abonnement
@@ -308,7 +308,7 @@ export default function CvDownloadenZonderAbonnementPage() {
               href="/editor"
               trackingLocation="cv-downloaden-zonder-abonnement:steps_primary"
               trackingLabel="Start gratis en download later"
-              ctaEventName="cta_download_no_subscription_steps"
+              ctaEventName="cta_no_subscription_comparison"
               className="inline-block border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
             >
               Start gratis en download later
@@ -453,7 +453,7 @@ export default function CvDownloadenZonderAbonnementPage() {
                 href="/editor"
                 trackingLocation="cv-downloaden-zonder-abonnement:bottom_primary"
                 trackingLabel="Maak gratis je cv"
-                ctaEventName="cta_download_no_subscription_bottom"
+                ctaEventName="cta_no_subscription_bottom"
                 className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 Maak gratis je cv
@@ -477,7 +477,7 @@ export default function CvDownloadenZonderAbonnementPage() {
         href="/editor"
         trackingLocation="cv-downloaden-zonder-abonnement:sticky_primary"
         trackingLabel="Start gratis"
-        ctaEventName="cta_download_no_subscription_sticky"
+        ctaEventName="cta_no_subscription_sticky"
       />
     </div>
   );
