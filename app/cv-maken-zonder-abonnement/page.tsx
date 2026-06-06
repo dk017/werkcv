@@ -111,6 +111,11 @@ const relatedLinks = [
     title: "CV maken zonder verborgen kosten",
     body: "Ga hierheen als je vooral wilt weten wanneer je betaalt en wat er niet stilletjes doorloopt.",
   },
+  {
+    href: "/cv-downloaden-zonder-abonnement",
+    title: "CV downloaden zonder abonnement",
+    body: "Specifiek voor download-intentie: wat er precies gebeurt bij de PDF-download en waarom daar geen maandkosten achteraan komen.",
+  },
 ];
 
 export const metadata: Metadata = {

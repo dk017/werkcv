@@ -827,6 +827,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.81,
         },
         {
+            url: `${baseUrl}/cv-downloaden-zonder-abonnement`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.81,
+        },
+        {
             url: `${baseUrl}/cv-maken-amsterdam`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
