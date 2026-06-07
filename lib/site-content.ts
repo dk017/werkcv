@@ -23,6 +23,13 @@ export const applicationBundlePrice = {
   currency: "EUR",
 };
 
+export const coverLetterPackagePrice = {
+  display: "€9,99",
+  value: "9.99",
+  amountCents: 999,
+  currency: "EUR",
+};
+
 export const homepageFaqItems = [
   {
     question: "Kan ik gratis beginnen met WerkCV?",
