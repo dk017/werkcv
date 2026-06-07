@@ -60,6 +60,16 @@ const routeChoices = [
     body: "Best if you need the section order and first-half-page logic before choosing a layout.",
   },
   {
+    href: "/en/dutch-cv-checker",
+    title: "Dutch CV checker",
+    body: "Best if you already have a CV draft and want to check ATS readability, Dutch-market fit and LinkedIn alignment first.",
+  },
+  {
+    href: "/en/motivation-letter-netherlands",
+    title: "Motivation letter Netherlands",
+    body: "Best if your CV is nearly done and you need the matching English cover letter for Dutch-market applications.",
+  },
+  {
     href: "/en/dutch-cv-for-expats",
     title: "Dutch CV for expats",
     body: "Best if your international background needs local framing for recruiters in the Netherlands.",

@@ -148,9 +148,9 @@ export default function ThuiswerkvergoedingBerekenenPage() {
           description="Gebruik thuiswerkvergoeding samen met deze routes als je een totaalpakket voor een nieuwe baan beoordeelt."
           tools={[
             {
-              href: "/tools/kilometervergoeding-berekenen",
-              title: "Kilometervergoeding berekenen",
-              description: "Vergelijk woon-werkverkeer met thuiswerkvergoeding in hetzelfde pakket.",
+              href: "/tools/reiskostenvergoeding-berekenen",
+              title: "Reiskostenvergoeding berekenen",
+              description: "Vergelijk woon-werkverkeer, OV en thuiswerkvergoeding in hetzelfde pakket.",
               badge: "Geld",
             },
             {

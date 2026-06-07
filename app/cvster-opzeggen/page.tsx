@@ -338,10 +338,10 @@ export default function CvsterOpzeggenPage() {
               Maak cv zonder proefabonnement
             </TrackedLandingLink>
             <Link
-              href="/cv-gids/werkcv-vs-cvster"
+              href="/alternatief-voor-cvster"
               className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >
-              Vergelijk WerkCV en CVster
+              Bekijk CVster alternatief
             </Link>
           </div>
         </section>

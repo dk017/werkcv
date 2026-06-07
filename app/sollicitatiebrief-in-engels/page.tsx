@@ -231,6 +231,12 @@ export default function SollicitatiebriefInEngelsPage() {
                 Write in generator
               </Link>
               <Link
+                href="/en/motivation-letter-netherlands"
+                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+              >
+                Dutch jobs version
+              </Link>
+              <Link
                 href="/engels-cv-template"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >

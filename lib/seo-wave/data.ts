@@ -3569,7 +3569,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         {
                             label: 'Prijsmodel',
                             primary: 'Gratis starten, daarna eenmalig EUR4,99 per CV als je wilt downloaden.',
-                            secondary: 'Abonnementsmodel: volgens de officiële pricingpagina EUR0,99 voor 14 dagen, daarna EUR19,99 per maand met automatische verlenging.',
+                            secondary: 'Abonnementsmodel: de publieke pricingpagina toont EUR0,99 voor 14 dagen en daarna EUR19,99 per maand met automatische verlenging.',
                         },
                         {
                             label: 'Productscope',
@@ -3715,7 +3715,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
             },
             {
                 question: 'Is CV.nl een abonnement?',
-                answer: 'Ja. Volgens de officiële pricingpagina werkt CV.nl met een proefperiode van EUR0,99 voor 14 dagen en daarna EUR19,99 per maand met automatische verlenging, tenzij je opzegt.',
+                answer: 'Ja. De publieke pricingpagina toont EUR0,99 voor 14 dagen en daarna EUR19,99 per maand met automatische verlenging. De FAQ noemt nog dat de eerste 14 dagen gratis zijn, dus controleer altijd de actuele officiële prijsinformatie zelf.',
             },
             {
                 question: 'Wanneer is CV.nl een betere keuze dan WerkCV?',
@@ -3751,17 +3751,27 @@ const dutchEditorialPages: SeoGuidePage[] = [
             {
                 label: 'CV.nl pricing',
                 href: 'https://www.cv.nl/pricing',
-                note: 'Officiële prijzenpagina met EUR0,99 voor 14 dagen en daarna EUR19,99 per maand, plus positionering als onbeperkt te gebruiken platform. Gecontroleerd op 30 maart 2026.',
+                note: 'Officiële prijzenpagina met EUR0,99 voor 14 dagen en daarna EUR19,99 per maand, plus positionering als onbeperkt te gebruiken platform. Gecontroleerd op 7 juni 2026.',
+            },
+            {
+                label: 'CV.nl FAQ',
+                href: 'https://www.cv.nl/faq',
+                note: 'Officiële FAQ die kosten, downloaden en opzeggen via Instellingen uitlegt. De FAQ noemt nog dat de eerste 14 dagen gratis zijn, wat afwijkt van de huidige pricingpagina. Gecontroleerd op 7 juni 2026.',
             },
             {
                 label: 'CV.nl over ons',
                 href: 'https://www.cv.nl/over-ons',
-                note: 'Officiële bedrijfsinformatie: opgericht in 2016, gericht op Nederland en België, met meer dan 2 miljoen gemaakte CVs. Gecontroleerd op 30 maart 2026.',
+                note: 'Officiële bedrijfsinformatie: opgericht in 2016, gericht op Nederland en België, met meer dan 2 miljoen gemaakte CVs. Gecontroleerd op 7 juni 2026.',
             },
             {
                 label: 'CV.nl app / productpagina',
                 href: 'https://www.cv.nl/app',
-                note: 'Officiële productpagina die CVs, sollicitatiebrieven, vacatures bekijken, sollicitaties bijhouden en een reviewscore van 20k+ reviews benadrukt. Gecontroleerd op 30 maart 2026.',
+                note: 'Officiële productpagina die CVs, sollicitatiebrieven, vacatures bekijken, sollicitaties bijhouden en een reviewscore van 20k+ reviews benadrukt. Gecontroleerd op 7 juni 2026.',
+            },
+            {
+                label: 'CV.nl voorwaarden',
+                href: 'https://www.cv.nl/terms',
+                note: 'Officiële voorwaarden met opzeggen via account en de regel dat je voor de nieuwe periode moet opzeggen om verlenging te voorkomen. Pagina vermeldt laatste wijziging op 18 april 2020. Gecontroleerd op 7 juni 2026.',
             },
             {
                 label: 'WerkCV prijzen',
@@ -3991,12 +4001,12 @@ const dutchEditorialPages: SeoGuidePage[] = [
             {
                 label: 'CVster pricing',
                 href: 'https://cvster.nl/pricing',
-                note: 'Officiële prijzenpagina met EUR14,95 per 4 weken, 7-daagse proef voor EUR2,95, plus 6-maanden- en jaarplannen en gratis toegang met beperkingen. Gecontroleerd op 30 maart 2026.',
+                note: 'Officiële prijzenpagina met EUR2,95 voor 7 dagen en daarna EUR14,95 per 4 weken, plus 6-maanden- en jaarplannen en gratis toegang met beperkingen. Gecontroleerd op 7 juni 2026.',
             },
             {
                 label: 'CVster over ons',
                 href: 'https://cvster.nl/about',
-                note: 'Officiële over-ons pagina met 61.945.889 CVs, 5.583.655 sollicitatiebrieven, 25.000+ aanmeldingen per dag, 20 talen en onderdeel van Resume.io / Career.io. Gecontroleerd op 30 maart 2026.',
+                note: 'Officiële over-ons pagina met 65.127.743 CVs, 5.709.260 sollicitatiebrieven, 25.000+ aanmeldingen per dag, 20 talen en onderdeel van Resume.io / Career.io. Gecontroleerd op 7 juni 2026.',
             },
             {
                 label: 'CVster ATS-checker',
@@ -4006,7 +4016,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
             {
                 label: 'CVster gratis gebruiken',
                 href: 'https://help.cvster.nl/article/267-hoe-kan-ik-cvsternl-gratis-gebruiken',
-                note: 'Officiële help-pagina met de gratis limieten: één CV, één sollicitatiebrief, TXT-download en een beperkt aantal gratis PDF-sjablonen.',
+                note: 'Officiële help-pagina met de huidige gratis limieten: één CV, één sollicitatiebrief, TXT-download en een beperkt aantal gratis PDF-sjablonen. Gecontroleerd op 7 juni 2026.',
             },
             {
                 label: 'WerkCV prijzen',
@@ -4997,12 +5007,12 @@ const dutchEditorialPages: SeoGuidePage[] = [
             {
                 label: 'CVster pricing',
                 href: 'https://cvster.nl/pricing',
-                note: 'Officiële prijzenpagina met proef- en premiumstructuur: EUR2,95 voor 7 dagen en daarna EUR14,95 per 4 weken, plus langere premiumopties. Gecontroleerd op 30 maart 2026.',
+                note: 'Officiële prijzenpagina met EUR2,95 voor 7 dagen en daarna EUR14,95 per 4 weken; de facturatie-uitleg noemt nog 7 dagen gratis proberen en zegt dat prijzen per regio of ouder prijsmodel kunnen verschillen. Gecontroleerd op 7 juni 2026.',
             },
             {
                 label: 'CVster gratis gebruiken',
                 href: 'https://help.cvster.nl/article/267-hoe-kan-ik-cvsternl-gratis-gebruiken',
-                note: 'Officiële help-pagina met huidige gratis limieten: één CV, één sollicitatiebrief, TXT-download en beperkt aantal gratis PDF-sjablonen.',
+                note: 'Officiële help-pagina met huidige gratis limieten: één CV, één sollicitatiebrief, TXT-download en beperkt aantal gratis PDF-sjablonen. Gecontroleerd op 7 juni 2026.',
             },
             {
                 label: 'maakeencv.nl homepage',
@@ -5528,7 +5538,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
             {
                 label: 'CVster pricing',
                 href: 'https://cvster.nl/pricing',
-                note: 'Officiële prijzenpagina met proef- en premiumstructuur en bredere suitefunctionaliteit. Gecontroleerd op 30 maart 2026.',
+                note: 'Officiële prijzenpagina met EUR2,95 voor 7 dagen en daarna EUR14,95 per 4 weken, plus langere premiumopties en bredere suitefunctionaliteit. Gecontroleerd op 7 juni 2026.',
             },
             {
                 label: 'maakeencv.nl homepage',

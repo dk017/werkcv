@@ -277,7 +277,7 @@ export default function CvNlOpzeggenPage() {
               Maak cv zonder abonnement
             </TrackedLandingLink>
             <Link
-              href="/cv-gids/werkcv-vs-cv-nl"
+              href="/alternatief-voor-cv-nl"
               className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >
               Vergelijk WerkCV en CV.nl

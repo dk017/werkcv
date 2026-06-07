@@ -116,6 +116,16 @@ const relatedLinks = [
     title: "CV downloaden zonder abonnement",
     body: "Specifiek voor download-intentie: wat er precies gebeurt bij de PDF-download en waarom daar geen maandkosten achteraan komen.",
   },
+  {
+    href: "/alternatief-voor-cv-nl",
+    title: "Alternatief voor CV.nl",
+    body: "Vergelijk het actuele CV.nl abonnementsmodel met de WerkCV-route als je vooral prijsrust en een eenvoudiger cv-flow zoekt.",
+  },
+  {
+    href: "/alternatief-voor-cvster",
+    title: "Alternatief voor CVster",
+    body: "Vergelijk de huidige CVster trial- en premiumsuite met de smallere WerkCV-route als je geen proefabonnement wilt.",
+  },
 ];
 
 export const metadata: Metadata = {

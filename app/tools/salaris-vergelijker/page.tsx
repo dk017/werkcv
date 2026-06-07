@@ -156,9 +156,9 @@ export default function SalarisVergelijkerPage() {
               badge: "Geld",
             },
             {
-              href: "/tools/kilometervergoeding-berekenen",
-              title: "Kilometervergoeding berekenen",
-              description: "Werk je veel op kantoor, dan kan reiskostenvergoeding flink meetellen.",
+              href: "/tools/reiskostenvergoeding-berekenen",
+              title: "Reiskostenvergoeding berekenen",
+              description: "Werk je veel op kantoor of deels hybride, dan kan woon-werkvergoeding flink meetellen.",
               badge: "Geld",
             },
             {

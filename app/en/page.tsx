@@ -4,7 +4,7 @@ import { buildEnglishMetadata } from "./metadata";
 export const metadata = buildEnglishMetadata({
   title: "Dutch CV in English for Jobs in the Netherlands",
   description:
-    "Build a Dutch CV in English for jobs in the Netherlands. Start with templates, format rules, examples, ATS guidance, expat tools and an English editor.",
+    "Build a Dutch CV in English for jobs in the Netherlands. Start free, pay one time when you download the PDF, and avoid subscriptions or auto-renewal.",
   path: "/en",
   nlPath: "/",
   keywords: [
@@ -27,6 +27,16 @@ const pages = [
     href: "/en/dutch-cv-template",
     title: "Dutch CV Template",
     description: "Use an ATS-safe Dutch-style CV template in English for jobs in the Netherlands.",
+  },
+  {
+    href: "/en/dutch-cv-checker",
+    title: "Dutch CV Checker",
+    description: "Check whether your current English CV fits Dutch recruiter expectations before you rebuild it.",
+  },
+  {
+    href: "/en/motivation-letter-netherlands",
+    title: "Motivation Letter Netherlands",
+    description: "Write a short, role-specific cover letter that fits Dutch recruiter expectations and stays aligned with your CV.",
   },
   {
     href: "/en/highly-skilled-migrant-cv-netherlands",
@@ -219,6 +229,16 @@ export default function EnglishHubPage() {
           <span className="inline-block bg-[#4ECDC4] text-black text-sm font-bold px-3 py-1 mb-4 border-2 border-black">
             ENGLISH CV FOR THE NETHERLANDS
           </span>
+          <div className="mb-4 flex flex-wrap gap-2">
+            {["Start free", "One-time €4.99 PDF download", "No subscription"].map((badge) => (
+              <span
+                key={badge}
+                className="inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-black"
+              >
+                {badge}
+              </span>
+            ))}
+          </div>
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
             Build a Dutch CV in English for jobs in the Netherlands
           </h1>
@@ -226,6 +246,10 @@ export default function EnglishHubPage() {
             Use WerkCV when you want English CV content, but Dutch-market structure:
             clear section order, practical proof, language levels, ATS-safe layout and
             an editor that keeps you on the English route.
+          </p>
+          <p className="mt-4 max-w-3xl text-base font-semibold text-slate-700">
+            Start for free, finish your CV first, and only pay a one-time €4.99 when you want the PDF.
+            No subscription, no trial trap, and no auto-renewal.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link

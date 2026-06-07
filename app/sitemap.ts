@@ -713,6 +713,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.75,
         },
         {
+            url: `${baseUrl}/en/dutch-cv-checker`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.75,
+        },
+        {
+            url: `${baseUrl}/en/motivation-letter-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.75,
+        },
+        {
             url: `${baseUrl}/en/dutch-cv-examples`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
@@ -831,6 +843,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.81,
+        },
+        {
+            url: `${baseUrl}/alternatief-voor-cv-nl`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/alternatief-voor-cvster`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.8,
         },
         {
             url: `${baseUrl}/cv-maken-amsterdam`,
@@ -997,6 +1021,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'parttime-salaris-calculator',
         'profieltekst-generator',
         'proeftijd-checker',
+        'reiskostenvergoeding-berekenen',
         'salaris-vergelijker',
         'salaris-calculator',
         'salaris-onderhandeling',

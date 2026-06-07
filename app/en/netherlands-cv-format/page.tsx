@@ -118,6 +118,9 @@ export default function NetherlandsCvFormatPage() {
         <div className="bg-white border-4 border-black p-6">
           <h2 className="text-2xl font-black mb-3">English next steps</h2>
           <div className="flex flex-wrap gap-3">
+            <Link href="/en/dutch-cv-checker" className="underline font-bold">
+              Dutch CV checker
+            </Link>
             <Link href="/en/guides/cv-format-netherlands-english" className="underline font-bold">
               Format guide for expats
             </Link>

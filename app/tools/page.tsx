@@ -85,9 +85,9 @@ const newLiveTools: ToolCard[] = [
         badgeClass: "bg-emerald-100 text-emerald-800 border-emerald-300",
     },
     {
-        href: "/tools/kilometervergoeding-berekenen",
-        title: "Kilometervergoeding berekenen",
-        description: "Bereken je woon-werkvergoeding met het belastingvrije tarief van €0,23 per kilometer in 2026.",
+        href: "/tools/reiskostenvergoeding-berekenen",
+        title: "Reiskostenvergoeding berekenen",
+        description: "Bereken woon-werkvergoeding voor eigen vervoer of OV met het actuele belastingvrije tarief van €0,25 per kilometer in 2026.",
         badge: "Geld",
         badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
     },
@@ -314,6 +314,13 @@ const sections: ToolSection[] = [
                 description: "Plak je LinkedIn-profieltekst en zet die om naar een Nederlandse cv-structuur als startpunt voor je sollicitatieversie.",
                 badge: "AI",
                 badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
+            },
+            {
+                href: "/profielfoto-cv-maken",
+                title: "Profielfoto voor CV en LinkedIn",
+                description: "Zet een bestaande foto om naar een professionele profielfoto voor je cv, LinkedIn en sollicitatieprofiel.",
+                badge: "AI foto",
+                badgeClass: "bg-amber-100 text-amber-800 border-amber-300",
             },
             {
                 href: "/tools/profieltekst-generator",

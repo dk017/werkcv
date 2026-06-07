@@ -13,8 +13,8 @@ const inputClass =
   "w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 font-medium bg-white";
 
 const kilometerRatePresets = [
-  { label: "€0,23", value: "0,23", note: "belastingvrij maximum" },
-  { label: "€0,25", value: "0,25", note: "vaak deels belast" },
+  { label: "€0,25", value: "0,25", note: "belastingvrij maximum" },
+  { label: "€0,23", value: "0,23", note: "ouder 2025/2026 tarief" },
   { label: "€0,30", value: "0,30", note: "eigen afspraak" },
 ];
 
@@ -48,7 +48,7 @@ export default function KilometervergoedingTool() {
   const [oneWayKilometers, setOneWayKilometers] = useState("24");
   const [workDaysPerWeek, setWorkDaysPerWeek] = useState("5");
   const [monthsPerYear, setMonthsPerYear] = useState("12");
-  const [employerRatePerKilometer, setEmployerRatePerKilometer] = useState("0,23");
+  const [employerRatePerKilometer, setEmployerRatePerKilometer] = useState("0,25");
   const [singleTripPrice, setSingleTripPrice] = useState("4,40");
   const [result, setResult] = useState<KilometervergoedingResult | null>(null);
   const [publicTransportResult, setPublicTransportResult] = useState<PublicTransportResult | null>(null);
@@ -267,7 +267,7 @@ export default function KilometervergoedingTool() {
                   <input
                     value={employerRatePerKilometer}
                     onChange={(event) => setEmployerRatePerKilometer(event.target.value)}
-                    placeholder="0,23"
+                    placeholder="0,25"
                     className={inputClass}
                     inputMode="decimal"
                   />
@@ -475,11 +475,13 @@ export default function KilometervergoedingTool() {
             </p>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-5">
+          <div className="grid gap-4 md:grid-cols-7">
             {[
               ["Per dag", formatEuro(result.reimbursementPerDay)],
               ["Per maand", formatEuro(result.reimbursementPerMonth)],
               ["Per jaar", formatEuro(result.reimbursementPerYear)],
+              ["Totaal km/maand", formatTravelDays(result.monthlyKilometers)],
+              ["Totaal km/jaar", formatTravelDays(result.annualKilometers)],
               ["Belastingvrij deel", formatEuro(result.taxFreePerYear)],
               ["Belastingplichtig deel", formatEuro(result.taxablePerYear)],
             ].map(([label, value]) => (
@@ -500,7 +502,9 @@ export default function KilometervergoedingTool() {
                   Fulltime rekent met {result.fixedFullTimeDays} dagen per jaar. Bij {workDaysPerWeek} werkdagen
                   per week wordt dat {result.fixedFullTimeDays} × {workDaysPerWeek} / 5 ={" "}
                   {formatTravelDays(result.fixedCorrectedDays)} dagen. De formule is{" "}
-                  {oneWayKilometers} km × 2 × {formatTravelDays(result.workDaysInPeriod)} dagen ×{" "}
+                  {oneWayKilometers} km × 2 × {formatTravelDays(result.workDaysInPeriod)} dagen ={" "}
+                  {formatTravelDays(result.annualKilometers)} km per jaar, gemiddeld{" "}
+                  {formatTravelDays(result.monthlyKilometers)} km per maand. Daarna ×{" "}
                   {formatEuro(parseDecimal(employerRatePerKilometer))} = {formatEuro(result.reimbursementPerYear)}.
                 </p>
               </div>

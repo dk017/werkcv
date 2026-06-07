@@ -1,6 +1,7 @@
 import OpenAI from 'openai';
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+type AtsLocale = 'nl' | 'en';
 
 export interface AtsCheck {
     id: string;
@@ -19,15 +20,7 @@ export interface AtsCheckerResult {
     checks: AtsCheck[];
 }
 
-export async function analyzeAts(cvText: string): Promise<AtsCheckerResult> {
-    const response = await openai.chat.completions.create({
-        model: 'gpt-4o-mini',
-        temperature: 0.2,
-        max_tokens: 1200,
-        messages: [
-            {
-                role: 'system',
-                content: `Je bent een ATS-expert die CV's beoordeelt voor de Nederlandse arbeidsmarkt.
+const nlSystemPrompt = `Je bent een ATS-expert die CV's beoordeelt voor de Nederlandse arbeidsmarkt.
 Analyseer het CV en beoordeel het op ATS-compatibiliteit en inhoudskwaliteit.
 
 Geef de beoordeling terug als JSON met dit exacte formaat:
@@ -79,7 +72,72 @@ Regels:
 - label: Zwak (0-40), Matig (41-60), Goed (61-80), Sterk (81-100)
 - labelKleur: rood (Zwak), oranje (Matig), geel (Goed), groen (Sterk)
 - tip: null als passed=true, anders max 1 zin met concrete verbetertip in het Nederlands
-- Geef ALLEEN de JSON, niets anders`,
+- Geef ALLEEN de JSON, niets anders`;
+
+const enSystemPrompt = `You are an ATS expert reviewing CVs for the Dutch job market.
+Analyze the CV for ATS compatibility and content quality.
+
+Return the assessment as JSON in this exact shape:
+{
+  "score": <number 0-100>,
+  "label": <"Weak" | "Fair" | "Good" | "Strong">,
+  "labelKleur": <"rood" | "oranje" | "geel" | "groen">,
+  "samenvatting": "<2-3 sentences on the biggest strengths and weaknesses>",
+  "checks": [
+    {
+      "id": "<unique id>",
+      "categorie": "<category name>",
+      "label": "<what is being checked>",
+      "passed": <true|false>,
+      "tip": "<null if passed=true, otherwise one short improvement tip>",
+      "punten": <points for this check 5-15>
+    }
+  ]
+}
+
+Use these 16 checks (category → checks):
+
+Category "Contact details" (4 checks):
+- "email": Email address present (8 points)
+- "telefoon": Phone number present (5 points)
+- "locatie": City/location present (5 points)
+- "linkedin": LinkedIn profile present (7 points)
+
+Category "Structure & Layout" (4 checks):
+- "profieltekst": Profile summary present (10 points)
+- "werkervaring_sectie": Work experience section present and filled (10 points)
+- "opleiding_sectie": Education section present (7 points)
+- "vaardigheden_sectie": Skills section present (8 points)
+
+Category "Content Quality" (4 checks):
+- "actieve_werkwoorden": Uses active verbs (Led, Built, Improved, Delivered, etc.) (8 points)
+- "meetbare_resultaten": Includes measurable outcomes or numbers (for example %, €, counts) (10 points)
+- "lengte": CV length is suitable (not too short <200 words, not too long >800 words) (7 points)
+- "buzzwords": No overload of empty buzzwords (results-driven, team player, proactive) without proof (5 points)
+
+Category "ATS Compatibility" (4 checks):
+- "datumformaat": Dates use a consistent, readable format (Jan 2023 – Present) (5 points)
+- "sectikoppen": Uses recognizable standard headings (5 points)
+- "geen_tabellen": No complex table structure likely to confuse ATS parsing (5 points — infer from text flow)
+- "email_professioneel": Email address looks professional (not something like coolguy1987@...) (5 points)
+
+Rules:
+- score = sum of points of all passed checks (max 103 → normalize to 100)
+- label: Weak (0-40), Fair (41-60), Good (61-80), Strong (81-100)
+- labelKleur: rood (Weak), oranje (Fair), geel (Good), groen (Strong)
+- categorie, label, samenvatting and tip must be in English
+- tip: null if passed=true, otherwise max 1 sentence with a concrete improvement tip in English
+- Return ONLY the JSON, nothing else`;
+
+export async function analyzeAts(cvText: string, locale: AtsLocale = 'nl'): Promise<AtsCheckerResult> {
+    const response = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        temperature: 0.2,
+        max_tokens: 1200,
+        messages: [
+            {
+                role: 'system',
+                content: locale === 'en' ? enSystemPrompt : nlSystemPrompt,
             },
             {
                 role: 'user',
@@ -99,6 +157,8 @@ Regels:
         parsed.score = Math.max(0, Math.min(100, Math.round(parsed.score)));
         return parsed;
     } catch {
-        throw new Error('ATS analyse kon niet worden verwerkt. Probeer het opnieuw.');
+        throw new Error(locale === 'en'
+            ? 'ATS analysis could not be processed. Please try again.'
+            : 'ATS analyse kon niet worden verwerkt. Probeer het opnieuw.');
     }
 }

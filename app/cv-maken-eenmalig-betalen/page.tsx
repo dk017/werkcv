@@ -286,6 +286,12 @@ export default function CvMakenEenmaligBetalenPage() {
             >
               CV maken zonder abonnement
             </Link>
+            <Link
+              href="/alternatief-voor-cv-nl"
+              className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+            >
+              Vergelijk met CV.nl
+            </Link>
           </div>
         </section>
 

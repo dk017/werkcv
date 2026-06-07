@@ -232,6 +232,9 @@ export default function AtsResumeNetherlandsPage() {
         <div className="bg-white border-4 border-black p-6">
           <h2 className="text-2xl font-black mb-3">Related English routes</h2>
           <div className="flex flex-wrap gap-3">
+            <Link href="/en/dutch-cv-checker" className="underline font-bold">
+              Dutch CV checker
+            </Link>
             <Link href="/en/guides/netherlands-cv-keywords-ats" className="underline font-bold">
               ATS keyword guide
             </Link>

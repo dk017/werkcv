@@ -11,13 +11,20 @@ const ALLOWED_MIME_TYPES = [
     'application/msword',
 ];
 const ALLOWED_EXTENSIONS = new Set(['pdf', 'doc', 'docx']);
+type AtsLocale = 'nl' | 'en';
+
+function toLocale(value: string | null | undefined): AtsLocale {
+    return value === 'en' ? 'en' : 'nl';
+}
 
 export async function POST(request: NextRequest) {
+    const locale = toLocale(request.nextUrl.searchParams.get('locale'));
+    const t = (nl: string, en: string) => (locale === 'en' ? en : nl);
     const ip = getClientIp(request);
     const { allowed } = checkRateLimit(ip);
     if (!allowed) {
         return NextResponse.json(
-            { error: 'Te veel aanvragen. Probeer het over een uur opnieuw.' },
+            { error: t('Te veel aanvragen. Probeer het over een uur opnieuw.', 'Too many requests. Please try again in about an hour.') },
             { status: 429 }
         );
     }
@@ -32,13 +39,13 @@ export async function POST(request: NextRequest) {
             const file = formData.get('file') as File | null;
 
             if (!file) {
-                return NextResponse.json({ error: 'Geen bestand geüpload.' }, { status: 400 });
+                return NextResponse.json({ error: t('Geen bestand geüpload.', 'No file uploaded.') }, { status: 400 });
             }
 
             // Validate MIME type (client-supplied but provides first filter)
             if (!ALLOWED_MIME_TYPES.includes(file.type)) {
                 return NextResponse.json(
-                    { error: 'Alleen PDF of Word-bestanden zijn toegestaan.' },
+                    { error: t('Alleen PDF of Word-bestanden zijn toegestaan.', 'Only PDF or Word files are allowed.') },
                     { status: 400 }
                 );
             }
@@ -47,13 +54,13 @@ export async function POST(request: NextRequest) {
             const ext = file.name.toLowerCase().split('.').pop() ?? '';
             if (!ALLOWED_EXTENSIONS.has(ext)) {
                 return NextResponse.json(
-                    { error: 'Alleen bestanden met extensie .pdf, .doc of .docx zijn toegestaan.' },
+                    { error: t('Alleen bestanden met extensie .pdf, .doc of .docx zijn toegestaan.', 'Only files with .pdf, .doc or .docx extensions are allowed.') },
                     { status: 400 }
                 );
             }
 
             if (file.size > MAX_FILE_SIZE) {
-                return NextResponse.json({ error: 'Bestand is te groot. Maximaal 5 MB.' }, { status: 400 });
+                return NextResponse.json({ error: t('Bestand is te groot. Maximaal 5 MB.', 'File is too large. Maximum size is 5 MB.') }, { status: 400 });
             }
 
             const bytes = await file.arrayBuffer();
@@ -69,19 +76,19 @@ export async function POST(request: NextRequest) {
 
         if (!cvText || cvText.length < 50) {
             return NextResponse.json(
-                { error: 'CV-tekst is te kort om te analyseren (minimaal 50 tekens).' },
+                { error: t('CV-tekst is te kort om te analyseren (minimaal 50 tekens).', 'CV text is too short to analyze (minimum 50 characters).') },
                 { status: 400 }
             );
         }
 
-        const result = await analyzeAts(cvText);
+        const result = await analyzeAts(cvText, locale);
         return NextResponse.json(result);
 
     } catch (err) {
         console.error('ats-checker error:', err);
         // Return generic message — never expose internal error details
         return NextResponse.json(
-            { error: 'Analyse mislukt. Probeer het opnieuw.' },
+            { error: t('Analyse mislukt. Probeer het opnieuw.', 'Analysis failed. Please try again.') },
             { status: 500 }
         );
     }

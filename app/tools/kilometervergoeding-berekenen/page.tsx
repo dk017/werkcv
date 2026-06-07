@@ -12,7 +12,7 @@ const faqItems = [
   {
     question: "Hoeveel kilometervergoeding is belastingvrij in 2026?",
     answer:
-      "In 2026 mag een werkgever maximaal €0,23 per kilometer belastingvrij vergoeden voor woon-werkverkeer en zakelijke kilometers. Betaalt de werkgever meer, dan is het meerdere in principe belast loon.",
+      "In 2026 mag een werkgever maximaal €0,25 per kilometer belastingvrij vergoeden voor woon-werkverkeer en zakelijke kilometers. Betaalt de werkgever meer, dan is het meerdere in principe belast loon.",
   },
   {
     question: "Hoe werkt de 214-dagenregeling voor vaste reiskostenvergoeding?",
@@ -42,25 +42,25 @@ const faqItems = [
   {
     question: "Is kilometervergoeding netto of bruto?",
     answer:
-      "Tot €0,23 per kilometer in 2026 is de vergoeding belastingvrij. Komt je werkgever daarboven, dan is alleen het meerdere belastbaar.",
+      "Tot €0,25 per kilometer in 2026 is de vergoeding belastingvrij. Komt je werkgever daarboven, dan is alleen het meerdere belastbaar.",
   },
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "Reiskostenvergoeding 2026 Berekenen | 214 Dagen, Kilometer & OV | WerkCV",
+  title: "Kilometervergoeding 2026 Berekenen | 214 Dagen, Woon-werk & OV | WerkCV",
   description:
-    "Bereken je reiskostenvergoeding in 2026 met kilometers, OV of de 214-dagenregeling voor vaste vergoeding.",
+    "Bereken je kilometervergoeding in 2026 met eigen vervoer, OV of de 214-dagenregeling voor vaste woon-werkvergoeding.",
   path: "/tools/kilometervergoeding-berekenen",
   keywords: [
     "kilometervergoeding berekenen",
-    "reiskostenvergoeding 2026 berekenen",
-    "214 dagen regeling reiskostenvergoeding",
+    "kilometervergoeding 2026 berekenen",
+    "214 dagen regeling kilometervergoeding",
     "vaste reiskostenvergoeding berekenen",
-    "reiskosten woon werk 2026",
     "kilometervergoeding woon-werk 2026",
     "kilometervergoeding belastingvrij 2026",
+    "woon werk kilometervergoeding berekenen",
     "ov vergoeding berekenen",
-    "ov reiskostenvergoeding berekenen",
+    "kilometervergoeding ov berekenen",
   ],
 });
 
@@ -88,7 +88,7 @@ export default function KilometervergoedingBerekenenPage() {
             items={[
               { label: "Home", href: "/" },
               { label: "Tools", href: "/tools" },
-              { label: "Reiskostenvergoeding berekenen", href: "/tools/kilometervergoeding-berekenen" },
+              { label: "Kilometervergoeding berekenen", href: "/tools/kilometervergoeding-berekenen" },
             ]}
           />
         </div>
@@ -100,14 +100,14 @@ export default function KilometervergoedingBerekenenPage() {
                 Geld
               </span>
               <span className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs font-black uppercase tracking-wide text-slate-700">
-                Bijgewerkt april 2026
+                Bijgewerkt juni 2026
               </span>
             </div>
             <h1 className="mb-4 text-3xl font-black leading-tight text-slate-900 sm:text-5xl">
-              Reiskostenvergoeding berekenen 2026
+              Kilometervergoeding berekenen 2026
             </h1>
             <p className="max-w-3xl text-lg font-medium text-slate-600">
-              Bereken je bruto reiskostenvergoeding op basis van kilometers, OV-ritprijs of de vaste 214-dagenregeling. Vul je woon-werkafstand, eigen kilometertarief of enkele OV-ritprijs in en zie direct wat je per dag, maand en jaar kunt verwachten.
+              Bereken je woon-werkvergoeding op basis van kilometers, OV-ritprijs of de vaste 214-dagenregeling. Vul je afstand enkele reis, kilometertarief of enkele OV-ritprijs in en zie direct wat je per dag, maand en jaar kunt verwachten.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
@@ -126,7 +126,7 @@ export default function KilometervergoedingBerekenenPage() {
 
             <div className="mt-6 grid gap-3 sm:grid-cols-3">
               {[
-                ["Wettelijke grens", "€0,23 per km", "belastingvrij maximum in 2026"],
+                ["Wettelijke grens", "€0,25 per km", "belastingvrij maximum in 2026"],
                 ["OV-formule", "Rit × 2 × reisdagen", "handig bij hybride werken"],
                 ["Vaste vergoeding", "214 dagen", "naar rato bij minder dan 5 dagen"],
               ].map(([label, value, note]) => (
@@ -164,13 +164,13 @@ export default function KilometervergoedingBerekenenPage() {
               <li>Voor een vaste kilometervergoeding kun je de 214-dagenregeling gebruiken.</li>
               <li>Voor OV kun je een enkele ritprijs invullen, zoals €4,40.</li>
               <li>Voor OV kies je alleen de dagen waarop je echt naar werk reist.</li>
-              <li>Het opgegeven kilometertarief, zoals €0,23 of €0,25 per km, wordt vergeleken met de belastingvrije grens van 2026.</li>
+              <li>Het opgegeven kilometertarief, zoals €0,25 of €0,30 per km, wordt vergeleken met de belastingvrije grens van 2026.</li>
             </ul>
           </div>
           <div className="border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <h2 className="mb-4 text-2xl font-black text-slate-900">Wanneer wordt kilometervergoeding belast?</h2>
             <p className="text-sm leading-relaxed text-slate-700">
-              Tot €0,23 per kilometer mag je werkgever in 2026 belastingvrij vergoeden. Ligt het bedrag per kilometer hoger, dan telt alleen het meerdere als belast loon. Daarom laat WerkCV altijd apart zien welk deel belastingvrij blijft en welk deel erboven komt.
+              Tot €0,25 per kilometer mag je werkgever in 2026 belastingvrij vergoeden. Ligt het bedrag per kilometer hoger, dan telt alleen het meerdere als belast loon. Daarom laat WerkCV altijd apart zien welk deel belastingvrij blijft en welk deel erboven komt.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-slate-700">
               Voor een vaste woon-werkvergoeding gebruiken werkgevers vaak de 214-dagenregeling. Daarbij wordt fulltime gerekend met 214 reisdagen per jaar en parttime naar rato, bijvoorbeeld 214 × 3/5 bij 3 werkdagen per week.
@@ -213,7 +213,7 @@ export default function KilometervergoedingBerekenenPage() {
           <div className="mb-5">
             <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-slate-500">FAQ</p>
             <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
-              Veelgestelde vragen over reiskostenvergoeding
+              Veelgestelde vragen over kilometervergoeding
             </h2>
           </div>
           <div className="divide-y divide-slate-200 border-2 border-black bg-white">
@@ -251,12 +251,22 @@ export default function KilometervergoedingBerekenenPage() {
             </li>
             <li>
               <a
-                href="https://www.rijksoverheid.nl/onderwerpen/arbeidsovereenkomst-en-cao"
+                href="https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/berichten/nieuws/verhoging-onbelaste-kilometervergoeding-hoe-verwerkt-u-dit-in-de-loonaangifte"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium text-teal-700 hover:underline"
               >
-                Rijksoverheid - Arbeidsovereenkomst en cao
+                Belastingdienst - Verhoging onbelaste kilometervergoeding (26 mei 2026)
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.rijksoverheid.nl/onderwerpen/inkomstenbelasting/vraag-en-antwoord/wat-is-de-maximale-kilometervergoeding-die-ik-van-mijn-werkgever-kan-ontvangen"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-teal-700 hover:underline"
+              >
+                Rijksoverheid - Maximale kilometervergoeding van je werkgever
               </a>
             </li>
           </ul>

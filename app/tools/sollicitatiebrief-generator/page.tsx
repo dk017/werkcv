@@ -75,6 +75,10 @@ export default function SollicitatiebriefGeneratorPage() {
                         <Link href="/sollicitatiebrief-in-engels" className="underline decoration-2 underline-offset-2 text-slate-900">
                             sollicitatiebrief in engels
                         </Link>
+                        {" "}of{" "}
+                        <Link href="/en/motivation-letter-netherlands" className="underline decoration-2 underline-offset-2 text-slate-900">
+                            English letter for Dutch jobs
+                        </Link>
                     </p>
                 </div>
 

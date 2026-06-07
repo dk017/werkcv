@@ -8,7 +8,7 @@ export const WW_MAX_DAGLOON_2026 = 304.25;
 export const THIRTY_PERCENT_GENERAL_THRESHOLD_2026 = 48013;
 export const THIRTY_PERCENT_YOUNG_MASTER_THRESHOLD_2026 = 36497;
 export const THIRTY_PERCENT_MAX_ALLOWANCE_2026 = 78600;
-export const TAX_FREE_KILOMETER_RATE_2026 = 0.23;
+export const TAX_FREE_KILOMETER_RATE_2026 = 0.25;
 export const TAX_FREE_HOME_OFFICE_RATE_2026 = 2.35;
 const AVERAGE_WORKDAYS_PER_MONTH = 261 / 12;
 const WEEKS_PER_YEAR = 52;
@@ -305,6 +305,7 @@ export type KilometervergoedingResult = {
   taxFreePerYear: number;
   taxablePerMonth: number;
   taxablePerYear: number;
+  monthlyKilometers: number;
   annualKilometers: number;
   withinTaxFreeLimit: boolean;
 };
@@ -321,6 +322,7 @@ export function calculateKilometervergoeding(
       ? fixedCorrectedDays * (input.monthsPerYear / MONTHS_PER_YEAR)
       : input.workDaysPerWeek * getWeeksInSelectedPeriod(input.monthsPerYear);
   const workDaysPerMonth = workDaysInPeriod / input.monthsPerYear;
+  const monthlyKilometers = returnKilometersPerDay * workDaysPerMonth;
   const annualKilometers = returnKilometersPerDay * workDaysInPeriod;
   const reimbursementPerDay = returnKilometersPerDay * input.employerRatePerKilometer;
   const reimbursementPerMonth = reimbursementPerDay * workDaysPerMonth;
@@ -342,6 +344,7 @@ export function calculateKilometervergoeding(
     taxFreePerYear: round2(annualKilometers * taxFreeRate),
     taxablePerMonth: round2(workDaysPerMonth * returnKilometersPerDay * taxableRate),
     taxablePerYear: round2(annualKilometers * taxableRate),
+    monthlyKilometers: round2(monthlyKilometers),
     annualKilometers: round2(annualKilometers),
     withinTaxFreeLimit: input.employerRatePerKilometer <= TAX_FREE_KILOMETER_RATE_2026,
   };

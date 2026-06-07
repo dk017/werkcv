@@ -1,9 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateSollicitatiebrief } from '@/lib/tools/sollicitatiebrief';
+type LetterLocale = 'nl' | 'en';
+
+function toLocale(value: string | null | undefined): LetterLocale {
+    return value === 'en' ? 'en' : 'nl';
+}
 
 export async function POST(request: NextRequest) {
+    let locale: LetterLocale = 'nl';
     try {
         const body = await request.json();
+        locale = toLocale(body.locale);
+        const t = (nl: string, en: string) => (locale === 'en' ? en : nl);
 
         const naam = typeof body.naam === 'string' ? body.naam.trim() : '';
         const doelrol = typeof body.doelrol === 'string' ? body.doelrol.trim() : '';
@@ -13,18 +21,18 @@ export async function POST(request: NextRequest) {
 
         if (!doelrol || !motivatie || motivatie.length < 20) {
             return NextResponse.json(
-                { error: 'Doelrol en een korte motivatie zijn verplicht.' },
+                { error: t('Doelrol en een korte motivatie zijn verplicht.', 'Target role and a short motivation are required.') },
                 { status: 400 }
             );
         }
 
-        const brief = await generateSollicitatiebrief({ naam, doelrol, bedrijfsnaam, motivatie, toon });
+        const brief = await generateSollicitatiebrief({ naam, doelrol, bedrijfsnaam, motivatie, toon, locale });
 
         return NextResponse.json({ brief });
     } catch (err) {
         console.error('sollicitatiebrief error:', err);
         return NextResponse.json(
-            { error: 'Genereren mislukt. Probeer het opnieuw.' },
+            { error: locale === 'en' ? 'Generation failed. Please try again.' : 'Genereren mislukt. Probeer het opnieuw.' },
             { status: 500 }
         );
     }
