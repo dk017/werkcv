@@ -26,6 +26,13 @@ function formatTravelDays(days: number) {
   return Number.isInteger(days) ? String(days) : days.toLocaleString("nl-NL", { maximumFractionDigits: 1 });
 }
 
+function formatKilometersPerMonth(kilometers: number) {
+  return kilometers.toLocaleString("nl-NL", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
 type TravelMode = "kilometers" | "public-transport";
 type KilometerCalculationMethod = "actual-days" | "fixed-214-days";
 
@@ -480,7 +487,7 @@ export default function KilometervergoedingTool() {
               ["Per dag", formatEuro(result.reimbursementPerDay)],
               ["Per maand", formatEuro(result.reimbursementPerMonth)],
               ["Per jaar", formatEuro(result.reimbursementPerYear)],
-              ["Totaal km/maand", formatTravelDays(result.monthlyKilometers)],
+              ["Totaal km/maand", formatKilometersPerMonth(result.monthlyKilometers)],
               ["Totaal km/jaar", formatTravelDays(result.annualKilometers)],
               ["Belastingvrij deel", formatEuro(result.taxFreePerYear)],
               ["Belastingplichtig deel", formatEuro(result.taxablePerYear)],
@@ -504,7 +511,7 @@ export default function KilometervergoedingTool() {
                   {formatTravelDays(result.fixedCorrectedDays)} dagen. De formule is{" "}
                   {oneWayKilometers} km × 2 × {formatTravelDays(result.workDaysInPeriod)} dagen ={" "}
                   {formatTravelDays(result.annualKilometers)} km per jaar, gemiddeld{" "}
-                  {formatTravelDays(result.monthlyKilometers)} km per maand. Daarna ×{" "}
+                  {formatKilometersPerMonth(result.monthlyKilometers)} km per maand. Daarna ×{" "}
                   {formatEuro(parseDecimal(employerRatePerKilometer))} = {formatEuro(result.reimbursementPerYear)}.
                 </p>
               </div>
