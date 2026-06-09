@@ -18,6 +18,8 @@ const kilometerRatePresets = [
   { label: "€0,30", value: "0,30", note: "eigen afspraak" },
 ];
 
+const workDayOptions = [1, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+
 const WEEKS_PER_YEAR = 52;
 const MONTHS_PER_YEAR = 12;
 const FIXED_TRAVEL_DAYS_FULL_TIME = 214;
@@ -31,6 +33,11 @@ function formatKilometersPerMonth(kilometers: number) {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+}
+
+function formatWorkDayOption(days: number) {
+  const label = Number.isInteger(days) ? String(days) : String(days).replace(".", ",");
+  return `${label} dag${days > 1 ? "en" : ""}`;
 }
 
 type TravelMode = "kilometers" | "public-transport";
@@ -310,7 +317,7 @@ export default function KilometervergoedingTool() {
                   Werkdagen per week
                 </label>
                 <div className="flex flex-wrap gap-2">
-                  {[1, 2, 3, 4, 5].map((days) => (
+                  {workDayOptions.map((days) => (
                     <button
                       key={days}
                       type="button"
@@ -325,7 +332,7 @@ export default function KilometervergoedingTool() {
                           : "bg-white text-slate-700"
                       }`}
                     >
-                      {days} dag{days > 1 ? "en" : ""}
+                      {formatWorkDayOption(days)}
                     </button>
                   ))}
                 </div>
@@ -354,7 +361,7 @@ export default function KilometervergoedingTool() {
                     Kantoordagen met OV per week
                   </label>
                   <div className="flex flex-wrap gap-2">
-                    {[1, 2, 3, 4, 5].map((days) => (
+                    {workDayOptions.map((days) => (
                       <button
                         key={days}
                         type="button"
@@ -369,7 +376,7 @@ export default function KilometervergoedingTool() {
                             : "bg-white text-slate-700"
                         }`}
                       >
-                        {days} dag{days > 1 ? "en" : ""}
+                        {formatWorkDayOption(days)}
                       </button>
                     ))}
                   </div>
