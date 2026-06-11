@@ -204,6 +204,7 @@ export type FunnelPageRow = {
   sessions: number;
   ctaClicks: number;
   editorStarts: number;
+  productProgress: number;
   checkoutModalViews: number;
   checkoutStarts: number;
   checkoutClicks: number;
@@ -236,10 +237,7 @@ const rangeHours: Record<AnalyticsRange, number> = {
 
 export function parseAnalyticsRange(value: string | string[] | undefined): AnalyticsRange {
   const range = Array.isArray(value) ? value[0] : value;
-  if (range === "24" || range === "24h") return "24h";
-  if (range === "7" || range === "7d") return "7d";
-  if (range === "30" || range === "30d") return "30d";
-  return "24h";
+  return range === "7d" || range === "30d" ? range : "24h";
 }
 
 function eventPageSql() {
@@ -756,27 +754,73 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
       LIMIT 20
     `,
     prisma.$queryRaw<FunnelPageRow[]>`
-      SELECT
-        ${pageSql} AS page,
-        COUNT(*) FILTER (WHERE event = 'page_view')::int AS "pageViews",
-        COUNT(DISTINCT NULLIF(properties->>'sessionId', ''))::int AS sessions,
-        COUNT(*) FILTER (
-          WHERE event IN ('landing_cta_click', 'tool_to_cv_cta_click', 'cta_clicked')
-            OR event LIKE 'cta_%'
-        )::int AS "ctaClicks",
-        COUNT(*) FILTER (WHERE event IN ('start_cv', 'editor_started', 'landing_to_editor'))::int AS "editorStarts",
-        COUNT(*) FILTER (WHERE event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
-        COUNT(*) FILTER (WHERE event IN ('checkout_start', 'checkout_started'))::int AS "checkoutStarts",
-        COUNT(*) FILTER (WHERE event = 'checkout_option_clicked')::int AS "checkoutClicks"
-      FROM "AnalyticsEvent"
-      WHERE "createdAt" >= ${since}
-      GROUP BY page
-      HAVING COUNT(*) FILTER (WHERE event = 'page_view') > 0
-          OR COUNT(*) FILTER (
+      WITH events AS (
+        SELECT
+          "createdAt",
+          event,
+          ${pageSql} AS page,
+          NULLIF(properties->>'sessionId', '') AS session_id,
+          NULLIF(properties->>'toPath', '') AS to_path
+        FROM "AnalyticsEvent"
+        WHERE "createdAt" >= ${since}
+      ),
+      page_base AS (
+        SELECT
+          page,
+          COUNT(*) FILTER (WHERE event = 'page_view')::int AS "pageViews",
+          COUNT(DISTINCT session_id)::int AS sessions,
+          COUNT(*) FILTER (
             WHERE event IN ('landing_cta_click', 'tool_to_cv_cta_click', 'cta_clicked')
               OR event LIKE 'cta_%'
-          ) > 0
-      ORDER BY "pageViews" DESC, "ctaClicks" DESC
+          )::int AS "ctaClicks",
+          COUNT(*) FILTER (WHERE event IN ('start_cv', 'editor_started', 'landing_to_editor'))::int AS "editorStarts",
+          COUNT(*) FILTER (WHERE event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
+          COUNT(*) FILTER (WHERE event IN ('checkout_start', 'checkout_started'))::int AS "checkoutStarts",
+          COUNT(*) FILTER (WHERE event = 'checkout_option_clicked')::int AS "checkoutClicks"
+        FROM events
+        GROUP BY page
+      ),
+      cta_events AS (
+        SELECT page, session_id, "createdAt", to_path
+        FROM events
+        WHERE session_id IS NOT NULL
+          AND (
+            event IN ('landing_cta_click', 'tool_to_cv_cta_click', 'cta_clicked')
+            OR event LIKE 'cta_%'
+          )
+      ),
+      downstream_progress AS (
+        SELECT
+          cta.page,
+          COUNT(*)::int AS "productProgress"
+        FROM cta_events cta
+        WHERE cta.to_path IN ('/editor', '/templates', '/login', '/cv-aanmaken', '/gratis-cv-maken')
+          OR EXISTS (
+            SELECT 1
+            FROM events later
+            WHERE later.session_id = cta.session_id
+              AND later."createdAt" >= cta."createdAt"
+              AND (
+                later.event IN ('landing_to_editor', 'start_cv', 'editor_started', 'signup_completed')
+                OR later.page IN ('/editor', '/templates', '/login', '/cv-aanmaken', '/gratis-cv-maken')
+              )
+          )
+        GROUP BY cta.page
+      )
+      SELECT
+        page_base.page,
+        page_base."pageViews",
+        page_base.sessions,
+        page_base."ctaClicks",
+        page_base."editorStarts",
+        COALESCE(downstream_progress."productProgress", 0)::int AS "productProgress",
+        page_base."checkoutModalViews",
+        page_base."checkoutStarts",
+        page_base."checkoutClicks"
+      FROM page_base
+      LEFT JOIN downstream_progress ON downstream_progress.page = page_base.page
+      WHERE page_base."pageViews" > 0 OR page_base."ctaClicks" > 0
+      ORDER BY page_base."pageViews" DESC, page_base."ctaClicks" DESC
       LIMIT 25
     `,
   ]);
@@ -940,7 +984,7 @@ function buildInsights(
 
   const moneyPages = funnelPages
     .filter((row) => isMoneyPage(row.page))
-    .filter((row) => row.pageViews >= 3 && row.editorStarts + row.checkoutModalViews + row.checkoutClicks === 0)
+    .filter((row) => row.sessions >= 25 && row.productProgress + row.editorStarts + row.checkoutModalViews + row.checkoutClicks === 0)
     .slice(0, 3);
 
   for (const page of moneyPages) {
@@ -975,7 +1019,7 @@ function buildInsights(
   }
 
   const highIntentNoCheckout = funnelPages
-    .filter((row) => row.ctaClicks >= 2 && row.checkoutModalViews + row.checkoutClicks === 0)
+    .filter((row) => row.ctaClicks >= 2 && row.productProgress + row.editorStarts + row.checkoutModalViews + row.checkoutClicks === 0)
     .slice(0, 3);
 
   for (const page of highIntentNoCheckout) {

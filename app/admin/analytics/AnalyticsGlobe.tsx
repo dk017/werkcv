@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { GlobePointRow, VisitorJourneyRow } from "@/lib/admin-analytics";
+import { GlobePointRow, VisitorJourneyRow } from "@/lib/admin-analytics";
 
 type AnalyticsGlobeProps = {
   points: GlobePointRow[];
@@ -151,7 +151,8 @@ export function AnalyticsGlobe({ points, visitors, generatedAt }: AnalyticsGlobe
 
   useEffect(() => {
     let cancelled = false;
-    if (!mapRef.current) return;
+    const element = mapRef.current;
+    if (!element) return;
 
     loadLeaflet()
       .then((leaflet) => {
@@ -429,9 +430,7 @@ function VisitorJourneyPanel({ visitor }: { visitor: VisitorJourneyRow | null })
         </span>
         <div className="min-w-0">
           <p className="text-sm font-semibold">{location}</p>
-          <p className="truncate text-xs text-slate-400">
-            {visitor.sourceType}: {visitor.sourceLabel}
-          </p>
+          <p className="truncate text-xs text-slate-400">{visitor.sourceType}: {visitor.sourceLabel}</p>
           <p className="mt-1 inline-flex rounded-full bg-white/10 px-2 py-1 text-xs font-semibold text-slate-100">
             {visitor.stage}
           </p>
@@ -459,11 +458,7 @@ function VisitorJourneyPanel({ visitor }: { visitor: VisitorJourneyRow | null })
                 <p className="truncate text-slate-400" title={event.page}>
                   {event.page}
                 </p>
-                {event.detail ? (
-                  <p className="truncate text-slate-500" title={event.detail}>
-                    {event.detail}
-                  </p>
-                ) : null}
+                {event.detail ? <p className="truncate text-slate-500" title={event.detail}>{event.detail}</p> : null}
               </div>
             </li>
           ))}
@@ -477,9 +472,7 @@ function InfoChip({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0 rounded-md bg-white/8 px-3 py-2">
       <p className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-1 truncate text-slate-200" title={value}>
-        {value}
-      </p>
+      <p className="mt-1 truncate text-slate-200" title={value}>{value}</p>
     </div>
   );
 }

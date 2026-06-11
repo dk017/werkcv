@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Metadata } from "next";
+import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { getAnalyticsDashboardData, parseAnalyticsRange, type InsightRow } from "@/lib/admin-analytics";
 import { isAnalyticsAdminEmail } from "@/lib/admin-auth";
@@ -39,7 +39,7 @@ const viewLabels: Array<{ value: AnalyticsView; label: string; description: stri
 
 function parseAnalyticsView(value: string | string[] | undefined): AnalyticsView {
   const view = Array.isArray(value) ? value[0] : value;
-  return viewLabels.some((item) => item.value === view) ? (view as AnalyticsView) : "overview";
+  return viewLabels.some((item) => item.value === view) ? (view as AnalyticsView) : "live";
 }
 
 function dashboardHref(view: AnalyticsView, range: string): string {
@@ -176,328 +176,328 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
 
             {view === "overview" ? (
               <>
-                <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                  <StatCard label="Visitors" value={number(data.summary.visitors)} detail={`${number(data.summary.sessions)} sessions`} />
-                  <StatCard label="Page views" value={number(data.summary.pageViews)} detail={`${number(data.summary.events)} total events`} />
-                  <StatCard label="CTA clicks" value={number(data.summary.ctaClicks)} detail={`${ctaToEditorRate}% CTA to editor/start`} />
-                  <StatCard label="Checkout clicks" value={number(data.summary.checkoutClicks)} detail={`${checkoutToPaidRate}% checkout click to paid`} />
-                  <StatCard
-                    label="Checkout modal"
-                    value={number(data.summary.checkoutModalViews)}
-                    detail={`${checkoutChoiceRate}% chose a payment option`}
-                  />
-                  <StatCard label="Editor starts" value={number(data.summary.editorStarts)} detail={`${number(data.summary.checkoutStarts)} provider starts`} />
-                  <StatCard label="Paid orders" value={number(data.summary.paidOrders)} detail={money(data.summary.revenueCents)} />
-                  <StatCard label="Signups" value={number(data.summary.signups)} detail="New accounts in range" />
-                  <StatCard label="Live now" value={number(data.liveVisitors.length)} detail="Sessions active in last 15 min" />
-                </section>
+        <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard label="Visitors" value={number(data.summary.visitors)} detail={`${number(data.summary.sessions)} sessions`} />
+          <StatCard label="Page views" value={number(data.summary.pageViews)} detail={`${number(data.summary.events)} total events`} />
+          <StatCard label="CTA clicks" value={number(data.summary.ctaClicks)} detail={`${ctaToEditorRate}% CTA to editor/start`} />
+          <StatCard label="Checkout clicks" value={number(data.summary.checkoutClicks)} detail={`${checkoutToPaidRate}% checkout click to paid`} />
+          <StatCard
+            label="Checkout modal"
+            value={number(data.summary.checkoutModalViews)}
+            detail={`${checkoutChoiceRate}% chose a payment option`}
+          />
+          <StatCard label="Editor starts" value={number(data.summary.editorStarts)} detail={`${number(data.summary.checkoutStarts)} provider starts`} />
+          <StatCard label="Paid orders" value={number(data.summary.paidOrders)} detail={money(data.summary.revenueCents)} />
+          <StatCard label="Signups" value={number(data.summary.signups)} detail="New accounts in range" />
+          <StatCard label="Live now" value={number(data.liveVisitors.length)} detail="Sessions active in last 15 min" />
+        </section>
 
-                <section className="grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
-                  <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-                    <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
-                      <div>
-                        <h2 className="text-base font-semibold text-slate-950">Action Queue</h2>
-                        <p className="mt-1 text-sm text-slate-500">
-                          Funnel signals converted into the next thing worth checking.
-                        </p>
-                      </div>
-                      <span className="rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">
-                        {rangeLabels[range]}
-                      </span>
-                    </div>
-                    <div className="mt-4 grid gap-3">
-                      {data.insights.map((insight) => (
-                        <InsightCard key={insight.id} insight={insight} />
-                      ))}
-                    </div>
-                  </div>
-                  <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-                    <h2 className="text-base font-semibold text-slate-950">Funnel Snapshot</h2>
-                    <p className="mt-1 text-sm text-slate-500">Where the selected range loses momentum.</p>
-                    <FunnelBars
-                      rows={[
-                        ["Views", data.summary.pageViews],
-                        ["CTA", data.summary.ctaClicks],
-                        ["Editor", data.summary.editorStarts],
-                        ["Checkout modal", data.summary.checkoutModalViews],
-                        ["Checkout click", data.summary.checkoutClicks],
-                        ["Paid", data.summary.paidOrders],
-                      ]}
-                    />
-                  </div>
-                </section>
+        <section className="grid gap-4 lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <h2 className="text-base font-semibold text-slate-950">Action Queue</h2>
+                <p className="mt-1 text-sm text-slate-500">
+                  Funnel signals converted into the next thing worth checking.
+                </p>
+              </div>
+              <span className="rounded bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-600">
+                {rangeLabels[range]}
+              </span>
+            </div>
+            <div className="mt-4 grid gap-3">
+              {data.insights.map((insight) => (
+                <InsightCard key={insight.id} insight={insight} />
+              ))}
+            </div>
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <h2 className="text-base font-semibold text-slate-950">Funnel Snapshot</h2>
+            <p className="mt-1 text-sm text-slate-500">Where the selected range loses momentum.</p>
+            <FunnelBars
+              rows={[
+                ["Views", data.summary.pageViews],
+                ["CTA", data.summary.ctaClicks],
+                ["Editor", data.summary.editorStarts],
+                ["Checkout modal", data.summary.checkoutModalViews],
+                ["Checkout click", data.summary.checkoutClicks],
+                ["Paid", data.summary.paidOrders],
+              ]}
+            />
+          </div>
+        </section>
               </>
             ) : null}
 
             {view === "live" ? (
               <>
-                <AnalyticsGlobe points={data.liveGlobePoints} visitors={data.visitorJourneys} generatedAt={dateTime(data.generatedAt)} />
+        <AnalyticsGlobe points={data.liveGlobePoints} visitors={data.visitorJourneys} generatedAt={dateTime(data.generatedAt)} />
 
-                <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-                  <div className="flex flex-col gap-1 border-b border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div>
-                      <h2 className="text-base font-semibold text-slate-950">Live Visitors</h2>
-                      <p className="text-sm text-slate-500">Current page, source, and device for sessions active in the last 15 minutes.</p>
-                    </div>
-                    <p className="text-xs text-slate-500">Updated {dateTime(data.generatedAt)}</p>
-                  </div>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-slate-200 text-sm">
-                      <thead className="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
-                        <tr>
-                          <th className="px-4 py-3">Session</th>
-                          <th className="px-4 py-3">Page</th>
-                          <th className="px-4 py-3">Source</th>
-                          <th className="px-4 py-3">Device</th>
-                          <th className="px-4 py-3">Location</th>
-                          <th className="px-4 py-3 text-right">Events</th>
-                          <th className="px-4 py-3">Last seen</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {data.liveVisitors.length === 0 ? (
-                          <EmptyRow colSpan={7} />
-                        ) : (
-                          data.liveVisitors.map((visitor) => (
-                            <tr key={visitor.sessionId}>
-                              <td className="px-4 py-3 font-mono text-xs text-slate-600">{shortId(visitor.sessionId)}</td>
-                              <td className="max-w-sm truncate px-4 py-3 font-medium text-slate-900">{visitor.page}</td>
-                              <td className="px-4 py-3">
-                                <span className="rounded bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">
-                                  {visitor.sourceType}
-                                </span>{" "}
-                                {visitor.sourceLabel}
-                              </td>
-                              <td className="px-4 py-3 text-slate-600">
-                                {visitor.deviceType} / {visitor.browserName} / {visitor.osName}
-                              </td>
-                              <td className="px-4 py-3 text-slate-600">
-                                {[visitor.city, visitor.country].filter(Boolean).join(", ") || "-"}
-                              </td>
-                              <td className="px-4 py-3 text-right tabular-nums">{number(visitor.eventCount)}</td>
-                              <td className="px-4 py-3 text-slate-600">{dateTime(visitor.lastSeen)}</td>
-                            </tr>
-                          ))
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <div className="flex flex-col gap-1 border-b border-slate-200 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-base font-semibold text-slate-950">Live Visitors</h2>
+              <p className="text-sm text-slate-500">Current page, source, and device for sessions active in the last 15 minutes.</p>
+            </div>
+            <p className="text-xs text-slate-500">Updated {dateTime(data.generatedAt)}</p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-slate-200 text-sm">
+              <thead className="bg-slate-50 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <tr>
+                  <th className="px-4 py-3">Session</th>
+                  <th className="px-4 py-3">Page</th>
+                  <th className="px-4 py-3">Source</th>
+                  <th className="px-4 py-3">Device</th>
+                  <th className="px-4 py-3">Location</th>
+                  <th className="px-4 py-3 text-right">Events</th>
+                  <th className="px-4 py-3">Last seen</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {data.liveVisitors.length === 0 ? (
+                  <EmptyRow colSpan={7} />
+                ) : (
+                  data.liveVisitors.map((visitor) => (
+                    <tr key={visitor.sessionId}>
+                      <td className="px-4 py-3 font-mono text-xs text-slate-600">{shortId(visitor.sessionId)}</td>
+                      <td className="max-w-sm truncate px-4 py-3 font-medium text-slate-900">{visitor.page}</td>
+                      <td className="px-4 py-3">
+                        <span className="rounded bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">
+                          {visitor.sourceType}
+                        </span>{" "}
+                        {visitor.sourceLabel}
+                      </td>
+                      <td className="px-4 py-3 text-slate-600">
+                        {visitor.deviceType} / {visitor.browserName} / {visitor.osName}
+                      </td>
+                      <td className="px-4 py-3 text-slate-600">
+                        {[visitor.city, visitor.country].filter(Boolean).join(", ") || "-"}
+                      </td>
+                      <td className="px-4 py-3 text-right tabular-nums">{number(visitor.eventCount)}</td>
+                      <td className="px-4 py-3 text-slate-600">{dateTime(visitor.lastSeen)}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </section>
               </>
             ) : null}
 
             {view === "overview" ? (
-              <section className="grid gap-6 lg:grid-cols-2">
-                <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-                  <ChartHeader title="Visitor Trend" subtitle="Visitors, sessions, and page views over the selected range." />
-                  <SparklineChart
-                    rows={data.trends.map((row) => ({
-                      label: dateTime(row.bucket),
-                      primary: row.visitors,
-                      secondary: row.pageViews,
-                    }))}
-                    primaryLabel="Visitors"
-                    secondaryLabel="Page views"
-                  />
-                </div>
-                <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-                  <ChartHeader title="CTA and Checkout Trend" subtitle="CTA clicks compared with checkout intent." />
-                  <SparklineChart
-                    rows={data.trends.map((row) => ({
-                      label: dateTime(row.bucket),
-                      primary: row.ctaClicks,
-                      secondary: row.checkoutModalViews + row.checkoutClicks,
-                    }))}
-                    primaryLabel="CTA clicks"
-                    secondaryLabel="Checkout events"
-                  />
-                </div>
-              </section>
+        <section className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <ChartHeader title="Visitor Trend" subtitle="Visitors, sessions, and page views over the selected range." />
+            <SparklineChart
+              rows={data.trends.map((row) => ({
+                label: dateTime(row.bucket),
+                primary: row.visitors,
+                secondary: row.pageViews,
+              }))}
+              primaryLabel="Visitors"
+              secondaryLabel="Page views"
+            />
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <ChartHeader title="CTA and Checkout Trend" subtitle="CTA clicks compared with checkout intent." />
+            <SparklineChart
+              rows={data.trends.map((row) => ({
+                label: dateTime(row.bucket),
+                primary: row.ctaClicks,
+                secondary: row.checkoutModalViews + row.checkoutClicks,
+              }))}
+              primaryLabel="CTA clicks"
+              secondaryLabel="Checkout events"
+            />
+          </div>
+        </section>
             ) : null}
 
             {view === "conversion" ? (
               <>
-                <section className="grid gap-6 lg:grid-cols-[minmax(320px,0.8fr)_minmax(0,1.2fr)]">
-                  <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-                    <ChartHeader title="Signup Drop-off Cohorts" subtitle="Where new accounts stop after signup." />
-                    <FunnelBars rows={data.signupCohorts.map((row) => [row.stage, row.users])} />
-                    <div className="mt-4 space-y-2 border-t border-slate-100 pt-4">
-                      {data.signupCohorts.map((row) => (
-                        <p key={row.stage} className="text-xs text-slate-500">
-                          <span className="font-semibold text-slate-700">{row.stage}:</span> {row.description}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                </section>
+        <section className="grid gap-6 lg:grid-cols-[minmax(320px,0.8fr)_minmax(0,1.2fr)]">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <ChartHeader title="Signup Drop-off Cohorts" subtitle="Where new accounts stop after signup." />
+            <FunnelBars rows={data.signupCohorts.map((row) => [row.stage, row.users])} />
+            <div className="mt-4 space-y-2 border-t border-slate-100 pt-4">
+              {data.signupCohorts.map((row) => (
+                <p key={row.stage} className="text-xs text-slate-500">
+                  <span className="font-semibold text-slate-700">{row.stage}:</span> {row.description}
+                </p>
+              ))}
+            </div>
+          </div>
+        </section>
 
-                <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-                  <TableHeader
-                    title="Recent Signup States"
-                    subtitle="Every new signup in this range, with the exact stage where they stopped."
-                  />
-                  <SimpleTable
-                    headers={["Email", "Signup", "Source", "Landing page", "Locale", "CVs", "Modal", "Checkout", "Paid", "Stopped at"]}
-                    rows={data.recentSignups.map((row) => [
-                      row.email,
-                      dateTime(row.signupAt),
-                      row.source,
-                      row.landingPage,
-                      row.locale,
-                      number(row.cvCount),
-                      number(row.checkoutModalViews),
-                      number(row.checkoutClicks),
-                      number(row.paidOrders),
-                      row.stoppedAt,
-                    ])}
-                    alignRight={[5, 6, 7, 8]}
-                  />
-                </section>
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Recent Signup States"
+            subtitle="Every new signup in this range, with the exact stage where they stopped."
+          />
+          <SimpleTable
+            headers={["Email", "Signup", "Source", "Landing page", "Locale", "CVs", "Modal", "Checkout", "Paid", "Stopped at"]}
+            rows={data.recentSignups.map((row) => [
+              row.email,
+              dateTime(row.signupAt),
+              row.source,
+              row.landingPage,
+              row.locale,
+              number(row.cvCount),
+              number(row.checkoutModalViews),
+              number(row.checkoutClicks),
+              number(row.paidOrders),
+              row.stoppedAt,
+            ])}
+            alignRight={[5, 6, 7, 8]}
+          />
+        </section>
               </>
             ) : null}
 
             {view === "acquisition" ? (
               <>
-                <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-                  <TableHeader
-                    title="Source to Revenue"
-                    subtitle="Signup sources connected to CV creation, checkout intent, and paid orders."
-                  />
-                  <SimpleTable
-                    headers={["Source / landing page", "Signups", "CVs", "Modal", "Checkout", "Paid", "Revenue"]}
-                    rows={data.sourceRevenue.map((row) => [
-                      `${row.source} -> ${row.landingPage}`,
-                      number(row.signups),
-                      number(row.cvsCreated),
-                      number(row.checkoutModalViews),
-                      number(row.checkoutClicks),
-                      number(row.paidOrders),
-                      money(row.revenueCents),
-                    ])}
-                    alignRight={[1, 2, 3, 4, 5, 6]}
-                  />
-                </section>
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Source to Revenue"
+            subtitle="Signup sources connected to CV creation, checkout intent, and paid orders."
+          />
+          <SimpleTable
+            headers={["Source / landing page", "Signups", "CVs", "Modal", "Checkout", "Paid", "Revenue"]}
+            rows={data.sourceRevenue.map((row) => [
+              `${row.source} -> ${row.landingPage}`,
+              number(row.signups),
+              number(row.cvsCreated),
+              number(row.checkoutModalViews),
+              number(row.checkoutClicks),
+              number(row.paidOrders),
+              money(row.revenueCents),
+            ])}
+            alignRight={[1, 2, 3, 4, 5, 6]}
+          />
+        </section>
 
-                <section className="grid gap-6 lg:grid-cols-2">
-                  <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
-                    <TableHeader title="Top Pages" subtitle="Organic/search/AI landing pages with actual page views." />
-                    <SimpleTable
-                      headers={["Page", "Views", "Sessions"]}
-                      rows={data.topPages.map((row) => [row.page, number(row.pageViews), number(row.sessions)])}
-                      alignRight={[1, 2]}
-                    />
-                  </div>
-                  <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
-                    <TableHeader title="Sources" subtitle="Direct, search, referral, social, and AI traffic grouped by detected source." />
-                    <SimpleTable
-                      headers={["Source", "Visitors", "Sessions", "Views"]}
-                      rows={data.sources.map((row) => [
-                        `${row.sourceType}: ${row.sourceLabel}`,
-                        number(row.visitors),
-                        number(row.sessions),
-                        number(row.pageViews),
-                      ])}
-                      alignRight={[1, 2, 3]}
-                    />
-                  </div>
-                </section>
+        <section className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
+            <TableHeader title="Top Pages" subtitle="Organic/search/AI landing pages with actual page views." />
+            <SimpleTable
+              headers={["Page", "Views", "Sessions"]}
+              rows={data.topPages.map((row) => [row.page, number(row.pageViews), number(row.sessions)])}
+              alignRight={[1, 2]}
+            />
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
+            <TableHeader title="Sources" subtitle="Direct, search, referral, social, and AI traffic grouped by detected source." />
+            <SimpleTable
+              headers={["Source", "Visitors", "Sessions", "Views"]}
+              rows={data.sources.map((row) => [
+                `${row.sourceType}: ${row.sourceLabel}`,
+                number(row.visitors),
+                number(row.sessions),
+                number(row.pageViews),
+              ])}
+              alignRight={[1, 2, 3]}
+            />
+          </div>
+        </section>
               </>
             ) : null}
 
             {view === "checkout" ? (
               <>
-                <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-                  <TableHeader
-                    title="Checkout Diagnostics"
-                    subtitle="Checkout modal visibility, payment-option clicks, and paid revenue by page/provider signal."
-                  />
-                  <SimpleTable
-                    headers={["Page", "Provider / option", "Modal", "Checkout clicks", "Paid", "Revenue"]}
-                    rows={data.checkoutDiagnostics.map((row) => [
-                      row.page,
-                      row.provider,
-                      number(row.modalViews),
-                      number(row.checkoutClicks),
-                      number(row.paidOrders),
-                      money(row.revenueCents),
-                    ])}
-                    alignRight={[2, 3, 4, 5]}
-                  />
-                </section>
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Checkout Diagnostics"
+            subtitle="Checkout modal visibility, payment-option clicks, and paid revenue by page/provider signal."
+          />
+          <SimpleTable
+            headers={["Page", "Provider / option", "Modal", "Checkout clicks", "Paid", "Revenue"]}
+            rows={data.checkoutDiagnostics.map((row) => [
+              row.page,
+              row.provider,
+              number(row.modalViews),
+              number(row.checkoutClicks),
+              number(row.paidOrders),
+              money(row.revenueCents),
+            ])}
+            alignRight={[2, 3, 4, 5]}
+          />
+        </section>
 
-                <section className="grid gap-6 lg:grid-cols-2">
-                  <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-                    <ChartHeader title="CTA and Checkout Trend" subtitle="CTA clicks compared with checkout intent." />
-                    <SparklineChart
-                      rows={data.trends.map((row) => ({
-                        label: dateTime(row.bucket),
-                        primary: row.ctaClicks,
-                        secondary: row.checkoutModalViews + row.checkoutClicks,
-                      }))}
-                      primaryLabel="CTA clicks"
-                      secondaryLabel="Checkout events"
-                    />
-                  </div>
-                  <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-                    <h2 className="text-base font-semibold text-slate-950">Funnel Snapshot</h2>
-                    <p className="mt-1 text-sm text-slate-500">Payment path in the selected range.</p>
-                    <FunnelBars
-                      rows={[
-                        ["Editor", data.summary.editorStarts],
-                        ["Checkout modal", data.summary.checkoutModalViews],
-                        ["Checkout click", data.summary.checkoutClicks],
-                        ["Paid", data.summary.paidOrders],
-                      ]}
-                    />
-                  </div>
-                </section>
+        <section className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <ChartHeader title="CTA and Checkout Trend" subtitle="CTA clicks compared with checkout intent." />
+            <SparklineChart
+              rows={data.trends.map((row) => ({
+                label: dateTime(row.bucket),
+                primary: row.ctaClicks,
+                secondary: row.checkoutModalViews + row.checkoutClicks,
+              }))}
+              primaryLabel="CTA clicks"
+              secondaryLabel="Checkout events"
+            />
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+            <h2 className="text-base font-semibold text-slate-950">Funnel Snapshot</h2>
+            <p className="mt-1 text-sm text-slate-500">Payment path in the selected range.</p>
+            <FunnelBars
+              rows={[
+                ["Editor", data.summary.editorStarts],
+                ["Checkout modal", data.summary.checkoutModalViews],
+                ["Checkout click", data.summary.checkoutClicks],
+                ["Paid", data.summary.paidOrders],
+              ]}
+            />
+          </div>
+        </section>
               </>
             ) : null}
 
             {view === "raw" ? (
               <>
-                <section className="grid gap-6 lg:grid-cols-2">
-                  <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
-                    <TableHeader title="CTA Performance" subtitle="Page-specific CTA clicks so weak conversion pages are visible." />
-                    <SimpleTable
-                      headers={["Page", "CTA", "Destination", "Clicks"]}
-                      rows={data.ctas.map((row) => [row.page, row.label, row.destination, number(row.clicks)])}
-                      alignRight={[3]}
-                    />
-                  </div>
-                  <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
-                    <TableHeader title="Devices" subtitle="Sessions grouped by browser and device type." />
-                    <SimpleTable
-                      headers={["Device", "Browser", "Sessions"]}
-                      rows={data.devices.map((row) => [row.deviceType, row.browserName, number(row.sessions)])}
-                      alignRight={[2]}
-                    />
-                  </div>
-                </section>
+        <section className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
+            <TableHeader title="CTA Performance" subtitle="Page-specific CTA clicks so weak conversion pages are visible." />
+            <SimpleTable
+              headers={["Page", "CTA", "Destination", "Clicks"]}
+              rows={data.ctas.map((row) => [row.page, row.label, row.destination, number(row.clicks)])}
+              alignRight={[3]}
+            />
+          </div>
+          <div className="rounded-lg border border-slate-200 bg-white shadow-sm">
+            <TableHeader title="Devices" subtitle="Sessions grouped by browser and device type." />
+            <SimpleTable
+              headers={["Device", "Browser", "Sessions"]}
+              rows={data.devices.map((row) => [row.deviceType, row.browserName, number(row.sessions)])}
+              alignRight={[2]}
+            />
+          </div>
+        </section>
 
-                <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
-                  <TableHeader title="Page Funnel" subtitle="Where visitors move from page view into CTA, editor, and checkout actions." />
-                  <SimpleTable
-                    headers={["Page", "Views", "Sessions", "CTA", "Editor", "Modal", "Provider", "Checkout clicks"]}
-                    rows={data.funnelPages.map((row) => [
-                      row.page,
-                      number(row.pageViews),
-                      number(row.sessions),
-                      number(row.ctaClicks),
-                      number(row.editorStarts),
-                      number(row.checkoutModalViews),
-                      number(row.checkoutStarts),
-                      number(row.checkoutClicks),
-                    ])}
-                    alignRight={[1, 2, 3, 4, 5, 6, 7]}
-                  />
-                </section>
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader title="Page Funnel" subtitle="Where visitors move from page view into CTA, editor, and checkout actions." />
+          <SimpleTable
+            headers={["Page", "Views", "Sessions", "CTA", "Editor", "Modal", "Provider", "Checkout clicks"]}
+            rows={data.funnelPages.map((row) => [
+              row.page,
+              number(row.pageViews),
+              number(row.sessions),
+              number(row.ctaClicks),
+              number(row.editorStarts),
+              number(row.checkoutModalViews),
+              number(row.checkoutStarts),
+              number(row.checkoutClicks),
+            ])}
+            alignRight={[1, 2, 3, 4, 5, 6, 7]}
+          />
+        </section>
               </>
             ) : null}
 
-            <p className="text-xs text-slate-500">
-              Range starts {dateTime(data.since)}. Visitor and session IDs are anonymous browser IDs stored in local/session storage.
-            </p>
+        <p className="text-xs text-slate-500">
+          Range starts {dateTime(data.since)}. Visitor and session IDs are anonymous browser IDs stored in local/session storage.
+        </p>
           </div>
         </div>
       </div>
