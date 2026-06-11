@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { buildDutchMetadata } from "@/lib/page-metadata";
 import { templateList } from "@/lib/templates/registry";
 
 const featuredTemplates = templateList.filter((template) =>
@@ -100,27 +101,26 @@ const faqs = [
   },
 ];
 
-export const metadata: Metadata = {
-  title: "Online CV Maken - Snel, Professioneel en Zonder Opmaakstress | WerkCV",
+export const metadata: Metadata = buildDutchMetadata({
+  title: "Online CV maken in je browser | Snel aanpassen per vacature | WerkCV",
   description:
-    "Online cv maken in een paar stappen. Gebruik templates, copy-ready voorbeelden en ATS tips. Start gratis en betaal alleen bij PDF-download.",
+    "Online cv maken zonder Word-gedoe. Werk in je browser, pas snel meerdere versies aan en betaal alleen bij PDF-download.",
+  path: "/online-cv-maken",
   keywords: [
     "online cv maken",
     "cv online maken",
     "cv maken online",
-    "online cv maken gratis",
-    "cv maken gratis online",
-    "gratis online cv maken",
+    "online cv builder",
+    "cv in browser maken",
     "online curriculum vitae maken",
+    "cv online aanpassen",
+    "meerdere cv versies maken",
   ],
-  alternates: {
-    canonical: "https://werkcv.nl/online-cv-maken",
-    languages: {
-      "nl-NL": "https://werkcv.nl/online-cv-maken",
-      "x-default": "https://werkcv.nl/online-cv-maken",
-    },
+  languages: {
+    "nl-NL": "https://werkcv.nl/online-cv-maken",
+    "x-default": "https://werkcv.nl/online-cv-maken",
   },
-};
+});
 
 export default function OnlineCvMakenPage() {
   const faqSchema = {

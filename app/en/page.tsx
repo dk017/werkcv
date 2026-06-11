@@ -2,9 +2,9 @@ import Link from "next/link";
 import { buildEnglishMetadata } from "./metadata";
 
 export const metadata = buildEnglishMetadata({
-  title: "Dutch CV in English for Jobs in the Netherlands",
+  title: "Netherlands CV Format: Dutch CV Template in English",
   description:
-    "Build a Dutch CV in English for jobs in the Netherlands. Start free, pay one time when you download the PDF, and avoid subscriptions or auto-renewal.",
+    "Use a Dutch CV template in English for jobs in the Netherlands. Follow local format rules, ATS-safe structure, examples, and one-time PDF download.",
   path: "/en",
   nlPath: "/",
   keywords: [
@@ -240,12 +240,12 @@ export default function EnglishHubPage() {
             ))}
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Build a Dutch CV in English for jobs in the Netherlands
+            Netherlands CV format and Dutch CV template in English
           </h1>
           <p className="text-lg md:text-xl text-gray-700 max-w-4xl leading-relaxed">
-            Use WerkCV when you want English CV content, but Dutch-market structure:
+            Use WerkCV when you want English CV content with Dutch-market structure:
             clear section order, practical proof, language levels, ATS-safe layout and
-            an editor that keeps you on the English route.
+            examples for jobs in the Netherlands.
           </p>
           <p className="mt-4 max-w-3xl text-base font-semibold text-slate-700">
             Start for free, finish your CV first, and only pay a one-time €4.99 when you want the PDF.

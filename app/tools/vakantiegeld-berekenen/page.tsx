@@ -146,8 +146,8 @@ const comparisonRows = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-    title: "Netto Vakantiegeld Berekenen 2026 | Inclusief Loonheffing | WerkCV",
-    description: "Vul je bruto maandloon in en zie direct je netto vakantiegeld inclusief loonheffing. Bijgewerkt voor 2026 met bruto/netto uitleg.",
+    title: "Vakantiegeld berekenen 2026 | Bruto netto tool | WerkCV",
+    description: "Bereken je bruto en netto vakantiegeld voor 2026. Vul je salaris in en zie direct 8%, loonheffing, bruto/netto uitleg en uitbetaling.",
     path: "/tools/vakantiegeld-berekenen",
     keywords: [
         "vakantiegeld berekenen",
@@ -211,10 +211,10 @@ export default function VakantiegeldBerekenenPage() {
                             </span>
                         </div>
                         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-                            Vakantiegeld berekenen in 2026
+                            Vakantiegeld berekenen in 2026: bruto en netto indicatie
                         </h1>
                         <p className="text-lg text-slate-600 font-medium max-w-3xl">
-                            Simpel, snel en bruikbaar voor werknemers in loondienst. Deze tool rekent met de Nederlandse basisregel van meestal minimaal 8% en laat direct zien wat je bruto vakantiegeld ongeveer is over de periode die je hebt opgebouwd. Daarna zie je ook een ruwe netto-indicatie en lees je waar het verschil tussen bruto en netto vakantiegeld meestal vandaan komt.
+                            Vul je bruto salaris in en zie direct hoeveel vakantiegeld je ongeveer opbouwt. De tool rekent met de Nederlandse basisregel van meestal minimaal 8%, toont bruto en netto naast elkaar en legt uit waarom loonheffing je uitbetaling kan verlagen.
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-6">
                             {[

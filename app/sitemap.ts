@@ -133,20 +133,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         {
             url: `${baseUrl}/online-cv-maken`,
             lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.9,
+            changeFrequency: 'monthly',
+            priority: 0.82,
         },
         {
             url: `${baseUrl}/cv-aanmaken`,
             lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.9,
+            changeFrequency: 'monthly',
+            priority: 0.81,
         },
         {
             url: `${baseUrl}/cv-opstellen`,
             lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.89,
+            changeFrequency: 'monthly',
+            priority: 0.8,
         },
         {
             url: `${baseUrl}/cv-tools-links`,
@@ -175,20 +175,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         {
             url: `${baseUrl}/curriculum-vitae-maken`,
             lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.89,
+            changeFrequency: 'monthly',
+            priority: 0.78,
         },
         {
             url: `${baseUrl}/cv-maken-template`,
             lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.88,
+            changeFrequency: 'monthly',
+            priority: 0.77,
         },
         {
             url: `${baseUrl}/cv-maken-sjabloon`,
             lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.88,
+            changeFrequency: 'monthly',
+            priority: 0.77,
         },
         {
             url: `${baseUrl}/cv-maken-in-word`,
@@ -265,8 +265,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         {
             url: `${baseUrl}/professioneel-cv-maken`,
             lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.86,
+            changeFrequency: 'monthly',
+            priority: 0.73,
         },
         {
             url: `${baseUrl}/eerste-cv-maken`,
@@ -289,14 +289,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         {
             url: `${baseUrl}/makkelijk-cv-maken`,
             lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.85,
+            changeFrequency: 'monthly',
+            priority: 0.72,
         },
         {
             url: `${baseUrl}/snel-cv-maken`,
             lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.85,
+            changeFrequency: 'monthly',
+            priority: 0.71,
         },
         {
             url: `${baseUrl}/cv-opmaak-voorbeeld`,

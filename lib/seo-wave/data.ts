@@ -4167,7 +4167,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 ],
                 intentLinks: [
                     {
-                        href: '/cv-maken-in-het-engels',
+                        href: '/cv-maken-in-engels',
                         label: 'Gebruik WerkCV als je vooral een Engels cv voor Nederland wilt maken',
                         description: 'Handig als je niet per se een internationale suite nodig hebt, maar wel een Engelstalig sollicitatiedocument.',
                     },
@@ -4250,7 +4250,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 description: 'Vergelijk WerkCV ook met andere no-subscription routes en niet alleen met Zety.',
             },
             {
-                href: '/cv-maken-in-het-engels',
+                href: '/cv-maken-in-engels',
                 title: 'Engels cv maken',
                 description: 'Handig als je Zety overwoog vanwege de Engelstalige builder-ervaring maar toch in Nederland solliciteert.',
             },

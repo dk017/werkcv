@@ -149,13 +149,13 @@ export default function EnglishProfilePhotoPage() {
             </span>
           </Link>
           <nav className="hidden items-center gap-5 text-sm font-bold text-slate-600 sm:flex">
-            <Link href="/en/cv-maker-netherlands" className="hover:text-slate-900">
+            <Link href="/en/editor" className="hover:text-slate-900">
               CV maker
             </Link>
             <Link href="/en/templates" className="hover:text-slate-900">
               Templates
             </Link>
-            <Link href="/en/tools" className="hover:text-slate-900">
+            <Link href="/tools" className="hover:text-slate-900">
               Tools
             </Link>
             <NavUserMenu />
