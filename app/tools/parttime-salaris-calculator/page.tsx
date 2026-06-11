@@ -61,9 +61,9 @@ const parttimeCvIntentLinks = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "Parttime Salaris Berekenen 2026 - 24 t/m 36 Uur | WerkCV",
+  title: "Parttime salaris berekenen 2026 | Fulltime naar 24-36 uur | WerkCV",
   description:
-    "Vul je fulltime bruto loon en uren in. Zie direct je parttime salaris voor 24, 28, 32 of 36 uur, inclusief jaarloon, uurloon en vakantiegeld.",
+    "Reken fulltime naar parttime salaris om voor 24, 28, 32 of 36 uur. Zie bruto maandloon, jaarloon, uurloon en vakantiegeld in een tool.",
   path: "/tools/parttime-salaris-calculator",
   keywords: [
     "parttime salaris calculator",
@@ -117,10 +117,10 @@ export default function ParttimeSalarisCalculatorPage() {
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-              Parttime salaris berekenen voor 24, 28, 32 of 36 uur in 2026
+              Parttime salaris berekenen: van fulltime naar 24, 28, 32 of 36 uur
             </h1>
             <p className="text-lg text-slate-600 font-medium max-w-3xl">
-              Bereken direct wat 24, 28, 32 of 36 uur bruto betekent. WerkCV zet je fulltime salaris om naar een parttime maandloon, jaarloon, uurloon en vakantiegeld-indicatie.
+              Reken je fulltime bruto salaris direct om naar parttime. WerkCV toont je maandloon, jaarloon, uurloon en vakantiegeld-indicatie voor je eigen uren en voor veelgebruikte scenario&apos;s zoals 24, 28, 32 en 36 uur.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <TrackedToolLink

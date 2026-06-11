@@ -36,8 +36,8 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "Eindejaarsuitkering Berekenen 2026 | Netto vs Bruto | WerkCV",
-  description: "Bereken je eindejaarsuitkering of 13e maand in 2026. Vul salaris en maanden in en zie direct bruto, pro rata en netto-context.",
+  title: "Eindejaarsuitkering berekenen 2026 | 13e maand bruto netto | WerkCV",
+  description: "Bereken je eindejaarsuitkering of 13e maand in 2026. Vul salaris en maanden in voor bruto, pro rata, netto-uitleg en belastingcontext.",
   path: "/tools/eindejaarsuitkering-berekenen",
   keywords: [
     "eindejaarsuitkering berekenen",
@@ -95,10 +95,10 @@ export default function EindejaarsuitkeringBerekenenPage() {
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-              Eindejaarsuitkering berekenen: 13e maand en pro rata
+              Eindejaarsuitkering berekenen: 13e maand, bruto en netto
             </h1>
             <p className="text-lg text-slate-600 font-medium max-w-3xl">
-              Bereken direct je bruto eindejaarsuitkering of 13e maand. Vul je maandsalaris, percentage en gewerkte maanden in en zie meteen wat je pro-rata bruto bedrag ongeveer wordt. Daarna kun je ook beter inschatten wanneer uitbetaling meestal plaatsvindt en waarom belasting op je loonstrook anders kan aanvoelen.
+              Bereken direct je bruto eindejaarsuitkering of 13e maand. Vul je maandsalaris, percentage en gewerkte maanden in, zie je pro-rata bedrag en gebruik de netto-uitleg om loonheffing en belasting op je loonstrook beter te begrijpen.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link

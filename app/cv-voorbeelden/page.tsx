@@ -5,8 +5,8 @@ import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { buildDutchMetadata } from '@/lib/page-metadata';
 
 export const metadata: Metadata = buildDutchMetadata({
-    title: 'CV Voorbeelden per Beroep | Professionele Voorbeelden + Templates',
-    description: 'Bekijk uitgebreide CV voorbeelden per beroep en sector. Inclusief structuur, checklist, veelgemaakte fouten en directe links naar templates, editor en voorbeeldteksten.',
+    title: '80+ CV Voorbeelden 2026 per Beroep | WerkCV',
+    description: 'Bekijk 80+ CV voorbeelden per beroep en sector. Gebruik structuur, voorbeeldteksten, checklist en templates om sneller een sterk Nederlands CV te maken.',
     path: '/cv-voorbeelden',
     keywords: [
         'cv voorbeelden',
@@ -146,6 +146,45 @@ const popularRoleLinks = [
     { label: 'CV voorbeeld timmerman', href: '/cv-voorbeelden/bouw-en-techniek/timmerman' },
 ];
 
+const priorityRoleCards = [
+    {
+        title: 'CV voorbeeld student',
+        href: '/cv-voorbeeld-student',
+        intent: 'Voor stage, bijbaan of eerste baan',
+        body: 'Start hier als opleiding, projecten, bijbaan en beschikbaarheid belangrijker zijn dan jaren werkervaring.',
+    },
+    {
+        title: 'CV voorbeeld zonder ervaring',
+        href: '/cv-gids/cv-voorbeeld-zonder-ervaring',
+        intent: 'Voor starters en zij-instromers',
+        body: 'Gebruik deze route als je bewijs moet halen uit studie, vrijwilligerswerk, projecten of overdraagbare vaardigheden.',
+    },
+    {
+        title: 'CV voorbeeld verpleegkundige',
+        href: '/cv-voorbeelden/zorg-en-welzijn/verpleegkundige',
+        intent: 'Voor zorgrollen met verantwoordelijkheid',
+        body: 'Sterk wanneer patiëntgerichtheid, BIG/context, rapportage, samenwerking en kwaliteit snel zichtbaar moeten zijn.',
+    },
+    {
+        title: 'Softwareontwikkelaar CV',
+        href: '/cv-voorbeelden/technologie-en-ict/software-ontwikkelaar',
+        intent: 'Voor developer- en ICT-sollicitaties',
+        body: 'Richt je CV op stack, projecten, productimpact, GitHub/portfolio en ATS-herkenbare technische termen.',
+    },
+    {
+        title: 'CV administratief medewerker',
+        href: '/cv-voorbeelden/zakelijk-en-financieel/administratief-medewerker',
+        intent: 'Voor kantoor, backoffice en support',
+        body: 'Laat nauwkeurigheid, systemen, documentstromen, planning en procesverbetering concreet terugkomen.',
+    },
+    {
+        title: 'CV voorbeeld magazijnmedewerker',
+        href: '/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker',
+        intent: 'Voor logistiek en uitvoerend werk',
+        body: 'Maak inzetbaarheid, veiligheid, tempo, WMS/scannerervaring en ploegendienst direct scanbaar.',
+    },
+];
+
 const faqs = [
     {
         question: 'Wat is een goed CV voorbeeld?',
@@ -212,6 +251,18 @@ export default function CVVoorbeeldenOverview() {
         })),
     };
 
+    const priorityExamplesSchema = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Meest gezochte CV voorbeelden',
+        itemListElement: priorityRoleCards.map((item, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            name: item.title,
+            url: `https://werkcv.nl${item.href}`,
+        })),
+    };
+
     return (
         <main className="min-h-screen bg-[#FFFEF9]">
             <script
@@ -221,6 +272,10 @@ export default function CVVoorbeeldenOverview() {
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(priorityExamplesSchema) }}
             />
 
             <div className="border-b-4 border-black bg-white">
@@ -240,7 +295,7 @@ export default function CVVoorbeeldenOverview() {
                         {totalExamples}+ CV VOORBEELDEN
                     </span>
                     <h1 className="text-5xl md:text-6xl font-black mb-6 text-gray-900">
-                        CV Voorbeelden per beroep
+                        80+ CV voorbeelden per beroep
                     </h1>
                     <p className="text-xl md:text-2xl max-w-4xl text-gray-700 leading-relaxed">
                         Op deze pagina vind je uitgebreide CV voorbeelden voor starters, medior en senior kandidaten in verschillende sectoren. Je krijgt niet alleen inspiratie voor opmaak, maar vooral voor inhoud die recruiters vertrouwen geeft:
@@ -306,6 +361,78 @@ export default function CVVoorbeeldenOverview() {
                                 <p className="mt-2 text-sm leading-relaxed text-gray-700">{item.body}</p>
                             </Link>
                         ))}
+                    </div>
+                </div>
+            </section>
+
+            <section className="border-b-4 border-black bg-[#FFFEF9]">
+                <div className="max-w-6xl mx-auto px-6 py-14">
+                    <div className="max-w-4xl">
+                        <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+                            Meest gekozen startpunten
+                        </p>
+                        <h2 className="mt-2 text-3xl font-black text-black">
+                            Begin bij het voorbeeld dat het dichtst bij je sollicitatie ligt
+                        </h2>
+                        <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+                            De snelste route is niet alle voorbeelden bekijken, maar één sterk uitgangspunt kiezen en dat meteen aanpassen op je vacature. Deze routes krijgen daarom meer gewicht in de interne structuur van de hub.
+                        </p>
+                    </div>
+
+                    <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                        {priorityRoleCards.map((role) => (
+                            <article
+                                key={role.href}
+                                className="flex h-full flex-col border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+                            >
+                                <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">
+                                    {role.intent}
+                                </p>
+                                <h3 className="mt-2 text-xl font-black text-gray-900">
+                                    {role.title}
+                                </h3>
+                                <p className="mt-3 flex-1 text-sm leading-relaxed text-gray-700">
+                                    {role.body}
+                                </p>
+                                <div className="mt-5 flex flex-wrap gap-2">
+                                    <Link
+                                        href={role.href}
+                                        className="border-2 border-black bg-yellow-300 px-3 py-2 text-sm font-black text-black hover:bg-yellow-200 transition-colors"
+                                    >
+                                        Bekijk voorbeeld
+                                    </Link>
+                                    <Link
+                                        href="/editor"
+                                        className="border-2 border-black bg-white px-3 py-2 text-sm font-black text-black hover:bg-slate-100 transition-colors"
+                                    >
+                                        Maak eigen CV
+                                    </Link>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
+
+                    <div className="mt-8 border-4 border-black bg-black p-5 text-white">
+                        <h3 className="text-2xl font-black">
+                            Van voorbeeld naar sollicitatieklare PDF
+                        </h3>
+                        <p className="mt-2 max-w-4xl text-sm font-medium leading-relaxed text-slate-200">
+                            Gebruik een voorbeeld voor inhoud en volgorde, kies daarna een rustige template en bouw de definitieve versie in de editor. Zo voorkom je dat inspiratie verandert in knip-en-plakwerk.
+                        </p>
+                        <div className="mt-4 flex flex-wrap gap-3">
+                            <Link
+                                href="/templates"
+                                className="border-2 border-white bg-white px-4 py-2 text-sm font-black text-black"
+                            >
+                                Bekijk templates
+                            </Link>
+                            <Link
+                                href="/editor"
+                                className="border-2 border-white bg-[#4ECDC4] px-4 py-2 text-sm font-black text-black"
+                            >
+                                Start in editor
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -446,9 +573,9 @@ export default function CVVoorbeeldenOverview() {
 
             <section className="border-b-4 border-black bg-[#FDFDFD]">
                 <div className="max-w-6xl mx-auto px-6 py-14">
-                    <h2 className="text-3xl font-black mb-6">Populaire zoekopdrachten</h2>
+                    <h2 className="text-3xl font-black mb-6">Meer populaire CV voorbeeld-routes</h2>
                     <p className="text-gray-700 mb-6 max-w-5xl leading-relaxed">
-                        Deze veelgezochte rollen zijn een goede start als je snel wilt vergelijken hoe functies profieltekst, werkervaring en vaardigheden presenteren. Open 2 of 3 voorbeelden, combineer de beste onderdelen en bouw daarna je eigen versie in de editor.
+                        Staat je exacte rol hierboven niet tussen de startpunten? Gebruik dan deze extra routes. Open maximaal twee of drie voorbeelden, vergelijk profieltekst en werkervaring, en bouw daarna je eigen versie in de editor.
                     </p>
                     <div className="flex flex-wrap gap-3">
                         {popularRoleLinks.map((role) => (

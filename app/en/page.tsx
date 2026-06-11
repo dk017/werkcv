@@ -2,9 +2,9 @@ import Link from "next/link";
 import { buildEnglishMetadata } from "./metadata";
 
 export const metadata = buildEnglishMetadata({
-  title: "Dutch CV in English for Jobs in the Netherlands",
+  title: "Netherlands CV Format: Dutch CV Template in English",
   description:
-    "Build a Dutch CV in English for jobs in the Netherlands. Start with templates, format rules, examples, ATS guidance, expat tools and an English editor.",
+    "Use a Dutch CV template in English for jobs in the Netherlands. Start with format rules, examples, ATS guidance, expat tools and an English editor.",
   path: "/en",
   nlPath: "/",
   keywords: [
@@ -220,12 +220,12 @@ export default function EnglishHubPage() {
             ENGLISH CV FOR THE NETHERLANDS
           </span>
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Build a Dutch CV in English for jobs in the Netherlands
+            Netherlands CV format and Dutch CV template in English
           </h1>
           <p className="text-lg md:text-xl text-gray-700 max-w-4xl leading-relaxed">
-            Use WerkCV when you want English CV content, but Dutch-market structure:
+            Use WerkCV when you want English CV content with Dutch-market structure:
             clear section order, practical proof, language levels, ATS-safe layout and
-            an editor that keeps you on the English route.
+            examples for jobs in the Netherlands.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
