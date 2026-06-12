@@ -439,7 +439,6 @@ async function main() {
     console.table(summary);
   } finally {
     await pool.end();
-    if (transporter) transporter.close();
   }
 }
 
