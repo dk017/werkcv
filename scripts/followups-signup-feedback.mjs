@@ -115,7 +115,13 @@ function getTransporter() {
 }
 
 function getResendApiKey() {
-  return process.env.FOLLOWUP_RESEND_API_KEY || process.env.SMTP_PASS || "";
+  return (
+    process.env.FOLLOWUP_RESEND_API_KEY ||
+    process.env.RESEND_API_KEY ||
+    process.env.RESENT ||
+    process.env.SMTP_PASS ||
+    ""
+  );
 }
 
 function shouldUseResendApi() {
