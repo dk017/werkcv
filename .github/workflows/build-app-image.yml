@@ -116,17 +116,12 @@ jobs:
       - name: Run signup feedback outreach
         if: ${{ github.event.inputs.run_signup_feedback == 'true' }}
         uses: appleboy/ssh-action@v1.2.0
-        env:
-          SIGNUP_FEEDBACK_DAYS: ${{ github.event.inputs.signup_feedback_days }}
-          SIGNUP_FEEDBACK_FROM: contact@werkcv.nl
-          SIGNUP_FEEDBACK_DELIVERY_MODE: "resend"
         with:
           host: ${{ secrets.HETZNER_HOST }}
           username: ${{ secrets.HETZNER_USER }}
           key: ${{ secrets.HETZNER_SSH_KEY }}
-          envs: SIGNUP_FEEDBACK_DAYS,SIGNUP_FEEDBACK_FROM,SIGNUP_FEEDBACK_DELIVERY_MODE
           script: |
             set -eu
             cd "${{ github.event.inputs.deploy_dir }}"
             docker compose -p werkcv -f docker-compose.ghcr.yml exec -T app \
-              sh -lc 'FOLLOWUP_FROM_EMAIL="$SIGNUP_FEEDBACK_FROM" FOLLOWUP_REPLY_TO="$SIGNUP_FEEDBACK_FROM" FOLLOWUP_DELIVERY_MODE="$SIGNUP_FEEDBACK_DELIVERY_MODE" node scripts/followups-signup-feedback.mjs --days="$SIGNUP_FEEDBACK_DAYS"'
+              sh -lc 'FOLLOWUP_FROM_EMAIL=contact@werkcv.nl FOLLOWUP_REPLY_TO=contact@werkcv.nl FOLLOWUP_DELIVERY_MODE=resend node scripts/followups-signup-feedback.mjs --days=${{ github.event.inputs.signup_feedback_days }}'
