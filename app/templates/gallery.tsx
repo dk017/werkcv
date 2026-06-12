@@ -353,7 +353,8 @@ export default function TemplateGallery({
 
       if (!response.ok) {
         if (response.status === 401) {
-          router.push(`/login?next=${encodeURIComponent(isEnglish ? "/en/templates" : "/templates")}`);
+          const nextPath = `${isEnglish ? "/en" : ""}/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(entryPoint)}`;
+          router.push(`/login?next=${encodeURIComponent(nextPath)}`);
           return;
         }
         const message = data?.error || `Request failed with status ${response.status}`;
