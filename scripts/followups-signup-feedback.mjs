@@ -1,7 +1,15 @@
 import nodemailer from "nodemailer";
 import { PrismaClient } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  adapter: new PrismaPg(
+    new Pool({
+      connectionString: process.env.DATABASE_URL,
+    })
+  ),
+});
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DEFAULT_DAYS = 14;
 const SIGNUP_FEEDBACK_DELAY_HOURS = 48;
