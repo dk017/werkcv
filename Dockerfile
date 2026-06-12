@@ -79,8 +79,8 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Prisma CLI and nodemailer so the app can run migrations and outbound mail tasks at runtime
-RUN npm install -g prisma nodemailer
+# Install Prisma CLI so we can run migrations at startup, and nodemailer locally for outbound mail tasks
+RUN npm install -g prisma
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -106,6 +106,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 # Copy Prisma schema so the CLI can run migrations at startup
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/scripts/followups-signup-feedback.mjs ./scripts/followups-signup-feedback.mjs
+
+RUN npm install nodemailer --omit=dev
 
 COPY --chown=nextjs:nodejs entrypoint.sh ./entrypoint.sh
 RUN chmod +x entrypoint.sh
