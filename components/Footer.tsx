@@ -1,6 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 
+type FeaturedBadge = {
+    href: string;
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    padded?: boolean;
+};
+
 const mainLinks = [
     { href: "/templates", label: "Templates" },
     { href: "/cv-voorbeelden", label: "CV Voorbeelden" },
@@ -47,7 +56,7 @@ const legalLinks = [
     { href: "/voorwaarden", label: "Algemene Voorwaarden" },
 ];
 
-const featuredBadges = [
+const featuredBadges: FeaturedBadge[] = [
     {
         href: "https://www.betterlaunch.co",
         src: "https://www.betterlaunch.co/badge-dark.svg",
@@ -89,6 +98,13 @@ const featuredBadges = [
         src: "https://cdn.prod.website-files.com/63d8afd87da01fb58ea3fbcb/6487e2868c6c8f93b4828827_dang-badge.png",
         alt: "Dang.ai",
         width: 150,
+        height: 54,
+    },
+    {
+        href: "https://mediapronet.com",
+        src: "https://mediapronet.com/api/badge?style=dark",
+        alt: "Listed on mediapronet.com",
+        width: 160,
         height: 54,
     },
 ];
@@ -165,7 +181,7 @@ export default function Footer() {
                                     alt={badge.alt}
                                     width={badge.width}
                                     height={badge.height}
-                                    className={`block h-auto ${badge.width === 139 ? "w-[139px]" : badge.width === 150 ? "w-[150px]" : "w-[170px]"}`}
+                                    className={`block h-auto ${badge.width === 139 ? "w-[139px]" : badge.width === 150 ? "w-[150px]" : badge.width === 160 ? "w-[160px]" : "w-[170px]"}`}
                                     unoptimized
                                 />
                             </a>
