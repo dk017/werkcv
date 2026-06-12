@@ -119,13 +119,15 @@ jobs:
         env:
           SIGNUP_FEEDBACK_DAYS: ${{ github.event.inputs.signup_feedback_days }}
           SIGNUP_FEEDBACK_FROM: contact@werkcv.nl
+          SIGNUP_FEEDBACK_SMTP_PORT: "465"
+          SIGNUP_FEEDBACK_SMTP_SECURE: "true"
         with:
           host: ${{ secrets.HETZNER_HOST }}
           username: ${{ secrets.HETZNER_USER }}
           key: ${{ secrets.HETZNER_SSH_KEY }}
-          envs: SIGNUP_FEEDBACK_DAYS,SIGNUP_FEEDBACK_FROM
+          envs: SIGNUP_FEEDBACK_DAYS,SIGNUP_FEEDBACK_FROM,SIGNUP_FEEDBACK_SMTP_PORT,SIGNUP_FEEDBACK_SMTP_SECURE
           script: |
             set -eu
             cd "${{ github.event.inputs.deploy_dir }}"
             docker compose -p werkcv -f docker-compose.ghcr.yml exec -T app \
-              sh -lc 'FOLLOWUP_FROM_EMAIL="$SIGNUP_FEEDBACK_FROM" FOLLOWUP_REPLY_TO="$SIGNUP_FEEDBACK_FROM" node scripts/followups-signup-feedback.mjs --days="$SIGNUP_FEEDBACK_DAYS"'
+              sh -lc 'FOLLOWUP_FROM_EMAIL="$SIGNUP_FEEDBACK_FROM" FOLLOWUP_REPLY_TO="$SIGNUP_FEEDBACK_FROM" FOLLOWUP_SMTP_PORT="$SIGNUP_FEEDBACK_SMTP_PORT" FOLLOWUP_SMTP_SECURE="$SIGNUP_FEEDBACK_SMTP_SECURE" node scripts/followups-signup-feedback.mjs --days="$SIGNUP_FEEDBACK_DAYS"'
