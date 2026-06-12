@@ -89,31 +89,6 @@ Dinesh`,
   };
 }
 
-function getTransporter() {
-  const host = process.env.FOLLOWUP_SMTP_HOST || process.env.SMTP_HOST;
-  const user = process.env.FOLLOWUP_SMTP_USER || process.env.SMTP_USER;
-  const pass = process.env.FOLLOWUP_SMTP_PASSWORD || process.env.SMTP_PASS;
-  const port = Number(process.env.FOLLOWUP_SMTP_PORT || process.env.SMTP_PORT || 465);
-  const secure =
-    process.env.FOLLOWUP_SMTP_SECURE !== undefined
-      ? process.env.FOLLOWUP_SMTP_SECURE !== "false"
-      : port === 465;
-
-  if (!host || !user || !pass) {
-    throw new Error("SMTP credentials are required");
-  }
-
-  return nodemailer.createTransport({
-    host,
-    port,
-    secure,
-    auth: {
-      user,
-      pass,
-    },
-  });
-}
-
 function getResendApiKey() {
   return (
     process.env.FOLLOWUP_RESEND_API_KEY ||
@@ -164,6 +139,70 @@ async function sendViaResendApi({ from, to, replyTo, subject, text }) {
   }
 
   return { messageId: payload?.id || null };
+}
+
+function buildSmtpPortCandidates() {
+  const preferred = Number(process.env.FOLLOWUP_SMTP_PORT || process.env.SMTP_PORT || 587);
+  const ports = [preferred, 465, 587, 2525, 2587, 2465, 25];
+  const unique = [];
+
+  for (const port of ports) {
+    if (Number.isFinite(port) && port > 0 && !unique.includes(port)) {
+      unique.push(port);
+    }
+  }
+
+  return unique.map((port) => ({
+    port,
+    secure: port === 465 || port === 2465,
+  }));
+}
+
+async function sendViaSmtp({ from, to, replyTo, subject, text }) {
+  const host = process.env.FOLLOWUP_SMTP_HOST || process.env.SMTP_HOST;
+  const user = process.env.FOLLOWUP_SMTP_USER || process.env.SMTP_USER;
+  const pass = process.env.FOLLOWUP_SMTP_PASSWORD || process.env.SMTP_PASS;
+
+  if (!host || !user || !pass) {
+    throw new Error("SMTP credentials are required");
+  }
+
+  let lastError = null;
+  for (const candidate of buildSmtpPortCandidates()) {
+    const transporter = nodemailer.createTransport({
+      host,
+      port: candidate.port,
+      secure: candidate.secure,
+      auth: {
+        user,
+        pass,
+      },
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 15000,
+    });
+
+    try {
+      const info = await transporter.sendMail({
+        from,
+        to,
+        replyTo,
+        subject,
+        text,
+      });
+      transporter.close();
+      return { messageId: Array.isArray(info.messageId) ? info.messageId[0] : info.messageId || null };
+    } catch (error) {
+      lastError = error;
+      transporter.close();
+      const code = typeof error === "object" && error && "code" in error ? String(error.code || "") : "";
+      if (code && !["ETIMEDOUT", "ESOCKET", "ECONNECTION", "ECONNREFUSED"].includes(code)) {
+        throw error;
+      }
+    }
+  }
+
+  throw lastError || new Error("SMTP connection failed");
 }
 
 function fromName() {
@@ -311,8 +350,6 @@ async function upsertFollowupRecords(pool, email, userId, sourceCluster, created
 async function main() {
   const { dryRun, days, limit } = parseArgs();
   const pool = getPool();
-  const transporter = dryRun || shouldUseResendApi() ? null : getTransporter();
-  const useResendApi = !dryRun && shouldUseResendApi();
   const lowerBound = new Date(Date.now() - days * DAY_MS);
   const cutoff = new Date(Date.now() - SIGNUP_FEEDBACK_DELAY_HOURS * 60 * 60 * 1000);
   const recentReplyCutoff = new Date(Date.now() - RECENT_REPLY_WINDOW_DAYS * DAY_MS);
@@ -347,21 +384,40 @@ async function main() {
 
       const from = `${fromName()} <${fromEmail()}>`;
       const replyTo = replyToEmail();
-      const info = useResendApi
-        ? await sendViaResendApi({
-            from,
-            to: email,
-            replyTo,
-            subject: draft.subject,
-            text: draft.body,
-          })
-        : await transporter.sendMail({
+      let info;
+
+      if (shouldUseResendApi()) {
+        try {
+          info = await sendViaResendApi({
             from,
             to: email,
             replyTo,
             subject: draft.subject,
             text: draft.body,
           });
+        } catch (error) {
+          const message = error instanceof Error ? error.message : String(error || "");
+          if (!/invalid/i.test(message)) {
+            throw error;
+          }
+          console.warn(`Resend API fallback to SMTP for ${email}: ${message}`);
+          info = await sendViaSmtp({
+            from,
+            to: email,
+            replyTo,
+            subject: draft.subject,
+            text: draft.body,
+          });
+        }
+      } else {
+        info = await sendViaSmtp({
+          from,
+          to: email,
+          replyTo,
+          subject: draft.subject,
+          text: draft.body,
+        });
+      }
 
       await upsertFollowupRecords(
         pool,
