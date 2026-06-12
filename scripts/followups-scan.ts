@@ -3,6 +3,7 @@ import { prisma } from "../lib/prisma";
 
 type FollowupType =
   | "paid_customer_testimonial"
+  | "signup_no_cv_feedback"
   | "created_cv_no_purchase"
   | "checkout_no_purchase";
 
@@ -28,6 +29,7 @@ type ScanResult = {
 const DAY_MS = 24 * 60 * 60 * 1000;
 const DEFAULT_DAYS = 14;
 const TESTIMONIAL_DELAY_DAYS = 2;
+const SIGNUP_FEEDBACK_DELAY_HOURS = 48;
 const CREATED_CV_DELAY_HOURS = 36;
 const CHECKOUT_DELAY_HOURS = 18;
 
@@ -105,6 +107,48 @@ Ik zag dat je WerkCV recent hebt gebruikt. Ik ben het product aan het verbeteren
 Was het maken en downloaden van je CV duidelijk genoeg, of was er iets dat verwarrend voelde?
 
 Als WerkCV je geholpen heeft, is een korte zin over je ervaring ook heel waardevol. Geen verplichting natuurlijk.
+
+Groet,
+Dinesh`,
+  };
+}
+
+function signupNoCvFeedbackDraft(email: string, english: boolean): Pick<Candidate, "draftSubject" | "draftBody"> {
+  const name = firstNameFromEmail(email);
+
+  if (english) {
+    return {
+      draftSubject: "Quick feedback on WerkCV?",
+      draftBody: `Hi ${name},
+
+I saw you signed up for WerkCV, but it looks like you did not get to the CV builder yet.
+
+I am trying to improve the product and would genuinely value honest feedback, even if it is blunt:
+
+- What were you expecting when you signed up?
+- What felt unclear or missing?
+- What nearly made you leave?
+
+A reply with just 1 or 2 lines is already helpful. No sales pitch.
+
+Thanks,
+Dinesh`,
+    };
+  }
+
+  return {
+    draftSubject: "Korte feedback over WerkCV?",
+    draftBody: `Hoi ${name},
+
+Ik zag dat je je hebt aangemeld voor WerkCV, maar nog niet bij de cv-builder bent gekomen.
+
+Ik ben het product aan het verbeteren en hoor graag eerlijke feedback, ook als die scherp is:
+
+- Wat verwachtte je toen je je aanmeldde?
+- Wat voelde onduidelijk of miste je?
+- Wat maakte bijna dat je afhaakte?
+
+Een reply van 1 of 2 zinnen helpt al enorm. Geen verkooppraatje.
 
 Groet,
 Dinesh`,
@@ -246,6 +290,7 @@ async function upsertTask(candidate: Candidate, dryRun: boolean): Promise<ScanRe
   if (dryRun) return { candidate, action: "dry_run" };
 
   await ensureContact(candidate, dryRun);
+  const autoApprove = candidate.type === "signup_no_cv_feedback";
 
   const existing = await prisma.followupTask.findFirst({
     where: {
@@ -271,7 +316,7 @@ async function upsertTask(candidate: Candidate, dryRun: boolean): Promise<ScanRe
   const data = {
     email,
     type: candidate.type,
-    status: existing?.status === "approved" ? "approved" : "draft",
+    status: existing?.status === "approved" || autoApprove ? "approved" : "draft",
     reason: candidate.reason,
     draftSubject: candidate.draftSubject,
     draftBody: candidate.draftBody,
@@ -331,6 +376,64 @@ async function findPaidCustomerCandidates(days: number): Promise<Candidate[]> {
         ...draft,
       };
     });
+}
+
+async function findSignupNoCvFeedbackCandidates(days: number): Promise<Candidate[]> {
+  const lowerBound = daysAgo(days);
+  const cutoff = hoursAgo(SIGNUP_FEEDBACK_DELAY_HOURS);
+
+  const users = await prisma.user.findMany({
+    where: {
+      createdAt: {
+        gte: lowerBound,
+        lte: cutoff,
+      },
+    },
+    select: {
+      id: true,
+      email: true,
+      createdAt: true,
+      sourcePath: true,
+      sourceCluster: true,
+      sourceLocale: true,
+      attribution: true,
+      documents: {
+        select: {
+          id: true,
+        },
+        take: 1,
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+
+  const candidates: Candidate[] = [];
+
+  for (const user of users) {
+    const email = normalizeEmail(user.email);
+    if (isInternalOrTestEmail(email)) continue;
+    if (user.documents.length > 0) continue;
+
+    const attribution = user.attribution && typeof user.attribution === "object" && !Array.isArray(user.attribution)
+      ? (user.attribution as Record<string, unknown>)
+      : null;
+    const path = user.sourcePath || (typeof attribution?.firstTouchPath === "string" ? attribution.firstTouchPath : null);
+    const locale = user.sourceLocale || (typeof attribution?.locale === "string" ? attribution.locale : null);
+    const english = isEnglishContext(path, locale);
+    const draft = signupNoCvFeedbackDraft(email, english);
+
+    candidates.push({
+      email,
+      type: "signup_no_cv_feedback",
+      reason: `User signed up ${user.createdAt.toISOString()} and did not create a CV or start the editor within ${SIGNUP_FEEDBACK_DELAY_HOURS} hours.`,
+      dueAt: new Date(user.createdAt.getTime() + SIGNUP_FEEDBACK_DELAY_HOURS * 60 * 60 * 1000),
+      relatedUserId: user.id,
+      source: user.sourceCluster || "signup_only",
+      ...draft,
+    });
+  }
+
+  return candidates;
 }
 
 async function findCreatedCvNoPurchaseCandidates(days: number): Promise<Candidate[]> {
@@ -536,6 +639,7 @@ async function main() {
 
   const candidates = [
     ...(await findPaidCustomerCandidates(days)),
+    ...(await findSignupNoCvFeedbackCandidates(days)),
     ...(await findCreatedCvNoPurchaseCandidates(days)),
     ...(await findCheckoutNoPurchaseCandidates(days)),
   ];

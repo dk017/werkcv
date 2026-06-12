@@ -15,6 +15,18 @@ on:
         description: "Remote checkout directory"
         required: true
         default: "/opt/werkcv"
+      run_signup_feedback:
+        description: "Run the signup feedback outreach after deploy"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
+      signup_feedback_days:
+        description: "Signup window in days for the outreach"
+        required: true
+        default: "14"
 
 jobs:
   build:
@@ -100,3 +112,20 @@ jobs:
             docker compose -p werkcv -f docker-compose.ghcr.yml pull app
             docker compose -p werkcv -f docker-compose.ghcr.yml up -d app
             docker compose -p werkcv ps
+
+      - name: Run signup feedback outreach
+        if: ${{ github.event.inputs.run_signup_feedback == 'true' }}
+        uses: appleboy/ssh-action@v1.2.0
+        env:
+          SIGNUP_FEEDBACK_DAYS: ${{ github.event.inputs.signup_feedback_days }}
+          SIGNUP_FEEDBACK_FROM: contact@werkcv.nl
+        with:
+          host: ${{ secrets.HETZNER_HOST }}
+          username: ${{ secrets.HETZNER_USER }}
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          envs: SIGNUP_FEEDBACK_DAYS,SIGNUP_FEEDBACK_FROM
+          script: |
+            set -eu
+            cd "${{ github.event.inputs.deploy_dir }}"
+            docker compose -p werkcv -f docker-compose.ghcr.yml exec -T app \
+              sh -lc 'FOLLOWUP_FROM_EMAIL="$SIGNUP_FEEDBACK_FROM" FOLLOWUP_REPLY_TO="$SIGNUP_FEEDBACK_FROM" node scripts/followups-signup-feedback.mjs --days="$SIGNUP_FEEDBACK_DAYS"'

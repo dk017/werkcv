@@ -20,18 +20,25 @@ type ParseArgsResult = {
   dryRun: boolean;
   includeDrafts: boolean;
   limit: number;
+  types: string[];
 };
 
 function parseArgs(): ParseArgsResult {
   const args = new Set(process.argv.slice(2));
   const limitArg = process.argv.find((arg) => arg.startsWith("--limit="));
+  const typesArg = process.argv.find((arg) => arg.startsWith("--types="));
   const limitValue = limitArg ? Number(limitArg.replace("--limit=", "")) : 20;
   const limit = Number.isFinite(limitValue) && limitValue > 0 ? Math.floor(limitValue) : 20;
+  const types = (typesArg ? typesArg.replace("--types=", "") : "")
+    .split(",")
+    .map((type) => type.trim())
+    .filter(Boolean);
 
   return {
     dryRun: args.has("--dry-run"),
     includeDrafts: args.has("--include-drafts"),
     limit,
+    types,
   };
 }
 
@@ -40,11 +47,11 @@ function normalizeEmail(email: string): string {
 }
 
 function getTransporter() {
-  const host = process.env.FOLLOWUP_SMTP_HOST;
-  const user = process.env.FOLLOWUP_SMTP_USER;
-  const pass = process.env.FOLLOWUP_SMTP_PASSWORD;
-  const port = Number(process.env.FOLLOWUP_SMTP_PORT || 465);
-  const secure = process.env.FOLLOWUP_SMTP_SECURE !== "false";
+  const host = process.env.FOLLOWUP_SMTP_HOST || process.env.SMTP_HOST;
+  const user = process.env.FOLLOWUP_SMTP_USER || process.env.SMTP_USER;
+  const pass = process.env.FOLLOWUP_SMTP_PASSWORD || process.env.SMTP_PASS;
+  const port = Number(process.env.FOLLOWUP_SMTP_PORT || process.env.SMTP_PORT || 465);
+  const secure = (process.env.FOLLOWUP_SMTP_SECURE ?? (process.env.SMTP_PORT === "465" ? "true" : "false")) !== "false";
 
   if (!host || !user || !pass) {
     throw new Error("FOLLOWUP_SMTP_HOST, FOLLOWUP_SMTP_USER and FOLLOWUP_SMTP_PASSWORD are required");
@@ -66,7 +73,7 @@ function fromName(): string {
 }
 
 function fromEmail(): string {
-  return process.env.FOLLOWUP_FROM_EMAIL || process.env.FOLLOWUP_SMTP_USER || "contact@werkcv.nl";
+  return process.env.FOLLOWUP_FROM_EMAIL || process.env.AUTH_FROM_EMAIL || process.env.FOLLOWUP_SMTP_USER || process.env.SMTP_USER || "contact@werkcv.nl";
 }
 
 function replyToEmail(): string {
@@ -74,7 +81,7 @@ function replyToEmail(): string {
 }
 
 async function main() {
-  const { dryRun, includeDrafts, limit } = parseArgs();
+  const { dryRun, includeDrafts, limit, types } = parseArgs();
   const now = new Date();
 
   const tasks = await prisma.followupTask.findMany({
@@ -82,6 +89,7 @@ async function main() {
       dueAt: { lte: now },
       status: includeDrafts ? { in: ["draft", "approved"] } : "approved",
       sentAt: null,
+      ...(types.length > 0 ? { type: { in: types } } : {}),
     },
     orderBy: [{ dueAt: "asc" }, { createdAt: "asc" }],
     take: limit,

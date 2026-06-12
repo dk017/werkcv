@@ -105,6 +105,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/public ./public
 
 # Copy Prisma schema so the CLI can run migrations at startup
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/followups-signup-feedback.mjs ./scripts/followups-signup-feedback.mjs
 
 COPY --chown=nextjs:nodejs entrypoint.sh ./entrypoint.sh
 RUN chmod +x entrypoint.sh
