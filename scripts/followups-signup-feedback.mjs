@@ -114,6 +114,52 @@ function getTransporter() {
   });
 }
 
+function getResendApiKey() {
+  return process.env.FOLLOWUP_RESEND_API_KEY || process.env.SMTP_PASS || "";
+}
+
+function shouldUseResendApi() {
+  const transport = (process.env.FOLLOWUP_DELIVERY_MODE || "").trim().toLowerCase();
+  if (transport === "resend") return true;
+  if (transport === "smtp") return false;
+  const host = (process.env.FOLLOWUP_SMTP_HOST || process.env.SMTP_HOST || "").trim().toLowerCase();
+  return host === "smtp.resend.com" && Boolean(getResendApiKey());
+}
+
+async function sendViaResendApi({ from, to, replyTo, subject, text }) {
+  const apiKey = getResendApiKey();
+  if (!apiKey) {
+    throw new Error("Resend API key is required");
+  }
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from,
+      to: [to],
+      reply_to: replyTo,
+      subject,
+      text,
+    }),
+  });
+
+  const payload = await response.json().catch(() => null);
+  if (!response.ok) {
+    const message = payload && typeof payload.error === "string"
+      ? payload.error
+      : payload && typeof payload.message === "string"
+        ? payload.message
+        : `Resend API request failed with status ${response.status}`;
+    throw new Error(message);
+  }
+
+  return { messageId: payload?.id || null };
+}
+
 function fromName() {
   return process.env.FOLLOWUP_FROM_NAME || "WerkCV";
 }
@@ -259,7 +305,8 @@ async function upsertFollowupRecords(pool, email, userId, sourceCluster, created
 async function main() {
   const { dryRun, days, limit } = parseArgs();
   const pool = getPool();
-  const transporter = dryRun ? null : getTransporter();
+  const transporter = dryRun || shouldUseResendApi() ? null : getTransporter();
+  const useResendApi = !dryRun && shouldUseResendApi();
   const lowerBound = new Date(Date.now() - days * DAY_MS);
   const cutoff = new Date(Date.now() - SIGNUP_FEEDBACK_DELAY_HOURS * 60 * 60 * 1000);
   const recentReplyCutoff = new Date(Date.now() - RECENT_REPLY_WINDOW_DAYS * DAY_MS);
@@ -292,13 +339,23 @@ async function main() {
         continue;
       }
 
-      const info = await transporter.sendMail({
-        from: `${fromName()} <${fromEmail()}>`,
-        to: email,
-        replyTo: replyToEmail(),
-        subject: draft.subject,
-        text: draft.body,
-      });
+      const from = `${fromName()} <${fromEmail()}>`;
+      const replyTo = replyToEmail();
+      const info = useResendApi
+        ? await sendViaResendApi({
+            from,
+            to: email,
+            replyTo,
+            subject: draft.subject,
+            text: draft.body,
+          })
+        : await transporter.sendMail({
+            from,
+            to: email,
+            replyTo,
+            subject: draft.subject,
+            text: draft.body,
+          });
 
       await upsertFollowupRecords(
         pool,
