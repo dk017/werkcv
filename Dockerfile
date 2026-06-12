@@ -79,8 +79,8 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Prisma CLI so we can run db push/migrate at container startup
-RUN npm install -g prisma
+# Install Prisma CLI and nodemailer so the app can run migrations and outbound mail tasks at runtime
+RUN npm install -g prisma nodemailer
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
