@@ -1,9 +1,10 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { getStoredAttribution } from "@/lib/analytics";
+import { getStoredAttribution, track } from "@/lib/analytics";
+import { normalizeAnalyticsPath } from "@/lib/analytics-paths";
 
 const loginCopy = {
   nl: {
@@ -51,9 +52,17 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [devCode, setDevCode] = useState<string | null>(null);
+  const loginViewTrackedRef = useRef(false);
 
-  const locale = next.startsWith("/en") ? "en" : "nl";
+  const nextPath = normalizeAnalyticsPath(next);
+  const locale = nextPath.startsWith("/en") ? "en" : "nl";
   const copy = loginCopy[locale];
+
+  useEffect(() => {
+    if (loginViewTrackedRef.current) return;
+    track("login_view", { locale, nextPath });
+    loginViewTrackedRef.current = true;
+  }, [locale, nextPath]);
 
   const requestCode = async (e: FormEvent) => {
     e.preventDefault();
@@ -64,17 +73,27 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
       const response = await fetch("/api/auth/request-code", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, locale }),
       });
       const data = await response.json().catch(() => null);
       if (!response.ok) {
+        track("login_failed", {
+          locale,
+          nextPath,
+          stage: "request_code",
+          reason: data?.code === "INVALID_EMAIL" ? "invalid_email" : "server_error",
+        });
         setError(data?.error || copy.requestError);
         return;
       }
       if (data?.devCode) {
         setDevCode(data.devCode);
       }
+      track("login_code_requested", { locale, nextPath });
       setStep("code");
+    } catch {
+      track("login_failed", { locale, nextPath, stage: "request_code", reason: "network_error" });
+      setError(copy.requestError);
     } finally {
       setLoading(false);
     }
@@ -97,10 +116,24 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
       });
       const data = await response.json().catch(() => null);
       if (!response.ok) {
+        track("login_failed", {
+          locale,
+          nextPath,
+          stage: "verify_code",
+          reason: data?.code === "INVALID_CODE" ? "invalid_code" : "server_error",
+        });
         setError(data?.error || copy.verifyError);
         return;
       }
+      track("login_verified", {
+        locale,
+        nextPath,
+        isNewUser: data?.isNewUser === true,
+      });
       router.replace(next);
+    } catch {
+      track("login_failed", { locale, nextPath, stage: "verify_code", reason: "network_error" });
+      setError(copy.verifyError);
     } finally {
       setLoading(false);
     }
@@ -125,6 +158,7 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
               </label>
               <input
                 type="email"
+                autoComplete="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -155,6 +189,8 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
                 required
                 pattern="\d{6}"
                 maxLength={6}
+                inputMode="numeric"
+                autoComplete="one-time-code"
                 className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100"
                 placeholder="123456"
               />
@@ -182,7 +218,7 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
         )}
 
         {error && (
-          <div className="mt-4 text-sm text-rose-800 bg-rose-100 border border-rose-300 rounded-md px-3 py-2">
+          <div role="alert" className="mt-4 text-sm text-rose-800 bg-rose-100 border border-rose-300 rounded-md px-3 py-2">
             {error}
           </div>
         )}

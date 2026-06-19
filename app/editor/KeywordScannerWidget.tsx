@@ -10,13 +10,19 @@ interface KeywordResult {
 
 interface KeywordScannerWidgetProps {
     data: CVData;
+    jobDescription: string;
+    onJobDescriptionChange: (value: string) => void;
     uiLanguage?: UiLanguage;
 }
 
-export default function KeywordScannerWidget({ data, uiLanguage = "nl" }: KeywordScannerWidgetProps) {
+export default function KeywordScannerWidget({
+    data,
+    jobDescription,
+    onJobDescriptionChange,
+    uiLanguage = "nl",
+}: KeywordScannerWidgetProps) {
     const isEnglish = uiLanguage === "en";
     const [expanded, setExpanded] = useState(false);
-    const [jobDescription, setJobDescription] = useState('');
     const [results, setResults] = useState<KeywordResult[] | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
@@ -66,7 +72,7 @@ export default function KeywordScannerWidget({ data, uiLanguage = "nl" }: Keywor
 
     function handleReset() {
         setResults(null);
-        setJobDescription('');
+        onJobDescriptionChange('');
         setError('');
     }
 
@@ -138,7 +144,7 @@ export default function KeywordScannerWidget({ data, uiLanguage = "nl" }: Keywor
                                 </label>
                                 <textarea
                                     value={jobDescription}
-                                    onChange={e => { setJobDescription(e.target.value); setError(''); }}
+                                    onChange={e => { onJobDescriptionChange(e.target.value); setError(''); }}
                                     placeholder={isEnglish ? "Paste the full job description here..." : "Plak hier de volledige vacaturetekst..."}
                                     rows={6}
                                     className="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 resize-none font-medium"

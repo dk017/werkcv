@@ -2492,6 +2492,10 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
     },
     'one-page-cv-netherlands': {
         intro: 'One-page CVs work very well in the Netherlands when they are genuinely focused. This guide helps you decide what to keep, what to cut, and how to preserve impact.',
+        ctaTitle: 'Ready to build a focused one-page CV for the Netherlands?',
+        ctaText: 'Start with the essential sections, keep the strongest evidence on page one, and expand only if the role genuinely needs more detail.',
+        ctaHref: '/en/editor',
+        ctaButtonLabel: 'Build my one-page Netherlands CV',
         sectionOverrides: {
             layout: {
                 bullets: [

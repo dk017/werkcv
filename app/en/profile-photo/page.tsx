@@ -158,7 +158,7 @@ export default function EnglishProfilePhotoPage() {
             <Link href="/tools" className="hover:text-slate-900">
               Tools
             </Link>
-            <NavUserMenu />
+            <NavUserMenu uiLanguage="en" />
           </nav>
         </div>
       </header>
@@ -305,7 +305,7 @@ export default function EnglishProfilePhotoPage() {
         </section>
       </main>
 
-      <Footer />
+      <Footer uiLanguage="en" />
     </div>
   );
 }

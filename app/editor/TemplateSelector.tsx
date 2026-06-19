@@ -1,21 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { createElement, useState } from "react";
 import { templateList, getThemeById } from "@/lib/templates/registry";
 import { TemplateConfig } from "@/lib/templates";
 import { getTemplateComponent } from "@/app/editor/templates";
-import { sampleCV } from "@/lib/cv";
+import type { CVData } from "@/lib/cv";
 import { LinkTextProvider } from "@/app/editor/templates/link-utils";
 import { UiLanguage } from "@/lib/ui-language";
 
+const templateComponents = new Map(
+  templateList.map((template) => [template.id, getTemplateComponent(template.id)]),
+);
+
 interface TemplateSelectorProps {
   currentTemplateId: string;
+  data: CVData;
   onSelectTemplate: (templateId: string, defaultThemeId: string) => void;
   uiLanguage?: UiLanguage;
 }
 
 export default function TemplateSelector({
   currentTemplateId,
+  data,
   onSelectTemplate,
   uiLanguage = "nl",
 }: TemplateSelectorProps) {
@@ -70,6 +76,7 @@ export default function TemplateSelector({
                   <TemplateCard
                     key={template.id}
                     template={template}
+                    data={data}
                     uiLanguage={uiLanguage}
                     isSelected={template.id === currentTemplateId}
                     onSelect={() => {
@@ -89,17 +96,21 @@ export default function TemplateSelector({
 
 function TemplateCard({
   template,
+  data,
   uiLanguage,
   isSelected,
   onSelect,
 }: {
   template: TemplateConfig;
+  data: CVData;
   uiLanguage: UiLanguage;
   isSelected: boolean;
   onSelect: () => void;
 }) {
-  const TemplateComponent = getTemplateComponent(template.id);
+  const TemplateComponent = templateComponents.get(template.id);
   const theme = getThemeById(template.defaultThemeId);
+
+  if (!TemplateComponent) return null;
 
   return (
     <button
@@ -111,7 +122,7 @@ function TemplateCard({
       <div className="mb-2 flex h-[200px] items-start justify-center overflow-hidden rounded-lg border border-gray-100 bg-gray-50">
         <div style={{ zoom: 0.22, pointerEvents: "none", flexShrink: 0 }}>
           <LinkTextProvider disableAnchors>
-            <TemplateComponent data={sampleCV} theme={theme} />
+            {createElement(TemplateComponent, { data, theme })}
           </LinkTextProvider>
         </div>
       </div>

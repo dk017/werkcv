@@ -561,7 +561,7 @@ export function CoursesSection({ control, register, uiLanguage = "nl" }: Section
                     onClick={() => append({ name: "", institution: "", year: "" })}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
-                    + Toevoegen
+                    {t(uiLanguage, "+ Toevoegen", "+ Add")}
                 </button>
             </div>
             <div className="space-y-3">
@@ -623,7 +623,7 @@ export function AwardsSection({ control, register, uiLanguage = "nl" }: SectionP
                     onClick={() => append("" as any)}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
-                    + Toevoegen
+                    {t(uiLanguage, "+ Toevoegen", "+ Add")}
                 </button>
             </div>
             <div className="space-y-2">

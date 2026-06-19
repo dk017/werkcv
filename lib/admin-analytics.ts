@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
+import { ANALYTICS_PRODUCT_PROGRESS_PATHS } from "@/lib/analytics-paths";
 
 export type AnalyticsRange = "24h" | "7d" | "30d";
 
@@ -35,6 +36,9 @@ export type AnalyticsDashboardData = {
   devices: DeviceRow[];
   ctas: CtaRow[];
   funnelPages: FunnelPageRow[];
+  segmentedFunnels: SegmentedFunnelRow[];
+  checkoutExperiments: CheckoutExperimentRow[];
+  ctaCopyExperiments: CtaCopyExperimentRow[];
 };
 
 type SummaryRow = {
@@ -210,6 +214,44 @@ export type FunnelPageRow = {
   checkoutClicks: number;
 };
 
+export type SegmentedFunnelRow = {
+  dimension: "locale" | "landing_page" | "source_cluster" | "device";
+  segment: string;
+  sessions: number;
+  ctaSessions: number;
+  loginViews: number;
+  codeRequests: number;
+  verifiedLogins: number;
+  editorStarts: number;
+  readyCvs: number;
+  pdfStarts: number;
+  checkoutStarts: number;
+  paidSessions: number;
+};
+
+export type CheckoutExperimentRow = {
+  variant: "modal" | "direct";
+  locale: "all" | "nl" | "en";
+  assignedCvs: number;
+  readyCvs: number;
+  paywallCvs: number;
+  checkoutCvs: number;
+  failedCvs: number;
+  paidCvs: number;
+  revenueCents: number;
+};
+
+export type CtaCopyExperimentRow = {
+  variant: "trust" | "speed";
+  locale: "all" | "nl" | "en";
+  assignedVisitors: number;
+  clickedVisitors: number;
+  editorVisitors: number;
+  createdCvs: number;
+  paidVisitors: number;
+  revenueCents: number;
+};
+
 type JourneyEventQueryRow = {
   id: string;
   sessionId: string;
@@ -273,6 +315,9 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
     devices,
     ctas,
     funnelPages,
+    segmentedFunnels,
+    checkoutExperiments,
+    ctaCopyExperiments,
   ] = await Promise.all([
     prisma.$queryRaw<SummaryRow[]>`
       WITH events AS (
@@ -794,7 +839,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
           cta.page,
           COUNT(*)::int AS "productProgress"
         FROM cta_events cta
-        WHERE cta.to_path IN ('/editor', '/templates', '/login', '/cv-aanmaken', '/gratis-cv-maken')
+        WHERE cta.to_path IN (${Prisma.join(ANALYTICS_PRODUCT_PROGRESS_PATHS)})
           OR EXISTS (
             SELECT 1
             FROM events later
@@ -802,7 +847,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
               AND later."createdAt" >= cta."createdAt"
               AND (
                 later.event IN ('landing_to_editor', 'start_cv', 'editor_started', 'signup_completed')
-                OR later.page IN ('/editor', '/templates', '/login', '/cv-aanmaken', '/gratis-cv-maken')
+                OR later.page IN (${Prisma.join(ANALYTICS_PRODUCT_PROGRESS_PATHS)})
               )
           )
         GROUP BY cta.page
@@ -822,6 +867,295 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
       WHERE page_base."pageViews" > 0 OR page_base."ctaClicks" > 0
       ORDER BY page_base."pageViews" DESC, page_base."ctaClicks" DESC
       LIMIT 25
+    `,
+    prisma.$queryRaw<SegmentedFunnelRow[]>`
+      WITH event_base AS (
+        SELECT
+          "createdAt",
+          event,
+          "cvId" AS cv_id,
+          properties->>'sessionId' AS session_id,
+          COALESCE(
+            NULLIF(attribution->>'locale', ''),
+            CASE WHEN ${pageSql} = '/en' OR ${pageSql} LIKE '/en/%' THEN 'en' ELSE 'nl' END
+          ) AS locale,
+          COALESCE(
+            NULLIF(attribution->>'firstTouchPath', ''),
+            ${pageSql}
+          ) AS landing_page,
+          COALESCE(
+            NULLIF(cluster, ''),
+            NULLIF(attribution->>'firstTouchCluster', ''),
+            'unknown'
+          ) AS source_cluster,
+          COALESCE(NULLIF(properties->>'deviceType', ''), 'unknown') AS device
+        FROM "AnalyticsEvent"
+        WHERE "createdAt" >= ${since}
+          AND NULLIF(properties->>'sessionId', '') IS NOT NULL
+      ),
+      session_base AS (
+        SELECT
+          session_id,
+          (ARRAY_AGG(locale ORDER BY "createdAt"))[1] AS locale,
+          (ARRAY_AGG(landing_page ORDER BY "createdAt"))[1] AS landing_page,
+          (ARRAY_AGG(source_cluster ORDER BY "createdAt"))[1] AS source_cluster,
+          (ARRAY_AGG(device ORDER BY "createdAt"))[1] AS device,
+          BOOL_OR(
+            event IN ('landing_cta_click', 'tool_to_cv_cta_click', 'cta_clicked')
+            OR event LIKE 'cta_%'
+          ) AS cta,
+          BOOL_OR(event = 'login_view') AS login_view,
+          BOOL_OR(event = 'login_code_requested') AS code_requested,
+          BOOL_OR(event = 'login_verified') AS login_verified,
+          BOOL_OR(event IN ('start_cv', 'editor_started', 'landing_to_editor')) AS editor_started,
+          BOOL_OR(event = 'ready_to_download_viewed') AS ready_cv,
+          BOOL_OR(event IN ('pdf_download_started', 'pdf_download_completed')) AS pdf_started,
+          BOOL_OR(event IN ('checkout_start', 'checkout_started')) AS checkout_started
+        FROM event_base
+        GROUP BY session_id
+      ),
+      order_session_touches AS (
+        SELECT
+          orders.id AS order_id,
+          events.session_id,
+          MAX(events."createdAt") AS last_touch
+        FROM "Order" orders
+        JOIN event_base events
+          ON events.cv_id = orders."cvId"
+          AND events."createdAt" <= orders."paidAt"
+        WHERE orders."paidAt" IS NOT NULL
+          AND orders."paidAt" >= ${since}
+          AND orders.product = 'cv-download'
+        GROUP BY orders.id, events.session_id
+      ),
+      order_sessions AS (
+        SELECT DISTINCT session_id
+        FROM (
+          SELECT
+            order_id,
+            session_id,
+            ROW_NUMBER() OVER (
+              PARTITION BY order_id
+              ORDER BY last_touch DESC, session_id ASC
+            ) AS row_number
+          FROM order_session_touches
+        ) ranked
+        WHERE row_number = 1
+      ),
+      segmented AS (
+        SELECT
+          session_base.*,
+          order_sessions.session_id IS NOT NULL AS paid,
+          dimensions.dimension,
+          dimensions.segment
+        FROM session_base
+        LEFT JOIN order_sessions USING (session_id)
+        CROSS JOIN LATERAL (
+          VALUES
+            ('locale', session_base.locale),
+            ('landing_page', session_base.landing_page),
+            ('source_cluster', session_base.source_cluster),
+            ('device', session_base.device)
+        ) AS dimensions(dimension, segment)
+      ),
+      rollup AS (
+        SELECT
+          dimension,
+          COALESCE(NULLIF(segment, ''), 'unknown') AS segment,
+          COUNT(*)::int AS sessions,
+          COUNT(*) FILTER (WHERE cta)::int AS "ctaSessions",
+          COUNT(*) FILTER (WHERE login_view)::int AS "loginViews",
+          COUNT(*) FILTER (WHERE code_requested)::int AS "codeRequests",
+          COUNT(*) FILTER (WHERE login_verified)::int AS "verifiedLogins",
+          COUNT(*) FILTER (WHERE editor_started)::int AS "editorStarts",
+          COUNT(*) FILTER (WHERE ready_cv)::int AS "readyCvs",
+          COUNT(*) FILTER (WHERE pdf_started)::int AS "pdfStarts",
+          COUNT(*) FILTER (WHERE checkout_started)::int AS "checkoutStarts",
+          COUNT(*) FILTER (WHERE paid)::int AS "paidSessions"
+        FROM segmented
+        GROUP BY dimension, segment
+      ),
+      ranked_rollup AS (
+        SELECT
+          rollup.*,
+          ROW_NUMBER() OVER (PARTITION BY dimension ORDER BY sessions DESC, segment ASC) AS row_number
+        FROM rollup
+      )
+      SELECT
+        dimension,
+        segment,
+        sessions,
+        "ctaSessions",
+        "loginViews",
+        "codeRequests",
+        "verifiedLogins",
+        "editorStarts",
+        "readyCvs",
+        "pdfStarts",
+        "checkoutStarts",
+        "paidSessions"
+      FROM ranked_rollup
+      WHERE dimension <> 'landing_page' OR row_number <= 12
+      ORDER BY
+        CASE dimension
+          WHEN 'locale' THEN 1
+          WHEN 'landing_page' THEN 2
+          WHEN 'source_cluster' THEN 3
+          ELSE 4
+        END,
+        sessions DESC,
+        segment ASC
+    `,
+    prisma.$queryRaw<CheckoutExperimentRow[]>`
+      WITH ranked_assignments AS (
+        SELECT
+          "cvId" AS cv_id,
+          properties->>'variant' AS variant,
+          CASE WHEN properties->>'uiLanguage' = 'en' THEN 'en' ELSE 'nl' END AS locale,
+          "createdAt" AS assigned_at,
+          ROW_NUMBER() OVER (PARTITION BY "cvId" ORDER BY "createdAt" ASC) AS row_number
+        FROM "AnalyticsEvent"
+        WHERE event = 'checkout_experiment_assigned'
+          AND "createdAt" >= ${since}
+          AND "cvId" IS NOT NULL
+          AND properties->>'variant' IN ('modal', 'direct')
+      ),
+      cohort AS (
+        SELECT cv_id, variant, locale, assigned_at
+        FROM ranked_assignments
+        WHERE row_number = 1
+      ),
+      event_outcomes AS (
+        SELECT
+          cohort.cv_id,
+          BOOL_OR(events.event = 'ready_to_download_viewed') AS ready,
+          BOOL_OR(events.event = 'checkout_paywall_reached') AS paywall,
+          BOOL_OR(events.event IN ('checkout_start', 'checkout_started')) AS checkout_started,
+          BOOL_OR(events.event = 'checkout_failed') AS checkout_failed
+        FROM cohort
+        LEFT JOIN "AnalyticsEvent" events
+          ON events."cvId" = cohort.cv_id
+          AND events."createdAt" >= cohort.assigned_at
+          AND events.event IN (
+            'ready_to_download_viewed',
+            'checkout_paywall_reached',
+            'checkout_start',
+            'checkout_started',
+            'checkout_failed'
+          )
+        GROUP BY cohort.cv_id
+      ),
+      order_outcomes AS (
+        SELECT
+          cohort.cv_id,
+          COUNT(orders.id) FILTER (WHERE orders."paidAt" IS NOT NULL)::int AS paid_orders,
+          COALESCE(SUM(orders."amountCents") FILTER (WHERE orders."paidAt" IS NOT NULL), 0)::int AS revenue_cents
+        FROM cohort
+        LEFT JOIN "Order" orders
+          ON orders."cvId" = cohort.cv_id
+          AND orders."paidAt" >= cohort.assigned_at
+          AND orders.product IN ('cv-download', 'cv-profile-photo-bundle')
+        GROUP BY cohort.cv_id
+      )
+      SELECT
+        cohort.variant,
+        CASE WHEN GROUPING(cohort.locale) = 1 THEN 'all' ELSE cohort.locale END AS locale,
+        COUNT(*)::int AS "assignedCvs",
+        COUNT(*) FILTER (WHERE event_outcomes.ready)::int AS "readyCvs",
+        COUNT(*) FILTER (WHERE event_outcomes.paywall)::int AS "paywallCvs",
+        COUNT(*) FILTER (WHERE event_outcomes.checkout_started)::int AS "checkoutCvs",
+        COUNT(*) FILTER (WHERE event_outcomes.checkout_failed)::int AS "failedCvs",
+        COUNT(*) FILTER (WHERE order_outcomes.paid_orders > 0)::int AS "paidCvs",
+        COALESCE(SUM(order_outcomes.revenue_cents), 0)::int AS "revenueCents"
+      FROM cohort
+      JOIN event_outcomes USING (cv_id)
+      JOIN order_outcomes USING (cv_id)
+      GROUP BY GROUPING SETS ((cohort.variant), (cohort.variant, cohort.locale))
+      ORDER BY
+        CASE cohort.variant WHEN 'direct' THEN 1 ELSE 2 END,
+        CASE WHEN GROUPING(cohort.locale) = 1 THEN 1 ELSE 2 END,
+        locale ASC
+    `,
+    prisma.$queryRaw<CtaCopyExperimentRow[]>`
+      WITH ranked_assignments AS (
+        SELECT
+          properties->>'visitorId' AS visitor_id,
+          properties->>'variant' AS variant,
+          CASE WHEN properties->>'locale' = 'en' THEN 'en' ELSE 'nl' END AS locale,
+          "createdAt" AS assigned_at,
+          ROW_NUMBER() OVER (
+            PARTITION BY properties->>'visitorId'
+            ORDER BY "createdAt" ASC
+          ) AS row_number
+        FROM "AnalyticsEvent"
+        WHERE event = 'cta_experiment_assigned'
+          AND "createdAt" >= ${since}
+          AND properties->>'experiment' = 'guide_cta_copy_v1'
+          AND properties->>'variant' IN ('trust', 'speed')
+          AND NULLIF(properties->>'visitorId', '') IS NOT NULL
+      ),
+      cohort AS (
+        SELECT visitor_id, variant, locale, assigned_at
+        FROM ranked_assignments
+        WHERE row_number = 1
+      ),
+      visitor_outcomes AS (
+        SELECT
+          cohort.visitor_id,
+          BOOL_OR(events.event = 'cta_experiment_clicked') AS clicked,
+          BOOL_OR(events.event IN ('landing_to_editor', 'start_cv', 'editor_started')) AS editor_started,
+          COUNT(DISTINCT events."cvId") FILTER (WHERE events."cvId" IS NOT NULL)::int AS created_cvs
+        FROM cohort
+        LEFT JOIN "AnalyticsEvent" events
+          ON events.properties->>'visitorId' = cohort.visitor_id
+          AND events."createdAt" >= cohort.assigned_at
+          AND (
+            (
+              events.event = 'cta_experiment_clicked'
+              AND events.properties->>'experiment' = 'guide_cta_copy_v1'
+              AND events.properties->>'variant' = cohort.variant
+            )
+            OR events.event IN ('landing_to_editor', 'start_cv', 'editor_started', 'cv_created')
+          )
+        GROUP BY cohort.visitor_id
+      ),
+      visitor_cvs AS (
+        SELECT DISTINCT cohort.visitor_id, events."cvId" AS cv_id
+        FROM cohort
+        JOIN "AnalyticsEvent" events
+          ON events.properties->>'visitorId' = cohort.visitor_id
+          AND events."createdAt" >= cohort.assigned_at
+          AND events."cvId" IS NOT NULL
+      ),
+      order_outcomes AS (
+        SELECT
+          visitor_cvs.visitor_id,
+          COUNT(orders.id) FILTER (WHERE orders."paidAt" IS NOT NULL)::int AS paid_orders,
+          COALESCE(SUM(orders."amountCents") FILTER (WHERE orders."paidAt" IS NOT NULL), 0)::int AS revenue_cents
+        FROM visitor_cvs
+        JOIN cohort ON cohort.visitor_id = visitor_cvs.visitor_id
+        LEFT JOIN "Order" orders
+          ON orders."cvId" = visitor_cvs.cv_id
+          AND orders."paidAt" >= cohort.assigned_at
+        GROUP BY visitor_cvs.visitor_id
+      )
+      SELECT
+        cohort.variant,
+        CASE WHEN GROUPING(cohort.locale) = 1 THEN 'all' ELSE cohort.locale END AS locale,
+        COUNT(*)::int AS "assignedVisitors",
+        COUNT(*) FILTER (WHERE visitor_outcomes.clicked)::int AS "clickedVisitors",
+        COUNT(*) FILTER (WHERE visitor_outcomes.editor_started)::int AS "editorVisitors",
+        COALESCE(SUM(visitor_outcomes.created_cvs), 0)::int AS "createdCvs",
+        COUNT(*) FILTER (WHERE COALESCE(order_outcomes.paid_orders, 0) > 0)::int AS "paidVisitors",
+        COALESCE(SUM(order_outcomes.revenue_cents), 0)::int AS "revenueCents"
+      FROM cohort
+      JOIN visitor_outcomes USING (visitor_id)
+      LEFT JOIN order_outcomes USING (visitor_id)
+      GROUP BY GROUPING SETS ((cohort.variant), (cohort.variant, cohort.locale))
+      ORDER BY
+        CASE cohort.variant WHEN 'trust' THEN 1 ELSE 2 END,
+        CASE WHEN GROUPING(cohort.locale) = 1 THEN 1 ELSE 2 END,
+        locale ASC
     `,
   ]);
 
@@ -861,6 +1195,9 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
     devices,
     ctas,
     funnelPages,
+    segmentedFunnels,
+    checkoutExperiments,
+    ctaCopyExperiments,
   };
 }
 

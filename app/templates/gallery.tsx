@@ -11,10 +11,12 @@ import Footer from "@/components/Footer";
 import NavUserMenu from "@/components/NavUserMenu";
 import { getStoredAttribution, track } from "@/lib/analytics";
 import { UiLanguage } from "@/lib/ui-language";
+import { normalizeStartSource } from "@/lib/start-source";
 
 interface TemplateGalleryProps {
   templates: TemplateConfig[];
   uiLanguage?: UiLanguage;
+  initialStartSource?: string;
 }
 
 const categoryLabels: Record<UiLanguage, Record<string, string>> = {
@@ -125,9 +127,9 @@ const englishTemplatePreviewData: CVData = {
     { name: "Educational technology", level: 4 },
   ],
   languages: [
-    { name: "English", level: "Moedertaal" },
-    { name: "Dutch", level: "Goed" },
-    { name: "German", level: "Basis" },
+    { name: "English", level: "Native" },
+    { name: "Dutch", level: "Good" },
+    { name: "German", level: "Basic" },
   ],
   courses: [
     {
@@ -265,6 +267,7 @@ function getQuickStartCopy(templateId: string, uiLanguage: UiLanguage) {
 export default function TemplateGallery({
   templates,
   uiLanguage = "nl",
+  initialStartSource,
 }: TemplateGalleryProps) {
   const router = useRouter();
   const isEnglish = uiLanguage === "en";
@@ -317,6 +320,7 @@ export default function TemplateGallery({
     defaultThemeId: string,
     entryPoint = "template_gallery",
   ) => {
+    const startSource = normalizeStartSource(initialStartSource) || entryPoint;
     setIsCreating(templateId);
     try {
       track("cta_clicked", { location: entryPoint, label: templateId });
@@ -337,7 +341,7 @@ export default function TemplateGallery({
           templateId,
           colorThemeId: defaultThemeId,
           attribution,
-          startSource: entryPoint,
+          startSource,
           initialData,
         }),
       });
@@ -353,7 +357,7 @@ export default function TemplateGallery({
 
       if (!response.ok) {
         if (response.status === 401) {
-          const nextPath = `${isEnglish ? "/en" : ""}/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(entryPoint)}`;
+          const nextPath = `${isEnglish ? "/en" : ""}/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(startSource)}`;
           router.push(`/login?next=${encodeURIComponent(nextPath)}`);
           return;
         }
@@ -404,7 +408,7 @@ export default function TemplateGallery({
             </span>
           </Link>
           <div className="flex items-center gap-4">
-            <NavUserMenu />
+            <NavUserMenu uiLanguage={uiLanguage} />
             <div className="border-2 border-black bg-blue-400 px-3 py-1 text-sm font-bold text-black">
               {isEnglish ? "Choose your template" : "Kies je template"}
             </div>
@@ -704,7 +708,7 @@ export default function TemplateGallery({
         )}
       </main>
 
-      <Footer />
+      <Footer uiLanguage={uiLanguage} />
     </div>
   );
 }

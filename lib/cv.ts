@@ -54,7 +54,7 @@ export const cvSchema = z.object({
     languages: z.array(
         z.object({
             name: z.string().default(""),
-            level: z.enum(["Moedertaal", "Vloeiend", "Goed", "Basis"]).default("Goed"),
+            level: z.enum(["Moedertaal", "Vloeiend", "Goed", "Basis", "Native", "Fluent", "Good", "Basic"]).default("Goed"),
         })
     ).default([]),
     // Internships/Stages

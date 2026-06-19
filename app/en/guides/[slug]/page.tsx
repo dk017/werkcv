@@ -8,6 +8,8 @@ import LinkedInToCvImporter from '@/components/translate/LinkedInToCvImporter';
 import ResumeTranslator from '@/components/translate/ResumeTranslator';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
 import { normalizeBrandCopy } from '@/lib/seo-branding';
+import TrackedLandingLink from '@/components/analytics/TrackedLandingLink';
+import MobileStickyCta from '@/components/landing/MobileStickyCta';
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -102,7 +104,7 @@ export default async function EnglishWavePage({ params }: PageProps) {
     ];
 
     return (
-        <main className="min-h-screen bg-[#FFFEF9]">
+        <main className="min-h-screen bg-[#FFFEF9] pb-20 md:pb-0">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -131,22 +133,26 @@ export default async function EnglishWavePage({ params }: PageProps) {
                             Based on Dutch hiring guidance and official sources
                         </div>
                     )}
-                    <div className="mt-8 flex flex-wrap gap-3">
-                        <Link
+                    <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+                        <TrackedLandingLink
                             href={primaryGuideHref}
+                            trackingLocation={`english_guide_hero:${page.slug}`}
+                            trackingLabel="primary"
                             className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-black text-white font-black text-sm border-3 border-black hover:bg-slate-900 transition-colors"
                         >
                             {primaryGuideLabel}
-                        </Link>
-                        <Link
-                            href="/en/editor"
-                            className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-black font-black text-sm border-3 border-black hover:bg-slate-100 transition-colors"
-                        >
-                            Open English editor
-                        </Link>
+                        </TrackedLandingLink>
+                        {primaryGuideHref !== '/en/editor' ? (
+                            <Link
+                                href="/en/editor"
+                                className="text-sm font-semibold text-slate-600 underline decoration-slate-400 underline-offset-4 hover:text-slate-950"
+                            >
+                                Open English editor
+                            </Link>
+                        ) : null}
                         <Link
                             href="/en/guides"
-                            className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-black font-black text-sm border-3 border-black hover:bg-slate-100 transition-colors"
+                            className="text-sm font-semibold text-slate-600 underline decoration-slate-400 underline-offset-4 hover:text-slate-950"
                         >
                             Browse all expat guides
                         </Link>
@@ -286,6 +292,13 @@ export default async function EnglishWavePage({ params }: PageProps) {
                     defaultButtonLabel={page.ctaButtonLabel || 'Open English templates'}
                 />
             </article>
+            <MobileStickyCta
+                text="Start free. Pay only for the PDF."
+                buttonLabel="Start CV"
+                href={primaryGuideHref}
+                trackingLocation={`english_guide_mobile_sticky:${page.slug}`}
+                trackingLabel="primary"
+            />
         </main>
     );
 }

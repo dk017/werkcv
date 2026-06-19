@@ -58,10 +58,7 @@ export default function CvScoreWidget({ data, uiLanguage = "nl" }: CvScoreWidget
     return (
         <section className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
             {/* Header */}
-            <button
-                onClick={() => setExpanded(v => !v)}
-                className="w-full flex items-center gap-4 px-5 py-4 hover:bg-slate-50 transition-colors text-left"
-            >
+            <div className="flex w-full items-center gap-4 px-5 py-4">
                 {/* Score Ring */}
                 <div className="relative flex-shrink-0 w-16 h-16">
                     <svg width="64" height="64" viewBox="0 0 64 64" className="-rotate-90">
@@ -91,22 +88,31 @@ export default function CvScoreWidget({ data, uiLanguage = "nl" }: CvScoreWidget
                     </p>
                 </div>
 
-                {/* Re-check link + chevron */}
+                {/* Reset and expand controls */}
                 <div className="flex items-center gap-3 flex-shrink-0">
                     <button
-                        onClick={e => { e.stopPropagation(); setChecked(false); }}
+                        type="button"
+                        onClick={() => setChecked(false)}
                         className="text-[11px] font-semibold text-slate-400 hover:text-slate-600 transition-colors"
                     >
                         {isEnglish ? "Reset" : "Opnieuw"}
                     </button>
-                    <svg
-                        className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
-                        fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    <button
+                        type="button"
+                        onClick={() => setExpanded(v => !v)}
+                        aria-expanded={expanded}
+                        aria-label={isEnglish ? (expanded ? "Collapse CV score" : "Expand CV score") : (expanded ? "CV-score inklappen" : "CV-score uitklappen")}
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
                     >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                        <svg
+                            className={`w-4 h-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
                 </div>
-            </button>
+            </div>
 
             {/* Check list */}
             {expanded && (

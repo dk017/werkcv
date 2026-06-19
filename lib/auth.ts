@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
-import { AttributionSnapshot } from '@/lib/attribution';
+import { AttributionSnapshot, LocaleCode } from '@/lib/attribution';
 import { resolvePartnerPilotForSignup } from '@/lib/partner-pilot';
 
 const SESSION_COOKIE_NAME = 'werkcv_session';
@@ -60,7 +60,10 @@ function buildUserAttributionData(attribution: AttributionSnapshot | null) {
     };
 }
 
-export async function requestEmailLoginCode(emailInput: string): Promise<{ devCode?: string }> {
+export async function requestEmailLoginCode(
+    emailInput: string,
+    locale: LocaleCode = 'nl'
+): Promise<{ devCode?: string }> {
     const email = normalizeEmail(emailInput);
     if (!isValidEmail(email)) {
         throw new Error('INVALID_EMAIL');
@@ -81,12 +84,17 @@ export async function requestEmailLoginCode(emailInput: string): Promise<{ devCo
     const transporter = getEmailTransporter();
     const from = process.env.AUTH_FROM_EMAIL || process.env.SMTP_USER || 'noreply@werkcv.nl';
     if (transporter) {
+        const isEnglish = locale === 'en';
         await transporter.sendMail({
             from,
             to: email,
-            subject: 'WerkCV login code',
-            text: `Je login code is ${code}. Deze code verloopt over ${LOGIN_CODE_TTL_MINUTES} minuten.`,
-            html: `<p>Je login code is <strong>${code}</strong>.</p><p>Deze code verloopt over ${LOGIN_CODE_TTL_MINUTES} minuten.</p>`,
+            subject: isEnglish ? 'Your WerkCV login code' : 'Je WerkCV login code',
+            text: isEnglish
+                ? `Your login code is ${code}. This code expires in ${LOGIN_CODE_TTL_MINUTES} minutes.`
+                : `Je login code is ${code}. Deze code verloopt over ${LOGIN_CODE_TTL_MINUTES} minuten.`,
+            html: isEnglish
+                ? `<p>Your login code is <strong>${code}</strong>.</p><p>This code expires in ${LOGIN_CODE_TTL_MINUTES} minutes.</p>`
+                : `<p>Je login code is <strong>${code}</strong>.</p><p>Deze code verloopt over ${LOGIN_CODE_TTL_MINUTES} minuten.</p>`,
         });
         return {};
     }

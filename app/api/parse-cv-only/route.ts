@@ -11,6 +11,8 @@ export async function POST(request: NextRequest) {
     let file: File | null = null;
     let userId: string | null = null;
     let stage = 'auth';
+    const locale = request.headers.get('referer')?.includes('/en/') ? 'en' : 'nl';
+    const isEnglish = locale === 'en';
 
     try {
         const user = await getCurrentUserFromRequest(request);
@@ -28,7 +30,7 @@ export async function POST(request: NextRequest) {
 
         if (!file) {
             return NextResponse.json(
-                { error: 'Geen bestand geüpload' },
+                { error: isEnglish ? 'No file was uploaded.' : 'Geen bestand geüpload' },
                 { status: 400 }
             );
         }
@@ -42,7 +44,11 @@ export async function POST(request: NextRequest) {
 
         if (!allowedTypes.includes(file.type)) {
             return NextResponse.json(
-                { error: 'Ongeldig bestandstype. Upload een PDF of Word document.' },
+                {
+                    error: isEnglish
+                        ? 'Invalid file type. Upload a PDF or Word document.'
+                        : 'Ongeldig bestandstype. Upload een PDF of Word document.',
+                },
                 { status: 400 }
             );
         }
@@ -51,7 +57,11 @@ export async function POST(request: NextRequest) {
         const maxSize = 10 * 1024 * 1024;
         if (file.size > maxSize) {
             return NextResponse.json(
-                { error: 'Bestand is te groot. Maximale grootte is 10MB.' },
+                {
+                    error: isEnglish
+                        ? 'File is too large. Maximum size is 10MB.'
+                        : 'Bestand is te groot. Maximale grootte is 10MB.',
+                },
                 { status: 400 }
             );
         }
@@ -80,7 +90,6 @@ export async function POST(request: NextRequest) {
             error,
         });
 
-        const locale = request.headers.get('referer')?.includes('/en/') ? 'en' : 'nl';
         const message = getCvParsePublicMessage(error, locale);
 
         return NextResponse.json(

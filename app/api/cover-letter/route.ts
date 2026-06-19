@@ -4,6 +4,11 @@ import { CVData } from '@/lib/cv';
 import { generateCoverLetter } from '@/lib/cover-letter';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 
+const MAX_TARGET_ROLE_LENGTH = 200;
+const MAX_COMPANY_NAME_LENGTH = 200;
+const MAX_JOB_DESCRIPTION_LENGTH = 20_000;
+const MAX_COVER_LETTER_LENGTH = 50_000;
+
 export async function GET(request: NextRequest) {
     const user = await getCurrentUserFromRequest(request);
     if (!user) {
@@ -58,6 +63,13 @@ export async function POST(request: NextRequest) {
 
         if (!cvId) {
             return NextResponse.json({ error: 'cvId is required' }, { status: 400 });
+        }
+        if (
+            targetRole.length > MAX_TARGET_ROLE_LENGTH ||
+            companyName.length > MAX_COMPANY_NAME_LENGTH ||
+            jobDescription.length > MAX_JOB_DESCRIPTION_LENGTH
+        ) {
+            return NextResponse.json({ error: 'Cover letter input is too long', code: 'INPUT_TOO_LONG' }, { status: 400 });
         }
 
         const cv = await prisma.cVDocument.findFirst({
@@ -117,6 +129,9 @@ export async function PUT(request: NextRequest) {
 
         if (!cvId) {
             return NextResponse.json({ error: 'cvId is required' }, { status: 400 });
+        }
+        if (coverLetter.length > MAX_COVER_LETTER_LENGTH) {
+            return NextResponse.json({ error: 'Cover letter is too long', code: 'INPUT_TOO_LONG' }, { status: 400 });
         }
 
         const cv = await prisma.cVDocument.findFirst({

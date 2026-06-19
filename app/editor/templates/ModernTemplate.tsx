@@ -1,7 +1,7 @@
 import { CVData } from "@/lib/cv";
 import { ColorTheme } from "@/lib/templates";
 import { LinkText } from "./link-utils";
-import { formatGender, formatMaritalStatus, resumeText } from "@/lib/resume-language";
+import { formatGender, formatMaritalStatus, getLanguageLevelPercentage, resumeText } from "@/lib/resume-language";
 
 interface TemplateProps {
     data: CVData;
@@ -23,13 +23,7 @@ function SkillBar({ level, maxLevel = 5 }: { level: number; maxLevel?: number })
 
 // Language level bar
 function LanguageBar({ level }: { level: string }) {
-    const levelMap: Record<string, number> = {
-        'Moedertaal': 100,
-        'Vloeiend': 85,
-        'Goed': 65,
-        'Basis': 35,
-    };
-    const percentage = levelMap[level] || 50;
+    const percentage = getLanguageLevelPercentage(level);
     return (
         <div className="w-full h-1.5 rounded-full bg-white/20">
             <div

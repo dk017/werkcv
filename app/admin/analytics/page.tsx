@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import { getAnalyticsDashboardData, parseAnalyticsRange, type InsightRow } from "@/lib/admin-analytics";
+import {
+  getAnalyticsDashboardData,
+  parseAnalyticsRange,
+  type InsightRow,
+  type SegmentedFunnelRow,
+} from "@/lib/admin-analytics";
 import { isAnalyticsAdminEmail } from "@/lib/admin-auth";
 import { getCurrentUser } from "@/lib/auth";
 import { AnalyticsGlobe } from "./AnalyticsGlobe";
@@ -55,6 +60,11 @@ function money(cents: number): string {
     style: "currency",
     currency: "EUR",
   }).format((cents || 0) / 100);
+}
+
+function percentage(numerator: number, denominator: number): string {
+  if (denominator <= 0) return "-";
+  return `${Math.round((numerator / denominator) * 100)}%`;
 }
 
 function dateTime(value: Date): string {
@@ -317,6 +327,32 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
 
             {view === "conversion" ? (
               <>
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Segmented Conversion Funnel"
+            subtitle="Unique sessions at each measured stage, grouped by first-touch acquisition context and device. Landing pages show the 12 highest-volume segments."
+          />
+          <SegmentedFunnelTable
+            title="Locale"
+            rows={data.segmentedFunnels.filter((row) => row.dimension === "locale")}
+          />
+          <SegmentedFunnelTable
+            title="Landing page"
+            rows={data.segmentedFunnels.filter((row) => row.dimension === "landing_page")}
+          />
+          <SegmentedFunnelTable
+            title="Source cluster"
+            rows={data.segmentedFunnels.filter((row) => row.dimension === "source_cluster")}
+          />
+          <SegmentedFunnelTable
+            title="Device"
+            rows={data.segmentedFunnels.filter((row) => row.dimension === "device")}
+          />
+          <p className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500">
+            Paid counts include CV-download orders assigned to the last measured session that touched that CV before payment.
+          </p>
+        </section>
+
         <section className="grid gap-6 lg:grid-cols-[minmax(320px,0.8fr)_minmax(0,1.2fr)]">
           <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
             <ChartHeader title="Signup Drop-off Cohorts" subtitle="Where new accounts stop after signup." />
@@ -352,6 +388,32 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
             ])}
             alignRight={[5, 6, 7, 8]}
           />
+        </section>
+
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Guide CTA Copy Experiment"
+            subtitle="Visitor-level trust versus speed copy, from first assignment through editor use and paid orders."
+          />
+          <SimpleTable
+            headers={["Variant / locale", "Assigned", "Clicked", "Editor", "CVs", "Paid", "Revenue", "Assigned → click", "Assigned → editor", "Assigned → paid"]}
+            rows={data.ctaCopyExperiments.map((row) => [
+              `${row.variant} / ${row.locale}`,
+              number(row.assignedVisitors),
+              number(row.clickedVisitors),
+              number(row.editorVisitors),
+              number(row.createdCvs),
+              number(row.paidVisitors),
+              money(row.revenueCents),
+              percentage(row.clickedVisitors, row.assignedVisitors),
+              percentage(row.editorVisitors, row.assignedVisitors),
+              percentage(row.paidVisitors, row.assignedVisitors),
+            ])}
+            alignRight={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+          />
+          <p className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500">
+            Do not select a winner before each overall variant has at least 100 assigned visitors and enough time for recent visitors to purchase.
+          </p>
         </section>
               </>
             ) : null}
@@ -406,6 +468,32 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
 
             {view === "checkout" ? (
               <>
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Checkout Experiment Results"
+            subtitle="CV-level modal versus direct-checkout cohorts assigned in the selected range. Bundle purchases count as paid because they include the CV PDF."
+          />
+          <SimpleTable
+            headers={["Variant / locale", "Assigned", "Ready", "Paywall", "Checkout", "Failed", "Paid", "Revenue", "Ready → paid", "Assigned → paid"]}
+            rows={data.checkoutExperiments.map((row) => [
+              `${row.variant} / ${row.locale}`,
+              number(row.assignedCvs),
+              number(row.readyCvs),
+              number(row.paywallCvs),
+              number(row.checkoutCvs),
+              number(row.failedCvs),
+              number(row.paidCvs),
+              money(row.revenueCents),
+              percentage(row.paidCvs, row.readyCvs),
+              percentage(row.paidCvs, row.assignedCvs),
+            ])}
+            alignRight={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+          />
+          <p className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500">
+            Treat results as directional until each overall variant has at least 50 assigned CVs. Recent cohorts may still convert later.
+          </p>
+        </section>
+
         <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
           <TableHeader
             title="Checkout Diagnostics"
@@ -510,6 +598,45 @@ function TableHeader({ title, subtitle }: { title: string; subtitle: string }) {
     <div className="border-b border-slate-200 px-4 py-3">
       <h2 className="text-base font-semibold text-slate-950">{title}</h2>
       <p className="mt-1 text-sm text-slate-500">{subtitle}</p>
+    </div>
+  );
+}
+
+function SegmentedFunnelTable({ title, rows }: { title: string; rows: SegmentedFunnelRow[] }) {
+  return (
+    <div className="border-t border-slate-100 first:border-t-0">
+      <h3 className="px-4 pt-4 text-sm font-semibold text-slate-900">{title}</h3>
+      <SimpleTable
+        headers={[
+          "Segment",
+          "Sessions",
+          "CTA",
+          "Login",
+          "Code",
+          "Verified",
+          "Editor",
+          "Ready",
+          "PDF",
+          "Checkout",
+          "Paid",
+          "Ready / editor",
+        ]}
+        rows={rows.map((row) => [
+          row.segment,
+          number(row.sessions),
+          number(row.ctaSessions),
+          number(row.loginViews),
+          number(row.codeRequests),
+          number(row.verifiedLogins),
+          number(row.editorStarts),
+          number(row.readyCvs),
+          number(row.pdfStarts),
+          number(row.checkoutStarts),
+          number(row.paidSessions),
+          percentage(row.readyCvs, row.editorStarts),
+        ])}
+        alignRight={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
+      />
     </div>
   );
 }

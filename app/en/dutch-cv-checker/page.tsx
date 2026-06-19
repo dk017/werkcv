@@ -314,7 +314,7 @@ export default function DutchCvCheckerPage() {
         />
       </main>
 
-      <Footer />
+      <Footer uiLanguage="en" />
     </div>
   );
 }

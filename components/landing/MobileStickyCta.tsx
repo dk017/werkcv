@@ -7,7 +7,7 @@ type MobileStickyCtaProps = {
   href: string;
   trackingLocation: string;
   trackingLabel: string;
-  ctaEventName: NamedLandingCtaEvent;
+  ctaEventName?: NamedLandingCtaEvent;
 };
 
 export default function MobileStickyCta({

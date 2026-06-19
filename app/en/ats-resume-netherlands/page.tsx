@@ -1,4 +1,6 @@
 import Link from "next/link";
+import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
+import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import { buildEnglishMetadata } from "../metadata";
 
 export const metadata = buildEnglishMetadata({
@@ -116,7 +118,7 @@ const faqJsonLd = {
 
 export default function AtsResumeNetherlandsPage() {
   return (
-    <main className="min-h-screen bg-[#FFFEF9]">
+    <main className="min-h-screen bg-[#FFFEF9] pb-20 md:pb-0">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
@@ -138,13 +140,23 @@ export default function AtsResumeNetherlandsPage() {
             If your CV is not getting callbacks, fix the basics first: a simple layout, vacancy-matched keywords and a
             PDF that remains readable for Dutch recruitment systems.
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/en/editor" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
-              Build ATS-safe CV
-            </Link>
-            <Link href="/tools/ats-cv-checker" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
-              Check existing CV
-            </Link>
+          <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+            <TrackedLandingLink
+              href="/en/editor"
+              trackingLocation="ats_resume_netherlands_hero"
+              trackingLabel="build_ats_cv"
+              className="bg-black text-white font-bold px-5 py-3 border-4 border-black"
+            >
+              Build my ATS-safe CV
+            </TrackedLandingLink>
+            <TrackedLandingLink
+              href="/tools/ats-cv-checker"
+              trackingLocation="ats_resume_netherlands_hero"
+              trackingLabel="check_existing_cv"
+              className="text-sm font-semibold text-slate-600 underline decoration-slate-400 underline-offset-4 hover:text-slate-950"
+            >
+              Check my current CV
+            </TrackedLandingLink>
           </div>
         </div>
       </section>
@@ -262,6 +274,13 @@ export default function AtsResumeNetherlandsPage() {
           </Link>
         </div>
       </section>
+      <MobileStickyCta
+        text="Build an ATS-safe Netherlands CV."
+        buttonLabel="Start CV"
+        href="/en/editor"
+        trackingLocation="ats_resume_netherlands_mobile_sticky"
+        trackingLabel="build_ats_cv"
+      />
     </main>
   );
 }

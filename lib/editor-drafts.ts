@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import { defaultCV, type CVData } from "@/lib/cv";
 import { getCurrentUser } from "@/lib/auth";
 import { getDefaultThemeId, getTemplateConfig } from "@/lib/templates/registry";
+import { Prisma } from "@prisma/client";
+import { normalizeStartSource } from "@/lib/start-source";
 
 export type EditorUiLanguage = "nl" | "en";
 
@@ -34,7 +36,10 @@ export async function createEditorDraft(input: CreateEditorDraftInput): Promise<
       templateId,
       colorThemeId,
       userId: user.id,
-      startSource: input.startSource || null,
+      attribution: (user.attribution || undefined) as Prisma.InputJsonValue | undefined,
+      sourceCluster: user.sourceCluster || null,
+      sourceLocale: user.sourceLocale || input.uiLanguage,
+      startSource: normalizeStartSource(input.startSource),
     },
   });
 

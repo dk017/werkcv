@@ -99,19 +99,35 @@ export default function CtaExperiment({
     defaultText,
     defaultButtonLabel,
 }: CtaExperimentProps) {
-    const [variant] = useState<CtaVariantId>(() => resolveInitialVariant());
+    const [variant, setVariant] = useState<CtaVariantId>('trust');
+    const [variantResolved, setVariantResolved] = useState(false);
     const trackedViewRef = useRef(false);
 
     useEffect(() => {
-        if (trackedViewRef.current) return;
+        const timeoutId = window.setTimeout(() => {
+            setVariant(resolveInitialVariant());
+            setVariantResolved(true);
+        }, 0);
+
+        return () => window.clearTimeout(timeoutId);
+    }, []);
+
+    useEffect(() => {
+        if (!variantResolved || trackedViewRef.current) return;
         track('cta_viewed', {
             location: 'seo_wave_guide',
             variant,
             slug,
             locale,
         });
+        track('cta_experiment_assigned', {
+            experiment: 'guide_cta_copy_v1',
+            variant,
+            slug,
+            locale,
+        });
         trackedViewRef.current = true;
-    }, [locale, slug, variant]);
+    }, [locale, slug, variant, variantResolved]);
 
     const variantCopy = useMemo(
         () => getVariantCopy(locale, defaultTitle, defaultText, defaultButtonLabel)[variant],
@@ -127,12 +143,18 @@ export default function CtaExperiment({
             <p className="text-gray-700 mb-4">{variantCopy.text}</p>
             <Link
                 href={variantHref}
-                onClick={() =>
+                onClick={() => {
                     track('cta_clicked', {
                         location: 'seo_wave_guide',
                         label: `${variant}_${slug}`,
-                    })
-                }
+                    });
+                    track('cta_experiment_clicked', {
+                        experiment: 'guide_cta_copy_v1',
+                        variant,
+                        slug,
+                        locale,
+                    });
+                }}
                 className="inline-block bg-black text-white font-bold px-6 py-3 border-3 border-black"
             >
                 {variantCopy.button}

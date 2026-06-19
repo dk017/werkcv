@@ -1,3 +1,5 @@
+import { isEditorPath, isTemplatePath } from '@/lib/analytics-paths';
+
 export type LocaleCode = 'nl' | 'en';
 
 export interface AttributionSnapshot {
@@ -36,10 +38,23 @@ function cleanPath(path: string): string {
     return path.startsWith('/') ? path : `/${path}`;
 }
 
+export function sanitizeReferrer(referrer: string): string {
+    if (!referrer) return '';
+
+    try {
+        const url = new URL(referrer);
+        return `${url.origin}${url.pathname}`;
+    } catch {
+        return referrer.split(/[?#]/, 1)[0];
+    }
+}
+
 export function getPathCluster(pathname: string): string {
     const path = cleanPath(pathname);
     if (path === '/') return 'home';
     if (path === '/en/resume-optimizer-netherlands') return 'resume-optimizer-en';
+    if (isTemplatePath(path)) return 'templates';
+    if (isEditorPath(path)) return 'editor';
     if (path.startsWith('/en')) return 'en-guides';
     if (
         path === '/cv-optimaliseren' ||
@@ -57,8 +72,6 @@ export function getPathCluster(pathname: string): string {
     if (path.startsWith('/cv-gids')) return 'nl-cv-gids';
     if (path.startsWith('/cv-tips')) return 'nl-cv-tips';
     if (path.startsWith('/tools')) return 'tools';
-    if (path.startsWith('/templates')) return 'templates';
-    if (path.startsWith('/editor')) return 'editor';
     if (path.startsWith('/prijzen')) return 'pricing';
     return 'other';
 }
@@ -75,14 +88,14 @@ export function sanitizeAttribution(input: unknown): AttributionSnapshot | null 
     if (!firstTouchPath || !firstTouchAt) return null;
 
     const fallbackCluster = getPathCluster(firstTouchPath);
-    const locale = value.locale === 'en' ? 'en' : 'nl';
+    const locale = getLocaleFromPath(firstTouchPath) === 'en' || value.locale === 'en' ? 'en' : 'nl';
 
     return {
         version: 1,
         firstTouchAt,
         firstTouchPath,
         firstTouchCluster: value.firstTouchCluster || fallbackCluster,
-        firstTouchReferrer: value.firstTouchReferrer || '',
+        firstTouchReferrer: sanitizeReferrer(value.firstTouchReferrer || ''),
         lastTouchAt: value.lastTouchAt || firstTouchAt,
         lastTouchPath: cleanPath(value.lastTouchPath || firstTouchPath),
         lastTouchCluster: value.lastTouchCluster || fallbackCluster,
@@ -112,7 +125,7 @@ export function buildInitialAttribution(
         firstTouchAt: nowIso,
         firstTouchPath: safePath,
         firstTouchCluster: cluster,
-        firstTouchReferrer: referrer || '',
+        firstTouchReferrer: sanitizeReferrer(referrer),
         lastTouchAt: nowIso,
         lastTouchPath: safePath,
         lastTouchCluster: cluster,

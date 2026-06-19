@@ -13,7 +13,9 @@ import {
     buildInitialAttribution,
     mergeAttributionTouch,
     sanitizeAttribution,
+    sanitizeReferrer,
 } from '@/lib/attribution';
+import { isEditorPath } from '@/lib/analytics-paths';
 
 const ATTRIBUTION_STORAGE_KEY = 'werkcv_attribution_v1';
 const LANDING_TRACKED_SESSION_KEY = 'werkcv_landing_tracked_v1';
@@ -100,6 +102,19 @@ export type AnalyticsEvent =
       }
     | { event: 'landing_cta_click'; properties: { fromPath: string; toPath: string; label: string } }
     | { event: 'landing_to_editor'; properties: { fromPath: string; toPath: string } }
+    // Authentication
+    | { event: 'login_view'; properties: { locale: 'nl' | 'en'; nextPath: string } }
+    | { event: 'login_code_requested'; properties: { locale: 'nl' | 'en'; nextPath: string } }
+    | { event: 'login_verified'; properties: { locale: 'nl' | 'en'; nextPath: string; isNewUser: boolean } }
+    | {
+          event: 'login_failed';
+          properties: {
+              locale: 'nl' | 'en';
+              nextPath: string;
+              stage: 'request_code' | 'verify_code';
+              reason: 'invalid_email' | 'invalid_code' | 'server_error' | 'network_error';
+          };
+      }
     // CV lifecycle
     | { event: 'cv_created'; properties: { templateId: string } }
     | { event: 'cv_uploaded'; properties: { fileType: string } }
@@ -107,6 +122,9 @@ export type AnalyticsEvent =
     | { event: 'start_cv'; properties: { entryPoint: string; templateId?: string; cvId?: string } }
     | { event: 'editor_started'; properties: { cvId: string; fromPath?: string } }
     | { event: 'complete_cv'; properties: { cvId: string; completionScore: number } }
+    | { event: 'cv_progress_milestone'; properties: { cvId: string; milestone: 25 | 50 | 75 | 100; completionScore: number } }
+    | { event: 'cv_section_completed'; properties: { cvId: string; section: string; completionScore: number } }
+    | { event: 'ready_to_download_viewed'; properties: { cvId: string; completionScore: number } }
     // Template & theme
     | { event: 'template_selected'; properties: { templateId: string; previousId?: string } }
     | { event: 'color_theme_changed'; properties: { themeId: string; templateId: string } }
@@ -116,10 +134,26 @@ export type AnalyticsEvent =
     | { event: 'photo_edit_opened'; properties: { source: string } }
     | { event: 'photo_repositioned'; properties: { moved: boolean } }
     // Download & payment
-    | { event: 'pdf_download_started'; properties: { cvId: string } }
+    | { event: 'pdf_download_started'; properties: { cvId: string; source?: string; completionScore?: number } }
     | { event: 'pdf_download_completed'; properties: { cvId: string } }
     | { event: 'addon_selected'; properties: { cvId: string; addons: string[] } }
-    | { event: 'checkout_modal_viewed'; properties: { cvId: string; source: 'pdf_download' } }
+    | {
+          event: 'checkout_experiment_assigned';
+          properties: { cvId: string; variant: 'modal' | 'direct'; uiLanguage: 'nl' | 'en' };
+      }
+    | {
+          event: 'checkout_paywall_reached';
+          properties: {
+              cvId: string;
+              variant: 'modal' | 'direct';
+              source: string;
+              completionScore: number;
+          };
+      }
+    | {
+          event: 'checkout_modal_viewed';
+          properties: { cvId: string; source: 'pdf_download'; experimentVariant?: 'modal' | 'direct' };
+      }
     | {
           event: 'checkout_option_viewed';
           properties: {
@@ -145,9 +179,9 @@ export type AnalyticsEvent =
           event: 'checkout_modal_closed';
           properties: { cvId: string; reason: 'later_button' | 'close_button' | 'overlay' };
       }
-    | { event: 'checkout_start'; properties: { cvId: string; product?: string; amountCents?: number } }
-    | { event: 'checkout_started'; properties: { cvId: string; product?: string; amountCents?: number } }
-    | { event: 'checkout_failed'; properties: { cvId: string; reason?: string; product?: string } }
+    | { event: 'checkout_start'; properties: { cvId: string; product?: string; amountCents?: number; experimentVariant?: 'modal' | 'direct' } }
+    | { event: 'checkout_started'; properties: { cvId: string; product?: string; amountCents?: number; experimentVariant?: 'modal' | 'direct' } }
+    | { event: 'checkout_failed'; properties: { cvId: string; reason?: string; product?: string; experimentVariant?: 'modal' | 'direct' } }
     | { event: 'checkout_completed'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } }
     | { event: 'paid'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } }
     | { event: 'payment_completed'; properties: { cvId: string } }
@@ -167,6 +201,14 @@ export type AnalyticsEvent =
     | { event: 'section_expanded'; properties: { section: string } }
     | { event: 'cta_viewed'; properties: { location: string; variant: string; slug?: string; locale?: 'nl' | 'en' } }
     | { event: 'cta_clicked'; properties: { location: string; label: string } }
+    | {
+          event: 'cta_experiment_assigned';
+          properties: { experiment: 'guide_cta_copy_v1'; variant: 'trust' | 'speed'; slug: string; locale: 'nl' | 'en' };
+      }
+    | {
+          event: 'cta_experiment_clicked';
+          properties: { experiment: 'guide_cta_copy_v1'; variant: 'trust' | 'speed'; slug: string; locale: 'nl' | 'en' };
+      }
     | { event: NamedLandingCtaEvent; properties: Record<string, never> }
     | {
           event: CareerTransitionCtaEvent;
@@ -276,10 +318,6 @@ export function track<E extends AnalyticsEvent['event']>(
     // 2) Forward to GA4 if configured
     sendToGA4(event, properties);
 
-    // 3) Console log in development
-    if (process.env.NODE_ENV === 'development') {
-        console.log(`[analytics] ${event}`, properties);
-    }
 }
 
 // ============================================================
@@ -332,7 +370,7 @@ export function trackPageView(path: string): void {
     maybeTrackLandingToEditor(path);
     track('page_view', {
         path,
-        referrer: typeof document !== 'undefined' ? document.referrer : undefined,
+        referrer: typeof document !== 'undefined' ? sanitizeReferrer(document.referrer) : undefined,
     });
 }
 
@@ -362,7 +400,7 @@ export function ensureAttribution(path: string, search: string): AttributionSnap
     const existing = getStoredAttribution();
     const updated = existing
         ? mergeAttributionTouch(existing, path, params, nowIso)
-        : buildInitialAttribution(path, document.referrer || '', params, nowIso);
+        : buildInitialAttribution(path, sanitizeReferrer(document.referrer || ''), params, nowIso);
 
     window.localStorage.setItem(ATTRIBUTION_STORAGE_KEY, JSON.stringify(updated));
     return updated;
@@ -432,10 +470,6 @@ export function markEditorStartedTracked(cvId: string): void {
 export function hasEditorStartedTracked(cvId: string): boolean {
     if (typeof window === 'undefined') return false;
     return window.sessionStorage.getItem(`${EDITOR_STARTED_TRACKED_PREFIX}${cvId}`) === '1';
-}
-
-function isEditorPath(path: string): boolean {
-    return path === '/editor' || path.startsWith('/editor/');
 }
 
 function maybeTrackLandingToEditor(currentPath: string): void {

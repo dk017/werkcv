@@ -4,6 +4,7 @@ import { defaultCV, cvSchema } from '@/lib/cv';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { Prisma } from '@prisma/client';
 import { getCurrentUserFromRequest } from '@/lib/auth';
+import { normalizeStartSource } from '@/lib/start-source';
 
 function getCreateCvErrorMessage(error: unknown): string {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'ECONNREFUSED') {
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         if (body.templateId) templateId = body.templateId;
         if (body.colorThemeId) colorThemeId = body.colorThemeId;
-        if (body.startSource) startSource = body.startSource;
+        startSource = normalizeStartSource(body.startSource) || '';
         attribution = sanitizeAttribution(body.attribution);
 
         // Support pre-populating with example CV data

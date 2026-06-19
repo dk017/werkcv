@@ -340,7 +340,7 @@ export default function ResumeOptimizerNetherlandsPage() {
         />
       </main>
 
-      <Footer />
+      <Footer uiLanguage="en" />
     </div>
   );
 }

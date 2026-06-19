@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
         const session = await verifyEmailLoginCode(email, code, attribution);
         if (!session) {
             return NextResponse.json(
-                { error: 'Invalid or expired code' },
+                { error: 'Invalid or expired code', code: 'INVALID_CODE' },
                 { status: 401 }
             );
         }
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         console.error('verify-code failed', error);
         return NextResponse.json(
-            { error: 'Failed to verify login code' },
+            { error: 'Failed to verify login code', code: 'VERIFY_CODE_FAILED' },
             { status: 500 }
         );
     }

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { UiLanguage } from "@/lib/ui-language";
 
 type FeaturedBadge = {
     href: string;
@@ -56,6 +57,37 @@ const legalLinks = [
     { href: "/voorwaarden", label: "Algemene Voorwaarden" },
 ];
 
+const englishMainLinks = [
+    { href: "/en/templates", label: "CV Templates" },
+    { href: "/en/dutch-cv-examples", label: "CV Examples" },
+    { href: "/en/guides", label: "Netherlands CV Guides" },
+    { href: "/en/resume-optimizer-netherlands", label: "Resume Optimizer" },
+    { href: "/en/profile-photo", label: "Profile Photo" },
+    { href: "/en/motivation-letter-netherlands", label: "Motivation Letter" },
+    { href: "/about", label: "About" },
+    { href: "/contact", label: "Contact" },
+];
+
+const englishToolLinks = [
+    { href: "/tools/kennismigrant-salary-checker", label: "Highly Skilled Migrant Salary" },
+    { href: "/tools/zoekjaar-checker", label: "Orientation Year Checker" },
+    { href: "/tools/eu-blue-card-checker", label: "EU Blue Card Checker" },
+    { href: "/tools/netto-bruto-calculator", label: "Net to Gross Calculator" },
+];
+
+const englishCvLinks = [
+    { href: "/en", label: "Build a Netherlands CV" },
+    { href: "/en/dutch-cv-template", label: "Dutch CV Template in English" },
+    { href: "/en/netherlands-cv-format", label: "Netherlands CV Format" },
+    { href: "/en/cv-netherlands-without-dutch-language", label: "CV Without Dutch" },
+    { href: "/en/expat-cv-netherlands", label: "Expat CV Guide" },
+];
+
+const englishLegalLinks = [
+    { href: "/privacy", label: "Privacy" },
+    { href: "/voorwaarden", label: "Terms" },
+];
+
 const featuredBadges: FeaturedBadge[] = [
     {
         href: "https://www.betterlaunch.co",
@@ -109,26 +141,34 @@ const featuredBadges: FeaturedBadge[] = [
     },
 ];
 
-export default function Footer() {
+export default function Footer({ uiLanguage = "nl" }: { uiLanguage?: UiLanguage }) {
+    const isEnglish = uiLanguage === "en";
+    const navigationLinks = isEnglish ? englishMainLinks : mainLinks;
+    const popularToolLinks = isEnglish ? englishToolLinks : toolLinks;
+    const popularCvLinks = isEnglish ? englishCvLinks : cvIntentLinks;
+    const footerLegalLinks = isEnglish ? englishLegalLinks : legalLinks;
+
     return (
         <footer className="relative z-10 border-t-4 border-black bg-white mt-20">
             <div className="max-w-6xl mx-auto px-6 py-8">
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1fr_1.1fr_1fr_1fr] gap-8">
                     <div>
-                        <Link href="/" className="inline-block font-black text-xl tracking-tight text-black mb-3">
+                        <Link href={isEnglish ? "/en" : "/"} className="inline-block font-black text-xl tracking-tight text-black mb-3">
                             Werk<span className="bg-yellow-400 px-1">CV</span>.nl
                         </Link>
                         <p className="text-sm text-gray-600 leading-relaxed">
-                            CV-builder, sollicitatiehulp en praktische tools voor werken in Nederland.
+                            {isEnglish
+                                ? "English CV guidance, templates, and practical tools for working in the Netherlands."
+                                : "CV-builder, sollicitatiehulp en praktische tools voor werken in Nederland."}
                         </p>
                     </div>
 
                     <div>
                         <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">
-                            Navigatie
+                            {isEnglish ? "Navigation" : "Navigatie"}
                         </p>
                         <nav className="flex flex-wrap gap-x-6 gap-y-2 text-sm font-bold text-black">
-                            {mainLinks.map((link) => (
+                            {navigationLinks.map((link) => (
                                 <Link key={link.href} href={link.href} className="hover:text-yellow-600 transition-colors">
                                     {link.label}
                                 </Link>
@@ -138,10 +178,10 @@ export default function Footer() {
 
                     <div>
                         <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">
-                            Populaire tools
+                            {isEnglish ? "Popular tools" : "Populaire tools"}
                         </p>
                         <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm font-bold text-black">
-                            {toolLinks.map((link) => (
+                            {popularToolLinks.map((link) => (
                                 <Link key={link.href} href={link.href} className="hover:text-teal-700 transition-colors">
                                     {link.label}
                                 </Link>
@@ -151,10 +191,10 @@ export default function Footer() {
 
                     <div>
                         <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">
-                            Populaire CV Pagina&apos;s
+                            {isEnglish ? "Popular CV pages" : "Populaire CV Pagina's"}
                         </p>
                         <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm font-bold text-black">
-                            {cvIntentLinks.map((link) => (
+                            {popularCvLinks.map((link) => (
                                 <Link key={link.href} href={link.href} className="hover:text-yellow-600 transition-colors">
                                     {link.label}
                                 </Link>
@@ -165,7 +205,7 @@ export default function Footer() {
 
                 <div className="mt-8 border-t-2 border-gray-200 pt-5">
                     <p className="mb-3 text-center text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-                        Ook genoemd op
+                        {isEnglish ? "Featured on" : "Ook genoemd op"}
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-3">
                         {featuredBadges.map((badge) => (
@@ -191,10 +231,12 @@ export default function Footer() {
 
                 <div className="mt-6 pt-4 border-t-2 border-gray-200 flex flex-col md:flex-row items-center justify-between gap-3">
                     <p className="text-sm font-medium text-gray-600 text-center md:text-left">
-                        &copy; {new Date().getFullYear()} WerkCV.nl | Maak een professioneel CV dat opvalt
+                        &copy; {new Date().getFullYear()} WerkCV.nl | {isEnglish
+                            ? "Build a professional CV for jobs in the Netherlands"
+                            : "Maak een professioneel CV dat opvalt"}
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-4 text-sm font-bold text-black">
-                        {legalLinks.map((link) => (
+                        {footerLegalLinks.map((link) => (
                             <Link key={link.href} href={link.href} className="hover:text-yellow-600 transition-colors">
                                 {link.label}
                             </Link>

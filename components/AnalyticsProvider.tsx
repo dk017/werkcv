@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { track, trackLanding, trackPageView } from "@/lib/analytics";
+import { isEditorPath, isFunnelCtaTargetPath, isTemplatePath } from "@/lib/analytics-paths";
+import { landingStartSource, PENDING_START_SOURCE_COOKIE } from "@/lib/start-source";
 
 /**
  * Client component that tracks page views on route changes.
@@ -15,6 +17,10 @@ export default function AnalyticsProvider() {
         const search = typeof window !== 'undefined' ? window.location.search : '';
         trackLanding(pathname, search);
         trackPageView(pathname);
+
+        if (isEditorPath(pathname)) {
+            document.cookie = `${PENDING_START_SOURCE_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`;
+        }
     }, [pathname]);
 
     useEffect(() => {
@@ -24,11 +30,9 @@ export default function AnalyticsProvider() {
             const target = event.target as HTMLElement | null;
             const anchor = target?.closest('a[href]') as HTMLAnchorElement | null;
             if (!anchor) return;
-            if (anchor.dataset.trackCta === 'manual') return;
-
             const href = anchor.getAttribute('href');
             if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
-            if (pathname === '/editor' || pathname.startsWith('/editor/')) return;
+            if (isEditorPath(pathname)) return;
 
             let url: URL;
             try {
@@ -40,19 +44,14 @@ export default function AnalyticsProvider() {
             if (url.origin !== window.location.origin) return;
 
             const toPath = url.pathname;
-            const isFunnelCtaTarget =
-                toPath.startsWith('/editor') ||
-                toPath.startsWith('/templates') ||
-                toPath.startsWith('/prijzen') ||
-                toPath.startsWith('/cv-maken-zonder-abonnement') ||
-                toPath.startsWith('/cv-maken-eenmalig-betalen') ||
-                toPath.startsWith('/cv-optimaliseren') ||
-                toPath.startsWith('/cv-verbeteren') ||
-                toPath.startsWith('/cv-checken') ||
-                toPath.startsWith('/cv-nakijken') ||
-                toPath.startsWith('/en/resume-optimizer-netherlands') ||
-                toPath.startsWith('/tools/sollicitatiebrief-generator');
-            if (!isFunnelCtaTarget) return;
+            if (!isFunnelCtaTargetPath(toPath)) return;
+
+            if (isEditorPath(toPath) || isTemplatePath(toPath)) {
+                const source = encodeURIComponent(landingStartSource(pathname));
+                document.cookie = `${PENDING_START_SOURCE_COOKIE}=${source}; Path=/; Max-Age=600; SameSite=Lax`;
+            }
+
+            if (anchor.dataset.trackCta === 'manual') return;
 
             const label =
                 anchor.getAttribute('aria-label') ||

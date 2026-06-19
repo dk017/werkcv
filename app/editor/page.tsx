@@ -3,6 +3,8 @@ import { getCVWithSettings } from "../actions";
 import { getCurrentUser } from "@/lib/auth";
 import Editor from "./editor";
 import { createEditorDraft } from "@/lib/editor-drafts";
+import { cookies } from "next/headers";
+import { normalizeStartSource, PENDING_START_SOURCE_COOKIE, readEncodedStartSource } from "@/lib/start-source";
 
 function normalizeTemplateId(value: string | string[] | undefined): string | null {
     const template = Array.isArray(value) ? value[0] : value;
@@ -17,25 +19,30 @@ export default async function EditorPage({
     const { id, template, startSource } = await searchParams;
     const user = await getCurrentUser();
     const templateId = normalizeTemplateId(template);
+    const cookieStore = await cookies();
+    const resolvedStartSource =
+        normalizeStartSource(startSource) ||
+        readEncodedStartSource(cookieStore.get(PENDING_START_SOURCE_COOKIE)?.value) ||
+        "editor_direct";
 
     if (!user) {
         const next = id
             ? `/editor?id=${encodeURIComponent(id)}`
             : templateId
-                ? `/editor?template=${encodeURIComponent(templateId)}${startSource ? `&startSource=${encodeURIComponent(startSource)}` : ""}`
-                : "/editor?template=professional";
+                ? `/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(resolvedStartSource)}`
+                : `/editor?template=professional&startSource=${encodeURIComponent(resolvedStartSource)}`;
         redirect(`/login?next=${encodeURIComponent(next)}`);
     }
 
     if (!id) {
         if (!templateId) {
-            redirect(`/templates`);
+            redirect(`/templates?startSource=${encodeURIComponent(resolvedStartSource)}`);
         }
 
         const cvId = await createEditorDraft({
             templateId,
             uiLanguage: "nl",
-            startSource: startSource || null,
+            startSource: resolvedStartSource,
         });
         redirect(`/editor?id=${encodeURIComponent(cvId)}`);
     }

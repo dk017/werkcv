@@ -323,7 +323,7 @@ export default function MotivationLetterNetherlandsPage() {
         />
       </main>
 
-      <Footer />
+      <Footer uiLanguage="en" />
     </div>
   );
 }

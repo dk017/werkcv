@@ -36,6 +36,13 @@ import {
     track
 } from "@/lib/analytics";
 import { UiLanguage } from "@/lib/ui-language";
+import {
+    getCompletionState,
+    type CompletionState,
+    type CompletionStep,
+    type CompletionStepId,
+} from "@/lib/cv-completion";
+import { getTargetVacancySessionKey } from "@/lib/cover-letter-session";
 
 interface EditorProps {
     initialData: CVData;
@@ -52,10 +59,14 @@ const DESKTOP_PREVIEW_SCALE = 0.58;
 const MOBILE_PREVIEW_SCALE = 0.44;
 const A4_WIDTH_PX = 794;
 const A4_HEIGHT_PX = 1123;
+const CHECKOUT_EXPERIMENT_STORAGE_KEY = 'werkcv_checkout_variant_v1';
+const CHECKOUT_EXPERIMENT_TRACKED_PREFIX = 'werkcv_checkout_variant_tracked_';
+const READY_TO_DOWNLOAD_TRACKED_PREFIX = 'werkcv_ready_to_download_tracked_';
 
-type CoverLetterTone = 'professional' | 'enthusiastic' | 'concise';
 type AtsLanguageLock = 'auto' | 'nl' | 'en';
 type CheckoutModalCloseReason = 'later_button' | 'close_button' | 'overlay';
+type CheckoutExperimentVariant = 'modal' | 'direct';
+type DownloadSource = 'toolbar' | 'post_completion_tools';
 type OptionalSectionId =
     | 'internships'
     | 'courses'
@@ -65,6 +76,26 @@ type OptionalSectionId =
     | 'references'
     | 'sideActivities'
     | 'customSections';
+
+function isCheckoutExperimentVariant(value: string | null): value is CheckoutExperimentVariant {
+    return value === 'modal' || value === 'direct';
+}
+
+function resolveCheckoutExperimentVariant(): CheckoutExperimentVariant {
+    const params = new URLSearchParams(window.location.search);
+    const forcedVariant = params.get('checkout');
+    if (isCheckoutExperimentVariant(forcedVariant)) {
+        window.localStorage.setItem(CHECKOUT_EXPERIMENT_STORAGE_KEY, forcedVariant);
+        return forcedVariant;
+    }
+
+    const storedVariant = window.localStorage.getItem(CHECKOUT_EXPERIMENT_STORAGE_KEY);
+    if (isCheckoutExperimentVariant(storedVariant)) return storedVariant;
+
+    const assignedVariant: CheckoutExperimentVariant = Math.random() < 0.5 ? 'modal' : 'direct';
+    window.localStorage.setItem(CHECKOUT_EXPERIMENT_STORAGE_KEY, assignedVariant);
+    return assignedVariant;
+}
 
 function getOptionalSectionOptions(uiLanguage: UiLanguage): Array<{ id: OptionalSectionId; label: string }> {
     if (uiLanguage === "en") {
@@ -123,16 +154,92 @@ function deriveVisibleOptionalSections(data: CVData): Record<OptionalSectionId, 
     };
 }
 
-function getCompletionScore(data: CVData): number {
-    let score = 0;
-    if (data.personal.name) score += 20;
-    if (data.personal.email) score += 10;
-    if (data.personal.phone) score += 10;
-    if (data.personal.summary && data.personal.summary.length > 80) score += 20;
-    if (data.experience.length > 0) score += 20;
-    if (data.education.length > 0) score += 10;
-    if (data.skills.length >= 3) score += 10;
-    return Math.min(score, 100);
+function hasAdditionalPersonalDetails(data: CVData): boolean {
+    const personal = data.personal;
+    return [
+        personal.photo,
+        personal.address,
+        personal.postalCode,
+        personal.birthDate,
+        personal.birthPlace,
+        personal.nationality,
+        personal.driversLicense,
+        personal.gender,
+        personal.maritalStatus,
+        personal.linkedIn,
+        personal.github,
+        personal.website,
+    ].some((value) => typeof value === "string" && value.trim().length > 0);
+}
+
+function CompletionPanel({
+    state,
+    onGoToStep,
+    uiLanguage,
+}: {
+    state: CompletionState;
+    onGoToStep: (step: CompletionStep) => void;
+    uiLanguage: UiLanguage;
+}) {
+    const isEnglish = uiLanguage === "en";
+    const tr = (dutch: string, english: string) => (isEnglish ? english : dutch);
+    const progressColor = state.isComplete ? "bg-emerald-600" : state.isReady ? "bg-teal-500" : "bg-slate-900";
+
+    return (
+        <section className="rounded-lg border border-slate-200 bg-white px-4 py-3 shadow-sm">
+            <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                    <p className="text-sm font-semibold text-slate-900">
+                        {state.isComplete
+                            ? tr("CV compleet", "CV complete")
+                            : state.isReady
+                                ? tr("Klaar om te downloaden", "Ready to download")
+                                : tr("CV voortgang", "CV progress")}
+                    </p>
+                    <p className="truncate text-xs text-slate-500">
+                        {state.isComplete
+                            ? tr("Klaar om te downloaden", "Ready to download")
+                            : state.isReady && state.nextStep
+                                ? tr(`Aanbevolen voor 100%: ${state.nextStep.label}`, `Recommended for 100%: ${state.nextStep.label}`)
+                            : state.nextStep
+                                ? tr(`Volgende: ${state.nextStep.label}`, `Next: ${state.nextStep.label}`)
+                                : tr("Bijna klaar", "Almost done")}
+                    </p>
+                </div>
+                <span className={`shrink-0 text-sm font-bold ${state.isComplete || state.isReady ? "text-emerald-700" : "text-slate-700"}`}>
+                    {state.isComplete ? "✓ 100%" : state.isReady ? `✓ ${state.score}%` : `${state.score}%`}
+                </span>
+            </div>
+
+            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-100">
+                <div
+                    className={`h-full rounded-full ${progressColor} transition-all duration-300`}
+                    style={{ width: `${state.score}%` }}
+                />
+            </div>
+
+            <div className="mt-3 grid grid-cols-5 gap-1">
+                {state.steps.map((step) => (
+                    <button
+                        key={step.id}
+                        type="button"
+                        onClick={() => onGoToStep(step)}
+                        className="group min-w-0 text-left"
+                        title={step.hint}
+                    >
+                        <span className="flex items-center gap-1.5">
+                            <span className={`inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full border text-[10px] font-bold ${step.complete ? "border-emerald-600 bg-emerald-600 text-white" : "border-slate-300 bg-white text-slate-400 group-hover:border-slate-500"}`}>
+                                {step.complete ? "✓" : ""}
+                            </span>
+                            <span className={`hidden truncate text-[11px] font-medium sm:block ${step.complete ? "text-emerald-800" : "text-slate-500"}`}>
+                                {step.label}
+                            </span>
+                        </span>
+                    </button>
+                ))}
+            </div>
+        </section>
+    );
 }
 
 function getCheckoutFailureReason(error: unknown): string {
@@ -166,11 +273,6 @@ export default function Editor({
         { value: "Samenwonend", label: tr("Samenwonend", "Cohabiting") },
         { value: "Gescheiden", label: tr("Gescheiden", "Divorced") },
     ];
-    const coverLetterToneOptions: Array<{ value: CoverLetterTone; label: string }> = [
-        { value: "professional", label: tr("Professioneel", "Professional") },
-        { value: "enthusiastic", label: tr("Enthousiast", "Enthusiastic") },
-        { value: "concise", label: tr("Bondig", "Concise") },
-    ];
     const checkoutBenefits = isEnglish
         ? [
             `One-time ${cvDownloadPrice.display.replace(",", ".")} payment for this CV`,
@@ -203,10 +305,16 @@ export default function Editor({
     });
 
     const data = watch();
-    const completionScore = getCompletionScore(data);
-    const isReadyToDownload = completionScore >= 70;
+    const completionState = getCompletionState(data, uiLanguage);
+    const completionScore = completionState.score;
+    const isReadyToDownload = completionState.isReady;
+    const remainingCoreSteps = completionState.steps.filter((step) => !step.complete).length;
+    const toolbarCtaLabel = isReadyToDownload
+        ? tr("CV downloaden", "Download CV")
+        : uiLanguage === "en"
+            ? `Finish CV · ${remainingCoreSteps} ${remainingCoreSteps === 1 ? "step" : "steps"} left`
+            : `CV afronden · nog ${remainingCoreSteps} ${remainingCoreSteps === 1 ? "stap" : "stappen"}`;
     const [isSaved, setIsSaved] = useState(true);
-    const [lastSaved, setLastSaved] = useState<Date | null>(null);
     const [isDownloading, setIsDownloading] = useState(false);
     const [templateId, setTemplateId] = useState(initialTemplateId);
     const [colorThemeId, setColorThemeId] = useState(initialColorThemeId);
@@ -218,25 +326,24 @@ export default function Editor({
     const [showOnboarding, setShowOnboarding] = useState(false);
     const [showTemplateHint, setShowTemplateHint] = useState(false);
     const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+    const [checkoutExperimentVariant, setCheckoutExperimentVariant] = useState<CheckoutExperimentVariant>('modal');
     const [visibleOptionalSections, setVisibleOptionalSections] = useState<Record<OptionalSectionId, boolean>>(
         () => deriveVisibleOptionalSections(normalizedInitialData)
+    );
+    const [showAdditionalPersonalDetails, setShowAdditionalPersonalDetails] = useState(
+        () => hasAdditionalPersonalDetails(normalizedInitialData)
     );
     const [isCheckoutRedirecting, setIsCheckoutRedirecting] = useState(false);
     const [isAtsRewriting, setIsAtsRewriting] = useState(false);
     const [atsTargetRole, setAtsTargetRole] = useState(initialData.personal.title || '');
-    const [atsJobDescription, setAtsJobDescription] = useState('');
+    const [targetVacancy, setTargetVacancy] = useState('');
     const [atsLanguageLock, setAtsLanguageLock] = useState<AtsLanguageLock>('auto');
-    const [coverLetter, setCoverLetter] = useState('');
-    const [coverLetterUpdatedAt, setCoverLetterUpdatedAt] = useState<string | null>(null);
-    const [coverLetterCompanyName, setCoverLetterCompanyName] = useState('');
-    const [coverLetterJobDescription, setCoverLetterJobDescription] = useState('');
-    const [coverLetterTone, setCoverLetterTone] = useState<CoverLetterTone>('professional');
-    const [isCoverLetterLoading, setIsCoverLetterLoading] = useState(true);
-    const [isCoverLetterGenerating, setIsCoverLetterGenerating] = useState(false);
-    const [isCoverLetterSaving, setIsCoverLetterSaving] = useState(false);
-    const [isCoverLetterDirty, setIsCoverLetterDirty] = useState(false);
     const desktopPreviewViewportRef = useRef<HTMLDivElement>(null);
     const mobilePreviewViewportRef = useRef<HTMLDivElement>(null);
+    const progressMilestonesTrackedRef = useRef<Set<number>>(new Set());
+    const completedSectionsTrackedRef = useRef<Set<CompletionStepId>>(new Set());
+    const progressTrackingInitializedRef = useRef(false);
+    const readyToDownloadTrackedRef = useRef(false);
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -245,6 +352,21 @@ export default function Editor({
             setShowUploader(true);
         }
     }, []);
+
+    useEffect(() => {
+        const variant = resolveCheckoutExperimentVariant();
+        setCheckoutExperimentVariant(variant);
+
+        const trackedKey = `${CHECKOUT_EXPERIMENT_TRACKED_PREFIX}${id}`;
+        if (window.sessionStorage.getItem(trackedKey)) return;
+        track('checkout_experiment_assigned', { cvId: id, variant, uiLanguage });
+        window.sessionStorage.setItem(trackedKey, '1');
+    }, [id, uiLanguage]);
+
+    useEffect(() => {
+        const storedVacancy = window.sessionStorage.getItem(getTargetVacancySessionKey(id));
+        if (storedVacancy) setTargetVacancy(storedVacancy);
+    }, [id]);
 
     const handlePageCountChange = useCallback((count: number) => {
         setPageCount(count);
@@ -314,7 +436,7 @@ export default function Editor({
 
     useEffect(() => {
         if (!showCheckoutModal) return;
-        track('checkout_modal_viewed', { cvId: id, source: 'pdf_download' });
+        track('checkout_modal_viewed', { cvId: id, source: 'pdf_download', experimentVariant: checkoutExperimentVariant });
         track('checkout_option_viewed', {
             cvId: id,
             product: "cv-profile-photo-bundle",
@@ -329,39 +451,43 @@ export default function Editor({
             uiLanguage,
             recommended: false,
         });
-    }, [showCheckoutModal, id, uiLanguage]);
+    }, [checkoutExperimentVariant, showCheckoutModal, id, uiLanguage]);
 
     useEffect(() => {
-        let cancelled = false;
-
-        const loadCoverLetter = async () => {
-            setIsCoverLetterLoading(true);
-            try {
-                const response = await fetch(`/api/cover-letter?cvId=${encodeURIComponent(id)}`);
-                if (!response.ok) {
-                    // If payment/add-on is missing we keep editor usable and only gate on generate/save actions.
-                    setCoverLetter('');
-                    setCoverLetterUpdatedAt(null);
-                    return;
-                }
-                const result = await response.json().catch(() => null);
-                if (cancelled) return;
-                setCoverLetter(typeof result?.coverLetter === 'string' ? result.coverLetter : '');
-                setCoverLetterUpdatedAt(typeof result?.updatedAt === 'string' ? result.updatedAt : null);
-                setIsCoverLetterDirty(false);
-            } finally {
-                if (!cancelled) {
-                    setIsCoverLetterLoading(false);
+        const milestones: Array<25 | 50 | 75 | 100> = [25, 50, 75, 100];
+        if (!progressTrackingInitializedRef.current) {
+            for (const milestone of milestones) {
+                if (completionScore >= milestone) progressMilestonesTrackedRef.current.add(milestone);
+            }
+            for (const step of completionState.steps) {
+                if (step.complete) completedSectionsTrackedRef.current.add(step.id);
+            }
+            progressTrackingInitializedRef.current = true;
+        } else {
+            for (const milestone of milestones) {
+                if (completionScore >= milestone && !progressMilestonesTrackedRef.current.has(milestone)) {
+                    track('cv_progress_milestone', { cvId: id, milestone, completionScore });
+                    progressMilestonesTrackedRef.current.add(milestone);
                 }
             }
-        };
 
-        loadCoverLetter();
+            for (const step of completionState.steps) {
+                if (step.complete && !completedSectionsTrackedRef.current.has(step.id)) {
+                    track('cv_section_completed', { cvId: id, section: step.id, completionScore });
+                    completedSectionsTrackedRef.current.add(step.id);
+                }
+            }
+        }
 
-        return () => {
-            cancelled = true;
-        };
-    }, [id]);
+        if (completionState.isReady && !readyToDownloadTrackedRef.current) {
+            const trackedKey = `${READY_TO_DOWNLOAD_TRACKED_PREFIX}${id}`;
+            if (!window.sessionStorage.getItem(trackedKey)) {
+                track('ready_to_download_viewed', { cvId: id, completionScore });
+                window.sessionStorage.setItem(trackedKey, '1');
+            }
+            readyToDownloadTrackedRef.current = true;
+        }
+    }, [completionScore, completionState.isReady, completionState.steps, id]);
 
     const handleDismissOnboarding = () => {
         setShowOnboarding(false);
@@ -386,11 +512,11 @@ export default function Editor({
 
     const maybeTrackCompletion = useCallback((cvData: CVData) => {
         if (hasCompletionTracked(id)) return;
-        const score = getCompletionScore(cvData);
-        if (score < 70) return;
-        track('complete_cv', { cvId: id, completionScore: score });
+        const state = getCompletionState(cvData, uiLanguage);
+        if (!state.isComplete) return;
+        track('complete_cv', { cvId: id, completionScore: state.score });
         markCompletionTracked(id);
-    }, [id]);
+    }, [id, uiLanguage]);
 
     const toggleOptionalSection = (sectionId: OptionalSectionId) => {
         setVisibleOptionalSections((prev) => ({
@@ -404,7 +530,6 @@ export default function Editor({
         const res = await updateCV(id, formData);
         if (res.success) {
             setIsSaved(true);
-            setLastSaved(new Date());
             maybeTrackCompletion(formData);
         } else {
             alert(tr("Er ging iets mis bij het opslaan.", "Something went wrong while saving."));
@@ -431,7 +556,6 @@ export default function Editor({
                     const res = await updateCV(id, currentData);
                     if (res.success) {
                         setIsSaved(true);
-                        setLastSaved(new Date());
                         maybeTrackCompletion(currentData);
                     }
                 } finally {
@@ -477,6 +601,7 @@ export default function Editor({
         // Reset the form with the parsed CV data
         reset(normalizedData);
         setVisibleOptionalSections(deriveVisibleOptionalSections(normalizedData));
+        setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
         setShowUploader(false);
         setIsSaved(false);
         track('cv_uploaded', { fileType: 'parsed' });
@@ -487,7 +612,7 @@ export default function Editor({
         const amountCents = checkoutProduct === "cv-profile-photo-bundle"
             ? applicationBundlePrice.amountCents
             : cvDownloadPrice.amountCents;
-        track('checkout_start', { cvId: id, product: checkoutProduct, amountCents });
+        track('checkout_start', { cvId: id, product: checkoutProduct, amountCents, experimentVariant: checkoutExperimentVariant });
         try {
             const checkoutResult = await getCheckoutURL(id, undefined, [], checkoutProduct);
             if (!checkoutResult.ok) {
@@ -495,6 +620,7 @@ export default function Editor({
                     cvId: id,
                     reason: checkoutResult.reason || checkoutResult.code,
                     product: checkoutProduct,
+                    experimentVariant: checkoutExperimentVariant,
                 });
                 alert(checkoutResult.supportNotified ? supportNotifiedMessage : tr(
                     "Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.",
@@ -503,10 +629,10 @@ export default function Editor({
                 setIsCheckoutRedirecting(false);
                 return;
             }
-            track('checkout_started', { cvId: id, product: checkoutProduct, amountCents });
+            track('checkout_started', { cvId: id, product: checkoutProduct, amountCents, experimentVariant: checkoutExperimentVariant });
             window.location.href = checkoutResult.url;
         } catch (error) {
-            track('checkout_failed', { cvId: id, reason: getCheckoutFailureReason(error), product: checkoutProduct });
+            track('checkout_failed', { cvId: id, reason: getCheckoutFailureReason(error), product: checkoutProduct, experimentVariant: checkoutExperimentVariant });
             alert(tr("Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.", "Payment could not be started. Check the payment configuration and try again."));
             setIsCheckoutRedirecting(false);
         }
@@ -536,6 +662,18 @@ export default function Editor({
         setShowCheckoutModal(false);
     };
 
+    const scrollToCompletionStep = (step: CompletionStep) => {
+        if (typeof document === "undefined") return;
+        document.getElementById(step.anchorId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    const handleOpenCoverLetter = () => {
+        if (typeof window !== "undefined") {
+            window.sessionStorage.setItem(getTargetVacancySessionKey(id), targetVacancy);
+        }
+        track('cta_clicked', { location: 'editor_final_review', label: 'open_cover_letter' });
+    };
+
     const handleAtsRewrite = async () => {
         setIsAtsRewriting(true);
         try {
@@ -546,7 +684,7 @@ export default function Editor({
                 body: JSON.stringify({
                     cvId: id,
                     targetRole,
-                    jobDescription: atsJobDescription,
+                    jobDescription: targetVacancy,
                     preferredLanguage: atsLanguageLock === 'auto' ? undefined : atsLanguageLock,
                 }),
             });
@@ -596,67 +734,9 @@ export default function Editor({
         }
     };
 
-    const handleGenerateCoverLetter = async () => {
-        setIsCoverLetterGenerating(true);
-        track('cta_clicked', { location: 'editor_cover_letter', label: coverLetter ? 'regenerate' : 'generate' });
-        try {
-            const response = await fetch('/api/cover-letter', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    cvId: id,
-                    targetRole: data.personal.title || '',
-                    companyName: coverLetterCompanyName,
-                    jobDescription: coverLetterJobDescription,
-                    tone: coverLetterTone,
-                }),
-            });
-
-            const result = await response.json().catch(() => null);
-            if (!response.ok) {
-                alert(result?.error || tr("Sollicitatiebrief genereren mislukt. Probeer het opnieuw.", "Cover letter generation failed. Please try again."));
-                return;
-            }
-
-            setCoverLetter(typeof result?.coverLetter === 'string' ? result.coverLetter : '');
-            setCoverLetterUpdatedAt(typeof result?.updatedAt === 'string' ? result.updatedAt : null);
-            setIsCoverLetterDirty(false);
-        } finally {
-            setIsCoverLetterGenerating(false);
-        }
-    };
-
-    const handleSaveCoverLetter = async () => {
-        if (!isCoverLetterDirty) return;
-        setIsCoverLetterSaving(true);
-        track('cta_clicked', { location: 'editor_cover_letter', label: 'save' });
-        try {
-            const response = await fetch('/api/cover-letter', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    cvId: id,
-                    coverLetter,
-                }),
-            });
-
-            const result = await response.json().catch(() => null);
-            if (!response.ok) {
-                alert(result?.error || tr("Opslaan van sollicitatiebrief mislukt.", "Saving the cover letter failed."));
-                return;
-            }
-
-            setCoverLetter(typeof result?.coverLetter === 'string' ? result.coverLetter : coverLetter);
-            setCoverLetterUpdatedAt(typeof result?.updatedAt === 'string' ? result.updatedAt : null);
-            setIsCoverLetterDirty(false);
-        } finally {
-            setIsCoverLetterSaving(false);
-        }
-    };
-
-    const handleDownload = async () => {
+    const handleDownload = async (source: DownloadSource = "toolbar") => {
         setIsDownloading(true);
-        track('pdf_download_started', { cvId: id });
+        track('pdf_download_started', { cvId: id, source, completionScore });
         try {
             // Always save latest data before generating PDF to prevent stale content
             const formData = watch();
@@ -666,7 +746,6 @@ export default function Editor({
                 return;
             }
             setIsSaved(true);
-            setLastSaved(new Date());
             maybeTrackCompletion(formData);
 
             // Fetch PDF as blob so we can track completion and handle errors
@@ -674,7 +753,17 @@ export default function Editor({
             if (!response.ok) {
                 const errorData = await response.json().catch(() => null);
                 if (errorData?.code === 'PAYMENT_REQUIRED') {
-                    setShowCheckoutModal(true);
+                    track('checkout_paywall_reached', {
+                        cvId: id,
+                        variant: checkoutExperimentVariant,
+                        source,
+                        completionScore,
+                    });
+                    if (checkoutExperimentVariant === 'direct') {
+                        await startCheckout('cv-download');
+                    } else {
+                        setShowCheckoutModal(true);
+                    }
                 } else if (errorData?.code === 'PDF_ERROR') {
                     alert(errorData?.supportNotified
                         ? supportNotifiedMessage
@@ -714,28 +803,18 @@ export default function Editor({
             {/* Left: Editor Form */}
             <div className="flex w-full lg:w-[54%] flex-col border-r-0 lg:border-r border-slate-200 bg-[#FFFEF9] z-10 h-screen">
                 {/* Toolbar */}
-                <div className="min-h-14 border-b border-slate-200 flex flex-wrap items-center justify-between px-3 sm:px-5 py-2 bg-white/95 backdrop-blur sticky top-0 z-20 gap-2">
+                <div className="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-slate-200 bg-white/95 px-3 backdrop-blur sm:px-4">
                     {/* Left side - Logo and tools */}
-                    <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-                        <Link href="/" className="flex items-center gap-1">
+                    <div className="flex min-w-0 items-center gap-2">
+                        <Link href={isEnglish ? "/en" : "/"} className="hidden shrink-0 items-center gap-1 lg:flex">
                             <span className="font-semibold text-lg sm:text-xl tracking-tight text-slate-900">
                                 Werk<span className="bg-[#4ECDC4] px-1 rounded-sm">CV</span>.nl
                             </span>
                         </Link>
-                        <Link
-                            href="/mijn-cvs"
-                            className="hidden sm:flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors"
-                            title={tr("Mijn CV's", "My CVs")}
-                        >
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                            </svg>
-                            {tr("Mijn CV's", "My CVs")}
-                        </Link>
-                        <div className="hidden sm:block w-px h-6 bg-slate-300" />
                         <div className="relative flex items-center gap-1 sm:gap-2">
                             <TemplateSelector
                                 currentTemplateId={templateId}
+                                data={data}
                                 onSelectTemplate={handleTemplateChange}
                                 uiLanguage={uiLanguage}
                             />
@@ -748,429 +827,218 @@ export default function Editor({
                                 templateId={templateId}
                                 currentThemeId={colorThemeId}
                                 onSelectTheme={handleColorThemeChange}
+                                uiLanguage={uiLanguage}
                             />
                         </div>
-                        <div className="hidden xl:block w-px h-6 bg-slate-300" />
-                        <button
-                            onClick={() => setShowUploader(true)}
-                            className="hidden xl:flex px-3 py-1.5 font-semibold text-xs border border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition-colors rounded-md items-center gap-1.5"
-                           
-                            title={tr("Upload je bestaande CV", "Upload your existing CV")}
-                        >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                            </svg>
-                            <span className="hidden lg:inline">{tr("CV Uploaden", "Upload CV")}</span>
-                        </button>
-                        <button
-                            onClick={handleAtsRewrite}
-                            disabled={isAtsRewriting}
-                            className="hidden xl:flex px-3 py-1.5 font-semibold text-xs border border-sky-300 bg-sky-50 text-sky-900 hover:bg-sky-100 transition-colors rounded-md items-center gap-1.5 disabled:opacity-60 disabled:cursor-not-allowed"
-                           
-                            title="ATS Rewrite"
-                        >
-                            <span className="font-black">{isAtsRewriting ? '...' : 'ATS'}</span>
-                        </button>
-                        <button
-                            onClick={handleGenerateCoverLetter}
-                            disabled={isCoverLetterGenerating}
-                            className="hidden xl:flex px-3 py-1.5 font-semibold text-xs border border-rose-300 bg-rose-50 text-rose-900 hover:bg-rose-100 transition-colors rounded-md items-center gap-1.5 disabled:opacity-60 disabled:cursor-not-allowed"
-                           
-                            title={tr("Genereer sollicitatiebrief", "Generate cover letter")}
-                        >
-                            <span className="font-black">{isCoverLetterGenerating ? '...' : tr('Brief AI', 'Letter AI')}</span>
-                        </button>
                     </div>
 
                     {/* Right side - Save and Download */}
-                    <div className="flex flex-col items-end gap-1.5">
+                    <div className="flex shrink-0 items-center">
                         <div className="flex items-center gap-2 sm:gap-3">
-                            <div className="text-xs font-medium text-slate-700 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200">
-                                {isSaved ? (lastSaved ? <span className="text-green-700">✓ <span className="hidden sm:inline">{tr("Opgeslagen", "Saved")} {lastSaved.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span></span> : "✓") : <span className="text-orange-600">●<span className="hidden sm:inline"> {tr("Niet opgeslagen", "Not saved")}</span></span>}
-                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setShowUploader(true)}
+                                className="inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 sm:px-3"
+                                title={tr("Upload je bestaande CV", "Upload your existing CV")}
+                                aria-label={tr("Upload je bestaande CV", "Upload your existing CV")}
+                            >
+                                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                                <span className="hidden sm:inline">{tr("CV uploaden", "Upload CV")}</span>
+                            </button>
                             <button
                                 onClick={handleSubmit(onSubmit)}
                                 disabled={isSubmitting || isSaved}
                                 className={`px-3 sm:px-4 py-2 font-semibold text-xs sm:text-sm rounded-md border transition-colors ${isSaved
-                                        ? "bg-emerald-100 text-emerald-800 border-emerald-200"
+                                        ? "border-transparent bg-transparent text-emerald-700 cursor-default"
                                         : "bg-white text-slate-800 border-slate-300 hover:bg-slate-50"
                                     }`}
                             >
-                                {isSubmitting ? "..." : isSaved ? "✓" : tr("Opslaan", "Save")}
+                                {isSubmitting
+                                    ? tr("Opslaan...", "Saving...")
+                                    : isSaved
+                                        ? `✓ ${tr("Opgeslagen", "Saved")}`
+                                        : tr("Opslaan", "Save")}
                             </button>
                             <button
-                                onClick={handleDownload}
+                                onClick={() => {
+                                    if (!completionState.isReady && completionState.nextStep) {
+                                        scrollToCompletionStep(completionState.nextStep);
+                                        return;
+                                    }
+                                    handleDownload("toolbar");
+                                }}
                                 disabled={isDownloading}
-                                className="bg-emerald-600 text-white px-3 sm:px-4 py-2 font-semibold text-xs sm:text-sm rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                className={`px-3 sm:px-4 py-2 font-semibold text-xs sm:text-sm rounded-md border transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${isReadyToDownload
+                                    ? "border-emerald-700 bg-emerald-600 text-white hover:bg-emerald-700"
+                                    : "border-slate-800 bg-slate-900 text-white hover:bg-slate-800"
+                                }`}
                             >
-                                {isDownloading ? "..." : (
-                                    <>
-                                        <span className="sm:hidden">{tr("Download", "Download")}</span>
-                                        <span className="hidden sm:inline">{tr("Download PDF", "Download PDF")}</span>
-                                    </>
-                                )}
+                                {isDownloading
+                                    ? tr("Bezig...", "Working...")
+                                    : toolbarCtaLabel}
                             </button>
-                        </div>
-                        <div className="hidden md:flex items-center gap-2 text-[11px] font-medium text-slate-500">
-                            {isReadyToDownload && (
-                                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-emerald-800">
-                                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                                    {tr("Klaar voor PDF", "Ready for PDF")}
-                                </span>
-                            )}
-                            <span>{tr("Gratis bewerken, betaal alleen bij downloaden.", "Edit for free, pay only when downloading.")}</span>
                         </div>
                     </div>
                 </div>
-
-                {/* Secondary action row - prevents crowded toolbar wrapping on narrow editor panes */}
-                <div className="xl:hidden flex gap-2 px-4 py-3 bg-white border-b border-slate-200">
-                    <button
-                        onClick={() => setShowUploader(true)}
-                        className="flex-1 px-3 py-2 font-semibold text-xs rounded-md border border-emerald-300 bg-emerald-50 text-emerald-900 hover:bg-emerald-100 transition-colors flex items-center justify-center gap-2"
-                       
-                    >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                        </svg>
-                        {tr("Upload bestaand CV", "Upload existing CV")}
-                    </button>
-                    <button
-                        onClick={handleAtsRewrite}
-                        disabled={isAtsRewriting}
-                        className="px-3 py-2 font-semibold text-xs rounded-md border border-sky-300 bg-sky-50 text-sky-900 hover:bg-sky-100 transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-                       
-                    >
-                        {isAtsRewriting ? '...' : 'ATS'}
-                    </button>
-                    <button
-                        onClick={handleGenerateCoverLetter}
-                        disabled={isCoverLetterGenerating}
-                        className="px-3 py-2 font-semibold text-xs rounded-md border border-rose-300 bg-rose-50 text-rose-900 hover:bg-rose-100 transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
-                       
-                    >
-                        {isCoverLetterGenerating ? '...' : tr('Brief AI', 'Letter AI')}
-                    </button>
-                </div>
-
-                {isReadyToDownload && !showCheckoutModal && (
-                    <div className="md:hidden border-b border-emerald-200 bg-emerald-50/80 px-4 py-3">
-                        <div className="flex items-center justify-between gap-3">
-                            <div className="min-w-0">
-                                <p className="text-sm font-semibold text-slate-900">{tr("Je CV is klaar om te downloaden.", "Your CV is ready to download.")}</p>
-                                <p className="text-[11px] font-medium text-slate-600">
-                                    {tr("Gratis bewerken, betaal pas als je de PDF wilt downloaden.", "Edit for free, only pay when you want the PDF.")}
-                                </p>
-                            </div>
-                            <button
-                                type="button"
-                                onClick={handleDownload}
-                                disabled={isDownloading}
-                                className="shrink-0 rounded-md border border-emerald-700 bg-emerald-600 px-3 py-2 text-xs font-semibold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
-                            >
-                                {isDownloading ? "..." : tr("Download", "Download")}
-                            </button>
-                        </div>
-                    </div>
-                )}
 
                 {/* Scrollable Form Area */}
                 <div className="flex-1 overflow-y-auto p-4 sm:p-5 scroll-smooth bg-[#FFFEF9]">
                     <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12">
 
-                        {/* CV Score Widget */}
-                        <CvScoreWidget data={data} uiLanguage={uiLanguage} />
-
-                        {/* Keyword Scanner Widget */}
-                        <KeywordScannerWidget data={data} uiLanguage={uiLanguage} />
+                        <CompletionPanel
+                            state={completionState}
+                            onGoToStep={scrollToCompletionStep}
+                            uiLanguage={uiLanguage}
+                        />
 
                         {/* Personal Section */}
-                        <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+                        <section id="section-personal" className="scroll-mt-28 bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                             <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
                                 <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md">
                                     {tr("Persoonlijke Gegevens", "Personal Details")}
                                 </span>
                             </h2>
 
-                            {/* Photo Upload + Name/Title */}
-                            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-6">
-                                <PhotoUpload
-                                    currentPhoto={data.personal.photo}
-                                    onPhotoChange={handlePhotoChange}
-                                    uiLanguage={uiLanguage}
-                                />
-                                <div className="flex-1 grid grid-cols-1 gap-4">
-                                    <div>
-                                        <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Volledige Naam", "Full Name")}</label>
-                                        <input {...register("personal.name")} placeholder={tr("bv. Simone van Roodenburg", "e.g. Emma Johnson")} className={inputClass} style={inputStyle} />
-                                    </div>
-                                    <div>
-                                        <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Gewenste Functie", "Target Role")}</label>
-                                        <input {...register("personal.title")} placeholder={tr("bv. Leerkracht Basisonderwijs", "e.g. Primary School Teacher")} className={inputClass} style={inputStyle} />
-                                    </div>
-                                    <div>
-                                        <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("CV taal", "CV language")}</label>
-                                        <select {...register("personal.resumeLanguage")} className={inputClass} style={inputStyle}>
-                                            <option value="nl">{tr("Nederlands", "Dutch")}</option>
-                                            <option value="en">English</option>
-                                        </select>
-                                    </div>
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Volledige Naam", "Full Name")}</label>
+                                    <input {...register("personal.name")} placeholder={tr("bv. Simone van Roodenburg", "e.g. Emma Johnson")} className={inputClass} style={inputStyle} />
                                 </div>
-                            </div>
-
-                            <div className="mb-6 rounded-xl border-2 border-black bg-[#FFFEF9] p-4 text-sm text-slate-800 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
-                                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                    <div>
-                                        <p className="font-black text-black">
-                                            {tr("Maak je sollicitatieprofiel compleet", "Complete your application profile")}
-                                        </p>
-                                        <p className="mt-1 font-medium leading-relaxed text-slate-700">
-                                            {tr(
-                                                "Geen goede foto? Maak een professionele AI-profielfoto voor je CV en LinkedIn.",
-                                                "No good photo? Create a professional AI profile photo for your CV and LinkedIn."
-                                            )}
-                                        </p>
-                                    </div>
-                                    <Link
-                                        href={isEnglish ? "/en/profile-photo" : "/profielfoto-cv-maken"}
-                                        className="inline-flex shrink-0 items-center justify-center border-2 border-black bg-[#4ECDC4] px-4 py-2 text-xs font-black text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                                    >
-                                        {tr("Maak profielfoto €9,99", "Create profile photo €9.99")}
-                                    </Link>
+                                <div>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Gewenste Functie", "Target Role")}</label>
+                                    <input {...register("personal.title")} placeholder={tr("bv. Leerkracht Basisonderwijs", "e.g. Primary School Teacher")} className={inputClass} style={inputStyle} />
                                 </div>
-                            </div>
-
-                            {/* Contact Info */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                                 <div>
                                     <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Email</label>
-                                    <input {...register("personal.email")} placeholder="email@voorbeeld.nl" className={inputClass} style={inputStyle} />
+                                    <input {...register("personal.email")} placeholder={tr("email@voorbeeld.nl", "email@example.com")} className={inputClass} style={inputStyle} />
                                 </div>
                                 <div>
                                     <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Telefoonnummer", "Phone number")}</label>
                                     <input {...register("personal.phone")} placeholder={tr("06 12345678", "+31 6 12345678")} className={inputClass} style={inputStyle} />
                                 </div>
-                            </div>
-
-                            {/* Address */}
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                                <div className="sm:col-span-2">
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Adres", "Address")}</label>
-                                    <input {...register("personal.address")} placeholder={tr("bv. Wilhelminastraat 78", "e.g. Wilhelminastraat 78")} className={inputClass} style={inputStyle} />
+                                <div>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Plaats", "City")}</label>
+                                    <input {...register("personal.location")} placeholder={tr("bv. Utrecht", "e.g. Utrecht")} className={inputClass} style={inputStyle} />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Postcode & Plaats", "Postal code & city")}</label>
-                                    <input {...register("personal.postalCode")} placeholder="1234 AB Utrecht" className={inputClass} style={inputStyle} />
-                                </div>
-                            </div>
-
-                            {/* Personal Details */}
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4">
-                                <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Geboortedatum", "Date of birth")}</label>
-                                    <input {...register("personal.birthDate")} placeholder="15-03-1994" className={inputClass} style={inputStyle} />
-                                </div>
-                                <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Geboorteplaats", "Place of birth")}</label>
-                                    <input {...register("personal.birthPlace")} placeholder="Naarden" className={inputClass} style={inputStyle} />
-                                </div>
-                                <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Nationaliteit", "Nationality")}</label>
-                                    <input {...register("personal.nationality")} placeholder={tr("Nederlandse", "Dutch")} className={inputClass} style={inputStyle} />
-                                </div>
-                                <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Rijbewijs", "Driver's license")}</label>
-                                    <input {...register("personal.driversLicense")} placeholder="B" className={inputClass} style={inputStyle} />
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-4">
-                                <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Geslacht", "Gender")}</label>
-                                    <select {...register("personal.gender")} className={inputClass} style={inputStyle}>
-                                        {genderOptions.map((option) => (
-                                            <option key={option.value || "empty"} value={option.value}>{option.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Burgerlijke staat", "Marital status")}</label>
-                                    <select {...register("personal.maritalStatus")} className={inputClass} style={inputStyle}>
-                                        {maritalStatusOptions.map((option) => (
-                                            <option key={option.value || "empty"} value={option.value}>{option.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">LinkedIn</label>
-                                    <input {...register("personal.linkedIn")} placeholder={tr("linkedin.com/in/naam", "linkedin.com/in/name")} className={inputClass} style={inputStyle} />
-                                </div>
-                                <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">GitHub</label>
-                                    <input {...register("personal.github")} placeholder="github.com/username" className={inputClass} style={inputStyle} />
-                                </div>
-                            </div>
-
-                            {/* Summary */}
-                            <div>
-                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Persoonlijk Profiel", "Personal Profile")}</label>
-                                <textarea {...register("personal.summary")} placeholder={tr("Korte introductie over jezelf, je ervaring en wat je zoekt...", "Short introduction about yourself, your experience, and what you are looking for...")} className={`${inputClass} h-28`} style={inputStyle} />
-                            </div>
-                        </section>
-
-                        <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
-                            <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
-                                <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                                    {tr("ATS Optimalisatie", "ATS Optimization")}
-                                </span>
-                            </h2>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                                <div className="sm:col-span-2">
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Doelrol", "Target role")}</label>
-                                    <input
-                                        value={atsTargetRole}
-                                        onChange={(e) => setAtsTargetRole(e.target.value)}
-                                        placeholder={data.personal.title || tr("bv. Backend Developer", "e.g. Backend Developer")}
-                                        className={inputClass}
-                                        style={inputStyle}
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Taal lock", "Language lock")}</label>
-                                    <select
-                                        value={atsLanguageLock}
-                                        onChange={(e) => setAtsLanguageLock(e.target.value as AtsLanguageLock)}
-                                        className={inputClass}
-                                        style={inputStyle}
-                                    >
-                                        <option value="auto">{tr("Auto (detecteer)", "Auto (detect)")}</option>
+                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("CV taal", "CV language")}</label>
+                                    <select {...register("personal.resumeLanguage")} className={inputClass} style={inputStyle}>
                                         <option value="nl">{tr("Nederlands", "Dutch")}</option>
                                         <option value="en">English</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div className="mb-4">
-                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Vacaturetekst (optioneel)", "Job description (optional)")}</label>
-                                <textarea
-                                    value={atsJobDescription}
-                                    onChange={(e) => setAtsJobDescription(e.target.value)}
-                                    placeholder={tr("Plak de vacaturetekst voor sterkere ATS-keyword match...", "Paste the job description for a stronger ATS keyword match...")}
-                                    className={`${inputClass} h-24`}
-                                    style={inputStyle}
-                                />
+                            {/* Summary */}
+                            <div className="mt-4">
+                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Persoonlijk Profiel", "Personal Profile")}</label>
+                                <textarea {...register("personal.summary")} placeholder={tr("Korte introductie over jezelf, je ervaring en wat je zoekt...", "Short introduction about yourself, your experience, and what you are looking for...")} className={`${inputClass} h-28`} style={inputStyle} />
                             </div>
 
-                            <div className="flex items-center gap-3">
-                                <button
-                                    onClick={handleAtsRewrite}
-                                    disabled={isAtsRewriting}
-                                    className="px-4 py-2 rounded-md border border-sky-300 bg-sky-50 text-sky-900 font-semibold text-xs hover:bg-sky-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-                                >
-                                    {isAtsRewriting ? tr('Bezig...', 'Working...') : tr('ATS herschrijven', 'Rewrite for ATS')}
-                                </button>
-                                <p className="text-xs font-bold text-gray-600">
-                                    {tr("Herschrijft profiel + werkervaring met taalbehoud.", "Rewrites your profile and experience while keeping the selected language.")}
-                                </p>
-                            </div>
-                        </section>
+                            <button
+                                type="button"
+                                onClick={() => setShowAdditionalPersonalDetails((open) => !open)}
+                                aria-expanded={showAdditionalPersonalDetails}
+                                className="mt-5 flex w-full items-center justify-between border-t border-slate-200 pt-4 text-left text-sm font-semibold text-slate-700 hover:text-slate-950"
+                            >
+                                <span>
+                                    {tr("Meer persoonlijke gegevens", "More personal details")}
+                                    <span className="ml-2 text-xs font-medium text-slate-400">{tr("optioneel", "optional")}</span>
+                                </span>
+                                <span className={`text-slate-400 transition-transform ${showAdditionalPersonalDetails ? "rotate-180" : ""}`}>⌄</span>
+                            </button>
 
-                        <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
-                            <div className="flex items-start justify-between gap-3 mb-4">
-                                <h2 className="text-base sm:text-lg font-semibold text-slate-900">
-                                    <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                                        {tr("Sollicitatiebrief AI", "Cover Letter AI")}
-                                    </span>
-                                </h2>
-                                {coverLetterUpdatedAt && (
-                                    <span className="text-[11px] font-bold text-gray-600">
-                                        {tr("Bijgewerkt", "Updated")}: {new Date(coverLetterUpdatedAt).toLocaleString(isEnglish ? "en-NL" : "nl-NL")}
-                                    </span>
-                                )}
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-                                <div className="sm:col-span-2">
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Bedrijfsnaam (optioneel)", "Company name (optional)")}</label>
-                                    <input
-                                        value={coverLetterCompanyName}
-                                        onChange={(e) => setCoverLetterCompanyName(e.target.value)}
-                                        placeholder={tr("bv. ASML", "e.g. ASML")}
-                                        className={inputClass}
-                                        style={inputStyle}
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Toon", "Tone")}</label>
-                                    <select
-                                        value={coverLetterTone}
-                                        onChange={(e) => setCoverLetterTone(e.target.value as CoverLetterTone)}
-                                        className={inputClass}
-                                        style={inputStyle}
-                                    >
-                                        {coverLetterToneOptions.map((option) => (
-                                            <option key={option.value} value={option.value}>{option.label}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Vacaturetekst (optioneel)", "Job description (optional)")}</label>
-                                <textarea
-                                    value={coverLetterJobDescription}
-                                    onChange={(e) => setCoverLetterJobDescription(e.target.value)}
-                                    placeholder={tr("Plak hier de vacaturetekst voor betere afstemming...", "Paste the job description here for better alignment...")}
-                                    className={`${inputClass} h-24`}
-                                    style={inputStyle}
-                                />
-                            </div>
-
-                            <div className="mb-4">
-                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Brieftekst", "Letter text")}</label>
-                                {isCoverLetterLoading ? (
-                                    <div className="border-3 border-black bg-gray-50 px-3 py-4 text-sm font-bold text-gray-600">
-                                        {tr("Sollicitatiebrief laden...", "Loading cover letter...")}
+                            {showAdditionalPersonalDetails ? (
+                                <div className="mt-4 space-y-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                                        <PhotoUpload
+                                            currentPhoto={data.personal.photo}
+                                            onPhotoChange={handlePhotoChange}
+                                            uiLanguage={uiLanguage}
+                                        />
+                                        <div className="flex-1 rounded-md border border-slate-200 bg-white p-3">
+                                            <p className="text-sm font-semibold text-slate-900">{tr("Profielfoto", "Profile photo")}</p>
+                                            <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                                                {tr("Een foto is optioneel. Gebruik alleen een foto die professioneel en actueel is.", "A photo is optional. Use one only when it is professional and current.")}
+                                            </p>
+                                            <Link
+                                                href={isEnglish ? "/en/profile-photo" : "/profielfoto-cv-maken"}
+                                                className="mt-2 inline-flex text-xs font-semibold text-emerald-700 underline underline-offset-2 hover:text-emerald-800"
+                                            >
+                                                {tr("AI-profielfoto maken (€9,99)", "Create an AI profile photo (€9.99)")}
+                                            </Link>
+                                        </div>
                                     </div>
-                                ) : (
-                                    <textarea
-                                        value={coverLetter}
-                                        onChange={(e) => {
-                                            setCoverLetter(e.target.value);
-                                            setIsCoverLetterDirty(true);
-                                        }}
-                                        placeholder={tr("Klik op 'Genereer brief' om je sollicitatiebrief te maken.", "Click 'Generate letter' to create your cover letter.")}
-                                        className={`${inputClass} h-56`}
-                                        style={inputStyle}
-                                    />
-                                )}
-                            </div>
 
-                            <div className="flex flex-wrap items-center gap-3">
-                                <button
-                                    onClick={handleGenerateCoverLetter}
-                                    disabled={isCoverLetterGenerating}
-                                    className="px-4 py-2 rounded-md border border-rose-300 bg-rose-50 text-rose-900 font-semibold text-xs hover:bg-rose-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-                                >
-                                    {isCoverLetterGenerating ? tr('Bezig...', 'Working...') : coverLetter ? tr('Regenereer brief', 'Regenerate letter') : tr('Genereer brief', 'Generate letter')}
-                                </button>
-                                <button
-                                    onClick={handleSaveCoverLetter}
-                                    disabled={!isCoverLetterDirty || isCoverLetterSaving}
-                                    className="px-4 py-2 rounded-md border border-amber-300 bg-amber-50 text-amber-900 font-semibold text-xs hover:bg-amber-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-                                >
-                                    {isCoverLetterSaving ? tr('Opslaan...', 'Saving...') : tr('Brief opslaan', 'Save letter')}
-                                </button>
-                                <p className="text-xs font-bold text-gray-600">
-                                    {tr("Je kunt handmatig aanpassen en opnieuw genereren.", "You can edit it manually and regenerate it at any time.")}
-                                </p>
-                            </div>
+                                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                        <div>
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Adres", "Address")}</label>
+                                            <input {...register("personal.address")} placeholder={tr("bv. Wilhelminastraat 78", "e.g. Wilhelminastraat 78")} className={inputClass} style={inputStyle} />
+                                        </div>
+                                        <div>
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Postcode", "Postal code")}</label>
+                                            <input {...register("personal.postalCode")} placeholder="1234 AB" className={inputClass} style={inputStyle} />
+                                        </div>
+                                        <div>
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Geboortedatum", "Date of birth")}</label>
+                                            <input {...register("personal.birthDate")} placeholder="15-03-1994" className={inputClass} style={inputStyle} />
+                                        </div>
+                                        <div>
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Geboorteplaats", "Place of birth")}</label>
+                                            <input {...register("personal.birthPlace")} placeholder="Naarden" className={inputClass} style={inputStyle} />
+                                        </div>
+                                        <div>
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Nationaliteit", "Nationality")}</label>
+                                            <input {...register("personal.nationality")} placeholder={tr("Nederlandse", "Dutch")} className={inputClass} style={inputStyle} />
+                                        </div>
+                                        <div>
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Rijbewijs", "Driver's license")}</label>
+                                            <input {...register("personal.driversLicense")} placeholder="B" className={inputClass} style={inputStyle} />
+                                        </div>
+                                        <div>
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Geslacht", "Gender")}</label>
+                                            <select {...register("personal.gender")} className={inputClass} style={inputStyle}>
+                                                {genderOptions.map((option) => (
+                                                    <option key={option.value || "empty"} value={option.value}>{option.label}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Burgerlijke staat", "Marital status")}</label>
+                                            <select {...register("personal.maritalStatus")} className={inputClass} style={inputStyle}>
+                                                {maritalStatusOptions.map((option) => (
+                                                    <option key={option.value || "empty"} value={option.value}>{option.label}</option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">LinkedIn</label>
+                                            <input {...register("personal.linkedIn")} placeholder={tr("linkedin.com/in/naam", "linkedin.com/in/name")} className={inputClass} style={inputStyle} />
+                                        </div>
+                                        <div>
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">GitHub</label>
+                                            <input {...register("personal.github")} placeholder="github.com/username" className={inputClass} style={inputStyle} />
+                                        </div>
+                                        <div className="sm:col-span-2">
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Website</label>
+                                            <input {...register("personal.website")} placeholder="portfolio.example.com" className={inputClass} style={inputStyle} />
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : null}
                         </section>
 
-                        <ExperienceSection control={control} register={register} uiLanguage={uiLanguage} />
-                        <EducationSection control={control} register={register} uiLanguage={uiLanguage} />
-                        <SkillsSection control={control} register={register} uiLanguage={uiLanguage} />
+                        <div id="section-experience" className="scroll-mt-28">
+                            <ExperienceSection control={control} register={register} uiLanguage={uiLanguage} />
+                        </div>
+                        <div id="section-education" className="scroll-mt-28">
+                            <EducationSection control={control} register={register} uiLanguage={uiLanguage} />
+                        </div>
+                        <div id="section-skills" className="scroll-mt-28">
+                            <SkillsSection control={control} register={register} uiLanguage={uiLanguage} />
+                        </div>
                         <LanguagesSection control={control} register={register} uiLanguage={uiLanguage} />
 
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
@@ -1212,6 +1080,123 @@ export default function Editor({
                         {visibleOptionalSections.references && <ReferencesSection control={control} register={register} uiLanguage={uiLanguage} />}
                         {visibleOptionalSections.sideActivities && <SideActivitiesSection control={control} register={register} uiLanguage={uiLanguage} />}
                         {visibleOptionalSections.customSections && <CustomSectionsSection control={control} register={register} uiLanguage={uiLanguage} />}
+
+                        <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+                            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                <div>
+                                    <h2 className="text-base sm:text-lg font-semibold text-slate-900">
+                                        <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
+                                            {tr("Laatste controle", "Final check")}
+                                        </span>
+                                    </h2>
+                                    <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
+                                        {isReadyToDownload
+                                            ? tr("Je basis-CV is klaar. Gebruik deze checks om je PDF sterker te maken voor een specifieke vacature.", "Your core CV is ready. Use these checks to make your PDF stronger for a specific vacancy.")
+                                            : tr("Maak eerst de belangrijkste onderdelen af. Daarna tonen we de optimalisatie voor ATS, keywords en sollicitatiebrief.", "Finish the key sections first. Then we show ATS, keyword, and cover-letter optimization.")}
+                                    </p>
+                                </div>
+                                {isReadyToDownload ? (
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDownload("post_completion_tools")}
+                                        disabled={isDownloading}
+                                        className="inline-flex shrink-0 items-center justify-center rounded-md border border-emerald-700 bg-emerald-600 px-4 py-2 text-xs font-black text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                                    >
+                                        {isDownloading
+                                            ? tr("Bezig...", "Working...")
+                                            : tr("CV downloaden", "Download CV")}
+                                    </button>
+                                ) : null}
+                            </div>
+
+                            <div className="mt-5 grid gap-4">
+                                <CvScoreWidget data={data} uiLanguage={uiLanguage} />
+                                <KeywordScannerWidget
+                                    data={data}
+                                    jobDescription={targetVacancy}
+                                    onJobDescriptionChange={setTargetVacancy}
+                                    uiLanguage={uiLanguage}
+                                />
+                            </div>
+                        </section>
+
+                        {isReadyToDownload ? (
+                            <>
+                                <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+                                    <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
+                                        <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
+                                            {tr("ATS Optimalisatie", "ATS Optimization")}
+                                        </span>
+                                    </h2>
+
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                                        <div className="sm:col-span-2">
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Doelrol", "Target role")}</label>
+                                            <input
+                                                value={atsTargetRole}
+                                                onChange={(e) => setAtsTargetRole(e.target.value)}
+                                                placeholder={data.personal.title || tr("bv. Backend Developer", "e.g. Backend Developer")}
+                                                className={inputClass}
+                                                style={inputStyle}
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Taal lock", "Language lock")}</label>
+                                            <select
+                                                value={atsLanguageLock}
+                                                onChange={(e) => setAtsLanguageLock(e.target.value as AtsLanguageLock)}
+                                                className={inputClass}
+                                                style={inputStyle}
+                                            >
+                                                <option value="auto">{tr("Auto (detecteer)", "Auto (detect)")}</option>
+                                                <option value="nl">{tr("Nederlands", "Dutch")}</option>
+                                                <option value="en">English</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div className="mb-4">
+                                        <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Vacaturetekst (optioneel)", "Job description (optional)")}</label>
+                                        <textarea
+                                            value={targetVacancy}
+                                            onChange={(e) => setTargetVacancy(e.target.value)}
+                                            placeholder={tr("Plak de vacaturetekst voor sterkere ATS-keyword match...", "Paste the job description for a stronger ATS keyword match...")}
+                                            className={`${inputClass} h-24`}
+                                            style={inputStyle}
+                                        />
+                                    </div>
+
+                                    <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                                        <button
+                                            onClick={handleAtsRewrite}
+                                            disabled={isAtsRewriting}
+                                            className="px-4 py-2 rounded-md border border-sky-300 bg-sky-50 text-sky-900 font-semibold text-xs hover:bg-sky-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                                        >
+                                            {isAtsRewriting ? tr('Bezig...', 'Working...') : tr('ATS herschrijven', 'Rewrite for ATS')}
+                                        </button>
+                                        <p className="text-xs font-bold text-gray-600">
+                                            {tr("Herschrijft profiel + werkervaring met taalbehoud.", "Rewrites your profile and experience while keeping the selected language.")}
+                                        </p>
+                                    </div>
+                                </section>
+
+                                <section className="flex flex-col gap-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+                                    <div>
+                                        <h2 className="text-base font-semibold text-slate-950">{tr("Ook een sollicitatiebrief nodig?", "Need a cover letter too?")}</h2>
+                                        <p className="mt-1 max-w-xl text-sm leading-relaxed text-slate-600">
+                                            {tr("Open een aparte werkruimte voor je brief. Je CV blijft overzichtelijk en de vacaturetekst wordt meegenomen.", "Open a focused workspace for your letter. Your CV stays uncluttered and the job description carries over.")}
+                                        </p>
+                                    </div>
+                                    <Link
+                                        href={isEnglish ? `/en/cover-letter?id=${encodeURIComponent(id)}` : `/sollicitatiebrief?id=${encodeURIComponent(id)}`}
+                                        onClick={handleOpenCoverLetter}
+                                        className="inline-flex shrink-0 items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
+                                    >
+                                        {tr("Open sollicitatiebrief", "Open cover letter")} →
+                                    </Link>
+                                </section>
+                            </>
+                        ) : null}
 
                     </div>
                 </div>

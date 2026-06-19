@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { buildEnglishMetadata } from "./metadata";
+import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
+import MobileStickyCta from "@/components/landing/MobileStickyCta";
 
 export const metadata = buildEnglishMetadata({
   title: "Netherlands CV Format: Dutch CV Template in English",
@@ -218,7 +220,7 @@ const jsonLd = {
 
 export default function EnglishHubPage() {
   return (
-    <main className="min-h-screen bg-[#FFFEF9]">
+    <main className="min-h-screen bg-[#FFFEF9] pb-20 md:pb-0">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -251,24 +253,30 @@ export default function EnglishHubPage() {
             Start for free, finish your CV first, and only pay a one-time €4.99 when you want the PDF.
             No subscription, no trial trap, and no auto-renewal.
           </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link
+          <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+            <TrackedLandingLink
               href="/en/editor"
+              trackingLocation="english_hub_hero"
+              trackingLabel="build_netherlands_cv"
               className="inline-block bg-[#4ECDC4] text-black font-black px-5 py-3 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
             >
-              Create my English CV
-            </Link>
+              Build my Netherlands CV
+            </TrackedLandingLink>
+            <TrackedLandingLink
+              href="/en/editor?upload=1"
+              trackingLocation="english_hub_hero"
+              trackingLabel="upload_current_cv"
+              className="inline-block border-2 border-black bg-white px-5 py-3 font-black text-black hover:bg-slate-50"
+            >
+              Upload my current CV
+            </TrackedLandingLink>
+          </div>
+          <div className="mt-4">
             <Link
               href="/en/guides/cv-format-netherlands-english"
-              className="inline-block bg-black text-white font-black px-5 py-3 border-4 border-black"
+              className="text-sm font-semibold text-slate-600 underline decoration-slate-400 underline-offset-4 hover:text-slate-950"
             >
-              Check the Netherlands CV format
-            </Link>
-            <Link
-              href="/en/templates"
-              className="inline-block bg-white text-black font-black px-5 py-3 border-4 border-black"
-            >
-              Browse templates
+              Read the Netherlands CV format guidance
             </Link>
           </div>
           <p className="mt-4 text-sm font-medium text-gray-600">
@@ -432,6 +440,13 @@ export default function EnglishHubPage() {
           </Link>
         </div>
       </section>
+      <MobileStickyCta
+        text="Start free. Pay only for the PDF."
+        buttonLabel="Build my CV"
+        href="/en/editor"
+        trackingLocation="english_hub_mobile_sticky"
+        trackingLabel="build_netherlands_cv"
+      />
     </main>
   );
 }

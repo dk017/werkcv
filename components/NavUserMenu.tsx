@@ -3,9 +3,11 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import type { UiLanguage } from '@/lib/ui-language';
 
-export default function NavUserMenu() {
+export default function NavUserMenu({ uiLanguage = 'nl' }: { uiLanguage?: UiLanguage }) {
     const router = useRouter();
+    const isEnglish = uiLanguage === 'en';
     const [email, setEmail] = useState<string | null>(null);
     const [loggingOut, setLoggingOut] = useState(false);
 
@@ -21,7 +23,7 @@ export default function NavUserMenu() {
     const handleLogout = async () => {
         setLoggingOut(true);
         await fetch('/api/auth/logout', { method: 'POST' });
-        router.push('/');
+        router.push(isEnglish ? '/en' : '/');
         router.refresh();
     };
 
@@ -31,20 +33,20 @@ export default function NavUserMenu() {
                 href="/mijn-cvs"
                 className="font-bold text-sm text-black hover:text-yellow-600 transition-colors"
             >
-                Mijn CV&apos;s
+                {isEnglish ? 'My CVs' : "Mijn CV's"}
             </Link>
             <Link
-                href="/profielfoto-cv-maken"
+                href={isEnglish ? '/en/profile-photo' : '/profielfoto-cv-maken'}
                 className="font-bold text-sm text-black hover:text-yellow-600 transition-colors"
             >
-                Profielfoto&apos;s
+                {isEnglish ? 'Profile photos' : "Profielfoto's"}
             </Link>
             <button
                 onClick={handleLogout}
                 disabled={loggingOut}
                 className="text-xs font-bold text-gray-500 hover:text-black transition-colors disabled:opacity-50"
             >
-                {loggingOut ? '...' : 'Uitloggen'}
+                {loggingOut ? '...' : isEnglish ? 'Log out' : 'Uitloggen'}
             </button>
         </div>
     );

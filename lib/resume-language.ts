@@ -167,6 +167,21 @@ export function formatLanguageLevel(level: string | undefined, dataOrLanguage?: 
   return languageLevelMap[language][level] ?? level;
 }
 
+export function getLanguageLevelPercentage(level: string | undefined): number {
+  if (!level) return 50;
+  const percentages: Record<string, number> = {
+    Moedertaal: 100,
+    Native: 100,
+    Vloeiend: 85,
+    Fluent: 85,
+    Goed: 65,
+    Good: 65,
+    Basis: 35,
+    Basic: 35,
+  };
+  return percentages[level] ?? 50;
+}
+
 export function formatGender(value: string | undefined, dataOrLanguage?: CVData | ResumeLanguage | null): string {
   if (!value) return "";
   const language = getResumeLanguage(dataOrLanguage);
