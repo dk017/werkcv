@@ -494,13 +494,13 @@ export default function VaardighedenCvVoorbeeldenPage() {
                 href="/tools/vaardigheden-generator"
                 className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Start vaardigheden tool
+                Bouw mijn skillssectie
               </Link>
               <Link
-                href="/cv-maken-template"
+                href="/templates"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
-                Kies een CV-template
+                Zet mijn skills in een CV-template
               </Link>
             </div>
           </div>

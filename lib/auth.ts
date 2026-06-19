@@ -52,10 +52,12 @@ export function isValidEmail(email: string): boolean {
 }
 
 function buildUserAttributionData(attribution: AttributionSnapshot | null) {
+    const sourceLocale = attribution?.firstTouchPath?.startsWith('/en') ? 'en' : attribution?.locale || null;
+
     return {
         attribution: (attribution || undefined) as Prisma.InputJsonValue | undefined,
         sourceCluster: attribution?.firstTouchCluster || null,
-        sourceLocale: attribution?.locale || null,
+        sourceLocale,
         sourcePath: attribution?.firstTouchPath || null,
     };
 }

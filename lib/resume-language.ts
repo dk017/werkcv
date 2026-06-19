@@ -200,3 +200,31 @@ export function formatSkillLevel(level: number | undefined, dataOrLanguage?: CVD
   }
   return skillLevelMap[getResumeLanguage(dataOrLanguage)][level - 1];
 }
+
+export function formatResumeInlineValue(value: string | undefined, dataOrLanguage?: CVData | ResumeLanguage | null): string {
+  if (!value) return "";
+  const language = getResumeLanguage(dataOrLanguage);
+
+  if (language !== "en") {
+    return value;
+  }
+
+  return value
+    .replace(/\bNederland\b/g, "The Netherlands")
+    .replace(/\bheden\b/gi, "current");
+}
+
+export function formatResumeDateRange(
+  start: string | undefined,
+  end: string | undefined,
+  dataOrLanguage?: CVData | ResumeLanguage | null
+): string {
+  const formattedStart = formatResumeInlineValue(start, dataOrLanguage);
+  const formattedEnd = formatResumeInlineValue(end, dataOrLanguage);
+
+  if (formattedStart && formattedEnd) {
+    return `${formattedStart} - ${formattedEnd}`;
+  }
+
+  return formattedStart || formattedEnd;
+}

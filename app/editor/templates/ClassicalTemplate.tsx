@@ -1,7 +1,7 @@
 import { CVData } from "@/lib/cv";
 import { ColorTheme } from "@/lib/templates";
 import { LinkText } from "./link-utils";
-import { formatGender, formatLanguageLevel, formatMaritalStatus, resumeText } from "@/lib/resume-language";
+import { formatGender, formatLanguageLevel, formatMaritalStatus, formatResumeDateRange, formatResumeInlineValue, resumeText } from "@/lib/resume-language";
 
 interface TemplateProps {
     data: CVData;
@@ -26,6 +26,14 @@ function SkillLevel({ level, color }: { level: number; color: string }) {
 }
 
 export default function ClassicalTemplate({ data, theme }: TemplateProps) {
+    const contactItems = [
+        data.personal.email,
+        data.personal.phone,
+        data.personal.address,
+        data.personal.postalCode,
+        data.personal.location ? formatResumeInlineValue(data.personal.location, data) : "",
+    ].filter((value): value is string => Boolean(value && value.trim()));
+
     return (
         <div
             className="bg-white min-h-[297mm] w-[210mm] mx-auto p-10"
@@ -50,13 +58,11 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                     </p>
                 )}
                 {/* Contact Info Row */}
-                <div className="flex justify-center flex-wrap gap-4 mt-3 text-xs" style={{ color: theme.textMuted }}>
-                    {data.personal.email && <span>{data.personal.email}</span>}
-                    {data.personal.phone && <span>• {data.personal.phone}</span>}
-                    {data.personal.address && <span>• {data.personal.address}</span>}
-                    {data.personal.postalCode && <span>• {data.personal.postalCode}</span>}
-                    {data.personal.location && <span>• {data.personal.location}</span>}
-                </div>
+                {contactItems.length > 0 && (
+                    <p className="mt-3 text-[11px] leading-relaxed text-center" style={{ color: theme.textMuted }}>
+                        {contactItems.join(" • ")}
+                    </p>
+                )}
             </div>
 
             {/* Two column layout for personal details */}
@@ -117,10 +123,10 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                     <div className="space-y-4">
                         {data.experience.map((exp, i) => (
                             <div key={i}>
-                                <div className="flex justify-between items-baseline mb-1">
+                                <div className="flex justify-between items-start gap-4 mb-1">
                                     <h3 className="text-sm font-bold">{exp.role}</h3>
-                                    <span className="text-xs" style={{ color: theme.textMuted }}>
-                                        {exp.start} - {exp.end}
+                                    <span className="text-xs shrink-0 text-left w-[96px]" style={{ color: theme.textMuted }}>
+                                        {formatResumeDateRange(exp.start, exp.end, data)}
                                     </span>
                                 </div>
                                 <p className="text-xs font-medium mb-1" style={{ color: theme.secondary }}>
@@ -157,10 +163,10 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                     <div className="space-y-3">
                         {data.internships.map((intern, i) => (
                             <div key={i}>
-                                <div className="flex justify-between items-baseline mb-1">
+                                <div className="flex justify-between items-start gap-4 mb-1">
                                     <h3 className="text-sm font-bold">{intern.role}</h3>
-                                    <span className="text-xs" style={{ color: theme.textMuted }}>
-                                        {intern.start} - {intern.end}
+                                    <span className="text-xs shrink-0 text-left w-[96px]" style={{ color: theme.textMuted }}>
+                                        {formatResumeDateRange(intern.start, intern.end, data)}
                                     </span>
                                 </div>
                                 <p className="text-xs font-medium" style={{ color: theme.secondary }}>
@@ -196,11 +202,11 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                     >{resumeText(data, "education")}</h2>
                     <div className="space-y-3">
                         {data.education.map((edu, i) => (
-                            <div key={i} className="flex justify-between items-baseline">
+                            <div key={i} className="flex justify-between items-start gap-4">
                                 <div>
                                     <h3 className="font-bold text-sm">{edu.degree}</h3>
                                     <p className="text-xs" style={{ color: theme.textMuted }}>
-                                        {edu.school}{edu.location && `, ${edu.location}`}
+                                        {edu.school}{edu.location && `, ${formatResumeInlineValue(edu.location, data)}`}
                                     </p>
                                     {edu.description && (
                                         <p className="text-xs mt-1" style={{ color: theme.textMuted }}>
@@ -208,8 +214,8 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
                                         </p>
                                     )}
                                 </div>
-                                <span className="text-xs" style={{ color: theme.textMuted }}>
-                                    {edu.start} - {edu.end}
+                                <span className="text-xs shrink-0 text-left w-[96px]" style={{ color: theme.textMuted }}>
+                                    {formatResumeDateRange(edu.start, edu.end, data)}
                                 </span>
                             </div>
                         ))}

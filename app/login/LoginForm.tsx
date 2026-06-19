@@ -130,7 +130,7 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
         nextPath,
         isNewUser: data?.isNewUser === true,
       });
-      router.replace(next);
+      router.replace(typeof data?.redirectTo === "string" ? data.redirectTo : next);
     } catch {
       track("login_failed", { locale, nextPath, stage: "verify_code", reason: "network_error" });
       setError(copy.verifyError);
