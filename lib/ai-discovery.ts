@@ -85,6 +85,36 @@ export const primaryAiPages = [
       "Role-specific English CV example for software engineers applying to Dutch tech roles.",
   },
   {
+    title: "English CV example for data engineers in the Netherlands",
+    url: `${siteBaseUrl}/en/english-cv-example-data-engineer-netherlands`,
+    description:
+      "Role-specific English CV example for data engineers applying to Dutch data and analytics roles.",
+  },
+  {
+    title: "English CV example for customer support in the Netherlands",
+    url: `${siteBaseUrl}/en/english-cv-example-customer-support-netherlands`,
+    description:
+      "Role-specific English CV example for customer support and service roles in the Netherlands.",
+  },
+  {
+    title: "English CV example for finance and accounting in the Netherlands",
+    url: `${siteBaseUrl}/en/english-cv-example-finance-accounting-netherlands`,
+    description:
+      "Role-specific English CV example for finance, accounting and reporting roles in the Netherlands.",
+  },
+  {
+    title: "English CV example for logistics and warehouse in the Netherlands",
+    url: `${siteBaseUrl}/en/english-cv-example-logistics-warehouse-netherlands`,
+    description:
+      "Role-specific English CV example for warehouse, order picking and logistics roles in the Netherlands.",
+  },
+  {
+    title: "English CV example for nurses in the Netherlands",
+    url: `${siteBaseUrl}/en/english-cv-example-nurse-netherlands`,
+    description:
+      "Role-specific English CV example for nursing and healthcare applications in the Netherlands.",
+  },
+  {
     title: "CV Netherlands without Dutch language",
     url: `${siteBaseUrl}/en/cv-netherlands-without-dutch-language`,
     description:

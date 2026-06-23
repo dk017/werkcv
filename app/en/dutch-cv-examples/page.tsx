@@ -43,10 +43,12 @@ const faqs = [
 ];
 
 const roleLinks = [
-  { href: "/cv-voorbeelden/technologie-en-ict/software-ontwikkelaar", label: "Software Developer" },
-  { href: "/cv-voorbeelden/technologie-en-ict/data-engineer", label: "Data Engineer" },
-  { href: "/cv-voorbeelden/zakelijk-en-financieel/controller", label: "Controller" },
-  { href: "/cv-voorbeelden/zorg-en-welzijn/verpleegkundige", label: "Nurse" },
+  { href: "/en/english-cv-example-software-engineer-netherlands", label: "Software Engineer" },
+  { href: "/en/english-cv-example-data-engineer-netherlands", label: "Data Engineer" },
+  { href: "/en/english-cv-example-customer-support-netherlands", label: "Customer Support" },
+  { href: "/en/english-cv-example-finance-accounting-netherlands", label: "Finance / Accounting" },
+  { href: "/en/english-cv-example-logistics-warehouse-netherlands", label: "Logistics / Warehouse" },
+  { href: "/en/english-cv-example-nurse-netherlands", label: "Nurse" },
   { href: "/cv-voorbeelden/studenten-en-starters/eerste-baan-starter", label: "Starter / First Job" },
   { href: "/cv-voorbeelden/marketing-en-communicatie/marketing-manager", label: "Marketing Manager" },
 ];

@@ -6,6 +6,5 @@ export type PendingExampleCV = {
   templateId: string;
   colorThemeId: string;
   sampleCV?: CVData;
-  startSource: "example_page" | "example_blank_template";
+  startSource: "example_page" | "example_blank_template" | "english_example_page";
 };
-

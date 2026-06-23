@@ -51,6 +51,31 @@ const pages = [
     description: "English CV example for developers applying to Dutch tech roles.",
   },
   {
+    href: "/en/english-cv-example-data-engineer-netherlands",
+    title: "Data Engineer CV Example",
+    description: "English CV example for data engineers applying to Dutch data and analytics roles.",
+  },
+  {
+    href: "/en/english-cv-example-customer-support-netherlands",
+    title: "Customer Support CV Example",
+    description: "English CV example for support agents and service specialists applying in the Netherlands.",
+  },
+  {
+    href: "/en/english-cv-example-finance-accounting-netherlands",
+    title: "Finance & Accounting CV Example",
+    description: "English CV example for finance, accounting and reporting roles in the Netherlands.",
+  },
+  {
+    href: "/en/english-cv-example-logistics-warehouse-netherlands",
+    title: "Logistics & Warehouse CV Example",
+    description: "English CV example for warehouse, order picking and logistics roles in the Netherlands.",
+  },
+  {
+    href: "/en/english-cv-example-nurse-netherlands",
+    title: "Nurse CV Example",
+    description: "English CV example for nursing and healthcare roles in the Netherlands.",
+  },
+  {
     href: "/en/cv-netherlands-without-dutch-language",
     title: "CV Without Dutch Language",
     description: "How to target English-speaking roles while showing Dutch level honestly.",

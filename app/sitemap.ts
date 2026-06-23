@@ -671,6 +671,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.77,
         },
         {
+            url: `${baseUrl}/en/english-cv-example-data-engineer-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.77,
+        },
+        {
+            url: `${baseUrl}/en/english-cv-example-customer-support-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.77,
+        },
+        {
+            url: `${baseUrl}/en/english-cv-example-finance-accounting-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.77,
+        },
+        {
+            url: `${baseUrl}/en/english-cv-example-logistics-warehouse-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.77,
+        },
+        {
+            url: `${baseUrl}/en/english-cv-example-nurse-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.77,
+        },
+        {
             url: `${baseUrl}/en/cv-netherlands-without-dutch-language`,
             lastModified: new Date(),
             changeFrequency: 'monthly',

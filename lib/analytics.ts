@@ -119,7 +119,7 @@ export type AnalyticsEvent =
     | { event: 'cv_created'; properties: { templateId: string } }
     | { event: 'cv_uploaded'; properties: { fileType: string } }
     | { event: 'cv_saved'; properties: { cvId: string } }
-    | { event: 'start_cv'; properties: { entryPoint: string; templateId?: string; cvId?: string } }
+    | { event: 'start_cv'; properties: { entryPoint: string; templateId?: string; cvId?: string; roleSlug?: string } }
     | { event: 'editor_started'; properties: { cvId: string; fromPath?: string } }
     | { event: 'example_cv_applied_after_login'; properties: { cvId: string; templateId: string; startSource: string; hasSampleCV: boolean } }
     | { event: 'complete_cv'; properties: { cvId: string; completionScore: number } }

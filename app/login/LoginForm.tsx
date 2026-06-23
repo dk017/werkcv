@@ -69,7 +69,10 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
   const nextPath = normalizeAnalyticsPath(next);
   const locale = nextPath.startsWith("/en") ? "en" : "nl";
   const copy = loginCopy[locale];
-  const isExampleStart = next.includes("startSource=example_page") || next.includes("startSource=example_blank_template");
+  const isExampleStart =
+    next.includes("startSource=example_page") ||
+    next.includes("startSource=example_blank_template") ||
+    next.includes("startSource=english_example_page");
 
   useEffect(() => {
     if (loginViewTrackedRef.current) return;
