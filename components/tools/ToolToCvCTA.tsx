@@ -23,8 +23,8 @@ export function ToolToCvCTA({
   primaryHref = "/cv-maken-zonder-abonnement",
   secondaryHref = "/templates",
   secondaryLabel = "Bekijk cv-templates",
-  eyebrow = "Volgende sollicitatiestap",
-  insightText = "Gebruik dit resultaat terwijl het nog vers is: maak je CV direct recruiter-proof en download pas wanneer je tevreden bent.",
+  eyebrow = "Maak je volgende stap concreet",
+  insightText = "Gebruik dit resultaat terwijl het nog vers is: zet je CV klaar voor de functie, uren of voorwaarden die je nu serieus overweegt.",
   intent = "general",
   proofItems = ["Gratis starten", "Eenmalig €4,99 bij PDF-download", "Geen abonnement"],
 }: ToolToCvCTAProps) {
@@ -72,7 +72,7 @@ export function ToolToCvCTA({
         {proofItems.join(" · ")}.
       </p>
       <div className="mt-4 text-sm font-medium text-slate-700">
-        Liever eerst lezen hoe WerkCV werkt?{" "}
+        Liever eerst weten hoe downloaden werkt?{" "}
         <Link href="/cv-maken-zonder-abonnement" className="font-black underline decoration-2 underline-offset-4">
           Bekijk de route zonder abonnement
         </Link>

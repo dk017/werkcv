@@ -299,10 +299,10 @@ export default function ParttimeSalarisTool() {
 
           <SalaryResultCvCta
             toolName="parttime-salaris-calculator"
-            title="Gebruik je parttime uitkomst voor je volgende sollicitatie"
-            text="Denk je door parttime werken ook na over een andere functie, betere voorwaarden of een andere werkweek? Werk je CV bij voor de rol die past bij dat nieuwe salarisplaatje."
-            primaryLabel="Maak CV voor betere voorwaarden"
-            secondaryLabel="Bekijk CV zonder abonnement"
+            title="Solliciteer met dit uren- en salarisdoel in je hoofd"
+            text="Als 24, 28, 32 of 36 uur beter past, laat je CV dan ook die richting zien: gewenste functie, beschikbaarheid en ervaring helder voor recruiters."
+            primaryLabel="Maak CV voor deze volgende stap"
+            secondaryLabel="Hoe betalen werkt"
             resultState={`${targetHours}_hours_result`}
           />
 

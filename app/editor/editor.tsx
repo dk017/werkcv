@@ -66,7 +66,7 @@ const READY_TO_DOWNLOAD_TRACKED_PREFIX = 'werkcv_ready_to_download_tracked_';
 type AtsLanguageLock = 'auto' | 'nl' | 'en';
 type CheckoutModalCloseReason = 'later_button' | 'close_button' | 'overlay';
 type CheckoutExperimentVariant = 'modal' | 'direct';
-type DownloadSource = 'toolbar' | 'post_completion_tools';
+type DownloadSource = 'toolbar' | 'ready_panel' | 'post_completion_tools';
 type OptionalSectionId =
     | 'internships'
     | 'courses'
@@ -892,6 +892,34 @@ export default function Editor({
                             onGoToStep={scrollToCompletionStep}
                             uiLanguage={uiLanguage}
                         />
+
+                        {isReadyToDownload ? (
+                            <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm sm:p-5">
+                                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                                    <div>
+                                        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-700">
+                                            {tr("Klaar voor download", "Ready to download")}
+                                        </p>
+                                        <h2 className="mt-1 text-lg font-semibold text-slate-950">
+                                            {tr("Je CV is compleet genoeg om te versturen.", "Your CV is ready to send.")}
+                                        </h2>
+                                        <p className="mt-1 text-sm font-medium text-slate-600">
+                                            {tr("Download je PDF wanneer je tevreden bent. Geen abonnement of automatische verlenging.", "Download your PDF when you are happy with it. No subscription or automatic renewal.")}
+                                        </p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDownload("ready_panel")}
+                                        disabled={isDownloading}
+                                        className="inline-flex shrink-0 items-center justify-center rounded-md border border-emerald-700 bg-emerald-600 px-5 py-3 text-sm font-black text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+                                    >
+                                        {isDownloading
+                                            ? tr("Bezig...", "Working...")
+                                            : tr("CV downloaden", "Download CV")}
+                                    </button>
+                                </div>
+                            </section>
+                        ) : null}
 
                         {/* Personal Section */}
                         <section id="section-personal" className="scroll-mt-28 bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">

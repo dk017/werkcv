@@ -8,34 +8,40 @@ import { normalizeAnalyticsPath } from "@/lib/analytics-paths";
 
 const loginCopy = {
   nl: {
-    title: "Log in om je cv op te slaan",
-    intro: "Geen wachtwoord nodig. We sturen een eenmalige code naar je e-mailadres.",
+    eyebrow: "Je CV-editor staat klaar",
+    title: "Ga verder naar je CV-editor",
+    intro: "Geen wachtwoord nodig. We gebruiken je e-mailadres alleen om je CV veilig op te slaan en later terug te openen.",
     emailLabel: "E-mailadres",
     emailPlaceholder: "jij@voorbeeld.nl",
-    sendCode: "Stuur login code",
+    sendCode: "Stuur code en ga verder",
     sending: "Bezig...",
     sentTo: "Code gestuurd naar",
     codeLabel: "6-cijferige code",
-    verify: "Verifieer en ga verder",
+    verify: "Open mijn CV-editor",
     otherEmail: "Ander e-mailadres gebruiken",
     requestError: "Kon geen login code versturen.",
     verifyError: "Code is ongeldig of verlopen.",
     devCode: "Dev code",
+    proof: ["Gratis bouwen", "Geen wachtwoord", "Geen abonnement"],
+    reassurance: "Je betaalt pas wanneer je een PDF wilt downloaden.",
   },
   en: {
-    title: "Log in to save your CV",
-    intro: "No password needed. We will send a one-time code to your email address.",
+    eyebrow: "Your CV editor is ready",
+    title: "Continue to your CV editor",
+    intro: "No password needed. We only use your email to save your CV securely and let you return later.",
     emailLabel: "Email address",
     emailPlaceholder: "you@example.com",
-    sendCode: "Send login code",
+    sendCode: "Send code and continue",
     sending: "Working...",
     sentTo: "Code sent to",
     codeLabel: "6-digit code",
-    verify: "Verify and continue",
+    verify: "Open my CV editor",
     otherEmail: "Use a different email address",
     requestError: "Could not send the login code.",
     verifyError: "The code is invalid or expired.",
     devCode: "Dev code",
+    proof: ["Free to build", "No password", "No subscription"],
+    reassurance: "You only pay when you want to download the PDF.",
   },
 };
 
@@ -146,8 +152,19 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
           <Link href={locale === "en" ? "/en" : "/"} className="font-semibold text-lg text-slate-900">
             Werk<span className="bg-emerald-200 px-1 rounded-sm">CV</span>.nl
           </Link>
+          <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-700">
+            {copy.eyebrow}
+          </p>
           <h1 className="text-xl font-semibold text-slate-900 mt-3">{copy.title}</h1>
           <p className="text-sm text-slate-600 mt-1">{copy.intro}</p>
+          <div className="mt-4 grid grid-cols-3 gap-2">
+            {copy.proof.map((item) => (
+              <div key={item} className="rounded-md border border-slate-200 bg-slate-50 px-2 py-2 text-center text-[11px] font-semibold text-slate-700">
+                {item}
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-xs font-medium text-slate-500">{copy.reassurance}</p>
         </div>
 
         {step === "email" ? (
