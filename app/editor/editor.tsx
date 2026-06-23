@@ -43,6 +43,7 @@ import {
     type CompletionStepId,
 } from "@/lib/cv-completion";
 import { getTargetVacancySessionKey } from "@/lib/cover-letter-session";
+import { PENDING_EXAMPLE_CV_STORAGE_KEY, type PendingExampleCV } from "@/lib/pending-example-cv";
 
 interface EditorProps {
     initialData: CVData;
@@ -352,6 +353,56 @@ export default function Editor({
             setShowUploader(true);
         }
     }, []);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        const rawPendingExample = window.sessionStorage.getItem(PENDING_EXAMPLE_CV_STORAGE_KEY);
+        if (!rawPendingExample) return;
+
+        let pendingExample: PendingExampleCV | null = null;
+        try {
+            pendingExample = JSON.parse(rawPendingExample) as PendingExampleCV;
+        } catch {
+            window.sessionStorage.removeItem(PENDING_EXAMPLE_CV_STORAGE_KEY);
+            return;
+        }
+
+        if (!pendingExample || pendingExample.templateId !== initialTemplateId) {
+            return;
+        }
+
+        window.sessionStorage.removeItem(PENDING_EXAMPLE_CV_STORAGE_KEY);
+
+        const applyPendingExample = async () => {
+            try {
+                if (pendingExample.sampleCV) {
+                    const normalizedData = ensureEditorData(pendingExample.sampleCV, uiLanguage);
+                    reset(normalizedData);
+                    setVisibleOptionalSections(deriveVisibleOptionalSections(normalizedData));
+                    setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
+                    setIsSaved(false);
+                    await updateCV(id, normalizedData);
+                }
+
+                if (pendingExample.colorThemeId && pendingExample.colorThemeId !== initialColorThemeId) {
+                    setColorThemeId(pendingExample.colorThemeId);
+                    await updateCVColorTheme(id, pendingExample.colorThemeId);
+                }
+
+                setIsSaved(true);
+                track('example_cv_applied_after_login', {
+                    cvId: id,
+                    templateId: pendingExample.templateId,
+                    startSource: pendingExample.startSource,
+                    hasSampleCV: Boolean(pendingExample.sampleCV),
+                });
+            } catch {
+                setIsSaved(false);
+            }
+        };
+
+        void applyPendingExample();
+    }, [id, initialColorThemeId, initialTemplateId, reset, uiLanguage]);
 
     useEffect(() => {
         const variant = resolveCheckoutExperimentVariant();

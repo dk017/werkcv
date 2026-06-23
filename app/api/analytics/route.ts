@@ -72,6 +72,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'profile_photo_cta_editor_click',
     'start_cv',
     'editor_started',
+    'example_cv_applied_after_login',
     'complete_cv',
     'cv_progress_milestone',
     'cv_section_completed',

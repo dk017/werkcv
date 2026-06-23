@@ -24,6 +24,9 @@ const loginCopy = {
     devCode: "Dev code",
     proof: ["Gratis bouwen", "Geen wachtwoord", "Geen abonnement"],
     reassurance: "Je betaalt pas wanneer je een PDF wilt downloaden.",
+    exampleEyebrow: "Je voorbeeld staat klaar",
+    exampleTitle: "Sla dit voorbeeld op en open de editor",
+    exampleIntro: "Stuur jezelf een eenmalige code. Daarna zetten we dit voorbeeld direct klaar in jouw CV-editor.",
   },
   en: {
     eyebrow: "Your CV editor is ready",
@@ -42,6 +45,9 @@ const loginCopy = {
     devCode: "Dev code",
     proof: ["Free to build", "No password", "No subscription"],
     reassurance: "You only pay when you want to download the PDF.",
+    exampleEyebrow: "Your example is ready",
+    exampleTitle: "Save this example and open the editor",
+    exampleIntro: "Send yourself a one-time code. Then we will open this example directly in your CV editor.",
   },
 };
 
@@ -63,6 +69,7 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
   const nextPath = normalizeAnalyticsPath(next);
   const locale = nextPath.startsWith("/en") ? "en" : "nl";
   const copy = loginCopy[locale];
+  const isExampleStart = next.includes("startSource=example_page") || next.includes("startSource=example_blank_template");
 
   useEffect(() => {
     if (loginViewTrackedRef.current) return;
@@ -153,10 +160,14 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
             Werk<span className="bg-emerald-200 px-1 rounded-sm">CV</span>.nl
           </Link>
           <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-700">
-            {copy.eyebrow}
+            {isExampleStart ? copy.exampleEyebrow : copy.eyebrow}
           </p>
-          <h1 className="text-xl font-semibold text-slate-900 mt-3">{copy.title}</h1>
-          <p className="text-sm text-slate-600 mt-1">{copy.intro}</p>
+          <h1 className="text-xl font-semibold text-slate-900 mt-3">
+            {isExampleStart ? copy.exampleTitle : copy.title}
+          </h1>
+          <p className="text-sm text-slate-600 mt-1">
+            {isExampleStart ? copy.exampleIntro : copy.intro}
+          </p>
           <div className="mt-4 grid grid-cols-3 gap-2">
             {copy.proof.map((item) => (
               <div key={item} className="rounded-md border border-slate-200 bg-slate-50 px-2 py-2 text-center text-[11px] font-semibold text-slate-700">

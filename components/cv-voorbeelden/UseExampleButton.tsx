@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CVData } from '@/lib/cv';
 import { getStoredAttribution, track } from '@/lib/analytics';
+import { PENDING_EXAMPLE_CV_STORAGE_KEY, type PendingExampleCV } from '@/lib/pending-example-cv';
 
 interface UseExampleButtonProps {
     templateId: string;
@@ -31,6 +32,23 @@ export function UseExampleButton({ templateId, colorThemeId, sampleCV }: UseExam
                     startSource: 'example_page',
                 }),
             });
+
+            if (res.status === 401) {
+                const pendingExample: PendingExampleCV = {
+                    templateId,
+                    colorThemeId,
+                    sampleCV,
+                    startSource: 'example_page',
+                };
+                window.sessionStorage.setItem(PENDING_EXAMPLE_CV_STORAGE_KEY, JSON.stringify(pendingExample));
+                const nextPath = `/editor?template=${encodeURIComponent(templateId)}&startSource=example_page`;
+                router.push(`/login?next=${encodeURIComponent(nextPath)}`);
+                return;
+            }
+
+            if (!res.ok) {
+                throw new Error('CREATE_CV_FAILED');
+            }
 
             const { cvId } = await res.json();
             router.push(`/editor?id=${cvId}`);
