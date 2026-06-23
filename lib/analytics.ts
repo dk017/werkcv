@@ -117,17 +117,17 @@ export type AnalyticsEvent =
       }
     // CV lifecycle
     | { event: 'cv_created'; properties: { templateId: string } }
-    | { event: 'cv_uploaded'; properties: { fileType: string } }
+    | { event: 'cv_uploaded'; properties: { fileType: string; cvId?: string; templateId?: string; entryMethod?: 'upload' } }
     | { event: 'cv_saved'; properties: { cvId: string } }
     | { event: 'start_cv'; properties: { entryPoint: string; templateId?: string; cvId?: string; roleSlug?: string } }
-    | { event: 'editor_started'; properties: { cvId: string; fromPath?: string } }
+    | { event: 'editor_started'; properties: { cvId: string; fromPath?: string; templateId?: string; uiLanguage?: 'nl' | 'en' } }
     | { event: 'example_cv_applied_after_login'; properties: { cvId: string; templateId: string; startSource: string; hasSampleCV: boolean } }
     | { event: 'complete_cv'; properties: { cvId: string; completionScore: number } }
     | { event: 'cv_progress_milestone'; properties: { cvId: string; milestone: 25 | 50 | 75 | 100; completionScore: number } }
     | { event: 'cv_section_completed'; properties: { cvId: string; section: string; completionScore: number } }
     | { event: 'ready_to_download_viewed'; properties: { cvId: string; completionScore: number } }
     // Template & theme
-    | { event: 'template_selected'; properties: { templateId: string; previousId?: string } }
+    | { event: 'template_selected'; properties: { templateId: string; previousId?: string; cvId?: string } }
     | { event: 'color_theme_changed'; properties: { themeId: string; templateId: string } }
     // Photo
     | { event: 'photo_uploaded'; properties: { method: 'click' | 'drag' } }
@@ -135,7 +135,7 @@ export type AnalyticsEvent =
     | { event: 'photo_edit_opened'; properties: { source: string } }
     | { event: 'photo_repositioned'; properties: { moved: boolean } }
     // Download & payment
-    | { event: 'pdf_download_started'; properties: { cvId: string; source?: string; completionScore?: number } }
+    | { event: 'pdf_download_started'; properties: { cvId: string; source?: string; completionScore?: number; templateId?: string } }
     | { event: 'pdf_download_completed'; properties: { cvId: string } }
     | { event: 'addon_selected'; properties: { cvId: string; addons: string[] } }
     | {

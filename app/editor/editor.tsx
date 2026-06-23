@@ -481,9 +481,9 @@ export default function Editor({
             }
         }
 
-        track('editor_started', { cvId: id, fromPath });
+        track('editor_started', { cvId: id, fromPath, templateId, uiLanguage });
         markEditorStartedTracked(id);
-    }, [id]);
+    }, [id, templateId, uiLanguage]);
 
     useEffect(() => {
         if (!showCheckoutModal) return;
@@ -634,7 +634,7 @@ export default function Editor({
     }, [isSaved]);
 
     const handleTemplateChange = async (newTemplateId: string, defaultThemeId: string) => {
-        track('template_selected', { templateId: newTemplateId, previousId: templateId });
+        track('template_selected', { cvId: id, templateId: newTemplateId, previousId: templateId });
         setTemplateId(newTemplateId);
         setColorThemeId(defaultThemeId);
         await updateCVTemplate(id, newTemplateId);
@@ -655,7 +655,7 @@ export default function Editor({
         setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
         setShowUploader(false);
         setIsSaved(false);
-        track('cv_uploaded', { fileType: 'parsed' });
+        track('cv_uploaded', { cvId: id, fileType: 'parsed', templateId, entryMethod: 'upload' });
     };
 
     const startCheckout = async (checkoutProduct: CheckoutProduct = "cv-download") => {
@@ -787,7 +787,7 @@ export default function Editor({
 
     const handleDownload = async (source: DownloadSource = "toolbar") => {
         setIsDownloading(true);
-        track('pdf_download_started', { cvId: id, source, completionScore });
+        track('pdf_download_started', { cvId: id, source, completionScore, templateId });
         try {
             // Always save latest data before generating PDF to prevent stale content
             const formData = watch();

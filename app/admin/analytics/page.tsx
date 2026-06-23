@@ -5,6 +5,7 @@ import {
   getAnalyticsDashboardData,
   parseAnalyticsRange,
   type InsightRow,
+  type MoneyFunnelRow,
   type SegmentedFunnelRow,
 } from "@/lib/admin-analytics";
 import { isAnalyticsAdminEmail } from "@/lib/admin-auth";
@@ -353,6 +354,44 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
           </p>
         </section>
 
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Money Funnel"
+            subtitle="Revenue-attributed funnel by landing page, locale, device, source cluster, editor start source, template, and upload/manual entry."
+          />
+          <MoneyFunnelTable
+            title="Landing page"
+            rows={data.moneyFunnels.filter((row) => row.dimension === "landing_page")}
+          />
+          <MoneyFunnelTable
+            title="Locale"
+            rows={data.moneyFunnels.filter((row) => row.dimension === "locale")}
+          />
+          <MoneyFunnelTable
+            title="Device"
+            rows={data.moneyFunnels.filter((row) => row.dimension === "device")}
+          />
+          <MoneyFunnelTable
+            title="Source cluster"
+            rows={data.moneyFunnels.filter((row) => row.dimension === "source_cluster")}
+          />
+          <MoneyFunnelTable
+            title="Editor start source"
+            rows={data.moneyFunnels.filter((row) => row.dimension === "start_source")}
+          />
+          <MoneyFunnelTable
+            title="Upload / example / manual"
+            rows={data.moneyFunnels.filter((row) => row.dimension === "entry_method")}
+          />
+          <MoneyFunnelTable
+            title="Template"
+            rows={data.moneyFunnels.filter((row) => row.dimension === "template")}
+          />
+          <p className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500">
+            Revenue is assigned to the last measured session that touched the paid CV before payment. Older rows may show unknown start source/template when the original event did not carry that detail.
+          </p>
+        </section>
+
         <section className="grid gap-6 lg:grid-cols-[minmax(320px,0.8fr)_minmax(0,1.2fr)]">
           <div className="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
             <ChartHeader title="Signup Drop-off Cohorts" subtitle="Where new accounts stop after signup." />
@@ -636,6 +675,43 @@ function SegmentedFunnelTable({ title, rows }: { title: string; rows: SegmentedF
           percentage(row.readyCvs, row.editorStarts),
         ])}
         alignRight={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
+      />
+    </div>
+  );
+}
+
+function MoneyFunnelTable({ title, rows }: { title: string; rows: MoneyFunnelRow[] }) {
+  return (
+    <div className="border-t border-slate-100 first:border-t-0">
+      <h3 className="px-4 pt-4 text-sm font-semibold text-slate-900">{title}</h3>
+      <SimpleTable
+        headers={[
+          "Segment",
+          "Sessions",
+          "Editor",
+          "Ready",
+          "PDF",
+          "Checkout open",
+          "Payment",
+          "Paid",
+          "Revenue",
+          "Ready / editor",
+          "Paid / ready",
+        ]}
+        rows={rows.map((row) => [
+          row.segment,
+          number(row.sessions),
+          number(row.editorStarts),
+          number(row.readyCvs),
+          number(row.pdfStarts),
+          number(row.checkoutOpened),
+          number(row.checkoutStarts),
+          number(row.paidOrders),
+          money(row.revenueCents),
+          percentage(row.readyCvs, row.editorStarts),
+          percentage(row.paidOrders, row.readyCvs),
+        ])}
+        alignRight={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
       />
     </div>
   );

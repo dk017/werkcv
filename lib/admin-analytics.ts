@@ -37,6 +37,7 @@ export type AnalyticsDashboardData = {
   ctas: CtaRow[];
   funnelPages: FunnelPageRow[];
   segmentedFunnels: SegmentedFunnelRow[];
+  moneyFunnels: MoneyFunnelRow[];
   checkoutExperiments: CheckoutExperimentRow[];
   ctaCopyExperiments: CtaCopyExperimentRow[];
 };
@@ -229,6 +230,19 @@ export type SegmentedFunnelRow = {
   paidSessions: number;
 };
 
+export type MoneyFunnelRow = {
+  dimension: "landing_page" | "locale" | "device" | "source_cluster" | "start_source" | "template" | "entry_method";
+  segment: string;
+  sessions: number;
+  editorStarts: number;
+  readyCvs: number;
+  pdfStarts: number;
+  checkoutOpened: number;
+  checkoutStarts: number;
+  paidOrders: number;
+  revenueCents: number;
+};
+
 export type CheckoutExperimentRow = {
   variant: "modal" | "direct";
   locale: "all" | "nl" | "en";
@@ -316,6 +330,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
     ctas,
     funnelPages,
     segmentedFunnels,
+    moneyFunnels,
     checkoutExperiments,
     ctaCopyExperiments,
   ] = await Promise.all([
@@ -1006,6 +1021,172 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
         sessions DESC,
         segment ASC
     `,
+    prisma.$queryRaw<MoneyFunnelRow[]>`
+      WITH event_base AS (
+        SELECT
+          e."createdAt",
+          e.event,
+          e."cvId" AS cv_id,
+          e.properties,
+          e.attribution,
+          NULLIF(e.properties->>'sessionId', '') AS session_id,
+          COALESCE(
+            NULLIF(e.attribution->>'locale', ''),
+            CASE WHEN ${pageSql} = '/en' OR ${pageSql} LIKE '/en/%' THEN 'en' ELSE 'nl' END
+          ) AS locale,
+          COALESCE(NULLIF(e.attribution->>'firstTouchPath', ''), ${pageSql}) AS landing_page,
+          COALESCE(NULLIF(e.cluster, ''), NULLIF(e.attribution->>'firstTouchCluster', ''), 'unknown') AS source_cluster,
+          COALESCE(NULLIF(e.properties->>'deviceType', ''), 'unknown') AS device,
+          cv."startSource" AS cv_start_source,
+          cv."templateId" AS cv_template_id
+        FROM "AnalyticsEvent" e
+        LEFT JOIN "CVDocument" cv ON cv.id = e."cvId"
+        WHERE e."createdAt" >= ${since}
+          AND NULLIF(e.properties->>'sessionId', '') IS NOT NULL
+      ),
+      session_base AS (
+        SELECT
+          session_id,
+          (ARRAY_AGG(locale ORDER BY "createdAt"))[1] AS locale,
+          (ARRAY_AGG(landing_page ORDER BY "createdAt"))[1] AS landing_page,
+          (ARRAY_AGG(source_cluster ORDER BY "createdAt"))[1] AS source_cluster,
+          (ARRAY_AGG(device ORDER BY "createdAt"))[1] AS device,
+          COALESCE(
+            (ARRAY_AGG(NULLIF(properties->>'startSource', '') ORDER BY "createdAt") FILTER (WHERE NULLIF(properties->>'startSource', '') IS NOT NULL))[1],
+            (ARRAY_AGG(NULLIF(cv_start_source, '') ORDER BY "createdAt") FILTER (WHERE NULLIF(cv_start_source, '') IS NOT NULL))[1],
+            (ARRAY_AGG(NULLIF(properties->>'entryPoint', '') ORDER BY "createdAt") FILTER (WHERE NULLIF(properties->>'entryPoint', '') IS NOT NULL))[1],
+            'unknown'
+          ) AS start_source,
+          COALESCE(
+            (ARRAY_AGG(NULLIF(properties->>'templateId', '') ORDER BY "createdAt") FILTER (WHERE NULLIF(properties->>'templateId', '') IS NOT NULL))[1],
+            (ARRAY_AGG(NULLIF(cv_template_id, '') ORDER BY "createdAt") FILTER (WHERE NULLIF(cv_template_id, '') IS NOT NULL))[1],
+            'unknown'
+          ) AS template,
+          BOOL_OR(event = 'cv_uploaded') AS uploaded_cv,
+          BOOL_OR(event = 'example_cv_applied_after_login' OR COALESCE(properties->>'entryPoint', '') LIKE '%example%') AS used_example,
+          BOOL_OR(event IN ('start_cv', 'editor_started', 'landing_to_editor')) AS editor_started,
+          BOOL_OR(event = 'ready_to_download_viewed') AS ready_cv,
+          BOOL_OR(event IN ('pdf_download_started', 'pdf_download_completed')) AS pdf_started,
+          BOOL_OR(event IN ('checkout_paywall_reached', 'checkout_modal_viewed')) AS checkout_opened,
+          BOOL_OR(event IN ('checkout_start', 'checkout_started')) AS checkout_started
+        FROM event_base
+        GROUP BY session_id
+      ),
+      session_enriched AS (
+        SELECT
+          *,
+          CASE
+            WHEN uploaded_cv OR start_source LIKE '%upload%' OR start_source LIKE '%linkedin%' OR start_source LIKE '%translate%' THEN 'upload'
+            WHEN used_example OR start_source LIKE '%example%' THEN 'example'
+            WHEN start_source LIKE '%template%' THEN 'template'
+            WHEN start_source IN ('editor_direct', 'unknown') THEN 'manual/direct'
+            ELSE start_source
+          END AS entry_method
+        FROM session_base
+      ),
+      order_session_touches AS (
+        SELECT
+          orders.id AS order_id,
+          events.session_id,
+          MAX(events."createdAt") AS last_touch
+        FROM "Order" orders
+        JOIN event_base events
+          ON events.cv_id = orders."cvId"
+          AND events."createdAt" <= orders."paidAt"
+        WHERE orders."paidAt" IS NOT NULL
+          AND orders."paidAt" >= ${since}
+          AND orders."cvId" IS NOT NULL
+        GROUP BY orders.id, events.session_id
+      ),
+      order_sessions AS (
+        SELECT
+          ranked.order_id,
+          ranked.session_id,
+          orders."amountCents" AS amount_cents
+        FROM (
+          SELECT
+            order_id,
+            session_id,
+            ROW_NUMBER() OVER (
+              PARTITION BY order_id
+              ORDER BY last_touch DESC, session_id ASC
+            ) AS row_number
+          FROM order_session_touches
+        ) ranked
+        JOIN "Order" orders ON orders.id = ranked.order_id
+        WHERE ranked.row_number = 1
+      ),
+      segmented AS (
+        SELECT
+          session_enriched.*,
+          dimensions.dimension,
+          dimensions.segment,
+          order_sessions.order_id,
+          order_sessions.amount_cents
+        FROM session_enriched
+        LEFT JOIN order_sessions USING (session_id)
+        CROSS JOIN LATERAL (
+          VALUES
+            ('landing_page', session_enriched.landing_page),
+            ('locale', session_enriched.locale),
+            ('device', session_enriched.device),
+            ('source_cluster', session_enriched.source_cluster),
+            ('start_source', session_enriched.start_source),
+            ('template', session_enriched.template),
+            ('entry_method', session_enriched.entry_method)
+        ) AS dimensions(dimension, segment)
+      ),
+      rollup AS (
+        SELECT
+          dimension,
+          COALESCE(NULLIF(segment, ''), 'unknown') AS segment,
+          COUNT(DISTINCT session_id)::int AS sessions,
+          COUNT(DISTINCT session_id) FILTER (WHERE editor_started)::int AS "editorStarts",
+          COUNT(DISTINCT session_id) FILTER (WHERE ready_cv)::int AS "readyCvs",
+          COUNT(DISTINCT session_id) FILTER (WHERE pdf_started)::int AS "pdfStarts",
+          COUNT(DISTINCT session_id) FILTER (WHERE checkout_opened)::int AS "checkoutOpened",
+          COUNT(DISTINCT session_id) FILTER (WHERE checkout_started)::int AS "checkoutStarts",
+          COUNT(DISTINCT order_id)::int AS "paidOrders",
+          COALESCE(SUM(amount_cents), 0)::int AS "revenueCents"
+        FROM segmented
+        GROUP BY dimension, segment
+      ),
+      ranked_rollup AS (
+        SELECT
+          rollup.*,
+          ROW_NUMBER() OVER (
+            PARTITION BY dimension
+            ORDER BY "revenueCents" DESC, sessions DESC, segment ASC
+          ) AS row_number
+        FROM rollup
+      )
+      SELECT
+        dimension,
+        segment,
+        sessions,
+        "editorStarts",
+        "readyCvs",
+        "pdfStarts",
+        "checkoutOpened",
+        "checkoutStarts",
+        "paidOrders",
+        "revenueCents"
+      FROM ranked_rollup
+      WHERE dimension <> 'landing_page' OR row_number <= 15
+      ORDER BY
+        CASE dimension
+          WHEN 'landing_page' THEN 1
+          WHEN 'locale' THEN 2
+          WHEN 'device' THEN 3
+          WHEN 'source_cluster' THEN 4
+          WHEN 'start_source' THEN 5
+          WHEN 'entry_method' THEN 6
+          ELSE 7
+        END,
+        "revenueCents" DESC,
+        sessions DESC,
+        segment ASC
+    `,
     prisma.$queryRaw<CheckoutExperimentRow[]>`
       WITH ranked_assignments AS (
         SELECT
@@ -1196,6 +1377,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
     ctas,
     funnelPages,
     segmentedFunnels,
+    moneyFunnels,
     checkoutExperiments,
     ctaCopyExperiments,
   };
