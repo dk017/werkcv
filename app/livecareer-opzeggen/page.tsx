@@ -82,9 +82,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "LiveCareer Opzeggen 2026 - Stappen + Alternatief | WerkCV",
+  title: "LiveCareer opzeggen: stap-voor-stap handleiding 2026 | WerkCV",
   description:
-    "LiveCareer opzeggen? Bekijk de officiele route via Mijn account of klantenservice, bewaar je bevestiging en kies eventueel een cv zonder abonnement.",
+    `LiveCareer opzeggen? Bekijk de officiele route via Mijn account of klantenservice. Daarna kun je eventueel een CV maken zonder abonnement voor eenmalig ${cvDownloadPrice.display}.`,
   path: "/livecareer-opzeggen",
   keywords: [
     "livecareer opzeggen",

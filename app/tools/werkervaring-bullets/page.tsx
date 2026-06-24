@@ -80,6 +80,11 @@ export default function WerkervaringBulletsPage() {
                     title="Gebruik deze bullets in je werkervaring"
                     description="Zet je verbeterde werkervaring direct in een professionele cv-layout."
                     primaryLabel="Maak cv met deze bullets"
+                    primaryHref="/editor?template=professional&startSource=experience_bullets"
+                    secondaryHref="/templates?startSource=experience_bullets_template_compare"
+                    secondaryLabel="Vergelijk templates"
+                    intent="cv_content"
+                    resultState="experience_bullets_page_cta"
                 />
             </div>
 

@@ -227,9 +227,13 @@ export default function UurloonCalculatorPage() {
                     eyebrow="Volgende stap na je uurlooncheck"
                     title="Past je uurloon niet meer bij het werk dat je zoekt?"
                     description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
-                    primaryLabel="Bekijk cv zonder abonnement"
+                    primaryLabel="Werk mijn CV bij"
+                    primaryHref="/editor?template=professional&startSource=uurloon_page"
+                    secondaryHref="/cv-maken-zonder-abonnement?startSource=uurloon_no_subscription"
+                    secondaryLabel="Hoe betalen werkt"
                     insightText="Gebruik je uurlooncheck als startpunt voor een nieuwe sollicitatie, aanbodvergelijking of salarisonderhandeling."
                     intent="salary"
+                    resultState="uurloon_page_cta"
                 />
             </main>
 

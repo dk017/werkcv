@@ -111,8 +111,10 @@ export default function AtsCheckerTool({
   trackingPrefix,
 }: AtsCheckerToolProps) {
   const strings = copy[locale];
-  const resolvedEditorHref = editorHref ?? (locale === "en" ? "/en/editor" : "/editor");
-  const resolvedTemplatesHref = templatesHref ?? (locale === "en" ? "/en/templates" : "/templates");
+  const resolvedEditorHref =
+    editorHref ?? (locale === "en" ? "/en/editor?template=ats&startSource=ats_checker_result" : "/editor?template=ats&startSource=ats_checker_result");
+  const resolvedTemplatesHref =
+    templatesHref ?? (locale === "en" ? "/en/templates?startSource=ats_checker_template_compare" : "/templates?startSource=ats_checker_template_compare");
   const resolvedToolName = toolName ?? (locale === "en" ? "dutch-cv-checker" : "ats-cv-checker");
   const resolvedTrackingPrefix = trackingPrefix ?? resolvedToolName;
 
@@ -387,6 +389,8 @@ export default function AtsCheckerTool({
                 eventName="tool_to_cv_cta_click"
                 toolName={resolvedToolName}
                 ctaVariant="primary"
+                ctaIntent="cv_content"
+                resultState={`ats_checker_score_${result.score}`}
                 trackingLocation={`${resolvedTrackingPrefix}:result_primary`}
                 trackingLabel={strings.primaryCta}
                 className="flex flex-1 items-center justify-center gap-2 border-[3px] border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-slate-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
@@ -398,6 +402,8 @@ export default function AtsCheckerTool({
                 eventName="tool_to_cv_cta_click"
                 toolName={resolvedToolName}
                 ctaVariant="secondary"
+                ctaIntent="cv_content"
+                resultState={`ats_checker_score_${result.score}`}
                 trackingLocation={`${resolvedTrackingPrefix}:result_secondary`}
                 trackingLabel={strings.secondaryCta}
                 className="flex flex-1 items-center justify-center gap-2 border-2 border-black bg-white px-4 py-3 text-sm font-black text-slate-900 transition-colors hover:bg-slate-50"

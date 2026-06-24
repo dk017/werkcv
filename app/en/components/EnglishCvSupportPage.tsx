@@ -29,12 +29,12 @@ const coreRoutes = [
     body: "Start from the main English route when you want the builder, not only advice.",
   },
   {
-    href: "/en/templates",
+    href: "/en/templates?startSource=en_support_related_templates",
     title: "English templates",
     body: "Compare layouts and create a CV that stays in the English funnel.",
   },
   {
-    href: "/en/editor",
+    href: "/en/editor?template=professional&startSource=en_support_related_editor",
     title: "English editor",
     body: "Open the editor directly when you already know the structure you need.",
   },
@@ -64,7 +64,7 @@ export default function EnglishCvSupportPage({
             {intro}
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <Link href="/en/templates" className="border-4 border-black bg-black px-5 py-3 font-bold text-white">
+            <Link href="/en/templates?startSource=en_support_hero_templates" className="border-4 border-black bg-black px-5 py-3 font-bold text-white">
               {primaryCtaLabel}
             </Link>
             <Link href="/en/dutch-cv-template" className="border-4 border-black bg-[#4ECDC4] px-5 py-3 font-bold text-black">
@@ -121,7 +121,7 @@ export default function EnglishCvSupportPage({
             builder; it is a Dutch-market structure with English wording.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link href="/en/templates" className="border-4 border-black bg-black px-5 py-3 font-bold text-white">
+            <Link href="/en/templates?startSource=en_support_bottom_templates" className="border-4 border-black bg-black px-5 py-3 font-bold text-white">
               Choose template
             </Link>
             <Link href="/prijzen" className="border-4 border-black bg-white px-5 py-3 font-bold text-black">

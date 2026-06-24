@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getAllCategories, getAllExamples, getExamplesByCategory } from '@/lib/cv-voorbeelden/registry';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { buildDutchMetadata } from '@/lib/page-metadata';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export const metadata: Metadata = buildDutchMetadata({
     title: '80+ CV Voorbeelden per Beroep 2026 - Maak je CV | WerkCV',
@@ -291,6 +292,9 @@ export default function CVVoorbeeldenOverview() {
 
             <section className="border-b-4 border-black bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
                 <div className="max-w-6xl mx-auto px-6 py-16">
+                    <div className="mb-6 flex justify-end">
+                        <LanguageSwitcher tone="solid" />
+                    </div>
                     <span className="inline-block bg-[#4ECDC4] text-black text-sm font-bold px-3 py-1 mb-4 border-2 border-black">
                         {totalExamples}+ CV VOORBEELDEN
                     </span>

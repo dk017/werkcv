@@ -172,10 +172,10 @@ export default function DutchCvTemplatePage() {
             and proof.
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <Link href="/en/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
+            <Link href="/en/templates?startSource=en_dutch_cv_template_compare" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
               Compare English Templates
             </Link>
-            <Link href="/en/editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+            <Link href="/en/editor?template=professional&startSource=en_dutch_cv_template_editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
               Open English editor
             </Link>
           </div>
@@ -276,7 +276,7 @@ export default function DutchCvTemplatePage() {
             ))}
           </div>
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link href="/en/editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+            <Link href="/en/editor?template=professional&startSource=en_dutch_cv_template_mid_editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
               Start in English
             </Link>
             <Link href="/prijzen" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
@@ -316,10 +316,10 @@ export default function DutchCvTemplatePage() {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Link href="/en/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
+          <Link href="/en/templates?startSource=en_dutch_cv_template_bottom_templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
             Start with a Template
           </Link>
-          <Link href="/en/editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+          <Link href="/en/editor?template=professional&startSource=en_dutch_cv_template_bottom_editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
             Open English editor
           </Link>
           <Link href="/en" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">

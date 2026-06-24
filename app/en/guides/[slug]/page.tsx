@@ -10,6 +10,7 @@ import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
 import { normalizeBrandCopy } from '@/lib/seo-branding';
 import TrackedLandingLink from '@/components/analytics/TrackedLandingLink';
 import MobileStickyCta from '@/components/landing/MobileStickyCta';
+import { getLanguageAlternates } from '@/lib/i18n/route-pairs';
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -25,6 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     if (!page) return { title: 'Page not found | WerkCV' };
 
     const path = `/en/guides/${page.slug}`;
+    const languageAlternates = getLanguageAlternates(path);
     const imageUrl = `https://werkcv.nl${path}/opengraph-image`;
     const metaTitle = normalizeBrandCopy(page.metaTitle);
     const metaDesc = normalizeBrandCopy(page.metaDesc);
@@ -35,6 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         keywords: page.keywords,
         alternates: {
             canonical: `https://werkcv.nl${path}`,
+            ...(languageAlternates ? { languages: languageAlternates } : {}),
         },
         openGraph: {
             title: metaTitle,

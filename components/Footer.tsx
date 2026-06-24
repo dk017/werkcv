@@ -12,6 +12,7 @@ type FeaturedBadge = {
 };
 
 const mainLinks = [
+    { href: "/cv-maken", label: "CV maken" },
     { href: "/templates", label: "Templates" },
     { href: "/cv-voorbeelden", label: "CV Voorbeelden" },
     { href: "/cv-tips", label: "CV Tips" },
@@ -42,6 +43,7 @@ const toolLinks = [
 ];
 
 const cvIntentLinks = [
+    { href: "/cv-maken-zonder-abonnement", label: "CV maken zonder abonnement" },
     { href: "/gratis-cv-maken", label: "Gratis CV maken" },
     { href: "/cv-aanmaken", label: "CV aanmaken" },
     { href: "/cv-maken-template", label: "CV maken template" },

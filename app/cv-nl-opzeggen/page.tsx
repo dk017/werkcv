@@ -78,9 +78,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "CV.nl Opzeggen 2026 - Stappen + Alternatief | WerkCV",
+  title: "CV.nl opzeggen: stap-voor-stap handleiding 2026 | WerkCV",
   description:
-    "CV.nl opzeggen? Log in, open Instellingen en klik op Opzeggen. Controleer je bevestigingsmail en bekijk daarna een alternatief zonder abonnement.",
+    `Zeg je CV.nl abonnement op via de officiele route. Bekijk de stappen, bewaar je bevestiging en bouw daarna eventueel een CV zonder abonnement voor eenmalig ${cvDownloadPrice.display}.`,
   path: "/cv-nl-opzeggen",
   keywords: [
     "cv.nl opzeggen",
@@ -277,7 +277,7 @@ export default function CvNlOpzeggenPage() {
               Maak cv zonder abonnement
             </TrackedLandingLink>
             <Link
-              href="/alternatief-voor-cv-nl"
+              href="/cv-gids/werkcv-vs-cv-nl"
               className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >
               Vergelijk WerkCV en CV.nl

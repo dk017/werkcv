@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import NavUserMenu from "@/components/NavUserMenu";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { templateList } from "@/lib/templates/registry";
 import { CVData, sampleCV } from "@/lib/cv";
 import { getTemplateComponent, getTheme } from "@/app/editor/templates";
@@ -423,6 +424,7 @@ export default function HomePageClient() {
                         <Link href="/prijzen" className="hover:text-yellow-600 transition-colors">Prijzen</Link>
                     </nav>
                     <div className="flex items-center gap-4">
+                        <LanguageSwitcher tone="solid" className="hidden sm:inline-flex" />
                         <NavUserMenu />
                         <Link
                             href="/templates"

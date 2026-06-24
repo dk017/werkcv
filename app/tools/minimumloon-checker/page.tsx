@@ -5,6 +5,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import MinimumloonCheckerTool from "./MinimumloonCheckerTool";
 
 const faqItems = [
@@ -174,6 +175,20 @@ export default function MinimumloonCheckerPage() {
                         ))}
                     </div>
                 </section>
+
+                <ToolToCvCTA
+                    toolName="minimumloon-checker"
+                    eyebrow="Volgende stap na je minimumlooncheck"
+                    title="Solliciteer je op starter- of bijbaanwerk?"
+                    description="Maak gratis een eenvoudig Nederlands CV voor horeca, winkel, bezorging, magazijn of je eerste baan. Je betaalt pas als je de PDF wilt downloaden."
+                    primaryLabel="Maak mijn starter-CV"
+                    primaryHref="/editor?template=simple&startSource=minimumloon_checker_page"
+                    secondaryHref="/cv-maken-student?startSource=minimumloon_checker_student"
+                    secondaryLabel="CV maken als student"
+                    insightText="Gebruik je looncheck als moment om je beschikbaarheid, school, bijbaanervaring en vaardigheden duidelijk in één CV te zetten."
+                    intent="salary"
+                    resultState="minimumloon_page_cta"
+                />
 
                 <section className="bg-slate-50 border-2 border-slate-200 p-6">
                     <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">

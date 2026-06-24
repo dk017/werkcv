@@ -282,9 +282,13 @@ export default function SalarisCalculatorPage() {
           eyebrow="Volgende stap na je salarisbenchmark"
           title="Gebruik je marktcheck om gerichter te solliciteren"
           description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
-          primaryLabel="Bekijk cv zonder abonnement"
+          primaryLabel="Werk mijn CV bij"
+          primaryHref="/editor?template=professional&startSource=salaris_calculator_page"
+          secondaryHref="/cv-maken-zonder-abonnement?startSource=salaris_calculator_no_subscription"
+          secondaryLabel="Hoe betalen werkt"
           insightText="Leg je benchmark naast je ervaring en vacaturedoel. Een helder cv helpt je om op het juiste niveau te solliciteren."
           intent="salary"
+          resultState="salary_calculator_page_cta"
         />
 
         <section className="bg-slate-50 border-2 border-slate-200 p-6">

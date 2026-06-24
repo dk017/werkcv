@@ -3,6 +3,7 @@ import { buildEnglishMetadata } from "./metadata";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import EnglishRoleExampleBand from "./components/EnglishRoleExampleBand";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export const metadata = buildEnglishMetadata({
   title: "Netherlands CV Format: Dutch CV Template in English",
@@ -254,6 +255,9 @@ export default function EnglishHubPage() {
 
       <section className="border-b-4 border-black bg-white">
         <div className="max-w-5xl mx-auto px-6 py-14">
+          <div className="mb-6 flex justify-end">
+            <LanguageSwitcher tone="solid" />
+          </div>
           <span className="inline-block bg-[#4ECDC4] text-black text-sm font-bold px-3 py-1 mb-4 border-2 border-black">
             ENGLISH CV FOR THE NETHERLANDS
           </span>
@@ -281,7 +285,7 @@ export default function EnglishHubPage() {
           </p>
           <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
             <TrackedLandingLink
-              href="/en/editor"
+              href="/en/editor?template=professional&startSource=en_home_hero"
               trackingLocation="english_hub_hero"
               trackingLabel="build_netherlands_cv"
               className="inline-block bg-[#4ECDC4] text-black font-black px-5 py-3 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
@@ -289,7 +293,7 @@ export default function EnglishHubPage() {
               Build my Netherlands CV
             </TrackedLandingLink>
             <TrackedLandingLink
-              href="/en/editor?upload=1"
+              href="/en/editor?upload=1&startSource=en_home_upload"
               trackingLocation="english_hub_hero"
               trackingLabel="upload_current_cv"
               className="inline-block border-2 border-black bg-white px-5 py-3 font-black text-black hover:bg-slate-50"
@@ -445,13 +449,13 @@ export default function EnglishHubPage() {
 
         <div className="mt-10 flex flex-wrap gap-3">
           <Link
-            href="/en/editor"
+            href="/en/editor?template=professional&startSource=en_home_bottom"
             className="inline-block bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black"
           >
             Open English editor
           </Link>
           <Link
-            href="/en/templates"
+            href="/en/templates?startSource=en_home_template_compare"
             className="inline-block bg-black text-white font-bold px-5 py-3 border-4 border-black"
           >
             Open CV Templates
@@ -473,7 +477,7 @@ export default function EnglishHubPage() {
       <MobileStickyCta
         text="Start free. Pay only for the PDF."
         buttonLabel="Build my CV"
-        href="/en/editor"
+        href="/en/editor?template=professional&startSource=en_home_sticky"
         trackingLocation="english_hub_mobile_sticky"
         trackingLabel="build_netherlands_cv"
       />

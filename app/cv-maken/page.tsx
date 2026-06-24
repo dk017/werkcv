@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import MoneyPageTrustBlock from "@/components/landing/MoneyPageTrustBlock";
 import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
 import { buildDutchMetadata } from "@/lib/page-metadata";
+import { cvDownloadPrice } from "@/lib/site-content";
 import { templateList } from "@/lib/templates/registry";
 
 const featuredTemplates = templateList.filter((template) =>
@@ -281,9 +282,9 @@ const workflowHowToSteps = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "CV Maken voor Nederlandse Vacatures - Gratis Starten | WerkCV",
+  title: "CV maken: gratis starten, professioneel downloaden | WerkCV",
   description:
-    "Maak gratis een professioneel Nederlands cv en betaal pas bij PDF-download. ATS-vriendelijke templates, upload bestaande cv en geen abonnement.",
+    `Maak gratis een professioneel Nederlands CV. Kies een template, upload eventueel je oude CV en betaal pas bij PDF-download: eenmalig ${cvDownloadPrice.display}, geen abonnement.`,
   path: "/cv-maken",
   keywords: [
     "cv maken",
@@ -355,7 +356,7 @@ export default function CvMakenPage() {
               CV maken voor Nederlandse vacatures
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Maak gratis je cv, kies een rustige Nederlandse template en betaal pas éénmalig €4,99 wanneer je de PDF wilt downloaden. Geen abonnement, geen proefperiode en geen automatische verlenging.
+              Maak gratis je cv, kies een rustige Nederlandse template en betaal pas éénmalig {cvDownloadPrice.display} wanneer je de PDF wilt downloaden. Geen abonnement, geen proefperiode en geen automatische verlenging.
             </p>
             <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
               Begin vanaf nul, upload je bestaande cv of gebruik je LinkedIn-profiel als basis. WerkCV helpt je inhoud, opmaak en PDF-export op één plek af te ronden.
@@ -376,7 +377,7 @@ export default function CvMakenPage() {
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               {[
-                "Eenmalig €4,99",
+                `Eenmalig ${cvDownloadPrice.display}`,
                 "Geen abonnement",
                 "ATS-vriendelijk",
                 "PDF-download",

@@ -13,6 +13,7 @@ type ToolToCvCTAProps = {
   insightText?: string;
   intent?: "salary" | "legal" | "cv_content" | "cancellation" | "cover_letter" | "general";
   proofItems?: string[];
+  resultState?: string;
 };
 
 export function ToolToCvCTA({
@@ -27,6 +28,7 @@ export function ToolToCvCTA({
   insightText = "Gebruik dit resultaat terwijl het nog vers is: zet je CV klaar voor de functie, uren of voorwaarden die je nu serieus overweegt.",
   intent = "general",
   proofItems = ["Gratis starten", "Eenmalig €4,99 bij PDF-download", "Geen abonnement"],
+  resultState = "tool_page_cta",
 }: ToolToCvCTAProps) {
   const locationPrefix = `${toolName}:tool_to_cv`;
 
@@ -49,6 +51,7 @@ export function ToolToCvCTA({
           toolName={toolName}
           ctaVariant="primary"
           ctaIntent={intent}
+          resultState={resultState}
           trackingLocation={`${locationPrefix}:primary`}
           trackingLabel={primaryLabel}
           className="border-4 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
@@ -61,6 +64,7 @@ export function ToolToCvCTA({
           toolName={toolName}
           ctaVariant="secondary"
           ctaIntent={intent}
+          resultState={resultState}
           trackingLocation={`${locationPrefix}:secondary`}
           trackingLabel={secondaryLabel}
           className="border-4 border-black bg-white px-5 py-3 text-sm font-black text-black"

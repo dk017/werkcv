@@ -134,10 +134,10 @@ export default function NetherlandsCvFormatPage() {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Link href="/en/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
+          <Link href="/en/templates?startSource=en_netherlands_cv_format_templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
             Open CV Builder
           </Link>
-          <Link href="/en/editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+          <Link href="/en/editor?template=professional&startSource=en_netherlands_cv_format_editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
             Open English editor
           </Link>
           <Link href="/en" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">

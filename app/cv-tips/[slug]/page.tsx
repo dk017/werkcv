@@ -9,6 +9,8 @@ import { HowToJsonLd } from '@/components/seo/JsonLd';
 import LinkedInToCvImporter from '@/components/translate/LinkedInToCvImporter';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
 import { normalizeBrandCopy } from '@/lib/seo-branding';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { getLanguageAlternates } from '@/lib/i18n/route-pairs';
 
 interface PageProps {
     params: Promise<{ slug: string }>;
@@ -32,6 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
 
     const articleUrl = `https://werkcv.nl/cv-tips/${article.slug}`;
+    const languageAlternates = getLanguageAlternates(`/cv-tips/${article.slug}`);
     const articleImageUrl = `${articleUrl}/opengraph-image`;
     const publishedTime = toSchemaDate(article.publishedAt);
     const modifiedTime = article.updatedAt ? toSchemaDate(article.updatedAt) : undefined;
@@ -44,6 +47,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         keywords: article.keywords,
         alternates: {
             canonical: articleUrl,
+            ...(languageAlternates ? { languages: languageAlternates } : {}),
         },
         openGraph: {
             title: metaTitle,
@@ -189,6 +193,7 @@ export default async function ArticlePage({ params }: PageProps) {
             <section className="border-b-4 border-black bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50">
                 <div className="max-w-4xl mx-auto px-6 py-12">
                     <div className="flex items-center gap-3 mb-4 flex-wrap">
+                        <LanguageSwitcher tone="solid" />
                         <span
                             className="text-xs font-bold px-2 py-0.5 border-2 border-black"
                             style={{ backgroundColor: articleCategoryColors[article.category] }}

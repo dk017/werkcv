@@ -255,9 +255,13 @@ export default function NettoBrutoCalculatorPage() {
                     eyebrow="Volgende stap na je looncheck"
                     title="Vergelijk je nettoloon met een volgende baan"
                     description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
-                    primaryLabel="Bekijk cv zonder abonnement"
+                    primaryLabel="Werk mijn CV bij"
+                    primaryHref="/editor?template=professional&startSource=netto_bruto_page"
+                    secondaryHref="/cv-maken-zonder-abonnement?startSource=netto_bruto_no_subscription"
+                    secondaryLabel="Hoe betalen werkt"
                     insightText="Gebruik je netto-indicatie wanneer je een aanbod vergelijkt, een salarisgesprek voorbereidt of gericht wilt solliciteren."
                     intent="salary"
+                    resultState="netto_bruto_page_cta"
                 />
 
                 <section className="bg-slate-50 border-2 border-slate-200 p-6">

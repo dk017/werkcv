@@ -9,6 +9,7 @@ import { CVData, defaultCV, sampleCV } from "@/lib/cv";
 import { getTemplateComponent, getTheme } from "@/app/editor/templates";
 import Footer from "@/components/Footer";
 import NavUserMenu from "@/components/NavUserMenu";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { getStoredAttribution, track } from "@/lib/analytics";
 import { UiLanguage } from "@/lib/ui-language";
 import { normalizeStartSource } from "@/lib/start-source";
@@ -408,6 +409,7 @@ export default function TemplateGallery({
             </span>
           </Link>
           <div className="flex items-center gap-4">
+            <LanguageSwitcher tone="solid" className="hidden sm:inline-flex" />
             <NavUserMenu uiLanguage={uiLanguage} />
             <div className="border-2 border-black bg-blue-400 px-3 py-1 text-sm font-bold text-black">
               {isEnglish ? "Choose your template" : "Kies je template"}

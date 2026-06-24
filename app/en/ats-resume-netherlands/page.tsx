@@ -1,6 +1,7 @@
 import Link from "next/link";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { buildEnglishMetadata } from "../metadata";
 
 export const metadata = buildEnglishMetadata({
@@ -130,6 +131,9 @@ export default function AtsResumeNetherlandsPage() {
 
       <section className="border-b-4 border-black bg-[radial-gradient(circle_at_top_left,#E9FFFC_0,#FFFEF9_45%,#FFF4D8_100%)]">
         <div className="max-w-5xl mx-auto px-6 py-14">
+          <div className="mb-6 flex justify-end">
+            <LanguageSwitcher tone="solid" />
+          </div>
           <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-gray-700">
             ATS CV for Dutch applications
           </p>

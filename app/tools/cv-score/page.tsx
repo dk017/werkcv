@@ -299,6 +299,11 @@ export default function CvScorePage() {
             title="Verbeter je cv-score direct"
             description="Gebruik de score als checklist en maak daarna een sterkere cv-versie in WerkCV."
             primaryLabel="Maak mijn verbeterde cv"
+            primaryHref="/editor?template=professional&startSource=cv_score_page"
+            secondaryHref="/templates?startSource=cv_score_template_compare"
+            secondaryLabel="Vergelijk templates"
+            intent="cv_content"
+            resultState="cv_score_page_cta"
           />
         </div>
       </div>

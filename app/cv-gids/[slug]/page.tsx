@@ -6,6 +6,7 @@ import CtaExperiment from '@/components/seo/CtaExperiment';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
 import { normalizeBrandCopy } from '@/lib/seo-branding';
+import { getLanguageAlternates } from '@/lib/i18n/route-pairs';
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -20,6 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const page = getDutchWavePage(slug);
     if (!page) return { title: 'Pagina niet gevonden | WerkCV' };
     const path = `/cv-gids/${page.slug}`;
+    const languageAlternates = getLanguageAlternates(path);
     const imageUrl = `https://werkcv.nl${path}/opengraph-image`;
     const metaTitle = normalizeBrandCopy(page.metaTitle);
     const metaDesc = normalizeBrandCopy(page.metaDesc);
@@ -30,6 +32,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         keywords: page.keywords,
         alternates: {
             canonical: `https://werkcv.nl${path}`,
+            ...(languageAlternates ? { languages: languageAlternates } : {}),
         },
         openGraph: {
             title: metaTitle,

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import EnglishRoleExampleBand from "../components/EnglishRoleExampleBand";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { buildEnglishMetadata } from "../metadata";
 
 export const metadata = buildEnglishMetadata({
@@ -86,6 +87,9 @@ export default function DutchCvExamplesPage() {
 
       <section className="border-b-4 border-black bg-gradient-to-br from-green-50 via-teal-50 to-white">
         <div className="max-w-5xl mx-auto px-6 py-14">
+          <div className="mb-6 flex justify-end">
+            <LanguageSwitcher tone="solid" />
+          </div>
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
             Dutch CV Examples You Can Adapt in English
           </h1>
@@ -128,7 +132,7 @@ export default function DutchCvExamplesPage() {
         </div>
 
         <div className="flex flex-wrap gap-3">
-          <Link href="/en/templates" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+          <Link href="/en/templates?startSource=en_dutch_cv_examples_templates" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
             Open English templates
           </Link>
           <Link href="/en/guides" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
@@ -137,7 +141,7 @@ export default function DutchCvExamplesPage() {
           <Link href="/cv-voorbeelden" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
             Browse All Dutch Examples
           </Link>
-          <Link href="/en/editor" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
+          <Link href="/en/editor?template=professional&startSource=en_dutch_cv_examples_editor" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
             Open English editor
           </Link>
         </div>

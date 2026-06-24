@@ -220,6 +220,11 @@ export default function CvKeywordsPage() {
                         title="Gebruik deze keywords direct in je cv"
                         description="Verwerk de belangrijkste vacature-keywords in je profiel, werkervaring en vaardigheden."
                         primaryLabel="Maak cv met deze keywords"
+                        primaryHref="/editor?template=ats&startSource=cv_keywords_page"
+                        secondaryHref="/templates?startSource=cv_keywords_template_compare"
+                        secondaryLabel="Vergelijk ATS templates"
+                        intent="cv_content"
+                        resultState="cv_keywords_page_cta"
                     />
                 </div>
             </div>

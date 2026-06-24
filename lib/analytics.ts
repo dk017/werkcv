@@ -85,6 +85,18 @@ export type ProfilePhotoEvent =
     | 'profile_photo_download'
     | 'profile_photo_cta_editor_click';
 
+type EditorSourceContext = {
+    templateId?: string;
+    startSource?: string;
+    requestedTemplate?: string;
+    uiLanguage?: 'nl' | 'en';
+};
+
+type CheckoutExperimentContext = EditorSourceContext & {
+    variant?: 'modal' | 'direct';
+    experimentVariant?: 'modal' | 'direct';
+};
+
 // ============================================================
 // Event types — exhaustive list of all tracked interactions
 // ============================================================
@@ -120,7 +132,7 @@ export type AnalyticsEvent =
     | { event: 'cv_uploaded'; properties: { fileType: string; cvId?: string; templateId?: string; entryMethod?: 'upload' } }
     | { event: 'cv_saved'; properties: { cvId: string } }
     | { event: 'start_cv'; properties: { entryPoint: string; templateId?: string; cvId?: string; roleSlug?: string } }
-    | { event: 'editor_started'; properties: { cvId: string; fromPath?: string; templateId?: string; uiLanguage?: 'nl' | 'en' } }
+    | { event: 'editor_started'; properties: { cvId: string; fromPath?: string } & EditorSourceContext }
     | { event: 'example_cv_applied_after_login'; properties: { cvId: string; templateId: string; startSource: string; hasSampleCV: boolean } }
     | { event: 'complete_cv'; properties: { cvId: string; completionScore: number } }
     | { event: 'cv_progress_milestone'; properties: { cvId: string; milestone: 25 | 50 | 75 | 100; completionScore: number } }
@@ -140,7 +152,7 @@ export type AnalyticsEvent =
     | { event: 'addon_selected'; properties: { cvId: string; addons: string[] } }
     | {
           event: 'checkout_experiment_assigned';
-          properties: { cvId: string; variant: 'modal' | 'direct'; uiLanguage: 'nl' | 'en' };
+          properties: { cvId: string; variant: 'modal' | 'direct'; uiLanguage: 'nl' | 'en' } & EditorSourceContext;
       }
     | {
           event: 'checkout_paywall_reached';
@@ -149,11 +161,11 @@ export type AnalyticsEvent =
               variant: 'modal' | 'direct';
               source: string;
               completionScore: number;
-          };
+          } & CheckoutExperimentContext;
       }
     | {
           event: 'checkout_modal_viewed';
-          properties: { cvId: string; source: 'pdf_download'; experimentVariant?: 'modal' | 'direct' };
+          properties: { cvId: string; source: 'pdf_download' } & CheckoutExperimentContext;
       }
     | {
           event: 'checkout_option_viewed';
@@ -163,7 +175,7 @@ export type AnalyticsEvent =
               amountCents: number;
               uiLanguage: 'nl' | 'en';
               recommended: boolean;
-          };
+          } & CheckoutExperimentContext;
       }
     | {
           event: 'checkout_option_clicked';
@@ -174,15 +186,15 @@ export type AnalyticsEvent =
               uiLanguage: 'nl' | 'en';
               recommended: boolean;
               ctaText: string;
-          };
+          } & CheckoutExperimentContext;
       }
     | {
           event: 'checkout_modal_closed';
           properties: { cvId: string; reason: 'later_button' | 'close_button' | 'overlay' };
       }
-    | { event: 'checkout_start'; properties: { cvId: string; product?: string; amountCents?: number; experimentVariant?: 'modal' | 'direct' } }
-    | { event: 'checkout_started'; properties: { cvId: string; product?: string; amountCents?: number; experimentVariant?: 'modal' | 'direct' } }
-    | { event: 'checkout_failed'; properties: { cvId: string; reason?: string; product?: string; experimentVariant?: 'modal' | 'direct' } }
+    | { event: 'checkout_start'; properties: { cvId: string; product?: string; amountCents?: number } & CheckoutExperimentContext }
+    | { event: 'checkout_started'; properties: { cvId: string; product?: string; amountCents?: number } & CheckoutExperimentContext }
+    | { event: 'checkout_failed'; properties: { cvId: string; reason?: string; product?: string; amountCents?: number } & CheckoutExperimentContext }
     | { event: 'checkout_completed'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } }
     | { event: 'paid'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } }
     | { event: 'payment_completed'; properties: { cvId: string } }

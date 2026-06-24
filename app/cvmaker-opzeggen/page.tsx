@@ -46,9 +46,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CVMaker Opzeggen - Officiële Stappen + Alternatief | WerkCV",
+  title: "CVMaker opzeggen: officiele stappen + alternatief 2026 | WerkCV",
   description:
-    "Zoek je hoe je CVMaker opzegt? Bekijk de officiële stappen van CVMaker, wat de prijzenpagina zegt over annuleren en vergelijk daarna een alternatief zonder abonnement.",
+    "CVMaker opzeggen? Bekijk de officiele route, controleer je bevestiging en vergelijk daarna een CV-maker zonder abonnement of automatische verlenging.",
   keywords: [
     "cvmaker opzeggen",
     "cvmaker abonnement opzeggen",

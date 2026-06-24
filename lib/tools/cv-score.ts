@@ -355,9 +355,9 @@ const CTA = {
   headline: "Verbeter je score met een WerkCV template",
   subtext: "ATS-vriendelijk, geoptimaliseerd voor de Nederlandse markt. Eenmalig €4,99.",
   primary_button_text: "Begin in de editor →",
-  primary_button_url: "/editor",
+  primary_button_url: "/editor?template=professional&startSource=cv_score_result",
   secondary_button_text: "Vergelijk templates",
-  secondary_button_url: "/templates",
+  secondary_button_url: "/templates?startSource=cv_score_result_template_compare",
 };
 
 export async function scoreCv(text: string, source: InputSource): Promise<CvScoreResult> {

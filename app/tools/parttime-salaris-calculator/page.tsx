@@ -312,9 +312,13 @@ export default function ParttimeSalarisCalculatorPage() {
           eyebrow="Volgende stap na je salarisvergelijking"
           title="Op zoek naar een baan die beter bij je uren past?"
           description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je tevreden bent en de PDF wilt downloaden."
-          primaryLabel="Start gratis zonder abonnement"
+          primaryLabel="Werk mijn CV bij"
+          primaryHref="/editor?template=professional&startSource=parttime_salary_page"
+          secondaryHref="/cv-maken-zonder-abonnement?startSource=parttime_salary_no_subscription"
+          secondaryLabel="Hoe betalen werkt"
           insightText="Gebruik je vergelijking als voorbereiding op je volgende sollicitatie: houd je cv praktisch, duidelijk en gericht op de uren en functie die je zoekt."
           intent="salary"
+          resultState="parttime_salary_page_cta"
         />
 
         <section className="bg-slate-50 border-2 border-slate-200 p-6">

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getLanguageAlternates } from "@/lib/i18n/route-pairs";
 
 const BASE_URL = "https://werkcv.nl";
 
@@ -20,7 +21,20 @@ export function buildEnglishMetadata({
   type = "website",
 }: BuildEnglishMetadataInput): Metadata {
   const canonical = `${BASE_URL}${path}`;
-  const dutchUrl = nlPath ? `${BASE_URL}${nlPath}` : null;
+  const languageAlternates = getLanguageAlternates(path) ??
+    (nlPath
+      ? {
+          en: canonical,
+          "en-NL": canonical,
+          nl: `${BASE_URL}${nlPath}`,
+          "nl-NL": `${BASE_URL}${nlPath}`,
+          "x-default": canonical,
+        }
+      : {
+          en: canonical,
+          "en-NL": canonical,
+          "x-default": canonical,
+        });
   const fullTitle = `${title} | WerkCV`;
   const ogImageUrl = `${BASE_URL}/opengraph-image`;
 
@@ -32,17 +46,7 @@ export function buildEnglishMetadata({
     keywords,
     alternates: {
       canonical,
-      languages: {
-        en: canonical,
-        "en-NL": canonical,
-        ...(dutchUrl
-          ? {
-              nl: dutchUrl,
-              "nl-NL": dutchUrl,
-            }
-          : {}),
-        "x-default": canonical,
-      },
+      languages: languageAlternates,
     },
     openGraph: {
       title: fullTitle,

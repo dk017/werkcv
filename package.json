@@ -18,6 +18,7 @@
     "analytics:paid": "npx tsx scripts/paid-attribution-report.ts",
     "analytics:opzeggen": "npx tsx scripts/opzeggen-funnel-report.ts",
     "analytics:google": "npx tsx scripts/google-insights-report.ts",
+    "i18n:validate-routes": "npx tsx scripts/validate-route-pairs.ts",
     "followups:scan": "npx tsx scripts/followups-scan.ts",
     "followups:send": "npx tsx scripts/followups-send.ts",
     "seo-wave:pilot-report": "node ./node_modules/typescript/lib/tsc.js --pretty false --module commonjs --target es2020 --esModuleInterop --skipLibCheck --moduleResolution node --outDir .codex-tmp scripts/seo-wave-pilot-report.ts && node .codex-tmp/scripts/seo-wave-pilot-report.js",

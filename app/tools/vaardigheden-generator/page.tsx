@@ -98,6 +98,11 @@ export default function VaardigheidGeneratorPage() {
                     title="Gebruik deze vaardigheden in je cv"
                     description="Voeg relevante vaardigheden toe aan een duidelijke, ATS-vriendelijke cv."
                     primaryLabel="Maak cv met deze vaardigheden"
+                    primaryHref="/editor?template=professional&startSource=skills_generator"
+                    secondaryHref="/templates?startSource=skills_template_compare"
+                    secondaryLabel="Vergelijk templates"
+                    intent="cv_content"
+                    resultState="skills_page_cta"
                 />
             </div>
 

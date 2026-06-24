@@ -98,6 +98,16 @@ function resolveCheckoutExperimentVariant(): CheckoutExperimentVariant {
     return assignedVariant;
 }
 
+function getEditorSearchContext() {
+    if (typeof window === 'undefined') return {};
+
+    const params = new URLSearchParams(window.location.search);
+    return {
+        startSource: params.get('startSource') || undefined,
+        requestedTemplate: params.get('template') || undefined,
+    };
+}
+
 function getOptionalSectionOptions(uiLanguage: UiLanguage): Array<{ id: OptionalSectionId; label: string }> {
     if (uiLanguage === "en") {
         return [
@@ -417,9 +427,15 @@ export default function Editor({
 
         const trackedKey = `${CHECKOUT_EXPERIMENT_TRACKED_PREFIX}${id}`;
         if (window.sessionStorage.getItem(trackedKey)) return;
-        track('checkout_experiment_assigned', { cvId: id, variant, uiLanguage });
+        track('checkout_experiment_assigned', {
+            cvId: id,
+            variant,
+            uiLanguage,
+            templateId,
+            ...getEditorSearchContext(),
+        });
         window.sessionStorage.setItem(trackedKey, '1');
-    }, [id, uiLanguage]);
+    }, [id, templateId, uiLanguage]);
 
     useEffect(() => {
         const storedVacancy = window.sessionStorage.getItem(getTargetVacancySessionKey(id));
@@ -488,19 +504,37 @@ export default function Editor({
             }
         }
 
-        track('editor_started', { cvId: id, fromPath, templateId, uiLanguage });
+        track('editor_started', {
+            cvId: id,
+            fromPath,
+            templateId,
+            uiLanguage,
+            ...getEditorSearchContext(),
+        });
         markEditorStartedTracked(id);
     }, [id, templateId, uiLanguage]);
 
     useEffect(() => {
         if (!showCheckoutModal) return;
-        track('checkout_modal_viewed', { cvId: id, source: 'pdf_download', experimentVariant: checkoutExperimentVariant });
+        track('checkout_modal_viewed', {
+            cvId: id,
+            source: 'pdf_download',
+            variant: checkoutExperimentVariant,
+            experimentVariant: checkoutExperimentVariant,
+            templateId,
+            uiLanguage,
+            ...getEditorSearchContext(),
+        });
         track('checkout_option_viewed', {
             cvId: id,
             product: "cv-profile-photo-bundle",
             amountCents: applicationBundlePrice.amountCents,
             uiLanguage,
             recommended: true,
+            variant: checkoutExperimentVariant,
+            experimentVariant: checkoutExperimentVariant,
+            templateId,
+            ...getEditorSearchContext(),
         });
         track('checkout_option_viewed', {
             cvId: id,
@@ -508,8 +542,12 @@ export default function Editor({
             amountCents: cvDownloadPrice.amountCents,
             uiLanguage,
             recommended: false,
+            variant: checkoutExperimentVariant,
+            experimentVariant: checkoutExperimentVariant,
+            templateId,
+            ...getEditorSearchContext(),
         });
-    }, [checkoutExperimentVariant, showCheckoutModal, id, uiLanguage]);
+    }, [checkoutExperimentVariant, showCheckoutModal, id, templateId, uiLanguage]);
 
     useEffect(() => {
         const milestones: Array<25 | 50 | 75 | 100> = [25, 50, 75, 100];
@@ -670,15 +708,23 @@ export default function Editor({
         const amountCents = checkoutProduct === "cv-profile-photo-bundle"
             ? applicationBundlePrice.amountCents
             : cvDownloadPrice.amountCents;
-        track('checkout_start', { cvId: id, product: checkoutProduct, amountCents, experimentVariant: checkoutExperimentVariant });
+        const checkoutEventContext = {
+            cvId: id,
+            product: checkoutProduct,
+            amountCents,
+            variant: checkoutExperimentVariant,
+            experimentVariant: checkoutExperimentVariant,
+            templateId,
+            uiLanguage,
+            ...getEditorSearchContext(),
+        };
+        track('checkout_start', checkoutEventContext);
         try {
             const checkoutResult = await getCheckoutURL(id, undefined, [], checkoutProduct);
             if (!checkoutResult.ok) {
                 track('checkout_failed', {
-                    cvId: id,
+                    ...checkoutEventContext,
                     reason: checkoutResult.reason || checkoutResult.code,
-                    product: checkoutProduct,
-                    experimentVariant: checkoutExperimentVariant,
                 });
                 alert(checkoutResult.supportNotified ? supportNotifiedMessage : tr(
                     "Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.",
@@ -687,10 +733,13 @@ export default function Editor({
                 setIsCheckoutRedirecting(false);
                 return;
             }
-            track('checkout_started', { cvId: id, product: checkoutProduct, amountCents, experimentVariant: checkoutExperimentVariant });
+            track('checkout_started', checkoutEventContext);
             window.location.href = checkoutResult.url;
         } catch (error) {
-            track('checkout_failed', { cvId: id, reason: getCheckoutFailureReason(error), product: checkoutProduct, experimentVariant: checkoutExperimentVariant });
+            track('checkout_failed', {
+                ...checkoutEventContext,
+                reason: getCheckoutFailureReason(error),
+            });
             alert(tr("Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.", "Payment could not be started. Check the payment configuration and try again."));
             setIsCheckoutRedirecting(false);
         }
@@ -710,6 +759,10 @@ export default function Editor({
             uiLanguage,
             recommended: isBundle,
             ctaText,
+            variant: checkoutExperimentVariant,
+            experimentVariant: checkoutExperimentVariant,
+            templateId,
+            ...getEditorSearchContext(),
         });
         startCheckout(checkoutProduct);
     };
@@ -814,8 +867,12 @@ export default function Editor({
                     track('checkout_paywall_reached', {
                         cvId: id,
                         variant: checkoutExperimentVariant,
+                        experimentVariant: checkoutExperimentVariant,
                         source,
                         completionScore,
+                        templateId,
+                        uiLanguage,
+                        ...getEditorSearchContext(),
                     });
                     if (checkoutExperimentVariant === 'direct') {
                         await startCheckout('cv-download');

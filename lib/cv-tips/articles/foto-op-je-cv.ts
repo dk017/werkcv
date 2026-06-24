@@ -2,13 +2,13 @@ import { BlogArticle } from '../types';
 
 export const fotoOpJeCv: BlogArticle = {
     slug: 'foto-op-je-cv',
-    title: 'CV foto in Nederland: wel of niet? Regels, tips en voorbeelden',
-    description: 'Moet je een foto op je CV zetten in Nederland? Niet verplicht. Gebruik deze keuzehulp met CV-foto tips, voorbeelden en situaties waarin je de foto beter weglaat.',
+    title: 'Foto op je CV: wel of niet? Alles wat je moet weten',
+    description: 'Een foto op je CV is in Nederland niet verplicht. Ontdek wanneer een foto wel helpt, wanneer je hem beter weglaat en welke CV-template past.',
     publishedAt: '2026-02-19',
     updatedAt: '2026-05-12',
 
-    metaTitle: 'CV foto 2026: wel of niet? Regels, tips en voorbeelden',
-    metaDesc: 'Moet je een foto op je CV zetten? Bekijk Nederlandse regels, CV-foto tips, voorbeelden en wanneer je een foto beter weglaat.',
+    metaTitle: 'Foto op je CV: wel of niet? Alles wat je moet weten',
+    metaDesc: 'Een foto op je CV is in Nederland niet verplicht. Bekijk wanneer het wel of niet werkt, plus CV-foto tips en templates met of zonder foto.',
     keywords: [
         'foto op cv',
         'pasfoto cv',

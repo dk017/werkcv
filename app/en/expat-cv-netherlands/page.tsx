@@ -418,7 +418,7 @@ export default function ExpatCvNetherlandsPage() {
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <TrackedLandingLink
-                href="/en/templates"
+                href="/en/templates?startSource=en_expat_templates"
                 trackingLocation="expat_cv_hero"
                 trackingLabel="templates"
                 className="border-4 border-black bg-black px-6 py-3 text-sm font-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
@@ -426,7 +426,7 @@ export default function ExpatCvNetherlandsPage() {
                 Choose an English CV template
               </TrackedLandingLink>
               <TrackedLandingLink
-                href="/en/editor"
+                href="/en/editor?template=professional&startSource=en_expat_editor"
                 trackingLocation="expat_cv_hero"
                 trackingLabel="editor"
                 className="border-4 border-black bg-[#4ECDC4] px-6 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
@@ -725,7 +725,7 @@ export default function ExpatCvNetherlandsPage() {
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
               <TrackedLandingLink
-                href="/en/templates"
+                href="/en/templates?startSource=en_expat_bottom_templates"
                 trackingLocation="expat_cv_bottom"
                 trackingLabel="templates"
                 className="border-4 border-white bg-[#4ECDC4] px-6 py-3 text-center text-sm font-black text-black"
@@ -733,7 +733,7 @@ export default function ExpatCvNetherlandsPage() {
                 Choose English template
               </TrackedLandingLink>
               <TrackedLandingLink
-                href="/en/editor"
+                href="/en/editor?template=professional&startSource=en_expat_bottom_editor"
                 trackingLocation="expat_cv_bottom"
                 trackingLabel="editor"
                 className="border-4 border-white bg-white px-6 py-3 text-center text-sm font-black text-black"

@@ -232,6 +232,11 @@ export default function AtsCvCheckerPage() {
                         title="Los ATS-risico&apos;s direct op in je cv"
                         description="Als je cv lastig te lezen is voor ATS-systemen, maak dan een schonere versie met een eenvoudige Nederlandse template."
                         primaryLabel="Maak een ATS-vriendelijke cv"
+                        primaryHref="/editor?template=ats&startSource=ats_checker_page"
+                        secondaryHref="/templates?startSource=ats_checker_template_compare"
+                        secondaryLabel="Vergelijk ATS templates"
+                        intent="cv_content"
+                        resultState="ats_checker_page_cta"
                     />
                 </div>
             </div>

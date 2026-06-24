@@ -91,6 +91,11 @@ export default function ProfieltekstGeneratorPage() {
                     title="Gebruik deze profieltekst in je cv"
                     description="Plaats je profieltekst direct in een nette Nederlandse cv-template."
                     primaryLabel="Maak cv met deze profieltekst"
+                    primaryHref="/editor?template=professional&startSource=profile_text_generator"
+                    secondaryHref="/templates?startSource=profile_text_template_compare"
+                    secondaryLabel="Vergelijk templates"
+                    intent="cv_content"
+                    resultState="profile_text_page_cta"
                 />
             </div>
 
