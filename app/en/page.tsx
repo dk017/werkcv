@@ -83,6 +83,16 @@ const pages = [
     description: "How to target English-speaking roles while showing Dutch level honestly.",
   },
   {
+    href: "/en/europass-vs-dutch-cv-netherlands",
+    title: "Europass vs Dutch CV",
+    description: "Decide when Europass is enough and when a Dutch-market CV works better for applications.",
+  },
+  {
+    href: "/en/linkedin-to-cv-netherlands",
+    title: "LinkedIn to CV Netherlands",
+    description: "Turn your LinkedIn profile into a focused English CV for jobs in the Netherlands.",
+  },
+  {
     href: "/en/guides/cv-format-netherlands-english",
     title: "CV Format Netherlands English",
     description: "Use the updated format guide for section order, Europass context, ATS-safe layout and examples.",
@@ -202,7 +212,7 @@ const startPaths = [
     cta: "Fix ATS wording",
   },
   {
-    href: "/en/guides/linkedin-to-cv-netherlands",
+    href: "/en/linkedin-to-cv-netherlands",
     title: "LinkedIn to CV route",
     description: "Best if your profile is stronger on LinkedIn than in your current resume or CV document.",
     cta: "Convert LinkedIn profile",
@@ -217,7 +227,7 @@ const sourceLinks = [
       "Public Dutch employment guidance explaining that a CV is used by employers in the Netherlands to decide whom to invite.",
   },
   {
-    href: "https://europass.europa.eu/nl/create-europass-cv",
+    href: "https://europass.europa.eu/en/create-europass-cv",
     title: "Europass: Create your CV",
     description:
       "European CV guidance on readable language, tailoring and reverse-chronological experience.",

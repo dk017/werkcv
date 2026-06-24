@@ -76,6 +76,16 @@ const routeChoices = [
     body: "Best if your international background needs local framing for recruiters in the Netherlands.",
   },
   {
+    href: "/en/europass-vs-dutch-cv-netherlands",
+    title: "Europass vs Dutch CV",
+    body: "Best if you are comparing the official free European format with a more focused Netherlands job CV.",
+  },
+  {
+    href: "/en/linkedin-to-cv-netherlands",
+    title: "LinkedIn to CV Netherlands",
+    body: "Best if your LinkedIn profile is stronger than your current CV and needs to become a focused application PDF.",
+  },
+  {
     href: "/en/english-cv-example-netherlands",
     title: "English CV example Netherlands",
     body: "Best if you want to see tone, summary style, and proof bullets before writing your version.",
@@ -311,6 +321,12 @@ export default function DutchCvTemplatePage() {
             </Link>
             <Link href="/en/guides/netherlands-cv-keywords-ats" className="underline font-bold">
               ATS keyword guide
+            </Link>
+            <Link href="/en/europass-vs-dutch-cv-netherlands" className="underline font-bold">
+              Europass vs Dutch CV
+            </Link>
+            <Link href="/en/linkedin-to-cv-netherlands" className="underline font-bold">
+              LinkedIn to CV Netherlands
             </Link>
           </div>
         </div>
