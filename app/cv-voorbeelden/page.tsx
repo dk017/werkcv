@@ -5,8 +5,8 @@ import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import { buildDutchMetadata } from '@/lib/page-metadata';
 
 export const metadata: Metadata = buildDutchMetadata({
-    title: '80+ CV Voorbeelden 2026 per Beroep | WerkCV',
-    description: 'Bekijk 80+ CV voorbeelden per beroep en sector. Gebruik structuur, voorbeeldteksten, checklist en templates om sneller een sterk Nederlands CV te maken.',
+    title: '80+ CV Voorbeelden per Beroep 2026 - Maak je CV | WerkCV',
+    description: 'Bekijk 80+ Nederlandse CV voorbeelden per beroep. Kies een voorbeeld, pas profiel en werkervaring aan en maak direct een ATS-vriendelijk PDF-CV.',
     path: '/cv-voorbeelden',
     keywords: [
         'cv voorbeelden',

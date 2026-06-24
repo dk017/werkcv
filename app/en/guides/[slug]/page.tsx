@@ -68,9 +68,10 @@ export default async function EnglishWavePage({ params }: PageProps) {
     if (!page) notFound();
     const metaDesc = normalizeBrandCopy(page.metaDesc);
     const primaryGuideHref = page.ctaHref || '/en/templates';
+    const primaryGuideIsEditor = primaryGuideHref.startsWith('/en/editor');
     const primaryGuideLabel =
         page.ctaButtonLabel ||
-        (primaryGuideHref === '/en/editor' ? 'Open English editor' : 'Open English templates');
+        (primaryGuideIsEditor ? 'Open English editor' : 'Open English templates');
 
     const jsonLd = {
         '@context': 'https://schema.org',
@@ -142,7 +143,7 @@ export default async function EnglishWavePage({ params }: PageProps) {
                         >
                             {primaryGuideLabel}
                         </TrackedLandingLink>
-                        {primaryGuideHref !== '/en/editor' ? (
+                        {!primaryGuideIsEditor ? (
                             <Link
                                 href="/en/editor"
                                 className="text-sm font-semibold text-slate-600 underline decoration-slate-400 underline-offset-4 hover:text-slate-950"

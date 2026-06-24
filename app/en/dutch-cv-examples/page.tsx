@@ -1,4 +1,5 @@
 import Link from "next/link";
+import EnglishRoleExampleBand from "../components/EnglishRoleExampleBand";
 import { buildEnglishMetadata } from "../metadata";
 
 export const metadata = buildEnglishMetadata({
@@ -40,17 +41,6 @@ const faqs = [
     answer:
       "Use an English title and optionally include the Dutch title in parentheses for context.",
   },
-];
-
-const roleLinks = [
-  { href: "/en/english-cv-example-software-engineer-netherlands", label: "Software Engineer" },
-  { href: "/en/english-cv-example-data-engineer-netherlands", label: "Data Engineer" },
-  { href: "/en/english-cv-example-customer-support-netherlands", label: "Customer Support" },
-  { href: "/en/english-cv-example-finance-accounting-netherlands", label: "Finance / Accounting" },
-  { href: "/en/english-cv-example-logistics-warehouse-netherlands", label: "Logistics / Warehouse" },
-  { href: "/en/english-cv-example-nurse-netherlands", label: "Nurse" },
-  { href: "/cv-voorbeelden/studenten-en-starters/eerste-baan-starter", label: "Starter / First Job" },
-  { href: "/cv-voorbeelden/marketing-en-communicatie/marketing-manager", label: "Marketing Manager" },
 ];
 
 const howToJsonLd = {
@@ -107,16 +97,11 @@ export default function DutchCvExamplesPage() {
       </section>
 
       <section className="max-w-5xl mx-auto px-6 py-10 space-y-8">
-        <div className="bg-white border-4 border-black p-6">
-          <h2 className="text-2xl font-black mb-3">High-value example pages</h2>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {roleLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="underline font-bold">
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        </div>
+        <EnglishRoleExampleBand
+          trackingLocation="english_examples_role_examples"
+          title="Choose a CV example you can actually adapt"
+          description="Open the closest role example first. Each example is written for English applications in the Netherlands and can be used as a starting point in the editor."
+        />
 
         <div className="bg-white border-4 border-black p-6">
           <h2 className="text-2xl font-black mb-3">How to use examples</h2>

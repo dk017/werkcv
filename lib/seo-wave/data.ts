@@ -2026,8 +2026,8 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
     'netherlands-cv-photo-rules': {
         title: 'CV Photo Rules in the Netherlands: Should You Add a Photo?',
         description: 'Clear guidance for expats on when a CV photo helps, when to leave it out, and how Dutch recruiters usually interpret it.',
-        metaTitle: 'CV Photo Netherlands: Optional or Required? (2026) | WerkCV',
-        metaDesc: 'A CV photo is optional in the Netherlands. See when to include one, when to leave it out, and choose a Dutch-market English CV template.',
+        metaTitle: 'CV Photo Rules Netherlands 2026: Optional or Required? | WerkCV',
+        metaDesc: 'A CV photo is optional in the Netherlands. See when to include one, when to leave it out, and build an English CV for Dutch jobs.',
         intro: 'In the Netherlands, a photo on your CV is usually optional, not mandatory. The right choice depends on the employer, the role, and whether the company follows Dutch or more international hiring norms. This guide translates those expectations into a practical decision so you can keep page one recruiter-focused instead of appearance-led.',
         sources: [
             {
@@ -2046,10 +2046,10 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                 note: 'Official guidance on fair hiring and how applicants can question opaque or potentially discriminatory selection processes. Checked April 2026.',
             },
         ],
-        ctaTitle: 'Choose the right Netherlands CV layout before you export',
-        ctaText: 'Use a Dutch-market English template, decide with or without photo, and keep recruiter focus on role fit, evidence, and clean PDF readability.',
-        ctaHref: '/en/templates',
-        ctaButtonLabel: 'Choose a CV template with or without photo',
+        ctaTitle: 'Build a Netherlands CV with the right photo choice',
+        ctaText: 'Start with a Dutch-market English CV, choose a photo or no-photo layout, and keep recruiter focus on role fit, evidence, and clean PDF readability.',
+        ctaHref: '/en/editor?template=professional&startSource=en_photo_rules_guide',
+        ctaButtonLabel: 'Build my Netherlands CV',
         sectionOverrides: {
             layout: {
                 intentLinks: [

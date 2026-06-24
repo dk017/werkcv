@@ -651,8 +651,14 @@ export default function SalarisCalculatorTool() {
 
           <SalaryResultCvCta
             toolName="salaris-calculator"
-            title="Gebruik je salarischeck voor je volgende sollicitatie"
-            text="Zie je ruimte voor een betere functie of salarissprong? Werk je cv direct bij voor rollen die beter aansluiten op je benchmark."
+            title="Gebruik je salarisbenchmark voor je volgende sollicitatie"
+            text="Zie je ruimte voor een betere functie of salarissprong? Werk je CV direct bij voor rollen die beter aansluiten op je benchmark, ervaring en regio."
+            insightText="Maak je profieltekst en werkervaring concreet genoeg om je gewenste salarissprong te verklaren: rolomvang, systemen, resultaten en verantwoordelijkheid tellen zwaarder dan algemene claims."
+            primaryLabel="Open editor met benchmarkfocus"
+            primaryHref="/editor?template=professional&startSource=salary_benchmark_result"
+            secondaryLabel="Vergelijk eerst templates"
+            secondaryHref="/templates?startSource=salary_benchmark_template_compare"
+            resultState={`salary_benchmark_${result.status}`}
           />
 
           <button

@@ -4,8 +4,8 @@ import Footer from "@/components/Footer";
 import { coverLetterPackagePrice, cvDownloadPrice } from "@/lib/site-content";
 
 export const metadata: Metadata = {
-    title: `CV Maken Kosten? Eenmalig ${cvDownloadPrice.display}, geen abonnement | WerkCV`,
-    description: `Maak gratis je CV en download voor ${cvDownloadPrice.display} per CV. Geen abonnement, geen automatische verlenging en een duidelijke eenmalige prijs.`,
+    title: `CV Maken Kosten 2026: Eenmalig ${cvDownloadPrice.display}, Geen Abonnement | WerkCV`,
+    description: `Maak en bewerk je CV gratis. Betaal pas bij PDF-download: eenmalig ${cvDownloadPrice.display} per CV, geen proefperiode en geen automatische verlenging.`,
     keywords: [
         "cv maken kosten",
         "cv maker prijs",

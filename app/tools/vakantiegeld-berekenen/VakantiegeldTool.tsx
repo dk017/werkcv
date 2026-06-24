@@ -223,8 +223,12 @@ export default function VakantiegeldTool() {
                         toolName="vakantiegeld-berekenen"
                         title="Gebruik je vakantiegeldmoment om vooruit te solliciteren"
                         text="Vakantiegeld laat vaak zien wat je huidige beloning echt oplevert. Wil je meer ruimte na je volgende baan? Werk je CV bij voor functies met betere voorwaarden."
+                        insightText="Zet in je CV niet alleen taken, maar ook resultaten, verantwoordelijkheden en systemen die een beter arbeidsvoorwaardenpakket logisch maken."
                         primaryLabel="Maak CV voor betere voorwaarden"
-                        secondaryLabel="Bekijk CV zonder abonnement"
+                        primaryHref="/editor?template=professional&startSource=holiday_allowance_result"
+                        secondaryLabel="Vergelijk eerst templates"
+                        secondaryHref="/templates?startSource=holiday_allowance_template_compare"
+                        resultState="holiday_allowance_result"
                     />
 
                     <button

@@ -306,6 +306,13 @@ export default function Editor({
     });
 
     const data = watch();
+    const isCurrentCvEmpty =
+        !data.personal.name?.trim() &&
+        !data.personal.email?.trim() &&
+        !data.personal.summary?.trim() &&
+        data.experience.length === 0 &&
+        data.education.length === 0 &&
+        data.skills.length === 0;
     const completionState = getCompletionState(data, uiLanguage);
     const completionScore = completionState.score;
     const isReadyToDownload = completionState.isReady;
@@ -943,6 +950,37 @@ export default function Editor({
                             onGoToStep={scrollToCompletionStep}
                             uiLanguage={uiLanguage}
                         />
+
+                        {!isReadyToDownload && isCurrentCvEmpty ? (
+                            <section className="rounded-2xl border border-teal-200 bg-teal-50 p-4 shadow-sm sm:p-5">
+                                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                    <div>
+                                        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-teal-700">
+                                            {tr("Sneller starten", "Faster start")}
+                                        </p>
+                                        <h2 className="mt-1 text-base font-semibold text-slate-950">
+                                            {tr("Heb je al een CV? Upload hem en vul dit formulier automatisch.", "Already have a CV? Upload it and fill this form automatically.")}
+                                        </h2>
+                                        <p className="mt-1 text-sm font-medium text-slate-600">
+                                            {tr("Je kunt daarna alles aanpassen voordat je downloadt.", "You can edit everything before downloading.")}
+                                        </p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            track("cta_clicked", {
+                                                location: "editor_empty_cv_upload_nudge",
+                                                label: "upload_existing_cv",
+                                            });
+                                            setShowUploader(true);
+                                        }}
+                                        className="inline-flex shrink-0 items-center justify-center rounded-md border border-teal-700 bg-teal-600 px-4 py-3 text-sm font-black text-white transition-colors hover:bg-teal-700"
+                                    >
+                                        {tr("CV uploaden", "Upload CV")}
+                                    </button>
+                                </div>
+                            </section>
+                        ) : null}
 
                         {isReadyToDownload ? (
                             <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm sm:p-5">

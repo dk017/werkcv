@@ -1,4 +1,5 @@
 import Link from "next/link";
+import EnglishRoleExampleBand from "../components/EnglishRoleExampleBand";
 import { buildEnglishMetadata } from "../metadata";
 
 export const metadata = buildEnglishMetadata({
@@ -196,6 +197,12 @@ export default function DutchCvTemplatePage() {
             ))}
           </div>
         </div>
+
+        <EnglishRoleExampleBand
+          trackingLocation="english_template_role_examples"
+          title="Not sure which template to start with?"
+          description="Pick the role example closest to your application. It shows the right section order and wording before you open the editor."
+        />
 
         <div className="bg-white border-4 border-black p-6">
           <h2 className="text-2xl font-black mb-3">Recommended structure</h2>

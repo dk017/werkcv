@@ -130,10 +130,10 @@ const relatedLinks = [
 
 export const metadata: Metadata = {
   title: {
-    absolute: "CV maken zonder abonnement | Eenmalig €4,99 | WerkCV",
+    absolute: "CV maken zonder abonnement - Eenmalig €4,99 per PDF | WerkCV",
   },
   description:
-    "Maak gratis je Nederlandse cv en betaal pas éénmalig €4,99 bij PDF-download. Geen proefperiode, geen automatische verlenging en niets om op te zeggen.",
+    "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
   keywords: [
     "cv maken zonder abonnement",
     "cv maken eenmalig betalen",
@@ -151,9 +151,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "CV maken zonder abonnement | Eenmalig €4,99 | WerkCV",
+    title: "CV maken zonder abonnement - Eenmalig €4,99 per PDF | WerkCV",
     description:
-      "Maak gratis je Nederlandse cv en betaal pas éénmalig €4,99 bij PDF-download. Geen proefperiode, geen automatische verlenging en niets om op te zeggen.",
+      "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
     url: pageUrl,
     siteName: "WerkCV",
     locale: "nl_NL",
@@ -169,9 +169,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "CV maken zonder abonnement | Eenmalig €4,99 | WerkCV",
+    title: "CV maken zonder abonnement - Eenmalig €4,99 per PDF | WerkCV",
     description:
-      "Maak gratis je Nederlandse cv en betaal pas éénmalig €4,99 bij PDF-download. Geen proefperiode, geen automatische verlenging en niets om op te zeggen.",
+      "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
     images: ["/opengraph-image"],
   },
 };

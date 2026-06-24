@@ -29,6 +29,10 @@ export default function ParttimeSalarisTool() {
   const [holidayPercentage, setHolidayPercentage] = useState("8");
   const [result, setResult] = useState<ParttimeSalaryResult | null>(null);
   const [error, setError] = useState("");
+  const selectedHours = Number(targetHours);
+  const selectedHoursLabel = Number.isFinite(selectedHours)
+    ? `${formatPercent(selectedHours)} uur`
+    : `${targetHours} uur`;
 
   function handleCalculate() {
     const parsedSalary = parseDecimal(fullTimeSalary);
@@ -299,11 +303,14 @@ export default function ParttimeSalarisTool() {
 
           <SalaryResultCvCta
             toolName="parttime-salaris-calculator"
-            title="Solliciteer met dit uren- en salarisdoel in je hoofd"
-            text="Als 24, 28, 32 of 36 uur beter past, laat je CV dan ook die richting zien: gewenste functie, beschikbaarheid en ervaring helder voor recruiters."
-            primaryLabel="Maak CV voor deze volgende stap"
-            secondaryLabel="Hoe betalen werkt"
-            resultState={`${targetHours}_hours_result`}
+            title={`Maak je CV klaar voor een ${selectedHoursLabel} sollicitatie`}
+            text={`Je hebt nu een salarisindicatie voor ${selectedHoursLabel}. Als je deze uren serieus overweegt, maak dan ook je CV concreet: gewenste functie, beschikbaarheid en relevante ervaring moeten direct duidelijk zijn.`}
+            insightText="Voor parttime functies scannen recruiters snel op beschikbaarheid, recente ervaring en praktische inzetbaarheid. Zet die punten bovenin je CV voordat je gaat solliciteren."
+            primaryLabel="Open editor met deze focus"
+            primaryHref="/editor?template=professional&startSource=parttime_salary_result"
+            secondaryLabel="Vergelijk eerst templates"
+            secondaryHref="/templates?startSource=parttime_salary_template_compare"
+            resultState={`parttime_${targetHours}_hours_result`}
           />
 
           <button

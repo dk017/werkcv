@@ -185,10 +185,14 @@ export default function EindejaarsuitkeringTool() {
 
           <SalaryResultCvCta
             toolName="eindejaarsuitkering-berekenen"
-            title="Vergelijk je aanbod, werk daarna je CV bij"
-            text="Een 13e maand of eindejaarsuitkering verandert je totale pakket. Als je verder kijkt, maak dan een CV dat past bij de rol en voorwaarden die je nu wilt."
-            primaryLabel="Maak CV voor een beter aanbod"
-            secondaryLabel="Hoe betalen werkt"
+            title="Maak je CV klaar voor een sterker totaalpakket"
+            text="Een 13e maand of eindejaarsuitkering verandert je totale beloning. Als je verder kijkt, maak dan een CV dat past bij de rol, senioriteit en voorwaarden die je nu wilt."
+            insightText="Recruiters zien sneller waarde als je CV laat zien welke verantwoordelijkheid, impact en ervaring jouw gewenste beloningspakket onderbouwen."
+            primaryLabel="Open editor voor beter aanbod"
+            primaryHref="/editor?template=professional&startSource=year_end_bonus_result"
+            secondaryLabel="Vergelijk eerst templates"
+            secondaryHref="/templates?startSource=year_end_bonus_template_compare"
+            resultState="year_end_bonus_result"
           />
 
           <button

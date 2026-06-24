@@ -278,8 +278,14 @@ export default function VakantiedagenTool() {
 
           <SalaryResultCvCta
             toolName="vakantiedagen-berekenen"
-            title="Gebruik je verlofinzicht voor je volgende stap"
-            text="Plan je verlof rond een baanwissel of nieuw aanbod? Zorg dat je cv klaarstaat voordat je actief gaat reageren."
+            title="Plan je verlof en houd je CV klaar voor je volgende stap"
+            text="Als je verlof plant rond een mogelijke baanwissel, is dit een goed moment om je CV alvast klaar te zetten. Dan kun je reageren zodra er een passende vacature komt."
+            insightText="Houd je CV praktisch: actuele functie, beschikbaarheid, belangrijkste ervaring en recente resultaten. Dat maakt reageren sneller als je planning duidelijk is."
+            primaryLabel="Open editor voor mijn volgende stap"
+            primaryHref="/editor?template=professional&startSource=vacation_days_result"
+            secondaryLabel="Vergelijk eerst templates"
+            secondaryHref="/templates?startSource=vacation_days_template_compare"
+            resultState="vacation_days_result"
           />
 
           <button

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { buildEnglishMetadata } from "./metadata";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
+import EnglishRoleExampleBand from "./components/EnglishRoleExampleBand";
 
 export const metadata = buildEnglishMetadata({
   title: "Netherlands CV Format: Dutch CV Template in English",
@@ -311,6 +312,10 @@ export default function EnglishHubPage() {
       </section>
 
       <section className="max-w-5xl mx-auto px-6 py-12">
+        <div className="mb-12">
+          <EnglishRoleExampleBand trackingLocation="english_hub_role_examples" />
+        </div>
+
         <div className="mb-12 grid gap-5 md:grid-cols-3">
           {proofPoints.map((point) => (
             <div key={point.title} className="border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
