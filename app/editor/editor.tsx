@@ -1122,6 +1122,28 @@ export default function Editor({
                                 <textarea {...register("personal.summary")} placeholder={tr("Korte introductie over jezelf, je ervaring en wat je zoekt...", "Short introduction about yourself, your experience, and what you are looking for...")} className={`${inputClass} h-28`} style={inputStyle} />
                             </div>
 
+                            <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                                <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                                    <PhotoUpload
+                                        currentPhoto={data.personal.photo}
+                                        onPhotoChange={handlePhotoChange}
+                                        uiLanguage={uiLanguage}
+                                    />
+                                    <div className="flex-1 rounded-md border border-slate-200 bg-white p-3">
+                                        <p className="text-sm font-semibold text-slate-900">{tr("Profielfoto", "Profile photo")}</p>
+                                        <p className="mt-1 text-xs leading-relaxed text-slate-600">
+                                            {tr("Optioneel. Voeg alleen een professionele, actuele foto toe als dit past bij je sollicitatie.", "Optional. Add one only if it is professional, current, and fits the job application.")}
+                                        </p>
+                                        <Link
+                                            href={isEnglish ? "/en/profile-photo" : "/profielfoto-cv-maken"}
+                                            className="mt-2 inline-flex text-xs font-semibold text-emerald-700 underline underline-offset-2 hover:text-emerald-800"
+                                        >
+                                            {tr("AI-profielfoto maken (€9,99)", "Create an AI profile photo (€9.99)")}
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+
                             <button
                                 type="button"
                                 onClick={() => setShowAdditionalPersonalDetails((open) => !open)}
@@ -1137,26 +1159,6 @@ export default function Editor({
 
                             {showAdditionalPersonalDetails ? (
                                 <div className="mt-4 space-y-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
-                                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-                                        <PhotoUpload
-                                            currentPhoto={data.personal.photo}
-                                            onPhotoChange={handlePhotoChange}
-                                            uiLanguage={uiLanguage}
-                                        />
-                                        <div className="flex-1 rounded-md border border-slate-200 bg-white p-3">
-                                            <p className="text-sm font-semibold text-slate-900">{tr("Profielfoto", "Profile photo")}</p>
-                                            <p className="mt-1 text-xs leading-relaxed text-slate-600">
-                                                {tr("Een foto is optioneel. Gebruik alleen een foto die professioneel en actueel is.", "A photo is optional. Use one only when it is professional and current.")}
-                                            </p>
-                                            <Link
-                                                href={isEnglish ? "/en/profile-photo" : "/profielfoto-cv-maken"}
-                                                className="mt-2 inline-flex text-xs font-semibold text-emerald-700 underline underline-offset-2 hover:text-emerald-800"
-                                            >
-                                                {tr("AI-profielfoto maken (€9,99)", "Create an AI profile photo (€9.99)")}
-                                            </Link>
-                                        </div>
-                                    </div>
-
                                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                         <div>
                                             <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Adres", "Address")}</label>
