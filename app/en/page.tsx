@@ -23,6 +23,16 @@ export const metadata = buildEnglishMetadata({
 
 const pages = [
   {
+    href: "/en/dutch-cv-mistakes-english-speaking-job-seekers",
+    title: "Dutch CV Mistakes",
+    description: "Avoid the common mistakes that make English-speaking applicants harder for Dutch recruiters to assess.",
+  },
+  {
+    href: "/en/how-to-write-dutch-cv-without-speaking-dutch",
+    title: "Write a Dutch CV Without Dutch",
+    description: "How to apply in English, show Dutch level honestly, and reduce recruiter uncertainty.",
+  },
+  {
     href: "/en/expat-cv-netherlands",
     title: "Expat CV Netherlands",
     description: "A practical decision guide for English vs Dutch, visa wording, language levels, and personal details.",

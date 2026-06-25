@@ -56,6 +56,16 @@ const dutchExpectations = [
 
 const routeChoices = [
   {
+    href: "/en/dutch-cv-mistakes-english-speaking-job-seekers",
+    title: "Dutch CV mistakes",
+    body: "Best if you already have a CV but suspect it reads like an international resume instead of a Netherlands job application.",
+  },
+  {
+    href: "/en/how-to-write-dutch-cv-without-speaking-dutch",
+    title: "CV without Dutch",
+    body: "Best if you are applying in English and need to show Dutch level, location, and work context clearly.",
+  },
+  {
     href: "/en/cv-format-netherlands-english",
     title: "CV format Netherlands English",
     body: "Best if you need the section order and first-half-page logic before choosing a layout.",

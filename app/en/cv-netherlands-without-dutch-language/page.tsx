@@ -241,7 +241,8 @@ export default function CvNetherlandsWithoutDutchLanguagePage() {
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/en/expat-cv-netherlands" className="underline font-bold">Main expat CV guide</Link>
-            <Link href="/en/guides/netherlands-cv-without-dutch-language" className="underline font-bold">Detailed guide version</Link>
+            <Link href="/en/how-to-write-dutch-cv-without-speaking-dutch" className="underline font-bold">Detailed no-Dutch CV guide</Link>
+            <Link href="/en/dutch-cv-mistakes-english-speaking-job-seekers" className="underline font-bold">Common Dutch CV mistakes</Link>
             <Link href="/en/english-speaking-companies-netherlands" className="underline font-bold">English-speaking companies</Link>
           </div>
         </section>

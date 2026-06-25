@@ -707,6 +707,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.77,
         },
         {
+            url: `${baseUrl}/en/dutch-cv-mistakes-english-speaking-job-seekers`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.78,
+        },
+        {
+            url: `${baseUrl}/en/how-to-write-dutch-cv-without-speaking-dutch`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.78,
+        },
+        {
             url: `${baseUrl}/en/europass-vs-dutch-cv-netherlands`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
