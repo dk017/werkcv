@@ -1,4 +1,5 @@
 import Link from "next/link";
+import LinkedInToCvImporter from "@/components/translate/LinkedInToCvImporter";
 import { buildEnglishMetadata } from "../metadata";
 
 const pagePath = "/en/linkedin-to-cv-netherlands";
@@ -135,10 +136,10 @@ const dutchMarketChecks = [
 
 const internalRoutes = [
   {
-    href: "/en/editor?template=professional&startSource=en_linkedin_to_cv_primary",
-    title: "Open the English editor",
+    href: "#linkedin-importer",
+    title: "Convert LinkedIn text first",
     body:
-      "Best if you already know what to copy from LinkedIn and want to build the CV now.",
+      "Best if your source material is LinkedIn and you want WerkCV to turn it into a CV draft before editing.",
   },
   {
     href: "/en/resume-optimizer-netherlands",
@@ -241,7 +242,7 @@ export default function LinkedinToCvNetherlandsPage() {
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <Link
-              href="/en/editor?template=professional&startSource=en_linkedin_to_cv_hero"
+              href="#linkedin-importer"
               className="border-4 border-black bg-black px-5 py-3 font-bold text-white"
             >
               Build my CV using LinkedIn text
@@ -264,6 +265,13 @@ export default function LinkedinToCvNetherlandsPage() {
               <p className="mt-2 text-sm leading-relaxed text-gray-700">{card.body}</p>
             </article>
           ))}
+        </section>
+
+        <section id="linkedin-importer" className="scroll-mt-24">
+          <LinkedInToCvImporter
+            uiLanguage="en"
+            sourcePath={pagePath}
+          />
         </section>
 
         <section className="border-4 border-black bg-white p-6">

@@ -313,7 +313,7 @@ export default function DutchCvTemplatePage() {
             <Link href="/en/dutch-cv-examples" className="underline font-bold">
               Dutch CV examples in English
             </Link>
-            <Link href="/tools/linkedin-naar-cv" className="underline font-bold">
+            <Link href="/en/linkedin-to-cv-netherlands" className="underline font-bold">
               Convert your LinkedIn profile into a Dutch CV
             </Link>
             <Link href="/en/guides/dutch-cv-for-expats" className="underline font-bold">

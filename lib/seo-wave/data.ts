@@ -2959,7 +2959,7 @@ function getEnglishRelatedLinks(seed: EnglishSeed): SeoGuidePage['relatedLinks']
                 description: 'Tighten vacancy language after the core structure has been converted.',
             },
             {
-                href: '/en/guides/linkedin-to-cv-netherlands',
+                href: '/en/linkedin-to-cv-netherlands',
                 title: 'LinkedIn to CV Netherlands',
                 description: 'Use this if your source material is a LinkedIn profile rather than a classic resume.',
             },

@@ -134,7 +134,7 @@ export default function ResumeOptimizerNetherlandsPage() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink
-                href="/tools/ats-cv-checker"
+                href="/en/dutch-cv-checker"
                 trackingLocation="resume-optimizer-netherlands:hero_primary"
                 trackingLabel="Check my resume"
                 ctaEventName="cta_resume_optimizer_en_hero"
@@ -239,8 +239,8 @@ export default function ResumeOptimizerNetherlandsPage() {
           </div>
           <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
             Start with the{" "}
-            <Link href="/tools/ats-cv-checker" className="font-black underline">
-              ATS CV checker
+            <Link href="/en/dutch-cv-checker" className="font-black underline">
+              Dutch CV checker
             </Link>
             {" "}and compare with the guidance on{" "}
             <Link href="/en/ats-resume-netherlands" className="font-black underline">

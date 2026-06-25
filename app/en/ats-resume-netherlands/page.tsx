@@ -154,7 +154,7 @@ export default function AtsResumeNetherlandsPage() {
               Build my ATS-safe CV
             </TrackedLandingLink>
             <TrackedLandingLink
-              href="/tools/ats-cv-checker"
+              href="/en/dutch-cv-checker"
               trackingLocation="ats_resume_netherlands_hero"
               trackingLabel="check_existing_cv"
               className="text-sm font-semibold text-slate-600 underline decoration-slate-400 underline-offset-4 hover:text-slate-950"
