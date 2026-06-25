@@ -1,6 +1,7 @@
 "use client";
 
-import { createElement, useState } from "react";
+import { createElement, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { templateList, getThemeById } from "@/lib/templates/registry";
 import { TemplateConfig } from "@/lib/templates";
 import { getTemplateComponent } from "@/app/editor/templates";
@@ -247,6 +248,7 @@ export default function TemplateSelector({
 }: TemplateSelectorProps) {
   const isEnglish = uiLanguage === "en";
   const [isOpen, setIsOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   const currentTemplate = templateList.find((template) => template.id === currentTemplateId);
   const previewData = isEmptyCv(data)
@@ -254,6 +256,50 @@ export default function TemplateSelector({
       ? englishPreviewData
       : dutchPreviewData
     : data;
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const templateModal = (
+    <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto p-4 pt-16 sm:pt-20">
+      <div className="fixed inset-0 bg-black/50" onClick={() => setIsOpen(false)} />
+
+      <div className="relative flex max-h-[calc(100vh-5rem)] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:max-h-[calc(100vh-6rem)]">
+        <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
+          <h2 className="text-xl font-bold text-gray-900">
+            {isEnglish ? "Choose a template" : "Kies een template"}
+          </h2>
+          <button
+            onClick={() => setIsOpen(false)}
+            className="rounded-lg p-2 transition hover:bg-gray-100"
+          >
+            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-6">
+          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {templateList.map((template) => (
+              <TemplateCard
+                key={template.id}
+                template={template}
+                data={previewData}
+                uiLanguage={uiLanguage}
+                isSelected={template.id === currentTemplateId}
+                onSelect={() => {
+                  onSelectTemplate(template.id, template.defaultThemeId);
+                  setIsOpen(false);
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <>
@@ -276,45 +322,7 @@ export default function TemplateSelector({
         </span>
       </button>
 
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 pt-16 sm:pt-20">
-          <div className="absolute inset-0 bg-black/50" onClick={() => setIsOpen(false)} />
-
-          <div className="relative flex max-h-[calc(100vh-5rem)] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:max-h-[calc(100vh-6rem)]">
-            <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
-              <h2 className="text-xl font-bold text-gray-900">
-                {isEnglish ? "Choose a template" : "Kies een template"}
-              </h2>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="rounded-lg p-2 transition hover:bg-gray-100"
-              >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-6">
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                {templateList.map((template) => (
-                  <TemplateCard
-                    key={template.id}
-                    template={template}
-                    data={previewData}
-                    uiLanguage={uiLanguage}
-                    isSelected={template.id === currentTemplateId}
-                    onSelect={() => {
-                      onSelectTemplate(template.id, template.defaultThemeId);
-                      setIsOpen(false);
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {isOpen && isMounted ? createPortal(templateModal, document.body) : null}
     </>
   );
 }
