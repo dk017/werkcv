@@ -11,11 +11,11 @@ interface TemplateProps {
 // Skill level indicator (horizontal bars)
 function SkillLevel({ level, color }: { level: number; color: string }) {
     return (
-        <div className="flex gap-0.5">
+        <div className="flex gap-1">
             {[1, 2, 3, 4, 5].map((bar) => (
                 <div
                     key={bar}
-                    className="w-4 h-1.5 rounded-sm"
+                    className="h-1.5 w-3.5 rounded-sm"
                     style={{
                         backgroundColor: bar <= level ? color : '#e5e7eb',
                     }}
@@ -40,33 +40,34 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
             style={{ color: theme.text }}
         >
             {/* Header - Centered */}
-            <div className="text-center mb-6 pb-4" style={{ borderBottom: `2px solid ${theme.primary}` }}>
+            <div className="mb-7 pb-5 text-center" style={{ borderBottom: `2px solid ${theme.primary}` }}>
                 {data.personal.photo && (
-                    <img
-                        src={data.personal.photo}
-                        alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
-                        className="w-20 h-20 rounded-full object-cover mx-auto mb-3"
-                        style={{ border: `3px solid ${theme.primary}` }}
-                    />
+                    <div className="mx-auto mb-4 h-24 w-24 rounded-full p-1" style={{ border: `1px solid ${theme.primary}` }}>
+                        <img
+                            src={data.personal.photo}
+                            alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
+                            className="h-full w-full rounded-full object-cover"
+                        />
+                    </div>
                 )}
-                <h1 className="text-3xl font-bold tracking-wide mb-1">
+                <h1 className="mb-1 text-[34px] font-bold leading-tight tracking-tight">
                     {data.personal.name || resumeText(data, "nameFallback")}
                 </h1>
                 {data.personal.title && (
-                    <p className="text-lg" style={{ color: theme.textMuted }}>
+                    <p className="text-[15px] font-medium" style={{ color: theme.textMuted }}>
                         {data.personal.title}
                     </p>
                 )}
                 {/* Contact Info Row */}
                 {contactItems.length > 0 && (
-                    <p className="mt-3 text-[11px] leading-relaxed text-center" style={{ color: theme.textMuted }}>
+                    <p className="mt-3 text-center text-[11px] font-medium leading-relaxed" style={{ color: theme.textMuted }}>
                         {contactItems.join(" • ")}
                     </p>
                 )}
             </div>
 
             {/* Two column layout for personal details */}
-            <div className="grid grid-cols-3 gap-6 mb-6 text-xs" style={{ color: theme.textMuted }}>
+            <div className="mb-6 grid grid-cols-3 gap-5 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
                 {data.personal.birthDate && (
                     <div>
                         <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "birthDate")}:</span> {data.personal.birthDate}
@@ -104,10 +105,10 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
             {data.personal.summary && (
                 <div className="mb-5">
                     <h2
-                        className="text-sm font-bold uppercase tracking-wide mb-2"
+                        className="mb-3 border-b pb-2 text-xs font-bold uppercase tracking-[0.16em]"
                         style={{ color: theme.primary }}
                     >{resumeText(data, "profile")}</h2>
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                    <p className="whitespace-pre-wrap text-[13px] leading-6">
                         {data.personal.summary}
                     </p>
                 </div>
@@ -117,30 +118,30 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
             {data.experience.length > 0 && (
                 <div className="mb-5">
                     <h2
-                        className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
+                        className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.16em]"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
                     >{resumeText(data, "experience")}</h2>
                     <div className="space-y-4">
                         {data.experience.map((exp, i) => (
                             <div key={i}>
-                                <div className="flex justify-between items-start gap-4 mb-1">
-                                    <h3 className="text-sm font-bold">{exp.role}</h3>
-                                    <span className="text-xs shrink-0 text-left w-[96px]" style={{ color: theme.textMuted }}>
+                                <div className="mb-1 flex items-start justify-between gap-4">
+                                    <h3 className="text-[13px] font-bold leading-snug">{exp.role}</h3>
+                                    <span className="w-[96px] shrink-0 text-left text-[11px]" style={{ color: theme.textMuted }}>
                                         {formatResumeDateRange(exp.start, exp.end, data)}
                                     </span>
                                 </div>
-                                <p className="text-xs font-medium mb-1" style={{ color: theme.secondary }}>
+                                <p className="mb-1 text-[12px] font-semibold" style={{ color: theme.secondary }}>
                                     {exp.company}{exp.location && ` | ${exp.location}`}
                                 </p>
                                 {exp.description && (
-                                    <p className="text-xs leading-relaxed" style={{ color: theme.textMuted }}>
+                                    <p className="text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
                                         {exp.description}
                                     </p>
                                 )}
                                 {exp.highlights && exp.highlights.length > 0 && (
                                     <ul className="mt-2 space-y-1">
                                         {exp.highlights.map((highlight, hi) => (
-                                            <li key={hi} className="text-xs flex gap-2">
+                                            <li key={hi} className="flex gap-2 text-[11px] leading-relaxed">
                                                 <span style={{ color: theme.primary }}>•</span>
                                                 <span>{highlight}</span>
                                             </li>
@@ -157,30 +158,30 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
             {data.internships && data.internships.length > 0 && (
                 <div className="mb-5">
                     <h2
-                        className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
+                        className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.16em]"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
                     >{resumeText(data, "internships")}</h2>
                     <div className="space-y-3">
                         {data.internships.map((intern, i) => (
                             <div key={i}>
-                                <div className="flex justify-between items-start gap-4 mb-1">
-                                    <h3 className="text-sm font-bold">{intern.role}</h3>
-                                    <span className="text-xs shrink-0 text-left w-[96px]" style={{ color: theme.textMuted }}>
+                                <div className="mb-1 flex items-start justify-between gap-4">
+                                    <h3 className="text-[13px] font-bold leading-snug">{intern.role}</h3>
+                                    <span className="w-[96px] shrink-0 text-left text-[11px]" style={{ color: theme.textMuted }}>
                                         {formatResumeDateRange(intern.start, intern.end, data)}
                                     </span>
                                 </div>
-                                <p className="text-xs font-medium" style={{ color: theme.secondary }}>
+                                <p className="text-[12px] font-semibold" style={{ color: theme.secondary }}>
                                     {intern.company}{intern.location && ` | ${intern.location}`}
                                 </p>
                                 {intern.description && (
-                                    <p className="text-xs mt-1 leading-relaxed" style={{ color: theme.textMuted }}>
+                                    <p className="mt-1 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
                                         {intern.description}
                                     </p>
                                 )}
                                 {intern.highlights && intern.highlights.length > 0 && (
                                     <ul className="mt-2 space-y-1">
                                         {intern.highlights.map((highlight, hi) => (
-                                            <li key={hi} className="text-xs flex gap-2">
+                                            <li key={hi} className="flex gap-2 text-[11px] leading-relaxed">
                                                 <span style={{ color: theme.primary }}>•</span>
                                                 <span>{highlight}</span>
                                             </li>
@@ -197,7 +198,7 @@ export default function ClassicalTemplate({ data, theme }: TemplateProps) {
             {data.education.length > 0 && (
                 <div className="mb-5">
                     <h2
-                        className="text-sm font-bold uppercase tracking-wide mb-3 pb-1"
+                        className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.16em]"
                         style={{ color: theme.primary, borderBottom: `1px solid ${theme.border}` }}
                     >{resumeText(data, "education")}</h2>
                     <div className="space-y-3">

@@ -11,11 +11,11 @@ interface TemplateProps {
 // Skill level dots component (white version for dark sidebar)
 function SkillDots({ level }: { level: number }) {
     return (
-        <div className="flex gap-1">
+        <div className="flex gap-1.5">
             {[1, 2, 3, 4, 5].map((dot) => (
                 <div
                     key={dot}
-                    className="w-2 h-2 rounded-full"
+                    className="h-1.5 w-1.5 rounded-full"
                     style={{
                         backgroundColor: dot <= level ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.3)',
                     }}
@@ -32,17 +32,17 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
             style={{ color: theme.text }}
         >
             {/* Main Content - Left 65% */}
-            <div className="w-[65%] p-10 space-y-5">
+            <div className="w-[66%] p-9 space-y-6">
                 {/* Header */}
-                <div className="mb-6">
+                <div className="mb-7">
                     <h1
-                        className="text-3xl font-bold mb-1"
+                        className="mb-1 text-[34px] font-bold leading-tight tracking-tight"
                         style={{ color: theme.primary }}
                     >
                         {data.personal.name || resumeText(data, "nameFallback")}
                     </h1>
                     {data.personal.title && (
-                        <p className="text-lg" style={{ color: theme.textMuted }}>
+                        <p className="text-[15px] font-medium" style={{ color: theme.textMuted }}>
                             {data.personal.title}
                         </p>
                     )}
@@ -52,10 +52,10 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                 {data.personal.summary && (
                     <div>
                         <h2
-                            className="text-base font-bold uppercase tracking-wide mb-2 pb-1"
+                            className="mb-3 border-b-2 pb-2 text-xs font-bold uppercase tracking-[0.16em]"
                             style={{ borderBottom: `2px solid ${theme.primary}` }}
                         >{resumeText(data, "profile")}</h2>
-                        <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                        <p className="whitespace-pre-wrap text-[13px] leading-6">
                             {data.personal.summary}
                         </p>
                     </div>
@@ -65,32 +65,32 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                 {data.experience.length > 0 && (
                     <div>
                         <h2
-                            className="text-base font-bold uppercase tracking-wide mb-3 pb-1"
+                            className="mb-4 border-b-2 pb-2 text-xs font-bold uppercase tracking-[0.16em]"
                             style={{ borderBottom: `2px solid ${theme.primary}` }}
                         >{resumeText(data, "experience")}</h2>
                         <div className="space-y-4">
                             {data.experience.map((exp, i) => (
                                 <div key={i}>
-                                    <div className="flex justify-between items-baseline">
-                                        <h3 className="font-bold" style={{ color: theme.primary }}>
+                                    <div className="flex items-baseline justify-between gap-4">
+                                        <h3 className="text-[13px] font-bold leading-snug" style={{ color: theme.primary }}>
                                             {exp.role}
                                         </h3>
-                                        <span className="text-xs" style={{ color: theme.textMuted }}>
+                                        <span className="whitespace-nowrap text-[11px]" style={{ color: theme.textMuted }}>
                                             {exp.start} - {exp.end}
                                         </span>
                                     </div>
-                                    <p className="text-sm font-medium" style={{ color: theme.secondary }}>
+                                    <p className="mt-0.5 text-[12px] font-semibold" style={{ color: theme.secondary }}>
                                         {exp.company}{exp.location && ` • ${exp.location}`}
                                     </p>
                                     {exp.description && (
-                                        <p className="text-xs mt-2 leading-relaxed" style={{ color: theme.textMuted }}>
+                                        <p className="mt-2 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
                                             {exp.description}
                                         </p>
                                     )}
                                     {exp.highlights && exp.highlights.length > 0 && (
                                         <ul className="mt-2 space-y-1">
                                             {exp.highlights.map((highlight, hi) => (
-                                                <li key={hi} className="text-xs flex gap-2">
+                                                <li key={hi} className="flex gap-2 text-[11px] leading-relaxed">
                                                     <span style={{ color: theme.primary }}>▸</span>
                                                     <span>{highlight}</span>
                                                 </li>
@@ -107,32 +107,32 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                 {data.internships && data.internships.length > 0 && (
                     <div>
                         <h2
-                            className="text-base font-bold uppercase tracking-wide mb-3 pb-1"
+                            className="mb-4 border-b-2 pb-2 text-xs font-bold uppercase tracking-[0.16em]"
                             style={{ borderBottom: `2px solid ${theme.primary}` }}
                         >{resumeText(data, "internships")}</h2>
                         <div className="space-y-3">
                             {data.internships.map((intern, i) => (
                                 <div key={i}>
-                                    <div className="flex justify-between items-baseline">
-                                        <h3 className="font-bold text-sm" style={{ color: theme.primary }}>
+                                    <div className="flex items-baseline justify-between gap-4">
+                                        <h3 className="text-[13px] font-bold leading-snug" style={{ color: theme.primary }}>
                                             {intern.role}
                                         </h3>
-                                        <span className="text-xs" style={{ color: theme.textMuted }}>
+                                        <span className="whitespace-nowrap text-[11px]" style={{ color: theme.textMuted }}>
                                             {intern.start} - {intern.end}
                                         </span>
                                     </div>
-                                    <p className="text-sm" style={{ color: theme.secondary }}>
+                                    <p className="mt-0.5 text-[12px] font-semibold" style={{ color: theme.secondary }}>
                                         {intern.company}{intern.location && ` • ${intern.location}`}
                                     </p>
                                     {intern.description && (
-                                        <p className="text-xs mt-1 leading-relaxed" style={{ color: theme.textMuted }}>
+                                        <p className="mt-2 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
                                             {intern.description}
                                         </p>
                                     )}
                                     {intern.highlights && intern.highlights.length > 0 && (
                                         <ul className="mt-2 space-y-1">
                                             {intern.highlights.map((highlight, hi) => (
-                                                <li key={hi} className="text-xs flex gap-2">
+                                                <li key={hi} className="flex gap-2 text-[11px] leading-relaxed">
                                                     <span style={{ color: theme.primary }}>▸</span>
                                                     <span>{highlight}</span>
                                                 </li>
@@ -149,23 +149,23 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                 {data.education.length > 0 && (
                     <div>
                         <h2
-                            className="text-base font-bold uppercase tracking-wide mb-3 pb-1"
+                            className="mb-4 border-b-2 pb-2 text-xs font-bold uppercase tracking-[0.16em]"
                             style={{ borderBottom: `2px solid ${theme.primary}` }}
                         >{resumeText(data, "education")}</h2>
                         <div className="space-y-3">
                             {data.education.map((edu, i) => (
                                 <div key={i}>
-                                    <div className="flex justify-between items-baseline">
-                                        <h3 className="font-bold text-sm">{edu.degree}</h3>
-                                        <span className="text-xs" style={{ color: theme.textMuted }}>
+                                    <div className="flex items-baseline justify-between gap-4">
+                                        <h3 className="text-[13px] font-bold leading-snug">{edu.degree}</h3>
+                                        <span className="whitespace-nowrap text-[11px]" style={{ color: theme.textMuted }}>
                                             {edu.start} - {edu.end}
                                         </span>
                                     </div>
-                                    <p className="text-sm" style={{ color: theme.textMuted }}>
+                                    <p className="text-[12px]" style={{ color: theme.textMuted }}>
                                         {edu.school}{edu.location && `, ${edu.location}`}
                                     </p>
                                     {edu.description && (
-                                        <p className="text-xs mt-1 leading-relaxed" style={{ color: theme.textMuted }}>
+                                        <p className="mt-1 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
                                             {edu.description}
                                         </p>
                                     )}
@@ -179,12 +179,12 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                 {data.courses && data.courses.length > 0 && (
                     <div>
                         <h2
-                            className="text-base font-bold uppercase tracking-wide mb-3 pb-1"
+                            className="mb-4 border-b-2 pb-2 text-xs font-bold uppercase tracking-[0.16em]"
                             style={{ borderBottom: `2px solid ${theme.primary}` }}
                         >{resumeText(data, "courses")}</h2>
                         <div className="space-y-1">
                             {data.courses.map((course, i) => (
-                                <div key={i} className="flex justify-between text-sm">
+                                <div key={i} className="flex justify-between gap-4 text-[12px]">
                                     <span className="font-medium">{course.name}</span>
                                     <span style={{ color: theme.textMuted }}>
                                         {course.institution} • {course.year}
@@ -198,12 +198,12 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                 {data.awards && data.awards.length > 0 && (
                     <div>
                         <h2
-                            className="text-base font-bold uppercase tracking-wide mb-3 pb-1"
+                            className="mb-4 border-b-2 pb-2 text-xs font-bold uppercase tracking-[0.16em]"
                             style={{ borderBottom: `2px solid ${theme.primary}` }}
                         >{resumeText(data, "awards")}</h2>
                         <ul className="space-y-1">
                             {data.awards.map((award, i) => (
-                                <li key={i} className="text-sm flex items-start gap-2">
+                                <li key={i} className="flex items-start gap-2 text-[12px] leading-relaxed">
                                     <span style={{ color: theme.primary }}>▸</span>
                                     <span>{award}</span>
                                 </li>
@@ -213,9 +213,9 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                 )}
             </div>
 
-            {/* Sidebar - Right 35% */}
+            {/* Sidebar */}
             <div
-                className="w-[35%] p-6 space-y-5"
+                className="w-[34%] p-7 space-y-6"
                 style={{ backgroundColor: theme.primary, color: '#ffffff' }}
             >
                 {/* Photo or initials */}
@@ -224,12 +224,12 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
                         <img
                             src={data.personal.photo}
                             alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
-                            className="w-28 h-28 rounded-full object-cover border-4"
-                            style={{ borderColor: 'rgba(255,255,255,0.3)' }}
+                            className="h-24 w-24 rounded-full object-cover border-2"
+                            style={{ borderColor: 'rgba(255,255,255,0.55)' }}
                         />
                     ) : (
                         <div
-                            className="w-28 h-28 rounded-full flex items-center justify-center text-3xl font-bold"
+                            className="flex h-24 w-24 items-center justify-center rounded-full text-2xl font-bold"
                             style={{ backgroundColor: theme.background, color: theme.primary }}
                         >
                             {data.personal.name ? data.personal.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'CV'}
@@ -239,8 +239,8 @@ export default function FormalTemplate({ data, theme }: TemplateProps) {
 
                 {/* Personalia */}
                 <div>
-                    <h2 className="text-xs font-bold uppercase tracking-wider mb-3 opacity-90">{resumeText(data, "personalDetails")}</h2>
-                    <div className="space-y-2 text-xs opacity-90">
+                    <h2 className="mb-3 border-b border-white/25 pb-2 text-[11px] font-bold uppercase tracking-[0.18em] opacity-95">{resumeText(data, "personalDetails")}</h2>
+                    <div className="space-y-2.5 text-[11px] leading-relaxed opacity-95">
                         {data.personal.address && (
                             <div>
                                 <div className="font-semibold">{data.personal.address}</div>

@@ -10,11 +10,11 @@ interface TemplateProps {
 // Skill level dots component
 function SkillDots({ level, color }: { level: number; color: string }) {
     return (
-        <div className="flex gap-1">
+        <div className="flex gap-1.5">
             {[1, 2, 3, 4, 5].map((dot) => (
                 <div
                     key={dot}
-                    className="w-2 h-2 rounded-full"
+                    className="h-1.5 w-1.5 rounded-full"
                     style={{
                         backgroundColor: dot <= level ? color : '#e5e7eb',
                     }}
@@ -34,7 +34,7 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
             <div className="flex min-h-[297mm]">
                 {/* Left Sidebar - Personal Info */}
                 <div
-                    className="w-[35%] p-6 space-y-5"
+                    className="w-[33%] p-7 space-y-6"
                     style={{ backgroundColor: theme.headerBg || `${theme.primary}10` }}
                 >
                     {/* Photo or initials */}
@@ -43,12 +43,12 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                             <img
                                 src={data.personal.photo}
                                 alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
-                                className="w-28 h-28 rounded-full object-cover"
-                                style={{ border: `4px solid ${theme.primary}` }}
+                                className="h-24 w-24 rounded-full object-cover"
+                                style={{ border: `3px solid ${theme.primary}` }}
                             />
                         ) : (
                             <div
-                                className="w-28 h-28 rounded-full flex items-center justify-center text-white text-3xl font-bold"
+                                className="flex h-24 w-24 items-center justify-center rounded-full text-2xl font-bold text-white"
                                 style={{ backgroundColor: theme.primary }}
                             >
                                 {data.personal.name ? data.personal.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'CV'}
@@ -59,11 +59,11 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                     {/* Personalia Section */}
                     <div>
                         <h2
-                            className="text-xs font-bold uppercase tracking-widest pb-1 mb-3 flex items-center gap-2"
+                            className="mb-3 border-b pb-2 text-[11px] font-bold uppercase tracking-[0.18em]"
                             style={{ color: theme.primary }}
                         >
-                            <span>●</span>{resumeText(data, "personalDetails")}</h2>
-                        <div className="space-y-2 text-xs" style={{ color: theme.textMuted }}>
+                            {resumeText(data, "personalDetails")}</h2>
+                        <div className="space-y-2.5 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
                             {data.personal.address && (
                                 <div>
                                     <div className="font-semibold" style={{ color: theme.text }}>{data.personal.address}</div>
@@ -120,14 +120,14 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                     {data.skills.length > 0 && (
                         <div>
                             <h2
-                                className="text-xs font-bold uppercase tracking-widest pb-1 mb-3 flex items-center gap-2"
+                                className="mb-3 border-b pb-2 text-[11px] font-bold uppercase tracking-[0.18em]"
                                 style={{ color: theme.primary }}
                             >
-                                <span>●</span>{resumeText(data, "skills")}</h2>
-                            <div className="space-y-2">
+                                {resumeText(data, "skills")}</h2>
+                            <div className="space-y-2.5">
                                 {data.skills.map((skill, i) => (
-                                    <div key={i} className="flex justify-between items-center">
-                                        <span className="text-xs" style={{ color: theme.text }}>
+                                    <div key={i} className="flex items-center justify-between gap-3">
+                                        <span className="text-[11px] leading-snug" style={{ color: theme.text }}>
                                             {typeof skill === 'object' ? skill.name : skill}
                                         </span>
                                         <SkillDots
@@ -144,18 +144,18 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                     {data.languages.length > 0 && (
                         <div>
                             <h2
-                                className="text-xs font-bold uppercase tracking-widest pb-1 mb-3 flex items-center gap-2"
+                                className="mb-3 border-b pb-2 text-[11px] font-bold uppercase tracking-[0.18em]"
                                 style={{ color: theme.primary }}
                             >
-                                <span>●</span>{resumeText(data, "languages")}</h2>
-                            <div className="space-y-2">
+                                {resumeText(data, "languages")}</h2>
+                            <div className="space-y-2.5">
                                 {data.languages.map((lang, i) => (
                                     <div key={i}>
-                                        <div className="text-xs font-medium" style={{ color: theme.text }}>
+                                        <div className="text-[11px] font-medium" style={{ color: theme.text }}>
                                             {typeof lang === 'object' ? lang.name : lang}
                                         </div>
                                         {typeof lang === 'object' && lang.level && (
-                                            <div className="text-xs" style={{ color: theme.textMuted }}>{formatLanguageLevel(lang.level, data)}</div>
+                                            <div className="text-[11px]" style={{ color: theme.textMuted }}>{formatLanguageLevel(lang.level, data)}</div>
                                         )}
                                     </div>
                                 ))}
@@ -167,10 +167,10 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                     {data.interests && data.interests.length > 0 && (
                         <div>
                             <h2
-                                className="text-xs font-bold uppercase tracking-widest pb-1 mb-3 flex items-center gap-2"
+                                className="mb-3 border-b pb-2 text-[11px] font-bold uppercase tracking-[0.18em]"
                                 style={{ color: theme.primary }}
                             >
-                                <span>●</span>{resumeText(data, "interests")}</h2>
+                                {resumeText(data, "interests")}</h2>
                             <div className="flex flex-wrap gap-1">
                                 {data.interests.map((interest, i) => (
                                     <span
@@ -190,14 +190,14 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                 </div>
 
                 {/* Right Column - Main Content */}
-                <div className="flex-1 p-8 space-y-6">
+                <div className="flex-1 p-9 space-y-6">
                     {/* Header */}
-                    <div className="pb-4 border-b-2" style={{ borderColor: theme.primary }}>
-                        <h1 className="text-3xl font-bold" style={{ color: theme.primary }}>
+                    <div className="border-b-2 pb-5" style={{ borderColor: theme.primary }}>
+                        <h1 className="text-[34px] font-bold leading-tight tracking-tight" style={{ color: theme.primary }}>
                             {data.personal.name || resumeText(data, "nameFallback")}
                         </h1>
                         {data.personal.title && (
-                            <p className="text-lg mt-1" style={{ color: theme.textMuted }}>
+                            <p className="mt-2 text-[15px] font-medium" style={{ color: theme.textMuted }}>
                                 {data.personal.title}
                             </p>
                         )}
@@ -206,7 +206,7 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                     {/* Summary */}
                     {data.personal.summary && (
                         <div>
-                            <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                            <p className="whitespace-pre-wrap text-[13px] leading-6">
                                 {data.personal.summary}
                             </p>
                         </div>
@@ -216,33 +216,33 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                     {data.experience.length > 0 && (
                         <div>
                             <h2
-                                className="text-sm font-bold uppercase tracking-widest pb-1 mb-4 flex items-center gap-2"
+                                className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.18em]"
                                 style={{ color: theme.primary }}
                             >
-                                <span>●</span>{resumeText(data, "experience")}</h2>
+                                {resumeText(data, "experience")}</h2>
                             <div className="space-y-5">
                                 {data.experience.map((exp, i) => (
-                                    <div key={i} className="relative pl-4 border-l-2" style={{ borderColor: theme.primary }}>
-                                        <div className="flex justify-between items-start">
+                                    <div key={i} className="relative border-b pb-4 last:border-b-0 last:pb-0" style={{ borderColor: `${theme.primary}22` }}>
+                                        <div className="flex items-start justify-between gap-4">
                                             <div>
-                                                <h3 className="font-bold text-sm">{exp.role}</h3>
-                                                <div className="text-sm" style={{ color: theme.primary }}>
+                                                <h3 className="text-[13px] font-bold leading-snug">{exp.role}</h3>
+                                                <div className="mt-0.5 text-[12px] font-semibold" style={{ color: theme.primary }}>
                                                     {exp.company}{exp.location && `, ${exp.location}`}
                                                 </div>
                                             </div>
-                                            <span className="text-xs whitespace-nowrap" style={{ color: theme.textMuted }}>
+                                            <span className="whitespace-nowrap text-[11px]" style={{ color: theme.textMuted }}>
                                                 {exp.start} - {exp.end}
                                             </span>
                                         </div>
                                         {exp.description && (
-                                            <p className="text-xs mt-2 leading-relaxed" style={{ color: theme.textMuted }}>
+                                            <p className="mt-2 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
                                                 {exp.description}
                                             </p>
                                         )}
                                         {exp.highlights && exp.highlights.length > 0 && (
                                             <ul className="mt-2 space-y-1">
                                                 {exp.highlights.map((highlight, hi) => (
-                                                    <li key={hi} className="text-xs flex gap-2">
+                                                    <li key={hi} className="flex gap-2 text-[11px] leading-relaxed">
                                                         <span style={{ color: theme.primary }}>•</span>
                                                         <span>{highlight}</span>
                                                     </li>
@@ -259,33 +259,33 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                     {data.internships && data.internships.length > 0 && (
                         <div>
                             <h2
-                                className="text-sm font-bold uppercase tracking-widest pb-1 mb-4 flex items-center gap-2"
+                                className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.18em]"
                                 style={{ color: theme.primary }}
                             >
-                                <span>●</span>{resumeText(data, "internships")}</h2>
+                                {resumeText(data, "internships")}</h2>
                             <div className="space-y-4">
                                 {data.internships.map((intern, i) => (
-                                    <div key={i} className="relative pl-4 border-l-2" style={{ borderColor: theme.secondary || theme.primary }}>
-                                        <div className="flex justify-between items-start">
+                                    <div key={i} className="relative border-b pb-4 last:border-b-0 last:pb-0" style={{ borderColor: `${theme.primary}22` }}>
+                                        <div className="flex items-start justify-between gap-4">
                                             <div>
-                                                <h3 className="font-bold text-sm">{intern.role}</h3>
-                                                <div className="text-sm" style={{ color: theme.primary }}>
+                                                <h3 className="text-[13px] font-bold leading-snug">{intern.role}</h3>
+                                                <div className="mt-0.5 text-[12px] font-semibold" style={{ color: theme.primary }}>
                                                     {intern.company}{intern.location && `, ${intern.location}`}
                                                 </div>
                                             </div>
-                                            <span className="text-xs whitespace-nowrap" style={{ color: theme.textMuted }}>
+                                            <span className="whitespace-nowrap text-[11px]" style={{ color: theme.textMuted }}>
                                                 {intern.start} - {intern.end}
                                             </span>
                                         </div>
                                         {intern.description && (
-                                            <p className="text-xs mt-2 leading-relaxed" style={{ color: theme.textMuted }}>
+                                            <p className="mt-2 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
                                                 {intern.description}
                                             </p>
                                         )}
                                         {intern.highlights && intern.highlights.length > 0 && (
                                             <ul className="mt-2 space-y-1">
                                                 {intern.highlights.map((highlight, hi) => (
-                                                    <li key={hi} className="text-xs flex gap-2">
+                                                    <li key={hi} className="flex gap-2 text-[11px] leading-relaxed">
                                                         <span style={{ color: theme.primary }}>•</span>
                                                         <span>{highlight}</span>
                                                     </li>
@@ -302,26 +302,26 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                     {data.education.length > 0 && (
                         <div>
                             <h2
-                                className="text-sm font-bold uppercase tracking-widest pb-1 mb-4 flex items-center gap-2"
+                                className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.18em]"
                                 style={{ color: theme.primary }}
                             >
-                                <span>●</span>{resumeText(data, "education")}</h2>
+                                {resumeText(data, "education")}</h2>
                             <div className="space-y-4">
                                 {data.education.map((edu, i) => (
-                                    <div key={i} className="relative pl-4 border-l-2" style={{ borderColor: theme.primary }}>
-                                        <div className="flex justify-between items-start">
+                                    <div key={i} className="relative border-b pb-4 last:border-b-0 last:pb-0" style={{ borderColor: `${theme.primary}22` }}>
+                                        <div className="flex items-start justify-between gap-4">
                                             <div>
-                                                <h3 className="font-bold text-sm">{edu.degree}</h3>
-                                                <div className="text-sm" style={{ color: theme.primary }}>
+                                                <h3 className="text-[13px] font-bold leading-snug">{edu.degree}</h3>
+                                                <div className="mt-0.5 text-[12px] font-semibold" style={{ color: theme.primary }}>
                                                     {edu.school}{edu.location && `, ${edu.location}`}
                                                 </div>
                                             </div>
-                                            <span className="text-xs whitespace-nowrap" style={{ color: theme.textMuted }}>
+                                            <span className="whitespace-nowrap text-[11px]" style={{ color: theme.textMuted }}>
                                                 {edu.start} - {edu.end}
                                             </span>
                                         </div>
                                         {edu.description && (
-                                            <p className="text-xs mt-2 leading-relaxed" style={{ color: theme.textMuted }}>
+                                            <p className="mt-2 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
                                                 {edu.description}
                                             </p>
                                         )}
@@ -335,13 +335,13 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                     {data.courses && data.courses.length > 0 && (
                         <div>
                             <h2
-                                className="text-sm font-bold uppercase tracking-widest pb-1 mb-4 flex items-center gap-2"
+                                className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.18em]"
                                 style={{ color: theme.primary }}
                             >
-                                <span>●</span>{resumeText(data, "courses")}</h2>
+                                {resumeText(data, "courses")}</h2>
                             <div className="space-y-2">
                                 {data.courses.map((course, i) => (
-                                    <div key={i} className="flex justify-between text-sm">
+                                    <div key={i} className="flex justify-between gap-4 text-[12px]">
                                         <span className="font-medium">{course.name}</span>
                                         <span style={{ color: theme.textMuted }}>
                                             {course.institution} • {course.year}
@@ -355,13 +355,13 @@ export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
                     {data.awards && data.awards.length > 0 && (
                         <div>
                             <h2
-                                className="text-sm font-bold uppercase tracking-widest pb-1 mb-4 flex items-center gap-2"
+                                className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.18em]"
                                 style={{ color: theme.primary }}
                             >
-                                <span>●</span>{resumeText(data, "awards")}</h2>
+                                {resumeText(data, "awards")}</h2>
                             <ul className="space-y-2 ml-1">
                                 {data.awards.map((award, i) => (
-                                    <li key={i} className="text-sm flex items-start gap-2">
+                                    <li key={i} className="flex items-start gap-2 text-[12px] leading-relaxed">
                                         <span style={{ color: theme.primary }}>•</span>
                                         <span>{award}</span>
                                     </li>

@@ -12,6 +12,166 @@ const templateComponents = new Map(
   templateList.map((template) => [template.id, getTemplateComponent(template.id)]),
 );
 
+const previewPhoto = `data:image/svg+xml,${encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
+  <rect width="240" height="240" fill="#e8eef4"/>
+  <circle cx="120" cy="92" r="46" fill="#f8fbff"/>
+  <path d="M44 214c10-50 38-78 76-78s66 28 76 78" fill="#f8fbff"/>
+  <circle cx="120" cy="92" r="42" fill="#d9e3ee"/>
+  <path d="M57 214c10-42 33-64 63-64s53 22 63 64" fill="#c3d2e1"/>
+  <path d="M78 91c6-27 22-41 44-41 25 0 42 18 42 44 0 6-1 12-3 18-8-11-18-17-32-17-18 0-33-7-51-4Z" fill="#293241"/>
+</svg>
+`)}`;
+
+const dutchPreviewData: CVData = {
+  personal: {
+    name: "Sanne de Vries",
+    title: "Marketing Specialist",
+    resumeLanguage: "nl",
+    email: "sanne@example.com",
+    phone: "06 12345678",
+    location: "Utrecht",
+    address: "",
+    postalCode: "",
+    summary:
+      "Resultaatgerichte marketing specialist met ervaring in campagnes, content en analyse. Sterk in het vertalen van klantinzichten naar concrete acties en duidelijke rapportages.",
+    birthDate: "",
+    birthPlace: "",
+    nationality: "",
+    driversLicense: "",
+    gender: "",
+    maritalStatus: "",
+    linkedIn: "linkedin.com/in/sannedevries",
+    github: "",
+    website: "",
+    photo: previewPhoto,
+  },
+  experience: [
+    {
+      role: "Marketing Specialist",
+      company: "Nexa Digital",
+      location: "Amsterdam",
+      start: "2022",
+      end: "heden",
+      description: "",
+      highlights: [
+        "Ontwikkelde campagnes voor e-mail, social en landingspagina's met duidelijke KPI-rapportage.",
+        "Verbeterde conversie door A/B-tests en nauwe samenwerking met sales en design.",
+      ],
+    },
+  ],
+  education: [
+    {
+      degree: "HBO Communicatie",
+      school: "Hogeschool Utrecht",
+      location: "Utrecht",
+      start: "2017",
+      end: "2021",
+      description: "",
+    },
+  ],
+  skills: [
+    { name: "Campagnebeheer", level: 5 },
+    { name: "SEO", level: 4 },
+    { name: "Google Analytics", level: 4 },
+    { name: "Contentstrategie", level: 4 },
+  ],
+  languages: [
+    { name: "Nederlands", level: "Moedertaal" },
+    { name: "Engels", level: "Vloeiend" },
+  ],
+  internships: [],
+  interests: ["Content", "Data", "Design"],
+  properties: [],
+  courses: [],
+  awards: [],
+  references: [],
+  sideActivities: [],
+  customSections: [],
+};
+
+const englishPreviewData: CVData = {
+  personal: {
+    name: "Emma Johnson",
+    title: "Customer Success Specialist",
+    resumeLanguage: "en",
+    email: "emma@example.com",
+    phone: "+31 6 12345678",
+    location: "Rotterdam",
+    address: "",
+    postalCode: "",
+    summary:
+      "Customer success specialist with 4 years of experience supporting SaaS and e-commerce clients. Strong in onboarding, retention, ticket analysis and clear stakeholder communication.",
+    birthDate: "",
+    birthPlace: "",
+    nationality: "",
+    driversLicense: "",
+    gender: "",
+    maritalStatus: "",
+    linkedIn: "linkedin.com/in/emmajohnson",
+    github: "",
+    website: "",
+    photo: previewPhoto,
+  },
+  experience: [
+    {
+      role: "Customer Success Specialist",
+      company: "Northstar Software",
+      location: "Amsterdam",
+      start: "2022",
+      end: "present",
+      description: "",
+      highlights: [
+        "Managed onboarding and adoption for international B2B clients across email, calls and product training.",
+        "Reduced repeated support questions by improving help-centre content and customer handover notes.",
+      ],
+    },
+  ],
+  education: [
+    {
+      degree: "BA International Business",
+      school: "Rotterdam University of Applied Sciences",
+      location: "Rotterdam",
+      start: "2017",
+      end: "2021",
+      description: "",
+    },
+  ],
+  skills: [
+    { name: "Customer onboarding", level: 5 },
+    { name: "Zendesk", level: 4 },
+    { name: "HubSpot", level: 4 },
+    { name: "Reporting", level: 4 },
+  ],
+  languages: [
+    { name: "English", level: "Fluent" },
+    { name: "Dutch", level: "Basic" },
+  ],
+  internships: [],
+  interests: ["SaaS", "Customer research", "Process improvement"],
+  properties: [],
+  courses: [],
+  awards: [],
+  references: [],
+  sideActivities: [],
+  customSections: [],
+};
+
+function isEmptyCv(data: CVData) {
+  return (
+    !data.personal.name?.trim() &&
+    !data.personal.title?.trim() &&
+    !data.personal.email?.trim() &&
+    !data.personal.phone?.trim() &&
+    !data.personal.location?.trim() &&
+    !data.personal.summary?.trim() &&
+    data.experience.length === 0 &&
+    data.education.length === 0 &&
+    data.skills.length === 0 &&
+    data.languages.length === 0
+  );
+}
+
 interface TemplateSelectorProps {
   currentTemplateId: string;
   data: CVData;
@@ -29,6 +189,11 @@ export default function TemplateSelector({
   const [isOpen, setIsOpen] = useState(false);
 
   const currentTemplate = templateList.find((template) => template.id === currentTemplateId);
+  const previewData = isEmptyCv(data)
+    ? isEnglish
+      ? englishPreviewData
+      : dutchPreviewData
+    : data;
 
   return (
     <>
@@ -76,7 +241,7 @@ export default function TemplateSelector({
                   <TemplateCard
                     key={template.id}
                     template={template}
-                    data={data}
+                    data={previewData}
                     uiLanguage={uiLanguage}
                     isSelected={template.id === currentTemplateId}
                     onSelect={() => {

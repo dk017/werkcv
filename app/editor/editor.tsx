@@ -288,6 +288,7 @@ export default function Editor({
         ? [
             `One-time ${cvDownloadPrice.display.replace(",", ".")} payment for this CV`,
             "No subscription or automatic renewal",
+            "No trial and no recurring charge",
             "You only pay for this PDF download",
             "Edit this CV later and re-download it for free",
             "Professional PDF available immediately",
@@ -295,6 +296,7 @@ export default function Editor({
         : [
             `Eenmalig ${cvDownloadPrice.display} voor dit CV`,
             "Geen abonnement of automatische verlenging",
+            "Geen proefperiode en geen terugkerende kosten",
             "Je betaalt alleen voor deze PDF-download",
             "Dit CV later gratis aanpassen en opnieuw downloaden",
             "Professionele PDF direct beschikbaar",
@@ -585,13 +587,19 @@ export default function Editor({
         }
     }, [completionScore, completionState.isReady, completionState.steps, id]);
 
+    const highlightTemplateSwitcher = () => {
+        setShowTemplateHint(true);
+        setTimeout(() => setShowTemplateHint(false), 5000);
+        if (typeof window !== "undefined") {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    };
+
     const handleDismissOnboarding = () => {
         setShowOnboarding(false);
         localStorage.setItem('werkcv-onboarding-dismissed', 'true');
         track('onboarding_dismissed', { action: 'start_typing' });
-        // Show template hint after dismissing
-        setShowTemplateHint(true);
-        setTimeout(() => setShowTemplateHint(false), 5000);
+        highlightTemplateSwitcher();
     };
 
     const handleOnboardingUpload = () => {
@@ -1050,7 +1058,10 @@ export default function Editor({
                                             {tr("Je CV is compleet genoeg om te versturen.", "Your CV is ready to send.")}
                                         </h2>
                                         <p className="mt-1 text-sm font-medium text-slate-600">
-                                            {tr("Download je PDF wanneer je tevreden bent. Geen abonnement of automatische verlenging.", "Download your PDF when you are happy with it. No subscription or automatic renewal.")}
+                                            {tr(
+                                                `Download je PDF wanneer je tevreden bent. Eenmalig ${cvDownloadPrice.display}. Geen abonnement. Geen automatische verlenging.`,
+                                                `Download your PDF when you are happy with it. One-time ${cvDownloadPrice.display.replace(",", ".")}. No subscription. No automatic renewal.`
+                                            )}
                                         </p>
                                     </div>
                                     <button
@@ -1284,6 +1295,36 @@ export default function Editor({
                             </div>
 
                             <div className="mt-5 grid gap-4">
+                                {isReadyToDownload ? (
+                                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                                            <div>
+                                                <p className="text-sm font-semibold text-slate-950">
+                                                    {tr("Twijfel je over de opmaak?", "Not sure about the design?")}
+                                                </p>
+                                                <p className="mt-1 text-xs font-medium leading-relaxed text-slate-600">
+                                                    {tr(
+                                                        "Wissel gratis van template of kleur voordat je betaalt. De inhoud blijft behouden.",
+                                                        "Switch template or color for free before paying. Your content stays intact."
+                                                    )}
+                                                </p>
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    track("cta_clicked", {
+                                                        location: "editor_final_check_template_prompt",
+                                                        label: "switch_template_before_download",
+                                                    });
+                                                    highlightTemplateSwitcher();
+                                                }}
+                                                className="inline-flex shrink-0 items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-xs font-black text-slate-800 hover:bg-slate-100"
+                                            >
+                                                {tr("Template bekijken", "Review templates")}
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : null}
                                 <CvScoreWidget data={data} uiLanguage={uiLanguage} />
                                 <KeywordScannerWidget
                                     data={data}
@@ -1540,8 +1581,8 @@ export default function Editor({
                             </h3>
                             <p className="mt-2 max-w-2xl text-sm font-medium leading-relaxed text-slate-700">
                                 {tr(
-                                    `Download je PDF voor eenmalig ${cvDownloadPrice.display}. Geen abonnement, geen automatische verlenging.`,
-                                    `Download your Dutch-market English CV PDF for a one-time ${cvDownloadPrice.display.replace(",", ".")} payment. No subscription, no automatic renewal.`
+                                    `Download je PDF voor eenmalig ${cvDownloadPrice.display}. Geen abonnement. Geen automatische verlenging. Geen proefperiode.`,
+                                    `Download your Dutch-market English CV PDF for a one-time ${cvDownloadPrice.display.replace(",", ".")} payment. No subscription. No automatic renewal. No trial.`
                                 )}
                             </p>
                         </div>
@@ -1553,7 +1594,10 @@ export default function Editor({
                                         <div>
                                             <p className="text-xl font-black text-black">{tr("Alleen CV als PDF", "CV PDF only")}</p>
                                             <p className="mt-1 text-sm font-semibold leading-relaxed text-slate-700">
-                                                {tr("Voor als je nu alleen deze sollicitatie-PDF nodig hebt.", "For when you only need this Dutch-market application PDF now.")}
+                                                {tr(
+                                                    "Eenmalig betalen voor deze PDF. Geen maandbedrag, geen automatische verlenging.",
+                                                    "One-time payment for this PDF. No monthly charge, no automatic renewal."
+                                                )}
                                             </p>
                                         </div>
                                         <div className="shrink-0 text-right">
@@ -1565,8 +1609,8 @@ export default function Editor({
                                     </div>
                                     <div className="mt-4 grid gap-2 text-xs font-bold text-slate-800 sm:grid-cols-3">
                                         <span className="border border-black/15 bg-white px-2 py-2">{tr("Directe PDF-download", "Immediate PDF download")}</span>
-                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Later opnieuw downloaden", "Download again later")}</span>
                                         <span className="border border-black/15 bg-white px-2 py-2">{tr("Geen abonnement", "No subscription")}</span>
+                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Geen automatische verlenging", "No automatic renewal")}</span>
                                     </div>
                                     <button
                                         onClick={() => handleCheckoutOptionClick("cv-download")}
@@ -1610,8 +1654,8 @@ export default function Editor({
 
                             <div className="mb-5 rounded-md border border-slate-300 bg-white px-3 py-3 text-xs font-semibold text-slate-700">
                                 {tr(
-                                    "Betaal pas als je klaar bent met downloaden. Je CV blijft beschikbaar om later opnieuw te openen en opnieuw te downloaden.",
-                                    "Only pay when you are ready to download. Your CV stays available so you can open and download it again later."
+                                    `Betaal pas als je klaar bent met downloaden: eenmalig ${cvDownloadPrice.display} voor deze CV-PDF. Je CV blijft beschikbaar om later opnieuw te openen en opnieuw te downloaden.`,
+                                    `Only pay when you are ready to download: one-time ${cvDownloadPrice.display.replace(",", ".")} for this CV PDF. Your CV stays available so you can open and download it again later.`
                                 )}
                             </div>
 
