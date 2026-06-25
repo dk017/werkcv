@@ -423,8 +423,8 @@ export default function HomePageClient() {
                         <Link href="/tools" className="hover:text-yellow-600 transition-colors">Tools</Link>
                         <Link href="/prijzen" className="hover:text-yellow-600 transition-colors">Prijzen</Link>
                     </nav>
-                    <div className="flex items-center gap-4">
-                        <LanguageSwitcher tone="solid" className="hidden sm:inline-flex" />
+                    <div className="flex items-center gap-2 sm:gap-4">
+                        <LanguageSwitcher tone="solid" className="inline-flex" />
                         <NavUserMenu />
                         <Link
                             href="/templates"
