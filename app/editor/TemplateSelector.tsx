@@ -277,10 +277,10 @@ export default function TemplateSelector({
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-4 pt-16 sm:pt-20">
           <div className="absolute inset-0 bg-black/50" onClick={() => setIsOpen(false)} />
 
-          <div className="relative flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
+          <div className="relative flex max-h-[calc(100vh-5rem)] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:max-h-[calc(100vh-6rem)]">
             <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
               <h2 className="text-xl font-bold text-gray-900">
                 {isEnglish ? "Choose a template" : "Kies een template"}
@@ -344,7 +344,7 @@ function TemplateCard({
         isSelected ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:border-gray-300"
       }`}
     >
-      <div className="mb-2 flex h-[200px] items-start justify-center overflow-hidden rounded-lg border border-gray-100 bg-gray-50">
+      <div className="mb-2 flex h-[200px] items-center justify-center overflow-hidden rounded-lg border border-gray-100 bg-gray-50">
         <div style={{ zoom: 0.22, pointerEvents: "none", flexShrink: 0 }}>
           <LinkTextProvider disableAnchors>
             {createElement(TemplateComponent, { data, theme })}
