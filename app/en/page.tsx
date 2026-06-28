@@ -4,6 +4,7 @@ import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import EnglishRoleExampleBand from "./components/EnglishRoleExampleBand";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import Footer from "@/components/Footer";
 
 export const metadata = buildEnglishMetadata({
   title: "Netherlands CV Format: Dutch CV Template in English",
@@ -494,6 +495,7 @@ export default function EnglishHubPage() {
           </Link>
         </div>
       </section>
+      <Footer uiLanguage="en" />
       <MobileStickyCta
         text="Start free. Pay only for the PDF."
         buttonLabel="Build my CV"
