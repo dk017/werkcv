@@ -9,6 +9,8 @@ type FeaturedBadge = {
     width: number;
     height: number;
     padded?: boolean;
+    dataBadge?: string;
+    dataBadgeVariant?: string;
 };
 
 const mainLinks = [
@@ -141,6 +143,15 @@ const featuredBadges: FeaturedBadge[] = [
         width: 160,
         height: 54,
     },
+    {
+        href: "https://launchpadly.co/startup/werkcv",
+        src: "https://launchpadly.co/embed/badges/startup/werkcv.svg?variant=listed-on",
+        alt: "Launchpadly Startup Directory",
+        width: 260,
+        height: 48,
+        dataBadge: "werkcv",
+        dataBadgeVariant: "listed-on",
+    },
 ];
 
 export default function Footer({ uiLanguage = "nl" }: { uiLanguage?: UiLanguage }) {
@@ -216,6 +227,8 @@ export default function Footer({ uiLanguage = "nl" }: { uiLanguage?: UiLanguage 
                                 href={badge.href}
                                 target="_blank"
                                 rel="noopener noreferrer"
+                                data-launchpadly-badge={badge.dataBadge}
+                                data-launchpadly-badge-variant={badge.dataBadgeVariant}
                                 className={`inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 ${badge.padded ? "items-center p-2" : ""}`}
                             >
                                 <Image
@@ -223,7 +236,7 @@ export default function Footer({ uiLanguage = "nl" }: { uiLanguage?: UiLanguage 
                                     alt={badge.alt}
                                     width={badge.width}
                                     height={badge.height}
-                                    className={`block h-auto ${badge.width === 139 ? "w-[139px]" : badge.width === 150 ? "w-[150px]" : badge.width === 160 ? "w-[160px]" : "w-[170px]"}`}
+                                    className={`block h-auto max-w-full ${badge.width === 139 ? "w-[139px]" : badge.width === 150 ? "w-[150px]" : badge.width === 160 ? "w-[160px]" : badge.width === 260 ? "w-[260px]" : "w-[170px]"}`}
                                     unoptimized
                                 />
                             </a>
