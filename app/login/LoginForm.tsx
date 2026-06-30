@@ -27,6 +27,10 @@ const loginCopy = {
     exampleEyebrow: "Je voorbeeld staat klaar",
     exampleTitle: "Sla dit voorbeeld op en open de editor",
     exampleIntro: "Stuur jezelf een eenmalige code. Daarna zetten we dit voorbeeld direct klaar in jouw CV-editor.",
+    resumeEyebrow: "Je PDF-upload staat klaar",
+    resumeTitle: "Log in en ga verder met je PDF",
+    resumeIntro: "Na het inloggen ga je terug naar de vertaler. Selecteer daar je PDF om direct verder te gaan.",
+    resumeVerify: "Ga verder met PDF uploaden",
   },
   en: {
     eyebrow: "Your CV editor is ready",
@@ -48,6 +52,10 @@ const loginCopy = {
     exampleEyebrow: "Your example is ready",
     exampleTitle: "Save this example and open the editor",
     exampleIntro: "Send yourself a one-time code. Then we will open this example directly in your CV editor.",
+    resumeEyebrow: "Your PDF upload is ready",
+    resumeTitle: "Sign in and continue with your PDF",
+    resumeIntro: "After sign-in, you’ll return to the translator. Select your PDF there to continue immediately.",
+    resumeVerify: "Continue PDF upload",
   },
 };
 
@@ -73,6 +81,22 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
     next.includes("startSource=example_page") ||
     next.includes("startSource=example_blank_template") ||
     next.includes("startSource=english_example_page");
+  const isResumeUpload = next.includes("resumeUpload=continue");
+  const eyebrow = isExampleStart
+    ? copy.exampleEyebrow
+    : isResumeUpload
+      ? copy.resumeEyebrow
+      : copy.eyebrow;
+  const title = isExampleStart
+    ? copy.exampleTitle
+    : isResumeUpload
+      ? copy.resumeTitle
+      : copy.title;
+  const intro = isExampleStart
+    ? copy.exampleIntro
+    : isResumeUpload
+      ? copy.resumeIntro
+      : copy.intro;
 
   useEffect(() => {
     if (loginViewTrackedRef.current) return;
@@ -163,13 +187,13 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
             Werk<span className="bg-emerald-200 px-1 rounded-sm">CV</span>.nl
           </Link>
           <p className="mt-5 text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-700">
-            {isExampleStart ? copy.exampleEyebrow : copy.eyebrow}
+            {eyebrow}
           </p>
           <h1 className="text-xl font-semibold text-slate-900 mt-3">
-            {isExampleStart ? copy.exampleTitle : copy.title}
+            {title}
           </h1>
           <p className="text-sm text-slate-600 mt-1">
-            {isExampleStart ? copy.exampleIntro : copy.intro}
+            {intro}
           </p>
           <div className="mt-4 grid grid-cols-3 gap-2">
             {copy.proof.map((item) => (
@@ -231,7 +255,7 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
               disabled={loading}
               className="w-full bg-emerald-600 text-white py-2.5 rounded-md font-semibold border border-emerald-700 hover:bg-emerald-700 transition-colors disabled:opacity-60"
             >
-              {loading ? copy.sending : copy.verify}
+              {loading ? copy.sending : isResumeUpload ? copy.resumeVerify : copy.verify}
             </button>
             <button
               type="button"

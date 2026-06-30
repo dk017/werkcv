@@ -26,8 +26,7 @@ import WelcomeOnboarding from "./WelcomeOnboarding";
 import CvScoreWidget from "./CvScoreWidget";
 import KeywordScannerWidget from "./KeywordScannerWidget";
 import PhotoUpload from "./PhotoUpload";
-import type { CheckoutProduct } from "@/lib/polar";
-import { applicationBundlePrice, cvDownloadPrice } from "@/lib/site-content";
+import { cvDownloadPrice } from "@/lib/site-content";
 import {
     hasCompletionTracked,
     hasEditorStartedTracked,
@@ -60,13 +59,10 @@ const DESKTOP_PREVIEW_SCALE = 0.58;
 const MOBILE_PREVIEW_SCALE = 0.44;
 const A4_WIDTH_PX = 794;
 const A4_HEIGHT_PX = 1123;
-const CHECKOUT_EXPERIMENT_STORAGE_KEY = 'werkcv_checkout_variant_v1';
-const CHECKOUT_EXPERIMENT_TRACKED_PREFIX = 'werkcv_checkout_variant_tracked_';
 const READY_TO_DOWNLOAD_TRACKED_PREFIX = 'werkcv_ready_to_download_tracked_';
+const CHECKOUT_FLOW_VARIANT = 'direct' as const;
 
 type AtsLanguageLock = 'auto' | 'nl' | 'en';
-type CheckoutModalCloseReason = 'later_button' | 'close_button' | 'overlay';
-type CheckoutExperimentVariant = 'modal' | 'direct';
 type DownloadSource = 'toolbar' | 'ready_panel' | 'post_completion_tools';
 type OptionalSectionId =
     | 'internships'
@@ -77,26 +73,6 @@ type OptionalSectionId =
     | 'references'
     | 'sideActivities'
     | 'customSections';
-
-function isCheckoutExperimentVariant(value: string | null): value is CheckoutExperimentVariant {
-    return value === 'modal' || value === 'direct';
-}
-
-function resolveCheckoutExperimentVariant(): CheckoutExperimentVariant {
-    const params = new URLSearchParams(window.location.search);
-    const forcedVariant = params.get('checkout');
-    if (isCheckoutExperimentVariant(forcedVariant)) {
-        window.localStorage.setItem(CHECKOUT_EXPERIMENT_STORAGE_KEY, forcedVariant);
-        return forcedVariant;
-    }
-
-    const storedVariant = window.localStorage.getItem(CHECKOUT_EXPERIMENT_STORAGE_KEY);
-    if (isCheckoutExperimentVariant(storedVariant)) return storedVariant;
-
-    const assignedVariant: CheckoutExperimentVariant = Math.random() < 0.5 ? 'modal' : 'direct';
-    window.localStorage.setItem(CHECKOUT_EXPERIMENT_STORAGE_KEY, assignedVariant);
-    return assignedVariant;
-}
 
 function getEditorSearchContext() {
     if (typeof window === 'undefined') return {};
@@ -284,23 +260,6 @@ export default function Editor({
         { value: "Samenwonend", label: tr("Samenwonend", "Cohabiting") },
         { value: "Gescheiden", label: tr("Gescheiden", "Divorced") },
     ];
-    const checkoutBenefits = isEnglish
-        ? [
-            `One-time ${cvDownloadPrice.display.replace(",", ".")} payment for this CV`,
-            "No subscription or automatic renewal",
-            "No trial and no recurring charge",
-            "You only pay for this PDF download",
-            "Edit this CV later and re-download it for free",
-            "Professional PDF available immediately",
-        ]
-        : [
-            `Eenmalig ${cvDownloadPrice.display} voor dit CV`,
-            "Geen abonnement of automatische verlenging",
-            "Geen proefperiode en geen terugkerende kosten",
-            "Je betaalt alleen voor deze PDF-download",
-            "Dit CV later gratis aanpassen en opnieuw downloaden",
-            "Professionele PDF direct beschikbaar",
-        ];
     const supportNotifiedMessage = tr(
         "We hebben een technisch probleem aan onze kant gedetecteerd. Ons team is op de hoogte en bekijkt dit zo snel mogelijk. Als het nodig is, nemen we contact op via je e-mailadres.",
         "We hit a technical issue on our side. Our team has been notified and will review it shortly. If needed, we will contact you at your email address."
@@ -345,15 +304,12 @@ export default function Editor({
     const [mobilePreviewScale, setMobilePreviewScale] = useState(MOBILE_PREVIEW_SCALE);
     const [showOnboarding, setShowOnboarding] = useState(false);
     const [showTemplateHint, setShowTemplateHint] = useState(false);
-    const [showCheckoutModal, setShowCheckoutModal] = useState(false);
-    const [checkoutExperimentVariant, setCheckoutExperimentVariant] = useState<CheckoutExperimentVariant>('modal');
     const [visibleOptionalSections, setVisibleOptionalSections] = useState<Record<OptionalSectionId, boolean>>(
         () => deriveVisibleOptionalSections(normalizedInitialData)
     );
     const [showAdditionalPersonalDetails, setShowAdditionalPersonalDetails] = useState(
         () => hasAdditionalPersonalDetails(normalizedInitialData)
     );
-    const [isCheckoutRedirecting, setIsCheckoutRedirecting] = useState(false);
     const [isAtsRewriting, setIsAtsRewriting] = useState(false);
     const [atsTargetRole, setAtsTargetRole] = useState(initialData.personal.title || '');
     const [targetVacancy, setTargetVacancy] = useState('');
@@ -422,22 +378,6 @@ export default function Editor({
 
         void applyPendingExample();
     }, [id, initialColorThemeId, initialTemplateId, reset, uiLanguage]);
-
-    useEffect(() => {
-        const variant = resolveCheckoutExperimentVariant();
-        setCheckoutExperimentVariant(variant);
-
-        const trackedKey = `${CHECKOUT_EXPERIMENT_TRACKED_PREFIX}${id}`;
-        if (window.sessionStorage.getItem(trackedKey)) return;
-        track('checkout_experiment_assigned', {
-            cvId: id,
-            variant,
-            uiLanguage,
-            templateId,
-            ...getEditorSearchContext(),
-        });
-        window.sessionStorage.setItem(trackedKey, '1');
-    }, [id, templateId, uiLanguage]);
 
     useEffect(() => {
         const storedVacancy = window.sessionStorage.getItem(getTargetVacancySessionKey(id));
@@ -515,41 +455,6 @@ export default function Editor({
         });
         markEditorStartedTracked(id);
     }, [id, templateId, uiLanguage]);
-
-    useEffect(() => {
-        if (!showCheckoutModal) return;
-        track('checkout_modal_viewed', {
-            cvId: id,
-            source: 'pdf_download',
-            variant: checkoutExperimentVariant,
-            experimentVariant: checkoutExperimentVariant,
-            templateId,
-            uiLanguage,
-            ...getEditorSearchContext(),
-        });
-        track('checkout_option_viewed', {
-            cvId: id,
-            product: "cv-profile-photo-bundle",
-            amountCents: applicationBundlePrice.amountCents,
-            uiLanguage,
-            recommended: true,
-            variant: checkoutExperimentVariant,
-            experimentVariant: checkoutExperimentVariant,
-            templateId,
-            ...getEditorSearchContext(),
-        });
-        track('checkout_option_viewed', {
-            cvId: id,
-            product: "cv-download",
-            amountCents: cvDownloadPrice.amountCents,
-            uiLanguage,
-            recommended: false,
-            variant: checkoutExperimentVariant,
-            experimentVariant: checkoutExperimentVariant,
-            templateId,
-            ...getEditorSearchContext(),
-        });
-    }, [checkoutExperimentVariant, showCheckoutModal, id, templateId, uiLanguage]);
 
     useEffect(() => {
         const milestones: Array<25 | 50 | 75 | 100> = [25, 50, 75, 100];
@@ -711,24 +616,20 @@ export default function Editor({
         track('cv_uploaded', { cvId: id, fileType: 'parsed', templateId, entryMethod: 'upload' });
     };
 
-    const startCheckout = async (checkoutProduct: CheckoutProduct = "cv-download") => {
-        setIsCheckoutRedirecting(true);
-        const amountCents = checkoutProduct === "cv-profile-photo-bundle"
-            ? applicationBundlePrice.amountCents
-            : cvDownloadPrice.amountCents;
+    const startCheckout = async () => {
         const checkoutEventContext = {
             cvId: id,
-            product: checkoutProduct,
-            amountCents,
-            variant: checkoutExperimentVariant,
-            experimentVariant: checkoutExperimentVariant,
+            product: "cv-download" as const,
+            amountCents: cvDownloadPrice.amountCents,
+            variant: CHECKOUT_FLOW_VARIANT,
+            experimentVariant: CHECKOUT_FLOW_VARIANT,
             templateId,
             uiLanguage,
             ...getEditorSearchContext(),
         };
         track('checkout_start', checkoutEventContext);
         try {
-            const checkoutResult = await getCheckoutURL(id, undefined, [], checkoutProduct);
+            const checkoutResult = await getCheckoutURL(id, undefined, [], "cv-download");
             if (!checkoutResult.ok) {
                 track('checkout_failed', {
                     ...checkoutEventContext,
@@ -738,7 +639,6 @@ export default function Editor({
                     "Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.",
                     "Payment could not be started. Check the payment configuration and try again."
                 ));
-                setIsCheckoutRedirecting(false);
                 return;
             }
             track('checkout_started', checkoutEventContext);
@@ -749,36 +649,7 @@ export default function Editor({
                 reason: getCheckoutFailureReason(error),
             });
             alert(tr("Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.", "Payment could not be started. Check the payment configuration and try again."));
-            setIsCheckoutRedirecting(false);
         }
-    };
-
-    const handleCheckoutOptionClick = (checkoutProduct: CheckoutProduct) => {
-        const isBundle = checkoutProduct === "cv-profile-photo-bundle";
-        const amountCents = isBundle ? applicationBundlePrice.amountCents : cvDownloadPrice.amountCents;
-        const ctaText = isBundle
-            ? tr(`Kies CV + profielfoto voor ${applicationBundlePrice.display}`, `Choose CV + profile photo for ${applicationBundlePrice.display.replace(",", ".")}`)
-            : tr(`Alleen CV downloaden voor ${cvDownloadPrice.display}`, `Download CV only for ${cvDownloadPrice.display.replace(",", ".")}`);
-
-        track('checkout_option_clicked', {
-            cvId: id,
-            product: checkoutProduct,
-            amountCents,
-            uiLanguage,
-            recommended: isBundle,
-            ctaText,
-            variant: checkoutExperimentVariant,
-            experimentVariant: checkoutExperimentVariant,
-            templateId,
-            ...getEditorSearchContext(),
-        });
-        startCheckout(checkoutProduct);
-    };
-
-    const closeCheckoutModal = (reason: CheckoutModalCloseReason) => {
-        if (isCheckoutRedirecting) return;
-        track('checkout_modal_closed', { cvId: id, reason });
-        setShowCheckoutModal(false);
     };
 
     const scrollToCompletionStep = (step: CompletionStep) => {
@@ -874,19 +745,15 @@ export default function Editor({
                 if (errorData?.code === 'PAYMENT_REQUIRED') {
                     track('checkout_paywall_reached', {
                         cvId: id,
-                        variant: checkoutExperimentVariant,
-                        experimentVariant: checkoutExperimentVariant,
+                        variant: CHECKOUT_FLOW_VARIANT,
+                        experimentVariant: CHECKOUT_FLOW_VARIANT,
                         source,
                         completionScore,
                         templateId,
                         uiLanguage,
                         ...getEditorSearchContext(),
                     });
-                    if (checkoutExperimentVariant === 'direct') {
-                        await startCheckout('cv-download');
-                    } else {
-                        setShowCheckoutModal(true);
-                    }
+                    await startCheckout();
                 } else if (errorData?.code === 'PDF_ERROR') {
                     alert(errorData?.supportNotified
                         ? supportNotifiedMessage
@@ -1548,132 +1415,6 @@ export default function Editor({
                                     ))}
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Checkout Modal */}
-            {showCheckoutModal && (
-                <div
-                    className="fixed inset-0 z-50 bg-black/55 flex items-center justify-center p-4"
-                    onClick={() => closeCheckoutModal('overlay')}
-                >
-                    <div
-                        className="max-h-[92vh] w-full max-w-3xl overflow-y-auto bg-white border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
-                        onClick={(event) => event.stopPropagation()}
-                    >
-                        <div className="border-b-4 border-black bg-[#FFF3BF] px-5 py-5 sm:px-6">
-                            <div className="flex items-start justify-between gap-3">
-                                <div className="inline-flex items-center gap-2 border-2 border-black bg-white px-2.5 py-1 text-[11px] font-black uppercase tracking-wide text-black">
-                                    {tr("Eenmalige betaling", "One-time payment")}
-                                </div>
-                                <button
-                                    type="button"
-                                    onClick={() => closeCheckoutModal('close_button')}
-                                    disabled={isCheckoutRedirecting}
-                                    className="flex h-9 w-9 items-center justify-center border-2 border-black bg-white text-lg font-black text-black hover:bg-gray-100 disabled:opacity-60 disabled:cursor-not-allowed"
-                                    aria-label={tr("Sluit betalingsoverzicht", "Close payment summary")}
-                                >
-                                    ×
-                                </button>
-                            </div>
-                            <h3 className="mt-4 text-2xl font-black text-black sm:text-[2rem]">
-                                {tr("Je CV is klaar om te downloaden.", "Your CV is ready to download.")}
-                            </h3>
-                            <p className="mt-2 max-w-2xl text-sm font-medium leading-relaxed text-slate-700">
-                                {tr(
-                                    `Download je PDF voor eenmalig ${cvDownloadPrice.display}. Geen abonnement. Geen automatische verlenging. Geen proefperiode.`,
-                                    `Download your Dutch-market English CV PDF for a one-time ${cvDownloadPrice.display.replace(",", ".")} payment. No subscription. No automatic renewal. No trial.`
-                                )}
-                            </p>
-                        </div>
-
-                        <div className="px-5 py-5 sm:px-6">
-                            <div className="mb-5 space-y-4">
-                                <div className="border-4 border-black bg-[#E9FFFC] p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-                                    <div className="flex items-start justify-between gap-4">
-                                        <div>
-                                            <p className="text-xl font-black text-black">{tr("Alleen CV als PDF", "CV PDF only")}</p>
-                                            <p className="mt-1 text-sm font-semibold leading-relaxed text-slate-700">
-                                                {tr(
-                                                    "Eenmalig betalen voor deze PDF. Geen maandbedrag, geen automatische verlenging.",
-                                                    "One-time payment for this PDF. No monthly charge, no automatic renewal."
-                                                )}
-                                            </p>
-                                        </div>
-                                        <div className="shrink-0 text-right">
-                                            <p className="text-4xl font-black text-black">{cvDownloadPrice.display}</p>
-                                            <p className="text-[11px] font-black uppercase tracking-wide text-slate-600">
-                                                {tr("eenmalig", "one-time")}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div className="mt-4 grid gap-2 text-xs font-bold text-slate-800 sm:grid-cols-3">
-                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Directe PDF-download", "Immediate PDF download")}</span>
-                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Geen abonnement", "No subscription")}</span>
-                                        <span className="border border-black/15 bg-white px-2 py-2">{tr("Geen automatische verlenging", "No automatic renewal")}</span>
-                                    </div>
-                                    <button
-                                        onClick={() => handleCheckoutOptionClick("cv-download")}
-                                        disabled={isCheckoutRedirecting}
-                                        className="mt-4 w-full px-5 py-3 border-2 border-black font-black text-sm bg-yellow-400 hover:bg-yellow-500 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-                                    >
-                                        {isCheckoutRedirecting ? tr('Bezig...', 'Working...') : tr(`Alleen CV downloaden voor ${cvDownloadPrice.display}`, `Download CV only for ${cvDownloadPrice.display.replace(",", ".")}`)}
-                                    </button>
-                                    <p className="mt-3 text-xs font-semibold leading-relaxed text-slate-600">
-                                        {tr(
-                                            "Optioneel: ",
-                                            "Optional: "
-                                        )}
-                                        <button
-                                            type="button"
-                                            onClick={() => handleCheckoutOptionClick("cv-profile-photo-bundle")}
-                                            disabled={isCheckoutRedirecting}
-                                            className="font-black text-black underline decoration-2 underline-offset-2 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
-                                        >
-                                            {tr(
-                                                `voeg een AI-profielfoto toe`,
-                                                `add an AI profile photo`
-                                            )}
-                                        </button>
-                                        {tr(
-                                            ` en betaal ${applicationBundlePrice.display} totaal voor CV + profielfoto.`,
-                                            ` and pay ${applicationBundlePrice.display.replace(",", ".")} total for CV + profile photo.`
-                                        )}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="mb-5 grid gap-3 rounded-md border border-slate-300 bg-slate-50 px-3 py-3 text-xs font-semibold text-slate-700 sm:grid-cols-2">
-                                {checkoutBenefits.slice(0, 4).map((benefit) => (
-                                    <p key={benefit} className="flex items-start gap-2">
-                                        <span className="font-black text-emerald-700">✓</span>
-                                        <span>{benefit}</span>
-                                    </p>
-                                ))}
-                            </div>
-
-                            <div className="mb-5 rounded-md border border-slate-300 bg-white px-3 py-3 text-xs font-semibold text-slate-700">
-                                {tr(
-                                    `Betaal pas als je klaar bent met downloaden: eenmalig ${cvDownloadPrice.display} voor deze CV-PDF. Je CV blijft beschikbaar om later opnieuw te openen en opnieuw te downloaden.`,
-                                    `Only pay when you are ready to download: one-time ${cvDownloadPrice.display.replace(",", ".")} for this CV PDF. Your CV stays available so you can open and download it again later.`
-                                )}
-                            </div>
-
-                            <div className="flex">
-                                <button
-                                    onClick={() => closeCheckoutModal('later_button')}
-                                    disabled={isCheckoutRedirecting}
-                                    className="w-full px-4 py-3 border-2 border-black font-bold text-sm bg-gray-100 hover:bg-gray-200 disabled:opacity-60 disabled:cursor-not-allowed"
-                                >
-                                    {tr("Nog even bewerken", "Keep editing")}
-                                </button>
-                            </div>
-
-                            <p className="mt-3 text-center text-[11px] font-medium text-slate-500">
-                                {tr("Veilige betaling via onze betaalpartner.", "Secure payment via our payment partner.")}
-                            </p>
                         </div>
                     </div>
                 </div>
