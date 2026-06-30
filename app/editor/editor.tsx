@@ -870,18 +870,20 @@ export default function Editor({
                     {/* Right side - Save and Download */}
                     <div className="flex shrink-0 items-center">
                         <div className="flex items-center gap-2 sm:gap-3">
-                            <button
-                                type="button"
-                                onClick={() => openUploader("toolbar")}
-                                className="inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 sm:px-3"
-                                title={tr("Upload je bestaande CV", "Upload your existing CV")}
-                                aria-label={tr("Upload je bestaande CV", "Upload your existing CV")}
-                            >
-                                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                                </svg>
-                                <span className="hidden sm:inline">{tr("CV uploaden", "Upload CV")}</span>
-                            </button>
+                            {!isCurrentCvEmpty ? (
+                                <button
+                                    type="button"
+                                    onClick={() => openUploader("toolbar")}
+                                    className="inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 sm:px-3"
+                                    title={tr("Upload je bestaande CV", "Upload your existing CV")}
+                                    aria-label={tr("Upload je bestaande CV", "Upload your existing CV")}
+                                >
+                                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                    </svg>
+                                    <span className="hidden sm:inline">{tr("CV uploaden", "Upload CV")}</span>
+                                </button>
+                            ) : null}
                             <button
                                 onClick={handleSubmit(onSubmit)}
                                 disabled={isSubmitting || isSaved}
