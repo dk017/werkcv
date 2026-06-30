@@ -100,6 +100,75 @@ function normalizeLanguageLevel(value: unknown): "Moedertaal" | "Vloeiend" | "Go
   return languageLevelAliases[normalized] ?? "Goed";
 }
 
+const currentRolePattern = /\b(present|current|ongoing|today|now|heden|huidig|nu|lopend)\b/i;
+const monthIndexes: Record<string, number> = {
+  jan: 1,
+  january: 1,
+  januari: 1,
+  feb: 2,
+  february: 2,
+  februari: 2,
+  mar: 3,
+  march: 3,
+  maart: 3,
+  apr: 4,
+  april: 4,
+  may: 5,
+  mei: 5,
+  jun: 6,
+  june: 6,
+  juni: 6,
+  jul: 7,
+  july: 7,
+  juli: 7,
+  aug: 8,
+  august: 8,
+  augustus: 8,
+  sep: 9,
+  sept: 9,
+  september: 9,
+  oct: 10,
+  october: 10,
+  oktober: 10,
+  nov: 11,
+  november: 11,
+  dec: 12,
+  december: 12,
+};
+
+function getDateRank(value: string): number {
+  if (currentRolePattern.test(value)) return Number.MAX_SAFE_INTEGER;
+
+  const normalized = value.toLowerCase();
+  const years = normalized.match(/\b(?:19|20)\d{2}\b/g);
+  const year = years ? Math.max(...years.map(Number)) : 0;
+  if (!year) return 0;
+
+  const month = Object.entries(monthIndexes).find(([name]) =>
+    new RegExp(`\\b${name}\\b`, "i").test(normalized),
+  )?.[1] ?? 12;
+
+  return year * 100 + month;
+}
+
+export function suggestTargetRoleFromExperience(data: CVData): string {
+  if (data.personal.title.trim()) return "";
+
+  return data.experience
+    .map((experience, index) => ({
+      role: experience.role.trim(),
+      index,
+      endRank: getDateRank(experience.end),
+      startRank: getDateRank(experience.start),
+    }))
+    .filter((experience) => experience.role)
+    .sort((a, b) =>
+      b.endRank - a.endRank
+      || b.startRank - a.startRank
+      || a.index - b.index
+    )[0]?.role ?? "";
+}
+
 export function normalizeParsedCv(
   input: unknown,
   options: { fallbackLanguage?: ResumeLanguage; sourceText?: string } = {},

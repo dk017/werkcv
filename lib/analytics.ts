@@ -85,6 +85,8 @@ export type ProfilePhotoEvent =
     | 'profile_photo_download'
     | 'profile_photo_cta_editor_click';
 
+export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboarding';
+
 type EditorSourceContext = {
     templateId?: string;
     startSource?: string;
@@ -130,6 +132,53 @@ export type AnalyticsEvent =
     // CV lifecycle
     | { event: 'cv_created'; properties: { templateId: string } }
     | { event: 'cv_uploaded'; properties: { fileType: string; cvId?: string; templateId?: string; entryMethod?: 'upload' } }
+    | {
+          event: 'cv_upload_modal_opened';
+          properties: {
+              cvId: string;
+              source: CvUploadSource;
+              uiLanguage: 'nl' | 'en';
+          } & EditorSourceContext;
+      }
+    | {
+          event: 'cv_upload_started';
+          properties: {
+              cvId: string;
+              source: CvUploadSource;
+              uiLanguage: 'nl' | 'en';
+              fileType: 'pdf' | 'doc' | 'docx' | 'unknown';
+              sizeBucket: 'under_1mb' | '1_to_5mb' | '5_to_10mb' | 'over_10mb';
+          };
+      }
+    | {
+          event: 'cv_upload_completed';
+          properties: {
+              cvId: string;
+              source: CvUploadSource;
+              uiLanguage: 'nl' | 'en';
+              fileType: 'pdf' | 'doc' | 'docx';
+              durationMs: number;
+          };
+      }
+    | {
+          event: 'cv_upload_failed';
+          properties: {
+              cvId: string;
+              source: CvUploadSource;
+              uiLanguage: 'nl' | 'en';
+              fileType: 'pdf' | 'doc' | 'docx' | 'unknown';
+              reason: 'invalid_type' | 'too_large' | 'parse_error' | 'network_error';
+          };
+      }
+    | {
+          event: 'cv_upload_cancelled';
+          properties: {
+              cvId: string;
+              source: CvUploadSource;
+              uiLanguage: 'nl' | 'en';
+              hadError: boolean;
+          };
+      }
     | { event: 'cv_saved'; properties: { cvId: string } }
     | { event: 'start_cv'; properties: { entryPoint: string; templateId?: string; cvId?: string; roleSlug?: string } }
     | { event: 'editor_started'; properties: { cvId: string; fromPath?: string } & EditorSourceContext }
@@ -139,6 +188,15 @@ export type AnalyticsEvent =
     | { event: 'cv_section_completed'; properties: { cvId: string; section: string; completionScore: number } }
     | { event: 'ready_to_download_viewed'; properties: { cvId: string; completionScore: number } }
     // Template & theme
+    | {
+          event: 'template_selector_opened';
+          properties: {
+              cvId: string;
+              source: 'toolbar' | 'ready_state';
+              completionScore: number;
+              isReady: boolean;
+          } & EditorSourceContext;
+      }
     | { event: 'template_selected'; properties: { templateId: string; previousId?: string; cvId?: string } }
     | { event: 'color_theme_changed'; properties: { themeId: string; templateId: string } }
     // Photo

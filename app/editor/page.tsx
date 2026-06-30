@@ -11,14 +11,20 @@ function normalizeTemplateId(value: string | string[] | undefined): string | nul
     return typeof template === "string" && template.length > 0 ? template : null;
 }
 
+function isUploadRequested(value: string | string[] | undefined): boolean {
+    const upload = Array.isArray(value) ? value[0] : value;
+    return upload === "1";
+}
+
 export default async function EditorPage({
     searchParams,
 }: {
-    searchParams: Promise<{ id?: string; template?: string; startSource?: string }>;
+    searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string }>;
 }) {
-    const { id, template, startSource } = await searchParams;
+    const { id, template, startSource, upload } = await searchParams;
     const user = await getCurrentUser();
     const templateId = normalizeTemplateId(template);
+    const uploadRequested = isUploadRequested(upload);
     const cookieStore = await cookies();
     const resolvedStartSource =
         normalizeStartSource(startSource) ||
@@ -27,24 +33,25 @@ export default async function EditorPage({
 
     if (!user) {
         const next = id
-            ? `/editor?id=${encodeURIComponent(id)}`
+            ? `/editor?id=${encodeURIComponent(id)}${uploadRequested ? "&upload=1" : ""}`
             : templateId
-                ? `/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(resolvedStartSource)}`
-                : `/editor?template=professional&startSource=${encodeURIComponent(resolvedStartSource)}`;
+                ? `/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}`
+                : `/editor?template=professional&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}`;
         redirect(`/login?next=${encodeURIComponent(next)}`);
     }
 
     if (!id) {
-        if (!templateId) {
+        const draftTemplateId = templateId || (uploadRequested ? "professional" : null);
+        if (!draftTemplateId) {
             redirect(`/templates?startSource=${encodeURIComponent(resolvedStartSource)}`);
         }
 
         const cvId = await createEditorDraft({
-            templateId,
+            templateId: draftTemplateId,
             uiLanguage: "nl",
             startSource: resolvedStartSource,
         });
-        redirect(`/editor?id=${encodeURIComponent(cvId)}`);
+        redirect(`/editor?id=${encodeURIComponent(cvId)}${uploadRequested ? "&upload=1" : ""}`);
     }
 
     const cv = await getCVWithSettings(id);

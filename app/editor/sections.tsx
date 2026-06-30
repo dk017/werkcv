@@ -72,7 +72,13 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
     fieldName: "experience" | "internships";
     uiLanguage: UiLanguage;
 }) {
-    const { fields: highlightFields, append: appendHighlight, remove: removeHighlight } = useFieldArray({
+    const {
+        fields: highlightFields,
+        append: appendHighlight,
+        insert: insertHighlight,
+        move: moveHighlight,
+        remove: removeHighlight,
+    } = useFieldArray({
         control,
         name: `${fieldName}.${index}.highlights` as any,
     });
@@ -169,13 +175,46 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
                                 className={`${inputClass} min-h-[50px] flex-1`}
                                 style={inputStyle}
                             />
-                            <button
-                                type="button"
-                                onClick={() => removeHighlight(hIndex)}
-                                className="bg-white text-rose-700 font-semibold px-2 py-1 text-xs border border-rose-200 rounded-md hover:bg-rose-50 transition-colors mt-1"
-                            >
-                                ✕
-                            </button>
+                            <div className="mt-1 grid shrink-0 grid-cols-2 gap-1">
+                                <button
+                                    type="button"
+                                    onClick={() => insertHighlight(hIndex + 1, "" as any)}
+                                    className="flex h-7 w-7 items-center justify-center rounded-md border border-slate-300 bg-white text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100"
+                                    title={t(uiLanguage, "Punt hieronder invoegen", "Insert bullet below")}
+                                    aria-label={t(uiLanguage, "Punt hieronder invoegen", "Insert bullet below")}
+                                >
+                                    +
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => removeHighlight(hIndex)}
+                                    className="flex h-7 w-7 items-center justify-center rounded-md border border-rose-200 bg-white text-xs font-bold text-rose-700 transition-colors hover:bg-rose-50"
+                                    title={t(uiLanguage, "Punt verwijderen", "Remove bullet")}
+                                    aria-label={t(uiLanguage, "Punt verwijderen", "Remove bullet")}
+                                >
+                                    ✕
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => moveHighlight(hIndex, hIndex - 1)}
+                                    disabled={hIndex === 0}
+                                    className="flex h-7 w-7 items-center justify-center rounded-md border border-slate-300 bg-white text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-30"
+                                    title={t(uiLanguage, "Punt omhoog verplaatsen", "Move bullet up")}
+                                    aria-label={t(uiLanguage, "Punt omhoog verplaatsen", "Move bullet up")}
+                                >
+                                    ↑
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => moveHighlight(hIndex, hIndex + 1)}
+                                    disabled={hIndex === highlightFields.length - 1}
+                                    className="flex h-7 w-7 items-center justify-center rounded-md border border-slate-300 bg-white text-sm font-bold text-slate-700 transition-colors hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-30"
+                                    title={t(uiLanguage, "Punt omlaag verplaatsen", "Move bullet down")}
+                                    aria-label={t(uiLanguage, "Punt omlaag verplaatsen", "Move bullet down")}
+                                >
+                                    ↓
+                                </button>
+                            </div>
                         </div>
                     ))}
                 </div>

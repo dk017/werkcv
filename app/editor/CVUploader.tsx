@@ -3,14 +3,41 @@
 import { useState, useRef, useCallback } from "react";
 import { CVData } from "@/lib/cv";
 import { UiLanguage } from "@/lib/ui-language";
+import { track, type CvUploadSource } from "@/lib/analytics";
 
 interface CVUploaderProps {
+  cvId: string;
+  source: CvUploadSource;
   onParsed: (data: CVData) => void;
   onClose: () => void;
   uiLanguage?: UiLanguage;
 }
 
+type UploadFileType = "pdf" | "doc" | "docx";
+
+function getUploadFileType(file: File): UploadFileType | null {
+  const extension = file.name.split(".").pop()?.toLowerCase();
+  if (file.type === "application/pdf" || extension === "pdf") return "pdf";
+  if (file.type === "application/msword" || extension === "doc") return "doc";
+  if (
+    file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    || extension === "docx"
+  ) {
+    return "docx";
+  }
+  return null;
+}
+
+function getSizeBucket(size: number): "under_1mb" | "1_to_5mb" | "5_to_10mb" | "over_10mb" {
+  if (size < 1024 * 1024) return "under_1mb";
+  if (size < 5 * 1024 * 1024) return "1_to_5mb";
+  if (size <= 10 * 1024 * 1024) return "5_to_10mb";
+  return "over_10mb";
+}
+
 export default function CVUploader({
+  cvId,
+  source,
   onParsed,
   onClose,
   uiLanguage = "nl",
@@ -24,13 +51,15 @@ export default function CVUploader({
 
   const handleFile = useCallback(
     async (file: File) => {
-      const allowedTypes = [
-        "application/pdf",
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        "application/msword",
-      ];
-
-      if (!allowedTypes.includes(file.type)) {
+      const fileType = getUploadFileType(file);
+      if (!fileType) {
+        track("cv_upload_failed", {
+          cvId,
+          source,
+          uiLanguage,
+          fileType: "unknown",
+          reason: "invalid_type",
+        });
         setError(
           isEnglish
             ? "Invalid file type. Upload a PDF or Word document."
@@ -40,6 +69,13 @@ export default function CVUploader({
       }
 
       if (file.size > 10 * 1024 * 1024) {
+        track("cv_upload_failed", {
+          cvId,
+          source,
+          uiLanguage,
+          fileType,
+          reason: "too_large",
+        });
         setError(
           isEnglish
             ? "File is too large. Maximum size is 10MB."
@@ -51,6 +87,14 @@ export default function CVUploader({
       setError(null);
       setIsUploading(true);
       setProgress(isEnglish ? "Uploading file..." : "Bestand wordt geüpload...");
+      const startedAt = Date.now();
+      track("cv_upload_started", {
+        cvId,
+        source,
+        uiLanguage,
+        fileType,
+        sizeBucket: getSizeBucket(file.size),
+      });
 
       try {
         const formData = new FormData();
@@ -65,15 +109,23 @@ export default function CVUploader({
           body: formData,
         });
 
-        const result = await response.json();
+        const result = await response.json().catch(() => ({}));
 
         if (!response.ok) {
-          throw new Error(
+          track("cv_upload_failed", {
+            cvId,
+            source,
+            uiLanguage,
+            fileType,
+            reason: "parse_error",
+          });
+          setError(
             result.error ||
-              (isEnglish
-                ? "Something went wrong while processing the file."
-                : "Er ging iets mis bij het verwerken"),
+            (isEnglish
+              ? "Something went wrong while processing the file."
+              : "Er ging iets mis bij het verwerken"),
           );
+          return;
         }
 
         setProgress(
@@ -82,8 +134,22 @@ export default function CVUploader({
 
         await new Promise((resolve) => setTimeout(resolve, 500));
 
+        track("cv_upload_completed", {
+          cvId,
+          source,
+          uiLanguage,
+          fileType,
+          durationMs: Date.now() - startedAt,
+        });
         onParsed(result.data);
       } catch (err) {
+        track("cv_upload_failed", {
+          cvId,
+          source,
+          uiLanguage,
+          fileType,
+          reason: "network_error",
+        });
         setError(
           err instanceof Error
             ? err.message
@@ -96,8 +162,18 @@ export default function CVUploader({
         setProgress("");
       }
     },
-    [isEnglish, onParsed],
+    [cvId, isEnglish, onParsed, source, uiLanguage],
   );
+
+  const handleClose = useCallback(() => {
+    track("cv_upload_cancelled", {
+      cvId,
+      source,
+      uiLanguage,
+      hadError: Boolean(error),
+    });
+    onClose();
+  }, [cvId, error, onClose, source, uiLanguage]);
 
   const handleDrop = useCallback(
     (event: React.DragEvent) => {
@@ -133,52 +209,70 @@ export default function CVUploader({
   );
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
-      <div className="w-full max-w-lg border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-        <div className="flex items-center justify-between border-b-4 border-black bg-blue-400 px-6 py-4">
-          <h2 className="flex items-center gap-2 text-lg font-black uppercase text-black">
-            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2.5}
-                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
-              />
-            </svg>
-            {isEnglish ? "Upload CV" : "CV Uploaden"}
-          </h2>
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-slate-950/55 p-4">
+      <div className="w-full max-w-lg overflow-hidden rounded-xl border border-slate-200 bg-white shadow-2xl">
+        <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6">
+          <div>
+            <h2 className="flex items-center gap-2 text-lg font-bold text-slate-950">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg bg-teal-50 text-teal-700">
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.25}
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                  />
+                </svg>
+              </span>
+              {isEnglish ? "Upload your current CV" : "Upload je huidige CV"}
+            </h2>
+            <p className="mt-1 text-sm text-slate-500">
+              {isEnglish
+                ? "We will extract the details so you can review and edit them."
+                : "We halen de gegevens eruit, zodat je ze kunt controleren en aanpassen."}
+            </p>
+          </div>
           <button
-            onClick={onClose}
+            type="button"
+            onClick={handleClose}
             disabled={isUploading}
-            className="flex h-8 w-8 items-center justify-center border-3 border-black bg-white text-lg font-black transition-colors hover:bg-red-400 disabled:opacity-50"
-            style={{ borderWidth: "3px" }}
+            aria-label={isEnglish ? "Close CV upload" : "CV-upload sluiten"}
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-md text-xl text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 disabled:opacity-50"
           >
             ×
           </button>
         </div>
 
-        <div className="p-6">
+        <div className="p-5 sm:p-6">
           {isUploading ? (
-            <div className="py-8 text-center">
-              <div className="mb-4 inline-block h-12 w-12 animate-spin rounded-full border-4 border-black border-t-yellow-400" />
-              <p className="font-bold text-black">{progress}</p>
-              <p className="mt-2 text-sm text-gray-600">
+            <div className="py-8 text-center" role="status" aria-live="polite">
+              <div className="mb-4 inline-block h-11 w-11 animate-spin rounded-full border-4 border-slate-200 border-t-teal-600" />
+              <p className="font-semibold text-slate-950">{progress}</p>
+              <p className="mt-2 text-sm text-slate-500">
                 {isEnglish
-                  ? "This can take a few seconds..."
-                  : "Dit kan enkele seconden duren..."}
+                  ? "Keep this window open. This usually takes a few seconds."
+                  : "Laat dit venster open. Dit duurt meestal enkele seconden."}
               </p>
             </div>
           ) : (
             <>
               <div
+                role="button"
+                tabIndex={0}
                 onClick={() => fileInputRef.current?.click()}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    fileInputRef.current?.click();
+                  }
+                }}
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
-                className={`cursor-pointer border-4 border-dashed p-8 text-center transition-all ${
+                className={`cursor-pointer rounded-lg border-2 border-dashed p-7 text-center outline-none transition-colors focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2 ${
                   isDragging
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-black bg-gray-50 hover:bg-gray-100"
+                    ? "border-teal-500 bg-teal-50"
+                    : "border-slate-300 bg-slate-50 hover:border-teal-400 hover:bg-teal-50/60"
                 }`}
               >
                 <input
@@ -191,11 +285,11 @@ export default function CVUploader({
 
                 <div className="flex flex-col items-center gap-3">
                   <div
-                    className={`flex h-16 w-16 items-center justify-center rounded-full transition-colors ${
-                      isDragging ? "bg-blue-200" : "bg-yellow-400"
+                    className={`flex h-12 w-12 items-center justify-center rounded-full transition-colors ${
+                      isDragging ? "bg-teal-200 text-teal-800" : "bg-white text-slate-600 shadow-sm"
                     }`}
                   >
-                    <svg className="h-8 w-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -205,60 +299,44 @@ export default function CVUploader({
                     </svg>
                   </div>
                   <div>
-                    <p className="text-lg font-black text-black">
+                    <p className="text-base font-bold text-slate-950">
                       {isDragging
                         ? isEnglish
-                          ? "Drop to upload"
-                          : "Laat los om te uploaden"
+                          ? "Drop your CV here"
+                          : "Laat je CV hier los"
                         : isEnglish
-                          ? "Drag your CV here"
-                          : "Sleep je CV hier"}
+                          ? "Choose a CV or drag it here"
+                          : "Kies een CV of sleep het hierheen"}
                     </p>
-                    <p className="mt-1 text-sm text-gray-600">
-                      {isEnglish ? "or " : "of "}
-                      <span className="font-bold text-blue-600 underline">
-                        {isEnglish ? "click to select" : "klik om te selecteren"}
-                      </span>
+                    <p className="mt-1 text-sm font-semibold text-teal-700 underline underline-offset-2">
+                      {isEnglish ? "Browse files" : "Bestand kiezen"}
                     </p>
                   </div>
-                  <p className="mt-2 text-xs text-gray-500">
+                  <p className="text-xs text-slate-500">
                     {isEnglish
-                      ? "PDF or Word • Max 10MB • Dutch or English"
-                      : "PDF of Word • Max 10MB • Nederlands of Engels"}
+                      ? "PDF or Word · Maximum 10MB · Dutch or English"
+                      : "PDF of Word · Maximaal 10MB · Nederlands of Engels"}
                   </p>
                 </div>
               </div>
 
               {error && (
-                <div
-                  className="mt-4 border-3 border-red-500 bg-red-100 p-3 text-sm font-medium text-red-700"
-                  style={{ borderWidth: "3px" }}
-                >
-                  <span className="font-black">
-                    {isEnglish ? "Error:" : "Fout:"}
+                <div className="mt-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700" role="alert">
+                  <span className="font-bold">
+                    {isEnglish ? "Upload failed:" : "Upload mislukt:"}
                   </span>{" "}
                   {error}
                 </div>
               )}
 
-              <div
-                className="mt-4 border-3 border-yellow-400 bg-yellow-50 p-4"
-                style={{ borderWidth: "3px" }}
-              >
-                <p className="text-sm font-medium text-black">
-                  {isEnglish ? (
-                    <>
-                      <span className="font-black">Tip:</span> Upload your existing
-                      CV and we will fill in the fields automatically with AI. You can
-                      adjust everything afterwards.
-                    </>
-                  ) : (
-                    <>
-                      <span className="font-black">💡 Tip:</span> Upload je bestaande
-                      CV en wij vullen automatisch alle velden in met AI. Je kunt
-                      daarna alles aanpassen.
-                    </>
-                  )}
+              <div className="mt-4 rounded-lg border border-slate-200 bg-white p-4">
+                <p className="text-sm leading-relaxed text-slate-600">
+                  <span className="font-semibold text-slate-900">
+                    {isEnglish ? "You stay in control." : "Jij houdt de controle."}
+                  </span>{" "}
+                  {isEnglish
+                    ? "AI fills the editor from your document. Review every field and change anything before downloading."
+                    : "AI vult de editor vanuit je document. Controleer elk veld en pas alles aan voordat je downloadt."}
                 </p>
               </div>
             </>
@@ -266,11 +344,11 @@ export default function CVUploader({
         </div>
 
         {!isUploading && (
-          <div className="flex justify-end border-t-4 border-black bg-gray-50 px-6 py-4">
+          <div className="flex justify-end border-t border-slate-200 bg-slate-50 px-5 py-3 sm:px-6">
             <button
-              onClick={onClose}
-              className="border-3 border-black bg-white px-4 py-2 text-sm font-black transition-colors hover:bg-gray-100"
-              style={{ borderWidth: "3px" }}
+              type="button"
+              onClick={handleClose}
+              className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition-colors hover:bg-slate-100"
             >
               {isEnglish ? "Cancel" : "Annuleren"}
             </button>

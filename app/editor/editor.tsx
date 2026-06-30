@@ -32,7 +32,8 @@ import {
     hasEditorStartedTracked,
     markCompletionTracked,
     markEditorStartedTracked,
-    track
+    track,
+    type CvUploadSource,
 } from "@/lib/analytics";
 import { UiLanguage } from "@/lib/ui-language";
 import {
@@ -43,6 +44,7 @@ import {
 } from "@/lib/cv-completion";
 import { getTargetVacancySessionKey } from "@/lib/cover-letter-session";
 import { PENDING_EXAMPLE_CV_STORAGE_KEY, type PendingExampleCV } from "@/lib/pending-example-cv";
+import { suggestTargetRoleFromExperience } from "@/lib/cv-normalize";
 
 interface EditorProps {
     initialData: CVData;
@@ -64,6 +66,7 @@ const CHECKOUT_FLOW_VARIANT = 'direct' as const;
 
 type AtsLanguageLock = 'auto' | 'nl' | 'en';
 type DownloadSource = 'toolbar' | 'ready_panel' | 'post_completion_tools';
+type TemplateSelectorSource = 'toolbar' | 'ready_state';
 type OptionalSectionId =
     | 'internships'
     | 'courses'
@@ -298,12 +301,15 @@ export default function Editor({
     const [templateId, setTemplateId] = useState(initialTemplateId);
     const [colorThemeId, setColorThemeId] = useState(initialColorThemeId);
     const [showUploader, setShowUploader] = useState(false);
+    const [uploaderSource, setUploaderSource] = useState<CvUploadSource>("toolbar");
     const [showMobilePreview, setShowMobilePreview] = useState(false);
     const [pageCount, setPageCount] = useState(1);
     const [desktopPreviewScale, setDesktopPreviewScale] = useState(DESKTOP_PREVIEW_SCALE);
     const [mobilePreviewScale, setMobilePreviewScale] = useState(MOBILE_PREVIEW_SCALE);
     const [showOnboarding, setShowOnboarding] = useState(false);
     const [showTemplateHint, setShowTemplateHint] = useState(false);
+    const [isTemplateSelectorOpen, setIsTemplateSelectorOpen] = useState(false);
+    const [suggestedTargetRole, setSuggestedTargetRole] = useState<string | null>(null);
     const [visibleOptionalSections, setVisibleOptionalSections] = useState<Record<OptionalSectionId, boolean>>(
         () => deriveVisibleOptionalSections(normalizedInitialData)
     );
@@ -320,14 +326,28 @@ export default function Editor({
     const completedSectionsTrackedRef = useRef<Set<CompletionStepId>>(new Set());
     const progressTrackingInitializedRef = useRef(false);
     const readyToDownloadTrackedRef = useRef(false);
+    const uploadIntentHandledRef = useRef(false);
+
+    const openUploader = useCallback((source: CvUploadSource) => {
+        track("cv_upload_modal_opened", {
+            cvId: id,
+            source,
+            uiLanguage,
+            templateId,
+            ...getEditorSearchContext(),
+        });
+        setUploaderSource(source);
+        setShowUploader(true);
+    }, [id, templateId, uiLanguage]);
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
         const params = new URLSearchParams(window.location.search);
-        if (params.get('upload') === '1') {
-            setShowUploader(true);
+        if (params.get('upload') === '1' && !uploadIntentHandledRef.current) {
+            uploadIntentHandledRef.current = true;
+            openUploader("route_intent");
         }
-    }, []);
+    }, [openUploader]);
 
     useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -420,6 +440,9 @@ export default function Editor({
 
     // Show onboarding for empty CVs on first visit
     useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("upload") === "1") return;
+
         const dismissed = localStorage.getItem('werkcv-onboarding-dismissed');
         const isEmpty = initialData.personal.name === '' &&
             initialData.personal.email === '' &&
@@ -511,7 +534,7 @@ export default function Editor({
         setShowOnboarding(false);
         localStorage.setItem('werkcv-onboarding-dismissed', 'true');
         track('onboarding_dismissed', { action: 'upload_cv' });
-        setShowUploader(true);
+        openUploader("onboarding");
     };
 
     const handlePhotoChange = useCallback((base64: string) => {
@@ -599,6 +622,19 @@ export default function Editor({
         await updateCVColorTheme(id, defaultThemeId);
     };
 
+    const openTemplateSelector = (source: TemplateSelectorSource) => {
+        track('template_selector_opened', {
+            cvId: id,
+            source,
+            completionScore,
+            isReady: isReadyToDownload,
+            templateId,
+            uiLanguage,
+            ...getEditorSearchContext(),
+        });
+        setIsTemplateSelectorOpen(true);
+    };
+
     const handleColorThemeChange = async (newThemeId: string) => {
         track('color_theme_changed', { themeId: newThemeId, templateId });
         setColorThemeId(newThemeId);
@@ -607,8 +643,14 @@ export default function Editor({
 
     const handleCVParsed = (data: CVData) => {
         const normalizedData = ensureEditorData(data, uiLanguage);
+        const targetRoleSuggestion = suggestTargetRoleFromExperience(normalizedData);
+        if (targetRoleSuggestion) {
+            normalizedData.personal.title = targetRoleSuggestion;
+        }
         // Reset the form with the parsed CV data
         reset(normalizedData);
+        setSuggestedTargetRole(targetRoleSuggestion || null);
+        setAtsTargetRole(normalizedData.personal.title);
         setVisibleOptionalSections(deriveVisibleOptionalSections(normalizedData));
         setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
         setShowUploader(false);
@@ -805,6 +847,9 @@ export default function Editor({
                             <TemplateSelector
                                 currentTemplateId={templateId}
                                 data={data}
+                                isOpen={isTemplateSelectorOpen}
+                                onOpen={() => openTemplateSelector("toolbar")}
+                                onClose={() => setIsTemplateSelectorOpen(false)}
                                 onSelectTemplate={handleTemplateChange}
                                 uiLanguage={uiLanguage}
                             />
@@ -827,7 +872,7 @@ export default function Editor({
                         <div className="flex items-center gap-2 sm:gap-3">
                             <button
                                 type="button"
-                                onClick={() => setShowUploader(true)}
+                                onClick={() => openUploader("toolbar")}
                                 className="inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 sm:px-3"
                                 title={tr("Upload je bestaande CV", "Upload your existing CV")}
                                 aria-label={tr("Upload je bestaande CV", "Upload your existing CV")}
@@ -904,7 +949,7 @@ export default function Editor({
                                                 location: "editor_empty_cv_upload_nudge",
                                                 label: "upload_existing_cv",
                                             });
-                                            setShowUploader(true);
+                                            openUploader("empty_state");
                                         }}
                                         className="inline-flex shrink-0 items-center justify-center rounded-md border border-teal-700 bg-teal-600 px-4 py-3 text-sm font-black text-white transition-colors hover:bg-teal-700"
                                     >
@@ -961,6 +1006,14 @@ export default function Editor({
                                 <div>
                                     <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Gewenste Functie", "Target Role")}</label>
                                     <input {...register("personal.title")} placeholder={tr("bv. Leerkracht Basisonderwijs", "e.g. Primary School Teacher")} className={inputClass} style={inputStyle} />
+                                    {suggestedTargetRole && data.personal.title.trim() === suggestedTargetRole ? (
+                                        <p className="mt-1.5 text-xs leading-relaxed text-emerald-700" role="status">
+                                            {tr(
+                                                "Voorgesteld op basis van je meest recente functie. Pas dit aan voor de vacature waarop je solliciteert.",
+                                                "Suggested from your most recent role. Adjust it for the job you are targeting."
+                                            )}
+                                        </p>
+                                    ) : null}
                                 </div>
                                 <div>
                                     <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Email</label>
@@ -1185,7 +1238,7 @@ export default function Editor({
                                                         location: "editor_final_check_template_prompt",
                                                         label: "switch_template_before_download",
                                                     });
-                                                    highlightTemplateSwitcher();
+                                                    openTemplateSelector("ready_state");
                                                 }}
                                                 className="inline-flex shrink-0 items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-xs font-black text-slate-800 hover:bg-slate-100"
                                             >
@@ -1423,6 +1476,8 @@ export default function Editor({
             {/* CV Upload Modal */}
             {showUploader && (
                 <CVUploader
+                    cvId={id}
+                    source={uploaderSource}
                     onParsed={handleCVParsed}
                     onClose={() => setShowUploader(false)}
                     uiLanguage={uiLanguage}

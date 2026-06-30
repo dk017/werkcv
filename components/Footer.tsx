@@ -9,6 +9,7 @@ type FeaturedBadge = {
     width: number;
     height: number;
     padded?: boolean;
+    rel?: string;
     dataBadge?: string;
     dataBadgeVariant?: string;
 };
@@ -152,6 +153,14 @@ const featuredBadges: FeaturedBadge[] = [
         dataBadge: "werkcv",
         dataBadgeVariant: "listed-on",
     },
+    {
+        href: "https://marketingdb.live",
+        src: "https://marketingdb.live/badge.svg",
+        alt: "Listed on MarketingDB",
+        width: 190,
+        height: 44,
+        rel: "noopener noreferrer nofollow sponsored",
+    },
 ];
 
 export default function Footer({ uiLanguage = "nl" }: { uiLanguage?: UiLanguage }) {
@@ -226,7 +235,7 @@ export default function Footer({ uiLanguage = "nl" }: { uiLanguage?: UiLanguage 
                                 key={badge.href}
                                 href={badge.href}
                                 target="_blank"
-                                rel="noopener noreferrer"
+                                rel={badge.rel ?? "noopener noreferrer"}
                                 data-launchpadly-badge={badge.dataBadge}
                                 data-launchpadly-badge-variant={badge.dataBadgeVariant}
                                 className={`inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 ${badge.padded ? "items-center p-2" : ""}`}
@@ -236,7 +245,7 @@ export default function Footer({ uiLanguage = "nl" }: { uiLanguage?: UiLanguage 
                                     alt={badge.alt}
                                     width={badge.width}
                                     height={badge.height}
-                                    className={`block h-auto max-w-full ${badge.width === 139 ? "w-[139px]" : badge.width === 150 ? "w-[150px]" : badge.width === 160 ? "w-[160px]" : badge.width === 260 ? "w-[260px]" : "w-[170px]"}`}
+                                    className={`block h-auto max-w-full ${badge.width === 139 ? "w-[139px]" : badge.width === 150 ? "w-[150px]" : badge.width === 160 ? "w-[160px]" : badge.width === 190 ? "w-[190px]" : badge.width === 260 ? "w-[260px]" : "w-[170px]"}`}
                                     unoptimized
                                 />
                             </a>

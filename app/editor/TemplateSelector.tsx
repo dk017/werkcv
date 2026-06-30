@@ -1,6 +1,6 @@
 "use client";
 
-import { createElement, useEffect, useState } from "react";
+import { createElement } from "react";
 import { createPortal } from "react-dom";
 import { templateList, getThemeById } from "@/lib/templates/registry";
 import { TemplateConfig } from "@/lib/templates";
@@ -12,6 +12,36 @@ import { UiLanguage } from "@/lib/ui-language";
 const templateComponents = new Map(
   templateList.map((template) => [template.id, getTemplateComponent(template.id)]),
 );
+
+const templateGroups = [
+  {
+    id: "plain",
+    label: { nl: "Rustig & ATS-veilig", en: "Plain & ATS-safe" },
+    description: {
+      nl: "Eenvoudige layouts zonder onnodige kleur of grafische afleiding.",
+      en: "Simple layouts without unnecessary colour or visual distractions.",
+    },
+    templateIds: ["ats", "simple", "monochrome", "classical"],
+  },
+  {
+    id: "professional",
+    label: { nl: "Professioneel", en: "Professional" },
+    description: {
+      nl: "Evenwichtige layouts die bij de meeste functies passen.",
+      en: "Balanced layouts that work for most roles.",
+    },
+    templateIds: ["professional", "formal", "elegant", "robust"],
+  },
+  {
+    id: "modern",
+    label: { nl: "Modern & opvallend", en: "Modern & expressive" },
+    description: {
+      nl: "Meer visuele hiërarchie en kleur voor een uitgesproken uitstraling.",
+      en: "More visual hierarchy and colour for a distinctive look.",
+    },
+    templateIds: ["modern", "dynamic", "jobboss", "remarkable", "sepia"],
+  },
+] as const;
 
 const previewPhoto = `data:image/svg+xml,${encodeURIComponent(`
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240">
@@ -236,6 +266,9 @@ function isEmptyCv(data: CVData) {
 interface TemplateSelectorProps {
   currentTemplateId: string;
   data: CVData;
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
   onSelectTemplate: (templateId: string, defaultThemeId: string) => void;
   uiLanguage?: UiLanguage;
 }
@@ -243,12 +276,13 @@ interface TemplateSelectorProps {
 export default function TemplateSelector({
   currentTemplateId,
   data,
+  isOpen,
+  onOpen,
+  onClose,
   onSelectTemplate,
   uiLanguage = "nl",
 }: TemplateSelectorProps) {
   const isEnglish = uiLanguage === "en";
-  const [isOpen, setIsOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
 
   const currentTemplate = templateList.find((template) => template.id === currentTemplateId);
   const previewData = isEmptyCv(data)
@@ -257,13 +291,9 @@ export default function TemplateSelector({
       : dutchPreviewData
     : data;
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   const templateModal = (
     <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto p-4 pt-16 sm:pt-20">
-      <div className="fixed inset-0 bg-black/50" onClick={() => setIsOpen(false)} />
+      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
 
       <div className="relative flex max-h-[calc(100vh-5rem)] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:max-h-[calc(100vh-6rem)]">
         <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
@@ -271,8 +301,10 @@ export default function TemplateSelector({
             {isEnglish ? "Choose a template" : "Kies een template"}
           </h2>
           <button
-            onClick={() => setIsOpen(false)}
+            type="button"
+            onClick={onClose}
             className="rounded-lg p-2 transition hover:bg-gray-100"
+            aria-label={isEnglish ? "Close template chooser" : "Templates sluiten"}
           >
             <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -280,22 +312,40 @@ export default function TemplateSelector({
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6">
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-            {templateList.map((template) => (
-              <TemplateCard
-                key={template.id}
-                template={template}
-                data={previewData}
-                uiLanguage={uiLanguage}
-                isSelected={template.id === currentTemplateId}
-                onSelect={() => {
-                  onSelectTemplate(template.id, template.defaultThemeId);
-                  setIsOpen(false);
-                }}
-              />
-            ))}
-          </div>
+        <div className="flex-1 space-y-8 overflow-y-auto p-6">
+          {templateGroups.map((group) => {
+            const templates = group.templateIds
+              .map((templateId) => templateList.find((template) => template.id === templateId))
+              .filter((template): template is TemplateConfig => Boolean(template));
+
+            return (
+              <section key={group.id} aria-labelledby={`template-group-${group.id}`}>
+                <div className="mb-3">
+                  <h3 id={`template-group-${group.id}`} className="text-base font-bold text-gray-950">
+                    {isEnglish ? group.label.en : group.label.nl}
+                  </h3>
+                  <p className="mt-1 text-sm text-gray-600">
+                    {isEnglish ? group.description.en : group.description.nl}
+                  </p>
+                </div>
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+                  {templates.map((template) => (
+                    <TemplateCard
+                      key={template.id}
+                      template={template}
+                      data={previewData}
+                      uiLanguage={uiLanguage}
+                      isSelected={template.id === currentTemplateId}
+                      onSelect={() => {
+                        onSelectTemplate(template.id, template.defaultThemeId);
+                        onClose();
+                      }}
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -304,7 +354,13 @@ export default function TemplateSelector({
   return (
     <>
       <button
-        onClick={() => setIsOpen(true)}
+        type="button"
+        onClick={onOpen}
+        aria-label={
+          isEnglish
+            ? `Choose template. Current: ${currentTemplate?.name || "Template"}`
+            : `Template kiezen. Huidig: ${currentTemplate?.nameDutch || "Template"}`
+        }
         className="flex items-center gap-2 rounded-lg bg-gray-100 px-3 py-1.5 text-sm text-gray-700 transition hover:bg-gray-200"
       >
         <svg className="h-4 w-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -322,7 +378,7 @@ export default function TemplateSelector({
         </span>
       </button>
 
-      {isOpen && isMounted ? createPortal(templateModal, document.body) : null}
+      {isOpen ? createPortal(templateModal, document.body) : null}
     </>
   );
 }
