@@ -773,6 +773,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.75,
         },
         {
+            url: `${baseUrl}/en/cv-job-match-checker`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.76,
+        },
+        {
             url: `${baseUrl}/en/motivation-letter-netherlands`,
             lastModified: new Date(),
             changeFrequency: 'monthly',

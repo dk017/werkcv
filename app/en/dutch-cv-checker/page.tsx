@@ -39,6 +39,11 @@ const faqItems: OptimizerFaqItem[] = [
 
 const routeLinks: OptimizerLinkCard[] = [
   {
+    href: "/en/cv-job-match-checker",
+    title: "CV and job match checker",
+    body: "Use this when you have a specific vacancy and want to see which requirements your CV supports or leaves unclear.",
+  },
+  {
     href: "/en/dutch-cv-template",
     title: "Dutch CV template",
     body: "Best next step when the content is okay but the final layout and section order still need a Dutch-style format.",

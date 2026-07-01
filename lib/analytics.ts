@@ -298,6 +298,48 @@ export type AnalyticsEvent =
               result_state?: string;
           };
       }
+    // CV-to-vacancy screener
+    | { event: 'resume_screener_viewed'; properties: { locale: 'nl' | 'en' } }
+    | {
+          event: 'resume_screener_started';
+          properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text' };
+      }
+    | {
+          event: 'resume_screener_completed';
+          properties: {
+              locale: 'nl' | 'en';
+              input_type: 'file' | 'text';
+              score_band: 'weak' | 'fair' | 'good' | 'strong';
+              duration_ms: number;
+              top_issue_category: string;
+          };
+      }
+    | {
+          event: 'resume_screener_failed';
+          properties: {
+              locale: 'nl' | 'en';
+              input_type: 'file' | 'text';
+              reason: 'analysis_failed' | 'import_failed';
+          };
+      }
+    | {
+          event: 'resume_screener_result_cta_clicked';
+          properties: {
+              locale: 'nl' | 'en';
+              score_band: 'weak' | 'fair' | 'good' | 'strong';
+              destination: '/editor' | '/en/editor';
+          };
+      }
+    | {
+          event: 'resume_screener_editor_imported';
+          properties: {
+              cvId: string;
+              locale: 'nl' | 'en';
+              input_type: 'file' | 'text';
+              score_band: 'weak' | 'fair' | 'good' | 'strong';
+              top_issue_category: string;
+          };
+      }
     | { event: 'linkedin_to_cv_tool_view'; properties: { page_path: string } }
     | {
           event: 'linkedin_to_cv_submit';

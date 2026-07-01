@@ -37,6 +37,14 @@ export const routePairs = [
     preserveSearch: true,
   },
   {
+    id: "cv-vacancy-match",
+    nl: "/tools/cv-vacature-match",
+    en: "/en/cv-job-match-checker",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
     id: "resume-optimizer",
     nl: "/cv-optimaliseren",
     en: "/en/resume-optimizer-netherlands",

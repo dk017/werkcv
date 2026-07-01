@@ -44,6 +44,12 @@ import {
 } from "@/lib/cv-completion";
 import { getTargetVacancySessionKey } from "@/lib/cover-letter-session";
 import { PENDING_EXAMPLE_CV_STORAGE_KEY, type PendingExampleCV } from "@/lib/pending-example-cv";
+import {
+    isPendingCvMatch,
+    PENDING_CV_MATCH_STORAGE_KEY,
+    PENDING_CV_MATCH_TTL_MS,
+} from "@/lib/pending-cv-match";
+import type { CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match";
 import { suggestTargetRoleFromExperience } from "@/lib/cv-normalize";
 
 interface EditorProps {
@@ -67,6 +73,11 @@ const CHECKOUT_FLOW_VARIANT = 'direct' as const;
 type AtsLanguageLock = 'auto' | 'nl' | 'en';
 type DownloadSource = 'toolbar' | 'ready_panel' | 'post_completion_tools';
 type TemplateSelectorSource = 'toolbar' | 'ready_state';
+type MatchImportFeedback =
+    | { status: 'idle' }
+    | { status: 'importing' }
+    | { status: 'success'; result: CvVacatureMatchResult }
+    | { status: 'error'; message: string };
 type OptionalSectionId =
     | 'internships'
     | 'courses'
@@ -320,6 +331,7 @@ export default function Editor({
     const [atsTargetRole, setAtsTargetRole] = useState(initialData.personal.title || '');
     const [targetVacancy, setTargetVacancy] = useState('');
     const [atsLanguageLock, setAtsLanguageLock] = useState<AtsLanguageLock>('auto');
+    const [matchImportFeedback, setMatchImportFeedback] = useState<MatchImportFeedback>({ status: 'idle' });
     const desktopPreviewViewportRef = useRef<HTMLDivElement>(null);
     const mobilePreviewViewportRef = useRef<HTMLDivElement>(null);
     const progressMilestonesTrackedRef = useRef<Set<number>>(new Set());
@@ -327,6 +339,7 @@ export default function Editor({
     const progressTrackingInitializedRef = useRef(false);
     const readyToDownloadTrackedRef = useRef(false);
     const uploadIntentHandledRef = useRef(false);
+    const matchImportHandledRef = useRef(false);
 
     const openUploader = useCallback((source: CvUploadSource) => {
         track("cv_upload_modal_opened", {
@@ -398,6 +411,102 @@ export default function Editor({
 
         void applyPendingExample();
     }, [id, initialColorThemeId, initialTemplateId, reset, uiLanguage]);
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || matchImportHandledRef.current) return;
+        const rawPendingMatch = window.sessionStorage.getItem(PENDING_CV_MATCH_STORAGE_KEY);
+        if (!rawPendingMatch) return;
+
+        let parsedPendingMatch: unknown;
+        try {
+            parsedPendingMatch = JSON.parse(rawPendingMatch);
+        } catch {
+            window.sessionStorage.removeItem(PENDING_CV_MATCH_STORAGE_KEY);
+            return;
+        }
+
+        if (
+            !isPendingCvMatch(parsedPendingMatch) ||
+            Date.now() - parsedPendingMatch.createdAt > PENDING_CV_MATCH_TTL_MS
+        ) {
+            window.sessionStorage.removeItem(PENDING_CV_MATCH_STORAGE_KEY);
+            return;
+        }
+
+        matchImportHandledRef.current = true;
+        setMatchImportFeedback({ status: 'importing' });
+
+        const applyPendingMatch = async () => {
+            try {
+                const response = await fetch('/api/tools/cv-vacature-match/import', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        cvText: parsedPendingMatch.cvText,
+                        locale: parsedPendingMatch.locale,
+                    }),
+                });
+                const body = await response.json().catch(() => ({}));
+                if (!response.ok || !body.data) {
+                    throw new Error(body.error || 'CV import failed');
+                }
+
+                const normalizedData = ensureEditorData(body.data as CVData, uiLanguage);
+                const targetRoleSuggestion = normalizedData.personal.title
+                    ? null
+                    : suggestTargetRoleFromExperience(normalizedData);
+                if (targetRoleSuggestion) {
+                    normalizedData.personal.title = targetRoleSuggestion;
+                }
+
+                reset(normalizedData);
+                setSuggestedTargetRole(targetRoleSuggestion);
+                setAtsTargetRole(normalizedData.personal.title);
+                setTargetVacancy(parsedPendingMatch.vacancyText);
+                window.sessionStorage.setItem(
+                    getTargetVacancySessionKey(id),
+                    parsedPendingMatch.vacancyText,
+                );
+                setVisibleOptionalSections(deriveVisibleOptionalSections(normalizedData));
+                setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
+                setIsSaved(false);
+
+                const updateResult = await updateCV(id, normalizedData);
+                if (!updateResult.success) {
+                    throw new Error('CV save failed');
+                }
+
+                window.sessionStorage.removeItem(PENDING_CV_MATCH_STORAGE_KEY);
+                setIsSaved(true);
+                setMatchImportFeedback({
+                    status: 'success',
+                    result: parsedPendingMatch.result,
+                });
+                track('resume_screener_editor_imported', {
+                    cvId: id,
+                    locale: parsedPendingMatch.locale,
+                    input_type: parsedPendingMatch.inputMode,
+                    score_band: parsedPendingMatch.result.scoreBand,
+                    top_issue_category: parsedPendingMatch.result.topFixes[0]?.category || 'unknown',
+                });
+            } catch {
+                setIsSaved(false);
+                setMatchImportFeedback({
+                    status: 'error',
+                    message: uiLanguage === 'en'
+                        ? 'Your assessment was preserved, but the CV could not be imported automatically. Return to the check and try again.'
+                        : 'Je analyse is bewaard, maar het CV kon niet automatisch worden ingevuld. Ga terug naar de controle en probeer het opnieuw.',
+                });
+                track('resume_screener_failed', {
+                    locale: parsedPendingMatch.locale,
+                    input_type: parsedPendingMatch.inputMode,
+                    reason: 'import_failed',
+                });
+            }
+        };
+
+        void applyPendingMatch();
+    }, [id, reset, uiLanguage]);
 
     useEffect(() => {
         const storedVacancy = window.sessionStorage.getItem(getTargetVacancySessionKey(id));
@@ -929,6 +1038,65 @@ export default function Editor({
                             onGoToStep={scrollToCompletionStep}
                             uiLanguage={uiLanguage}
                         />
+
+                        {matchImportFeedback.status === 'importing' ? (
+                            <section className="rounded-lg border border-teal-200 bg-teal-50 px-4 py-3" aria-live="polite">
+                                <p className="text-sm font-semibold text-teal-900">
+                                    {tr(
+                                        'Je CV en vacature worden in de editor gezet...',
+                                        'Your CV and vacancy are being added to the editor...',
+                                    )}
+                                </p>
+                            </section>
+                        ) : null}
+
+                        {matchImportFeedback.status === 'error' ? (
+                            <section className="rounded-lg border border-red-200 bg-red-50 px-4 py-3" role="alert">
+                                <p className="text-sm font-semibold text-red-800">{matchImportFeedback.message}</p>
+                                <Link
+                                    href={isEnglish ? '/en/cv-job-match-checker' : '/tools/cv-vacature-match'}
+                                    className="mt-2 inline-block text-sm font-bold text-red-900 underline"
+                                >
+                                    {tr('Terug naar de controle', 'Return to the check')}
+                                </Link>
+                            </section>
+                        ) : null}
+
+                        {matchImportFeedback.status === 'success' ? (
+                            <section className="rounded-lg border border-teal-200 bg-white px-4 py-4 shadow-sm">
+                                <div className="flex items-start justify-between gap-4">
+                                    <div>
+                                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-teal-700">
+                                            {tr('Vacaturematch meegenomen', 'Vacancy match imported')}
+                                        </p>
+                                        <h2 className="mt-1 text-base font-semibold text-slate-950">
+                                            {tr(
+                                                `Je CV en vacature staan klaar. Begin met deze ${matchImportFeedback.result.topFixes.length} verbeterpunten.`,
+                                                `Your CV and vacancy are ready. Start with these ${matchImportFeedback.result.topFixes.length} priorities.`,
+                                            )}
+                                        </h2>
+                                    </div>
+                                    <span className="shrink-0 rounded-md bg-teal-50 px-2 py-1 text-sm font-black text-teal-800">
+                                        {matchImportFeedback.result.score}/100
+                                    </span>
+                                </div>
+                                <ol className="mt-3 space-y-2">
+                                    {matchImportFeedback.result.topFixes.map((fix, index) => (
+                                        <li key={`${fix.category}-${index}`} className="flex gap-2 text-sm text-slate-700">
+                                            <span className="font-black text-teal-700">{index + 1}.</span>
+                                            <span><strong className="text-slate-900">{fix.title}:</strong> {fix.action}</span>
+                                        </li>
+                                    ))}
+                                </ol>
+                                <button
+                                    type="button"
+                                    onClick={() => setMatchImportFeedback({ status: 'idle' })}
+                                    className="mt-3 text-xs font-bold text-slate-500 underline hover:text-slate-800"
+                                >
+                                    {tr('Verbergen', 'Hide')}
+                                </button>
+                            </section>
+                        ) : null}
 
                         {!isReadyToDownload && isCurrentCvEmpty ? (
                             <section className="rounded-2xl border border-teal-200 bg-teal-50 p-4 shadow-sm sm:p-5">
