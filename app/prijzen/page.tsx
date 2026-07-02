@@ -61,7 +61,7 @@ const pricingFaqs = [
     { q: "Is het een abonnement?", a: `Nee. Het is een eenmalige betaling van ${cvDownloadPrice.display} per CV. Geen automatische verlengingen en geen verborgen kosten.` },
     { q: "Kan ik mijn CV later nog bewerken?", a: "Ja. Na betaling blijft dat CV in je account staan en kun je het later opnieuw openen, bewerken, van template of kleur wisselen en opnieuw downloaden zonder opnieuw te betalen." },
     { q: "Wanneer betaal ik opnieuw?", a: "Alleen als je een nieuw CV als apart document aanmaakt. Voor een CV waarvoor je al hebt betaald, hoef je niet opnieuw te betalen om later nog een PDF te downloaden." },
-    { q: "Welke betaalmethoden accepteren jullie?", a: "We accepteren iDEAL, creditcard, Bancontact en andere gangbare betaalmethoden via onze betalingspartner." },
+    { q: "Welke betaalmethoden accepteren jullie?", a: "De CV-download wordt afgerekend via Dodo Payments. Voor Nederlandse checkouts ondersteunen we onder meer iDEAL; daarnaast kunnen creditcard, debitcard, Apple Pay en Google Pay beschikbaar zijn. De precieze opties hangen af van land, apparaat en bank." },
 ] as const;
 
 // Keep this date in sync with the currently advertised price period.

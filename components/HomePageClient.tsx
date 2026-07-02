@@ -349,7 +349,7 @@ export default function HomePageClient() {
         { title: "ATS-Vriendelijk", desc: "Alle templates werken met Applicant Tracking Systems", color: "bg-yellow-400", icon: "✓" },
         { title: "Direct PDF Download", desc: "Download je CV direct als professionele PDF", color: "bg-blue-400", icon: "↓" },
         { title: "100% Privacy", desc: "Je gegevens blijven van jou. Wij verkopen niets door", color: "bg-pink-400", icon: "🔒" },
-        { title: "Geen Abonnement", desc: "Eenmalig €4,99 per CV, geen verborgen kosten", color: "bg-green-400", icon: "€" },
+        { title: "Geen Abonnement", desc: `Eenmalig ${cvDownloadPrice.display} per CV, geen verborgen kosten`, color: "bg-green-400", icon: "€" },
         { title: "Live Preview", desc: "Bekijk je CV in realtime terwijl je typt", color: "bg-purple-400", icon: "👁" },
         { title: "Binnen 5 Minuten", desc: "Upload je bestaande CV of begin helemaal opnieuw", color: "bg-[#4ECDC4]", icon: "⚡" },
     ];
@@ -357,7 +357,7 @@ export default function HomePageClient() {
     const steps = [
         { num: "1", title: "Kies een template", desc: `Selecteer uit ${templateCount}+ professionele, ATS-vriendelijke templates.`, color: "bg-yellow-400" },
         { num: "2", title: "Vul je gegevens in", desc: "Typ je gegevens in de editor. Je CV wordt live bijgewerkt.", color: "bg-blue-400" },
-        { num: "3", title: "Download als PDF", desc: "Download je afgeronde CV als professionele PDF. Eenmalig €4,99 per CV.", color: "bg-pink-400" },
+        { num: "3", title: "Download als PDF", desc: `Download je afgeronde CV als professionele PDF. Eenmalig ${cvDownloadPrice.display} per CV.`, color: "bg-pink-400" },
     ];
 
     return (
@@ -468,7 +468,7 @@ export default function HomePageClient() {
                                     <Link href="/cv-maken-zonder-abonnement" className="underline decoration-2 underline-offset-2">
                                         eenmalig betalen
                                     </Link>{" "}
-                                    van €4,99 per CV en download later opnieuw zonder abonnement.
+                                    van {cvDownloadPrice.display} per CV en download later opnieuw zonder abonnement.
                                 </span>
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -509,7 +509,7 @@ export default function HomePageClient() {
                         { number: `${templateCount}+`, label: "Templates", color: "bg-yellow-400" },
                         { number: `${exampleCount}+`, label: "CV Voorbeelden", color: "bg-blue-400" },
                         { number: `${articleCount}`, label: "Expert Artikelen", color: "bg-pink-400" },
-                        { number: "€4,99", label: "Eenmalig", color: "bg-green-400" },
+                        { number: cvDownloadPrice.display, label: "Eenmalig", color: "bg-green-400" },
                     ].map((stat) => (
                         <div key={stat.label} className="flex flex-col items-center">
                             <div
@@ -643,7 +643,7 @@ export default function HomePageClient() {
             <div className="grid gap-5 md:grid-cols-2">
                 <blockquote className="border-4 border-black bg-white p-6 text-slate-700 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
                     <p className="text-base font-medium text-slate-900">
-                        “WerkCV liet me in één sessie twee cv’s bouwen die ATS-proof waren. De download was €4,99 en er zaten geen abonnementsvallen aan. Ik begin nu elke sollicitatie hier.”
+                        “WerkCV liet me in één sessie twee cv’s bouwen die ATS-proof waren. De download was {cvDownloadPrice.display} en er zaten geen abonnementsvallen aan. Ik begin nu elke sollicitatie hier.”
                     </p>
                     <footer className="mt-4 text-sm font-black text-black uppercase tracking-[0.3em]">
                         Mark — Marketing &amp; HR, Amsterdam
@@ -658,7 +658,7 @@ export default function HomePageClient() {
                     </p>
                     <div className="mt-5 flex flex-col gap-2 text-xs font-black uppercase tracking-[0.2em] text-black">
                         <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">EU hosting + GDPR</span>
-                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">Veilige downloads via Polar</span>
+                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">Veilige betaling via Dodo Payments</span>
                         <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">Geen auto-renew</span>
                     </div>
                 </div>
@@ -1012,7 +1012,7 @@ export default function HomePageClient() {
                     </h2>
                     <p className="text-xl mb-8 max-w-2xl mx-auto text-black/80">
                         Maak binnen 5 minuten een professioneel CV dat opvalt bij recruiters.
-                        Eenmalig €4,99 per CV, later opnieuw bewerken en downloaden.
+                        Eenmalig {cvDownloadPrice.display} per CV, later opnieuw bewerken en downloaden.
                     </p>
                     <Link
                         href="/templates"

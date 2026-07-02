@@ -89,8 +89,8 @@ const englishCvLinks = [
 ];
 
 const englishLegalLinks = [
-    { href: "/privacy", label: "Privacy" },
-    { href: "/voorwaarden", label: "Terms" },
+    { href: "/en/privacy", label: "Privacy" },
+    { href: "/en/terms", label: "Terms" },
 ];
 
 const featuredBadges: FeaturedBadge[] = [

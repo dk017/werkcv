@@ -36,11 +36,11 @@ const faqs = [
             },
             {
                 q: "Is WerkCV.nl gratis?",
-                a: "Het aanmaken en bewerken van je CV is volledig gratis. Je betaalt eenmalig €4,99 per CV wanneer je dat CV als PDF wilt downloaden. Er zijn geen abonnementen of verborgen kosten."
+                a: `Het aanmaken en bewerken van je CV is volledig gratis. Je betaalt eenmalig ${cvDownloadPrice.display} per CV wanneer je dat CV als PDF wilt downloaden. Er zijn geen abonnementen of verborgen kosten.`
             },
             {
                 q: "Hoe verschilt WerkCV.nl van andere CV-sites?",
-                a: "De meeste CV-sites werken met dure maandabonnementen (\u20ac10-25 per maand). Wij vragen een eenmalige betaling van €4,99 per CV. Daarna kun je datzelfde CV later opnieuw bewerken en downloaden zonder extra betaling. Geen automatische verlengingen, geen gedoe met opzeggen."
+                a: `De meeste CV-sites werken met dure maandabonnementen (\u20ac10-25 per maand). Wij vragen een eenmalige betaling van ${cvDownloadPrice.display} per CV. Daarna kun je datzelfde CV later opnieuw bewerken en downloaden zonder extra betaling. Geen automatische verlengingen, geen gedoe met opzeggen.`
             },
         ],
     },
@@ -74,7 +74,7 @@ const faqs = [
         questions: [
             {
                 q: "Hoeveel kost het om een CV te downloaden?",
-                a: "Een CV downloaden als PDF kost eenmalig €4,99 per CV. Dit is een eenmalige betaling, geen abonnement."
+                a: `Een CV downloaden als PDF kost eenmalig ${cvDownloadPrice.display} per CV. Dit is een eenmalige betaling, geen abonnement.`
             },
             {
                 q: "Moet ik opnieuw betalen als ik mijn CV later aanpas?",
@@ -82,7 +82,7 @@ const faqs = [
             },
             {
                 q: "Welke betaalmethoden worden geaccepteerd?",
-                a: "We accepteren iDEAL, creditcard, Bancontact en andere gangbare betaalmethoden via onze beveiligde betalingspartner Polar."
+                a: "De CV-download wordt veilig afgerekend via Dodo Payments. Voor Nederlandse checkouts ondersteunen we onder meer iDEAL; daarnaast kunnen creditcard, debitcard, Apple Pay en Google Pay beschikbaar zijn. De getoonde methoden hangen af van je land, apparaat en bank."
             },
             {
                 q: "Kan ik mijn geld terugkrijgen?",

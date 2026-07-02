@@ -86,6 +86,7 @@ export type ProfilePhotoEvent =
     | 'profile_photo_cta_editor_click';
 
 export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboarding';
+export type FullPreviewSource = 'desktop_preview_header' | 'desktop_document' | 'mobile_floating';
 
 type EditorSourceContext = {
     templateId?: string;
@@ -199,13 +200,101 @@ export type AnalyticsEvent =
       }
     | { event: 'template_selected'; properties: { templateId: string; previousId?: string; cvId?: string } }
     | { event: 'color_theme_changed'; properties: { themeId: string; templateId: string } }
+    | {
+          event: 'full_preview_opened';
+          properties: {
+              cvId: string;
+              source: FullPreviewSource;
+              uiLanguage: 'nl' | 'en';
+              templateId: string;
+              completionScore: number;
+              isReady: boolean;
+              pageCount: number;
+          };
+      }
+    | {
+          event: 'full_preview_closed';
+          properties: {
+              cvId: string;
+              source: FullPreviewSource;
+              uiLanguage: 'nl' | 'en';
+              templateId: string;
+              completionScore: number;
+              isReady: boolean;
+              pageCount: number;
+              closeMethod: 'x' | 'back_to_editor' | 'escape' | 'browser_back';
+              durationMs: number;
+              maxPageViewed: number;
+              finalZoomMode: 'fit' | 'custom';
+              designOpened: boolean;
+              templateChanged: boolean;
+              downloadClicked: boolean;
+          };
+      }
+    | {
+          event: 'full_preview_design_opened';
+          properties: {
+              cvId: string;
+              source: FullPreviewSource;
+              uiLanguage: 'nl' | 'en';
+              templateId: string;
+              completionScore: number;
+              isReady: boolean;
+              pageCount: number;
+              activePage: number;
+              zoomMode: 'fit' | 'custom';
+          };
+      }
+    | {
+          event: 'full_preview_template_selected';
+          properties: {
+              cvId: string;
+              source: FullPreviewSource;
+              uiLanguage: 'nl' | 'en';
+              templateId: string;
+              previousTemplateId: string;
+              completionScore: number;
+              isReady: boolean;
+              pageCount: number;
+          };
+      }
+    | {
+          event: 'full_preview_color_changed';
+          properties: {
+              cvId: string;
+              source: FullPreviewSource;
+              uiLanguage: 'nl' | 'en';
+              templateId: string;
+              previousThemeId: string;
+              themeId: string;
+              completionScore: number;
+              isReady: boolean;
+              pageCount: number;
+          };
+      }
+    | {
+          event: 'full_preview_download_clicked';
+          properties: {
+              cvId: string;
+              source: FullPreviewSource;
+              uiLanguage: 'nl' | 'en';
+              templateId: string;
+              completionScore: number;
+              isReady: boolean;
+              pageCount: number;
+              durationMs: number;
+              maxPageViewed: number;
+              designOpened: boolean;
+              templateChanged: boolean;
+          };
+      }
     // Photo
     | { event: 'photo_uploaded'; properties: { method: 'click' | 'drag' } }
     | { event: 'photo_removed'; properties: Record<string, never> }
     | { event: 'photo_edit_opened'; properties: { source: string } }
     | { event: 'photo_repositioned'; properties: { moved: boolean } }
     // Download & payment
-    | { event: 'pdf_download_started'; properties: { cvId: string; source?: string; completionScore?: number; templateId?: string } }
+    | { event: 'pdf_download_started'; properties: { cvId: string; source?: string; completionScore?: number; templateId?: string; pageCount?: number } }
     | { event: 'pdf_download_completed'; properties: { cvId: string } }
     | { event: 'addon_selected'; properties: { cvId: string; addons: string[] } }
     | {
@@ -217,8 +306,9 @@ export type AnalyticsEvent =
           properties: {
               cvId: string;
               variant: 'modal' | 'direct';
-              source: string;
-              completionScore: number;
+               source: string;
+               completionScore: number;
+               pageCount?: number;
           } & CheckoutExperimentContext;
       }
     | {
@@ -250,9 +340,9 @@ export type AnalyticsEvent =
           event: 'checkout_modal_closed';
           properties: { cvId: string; reason: 'later_button' | 'close_button' | 'overlay' };
       }
-    | { event: 'checkout_start'; properties: { cvId: string; product?: string; amountCents?: number } & CheckoutExperimentContext }
-    | { event: 'checkout_started'; properties: { cvId: string; product?: string; amountCents?: number } & CheckoutExperimentContext }
-    | { event: 'checkout_failed'; properties: { cvId: string; reason?: string; product?: string; amountCents?: number } & CheckoutExperimentContext }
+    | { event: 'checkout_start'; properties: { cvId: string; product?: string; amountCents?: number; source?: string } & CheckoutExperimentContext }
+    | { event: 'checkout_started'; properties: { cvId: string; product?: string; amountCents?: number; source?: string } & CheckoutExperimentContext }
+    | { event: 'checkout_failed'; properties: { cvId: string; reason?: string; product?: string; amountCents?: number; source?: string } & CheckoutExperimentContext }
     | { event: 'checkout_completed'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } }
     | { event: 'paid'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } }
     | { event: 'payment_completed'; properties: { cvId: string } }

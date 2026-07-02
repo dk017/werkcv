@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { getLanguageAlternates } from "@/lib/i18n/route-pairs";
 
 export const metadata: Metadata = {
     title: "Algemene Voorwaarden - WerkCV",
     description: "Lees de algemene voorwaarden van WerkCV.nl. Informatie over onze dienst, prijzen, betaling en aansprakelijkheid.",
+    alternates: {
+        canonical: "https://werkcv.nl/voorwaarden",
+        languages: getLanguageAlternates("/voorwaarden") ?? undefined,
+    },
 };
 
 export default function VoorwaardenPage() {
@@ -30,7 +35,7 @@ export default function VoorwaardenPage() {
             <main className="relative z-10 max-w-3xl mx-auto px-6 py-12">
                 <div className="bg-white border-4 border-black p-6 sm:p-10 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
                     <h1 className="text-3xl font-black text-black mb-2">Algemene Voorwaarden</h1>
-                    <p className="text-sm font-medium text-gray-500 mb-8">Laatst bijgewerkt: februari 2025</p>
+                    <p className="text-sm font-medium text-gray-500 mb-8">Laatst bijgewerkt: juli 2026</p>
 
                     <div className="prose prose-sm max-w-none space-y-6 text-black">
                         <section>
@@ -65,7 +70,8 @@ export default function VoorwaardenPage() {
                             <ul className="list-disc pl-6 space-y-1 font-medium">
                                 <li>Het downloaden van een CV als PDF kost een eenmalig bedrag (zie de actuele prijs op de website)</li>
                                 <li>Er zijn geen abonnementen of terugkerende kosten</li>
-                                <li>Betaling verloopt via onze betalingsprovider Polar</li>
+                                <li>De standaard CV-download wordt afgerekend via Dodo Payments</li>
+                                <li>Voor bepaalde aanvullende producten, zoals een profielfoto, kan de betaling via Polar verlopen</li>
                                 <li>Na betaling kun je je CV direct downloaden</li>
                                 <li>Alle genoemde prijzen zijn inclusief BTW</li>
                             </ul>

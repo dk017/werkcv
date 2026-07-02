@@ -655,6 +655,8 @@ function SegmentedFunnelTable({ title, rows }: { title: string; rows: SegmentedF
           "Verified",
           "Editor",
           "Ready",
+          "Preview",
+          "Design",
           "PDF",
           "Checkout",
           "Paid",
@@ -669,12 +671,14 @@ function SegmentedFunnelTable({ title, rows }: { title: string; rows: SegmentedF
           number(row.verifiedLogins),
           number(row.editorStarts),
           number(row.readyCvs),
+          number(row.fullPreviewOpens),
+          number(row.designReviews),
           number(row.pdfStarts),
           number(row.checkoutStarts),
           number(row.paidSessions),
           percentage(row.readyCvs, row.editorStarts),
         ])}
-        alignRight={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]}
+        alignRight={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]}
       />
     </div>
   );
@@ -690,6 +694,8 @@ function MoneyFunnelTable({ title, rows }: { title: string; rows: MoneyFunnelRow
           "Sessions",
           "Editor",
           "Ready",
+          "Preview",
+          "Design",
           "PDF",
           "Checkout open",
           "Payment",
@@ -703,6 +709,8 @@ function MoneyFunnelTable({ title, rows }: { title: string; rows: MoneyFunnelRow
           number(row.sessions),
           number(row.editorStarts),
           number(row.readyCvs),
+          number(row.fullPreviewOpens),
+          number(row.designReviews),
           number(row.pdfStarts),
           number(row.checkoutOpened),
           number(row.checkoutStarts),
@@ -711,7 +719,7 @@ function MoneyFunnelTable({ title, rows }: { title: string; rows: MoneyFunnelRow
           percentage(row.readyCvs, row.editorStarts),
           percentage(row.paidOrders, row.readyCvs),
         ])}
-        alignRight={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+        alignRight={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}
       />
     </div>
   );

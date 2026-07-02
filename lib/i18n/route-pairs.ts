@@ -37,6 +37,22 @@ export const routePairs = [
     preserveSearch: true,
   },
   {
+    id: "privacy",
+    nl: "/privacy",
+    en: "/en/privacy",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
+    id: "terms",
+    nl: "/voorwaarden",
+    en: "/en/terms",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
     id: "cv-vacancy-match",
     nl: "/tools/cv-vacature-match",
     en: "/en/cv-job-match-checker",

@@ -263,6 +263,71 @@ function isEmptyCv(data: CVData) {
   );
 }
 
+interface TemplateGalleryProps {
+  currentTemplateId: string;
+  data: CVData;
+  onSelectTemplate: (templateId: string, defaultThemeId: string) => void;
+  uiLanguage?: UiLanguage;
+  compact?: boolean;
+  idPrefix?: string;
+}
+
+export function TemplateGallery({
+  currentTemplateId,
+  data,
+  onSelectTemplate,
+  uiLanguage = "nl",
+  compact = false,
+  idPrefix = "template-gallery",
+}: TemplateGalleryProps) {
+  const isEnglish = uiLanguage === "en";
+  const previewData = isEmptyCv(data)
+    ? isEnglish
+      ? englishPreviewData
+      : dutchPreviewData
+    : data;
+
+  return (
+    <div className={compact ? "space-y-6" : "space-y-8"}>
+      {templateGroups.map((group) => {
+        const templates = group.templateIds
+          .map((templateId) => templateList.find((template) => template.id === templateId))
+          .filter((template): template is TemplateConfig => Boolean(template));
+        const headingId = `${idPrefix}-${group.id}`;
+
+        return (
+          <section key={group.id} aria-labelledby={headingId}>
+            <div className="mb-3">
+              <h3
+                id={headingId}
+                className={compact ? "text-sm font-bold text-gray-950" : "text-base font-bold text-gray-950"}
+              >
+                {isEnglish ? group.label.en : group.label.nl}
+              </h3>
+              <p className={`mt-1 text-gray-600 ${compact ? "text-xs leading-relaxed" : "text-sm"}`}>
+                {isEnglish ? group.description.en : group.description.nl}
+              </p>
+            </div>
+            <div className={compact ? "grid grid-cols-2 gap-3" : "grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4"}>
+              {templates.map((template) => (
+                <TemplateCard
+                  key={template.id}
+                  template={template}
+                  data={previewData}
+                  uiLanguage={uiLanguage}
+                  compact={compact}
+                  isSelected={template.id === currentTemplateId}
+                  onSelect={() => onSelectTemplate(template.id, template.defaultThemeId)}
+                />
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
 interface TemplateSelectorProps {
   currentTemplateId: string;
   data: CVData;
@@ -287,12 +352,6 @@ export default function TemplateSelector({
   const isEnglish = uiLanguage === "en";
 
   const currentTemplate = templateList.find((template) => template.id === currentTemplateId);
-  const previewData = isEmptyCv(data)
-    ? isEnglish
-      ? englishPreviewData
-      : dutchPreviewData
-    : data;
-
   const templateModal = (
     <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto p-4 pt-16 sm:pt-20">
       <div className="fixed inset-0 bg-black/50" onClick={onClose} />
@@ -314,40 +373,17 @@ export default function TemplateSelector({
           </button>
         </div>
 
-        <div className="flex-1 space-y-8 overflow-y-auto p-6">
-          {templateGroups.map((group) => {
-            const templates = group.templateIds
-              .map((templateId) => templateList.find((template) => template.id === templateId))
-              .filter((template): template is TemplateConfig => Boolean(template));
-
-            return (
-              <section key={group.id} aria-labelledby={`template-group-${group.id}`}>
-                <div className="mb-3">
-                  <h3 id={`template-group-${group.id}`} className="text-base font-bold text-gray-950">
-                    {isEnglish ? group.label.en : group.label.nl}
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-600">
-                    {isEnglish ? group.description.en : group.description.nl}
-                  </p>
-                </div>
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                  {templates.map((template) => (
-                    <TemplateCard
-                      key={template.id}
-                      template={template}
-                      data={previewData}
-                      uiLanguage={uiLanguage}
-                      isSelected={template.id === currentTemplateId}
-                      onSelect={() => {
-                        onSelectTemplate(template.id, template.defaultThemeId);
-                        onClose();
-                      }}
-                    />
-                  ))}
-                </div>
-              </section>
-            );
-          })}
+        <div className="flex-1 overflow-y-auto p-6">
+          <TemplateGallery
+            currentTemplateId={currentTemplateId}
+            data={data}
+            uiLanguage={uiLanguage}
+            idPrefix="template-selector"
+            onSelectTemplate={(templateId, defaultThemeId) => {
+              onSelectTemplate(templateId, defaultThemeId);
+              onClose();
+            }}
+          />
         </div>
       </div>
     </div>
@@ -413,29 +449,42 @@ function TemplateCard({
   template,
   data,
   uiLanguage,
+  compact,
   isSelected,
   onSelect,
 }: {
   template: TemplateConfig;
   data: CVData;
   uiLanguage: UiLanguage;
+  compact: boolean;
   isSelected: boolean;
   onSelect: () => void;
 }) {
   const TemplateComponent = templateComponents.get(template.id);
   const theme = getThemeById(template.defaultThemeId);
+  const templateName = uiLanguage === "en" ? template.name : template.nameDutch;
 
   if (!TemplateComponent) return null;
 
   return (
     <button
+      type="button"
       onClick={onSelect}
-      className={`rounded-xl border-2 p-3 text-left transition-all hover:shadow-md ${
+      aria-label={templateName}
+      aria-pressed={isSelected}
+      className={`rounded-lg border-2 text-left transition-all hover:shadow-md ${
+        compact ? "p-2" : "p-3"
+      } ${
         isSelected ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:border-gray-300"
       }`}
     >
-      <div className="mb-2 flex h-[200px] items-center justify-center overflow-hidden rounded-lg border border-gray-100 bg-gray-50">
-        <div style={{ zoom: 0.22, pointerEvents: "none", flexShrink: 0 }}>
+      <div
+        aria-hidden="true"
+        className={`mb-2 flex items-center justify-center overflow-hidden rounded-md border border-gray-100 bg-gray-50 ${
+          compact ? "h-[150px]" : "h-[200px]"
+        }`}
+      >
+        <div style={{ zoom: compact ? 0.17 : 0.22, pointerEvents: "none", flexShrink: 0 }}>
           <LinkTextProvider disableAnchors>
             {createElement(TemplateComponent, { data, theme })}
           </LinkTextProvider>
@@ -443,8 +492,8 @@ function TemplateCard({
       </div>
 
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-900">
-          {uiLanguage === "en" ? template.name : template.nameDutch}
+        <span className={`${compact ? "text-xs" : "text-sm"} font-medium text-gray-900`}>
+          {templateName}
         </span>
         {isSelected && (
           <svg className="h-4 w-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">

@@ -225,6 +225,8 @@ export type SegmentedFunnelRow = {
   verifiedLogins: number;
   editorStarts: number;
   readyCvs: number;
+  fullPreviewOpens: number;
+  designReviews: number;
   pdfStarts: number;
   checkoutStarts: number;
   paidSessions: number;
@@ -236,6 +238,8 @@ export type MoneyFunnelRow = {
   sessions: number;
   editorStarts: number;
   readyCvs: number;
+  fullPreviewOpens: number;
+  designReviews: number;
   pdfStarts: number;
   checkoutOpened: number;
   checkoutStarts: number;
@@ -924,6 +928,8 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
           BOOL_OR(event = 'login_verified') AS login_verified,
           BOOL_OR(event IN ('start_cv', 'editor_started', 'landing_to_editor')) AS editor_started,
           BOOL_OR(event = 'ready_to_download_viewed') AS ready_cv,
+          BOOL_OR(event = 'full_preview_opened') AS full_preview_opened,
+          BOOL_OR(event IN ('full_preview_design_opened', 'full_preview_template_selected')) AS design_reviewed,
           BOOL_OR(event IN ('pdf_download_started', 'pdf_download_completed')) AS pdf_started,
           BOOL_OR(event IN ('checkout_start', 'checkout_started')) AS checkout_started
         FROM event_base
@@ -984,6 +990,8 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
           COUNT(*) FILTER (WHERE login_verified)::int AS "verifiedLogins",
           COUNT(*) FILTER (WHERE editor_started)::int AS "editorStarts",
           COUNT(*) FILTER (WHERE ready_cv)::int AS "readyCvs",
+          COUNT(*) FILTER (WHERE full_preview_opened)::int AS "fullPreviewOpens",
+          COUNT(*) FILTER (WHERE design_reviewed)::int AS "designReviews",
           COUNT(*) FILTER (WHERE pdf_started)::int AS "pdfStarts",
           COUNT(*) FILTER (WHERE checkout_started)::int AS "checkoutStarts",
           COUNT(*) FILTER (WHERE paid)::int AS "paidSessions"
@@ -1006,6 +1014,8 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
         "verifiedLogins",
         "editorStarts",
         "readyCvs",
+        "fullPreviewOpens",
+        "designReviews",
         "pdfStarts",
         "checkoutStarts",
         "paidSessions"
@@ -1066,6 +1076,8 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
           BOOL_OR(event = 'example_cv_applied_after_login' OR COALESCE(properties->>'entryPoint', '') LIKE '%example%') AS used_example,
           BOOL_OR(event IN ('start_cv', 'editor_started', 'landing_to_editor')) AS editor_started,
           BOOL_OR(event = 'ready_to_download_viewed') AS ready_cv,
+          BOOL_OR(event = 'full_preview_opened') AS full_preview_opened,
+          BOOL_OR(event IN ('full_preview_design_opened', 'full_preview_template_selected')) AS design_reviewed,
           BOOL_OR(event IN ('pdf_download_started', 'pdf_download_completed')) AS pdf_started,
           BOOL_OR(event IN ('checkout_paywall_reached', 'checkout_modal_viewed')) AS checkout_opened,
           BOOL_OR(event IN ('checkout_start', 'checkout_started')) AS checkout_started
@@ -1143,6 +1155,8 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
           COUNT(DISTINCT session_id)::int AS sessions,
           COUNT(DISTINCT session_id) FILTER (WHERE editor_started)::int AS "editorStarts",
           COUNT(DISTINCT session_id) FILTER (WHERE ready_cv)::int AS "readyCvs",
+          COUNT(DISTINCT session_id) FILTER (WHERE full_preview_opened)::int AS "fullPreviewOpens",
+          COUNT(DISTINCT session_id) FILTER (WHERE design_reviewed)::int AS "designReviews",
           COUNT(DISTINCT session_id) FILTER (WHERE pdf_started)::int AS "pdfStarts",
           COUNT(DISTINCT session_id) FILTER (WHERE checkout_opened)::int AS "checkoutOpened",
           COUNT(DISTINCT session_id) FILTER (WHERE checkout_started)::int AS "checkoutStarts",
@@ -1166,6 +1180,8 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
         sessions,
         "editorStarts",
         "readyCvs",
+        "fullPreviewOpens",
+        "designReviews",
         "pdfStarts",
         "checkoutOpened",
         "checkoutStarts",

@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { CVData } from "@/lib/cv";
 import { updateCV, updateCVTemplate, updateCVColorTheme, getCheckoutURL } from "../actions";
-import Preview from "./preview";
 import {
     ExperienceSection,
     EducationSection,
@@ -34,6 +33,7 @@ import {
     markEditorStartedTracked,
     track,
     type CvUploadSource,
+    type FullPreviewSource,
 } from "@/lib/analytics";
 import { UiLanguage } from "@/lib/ui-language";
 import {
@@ -51,6 +51,8 @@ import {
 } from "@/lib/pending-cv-match";
 import type { CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match";
 import { suggestTargetRoleFromExperience } from "@/lib/cv-normalize";
+import FullCvPreviewDialog from "./FullCvPreviewDialog";
+import ScaledCvPreview, { A4_WIDTH_PX } from "./ScaledCvPreview";
 
 interface EditorProps {
     initialData: CVData;
@@ -64,14 +66,11 @@ interface EditorProps {
 const inputClass = "w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100";
 const inputStyle = undefined;
 const DESKTOP_PREVIEW_SCALE = 0.58;
-const MOBILE_PREVIEW_SCALE = 0.44;
-const A4_WIDTH_PX = 794;
-const A4_HEIGHT_PX = 1123;
 const READY_TO_DOWNLOAD_TRACKED_PREFIX = 'werkcv_ready_to_download_tracked_';
 const CHECKOUT_FLOW_VARIANT = 'direct' as const;
 
 type AtsLanguageLock = 'auto' | 'nl' | 'en';
-type DownloadSource = 'toolbar' | 'ready_panel' | 'post_completion_tools';
+type DownloadSource = 'toolbar' | 'ready_panel' | 'post_completion_tools' | 'full_preview';
 type TemplateSelectorSource = 'toolbar' | 'ready_state';
 type MatchImportFeedback =
     | { status: 'idle' }
@@ -313,10 +312,9 @@ export default function Editor({
     const [colorThemeId, setColorThemeId] = useState(initialColorThemeId);
     const [showUploader, setShowUploader] = useState(false);
     const [uploaderSource, setUploaderSource] = useState<CvUploadSource>("toolbar");
-    const [showMobilePreview, setShowMobilePreview] = useState(false);
+    const [fullPreviewSource, setFullPreviewSource] = useState<FullPreviewSource | null>(null);
     const [pageCount, setPageCount] = useState(1);
     const [desktopPreviewScale, setDesktopPreviewScale] = useState(DESKTOP_PREVIEW_SCALE);
-    const [mobilePreviewScale, setMobilePreviewScale] = useState(MOBILE_PREVIEW_SCALE);
     const [showOnboarding, setShowOnboarding] = useState(false);
     const [showTemplateHint, setShowTemplateHint] = useState(false);
     const [isTemplateSelectorOpen, setIsTemplateSelectorOpen] = useState(false);
@@ -333,7 +331,6 @@ export default function Editor({
     const [atsLanguageLock, setAtsLanguageLock] = useState<AtsLanguageLock>('auto');
     const [matchImportFeedback, setMatchImportFeedback] = useState<MatchImportFeedback>({ status: 'idle' });
     const desktopPreviewViewportRef = useRef<HTMLDivElement>(null);
-    const mobilePreviewViewportRef = useRef<HTMLDivElement>(null);
     const progressMilestonesTrackedRef = useRef<Set<number>>(new Set());
     const completedSectionsTrackedRef = useRef<Set<CompletionStepId>>(new Set());
     const progressTrackingInitializedRef = useRef(false);
@@ -535,17 +532,15 @@ export default function Editor({
 
         const recalc = () => {
             computeScale(desktopPreviewViewportRef.current, 0.5, 0.9, setDesktopPreviewScale);
-            computeScale(mobilePreviewViewportRef.current, 0.36, 0.65, setMobilePreviewScale);
         };
 
         recalc();
 
         const observer = new ResizeObserver(recalc);
         if (desktopPreviewViewportRef.current) observer.observe(desktopPreviewViewportRef.current);
-        if (mobilePreviewViewportRef.current) observer.observe(mobilePreviewViewportRef.current);
 
         return () => observer.disconnect();
-    }, [showMobilePreview]);
+    }, []);
 
     // Show onboarding for empty CVs on first visit
     useEffect(() => {
@@ -767,11 +762,12 @@ export default function Editor({
         track('cv_uploaded', { cvId: id, fileType: 'parsed', templateId, entryMethod: 'upload' });
     };
 
-    const startCheckout = async () => {
+    const startCheckout = async (source: DownloadSource) => {
         const checkoutEventContext = {
             cvId: id,
             product: "cv-download" as const,
             amountCents: cvDownloadPrice.amountCents,
+            source,
             variant: CHECKOUT_FLOW_VARIANT,
             experimentVariant: CHECKOUT_FLOW_VARIANT,
             templateId,
@@ -877,7 +873,7 @@ export default function Editor({
 
     const handleDownload = async (source: DownloadSource = "toolbar") => {
         setIsDownloading(true);
-        track('pdf_download_started', { cvId: id, source, completionScore, templateId });
+        track('pdf_download_started', { cvId: id, source, completionScore, templateId, pageCount });
         try {
             // Always save latest data before generating PDF to prevent stale content
             const formData = watch();
@@ -900,11 +896,12 @@ export default function Editor({
                         experimentVariant: CHECKOUT_FLOW_VARIANT,
                         source,
                         completionScore,
+                        pageCount,
                         templateId,
                         uiLanguage,
                         ...getEditorSearchContext(),
                     });
-                    await startCheckout();
+                    await startCheckout(source);
                 } else if (errorData?.code === 'PDF_ERROR') {
                     alert(errorData?.supportNotified
                         ? supportNotifiedMessage
@@ -1487,13 +1484,28 @@ export default function Editor({
                     <span className="text-xs font-semibold text-slate-600">{tr("Live preview", "Live preview")}</span>
                     <div className="flex items-center gap-2">
                         {pageCount > 1 && (
-                            <div className="bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-900 border border-amber-300 rounded-md">
+                            <div className={`px-2 py-1 text-xs font-semibold rounded-md border ${
+                                pageCount > 2
+                                    ? "border-amber-300 bg-amber-100 text-amber-900"
+                                    : "border-slate-200 bg-slate-100 text-slate-700"
+                            }`}>
                                 {pageCount} {tr("pagina's", "pages")}
                             </div>
                         )}
                         <div className="bg-slate-900 px-2 py-1 text-xs font-semibold text-white border border-slate-900 rounded-md">
                             Live
                         </div>
+                        <button
+                            type="button"
+                            onClick={() => setFullPreviewSource("desktop_preview_header")}
+                            className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-blue-200 bg-blue-50 text-blue-700 transition-colors hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+                            title={tr("Open grote CV-weergave", "Open full CV preview")}
+                            aria-label={tr("Open grote CV-weergave", "Open full CV preview")}
+                        >
+                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" />
+                            </svg>
+                        </button>
                     </div>
                 </div>
                 {/* Scrollable preview area */}
@@ -1501,118 +1513,75 @@ export default function Editor({
                     ref={desktopPreviewViewportRef}
                     className="flex-1 overflow-y-auto p-4 xl:p-5 flex justify-center items-start"
                 >
-                    <div
-                        className="relative bg-white shadow-sm border border-slate-200"
-                        style={{
-                            width: A4_WIDTH_PX * desktopPreviewScale,
-                            height: pageCount * A4_HEIGHT_PX * desktopPreviewScale,
-                        }}
-                    >
+                    {!fullPreviewSource ? (
                         <div
-                            style={{
-                                transform: `scale(${desktopPreviewScale})`,
-                                transformOrigin: 'top left',
-                                width: A4_WIDTH_PX,
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => setFullPreviewSource("desktop_document")}
+                            onKeyDown={(event) => {
+                                if (event.key === "Enter" || event.key === " ") {
+                                    event.preventDefault();
+                                    setFullPreviewSource("desktop_document");
+                                }
                             }}
+                            className="cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4 focus-visible:ring-offset-[#f0faf9]"
+                            title={tr("Klik voor grote CV-weergave", "Click for full CV preview")}
+                            aria-label={tr("Open grote CV-weergave", "Open full CV preview")}
                         >
-                            <Preview
+                            <ScaledCvPreview
                                 data={data}
                                 templateId={templateId}
                                 colorThemeId={colorThemeId}
+                                scale={desktopPreviewScale}
+                                pageCount={pageCount}
                                 onPageCountChange={handlePageCountChange}
                             />
                         </div>
-                        {pageCount > 1 && Array.from({ length: pageCount - 1 }, (_, i) => (
-                            <div
-                                key={i}
-                                className="absolute left-0 right-0 z-10 bg-slate-200"
-                                style={{ top: (i + 1) * A4_HEIGHT_PX * desktopPreviewScale, height: 6 }}
-                            />
-                        ))}
-                    </div>
+                    ) : null}
                 </div>
             </div>
 
-            {/* Mobile/Tablet preview trigger */}
+            {/* Mobile/tablet full-preview trigger */}
             <button
                 type="button"
-                onClick={() => setShowMobilePreview(true)}
-                className="lg:hidden fixed bottom-4 right-4 z-40 bg-slate-900 text-white px-4 py-2 font-semibold text-xs rounded-md border border-slate-900 shadow-sm"
-               
+                onClick={() => setFullPreviewSource("mobile_floating")}
+                className={`lg:hidden fixed bottom-4 right-4 z-40 px-4 py-2 font-semibold text-xs rounded-md border shadow-sm ${
+                    isReadyToDownload
+                        ? "border-blue-300 bg-blue-50 text-blue-800"
+                        : "border-slate-900 bg-slate-900 text-white"
+                }`}
             >
-                {tr("Live preview", "Live preview")}{pageCount > 1 ? ` (${pageCount})` : ""}
+                {isReadyToDownload
+                    ? tr("CV bekijken", "Review CV")
+                    : tr("Live preview", "Live preview")}
+                {pageCount > 1 ? ` (${pageCount})` : ""}
             </button>
 
-            {/* Mobile/Tablet preview panel */}
-            {showMobilePreview && (
-                <div className="lg:hidden fixed inset-0 z-40 bg-black/50">
-                    <button
-                        type="button"
-                        onClick={() => setShowMobilePreview(false)}
-                        className="absolute inset-0 w-full h-full cursor-default"
-                        aria-label={tr("Sluit voorbeeld", "Close preview")}
-                    />
-                    <div className="absolute inset-x-0 bottom-0 h-[72vh] md:inset-y-0 md:right-0 md:left-auto md:h-full md:w-[460px] bg-[#f0faf9] border-t md:border-t-0 md:border-l border-slate-300 flex flex-col">
-                        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-white">
-                            <div className="flex items-center gap-2">
-                                <span className="bg-slate-900 px-2 py-1 text-xs font-semibold text-white border border-slate-900 rounded-md">{tr("Live preview", "Live preview")}</span>
-                                {pageCount > 1 && (
-                                    <span className="bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-900 border border-amber-300 rounded-md">{pageCount} {tr("pagina's", "pages")}</span>
-                                )}
-                            </div>
-                            <button
-                                type="button"
-                                onClick={() => setShowMobilePreview(false)}
-                                className="px-3 py-1 border border-slate-300 text-xs font-semibold text-slate-700 bg-slate-100 rounded-md hover:bg-slate-200"
-                            >
-                                {tr("Sluiten", "Close")}
-                            </button>
-                        </div>
-                        <div className="flex-1 overflow-y-auto px-2 sm:px-3 py-4">
-                            <div
-                                ref={mobilePreviewViewportRef}
-                                className="flex justify-center items-start"
-                            >
-                                <div
-                                    className="relative bg-white shadow-sm border border-slate-200"
-                                    style={{
-                                        width: A4_WIDTH_PX * mobilePreviewScale,
-                                        height: pageCount * A4_HEIGHT_PX * mobilePreviewScale,
-                                    }}
-                                >
-                                    <div
-                                        style={{
-                                            transform: `scale(${mobilePreviewScale})`,
-                                            transformOrigin: 'top left',
-                                            width: A4_WIDTH_PX,
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                        }}
-                                    >
-                                        <Preview
-                                            data={data}
-                                            templateId={templateId}
-                                            colorThemeId={colorThemeId}
-                                            onPageCountChange={handlePageCountChange}
-                                        />
-                                    </div>
-                                    {pageCount > 1 && Array.from({ length: pageCount - 1 }, (_, i) => (
-                                        <div
-                                            key={i}
-                                            className="absolute left-0 right-0 z-10 bg-slate-200"
-                                            style={{ top: (i + 1) * A4_HEIGHT_PX * mobilePreviewScale, height: 4 }}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
+            {fullPreviewSource ? (
+                <FullCvPreviewDialog
+                    cvId={id}
+                    data={data}
+                    templateId={templateId}
+                    colorThemeId={colorThemeId}
+                    completionScore={completionScore}
+                    isReady={isReadyToDownload}
+                    remainingSteps={remainingCoreSteps}
+                    isSaved={isSaved}
+                    isSaving={isSubmitting}
+                    isDownloading={isDownloading}
+                    pageCount={pageCount}
+                    source={fullPreviewSource}
+                    uiLanguage={uiLanguage}
+                    onClose={() => setFullPreviewSource(null)}
+                    onContinueEditing={() => {
+                        if (completionState.nextStep) scrollToCompletionStep(completionState.nextStep);
+                    }}
+                    onDownload={() => handleDownload("full_preview")}
+                    onPageCountChange={handlePageCountChange}
+                    onSelectTemplate={handleTemplateChange}
+                    onSelectTheme={handleColorThemeChange}
+                />
+            ) : null}
 
             {/* CV Upload Modal */}
             {showUploader && (
