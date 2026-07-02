@@ -957,7 +957,8 @@ export default function Editor({
                                 currentTemplateId={templateId}
                                 data={data}
                                 isOpen={isTemplateSelectorOpen}
-                                onOpen={() => openTemplateSelector("toolbar")}
+                                reviewMode={isReadyToDownload}
+                                onOpen={() => openTemplateSelector(isReadyToDownload ? "ready_state" : "toolbar")}
                                 onClose={() => setIsTemplateSelectorOpen(false)}
                                 onSelectTemplate={handleTemplateChange}
                                 uiLanguage={uiLanguage}
@@ -1387,36 +1388,6 @@ export default function Editor({
                             </div>
 
                             <div className="mt-5 grid gap-4">
-                                {isReadyToDownload ? (
-                                    <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                                            <div>
-                                                <p className="text-sm font-semibold text-slate-950">
-                                                    {tr("Twijfel je over de opmaak?", "Not sure about the design?")}
-                                                </p>
-                                                <p className="mt-1 text-xs font-medium leading-relaxed text-slate-600">
-                                                    {tr(
-                                                        "Wissel gratis van template of kleur voordat je betaalt. De inhoud blijft behouden.",
-                                                        "Switch template or color for free before paying. Your content stays intact."
-                                                    )}
-                                                </p>
-                                            </div>
-                                            <button
-                                                type="button"
-                                                onClick={() => {
-                                                    track("cta_clicked", {
-                                                        location: "editor_final_check_template_prompt",
-                                                        label: "switch_template_before_download",
-                                                    });
-                                                    openTemplateSelector("ready_state");
-                                                }}
-                                                className="inline-flex shrink-0 items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-xs font-black text-slate-800 hover:bg-slate-100"
-                                            >
-                                                {tr("Template bekijken", "Review templates")}
-                                            </button>
-                                        </div>
-                                    </div>
-                                ) : null}
                                 <CvScoreWidget data={data} uiLanguage={uiLanguage} />
                                 <KeywordScannerWidget
                                     data={data}

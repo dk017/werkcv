@@ -267,6 +267,7 @@ interface TemplateSelectorProps {
   currentTemplateId: string;
   data: CVData;
   isOpen: boolean;
+  reviewMode?: boolean;
   onOpen: () => void;
   onClose: () => void;
   onSelectTemplate: (templateId: string, defaultThemeId: string) => void;
@@ -277,6 +278,7 @@ export default function TemplateSelector({
   currentTemplateId,
   data,
   isOpen,
+  reviewMode = false,
   onOpen,
   onClose,
   onSelectTemplate,
@@ -356,14 +358,34 @@ export default function TemplateSelector({
       <button
         type="button"
         onClick={onOpen}
-        aria-label={
-          isEnglish
-            ? `Choose template. Current: ${currentTemplate?.name || "Template"}`
-            : `Template kiezen. Huidig: ${currentTemplate?.nameDutch || "Template"}`
+        title={
+          reviewMode
+            ? isEnglish
+              ? `Review design. Current template: ${currentTemplate?.name || "Template"}`
+              : `Ontwerp bekijken. Huidig template: ${currentTemplate?.nameDutch || "Template"}`
+            : undefined
         }
-        className="flex items-center gap-2 rounded-lg bg-gray-100 px-3 py-1.5 text-sm text-gray-700 transition hover:bg-gray-200"
+        aria-label={
+          reviewMode
+            ? isEnglish
+              ? `Review design. Current template: ${currentTemplate?.name || "Template"}`
+              : `Ontwerp bekijken. Huidig template: ${currentTemplate?.nameDutch || "Template"}`
+            : isEnglish
+              ? `Choose template. Current: ${currentTemplate?.name || "Template"}`
+              : `Template kiezen. Huidig: ${currentTemplate?.nameDutch || "Template"}`
+        }
+        className={`flex items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-semibold transition ${
+          reviewMode
+            ? "border-blue-300 bg-blue-50 text-blue-800 hover:bg-blue-100"
+            : "border-transparent bg-gray-100 text-gray-700 hover:bg-gray-200"
+        }`}
       >
-        <svg className="h-4 w-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg
+          className={`h-4 w-4 ${reviewMode ? "text-blue-700" : "text-gray-600"}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -372,9 +394,13 @@ export default function TemplateSelector({
           />
         </svg>
         <span className="hidden sm:inline">
-          {isEnglish
-            ? currentTemplate?.name || "Template"
-            : currentTemplate?.nameDutch || "Template"}
+          {reviewMode
+            ? isEnglish
+              ? "Review design"
+              : "Ontwerp bekijken"
+            : isEnglish
+              ? currentTemplate?.name || "Template"
+              : currentTemplate?.nameDutch || "Template"}
         </span>
       </button>
 
