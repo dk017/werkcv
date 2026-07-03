@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  serverExternalPackages: ['pdfjs-dist'],
+  serverExternalPackages: ['@napi-rs/canvas', 'pdfjs-dist'],
   turbopack: {},
 
   async redirects() {

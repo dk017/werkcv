@@ -6,8 +6,9 @@ import type { CVData } from "@/lib/cv";
 import { track, type FullPreviewSource } from "@/lib/analytics";
 import { cvDownloadPrice } from "@/lib/site-content";
 import type { UiLanguage } from "@/lib/ui-language";
+import PdfPagedPreview from "./PdfPagedPreview";
 import PreviewDesignPanel from "./PreviewDesignPanel";
-import ScaledCvPreview, { A4_HEIGHT_PX, A4_WIDTH_PX } from "./ScaledCvPreview";
+import { A4_HEIGHT_PX, A4_WIDTH_PX } from "./ScaledCvPreview";
 
 type FullPreviewCloseMethod = "x" | "back_to_editor" | "escape" | "browser_back";
 type ZoomMode = "fit" | "custom";
@@ -391,7 +392,7 @@ export default function FullCvPreviewDialog({
               aria-expanded={isDesignOpen}
             >
               <DesignIcon />
-              {isEnglish ? "Design" : "Ontwerp"}
+              {isEnglish ? "Review design" : "Ontwerp bekijken"}
             </button>
 
             <div className="flex items-center gap-1" aria-label={isEnglish ? "Zoom controls" : "Zoomknoppen"}>
@@ -472,7 +473,9 @@ export default function FullCvPreviewDialog({
               className="inline-flex h-11 items-center gap-2 rounded-md border border-blue-300 bg-blue-50 px-3 text-xs font-bold text-blue-700 hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             >
               <DesignIcon />
-              <span className="hidden min-[370px]:inline">{isEnglish ? "Design" : "Ontwerp"}</span>
+              <span className="hidden min-[370px]:inline">
+                {isEnglish ? "Review design" : "Ontwerp bekijken"}
+              </span>
             </button>
           </div>
         </header>
@@ -515,13 +518,14 @@ export default function FullCvPreviewDialog({
             className="min-w-0 flex-1 overflow-auto overscroll-contain px-3 py-5 lg:px-12 lg:py-6"
           >
             <div className="mx-auto w-max min-w-full">
-              <ScaledCvPreview
+              <PdfPagedPreview
+                cvId={cvId}
                 data={data}
                 templateId={templateId}
                 colorThemeId={colorThemeId}
                 scale={scale}
                 pageCount={pageCount}
-                paginated
+                uiLanguage={uiLanguage}
                 onPageCountChange={onPageCountChange}
               />
             </div>
