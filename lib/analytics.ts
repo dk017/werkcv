@@ -356,6 +356,36 @@ export type AnalyticsEvent =
     | { event: 'contact_form_started'; properties: { path: string } }
     | { event: 'contact_form_submitted'; properties: { path: string; subject: string } }
     | { event: 'contact_form_failed'; properties: { path: string; reason: string } }
+    | {
+          event: 'editor_feedback_opened';
+          properties: {
+              cvId: string;
+              uiLanguage: 'nl' | 'en';
+              templateId: string;
+              completionScore: number;
+              pageCount: number;
+              nextStep: string | null;
+          };
+      }
+    | {
+          event: 'editor_feedback_submitted';
+          properties: {
+              cvId: string;
+              uiLanguage: 'nl' | 'en';
+              templateId: string;
+              completionScore: number;
+              pageCount: number;
+              nextStep: string | null;
+          };
+      }
+    | {
+          event: 'editor_feedback_failed';
+          properties: {
+              cvId: string;
+              uiLanguage: 'nl' | 'en';
+              reason: string;
+          };
+      }
     // Engagement
     | { event: 'onboarding_shown'; properties: Record<string, never> }
     | { event: 'onboarding_dismissed'; properties: { action: 'start_typing' | 'upload_cv' } }

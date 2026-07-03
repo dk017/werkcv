@@ -2,7 +2,12 @@ import nodemailer from "nodemailer";
 import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { getPathCluster, sanitizeAttribution } from "@/lib/attribution";
-import { contactPayloadSchema, getContactSubjectLabel } from "@/lib/contact";
+import { getCurrentUserFromRequest } from "@/lib/auth";
+import {
+  contactPayloadSchema,
+  getContactSubjectLabel,
+  type EditorFeedbackContext,
+} from "@/lib/contact";
 import { prisma } from "@/lib/prisma";
 
 function getEmailTransporter() {
@@ -56,6 +61,19 @@ function formatAttributionForEmail(attribution: ReturnType<typeof sanitizeAttrib
   ].join("\n");
 }
 
+function formatEditorContext(context: EditorFeedbackContext | undefined) {
+  if (!context) return null;
+
+  return [
+    `cv_id: ${context.cvId}`,
+    `ui_language: ${context.uiLanguage}`,
+    `template_id: ${context.templateId}`,
+    `completion_score: ${context.completionScore}`,
+    `page_count: ${context.pageCount}`,
+    `next_incomplete_step: ${context.nextStep || "-"}`,
+  ].join("\n");
+}
+
 function isDatabaseUnavailable(error: unknown) {
   return (
     error instanceof Prisma.PrismaClientKnownRequestError && error.code === "ECONNREFUSED"
@@ -86,6 +104,24 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: true }, { status: 200 });
   }
 
+  if (parsed.data.editorContext) {
+    const user = await getCurrentUserFromRequest(request);
+    if (!user) {
+      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+    }
+
+    const ownsCv = await prisma.cVDocument.findFirst({
+      where: {
+        id: parsed.data.editorContext.cvId,
+        userId: user.id,
+      },
+      select: { id: true },
+    });
+    if (!ownsCv) {
+      return NextResponse.json({ error: "CV not found" }, { status: 404 });
+    }
+  }
+
   const transporter = getEmailTransporter();
   if (!transporter) {
     console.error("contact_email_unavailable");
@@ -103,6 +139,7 @@ export async function POST(request: NextRequest) {
   const subjectLabel = getContactSubjectLabel(parsed.data.subject);
   const emailSubject = `[WerkCV Contact] ${subjectLabel} - ${parsed.data.name}`;
   const safeMessageHtml = escapeHtml(parsed.data.message).replace(/\n/g, "<br />");
+  const editorContext = formatEditorContext(parsed.data.editorContext);
 
   const messageLines = [
     `Pagina: ${parsed.data.pagePath}`,
@@ -113,6 +150,7 @@ export async function POST(request: NextRequest) {
     "Bericht:",
     parsed.data.message,
     "",
+    ...(editorContext ? ["Editor context:", editorContext, ""] : []),
     `IP: ${ip}`,
     `User-Agent: ${userAgent}`,
     "",
@@ -134,6 +172,7 @@ export async function POST(request: NextRequest) {
         <p><strong>E-mail:</strong> ${escapeHtml(parsed.data.email)}</p>
         <p><strong>Onderwerp:</strong> ${escapeHtml(subjectLabel)}</p>
         <p><strong>Bericht:</strong><br />${safeMessageHtml}</p>
+        ${editorContext ? `<p><strong>Editor context:</strong></p><pre>${escapeHtml(editorContext)}</pre>` : ""}
         <hr />
         <p><strong>IP:</strong> ${escapeHtml(ip)}</p>
         <p><strong>User-Agent:</strong> ${escapeHtml(userAgent)}</p>
@@ -159,6 +198,17 @@ export async function POST(request: NextRequest) {
           subjectLabel,
           emailDomain: getEmailDomain(parsed.data.email),
           hasMessage: Boolean(parsed.data.message),
+          origin: parsed.data.editorContext ? "editor" : "contact_page",
+          ...(parsed.data.editorContext
+            ? {
+                cvId: parsed.data.editorContext.cvId,
+                uiLanguage: parsed.data.editorContext.uiLanguage,
+                templateId: parsed.data.editorContext.templateId,
+                completionScore: parsed.data.editorContext.completionScore,
+                pageCount: parsed.data.editorContext.pageCount,
+                nextStep: parsed.data.editorContext.nextStep,
+              }
+            : {}),
         } as Prisma.InputJsonValue,
         attribution: (attribution || undefined) as Prisma.InputJsonValue | undefined,
       },

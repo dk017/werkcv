@@ -53,12 +53,14 @@ import type { CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match";
 import { suggestTargetRoleFromExperience } from "@/lib/cv-normalize";
 import FullCvPreviewDialog from "./FullCvPreviewDialog";
 import ScaledCvPreview, { A4_WIDTH_PX } from "./ScaledCvPreview";
+import EditorFeedbackWidget from "./EditorFeedbackWidget";
 
 interface EditorProps {
     initialData: CVData;
     id: string;
     initialTemplateId: string;
     initialColorThemeId: string;
+    accountEmail: string;
     uiLanguage?: UiLanguage;
 }
 
@@ -254,6 +256,7 @@ export default function Editor({
     id,
     initialTemplateId,
     initialColorThemeId,
+    accountEmail,
     uiLanguage = "nl",
 }: EditorProps) {
     const isEnglish = uiLanguage === "en";
@@ -1556,6 +1559,20 @@ export default function Editor({
                     : tr("Live preview", "Live preview")}
                 {pageCount > 1 ? ` (${pageCount})` : ""}
             </button>
+
+            <EditorFeedbackWidget
+                accountEmail={accountEmail}
+                userName={data.personal.name}
+                uiLanguage={uiLanguage}
+                context={{
+                    cvId: id,
+                    uiLanguage,
+                    templateId,
+                    completionScore,
+                    pageCount,
+                    nextStep: completionState.nextStep?.id || null,
+                }}
+            />
 
             {fullPreviewSource ? (
                 <FullCvPreviewDialog

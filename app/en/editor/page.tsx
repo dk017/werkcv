@@ -66,6 +66,7 @@ export default async function EnglishEditorPage({
       id={id}
       initialTemplateId={cv.templateId}
       initialColorThemeId={cv.colorThemeId}
+      accountEmail={user.email}
       uiLanguage="en"
     />
   );

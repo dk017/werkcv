@@ -25,6 +25,15 @@ export function getContactSubjectLabel(subject: ContactSubjectValue): string {
   return contactSubjectOptions.find((option) => option.value === subject)?.label || "Anders";
 }
 
+export const editorFeedbackContextSchema = z.object({
+  cvId: z.string().trim().min(1).max(100),
+  uiLanguage: z.enum(["nl", "en"]),
+  templateId: z.string().trim().min(1).max(100),
+  completionScore: z.number().int().min(0).max(100),
+  pageCount: z.number().int().min(1).max(100),
+  nextStep: z.string().trim().min(1).max(100).nullable(),
+});
+
 export const contactPayloadSchema = z.object({
   name: z
     .string()
@@ -47,6 +56,8 @@ export const contactPayloadSchema = z.object({
   website: z.string().trim().max(200).optional().default(""),
   pagePath: z.string().trim().startsWith("/").default("/contact"),
   attribution: z.unknown().optional(),
+  editorContext: editorFeedbackContextSchema.optional(),
 });
 
 export type ContactPayload = z.infer<typeof contactPayloadSchema>;
+export type EditorFeedbackContext = z.infer<typeof editorFeedbackContextSchema>;
