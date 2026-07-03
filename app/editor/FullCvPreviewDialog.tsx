@@ -228,7 +228,7 @@ export default function FullCvPreviewDialog({
 
   useEffect(() => {
     if (!hasMounted) return;
-    fitPreview();
+    if (zoomMode === "fit") fitPreview();
     const canvas = canvasRef.current;
     if (!canvas) return;
     const observer = new ResizeObserver(() => {
