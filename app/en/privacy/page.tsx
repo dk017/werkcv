@@ -114,6 +114,20 @@ export default function EnglishPrivacyPage() {
                 the safeguards and contractual arrangements available and required for each
                 provider.
               </p>
+              <p className="mt-2 font-medium leading-relaxed">
+                WerkCV does not use your CV to train its own AI model. OpenAI states that data
+                processed through its API is not used to train models by default. Limited log
+                retention may apply for abuse and security monitoring. See the current{" "}
+                <a
+                  href="https://openai.com/enterprise-privacy/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-bold underline"
+                >
+                  OpenAI business and API privacy information
+                </a>
+                .
+              </p>
             </section>
 
             <section>

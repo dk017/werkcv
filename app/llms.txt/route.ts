@@ -6,7 +6,7 @@ export function GET() {
   const lines = [
     "# WerkCV",
     "",
-    "> WerkCV is an online CV builder for the Dutch job market. Users can create a Dutch CV, use ATS-friendly templates, check and improve CV text, and download a PDF after a one-time payment. WerkCV does not use a subscription model for individual job seekers.",
+    "> WerkCV is an online CV builder for the Dutch job market. Users can build, import, edit and fully review a Dutch or English CV for free, then pay a one-time €4.99 including VAT for the final PDF of one CV. There is no trial, subscription or automatic renewal. WerkCV provides an ATS-oriented layout but does not guarantee ranking or selection by every ATS.",
     "",
     `Website: ${siteBaseUrl}`,
     `Language: Dutch (primary), English guides for international applicants`,

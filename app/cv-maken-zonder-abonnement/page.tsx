@@ -6,7 +6,12 @@ import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { cvDownloadPrice } from "@/lib/site-content";
-import { comparisonRows, faqs } from "./content";
+import {
+  comparisonCheckedAt,
+  comparisonRows,
+  comparisonSources,
+  faqs,
+} from "./content";
 
 const pageUrl = "https://werkcv.nl/cv-maken-zonder-abonnement";
 const supportLine =
@@ -17,7 +22,7 @@ const heroBadges = [
   "Geen abonnement",
   "Geen automatische verlenging",
   "Later opnieuw downloaden",
-  "ATS-vriendelijk",
+  "Volledig voorbeeld vóór betaling",
 ];
 
 const subscriptionChecks = [
@@ -49,7 +54,7 @@ const subscriptionChecks = [
 
 const whyWerkCvBullets = [
   "Gebouwd voor de Nederlandse arbeidsmarkt",
-  "ATS-vriendelijke templates zonder overbodige opmaak",
+  "Rustige en moderne templates, inclusief een specifieke ATS-layout",
   "Gratis starten, pas betalen bij PDF-download",
   "Geen abonnement of automatische verlenging",
   `Eén duidelijke prijs: ${cvDownloadPrice.display}`,
@@ -133,7 +138,7 @@ export const metadata: Metadata = {
     absolute: "CV maken zonder abonnement - Eenmalig €4,99 per PDF | WerkCV",
   },
   description:
-    "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
+    "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 inclusief btw per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
   keywords: [
     "cv maken zonder abonnement",
     "cv maken eenmalig betalen",
@@ -153,7 +158,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "CV maken zonder abonnement - Eenmalig €4,99 per PDF | WerkCV",
     description:
-      "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
+      "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 inclusief btw per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
     url: pageUrl,
     siteName: "WerkCV",
     locale: "nl_NL",
@@ -171,7 +176,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "CV maken zonder abonnement - Eenmalig €4,99 per PDF | WerkCV",
     description:
-      "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
+      "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 inclusief btw per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
     images: ["/opengraph-image"],
   },
 };
@@ -233,7 +238,7 @@ export default function CvMakenZonderAbonnementPage() {
               CV maken zonder abonnement
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Maak gratis je Nederlandse cv, bekijk je voorbeeld en betaal pas éénmalig {cvDownloadPrice.display} als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en niets om later op te zeggen.
+              Maak gratis je Nederlandse cv, bekijk je voorbeeld en betaal pas éénmalig {cvDownloadPrice.display} inclusief btw als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en niets om later op te zeggen.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink
@@ -284,7 +289,7 @@ export default function CvMakenZonderAbonnementPage() {
           </h2>
           <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
             Zoek je een cv maker waarbij je niet vastzit aan een proefperiode of maandbedrag?
-            Bij WerkCV bouw je eerst gratis. Pas als je je cv als PDF downloadt betaal je eenmalig {cvDownloadPrice.display}.
+            Bij WerkCV bouw je eerst gratis. Pas als je je cv als PDF downloadt betaal je eenmalig {cvDownloadPrice.display} inclusief btw.
           </p>
         </section>
 
@@ -362,12 +367,30 @@ export default function CvMakenZonderAbonnementPage() {
               ))}
             </tbody>
           </table>
+          <div className="border-t-2 border-black bg-white px-4 py-4">
+            <p className="text-xs font-medium leading-relaxed text-slate-600">
+              Prijzen en verlengingsvoorwaarden gecontroleerd op {comparisonCheckedAt} via de officiële pagina&apos;s. Controleer ze voor aankoop opnieuw; aanbieders kunnen hun prijzen wijzigen.
+            </p>
+            <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2">
+              {comparisonSources.map((source) => (
+                <a
+                  key={source.href}
+                  href={source.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-black text-emerald-800 underline decoration-2 underline-offset-4 hover:text-emerald-950"
+                >
+                  {source.name}
+                </a>
+              ))}
+            </div>
+          </div>
           <div className="border-t-2 border-black bg-[#FFF4D6] px-4 py-5">
             <h3 className="text-2xl font-black text-black">
               Kies de cv-maker zonder abonnement
             </h3>
             <p className="mt-2 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
-              Wil je gewoon een nette cv-PDF zonder maandkosten? Start gratis, maak je cv af en betaal pas éénmalig {cvDownloadPrice.display} wanneer je wilt downloaden.
+              Wil je gewoon een nette cv-PDF zonder maandkosten? Start gratis, maak je cv af en betaal pas éénmalig {cvDownloadPrice.display} inclusief btw wanneer je wilt downloaden.
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-4">
               <TrackedLandingLink
@@ -462,7 +485,7 @@ export default function CvMakenZonderAbonnementPage() {
                 className="block border-2 border-white bg-white/10 p-4 transition-colors hover:bg-white hover:text-black"
               >
                 <p className="text-sm font-black">{item.title}</p>
-                <p className="mt-1 text-sm font-medium leading-relaxed text-slate-200 hover:text-slate-700">
+                <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
                   {item.body}
                 </p>
               </Link>

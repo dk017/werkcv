@@ -166,9 +166,9 @@ export const cvWerkervaringBeschrijven: BlogArticle = {
             title: 'Werkervaring en ATS: zo word je gevonden',
             answerCapsule: 'Verwerk de exacte functietitels en vakjargon uit de vacature in je werkervaring-bullets — ATS-systemen matchen op exacte termen en begrijpen geen synoniemen.',
             content: [
-                'In Nederland gebruikt 75% van de organisaties met meer dan 50 medewerkers een ATS om sollicitaties te filteren (Jobscan 2024). De werkervaring-sectie is de zwaarst gewogen sectie in de meeste ATS-algoritmes. Dat betekent dat je niet alleen voor de menselijke recruiter schrijft, maar ook voor de software die bepaalt of jij de recruiter ooit bereikt.',
+                'Veel grotere werkgevers en bureaus gebruiken een ATS om sollicitaties te beheren, uit te lezen of te doorzoeken. Hoe werkervaring wordt verwerkt verschilt per systeem en configuratie. Schrijf daarom eerst voor de recruiter, maar gebruik herkenbare functietitels, consistente datums en selecteerbare tekst.',
                 'Verwerk de exacte functietitels en zoekwoorden uit de vacature in je werkervaring-bullets. Als de vacature vraagt om "scrum master", schrijf dan "scrum master" — niet "agile projectcoördinator" of "sprint begeleider". ATS-systemen matchen op exacte terminologie. Dubbelcheck ook je functietitels: als jij intern "Customer Experience Specialist" heette maar de vacature vraagt om een "Klantenservice Manager", overweeg dan je titel aan te passen (mits eerlijk en aantoonbaar).',
-                'Vermijd tabellen, tekstvakken en afbeeldingen in de werkervaring-sectie — ATS-systemen parsen deze niet of slecht. Gebruik eenvoudige opsommingstekens (•) of streepjes (-) voor je bullets. Sla je CV altijd op als .docx of .pdf met leesbare tekst, nooit als afbeelding. Een eenkoloms CV scoort 97% parse-nauwkeurigheid; een tweekoloms CV slechts 68% (Jobscan 2024).',
+                'Vermijd bij een onbekend sollicitatieportaal onnodige tabellen, tekstvakken en afbeeldingen in de werkervaring-sectie. Gebruik eenvoudige opsommingstekens en lever het gevraagde bestandsformaat aan. Een eenkoloms indeling geeft de kleinste kans op een verkeerde leesvolgorde, maar geen enkele layout garandeert dezelfde verwerking in ieder ATS.',
             ],
             intentLinks: [
                 {
@@ -188,7 +188,7 @@ export const cvWerkervaringBeschrijven: BlogArticle = {
             title: 'Veelgemaakte fouten bij werkervaring op je CV',
             answerCapsule: 'De meest gemaakte fout is taakomschrijvingen geven in plaats van resultaten. Andere veelvoorkomende fouten: inconsistente opmaak, te veel functies en vage formuleringen.',
             content: [
-                'De meest voorkomende fout is het opsommen van taken in plaats van resultaten. "Verantwoordelijk voor de administratie" zegt niets over je prestaties. "Administratieve processen geautomatiseerd in Power Automate, waardoor de afdeling 8 uur per week bespaarde" toont impact. Uit onderzoek van CareerBuilder (2024) wijst 68% van de recruiters een sollicitatie af wegens taakomschrijvingen zonder resultaten.',
+                'Een veelgemaakte fout is het opsommen van taken zonder context of resultaat. "Verantwoordelijk voor de administratie" zegt weinig over je bijdrage. "Administratieve processen geautomatiseerd in Power Automate, waardoor de afdeling 8 uur per week bespaarde" toont actie en aantoonbare impact.',
                 'Andere veelgemaakte fouten zijn: te veel functies vermelden (meer dan 6 voor ervaren professionals), inconsistente opmaak tussen functies, het gebruik van vage formuleringen ("meegewerkt aan", "onderdeel geweest van"), en het weglaten van datums of locaties. Houd de opmaak consequent: als je één functie geeft met maand én jaar, doe dat dan voor alle functies.',
                 'Tot slot: vermijd het kopiëren van functieomschrijvingen van je werkgever of LinkedIn. Recruiters herkennen generieke functiebeschrijvingen direct en interpreteren dit als gebrek aan zelfreflectie. Schrijf altijd in je eigen woorden, vanuit je eigen perspectief, over de impact die jij persoonlijk hebt gemaakt.',
             ],
@@ -235,7 +235,7 @@ export const cvWerkervaringBeschrijven: BlogArticle = {
         },
         {
             question: 'Hoe zorg ik dat mijn werkervaring door ATS-systemen wordt gelezen?',
-            answer: 'Gebruik exacte zoekwoorden en functietitels uit de vacature, vermijd tabellen en tekstvakken, gebruik eenvoudige bullet points en sla je CV op als .docx of standaard PDF. Een eenkoloms lay-out geeft 97% parse-nauwkeurigheid versus 68% voor twee kolommen (Jobscan 2024).',
+            answer: 'Gebruik herkenbare functietitels en relevante termen uit de vacature, gewone tekst en eenvoudige bullets. Volg het gevraagde bestandsformaat. Een eenkoloms layout is de voorzichtigste keuze bij een onbekend ATS, maar test altijd de tekstvolgorde van de uiteindelijke export.',
         },
     ],
 

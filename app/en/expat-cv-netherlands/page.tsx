@@ -279,6 +279,16 @@ const faqs = [
     answer:
       "Be precise. Use CEFR levels such as A2, B1, or C1 and connect your level to the roles you target. For example: Dutch A2, targeting English-speaking product roles while studying Dutch.",
   },
+  {
+    question: "How long should an expat CV be in the Netherlands?",
+    answer:
+      "One page can work for a graduate or short career; one to two pages is common for experienced applicants. Prioritise evidence relevant to the vacancy and remove older detail rather than shrinking the type. The employer's instructions take priority.",
+  },
+  {
+    question: "Do I need a Dutch address or BSN on my CV?",
+    answer:
+      "Do not put your BSN on a CV. A city, region, or clear relocation note is normally enough location context. Add a full street address only when an employer specifically needs it later in the hiring process.",
+  },
 ];
 
 const articleJsonLd = {

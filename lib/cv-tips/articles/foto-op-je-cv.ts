@@ -93,7 +93,7 @@ export const fotoOpJeCv: BlogArticle = {
             title: 'Wanneer laat je een foto beter weg?',
             answerCapsule: 'Laat de foto weg bij: internationale bedrijven met Angelsaksisch HR-beleid, anoniem werven, sollicitaties naar de VS of het VK, of als de vacature expliciet vraagt om een CV zonder foto.',
             content: [
-                'Er zijn duidelijke situaties waarin je een CV-foto beter weglaat. Ten eerste bij multinationals met een Angelsaksisch bedrijfsbeleid — denk aan Google, Microsoft, McKinsey of Deloitte International. Veel van deze bedrijven hanteren wereldwijd een no-photo-policy om unconscious bias in het selectieproces te minimaliseren. Kijk op hun carrièrepagina of in de vacature of er een voorkeur staat vermeld.',
+                'Er zijn duidelijke situaties waarin je een CV-foto beter weglaat. Denk aan een internationale procedure die een Angelsaksische CV-norm volgt, of een werkgever die objectiever of anoniem wil selecteren. Kijk op de carrièrepagina, in de vacature en in het uploadformulier of er een voorkeur staat vermeld.',
                 'Ten tweede bij anoniem werven. Steeds meer Nederlandse overheidsinstanties en grote bedrijven voeren een fase van anonieme CV-beoordeling in om objectiever te selecteren. In die gevallen staat in de vacaturetekst expliciet dat naam, leeftijd en foto niet vereist zijn in de eerste ronde.',
                 'Ten derde bij sollicitaties naar functies in de VS, het VK, Canada of Australië. In die landen is een CV met foto uitzonderlijk en kan het werkgevers in verwarring brengen of zelfs als juridisch risico worden gezien. Als je solliciteert bij een internationaal bedrijf, kijk dan welk land de vacature uitschrijft en volg de lokale norm.',
             ],
@@ -111,7 +111,7 @@ export const fotoOpJeCv: BlogArticle = {
             answerCapsule: 'Kies een recente, professioneel ogende foto: neutrale achtergrond, zakelijke kleding, vriendelijk oogcontact met de camera, goede daglichtbelichting — geen selfie, geen vakantiefoto.',
             content: [
                 'Een goede CV-foto is professioneel, maar niet stijf. Je wilt overkomen als toegankelijk, betrouwbaar en competent. De meest effectieve profielfoto\'s worden gemaakt door een fotograaf, maar een goede foto met een moderne smartphone is ook prima — als je let op vier elementen: achtergrond, kleding, gezichtsuitdrukking en belichting.',
-                'Kies een neutrale achtergrond: wit, lichtgrijs of een zachte effen tint. Draag zakelijke kleding die past bij de sector: financiën en juridisch vereisen een blazer of pak, creatieve en digitale sectoren mogen informeler maar altijd netjes. Kijk recht in de camera en glimlach vriendelijk — niet gespannen, maar open. Goede belichting betekent daglicht van opzij, geen flitser die je gezicht plat maakt en geen tegenlicht vanuit een raam.',
+                'Kies een neutrale achtergrond: wit, lichtgrijs of een zachte effen tint. Draag verzorgde kleding die past bij de functie en organisatie; een formele rol kan om een zakelijkere uitstraling vragen dan een creatieve of informele werkomgeving. Kijk recht in de camera en gebruik rustig daglicht zonder hard tegenlicht.',
                 'Een recente foto is essentieel. Als je er de afgelopen drie jaar significant anders bent gaan uitzien — ander kapsel, baard, gewicht, bril — maak dan een nieuwe foto. Een grote discrepantie tussen je CV-foto en je uiterlijk bij het gesprek veroorzaakt een ongemakkelijke herkenningsvraag. Dat wil je vermijden.',
             ],
             intentLinks: [
@@ -175,7 +175,7 @@ export const fotoOpJeCv: BlogArticle = {
             content: [
                 'Veel recruiters bekijken ook je LinkedIn-profiel nadat ze je CV hebben gelezen. Als je foto op LinkedIn er significant anders uitziet dan op je CV — andere stijl, andere periode, ander uiterlijk — dan kan dat onnodig afleiden. Consistent zijn op beide platforms vergroot de herkenbaarheid.',
                 'Gebruik idealiter dezelfde foto op je CV en LinkedIn, of in elk geval foto\'s uit dezelfde tijdsperiode met dezelfde professionele uitstraling. Je hoeft geen professionele fotosessie te boeken voor iedere platformupdate — maar als je een nieuwe foto maakt, update dan beide direct.',
-                'Stel op LinkedIn je persoonlijke profiel-URL in via de profielinstellingen: linkedin.com/in/jounaam. Een opgeschoonde URL zonder willekeurige nummers ziet er professioneel uit in je contactgegevens op je CV. Vermeld deze link altijd in je CV-header — zo geeft de foto op LinkedIn ook indirect informatie aan de recruiter die je CV leest.',
+                'Stel op LinkedIn eventueel een herkenbare profiel-URL in via de profielinstellingen. Neem die link alleen op je CV op wanneer je profiel actueel is, aansluit op je CV en aanvullende professionele informatie biedt.',
             ],
             intentLinks: [
                 {
@@ -247,15 +247,15 @@ export const fotoOpJeCv: BlogArticle = {
         },
         {
             question: 'Moet ik mijn CV als PDF opslaan als ik een foto toevoeg?',
-            answer: 'Ja, altijd. In een Word-bestand kan de positie van je foto verschuiven op andere computers. Een PDF garandeert dat de lay-out intact blijft ongeacht het apparaat of besturingssysteem van de ontvanger.',
+            answer: 'Een PDF houdt de bedoelde plaatsing meestal stabieler dan een bewerkbaar Word-bestand. Volg wel altijd het bestandsformaat dat de werkgever vraagt en open de uiteindelijke export om foto, pagina-einden en tekstselectie te controleren.',
         },
         {
             question: 'Is een LinkedIn-profielfoto een alternatief voor een CV-foto?',
             answer: 'Soms wel. Als je twijfelt over een foto op je CV, kun je de foto weglaten en wel een nette LinkedIn-link opnemen. Als je een professionele foto gebruikt, is het sterkst om dezelfde of een vergelijkbare foto op beide platforms te gebruiken voor consistentie en herkenbaarheid.',
         },
         {
-            question: 'Wat is de ideale achtergrondkleur voor een CV-foto?',
-            answer: 'Wit of lichtgrijs zijn het meest neutraal en professioneel. Als je lichte kleding draagt, kies dan een lichtgrijze of beige achtergrond zodat je niet "wegsmeelt" in de achtergrond. Vermijd felle kleuren — die trekken de aandacht van je gezicht af.',
+            question: 'Kan een foto voor vooroordelen zorgen bij de selectie?',
+            answer: 'Ja. Een foto maakt persoonlijke kenmerken zichtbaar die niet bepalen of je het werk kunt uitvoeren. Wil je dat de eerste beoordeling zoveel mogelijk op ervaring en vaardigheden rust, laat de foto dan weg. Bij anoniem werven volg je altijd de instructies van de werkgever.',
         },
     ],
 

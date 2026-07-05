@@ -34,22 +34,22 @@ export const homepageFaqItems = [
   {
     question: "Kan ik gratis beginnen met WerkCV?",
     answer:
-      "Ja. Je kunt gratis starten, templates vergelijken en je CV volledig opbouwen. Je betaalt pas wanneer je je PDF wilt downloaden.",
+      `Ja. Je kunt gratis een account maken, je CV invullen of uploaden, templates vergelijken en het volledige resultaat bekijken. Je betaalt pas ${cvDownloadPrice.display} inclusief btw wanneer je de PDF wilt downloaden.`,
   },
   {
     question: "Is WerkCV een abonnement?",
     answer:
-      "Nee. WerkCV werkt met een eenmalige betaling per CV-download en niet met automatische verlenging of een maandabonnement.",
+      `Nee. Een PDF-download kost eenmalig ${cvDownloadPrice.display} inclusief btw. Er is geen proefabonnement, automatische verlenging of maandelijkse afschrijving.`,
   },
   {
-    question: "Zijn de templates ATS-vriendelijk?",
+    question: "Voor wie is WerkCV geschikt?",
     answer:
-      "Ja. De templates zijn ontworpen voor rustige scanbaarheid, duidelijke koppen en een layout die goed leesbaar blijft voor recruiters en ATS-software.",
+      "WerkCV is bedoeld voor sollicitanten die snel een verzorgd Nederlands of Engelstalig CV willen maken en vooraf het volledige voorbeeld willen zien. Wil je uitsluitend een volledig gratis bestand en vind je handmatige opmaak geen probleem, dan kunnen Word, Google Docs of Europass beter passen.",
   },
   {
-    question: "Kan ik mijn CV later opnieuw aanpassen?",
+    question: "Kan ik mijn bestaande CV uploaden?",
     answer:
-      "Ja. Je kunt hetzelfde CV later opnieuw openen, bijwerken, van template wisselen en opnieuw downloaden zonder opnieuw helemaal opnieuw te beginnen.",
+      "Ja. Je kunt een PDF- of Word-bestand uploaden om de editor automatisch te vullen. Controleer daarna altijd namen, datums en bullets in de live preview; complexe kolommen, tabellen en gescande documenten kunnen minder nauwkeurig worden overgenomen.",
   },
 ];
 

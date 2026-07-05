@@ -5,7 +5,7 @@ export const atsVriendelijkCv: BlogArticle = {
     title: 'ATS-vriendelijke CV maken: opmaak, keywords en PDF (2026)',
     description: 'Wil je een ATS-vriendelijke cv maken? Leer hoe je opmaak, secties, keywords en PDF-keuzes goed zet, zodat recruiters en sollicitatiesoftware je cv beter lezen.',
     publishedAt: '2025-06-10',
-    updatedAt: '2026-02-19',
+    updatedAt: '2026-07-05',
 
     metaTitle: 'ATS-vriendelijke CV maken in 2026 | WerkCV.nl',
     metaDesc: 'Wil je een ATS-vriendelijke cv maken? Leer welke opmaak, secties, keywords en PDF-keuzes werken voor Nederlandse ATS-systemen en recruiters.',
@@ -17,24 +17,24 @@ export const atsVriendelijkCv: BlogArticle = {
     order: 10,
 
     keyTakeaways: [
-        '70–75% van alle ingezonden cv\'s wordt door ATS gefilterd vóór een recruiter ze ziet (Jobscan 2024).',
-        'Een eenkoloms cv heeft 97% parse-nauwkeurigheid in ATS; een tweekoloms cv slechts 68% (Jobscan).',
-        'Gebruik exacte vacaturetermen — ATS matcht op letterlijke tekst, niet op synoniemen.',
-        'Contactgegevens in kop- of voetteksten worden door veel ATS-systemen overgeslagen.',
-        'PDF is veilig voor moderne ATS; .docx werkt beter bij oudere systemen — check de vacature.',
-        'Test je cv: kopieer de tekst naar Kladblok — als alles klopt lees je, is de opmaak ATS-veilig.',
-        'Nederlandse ATS-systemen: OTYS, Connexys, Recruitee; internationaal: Workday, Greenhouse, Taleo.',
+        'Een ATS beheert sollicitaties; parsing, zoekfilters en automatische rangschikking verschillen per werkgever en systeem.',
+        'Een eenvoudige eenkoloms opmaak verkleint het risico op een verkeerde leesvolgorde.',
+        'Gebruik relevante termen uit de vacature alleen wanneer ze jouw echte ervaring beschrijven.',
+        'Zet belangrijke contact- en ervaringsgegevens in gewone, selecteerbare tekst.',
+        'Volg altijd het bestandsformaat dat in de vacature of het sollicitatieformulier wordt gevraagd.',
+        'Test de PDF door alle tekst te kopiëren: ontbrekende of verkeerd geordende tekst wijst op een parsingrisico.',
+        'Een ATS-vriendelijk CV vergroot de technische leesbaarheid, maar garandeert geen score, selectie of gesprek.',
     ],
 
     sections: [
         {
             id: 'wat-is-ats',
-            title: 'Wat is ATS en waarom filtert het jouw cv weg?',
-            answerCapsule: 'ATS (Applicant Tracking System) scant cv\'s automatisch op keywords, opmaak en structuur — 70–75% van alle cv\'s wordt weggefiltered vóór een recruiter ze ziet.',
+            title: 'Wat is ATS en wat gebeurt er met je CV?',
+            answerCapsule: 'Een Applicant Tracking System beheert sollicitaties en kan CV-tekst uitlezen, doorzoekbaar maken of tegen vacaturecriteria laten beoordelen. De inrichting verschilt per werkgever.',
             content: [
-                'Een Applicant Tracking System (ATS) is software die bedrijven gebruiken om sollicitaties automatisch te beheren, te filteren en te rangschikken. Het systeem scant je cv op zoekwoorden, werkervaring, opleidingsniveau en opmaak — en berekent een match-score met de vacature-eisen. Alleen cv\'s boven een bepaalde drempelwaarde bereiken de inbox van een recruiter.',
-                'In Nederland gebruiken naar schatting 75% van de bedrijven met meer dan 50 medewerkers een vorm van ATS-software (Jobscan 2024). Bekende Nederlandse systemen zijn OTYS Recruiting Technology en Connexys (Randstad-platform). Internationaal domineren Workday, Greenhouse, Lever en Oracle Taleo. Elk systeem heeft zijn eigen parsing-logica, maar de basisregels zijn universeel.',
-                'De gevolgen zijn concreet: uit onderzoek van Jobscan (2024) blijkt dat gemiddeld 70 tot 75% van alle ingezonden cv\'s door ATS wordt afgewezen vóór menselijke beoordeling. Een perfect geschreven cv dat niet ATS-compatibel is opgemaakt, bereikt de recruiter nooit. Dit artikel behandelt elke variabele die dat percentage bepaalt — zodat jij bij de 25–30% hoort die wél doorgaat.',
+                'Een Applicant Tracking System (ATS) is software waarmee werkgevers vacatures, kandidaten en communicatie beheren. Veel systemen lezen gegevens uit een CV zodat recruiters kunnen zoeken of sorteren. Sommige werkgevers voegen screeningsvragen, filters of matching toe; andere gebruiken het systeem vooral als kandidatenadministratie.',
+                'Er bestaat daarom geen universele ATS-score of vaste regel waarmee ieder bedrijf kandidaten afwijst. De gebruikte leverancier, configuratie, vacature en werkwijze van de recruiter bepalen wat er gebeurt. Grote werkgevers en bureaus gebruiken vaak een sollicitatieplatform, maar ook daar kan een recruiter ieder CV handmatig bekijken.',
+                'Het praktische doel is niet om software te "verslaan". Zorg dat je naam, ervaring, opleiding en vaardigheden als selecteerbare tekst in een logische volgorde beschikbaar zijn, en dat de inhoud eerlijk aansluit op de vacature. Dat helpt zowel de parser als de recruiter die daarna leest.',
             ],
             intentLinks: [
                 {
@@ -52,11 +52,11 @@ export const atsVriendelijkCv: BlogArticle = {
         {
             id: 'opmaak-voor-ats',
             title: 'Opmaak: de meest onderschatte ATS-fout',
-            answerCapsule: 'Twee kolommen, tabellen, tekstvakken en grafische elementen zijn de meest voorkomende ATS-breakers — een eenkoloms layout scoort 97% parse-nauwkeurigheid vs 68% bij tweekoloms.',
+            answerCapsule: 'Een eenvoudige eenkoloms indeling met gewone tekst en herkenbare koppen geeft de kleinste kans op een verkeerde leesvolgorde.',
             content: [
-                'ATS-software leest cv\'s als platte tekst, van boven naar beneden. Een tweekoloms layout — populair bij veel cv-templates — wordt door ATS gelezen als één lange tekstkolom waarbij kolom 1 en kolom 2 worden samengevoegd. Het resultaat: "Python | 5 jaar" wordt "Python 5 jaar" of erger, de tekst loopt door elkaar en sectienamen worden niet herkend. Jobscan-tests tonen dat eenkoloms cv\'s 97% parse-nauwkeurigheid scoren; tweekoloms slechts 68%.',
-                'Vermijd tabellen voor het indelen van vaardigheden of werkervaring. Wat er visueel als een nette tabel uitziet, wordt door ATS geëxtraheerd als een aaneengesloten tekstreeks zonder structuur. Datzelfde geldt voor tekstvakken (text boxes), kaders, grafische skill-bars en iconen voor sectiescheiders. Al deze elementen worden door de meeste ATS-parsers genegeerd of verkeerd geïnterpreteerd.',
-                'De veiligste opmaak: eenkoloms layout, standaard lettertype (Arial, Calibri of Lato, minimaal 10pt), bullet points als gewone tekstronde punten (•) of streepjes (-), en sectiescheiders als een eenvoudige horizontale lijn of wit ruimte. Kleuraccenten op kopjes zijn prima — zolang de tekst zelf zwart op wit is. Minimale marges van 2 cm rondom. Geen kop- of voetteksten voor cv-inhoud.',
+                'Parsers zetten een document vaak om naar tekstvelden. Bij meerdere kolommen, tekstvakken of tabellen kan de volgorde anders uitpakken dan op het scherm. Moderne systemen kunnen complexe layouts soms prima verwerken, maar vooraf weet je zelden welk systeem en welke configuratie de werkgever gebruikt.',
+                'Voor een sollicitatieportaal is een eenvoudige eenkoloms indeling daarom de voorzichtigste keuze. Gebruik herkenbare sectiekoppen, gewone tekst voor vaardigheden en standaard bullets. Laat belangrijke informatie niet uitsluitend via iconen, grafische balkjes of afbeeldingen zien.',
+                'Kleuraccenten en een verzorgd lettertype zijn mogelijk zolang het contrast goed blijft en tekst selecteerbaar is. Controleer de uiteindelijke PDF, niet alleen het bewerkbare document: selecteer en kopieer de inhoud en kijk of namen, datums en secties in een begrijpelijke volgorde verschijnen.',
             ],
             intentLinks: [
                 {
@@ -78,7 +78,7 @@ export const atsVriendelijkCv: BlogArticle = {
             content: [
                 'ATS-software koppelt de tekst onder een sectiekoppen aan de juiste categorieën in het systeem: werkervaring gaat naar de ervarings-database, opleiding naar het opleidingsveld, vaardigheden naar de skills-index. Dit werkt alleen als het systeem de kop herkent. Creatieve koppen als "Mijn reis", "Waar ik uitblink" of "Toolbox" worden door de meeste systemen niet gematcht — de bijbehorende inhoud wordt genegeerd of in een onbekende categorie opgeslagen.',
                 'Gebruik in een Nederlands cv de volgende standaard sectienamen: Profiel of Profieltekst, Werkervaring, Opleiding, Vaardigheden, Talen, en optioneel Certificeringen of Vrijwilligerswerk. In een Engelstalig cv voor internationale werkgevers gebruik je: Profile of Summary, Work Experience, Education, Skills, Languages. Wijk hier alleen af als je zeker weet dat de werkgever een eigen ATS-systeem heeft met aangepaste parsing.',
-                'Een subtiel maar belangrijk punt: zet je contactgegevens (naam, telefoonnummer, e-mail, LinkedIn, woonplaats) altijd in de hoofdtekst van je cv — nooit in de kop- of voettekst van het document. Kop- en voetteksten worden door minimaal 30% van de ATS-systemen volledig overgeslagen (Jobscan 2024). Als je naam in de voettekst staat, bestaat de kans dat het systeem jouw sollicitatie registreert als "onbekende kandidaat".',
+                'Zet je contactgegevens bij voorkeur in de gewone documenttekst en niet uitsluitend in een kop- of voettekst. Niet iedere parser behandelt headers, footers en tekstvakken hetzelfde. Door naam, telefoonnummer, e-mail en woonplaats als gewone tekst bovenaan te plaatsen, verminder je dit risico.',
             ],
             bullets: [
                 'Profiel / Profieltekst (niet: "Over mij", "Mijn verhaal", "In het kort")',
@@ -92,21 +92,21 @@ export const atsVriendelijkCv: BlogArticle = {
         {
             id: 'zoekwoorden-strategie',
             title: 'Zoekwoorden: de kern van ATS-matching',
-            answerCapsule: 'ATS matcht op exacte tekst — gebruik de woordkeuze van de vacature letterlijk in je profieltekst, werkervaring en vaardigheidssectie voor een hogere match-score.',
+            answerCapsule: 'Gebruik relevante functietitels, vaardigheden, tools en certificeringen uit de vacature op natuurlijke plekken, maar alleen wanneer ze aantoonbaar bij jou passen.',
             content: [
-                'De match-score die ATS berekent, is grotendeels gebaseerd op keyword-overlap tussen jouw cv en de vacaturetekst. Jobscan-onderzoek (2024) laat zien dat kandidaten met een keyword-match boven de 70% 2,5 keer vaker worden uitgenodigd voor een gesprek dan kandidaten met een match onder de 50%. Dit is geen magie — het is tekst-matching.',
-                'Lees de vacature aandachtig en identificeer drie soorten zoekwoorden: (1) functietitels en rolnamen ("projectmanager", "scrum master", "financieel analist"), (2) vereiste vaardigheden en tools ("Salesforce", "Python", "IFRS", "lean manufacturing"), en (3) branchespecifieke termen en certificeringen ("PRINCE2", "CPA", "BIG-geregistreerd"). Neem al drie categorieën letterlijk over in je cv — niet als synoniem, maar als exact dezelfde term.',
-                'Gebruik zowel de volledige term als gangbare afkortingen wanneer die in de vacature worden gebruikt: "Search Engine Optimization (SEO)", "Agile/Scrum", "Applicant Tracking System (ATS)". Dit dekt beide varianten af. Verwerk zoekwoorden organisch: in je profieltekst, in werkervaring-bullets en in de vaardigheidssectie. Keyword-stuffing — het onnatuurlijk herhalen van termen — wordt herkend door moderne ATS en kan je score verlagen.',
+                'Recruiters en zoekfuncties kunnen zoeken op functietitels, vaardigheden, tools en certificeringen. Lees de vacature daarom zorgvuldig en markeer welke harde eisen, werkzaamheden en termen werkelijk overeenkomen met jouw achtergrond.',
+                'Gebruik waar passend dezelfde herkenbare benaming als de vacature. Schrijf bijvoorbeeld de officiële toolnaam of certificering voluit en voeg een gangbare afkorting toe. Behoud je echte functietitel; je kunt een begrijpelijke marktterm ernaast zetten wanneer een interne titel onduidelijk is.',
+                'Plaats termen in context, bijvoorbeeld in een resultaatgerichte bullet. Een losse lijst vol herhaalde woorden bewijst geen ervaring en maakt het CV minder geloofwaardig. De uiteindelijke selectie blijft bovendien afhankelijk van inhoud, eisen, concurrentie en menselijke beoordeling.',
             ],
         },
         {
             id: 'bestandsformaat',
             title: 'Bestandsformaat: PDF vs .docx vs de rest',
-            answerCapsule: 'PDF is de standaard voor moderne ATS-systemen; .docx werkt beter bij oudere systemen — controleer altijd de vacature en lever nooit een gescand document of afbeelding in.',
+            answerCapsule: 'Volg het formaat dat de werkgever vraagt. Is er geen instructie, gebruik dan een tekstgebaseerde PDF en controleer of je de tekst kunt selecteren en kopiëren.',
             content: [
-                'Het bestandsformaat is de meest basale ATS-vereiste en tegelijk de meest onderschatte. Moderne ATS-systemen (Workday, Greenhouse, Recruitee, OTYS) verwerken PDF correct — mits de PDF is gegenereerd vanuit een tekstverwerker, niet gescand. Oudere ATS-systemen (sommige Taleo-versies, lokale HR-software) geven nog steeds de voorkeur aan .docx. Controleer daarom altijd de vacaturetekst of het sollicitatieformulier op instructies over bestandsformaat.',
-                'De gevaarlijkste varianten: een gescand cv (.jpg of .pdf van scan) wordt door ATS niet als tekst gelezen tenzij het systeem OCR-technologie heeft — wat lang niet altijd het geval is. Een Canva-export als PDF ziet er mooi uit maar bevat vaak ontoegankelijke vectortekst die parsers niet kunnen lezen. Een .pages-bestand (Apple Pages) is voor de meeste Windows-gebaseerde ATS-systemen onleesbaar.',
-                'De veiligste workflow: maak je cv in Microsoft Word of Google Docs, gebruik geen templates met tekstvakken of afbeeldingen, en exporteer naar PDF via Bestand → Opslaan als → PDF. Geef het bestand een professionele naam: "CV-Voornaam-Achternaam.pdf". Vermijd spaties in de bestandsnaam — sommige upload-systemen interpreteren spaties verkeerd.',
+                'De instructie in de vacature of het uploadformulier gaat voor. Wordt alleen DOCX gevraagd, lever DOCX aan. Wordt PDF geaccepteerd, gebruik dan een PDF die rechtstreeks uit een editor is geëxporteerd en waarin de tekst selecteerbaar blijft.',
+                'Een scan of afbeelding van een CV is riskanter, omdat tekstherkenning dan afhankelijk is van OCR. Ook bij een ontworpen PDF kunnen tekstvakken of een onlogische exportvolgorde problemen geven. Test daarom het werkelijke bestand dat je gaat uploaden.',
+                'Gebruik een duidelijke bestandsnaam, bijvoorbeeld "CV-Voornaam-Achternaam.pdf". Open het bestand na export, controleer alle pagina\'s en kopieer de tekst naar een leeg document. Als informatie ontbreekt of door elkaar staat, kies dan een eenvoudiger layout of exportmethode.',
             ],
             intentLinks: [
                 {
@@ -128,7 +128,7 @@ export const atsVriendelijkCv: BlogArticle = {
             content: [
                 'ATS-systemen gebruiken de structuur van je werkervaring-sectie om automatisch te berekenen hoeveel relevante ervaring je hebt. Dit werkt alleen als elke functie-entry compleet en consistent is opgebouwd. Een ontbrekende einddatum, een afgekorte bedrijfsnaam of een onduidelijke functietitel kan ertoe leiden dat ATS de ervaring niet correct meetelt.',
                 'Vermeld bij elke functie de exacte functietitel (gebruik de gangbare brancheterm als je interne titel afwijkend is), de volledige bedrijfsnaam, de locatie (stad is voldoende), en een exacte periode in het formaat maand-jaar tot maand-jaar. Schrijf "jan. 2022 – mrt. 2024" niet "2022–2024" — maanden geven ATS de informatie om je ervaringslengte exact te berekenen.',
-                'Gebruik per functie 3 tot 5 bullet points die beginnen met een actief werkwoord en relevante zoekwoorden bevatten. Vermijd speciale Unicode-bullets (✓, ★, ▸) — gebruik standaard ronde punten (•) of streepjes (-). Beschrijf resultaten en prestaties, niet alleen taken. Een ATS-systeem rankt cv\'s hoger als de werkervaring-bullets trefwoorden bevatten die overeenkomen met de "must-have" eisen in de vacature.',
+                'Gebruik per functie 3 tot 5 korte bullets die beginnen met een actief werkwoord. Gebruik gewone ronde punten of streepjes en beschrijf resultaten en prestaties, niet alleen taken. Relevante termen helpen een recruiter of zoekfunctie begrijpen waar je ervaring op aansluit, maar gebruik ze alleen in concrete, waarheidsgetrouwe context.',
             ],
         },
         {
@@ -136,9 +136,9 @@ export const atsVriendelijkCv: BlogArticle = {
             title: 'Vaardigheidssectie optimaliseren voor ATS',
             answerCapsule: 'Een aparte vaardigheidssectie met exacte tool- en competentienamen verhoogt je ATS-match-score direct — groepeer in subcategorieën voor zowel ATS als menselijke leesbaarheid.',
             content: [
-                'De vaardigheidssectie is de meest directe ATS-keyword-bron. ATS-systemen indexeren vaardigheden apart van werkervaring en vergelijken ze rechtstreeks met de gevraagde competenties in de vacature. Een vaardigheidssectie die ontbreekt of vage omschrijvingen bevat, verlaagt je match-score ook als je de vaardigheden wel hebt — maar alleen beschrijft in je werkervaring-bullets.',
+                'Een aparte vaardigheidssectie maakt belangrijke tools en competenties sneller vindbaar voor recruiters en zoekfuncties. Onderbouw de belangrijkste vaardigheden daarnaast in je werkervaring, opleiding of projecten.',
                 'Gebruik exacte, korte termen: "Python", "Projectmanagement", "SAP S/4HANA", "IFRS-rapportage", "Lean Six Sigma (Green Belt)". Vermijd vaagheid: "technisch onderlegd", "analytisch ingesteld" of "affiniteit met data" zijn voor ATS onherkenbare termen. Groepeer vaardigheden in subcategorieën om ook voor menselijke lezers overzichtelijk te zijn: Technische vaardigheden, Software & tools, Talen, Certificeringen.',
-                'Stem je vaardigheidssectie af op elke vacature. Zet de meest relevante vaardigheden bovenaan — ATS-systemen die op positie rangschikken, geven meer gewicht aan eerder genoemde termen. Verwijder vaardigheden die niet relevant zijn voor de specifieke rol. Een gerichte lijst van 8 vaardigheden scoort beter dan een generieke lijst van 20.',
+                'Stem je vaardigheidssectie af op elke vacature. Zet de meest relevante vaardigheden vooraan en verwijder afleidende termen die niets met de rol te maken hebben. Een gerichte lijst is voor een recruiter meestal nuttiger dan een lange verzameling zonder context.',
             ],
         },
         {
@@ -155,7 +155,7 @@ export const atsVriendelijkCv: BlogArticle = {
                 'Contactgegevens in kop- of voettekst → in de hoofdtekst plaatsen',
                 'Creatieve sectienamen ("Toolbox", "Mijn reis") → standaard kopjes gebruiken',
                 'Grafische skill-bars of iconen → tekstlijst van vaardigheden',
-                'Gescand cv of Canva-export → PDF vanuit Word of Google Docs',
+                'Gescand cv of onduidelijke export → tekstgebaseerde PDF of gevraagd DOCX-formaat',
                 'Ontbrekende maand+jaar bij functies → altijd volledige periode vermelden',
                 'Zelfde cv voor alle vacatures → minimaal profieltekst + vaardigheden aanpassen',
             ],
@@ -194,12 +194,29 @@ export const atsVriendelijkCv: BlogArticle = {
         },
         {
             id: 'ats-per-sector',
-            title: 'ATS-gebruik per sector: waar moet je extra scherp zijn?',
-            answerCapsule: 'Finance, consultancy, tech en zorg zijn de sectoren met de meest strikte ATS-filtering in Nederland — corporate werkgevers en uitzendbureaus screenen het zwaarst automatisch.',
+            title: 'Wanneer moet je extra voorzichtig zijn met de opmaak?',
+            answerCapsule: 'Wees extra voorzichtig wanneer je via een groot sollicitatieportaal, uitzendbureau of internationale werkgever solliciteert en het gebruikte systeem onbekend is.',
             content: [
-                'Niet alle werkgevers screenen even streng. Kleine bedrijven (onder de 10 medewerkers) gebruiken zelden ATS — hun sollicitatieproces is handmatig. Middelgrote bedrijven gebruiken vaak een eenvoudiger systeem zoals Recruitee of Homerun, dat minder strak filtert. Grote corporates, uitzendbureaus (Randstad, Adecco, Manpower) en internationale bedrijven (Shell, ASML, Philips, ING, ABN AMRO) hebben de meest geavanceerde ATS-configuraties.',
-                'Sectoren met de strengste ATS-filtering in Nederland: financiële dienstverlening (certificeringen als CFA, CPA, RA worden exact gematcht), consultancy (methodieken als Agile, PRINCE2, LEAN worden als harde vereisten gefilterd), technologie (programmeertalen en tools als exacte termen), en gezondheidszorg (BIG-registratie, specialismen als exacte codes).',
-                'Uitzendbureaus gebruiken ATS ook om hun eigen kandidatenpool te doorzoeken. Als je je cv uploadt op de website van een uitzendbureau, wordt het opgeslagen in hun ATS-database. Recruiters van het bureau zoeken daarna op zoekwoorden. Hoe beter je cv geoptimaliseerd is op de termen die in jouw vakgebied gangbaar zijn, hoe vaker je gevonden wordt bij toekomstige zoekopdrachten — ook voor vacatures die nog niet bestaan.',
+                'Je kunt aan een vacature meestal niet zien hoe de achterliggende selectie is geconfigureerd. Een groot portaal, verplichte vragenlijst of kandidaatprofiel is wel een reden om een eenvoudige en voorspelbare CV-versie te gebruiken.',
+                'Bij gereguleerde of specialistische functies zijn officiële namen van registraties, certificaten, tools en methodieken extra belangrijk. Vermeld bijvoorbeeld een geldige BIG-registratie, taalniveau of certificering precies en alleen wanneer die werkelijk van toepassing is.',
+                'Uitzendbureaus en werkgevers kunnen gegevens uit je CV later doorzoekbaar maken binnen hun kandidatenbestand. Een duidelijke functietitel, concrete vaardigheden en consistente periodes helpen dan, zonder dat je hoeft te gokken op een geheime score.',
+            ],
+        },
+        {
+            id: 'bronnen-en-beperkingen',
+            title: 'Bronnen en beperkingen van ATS-advies',
+            answerCapsule: 'ATS-leveranciers documenteren parsingproblemen, maar er bestaat geen openbare test die iedere leverancier, versie en werkgeversconfiguratie dekt.',
+            content: [
+                'De praktische opmaakadviezen op deze pagina zijn gebaseerd op gedocumenteerd parsergedrag en op het principe dat belangrijke informatie ook als gewone tekst beschikbaar moet zijn. Greenhouse noemt bijvoorbeeld bestandsomvang, opmaak en contactgegevens in headers, footers of tekstvakken als mogelijke oorzaken van een mislukte CV-import.',
+                'Dat voorbeeld bewijst niet dat ieder ATS hetzelfde reageert. Werkgevers kunnen andere systemen, versies en instellingen gebruiken. Gebruik een externe ATS-score daarom als diagnosehulpmiddel, niet als voorspelling van een uitnodiging.',
+                'De meest betrouwbare controle blijft de combinatie van drie stappen: volg de vacature-instructies, controleer de geëxporteerde tekstvolgorde en zorg dat je inhoud aantoonbaar aansluit op de functie.',
+            ],
+            intentLinks: [
+                {
+                    href: 'https://support.greenhouse.io/hc/en-us/articles/200989175-Unsuccessful-resume-parse',
+                    label: 'Greenhouse Support: oorzaken van een mislukte CV-parse',
+                    description: 'Een actueel leveranciersvoorbeeld van bestand- en opmaakproblemen; geraadpleegd op 5 juli 2026.',
+                },
             ],
         },
     ],
@@ -207,35 +224,35 @@ export const atsVriendelijkCv: BlogArticle = {
     faq: [
         {
             question: 'Wat is een ATS-vriendelijk cv?',
-            answer: 'Een ATS-vriendelijk cv is opgemaakt zodat Applicant Tracking Systems het correct kunnen lezen en verwerken. Dit betekent: eenkoloms layout, standaard sectienamen, exacte vacature-zoekwoorden, geen tabellen of afbeeldingen, en contactgegevens in de hoofdtekst — niet in kop- of voettekst.',
+            answer: 'Een ATS-vriendelijk CV gebruikt een voorspelbare leesvolgorde, herkenbare sectiekoppen en selecteerbare tekst. Belangrijke gegevens staan niet uitsluitend in afbeeldingen, grafische balkjes, kopteksten of tekstvakken. Dat verkleint parsingrisico, maar garandeert geen selectie.',
         },
         {
-            question: 'Welk bestandsformaat is het beste voor ATS?',
-            answer: 'PDF gegenereerd vanuit Word of Google Docs is de veiligste keuze voor moderne ATS-systemen (Workday, Greenhouse, Recruitee). Oudere systemen geven soms de voorkeur aan .docx. Controleer altijd de vacature op instructies. Vermijd gescande bestanden, Canva-exports en .pages-bestanden.',
+            question: 'Gebruiken alle werkgevers in Nederland een ATS?',
+            answer: 'Nee. Veel grotere werkgevers en bureaus gebruiken sollicitatiesoftware, maar de functies en instellingen verschillen. Sommige systemen bewaren en doorzoeken kandidaten, andere voegen screening of matching toe. Een recruiter kan CV\'s daarnaast nog steeds handmatig beoordelen.',
         },
         {
-            question: 'Mag ik een cv met twee kolommen gebruiken?',
-            answer: 'Beter niet. Eenkoloms cv\'s scoren 97% parse-nauwkeurigheid in ATS-tests; tweekoloms slechts 68% (Jobscan). ATS leest kolommen samen als één doorlopende tekstkolom, wat de volgorde en structuur verstoort. Gebruik één kolom voor maximale compatibiliteit.',
+            question: 'Kan een ATS mijn CV automatisch afwijzen?',
+            answer: 'Dat kan wanneer een werkgever automatische knock-outvragen of filters heeft ingesteld, maar niet ieder systeem of iedere vacature werkt zo. Afwijzing kan ook het gevolg zijn van menselijke beoordeling, ontbrekende eisen of concurrentie. Van buitenaf kun je de precieze oorzaak meestal niet vaststellen.',
         },
         {
-            question: 'Hoe weet ik welke zoekwoorden ik moet gebruiken?',
-            answer: 'Lees de vacaturetekst en noteer: functietitels, vereiste vaardigheden, tools, certificeringen en branchetermen. Neem de exacte bewoording over — niet alleen synoniemen. Gebruik zowel voluit geschreven termen als gangbare afkortingen: "Projectmanagement (PRINCE2)" dekt beide varianten.',
+            question: 'Welk bestandsformaat is het beste voor een ATS?',
+            answer: 'Volg altijd de instructie van de werkgever. Is er geen voorkeur, gebruik dan een tekstgebaseerde PDF en controleer of alle tekst selecteerbaar en logisch te kopiëren is. Lever DOCX aan wanneer het formulier dat expliciet vraagt; vermijd scans en afbeeldingsbestanden.',
         },
         {
-            question: 'Gebruiken alle bedrijven in Nederland een ATS?',
-            answer: 'Niet alle, maar de meeste bedrijven met meer dan 50 medewerkers wel. Schatting: 75% van die groep gebruikt ATS (Jobscan 2024). Uitzendbureaus, grote corporates en internationale bedrijven hebben de meest strikte ATS-configuraties. Kleine bedrijven screenen vaker handmatig.',
+            question: 'Welk CV-layout geeft het minste ATS-risico?',
+            answer: 'Een eenvoudige eenkoloms layout met standaardkoppen als Werkervaring, Opleiding en Vaardigheden is de voorzichtigste keuze. Sommige systemen lezen twee kolommen goed, maar dat kun je vooraf niet garanderen. Laat essentiële informatie nooit alleen visueel zien.',
         },
         {
-            question: 'Hoe test ik of mijn cv ATS-vriendelijk is?',
-            answer: 'Kopieer alle tekst uit je cv-PDF en plak het in Kladblok. Is de volgorde logisch en ontbreekt er niets? Dan is je cv tekstueel leesbaar. Gebruik aanvullend een online ATS-checker zoals Jobscan om je keyword-match met een specifieke vacature te meten.',
+            question: 'Hoe gebruik ik zoekwoorden uit een vacature?',
+            answer: 'Markeer relevante functietitels, taken, tools, certificaten en vaktermen. Gebruik herkenbare benamingen in je profiel, vaardigheden en werkervaring, maar alleen wanneer ze jouw echte ervaring beschrijven. Geef bewijs in context en vermijd herhaling zonder inhoud.',
         },
         {
-            question: 'Is een creatief cv-template altijd slecht voor ATS?',
-            answer: 'Niet altijd, maar het risico is groot. Test elk creatief template met de plak-in-Kladblok-methode. Als de tekst correct uitkomt, is het template waarschijnlijk ATS-veilig. Templates van Canva of Figma zijn vrijwel altijd problematisch voor ATS-parsing.',
+            question: 'Hoe test ik of mijn CV tekstueel leesbaar is?',
+            answer: 'Open de uiteindelijke PDF, selecteer alle tekst en plak die in Kladblok of een leeg document. Controleer of naam, secties, werkgevers en datums aanwezig zijn en in een logische volgorde staan. Dit is een nuttige technische controle, geen garantie voor ieder ATS.',
         },
         {
-            question: 'Wat is een goede ATS-match-score?',
-            answer: 'Jobscan adviseert een keyword-match van minimaal 70% voor een goede kans op doorgang. Boven de 80% scoren geeft 3x meer kans op een uitnodiging (Jobscan 2024). Gebruik het als richtlijn, niet als garantie — elk ATS-systeem weegt factoren anders.',
+            question: 'Is ieder WerkCV-template even geschikt voor een ATS?',
+            answer: 'Nee. Voor een onbekend sollicitatieportaal is de expliciete ATS- of eenvoudige eenkoloms template de voorzichtigste keuze. Visuelere layouts kunnen prima zijn voor directe verzending, maar controleer altijd de tekstvolgorde en volg de instructies van de werkgever.',
         },
     ],
 

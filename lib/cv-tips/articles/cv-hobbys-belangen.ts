@@ -144,7 +144,7 @@ export const cvHobbysBelangen: BlogArticle = {
             title: 'ATS-systemen en de hobbysectie',
             answerCapsule: 'ATS-systemen scannen ook de hobbysectie op soft-skill-trefwoorden en sector-relevante activiteiten — gebruik bewust herkenbare terminologie.',
             content: [
-                'Jobscan (2024) rapporteert dat 97% van grote Nederlandse en internationale werkgevers ATS-software gebruikt. Hoewel de hobbysectie minder zwaar weegt dan werkervaring of vaardigheden, scannen moderne ATS-parsers ook deze sectie op relevante trefwoorden. Een vermelding als "Scrum Master voor open-source project" kan door een ATS worden opgepikt als extra Scrum-relevantiesignaal, ook al staat het in de hobbysectie.',
+                'Sommige sollicitatiesystemen maken alle selecteerbare CV-tekst doorzoekbaar, maar je weet niet hoe een werkgever hobby\'s verwerkt. Zet relevante projectervaring daarom liever bij Projecten of Vrijwilligerswerk. Een rol als "Scrum Master voor een open-sourceproject" verdient meer context dan een losse hobbyvermelding.',
                 'De praktische implicatie: gebruik in de hobbysectie dezelfde terminologie die in de vacaturetekst staat. Als de vacature vraagt om "leiderschap" en u bent voorzitter van een vereniging, schrijf dan expliciet "voorzitter" en koppel dat aan een resultaat dat leiderschap aantoont. Zo versterkt de hobbysectie de algehele ATS-score van uw cv zonder dat het geforceerd overkomt.',
                 'LinkedIn (2024) rapporteert ook dat 84% van recruiters het LinkedIn-profiel bekijkt na het cv. Als uw hobbysectie op uw cv consistent is met de interesses en vrijwilligerswerk die u op LinkedIn vermeldt, versterkt dat het totaalbeeld. Inconsistenties — een hobby op uw cv die niet terugkomt op LinkedIn — kunnen vragen oproepen.',
             ],
@@ -192,7 +192,7 @@ export const cvHobbysBelangen: BlogArticle = {
         },
         {
             question: 'Scannen ATS-systemen ook de hobbysectie?',
-            answer: 'Ja. Jobscan (2024) bevestigt dat moderne ATS-parsers ook de hobbysectie scannen op soft-skill-trefwoorden en sector-relevante activiteiten. Gebruik in de hobbysectie dezelfde terminologie als in de vacaturetekst — "voorzitter" als de vacature om leiderschap vraagt, "open-source bijdragen" als IT-vaardigheden gevraagd worden.',
+            answer: 'Dat verschilt per systeem en werkgever. Zet ervaring die belangrijk is voor de functie liever in een aparte sectie Projecten of Vrijwilligerswerk, met rol, context en resultaat. Gebruik in Hobby\'s alleen korte, eerlijke informatie die iets relevants toevoegt.',
         },
     ],
 

@@ -17,8 +17,8 @@ export const cvTemplateKiezen: BlogArticle = {
     order: 14,
 
     keyTakeaways: [
-        'ATS-compatibiliteit is het primaire criterium — 97% van grote werkgevers filtert cv\'s automatisch',
-        'Enkelvoudig kolomformat heeft 94% ATS-successrate vs 67% bij complexe meerkolomstemplate',
+        'Bij een onbekend sollicitatieportaal is voorspelbare tekstvolgorde belangrijker dan decoratie',
+        'Een eenvoudige eenkoloms layout geeft het kleinste risico op een verkeerde leesvolgorde',
         'Per sector gelden andere designverwachtingen — een creatief cv bij een advocatenkantoor werkt averechts',
         'Gebruik maximaal twee kleuren naast zwart en een leesbaar schreefloos lettertype van minimaal 10pt',
         'Lever altijd als PDF tenzij anders gevraagd — 89% van ATS-systemen leest PDF correct',
@@ -32,17 +32,17 @@ export const cvTemplateKiezen: BlogArticle = {
             content: [
                 'De eerste indruk van je cv is visueel. Nog voordat een recruiter de inhoud leest, heeft het design al een indruk achtergelaten. ADP (2023) bevestigt dat recruiters gemiddeld 3,2 seconden besteden aan de visuele scan van een cv voordat ze besluiten het verder te lezen of te sluiten. Ladders Research (2024) bevestigt dit: de totale leestijd van een eerste scan bedraagt gemiddeld 6-7 seconden. In die tijd beoordeelt het brein of het document professioneel, overzichtelijk en relevant lijkt.',
                 'Een professionele, passende template straalt competentie en aandacht voor detail uit. Adobe (2023) rapporteert dat 74% van hiring managers zegt dat een cv met een professioneel ontwerp een betere eerste indruk wekt dan een cv met dezelfde inhoud maar slechte opmaak. Omgekeerd: CareerBuilder (2024) bevestigt dat 76% van recruiters een cv direct verwerpt bij slechte opmaak of onleesbare lay-out.',
-                'Daarnaast speelt de template een cruciale rol bij ATS-systemen (Applicant Tracking Systems). Jobscan (2024) rapporteert dat 97% van grote Nederlandse en internationale werkgevers software gebruikt die cv\'s automatisch scant en filtert. Een te complex design met tabellen, afbeeldingen of meerdere tekstkaders kan ervoor zorgen dat het systeem de tekst niet correct kan uitlezen — wat betekent dat het cv nooit een menselijk oog bereikt.',
+                'Daarnaast speelt de template een rol wanneer een werkgever een Applicant Tracking System gebruikt. Complexe tabellen, afbeeldingen of tekstkaders kunnen in sommige parsers een onlogische tekstvolgorde geven. Je weet vooraf zelden welk systeem en welke instellingen worden gebruikt, dus kies bij twijfel een eenvoudige layout.',
             ],
         },
         {
             id: 'ats-compatibiliteit',
             title: 'ATS-compatibiliteit: het primaire designcriterium',
-            answerCapsule: 'ATS-systemen filteren 97% van grote werkgevers\' cv\'s automatisch — een enkelvoudig kolomformat heeft 94% successrate, een complex meerkolomsformaat slechts 67%.',
+            answerCapsule: 'Een eenkoloms template met selecteerbare tekst en herkenbare sectiekoppen geeft bij een onbekend ATS het kleinste parsingrisico.',
             content: [
-                'Jobscan (2024) toont dat cv\'s zonder tekstkaders en complexe kolommen een ATS-successrate van 94% hebben, terwijl cv\'s met meerdere tekstvakken en grafische elementen slechts 67% correctheid bereiken. Dat betekent dat een derde van alle creatief opgemaakte cv\'s door ATS-software niet of incorrect wordt uitgelezen — en dus nooit een recruiter bereikt.',
+                'Parsers verschillen in hoe ze kolommen, tekstkaders en grafische elementen verwerken. Een eenvoudige tekstflow vermindert het risico dat onderdelen ontbreken of in de verkeerde volgorde terechtkomen, maar geen enkel template kan verwerking of selectie garanderen.',
                 'Een ATS-vriendelijke template heeft specifieke kenmerken. Enkel aaneengesloten tekstblokken worden het meest betrouwbaar gescand. Maximaal twee kolommen zijn acceptabel als de linkerkolom maar smal is (minder dan 30% van de paginabreedte) en uitsluitend contactgegevens, vaardigheden en certificeringen bevat. Tekst in afbeeldingen, grafieken en PDF-annotaties worden door de meeste ATS-parsers niet meegenomen.',
-                'Test je template altijd door de volledige tekst van het cv te kopiëren naar een leeg tekstdocument (CTRL+A, CTRL+C). Als alle informatie correct en in de juiste volgorde overkomt, is de template waarschijnlijk ATS-compatibel. Verdwijnt er tekst, of raken de volgorde en structuur door de war, dan moet je een andere template kiezen. Jobscan (2024) biedt ook een gratis online ATS-checker waarmee je je cv direct kunt testen.',
+                'Test je template door de volledige tekst van de uiteindelijke PDF naar een leeg tekstdocument te kopiëren. Als alle informatie correct en in de juiste volgorde overkomt, is de export tekstueel leesbaar. Verdwijnt er tekst of raakt de structuur door de war, kies dan een eenvoudigere template. Dit is een technische controle, geen voorspelling van een uitnodiging.',
             ],
             bullets: [
                 'Gebruik: enkelvoudig kolom of maximaal twee kolommen (smal links, breed rechts)',
@@ -191,7 +191,7 @@ export const cvTemplateKiezen: BlogArticle = {
             title: 'Veelgemaakte fouten bij het kiezen van een cv-template',
             answerCapsule: 'De drie grootste templatefouten: infographic-lay-out die ATS blokkeert, verkeerde sector-match, en esthetiek boven functionaliteit laten prevaleren.',
             content: [
-                'De meest voorkomende fout is het kiezen van een infographic-template op basis van Pinterest-esthetiek. Jobscan (2024) rapporteert dat infographic-cv\'s door 43% van ATS-systemen niet correct worden gelezen. Cirkeldiagrammen, tijdlijnafbeeldingen en decoratieve iconen zien er aantrekkelijk uit maar verbergen informatie voor de ATS-scanner die bepaalt of je überhaupt door het selectieproces komt.',
+                'Een veelgemaakte fout is het kiezen van een infographic-template op basis van uitstraling alleen. Cirkeldiagrammen, tijdlijnafbeeldingen en decoratieve iconen kunnen informatie verbergen wanneer dezelfde inhoud niet ook als gewone tekst beschikbaar is.',
                 'Een tweede veelgemaakte fout is het gebruiken van dezelfde template ongeacht de sector. Een creatieve template die perfect past bij een marketingbureau, werkt averechts bij een advocatenkantoor of een zorginstelling. Pas je template aan de sector aan — net zoals je je cv-inhoud per vacature aanpast. Als je breed solliciteert, hou dan twee of drie templates klaar: een conservatief, een modern en een creatief.',
                 'De derde fout is esthetiek boven functionaliteit kiezen. Een mooi design dat geen ruimte biedt voor je werkervaring, dat de tekst te klein maakt om alles in te passen, of dat bij afdrukken vervormt, is functioneel een slechte keuze. Leesbaarheid, overzichtelijkheid en ATS-vriendelijkheid zijn altijd het primaire criterium — design is ondergeschikt.',
             ],
@@ -201,7 +201,7 @@ export const cvTemplateKiezen: BlogArticle = {
     faq: [
         {
             question: 'Welke cv-template is het meest universeel inzetbaar?',
-            answer: 'Een strakke, minimalistische template met een enkelvoudige of lichte twee-kolomsstructuur, een accentkleur in donkerblauw of grijs, en een schreefloos lettertype als Lato of Calibri werkt in vrijwel elke sector. Jobscan (2024) bevestigt dat dit type template de hoogste ATS-successrate heeft (94%).',
+            answer: 'Een strakke template met duidelijke sectiekoppen, voldoende witruimte en een goed leesbaar lettertype werkt voor veel sectoren. Kies bij een onbekend sollicitatieportaal bij voorkeur één kolom; stem kleur en formaliteit af op functie en werkgever.',
         },
         {
             question: 'Is een creatief cv-template een goed idee?',
@@ -209,7 +209,7 @@ export const cvTemplateKiezen: BlogArticle = {
         },
         {
             question: 'Hoe weet ik of mijn cv-template ATS-vriendelijk is?',
-            answer: 'Kopieer de tekst van je cv naar een leeg tekstdocument. Als alle informatie correct en in de juiste volgorde overkomt, is de template waarschijnlijk ATS-vriendelijk. Jobscan (2024) biedt ook een gratis online ATS-checker. Vermijd templates met tabellen, tekstvakken, afbeeldingen of grafische vaardigheidsbalkjes.',
+            answer: 'Kopieer de tekst van je uiteindelijke PDF naar een leeg tekstdocument. Controleer of alle informatie aanwezig is en logisch staat. Vermijd dat belangrijke gegevens uitsluitend in tabellen, tekstvakken, afbeeldingen of grafische vaardigheidsbalkjes staan.',
         },
         {
             question: 'PDF of Word: welk formaat is beter voor je cv?',

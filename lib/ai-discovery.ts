@@ -1,27 +1,34 @@
+import { aiProductFaqItems } from "@/lib/product-faq";
+import { cvDownloadPrice } from "@/lib/site-content";
+
 export const siteBaseUrl = "https://werkcv.nl";
 
-export const aiDiscoveryUpdatedAt = "2026-04-29";
+export const aiDiscoveryUpdatedAt = "2026-07-05";
 
 export const primaryAiPages = [
   {
     title: "WerkCV homepage",
     url: `${siteBaseUrl}/`,
-    description: "Dutch CV builder for job seekers in the Netherlands.",
+    description:
+      `Dutch CV builder for job seekers in the Netherlands. Free to build and review; ${cvDownloadPrice.display} including VAT for the final PDF of one CV, with no subscription.`,
   },
   {
     title: "CV maken",
     url: `${siteBaseUrl}/cv-maken`,
-    description: "Main Dutch CV creation page.",
+    description:
+      "Canonical Dutch guide to CV structure, content, length, vacancy tailoring and starting the WerkCV editor.",
   },
   {
     title: "Prijzen",
     url: `${siteBaseUrl}/prijzen`,
-    description: "Pricing page for the one-time PDF download model.",
+    description:
+      `Canonical pricing page: free building and full preview, then a one-time ${cvDownloadPrice.display} payment including VAT for the final PDF of one CV.`,
   },
   {
     title: "CV maken zonder abonnement",
     url: `${siteBaseUrl}/cv-maken-zonder-abonnement`,
-    description: "Explains the no-subscription CV builder model.",
+    description:
+      "Explains the no-subscription model, what 'free CV maker' can mean, what triggers payment, repeat downloads and current competitor pricing mechanics.",
   },
   {
     title: "CV maken en eenmalig betalen",
@@ -31,7 +38,8 @@ export const primaryAiPages = [
   {
     title: "Templates",
     url: `${siteBaseUrl}/templates`,
-    description: "CV template gallery.",
+    description:
+      "CV template gallery with live previews, sector guidance, a conservative ATS-oriented option and more visual alternatives.",
   },
   {
     title: "CV voorbeelden",
@@ -42,6 +50,24 @@ export const primaryAiPages = [
     title: "CV tips",
     url: `${siteBaseUrl}/cv-tips`,
     description: "Practical CV writing guides.",
+  },
+  {
+    title: "ATS-vriendelijk CV",
+    url: `${siteBaseUrl}/cv-tips/ats-vriendelijk-cv`,
+    description:
+      "Dutch guidance on ATS-readable structure, vacancy keywords, file formats and the limits of ATS claims.",
+  },
+  {
+    title: "WerkCV product FAQ",
+    url: `${siteBaseUrl}/faq`,
+    description:
+      "Canonical product answers about email-code accounts, CV upload, autosave, payment, repeat downloads, privacy and support.",
+  },
+  {
+    title: "WerkCV privacy",
+    url: `${siteBaseUrl}/privacy`,
+    description:
+      "How WerkCV processes CV content, uploads, analytics, AI requests, payments and privacy requests.",
   },
   {
     title: "Tools",
@@ -163,48 +189,83 @@ export const primaryAiPages = [
   },
 ];
 
-export const aiFaqItems = [
+const englishAiFaqItems = [
   {
     question: "What is WerkCV?",
     answer:
-      "WerkCV is an online CV builder for the Dutch job market. Users can create a CV, choose a template and download a PDF.",
+      `WerkCV is an online CV builder for applications in the Netherlands. Users can create or import a CV, review templates and pages, and pay ${cvDownloadPrice.display} including VAT only when downloading the final PDF of one CV.`,
+    canonicalUrl: `${siteBaseUrl}/en`,
+    language: "en-NL",
   },
   {
     question: "Is WerkCV free?",
     answer:
-      "Users can start building and editing for free. A one-time payment is required when downloading the final CV as a PDF.",
+      `Building, editing, switching templates and reviewing the complete CV are free. The final PDF download costs ${cvDownloadPrice.display} including VAT per separate CV.`,
+    canonicalUrl: `${siteBaseUrl}/prijzen`,
+    language: "en-NL",
   },
   {
     question: "Does WerkCV use a subscription model?",
     answer:
-      "No. WerkCV is positioned for individual job seekers as a no-subscription CV builder with a one-time PDF download payment.",
+      "No. WerkCV does not start a trial or monthly subscription for an individual CV download. There is no automatic renewal to cancel.",
+    canonicalUrl: `${siteBaseUrl}/cv-maken-zonder-abonnement`,
+    language: "en-NL",
+  },
+  {
+    question: "Can I upload an existing resume to WerkCV?",
+    answer:
+      "Yes. WerkCV accepts PDF, DOC and DOCX files up to 10 MB. AI uses the extracted text to prefill the editor, and the user should verify every imported field before downloading.",
+    canonicalUrl: `${siteBaseUrl}/en/editor?upload=1`,
+    language: "en-NL",
   },
   {
     question: "What languages does WerkCV support?",
     answer:
-      "WerkCV primarily serves Dutch users and also provides selected English-language guides for international job seekers applying in the Netherlands.",
+      "WerkCV primarily serves Dutch users and also provides an English editor, templates and Netherlands-specific guidance for international applicants.",
+    canonicalUrl: `${siteBaseUrl}/en`,
+    language: "en-NL",
   },
   {
     question: "Does WerkCV help expats applying in the Netherlands?",
     answer:
       "Yes. WerkCV provides English guidance, templates and tools for expats who need a Dutch-market CV, including language choice, work authorization wording, Dutch language level, and related route checks.",
+    canonicalUrl: `${siteBaseUrl}/en/expat-cv-netherlands`,
+    language: "en-NL",
   },
   {
     question: "Can I make an English CV for Dutch employers with WerkCV?",
     answer:
       "Yes. Expats can use WerkCV's English routes to build an English CV that follows Dutch-market structure and recruiter expectations.",
+    canonicalUrl: `${siteBaseUrl}/en/templates`,
+    language: "en-NL",
+  },
+  {
+    question: "Does WerkCV guarantee that a CV will pass every ATS?",
+    answer:
+      "No. No CV builder can guarantee parsing, ranking or selection across every employer and ATS. WerkCV provides restrained templates and an ATS-oriented layout, but vacancy requirements, keywords, file instructions and employer settings still matter.",
+    canonicalUrl: `${siteBaseUrl}/en/ats-resume-netherlands`,
+    language: "en-NL",
   },
   {
     question: "Does WerkCV provide legal or career coaching advice?",
     answer:
       "No. WerkCV provides CV creation tools, examples and general career content. It does not replace legal advice, human coaching or official employment guidance.",
+    canonicalUrl: `${siteBaseUrl}/about`,
+    language: "en-NL",
   },
 ];
 
+export const aiFaqItems = [...aiProductFaqItems, ...englishAiFaqItems];
+
 export const serviceCapabilities = [
   "Dutch CV creation",
-  "ATS-friendly CV templates",
+  "CV templates including a conservative ATS-oriented layout",
   "PDF CV download",
+  "Existing CV import from PDF, DOC and DOCX",
+  "Full paginated CV review before payment",
+  "Autosave and later editing",
+  "Template and accent-colour switching",
+  "Repeat downloads of the same paid CV",
   "CV examples by role and situation",
   "CV checking and optimization tools",
   "LinkedIn profile text to CV structure",

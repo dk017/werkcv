@@ -181,8 +181,8 @@ export const carriereswitchCv: BlogArticle = {
             title: 'ATS-systemen en het switch-cv',
             answerCapsule: 'Gebruik bewust trefwoorden uit de vacaturetekst van het nieuwe vakgebied in je cv — ATS-systemen filteren op sector-specifieke termen die in je oude cv ontbreken.',
             content: [
-                'Jobscan (2024) rapporteert dat 97% van grote Nederlandse en internationale werkgevers ATS-software gebruikt. Bij een switch is dit extra uitdagend: je cv bevat van nature minder sector-specifieke trefwoorden uit het nieuwe vakgebied dan een kandidaat met directe sectorervaring.',
-                'De oplossing is proactief trefwoordbeheer. Lees de vacaturetekst van je doelfunctie nauwkeurig door en noteer de exacte benamingen die worden gebruikt: functietitels, tools, methodieken, certificaten en vakgebied-jargon. Werk deze termen vervolgens organisch in je cv in — in de profieltekst, vaardigheidssectie en werkervaring-omschrijvingen. Jobscan (2024) toont dat het opnemen van minimaal 70% van de vacature-trefwoorden de ATS-passagegraad verhoogt van 33% naar 72%.',
+                'Veel grote werkgevers gebruiken sollicitatiesoftware om kandidaten te beheren en te doorzoeken. Bij een switch bevat je CV van nature minder termen en ervaring uit het nieuwe vakgebied dan dat van een kandidaat met directe sectorervaring.',
+                'Lees de vacaturetekst van je doelfunctie nauwkeurig en noteer functietitels, tools, methodieken en certificaten die werkelijk aansluiten op je ervaring of omscholing. Verwerk die termen organisch in profiel, vaardigheden en relevante projecten. Een hoog percentage woordoverlap is geen vervanging voor aantoonbaar bewijs.',
                 'Gebruik ook het exacte vakgebied-jargon in je aanvullende opleidingen-sectie. "Scrum Master PSM I" is een ATS-trefwoord dat exact matcht met vacatures die om Scrum vragen. "Agile projectmanagement ervaring" is te generiek en wordt mogelijk niet gematcht. Precisie in benamingen is bij ATS-scanning altijd beter dan approximaties.',
             ],
         },

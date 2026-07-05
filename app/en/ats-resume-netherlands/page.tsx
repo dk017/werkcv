@@ -25,7 +25,7 @@ const steps = [
   "Mirror keywords from the vacancy in skills and experience.",
   "Avoid tables, text in images, and decorative icons for key details.",
   "Use consistent date and role formatting.",
-  "Submit in PDF unless a company requests another format.",
+  "Follow the requested file format; otherwise use a text-based PDF.",
 ];
 
 const buildFlow = [
@@ -50,17 +50,17 @@ const faqs = [
   {
     question: "Do Dutch employers use ATS systems?",
     answer:
-      "Yes. Many medium-sized companies, large employers, agencies and corporate career portals in the Netherlands use ATS software to collect, parse and route applications before a recruiter reviews them.",
+      "Many larger employers, agencies, and career portals use applicant tracking software, but its role varies. One system may only store and search applications, while another may add screening questions or matching. Recruiters can still review CVs manually.",
   },
   {
-    question: "What hurts ATS readability most?",
+    question: "Can an ATS automatically reject my CV?",
     answer:
-      "Complex layouts, unclear headings, and missing role-specific keywords are common causes.",
+      "It can when an employer configures knockout questions or filters, but not every vacancy works that way. A rejection may also result from human review, missing requirements, or competition, so an external score cannot reveal the exact cause.",
   },
   {
-    question: "Should I keyword-stuff my CV?",
+    question: "What layout has the lowest ATS risk?",
     answer:
-      "No. Keep wording natural and only include relevant terms that reflect your real experience.",
+      "A simple single-column layout with standard headings and selectable text is the cautious option. Keep essential details out of images, charts, and decorative text boxes. Some systems parse complex layouts well, but you rarely know the configuration in advance.",
   },
   {
     question: "Should my CV be in English or Dutch for ATS screening?",
@@ -70,12 +70,12 @@ const faqs = [
   {
     question: "Is PDF safe for ATS systems in the Netherlands?",
     answer:
-      "Usually yes, as long as the PDF contains selectable text and a simple structure. Avoid scanned images, decorative text boxes and contact details hidden in headers or footers.",
+      "Follow the vacancy or upload form first. If no format is specified, a text-based PDF is a practical choice when all text can be selected and copied in a logical order. Use DOCX when the employer explicitly requests it, and avoid scans.",
   },
   {
-    question: "What should I fix first if I already have a CV?",
+    question: "How should I use keywords from a Dutch vacancy?",
     answer:
-      "Fix the top third first: role title, profile summary, contact details and the first experience section. That is where both recruiters and ATS matching usually find the strongest signals.",
+      "Identify relevant job titles, responsibilities, tools, certifications, and skills. Use recognisable wording where it truthfully describes your background, then prove it inside experience bullets. Do not repeat terms that you cannot support.",
   },
 ];
 

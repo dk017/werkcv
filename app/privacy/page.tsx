@@ -134,6 +134,20 @@ export default function PrivacyPage() {
                                 daarbij gebruiken we de waarborgen en contractuele afspraken die voor de betreffende
                                 leverancier beschikbaar en vereist zijn.
                             </p>
+                            <p className="font-medium leading-relaxed mt-2">
+                                WerkCV gebruikt je CV niet om een eigen AI-model te trainen. OpenAI vermeldt dat gegevens
+                                die via zijn API worden verwerkt standaard niet worden gebruikt om modellen te trainen.
+                                Beperkte logbewaring kan gelden voor misbruik- en beveiligingscontrole. Bekijk hiervoor ook het{" "}
+                                <a
+                                    href="https://openai.com/enterprise-privacy/"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="font-bold underline"
+                                >
+                                    actuele OpenAI-privacybeleid voor zakelijke en API-diensten
+                                </a>
+                                .
+                            </p>
                         </section>
 
                         <section>

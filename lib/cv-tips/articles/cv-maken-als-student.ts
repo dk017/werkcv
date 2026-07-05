@@ -42,7 +42,7 @@ export const cvMakenAlsStudent: BlogArticle = {
             title: 'CV maken als student: waar begin je?',
             answerCapsule: 'Begin bij je opleiding, voeg alle bijbanen en stages toe en schrijf een krachtige profieltekst van 3-5 zinnen die je ambitie toont.',
             content: [
-                'Een eerste CV maken voelt voor veel studenten overweldigend. Hoe presenteer je jezelf professioneel als je nog nauwelijks werkervaring hebt? Het goede nieuws: recruiters bij starterfuncties verwachten geen tien jaar ervaring. Volgens onderzoek van Randstad (2024) kijkt 68% van de Nederlandse recruiters bij een starter primair naar motivatie en leerpotentieel — pas daarna naar werkervaring.',
+                'Een eerste CV maken voelt voor veel studenten overweldigend. Hoe presenteer je jezelf professioneel als je nog nauwelijks werkervaring hebt? Recruiters bij starterfuncties verwachten geen tien jaar ervaring. Laat daarom motivatie en leervermogen zien met bewijs uit stages, projecten, bijbanen, studie en vrijwilligerswerk.',
                 'De sleutel is slim structureren. Je hebt meer te bieden dan je denkt: je opleiding, bijbaantjes, stages, vrijwilligerswerk, studieverenigingen, sportprestaties en soft skills zijn allemaal relevante informatie voor een recruiter. Het gaat erom dat je dit op de juiste manier presenteert op maximaal 1 A4-pagina.',
                 'In deze gids leer je stap voor stap hoe je als student een CV opstelt dat opvalt, zelfs zonder uitgebreide werkervaring. We behandelen elke sectie, geven concrete voorbeeldteksten en leggen uit hoe je je CV aanpast per vacature voor maximaal resultaat.',
             ],
@@ -54,7 +54,7 @@ export const cvMakenAlsStudent: BlogArticle = {
             content: [
                 'De structuur van een student-CV wijkt bewust af van een ervaren professional. Waar een senior zijn werkervaring bovenaan zet, zet een student zijn opleiding prominent bovenaan. Dit is logisch: je diploma (of het behalen ervan) is je belangrijkste troef op dit moment.',
                 'De aanbevolen volgorde voor een starter-CV is: 1) Contactgegevens en profieltekst, 2) Opleiding (meest recent eerst), 3) Werkervaring inclusief bijbanen en stages, 4) Vaardigheden en competenties, 5) Activiteiten en vrijwilligerswerk, 6) Talen, 7) Interesses (optioneel). Hobbies zijn optioneel maar kunnen je onderscheiden als ze relevant zijn.',
-                'Gebruik een clean, ATS-vriendelijk template zonder tabellen of tekstblokken in kolommen. Onderzoek van Jobscan (2024) toont dat 75% van de Nederlandse cv\'s gefilterd wordt door een Applicant Tracking System voordat een recruiter ze ziet. Een simpele structuur met duidelijke kopjes zorgt dat je door het filter heen komt.',
+                'Gebruik bij een sollicitatieportaal een rustige layout met duidelijke kopjes en selecteerbare tekst. Een eenvoudige structuur verkleint parsingrisico en helpt ook een recruiter sneller zien wat je opleiding, projecten en relevante ervaring zijn.',
             ],
             bullets: [
                 'Contactgegevens: naam, telefoonnummer, professioneel e-mailadres, LinkedIn-URL, woonplaats',

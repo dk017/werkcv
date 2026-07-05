@@ -5,6 +5,7 @@ import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import EnglishRoleExampleBand from "./components/EnglishRoleExampleBand";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import Footer from "@/components/Footer";
+import { FAQJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata = buildEnglishMetadata({
   title: "Netherlands CV Format: Dutch CV Template in English",
@@ -188,6 +189,34 @@ const proofPoints = [
     title: "ATS-safe before decorative",
     description:
       "Use real text, clear headings and simple layout before adding visual elements that can make parsing harder.",
+  },
+];
+
+const englishHomeFaqs = [
+  {
+    question: "Can I build a CV for the Netherlands for free?",
+    answer:
+      "You can create an account, build or upload your CV, compare templates, and review the complete result for free. You pay a one-time €4.99 including VAT only when you choose to download the PDF.",
+  },
+  {
+    question: "Is WerkCV a subscription?",
+    answer:
+      "No. There is no trial subscription, automatic renewal, or monthly charge. A PDF download is a one-time €4.99 payment including VAT.",
+  },
+  {
+    question: "Can my Netherlands CV be written in English?",
+    answer:
+      "Yes. Use English when the vacancy and working language are English. Match a Dutch-language vacancy in Dutch unless the employer explicitly welcomes English applications. Keep official tool names and certifications in their recognised form.",
+  },
+  {
+    question: "Can I upload my current resume or CV?",
+    answer:
+      "Yes. Upload a PDF or Word file to prefill the editor, then verify names, dates, bullets, and section order in the preview. Scans, tables, and complex multi-column documents may import less accurately.",
+  },
+  {
+    question: "Do I need to speak Dutch to use WerkCV?",
+    answer:
+      "No. The English editor and guidance are designed for international applicants. On the CV, state your actual Dutch level honestly and focus on roles whose vacancy language and requirements match your situation.",
   },
 ];
 
@@ -494,6 +523,19 @@ export default function EnglishHubPage() {
             Netherlands example
           </Link>
         </div>
+
+        <div className="mt-12 border-4 border-black bg-[#FFF7E8] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-600">Before you start</p>
+          <h2 className="mt-2 text-3xl font-black text-gray-900">English CV builder questions</h2>
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {englishHomeFaqs.map((item) => (
+              <details key={item.question} className="border-2 border-black bg-white p-4">
+                <summary className="cursor-pointer font-black text-gray-900">{item.question}</summary>
+                <p className="mt-3 leading-relaxed text-gray-700">{item.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
       </section>
       <Footer uiLanguage="en" />
       <MobileStickyCta
@@ -503,6 +545,7 @@ export default function EnglishHubPage() {
         trackingLocation="english_hub_mobile_sticky"
         trackingLabel="build_netherlands_cv"
       />
+      <FAQJsonLd questions={englishHomeFaqs} />
     </main>
   );
 }

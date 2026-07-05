@@ -19,7 +19,7 @@ export const cvSchrijvenTips: BlogArticle = {
     keyTakeaways: [
         'Een recruiter besteedt gemiddeld 6 tot 7 seconden aan een eerste cv-scan (Ladders Eye-Tracking Study).',
         'Houd je cv op maximaal 2 pagina\'s — voor starters is 1 A4 de norm.',
-        'ATS-systemen filteren 70–75% van alle cv\'s weg vóór menselijke beoordeling (Jobscan 2024).',
+        'ATS-verwerking verschilt per werkgever; eenvoudige opmaak en relevante vacaturetaal verkleinen vermijdbare risico\'s.',
         'Kwantificeer resultaten: "omzet verhoogd met 15%" scoort 40% meer terugkoppeling dan taakbeschrijvingen.',
         'Pas je profieltekst en vaardigheidssectie aan voor elke vacature — een generiek cv is een gemiste kans.',
         'Sla altijd op als PDF en geef het bestand een professionele naam: "CV-Voornaam-Achternaam.pdf".',
@@ -94,7 +94,7 @@ export const cvSchrijvenTips: BlogArticle = {
             title: '5. Kies vaardigheden die de vacature direct matchen',
             answerCapsule: 'Selecteer 6 tot 10 vaardigheden die letterlijk overeenkomen met de vacaturetaal — ATS-systemen matchen op exacte termen, niet op synoniemen.',
             content: [
-                'De vaardigheidssectie is voor twee lezers geschreven: ATS-software en menselijke recruiters. ATS-systemen — gebruikt door 75% van de Nederlandse bedrijven met meer dan 50 medewerkers (Jobscan 2024) — scannen op exacte trefwoorden uit de vacature. "Projectmanagement" en "projectbeheer" zijn voor een mens synoniemen, maar voor een ATS twee verschillende termen. Gebruik de exacte bewoording van de vacature.',
+                'De vaardigheidssectie is voor recruiters én eventuele zoekfuncties geschreven. Gebruik herkenbare termen uit de vacature wanneer die echt bij je passen. Combineer bijvoorbeeld de officiële tool- of certificeringsnaam met bewijs in je werkervaring, in plaats van alleen synoniemen of een losse woordenlijst te plaatsen.',
                 'Selecteer 6 tot 10 vaardigheden die direct relevant zijn voor de functie. Combineer hard skills (concrete, meetbare vaardigheden zoals "Excel", "Salesforce" of "Python") met soft skills die je kunt onderbouwen ("stakeholdermanagement — bewezen in projecten met 8+ afdelingen"). Een vaardigheidssectie van 15 generieke termen is zwakker dan een van 8 specifieke, vacature-gerichte vaardigheden.',
                 'Vermeld talenkennis apart met het Europees Referentiekader (ERK): A1 (beginner) tot C2 (vloeiend). "Engels: C1 (vloeiend in woord en geschrift)" is preciezer dan "goed Engels". Nederlandse recruiters kennen het ERK-systeem en waarderen de specificiteit — het is een eerlijkheidssignaal dat je zelfkennis toont.',
             ],
@@ -152,9 +152,9 @@ export const cvSchrijvenTips: BlogArticle = {
         {
             id: 'digitaal-optimaliseren',
             title: '9. Optimaliseer je cv voor ATS en digitaal lezen',
-            answerCapsule: 'ATS-systemen filteren 70–75% van alle cv\'s weg vóór menselijke beoordeling — gebruik exacte vacaturekeywords en vermijd tabellen en tekstvakken.',
+            answerCapsule: 'ATS-systemen en werkgeversconfiguraties verschillen. Gebruik herkenbare vacaturetermen, gewone tekst en een voorspelbare leesvolgorde.',
             content: [
-                'ATS-systemen (Applicant Tracking Systems) zijn bij 75% van de Nederlandse bedrijven met meer dan 50 medewerkers actief (Jobscan 2024). Ze filteren cv\'s op keyword-match, bestandsformaat en leesbaarheid. Gemiddeld wordt 70 tot 75% van alle ingezonden cv\'s door ATS weggefilterd vóór een menselijke recruiter ze ziet. Dit betekent dat een perfect cv dat de ATS-beoordeling niet haalt, nooit gezien wordt.',
+                'Veel grotere werkgevers en bureaus gebruiken Applicant Tracking Systems om sollicitaties te beheren, uit te lezen of te doorzoeken. Niet ieder systeem filtert automatisch en er bestaat geen universele score. Zorg dat belangrijke informatie als selecteerbare tekst in een logische volgorde staat en dat je inhoud eerlijk aansluit op de vacature.',
                 'De drie ATS-regels die het meeste impact hebben: (1) gebruik de exacte trefwoorden uit de vacature in je cv — niet alleen synoniemen maar letterlijk dezelfde termen; (2) vermijd tabellen, tekstvakken, grafische elementen en kopteksten/voetteksten voor cv-inhoud — ATS leest die onbetrouwbaar; (3) sla je cv op als PDF vanuit Word of Google Docs, niet als een gescand document of Canva-export.',
                 'Buiten ATS-optimalisatie geldt ook voor menselijke digitale lezers: minimaal 10pt lettergrootte, voldoende witruimte, bullet points in plaats van alinea\'s, en duidelijke kopjes die als ankers werken bij scannen. Onderzoek van Nielsen Norman Group (2024) laat zien dat mensen online tekst niet lezen maar scannen — in een F-patroon van links naar rechts voor de eerste twee regels, daarna verticaal langs de linkerkant.',
             ],

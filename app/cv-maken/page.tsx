@@ -212,39 +212,44 @@ const mistakeFixes = [
 
 const faqs = [
   {
-    question: "Hoe maak je een goed cv?",
-    answer:
-      "Begin met een duidelijke doelrol, schrijf een korte profieltekst, zet werkervaring neer in resultaatgerichte bullets en kies daarna een rustige template. Werk vervolgens vacaturegericht af in de editor zodat je CV niet generiek blijft.",
-  },
-  {
-    question: "Hoe kan ik snel een goed cv maken?",
-    answer:
-      "Begin met een duidelijke doelrol, schrijf een korte profieltekst, voeg resultaatgerichte werkervaring toe en kies daarna een rustige template. Werk vervolgens vacaturegericht af in de editor.",
-  },
-  {
     question: "Wat moet er minimaal in een CV staan?",
     answer:
-      "Persoonsgegevens, functietitel/profieltekst, relevante werkervaring, opleiding en vaardigheden vormen de basis. Voeg alleen onderdelen toe die je sollicitatie sterker maken.",
-  },
-  {
-    question: "Is online cv maken beter dan in Word?",
-    answer:
-      "Voor de meeste mensen wel. Online bouwen voorkomt opmaakproblemen, versnelt aanpassingen per vacature en maakt het makkelijker om consistente, ATS-vriendelijke versies te maken.",
+      "Vermeld je naam en contactgegevens, een duidelijke doelrol of korte profieltekst, relevante werkervaring, opleiding en vaardigheden. Voeg talen, certificaten, projecten of vrijwilligerswerk alleen toe wanneer ze bewijs leveren voor de functie waarop je solliciteert.",
   },
   {
     question: "Hoe lang mag een CV zijn in Nederland?",
     answer:
-      "Meestal werkt 1 pagina voor starters en 1 tot 2 pagina's voor ervaren kandidaten. Lengte is minder belangrijk dan relevantie en scanbaarheid.",
+      "Een starter kan vaak op één pagina uitkomen; voor iemand met relevante ervaring zijn één tot twee pagina's gebruikelijk. Schrap liever oude of irrelevante details dan het lettertype te verkleinen. Relevantie en scanbaarheid zijn belangrijker dan een absoluut paginalimiet.",
   },
   {
-    question: "Kan ik gratis een CV maken op WerkCV?",
+    question: "In welke volgorde zet je onderdelen op een CV?",
     answer:
-      "Ja. Je kunt gratis starten, bewerken en templates vergelijken. Je betaalt alleen als je je definitieve PDF wilt downloaden.",
+      "Zet bovenaan je contactgegevens en profiel. Daarna komt meestal de meest relevante werkervaring in omgekeerd chronologische volgorde, gevolgd door opleiding en vaardigheden. Ben je starter en is je opleiding sterker dan je ervaring, dan mag opleiding eerder komen.",
   },
   {
-    question: "Welke template is het beste als ik twijfel?",
+    question: "Moet je je CV voor iedere vacature aanpassen?",
     answer:
-      "Start meestal met een professionele of ATS-vriendelijke template. Die werken voor veel functies omdat ze duidelijk, rustig en recruiter-proof zijn.",
+      "Ja, maar je hoeft niet telkens opnieuw te beginnen. Pas vooral de functietitel, profieltekst, volgorde van relevante bullets en vaardigheden aan op de vacature. Gebruik alleen termen en ervaring die werkelijk op jou van toepassing zijn.",
+  },
+  {
+    question: "Hoe schrijf je werkervaring zonder alleen taken op te sommen?",
+    answer:
+      "Begin iedere bullet met een concrete actie en geef daarna context en resultaat. Schrijf bijvoorbeeld niet alleen 'verantwoordelijk voor klantvragen', maar hoeveel vragen je behandelde, via welke kanalen en wat daardoor verbeterde. Gebruik cijfers alleen wanneer je ze kunt onderbouwen.",
+  },
+  {
+    question: "Is een profieltekst verplicht op een CV?",
+    answer:
+      "Nee, maar een korte profieltekst helpt wanneer je richting, specialisatie of overstap uitleg nodig heeft. Houd hem bij drie tot vier zinnen: je relevante ervaring, sterkste bewijs, doelrol en eventueel sector. Vermijd algemene eigenschappen zonder voorbeeld.",
+  },
+  {
+    question: "Is een online CV-builder beter dan Word?",
+    answer:
+      "Dat hangt af van je behoefte. Een builder bewaakt opmaak, maakt wisselen van template eenvoudiger en kan sneller zijn voor meerdere versies. Word of Google Docs geeft meer handmatige vrijheid en kan volledig gratis zijn, maar je beheert uitlijning, pagina-einden en PDF-export zelf.",
+  },
+  {
+    question: "Welke bestandsnaam gebruik je voor je CV?",
+    answer:
+      "Gebruik een herkenbare naam zoals CV-Voornaam-Achternaam.pdf. Voeg eventueel de doelrol toe als dat helpt, bijvoorbeeld CV-Samira-El-Amrani-Projectmanager.pdf. Vermijd namen als cv_nieuw_definitief2.pdf en controleer vóór verzending of de juiste versie is bijgevoegd.",
   },
 ];
 

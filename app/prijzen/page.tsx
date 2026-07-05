@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import { coverLetterPackagePrice, cvDownloadPrice } from "@/lib/site-content";
+import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { cvDownloadPrice } from "@/lib/site-content";
 
 export const metadata: Metadata = {
     title: `CV Maken Kosten 2026: Eenmalig ${cvDownloadPrice.display}, Geen Abonnement | WerkCV`,
@@ -52,16 +53,34 @@ const pricingIntentCards = [
 ] as const;
 
 const pricingFaqs = [
-    { q: "Wat kost WerkCV precies?", a: `WerkCV kost ${cvDownloadPrice.display} per CV-download. Je start gratis, bouwt je CV op en betaalt pas wanneer je die definitieve PDF wilt downloaden.` },
-    { q: "Kan ik ook meer krijgen dan alleen een CV-download?", a: `Ja, maar we houden de standaard checkout bewust simpel. Eerst staat de CV-download centraal voor ${cvDownloadPrice.display}. Daarnaast testen we een hoger pakket voor CV + sollicitatiebrief rond ${coverLetterPackagePrice.display}.` },
-    { q: "Moet ik betalen om mijn CV te maken?", a: "Nee, het aanmaken en bewerken van je CV is volledig gratis. Je betaalt pas als je dat CV als PDF wilt downloaden." },
-    { q: "Wat betekent cv maken betaald meestal?", a: "Meestal zoekt iemand een betaalde CV-tool met duidelijke kosten en zonder verrassingen achteraf. Voor WerkCV betekent dat: gratis starten en pas betalen wanneer je jouw definitieve PDF wilt downloaden." },
-    { q: "Kan ik mijn CV per download betalen?", a: "Ja. Bij WerkCV betaal je eenmalig per CV wanneer je die definitieve PDF-download wilt doen. Voor datzelfde betaalde CV kun je later terugkomen, bewerken en opnieuw downloaden zonder opnieuw te betalen." },
-    { q: "Wat zijn CV.nl kosten volgens de publieke prijzenpagina?", a: "Volgens de publieke prijzenpagina van CV.nl kost de instaproute 14 dagen €0,99 en daarna €19,99 per maand met automatische verlenging. Gecheckt op 17 april 2026. Controleer actuele voorwaarden altijd zelf op hun officiële pricingpagina." },
-    { q: "Is het een abonnement?", a: `Nee. Het is een eenmalige betaling van ${cvDownloadPrice.display} per CV. Geen automatische verlengingen en geen verborgen kosten.` },
-    { q: "Kan ik mijn CV later nog bewerken?", a: "Ja. Na betaling blijft dat CV in je account staan en kun je het later opnieuw openen, bewerken, van template of kleur wisselen en opnieuw downloaden zonder opnieuw te betalen." },
-    { q: "Wanneer betaal ik opnieuw?", a: "Alleen als je een nieuw CV als apart document aanmaakt. Voor een CV waarvoor je al hebt betaald, hoef je niet opnieuw te betalen om later nog een PDF te downloaden." },
-    { q: "Welke betaalmethoden accepteren jullie?", a: "De CV-download wordt afgerekend via Dodo Payments. Voor Nederlandse checkouts ondersteunen we onder meer iDEAL; daarnaast kunnen creditcard, debitcard, Apple Pay en Google Pay beschikbaar zijn. De precieze opties hangen af van land, apparaat en bank." },
+    {
+        question: "Wat kost WerkCV precies?",
+        answer: `Je bouwt en bekijkt je CV gratis. De eerste PDF-download van een afzonderlijk CV kost eenmalig ${cvDownloadPrice.display} inclusief btw. Er ontstaat geen abonnement en er wordt niets automatisch verlengd.`,
+    },
+    {
+        question: `Wat krijg ik voor ${cvDownloadPrice.display}?`,
+        answer: "Je krijgt de definitieve PDF van dat CV. Het betaalde CV blijft in je account staan, zodat je later de inhoud, het template en de kleur kunt aanpassen en hetzelfde document opnieuw kunt downloaden zonder opnieuw te betalen.",
+    },
+    {
+        question: "Kan ik eerst het volledige CV bekijken?",
+        answer: "Ja. Je kunt de inhoud, pagina-indeling, het template en de accentkleur in de volledige voorbeeldweergave controleren voordat je de betaalstap opent.",
+    },
+    {
+        question: "Wanneer betaal ik opnieuw?",
+        answer: "Je betaalt niet opnieuw voor latere wijzigingen en downloads van hetzelfde betaalde CV. Maak je een nieuw CV als afzonderlijk document en wil je daarvan een PDF downloaden, dan geldt daarvoor een nieuwe eenmalige betaling.",
+    },
+    {
+        question: "Welke betaalmethoden krijg ik te zien?",
+        answer: "De standaard CV-download wordt afgerekend via Dodo Payments. Voor daarvoor geschikte Nederlandse checkouts is iDEAL beschikbaar. Andere getoonde methoden kunnen verschillen per land, apparaat, bank en betaalprovider.",
+    },
+    {
+        question: "Is een eenmalige CV-download goedkoper dan een abonnement?",
+        answer: "Voor iemand die één CV nodig heeft en geen doorlopende carrièresuite zoekt, kan een eenmalige betaling goedkoper zijn dan een proefperiode die maandelijks verlengt. Vergelijk altijd de actuele PDF-prijs, verlengingsvoorwaarden en functies van iedere aanbieder.",
+    },
+    {
+        question: "Kan ik WerkCV volledig gratis gebruiken?",
+        answer: `Je kunt gratis bouwen en beoordelen, maar de definitieve WerkCV-PDF is niet gratis: die kost eenmalig ${cvDownloadPrice.display} inclusief btw per afzonderlijk CV. Wie een volledig gratis bestand nodig heeft, kan Word, Google Docs of Europass gebruiken en de opmaak zelf beheren.`,
+    },
 ] as const;
 
 // Keep this date in sync with the currently advertised price period.
@@ -108,6 +127,7 @@ const productJsonLd = {
 export default function PrijzenPage() {
     return (
         <div className="min-h-screen bg-[#FFFEF0]">
+            <FAQJsonLd questions={[...pricingFaqs]} />
             {/* Header */}
             <header className="relative z-10 border-b-4 border-black bg-white">
                 <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -163,7 +183,7 @@ export default function PrijzenPage() {
                 </div>
 
                 {/* Pricing Card */}
-                <div className="mx-auto mb-16 grid max-w-4xl gap-6 lg:grid-cols-[1.08fr_0.92fr]">
+                <div className="mx-auto mb-16 max-w-2xl">
                     <div className="bg-yellow-300 border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
                         <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 px-4 py-1 border-3 border-black font-black text-sm" style={{ borderWidth: '3px' }}>
                             MEEST GEKOZEN
@@ -171,6 +191,9 @@ export default function PrijzenPage() {
 
                         <div className="text-center pt-4">
                             <div className="text-5xl font-black text-black mb-2">{cvDownloadPrice.display}</div>
+                            <p className="mb-2 text-xs font-black uppercase tracking-[0.16em] text-gray-700">
+                                Inclusief btw
+                            </p>
                             <p className="text-lg font-bold text-gray-700 mb-2">Alleen je CV als PDF</p>
                             <p className="mb-6 text-sm font-bold text-gray-700">
                                 Dit is de standaardroute: gratis bouwen, pas betalen wanneer je jouw definitieve CV wilt downloaden.
@@ -211,49 +234,6 @@ export default function PrijzenPage() {
                         </div>
                     </div>
 
-                    <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
-                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-white px-4 py-1 border-3 border-black font-black text-sm" style={{ borderWidth: '3px' }}>
-                            PILOTTEST
-                        </div>
-
-                        <div className="text-center pt-4">
-                            <div className="text-5xl font-black text-black mb-2">{coverLetterPackagePrice.display}</div>
-                            <p className="text-lg font-bold text-gray-600 mb-2">CV + sollicitatiebrief</p>
-                            <p className="mb-6 text-sm font-bold text-gray-700">
-                                Dit is de volgende logische upsell die we willen testen voor mensen die na hun CV ook direct hun brief willen afronden.
-                            </p>
-
-                            <ul className="text-left space-y-3 mb-8">
-                                {[
-                                    'Alles van de CV-download',
-                                    'Sollicitatiebrief in dezelfde flow',
-                                    'Gericht op hogere orderwaarde zonder extra checkout-ruis',
-                                    'Nog geen standaard checkoutoptie voor iedereen',
-                                    'We testen eerst interesse en gebruik',
-                                    `Doelprijs: ${coverLetterPackagePrice.display}`,
-                                ].map((feature, i) => (
-                                    <li key={i} className="flex items-start gap-3">
-                                        <span className="bg-green-400 border-2 border-black w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                            </svg>
-                                        </span>
-                                        <span className="font-medium text-black">{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <a
-                                href="mailto:contact@werkcv.nl?subject=Interesse%20CV%20%2B%20sollicitatiebrief"
-                                className="block w-full bg-white text-black py-4 font-black text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
-                            >
-                                Vraag pilottoegang
-                            </a>
-                            <p className="mt-3 text-xs font-bold text-gray-700">
-                                We vervangen de AI-bundle niet door nóg een afleidende checkoutkeuze. Eerst testen we of dit pakket echt wordt gevraagd.
-                            </p>
-                        </div>
-                    </div>
                 </div>
 
                 <section className="mb-16 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
@@ -334,12 +314,12 @@ export default function PrijzenPage() {
                             <div className="w-12 h-12 bg-red-400 border-3 border-black flex items-center justify-center mb-4 rotate-2" style={{ borderWidth: '3px' }}>
                                 <span className="text-xl font-black">X</span>
                             </div>
-                            <h3 className="font-black text-black mb-2">Andere CV-sites</h3>
+                            <h3 className="font-black text-black mb-2">Abonnementsbuilders</h3>
                             <ul className="space-y-2 text-sm font-medium text-gray-700">
-                                <li>&bull; Abonnement van &euro;10-25 per maand</li>
-                                <li>&bull; Automatische verlenging</li>
-                                <li>&bull; Gratis proefperiode als lokmiddel</li>
-                                <li>&bull; Opzeggen is lastig</li>
+                                <li>&bull; Vaak een lage proefprijs</li>
+                                <li>&bull; Daarna mogelijk een maandbedrag</li>
+                                <li>&bull; Verlengingsvoorwaarden controleren</li>
+                                <li>&bull; Opzeggen kan nodig zijn</li>
                             </ul>
                         </div>
                         <div className="bg-yellow-400 border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
@@ -364,9 +344,9 @@ export default function PrijzenPage() {
                             <h3 className="font-black text-black mb-2">Zelf doen in Word</h3>
                             <ul className="space-y-2 text-sm font-medium text-gray-700">
                                 <li>&bull; Uren bezig met opmaak</li>
-                                <li>&bull; Niet ATS-geoptimaliseerd</li>
-                                <li>&bull; Moeilijk professioneel te krijgen</li>
-                                <li>&bull; Geen templates beschikbaar</li>
+                                <li>&bull; Zelf opmaak en paginering bewaken</li>
+                                <li>&bull; Volledige ontwerpcontrole</li>
+                                <li>&bull; Gratis templates zijn beschikbaar</li>
                             </ul>
                         </div>
                     </div>
@@ -437,14 +417,14 @@ export default function PrijzenPage() {
                 <div>
                     <h2 className="text-2xl font-black text-black text-center mb-8">Veelgestelde vragen over prijzen</h2>
                     <div className="space-y-4 max-w-2xl mx-auto">
-                        {pricingFaqs.map((faq, i) => (
-                            <details key={i} className="bg-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group">
+                        {pricingFaqs.map((faq) => (
+                            <details key={faq.question} className="bg-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group">
                                 <summary className="p-4 font-black text-black cursor-pointer flex items-center justify-between">
-                                    {faq.q}
+                                    {faq.question}
                                     <span className="text-xl ml-2 group-open:rotate-45 transition-transform">+</span>
                                 </summary>
                                 <div className="px-4 pb-4 font-medium text-gray-700 border-t-2 border-black pt-3">
-                                    {faq.a}
+                                    {faq.answer}
                                 </div>
                             </details>
                         ))}

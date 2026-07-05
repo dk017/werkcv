@@ -90,11 +90,11 @@ export const cvFouten: BlogArticle = {
         {
             id: 'ats-fouten',
             title: 'Fout 10-11: ATS-onleesbare opmaak',
-            answerCapsule: 'Tabellen, tekstvakken, iconen en grafische elementen worden door ATS-systemen niet gelezen. Een tweekoloms layout scoort 68% parse-nauwkeurigheid vs 97% voor een eenkoloms layout.',
+            answerCapsule: 'Tabellen, tekstvakken en grafische elementen kunnen bij sommige parsers de leesvolgorde verstoren. Een eenvoudige tekstflow verkleint dat risico.',
             content: [
-                'Een van de meest onzichtbare maar meest fatale fouten: een cv-document dat er visueel indrukwekkend uitziet maar door ATS-software niet kan worden gelezen. In Nederland gebruikt 75% van de organisaties met meer dan 50 medewerkers een ATS om sollicitaties te filteren (Jobscan 2024). Een cv dat ATS niet kan parsen, wordt afgewezen nog voor een menselijke recruiter het ooit heeft gezien.',
-                'ATS-systemen struikelen over: tabellen (inhoud wordt genegeerd of door elkaar gegoooid), tekstvakken en tekstframes (inhoud verdwijnt volledig), iconen en staafdiagrammen voor vaardigheidsniveaus (ATS leest dit als leeg), koptekst- of voettekstinformatie zoals contactgegevens (ATS parseert dit niet als profieldata), en meerkolomige layouts. Een tweekoloms cv scoort gemiddeld 68% parse-nauwkeurigheid; een eenkoloms cv 97% (Jobscan 2024).',
-                'De oplossing is simpel: gebruik een clean, eenkoloms cv-template zonder tekstvakken of tabellen. Bewaar alle informatie in de normale tekstflow. Gebruik eenvoudige opsommingstekens (bullet points) in plaats van iconen. Sla je cv op als PDF of DOCX — nooit als afbeelding (.jpg, .png). Test je cv bij Jobscan of Resume Worded om je ATS-score te controleren voor je solliciteert.',
+                'Een onzichtbare fout is een CV dat er visueel goed uitziet maar na import onvolledig of in een verkeerde volgorde wordt uitgelezen. Sommige werkgevers gebruiken sollicitatiesoftware om CV-gegevens over te nemen of doorzoekbaar te maken; de werking verschilt per systeem.',
+                'Mogelijke risicobronnen zijn tabellen, tekstvakken, iconen zonder tekstlabel, grafische vaardigheidsbalken, belangrijke contactgegevens in headers of footers en een onduidelijke meerkoloms leesvolgorde. Moderne systemen kunnen veel hiervan verwerken, maar dat kun je vooraf niet voor iedere werkgever garanderen.',
+                'Gebruik bij twijfel een rustige eenkoloms template, gewone tekst en eenvoudige opsommingstekens. Volg het bestandsformaat uit de vacature en lever geen afbeelding van een CV aan. Kopieer de tekst uit de uiteindelijke export om aanwezigheid en volgorde te controleren; beschouw een externe score alleen als diagnose, niet als garantie.',
             ],
             bullets: [
                 'Vermijden: tabellen — ATS gooit kolommen door elkaar of negeert de inhoud volledig',
@@ -188,7 +188,7 @@ export const cvFouten: BlogArticle = {
         },
         {
             question: 'Hoe controleer ik of mijn CV ATS-compatibel is?',
-            answer: 'Gebruik Jobscan, Resume Worded of Enhancv om je cv te analyseren. Upload je cv en de vacaturetekst — je krijgt direct je match-score en een overzicht van ontbrekende zoekwoorden en ATS-technische problemen. Streef naar 75% of hoger.',
+            answer: 'Je kunt een checker gebruiken om ontbrekende termen of technische problemen te vinden. Controleer daarnaast zelf de gekopieerde tekstvolgorde en volg de vacature-instructies. Behandel een match-score als hulpmiddel, niet als universele norm of voorspelling van een gesprek.',
         },
         {
             question: 'Hoe lang mag mijn CV zijn?',
