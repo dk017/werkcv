@@ -427,12 +427,12 @@ export default function HomePageClient() {
                         <LanguageSwitcher tone="solid" className="inline-flex" />
                         <NavUserMenu />
                         <Link
-                            href="/templates"
-                            onClick={() => trackHomepageTemplatesClick('header', 'CV Maken')}
+                            href="/editor?template=professional&startSource=home_header"
+                            onClick={() => track('cta_clicked', { location: 'header', label: 'Begin gratis' })}
                             className="bg-yellow-400 text-black px-4 py-2 font-black text-sm border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
                             style={{ borderWidth: '3px' }}
                         >
-                            CV Maken
+                            Begin gratis
                         </Link>
                     </div>
                 </div>
@@ -462,22 +462,22 @@ export default function HomePageClient() {
                                 CV voor Nederlandse vacatures
                             </h1>
                             <p className="text-lg md:text-xl font-medium text-gray-700 mb-8 max-w-xl mx-auto lg:mx-0">
-                                WerkCV.nl helpt je snel een professioneel CV op te bouwen met {templateCount}+ templates die rustig, recruiter-proof en ATS-vriendelijk blijven.{" "}
+                                WerkCV.nl helpt je snel een professioneel CV op te bouwen met {templateCount}+ templates die rustig, recruiter-proof en ATS-vriendelijk blijven. Maak je CV eerst af, bekijk de volledige preview en betaal pas als je de PDF echt wilt downloaden.{" "}
                                 <span className="bg-blue-200 px-1">
-                                    Start gratis, kies voor{" "}
+                                    Geen abonnement:{" "}
                                     <Link href="/cv-maken-zonder-abonnement" className="underline decoration-2 underline-offset-2">
                                         eenmalig betalen
                                     </Link>{" "}
-                                    van {cvDownloadPrice.display} per CV en download later opnieuw zonder abonnement.
+                                    van {cvDownloadPrice.display} per CV.
                                 </span>
                             </p>
                             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                                 <Link
-                                    href="/templates"
-                                    onClick={() => trackHomepageTemplatesClick('hero', 'Vergelijk templates')}
+                                    href="/editor?template=professional&startSource=home_hero_primary"
+                                    onClick={() => track('cta_clicked', { location: 'hero', label: 'Begin nu gratis' })}
                                     className="bg-yellow-400 text-black px-8 py-4 font-black text-lg border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
                                 >
-                                    Vergelijk templates
+                                    Begin nu gratis
                                 </Link>
                                 <button
                                     onClick={() => { track('cta_clicked', { location: 'hero', label: 'Upload bestaand CV' }); fileInputRef.current?.click(); }}
@@ -485,6 +485,17 @@ export default function HomePageClient() {
                                 >
                                     Upload bestaand CV
                                 </button>
+                            </div>
+                            <div className="mt-4 text-sm font-bold text-slate-700">
+                                Liever eerst kijken?{" "}
+                                <Link
+                                    href="/templates"
+                                    onClick={() => trackHomepageTemplatesClick('hero_secondary_text', 'Vergelijk templates')}
+                                    className="underline decoration-2 underline-offset-2 hover:text-black"
+                                >
+                                    Vergelijk templates
+                                </Link>
+                                .
                             </div>
                             <div className="mt-5 flex flex-wrap gap-3 justify-center lg:justify-start text-xs font-black uppercase tracking-[0.2em] text-black">
                                 <span className="px-3 py-1 border-2 border-black bg-white">Voor Nederlandse sollicitaties</span>

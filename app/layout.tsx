@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AnalyticsProvider from "@/components/AnalyticsProvider";
+import BuildVersionGuard from "@/components/BuildVersionGuard";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { SharedSiteJsonLd } from "@/components/seo/JsonLd";
 
@@ -105,6 +106,7 @@ export default function RootLayout({
       >
         <GoogleAnalytics />
         <AnalyticsProvider />
+        <BuildVersionGuard />
         {children}
       </body>
     </html>

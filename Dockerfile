@@ -20,6 +20,7 @@ RUN npx prisma generate
 FROM node:20-bookworm-slim AS builder
 
 WORKDIR /app
+ARG APP_BUILD_ID=local
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/prisma ./prisma
@@ -28,6 +29,7 @@ COPY . .
 # Don't download Chromium during build — we use system Chromium at runtime
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV NEXT_PUBLIC_APP_BUILD_ID=$APP_BUILD_ID
 
 # Dummy env vars needed so module-level singletons (Prisma Pool, OpenAI) don't
 # fail during Next.js static analysis. Real values come from .env at runtime.
@@ -42,6 +44,7 @@ RUN npm run build
 FROM node:20-bookworm-slim AS runner
 
 WORKDIR /app
+ARG APP_BUILD_ID=local
 
 # Install Chromium + system libs required by Puppeteer for PDF generation
 RUN apt-get update && apt-get install -y \
@@ -84,6 +87,8 @@ RUN npm install -g prisma
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+ENV APP_BUILD_ID=$APP_BUILD_ID
+ENV NEXT_PUBLIC_APP_BUILD_ID=$APP_BUILD_ID
 # Tell Puppeteer to use the system-installed Chromium
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium

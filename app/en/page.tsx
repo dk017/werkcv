@@ -4,6 +4,7 @@ import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import EnglishRoleExampleBand from "./components/EnglishRoleExampleBand";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import NavUserMenu from "@/components/NavUserMenu";
 import Footer from "@/components/Footer";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 
@@ -303,11 +304,33 @@ export default function EnglishHubPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
+      <header className="sticky top-0 z-20 border-b-4 border-black bg-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
+          <Link href="/en" className="font-black text-2xl tracking-tight text-black sm:text-3xl">
+            Werk<span className="bg-yellow-400 px-1">CV</span>.nl
+          </Link>
+          <nav className="hidden items-center gap-6 text-sm font-bold text-black md:flex">
+            <Link href="/en/templates" className="hover:text-yellow-600 transition-colors">Templates</Link>
+            <Link href="/en/guides" className="hover:text-yellow-600 transition-colors">Guides</Link>
+            <Link href="/en/dutch-cv-examples" className="hover:text-yellow-600 transition-colors">Examples</Link>
+            <Link href="/tools" className="hover:text-yellow-600 transition-colors">Tools</Link>
+          </nav>
+          <div className="flex items-center gap-2 sm:gap-4">
+            <LanguageSwitcher tone="solid" />
+            <NavUserMenu uiLanguage="en" />
+            <Link
+              href="/en/editor?template=professional&startSource=en_header"
+              className="bg-[#4ECDC4] text-black px-4 py-2 font-black text-sm border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
+              style={{ borderWidth: "3px" }}
+            >
+              Start free
+            </Link>
+          </div>
+        </div>
+      </header>
+
       <section className="border-b-4 border-black bg-white">
         <div className="max-w-5xl mx-auto px-6 py-14">
-          <div className="mb-6 flex justify-end">
-            <LanguageSwitcher tone="solid" />
-          </div>
           <span className="inline-block bg-[#4ECDC4] text-black text-sm font-bold px-3 py-1 mb-4 border-2 border-black">
             ENGLISH CV FOR THE NETHERLANDS
           </span>

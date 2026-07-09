@@ -6,6 +6,9 @@ import { createEditorDraft } from "@/lib/editor-drafts";
 import { cookies } from "next/headers";
 import { normalizeStartSource, PENDING_START_SOURCE_COOKIE, readEncodedStartSource } from "@/lib/start-source";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 function normalizeTemplateId(value: string | string[] | undefined): string | null {
     const template = Array.isArray(value) ? value[0] : value;
     return typeof template === "string" && template.length > 0 ? template : null;

@@ -26,6 +26,8 @@ services:
       - .env
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-werkcv}
+      APP_BUILD_ID: ${APP_BUILD_ID:-local}
+      NEXT_PUBLIC_APP_BUILD_ID: ${APP_BUILD_ID:-local}
       PROFILE_PHOTO_STORAGE_DIR: /app/storage/profile-photos
     volumes:
       - profile_photo_storage:/app/storage/profile-photos

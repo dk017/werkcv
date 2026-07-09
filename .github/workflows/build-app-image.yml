@@ -70,6 +70,8 @@ jobs:
             ${{ steps.meta.outputs.image }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            APP_BUILD_ID=${{ steps.meta.outputs.tag }}
 
   deploy:
     name: Deploy image to Hetzner
@@ -96,13 +98,14 @@ jobs:
         uses: appleboy/ssh-action@v1.2.0
         env:
           WERKCV_IMAGE: ${{ needs.build.outputs.image }}:${{ needs.build.outputs.tag }}
+          APP_BUILD_ID: ${{ needs.build.outputs.tag }}
           GHCR_USER: ${{ github.actor }}
           GHCR_TOKEN: ${{ secrets.GHCR_READ_TOKEN }}
         with:
           host: ${{ secrets.HETZNER_HOST }}
           username: ${{ secrets.HETZNER_USER }}
           key: ${{ secrets.HETZNER_SSH_KEY }}
-          envs: WERKCV_IMAGE,GHCR_USER,GHCR_TOKEN
+          envs: WERKCV_IMAGE,APP_BUILD_ID,GHCR_USER,GHCR_TOKEN
           script: |
             set -eu
             cd "${{ github.event.inputs.deploy_dir }}"

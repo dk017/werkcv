@@ -2,23 +2,40 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import type { UiLanguage } from '@/lib/ui-language';
 
 export default function NavUserMenu({ uiLanguage = 'nl' }: { uiLanguage?: UiLanguage }) {
     const router = useRouter();
+    const pathname = usePathname();
     const isEnglish = uiLanguage === 'en';
     const [email, setEmail] = useState<string | null>(null);
+    const [loaded, setLoaded] = useState(false);
     const [loggingOut, setLoggingOut] = useState(false);
 
     useEffect(() => {
         fetch('/api/auth/me')
             .then(r => r.ok ? r.json() : null)
             .then(data => { if (data?.authenticated) setEmail(data.user.email); })
-            .catch(() => {});
+            .catch(() => {})
+            .finally(() => setLoaded(true));
     }, []);
 
-    if (!email) return null;
+    if (!loaded) return null;
+
+    if (!email) {
+        const currentPath = pathname || (isEnglish ? '/en' : '/');
+        const loginNext = currentPath.startsWith('/en') ? '/en/editor' : '/editor';
+
+        return (
+            <Link
+                href={`/login?next=${encodeURIComponent(loginNext)}`}
+                className="font-bold text-sm text-black hover:text-yellow-600 transition-colors"
+            >
+                {isEnglish ? 'Log in' : 'Inloggen'}
+            </Link>
+        );
+    }
 
     const handleLogout = async () => {
         setLoggingOut(true);
