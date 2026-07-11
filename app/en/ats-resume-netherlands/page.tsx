@@ -254,7 +254,7 @@ export default function AtsResumeNetherlandsPage() {
             <Link href="/en/guides/netherlands-cv-keywords-ats" className="underline font-bold">
               ATS keyword guide
             </Link>
-            <Link href="/en/netherlands-cv-format" className="underline font-bold">
+            <Link href="/en/guides/cv-format-netherlands-english" className="underline font-bold">
               Netherlands CV format
             </Link>
             <Link href="/en/dutch-cv-template" className="underline font-bold">

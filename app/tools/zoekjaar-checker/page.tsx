@@ -33,7 +33,7 @@ const orientationCvIntentLinks = [
         description: "Start with a template that fits Dutch recruiters while you prepare orientation-year applications.",
     },
     {
-        href: "/en/netherlands-cv-format",
+        href: "/en/guides/cv-format-netherlands-english",
         label: "Review the Netherlands CV format",
         description: "Check the local structure before applying to employers during your search year.",
     },

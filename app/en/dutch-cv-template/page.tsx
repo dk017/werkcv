@@ -3,7 +3,7 @@ import EnglishRoleExampleBand from "../components/EnglishRoleExampleBand";
 import { buildEnglishMetadata } from "../metadata";
 
 export const metadata = buildEnglishMetadata({
-  title: "Dutch-Style CV in English for Jobs in the Netherlands",
+  title: "Dutch CV Template in English for the Netherlands",
   description:
     "Create a Dutch-style CV in English for jobs in the Netherlands. Use local section order, ATS-friendly templates, clear language levels, and one-time PDF download pricing.",
   path: "/en/dutch-cv-template",
@@ -66,7 +66,7 @@ const routeChoices = [
     body: "Best if you are applying in English and need to show Dutch level, location, and work context clearly.",
   },
   {
-    href: "/en/cv-format-netherlands-english",
+    href: "/en/guides/cv-format-netherlands-english",
     title: "CV format Netherlands English",
     body: "Best if you need the section order and first-half-page logic before choosing a layout.",
   },
@@ -81,7 +81,7 @@ const routeChoices = [
     body: "Best if your CV is nearly done and you need the matching English cover letter for Dutch-market applications.",
   },
   {
-    href: "/en/dutch-cv-for-expats",
+    href: "/en/expat-cv-netherlands",
     title: "Dutch CV for expats",
     body: "Best if your international background needs local framing for recruiters in the Netherlands.",
   },
@@ -184,7 +184,7 @@ export default function DutchCvTemplatePage() {
             English CV for the Dutch market
           </p>
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Dutch-Style CV in English for Jobs in the Netherlands
+            Dutch CV Template in English for Jobs in the Netherlands
           </h1>
           <p className="text-lg text-gray-700 max-w-3xl">
             Use this route if you are applying in English, but want your CV to match
@@ -308,13 +308,13 @@ export default function DutchCvTemplatePage() {
         <div className="bg-white border-4 border-black p-6">
           <h2 className="text-2xl font-black mb-3">Best next English routes</h2>
           <div className="flex flex-wrap gap-3">
-            <Link href="/en/netherlands-cv-format" className="underline font-bold">
+            <Link href="/en/guides/cv-format-netherlands-english" className="underline font-bold">
               Netherlands CV format
             </Link>
-            <Link href="/en/cv-format-netherlands-english" className="underline font-bold">
+            <Link href="/en/guides/cv-format-netherlands-english" className="underline font-bold">
               CV format Netherlands English
             </Link>
-            <Link href="/en/dutch-cv-for-expats" className="underline font-bold">
+            <Link href="/en/expat-cv-netherlands" className="underline font-bold">
               Dutch CV for expats
             </Link>
             <Link href="/en/english-cv-example-netherlands" className="underline font-bold">
@@ -326,7 +326,7 @@ export default function DutchCvTemplatePage() {
             <Link href="/en/linkedin-to-cv-netherlands" className="underline font-bold">
               Convert your LinkedIn profile into a Dutch CV
             </Link>
-            <Link href="/en/guides/dutch-cv-for-expats" className="underline font-bold">
+            <Link href="/en/expat-cv-netherlands" className="underline font-bold">
               Dutch CV for expats
             </Link>
             <Link href="/en/guides/netherlands-cv-keywords-ats" className="underline font-bold">

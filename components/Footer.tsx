@@ -83,7 +83,7 @@ const englishToolLinks = [
 const englishCvLinks = [
     { href: "/en", label: "Build a Netherlands CV" },
     { href: "/en/dutch-cv-template", label: "Dutch CV Template in English" },
-    { href: "/en/netherlands-cv-format", label: "Netherlands CV Format" },
+    { href: "/en/guides/cv-format-netherlands-english", label: "Netherlands CV Format" },
     { href: "/en/cv-netherlands-without-dutch-language", label: "CV Without Dutch" },
     { href: "/en/expat-cv-netherlands", label: "Expat CV Guide" },
 ];

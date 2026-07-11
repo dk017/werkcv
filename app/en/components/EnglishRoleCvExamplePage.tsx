@@ -15,9 +15,9 @@ type FAQ = {
   answer: string;
 };
 
-type EnglishRoleCvExamplePageProps = {
+export type EnglishRoleCvExamplePageProps = {
   roleSlug: string;
-  pagePath: string;
+  pagePath: `/en${string}`;
   eyebrow: string;
   h1: string;
   intro: string;

@@ -138,7 +138,7 @@ const sourceLinks = [
   },
   {
     label: "WerkCV - Netherlands CV format",
-    href: "/en/netherlands-cv-format",
+    href: "/en/guides/cv-format-netherlands-english",
     note:
       "Our practical guide to section order and Dutch-market CV structure in English.",
   },
@@ -305,7 +305,7 @@ export default function EuropassVsDutchCvNetherlandsPage() {
               Build my Netherlands CV
             </Link>
             <Link
-              href="/en/cv-format-netherlands-english"
+              href="/en/guides/cv-format-netherlands-english"
               className="border-4 border-black bg-white px-5 py-3 font-bold text-black"
             >
               Read the format guide

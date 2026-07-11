@@ -9,18 +9,19 @@ import Footer from "@/components/Footer";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 
 export const metadata = buildEnglishMetadata({
-  title: "Netherlands CV Format: Dutch CV Template in English",
+  title: "English CV Builder for Jobs in the Netherlands",
   description:
-    "Use a Dutch CV template in English for jobs in the Netherlands. Follow local format rules, ATS-safe structure, examples, and one-time PDF download.",
+    "Build an English CV for jobs in the Netherlands. Start free, use Dutch-market structure and ATS-safe templates, then pay €4.99 once to download the PDF.",
   path: "/en",
   nlPath: "/",
   keywords: [
-    "dutch cv in english",
+    "english cv builder netherlands",
+    "cv builder netherlands",
     "english cv netherlands",
-    "dutch cv guide in english",
-    "netherlands resume help",
-    "cv template netherlands",
-    "expat cv netherlands",
+    "create cv netherlands english",
+    "cv maker netherlands english",
+    "online cv maker netherlands",
+    "english resume builder netherlands",
   ],
 });
 
@@ -111,7 +112,7 @@ const pages = [
     description: "Use the updated format guide for section order, Europass context, ATS-safe layout and examples.",
   },
   {
-    href: "/en/dutch-cv-for-expats",
+    href: "/en/expat-cv-netherlands",
     title: "Dutch CV for Expats",
     description: "Localize international experience, language levels, and practical hiring signals.",
   },
@@ -121,7 +122,7 @@ const pages = [
     description: "See the tone, profile summary, and proof bullets before writing your own version.",
   },
   {
-    href: "/en/netherlands-cv-format",
+    href: "/en/guides/cv-format-netherlands-english",
     title: "Netherlands CV Format",
     description: "Understand layout, sections, and what Dutch recruiters expect.",
   },
@@ -190,6 +191,24 @@ const proofPoints = [
     title: "ATS-safe before decorative",
     description:
       "Use real text, clear headings and simple layout before adding visual elements that can make parsing harder.",
+  },
+];
+
+const howItWorks = [
+  {
+    step: "1",
+    title: "Build or upload",
+    description: "Start with an English template or upload your current PDF or Word CV to prefill the editor.",
+  },
+  {
+    step: "2",
+    title: "Review the complete CV",
+    description: "Edit the content, compare templates and check the full preview before deciding whether to pay.",
+  },
+  {
+    step: "3",
+    title: "Download for €4.99",
+    description: "Pay once when the PDF is ready. There is no subscription, trial renewal or monthly charge.",
   },
 ];
 
@@ -283,17 +302,47 @@ const sourceLinks = [
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "CollectionPage",
-  name: "Dutch CV in English for Jobs in the Netherlands",
-  description:
-    "English resources for building a Dutch-style CV for jobs in the Netherlands.",
-  url: "https://werkcv.nl/en",
-  inLanguage: "en-NL",
-  isPartOf: {
-    "@type": "WebSite",
-    name: "WerkCV.nl",
-    url: "https://werkcv.nl",
-  },
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://werkcv.nl/en#webpage",
+      name: "English CV Builder for Jobs in the Netherlands",
+      description:
+        "Build an English CV with Dutch-market structure and download the finished PDF for a one-time €4.99 payment.",
+      url: "https://werkcv.nl/en",
+      inLanguage: "en-NL",
+      isPartOf: {
+        "@type": "WebSite",
+        name: "WerkCV.nl",
+        url: "https://werkcv.nl",
+      },
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://werkcv.nl/en#cv-builder",
+      name: "WerkCV English CV Builder",
+      applicationCategory: "BusinessApplication",
+      operatingSystem: "Web",
+      browserRequirements: "Requires JavaScript and a modern web browser.",
+      url: "https://werkcv.nl/en/editor",
+      description:
+        "An English CV builder for job applications in the Netherlands with Dutch-market structure, ATS-safe templates and PDF export.",
+      offers: {
+        "@type": "Offer",
+        price: "4.99",
+        priceCurrency: "EUR",
+        description: "One-time payment for the finished CV PDF download; no subscription.",
+        availability: "https://schema.org/InStock",
+      },
+      featureList: [
+        "Build or upload an English CV",
+        "Dutch-market CV structure",
+        "ATS-safe templates",
+        "Full CV preview before payment",
+        "One-time PDF download payment",
+      ],
+    },
+  ],
 };
 
 export default function EnglishHubPage() {
@@ -345,7 +394,7 @@ export default function EnglishHubPage() {
             ))}
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Netherlands CV format and Dutch CV template in English
+            Build an English CV for jobs in the Netherlands
           </h1>
           <p className="text-lg md:text-xl text-gray-700 max-w-4xl leading-relaxed">
             Use WerkCV when you want English CV content with Dutch-market structure:
@@ -389,6 +438,29 @@ export default function EnglishHubPage() {
       </section>
 
       <section className="max-w-5xl mx-auto px-6 py-12">
+        <div className="mb-12 border-4 border-black bg-[#FFF7E8] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+          <div className="max-w-3xl">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-600">How WerkCV works</p>
+            <h2 className="mt-2 text-3xl font-black text-gray-900">
+              Create your English CV before you pay
+            </h2>
+            <p className="mt-3 text-lg leading-relaxed text-gray-700">
+              Build and review the complete CV first. Payment is only required when you choose to download the finished PDF.
+            </p>
+          </div>
+          <ol className="mt-6 grid gap-5 md:grid-cols-3">
+            {howItWorks.map((item) => (
+              <li key={item.step} className="border-3 border-black bg-white p-5">
+                <span className="inline-flex h-9 w-9 items-center justify-center border-2 border-black bg-[#4ECDC4] font-black text-black">
+                  {item.step}
+                </span>
+                <h3 className="mt-4 text-xl font-black text-gray-900">{item.title}</h3>
+                <p className="mt-2 leading-relaxed text-gray-700">{item.description}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+
         <div className="mb-12">
           <EnglishRoleExampleBand trackingLocation="english_hub_role_examples" />
         </div>

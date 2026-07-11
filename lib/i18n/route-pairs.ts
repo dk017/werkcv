@@ -93,17 +93,9 @@ export const routePairs = [
     preserveSearch: false,
   },
   {
-    id: "english-cv-format",
-    nl: "/cv-maken-in-engels",
-    en: "/en/cv-format-netherlands-english",
-    useForSwitcher: true,
-    useForHreflang: true,
-    preserveSearch: false,
-  },
-  {
     id: "expat-cv",
     nl: "/cv-tips/cv-schrijven-buitenlander-nederland",
-    en: "/en/dutch-cv-for-expats",
+    en: "/en/expat-cv-netherlands",
     useForSwitcher: true,
     useForHreflang: true,
     preserveSearch: false,

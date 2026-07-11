@@ -2589,7 +2589,25 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
         ],
     },
     'cv-for-international-students-netherlands': {
+        title: 'CV for International Students in the Netherlands: Examples and Format',
+        metaTitle: 'International Student CV Netherlands (2026) | Examples',
+        metaDesc: 'Build an English student CV for internships, part-time work and graduate jobs in the Netherlands. See project bullets, section order and one-page examples.',
+        keywords: [
+            'international student cv netherlands',
+            'student cv netherlands english',
+            'internship cv netherlands',
+            'graduate cv netherlands',
+            'english student cv example',
+        ],
         intro: 'International students in the Netherlands can compete well when CVs are focused on practical evidence: projects, internships, part-time work, and reliability. This guide is built for that transition.',
+        checklist: [
+            'Target role, city, graduation date and availability are visible near the top.',
+            'Education includes only relevant modules, projects or thesis context.',
+            'Projects and internships use action, scope, tools and outcome bullets.',
+            'Part-time work proves transferable skills instead of being dismissed as unrelated.',
+            'English and Dutch language levels are explicit and honest.',
+            'The final CV fits one focused page unless relevant experience clearly justifies a second.',
+        ],
         sectionOverrides: {
             wording: {
                 paragraphs: [
@@ -2600,6 +2618,12 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                     'Translate coursework into practical skills only when directly relevant to the job.',
                     'Use part-time work to prove reliability, teamwork, and customer-facing discipline.',
                     'Highlight tools and methods you can demonstrate in interview tasks.',
+                ],
+                exampleTitle: 'Student evidence rewritten as CV bullets',
+                exampleItems: [
+                    'University project: Analysed 45,000 customer records in Python and presented three churn drivers to a five-person project team; recommendation received an 8.2/10 assessment.',
+                    'Internship: Built a Power BI dashboard for weekly campaign reporting, replacing four hours of manual Excel work for the marketing coordinator.',
+                    'Part-time work: Trained six new restaurant colleagues on order and closing procedures while maintaining service quality during weekend peaks.',
                 ],
                 intentLinks: [
                     {
@@ -2615,6 +2639,10 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                 ],
             },
             'special-case': {
+                paragraphs: [
+                    'For internships and graduate roles, employers need practical signals quickly: when you can start, what you can already do, and whether your study projects map to the vacancy.',
+                    'Non-EU students should keep permit explanations brief on the CV and confirm current work conditions through official sources rather than guessing or adding document numbers.',
+                ],
                 bullets: [
                     'Add graduation date and availability clearly in the header section.',
                     'Keep one strong page; avoid overloading with unrelated academic detail.',
@@ -2862,7 +2890,7 @@ function getDutchRelatedLinks(seed: DutchSeed): SeoGuidePage['relatedLinks'] {
 function getEnglishRelatedLinks(seed: EnglishSeed): SeoGuidePage['relatedLinks'] {
     const defaultLinks: SeoGuidePage['relatedLinks'] = [
         {
-            href: '/en/guides/dutch-cv-for-expats',
+            href: '/en/expat-cv-netherlands',
             title: 'Dutch CV for expats',
             description: 'Core structure and positioning principles for international candidates.',
         },
@@ -2898,7 +2926,7 @@ function getEnglishRelatedLinks(seed: EnglishSeed): SeoGuidePage['relatedLinks']
         ],
         'netherlands-cv-photo-rules': [
             {
-                href: '/en/guides/dutch-cv-for-expats',
+                href: '/en/expat-cv-netherlands',
                 title: 'Dutch CV for expats',
                 description: 'Use a content-first Dutch structure before worrying about optional photo choices.',
             },
@@ -2915,7 +2943,7 @@ function getEnglishRelatedLinks(seed: EnglishSeed): SeoGuidePage['relatedLinks']
         ],
         'cv-format-netherlands-english': [
             {
-                href: '/en/guides/dutch-cv-for-expats',
+                href: '/en/expat-cv-netherlands',
                 title: 'Dutch CV for expats',
                 description: 'Start with the broader expat positioning logic behind the structure.',
             },
@@ -2932,7 +2960,7 @@ function getEnglishRelatedLinks(seed: EnglishSeed): SeoGuidePage['relatedLinks']
         ],
         'netherlands-cv-without-dutch-language': [
             {
-                href: '/en/guides/dutch-cv-for-expats',
+                href: '/en/expat-cv-netherlands',
                 title: 'Dutch CV for expats',
                 description: 'Use the broader expat playbook for positioning, structure, and local role fit.',
             },
@@ -2971,7 +2999,7 @@ function getEnglishRelatedLinks(seed: EnglishSeed): SeoGuidePage['relatedLinks']
                 description: 'Keep CV structure and letter tone aligned for better interview conversion.',
             },
             {
-                href: '/en/guides/dutch-cv-for-expats',
+                href: '/en/expat-cv-netherlands',
                 title: 'Dutch CV for expats',
                 description: 'Match your letter to the wider Dutch-market positioning of your CV.',
             },
@@ -2983,7 +3011,7 @@ function getEnglishRelatedLinks(seed: EnglishSeed): SeoGuidePage['relatedLinks']
         ],
         'cv-for-international-students-netherlands': [
             {
-                href: '/en/guides/dutch-cv-for-expats',
+                href: '/en/expat-cv-netherlands',
                 title: 'Dutch CV for expats',
                 description: 'Use the broader Dutch-market logic behind English CVs for internationals.',
             },

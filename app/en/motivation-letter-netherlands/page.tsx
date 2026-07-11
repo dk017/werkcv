@@ -7,7 +7,7 @@ import { FaqCardSection, FinalCtaSection, LinkCardSection, WhyWerkCvSection, typ
 import SollicitatiebriefTool from "@/app/tools/sollicitatiebrief-generator/SollicitatiebriefTool";
 import { buildEnglishMetadata } from "../metadata";
 
-const checkedDate = "June 7, 2026";
+const checkedDate = "July 11, 2026";
 
 const faqItems: OptimizerFaqItem[] = [
   {
@@ -92,6 +92,11 @@ const commonMistakes = [
 ];
 
 const sourceLinks = [
+  {
+    href: "https://student.uva.nl/en/information/writing-a-cover-letter",
+    title: "University of Amsterdam: Writing a cover letter",
+    body: "Current June 2026 guidance says the letter should supplement rather than repeat the CV, stay concise, and connect your qualities to the employer's needs.",
+  },
   {
     href: "https://www.workinnl.nl/en/employment/cv-en/default.aspx",
     title: "Work in NL: CV and covering letter",
@@ -258,6 +263,31 @@ export default function MotivationLetterNetherlandsPage() {
               ))}
             </ul>
           </article>
+        </section>
+
+        <section className="mb-12 border-4 border-black bg-[#FFF7E8] p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+            Short example
+          </p>
+          <h2 className="mt-2 text-3xl font-black text-black">
+            English motivation letter example for a job in the Netherlands
+          </h2>
+          <div className="mt-5 max-w-4xl space-y-4 border-2 border-black bg-white p-5 text-sm font-medium leading-relaxed text-slate-700">
+            <p>Dear Ms de Vries,</p>
+            <p>
+              I am applying for the Business Analyst position at Northline. My five years of experience translating operational problems into requirements, process improvements and tested system changes closely match the role described in your vacancy.
+            </p>
+            <p>
+              At Brabant Technology, I mapped an order-to-service process across six teams and helped redesign the workflow, reducing manual handoffs by 28%. I also coordinated user acceptance testing with 35 business users and converted findings into clear priorities for the product and engineering teams.
+            </p>
+            <p>
+              Northline&apos;s focus on practical digital improvement appeals to me because it combines stakeholder work with measurable operational results. I would welcome the opportunity to discuss how this experience could support your transformation programme.
+            </p>
+            <p>Kind regards,<br />Sofia Costa</p>
+          </div>
+          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-slate-700">
+            Why it works: it names the role, gives one defensible example, explains employer-specific motivation, and adds context instead of repeating the complete CV.
+          </p>
         </section>
 
         <section id="generator" className="mb-12">

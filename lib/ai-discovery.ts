@@ -82,7 +82,7 @@ export const primaryAiPages = [
   },
   {
     title: "Dutch CV for expats",
-    url: `${siteBaseUrl}/en/guides/dutch-cv-for-expats`,
+    url: `${siteBaseUrl}/en/expat-cv-netherlands`,
     description:
       "Guide to localizing international experience for Dutch recruiter expectations.",
   },

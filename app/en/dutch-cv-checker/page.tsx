@@ -49,7 +49,7 @@ const routeLinks: OptimizerLinkCard[] = [
     body: "Best next step when the content is okay but the final layout and section order still need a Dutch-style format.",
   },
   {
-    href: "/en/netherlands-cv-format",
+    href: "/en/guides/cv-format-netherlands-english",
     title: "Netherlands CV format",
     body: "Use this if you need the structural rules behind the checker: page length, section order, language choice and summary style.",
   },

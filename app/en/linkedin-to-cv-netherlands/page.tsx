@@ -154,7 +154,7 @@ const internalRoutes = [
       "Best if you need a clear template before rewriting LinkedIn content.",
   },
   {
-    href: "/en/cv-format-netherlands-english",
+    href: "/en/guides/cv-format-netherlands-english",
     title: "Read the format guide",
     body:
       "Best if you are not sure which sections Dutch recruiters expect first.",

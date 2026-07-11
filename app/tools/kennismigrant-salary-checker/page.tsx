@@ -33,7 +33,7 @@ const migrationCvIntentLinks = [
         description: "Move from salary eligibility to a CV that matches Dutch hiring expectations.",
     },
     {
-        href: "/en/netherlands-cv-format",
+        href: "/en/guides/cv-format-netherlands-english",
         label: "Check the Netherlands CV format",
         description: "See what Dutch recruiters expect before you start applying.",
     },

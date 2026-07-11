@@ -48,7 +48,7 @@ const routeLinks: OptimizerLinkCard[] = [
     body: "Helpful if you already know the content issues and now want a clean Dutch-style layout.",
   },
   {
-    href: "/en/netherlands-cv-format",
+    href: "/en/guides/cv-format-netherlands-english",
     title: "Netherlands CV format",
     body: "Good next step when you want to understand what Dutch recruiters expect structurally.",
   },
@@ -201,7 +201,7 @@ export default function ResumeOptimizerNetherlandsPage() {
             </p>
             <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
               Use the{" "}
-              <Link href="/en/netherlands-cv-format" className="font-black underline">
+              <Link href="/en/guides/cv-format-netherlands-english" className="font-black underline">
                 Netherlands CV format
               </Link>
               {" "}guide and the{" "}

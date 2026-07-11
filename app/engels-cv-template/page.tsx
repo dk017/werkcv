@@ -304,7 +304,7 @@ export default function EngelsCvTemplatePage() {
                   body: "Start gratis en vergelijk meerdere stijlen voordat je een definitieve keuze maakt.",
                 },
                 {
-                  href: "/en/guides/dutch-cv-for-expats",
+                  href: "/en/expat-cv-netherlands",
                   title: "Dutch CV for expats",
                   body: "Engelse gids met context voor internationale kandidaten in Nederland.",
                 },

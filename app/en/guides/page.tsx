@@ -24,7 +24,7 @@ export default function EnglishGuidesHubPage() {
             description: 'Use the main decision page for CV language, work route wording, Dutch level, and personal details.',
         },
         {
-            href: '/en/guides/dutch-cv-for-expats',
+            href: '/en/expat-cv-netherlands',
             title: 'Need the big picture first?',
             description: 'Start with the expat overview if you want the Dutch recruiter logic behind English CVs.',
         },

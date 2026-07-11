@@ -12,6 +12,26 @@ const roleExamples = [
     body: "Pipelines, data quality, cloud platforms, and business impact.",
   },
   {
+    href: "/en/english-cv-example-data-analyst-netherlands",
+    label: "Data Analyst",
+    body: "SQL, BI dashboards, data quality, stakeholder reporting, and decisions.",
+  },
+  {
+    href: "/en/english-cv-example-project-manager-netherlands",
+    label: "Project Manager",
+    body: "Budgets, risks, teams, governance, delivery scope, and outcomes.",
+  },
+  {
+    href: "/en/english-cv-example-business-analyst-netherlands",
+    label: "Business Analyst",
+    body: "Requirements, process models, Jira, UAT, and measurable change.",
+  },
+  {
+    href: "/en/english-cv-example-product-manager-netherlands",
+    label: "Product Manager",
+    body: "Discovery, roadmap decisions, delivery, launch, and product metrics.",
+  },
+  {
     href: "/en/english-cv-example-customer-support-netherlands",
     label: "Customer Support",
     body: "CRM, tickets, service quality, escalations, and language levels.",

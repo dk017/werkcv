@@ -107,13 +107,13 @@ export default function CvOrResumeNetherlandsPage() {
         <div className="bg-white border-4 border-black p-6">
           <h2 className="text-2xl font-black mb-3">Useful English next steps</h2>
           <div className="flex flex-wrap gap-3">
-            <Link href="/en/netherlands-cv-format" className="underline font-bold">
+            <Link href="/en/guides/cv-format-netherlands-english" className="underline font-bold">
               Netherlands CV format
             </Link>
             <Link href="/en/dutch-cv-examples" className="underline font-bold">
               Dutch CV examples in English
             </Link>
-            <Link href="/en/guides/dutch-cv-for-expats" className="underline font-bold">
+            <Link href="/en/expat-cv-netherlands" className="underline font-bold">
               Dutch CV for expats
             </Link>
           </div>

@@ -7,6 +7,27 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      // Consolidate overlapping English CV intent onto one owner per cluster.
+      {
+        source: '/en/netherlands-cv-format',
+        destination: '/en/guides/cv-format-netherlands-english',
+        permanent: true,
+      },
+      {
+        source: '/en/cv-format-netherlands-english',
+        destination: '/en/guides/cv-format-netherlands-english',
+        permanent: true,
+      },
+      {
+        source: '/en/dutch-cv-for-expats',
+        destination: '/en/expat-cv-netherlands',
+        permanent: true,
+      },
+      {
+        source: '/en/guides/dutch-cv-for-expats',
+        destination: '/en/expat-cv-netherlands',
+        permanent: true,
+      },
       {
         source: '/cv.nl-opzeggen',
         destination: '/cv-nl-opzeggen',

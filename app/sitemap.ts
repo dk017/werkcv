@@ -677,6 +677,30 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.77,
         },
         {
+            url: `${baseUrl}/en/english-cv-example-data-analyst-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.77,
+        },
+        {
+            url: `${baseUrl}/en/english-cv-example-project-manager-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.77,
+        },
+        {
+            url: `${baseUrl}/en/english-cv-example-business-analyst-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.77,
+        },
+        {
+            url: `${baseUrl}/en/english-cv-example-product-manager-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.77,
+        },
+        {
             url: `${baseUrl}/en/english-cv-example-customer-support-netherlands`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
@@ -743,28 +767,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.75,
         },
         {
-            url: `${baseUrl}/en/cv-format-netherlands-english`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.74,
-        },
-        {
-            url: `${baseUrl}/en/dutch-cv-for-expats`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.74,
-        },
-        {
             url: `${baseUrl}/en/english-cv-example-netherlands`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.74,
-        },
-        {
-            url: `${baseUrl}/en/netherlands-cv-format`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.75,
         },
         {
             url: `${baseUrl}/en/dutch-cv-checker`,
@@ -1169,7 +1175,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.74,
     })));
 
-    const englishWave = getEnglishWavePages();
+    const englishWave = getEnglishWavePages().filter(
+        (page) => page.slug !== 'dutch-cv-for-expats',
+    );
     const englishWavePages: MetadataRoute.Sitemap = await Promise.all(englishWave.map(async (page) => ({
         url: `${baseUrl}/en/guides/${page.slug}`,
         lastModified: await getSeoWaveLastModified(page.slug, 'en'),

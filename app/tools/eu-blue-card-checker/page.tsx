@@ -33,7 +33,7 @@ const blueCardCvIntentLinks = [
     description: "Move from route comparison to a template that fits Dutch recruiter expectations.",
   },
   {
-    href: "/en/netherlands-cv-format",
+    href: "/en/guides/cv-format-netherlands-english",
     label: "Review the Netherlands CV format",
     description: "Check the local structure before you send applications under the Blue Card route.",
   },
