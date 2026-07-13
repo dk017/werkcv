@@ -412,7 +412,7 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
             subtitle="Every new signup in this range, with the exact stage where they stopped."
           />
           <SimpleTable
-            headers={["Email", "Signup", "Source", "Landing page", "Locale", "CVs", "Modal", "Checkout", "Paid", "Stopped at"]}
+            headers={["Email", "Signup", "Source", "Landing page", "Locale", "CVs", "Ready", "Download", "Checkout", "Paid", "Stopped at"]}
             rows={data.recentSignups.map((row) => [
               row.email,
               dateTime(row.signupAt),
@@ -420,12 +420,13 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
               row.landingPage,
               row.locale,
               number(row.cvCount),
-              number(row.checkoutModalViews),
-              number(row.checkoutClicks),
+              number(row.readyViews),
+              number(row.downloadClicks),
+              number(row.checkoutStarts),
               number(row.paidOrders),
               row.stoppedAt,
             ])}
-            alignRight={[5, 6, 7, 8]}
+            alignRight={[5, 6, 7, 8, 9]}
           />
         </section>
 

@@ -161,6 +161,9 @@ export type RecentSignupRow = {
   landingPage: string;
   locale: string;
   cvCount: number;
+  readyViews: number;
+  downloadClicks: number;
+  checkoutStarts: number;
   checkoutModalViews: number;
   checkoutClicks: number;
   paidOrders: number;
@@ -551,7 +554,10 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
       user_cv AS (
         SELECT
           u.id AS "userId",
-          COUNT(cv.id)::int AS "cvCount",
+          COUNT(DISTINCT cv.id)::int AS "cvCount",
+          BOOL_OR(e.event = 'ready_to_download_viewed') AS "readyViewed",
+          BOOL_OR(e.event IN ('pdf_download_started', 'full_preview_download_clicked')) AS "downloadClicked",
+          BOOL_OR(e.event IN ('checkout_start', 'checkout_started', 'checkout_option_clicked')) AS "checkoutStarted",
           COUNT(e.id) FILTER (WHERE e.event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
           COUNT(e.id) FILTER (WHERE e.event = 'checkout_option_clicked')::int AS "checkoutClicks",
           COUNT(o.id) FILTER (WHERE o."paidAt" IS NOT NULL)::int AS "paidOrders"
@@ -559,7 +565,16 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
         LEFT JOIN "CVDocument" cv ON cv."userId" = u.id
         LEFT JOIN "AnalyticsEvent" e ON e."cvId" = cv.id
           AND e."createdAt" >= ${since}
-          AND e.event IN ('checkout_modal_viewed', 'checkout_option_clicked')
+          AND e.event IN (
+            'ready_to_download_viewed',
+            'pdf_download_started',
+            'full_preview_download_clicked',
+            'checkout_paywall_reached',
+            'checkout_modal_viewed',
+            'checkout_start',
+            'checkout_started',
+            'checkout_option_clicked'
+          )
         LEFT JOIN "Order" o ON o."cvId" = cv.id
           AND o."paidAt" IS NOT NULL
           AND o."paidAt" >= ${since}
@@ -570,19 +585,24 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
         'Signed up but did not create a CV' AS description
       FROM user_cv
       UNION ALL
-      SELECT 'CV created, no checkout',
-        COUNT(*) FILTER (WHERE "cvCount" > 0 AND "checkoutModalViews" = 0 AND "paidOrders" = 0)::int,
-        'Created a CV but never opened the checkout modal'
+      SELECT 'Started CV, incomplete',
+        COUNT(*) FILTER (WHERE "cvCount" > 0 AND NOT COALESCE("readyViewed", false) AND "paidOrders" = 0)::int,
+        'Created a CV but did not reach the ready-to-download state'
       FROM user_cv
       UNION ALL
-      SELECT 'Checkout modal, no option',
-        COUNT(*) FILTER (WHERE "checkoutModalViews" > 0 AND "checkoutClicks" = 0 AND "paidOrders" = 0)::int,
-        'Saw checkout but did not choose a payment option'
+      SELECT 'Complete, no download',
+        COUNT(*) FILTER (WHERE COALESCE("readyViewed", false) AND NOT COALESCE("downloadClicked", false) AND "paidOrders" = 0)::int,
+        'Reached ready-to-download but did not click download'
       FROM user_cv
       UNION ALL
-      SELECT 'Checkout click, no paid',
-        COUNT(*) FILTER (WHERE "checkoutClicks" > 0 AND "paidOrders" = 0)::int,
-        'Clicked a checkout option but no paid order was recorded'
+      SELECT 'Download clicked, no checkout',
+        COUNT(*) FILTER (WHERE COALESCE("downloadClicked", false) AND NOT COALESCE("checkoutStarted", false) AND "paidOrders" = 0)::int,
+        'Clicked download but did not start checkout'
+      FROM user_cv
+      UNION ALL
+      SELECT 'Checkout started, unpaid',
+        COUNT(*) FILTER (WHERE COALESCE("checkoutStarted", false) AND "paidOrders" = 0)::int,
+        'Started checkout but no paid order was recorded'
       FROM user_cv
       UNION ALL
       SELECT 'Paid',
@@ -615,12 +635,24 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
       event_base AS (
         SELECT
           cv."userId",
+          COUNT(*) FILTER (WHERE e.event = 'ready_to_download_viewed')::int AS "readyViews",
+          COUNT(*) FILTER (WHERE e.event IN ('pdf_download_started', 'full_preview_download_clicked'))::int AS "downloadClicks",
+          COUNT(*) FILTER (WHERE e.event IN ('checkout_start', 'checkout_started', 'checkout_option_clicked'))::int AS "checkoutStarts",
           COUNT(*) FILTER (WHERE e.event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
           COUNT(*) FILTER (WHERE e.event = 'checkout_option_clicked')::int AS "checkoutClicks"
         FROM cv_base cv
         JOIN "AnalyticsEvent" e ON e."cvId" = cv.id
         WHERE e."createdAt" >= ${since}
-          AND e.event IN ('checkout_modal_viewed', 'checkout_option_clicked')
+          AND e.event IN (
+            'ready_to_download_viewed',
+            'pdf_download_started',
+            'full_preview_download_clicked',
+            'checkout_paywall_reached',
+            'checkout_modal_viewed',
+            'checkout_start',
+            'checkout_started',
+            'checkout_option_clicked'
+          )
         GROUP BY cv."userId"
       ),
       order_base AS (
@@ -676,12 +708,24 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
       event_base AS (
         SELECT
           cv."userId",
+          COUNT(*) FILTER (WHERE e.event = 'ready_to_download_viewed')::int AS "readyViews",
+          COUNT(*) FILTER (WHERE e.event IN ('pdf_download_started', 'full_preview_download_clicked'))::int AS "downloadClicks",
+          COUNT(*) FILTER (WHERE e.event IN ('checkout_start', 'checkout_started', 'checkout_option_clicked'))::int AS "checkoutStarts",
           COUNT(*) FILTER (WHERE e.event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
           COUNT(*) FILTER (WHERE e.event = 'checkout_option_clicked')::int AS "checkoutClicks"
         FROM cv_base cv
         JOIN "AnalyticsEvent" e ON e."cvId" = cv.id
         WHERE e."createdAt" >= ${since}
-          AND e.event IN ('checkout_modal_viewed', 'checkout_option_clicked')
+          AND e.event IN (
+            'ready_to_download_viewed',
+            'pdf_download_started',
+            'full_preview_download_clicked',
+            'checkout_paywall_reached',
+            'checkout_modal_viewed',
+            'checkout_start',
+            'checkout_started',
+            'checkout_option_clicked'
+          )
         GROUP BY cv."userId"
       ),
       order_base AS (
@@ -701,14 +745,18 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
         ru."landingPage",
         ru.locale,
         COUNT(cv.id)::int AS "cvCount",
+        COALESCE(MAX(eb."readyViews"), 0)::int AS "readyViews",
+        COALESCE(MAX(eb."downloadClicks"), 0)::int AS "downloadClicks",
+        COALESCE(MAX(eb."checkoutStarts"), 0)::int AS "checkoutStarts",
         COALESCE(MAX(eb."checkoutModalViews"), 0)::int AS "checkoutModalViews",
         COALESCE(MAX(eb."checkoutClicks"), 0)::int AS "checkoutClicks",
         COALESCE(MAX(ob."paidOrders"), 0)::int AS "paidOrders",
         CASE
           WHEN COALESCE(MAX(ob."paidOrders"), 0) > 0 THEN 'Paid'
-          WHEN COALESCE(MAX(eb."checkoutClicks"), 0) > 0 THEN 'Clicked checkout, no paid order'
-          WHEN COALESCE(MAX(eb."checkoutModalViews"), 0) > 0 THEN 'Saw checkout, no payment option'
-          WHEN COUNT(cv.id) > 0 THEN 'Created CV, no checkout'
+          WHEN COALESCE(MAX(eb."checkoutStarts"), 0) > 0 THEN 'Checkout started, unpaid'
+          WHEN COALESCE(MAX(eb."downloadClicks"), 0) > 0 THEN 'Download clicked, no checkout'
+          WHEN COALESCE(MAX(eb."readyViews"), 0) > 0 THEN 'Complete, no download click'
+          WHEN COUNT(cv.id) > 0 THEN 'Started CV, incomplete'
           ELSE 'Signup only'
         END AS "stoppedAt"
       FROM recent_users ru

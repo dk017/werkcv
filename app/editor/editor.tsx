@@ -321,6 +321,9 @@ export default function Editor({
     const [showOnboarding, setShowOnboarding] = useState(false);
     const [showTemplateHint, setShowTemplateHint] = useState(false);
     const [isTemplateSelectorOpen, setIsTemplateSelectorOpen] = useState(false);
+    const [templateSelectorSource, setTemplateSelectorSource] = useState<TemplateSelectorSource>("toolbar");
+    const [showPostUploadReview, setShowPostUploadReview] = useState(false);
+    const [showMobilePhoto, setShowMobilePhoto] = useState(() => Boolean(normalizedInitialData.personal.photo));
     const [suggestedTargetRole, setSuggestedTargetRole] = useState<string | null>(null);
     const [visibleOptionalSections, setVisibleOptionalSections] = useState<Record<OptionalSectionId, boolean>>(
         () => deriveVisibleOptionalSections(normalizedInitialData)
@@ -722,7 +725,14 @@ export default function Editor({
     }, [isSaved]);
 
     const handleTemplateChange = async (newTemplateId: string, defaultThemeId: string) => {
-        track('template_selected', { cvId: id, templateId: newTemplateId, previousId: templateId });
+        track('template_selected', {
+            cvId: id,
+            templateId: newTemplateId,
+            previousId: templateId,
+            source: templateSelectorSource,
+            completionScore,
+            isReady: isReadyToDownload,
+        });
         setTemplateId(newTemplateId);
         setColorThemeId(defaultThemeId);
         await updateCVTemplate(id, newTemplateId);
@@ -739,7 +749,20 @@ export default function Editor({
             uiLanguage,
             ...getEditorSearchContext(),
         });
+        setTemplateSelectorSource(source);
         setIsTemplateSelectorOpen(true);
+    };
+
+    const closeTemplateSelector = (reason: "dismissed" | "selected") => {
+        track('template_selector_closed', {
+            cvId: id,
+            source: templateSelectorSource,
+            reason,
+            completionScore,
+            isReady: isReadyToDownload,
+            templateId,
+        });
+        setIsTemplateSelectorOpen(false);
     };
 
     const handleColorThemeChange = async (newThemeId: string) => {
@@ -762,6 +785,7 @@ export default function Editor({
         setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
         setShowUploader(false);
         setIsSaved(false);
+        setShowPostUploadReview(getCompletionState(normalizedData, uiLanguage).isReady);
         track('cv_uploaded', { cvId: id, fileType: 'parsed', templateId, entryMethod: 'upload' });
     };
 
@@ -959,7 +983,7 @@ export default function Editor({
                                 isOpen={isTemplateSelectorOpen}
                                 reviewMode={isReadyToDownload}
                                 onOpen={() => openTemplateSelector(isReadyToDownload ? "ready_state" : "toolbar")}
-                                onClose={() => setIsTemplateSelectorOpen(false)}
+                                onClose={closeTemplateSelector}
                                 onSelectTemplate={handleTemplateChange}
                                 uiLanguage={uiLanguage}
                             />
@@ -1130,7 +1154,39 @@ export default function Editor({
                             </section>
                         ) : null}
 
-                        {isReadyToDownload ? (
+                        {isReadyToDownload && showPostUploadReview ? (
+                            <section className="rounded-2xl border-2 border-blue-300 bg-blue-50 p-4 shadow-sm sm:p-5">
+                                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                                    <div>
+                                        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-blue-700">
+                                            {tr("Upload geslaagd", "Upload complete")}
+                                        </p>
+                                        <h2 className="mt-1 text-lg font-semibold text-slate-950">
+                                            {tr("Controleer eerst je volledige CV", "Review your complete CV first")}
+                                        </h2>
+                                        <p className="mt-1 text-sm font-medium text-slate-600">
+                                            {tr(
+                                                "Je gegevens zijn ingevuld. Controleer de opmaak en inhoud; daarna kun je de PDF downloaden.",
+                                                "Your details are filled in. Review the layout and content, then download the PDF when you are satisfied."
+                                            )}
+                                        </p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            track("cta_clicked", { location: "editor_upload_success", label: "review_cv" });
+                                            setShowPostUploadReview(false);
+                                            setFullPreviewSource("upload_success");
+                                        }}
+                                        className="inline-flex shrink-0 items-center justify-center rounded-md border border-blue-800 bg-blue-700 px-5 py-3 text-sm font-black text-white transition-colors hover:bg-blue-800"
+                                    >
+                                        {tr("CV controleren →", "Review CV →")}
+                                    </button>
+                                </div>
+                            </section>
+                        ) : null}
+
+                        {isReadyToDownload && !showPostUploadReview ? (
                             <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm sm:p-5">
                                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                     <div>
@@ -1214,7 +1270,24 @@ export default function Editor({
                             </div>
 
                             <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4">
-                                <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                                {!data.personal.photo ? (
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setShowMobilePhoto((visible) => !visible);
+                                            track("cta_clicked", { location: "editor_mobile_optional_photo", label: showMobilePhoto ? "hide_photo" : "add_photo_later" });
+                                        }}
+                                        className="flex w-full items-center justify-between text-left sm:hidden"
+                                        aria-expanded={showMobilePhoto}
+                                    >
+                                        <span>
+                                            <span className="block text-sm font-semibold text-slate-900">{tr("Profielfoto", "Profile photo")}</span>
+                                            <span className="mt-1 block text-xs text-slate-600">{tr("Optioneel — je kunt dit later toevoegen", "Optional — you can add this later")}</span>
+                                        </span>
+                                        <span className="text-sm font-bold text-slate-500">{showMobilePhoto ? "−" : "+"}</span>
+                                    </button>
+                                ) : null}
+                                <div className={`${showMobilePhoto || data.personal.photo ? "flex" : "hidden"} flex-col gap-4 pt-4 sm:flex sm:flex-row sm:items-start sm:pt-0`}>
                                     <PhotoUpload
                                         currentPhoto={data.personal.photo}
                                         onPhotoChange={handlePhotoChange}

@@ -86,7 +86,7 @@ export type ProfilePhotoEvent =
     | 'profile_photo_cta_editor_click';
 
 export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboarding';
-export type FullPreviewSource = 'desktop_preview_header' | 'desktop_document' | 'mobile_floating';
+export type FullPreviewSource = 'desktop_preview_header' | 'desktop_document' | 'mobile_floating' | 'upload_success';
 
 type EditorSourceContext = {
     templateId?: string;
@@ -198,7 +198,18 @@ export type AnalyticsEvent =
               isReady: boolean;
           } & EditorSourceContext;
       }
-    | { event: 'template_selected'; properties: { templateId: string; previousId?: string; cvId?: string } }
+    | {
+          event: 'template_selector_closed';
+          properties: {
+              cvId: string;
+              source: 'toolbar' | 'ready_state';
+              reason: 'dismissed' | 'selected';
+              completionScore: number;
+              isReady: boolean;
+              templateId: string;
+          };
+      }
+    | { event: 'template_selected'; properties: { templateId: string; previousId?: string; cvId?: string; source?: 'toolbar' | 'ready_state'; completionScore?: number; isReady?: boolean } }
     | { event: 'color_theme_changed'; properties: { themeId: string; templateId: string } }
     | {
           event: 'full_preview_opened';

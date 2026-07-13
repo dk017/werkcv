@@ -334,7 +334,7 @@ interface TemplateSelectorProps {
   isOpen: boolean;
   reviewMode?: boolean;
   onOpen: () => void;
-  onClose: () => void;
+  onClose: (reason: "dismissed" | "selected") => void;
   onSelectTemplate: (templateId: string, defaultThemeId: string) => void;
   uiLanguage?: UiLanguage;
 }
@@ -354,7 +354,7 @@ export default function TemplateSelector({
   const currentTemplate = templateList.find((template) => template.id === currentTemplateId);
   const templateModal = (
     <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto p-4 pt-16 sm:pt-20">
-      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/50" onClick={() => onClose("dismissed")} />
 
       <div className="relative flex max-h-[calc(100vh-5rem)] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:max-h-[calc(100vh-6rem)]">
         <div className="flex items-center justify-between border-b border-gray-200 px-6 py-4">
@@ -363,7 +363,7 @@ export default function TemplateSelector({
           </h2>
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => onClose("dismissed")}
             className="rounded-lg p-2 transition hover:bg-gray-100"
             aria-label={isEnglish ? "Close template chooser" : "Templates sluiten"}
           >
@@ -381,7 +381,7 @@ export default function TemplateSelector({
             idPrefix="template-selector"
             onSelectTemplate={(templateId, defaultThemeId) => {
               onSelectTemplate(templateId, defaultThemeId);
-              onClose();
+              onClose("selected");
             }}
           />
         </div>

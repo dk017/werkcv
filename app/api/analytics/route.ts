@@ -83,6 +83,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'cv_progress_milestone',
     'cv_section_completed',
     'ready_to_download_viewed',
+    'template_selector_closed',
     'pdf_download_started',
     'pdf_download_completed',
     'checkout_experiment_assigned',
