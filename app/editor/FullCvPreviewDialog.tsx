@@ -38,6 +38,8 @@ interface FullCvPreviewDialogProps {
 const MIN_CUSTOM_ZOOM = 0.5;
 const MAX_CUSTOM_ZOOM = 1.25;
 const ZOOM_STEP = 0.1;
+const MIN_DESKTOP_FIT_ZOOM = 0.72;
+const MAX_DESKTOP_FIT_ZOOM = 0.9;
 
 function formatPrice(uiLanguage: UiLanguage) {
   return uiLanguage === "en"
@@ -219,7 +221,11 @@ export default function FullCvPreviewDialog({
     const heightScale = (canvas.clientHeight - verticalPadding) / A4_HEIGHT_PX;
     const nextScale = isMobile
       ? widthScale
-      : Math.min(widthScale, heightScale, 0.9);
+      : Math.min(
+          widthScale,
+          Math.max(heightScale, MIN_DESKTOP_FIT_ZOOM),
+          MAX_DESKTOP_FIT_ZOOM,
+        );
 
     if (Number.isFinite(nextScale)) {
       setScale(Math.max(0.32, nextScale));
@@ -517,7 +523,7 @@ export default function FullCvPreviewDialog({
             onScroll={handleCanvasScroll}
             className="min-w-0 flex-1 overflow-auto overscroll-contain px-3 py-5 lg:px-12 lg:py-6"
           >
-            <div className="mx-auto w-max min-w-full">
+            <div className="mx-auto flex w-max min-w-full justify-center">
               <PdfPagedPreview
                 cvId={cvId}
                 data={data}

@@ -548,7 +548,7 @@ export default function Editor({
         };
 
         const recalc = () => {
-            computeScale(desktopPreviewViewportRef.current, 0.5, 0.9, setDesktopPreviewScale);
+            computeScale(desktopPreviewViewportRef.current, 0.5, 1, setDesktopPreviewScale);
         };
 
         recalc();
