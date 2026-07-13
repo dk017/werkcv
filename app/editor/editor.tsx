@@ -174,6 +174,16 @@ function hasAdditionalPersonalDetails(data: CVData): boolean {
     ].some((value) => typeof value === "string" && value.trim().length > 0);
 }
 
+function isCoreCvEmpty(data: CVData): boolean {
+    return !data.personal.name?.trim()
+        && !data.personal.email?.trim()
+        && !data.personal.phone?.trim()
+        && !data.personal.summary?.trim()
+        && data.experience.length === 0
+        && data.education.length === 0
+        && data.skills.length === 0;
+}
+
 function CompletionPanel({
     state,
     onGoToStep,
@@ -293,22 +303,11 @@ export default function Editor({
     });
 
     const data = watch();
-    const isCurrentCvEmpty =
-        !data.personal.name?.trim() &&
-        !data.personal.email?.trim() &&
-        !data.personal.summary?.trim() &&
-        data.experience.length === 0 &&
-        data.education.length === 0 &&
-        data.skills.length === 0;
+    const isCurrentCvEmpty = isCoreCvEmpty(data);
     const completionState = getCompletionState(data, uiLanguage);
     const completionScore = completionState.score;
     const isReadyToDownload = completionState.isReady;
     const remainingCoreSteps = completionState.steps.filter((step) => !step.complete).length;
-    const toolbarCtaLabel = isReadyToDownload
-        ? tr("CV downloaden", "Download CV")
-        : uiLanguage === "en"
-            ? `Finish CV · ${remainingCoreSteps} ${remainingCoreSteps === 1 ? "step" : "steps"} left`
-            : `CV afronden · nog ${remainingCoreSteps} ${remainingCoreSteps === 1 ? "stap" : "stappen"}`;
     const [isSaved, setIsSaved] = useState(true);
     const [isDownloading, setIsDownloading] = useState(false);
     const [templateId, setTemplateId] = useState(initialTemplateId);
@@ -323,6 +322,7 @@ export default function Editor({
     const [isTemplateSelectorOpen, setIsTemplateSelectorOpen] = useState(false);
     const [templateSelectorSource, setTemplateSelectorSource] = useState<TemplateSelectorSource>("toolbar");
     const [showPostUploadReview, setShowPostUploadReview] = useState(false);
+    const [showDesignWorkspace, setShowDesignWorkspace] = useState(() => !isCoreCvEmpty(normalizedInitialData));
     const [showMobilePhoto, setShowMobilePhoto] = useState(() => Boolean(normalizedInitialData.personal.photo));
     const [suggestedTargetRole, setSuggestedTargetRole] = useState<string | null>(null);
     const [visibleOptionalSections, setVisibleOptionalSections] = useState<Record<OptionalSectionId, boolean>>(
@@ -343,6 +343,15 @@ export default function Editor({
     const readyToDownloadTrackedRef = useRef(false);
     const uploadIntentHandledRef = useRef(false);
     const matchImportHandledRef = useRef(false);
+    const quickBuildViewedRef = useRef(false);
+    const isGuidedBuild = !showDesignWorkspace && !isReadyToDownload;
+    const toolbarCtaLabel = isReadyToDownload
+        ? tr("CV downloaden", "Download CV")
+        : isGuidedBuild && completionState.nextStep
+            ? tr(`Volgende: ${completionState.nextStep.label}`, `Next: ${completionState.nextStep.label}`)
+            : uiLanguage === "en"
+                ? `Finish CV · ${remainingCoreSteps} ${remainingCoreSteps === 1 ? "step" : "steps"} left`
+                : `CV afronden · nog ${remainingCoreSteps} ${remainingCoreSteps === 1 ? "stap" : "stappen"}`;
 
     const openUploader = useCallback((source: CvUploadSource) => {
         track("cv_upload_modal_opened", {
@@ -389,6 +398,7 @@ export default function Editor({
                 if (pendingExample.sampleCV) {
                     const normalizedData = ensureEditorData(pendingExample.sampleCV, uiLanguage);
                     reset(normalizedData);
+                    setShowDesignWorkspace(true);
                     setVisibleOptionalSections(deriveVisibleOptionalSections(normalizedData));
                     setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
                     setIsSaved(false);
@@ -463,6 +473,7 @@ export default function Editor({
                 }
 
                 reset(normalizedData);
+                setShowDesignWorkspace(true);
                 setSuggestedTargetRole(targetRoleSuggestion);
                 setAtsTargetRole(normalizedData.personal.title);
                 setTargetVacancy(parsedPendingMatch.vacancyText);
@@ -588,6 +599,23 @@ export default function Editor({
         });
         markEditorStartedTracked(id);
     }, [id, templateId, uiLanguage]);
+
+    useEffect(() => {
+        if (!isGuidedBuild || quickBuildViewedRef.current) return;
+        quickBuildViewedRef.current = true;
+        track('quick_build_viewed', {
+            cvId: id,
+            uiLanguage,
+            completionScore,
+            ...getEditorSearchContext(),
+        });
+    }, [completionScore, id, isGuidedBuild, uiLanguage]);
+
+    useEffect(() => {
+        if (!isReadyToDownload || showDesignWorkspace) return;
+        setShowDesignWorkspace(true);
+        track('quick_build_completed', { cvId: id, completionScore });
+    }, [completionScore, id, isReadyToDownload, showDesignWorkspace]);
 
     useEffect(() => {
         const milestones: Array<25 | 50 | 75 | 100> = [25, 50, 75, 100];
@@ -779,6 +807,7 @@ export default function Editor({
         }
         // Reset the form with the parsed CV data
         reset(normalizedData);
+        setShowDesignWorkspace(true);
         setSuggestedTargetRole(targetRoleSuggestion || null);
         setAtsTargetRole(normalizedData.personal.title);
         setVisibleOptionalSections(deriveVisibleOptionalSections(normalizedData));
@@ -787,6 +816,11 @@ export default function Editor({
         setIsSaved(false);
         setShowPostUploadReview(getCompletionState(normalizedData, uiLanguage).isReady);
         track('cv_uploaded', { cvId: id, fileType: 'parsed', templateId, entryMethod: 'upload' });
+    };
+
+    const revealDesignWorkspace = () => {
+        setShowDesignWorkspace(true);
+        track('quick_build_design_revealed', { cvId: id, completionScore });
     };
 
     const startCheckout = async (source: DownloadSource) => {
@@ -966,7 +1000,7 @@ export default function Editor({
     return (
         <div className="flex flex-col lg:flex-row h-screen bg-[#FFFEF9] font-sans text-slate-900 overflow-hidden">
             {/* Left: Editor Form */}
-            <div className="flex w-full lg:w-[54%] flex-col border-r-0 lg:border-r border-slate-200 bg-[#FFFEF9] z-10 h-screen">
+            <div className={`flex w-full flex-col border-r-0 border-slate-200 bg-[#FFFEF9] z-10 h-screen ${isGuidedBuild ? "lg:w-full" : "lg:w-[54%] lg:border-r"}`}>
                 {/* Toolbar */}
                 <div className="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-slate-200 bg-white/95 px-3 backdrop-blur sm:px-4">
                     {/* Left side - Logo and tools */}
@@ -976,29 +1010,35 @@ export default function Editor({
                                 Werk<span className="bg-[#4ECDC4] px-1 rounded-sm">CV</span>.nl
                             </span>
                         </Link>
-                        <div className="relative flex items-center gap-1 sm:gap-2">
-                            <TemplateSelector
-                                currentTemplateId={templateId}
-                                data={data}
-                                isOpen={isTemplateSelectorOpen}
-                                reviewMode={isReadyToDownload}
-                                onOpen={() => openTemplateSelector(isReadyToDownload ? "ready_state" : "toolbar")}
-                                onClose={closeTemplateSelector}
-                                onSelectTemplate={handleTemplateChange}
-                                uiLanguage={uiLanguage}
-                            />
-                            {showTemplateHint && (
-                                <div className="absolute top-full left-0 mt-2 bg-emerald-100 border border-emerald-300 px-3 py-2 text-xs font-semibold text-emerald-900 shadow-sm z-30 whitespace-nowrap">
-                                    {tr("Wissel hier van template", "Switch templates here")}
-                                </div>
-                            )}
-                            <ColorThemePicker
-                                templateId={templateId}
-                                currentThemeId={colorThemeId}
-                                onSelectTheme={handleColorThemeChange}
-                                uiLanguage={uiLanguage}
-                            />
-                        </div>
+                        {isGuidedBuild ? (
+                            <span className="hidden rounded-full border border-teal-200 bg-teal-50 px-2.5 py-1 text-[11px] font-bold text-teal-800 sm:inline-flex">
+                                {tr("Stap voor stap", "Guided build")}
+                            </span>
+                        ) : (
+                            <div className="relative flex items-center gap-1 sm:gap-2">
+                                <TemplateSelector
+                                    currentTemplateId={templateId}
+                                    data={data}
+                                    isOpen={isTemplateSelectorOpen}
+                                    reviewMode={isReadyToDownload}
+                                    onOpen={() => openTemplateSelector(isReadyToDownload ? "ready_state" : "toolbar")}
+                                    onClose={closeTemplateSelector}
+                                    onSelectTemplate={handleTemplateChange}
+                                    uiLanguage={uiLanguage}
+                                />
+                                {showTemplateHint && (
+                                    <div className="absolute top-full left-0 mt-2 bg-emerald-100 border border-emerald-300 px-3 py-2 text-xs font-semibold text-emerald-900 shadow-sm z-30 whitespace-nowrap">
+                                        {tr("Wissel hier van template", "Switch templates here")}
+                                    </div>
+                                )}
+                                <ColorThemePicker
+                                    templateId={templateId}
+                                    currentThemeId={colorThemeId}
+                                    onSelectTheme={handleColorThemeChange}
+                                    uiLanguage={uiLanguage}
+                                />
+                            </div>
+                        )}
                     </div>
 
                     {/* Right side - Save and Download */}
@@ -1046,9 +1086,20 @@ export default function Editor({
                                     : "border-slate-800 bg-slate-900 text-white hover:bg-slate-800"
                                 }`}
                             >
-                                {isDownloading
-                                    ? tr("Bezig...", "Working...")
-                                    : toolbarCtaLabel}
+                                {isDownloading ? (
+                                    tr("Bezig...", "Working...")
+                                ) : (
+                                    <>
+                                        <span className="sm:hidden">
+                                            {isReadyToDownload
+                                                ? tr("Download", "Download")
+                                                : isGuidedBuild
+                                                    ? tr("Volgende", "Next")
+                                                    : tr("Afronden", "Finish")}
+                                        </span>
+                                        <span className="hidden sm:inline">{toolbarCtaLabel}</span>
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>
@@ -1058,11 +1109,62 @@ export default function Editor({
                 <div className="flex-1 overflow-y-auto p-4 sm:p-5 scroll-smooth bg-[#FFFEF9]">
                     <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12">
 
-                        <CompletionPanel
-                            state={completionState}
-                            onGoToStep={scrollToCompletionStep}
-                            uiLanguage={uiLanguage}
-                        />
+                        {isGuidedBuild ? (
+                            <section className="rounded-2xl border border-teal-200 bg-white p-4 shadow-sm sm:p-5">
+                                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                                    <div className="min-w-0">
+                                        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-teal-700">
+                                            {tr("Eerst de inhoud", "Content first")}
+                                        </p>
+                                        <h1 className="mt-1 text-lg font-semibold text-slate-950">
+                                            {tr("Maak je CV af in 5 duidelijke stappen", "Complete your CV in 5 clear steps")}
+                                        </h1>
+                                        <p className="mt-1 text-sm font-medium text-slate-600">
+                                            {tr(
+                                                "Vul alleen de basis in. Template, kleur, foto en extra onderdelen komen daarna.",
+                                                "Add the essentials first. Template, colour, photo, and extra sections come afterwards."
+                                            )}
+                                        </p>
+                                        <div className="mt-3 flex items-center gap-3">
+                                            <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100">
+                                                <div className="h-full rounded-full bg-teal-600 transition-all duration-300" style={{ width: `${completionScore}%` }} />
+                                            </div>
+                                            <span className="shrink-0 text-xs font-bold text-slate-600">{completionScore}%</span>
+                                        </div>
+                                    </div>
+                                    {completionState.nextStep ? (
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                track('quick_build_next_clicked', {
+                                                    cvId: id,
+                                                    step: completionState.nextStep?.id || 'unknown',
+                                                    completionScore,
+                                                });
+                                                scrollToCompletionStep(completionState.nextStep!);
+                                            }}
+                                            className="inline-flex shrink-0 items-center justify-center rounded-md border border-teal-800 bg-teal-700 px-5 py-3 text-sm font-black text-white transition-colors hover:bg-teal-800"
+                                        >
+                                            {tr(`Volgende: ${completionState.nextStep.label}`, `Next: ${completionState.nextStep.label}`)} →
+                                        </button>
+                                    ) : null}
+                                </div>
+                                <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-slate-100 pt-3 text-xs font-semibold">
+                                    <button type="button" onClick={() => openUploader("empty_state")} className="text-teal-800 underline underline-offset-2 hover:text-teal-950">
+                                        {tr("Heb je al een CV? Upload het", "Already have a CV? Upload it")}
+                                    </button>
+                                    <button type="button" onClick={revealDesignWorkspace} className="text-slate-500 underline underline-offset-2 hover:text-slate-800">
+                                        {tr("Toch template en voorbeeld bekijken", "Show template and preview anyway")}
+                                    </button>
+                                </div>
+                            </section>
+                        ) : (
+                            <CompletionPanel
+                                state={completionState}
+                                onGoToStep={scrollToCompletionStep}
+                                uiLanguage={uiLanguage}
+                            />
+                        )}
 
                         {matchImportFeedback.status === 'importing' ? (
                             <section className="rounded-lg border border-teal-200 bg-teal-50 px-4 py-3" aria-live="polite">
@@ -1123,7 +1225,7 @@ export default function Editor({
                             </section>
                         ) : null}
 
-                        {!isReadyToDownload && isCurrentCvEmpty ? (
+                        {!isGuidedBuild && !isReadyToDownload && isCurrentCvEmpty ? (
                             <section className="rounded-2xl border border-teal-200 bg-teal-50 p-4 shadow-sm sm:p-5">
                                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                     <div>
@@ -1269,7 +1371,7 @@ export default function Editor({
                                 <textarea {...register("personal.summary")} placeholder={tr("Korte introductie over jezelf, je ervaring en wat je zoekt...", "Short introduction about yourself, your experience, and what you are looking for...")} className={`${inputClass} h-28`} style={inputStyle} />
                             </div>
 
-                            <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                            {!isGuidedBuild ? <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4">
                                 {!data.personal.photo ? (
                                     <button
                                         type="button"
@@ -1306,7 +1408,7 @@ export default function Editor({
                                         </Link>
                                     </div>
                                 </div>
-                            </div>
+                            </div> : null}
 
                             <button
                                 type="button"
@@ -1390,6 +1492,7 @@ export default function Editor({
                         <div id="section-skills" className="scroll-mt-28">
                             <SkillsSection control={control} register={register} uiLanguage={uiLanguage} />
                         </div>
+                        <div className={isGuidedBuild ? "hidden" : "contents"} aria-hidden={isGuidedBuild}>
                         <LanguagesSection control={control} register={register} uiLanguage={uiLanguage} />
 
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
@@ -1548,13 +1651,14 @@ export default function Editor({
                                 </section>
                             </>
                         ) : null}
+                        </div>
 
                     </div>
                 </div>
             </div>
 
             {/* Right: Live Preview */}
-            <div className="hidden lg:flex flex-col lg:w-[46%] xl:w-[48%] bg-[#f0faf9] overflow-hidden">
+            {!isGuidedBuild ? <div className="hidden lg:flex flex-col lg:w-[46%] xl:w-[48%] bg-[#f0faf9] overflow-hidden">
                 {/* Fixed header */}
                 <div className="shrink-0 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200">
                     <span className="text-xs font-semibold text-slate-600">{tr("Live preview", "Live preview")}</span>
@@ -1615,10 +1719,10 @@ export default function Editor({
                         </div>
                     ) : null}
                 </div>
-            </div>
+            </div> : null}
 
             {/* Mobile/tablet full-preview trigger */}
-            <button
+            {!isGuidedBuild ? <button
                 type="button"
                 onClick={() => setFullPreviewSource("mobile_floating")}
                 className={`lg:hidden fixed bottom-4 right-4 z-40 px-4 py-2 font-semibold text-xs rounded-md border shadow-sm ${
@@ -1631,7 +1735,7 @@ export default function Editor({
                     ? tr("CV bekijken", "Review CV")
                     : tr("Live preview", "Live preview")}
                 {pageCount > 1 ? ` (${pageCount})` : ""}
-            </button>
+            </button> : null}
 
             <EditorFeedbackWidget
                 accountEmail={accountEmail}

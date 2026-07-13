@@ -188,6 +188,17 @@ export type AnalyticsEvent =
     | { event: 'cv_progress_milestone'; properties: { cvId: string; milestone: 25 | 50 | 75 | 100; completionScore: number } }
     | { event: 'cv_section_completed'; properties: { cvId: string; section: string; completionScore: number } }
     | { event: 'ready_to_download_viewed'; properties: { cvId: string; completionScore: number } }
+    | {
+          event: 'quick_build_viewed';
+          properties: {
+              cvId: string;
+              uiLanguage: 'nl' | 'en';
+              completionScore: number;
+          } & EditorSourceContext;
+      }
+    | { event: 'quick_build_next_clicked'; properties: { cvId: string; step: string; completionScore: number } }
+    | { event: 'quick_build_design_revealed'; properties: { cvId: string; completionScore: number } }
+    | { event: 'quick_build_completed'; properties: { cvId: string; completionScore: number } }
     // Template & theme
     | {
           event: 'template_selector_opened';
