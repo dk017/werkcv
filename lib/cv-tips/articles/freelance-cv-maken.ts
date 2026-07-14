@@ -5,7 +5,7 @@ export const freelanceCvMaken: BlogArticle = {
     title: 'ZZP CV schrijven in 2026: opdrachten, profieltekst en voorbeelden',
     description: 'Leer hoe je als zzp\'er een sterk CV schrijft met opdrachtstructuur, profieltekst, NDA-aanpak, resultaatbullets en gerichte voorbeeldroutes.',
     publishedAt: '2026-02-19',
-    updatedAt: '2026-05-30',
+    updatedAt: '2026-07-14',
 
     metaTitle: 'ZZP CV Schrijven 2026 - Opdrachten + Voorbeeld | WerkCV',
     metaDesc: 'Schrijf een sterk zzp-CV met opdrachtstructuur, profieltekst, NDA-aanpak en resultaatbullets voor intermediairs, platforms en opdrachtgevers.',
@@ -36,7 +36,7 @@ export const freelanceCvMaken: BlogArticle = {
         'Je profieltekst moet je specialisme, doelgroep en toegevoegde waarde in maximaal 5 zinnen samenvatten',
         'Kwantificeer elk project: omzetbesparing, conversieverbeteringen, opgeleverde deadlines — zonder getallen ben je inwisselbaar',
         'Vermeld je uurtarief nooit in je CV — dat hoort in een offerte of platformprofiel',
-        'Nederland telde in 2024 bijna 1,3 miljoen ZZP\'ers met zzp-werk als hoofdbaan (CBS) — een gerichte CV helpt je sneller opvallen',
+        'Gebruik het CV om opdrachtfit te bewijzen; KvK-gegevens, tarief en contractafspraken horen meestal in het vervolggesprek of de offerte',
         'Pas je CV aan per opdracht via een base CV + gerichte versies per sector of opdrachttype',
     ],
 
@@ -46,7 +46,7 @@ export const freelanceCvMaken: BlogArticle = {
             title: 'Hoe schrijf je een sterk ZZP CV?',
             answerCapsule: 'Een freelance CV toont opdrachten in plaats van functies, vermeldt opdrachtgevers in plaats van werkgevers, en is gemiddeld langer omdat meerdere projecten elk apart beschreven worden.',
             content: [
-                'Nederland telde in 2024 bijna 1,3 miljoen mensen met een hoofdbaan als ZZP\'er (CBS). Als je als freelancer reageert op een opdracht, concurreer je met andere professionals die vaak een vergelijkbaar trackrecord hebben. Wat je onderscheidt is niet alleen je expertise, maar hoe helder je die presenteert. Een CV dat geschreven is voor een loondienst-kandidaat werkt niet vanzelf voor een ZZP\'er.',
+                'Als je als freelancer reageert op een opdracht, concurreer je met professionals die vaak een vergelijkbaar trackrecord hebben. Wat je onderscheidt is niet alleen je expertise, maar hoe helder je die presenteert. Een CV dat geschreven is voor een loondienst-kandidaat werkt daarom niet vanzelf voor een ZZP\'er.',
                 'Wie zoekt op zzp cv schrijven, cv maken zzp of cv freelancer Nederland zoekt meestal niet naar nog een generieke template, maar naar een opbouw die opdrachtwerk, opdrachtgevercontext en resultaat logisch laat landen op de pagina. Dat is precies waar een freelance-cv van een standaard cv begint af te wijken.',
                 'Het fundamentele verschil zit in de werkervaring-sectie. In een gewoon CV beschrijf je een functie bij één werkgever over een aaneengesloten periode. Als freelancer heb je in vier jaar misschien twaalf opdrachten bij acht opdrachtgevers gedaan. Die presenteer je als afzonderlijke projecten — elk met een eigen opdrachtgever, rol, duur en resultaat. Dit vereist een andere structuur en een andere schrijfaanpak.',
                 'Intermediairs en opdrachtgevers scannen een freelance CV snel. Zij moeten direct kunnen zien: wat is je specialisme, voor wie heb je gewerkt en wat heb je opgeleverd? Als die drie vragen niet snel beantwoord worden, wordt je ervaring moeilijker op waarde geschat.',
@@ -178,7 +178,7 @@ export const freelanceCvMaken: BlogArticle = {
             answerCapsule: 'Platforms als Malt en Toptal hebben hun eigen profielformat — gebruik je CV als inhoudelijke basis, maar pas de opmaak aan op de eisen van het platform. Vraag altijd een kopie op van wat een intermediair in jouw naam verstuurt.',
             content: [
                 'Steeds meer freelancers werken via platforms als Malt (generalist), Toptal (toptalent tech/design/finance), Yacht, YER Interim, Brunel of Staffing MS. Elk platform heeft zijn eigen profielformat. Je CV is niet het eindproduct — het is de inhoudelijke bron waaruit je het platformprofiel opbouwt.',
-                'Malt vraagt een uurtarief, beschikbaarheid en een profieltekst van maximaal 500 tekens. Toptal screent inhoudelijk en heeft een streng acceptatieproces (top 3% van kandidaten). Intermediairs als Yacht en YER Interim stellen vaak een "anoniem profiel" op in jouw naam en versturen dat naar opdrachtgevers. Vraag altijd een kopie op van wat ze in jouw naam sturen — en corrigeer indien nodig.',
+                'Freelanceplatforms vragen vaak apart om tarief, beschikbaarheid, vaardigheden en een korte profieltekst. Intermediairs kunnen jouw informatie bovendien omzetten naar hun eigen kandidaat- of aanbiedingsprofiel. Vraag daarom altijd welke versie naar de opdrachtgever gaat en controleer of rollen, periodes en resultaten correct zijn overgenomen.',
                 'Bij overheidsplatforms (like OverheidZZP, Negometrix) zijn er specifieke eisen aan CV-format, referenties en certificeringen. Lees de aanbestedingseisen goed door — soms is een specifiek format vereist (zoals een Europees CV-format) of moet je bepaalde sectoren en jaren aantoonbaar vermelden.',
             ],
         },

@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import TrackedToolLink from "@/components/analytics/TrackedToolLink";
-import { track } from "@/lib/analytics";
+import { getStoredAttribution, track } from "@/lib/analytics";
+import type { CVData } from "@/lib/cv";
+import { PENDING_EXAMPLE_CV_STORAGE_KEY, type PendingExampleCV } from "@/lib/pending-example-cv";
 
 type ToolLanguage = "nl" | "en";
 
@@ -17,6 +20,7 @@ type PreviewPayload = {
   detectedLanguage: ToolLanguage;
   suggestedTitle: string;
   suggestedName: string;
+  cvData: CVData;
 };
 
 function sectionToClipboardText(section: PreviewSection) {
@@ -24,12 +28,14 @@ function sectionToClipboardText(section: PreviewSection) {
 }
 
 export default function LinkedinToCvTool() {
+  const router = useRouter();
   const [profileText, setProfileText] = useState("");
   const [targetRole, setTargetRole] = useState("");
   const [language, setLanguage] = useState<ToolLanguage>("nl");
   const [status, setStatus] = useState<"idle" | "submitting" | "done">("idle");
   const [error, setError] = useState("");
   const [result, setResult] = useState<PreviewPayload | null>(null);
+  const [createStatus, setCreateStatus] = useState<"idle" | "creating">("idle");
 
   useEffect(() => {
     track("linkedin_to_cv_tool_view", {
@@ -101,6 +107,57 @@ export default function LinkedinToCvTool() {
       page_path: "/tools/linkedin-naar-cv",
       section: section.key,
     });
+  }
+
+  async function handleCreateCv() {
+    if (!result || createStatus === "creating") return;
+
+    setCreateStatus("creating");
+    setError("");
+    track("start_cv", {
+      entryPoint: "linkedin_to_cv_tool",
+      templateId: "professional",
+    });
+
+    try {
+      const response = await fetch("/api/create-cv", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          templateId: "professional",
+          colorThemeId: "classic-blue",
+          initialData: result.cvData,
+          attribution: getStoredAttribution(),
+          startSource: "linkedin_to_cv_tool",
+        }),
+      });
+
+      if (response.status === 401) {
+        const pendingCv: PendingExampleCV = {
+          templateId: "professional",
+          colorThemeId: "classic-blue",
+          sampleCV: result.cvData,
+          startSource: "linkedin_to_cv_tool",
+        };
+        window.sessionStorage.setItem(PENDING_EXAMPLE_CV_STORAGE_KEY, JSON.stringify(pendingCv));
+        const nextPath = "/editor?template=professional&startSource=linkedin_to_cv_tool";
+        router.push(`/login?next=${encodeURIComponent(nextPath)}`);
+        return;
+      }
+
+      const payload = await response.json().catch(() => null);
+      if (!response.ok || !payload?.cvId) {
+        setError("Je CV kon niet worden aangemaakt. Probeer het opnieuw.");
+        setCreateStatus("idle");
+        return;
+      }
+
+      router.push(`/editor?id=${payload.cvId}`);
+    } catch (createError) {
+      console.error("linkedin_to_cv_create_failed", createError);
+      setError("Je CV kon niet worden aangemaakt. Probeer het opnieuw.");
+      setCreateStatus("idle");
+    }
   }
 
   return (
@@ -199,6 +256,14 @@ export default function LinkedinToCvTool() {
             >
               Check je cv daarna ook
             </TrackedToolLink>
+            <button
+              type="button"
+              onClick={handleCreateCv}
+              disabled={createStatus === "creating"}
+              className="border-2 border-black bg-[#4ECDC4] px-4 py-2 text-sm font-black text-black disabled:cursor-not-allowed disabled:bg-slate-200"
+            >
+              {createStatus === "creating" ? "CV wordt aangemaakt..." : "Open dit ingevulde CV"}
+            </button>
           </div>
 
           <div className="mt-6 space-y-5">
@@ -214,15 +279,6 @@ export default function LinkedinToCvTool() {
                     >
                       Kopieer tekst
                     </button>
-                    <TrackedToolLink
-                      href="/editor"
-                      eventName="linkedin_to_cv_cta_editor_click"
-                      trackingLocation={`linkedin_to_cv:${section.key}:editor`}
-                      trackingLabel="Gebruik in mijn WerkCV"
-                      className="border-2 border-black bg-[#4ECDC4] px-3 py-2 text-xs font-black text-black"
-                    >
-                      Gebruik in mijn WerkCV
-                    </TrackedToolLink>
                   </div>
                 </div>
                 <div className="mt-4 space-y-3">
@@ -245,15 +301,14 @@ export default function LinkedinToCvTool() {
               Je LinkedIn-profiel is vaak te breed of te informeel voor een sollicitatie. Gebruik de gegenereerde structuur als basis en maak er direct een professionele, ATS-vriendelijke cv van in WerkCV.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
-              <TrackedToolLink
-                href="/editor"
-                eventName="linkedin_to_cv_cta_editor_click"
-                trackingLocation="linkedin_to_cv:final_editor"
-                trackingLabel="Maak mijn cv in WerkCV"
-                className="border-4 border-white bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black"
+              <button
+                type="button"
+                onClick={handleCreateCv}
+                disabled={createStatus === "creating"}
+                className="border-4 border-white bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black disabled:cursor-not-allowed disabled:bg-slate-400"
               >
-                Maak mijn cv in WerkCV
-              </TrackedToolLink>
+                {createStatus === "creating" ? "CV wordt aangemaakt..." : "Maak mijn ingevulde CV"}
+              </button>
               <TrackedToolLink
                 href="/templates"
                 eventName="linkedin_to_cv_cta_templates_click"

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { UseExampleButton } from "@/components/cv-voorbeelden/UseExampleButton";
 import Footer from "@/components/Footer";
+import { cv15Jarige } from "@/lib/cv-voorbeelden/examples/studenten-en-starters/cv-15-jarige";
 
 const teenSignals = [
   "Beschikbaarheid voor bijbaan of weekendwerk.",
@@ -152,19 +154,23 @@ export default function CvMaken15JarigePage() {
               moet je CV dus op sturen.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
+              <UseExampleButton
+                templateId={cv15Jarige.templateId}
+                colorThemeId={cv15Jarige.colorThemeId}
+                sampleCV={cv15Jarige.sampleCV}
+                label="Start met ingevuld 15-jarigen CV"
+              />
               <Link
-                href="/editor"
-                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              >
-                Start je eerste CV
-              </Link>
-              <Link
-                href="/cv-voorbeelden/studenten-en-starters/bijbaan-deeltijd-cv"
+                href="/cv-voorbeelden/studenten-en-starters/cv-15-jarige"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Bekijk bijbaan voorbeeld
+                Bekijk het complete voorbeeld
               </Link>
             </div>
+            <p className="mt-4 max-w-2xl text-sm font-medium leading-relaxed text-slate-600">
+              De eerste knop opent een vooraf ingevuld CV met voorbeeldtekst voor school,
+              beschikbaarheid en verantwoordelijkheid. Vervang de voorbeeldgegevens daarna door je eigen gegevens.
+            </p>
           </div>
 
           <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">

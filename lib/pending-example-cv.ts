@@ -6,5 +6,11 @@ export type PendingExampleCV = {
   templateId: string;
   colorThemeId: string;
   sampleCV?: CVData;
-  startSource: "example_page" | "example_blank_template" | "english_example_page";
+  startSource:
+    | "example_page"
+    | "example_blank_template"
+    | "english_example_page"
+    | "linkedin_to_cv_tool"
+    | "salary_role_page"
+    | "role_example_page";
 };

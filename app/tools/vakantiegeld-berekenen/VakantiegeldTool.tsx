@@ -7,6 +7,7 @@ import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
 import { estimateNetFromTaxableIncome } from "@/lib/tools/netto-bruto";
 
 type Result = {
+    annualBaseGross: number;
     earnedGross: number;
     holidayAllowance: number;
     holidayAllowanceNetEstimate: number;
@@ -61,12 +62,20 @@ export default function VakantiegeldTool() {
             applyTaxCredits: true,
             ageProfile: "under_aow",
         });
+        const baseTaxEstimate = estimateNetFromTaxableIncome({
+            taxableAnnualIncome: annualMonthlyBase,
+            applyTaxCredits: true,
+            ageProfile: "under_aow",
+        });
+        const annualNetHolidayImpact = Math.max(0, taxEstimate.netAnnualIncome - baseTaxEstimate.netAnnualIncome);
+        const periodShare = holidayAllowance / annualHolidayAllowance;
 
         setError("");
         setResult({
+            annualBaseGross: annualMonthlyBase,
             earnedGross,
             holidayAllowance,
-            holidayAllowanceNetEstimate: holidayAllowance * taxEstimate.effectiveNetRatio,
+            holidayAllowanceNetEstimate: annualNetHolidayImpact * periodShare,
             monthlyAccrual: holidayAllowance / months,
             monthlyBase,
             percentage: rate,
@@ -192,6 +201,21 @@ export default function VakantiegeldTool() {
                             <p className="text-[11px] font-black uppercase tracking-wide text-slate-500 mb-1">Maandbasis voor berekening</p>
                             <p className="text-xl font-black text-slate-900">{formatEuro(result.monthlyBase)}</p>
                         </div>
+                    </div>
+
+                    <div className="border-2 border-black bg-[#FFF7E8] p-5">
+                        <p className="text-xs font-black uppercase tracking-wide text-slate-500">Met of zonder vakantiegeld</p>
+                        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                            <div className="border border-slate-300 bg-white p-4">
+                                <p className="text-xs font-black text-slate-500">12 maanden salaris zonder vakantiegeld</p>
+                                <p className="mt-1 text-xl font-black text-slate-900">{formatEuro(result.annualBaseGross)}</p>
+                            </div>
+                            <div className="border border-slate-300 bg-white p-4">
+                                <p className="text-xs font-black text-slate-500">Jaartotaal inclusief {result.percentage}% vakantiegeld</p>
+                                <p className="mt-1 text-xl font-black text-slate-900">{formatEuro(result.annualBaseGross + (result.annualBaseGross * result.percentage / 100))}</p>
+                            </div>
+                        </div>
+                        <p className="mt-3 text-xs leading-relaxed text-slate-600">Deze vergelijking gebruikt een volledig jaar. Je berekende uitbetaling hierboven volgt het aantal opgebouwde maanden dat je invulde.</p>
                     </div>
 
                     <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">

@@ -12,9 +12,7 @@ export const cv16Jarige: CVExample = {
     metaDesc: 'CV voorbeeld voor een 16-jarige scholier met bijbaan. Met profieltekst, school, beschikbaarheid, supermarkt, horeca, kassa en vaardigheden.',
     keywords: [
         'cv voorbeeld 16-jarige',
-        'cv 16 jarige',
         'cv voorbeeld 16 jarige',
-        'cv maken 16 jaar',
         'cv scholier 16 jaar',
         'cv bijbaan 16 jaar',
         'cv supermarkt 16 jaar',

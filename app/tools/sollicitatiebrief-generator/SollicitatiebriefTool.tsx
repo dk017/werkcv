@@ -1,8 +1,14 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { track } from "@/lib/analytics";
+import {
+  getMotivationLetterPreset,
+  type MotivationLetterTone,
+} from "@/lib/motivation-letter-presets";
 
 type Locale = "nl" | "en";
-type Tone = "professioneel" | "enthousiast" | "beknopt";
 
 type SollicitatiebriefToolProps = {
   locale?: Locale;
@@ -21,6 +27,9 @@ const copy = {
     motivationLabel: "Jouw motivatie & achtergrond",
     motivationPlaceholder: "bijv. 5 jaar ervaring als UX designer in e-commerce. Gespecialiseerd in mobile-first design en usability testing. Wil graag naar een product-gedreven bedrijf waar ik meer impact kan maken...",
     motivationHint: "Meer context = een sterkere, persoonlijkere brief.",
+    presetLoaded: "Voorbeeld geladen",
+    presetHelp: "De voorbeeldgegevens staan klaar. Vervang ze door je eigen controleerbare ervaring voordat je genereert.",
+    chooseOther: "Kies een ander voorbeeld",
     validationError: "Vul je doelrol en een korte motivatie in (minimaal 20 tekens).",
     requestError: "Genereren mislukt.",
     connectionError: "Verbindingsfout. Probeer het opnieuw.",
@@ -49,6 +58,9 @@ const copy = {
     motivationLabel: "Your motivation & background",
     motivationPlaceholder: "for example 4 years of experience in customer success at SaaS companies. Strong in onboarding, CRM follow-up and cross-team communication. Looking for a more product-led environment where I can improve retention and customer education...",
     motivationHint: "More context = a stronger, more personal letter.",
+    presetLoaded: "Example loaded",
+    presetHelp: "The example details are ready. Replace them with your own verifiable experience before generating.",
+    chooseOther: "Choose another example",
     validationError: "Enter your target role and a short motivation (minimum 20 characters).",
     requestError: "Generation failed.",
     connectionError: "Connection error. Please try again.",
@@ -74,12 +86,16 @@ export default function SollicitatiebriefTool({
 }: SollicitatiebriefToolProps) {
   const strings = copy[locale];
   const resolvedCvHref = cvHref ?? (locale === "en" ? "/en/editor" : "/templates");
+  const searchParams = useSearchParams();
+  const selectedPreset = locale === "nl"
+    ? getMotivationLetterPreset(searchParams.get("voorbeeld"))
+    : undefined;
 
   const [naam, setNaam] = useState("");
-  const [doelrol, setDoelrol] = useState("");
+  const [doelrol, setDoelrol] = useState(selectedPreset?.role ?? "");
   const [bedrijfsnaam, setBedrijfsnaam] = useState("");
-  const [motivatie, setMotivatie] = useState("");
-  const [toon, setToon] = useState<Tone>("professioneel");
+  const [motivatie, setMotivatie] = useState(selectedPreset?.context ?? "");
+  const [toon, setToon] = useState<MotivationLetterTone>(selectedPreset?.tone ?? "professioneel");
   const [result, setResult] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -93,6 +109,11 @@ export default function SollicitatiebriefTool({
     setError("");
     setIsLoading(true);
     setResult("");
+    track("cover_letter_generator_started", {
+      preset: selectedPreset?.slug ?? "manual",
+      locale,
+      tone: toon,
+    });
 
     try {
       const res = await fetch("/api/tools/sollicitatiebrief", {
@@ -106,6 +127,10 @@ export default function SollicitatiebriefTool({
         return;
       }
       setResult(json.brief ?? "");
+      track("cover_letter_generator_completed", {
+        preset: selectedPreset?.slug ?? "manual",
+        locale,
+      });
     } catch {
       setError(strings.connectionError);
     } finally {
@@ -125,6 +150,24 @@ export default function SollicitatiebriefTool({
     <div className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:p-8">
       {!result ? (
         <div className="space-y-4">
+          {selectedPreset ? (
+            <div className="border-2 border-black bg-[#FFF4C2] p-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">
+                    {strings.presetLoaded}: {selectedPreset.label}
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-700">{strings.presetHelp}</p>
+                </div>
+                <Link
+                  href="/motivatiebrief-voorbeeld#kies-voorbeeld"
+                  className="shrink-0 text-xs font-black text-black underline decoration-2 underline-offset-4"
+                >
+                  {strings.chooseOther}
+                </Link>
+              </div>
+            </div>
+          ) : null}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <label className="mb-1.5 block text-xs font-black uppercase tracking-wide text-slate-600">
@@ -168,7 +211,7 @@ export default function SollicitatiebriefTool({
               </label>
               <select
                 value={toon}
-                onChange={(e) => setToon(e.target.value as Tone)}
+                onChange={(e) => setToon(e.target.value as MotivationLetterTone)}
                 className={inputClass}
               >
                 <option value="professioneel">{strings.tones.professioneel}</option>

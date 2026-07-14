@@ -10,16 +10,24 @@ interface UseExampleButtonProps {
     templateId: string;
     colorThemeId: string;
     sampleCV: CVData;
+    label?: string;
+    startSource?: PendingExampleCV["startSource"];
 }
 
-export function UseExampleButton({ templateId, colorThemeId, sampleCV }: UseExampleButtonProps) {
+export function UseExampleButton({
+    templateId,
+    colorThemeId,
+    sampleCV,
+    label = 'Gebruik dit voorbeeld',
+    startSource = 'example_page',
+}: UseExampleButtonProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
 
     async function handleClick() {
         setIsLoading(true);
         try {
-            track('start_cv', { entryPoint: 'example_page', templateId });
+            track('start_cv', { entryPoint: startSource, templateId });
             const attribution = getStoredAttribution();
             const res = await fetch('/api/create-cv', {
                 method: 'POST',
@@ -29,7 +37,7 @@ export function UseExampleButton({ templateId, colorThemeId, sampleCV }: UseExam
                     colorThemeId,
                     initialData: sampleCV,
                     attribution,
-                    startSource: 'example_page',
+                    startSource,
                 }),
             });
 
@@ -38,10 +46,10 @@ export function UseExampleButton({ templateId, colorThemeId, sampleCV }: UseExam
                     templateId,
                     colorThemeId,
                     sampleCV,
-                    startSource: 'example_page',
+                    startSource,
                 };
                 window.sessionStorage.setItem(PENDING_EXAMPLE_CV_STORAGE_KEY, JSON.stringify(pendingExample));
-                const nextPath = `/editor?template=${encodeURIComponent(templateId)}&startSource=example_page`;
+                const nextPath = `/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(startSource)}`;
                 router.push(`/login?next=${encodeURIComponent(nextPath)}`);
                 return;
             }
@@ -72,7 +80,7 @@ export function UseExampleButton({ templateId, colorThemeId, sampleCV }: UseExam
                     Laden...
                 </>
             ) : (
-                'Gebruik dit voorbeeld'
+                label
             )}
         </button>
     );

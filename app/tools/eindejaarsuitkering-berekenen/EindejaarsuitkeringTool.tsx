@@ -4,10 +4,18 @@ import { useState } from "react";
 import SalaryResultCvCta from "@/components/tools/SalaryResultCvCta";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
 import { calculateYearEndBonus, type YearEndBonusResult } from "@/lib/tools/moat-calculators";
+import { estimateNetFromTaxableIncome } from "@/lib/tools/netto-bruto";
 
 const inputClass = "w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 font-medium bg-white";
 
 const percentagePresets = ["8,33", "8", "5", "4,17"];
+
+type CalculationMethod = "percentage" | "thirteenth-month";
+type DisplayResult = YearEndBonusResult & {
+  netBonusEstimate: number;
+  estimatedWithholding: number;
+  appliedPercentage: number;
+};
 
 function formatNumber(value: number, maximumFractionDigits = 2): string {
   return new Intl.NumberFormat("nl-NL", {
@@ -17,15 +25,18 @@ function formatNumber(value: number, maximumFractionDigits = 2): string {
 }
 
 export default function EindejaarsuitkeringTool() {
+  const [calculationMethod, setCalculationMethod] = useState<CalculationMethod>("percentage");
   const [monthlyGrossSalary, setMonthlyGrossSalary] = useState("3600");
   const [bonusPercentage, setBonusPercentage] = useState("8,33");
   const [monthsWorked, setMonthsWorked] = useState("12");
-  const [result, setResult] = useState<YearEndBonusResult | null>(null);
+  const [result, setResult] = useState<DisplayResult | null>(null);
   const [error, setError] = useState("");
 
   function handleCalculate() {
     const parsedMonthlySalary = parseDecimal(monthlyGrossSalary);
-    const parsedBonusPercentage = parseDecimal(bonusPercentage);
+    const parsedBonusPercentage = calculationMethod === "thirteenth-month"
+      ? 100 / 12
+      : parseDecimal(bonusPercentage);
     const parsedMonthsWorked = parseDecimal(monthsWorked);
 
     if (Number.isNaN(parsedMonthlySalary) || parsedMonthlySalary <= 0 || parsedMonthlySalary > 50000) {
@@ -43,18 +54,63 @@ export default function EindejaarsuitkeringTool() {
       return;
     }
 
-    setError("");
-    setResult(calculateYearEndBonus({
+    const grossResult = calculateYearEndBonus({
       monthlyGrossSalary: parsedMonthlySalary,
       bonusPercentage: parsedBonusPercentage,
       monthsWorked: parsedMonthsWorked,
-    }));
+    });
+    const baseTaxEstimate = estimateNetFromTaxableIncome({
+      taxableAnnualIncome: grossResult.annualBaseSalary,
+      applyTaxCredits: true,
+      ageProfile: "under_aow",
+    });
+    const totalTaxEstimate = estimateNetFromTaxableIncome({
+      taxableAnnualIncome: grossResult.annualBaseSalary + grossResult.proratedBonus,
+      applyTaxCredits: true,
+      ageProfile: "under_aow",
+    });
+    const netBonusEstimate = Math.max(0, totalTaxEstimate.netAnnualIncome - baseTaxEstimate.netAnnualIncome);
+
+    setError("");
+    setResult({
+      ...grossResult,
+      netBonusEstimate,
+      estimatedWithholding: Math.max(0, grossResult.proratedBonus - netBonusEstimate),
+      appliedPercentage: parsedBonusPercentage,
+    });
   }
 
   return (
     <div className="bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-6 md:p-8">
       {!result ? (
         <div className="space-y-5">
+          <div>
+            <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
+              Type uitkering
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {([
+                ["percentage", "Eindejaarsuitkering in %"],
+                ["thirteenth-month", "Vaste 13e maand"],
+              ] as const).map(([value, label]) => (
+                <button
+                  key={value}
+                  type="button"
+                  onClick={() => {
+                    setCalculationMethod(value);
+                    setResult(null);
+                    setError("");
+                  }}
+                  className={`border-2 p-3 text-left text-sm font-black transition-colors ${calculationMethod === value ? "border-black bg-black text-white" : "border-slate-300 bg-white text-slate-700 hover:border-slate-400"}`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+            <p className="mt-2 text-xs text-slate-500">
+              Een vaste 13e maand is één bruto maandsalaris. Een eindejaarsuitkering wordt meestal als percentage van de afgesproken loonbasis berekend.
+            </p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
@@ -68,7 +124,7 @@ export default function EindejaarsuitkeringTool() {
                 inputMode="decimal"
               />
             </div>
-            <div>
+            <div className={calculationMethod === "thirteenth-month" ? "opacity-60" : ""}>
               <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
                 Eindejaarsuitkering %
               </label>
@@ -78,8 +134,9 @@ export default function EindejaarsuitkeringTool() {
                 placeholder="8,33"
                 className={inputClass}
                 inputMode="decimal"
+                disabled={calculationMethod === "thirteenth-month"}
               />
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className={`mt-2 flex flex-wrap gap-2 ${calculationMethod === "thirteenth-month" ? "hidden" : ""}`}>
                 {percentagePresets.map((preset) => (
                   <button
                     key={preset}
@@ -138,7 +195,20 @@ export default function EindejaarsuitkeringTool() {
               {formatEuro(result.proratedBonus)}
             </p>
             <p className="text-sm text-slate-700 leading-relaxed">
-              Dat is jouw geschatte eindejaarsuitkering op basis van {monthsWorked} gewerkte maanden en {bonusPercentage}% van je bruto jaarsalaris.
+              Dat is jouw geschatte {calculationMethod === "thirteenth-month" ? "13e maand" : "eindejaarsuitkering"} op basis van {monthsWorked} gewerkte maanden en {formatNumber(result.appliedPercentage)}% van je bruto jaarsalaris.
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <div className="rounded-lg border border-emerald-200 bg-white p-3">
+                <p className="text-[11px] font-black uppercase tracking-wide text-slate-500">Netto jaarindicatie</p>
+                <p className="mt-1 text-xl font-black text-slate-900">{formatEuro(result.netBonusEstimate)}</p>
+              </div>
+              <div className="rounded-lg border border-emerald-200 bg-white p-3">
+                <p className="text-[11px] font-black uppercase tracking-wide text-slate-500">Geschatte belastingimpact</p>
+                <p className="mt-1 text-xl font-black text-slate-900">{formatEuro(result.estimatedWithholding)}</p>
+              </div>
+            </div>
+            <p className="mt-3 text-xs leading-relaxed text-slate-600">
+              De netto-indicatie vergelijkt je geschatte netto jaarinkomen vóór en na de uitkering met de belastingtarieven en heffingskortingen van 2026. Je loonstrook kan afwijken door de tabel bijzondere beloningen, pensioen en persoonlijke inhoudingen.
             </p>
           </div>
 

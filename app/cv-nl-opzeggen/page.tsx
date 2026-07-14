@@ -165,6 +165,14 @@ export default function CvNlOpzeggenPage() {
               <span className="font-black">Kort antwoord:</span> log in bij CV.nl, open via je profielicoon de pagina Instellingen en klik op Opzeggen. Controleer daarna of je de bevestiging per e-mail ontvangt.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href="https://www.cv.nl/contact"
+                target="_blank"
+                rel="noreferrer"
+                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              >
+                Open officiële CV.nl opzegroute
+              </a>
               <TrackedLandingLink
                 href="/editor"
                 trackingLocation="cv-nl-opzeggen:hero_primary"
@@ -188,7 +196,7 @@ export default function CvNlOpzeggenPage() {
               Let op: WerkCV is niet verbonden aan CV.nl. We verzamelen hier alleen openbare opzegstappen en tonen daarna een alternatief zonder abonnement.
             </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
-              Officiële bronnen gecheckt op 17 april 2026.
+              Officiële bronnen gecheckt op 14 juli 2026.
             </p>
           </div>
 

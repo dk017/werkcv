@@ -36,7 +36,7 @@ const faqs = [
   {
     question: "Heeft CVMaker een proefperiode of abonnement?",
     answer:
-      "Ja. De officiële prijzenpagina noemt CVMaker Pro voor EUR1,99 voor 14 dagen en daarna EUR21,99 per maand met automatische verlenging totdat je opzegt.",
+      "Ja. De officiële prijzenpagina noemt een proefperiode van 14 dagen voor EUR2,95 en daarna EUR21,99 per maand met automatische verlenging totdat je opzegt.",
   },
   {
     question: "Waarom zoeken mensen op cvmaker opzeggen?",
@@ -128,11 +128,19 @@ export default function CvmakerOpzeggenPage() {
               CVMaker opzeggen: wat de officiële prijzenpagina zegt
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Deze pagina vat samen wat CVMaker zelf publiceert over annuleren. Dat maakt de intentie
-              handig voor mensen die een lopend account willen stoppen en daarna vooral willen weten
-              of een eenvoudiger model zonder maandelijkse verlenging beter past.
+              Deze pagina vat samen wat CVMaker zelf publiceert over annuleren. Zeg eerst je lopende
+              abonnement op via Accountinstellingen of de helpdesk. Vergelijk pas daarna een alternatief
+              zonder maandelijkse verlenging.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href="https://www.cvmaker.nl/prijzen"
+                target="_blank"
+                rel="noreferrer"
+                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              >
+                Open officiële CVMaker opzegstappen
+              </a>
               <TrackedLandingLink
                 href="/cv-maken-zonder-abonnement"
                 trackingLocation="cvmaker-opzeggen:hero_primary"
@@ -146,7 +154,10 @@ export default function CvmakerOpzeggenPage() {
               Wil je pas daarna inhoudelijk vergelijken? De vergelijking met WerkCV staat lager op deze pagina.
             </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
-              Officiële bronnen gecheckt op 1 april 2026.
+              Officiële bronnen gecheckt op 14 juli 2026.
+            </p>
+            <p className="mt-4 border-2 border-black bg-white px-4 py-3 text-sm font-medium leading-relaxed text-slate-700">
+              Let op: WerkCV is niet verbonden aan CVMaker. We vatten openbare informatie samen en tonen pas daarna een alternatief zonder abonnement.
             </p>
           </div>
 
@@ -155,7 +166,7 @@ export default function CvmakerOpzeggenPage() {
             <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
               <li>CVMaker zegt dat opzeggen via Accountinstellingen &gt; Abonnement kan.</li>
               <li>De prijzenpagina noemt ook contact met de helpdesk als route om te annuleren.</li>
-              <li>CVMaker noemt EUR1,99 voor 14 dagen en daarna EUR21,99 per maand met automatische verlenging.</li>
+              <li>CVMaker noemt EUR2,95 voor 14 dagen en daarna EUR21,99 per maand met automatische verlenging.</li>
               <li>Na annuleren blijven kosten stoppen en houd je toegang tot de datum uit je bevestigingsmail.</li>
             </ul>
           </div>
@@ -189,7 +200,7 @@ export default function CvmakerOpzeggenPage() {
           </p>
           <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-200">
             <p>
-              CVMaker koppelt annuleren direct aan het abonnementsmodel: EUR1,99 voor 14 dagen en
+              CVMaker koppelt annuleren direct aan het abonnementsmodel: EUR2,95 voor 14 dagen en
               daarna EUR21,99 per maand zolang Pro actief blijft.
             </p>
             <p>

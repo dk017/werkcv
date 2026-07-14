@@ -41,6 +41,7 @@ import { ggzMedewerker } from './examples/zorg-en-welzijn/ggz-medewerker';
 import { apotheekassistent } from './examples/zorg-en-welzijn/apotheekassistent';
 import { opticien } from './examples/zorg-en-welzijn/opticien';
 import { verzorgendeIg } from './examples/zorg-en-welzijn/verzorgende-ig';
+import { tandarts } from './examples/zorg-en-welzijn/tandarts';
 
 // ============================================================================
 // EXAMPLE IMPORTS - Technologie & ICT
@@ -174,6 +175,7 @@ const allExamples: CVExample[] = [
     apotheekassistent,
     opticien,
     verzorgendeIg,
+    tandarts,
     // Technologie & ICT
     softwareOntwikkelaar,
     dataEngineer,

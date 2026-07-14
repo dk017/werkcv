@@ -237,6 +237,12 @@ export default function SalarisCalculatorPage() {
               badge: "Geld",
             },
             {
+              href: "/tools/eindejaarsuitkering-berekenen",
+              title: "Eindejaarsuitkering berekenen",
+              description: "Tel een vaste 13e maand of percentage mee wanneer je twee totaalpakketten vergelijkt.",
+              badge: "Geld",
+            },
+            {
               href: "/tools/salaris-onderhandeling",
               title: "Salaris onderhandeling",
               description: "Gebruik je benchmark direct in een script of e-mail voor recruiter of werkgever.",

@@ -202,6 +202,12 @@ export default function NettoBrutoCalculatorPage() {
                             badge: "Geld",
                         },
                         {
+                            href: "/tools/eindejaarsuitkering-berekenen",
+                            title: "Eindejaarsuitkering berekenen",
+                            description: "Bereken een vaste 13e maand of percentage en bekijk de geschatte netto jaarimpact.",
+                            badge: "Geld",
+                        },
+                        {
                             href: "/tools/minimumloon-checker",
                             title: "Minimumloon checker",
                             description: "Controleer de wettelijke ondergrens per leeftijd in 2026.",

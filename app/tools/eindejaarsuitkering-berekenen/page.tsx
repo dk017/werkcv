@@ -6,7 +6,27 @@ import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
+import { estimateNetFromTaxableIncome } from "@/lib/tools/netto-bruto";
 import EindejaarsuitkeringTool from "./EindejaarsuitkeringTool";
+
+const euroFormatter = new Intl.NumberFormat("nl-NL", {
+  style: "currency",
+  currency: "EUR",
+  maximumFractionDigits: 0,
+});
+
+const yearEndExamples = [2500, 3000, 4000, 5000].map((monthlyGross) => {
+  const annualGross = monthlyGross * 12;
+  const bonusGross = monthlyGross;
+  const baseEstimate = estimateNetFromTaxableIncome({ taxableAnnualIncome: annualGross, applyTaxCredits: true, ageProfile: "under_aow" });
+  const totalEstimate = estimateNetFromTaxableIncome({ taxableAnnualIncome: annualGross + bonusGross, applyTaxCredits: true, ageProfile: "under_aow" });
+
+  return {
+    monthlyGross,
+    bonusGross,
+    bonusNet: Math.round(totalEstimate.netAnnualIncome - baseEstimate.netAnnualIncome),
+  };
+});
 
 const faqItems = [
   {
@@ -23,7 +43,7 @@ const faqItems = [
   },
   {
     question: "Rekent deze tool netto of bruto?",
-    answer: "Deze tool geeft een bruto indicatie. Wil je daarna weten wat je netto ongeveer overhoudt, gebruik dan de netto-bruto calculator.",
+    answer: "De tool toont bruto én een netto jaarindicatie. Die netto-indicatie is het verschil tussen het geschatte netto jaarinkomen vóór en na de uitkering volgens de 2026-belastingtarieven en heffingskortingen. De inhouding op je echte loonstrook kan afwijken.",
   },
   {
     question: "Waarom valt mijn netto eindejaarsuitkering lager uit dan verwacht?",
@@ -36,8 +56,8 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "Eindejaarsuitkering berekenen 2026 | 13e maand bruto netto | WerkCV",
-  description: "Bereken je eindejaarsuitkering of 13e maand in 2026. Vul salaris en maanden in voor bruto, pro rata, netto-uitleg en belastingcontext.",
+  title: "Eindejaarsuitkering berekenen 2026 | 13e maand bruto én netto | WerkCV",
+  description: "Bereken je eindejaarsuitkering of vaste 13e maand in 2026. Bekijk bruto, netto-indicatie, belastingimpact en pro-rata uitkering.",
   path: "/tools/eindejaarsuitkering-berekenen",
   keywords: [
     "eindejaarsuitkering berekenen",
@@ -91,21 +111,21 @@ export default function EindejaarsuitkeringBerekenenPage() {
                 Geld
               </span>
               <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                Bijgewerkt 17 april 2026
+                Bijgewerkt 14 juli 2026
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-              Eindejaarsuitkering berekenen: 13e maand, bruto en netto
+              Eindejaarsuitkering berekenen 2026: 13e maand bruto en netto
             </h1>
             <p className="text-lg text-slate-600 font-medium max-w-3xl">
-              Bereken direct je bruto eindejaarsuitkering of 13e maand. Vul je maandsalaris, percentage en gewerkte maanden in, zie je pro-rata bedrag en gebruik de netto-uitleg om loonheffing en belasting op je loonstrook beter te begrijpen.
+              Kies een vaste 13e maand of percentage, vul je salaris en gewerkte maanden in en zie direct je bruto uitkering, netto jaarindicatie en geschatte belastingimpact.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
-                href="/tools/netto-bruto-calculator"
+                href="#eindejaarsuitkering-calculator"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
               >
-                Schat netto effect
+                Start berekening
               </Link>
               <Link
                 href="/cv-maken-zonder-abonnement"
@@ -164,7 +184,7 @@ export default function EindejaarsuitkeringBerekenenPage() {
                 Calculator-intent
               </p>
               <ul className="space-y-2 text-sm text-slate-600">
-                <li>Bereken direct een bruto indicatie.</li>
+                <li>Bereken direct een bruto én netto jaarindicatie.</li>
                 <li>Check pro rata als je later in het jaar bent gestart.</li>
                 <li>Gebruik daarna de netto-bruto calculator voor je loonstrook-effect.</li>
               </ul>
@@ -181,8 +201,31 @@ export default function EindejaarsuitkeringBerekenenPage() {
           </p>
         </section>
 
-        <section className="mb-12">
+        <section id="eindejaarsuitkering-calculator" className="mb-12 scroll-mt-6">
           <EindejaarsuitkeringTool />
+        </section>
+
+        <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Voorbeelden 2026</p>
+          <h2 className="mt-2 text-2xl sm:text-3xl font-black text-slate-900">Wat houd je ongeveer over van een 13e maand?</h2>
+          <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
+            De voorbeelden gaan uit van één volledig extra bruto maandsalaris, een volledig gewerkt jaar, een werknemer onder de AOW-leeftijd en loonheffingskorting. De netto-indicatie gebruikt het verschil in geschat netto jaarinkomen vóór en na de uitkering.
+          </p>
+          <div className="mt-5 overflow-x-auto">
+            <table className="min-w-full border-collapse text-sm">
+              <thead><tr className="border-b-2 border-black text-left"><th className="px-3 py-2">Bruto maandloon</th><th className="px-3 py-2">Bruto 13e maand</th><th className="px-3 py-2">Netto jaarindicatie</th></tr></thead>
+              <tbody>
+                {yearEndExamples.map((example) => (
+                  <tr key={example.monthlyGross} className="border-b border-slate-200">
+                    <td className="px-3 py-3 font-medium text-slate-700">{euroFormatter.format(example.monthlyGross)}</td>
+                    <td className="px-3 py-3 font-medium text-slate-700">{euroFormatter.format(example.bonusGross)}</td>
+                    <td className="px-3 py-3 font-medium text-slate-700">{euroFormatter.format(example.bonusNet)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-xs leading-relaxed text-slate-500">Dit is geen loonstrookberekening. Werkgevers kunnen bij uitbetaling de tabel voor bijzondere beloningen gebruiken; pensioen en andere persoonlijke inhoudingen zijn niet meegenomen.</p>
         </section>
 
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12">
@@ -265,6 +308,12 @@ export default function EindejaarsuitkeringBerekenenPage() {
               badge: "Geld",
             },
             {
+              href: "/tools/salaris-calculator",
+              title: "Salaris vergelijken met de markt",
+              description: "Beoordeel je maandloon en eindejaarsuitkering als één totaalpakket voordat je onderhandelt.",
+              badge: "Salaris",
+            },
+            {
               href: "/tools/verlofuren-omrekenen",
               title: "Verlofuren omrekenen",
               description: "Check ook hoe je werkuren en verlofadministratie in elkaar passen.",
@@ -311,6 +360,16 @@ export default function EindejaarsuitkeringBerekenenPage() {
               Deze tool geeft een bruto rekenindicatie. Je daadwerkelijke recht op een eindejaarsuitkering volgt meestal uit je cao, arbeidsovereenkomst of personeelsregeling en kan per sector sterk verschillen.
             </p>
             <ul className="space-y-2">
+              <li>
+                <a
+                  href="https://ondernemersplein.overheid.nl/personeel/arbeidsvoorwaarden/13e-maand-of-eindejaarsuitkering-voor-uw-personeel/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-teal-700 hover:underline"
+                >
+                  Ondernemersplein - 13e maand of eindejaarsuitkering berekenen
+                </a>
+              </li>
               <li>
                 <a
                   href="https://www.rijksoverheid.nl/onderwerpen/arbeidsovereenkomst-en-cao/vraag-en-antwoord/wat-is-een-cao"

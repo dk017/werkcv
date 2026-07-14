@@ -7,6 +7,10 @@ import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
 import { normalizeBrandCopy } from '@/lib/seo-branding';
 import { getLanguageAlternates } from '@/lib/i18n/route-pairs';
+import { UseExampleButton } from '@/components/cv-voorbeelden/UseExampleButton';
+import { RoleCvPrefillPanel } from '@/components/cv-voorbeelden/RoleCvPrefillPanel';
+import { zzpCvSample } from '@/lib/cv-samples/zzp-cv';
+import { getWavePageRoleConversion } from '@/lib/role-cv-conversions';
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -65,16 +69,30 @@ export default async function DutchWavePage({ params }: PageProps) {
     const page = getDutchWavePage(slug);
     if (!page) notFound();
     const metaDesc = normalizeBrandCopy(page.metaDesc);
+    const isZzpExample = page.slug === 'cv-voorbeeld-zzper';
+    const roleConversion = getWavePageRoleConversion(page.slug);
     const heroProofPoints = [
-        'Maak dit CV in 5 minuten',
+        isZzpExample || roleConversion ? 'Vooraf ingevuld CV-voorbeeld' : 'Maak dit CV in 5 minuten',
         'ATS-vriendelijke templates',
         'Eenmalig betalen, geen abonnement',
     ];
-    const heroWorkflow = [
-        'Kies een rustige template die past bij jouw rol.',
-        'Neem de beste zinnen uit dit voorbeeld direct over in de editor.',
-        'Pas je CV per vacature aan en exporteer daarna als PDF.',
-    ];
+    const heroWorkflow = isZzpExample
+        ? [
+            'Open het ingevulde voorbeeld met drie realistische opdrachten.',
+            'Vervang voorbeeldgegevens, opdrachtgevers en resultaten door je eigen bewijs.',
+            'Maak per opdracht een gerichte versie en exporteer die als PDF.',
+        ]
+        : roleConversion
+        ? [
+            `Open het vooraf ingevulde ${roleConversion.roleLabel} CV.`,
+            'Vervang alle voorbeeldgegevens en resultaten door je eigen controleerbare bewijs.',
+            'Pas profieltekst en trefwoorden aan op de vacature voordat je de PDF exporteert.',
+        ]
+        : [
+            'Kies een rustige template die past bij jouw rol.',
+            'Neem de beste zinnen uit dit voorbeeld direct over in de editor.',
+            'Pas je CV per vacature aan en exporteer daarna als PDF.',
+        ];
 
     const jsonLd = {
         '@context': 'https://schema.org',
@@ -148,12 +166,29 @@ export default async function DutchWavePage({ params }: PageProps) {
                             <p className="text-lg text-gray-700 max-w-3xl">{page.intro}</p>
 
                             <div className="mt-7 flex flex-wrap gap-3">
-                                <Link
-                                    href={`${page.ctaHref}#quick-start`}
-                                    className="inline-block border-4 border-black bg-yellow-300 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
-                                >
-                                    Maak dit CV in 5 minuten
-                                </Link>
+                                {isZzpExample ? (
+                                    <UseExampleButton
+                                        templateId="professional"
+                                        colorThemeId="classic-blue"
+                                        sampleCV={zzpCvSample}
+                                        label="Start met ingevuld ZZP-CV"
+                                    />
+                                ) : roleConversion ? (
+                                    <UseExampleButton
+                                        templateId={roleConversion.templateId}
+                                        colorThemeId={roleConversion.colorThemeId}
+                                        sampleCV={roleConversion.sampleCV}
+                                        label={`Open ingevuld ${roleConversion.roleLabel} CV`}
+                                        startSource="role_example_page"
+                                    />
+                                ) : (
+                                    <Link
+                                        href={`${page.ctaHref}#quick-start`}
+                                        className="inline-block border-4 border-black bg-yellow-300 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
+                                    >
+                                        Maak dit CV in 5 minuten
+                                    </Link>
+                                )}
                                 <Link
                                     href="/cv-tips/cv-template-kiezen"
                                     className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
@@ -194,13 +229,30 @@ export default async function DutchWavePage({ params }: PageProps) {
                             </div>
 
                             <div className="mt-6 flex flex-wrap gap-3">
-                                <Link
-                                    href={`${page.ctaHref}#quick-start`}
-                                    className="inline-block border-3 border-black bg-black px-5 py-3 text-sm font-black text-white"
-                                    style={{ borderWidth: '3px' }}
-                                >
-                                    Start met je CV
-                                </Link>
+                                {isZzpExample ? (
+                                    <UseExampleButton
+                                        templateId="professional"
+                                        colorThemeId="classic-blue"
+                                        sampleCV={zzpCvSample}
+                                        label="Gebruik dit ZZP-voorbeeld"
+                                    />
+                                ) : roleConversion ? (
+                                    <Link
+                                        href="#prefilled-role-cv"
+                                        className="inline-block border-3 border-black bg-black px-5 py-3 text-sm font-black text-white"
+                                        style={{ borderWidth: '3px' }}
+                                    >
+                                        Bekijk wat al is ingevuld
+                                    </Link>
+                                ) : (
+                                    <Link
+                                        href={`${page.ctaHref}#quick-start`}
+                                        className="inline-block border-3 border-black bg-black px-5 py-3 text-sm font-black text-white"
+                                        style={{ borderWidth: '3px' }}
+                                    >
+                                        Start met je CV
+                                    </Link>
+                                )}
                                 <Link
                                     href="/cv-maken"
                                     className="inline-block border-3 border-black bg-white px-5 py-3 text-sm font-black text-black"
@@ -213,6 +265,17 @@ export default async function DutchWavePage({ params }: PageProps) {
                     </div>
                 </div>
             </section>
+
+            {roleConversion ? (
+                <RoleCvPrefillPanel
+                    roleLabel={roleConversion.roleLabel}
+                    templateId={roleConversion.templateId}
+                    colorThemeId={roleConversion.colorThemeId}
+                    sampleCV={roleConversion.sampleCV}
+                    proofItems={roleConversion.proofItems}
+                    motivationHref={roleConversion.motivationHref}
+                />
+            ) : null}
 
             <article className="max-w-4xl mx-auto px-6 py-10">
                 <div className="space-y-10">

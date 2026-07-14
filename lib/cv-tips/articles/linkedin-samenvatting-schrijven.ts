@@ -5,7 +5,7 @@ export const linkedinSamenvattingSchrijven: BlogArticle = {
     title: 'LinkedIn samenvatting schrijven in 2026: formule + voorbeelden',
     description: 'Schrijf een LinkedIn About-sectie die recruiters snel begrijpen. Gebruik een praktische formule, openingszinnen en voorbeelden per type werkzoekende.',
     publishedAt: '2026-04-04',
-    updatedAt: '2026-04-04',
+    updatedAt: '2026-07-14',
 
     metaTitle: 'LinkedIn samenvatting schrijven in 2026: formule + voorbeelden | WerkCV',
     metaDesc: 'Leer hoe je een sterke LinkedIn samenvatting schrijft met de juiste opening, zoekwoorden en call to action. Inclusief voorbeelden en cv-doorvertaling.',
@@ -120,6 +120,27 @@ export const linkedinSamenvattingSchrijven: BlogArticle = {
             ],
         },
         {
+            id: 'linkedin-samenvatting-voorbeelden',
+            title: 'LinkedIn samenvatting voorbeelden voor vier situaties',
+            answerCapsule: 'Een bruikbaar voorbeeld combineert rol, bewijs, specialisatie, richting en een rustige uitnodiging tot contact. Pas ieder voorbeeld aan met je eigen feiten.',
+            content: [
+                'Gebruik onderstaande voorbeelden als structuur, niet als tekst om woordelijk te kopiëren. Vervang rol, sector, projecten en resultaten door informatie die aantoonbaar bij jou hoort. Zo blijft je samenvatting geloofwaardig en onderscheidend.',
+            ],
+            bullets: [
+                'Starter: "Afgestudeerd hbo-communicatieprofessional met stage- en projectervaring in content, e-mail en social media. Tijdens mijn afstudeeropdracht onderzocht ik de klantreis en vertaalde ik inzichten naar een praktisch contentplan. Ik zoek een junior marketingrol waarin analyse en uitvoering samenkomen. Beschikbaar voor werk in regio Utrecht en hybride."',
+                'Ervaren professional: "HR-adviseur met ervaring in verzuim, recruitment en begeleiding van leidinggevenden binnen organisaties van 200 tot 800 medewerkers. Ik combineer duidelijke procesafspraken met praktische ondersteuning voor managers en medewerkers. Mijn expertise ligt bij duurzame inzetbaarheid, casuïstiek en het verbeteren van HR-dienstverlening. Benader mij voor HR-adviesrollen in Midden-Nederland."',
+                'Carrièreswitch: "Operationeel teamleider die de overstap maakt naar projectcoördinatie. In mijn huidige werk stuur ik verbeteracties, planning en samenwerking tussen service, logistiek en IT aan. Ik heb ervaring met procesanalyse, voortgangsrapportage en implementaties op de werkvloer. Ik richt mij nu op projectcoördinatierollen waarin structuur en uitvoering samenkomen."',
+                'ZZP\'er: "Freelance projectmanager gespecialiseerd in digitale implementaties en procesverbetering bij middelgrote organisaties. Ik verbind operatie, IT en leveranciers en stuur opdrachten van intake tot overdracht. Recente trajecten draaiden om CRM-migratie, fulfilment en gebruikersadoptie. Beschikbaar vanaf september 2026 voor 24-32 uur per week, regio Midden-Nederland of hybride."',
+            ],
+            intentLinks: [
+                {
+                    href: '/tools/linkedin-naar-cv#linkedin-tool',
+                    label: 'Zet je eigen LinkedIn-samenvatting om naar een ingevuld CV',
+                    description: 'Plak je profieltekst, kies je doelrol en open de gegenereerde inhoud daarna direct in de CV-editor.',
+                },
+            ],
+        },
+        {
             id: 'van-linkedin-samenvatting-naar-cv',
             title: 'Van LinkedIn samenvatting naar cv-profiel',
             answerCapsule: 'Je LinkedIn-samenvatting kan de basis zijn voor je cv-profiel, maar moet daarvoor korter, selectiever en vacaturegerichter worden gemaakt.',
@@ -135,9 +156,9 @@ export const linkedinSamenvattingSchrijven: BlogArticle = {
                     description: 'Gebruik deze gids als je van je online profiel naar een sollicitatiedocument gaat.',
                 },
                 {
-                    href: '/editor',
-                    label: 'Open de editor en zet je samenvatting om naar een cv-profiel',
-                    description: 'Handig als je meteen een kortere sollicitatieversie wilt bouwen.',
+                    href: '/tools/linkedin-naar-cv#linkedin-tool',
+                    label: 'Zet je samenvatting om naar een ingevuld cv-profiel',
+                    description: 'Gebruik de LinkedIn-naar-CV tool zodat de gegenereerde inhoud meegaat naar de editor.',
                 },
             ],
         },

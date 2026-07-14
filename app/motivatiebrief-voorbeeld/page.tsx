@@ -1,21 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-
-const examples = [
-  {
-    title: "Voorbeeld motivatie-alinea (career switch)",
-    text: "Na zes jaar in retailmanagement wil ik mijn klantgerichte en resultaatgedreven aanpak inzetten binnen customer success. In mijn huidige rol heb ik een team van 12 medewerkers aangestuurd, de NPS met 14 punten verbeterd en nieuwe onboardingprocedures opgezet. Juist die combinatie van operationele discipline en klantfocus wil ik bij [Bedrijfsnaam] inzetten.",
-  },
-  {
-    title: "Voorbeeld motivatie-alinea (starter)",
-    text: "Tijdens mijn stage bij [Organisatie] ontdekte ik hoe sterk mijn analytische vaardigheden en communicatie samenkomen in een data-gedreven omgeving. Ik ben gemotiveerd om deze basis verder uit te bouwen in een junior data-analist rol, waarin ik direct kan bijdragen aan betere besluitvorming met heldere rapportages.",
-  },
-  {
-    title: "Voorbeeld motivatie-alinea (ervaren professional)",
-    text: "Wat mij aanspreekt in deze functie is de combinatie van strategische verantwoordelijkheid en uitvoering dichtbij de operatie. In mijn huidige functie heb ik cross-functionele projecten geleid die de doorlooptijd met 22% verkortten. Ik zie in uw vacature dezelfde impactgerichte aanpak en wil daar actief aan bijdragen.",
-  },
-];
+import {
+  getMotivationGeneratorHref,
+  motivationLetterPresets,
+} from "@/lib/motivation-letter-presets";
 
 const checklist = [
   "Leg kort uit waarom deze functie inhoudelijk bij je past.",
@@ -48,9 +37,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Motivatiebrief Voorbeeld - Praktische Voorbeelden + Opbouw | WerkCV",
+  title: "Motivatiebrief Voorbeeld 2026 – 6 Voorbeelden + Generator | WerkCV",
   description:
-    "Zoek je een motivatiebrief voorbeeld? Bekijk sterke voorbeeldalinea's, een duidelijke opbouw en een checklist voor een overtuigende brief. Pas direct toe in de generator.",
+    "Bekijk 6 motivatiebrief voorbeelden voor starters, carrièreswitch, stage en meer. Kies je situatie en open direct een vooraf ingevulde generator.",
   keywords: [
     "motivatiebrief voorbeeld",
     "goede motivatiebrief",
@@ -188,24 +177,76 @@ export default function MotivatiebriefVoorbeeldPage() {
           </div>
         </section>
 
-        <section className="mb-14">
+        <section id="kies-voorbeeld" className="mb-14 scroll-mt-24">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Copy-ready motivatieblokken
+            Kies, vervang en genereer
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
             Motivatiebrief voorbeelden per situatie
           </h2>
-          <div className="mt-6 space-y-5">
-            {examples.map((example) => (
+          <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Kies het voorbeeld dat het dichtst bij jouw situatie ligt. De generator vult de doelrol, toon en
+            relevante bewijsstructuur alvast in. Vervang daarna alle voorbeeldfeiten door je eigen ervaring.
+          </p>
+          <div className="mt-6 grid gap-5 lg:grid-cols-2">
+            {motivationLetterPresets.map((example) => (
               <article
-                key={example.title}
-                className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+                key={example.slug}
+                className="flex h-full flex-col border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
               >
-                <h3 className="text-lg font-black text-black">{example.title}</h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{example.text}</p>
+                <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">{example.eyebrow}</p>
+                <h3 className="mt-2 text-xl font-black text-black">{example.label}</h3>
+                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">“{example.preview}”</p>
+                <div className="mt-4 border-t-2 border-slate-200 pt-4">
+                  <p className="text-xs font-black uppercase tracking-wide text-slate-500">Vervang met jouw bewijs</p>
+                  <ul className="mt-2 space-y-1 text-sm font-medium text-slate-700">
+                    {example.proofPrompts.map((prompt) => (
+                      <li key={prompt}>✓ {prompt}</li>
+                    ))}
+                  </ul>
+                </div>
+                <Link
+                  href={getMotivationGeneratorHref(example)}
+                  className="mt-5 inline-flex w-full items-center justify-center border-3 border-black bg-yellow-400 px-4 py-3 text-sm font-black text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                  style={{ borderWidth: "3px" }}
+                >
+                  Gebruik voorbeeld voor {example.label.toLowerCase()}
+                </Link>
               </article>
             ))}
           </div>
+        </section>
+
+        <section className="mb-14 border-4 border-black bg-[#E9FBF8] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:p-8">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-teal-800">Waarom deze invoer werkt</p>
+          <h2 className="mt-2 text-2xl font-black text-black sm:text-3xl">
+            Geef de generator feiten, geen lege eigenschappen
+          </h2>
+          <p className="mt-3 max-w-4xl text-sm font-medium leading-relaxed text-slate-700">
+            UWV adviseert bij AI-hulp om de vacaturetekst en concrete motivatie-elementen mee te geven, een echte
+            gebeurtenis of voorbeeld uit je werk uit te schrijven en de uitkomst daarna kritisch te beoordelen.
+            Daarom vraagt elk voorbeeld hierboven om bewijs zoals een project, resultaat, tool of werksituatie.
+          </p>
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            {[
+              ["1. Benoem de context", "Welke rol, organisatie en situatie gaat het om?"],
+              ["2. Voeg bewijs toe", "Gebruik een project, resultaat, cijfer of concreet gedrag."],
+              ["3. Controleer de uitkomst", "Verwijder verzonnen details en maak de toon herkenbaar van jou."],
+            ].map(([title, body]) => (
+              <div key={title} className="border-2 border-black bg-white p-4">
+                <h3 className="text-sm font-black text-black">{title}</h3>
+                <p className="mt-1 text-sm leading-relaxed text-slate-700">{body}</p>
+              </div>
+            ))}
+          </div>
+          <a
+            href="https://inspiratie.uwv.nl/motivatiebrief-maken-met-chatgpt"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-block text-sm font-black text-teal-900 underline decoration-2 underline-offset-4"
+          >
+            Bron: UWV — motivatiebrief maken met AI
+          </a>
         </section>
 
         <section className="mb-14 grid gap-6 md:grid-cols-2">

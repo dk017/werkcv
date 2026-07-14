@@ -440,6 +440,18 @@ export type AnalyticsEvent =
               result_state?: string;
           };
       }
+    | {
+          event: 'cover_letter_generator_started';
+          properties: {
+              preset: string;
+              locale: 'nl' | 'en';
+              tone: 'professioneel' | 'enthousiast' | 'beknopt';
+          };
+      }
+    | {
+          event: 'cover_letter_generator_completed';
+          properties: { preset: string; locale: 'nl' | 'en' };
+      }
     // CV-to-vacancy screener
     | { event: 'resume_screener_viewed'; properties: { locale: 'nl' | 'en' } }
     | {

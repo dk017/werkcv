@@ -245,6 +245,40 @@ export default async function ArticlePage({ params }: PageProps) {
                 </section>
             )}
 
+            {(article.slug === 'freelance-cv-maken' || article.slug === 'linkedin-samenvatting-schrijven') && (
+                <section className="border-b-4 border-black bg-[#FFF7E8]">
+                    <div className="max-w-4xl mx-auto px-6 py-8">
+                        <div className="flex flex-col gap-5 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] md:flex-row md:items-center md:justify-between">
+                            <div className="max-w-2xl">
+                                <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-500">
+                                    Direct toepassen
+                                </p>
+                                <h2 className="mt-2 text-2xl font-black text-gray-900">
+                                    {article.slug === 'freelance-cv-maken'
+                                        ? 'Start met een vooraf ingevuld ZZP-CV'
+                                        : 'Zet je LinkedIn-samenvatting om naar een ingevuld CV'}
+                                </h2>
+                                <p className="mt-2 text-sm leading-relaxed text-gray-700">
+                                    {article.slug === 'freelance-cv-maken'
+                                        ? 'Bekijk een opdrachtgerichte structuur met profieltekst, drie projecten, NDA-formulering en resultaatbullets. Vervang daarna de voorbeeldgegevens door je eigen bewijs.'
+                                        : 'Plak je profieltekst, kies je doelrol en controleer de gegenereerde CV-structuur voordat je deze in de editor opent.'}
+                                </p>
+                            </div>
+                            <Link
+                                href={article.slug === 'freelance-cv-maken'
+                                    ? '/cv-gids/cv-voorbeeld-zzper'
+                                    : '/tools/linkedin-naar-cv#linkedin-tool'}
+                                className="inline-block flex-shrink-0 border-4 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                            >
+                                {article.slug === 'freelance-cv-maken'
+                                    ? 'Open het ZZP-voorbeeld'
+                                    : 'Open LinkedIn naar CV'}
+                            </Link>
+                        </div>
+                    </div>
+                </section>
+            )}
+
             {article.slug === 'linkedin-naar-cv' && (
                 <section className="border-b-4 border-black bg-white">
                     <div className="max-w-4xl mx-auto px-6 py-10">

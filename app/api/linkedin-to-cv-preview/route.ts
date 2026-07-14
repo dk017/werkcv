@@ -161,6 +161,7 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const profileText = typeof body?.profileText === "string" ? body.profileText.trim() : "";
+    const targetRole = typeof body?.targetRole === "string" ? body.targetRole.trim().slice(0, 120) : "";
     const language: ToolLanguage = body?.language === "en" ? "en" : "nl";
 
     if (!profileText) {
@@ -186,13 +187,23 @@ export async function POST(request: NextRequest) {
 
     const parsedCv = await parseLinkedInProfileText(profileText, language);
     const repairedCv = await repairLinkedInSummary(profileText, parsedCv);
-    const sections = buildSections(repairedCv, language);
+    const cvData: CVData = targetRole
+      ? {
+          ...repairedCv,
+          personal: {
+            ...repairedCv.personal,
+            title: targetRole,
+          },
+        }
+      : repairedCv;
+    const sections = buildSections(cvData, language);
 
     return NextResponse.json({
       sections,
-      detectedLanguage: repairedCv.personal.resumeLanguage === "en" ? "en" : "nl",
-      suggestedTitle: compactText(repairedCv.personal.title),
-      suggestedName: compactText(repairedCv.personal.name),
+      detectedLanguage: cvData.personal.resumeLanguage === "en" ? "en" : "nl",
+      suggestedTitle: compactText(cvData.personal.title),
+      suggestedName: compactText(cvData.personal.name),
+      cvData,
     });
   } catch (error) {
     console.error("linkedin_to_cv_preview_failed", error);

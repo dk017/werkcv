@@ -112,19 +112,9 @@ const pages = [
     description: "Use the updated format guide for section order, Europass context, ATS-safe layout and examples.",
   },
   {
-    href: "/en/expat-cv-netherlands",
-    title: "Dutch CV for Expats",
-    description: "Localize international experience, language levels, and practical hiring signals.",
-  },
-  {
     href: "/en/english-cv-example-netherlands",
     title: "English CV Example Netherlands",
     description: "See the tone, profile summary, and proof bullets before writing your own version.",
-  },
-  {
-    href: "/en/guides/cv-format-netherlands-english",
-    title: "Netherlands CV Format",
-    description: "Understand layout, sections, and what Dutch recruiters expect.",
   },
   {
     href: "/en/dutch-cv-examples",

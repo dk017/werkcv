@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import Footer from "@/components/Footer";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
@@ -302,7 +303,15 @@ export default function MotivationLetterNetherlandsPage() {
               This generator is tuned for English cover letters for jobs in the Netherlands: concise, role-specific and less robotic than generic templates. Treat the result as a strong first draft and still tailor the company-specific lines yourself.
             </p>
           </div>
-          <SollicitatiebriefTool locale="en" cvHref="/en/editor" />
+          <Suspense
+            fallback={(
+              <div className="border-4 border-black bg-white p-8 text-sm font-bold text-slate-600 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                Loading the cover letter generator…
+              </div>
+            )}
+          >
+            <SollicitatiebriefTool locale="en" cvHref="/en/editor" />
+          </Suspense>
         </section>
 
         <WhyWerkCvSection locale="en" />

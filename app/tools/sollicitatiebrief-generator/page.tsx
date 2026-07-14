@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import Footer from "@/components/Footer";
 import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
@@ -82,7 +83,17 @@ export default function SollicitatiebriefGeneratorPage() {
                     </p>
                 </div>
 
-                <SollicitatiebriefTool />
+                <div id="brief-generator" className="scroll-mt-24">
+                    <Suspense
+                        fallback={(
+                            <div className="border-4 border-black bg-white p-8 text-sm font-bold text-slate-600 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                                Generator laden…
+                            </div>
+                        )}
+                    >
+                        <SollicitatiebriefTool />
+                    </Suspense>
+                </div>
 
                 <section className="mt-8 rounded-2xl border-2 border-slate-200 bg-white p-5">
                     <h2 className="text-lg font-black text-slate-900">Meer briefhulp</h2>

@@ -80,7 +80,9 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
   const isExampleStart =
     next.includes("startSource=example_page") ||
     next.includes("startSource=example_blank_template") ||
-    next.includes("startSource=english_example_page");
+    next.includes("startSource=english_example_page") ||
+    next.includes("startSource=linkedin_to_cv_tool") ||
+    next.includes("startSource=salary_role_page");
   const isResumeUpload = next.includes("resumeUpload=continue");
   const eyebrow = isExampleStart
     ? copy.exampleEyebrow

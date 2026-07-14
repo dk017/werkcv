@@ -219,7 +219,7 @@ export default function CvsterOpzeggenPage() {
               Let op: WerkCV is niet verbonden aan CVster. We vatten hier openbare informatie samen en tonen daarna een alternatief zonder proefabonnement.
             </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
-              Officiële bronnen gecheckt op 12 mei 2026. Het CVster-helpcentrum vermeldt
+              Officiële bronnen gecheckt op 14 juli 2026. Het CVster-helpcentrum vermeldt
               bij het opzegartikel: bewerkt op 6 maart 2025.
             </p>
           </div>

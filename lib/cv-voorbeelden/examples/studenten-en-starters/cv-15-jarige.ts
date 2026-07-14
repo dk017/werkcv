@@ -12,9 +12,7 @@ export const cv15Jarige: CVExample = {
     metaDesc: 'CV voorbeeld voor een 15-jarige scholier. Met profieltekst, school, beschikbaarheid, vrijwilligerswerk, oppassen en eerste bijbaan voor supermarkt of horeca.',
     keywords: [
         'cv voorbeeld 15-jarige',
-        'cv 15 jarige',
         'cv voorbeeld 15 jarige',
-        'cv maken 15 jaar',
         'cv scholier 15 jaar',
         'cv bijbaan 15 jaar',
         'cv zonder werkervaring 15 jaar',

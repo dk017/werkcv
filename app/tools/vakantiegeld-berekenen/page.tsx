@@ -106,10 +106,15 @@ const euroFormatter = new Intl.NumberFormat("nl-NL", {
     maximumFractionDigits: 0,
 });
 
-const holidayExamples = [2500, 3500, 4500].map((monthlyGross) => {
+const holidayExamples = [2500, 3000, 4000, 5000].map((monthlyGross) => {
     const annualGross = monthlyGross * 12;
     const holidayAllowanceGross = annualGross * 0.08;
-    const taxEstimate = estimateNetFromTaxableIncome({
+    const baseTaxEstimate = estimateNetFromTaxableIncome({
+        taxableAnnualIncome: annualGross,
+        applyTaxCredits: true,
+        ageProfile: "under_aow",
+    });
+    const totalTaxEstimate = estimateNetFromTaxableIncome({
         taxableAnnualIncome: annualGross + holidayAllowanceGross,
         applyTaxCredits: true,
         ageProfile: "under_aow",
@@ -118,7 +123,7 @@ const holidayExamples = [2500, 3500, 4500].map((monthlyGross) => {
     return {
         monthlyGross,
         holidayAllowanceGross,
-        holidayAllowanceNet: Math.round(holidayAllowanceGross * taxEstimate.effectiveNetRatio),
+        holidayAllowanceNet: Math.round(totalTaxEstimate.netAnnualIncome - baseTaxEstimate.netAnnualIncome),
     };
 });
 
@@ -146,8 +151,8 @@ const comparisonRows = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-    title: "Vakantiegeld berekenen 2026 | Bruto netto tool | WerkCV",
-    description: "Bereken je bruto en netto vakantiegeld voor 2026. Vul je salaris in en zie direct 8%, loonheffing, bruto/netto uitleg en uitbetaling.",
+    title: "Vakantiegeld berekenen 2026 – bruto én netto indicatie | WerkCV",
+    description: "Bereken je vakantiegeld voor 2026. Zie 8% bruto, een netto jaarindicatie en je jaarsalaris met en zonder vakantiegeld.",
     path: "/tools/vakantiegeld-berekenen",
     keywords: [
         "vakantiegeld berekenen",
@@ -207,11 +212,11 @@ export default function VakantiegeldBerekenenPage() {
                                 Geld
                             </span>
                             <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                                Bijgewerkt 17 april 2026
+                                Gecontroleerd en bijgewerkt 14 juli 2026
                             </span>
                         </div>
                         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-                            Vakantiegeld berekenen in 2026: bruto en netto indicatie
+                            Vakantiegeld berekenen 2026: bruto én netto indicatie
                         </h1>
                         <p className="text-lg text-slate-600 font-medium max-w-3xl">
                             Vul je bruto salaris in en zie direct hoeveel vakantiegeld je ongeveer opbouwt. De tool rekent met de Nederlandse basisregel van meestal minimaal 8%, toont bruto en netto naast elkaar en legt uit waarom loonheffing je uitbetaling kan verlagen.
@@ -314,9 +319,9 @@ export default function VakantiegeldBerekenenPage() {
                             Voorbeelden vakantiegeld bruto netto in 2026
                         </h2>
                         <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">
-                            Dit zijn snelle rekenvoorbeelden bij een volledig opbouwjaar, 8% vakantiegeld,
-                            werknemer onder AOW-leeftijd en loonheffingskorting aan. Gebruik ze als grove
-                            oriëntatie, niet als vervanging van je loonstrook.
+                            Dit zijn rekenvoorbeelden bij een volledig opbouwjaar, 8% vakantiegeld,
+                            een werknemer onder AOW-leeftijd en loonheffingskorting. De netto-indicatie is
+                            het verschil in geschat netto jaarinkomen vóór en na het vakantiegeld.
                         </p>
                     </div>
                     <div className="overflow-x-auto">
@@ -346,9 +351,9 @@ export default function VakantiegeldBerekenenPage() {
                         </table>
                     </div>
                     <p className="mt-4 text-xs leading-relaxed text-slate-500">
-                        Netto-indicatie gebaseerd op dezelfde standaardaannames als de calculator op
-                        deze pagina. Pensioenpremie, cao-afspraken en persoonlijke inhoudingen kunnen de
-                        echte uitbetaling merkbaar veranderen.
+                        Netto-indicatie gebaseerd op de officiële box-1-tarieven en heffingskortingen voor
+                        2026. Het is geen loonstrookberekening: de tabel bijzondere beloningen, pensioenpremie,
+                        cao-afspraken en persoonlijke inhoudingen kunnen de echte uitbetaling veranderen.
                     </p>
                 </section>
 
@@ -534,7 +539,10 @@ export default function VakantiegeldBerekenenPage() {
 
                 <section className="bg-slate-50 border-2 border-slate-200 p-6">
                     <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">
-                        Bronnen
+                        Methodologie en officiële bronnen
+                    </p>
+                    <p className="mb-3 text-sm leading-relaxed text-slate-600">
+                        Bruto vakantiegeld = loon in de opbouwperiode × het gekozen percentage. De netto-indicatie vergelijkt het geschatte netto jaarinkomen zonder en met vakantiegeld volgens de 2026 box-1-tarieven en heffingskortingen voor iemand onder de AOW-leeftijd. WerkCV slaat je invoer niet op.
                     </p>
                     <ul className="space-y-2 text-sm text-slate-600">
                         <li>
@@ -545,6 +553,11 @@ export default function VakantiegeldBerekenenPage() {
                         <li>
                             <a href="https://www.belastingdienst.nl/wps/wcm/connect/nl/personeel-en-loon/content/hulpmiddel-loonbelastingtabellen" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
                                 Belastingdienst - Hulpmiddel loonbelastingtabellen en bijzondere beloningen
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://www.belastingdienst.nl/wps/wcm/connect/bldcontentnl/belastingdienst/prive/inkomstenbelasting/heffingskortingen_boxen_tarieven/boxen_en_tarieven/box_1/box_1" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
+                                Belastingdienst - Box 1 tarieven 2026
                             </a>
                         </li>
                     </ul>

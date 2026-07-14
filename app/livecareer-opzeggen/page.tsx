@@ -169,6 +169,14 @@ export default function LivecareerOpzeggenPage() {
               hoort te krijgen en wat je moet bewaren als bewijs.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
+              <a
+                href="https://www.livecareer.nl/contact"
+                target="_blank"
+                rel="noreferrer"
+                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+              >
+                Open officiële LiveCareer contactpagina
+              </a>
               <TrackedLandingLink
                 href="#stappen"
                 trackingLocation="livecareer-opzeggen:hero_steps"
@@ -192,7 +200,7 @@ export default function LivecareerOpzeggenPage() {
               en tonen daarna een alternatief zonder maandabonnement.
             </p>
             <p className="mt-5 text-sm font-medium text-slate-600">
-              Officiele bronnen gecheckt op 12 mei 2026. De LiveCareer voorwaardenpagina
+              Officiele bronnen gecheckt op 14 juli 2026. De LiveCareer voorwaardenpagina
               vermeldt zelf: laatst bijgewerkt op 21 oktober 2024.
             </p>
           </div>

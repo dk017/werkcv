@@ -136,6 +136,11 @@ export default function LinkedinNaarCvPage() {
           <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
             Open je LinkedIn-profiel, kopieer de onderdelen die relevant zijn voor je cv en plak die in de tool. Denk aan je headline, info-sectie, werkervaring, opleiding en vaardigheden. WerkCV gebruikt geen LinkedIn scraping of automatische login.
           </p>
+          <p className="mt-3 text-sm font-medium leading-relaxed text-slate-600">
+            LinkedIn biedt op desktop soms ook <span className="font-black">Profiel opslaan als PDF</span>.
+            Volgens LinkedIn is die functie niet voor iedereen beschikbaar en werkt zij betrouwbaar bij een
+            Engelstalig profiel. Tekst kopiëren blijft daarom de meest voorspelbare invoer voor deze tool.
+          </p>
         </section>
 
         <section className="mb-10 rounded-3xl border-2 border-slate-200 bg-white p-6">
@@ -189,6 +194,35 @@ export default function LinkedinNaarCvPage() {
               </div>
             ))}
           </div>
+        </section>
+
+        <section className="mt-10 border-4 border-black bg-[#FFF7E8] p-6">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Bronnen en methode</p>
+          <h2 className="mt-2 text-2xl font-black text-slate-900">Wat de tool wel en niet doet</h2>
+          <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+            WerkCV vraagt niet om je LinkedIn-login en haalt je profiel niet automatisch op. Jij kiest welke
+            profieltekst je plakt. De tool structureert die invoer als CV en verzint geen ontbrekende werkgevers,
+            periodes of resultaten. Controleer de gegenereerde versie altijd voordat je haar gebruikt.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <a
+              href="https://www.linkedin.com/help/linkedin/answer/a541960/save-a-profile-as-a-pdf?lang=en"
+              target="_blank"
+              rel="noreferrer"
+              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+            >
+              LinkedIn: profiel opslaan als PDF
+            </a>
+            <a
+              href="https://www.linkedin.com/help/linkedin/answer/a553140/editing-the-about-section-in-your-profile?lang=en"
+              target="_blank"
+              rel="noreferrer"
+              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+            >
+              LinkedIn: About-sectie bewerken
+            </a>
+          </div>
+          <p className="mt-4 text-xs font-medium text-slate-500">Officiële LinkedIn-bronnen gecontroleerd op 14 juli 2026.</p>
         </section>
 
         <ToolToCvCTA

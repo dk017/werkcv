@@ -195,6 +195,12 @@ export default function LinkedInToCvImporter({
               <li>{tr('3. Kies Profiel opslaan als PDF.', '3. Choose Save to PDF.')}</li>
               <li>{tr('4. Zie je die optie niet? Gebruik dan de tekst-plakoptie hierboven.', '4. If you do not see that option, use the paste-text option instead.')}</li>
             </ol>
+            <p className="mt-3 text-xs font-medium leading-relaxed text-slate-500">
+              {tr(
+                'LinkedIn vermeldt dat PDF opslaan alleen op desktop werkt, niet voor iedereen beschikbaar is en het betrouwbaarst werkt bij een Engelstalig profiel. Profieltekst plakken is daarom de vaste alternatieve route.',
+                'LinkedIn states that Save to PDF works on desktop only, may not be available to every member, and works reliably only for English-language profiles. Pasting profile text is therefore the dependable fallback.',
+              )}
+            </p>
           </div>
 
           <div className="space-y-3">

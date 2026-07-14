@@ -8,7 +8,9 @@ import { TableOfContents, TableOfContentsMobile } from '@/components/seo/TableOf
 import { ContentSection, ExampleBlock } from '@/components/seo/ContentSection';
 import { UseExampleButton } from '@/components/cv-voorbeelden/UseExampleButton';
 import { BlankTemplateButton } from '@/components/cv-voorbeelden/BlankTemplateButton';
+import { RoleCvPrefillPanel } from '@/components/cv-voorbeelden/RoleCvPrefillPanel';
 import { normalizeBrandCopy } from '@/lib/seo-branding';
+import { getExamplePageRoleConversion } from '@/lib/role-cv-conversions';
 
 interface PageProps {
     params: Promise<{ category: string; slug: string }>;
@@ -114,6 +116,7 @@ export default async function ExamplePage({ params }: PageProps) {
         ])
     ).slice(0, 10);
     const firstExperience = cvData.experience[0];
+    const roleConversion = getExamplePageRoleConversion(categorySlug, example.slug);
 
     const breadcrumbItems = [
         { label: 'Home', href: '/' },
@@ -199,6 +202,17 @@ export default async function ExamplePage({ params }: PageProps) {
                     </div>
                 </div>
             </section>
+
+            {roleConversion ? (
+                <RoleCvPrefillPanel
+                    roleLabel={roleConversion.roleLabel}
+                    templateId={example.templateId}
+                    colorThemeId={example.colorThemeId}
+                    sampleCV={example.sampleCV}
+                    proofItems={roleConversion.proofItems}
+                    motivationHref={roleConversion.motivationHref}
+                />
+            ) : null}
 
             {/* Table of Contents - Mobile */}
             <section className="border-b-4 border-black bg-white">

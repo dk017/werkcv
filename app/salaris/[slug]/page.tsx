@@ -5,8 +5,10 @@ import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
+import { SalaryRoleCvFunnel } from "@/components/tools/SalaryRoleCvFunnel";
 import { formatEuro } from "@/lib/tools/calculator-utils";
 import { buildDutchMetadata } from "@/lib/page-metadata";
+import { getSalaryRoleCvProfile } from "@/lib/tools/salary-role-cv-profiles";
 import {
   getSalaryRolePageBySlug,
   getSalaryRolePageLinks,
@@ -73,6 +75,7 @@ export default async function SalaryRolePage({ params }: PageProps) {
   }
 
   const benchmark = resolveSalaryRoleBenchmark(page);
+  const cvProfile = getSalaryRoleCvProfile(page.slug);
   const roleLinks = getSalaryRolePageLinks(page);
   const hoursRows = [32, 36, 40].map((weeklyHours) => ({
     weeklyHours,
@@ -99,7 +102,7 @@ export default async function SalaryRolePage({ params }: PageProps) {
     {
       question: "Waarom gebruikt WerkCV CBS 2024 data op een 2026-pagina?",
       answer:
-        "Omdat dit op 8 april 2026 het nieuwste officiele CBS-jaar is in deze beroepsdataset. WerkCV noemt dat expliciet, zodat je weet op welk bronjaar de vergelijking rust.",
+        "Omdat dit op 14 juli 2026 het nieuwste officiele CBS-jaar is in deze beroepsdataset. WerkCV noemt dat expliciet, zodat je weet op welk bronjaar de vergelijking rust.",
     },
     {
       question: `Wat verdient een ${page.roleLabel} bruto per maand?`,
@@ -152,7 +155,7 @@ export default async function SalaryRolePage({ params }: PageProps) {
                 CBS {benchmark.dataYear}
               </span>
               <span className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1 text-xs font-black uppercase tracking-wide text-slate-700">
-                Bijgewerkt 8 april 2026
+                Gecontroleerd 14 juli 2026
               </span>
             </div>
             <h1 className="mb-4 text-3xl font-black leading-tight text-slate-900 sm:text-5xl">
@@ -175,6 +178,12 @@ export default async function SalaryRolePage({ params }: PageProps) {
                 className="inline-flex items-center justify-center gap-2 border-2 border-black bg-white px-5 py-3 text-sm font-black text-slate-900 transition-colors hover:bg-slate-100"
               >
                 Gebruik dit bij onderhandeling
+              </Link>
+              <Link
+                href="#cv-en-salaris"
+                className="inline-flex items-center justify-center gap-2 border-2 border-black bg-[#FFD93D] px-5 py-3 text-sm font-black text-slate-900 transition-colors hover:bg-yellow-300"
+              >
+                Stem mijn CV op dit niveau af
               </Link>
             </div>
           </div>
@@ -274,6 +283,14 @@ export default async function SalaryRolePage({ params }: PageProps) {
             <p className="text-sm leading-relaxed text-amber-950">{page.benchmarkNote}</p>
           </section>
         ) : null}
+
+        <SalaryRoleCvFunnel
+          roleLabel={page.roleLabel}
+          profile={cvProfile}
+          monthlyP25={fortyHourRow.monthlyP25}
+          monthlyMedian={fortyHourRow.monthlyMedian}
+          monthlyP75={fortyHourRow.monthlyP75}
+        />
 
         <section className="mb-12 grid gap-6 lg:grid-cols-2">
           <div className="border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -393,6 +410,10 @@ export default async function SalaryRolePage({ params }: PageProps) {
             <li>
               <span className="font-medium text-slate-900">{benchmark.cbsOccupationCode}</span>
               <span>{` - ${benchmark.cbsOccupationLabel} (${benchmark.dataNote})`}</span>
+            </li>
+            <li>
+              De salarisdrivers en CV-checklist zijn redactionele sollicitatiehulp. Ze verklaren niet de individuele
+              CBS-percentielen en vervangen geen cao, vacature-inschaling of persoonlijk salarisadvies.
             </li>
           </ul>
         </section>
