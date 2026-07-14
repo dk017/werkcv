@@ -84,6 +84,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'cv_section_completed',
     'ready_to_download_viewed',
     'quick_build_viewed',
+    'quick_build_started',
     'quick_build_next_clicked',
     'quick_build_design_revealed',
     'quick_build_completed',

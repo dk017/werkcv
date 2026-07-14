@@ -196,6 +196,7 @@ export type AnalyticsEvent =
               completionScore: number;
           } & EditorSourceContext;
       }
+    | { event: 'quick_build_started'; properties: { cvId: string; completionScore: number } }
     | { event: 'quick_build_next_clicked'; properties: { cvId: string; step: string; completionScore: number } }
     | { event: 'quick_build_design_revealed'; properties: { cvId: string; completionScore: number } }
     | { event: 'quick_build_completed'; properties: { cvId: string; completionScore: number } }

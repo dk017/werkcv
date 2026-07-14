@@ -21,7 +21,6 @@ import {
 import TemplateSelector from "./TemplateSelector";
 import ColorThemePicker from "./ColorThemePicker";
 import CVUploader from "./CVUploader";
-import WelcomeOnboarding from "./WelcomeOnboarding";
 import CvScoreWidget from "./CvScoreWidget";
 import KeywordScannerWidget from "./KeywordScannerWidget";
 import PhotoUpload from "./PhotoUpload";
@@ -317,8 +316,6 @@ export default function Editor({
     const [fullPreviewSource, setFullPreviewSource] = useState<FullPreviewSource | null>(null);
     const [pageCount, setPageCount] = useState(1);
     const [desktopPreviewScale, setDesktopPreviewScale] = useState(DESKTOP_PREVIEW_SCALE);
-    const [showOnboarding, setShowOnboarding] = useState(false);
-    const [showTemplateHint, setShowTemplateHint] = useState(false);
     const [isTemplateSelectorOpen, setIsTemplateSelectorOpen] = useState(false);
     const [templateSelectorSource, setTemplateSelectorSource] = useState<TemplateSelectorSource>("toolbar");
     const [showPostUploadReview, setShowPostUploadReview] = useState(false);
@@ -344,6 +341,7 @@ export default function Editor({
     const uploadIntentHandledRef = useRef(false);
     const matchImportHandledRef = useRef(false);
     const quickBuildViewedRef = useRef(false);
+    const quickBuildStartedRef = useRef(false);
     const isGuidedBuild = !showDesignWorkspace && !isReadyToDownload;
     const toolbarCtaLabel = isReadyToDownload
         ? tr("CV downloaden", "Download CV")
@@ -559,22 +557,6 @@ export default function Editor({
         return () => observer.disconnect();
     }, []);
 
-    // Show onboarding for empty CVs on first visit
-    useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get("upload") === "1") return;
-
-        const dismissed = localStorage.getItem('werkcv-onboarding-dismissed');
-        const isEmpty = initialData.personal.name === '' &&
-            initialData.personal.email === '' &&
-            initialData.experience.length === 0 &&
-            initialData.education.length === 0;
-        if (!dismissed && isEmpty) {
-            setShowOnboarding(true);
-            track('onboarding_shown', {});
-        }
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
     useEffect(() => {
         if (hasEditorStartedTracked(id)) return;
 
@@ -610,6 +592,12 @@ export default function Editor({
             ...getEditorSearchContext(),
         });
     }, [completionScore, id, isGuidedBuild, uiLanguage]);
+
+    const handleQuickBuildInput = useCallback(() => {
+        if (!isGuidedBuild || quickBuildStartedRef.current) return;
+        quickBuildStartedRef.current = true;
+        track('quick_build_started', { cvId: id, completionScore });
+    }, [completionScore, id, isGuidedBuild]);
 
     useEffect(() => {
         if (!isReadyToDownload || showDesignWorkspace) return;
@@ -652,28 +640,6 @@ export default function Editor({
             readyToDownloadTrackedRef.current = true;
         }
     }, [completionScore, completionState.isReady, completionState.steps, id]);
-
-    const highlightTemplateSwitcher = () => {
-        setShowTemplateHint(true);
-        setTimeout(() => setShowTemplateHint(false), 5000);
-        if (typeof window !== "undefined") {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-    };
-
-    const handleDismissOnboarding = () => {
-        setShowOnboarding(false);
-        localStorage.setItem('werkcv-onboarding-dismissed', 'true');
-        track('onboarding_dismissed', { action: 'start_typing' });
-        highlightTemplateSwitcher();
-    };
-
-    const handleOnboardingUpload = () => {
-        setShowOnboarding(false);
-        localStorage.setItem('werkcv-onboarding-dismissed', 'true');
-        track('onboarding_dismissed', { action: 'upload_cv' });
-        openUploader("onboarding");
-    };
 
     const handlePhotoChange = useCallback((base64: string) => {
         setValue('personal.photo', base64, { shouldDirty: true });
@@ -1026,11 +992,6 @@ export default function Editor({
                                     onSelectTemplate={handleTemplateChange}
                                     uiLanguage={uiLanguage}
                                 />
-                                {showTemplateHint && (
-                                    <div className="absolute top-full left-0 mt-2 bg-emerald-100 border border-emerald-300 px-3 py-2 text-xs font-semibold text-emerald-900 shadow-sm z-30 whitespace-nowrap">
-                                        {tr("Wissel hier van template", "Switch templates here")}
-                                    </div>
-                                )}
                                 <ColorThemePicker
                                     templateId={templateId}
                                     currentThemeId={colorThemeId}
@@ -1106,7 +1067,10 @@ export default function Editor({
                 </div>
 
                 {/* Scrollable Form Area */}
-                <div className="flex-1 overflow-y-auto p-4 sm:p-5 scroll-smooth bg-[#FFFEF9]">
+                <div
+                    className="flex-1 overflow-y-auto p-4 sm:p-5 scroll-smooth bg-[#FFFEF9]"
+                    onInputCapture={handleQuickBuildInput}
+                >
                     <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12">
 
                         {isGuidedBuild ? (
@@ -1788,14 +1752,6 @@ export default function Editor({
                 />
             )}
 
-            {/* Welcome Onboarding Modal */}
-            {showOnboarding && (
-                <WelcomeOnboarding
-                    onDismiss={handleDismissOnboarding}
-                    onUploadCV={handleOnboardingUpload}
-                    uiLanguage={uiLanguage}
-                />
-            )}
         </div>
     );
 }
