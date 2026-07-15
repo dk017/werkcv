@@ -5,6 +5,7 @@ import { sanitizeAttribution } from '@/lib/attribution';
 import { Prisma } from '@prisma/client';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 import { normalizeStartSource } from '@/lib/start-source';
+import { getDefaultThemeId, getTemplateConfig } from '@/lib/templates/registry';
 
 function getCreateCvErrorMessage(error: unknown): string {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'ECONNREFUSED') {
@@ -26,14 +27,14 @@ export async function POST(request: NextRequest) {
     }
 
     let templateId = 'professional';
-    let colorThemeId = 'classic-blue';
+    let colorThemeId: string | null = null;
     let cvData = defaultCV;
     let attribution: ReturnType<typeof sanitizeAttribution> = null;
     let startSource = '';
 
     try {
         const body = await request.json();
-        if (body.templateId) templateId = body.templateId;
+        if (body.templateId) templateId = getTemplateConfig(body.templateId).id;
         if (body.colorThemeId) colorThemeId = body.colorThemeId;
         startSource = normalizeStartSource(body.startSource) || '';
         attribution = sanitizeAttribution(body.attribution);
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
         title: 'Mijn CV',
         data: cvData,
         templateId,
-        colorThemeId,
+        colorThemeId: colorThemeId || getDefaultThemeId(templateId),
     };
 
     try {

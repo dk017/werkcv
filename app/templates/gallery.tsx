@@ -202,17 +202,21 @@ function RichTemplatePreview({
   );
 }
 
-const recommendedTemplateIds = new Set(["classical", "ats", "modern"]);
+const recommendedTemplateIds = new Set(["professional", "classical", "ats", "modern"]);
 
 const templatePriority: Record<string, number> = {
-  classical: 0,
-  professional: 1,
+  professional: 0,
+  classical: 1,
   ats: 2,
   modern: 3,
   formal: 4,
 };
 
 const quickStartTemplates = [
+  {
+    templateId: "professional",
+    themeId: "charcoal",
+  },
   {
     templateId: "classical",
     themeId: "charcoal",
@@ -229,6 +233,12 @@ const quickStartTemplates = [
 
 function getQuickStartCopy(templateId: string, uiLanguage: UiLanguage) {
   if (uiLanguage === "en") {
+    if (templateId === "professional") {
+      return {
+        eyebrow: "Premium default",
+        body: "Clean single-column layout with strong hierarchy. Best first choice when the CV must look worth sending and downloading.",
+      };
+    }
     if (templateId === "classical") {
       return {
         eyebrow: "Safest choice for most jobs",
@@ -247,6 +257,12 @@ function getQuickStartCopy(templateId: string, uiLanguage: UiLanguage) {
     };
   }
 
+  if (templateId === "professional") {
+    return {
+      eyebrow: "Premium standaard",
+      body: "Rustige single-column opmaak met sterke hierarchie. Beste eerste keuze als je CV direct downloadwaardig moet voelen.",
+    };
+  }
   if (templateId === "classical") {
     return {
       eyebrow: "Veilige keuze voor de meeste vacatures",

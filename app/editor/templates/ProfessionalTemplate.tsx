@@ -2,379 +2,253 @@ import { CVData } from "@/lib/cv";
 import { ColorTheme } from "@/lib/templates";
 import { LinkText } from "./link-utils";
 import { formatGender, formatLanguageLevel, formatMaritalStatus, resumeText } from "@/lib/resume-language";
+import type { ReactNode } from "react";
+
 interface TemplateProps {
     data: CVData;
     theme: ColorTheme;
 }
 
-// Skill level dots component
-function SkillDots({ level, color }: { level: number; color: string }) {
+function dateRange(start?: string, end?: string) {
+    return [start, end].filter(Boolean).join(" - ");
+}
+
+function Section({
+    title,
+    children,
+}: {
+    title: string;
+    children: ReactNode;
+}) {
     return (
-        <div className="flex gap-1.5">
-            {[1, 2, 3, 4, 5].map((dot) => (
-                <div
-                    key={dot}
-                    className="h-1.5 w-1.5 rounded-full"
-                    style={{
-                        backgroundColor: dot <= level ? color : '#e5e7eb',
-                    }}
-                />
-            ))}
-        </div>
+        <section className="mb-6">
+            <h2 className="mb-3 border-b border-slate-200 pb-2 text-[13px] font-bold uppercase tracking-[0.16em] text-slate-700">
+                {title}
+            </h2>
+            {children}
+        </section>
     );
 }
 
+function MutedText({ children }: { children: ReactNode }) {
+    return <p className="text-[12px] leading-[1.55] text-slate-500">{children}</p>;
+}
+
 export default function ProfessionalTemplate({ data, theme }: TemplateProps) {
+    const contactItems = [
+        data.personal.email,
+        data.personal.phone,
+        data.personal.address,
+        data.personal.postalCode,
+        data.personal.location,
+    ].filter((value): value is string => Boolean(value && value.trim()));
+
+    const personalDetails = [
+        data.personal.birthDate || data.personal.birthPlace
+            ? `${resumeText(data, "birthDateAndPlace")}: ${data.personal.birthDate || ""}${data.personal.birthPlace ? `, ${data.personal.birthPlace}` : ""}`
+            : null,
+        data.personal.nationality ? `${resumeText(data, "nationality")}: ${data.personal.nationality}` : null,
+        data.personal.driversLicense ? `${resumeText(data, "driversLicense")}: ${data.personal.driversLicense}` : null,
+        formatGender(data.personal.gender, data) ? `${resumeText(data, "gender")}: ${formatGender(data.personal.gender, data)}` : null,
+        formatMaritalStatus(data.personal.maritalStatus, data) ? `${resumeText(data, "maritalStatus")}: ${formatMaritalStatus(data.personal.maritalStatus, data)}` : null,
+    ].filter(Boolean);
+
     return (
         <div
-            className="bg-white min-h-[297mm] w-[210mm] mx-auto shadow-lg"
+            className="mx-auto min-h-[297mm] w-[210mm] bg-white px-10 py-11 font-sans text-[12px] leading-[1.45] text-slate-900"
             style={{ color: theme.text }}
         >
-            {/* Two Column Layout */}
-            <div className="flex min-h-[297mm]">
-                {/* Left Sidebar - Personal Info */}
-                <div
-                    className="w-[33%] p-7 space-y-6"
-                    style={{ backgroundColor: theme.headerBg || `${theme.primary}10` }}
-                >
-                    {/* Photo or initials */}
-                    <div className="flex justify-center mb-4">
-                        {data.personal.photo ? (
-                            <img
-                                src={data.personal.photo}
-                                alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
-                                className="h-24 w-24 rounded-full object-cover"
-                                style={{ border: `3px solid ${theme.primary}` }}
-                            />
-                        ) : (
-                            <div
-                                className="flex h-24 w-24 items-center justify-center rounded-full text-2xl font-bold text-white"
-                                style={{ backgroundColor: theme.primary }}
-                            >
-                                {data.personal.name ? data.personal.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'CV'}
-                            </div>
-                        )}
+            <header className="mb-7 border-b-2 border-slate-700 pb-6 text-center">
+                {data.personal.photo ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                        src={data.personal.photo}
+                        alt={data.personal.name || resumeText(data, "profilePhotoAlt")}
+                        className="mx-auto mb-3 h-20 w-20 rounded-full object-cover"
+                        style={{ border: `3px solid ${theme.primary}` }}
+                    />
+                ) : null}
+                <h1 className="text-[31px] font-extrabold leading-tight tracking-normal text-slate-950">
+                    {data.personal.name || resumeText(data, "nameFallback")}
+                </h1>
+                {data.personal.title ? (
+                    <p className="mt-1 text-[15px] font-medium text-slate-500">{data.personal.title}</p>
+                ) : null}
+                {contactItems.length > 0 ? (
+                    <div className="mt-3 flex flex-wrap justify-center gap-x-2 gap-y-1 text-[11px] leading-relaxed text-slate-500">
+                        {contactItems.map((item, index) => (
+                            <span key={`${item}-${index}`} className="inline-flex items-center gap-2">
+                                {index > 0 ? <span className="text-slate-300">|</span> : null}
+                                <LinkText value={item} />
+                            </span>
+                        ))}
                     </div>
-
-                    {/* Personalia Section */}
-                    <div>
-                        <h2
-                            className="mb-3 border-b pb-2 text-[11px] font-bold uppercase tracking-[0.18em]"
-                            style={{ color: theme.primary }}
-                        >
-                            {resumeText(data, "personalDetails")}</h2>
-                        <div className="space-y-2.5 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
-                            {data.personal.address && (
-                                <div>
-                                    <div className="font-semibold" style={{ color: theme.text }}>{data.personal.address}</div>
-                                </div>
-                            )}
-                            {data.personal.postalCode && (
-                                <div>{data.personal.postalCode}</div>
-                            )}
-                            {data.personal.phone && <div>{data.personal.phone}</div>}
-                            {data.personal.email && (
-                                <div className="break-words">{data.personal.email}</div>
-                            )}
-                            {(data.personal.birthDate || data.personal.birthPlace) && (
-                                <div className="pt-2">
-                                    <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "birthDateAndPlace")}</span>
-                                    <div>{data.personal.birthDate}</div>
-                                    {data.personal.birthPlace && <div>{data.personal.birthPlace}</div>}
-                                </div>
-                            )}
-                            {data.personal.nationality && (
-                                <div className="pt-2">
-                                    <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "nationality")}</span>
-                                    <div>{data.personal.nationality}</div>
-                                </div>
-                            )}
-                            {data.personal.driversLicense && (
-                                <div className="pt-2">
-                                    <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "driversLicense")}</span>
-                                    <div>{data.personal.driversLicense}</div>
-                                </div>
-                            )}
-                            {formatGender(data.personal.gender, data) && (
-                                <div className="pt-2">
-                                    <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "gender")}</span>
-                                    <div>{formatGender(data.personal.gender, data)}</div>
-                                </div>
-                            )}
-                            {formatMaritalStatus(data.personal.maritalStatus, data) && (
-                                <div className="pt-2">
-                                    <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "maritalStatus")}</span>
-                                    <div>{formatMaritalStatus(data.personal.maritalStatus, data)}</div>
-                                </div>
-                            )}
-                            {data.personal.linkedIn && (
-                                <div className="pt-2">
-                                    <span className="font-semibold" style={{ color: theme.text }}>{resumeText(data, "links")}</span>
-                                    <div className="break-words"><LinkText value={data.personal.linkedIn} /></div>
-                                </div>
-                            )}
-                        </div>
+                ) : null}
+                {(data.personal.linkedIn || data.personal.github || data.personal.website) ? (
+                    <div className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1 text-[10.5px] leading-relaxed text-slate-500">
+                        {data.personal.linkedIn ? <span>LinkedIn: <LinkText value={data.personal.linkedIn} /></span> : null}
+                        {data.personal.github ? <span>GitHub: <LinkText value={data.personal.github} /></span> : null}
+                        {data.personal.website ? <span>Website: <LinkText value={data.personal.website} /></span> : null}
                     </div>
+                ) : null}
+                {personalDetails.length > 0 ? (
+                    <div className="mt-2 flex flex-wrap justify-center gap-x-3 gap-y-1 text-[10.5px] text-slate-500">
+                        {personalDetails.map((item) => <span key={item}>{item}</span>)}
+                    </div>
+                ) : null}
+            </header>
 
-                    {/* Skills with level indicators */}
-                    {data.skills.length > 0 && (
-                        <div>
-                            <h2
-                                className="mb-3 border-b pb-2 text-[11px] font-bold uppercase tracking-[0.18em]"
-                                style={{ color: theme.primary }}
-                            >
-                                {resumeText(data, "skills")}</h2>
-                            <div className="space-y-2.5">
-                                {data.skills.map((skill, i) => (
-                                    <div key={i} className="flex items-center justify-between gap-3">
-                                        <span className="text-[11px] leading-snug" style={{ color: theme.text }}>
-                                            {typeof skill === 'object' ? skill.name : skill}
-                                        </span>
-                                        <SkillDots
-                                            level={typeof skill === 'object' ? skill.level : 3}
-                                            color={theme.primary}
-                                        />
+            {data.personal.summary ? (
+                <Section title={resumeText(data, "profile")}>
+                    <p className="whitespace-pre-wrap text-[12.5px] leading-[1.65] text-slate-800">
+                        {data.personal.summary}
+                    </p>
+                </Section>
+            ) : null}
+
+            {data.experience.length > 0 ? (
+                <Section title={resumeText(data, "experience")}>
+                    <div className="space-y-4">
+                        {data.experience.map((exp, index) => (
+                            <div key={index} className="break-inside-avoid">
+                                <div className="flex items-start justify-between gap-5">
+                                    <div className="min-w-0">
+                                        <h3 className="text-[13px] font-bold leading-snug text-slate-950">{exp.role}</h3>
+                                        <p className="mt-0.5 text-[12px] font-medium text-slate-500">
+                                            {exp.company}{exp.location ? ` | ${exp.location}` : ""}
+                                        </p>
                                     </div>
+                                    <span className="shrink-0 whitespace-nowrap text-right text-[11px] text-slate-500">
+                                        {dateRange(exp.start, exp.end)}
+                                    </span>
+                                </div>
+                                {exp.description ? <MutedText>{exp.description}</MutedText> : null}
+                                {exp.highlights && exp.highlights.length > 0 ? (
+                                    <ul className="mt-1.5 list-disc space-y-0.5 pl-5 text-[11.5px] leading-[1.42] text-slate-800">
+                                        {exp.highlights.map((highlight, highlightIndex) => (
+                                            <li key={highlightIndex}>{highlight}</li>
+                                        ))}
+                                    </ul>
+                                ) : null}
+                            </div>
+                        ))}
+                    </div>
+                </Section>
+            ) : null}
+
+            {data.internships && data.internships.length > 0 ? (
+                <Section title={resumeText(data, "internships")}>
+                    <div className="space-y-4">
+                        {data.internships.map((internship, index) => (
+                            <div key={index} className="break-inside-avoid">
+                                <div className="flex items-start justify-between gap-5">
+                                    <div>
+                                        <h3 className="text-[13px] font-bold leading-snug text-slate-950">{internship.role}</h3>
+                                        <p className="mt-0.5 text-[12px] font-medium text-slate-500">
+                                            {internship.company}{internship.location ? ` | ${internship.location}` : ""}
+                                        </p>
+                                    </div>
+                                    <span className="shrink-0 whitespace-nowrap text-right text-[11px] text-slate-500">
+                                        {dateRange(internship.start, internship.end)}
+                                    </span>
+                                </div>
+                                {internship.description ? <MutedText>{internship.description}</MutedText> : null}
+                                {internship.highlights && internship.highlights.length > 0 ? (
+                                    <ul className="mt-1.5 list-disc space-y-0.5 pl-5 text-[11.5px] leading-[1.42] text-slate-800">
+                                        {internship.highlights.map((highlight, highlightIndex) => (
+                                            <li key={highlightIndex}>{highlight}</li>
+                                        ))}
+                                    </ul>
+                                ) : null}
+                            </div>
+                        ))}
+                    </div>
+                </Section>
+            ) : null}
+
+            {data.education.length > 0 ? (
+                <Section title={resumeText(data, "education")}>
+                    <div className="space-y-3.5">
+                        {data.education.map((education, index) => (
+                            <div key={index} className="break-inside-avoid">
+                                <div className="flex items-start justify-between gap-5">
+                                    <div>
+                                        <h3 className="text-[13px] font-bold leading-snug text-slate-950">{education.degree}</h3>
+                                        <p className="mt-0.5 text-[12px] font-medium text-slate-500">
+                                            {education.school}{education.location ? ` | ${education.location}` : ""}
+                                        </p>
+                                    </div>
+                                    <span className="shrink-0 whitespace-nowrap text-right text-[11px] text-slate-500">
+                                        {dateRange(education.start, education.end)}
+                                    </span>
+                                </div>
+                                {education.description ? <MutedText>{education.description}</MutedText> : null}
+                            </div>
+                        ))}
+                    </div>
+                </Section>
+            ) : null}
+
+            {data.awards && data.awards.length > 0 ? (
+                <Section title={resumeText(data, "awards")}>
+                    <ul className="list-disc space-y-1 pl-5 text-[11.5px] leading-[1.5] text-slate-800">
+                        {data.awards.map((award, index) => <li key={index}>{award}</li>)}
+                    </ul>
+                </Section>
+            ) : null}
+
+            {data.courses && data.courses.length > 0 ? (
+                <Section title={resumeText(data, "courses")}>
+                    <div className="space-y-1.5">
+                        {data.courses.map((course, index) => (
+                            <div key={index} className="flex justify-between gap-4 text-[11.5px]">
+                                <span className="font-semibold text-slate-900">{course.name}</span>
+                                <span className="text-slate-500">{course.institution} | {course.year}</span>
+                            </div>
+                        ))}
+                    </div>
+                </Section>
+            ) : null}
+
+            {(data.skills.length > 0 || data.languages.length > 0 || (data.interests && data.interests.length > 0)) ? (
+                <div className="grid grid-cols-1 gap-5">
+                    {data.skills.length > 0 ? (
+                        <Section title={resumeText(data, "skills")}>
+                            <div className="flex flex-wrap gap-2">
+                                {data.skills.map((skill, index) => (
+                                    <span key={index} className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-medium text-slate-700">
+                                        {typeof skill === "object" ? skill.name : skill}
+                                    </span>
                                 ))}
                             </div>
-                        </div>
-                    )}
+                        </Section>
+                    ) : null}
 
-                    {/* Languages */}
-                    {data.languages.length > 0 && (
-                        <div>
-                            <h2
-                                className="mb-3 border-b pb-2 text-[11px] font-bold uppercase tracking-[0.18em]"
-                                style={{ color: theme.primary }}
-                            >
-                                {resumeText(data, "languages")}</h2>
-                            <div className="space-y-2.5">
-                                {data.languages.map((lang, i) => (
-                                    <div key={i}>
-                                        <div className="text-[11px] font-medium" style={{ color: theme.text }}>
-                                            {typeof lang === 'object' ? lang.name : lang}
-                                        </div>
-                                        {typeof lang === 'object' && lang.level && (
-                                            <div className="text-[11px]" style={{ color: theme.textMuted }}>{formatLanguageLevel(lang.level, data)}</div>
-                                        )}
-                                    </div>
+                    {data.languages.length > 0 ? (
+                        <Section title={resumeText(data, "languages")}>
+                            <div className="flex flex-wrap gap-2">
+                                {data.languages.map((language, index) => (
+                                    <span key={index} className="rounded-full bg-slate-100 px-3 py-1 text-[11px] font-medium text-slate-700">
+                                        {typeof language === "object" ? `${language.name} (${formatLanguageLevel(language.level, data)})` : language}
+                                    </span>
                                 ))}
                             </div>
-                        </div>
-                    )}
+                        </Section>
+                    ) : null}
 
-                    {/* Interests */}
-                    {data.interests && data.interests.length > 0 && (
-                        <div>
-                            <h2
-                                className="mb-3 border-b pb-2 text-[11px] font-bold uppercase tracking-[0.18em]"
-                                style={{ color: theme.primary }}
-                            >
-                                {resumeText(data, "interests")}</h2>
-                            <div className="flex flex-wrap gap-1">
-                                {data.interests.map((interest, i) => (
-                                    <span
-                                        key={i}
-                                        className="text-xs px-2 py-1 rounded"
-                                        style={{
-                                            backgroundColor: `${theme.primary}20`,
-                                            color: theme.text
-                                        }}
-                                    >
+                    {data.interests && data.interests.length > 0 ? (
+                        <Section title={resumeText(data, "interests")}>
+                            <div className="flex flex-wrap gap-2">
+                                {data.interests.map((interest, index) => (
+                                    <span key={index} className="rounded-full bg-slate-50 px-3 py-1 text-[11px] font-medium text-slate-600">
                                         {interest}
                                     </span>
                                 ))}
                             </div>
-                        </div>
-                    )}
+                        </Section>
+                    ) : null}
                 </div>
-
-                {/* Right Column - Main Content */}
-                <div className="flex-1 p-9 space-y-6">
-                    {/* Header */}
-                    <div className="border-b-2 pb-5" style={{ borderColor: theme.primary }}>
-                        <h1 className="text-[34px] font-bold leading-tight tracking-tight" style={{ color: theme.primary }}>
-                            {data.personal.name || resumeText(data, "nameFallback")}
-                        </h1>
-                        {data.personal.title && (
-                            <p className="mt-2 text-[15px] font-medium" style={{ color: theme.textMuted }}>
-                                {data.personal.title}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* Summary */}
-                    {data.personal.summary && (
-                        <div>
-                            <p className="whitespace-pre-wrap text-[13px] leading-6">
-                                {data.personal.summary}
-                            </p>
-                        </div>
-                    )}
-
-                    {/* Experience */}
-                    {data.experience.length > 0 && (
-                        <div>
-                            <h2
-                                className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.18em]"
-                                style={{ color: theme.primary }}
-                            >
-                                {resumeText(data, "experience")}</h2>
-                            <div className="space-y-5">
-                                {data.experience.map((exp, i) => (
-                                    <div key={i} className="relative border-b pb-4 last:border-b-0 last:pb-0" style={{ borderColor: `${theme.primary}22` }}>
-                                        <div className="flex items-start justify-between gap-4">
-                                            <div>
-                                                <h3 className="text-[13px] font-bold leading-snug">{exp.role}</h3>
-                                                <div className="mt-0.5 text-[12px] font-semibold" style={{ color: theme.primary }}>
-                                                    {exp.company}{exp.location && `, ${exp.location}`}
-                                                </div>
-                                            </div>
-                                            <span className="whitespace-nowrap text-[11px]" style={{ color: theme.textMuted }}>
-                                                {exp.start} - {exp.end}
-                                            </span>
-                                        </div>
-                                        {exp.description && (
-                                            <p className="mt-2 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
-                                                {exp.description}
-                                            </p>
-                                        )}
-                                        {exp.highlights && exp.highlights.length > 0 && (
-                                            <ul className="mt-2 space-y-1">
-                                                {exp.highlights.map((highlight, hi) => (
-                                                    <li key={hi} className="flex gap-2 text-[11px] leading-relaxed">
-                                                        <span style={{ color: theme.primary }}>•</span>
-                                                        <span>{highlight}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Internships */}
-                    {data.internships && data.internships.length > 0 && (
-                        <div>
-                            <h2
-                                className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.18em]"
-                                style={{ color: theme.primary }}
-                            >
-                                {resumeText(data, "internships")}</h2>
-                            <div className="space-y-4">
-                                {data.internships.map((intern, i) => (
-                                    <div key={i} className="relative border-b pb-4 last:border-b-0 last:pb-0" style={{ borderColor: `${theme.primary}22` }}>
-                                        <div className="flex items-start justify-between gap-4">
-                                            <div>
-                                                <h3 className="text-[13px] font-bold leading-snug">{intern.role}</h3>
-                                                <div className="mt-0.5 text-[12px] font-semibold" style={{ color: theme.primary }}>
-                                                    {intern.company}{intern.location && `, ${intern.location}`}
-                                                </div>
-                                            </div>
-                                            <span className="whitespace-nowrap text-[11px]" style={{ color: theme.textMuted }}>
-                                                {intern.start} - {intern.end}
-                                            </span>
-                                        </div>
-                                        {intern.description && (
-                                            <p className="mt-2 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
-                                                {intern.description}
-                                            </p>
-                                        )}
-                                        {intern.highlights && intern.highlights.length > 0 && (
-                                            <ul className="mt-2 space-y-1">
-                                                {intern.highlights.map((highlight, hi) => (
-                                                    <li key={hi} className="flex gap-2 text-[11px] leading-relaxed">
-                                                        <span style={{ color: theme.primary }}>•</span>
-                                                        <span>{highlight}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Education */}
-                    {data.education.length > 0 && (
-                        <div>
-                            <h2
-                                className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.18em]"
-                                style={{ color: theme.primary }}
-                            >
-                                {resumeText(data, "education")}</h2>
-                            <div className="space-y-4">
-                                {data.education.map((edu, i) => (
-                                    <div key={i} className="relative border-b pb-4 last:border-b-0 last:pb-0" style={{ borderColor: `${theme.primary}22` }}>
-                                        <div className="flex items-start justify-between gap-4">
-                                            <div>
-                                                <h3 className="text-[13px] font-bold leading-snug">{edu.degree}</h3>
-                                                <div className="mt-0.5 text-[12px] font-semibold" style={{ color: theme.primary }}>
-                                                    {edu.school}{edu.location && `, ${edu.location}`}
-                                                </div>
-                                            </div>
-                                            <span className="whitespace-nowrap text-[11px]" style={{ color: theme.textMuted }}>
-                                                {edu.start} - {edu.end}
-                                            </span>
-                                        </div>
-                                        {edu.description && (
-                                            <p className="mt-2 text-[11px] leading-relaxed" style={{ color: theme.textMuted }}>
-                                                {edu.description}
-                                            </p>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Courses */}
-                    {data.courses && data.courses.length > 0 && (
-                        <div>
-                            <h2
-                                className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.18em]"
-                                style={{ color: theme.primary }}
-                            >
-                                {resumeText(data, "courses")}</h2>
-                            <div className="space-y-2">
-                                {data.courses.map((course, i) => (
-                                    <div key={i} className="flex justify-between gap-4 text-[12px]">
-                                        <span className="font-medium">{course.name}</span>
-                                        <span style={{ color: theme.textMuted }}>
-                                            {course.institution} • {course.year}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-                    {/* Awards */}
-                    {data.awards && data.awards.length > 0 && (
-                        <div>
-                            <h2
-                                className="mb-4 border-b pb-2 text-xs font-bold uppercase tracking-[0.18em]"
-                                style={{ color: theme.primary }}
-                            >
-                                {resumeText(data, "awards")}</h2>
-                            <ul className="space-y-2 ml-1">
-                                {data.awards.map((award, i) => (
-                                    <li key={i} className="flex items-start gap-2 text-[12px] leading-relaxed">
-                                        <span style={{ color: theme.primary }}>•</span>
-                                        <span>{award}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </div>
-            </div>
+            ) : null}
         </div>
     );
 }
-
-
-
-

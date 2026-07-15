@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } fro
 import { createPortal } from "react-dom";
 import type { CVData } from "@/lib/cv";
 import { track, type FullPreviewSource } from "@/lib/analytics";
-import { cvDownloadPrice } from "@/lib/site-content";
 import type { UiLanguage } from "@/lib/ui-language";
 import PdfPagedPreview from "./PdfPagedPreview";
 import PreviewDesignPanel from "./PreviewDesignPanel";
@@ -40,12 +39,6 @@ const MAX_CUSTOM_ZOOM = 1.25;
 const ZOOM_STEP = 0.1;
 const MIN_DESKTOP_FIT_ZOOM = 0.72;
 const MAX_DESKTOP_FIT_ZOOM = 0.9;
-
-function formatPrice(uiLanguage: UiLanguage) {
-  return uiLanguage === "en"
-    ? cvDownloadPrice.display.replace(",", ".")
-    : cvDownloadPrice.display;
-}
 
 export default function FullCvPreviewDialog({
   cvId,
@@ -324,8 +317,11 @@ export default function FullCvPreviewDialog({
   const saveLabel = isSaving || !isSaved
     ? isEnglish ? "Saving..." : "Opslaan..."
     : isEnglish ? "Saved" : "Opgeslagen";
+  const paidDownloadLabel = isEnglish
+    ? "Download PDF"
+    : "PDF downloaden";
   const primaryLabel = isReady
-    ? isEnglish ? "Download CV" : "CV downloaden"
+    ? paidDownloadLabel
     : isEnglish
       ? `Finish CV · ${remainingSteps} ${remainingSteps === 1 ? "step" : "steps"} left`
       : `CV afronden · nog ${remainingSteps} ${remainingSteps === 1 ? "stap" : "stappen"}`;
@@ -335,10 +331,9 @@ export default function FullCvPreviewDialog({
   const mobilePageLabel = isEnglish
     ? `Page ${activePage} of ${pageCount}`
     : `Pagina ${activePage} van ${pageCount}`;
-  const price = formatPrice(uiLanguage);
   const priceCopy = isEnglish
-    ? `One-time ${price} incl. VAT · No subscription`
-    : `Eenmalig ${price} incl. btw · Geen abonnement`;
+    ? "Secure checkout · No subscription · Immediate PDF"
+    : "Veilig betalen · Geen abonnement · Direct je PDF";
 
   if (!hasMounted || typeof document === "undefined") return null;
 

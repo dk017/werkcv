@@ -2,7 +2,7 @@ import puppeteer from 'puppeteer';
 import { CVData } from './cv';
 import { formatGender, formatLanguageLevel, formatMaritalStatus, formatResumeDateRange, formatResumeInlineValue, getResumeLanguage, resumeText } from './resume-language';
 import { ColorTheme, getThemeForTemplate } from './templates';
-import { templateRegistry, getTemplateConfig } from './templates/registry';
+import { templateRegistry, getTemplateConfig, getDefaultThemeId } from './templates/registry';
 import { escapeHtml, wrapPage } from './templates/html/utils';
 
 // ============================================================
@@ -142,14 +142,10 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
 
     // Sidebar styling
     let sidebarStyle = '';
-    let sidebarTextColor = theme.textMuted;
-    let sidebarHeadingColor = theme.primary;
     let sidebarWidth = '35%';
 
     if (hasColoredSidebar) {
         sidebarStyle = `background-color: ${theme.primary}; color: white;`;
-        sidebarTextColor = 'rgba(255,255,255,0.9)';
-        sidebarHeadingColor = 'rgba(255,255,255,0.7)';
     } else if (isRobust) {
         sidebarStyle = `background-color: #f8f9fa;`;
         sidebarWidth = '32%';
@@ -706,7 +702,6 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
             : `background-color: ${theme.primary}08; border-left: 1px solid ${theme.border};`;
 
     const sidebarTextColor = hasColoredSidebar ? 'rgba(255,255,255,0.9)' : theme.textMuted;
-    const sidebarHeadingColor = hasColoredSidebar ? 'rgba(255,255,255,0.9)' : theme.primary;
     const mainWidth = isElegant ? '60%' : '65%';
     const sidebarWidth = isElegant ? '40%' : '35%';
 
@@ -968,7 +963,8 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
 // Templates: classical, simple, monochrome
 // ============================================================
 
-function buildSingleColumnHTML(data: CVData, theme: ColorTheme, templateId: string): string {
+function buildSingleColumnHTML(data: CVData, theme: ColorTheme, _templateId: string): string {
+    void _templateId;
     const e = escapeHtml;
     const rt = (key: Parameters<typeof resumeText>[1]) => resumeText(data, key);
     const contactItems = [
@@ -1336,7 +1332,7 @@ function buildATSHTML(data: CVData, theme: ColorTheme): string {
 export async function generatePDF(
     data: CVData,
     templateId: string = 'professional',
-    colorThemeId: string = 'classic-blue'
+    colorThemeId: string = getDefaultThemeId(templateId)
 ): Promise<Buffer> {
     const html = buildHTML(data, templateId, colorThemeId);
 

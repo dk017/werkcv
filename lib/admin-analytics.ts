@@ -167,6 +167,15 @@ export type RecentSignupRow = {
   checkoutModalViews: number;
   checkoutClicks: number;
   paidOrders: number;
+  fullPreviewOpens: number;
+  fullPreviewCloses: number;
+  fullPreviewSeconds: number;
+  maxPreviewPageViewed: number;
+  previewPageCount: number;
+  designOpens: number;
+  templateChanges: number;
+  lastPreviewCloseMethod: string | null;
+  diagnostic: string;
   stoppedAt: string;
 };
 
@@ -712,7 +721,15 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
           COUNT(*) FILTER (WHERE e.event IN ('pdf_download_started', 'full_preview_download_clicked'))::int AS "downloadClicks",
           COUNT(*) FILTER (WHERE e.event IN ('checkout_start', 'checkout_started', 'checkout_option_clicked'))::int AS "checkoutStarts",
           COUNT(*) FILTER (WHERE e.event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
-          COUNT(*) FILTER (WHERE e.event = 'checkout_option_clicked')::int AS "checkoutClicks"
+          COUNT(*) FILTER (WHERE e.event = 'checkout_option_clicked')::int AS "checkoutClicks",
+          COUNT(*) FILTER (WHERE e.event = 'full_preview_opened')::int AS "fullPreviewOpens",
+          COUNT(*) FILTER (WHERE e.event = 'full_preview_closed')::int AS "fullPreviewCloses",
+          COALESCE(MAX(((e.properties->>'durationMs')::int / 1000)) FILTER (WHERE e.event = 'full_preview_closed'), 0)::int AS "fullPreviewSeconds",
+          COALESCE(MAX((e.properties->>'maxPageViewed')::int) FILTER (WHERE e.event = 'full_preview_closed'), 0)::int AS "maxPreviewPageViewed",
+          COALESCE(MAX((e.properties->>'pageCount')::int) FILTER (WHERE e.event IN ('full_preview_opened', 'full_preview_closed')), 0)::int AS "previewPageCount",
+          COUNT(*) FILTER (WHERE e.event = 'full_preview_design_opened')::int AS "designOpens",
+          COUNT(*) FILTER (WHERE e.event IN ('full_preview_template_selected', 'full_preview_color_changed', 'template_selected'))::int AS "templateChanges",
+          (ARRAY_AGG(e.properties->>'closeMethod' ORDER BY e."createdAt" DESC) FILTER (WHERE e.event = 'full_preview_closed'))[1] AS "lastPreviewCloseMethod"
         FROM cv_base cv
         JOIN "AnalyticsEvent" e ON e."cvId" = cv.id
         WHERE e."createdAt" >= ${since}
@@ -720,6 +737,12 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
             'ready_to_download_viewed',
             'pdf_download_started',
             'full_preview_download_clicked',
+            'full_preview_opened',
+            'full_preview_closed',
+            'full_preview_design_opened',
+            'full_preview_template_selected',
+            'full_preview_color_changed',
+            'template_selected',
             'checkout_paywall_reached',
             'checkout_modal_viewed',
             'checkout_start',
@@ -751,6 +774,38 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
         COALESCE(MAX(eb."checkoutModalViews"), 0)::int AS "checkoutModalViews",
         COALESCE(MAX(eb."checkoutClicks"), 0)::int AS "checkoutClicks",
         COALESCE(MAX(ob."paidOrders"), 0)::int AS "paidOrders",
+        COALESCE(MAX(eb."fullPreviewOpens"), 0)::int AS "fullPreviewOpens",
+        COALESCE(MAX(eb."fullPreviewCloses"), 0)::int AS "fullPreviewCloses",
+        COALESCE(MAX(eb."fullPreviewSeconds"), 0)::int AS "fullPreviewSeconds",
+        COALESCE(MAX(eb."maxPreviewPageViewed"), 0)::int AS "maxPreviewPageViewed",
+        COALESCE(MAX(eb."previewPageCount"), 0)::int AS "previewPageCount",
+        COALESCE(MAX(eb."designOpens"), 0)::int AS "designOpens",
+        COALESCE(MAX(eb."templateChanges"), 0)::int AS "templateChanges",
+        MAX(eb."lastPreviewCloseMethod") AS "lastPreviewCloseMethod",
+        CASE
+          WHEN COALESCE(MAX(ob."paidOrders"), 0) > 0 THEN 'Paid order recorded'
+          WHEN COALESCE(MAX(eb."checkoutStarts"), 0) > 0 THEN 'Redirected to checkout; no paid order/webhook yet'
+          WHEN COALESCE(MAX(eb."fullPreviewOpens"), 0) > 0 AND COALESCE(MAX(eb."downloadClicks"), 0) = 0 THEN
+            CONCAT(
+              'Opened full preview ',
+              COALESCE(MAX(eb."fullPreviewOpens"), 0),
+              'x; closed after ',
+              COALESCE(MAX(eb."fullPreviewSeconds"), 0),
+              's via ',
+              COALESCE(MAX(eb."lastPreviewCloseMethod"), 'unknown'),
+              '; viewed page ',
+              COALESCE(MAX(eb."maxPreviewPageViewed"), 0),
+              '/',
+              COALESCE(MAX(eb."previewPageCount"), 0),
+              '; design opens ',
+              COALESCE(MAX(eb."designOpens"), 0),
+              '; template/theme changes ',
+              COALESCE(MAX(eb."templateChanges"), 0)
+            )
+          WHEN COALESCE(MAX(eb."readyViews"), 0) > 0 THEN 'Ready state shown; no full-preview or download click recorded'
+          WHEN COUNT(cv.id) > 0 THEN 'CV created; did not reach ready state'
+          ELSE 'Signup completed; no CV events recorded'
+        END AS diagnostic,
         CASE
           WHEN COALESCE(MAX(ob."paidOrders"), 0) > 0 THEN 'Paid'
           WHEN COALESCE(MAX(eb."checkoutStarts"), 0) > 0 THEN 'Checkout started, unpaid'

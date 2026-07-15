@@ -3,7 +3,7 @@
 
 import { CVData } from '@/lib/cv';
 import { getTemplateComponent } from '@/app/editor/templates';
-import { getThemeById } from '@/lib/templates/registry';
+import { getDefaultThemeId, getThemeById } from '@/lib/templates/registry';
 import { LinkTextProvider } from '@/app/editor/templates/link-utils';
 
 interface SampleCVPreviewProps {
@@ -16,12 +16,12 @@ interface SampleCVPreviewProps {
 export function SampleCVPreview({
     data,
     templateId = 'professional',
-    colorThemeId = 'classic-blue',
+    colorThemeId,
     scale = 0.5,
     maxHeight = 500,
 }: SampleCVPreviewProps & { maxHeight?: number }) {
     const TemplateComponent = getTemplateComponent(templateId);
-    const theme = getThemeById(colorThemeId);
+    const theme = getThemeById(colorThemeId || getDefaultThemeId(templateId));
 
     return (
         <div
@@ -53,7 +53,7 @@ export function SampleCVPreview({
 export function SampleCVPreviewSmall({
     data,
     templateId = 'professional',
-    colorThemeId = 'classic-blue',
+    colorThemeId,
 }: Omit<SampleCVPreviewProps, 'scale'>) {
     return (
         <SampleCVPreview
@@ -69,7 +69,7 @@ export function SampleCVPreviewSmall({
 export function SampleCVPreviewMedium({
     data,
     templateId = 'professional',
-    colorThemeId = 'classic-blue',
+    colorThemeId,
 }: Omit<SampleCVPreviewProps, 'scale'>) {
     return (
         <SampleCVPreview

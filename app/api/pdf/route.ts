@@ -4,6 +4,7 @@ import { generatePDF } from '@/lib/pdf';
 import { CVData } from '@/lib/cv';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 import { reportOpsIncident } from '@/lib/ops-alerts';
+import { getDefaultThemeId } from '@/lib/templates/registry';
 
 export async function GET(request: NextRequest) {
     const user = await getCurrentUserFromRequest(request);
@@ -66,7 +67,7 @@ export async function GET(request: NextRequest) {
         pdfBuffer = await generatePDF(
             cv.data as CVData,
             cv.templateId,
-            cv.colorThemeId ?? 'classic-blue'
+            cv.colorThemeId ?? getDefaultThemeId(cv.templateId)
         );
     } catch (error) {
         console.error('PDF generation failed:', error);
@@ -86,7 +87,7 @@ export async function GET(request: NextRequest) {
             notifyUser: true,
             context: {
                 templateId: cv.templateId,
-                colorThemeId: cv.colorThemeId ?? 'classic-blue',
+                colorThemeId: cv.colorThemeId ?? getDefaultThemeId(cv.templateId),
             },
         });
         return NextResponse.json(

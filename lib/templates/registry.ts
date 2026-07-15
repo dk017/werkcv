@@ -15,18 +15,18 @@ export const templateRegistry: TemplateRegistry = {
         id: 'professional',
         name: 'Professional',
         nameDutch: 'Professioneel',
-        description: 'Strak, helder en zeer modern. Perfect voor zakelijke functies.',
+        description: 'Premium, rustig en recruiter-proof. Een sterke standaard voor ervaren professionals.',
         category: 'classic',
-        layout: 'two-column-left',
+        layout: 'single-column',
         colorThemes: pickThemes(
-            'classic-blue',
-            'elegant-navy',
             'charcoal',
+            'elegant-navy',
+            'classic-blue',
             'modern-teal',
             'sage-green',
             'burgundy'
         ),
-        defaultThemeId: 'classic-blue',
+        defaultThemeId: 'charcoal',
     },
 
     'classical': {

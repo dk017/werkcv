@@ -31,7 +31,7 @@ const showcaseTemplates = ['professional', 'modern', 'elegant', 'ats']
 // Hero carousel: 8 best templates with their strongest color theme
 const HERO_SCALE = 220 / 794; // renders A4 width (794px) → 220px
 const heroSlides = [
-    { templateId: 'professional', themeId: 'classic-blue',   label: 'Professioneel' },
+    { templateId: 'professional', themeId: 'charcoal',       label: 'Professioneel' },
     { templateId: 'modern',       themeId: 'ocean-blue',     label: 'Modern' },
     { templateId: 'elegant',      themeId: 'elegant-navy',   label: 'Elegant' },
     { templateId: 'dynamic',      themeId: 'purple-royal',   label: 'Dynamisch' },

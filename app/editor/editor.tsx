@@ -32,7 +32,6 @@ import {
     markEditorStartedTracked,
     track,
     type CvUploadSource,
-    type FullPreviewSource,
 } from "@/lib/analytics";
 import { UiLanguage } from "@/lib/ui-language";
 import {
@@ -50,7 +49,6 @@ import {
 } from "@/lib/pending-cv-match";
 import type { CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match";
 import { suggestTargetRoleFromExperience } from "@/lib/cv-normalize";
-import FullCvPreviewDialog from "./FullCvPreviewDialog";
 import ScaledCvPreview, { A4_WIDTH_PX } from "./ScaledCvPreview";
 import EditorFeedbackWidget from "./EditorFeedbackWidget";
 
@@ -71,7 +69,7 @@ const READY_TO_DOWNLOAD_TRACKED_PREFIX = 'werkcv_ready_to_download_tracked_';
 const CHECKOUT_FLOW_VARIANT = 'direct' as const;
 
 type AtsLanguageLock = 'auto' | 'nl' | 'en';
-type DownloadSource = 'toolbar' | 'ready_panel' | 'post_completion_tools' | 'full_preview';
+type DownloadSource = 'toolbar' | 'ready_panel' | 'post_completion_tools';
 type TemplateSelectorSource = 'toolbar' | 'ready_state';
 type MatchImportFeedback =
     | { status: 'idle' }
@@ -313,7 +311,6 @@ export default function Editor({
     const [colorThemeId, setColorThemeId] = useState(initialColorThemeId);
     const [showUploader, setShowUploader] = useState(false);
     const [uploaderSource, setUploaderSource] = useState<CvUploadSource>("toolbar");
-    const [fullPreviewSource, setFullPreviewSource] = useState<FullPreviewSource | null>(null);
     const [pageCount, setPageCount] = useState(1);
     const [desktopPreviewScale, setDesktopPreviewScale] = useState(DESKTOP_PREVIEW_SCALE);
     const [isTemplateSelectorOpen, setIsTemplateSelectorOpen] = useState(false);
@@ -343,8 +340,15 @@ export default function Editor({
     const quickBuildViewedRef = useRef(false);
     const quickBuildStartedRef = useRef(false);
     const isGuidedBuild = !showDesignWorkspace && !isReadyToDownload;
+    const downloadPriceLabel = uiLanguage === "en"
+        ? cvDownloadPrice.display.replace(",", ".")
+        : cvDownloadPrice.display;
+    const paidDownloadCtaLabel = tr(
+        "PDF downloaden",
+        "Download PDF"
+    );
     const toolbarCtaLabel = isReadyToDownload
-        ? tr("CV downloaden", "Download CV")
+        ? paidDownloadCtaLabel
         : isGuidedBuild && completionState.nextStep
             ? tr(`Volgende: ${completionState.nextStep.label}`, `Next: ${completionState.nextStep.label}`)
             : uiLanguage === "en"
@@ -1053,7 +1057,7 @@ export default function Editor({
                                     <>
                                         <span className="sm:hidden">
                                             {isReadyToDownload
-                                                ? tr("Download", "Download")
+                                                ? "PDF"
                                                 : isGuidedBuild
                                                     ? tr("Volgende", "Next")
                                                     : tr("Afronden", "Finish")}
@@ -1240,13 +1244,12 @@ export default function Editor({
                                     <button
                                         type="button"
                                         onClick={() => {
-                                            track("cta_clicked", { location: "editor_upload_success", label: "review_cv" });
+                                            track("cta_clicked", { location: "editor_upload_success", label: "continue_in_editor" });
                                             setShowPostUploadReview(false);
-                                            setFullPreviewSource("upload_success");
                                         }}
                                         className="inline-flex shrink-0 items-center justify-center rounded-md border border-blue-800 bg-blue-700 px-5 py-3 text-sm font-black text-white transition-colors hover:bg-blue-800"
                                     >
-                                        {tr("CV controleren →", "Review CV →")}
+                                        {tr("Verder in editor →", "Continue in editor →")}
                                     </button>
                                 </div>
                             </section>
@@ -1264,8 +1267,8 @@ export default function Editor({
                                         </h2>
                                         <p className="mt-1 text-sm font-medium text-slate-600">
                                             {tr(
-                                                `Download je PDF wanneer je tevreden bent. Eenmalig ${cvDownloadPrice.display}. Geen abonnement. Geen automatische verlenging.`,
-                                                `Download your PDF when you are happy with it. One-time ${cvDownloadPrice.display.replace(",", ".")}. No subscription. No automatic renewal.`
+                                                `Download je PDF direct na de betaling. Eenmalig ${downloadPriceLabel}, geen abonnement en geen automatische verlenging.`,
+                                                `Download your PDF immediately after payment. One-time ${downloadPriceLabel}, no subscription and no automatic renewal.`
                                             )}
                                         </p>
                                     </div>
@@ -1277,7 +1280,7 @@ export default function Editor({
                                     >
                                         {isDownloading
                                             ? tr("Bezig...", "Working...")
-                                            : tr("CV downloaden", "Download CV")}
+                                            : paidDownloadCtaLabel}
                                     </button>
                                 </div>
                             </section>
@@ -1522,7 +1525,7 @@ export default function Editor({
                                     >
                                         {isDownloading
                                             ? tr("Bezig...", "Working...")
-                                            : tr("CV downloaden", "Download CV")}
+                                            : paidDownloadCtaLabel}
                                     </button>
                                 ) : null}
                             </div>
@@ -1639,17 +1642,6 @@ export default function Editor({
                         <div className="bg-slate-900 px-2 py-1 text-xs font-semibold text-white border border-slate-900 rounded-md">
                             Live
                         </div>
-                        <button
-                            type="button"
-                            onClick={() => setFullPreviewSource("desktop_preview_header")}
-                            className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-blue-200 bg-blue-50 text-blue-700 transition-colors hover:bg-blue-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                            title={tr("Open grote CV-weergave", "Open full CV preview")}
-                            aria-label={tr("Open grote CV-weergave", "Open full CV preview")}
-                        >
-                            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5" />
-                            </svg>
-                        </button>
                     </div>
                 </div>
                 {/* Scrollable preview area */}
@@ -1657,49 +1649,16 @@ export default function Editor({
                     ref={desktopPreviewViewportRef}
                     className="flex-1 overflow-y-auto p-4 xl:p-5 flex justify-center items-start"
                 >
-                    {!fullPreviewSource ? (
-                        <div
-                            role="button"
-                            tabIndex={0}
-                            onClick={() => setFullPreviewSource("desktop_document")}
-                            onKeyDown={(event) => {
-                                if (event.key === "Enter" || event.key === " ") {
-                                    event.preventDefault();
-                                    setFullPreviewSource("desktop_document");
-                                }
-                            }}
-                            className="cursor-zoom-in outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-4 focus-visible:ring-offset-[#f0faf9]"
-                            title={tr("Klik voor grote CV-weergave", "Click for full CV preview")}
-                            aria-label={tr("Open grote CV-weergave", "Open full CV preview")}
-                        >
-                            <ScaledCvPreview
-                                data={data}
-                                templateId={templateId}
-                                colorThemeId={colorThemeId}
-                                scale={desktopPreviewScale}
-                                pageCount={pageCount}
-                                onPageCountChange={handlePageCountChange}
-                            />
-                        </div>
-                    ) : null}
+                    <ScaledCvPreview
+                        data={data}
+                        templateId={templateId}
+                        colorThemeId={colorThemeId}
+                        scale={desktopPreviewScale}
+                        pageCount={pageCount}
+                        onPageCountChange={handlePageCountChange}
+                    />
                 </div>
             </div> : null}
-
-            {/* Mobile/tablet full-preview trigger */}
-            {!isGuidedBuild ? <button
-                type="button"
-                onClick={() => setFullPreviewSource("mobile_floating")}
-                className={`lg:hidden fixed bottom-4 right-4 z-40 px-4 py-2 font-semibold text-xs rounded-md border shadow-sm ${
-                    isReadyToDownload
-                        ? "border-blue-300 bg-blue-50 text-blue-800"
-                        : "border-slate-900 bg-slate-900 text-white"
-                }`}
-            >
-                {isReadyToDownload
-                    ? tr("CV bekijken", "Review CV")
-                    : tr("Live preview", "Live preview")}
-                {pageCount > 1 ? ` (${pageCount})` : ""}
-            </button> : null}
 
             <EditorFeedbackWidget
                 accountEmail={accountEmail}
@@ -1714,32 +1673,6 @@ export default function Editor({
                     nextStep: completionState.nextStep?.id || null,
                 }}
             />
-
-            {fullPreviewSource ? (
-                <FullCvPreviewDialog
-                    cvId={id}
-                    data={data}
-                    templateId={templateId}
-                    colorThemeId={colorThemeId}
-                    completionScore={completionScore}
-                    isReady={isReadyToDownload}
-                    remainingSteps={remainingCoreSteps}
-                    isSaved={isSaved}
-                    isSaving={isSubmitting}
-                    isDownloading={isDownloading}
-                    pageCount={pageCount}
-                    source={fullPreviewSource}
-                    uiLanguage={uiLanguage}
-                    onClose={() => setFullPreviewSource(null)}
-                    onContinueEditing={() => {
-                        if (completionState.nextStep) scrollToCompletionStep(completionState.nextStep);
-                    }}
-                    onDownload={() => handleDownload("full_preview")}
-                    onPageCountChange={handlePageCountChange}
-                    onSelectTemplate={handleTemplateChange}
-                    onSelectTheme={handleColorThemeChange}
-                />
-            ) : null}
 
             {/* CV Upload Modal */}
             {showUploader && (

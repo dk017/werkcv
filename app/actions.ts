@@ -7,6 +7,7 @@ import { buildDodoCheckoutURL, isDodoEnabledForCheckout } from '@/lib/dodo'
 import { getCurrentUser } from '@/lib/auth'
 import { reportOpsIncident } from '@/lib/ops-alerts'
 import { getResumeLanguage } from '@/lib/resume-language'
+import { getDefaultThemeId } from '@/lib/templates/registry'
 
 const userCVListSelect = {
     id: true,
@@ -43,7 +44,7 @@ export type CheckoutUrlResult =
         supportNotified?: boolean;
     };
 
-export async function createCV(templateId: string = 'professional', colorThemeId: string = 'classic-blue', initialData?: CVData) {
+export async function createCV(templateId: string = 'professional', colorThemeId?: string, initialData?: CVData) {
     const user = await getCurrentUser();
     if (!user) {
         throw new Error('AUTH_REQUIRED');
@@ -63,7 +64,7 @@ export async function createCV(templateId: string = 'professional', colorThemeId
             title: 'Mijn CV',
             data: cvData,
             templateId,
-            colorThemeId,
+            colorThemeId: colorThemeId || getDefaultThemeId(templateId),
             userId: user.id,
         }
     })
@@ -88,7 +89,7 @@ export async function getCVWithSettings(id: string) {
     return {
         data: cv.data as unknown as CVData,
         templateId: cv.templateId,
-        colorThemeId: cv.colorThemeId ?? 'classic-blue',
+        colorThemeId: cv.colorThemeId ?? getDefaultThemeId(cv.templateId),
     }
 }
 
