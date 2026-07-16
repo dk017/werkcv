@@ -1670,6 +1670,7 @@ export default function Editor({
                         colorThemeId={colorThemeId}
                         scale={desktopPreviewScale}
                         pageCount={pageCount}
+                        paginated
                         onPageCountChange={handlePageCountChange}
                     />
                 </div>
