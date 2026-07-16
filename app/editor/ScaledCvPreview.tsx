@@ -44,6 +44,13 @@ export default function ScaledCvPreview({
               height: A4_HEIGHT_PX * scale,
             }}
           >
+            {pageIndex > 0 ? (
+              <div
+                className="pointer-events-none absolute inset-x-0 top-0 z-10 bg-white"
+                style={{ height: CONTINUED_PAGE_TOP_PADDING_PX * scale }}
+                aria-hidden="true"
+              />
+            ) : null}
             <div
               className="absolute left-0 w-[794px]"
               style={{
