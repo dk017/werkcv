@@ -8,10 +8,17 @@ interface PreviewProps {
     data: CVData;
     templateId: string;
     colorThemeId: string;
+    continuedPageTopPadding?: number;
     onPageCountChange?: (pageCount: number) => void;
 }
 
-export default function Preview({ data, templateId, colorThemeId, onPageCountChange }: PreviewProps) {
+export default function Preview({
+    data,
+    templateId,
+    colorThemeId,
+    continuedPageTopPadding = 0,
+    onPageCountChange,
+}: PreviewProps) {
     const TemplateComponent = getTemplateComponent(templateId);
     const theme = getTheme(templateId, colorThemeId);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -35,10 +42,14 @@ export default function Preview({ data, templateId, colorThemeId, onPageCountCha
 
         for (const entry of entries) {
             const heightPx = entry.contentRect.height;
-            const pages = Math.max(1, Math.ceil(heightPx / a4HeightRef.current));
+            const firstPageHeight = a4HeightRef.current;
+            const continuedPageHeight = Math.max(1, firstPageHeight - continuedPageTopPadding);
+            const pages = heightPx <= firstPageHeight
+                ? 1
+                : 1 + Math.ceil((heightPx - firstPageHeight) / continuedPageHeight);
             onPageCountChange(pages);
         }
-    }, [onPageCountChange]);
+    }, [continuedPageTopPadding, onPageCountChange]);
 
     useEffect(() => {
         if (!containerRef.current || !onPageCountChange) return;

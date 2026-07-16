@@ -6,6 +6,7 @@ import { LinkTextProvider } from "./templates/link-utils";
 
 export const A4_WIDTH_PX = 794;
 export const A4_HEIGHT_PX = 1123;
+const CONTINUED_PAGE_TOP_PADDING_PX = 38;
 
 interface ScaledCvPreviewProps {
   data: CVData;
@@ -46,7 +47,13 @@ export default function ScaledCvPreview({
             <div
               className="absolute left-0 w-[794px]"
               style={{
-                top: -pageIndex * A4_HEIGHT_PX * scale,
+                top: (
+                  pageIndex === 0
+                    ? 0
+                    : CONTINUED_PAGE_TOP_PADDING_PX
+                      - A4_HEIGHT_PX
+                      - (pageIndex - 1) * (A4_HEIGHT_PX - CONTINUED_PAGE_TOP_PADDING_PX)
+                ) * scale,
                 transform: `scale(${scale})`,
                 transformOrigin: "top left",
               }}
@@ -56,6 +63,7 @@ export default function ScaledCvPreview({
                   data={data}
                   templateId={templateId}
                   colorThemeId={colorThemeId}
+                  continuedPageTopPadding={CONTINUED_PAGE_TOP_PADDING_PX}
                   onPageCountChange={pageIndex === 0 ? onPageCountChange : undefined}
                 />
               </LinkTextProvider>
