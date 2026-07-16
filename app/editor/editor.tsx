@@ -65,6 +65,9 @@ interface EditorProps {
 const inputClass = "w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100";
 const inputStyle = undefined;
 const DESKTOP_PREVIEW_SCALE = 0.58;
+const DESKTOP_PREVIEW_MIN_SCALE = 0.42;
+const DESKTOP_PREVIEW_MAX_SCALE = 1.08;
+const DESKTOP_PREVIEW_GUTTER_PX = 16;
 const READY_TO_DOWNLOAD_TRACKED_PREFIX = 'werkcv_ready_to_download_tracked_';
 const CHECKOUT_FLOW_VARIANT = 'direct' as const;
 
@@ -541,7 +544,13 @@ export default function Editor({
             setter: (value: number) => void
         ) => {
             if (!el) return;
-            const width = Math.max(0, el.clientWidth - 32);
+            const styles = window.getComputedStyle(el);
+            const horizontalPadding = Number.parseFloat(styles.paddingLeft)
+                + Number.parseFloat(styles.paddingRight);
+            const width = Math.max(
+                0,
+                el.clientWidth - horizontalPadding - DESKTOP_PREVIEW_GUTTER_PX
+            );
             const fitScale = width / A4_WIDTH_PX;
             const clamped = Math.max(minScale, Math.min(maxScale, fitScale));
             if (Number.isFinite(clamped)) {
@@ -550,7 +559,12 @@ export default function Editor({
         };
 
         const recalc = () => {
-            computeScale(desktopPreviewViewportRef.current, 0.5, 1, setDesktopPreviewScale);
+            computeScale(
+                desktopPreviewViewportRef.current,
+                DESKTOP_PREVIEW_MIN_SCALE,
+                DESKTOP_PREVIEW_MAX_SCALE,
+                setDesktopPreviewScale
+            );
         };
 
         recalc();
@@ -559,7 +573,7 @@ export default function Editor({
         if (desktopPreviewViewportRef.current) observer.observe(desktopPreviewViewportRef.current);
 
         return () => observer.disconnect();
-    }, []);
+    }, [isGuidedBuild]);
 
     useEffect(() => {
         if (hasEditorStartedTracked(id)) return;
@@ -1647,6 +1661,7 @@ export default function Editor({
                 {/* Scrollable preview area */}
                 <div
                     ref={desktopPreviewViewportRef}
+                    data-live-preview-viewport
                     className="flex-1 overflow-y-auto p-4 xl:p-5 flex justify-center items-start"
                 >
                     <ScaledCvPreview
