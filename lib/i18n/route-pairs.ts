@@ -209,13 +209,11 @@ export function getLanguageAlternates(pathname: string): Record<string, string> 
 
   const nlUrl = `https://werkcv.nl${pair.nl === "/" ? "" : pair.nl}`;
   const enUrl = `https://werkcv.nl${pair.en}`;
-  const defaultUrl = normalizedPath === pair.en ? enUrl : nlUrl;
-
   return {
     nl: nlUrl,
     "nl-NL": nlUrl,
     en: enUrl,
     "en-NL": enUrl,
-    "x-default": defaultUrl,
+    "x-default": nlUrl,
   };
 }

@@ -28,13 +28,9 @@ export function buildEnglishMetadata({
           "en-NL": canonical,
           nl: `${BASE_URL}${nlPath}`,
           "nl-NL": `${BASE_URL}${nlPath}`,
-          "x-default": canonical,
+          "x-default": `${BASE_URL}${nlPath}`,
         }
-      : {
-          en: canonical,
-          "en-NL": canonical,
-          "x-default": canonical,
-        });
+      : undefined);
   const fullTitle = `${title} | WerkCV`;
   const ogImageUrl = `${BASE_URL}/opengraph-image`;
 
@@ -46,7 +42,7 @@ export function buildEnglishMetadata({
     keywords,
     alternates: {
       canonical,
-      languages: languageAlternates,
+      ...(languageAlternates ? { languages: languageAlternates } : {}),
     },
     openGraph: {
       title: fullTitle,

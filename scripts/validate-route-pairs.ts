@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import {
   getCounterpart,
+  getLanguageAlternates,
   getRoutePair,
   routePairs,
   type RoutePair,
@@ -12,6 +13,10 @@ assert.equal(getCounterpart("/en/ats-resume-netherlands"), "/cv-tips/ats-vriende
 assert.equal(getCounterpart("/some-unmapped-page"), null);
 assert.equal(getCounterpart("/editor", "hreflang"), null);
 assert.equal(getCounterpart("/templates/"), "/en/templates");
+assert.equal(
+  getLanguageAlternates("/en/templates")?.["x-default"],
+  "https://werkcv.nl/templates",
+);
 assert.equal(getRoutePair("/en/editor")?.preserveSearch, true);
 assert.equal(getCounterpart("/cv-gids/foto-op-cv-nederland"), null);
 assert.equal(

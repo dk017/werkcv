@@ -67,6 +67,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: pageUrl,
     languages: {
+      en: "https://werkcv.nl/en/templates",
       "nl-NL": pageUrl,
       "en-NL": "https://werkcv.nl/en/templates",
       "x-default": pageUrl,

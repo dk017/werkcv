@@ -21,11 +21,6 @@ export const metadata: Metadata = buildDutchMetadata({
         'perfect voorbeeld van een cv',
         'cv template',
     ],
-    languages: {
-        'nl-NL': 'https://werkcv.nl/cv-voorbeelden',
-        'en-NL': 'https://werkcv.nl/en/dutch-cv-examples',
-        'x-default': 'https://werkcv.nl/cv-voorbeelden',
-    },
 });
 
 const categoryAccents: Record<string, string> = {
