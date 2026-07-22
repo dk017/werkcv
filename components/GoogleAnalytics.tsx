@@ -2,13 +2,10 @@ import Script from "next/script";
 
 /**
  * Google Analytics 4 loader.
- * Set NEXT_PUBLIC_GA_MEASUREMENT_ID in .env to enable.
- * When not set, nothing renders — zero overhead.
+ * NEXT_PUBLIC_GA_MEASUREMENT_ID can override the production property.
  */
 export default function GoogleAnalytics() {
-    const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
-
-    if (!gaId) return null;
+    const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-PCC26F3HBJ";
 
     return (
         <>
