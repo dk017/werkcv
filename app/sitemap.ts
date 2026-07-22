@@ -29,7 +29,7 @@ async function getExistingFileLastModified(relativePath: string): Promise<Date |
     }
 }
 
-async function getFirstExistingLastModified(relativePaths: string[]): Promise<Date> {
+async function getFirstExistingLastModified(relativePaths: string[]): Promise<Date | undefined> {
     for (const relativePath of relativePaths) {
         const lastModified = await getExistingFileLastModified(relativePath);
         if (lastModified) {
@@ -37,15 +37,15 @@ async function getFirstExistingLastModified(relativePaths: string[]): Promise<Da
         }
     }
 
-    return new Date();
+    return undefined;
 }
 
-async function getLatestExistingLastModified(relativePaths: string[]): Promise<Date> {
+async function getLatestExistingLastModified(relativePaths: string[]): Promise<Date | undefined> {
     const dates = (
         await Promise.all(relativePaths.map((relativePath) => getExistingFileLastModified(relativePath)))
     ).filter((date): date is Date => Boolean(date));
 
-    return dates.length > 0 ? maxDate(dates) : new Date();
+    return dates.length > 0 ? maxDate(dates) : undefined;
 }
 
 function routePathToPageFile(routePath: string): string {
@@ -53,25 +53,25 @@ function routePathToPageFile(routePath: string): string {
     return normalized ? `app/${normalized}/page.tsx` : 'app/page.tsx';
 }
 
-async function getRouteLastModified(routePath: string): Promise<Date> {
+async function getRouteLastModified(routePath: string): Promise<Date | undefined> {
     return getFirstExistingLastModified([routePathToPageFile(routePath)]);
 }
 
-async function getCvVoorbeeldenCategoryLastModified(categorySlug: string): Promise<Date> {
+async function getCvVoorbeeldenCategoryLastModified(categorySlug: string): Promise<Date | undefined> {
     return getLatestExistingLastModified([
         `lib/cv-voorbeelden/categories/${categorySlug}.ts`,
         'app/cv-voorbeelden/[category]/page.tsx',
     ]);
 }
 
-async function getCvVoorbeeldenExampleLastModified(categorySlug: string, slug: string): Promise<Date> {
+async function getCvVoorbeeldenExampleLastModified(categorySlug: string, slug: string): Promise<Date | undefined> {
     return getLatestExistingLastModified([
         `lib/cv-voorbeelden/examples/${categorySlug}/${slug}.ts`,
         'app/cv-voorbeelden/[category]/[slug]/page.tsx',
     ]);
 }
 
-async function getSeoWaveLastModified(slug: string, locale: 'nl' | 'en'): Promise<Date> {
+async function getSeoWaveLastModified(slug: string, locale: 'nl' | 'en'): Promise<Date | undefined> {
     if (locale === 'en') {
         return getLatestExistingLastModified([
             'lib/seo-wave/data.ts',
@@ -1159,10 +1159,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const articles = getAllArticles();
     const articlePages: MetadataRoute.Sitemap = await Promise.all(articles.map(async (article) => ({
         url: `${baseUrl}/cv-tips/${article.slug}`,
-        lastModified: maxDate([
-            article.updatedAt ? new Date(article.updatedAt) : new Date(article.publishedAt),
-            await getFirstExistingLastModified(['app/cv-tips/[slug]/page.tsx']),
-        ]),
+        lastModified: article.updatedAt
+            ? new Date(article.updatedAt)
+            : new Date(article.publishedAt),
         changeFrequency: 'monthly' as const,
         priority: 0.75,
     })));
@@ -1190,7 +1189,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         lastModified: await getRouteLastModified(new URL(page.url).pathname),
     })));
 
-    return [
+    const pages = [
         ...staticPagesWithLastModified,
         ...toolPages,
         ...salaryRolePagesSitemap,
@@ -1200,5 +1199,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...dutchWavePages,
         ...englishWavePages,
     ];
+
+    // Google ignores priority/changefreq. Omitting them also prevents stale or
+    // inverted hints from diluting the real per-page last-modified signal.
+    return pages.map(({ changeFrequency: _changeFrequency, priority: _priority, ...page }) => page);
 }
 
