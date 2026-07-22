@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import HomePageClient from "@/components/HomePageClient";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { getAllArticles } from "@/lib/cv-tips/registry";
+import { getAllCategories, getAllExamples } from "@/lib/cv-voorbeelden/registry";
+import { templateList } from "@/lib/templates/registry";
 import {
   cvDownloadPrice,
   homepageFaqItems,
@@ -115,6 +118,12 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
+  const articles = getAllArticles();
+  const categories = getAllCategories();
+  const showcaseTemplates = ["professional", "modern", "elegant", "ats"]
+    .map((id) => templateList.find((template) => template.id === id))
+    .filter((template): template is NonNullable<typeof template> => Boolean(template));
+
   return (
     <>
       <script
@@ -126,7 +135,20 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSoftwareApplicationJsonLd) }}
       />
       <FAQJsonLd questions={homepageFaqItems} />
-            <HomePageClient />
+      <HomePageClient
+        templateCount={templateList.length}
+        articleCount={articles.length}
+        exampleCount={getAllExamples().length}
+        categoryCount={categories.length}
+        showcaseTemplates={showcaseTemplates}
+        featuredArticles={articles
+          .filter((article) => article.featured)
+          .slice(0, 3)
+          .map(({ slug, title }) => ({ slug, title }))}
+        featuredCategories={categories
+          .slice(0, 6)
+          .map(({ slug, name }) => ({ slug, name }))}
+      />
     </>
   );
 }

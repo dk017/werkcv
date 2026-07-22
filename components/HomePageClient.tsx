@@ -8,22 +8,19 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import NavUserMenu from "@/components/NavUserMenu";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { templateList } from "@/lib/templates/registry";
-import { getAllArticles } from "@/lib/cv-tips/registry";
-import { getAllExamples, getAllCategories } from "@/lib/cv-voorbeelden/registry";
+import type { TemplateConfig } from "@/lib/templates";
 import { getStoredAttribution, track } from "@/lib/analytics";
 import { applicationBundlePrice, cvDownloadPrice, homepageFaqItems, profilePhotoPrice } from "@/lib/site-content";
 
-// Computed stats from actual data
-const templateCount = templateList.length;
-const articleCount = getAllArticles().length;
-const exampleCount = getAllExamples().length;
-const categoryCount = getAllCategories().length;
-
-// 4 featured templates for showcase
-const showcaseTemplates = ['professional', 'modern', 'elegant', 'ats']
-    .map(id => templateList.find(t => t.id === id))
-    .filter(Boolean);
+interface HomePageClientProps {
+    templateCount: number;
+    articleCount: number;
+    exampleCount: number;
+    categoryCount: number;
+    showcaseTemplates: TemplateConfig[];
+    featuredArticles: Array<{ slug: string; title: string }>;
+    featuredCategories: Array<{ slug: string; name: string }>;
+}
 
 function TemplatePreviewPlaceholder({ compact = false }: { compact?: boolean }) {
     return (
@@ -99,10 +96,15 @@ const HeroCarousel = dynamic(
     }
 );
 
-// 3 featured articles
-const featuredArticles = getAllArticles().filter(a => a.featured).slice(0, 3);
-
-export default function HomePageClient() {
+export default function HomePageClient({
+    templateCount,
+    articleCount,
+    exampleCount,
+    categoryCount,
+    showcaseTemplates,
+    featuredArticles,
+    featuredCategories,
+}: HomePageClientProps) {
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isDragging, setIsDragging] = useState(false);
@@ -599,7 +601,7 @@ export default function HomePageClient() {
                                 </div>
                             </div>
                             <div className="flex flex-wrap gap-2">
-                                {getAllCategories().slice(0, 6).map(cat => (
+                                {featuredCategories.map(cat => (
                                     <span key={cat.slug} className="text-xs font-bold bg-gray-100 border-2 border-black px-2 py-1">
                                         {cat.name}
                                     </span>
