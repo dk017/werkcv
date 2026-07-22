@@ -1196,6 +1196,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Google ignores priority/changefreq. Omitting them also prevents stale or
     // inverted hints from diluting the real per-page last-modified signal.
-    return pages.map(({ changeFrequency: _changeFrequency, priority: _priority, ...page }) => page);
+    return pages.map((page) => {
+        const entry = { ...page };
+        delete entry.changeFrequency;
+        delete entry.priority;
+        return entry;
+    });
 }
 

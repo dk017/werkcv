@@ -227,7 +227,7 @@ export default function StageCvMakenPage() {
         </section>
 
         <section className="mb-14">
-          <h2 className="text-3xl font-black text-black">Veelgestelde vragen over stage-CV's</h2>
+          <h2 className="text-3xl font-black text-black">Veelgestelde vragen over stage-CV&apos;s</h2>
           <div className="mt-6 space-y-4">
             {faqs.map((faq) => (
               <article

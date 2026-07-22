@@ -1,5 +1,4 @@
 "use client";
-/* eslint-disable react-hooks/static-components */
 
 import dynamic from "next/dynamic";
 import { useState, useRef } from "react";

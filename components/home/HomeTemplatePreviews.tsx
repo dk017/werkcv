@@ -17,6 +17,13 @@ const heroSlides = [
   { templateId: "jobboss", themeId: "modern-teal", label: "Sollicitatiebaas" },
 ] as const;
 
+const templateComponents = Object.fromEntries(
+  [...new Set([...heroSlides.map((slide) => slide.templateId), "ats"])].map((templateId) => [
+    templateId,
+    getTemplateComponent(templateId),
+  ]),
+);
+
 const previewData: CVData = {
   ...sampleCV,
   personal: {
@@ -91,7 +98,7 @@ export function HomeTemplatePreview({
   templateId: string;
   colorThemeId: string;
 }) {
-  const TemplateComponent = getTemplateComponent(templateId);
+  const TemplateComponent = templateComponents[templateId] ?? templateComponents.professional;
   const theme = getTheme(templateId, colorThemeId);
 
   return (
@@ -144,7 +151,7 @@ export function HeroCarousel() {
           }}
         >
           {heroSlides.map((slide, index) => {
-            const TemplateComponent = getTemplateComponent(slide.templateId);
+            const TemplateComponent = templateComponents[slide.templateId];
             const theme = getTheme(slide.templateId, slide.themeId);
             return (
               <div
