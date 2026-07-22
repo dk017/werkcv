@@ -196,8 +196,8 @@ export default function ProfessioneelCvVoorbeeldPage() {
               body: "Ga van voorbeeld naar je eigen zakelijke versie.",
             },
             {
-              href: "/cv-maken-sjabloon",
-              title: "CV maken sjabloon",
+              href: "/cv-maken-template",
+              title: "CV-template of CV-sjabloon kiezen",
               body: "Vergelijk professionele sjablonen met simpelere of modernere opties.",
             },
             {

@@ -185,12 +185,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.77,
         },
         {
-            url: `${baseUrl}/cv-maken-sjabloon`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.77,
-        },
-        {
             url: `${baseUrl}/cv-maken-in-word`,
             lastModified: new Date(),
             changeFrequency: 'weekly',

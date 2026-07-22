@@ -51,6 +51,11 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      {
+        source: '/cv-maken-sjabloon',
+        destination: '/cv-maken-template',
+        permanent: true,
+      },
       // Consolidate overlapping English CV intent onto one owner per cluster.
       {
         source: '/en/netherlands-cv-format',

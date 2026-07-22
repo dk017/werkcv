@@ -148,7 +148,8 @@ export default function CvMakenTemplatePage() {
               goede layout kiezen en daarna verder met de inhoud. Op deze pagina
               helpen we je de beste CV-template selecteren op basis van rol,
               uitstraling en scanbaarheid, zodat je daarna direct kunt starten in
-              de editor.
+              de editor. Een CV-template wordt in het Nederlands ook wel een
+              CV-sjabloon genoemd; beide termen bedoelen hier dezelfde vaste layout.
             </p>
             <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
               Zie dit als de keuzehulp voor layout- en template-intentie. Voor het
@@ -217,10 +218,10 @@ export default function CvMakenTemplatePage() {
             </ul>
             <div className="mt-6 border-t-4 border-black pt-5">
               <Link
-                href="/cv-maken-sjabloon"
+                href="/templates"
                 className="text-sm font-black text-black underline decoration-2 underline-offset-4"
               >
-                Liever zoeken op sjabloon? Bekijk cv maken sjabloon
+                Bekijk alle CV-templates en sjablonen
               </Link>
             </div>
           </div>
@@ -294,9 +295,9 @@ export default function CvMakenTemplatePage() {
               body: "Speciaal voor formelere template-intentie en rustige, zakelijke layouts.",
             },
             {
-              href: "/cv-maken-sjabloon",
-              title: "CV maken sjabloon",
-              body: "Dezelfde cluster in meer sjabloon-taal en met extra keuzehulp.",
+              href: "/templates",
+              title: "Alle CV-templates",
+              body: "Vergelijk alle layouts met je eigen inhoud en kies daarna de beste versie.",
             },
             {
               href: "/cv-maken",

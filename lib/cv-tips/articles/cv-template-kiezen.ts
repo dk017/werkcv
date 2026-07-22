@@ -175,7 +175,7 @@ export const cvTemplateKiezen: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/cv-maken-sjabloon',
+                    href: '/cv-maken-template',
                     label: 'CV maken met een sjabloon dat je per situatie kunt aanpassen',
                     description: 'Gebruik een basis die al klopt en wijzig daarna alleen volgorde en nadruk.',
                 },

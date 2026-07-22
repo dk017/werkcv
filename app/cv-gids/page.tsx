@@ -48,7 +48,7 @@ const guideGroups = [
     links: [
       { href: "/cv-voorbeelden", label: "CV voorbeelden" },
       { href: "/cv-maken-template", label: "CV maken template" },
-      { href: "/cv-maken-sjabloon", label: "CV maken sjabloon" },
+      { href: "/cv-maken-template", label: "CV-template of CV-sjabloon kiezen" },
       { href: "/templates", label: "CV templates" },
       { href: "/professioneel-cv-maken", label: "Professioneel CV maken" },
       { href: "/mooie-cv-maken", label: "Mooie CV maken" },
