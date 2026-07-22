@@ -1,7 +1,9 @@
 # SEO implementation report
 
-Branch: `codex/seo-implementation-audit`  
-Baseline: `ed6f4ee` (`origin/main` at implementation start)  
+Branch: `codex/seo-implementation-audit`
+
+Baseline: `ed6f4ee` (`origin/main` at implementation start)
+
 Validated: 2026-07-22
 
 ## Phase 0 discovery
