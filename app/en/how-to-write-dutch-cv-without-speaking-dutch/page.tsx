@@ -208,8 +208,8 @@ const articleJsonLd = {
   mainEntityOfPage: pageUrl,
   datePublished: "2026-06-25",
   dateModified: "2026-06-25",
-  author: { "@type": "Organization", name: "WerkCV", url: "https://werkcv.nl" },
-  publisher: { "@type": "Organization", name: "WerkCV", url: "https://werkcv.nl" },
+  author: { "@id": "https://werkcv.nl/#organization" },
+  publisher: { "@id": "https://werkcv.nl/#organization" },
 };
 
 const faqJsonLd = {

@@ -83,7 +83,7 @@ export default async function EnglishWavePage({ params }: PageProps) {
         description: metaDesc,
         inLanguage: 'en-NL',
         mainEntityOfPage: `https://werkcv.nl/en/guides/${page.slug}`,
-        author: { '@type': 'Organization', name: 'WerkCV' },
+        author: { "@id": "https://werkcv.nl/#organization" },
     };
     const faqJsonLd = page.faq.length
         ? {

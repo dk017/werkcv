@@ -131,18 +131,8 @@ export default async function ExamplePage({ params }: PageProps) {
         '@type': 'Article',
         headline: example.heroTitle,
         description: metaDesc,
-        author: {
-            '@type': 'Organization',
-            name: 'WerkCV',
-        },
-        publisher: {
-            '@type': 'Organization',
-            name: 'WerkCV',
-            logo: {
-                '@type': 'ImageObject',
-                url: 'https://werkcv.nl/logo.png',
-            },
-        },
+        author: { "@id": "https://werkcv.nl/#organization" },
+        publisher: { "@id": "https://werkcv.nl/#organization" },
     };
 
     return (

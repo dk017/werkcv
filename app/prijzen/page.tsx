@@ -106,11 +106,7 @@ const productJsonLd = {
         "priceValidUntil": "2026-12-31",
         "availability": "https://schema.org/InStock",
         "itemCondition": "https://schema.org/NewCondition",
-        "seller": {
-            "@type": "Organization",
-            "name": "WerkCV.nl",
-            "url": "https://werkcv.nl",
-        },
+        "seller": { "@id": "https://werkcv.nl/#organization" },
         "shippingDetails": {
             "@type": "OfferShippingDetails",
             "doesNotShip": true,

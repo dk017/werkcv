@@ -16,19 +16,8 @@ export function ArticleJsonLd({ category, url }: ArticleJsonLdProps) {
         '@type': 'Article',
         headline: category.heroTitle || `CV Voorbeeld ${category.nameDutch}`,
         description: category.metaDesc,
-        author: {
-            '@type': 'Organization',
-            name: 'WerkCV.nl',
-            url: 'https://werkcv.nl',
-        },
-        publisher: {
-            '@type': 'Organization',
-            name: 'WerkCV.nl',
-            logo: {
-                '@type': 'ImageObject',
-                url: 'https://werkcv.nl/logo.png',
-            },
-        },
+        author: { "@id": "https://werkcv.nl/#organization" },
+        publisher: { "@id": "https://werkcv.nl/#organization" },
         mainEntityOfPage: {
             '@type': 'WebPage',
             '@id': url,

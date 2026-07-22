@@ -9,11 +9,7 @@ export function GET() {
       "@context": "https://schema.org",
       "@type": "Service",
       name: "WerkCV CV builder",
-      provider: {
-        "@type": "Organization",
-        name: "WerkCV",
-        url: siteBaseUrl,
-      },
+      provider: { "@id": `${siteBaseUrl}/#organization` },
       areaServed: "NL",
       availableLanguage: ["nl-NL", "en-NL"],
       serviceType: "Online CV builder and CV optimization tools",

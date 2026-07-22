@@ -63,10 +63,7 @@ export default async function CategoryPage({ params }: PageProps) {
         '@type': 'CollectionPage',
         name: category.heroTitle,
         description: metaDesc,
-        publisher: {
-            '@type': 'Organization',
-            name: 'WerkCV',
-        },
+        publisher: { "@id": "https://werkcv.nl/#organization" },
     };
 
     return (

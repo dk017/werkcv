@@ -104,15 +104,8 @@ export default async function DutchWavePage({ params }: PageProps) {
             '@type': 'WebPage',
             '@id': `https://werkcv.nl/cv-gids/${page.slug}`,
         },
-        author: { '@type': 'Organization', name: 'WerkCV', url: 'https://werkcv.nl' },
-        publisher: {
-            '@type': 'Organization',
-            name: 'WerkCV',
-            logo: {
-                '@type': 'ImageObject',
-                url: 'https://werkcv.nl/logo.png',
-            },
-        },
+        author: { "@id": "https://werkcv.nl/#organization" },
+        publisher: { "@id": "https://werkcv.nl/#organization" },
     };
     const faqJsonLd = page.faq.length
         ? {

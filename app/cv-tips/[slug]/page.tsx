@@ -113,20 +113,8 @@ export default async function ArticlePage({ params }: PageProps) {
         isAccessibleForFree: true,
         articleSection: articleCategoryLabels[article.category],
         keywords: article.keywords.join(', '),
-        author: {
-            '@type': 'Organization',
-            name: 'WerkCV',
-            url: 'https://werkcv.nl',
-        },
-        publisher: {
-            '@type': 'Organization',
-            name: 'WerkCV',
-            url: 'https://werkcv.nl',
-            logo: {
-                '@type': 'ImageObject',
-                url: 'https://werkcv.nl/logo.png',
-            },
-        },
+        author: { "@id": "https://werkcv.nl/#organization" },
+        publisher: { "@id": "https://werkcv.nl/#organization" },
         mainEntityOfPage: {
             '@type': 'WebPage',
             '@id': articleUrl,

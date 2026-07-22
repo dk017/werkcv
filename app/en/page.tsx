@@ -301,11 +301,7 @@ const jsonLd = {
         "Build an English CV with Dutch-market structure and download the finished PDF for a one-time €4.99 payment.",
       url: "https://werkcv.nl/en",
       inLanguage: "en-NL",
-      isPartOf: {
-        "@type": "WebSite",
-        name: "WerkCV.nl",
-        url: "https://werkcv.nl",
-      },
+      isPartOf: { "@id": "https://werkcv.nl/#website" },
     },
     {
       "@type": "WebApplication",

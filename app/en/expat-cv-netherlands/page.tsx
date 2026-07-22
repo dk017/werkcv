@@ -301,16 +301,8 @@ const articleJsonLd = {
   mainEntityOfPage: pageUrl,
   datePublished: "2026-05-13",
   dateModified: "2026-05-14",
-  author: {
-    "@type": "Organization",
-    name: "WerkCV",
-    url: "https://werkcv.nl",
-  },
-  publisher: {
-    "@type": "Organization",
-    name: "WerkCV",
-    url: "https://werkcv.nl",
-  },
+  author: { "@id": "https://werkcv.nl/#organization" },
+  publisher: { "@id": "https://werkcv.nl/#organization" },
   about: [
     "CV format in the Netherlands",
     "Expat job applications",

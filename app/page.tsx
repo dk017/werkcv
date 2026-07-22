@@ -16,11 +16,7 @@ const homepageWebPageJsonLd = {
   description:
     "Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig €4,99 bij download, geen abonnement.",
   inLanguage: "nl-NL",
-  isPartOf: {
-    "@type": "WebSite",
-    name: siteName,
-    url: siteUrl,
-  },
+  isPartOf: { "@id": "https://werkcv.nl/#website" },
 };
 
 const homepageSoftwareApplicationJsonLd = {
@@ -51,11 +47,7 @@ const homepageSoftwareApplicationJsonLd = {
     "Nederlandse arbeidsmarkt focus",
     "Later opnieuw downloaden",
   ],
-  provider: {
-    "@type": "Organization",
-    name: siteName,
-    url: siteUrl,
-  },
+  provider: { "@id": "https://werkcv.nl/#organization" },
   ...(siteAggregateRating
     ? {
         aggregateRating: {

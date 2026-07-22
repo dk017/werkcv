@@ -182,18 +182,8 @@ export default function GoedkoopsteCvMakerNederlandPage() {
     mainEntityOfPage: pageUrl,
     datePublished: "2026-04-10",
     dateModified: "2026-05-10",
-    author: {
-      "@type": "Organization",
-      name: "WerkCV",
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "WerkCV",
-      logo: {
-        "@type": "ImageObject",
-        url: "https://werkcv.nl/logo.png",
-      },
-    },
+    author: { "@id": "https://werkcv.nl/#organization" },
+    publisher: { "@id": "https://werkcv.nl/#organization" },
   };
 
   return (

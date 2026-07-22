@@ -31,10 +31,7 @@ export default function CVTipsHub() {
         name: 'CV Tips & Advies',
         description: metadata.description,
         url: 'https://werkcv.nl/cv-tips',
-        publisher: {
-            '@type': 'Organization',
-            name: 'WerkCV.nl',
-        },
+        publisher: { "@id": "https://werkcv.nl/#organization" },
     };
 
     return (

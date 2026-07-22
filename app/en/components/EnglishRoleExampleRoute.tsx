@@ -14,8 +14,8 @@ export default function EnglishRoleExampleRoute(props: Props) {
     mainEntityOfPage: `https://werkcv.nl${props.pagePath}`,
     datePublished: "2026-07-11",
     dateModified: "2026-07-11",
-    author: { "@type": "Organization", name: "WerkCV", url: "https://werkcv.nl" },
-    publisher: { "@type": "Organization", name: "WerkCV", url: "https://werkcv.nl" },
+    author: { "@id": "https://werkcv.nl/#organization" },
+    publisher: { "@id": "https://werkcv.nl/#organization" },
   };
   const faqJsonLd = {
     "@context": "https://schema.org",
