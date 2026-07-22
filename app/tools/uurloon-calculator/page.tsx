@@ -53,8 +53,8 @@ const cvIntentLinks = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-    title: "Uurloon Naar Maandloon Berekenen 2026 | WerkCV",
-    description: "Bereken je bruto uurloon naar maandloon of andersom. Inclusief jaarloon, maandloon en uurloon met vakantiegeld voor 2026.",
+    title: "Uurloon Berekenen — naar Maandloon Omrekenen (2026) | WerkCV",
+    description: "Bereken gratis je uurloon naar maandloon of andersom in 2026. Bekijk de formule, jaarloon, vakantiegeld en een uitgewerkt voorbeeld.",
     path: "/tools/uurloon-calculator",
     keywords: [
         "uurloon berekenen",
@@ -153,6 +153,24 @@ export default function UurloonCalculatorPage() {
                             <li>Als je uurloon naar maandloon wilt omrekenen voor een concreet aanbod</li>
                         </ul>
                     </aside>
+                </section>
+
+                <section className="mb-8 border-4 border-black bg-[#FFF7E8] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <h2 className="text-2xl font-black text-slate-900">Uurloon berekenen en omrekenen naar maandloon</h2>
+                    <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                        Je bruto uurloon bereken je door je bruto maandsalaris met 12 te vermenigvuldigen en te delen door 52 keer je wekelijkse uren. Bij €2.500 bruto per maand en 40 uur per week is dat (€2.500 × 12) ÷ (52 × 40) = <strong>€14,42 bruto per uur</strong>.
+                    </p>
+                    <div className="mt-4 grid gap-3 md:grid-cols-2">
+                        <p className="border-2 border-black bg-white p-3 text-sm font-black text-slate-900">
+                            Uurloon = (bruto maandloon × 12) ÷ (52 × uren per week)
+                        </p>
+                        <p className="border-2 border-black bg-white p-3 text-sm font-black text-slate-900">
+                            Maandloon = uurloon × (52 × uren per week) ÷ 12
+                        </p>
+                    </div>
+                    <p className="mt-3 text-xs leading-relaxed text-slate-600">
+                        De urennorm kan per cao verschillen. Gebruik daarom het aantal uren uit je eigen arbeidsovereenkomst.
+                    </p>
                 </section>
 
                 <section className="mb-12">

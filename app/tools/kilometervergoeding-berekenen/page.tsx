@@ -47,9 +47,9 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "Kilometervergoeding 2026 Berekenen | 214 Dagen, Woon-werk & OV | WerkCV",
+  title: "Kilometervergoeding Berekenen 2026 — Onbelaste Vergoeding | WerkCV",
   description:
-    "Bereken je kilometervergoeding in 2026 met eigen vervoer, OV of de 214-dagenregeling voor vaste woon-werkvergoeding.",
+    "Bereken gratis je kilometervergoeding in 2026. Gebruik het onbelaste tarief van €0,25 per km, de 214-dagenregeling en een duidelijk woon-werkvoorbeeld.",
   path: "/tools/kilometervergoeding-berekenen",
   keywords: [
     "kilometervergoeding berekenen",
@@ -149,6 +149,19 @@ export default function KilometervergoedingBerekenenPage() {
               <p>Daardoor kun je een aanbod beter vergelijken voordat je akkoord geeft of verder solliciteert.</p>
             </div>
           </aside>
+        </section>
+
+        <section className="mb-8 border-4 border-black bg-[#FFF7E8] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <h2 className="text-2xl font-black text-slate-900">Kilometervergoeding berekenen: direct antwoord</h2>
+          <p className="mt-3 text-sm leading-relaxed text-slate-700">
+            In 2026 mag een werkgever maximaal €0,25 per kilometer onbelast vergoeden voor woon-werkverkeer en zakelijke ritten. Reis je 20 kilometer enkele reis op 3 dagen per week, dan is de weekvergoeding 20 × 2 × 3 × €0,25 = <strong>€30,00</strong>.
+          </p>
+          <p className="mt-3 text-sm font-black text-slate-900">
+            Formule: kilometers enkele reis × 2 × reisdagen × tarief per kilometer.
+          </p>
+          <p className="mt-3 text-xs leading-relaxed text-slate-600">
+            Bron: Belastingdienst, update 25 juni 2026. De verhoging naar €0,25 geldt met terugwerkende kracht vanaf 1 januari 2026.
+          </p>
         </section>
 
         <section className="mb-12">

@@ -56,8 +56,8 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "Eindejaarsuitkering berekenen 2026 | 13e maand bruto én netto | WerkCV",
-  description: "Bereken je eindejaarsuitkering of vaste 13e maand in 2026. Bekijk bruto, netto-indicatie, belastingimpact en pro-rata uitkering.",
+  title: "Eindejaarsuitkering Berekenen (Netto) 2026 | WerkCV",
+  description: "Bereken gratis je eindejaarsuitkering of 13e maand in 2026. Bekijk bruto, netto-indicatie, pro-rata uitkering en een duidelijk rekenvoorbeeld.",
   path: "/tools/eindejaarsuitkering-berekenen",
   keywords: [
     "eindejaarsuitkering berekenen",
@@ -194,10 +194,13 @@ export default function EindejaarsuitkeringBerekenenPage() {
 
         <section className="mb-8 bg-[#FFF7E8] border-4 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <h2 className="text-2xl font-black text-slate-900 mb-3">
-            Eerst berekenen, daarna pas de nuance
+            Eindejaarsuitkering berekenen: direct antwoord
           </h2>
           <p className="text-sm md:text-base text-slate-700 leading-relaxed">
-            De snelste route is simpel: bereken eerst je bruto eindejaarsuitkering of 13e maand, kijk daarna of jouw werkgever werkt met een vast maandloon of percentage, en check pas daarna de belasting- en netto-uitleg. Zo krijg je sneller antwoord op de hoofdvraag achter deze zoekopdracht.
+            Een eindejaarsuitkering is geen wettelijk recht: de hoogte staat in je cao of arbeidscontract. Een volledige 13e maand is één extra bruto maandsalaris, oftewel 8,33% van twaalf bruto maandsalarissen. Bij €2.500 bruto per maand is dat €2.500 bruto; de netto-indicatie hangt af van je totale jaarinkomen.
+          </p>
+          <p className="mt-3 text-sm font-black text-slate-900">
+            Formule: bruto eindejaarsuitkering = bruto jaarloon × het percentage uit je cao of contract.
           </p>
         </section>
 
