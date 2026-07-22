@@ -132,20 +132,6 @@ export default function SollicitatiebriefBeginnenPage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "Sollicitatiebrief beginnen in 4 stappen",
-    description: "Praktische formule om een sollicitatiebrief sterker te openen.",
-    totalTime: "PT15M",
-    step: openingFormulas.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -373,7 +359,6 @@ export default function SollicitatiebriefBeginnenPage() {
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
 
       <Footer />
     </div>

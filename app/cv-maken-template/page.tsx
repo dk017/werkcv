@@ -116,21 +116,6 @@ export default function CvMakenTemplatePage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "Beste CV template kiezen in 5 stappen",
-    description:
-      "Praktische stappen om de juiste CV-template te kiezen en direct in de editor te gebruiken.",
-    totalTime: "PT20M",
-    step: selectionSteps.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -391,10 +376,6 @@ export default function CvMakenTemplatePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
-      />
-    </div>
+          </div>
   );
 }

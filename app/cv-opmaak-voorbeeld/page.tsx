@@ -193,20 +193,6 @@ export default function CvOpmaakVoorbeeldPage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "CV opmaak verbeteren in 5 stappen",
-    description: "Praktische stappen om CV-opmaak professioneel en scanbaar te maken.",
-    totalTime: "PT30M",
-    step: layoutRules.map((rule) => ({
-      "@type": "HowToStep",
-      name: rule.title,
-      text: rule.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -538,10 +524,6 @@ export default function CvOpmaakVoorbeeldPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
 
       <Footer />

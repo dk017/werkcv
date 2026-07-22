@@ -178,20 +178,6 @@ export default function SollicitatiebriefInEngelsPage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "Sollicitatiebrief in Engels schrijven",
-    description: "Praktische structuur voor een sterke English cover letter.",
-    totalTime: "PT35M",
-    step: structureBlocks.map((block) => ({
-      "@type": "HowToStep",
-      name: block.title,
-      text: block.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -467,10 +453,6 @@ export default function SollicitatiebriefInEngelsPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
 
       <Footer />

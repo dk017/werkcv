@@ -105,21 +105,6 @@ export default function CvMaken15JarigePage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "Eerste CV maken als 15-jarige",
-    description:
-      "Praktische aanpak voor jongeren die een eerste CV voor bijbaan of winkelwerk willen maken.",
-    totalTime: "PT15M",
-    step: teenSteps.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -274,10 +259,6 @@ export default function CvMaken15JarigePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
-      />
-    </div>
+          </div>
   );
 }

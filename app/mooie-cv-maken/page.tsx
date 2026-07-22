@@ -141,21 +141,6 @@ export default function MooieCvMakenPage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "Mooie CV maken in 5 stappen",
-    description:
-      "Praktische route voor sollicitanten die een stijlvolle, verzorgde CV-layout willen zonder overdesign.",
-    totalTime: "PT25M",
-    step: designSteps.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -409,10 +394,6 @@ export default function MooieCvMakenPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
-      />
-    </div>
+          </div>
   );
 }

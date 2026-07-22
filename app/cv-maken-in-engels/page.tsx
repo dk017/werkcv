@@ -186,20 +186,6 @@ export default function CvMakenInEngelsPage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "CV maken in Engels in 6 stappen",
-    description: "Praktische workflow voor een sterk Engelstalig CV.",
-    totalTime: "PT45M",
-    step: workflowSteps.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -527,10 +513,6 @@ export default function CvMakenInEngelsPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
 
       <Footer />

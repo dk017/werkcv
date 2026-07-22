@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import HomePageClient from "@/components/HomePageClient";
-import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
+import { FAQJsonLd } from "@/components/seo/JsonLd";
 import {
   cvDownloadPrice,
   homepageFaqItems,
@@ -8,22 +8,6 @@ import {
   siteName,
   siteUrl,
 } from "@/lib/site-content";
-
-const homepageHowToSteps = [
-  {
-    name: "Kies een template",
-    text: "Selecteer een rustige, ATS-vriendelijke CV-template die past bij Nederlandse vacatures.",
-  },
-  {
-    name: "Vul je gegevens in",
-    text: "Werk je profiel, werkervaring, opleiding en vaardigheden uit in de editor met live preview.",
-  },
-  {
-    name: "Download als PDF",
-    text: `Start gratis en betaal eenmalig ${cvDownloadPrice.display} wanneer je je CV als PDF wilt downloaden.`,
-  },
-];
-
 const homepageWebPageJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
@@ -150,12 +134,7 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSoftwareApplicationJsonLd) }}
       />
       <FAQJsonLd questions={homepageFaqItems} />
-      <HowToJsonLd
-        name="Hoe maak je een ATS-vriendelijk CV voor Nederlandse vacatures"
-        description="Gebruik WerkCV om gratis te starten, een ATS-vriendelijke template te kiezen en later als PDF te downloaden."
-        steps={homepageHowToSteps}
-      />
-      <HomePageClient />
+            <HomePageClient />
     </>
   );
 }

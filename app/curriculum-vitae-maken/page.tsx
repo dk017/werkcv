@@ -160,21 +160,6 @@ export default function CurriculumVitaeMakenPage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "Curriculum vitae maken in 5 stappen",
-    description:
-      "Formele en recruiter-proof workflow om een curriculum vitae op te bouwen zonder onnodige ballast.",
-    totalTime: "PT30M",
-    step: structureSteps.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -498,10 +483,6 @@ export default function CurriculumVitaeMakenPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
 
       <Footer />

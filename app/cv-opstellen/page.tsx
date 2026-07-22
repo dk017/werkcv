@@ -204,20 +204,6 @@ export default function CvOpstellenPage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "CV opstellen in 6 onderdelen",
-    description: "Praktische structuur om een CV logisch en recruiter-proof op te stellen.",
-    totalTime: "PT40M",
-    step: structureSteps.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -643,10 +629,6 @@ export default function CvOpstellenPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
 
       <Footer />

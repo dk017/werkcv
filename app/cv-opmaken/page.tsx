@@ -120,21 +120,6 @@ export default function CvOpmakenPage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "CV professioneel opmaken in 5 stappen",
-    description:
-      "Praktische richtlijnen om een CV rustig, scanbaar en recruiter-proof op te maken.",
-    totalTime: "PT25M",
-    step: formattingSteps.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -345,10 +330,6 @@ export default function CvOpmakenPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
-      />
-    </div>
+          </div>
   );
 }

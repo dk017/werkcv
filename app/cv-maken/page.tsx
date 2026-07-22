@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import MoneyPageTrustBlock from "@/components/landing/MoneyPageTrustBlock";
-import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
+import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import { cvDownloadPrice } from "@/lib/site-content";
 import { templateList } from "@/lib/templates/registry";
@@ -254,38 +254,6 @@ const faqs = [
 ];
 
 const pageUrl = "https://werkcv.nl/cv-maken";
-
-const workflowHowToSteps = [
-  {
-    name: "Kies je doelrol en vacaturetype",
-    text: workflowSteps[0].body,
-  },
-  {
-    name: "Schrijf je profieltekst",
-    text: workflowSteps[1].body,
-  },
-  {
-    name: "Bouw werkervaring met resultaatgerichte bullets",
-    text: workflowSteps[2].body,
-  },
-  {
-    name: "Selecteer relevante vaardigheden",
-    text: workflowSteps[3].body,
-  },
-  {
-    name: "Kies een template die de inhoud ondersteunt",
-    text: workflowSteps[4].body,
-  },
-  {
-    name: "Controleer ATS-woorden en leesbaarheid",
-    text: workflowSteps[5].body,
-  },
-  {
-    name: "Maak een versie per vacature",
-    text: workflowSteps[6].body,
-  },
-];
-
 export const metadata: Metadata = buildDutchMetadata({
   title: "CV maken: gratis starten, professioneel downloaden | WerkCV",
   description:
@@ -923,11 +891,6 @@ export default function CvMakenPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <HowToJsonLd
-        name="CV maken in 7 stappen"
-        description="Praktische workflow om snel een sterk, duidelijk en sollicitatieklaar CV te maken."
-        steps={workflowHowToSteps}
       />
 
       <Footer />

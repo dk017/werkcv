@@ -87,22 +87,6 @@ const beforeAfterExample = {
   after:
     "Customer Success Specialist supporting Dutch and English SaaS clients with onboarding, CRM follow-up and stakeholder communication across sales and support teams.",
 };
-
-const howToJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  name: "How to make an ATS-friendly CV for the Netherlands",
-  description:
-    "Checklist for improving ATS pass-through with structure, keywords, and formatting.",
-  inLanguage: "en-NL",
-  step: steps.map((text, index) => ({
-    "@type": "HowToStep",
-    position: index + 1,
-    name: `Step ${index + 1}`,
-    text,
-  })),
-};
-
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -120,11 +104,7 @@ const faqJsonLd = {
 export default function AtsResumeNetherlandsPage() {
   return (
     <main className="min-h-screen bg-[#FFFEF9] pb-20 md:pb-0">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
-      />
-      <script
+            <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />

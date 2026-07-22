@@ -163,20 +163,6 @@ export default function MotivatiebriefLayoutPage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "Motivatiebrief layout verbeteren",
-    description: "Praktische stappen om de opmaak van je motivatiebrief professioneel en scanbaar te maken.",
-    totalTime: "PT20M",
-    step: layoutRules.map((rule) => ({
-      "@type": "HowToStep",
-      name: rule.title,
-      text: rule.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -394,10 +380,6 @@ export default function MotivatiebriefLayoutPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
       />
 
       <Footer />

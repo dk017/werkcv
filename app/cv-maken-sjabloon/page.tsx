@@ -117,21 +117,6 @@ export default function CvMakenSjabloonPage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "CV-sjabloon kiezen in 5 stappen",
-    description:
-      "Praktische manier om het juiste CV-sjabloon te kiezen en daarna door te gaan naar de editor.",
-    totalTime: "PT20M",
-    step: sjabloonSteps.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -364,10 +349,6 @@ export default function CvMakenSjabloonPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
-      />
-    </div>
+          </div>
   );
 }

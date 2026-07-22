@@ -40,22 +40,6 @@ const faqs = [
       "Yes. Keep one English version and one Dutch version if you apply across both international and Dutch-speaking roles.",
   },
 ];
-
-const howToJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  name: "How to choose between CV and resume in the Netherlands",
-  description:
-    "Decision framework for document format and language for Dutch job applications.",
-  inLanguage: "en-NL",
-  step: steps.map((text, index) => ({
-    "@type": "HowToStep",
-    position: index + 1,
-    name: `Step ${index + 1}`,
-    text,
-  })),
-};
-
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -73,11 +57,7 @@ const faqJsonLd = {
 export default function CvOrResumeNetherlandsPage() {
   return (
     <main className="min-h-screen bg-[#FFFEF9]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
-      />
-      <script
+            <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />

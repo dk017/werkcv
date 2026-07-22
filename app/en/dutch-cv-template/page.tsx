@@ -136,22 +136,6 @@ const faqs = [
       "Most profiles should stay within one to two pages, focused on relevant experience and results.",
   },
 ];
-
-const howToJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  name: "How to build a Dutch-style CV in English",
-  description:
-    "Step-by-step process for building an ATS-friendly CV for jobs in the Netherlands.",
-  inLanguage: "en-NL",
-  step: steps.map((text, index) => ({
-    "@type": "HowToStep",
-    position: index + 1,
-    name: `Step ${index + 1}`,
-    text,
-  })),
-};
-
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -169,11 +153,7 @@ const faqJsonLd = {
 export default function DutchCvTemplatePage() {
   return (
     <main className="min-h-screen bg-[#FFFEF9]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
-      />
-      <script
+            <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />

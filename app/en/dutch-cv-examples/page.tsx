@@ -43,22 +43,6 @@ const faqs = [
       "Use an English title and optionally include the Dutch title in parentheses for context.",
   },
 ];
-
-const howToJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  name: "How to adapt Dutch CV examples for English applications",
-  description:
-    "A practical workflow for using Dutch CV examples when applying in English in the Netherlands.",
-  inLanguage: "en-NL",
-  step: steps.map((text, index) => ({
-    "@type": "HowToStep",
-    position: index + 1,
-    name: `Step ${index + 1}`,
-    text,
-  })),
-};
-
 const faqJsonLd = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -76,11 +60,7 @@ const faqJsonLd = {
 export default function DutchCvExamplesPage() {
   return (
     <main className="min-h-screen bg-[#FFFEF9]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
-      />
-      <script
+            <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />

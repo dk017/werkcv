@@ -5,7 +5,6 @@ import { getAllArticleSlugs, getArticleBySlug, getRelatedArticles } from '@/lib/
 import { getExampleBySlug } from '@/lib/cv-voorbeelden/registry';
 import { articleCategoryLabels, articleCategoryColors } from '@/lib/cv-tips/types';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
-import { HowToJsonLd } from '@/components/seo/JsonLd';
 import LinkedInToCvImporter from '@/components/translate/LinkedInToCvImporter';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
 import { normalizeBrandCopy } from '@/lib/seo-branding';
@@ -147,14 +146,6 @@ export default async function ArticlePage({ params }: PageProps) {
             },
         })),
     } : null;
-
-    const howToSteps = article.slug === 'cv-schrijven-tips'
-        ? article.sections.map((section, index) => ({
-            name: section.title.replace(/^\d+\.\s*/, ''),
-            text: section.answerCapsule || section.content[0] || `Stap ${index + 1} voor een sterker cv.`,
-        }))
-        : null;
-
     const breadcrumbItems = [
         { label: 'Home', href: '/' },
         { label: 'CV Tips', href: '/cv-tips' },
@@ -174,14 +165,6 @@ export default async function ArticlePage({ params }: PageProps) {
                     dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
                 />
             )}
-            {howToSteps && (
-                <HowToJsonLd
-                    name="CV schrijven in 10 stappen"
-                    description="Volg 10 praktische stappen om een sterk cv te schrijven voor Nederlandse vacatures."
-                    steps={howToSteps}
-                />
-            )}
-
             {/* Breadcrumbs */}
             <div className="border-b-4 border-black bg-white">
                 <div className="max-w-6xl mx-auto px-6 py-3">

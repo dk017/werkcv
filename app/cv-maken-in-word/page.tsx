@@ -112,21 +112,6 @@ export default function CvMakenInWordPage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "CV maken in Word vervangen door een snellere workflow",
-    description:
-      "Praktische stappen voor mensen die nu nog in Word starten maar sneller naar een stabiele sollicitatie-PDF willen.",
-    totalTime: "PT20M",
-    step: wordFlow.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -316,10 +301,6 @@ export default function CvMakenInWordPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
-      />
-    </div>
+          </div>
   );
 }

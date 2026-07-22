@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import { FAQJsonLd, HowToJsonLd } from "@/components/seo/JsonLd";
+import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { cvDownloadPrice, siteUrl } from "@/lib/site-content";
 
 const pageUrl = `${siteUrl}/sollicitatiebrief-maken`;
@@ -205,11 +205,6 @@ export default function SollicitatiebriefMakenPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <FAQJsonLd questions={faqs} />
-      <HowToJsonLd
-        name="Sollicitatiebrief maken in 5 stappen"
-        description="Praktische workflow om een sollicitatiebrief te maken voor Nederlandse vacatures."
-        steps={makingSteps}
-      />
 
       <header className="relative z-10 border-b-4 border-black bg-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">

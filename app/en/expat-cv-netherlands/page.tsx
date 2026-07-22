@@ -332,28 +332,6 @@ const faqJsonLd = {
     },
   })),
 };
-
-const howToJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  name: "How to build an expat CV for the Netherlands",
-  description:
-    "A practical process for deciding CV language, work authorization wording, language levels, personal details, and next actions for Dutch job applications.",
-  inLanguage: "en-NL",
-  step: [
-    "Choose English or Dutch based on the vacancy language.",
-    "Use a Dutch-market CV structure with recent experience first.",
-    "Add work authorization only when it reduces recruiter uncertainty.",
-    "Show Dutch and English levels clearly using CEFR levels where possible.",
-    "Remove unnecessary personal details and move into an ATS-safe template.",
-  ].map((text, index) => ({
-    "@type": "HowToStep",
-    position: index + 1,
-    name: `Step ${index + 1}`,
-    text,
-  })),
-};
-
 function SectionHeading({
   eyebrow,
   title,
@@ -390,10 +368,6 @@ export default function ExpatCvNetherlandsPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
       />
 
       <div className="border-b-4 border-black bg-white">

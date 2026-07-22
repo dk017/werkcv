@@ -104,21 +104,6 @@ export default function CvMakenOpMobielPage() {
       },
     ],
   };
-
-  const howToSchema = {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: "CV maken op mobiel in 4 stappen",
-    description:
-      "Praktische mobiele workflow om snel een CV te starten, aanpassen en afronden.",
-    totalTime: "PT15M",
-    step: mobileFlow.map((step) => ({
-      "@type": "HowToStep",
-      name: step.title,
-      text: step.body,
-    })),
-  };
-
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
       <header className="relative z-10 border-b-4 border-black bg-white">
@@ -275,10 +260,6 @@ export default function CvMakenOpMobielPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
-      />
-    </div>
+          </div>
   );
 }
