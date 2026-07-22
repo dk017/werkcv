@@ -33,7 +33,7 @@ rg -l 'application/ld\+json' app components --glob '*.tsx' --glob '*.ts'
 | 4. Remove HowTo | Implemented sitewide; visible instructions and existing FAQ schema retained. | `48ce42a` |
 | 5. Article schema | CV tips use real dates and images. CV-guide images added; dates deliberately omitted because the source has none. | `e0fd9af` |
 | 6. Schema entity IDs | Implemented; nested entities reference the canonical Organization/WebSite IDs. | `44364f6`, `b23a518` |
-| 7. Sitemap lastmod | Implemented with real stored/file dates where available; `changefreq` and `priority` removed. | `442281d`, `df4ac41` |
+| 7. Sitemap lastmod | Implemented with real stored editorial dates only. Undated pages omit `lastmod`; `changefreq` and `priority` are removed. A post-deployment correction removed Docker filesystem timestamps. | `442281d`, `df4ac41`, post-deployment correction |
 | 8. Cannibalization | `/cv-maken-sjabloon` consolidated into `/cv-maken-template`; internal links and sitemap updated; true HTTP 301 added. | `2c447c6`, `27727ad` |
 | 9. Calculators | Metadata and server-rendered direct answers/formulas/examples updated for all five routes. | `afd74a8` |
 | 10. Homepage trust | Unsupported testimonial removed; factual payment, hosting, preview, and renewal facts used. | `d2c04ce` |
@@ -52,7 +52,7 @@ Lint cleanup is in `df4ac41`.
 - Redirect: `/cv-maken-sjabloon` returns `301` with `Location: /cv-maken-template`.
 - Calculator raw HTML: all five routes contain formula, example, and 2026 text without client-side injection.
 - CV examples: eight preview `<img>` elements; every preview has explicit width and height.
-- Sitemap: 428 `lastmod` elements with 217 distinct values; no `changefreq`, `priority`, or redirected template URL.
+- Sitemap: 428 URLs; only the 45 CV-tip records with real `publishedAt`/`updatedAt` metadata emit `lastmod` (12 distinct editorial dates). Pages without stored editorial dates omit it; no `changefreq`, `priority`, or redirected template URL is emitted. This avoids Docker checkout times falsely presenting a bulk site update.
 - Schema: requested BreadcrumbList, CollectionPage, and ItemList nodes are present in raw HTML; homepage contains one Organization and one WebSite node.
 - HowTo: no `HowTo` or `HowToStep` schema strings remain.
 - Bundle analyzer: initial homepage JavaScript decreased from a measured 1,825,058 bytes to 637,805 bytes (65.1%). The first checkpoint was taken after the renderer extraction, so this is a conservative reduction for the full branch.

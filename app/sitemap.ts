@@ -1,105 +1,11 @@
 import { MetadataRoute } from 'next';
-import { stat } from 'fs/promises';
-import path from 'path';
 import { getAllCategories, getAllExamples } from '@/lib/cv-voorbeelden/registry';
 import { getAllArticles } from '@/lib/cv-tips/registry';
-import { getDutchWavePages, getEnglishWavePages, getPilotRoleGuidePages } from '@/lib/seo-wave/data';
-import { extraDutchEditorialPages } from '@/lib/seo-wave/extra-dutch-pages';
+import { getDutchWavePages, getEnglishWavePages } from '@/lib/seo-wave/data';
 import { salaryRolePages } from '@/lib/tools/salary-role-pages';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
-
-const ROOT_DIR = process.cwd();
-const dutchEditorialSlugs = new Set(extraDutchEditorialPages.map((page) => page.slug));
-const pilotRoleGuideSlugs = new Set(getPilotRoleGuidePages().map((page) => page.slug));
-
-function maxDate(dates: Date[]): Date {
-    return dates.reduce((latest, current) => (
-        current.getTime() > latest.getTime() ? current : latest
-    ));
-}
-
-async function getExistingFileLastModified(relativePath: string): Promise<Date | null> {
-    try {
-        const stats = await stat(path.join(ROOT_DIR, relativePath));
-        return stats.mtime;
-    } catch {
-        return null;
-    }
-}
-
-async function getFirstExistingLastModified(relativePaths: string[]): Promise<Date | undefined> {
-    for (const relativePath of relativePaths) {
-        const lastModified = await getExistingFileLastModified(relativePath);
-        if (lastModified) {
-            return lastModified;
-        }
-    }
-
-    return undefined;
-}
-
-async function getLatestExistingLastModified(relativePaths: string[]): Promise<Date | undefined> {
-    const dates = (
-        await Promise.all(relativePaths.map((relativePath) => getExistingFileLastModified(relativePath)))
-    ).filter((date): date is Date => Boolean(date));
-
-    return dates.length > 0 ? maxDate(dates) : undefined;
-}
-
-function routePathToPageFile(routePath: string): string {
-    const normalized = routePath.replace(/^\/+|\/+$/g, '');
-    return normalized ? `app/${normalized}/page.tsx` : 'app/page.tsx';
-}
-
-async function getRouteLastModified(routePath: string): Promise<Date | undefined> {
-    return getFirstExistingLastModified([routePathToPageFile(routePath)]);
-}
-
-async function getCvVoorbeeldenCategoryLastModified(categorySlug: string): Promise<Date | undefined> {
-    return getLatestExistingLastModified([
-        `lib/cv-voorbeelden/categories/${categorySlug}.ts`,
-        'app/cv-voorbeelden/[category]/page.tsx',
-    ]);
-}
-
-async function getCvVoorbeeldenExampleLastModified(categorySlug: string, slug: string): Promise<Date | undefined> {
-    return getLatestExistingLastModified([
-        `lib/cv-voorbeelden/examples/${categorySlug}/${slug}.ts`,
-        'app/cv-voorbeelden/[category]/[slug]/page.tsx',
-    ]);
-}
-
-async function getSeoWaveLastModified(slug: string, locale: 'nl' | 'en'): Promise<Date | undefined> {
-    if (locale === 'en') {
-        return getLatestExistingLastModified([
-            'lib/seo-wave/data.ts',
-            'app/en/guides/[slug]/page.tsx',
-        ]);
-    }
-
-    if (dutchEditorialSlugs.has(slug)) {
-        return getLatestExistingLastModified([
-            'lib/seo-wave/extra-dutch-pages.ts',
-            'app/cv-gids/[slug]/page.tsx',
-        ]);
-    }
-
-    if (pilotRoleGuideSlugs.has(slug)) {
-        return getLatestExistingLastModified([
-            'lib/seo-wave/programmatic-builders.ts',
-            'lib/seo-wave/page-families.ts',
-            'lib/seo-wave/role-taxonomy.ts',
-            'app/cv-gids/[slug]/page.tsx',
-        ]);
-    }
-
-    return getLatestExistingLastModified([
-        'lib/seo-wave/data.ts',
-        'app/cv-gids/[slug]/page.tsx',
-    ]);
-}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://werkcv.nl';
@@ -1110,81 +1016,66 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'cv-score': 0.82,
     };
 
-    const toolPages: MetadataRoute.Sitemap = await Promise.all(toolSlugs.map(async (slug) => ({
+    const toolPages: MetadataRoute.Sitemap = toolSlugs.map((slug) => ({
         url: `${baseUrl}/tools/${slug}`,
-        lastModified: await getFirstExistingLastModified([`app/tools/${slug}/page.tsx`]),
         changeFrequency: 'monthly' as const,
         priority: highIntentToolPriority[slug] ?? 0.72,
-    })));
+    }));
 
-    const salaryRolePagesSitemap: MetadataRoute.Sitemap = await Promise.all(salaryRolePages.map(async (page) => ({
+    const salaryRolePagesSitemap: MetadataRoute.Sitemap = salaryRolePages.map((page) => ({
         url: `${baseUrl}/salaris/${page.slug}`,
-        lastModified: await getLatestExistingLastModified([
-            'app/salaris/[slug]/page.tsx',
-            'lib/tools/salary-role-pages.ts',
-            'lib/tools/salary-benchmark.ts',
-        ]),
         changeFrequency: 'monthly' as const,
         priority: 0.71,
-    })));
+    }));
 
     // =========================================================================
     // NEW: /cv-voorbeelden/ pages (TS-based)
     // =========================================================================
     const newCategories = getAllCategories();
-    const newCategoryPages: MetadataRoute.Sitemap = await Promise.all(newCategories.map(async (cat) => ({
+    const newCategoryPages: MetadataRoute.Sitemap = newCategories.map((cat) => ({
         url: `${baseUrl}/cv-voorbeelden/${cat.slug}`,
-        lastModified: await getCvVoorbeeldenCategoryLastModified(cat.slug),
         changeFrequency: 'monthly' as const,
         priority: 0.85,
-    })));
+    }));
 
     const newExamples = getAllExamples();
-    const newExamplePages: MetadataRoute.Sitemap = await Promise.all(newExamples.map(async (ex) => ({
+    const newExamplePages: MetadataRoute.Sitemap = newExamples.map((ex) => ({
         url: `${baseUrl}/cv-voorbeelden/${ex.categorySlug}/${ex.slug}`,
-        lastModified: await getCvVoorbeeldenExampleLastModified(ex.categorySlug, ex.slug),
         changeFrequency: 'monthly' as const,
         priority: 0.7,
-    })));
+    }));
 
     // =========================================================================
     // NEW: /cv-tips/ article pages (TS-based)
     // =========================================================================
     const articles = getAllArticles();
-    const articlePages: MetadataRoute.Sitemap = await Promise.all(articles.map(async (article) => ({
+    const articlePages: MetadataRoute.Sitemap = articles.map((article) => ({
         url: `${baseUrl}/cv-tips/${article.slug}`,
         lastModified: article.updatedAt
             ? new Date(article.updatedAt)
             : new Date(article.publishedAt),
         changeFrequency: 'monthly' as const,
         priority: 0.75,
-    })));
+    }));
 
     const dutchWave = getDutchWavePages();
-    const dutchWavePages: MetadataRoute.Sitemap = await Promise.all(dutchWave.map(async (page) => ({
+    const dutchWavePages: MetadataRoute.Sitemap = dutchWave.map((page) => ({
         url: `${baseUrl}/cv-gids/${page.slug}`,
-        lastModified: await getSeoWaveLastModified(page.slug, 'nl'),
         changeFrequency: 'monthly' as const,
         priority: 0.74,
-    })));
+    }));
 
     const englishWave = getEnglishWavePages().filter(
         (page) => page.slug !== 'dutch-cv-for-expats',
     );
-    const englishWavePages: MetadataRoute.Sitemap = await Promise.all(englishWave.map(async (page) => ({
+    const englishWavePages: MetadataRoute.Sitemap = englishWave.map((page) => ({
         url: `${baseUrl}/en/guides/${page.slug}`,
-        lastModified: await getSeoWaveLastModified(page.slug, 'en'),
         changeFrequency: 'monthly' as const,
         priority: 0.73,
-    })));
-
-    const staticPagesWithLastModified: MetadataRoute.Sitemap = await Promise.all(staticPages.map(async (page) => ({
-        ...page,
-        lastModified: await getRouteLastModified(new URL(page.url).pathname),
-    })));
+    }));
 
     const pages = [
-        ...staticPagesWithLastModified,
+        ...staticPages,
         ...toolPages,
         ...salaryRolePagesSitemap,
         ...newCategoryPages,
@@ -1194,12 +1085,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...englishWavePages,
     ];
 
-    // Google ignores priority/changefreq. Omitting them also prevents stale or
-    // inverted hints from diluting the real per-page last-modified signal.
+    const editoriallyDatedUrls = new Set(articlePages.map((page) => page.url));
+
+    // Google ignores priority/changefreq. Only publish lastmod when it comes
+    // from stored editorial metadata; filesystem mtimes become build timestamps
+    // in Docker and would falsely claim that hundreds of pages changed together.
     return pages.map((page) => {
         const entry = { ...page };
         delete entry.changeFrequency;
         delete entry.priority;
+        if (!editoriallyDatedUrls.has(entry.url)) {
+            delete entry.lastModified;
+        }
         return entry;
     });
 }
