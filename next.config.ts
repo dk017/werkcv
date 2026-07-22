@@ -54,7 +54,9 @@ const nextConfig: NextConfig = {
       {
         source: '/cv-maken-sjabloon',
         destination: '/cv-maken-template',
-        permanent: true,
+        // Next.js maps `permanent: true` to 308; this explicit code preserves
+        // the brief's required 301 semantics for the consolidated URL.
+        statusCode: 301,
       },
       // Consolidate overlapping English CV intent onto one owner per cluster.
       {
