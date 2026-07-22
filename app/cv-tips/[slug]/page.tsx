@@ -107,7 +107,7 @@ export default async function ArticlePage({ params }: PageProps) {
         description: metaDesc,
         url: articleUrl,
         datePublished: publishedTime,
-        ...(modifiedTime ? { dateModified: modifiedTime } : {}),
+        dateModified: modifiedTime ?? publishedTime,
         image: [articleImageUrl],
         inLanguage: 'nl-NL',
         isAccessibleForFree: true,

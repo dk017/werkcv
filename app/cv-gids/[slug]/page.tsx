@@ -99,6 +99,8 @@ export default async function DutchWavePage({ params }: PageProps) {
         '@type': 'Article',
         headline: page.title,
         description: metaDesc,
+        url: `https://werkcv.nl/cv-gids/${page.slug}`,
+        image: [`https://werkcv.nl/cv-gids/${page.slug}/opengraph-image`],
         inLanguage: 'nl-NL',
         mainEntityOfPage: {
             '@type': 'WebPage',
@@ -106,6 +108,8 @@ export default async function DutchWavePage({ params }: PageProps) {
         },
         author: { "@id": "https://werkcv.nl/#organization" },
         publisher: { "@id": "https://werkcv.nl/#organization" },
+        // TODO(seo): Add real publishedAt/updatedAt fields to SeoGuidePage.
+        // Dates are intentionally omitted until the content source stores them.
     };
     const faqJsonLd = page.faq.length
         ? {
