@@ -648,29 +648,29 @@ export default function HomePageClient() {
                     Vertrouwen
                 </p>
                 <h2 className="text-3xl font-black text-black">
-                    Wat vroege gebruikers waarderen
+                    Wat je vooraf zeker weet
                 </h2>
             </div>
             <div className="grid gap-5 md:grid-cols-2">
-                <blockquote className="border-4 border-black bg-white p-6 text-slate-700 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-                    <p className="text-base font-medium text-slate-900">
-                        “WerkCV liet me in één sessie twee cv’s bouwen die ATS-proof waren. De download was {cvDownloadPrice.display} en er zaten geen abonnementsvallen aan. Ik begin nu elke sollicitatie hier.”
-                    </p>
-                    <footer className="mt-4 text-sm font-black text-black uppercase tracking-[0.3em]">
-                        Mark — Marketing &amp; HR, Amsterdam
-                    </footer>
-                </blockquote>
                 <div className="border-4 border-black bg-white p-6 text-slate-700 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
                     <p className="text-base font-bold text-black">
-                        30+ gratis Nederlandse HR-tools
+                        Eerst volledig bekijken, daarna beslissen
                     </p>
                     <p className="mt-3 text-sm">
-                        De tools geven context rond salaris, contracten en werk in Nederland. Elk van hen leidt met een CTA naar de editor zodat gebruikers meteen hun CV kunnen bouwen.
+                        Je bouwt je cv gratis, vergelijkt templates en bekijkt het volledige resultaat vóór je afrekent. Alleen de definitieve PDF-download kost {cvDownloadPrice.display} per cv.
+                    </p>
+                </div>
+                <div className="border-4 border-black bg-white p-6 text-slate-700 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="text-base font-bold text-black">
+                        Eén betaling, zonder automatische verlenging
+                    </p>
+                    <p className="mt-3 text-sm">
+                        WerkCV verkoopt geen abonnement en start geen proefperiode. Je rekent eenmalig af via Dodo Payments en kunt die betaalde cv later opnieuw downloaden zonder extra kosten.
                     </p>
                     <div className="mt-5 flex flex-col gap-2 text-xs font-black uppercase tracking-[0.2em] text-black">
-                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">EU hosting + GDPR</span>
-                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">Veilige betaling via Dodo Payments</span>
-                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">Geen auto-renew</span>
+                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">EU-hosting in Duitsland</span>
+                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">Betaling via Dodo Payments</span>
+                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">Geen automatische verlenging</span>
                     </div>
                 </div>
             </div>
