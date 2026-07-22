@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import { getAllCategories, getAllExamples, getExamplesByCategory } from '@/lib/cv-voorbeelden/registry';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
@@ -35,6 +36,57 @@ const categoryAccents: Record<string, string> = {
     'juridisch-en-overheid': '#6366F1',
     'bouw-en-techniek': '#EF4444',
 };
+
+const visualExamples = [
+    {
+        name: 'Student',
+        href: '/cv-voorbeelden/studenten-en-starters/student-cv',
+        src: '/cv-example-previews/student-cv.png',
+        alt: 'CV voorbeeld student — ATS-vriendelijk WerkCV template',
+    },
+    {
+        name: 'Verpleegkundige',
+        href: '/cv-voorbeelden/zorg-en-welzijn/verpleegkundige',
+        src: '/cv-example-previews/verpleegkundige.png',
+        alt: 'CV voorbeeld verpleegkundige — ATS-vriendelijk WerkCV template',
+    },
+    {
+        name: 'Softwareontwikkelaar',
+        href: '/cv-voorbeelden/technologie-en-ict/software-ontwikkelaar',
+        src: '/cv-example-previews/software-ontwikkelaar.png',
+        alt: 'CV voorbeeld softwareontwikkelaar — professioneel WerkCV template',
+    },
+    {
+        name: 'Magazijnmedewerker',
+        href: '/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker',
+        src: '/cv-example-previews/magazijnmedewerker.png',
+        alt: 'CV voorbeeld magazijnmedewerker — scanbaar WerkCV template',
+    },
+    {
+        name: 'Onderwijsassistent',
+        href: '/cv-voorbeelden/onderwijs/onderwijsassistent',
+        src: '/cv-example-previews/onderwijsassistent.png',
+        alt: 'CV voorbeeld onderwijsassistent — rustig WerkCV template',
+    },
+    {
+        name: 'Winkelmedewerker',
+        href: '/cv-voorbeelden/horeca-en-detailhandel/winkelmedewerker',
+        src: '/cv-example-previews/winkelmedewerker.png',
+        alt: 'CV voorbeeld winkelmedewerker — professioneel WerkCV template',
+    },
+    {
+        name: 'Administratief medewerker',
+        href: '/cv-voorbeelden/zakelijk-en-financieel/administratief-medewerker',
+        src: '/cv-example-previews/administratief-medewerker.png',
+        alt: 'CV voorbeeld administratief medewerker — ATS-vriendelijk WerkCV template',
+    },
+    {
+        name: 'Marketing manager',
+        href: '/cv-voorbeelden/marketing-en-communicatie/marketing-manager',
+        src: '/cv-example-previews/marketing-manager.png',
+        alt: 'CV voorbeeld marketing manager — modern WerkCV template',
+    },
+] as const;
 
 const workflowSteps = [
     {
@@ -322,6 +374,39 @@ export default function CVVoorbeeldenOverview() {
                         >
                             Bekijk prijzen
                         </Link>
+                    </div>
+                    <div className="mt-10">
+                        <h2 className="text-xl font-black text-gray-900">
+                            Bekijk echte CV voorbeelden
+                        </h2>
+                        <p className="mt-2 text-sm font-semibold text-gray-600">
+                            Elke preview is gerenderd met echte voorbeeldinhoud uit de WerkCV-editor.
+                        </p>
+                        <div className="mt-5 grid auto-cols-[44%] grid-flow-col gap-4 overflow-x-auto pb-4 sm:auto-cols-[30%] lg:grid-flow-row lg:grid-cols-8 lg:overflow-visible">
+                            {visualExamples.map((example, index) => (
+                                <Link
+                                    key={example.href}
+                                    href={example.href}
+                                    className="group block min-w-0 border-3 border-black bg-white p-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-1"
+                                    style={{ borderWidth: '3px' }}
+                                >
+                                    <div className="aspect-[210/297] overflow-hidden border-2 border-slate-300 bg-slate-100">
+                                        <Image
+                                            src={example.src}
+                                            alt={example.alt}
+                                            width={794}
+                                            height={1123}
+                                            priority={index === 0}
+                                            sizes="(max-width: 639px) 44vw, (max-width: 1023px) 30vw, 128px"
+                                            className="h-full w-full object-cover object-top"
+                                        />
+                                    </div>
+                                    <p className="mt-2 truncate text-xs font-black text-gray-900 group-hover:text-[#FF6B6B]">
+                                        {example.name}
+                                    </p>
+                                </Link>
+                            ))}
+                        </div>
                     </div>
                     <p className="mt-5 text-sm font-semibold text-gray-600">
                         Laatste inhoudelijke update: maart 2026

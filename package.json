@@ -24,6 +24,7 @@
     "seo-wave:pilot-report": "node ./node_modules/typescript/lib/tsc.js --pretty false --module commonjs --target es2020 --esModuleInterop --skipLibCheck --moduleResolution node --outDir .codex-tmp scripts/seo-wave-pilot-report.ts && node .codex-tmp/scripts/seo-wave-pilot-report.js",
     "pilot:create": "node scripts/create_pilot_access.js",
     "chrome:store:assets": "node scripts/chrome-extension/generate-store-assets.mjs",
+    "assets:cv-example-previews": "npx tsx scripts/generate-cv-example-previews.ts",
     "chrome:store:zip": "node scripts/chrome-extension/package-extension.mjs"
   },
   "dependencies": {
