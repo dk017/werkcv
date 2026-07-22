@@ -2,16 +2,13 @@
 /* eslint-disable react-hooks/static-components */
 
 import dynamic from "next/dynamic";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import NavUserMenu from "@/components/NavUserMenu";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { templateList } from "@/lib/templates/registry";
-import { CVData, sampleCV } from "@/lib/cv";
-import { getTemplateComponent, getTheme } from "@/app/editor/templates";
-import { LinkTextProvider } from "@/app/editor/templates/link-utils";
 import { getAllArticles } from "@/lib/cv-tips/registry";
 import { getAllExamples, getAllCategories } from "@/lib/cv-voorbeelden/registry";
 import { getStoredAttribution, track } from "@/lib/analytics";
@@ -27,86 +24,6 @@ const categoryCount = getAllCategories().length;
 const showcaseTemplates = ['professional', 'modern', 'elegant', 'ats']
     .map(id => templateList.find(t => t.id === id))
     .filter(Boolean);
-
-// Hero carousel: 8 best templates with their strongest color theme
-const HERO_SCALE = 220 / 794; // renders A4 width (794px) → 220px
-const heroSlides = [
-    { templateId: 'professional', themeId: 'charcoal',       label: 'Professioneel' },
-    { templateId: 'modern',       themeId: 'ocean-blue',     label: 'Modern' },
-    { templateId: 'elegant',      themeId: 'elegant-navy',   label: 'Elegant' },
-    { templateId: 'dynamic',      themeId: 'purple-royal',   label: 'Dynamisch' },
-    { templateId: 'remarkable',   themeId: 'rose-gold',      label: 'Opmerkelijk' },
-    { templateId: 'formal',       themeId: 'elegant-navy',   label: 'Formeel' },
-    { templateId: 'sepia',        themeId: 'warm-earth',     label: 'Sepia' },
-    { templateId: 'jobboss',      themeId: 'modern-teal',    label: 'Sollicitatiebaas' },
-];
-
-const homepageTemplatePreviewData: CVData = {
-    ...sampleCV,
-    personal: {
-        ...sampleCV.personal,
-        name: "Anouk de Vries",
-        title: "Marketing & Communicatie Specialist",
-        email: "anouk.devries@gmail.com",
-        phone: "+31 6 12345678",
-        location: "Amsterdam",
-        linkedIn: "linkedin.com/in/anouk-devries",
-        website: "anoukdevries.nl",
-        photo: "https://randomuser.me/api/portraits/women/44.jpg",
-        summary:
-            "Resultaatgerichte marketing professional met 6+ jaar ervaring in contentstrategie, campagne-optimalisatie en merkpositionering. Sterk in data-gedreven keuzes, stakeholdermanagement en het vertalen van doelstellingen naar meetbare groei.",
-    },
-    experience: [
-        {
-            role: "Senior Marketing Specialist",
-            company: "BrightWave Digital",
-            location: "Amsterdam",
-            start: "jan 2022",
-            end: "heden",
-            description: "",
-            highlights: [
-                "Verhoogde organisch verkeer met 48% via SEO contentclusters.",
-                "Leidde omnichannel campagnes met gemiddeld +32% leadgroei.",
-            ],
-        },
-        {
-            role: "Content Marketeer",
-            company: "ScaleUp Partners",
-            location: "Utrecht",
-            start: "mrt 2019",
-            end: "dec 2021",
-            description: "",
-            highlights: [
-                "Ontwikkelde employer-branding strategie voor internationale hiring.",
-                "Verbeterde nieuwsbrief-CTR van 3.8% naar 7.1% binnen 5 maanden.",
-            ],
-        },
-    ],
-    education: [
-        {
-            degree: "BSc Communicatiewetenschap",
-            school: "Universiteit van Amsterdam",
-            location: "Amsterdam",
-            start: "2014",
-            end: "2018",
-            description: "",
-        },
-    ],
-    skills: [
-        { name: "SEO & Contentstrategie", level: 5 },
-        { name: "Campagne Management", level: 5 },
-        { name: "GA4 & Looker Studio", level: 4 },
-        { name: "Copywriting", level: 4 },
-        { name: "Stakeholdermanagement", level: 4 },
-    ],
-    languages: [
-        { name: "Nederlands", level: "Moedertaal" },
-        { name: "Engels", level: "Vloeiend" },
-        { name: "Duits", level: "Goed" },
-    ],
-    interests: ["Hardlopen", "Design", "Reizen", "Podcasting"],
-    awards: ["Best Campaign Award (2023)"],
-};
 
 function TemplatePreviewPlaceholder({ compact = false }: { compact?: boolean }) {
     return (
@@ -166,112 +83,16 @@ function HeroCarouselPlaceholder() {
     );
 }
 
-function HomeTemplatePreviewInner({ templateId, colorThemeId }: { templateId: string; colorThemeId: string }) {
-    const TemplateComponent = getTemplateComponent(templateId);
-    const theme = getTheme(templateId, colorThemeId);
-
-    return (
-        <div className="relative h-full overflow-hidden border-2 border-black bg-white">
-            <div
-                className="origin-top-left pointer-events-none"
-                style={{
-                    transform: "scale(0.24)",
-                    width: `${100 / 0.24}%`,
-                }}
-            >
-                <LinkTextProvider disableAnchors>
-                    <TemplateComponent data={homepageTemplatePreviewData} theme={theme} />
-                </LinkTextProvider>
-            </div>
-            <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-white via-white/95 to-transparent pointer-events-none" />
-        </div>
-    );
-}
-
 const HomeTemplatePreview = dynamic(
-    () => Promise.resolve(HomeTemplatePreviewInner),
+    () => import("@/components/home/HomeTemplatePreviews").then((module) => module.HomeTemplatePreview),
     {
         ssr: false,
         loading: () => <TemplatePreviewPlaceholder compact />,
     }
 );
 
-function HeroCarouselInner() {
-    const [current, setCurrent] = useState(0);
-    const pausedRef = useRef(false);
-
-    useEffect(() => {
-        const t = setInterval(() => {
-            if (!pausedRef.current) {
-                setCurrent(c => (c + 1) % heroSlides.length);
-            }
-        }, 3000);
-        return () => clearInterval(t);
-    }, []);
-
-    return (
-        <div className="hidden md:flex flex-col items-center gap-5 flex-shrink-0">
-            {/* Card stack */}
-            <div className="relative w-[220px] h-[312px]">
-                {/* Back decorative cards */}
-                <div className="absolute inset-0 bg-blue-300 border-4 border-black"
-                    style={{ transform: 'rotate(6deg) translate(10px, 4px)', zIndex: 0 }} />
-                <div className="absolute inset-0 bg-yellow-300 border-4 border-black"
-                    style={{ transform: 'rotate(-4deg) translate(-8px, -2px)', zIndex: 1 }} />
-
-                {/* Main carousel card */}
-                <div
-                    className="absolute inset-0 border-4 border-black overflow-hidden bg-white shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] cursor-pointer"
-                    style={{ zIndex: 2 }}
-                    onMouseEnter={() => { pausedRef.current = true; }}
-                    onMouseLeave={() => { pausedRef.current = false; }}
-                >
-                    {heroSlides.map((slide, idx) => {
-                        const TemplateComponent = getTemplateComponent(slide.templateId);
-                        const theme = getTheme(slide.templateId, slide.themeId);
-                        return (
-                            <div
-                                key={slide.templateId}
-                                className="absolute inset-0 transition-opacity duration-700 ease-in-out"
-                                style={{ opacity: idx === current ? 1 : 0, zIndex: idx === current ? 1 : 0 }}
-                            >
-                                <div
-                                    className="origin-top-left pointer-events-none"
-                                    style={{ transform: `scale(${HERO_SCALE})`, width: `${100 / HERO_SCALE}%` }}
-                                >
-                                    <LinkTextProvider disableAnchors>
-                                        <TemplateComponent data={homepageTemplatePreviewData} theme={theme} />
-                                    </LinkTextProvider>
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-            </div>
-
-            {/* Template name label */}
-            <div className="bg-white border-2 border-black px-3 py-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-[11px] font-black tracking-widest uppercase text-black">
-                {heroSlides[current].label}
-            </div>
-
-            {/* Dot / pill indicators */}
-            <div className="flex gap-1.5 items-center">
-                {heroSlides.map((_, idx) => (
-                    <button
-                        key={idx}
-                        onClick={() => setCurrent(idx)}
-                        className={`h-2 border-2 border-black transition-all duration-300 ${
-                            idx === current ? 'w-5 bg-black' : 'w-2 bg-gray-300 hover:bg-gray-500'
-                        }`}
-                    />
-                ))}
-            </div>
-        </div>
-    );
-}
-
 const HeroCarousel = dynamic(
-    () => Promise.resolve(HeroCarouselInner),
+    () => import("@/components/home/HomeTemplatePreviews").then((module) => module.HeroCarousel),
     {
         ssr: false,
         loading: () => <HeroCarouselPlaceholder />,
