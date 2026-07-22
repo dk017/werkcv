@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
 import { cvDownloadPrice } from "@/lib/site-content";
 
 export const metadata: Metadata = {
@@ -120,10 +120,30 @@ const productJsonLd = {
     },
 };
 
+const pricingBreadcrumbJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+        {
+            "@type": "ListItem",
+            position: 1,
+            name: "WerkCV",
+            item: "https://werkcv.nl/",
+        },
+        {
+            "@type": "ListItem",
+            position: 2,
+            name: "Prijzen",
+            item: "https://werkcv.nl/prijzen",
+        },
+    ],
+};
+
 export default function PrijzenPage() {
     return (
         <div className="min-h-screen bg-[#FFFEF0]">
             <FAQJsonLd questions={[...pricingFaqs]} />
+            <JsonLd data={pricingBreadcrumbJsonLd} />
             {/* Header */}
             <header className="relative z-10 border-b-4 border-black bg-white">
                 <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">

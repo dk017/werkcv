@@ -1,18 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { UiLanguage } from "@/lib/ui-language";
-
-type FeaturedBadge = {
-    href: string;
-    src: string;
-    alt: string;
-    width: number;
-    height: number;
-    padded?: boolean;
-    rel?: string;
-    dataBadge?: string;
-    dataBadgeVariant?: string;
-};
 
 const mainLinks = [
     { href: "/cv-maken", label: "CV maken" },
@@ -93,76 +80,6 @@ const englishLegalLinks = [
     { href: "/en/terms", label: "Terms" },
 ];
 
-const featuredBadges: FeaturedBadge[] = [
-    {
-        href: "https://www.betterlaunch.co",
-        src: "https://www.betterlaunch.co/badge-dark.svg",
-        alt: "Featured on Better Launch",
-        width: 170,
-        height: 46,
-    },
-    {
-        href: "https://www.scrolllaunch.com/products/werkcv?utm_source=badge&utm_medium=embed&utm_campaign=werkcv&ref=scrolllaunch",
-        src: "https://www.scrolllaunch.com/api/badge/werkcv",
-        alt: "Featured on ScrollLaunch",
-        width: 170,
-        height: 37,
-    },
-    {
-        href: "https://neeed.directory/products/werkcv?utm_source=werkcv",
-        src: "https://neeed.directory/badges/neeed-badge-light.svg",
-        alt: "Featured on neeed.directory",
-        width: 139,
-        height: 40,
-        padded: true,
-    },
-    {
-        href: "https://wired.business",
-        src: "https://wired.business/badge0-dark.svg",
-        alt: "Featured on Wired Business",
-        width: 170,
-        height: 46,
-    },
-    {
-        href: "https://postyourstartup.co/startup/werkcv?ref=badge",
-        src: "https://postyourstartup.co/api/badge/werkcv?theme=dark",
-        alt: "Featured on PostYourStartup",
-        width: 170,
-        height: 44,
-    },
-    {
-        href: "https://dang.ai/",
-        src: "https://cdn.prod.website-files.com/63d8afd87da01fb58ea3fbcb/6487e2868c6c8f93b4828827_dang-badge.png",
-        alt: "Dang.ai",
-        width: 150,
-        height: 54,
-    },
-    {
-        href: "https://mediapronet.com",
-        src: "https://mediapronet.com/api/badge?style=dark",
-        alt: "Listed on mediapronet.com",
-        width: 160,
-        height: 54,
-    },
-    {
-        href: "https://launchpadly.co/startup/werkcv",
-        src: "https://launchpadly.co/embed/badges/startup/werkcv.svg?variant=listed-on",
-        alt: "Launchpadly Startup Directory",
-        width: 260,
-        height: 48,
-        dataBadge: "werkcv",
-        dataBadgeVariant: "listed-on",
-    },
-    {
-        href: "https://marketingdb.live",
-        src: "https://marketingdb.live/badge.svg",
-        alt: "Listed on MarketingDB",
-        width: 190,
-        height: 44,
-        rel: "noopener noreferrer nofollow sponsored",
-    },
-];
-
 export default function Footer({ uiLanguage = "nl" }: { uiLanguage?: UiLanguage }) {
     const isEnglish = uiLanguage === "en";
     const navigationLinks = isEnglish ? englishMainLinks : mainLinks;
@@ -222,34 +139,6 @@ export default function Footer({ uiLanguage = "nl" }: { uiLanguage?: UiLanguage 
                                 </Link>
                             ))}
                         </div>
-                    </div>
-                </div>
-
-                <div className="mt-8 border-t-2 border-gray-200 pt-5">
-                    <p className="mb-3 text-center text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-                        {isEnglish ? "Featured on" : "Ook genoemd op"}
-                    </p>
-                    <div className="flex flex-wrap items-center justify-center gap-3">
-                        {featuredBadges.map((badge) => (
-                            <a
-                                key={badge.href}
-                                href={badge.href}
-                                target="_blank"
-                                rel={badge.rel ?? "noopener noreferrer"}
-                                data-launchpadly-badge={badge.dataBadge}
-                                data-launchpadly-badge-variant={badge.dataBadgeVariant}
-                                className={`inline-flex overflow-hidden rounded-md border-2 border-black bg-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5 ${badge.padded ? "items-center p-2" : ""}`}
-                            >
-                                <Image
-                                    src={badge.src}
-                                    alt={badge.alt}
-                                    width={badge.width}
-                                    height={badge.height}
-                                    className={`block h-auto max-w-full ${badge.width === 139 ? "w-[139px]" : badge.width === 150 ? "w-[150px]" : badge.width === 160 ? "w-[160px]" : badge.width === 190 ? "w-[190px]" : badge.width === 260 ? "w-[260px]" : "w-[170px]"}`}
-                                    unoptimized
-                                />
-                            </a>
-                        ))}
                     </div>
                 </div>
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { JsonLd } from "@/components/seo/JsonLd";
 import { getDutchWavePages } from "@/lib/seo-wave/data";
 
 export const metadata: Metadata = {
@@ -47,7 +48,6 @@ const guideGroups = [
       "Gebruik dit cluster als je liever vergelijkt op rol, stijl of opmaak voordat je zelf gaat schrijven.",
     links: [
       { href: "/cv-voorbeelden", label: "CV voorbeelden" },
-      { href: "/cv-maken-template", label: "CV maken template" },
       { href: "/cv-maken-template", label: "CV-template of CV-sjabloon kiezen" },
       { href: "/templates", label: "CV templates" },
       { href: "/professioneel-cv-maken", label: "Professioneel CV maken" },
@@ -166,9 +166,58 @@ const workflowSteps = [
 
 export default function CvgidsHubPage() {
   const pages = getDutchWavePages();
+  const collectionJsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "WerkCV",
+            item: "https://werkcv.nl/",
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "CV-gids",
+            item: "https://werkcv.nl/cv-gids",
+          },
+        ],
+      },
+      {
+        "@type": "CollectionPage",
+        "@id": "https://werkcv.nl/cv-gids#webpage",
+        url: "https://werkcv.nl/cv-gids",
+        name: "Nederlandse CV-gids",
+        description: metadata.description,
+        isPartOf: { "@id": "https://werkcv.nl/#website" },
+        mainEntity: { "@id": "https://werkcv.nl/cv-gids#gidsen" },
+        inLanguage: "nl-NL",
+      },
+      {
+        "@type": "ItemList",
+        "@id": "https://werkcv.nl/cv-gids#gidsen",
+        name: "Alle Nederlandse CV-gidsen",
+        numberOfItems: pages.length,
+        itemListElement: pages.map((page, index) => ({
+          "@type": "ListItem",
+          position: index + 1,
+          item: {
+            "@type": "Article",
+            name: page.title,
+            description: page.description,
+            url: `https://werkcv.nl/cv-gids/${page.slug}`,
+          },
+        })),
+      },
+    ],
+  };
 
   return (
     <main className="min-h-screen bg-[#FFFEF9]">
+      <JsonLd data={collectionJsonLd} />
       <section className="border-b-4 border-black bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50">
         <div className="max-w-6xl mx-auto px-6 py-14">
           <span className="inline-block bg-[#FF6B6B] text-white text-sm font-bold px-3 py-1 mb-4 border-2 border-black">

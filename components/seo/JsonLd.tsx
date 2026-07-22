@@ -5,6 +5,15 @@ const WEBSITE_ID = 'https://werkcv.nl/#website';
 const CONTACT_EMAIL = 'contact@werkcv.nl';
 const X_PROFILE_URL = 'https://x.com/dk_r017';
 
+export function JsonLd({ data }: { data: unknown }) {
+    return (
+        <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+        />
+    );
+}
+
 interface ArticleJsonLdProps {
     category: CVCategory;
     url: string;

@@ -1,12 +1,61 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
 import { templateList } from "@/lib/templates/registry";
 import TemplateGallery from "./gallery";
 import { cookies } from "next/headers";
 import { normalizeStartSource, PENDING_START_SOURCE_COOKIE, readEncodedStartSource } from "@/lib/start-source";
 
 const pageUrl = "https://werkcv.nl/templates";
+
+const templateCollectionJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "WerkCV",
+          item: "https://werkcv.nl/",
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "CV-templates",
+          item: pageUrl,
+        },
+      ],
+    },
+    {
+      "@type": "CollectionPage",
+      "@id": `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: "ATS-vriendelijke CV-templates voor Nederlandse vacatures",
+      description:
+        "Vergelijk alle WerkCV-templates op indeling, stijl en geschiktheid voor Nederlandse sollicitaties.",
+      isPartOf: { "@id": "https://werkcv.nl/#website" },
+      mainEntity: { "@id": `${pageUrl}#templates` },
+      inLanguage: "nl-NL",
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${pageUrl}#templates`,
+      name: "Alle WerkCV-templates",
+      numberOfItems: templateList.length,
+      itemListElement: templateList.map((template, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        item: {
+          "@type": "CreativeWork",
+          name: template.nameDutch,
+          description: template.description,
+        },
+      })),
+    },
+  ],
+};
 
 const templateFaqs = [
   {
@@ -112,6 +161,7 @@ export default async function TemplatesPage({
     undefined;
   return (
     <main id="quick-start">
+      <JsonLd data={templateCollectionJsonLd} />
       <TemplateGallery templates={templateList} initialStartSource={resolvedStartSource} />
       <section className="border-t border-slate-200 bg-white px-5 py-16 sm:px-8">
         <div className="mx-auto max-w-5xl">

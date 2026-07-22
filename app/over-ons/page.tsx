@@ -50,36 +50,6 @@ const commitments = [
   "We verbeteren het product iteratief op basis van gebruik en feedback.",
 ];
 
-const organizationJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": "https://werkcv.nl/#organization",
-  name: "WerkCV",
-  alternateName: "WerkCV.nl",
-  url: "https://werkcv.nl",
-  logo: "https://werkcv.nl/logo.png",
-  description:
-    "Nederlandse CV builder voor ATS-vriendelijke sollicitaties, zonder abonnement en met eenmalige PDF-download.",
-  email: contactEmail,
-  sameAs: [xProfileUrl],
-  areaServed: {
-    "@type": "Country",
-    name: "Netherlands",
-  },
-  contactPoint: {
-    "@type": "ContactPoint",
-    contactType: "customer support",
-    email: contactEmail,
-    url: "https://werkcv.nl/contact",
-    availableLanguage: ["Dutch", "English"],
-  },
-  knowsAbout: [
-    "Nederlandse CV templates",
-    "ATS-vriendelijke CV's",
-    "CV schrijven voor Nederlandse vacatures",
-  ],
-};
-
 const aboutPageJsonLd = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
@@ -142,10 +112,6 @@ export const metadata: Metadata = {
 export default function OverOnsPage() {
   return (
     <div className="min-h-screen bg-[#FFFEF0]">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutPageJsonLd) }}
@@ -348,6 +314,12 @@ export default function OverOnsPage() {
               className="inline-block border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
             >
               Bekijk prijzen
+            </Link>
+            <Link
+              href="/voorwaarden"
+              className="inline-block border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+            >
+              Bekijk algemene voorwaarden
             </Link>
           </div>
 
