@@ -5,6 +5,50 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ['@napi-rs/canvas', 'pdfjs-dist'],
   turbopack: {},
 
+  async headers() {
+    // Keep this policy in report-only mode until production violation reports
+    // have been reviewed for 24-48 hours. Runtime third parties currently used:
+    // Google Analytics/Tag Manager, Microsoft Clarity, and the admin-only
+    // Leaflet bundle/OpenStreetMap tiles.
+    const contentSecurityPolicy = [
+      "default-src 'self'",
+      "base-uri 'self'",
+      "object-src 'none'",
+      "frame-ancestors 'self'",
+      "form-action 'self'",
+      "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://unpkg.com",
+      "style-src 'self' 'unsafe-inline' https://unpkg.com",
+      "img-src 'self' data: blob: https://*.clarity.ms https://c.bing.com https://*.tile.openstreetmap.org",
+      "font-src 'self' data:",
+      "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com",
+      "worker-src 'self' blob:",
+      "upgrade-insecure-requests",
+    ].join("; ");
+
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=63072000; includeSubDomains; preload',
+          },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+          {
+            key: 'Content-Security-Policy-Report-Only',
+            value: contentSecurityPolicy,
+          },
+        ],
+      },
+    ];
+  },
+
   async redirects() {
     return [
       // Consolidate overlapping English CV intent onto one owner per cluster.
