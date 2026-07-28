@@ -518,7 +518,17 @@ export type AnalyticsEvent =
           event: 'profile_photo_checkout_click';
           properties: { page_path: string; amount_cents: number; currency: string };
       }
-    | { event: 'profile_photo_submit'; properties: { page_path: string; style: string } }
+    | {
+          event: 'profile_photo_submit';
+          properties: {
+              page_path: string;
+              style: string;
+              file_count?: number;
+              clothing_preference?: 'keep' | 'adapt';
+              expression_preference?: 'keep' | 'approachable';
+              quality_warning_count?: number;
+          };
+      }
     | {
           event: 'profile_photo_generated';
           properties: { page_path: string; style: string; images_generated: number };

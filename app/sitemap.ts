@@ -73,6 +73,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.72,
         },
         {
+            url: `${baseUrl}/ai-headshot-foto-tips`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/en/ai-headshot-photo-requirements`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.68,
+        },
+        {
             url: `${baseUrl}/salaris`,
             lastModified: new Date(),
             changeFrequency: 'monthly',

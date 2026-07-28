@@ -73,6 +73,31 @@ const faqItems = [
     answer:
       `Yes. If you bought the CV + profile photo bundle for ${applicationBundlePrice.display}, the profile photo download is included.`,
   },
+  {
+    question: "What do I receive?",
+    answer:
+      "You create 4 square preview variants and can refine your selected photo up to 2 times. A paid download is delivered as a 1024 × 1024 JPEG for use on your CV, LinkedIn profile or professional account.",
+  },
+  {
+    question: "How long does generation take?",
+    answer:
+      "Generation time varies with demand and can take several minutes. Keep the page open while WerkCV creates the four previews.",
+  },
+  {
+    question: "What if the result does not look enough like me?",
+    answer:
+      "Do not use a photo that no longer feels recognizable. Select the closest preview and use the included refinements for a small correction. If none of the previews is usable, contact WerkCV support so the generation can be investigated.",
+  },
+  {
+    question: "What happens to my uploaded and generated photos?",
+    answer:
+      "WerkCV does not save your original source photos after the generation request. Generated results are kept in your account so you can return to them. You can request deletion by contacting WerkCV.",
+  },
+  {
+    question: "Can I use the downloaded photo professionally?",
+    answer:
+      "Yes. You may use your purchased result for your own CV, LinkedIn profile, professional biography, company profile and similar personal professional purposes. You remain responsible for using a photo that accurately represents you.",
+  },
 ];
 
 const valueComparison = [
@@ -89,9 +114,28 @@ const valueComparison = [
 ];
 
 const trustStats = [
-  "Widely cited LinkedIn data reports that profiles with a photo can receive up to 21x more profile views and 9x more connection requests than profiles without one.",
+  "A clear, recent photo helps people recognize you across your LinkedIn profile, CV and professional accounts.",
   "Preview variants first. Pay only if you choose to download.",
   "No LinkedIn login, no scraping and no subscription.",
+];
+
+const deliverables = [
+  {
+    title: "4 preview variants",
+    detail: "Compare four square results before deciding whether to pay.",
+  },
+  {
+    title: "2 included refinements",
+    detail: "Select your closest result and request up to two small adjustments.",
+  },
+  {
+    title: "1024 × 1024 JPEG",
+    detail: "A square file suitable for LinkedIn, CVs and professional profiles.",
+  },
+  {
+    title: "One-time payment",
+    detail: `Pay ${profilePhotoPrice.display} including VAT only when you choose to download. No subscription.`,
+  },
 ];
 
 export const metadata: Metadata = {
@@ -108,6 +152,13 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical: "https://werkcv.nl/en/profile-photo",
+    languages: {
+      nl: "https://werkcv.nl/profielfoto-cv-maken",
+      "nl-NL": "https://werkcv.nl/profielfoto-cv-maken",
+      en: "https://werkcv.nl/en/profile-photo",
+      "en-NL": "https://werkcv.nl/en/profile-photo",
+      "x-default": "https://werkcv.nl/profielfoto-cv-maken",
+    },
   },
   openGraph: {
     title: `AI headshot generator Netherlands | CV & LinkedIn photo | WerkCV`,
@@ -149,6 +200,9 @@ export default function EnglishProfilePhotoPage() {
             </span>
           </Link>
           <nav className="hidden items-center gap-5 text-sm font-bold text-slate-600 sm:flex">
+            <Link href="/en/ai-headshot-photo-requirements" className="hover:text-slate-900">
+              Photo tips
+            </Link>
             <Link href="/en/editor" className="hover:text-slate-900">
               CV maker
             </Link>
@@ -179,12 +233,20 @@ export default function EnglishProfilePhotoPage() {
               </p>
               <div className="mt-5 rounded-2xl border-2 border-black bg-white p-4">
                 <p className="text-sm font-black leading-relaxed text-slate-950">
-                  Your profile photo is not decoration. Widely cited LinkedIn data reports that profiles with a photo
-                  can receive up to 21x more profile views and 9x more connection requests than profiles without one.
+                  Use a clear, recent photo that accurately reflects how you look. That helps recruiters and
+                  professional contacts recognize you when they compare your CV and LinkedIn profile.
                 </p>
                 <p className="mt-2 text-xs font-bold leading-relaxed text-slate-600">
-                  WerkCV focuses on a photo that still looks like you, but feels cleaner and safer for Dutch recruiters
-                  who compare your CV and LinkedIn profile.
+                  WerkCV focuses on a result that still looks like you. This follows{" "}
+                  <a
+                    href="https://www.linkedin.com/business/talent/blog/product-tips/tips-for-taking-professional-linkedin-profile-pictures"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-2 underline-offset-2"
+                  >
+                    LinkedIn&apos;s current profile-photo guidance
+                  </a>
+                  , which recommends a recent, recognizable photo.
                 </p>
               </div>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -214,7 +276,7 @@ export default function EnglishProfilePhotoPage() {
           <div className="mb-6 grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-                Trust before upload
+                Recognizable by design
               </p>
               <h2 className="mt-2 text-3xl font-black leading-tight text-slate-950">
                 See the kind of profile photo WerkCV aims for
@@ -232,7 +294,7 @@ export default function EnglishProfilePhotoPage() {
           <section className="mb-8 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="rounded-3xl border-4 border-black bg-[#FFD166] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-800">
-                Price anchor
+                AI or a photographer?
               </p>
               <h2 className="mt-2 text-3xl font-black leading-tight text-black">
                 No full photoshoot needed when you only need a cleaner application photo
@@ -272,9 +334,44 @@ export default function EnglishProfilePhotoPage() {
         </section>
 
         <section className="mx-auto max-w-6xl px-6 pb-12">
+          <div className="rounded-3xl border-4 border-black bg-[#E9FFFC] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+              What you receive
+            </p>
+            <h2 className="mt-2 text-3xl font-black text-slate-950">
+              Clear deliverables before you upload
+            </h2>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {deliverables.map((item) => (
+                <article key={item.title} className="rounded-2xl border-2 border-black bg-white p-4">
+                  <h3 className="text-sm font-black text-slate-950">{item.title}</h3>
+                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">{item.detail}</p>
+                </article>
+              ))}
+            </div>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              <div className="rounded-2xl border-2 border-black bg-white p-5">
+                <h3 className="text-base font-black text-slate-950">Your source photos</h3>
+                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+                  Original uploads are used for the generation request and are not saved by WerkCV afterward. Upload
+                  only photos of yourself that you are allowed to use.
+                </p>
+              </div>
+              <div className="rounded-2xl border-2 border-black bg-white p-5">
+                <h3 className="text-base font-black text-slate-950">Your generated results</h3>
+                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
+                  Results are stored in your account so you can return to them. You may use a purchased result for your
+                  own CV, LinkedIn and professional profiles, or request deletion through WerkCV support.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-6 pb-12">
           <div className="rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-              Trust before upload
+              Preview before payment
             </p>
             <h2 className="mt-2 text-3xl font-black text-slate-950">
               Why improve your profile photo first?

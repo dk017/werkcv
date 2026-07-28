@@ -5,7 +5,7 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
     title: 'LinkedIn profiel optimaliseren in 2026: complete gids voor recruiters',
     description: 'Optimaliseer je LinkedIn-profiel voor recruiters met betere zoekwoorden, headline, samenvatting, skills, aanbevelingen en profielactiviteit.',
     publishedAt: '2025-03-01',
-    updatedAt: '2026-04-04',
+    updatedAt: '2026-07-28',
 
     metaTitle: 'LinkedIn profiel optimaliseren in 2026: complete gids | WerkCV',
     metaDesc: 'Optimaliseer je LinkedIn-profiel voor recruiters met tips voor kopregel, samenvatting, vaardigheden, aanbevelingen en zichtbaarheid. Inclusief LinkedIn naar cv-route.',
@@ -17,22 +17,22 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
     order: 8,
 
     keyTakeaways: [
-        'LinkedIn heeft 11+ miljoen Nederlandse gebruikers — recruiters zoeken hier dagelijks actief naar kandidaten',
-        'Je headline is het zwaarst gewogen zoekwoordenveld — maak het specifiek en vol met vacaturetermijnen',
-        'Profielen met foto krijgen 21x meer weergaven dan profielen zonder foto',
-        'Een volledig ingevuld profiel scoort 40x meer kansen via LinkedIn dan een onvolledig profiel',
-        'Wees actief: minstens 1 post of reactie per week verhoogt je zichtbaarheid significant',
+        'Recruiters gebruiken LinkedIn om kandidaten te zoeken, te beoordelen en te benaderen',
+        'Maak je headline specifiek en gebruik termen die herkenbaar zijn uit passende vacatures',
+        'Gebruik een recente profielfoto die jou herkenbaar weergeeft en ook als kleine uitsnede werkt',
+        'Vul de relevante profielsecties volledig en houd datums en functietitels gelijk aan je cv',
+        'Blijf zichtbaar met inhoudelijke reacties en bijdragen die passen bij je vakgebied',
     ],
 
     sections: [
         {
             id: 'waarom-linkedin',
             title: 'Waarom LinkedIn onmisbaar is voor je carriere in 2026',
-            answerCapsule: 'LinkedIn heeft 11+ miljoen Nederlandse gebruikers en is het platform waar 87% van de recruiters actief kandidaten zoekt. Een geoptimaliseerd profiel is je digitale visitekaartje — ook als je niet actief zoekt.',
+            answerCapsule: 'Recruiters gebruiken LinkedIn om kandidaten te zoeken en te beoordelen. Een volledig, actueel profiel is daarom je professionele visitekaartje, ook als je niet actief zoekt.',
             content: [
-                'LinkedIn is met 11+ miljoen Nederlandse gebruikers het grootste professionele netwerk van het land (LinkedIn 2024). Recruiters gebruiken LinkedIn dagelijks om kandidaten te zoeken, te beoordelen en te benaderen. Uit onderzoek van LinkedIn Talent Solutions (2024) gebruikt 87% van de recruiters LinkedIn als primaire sourcing-tool voor kandidaten. Een geoptimaliseerd profiel is daarmee niet optioneel — het is je professionele identiteit online.',
-                'Je LinkedIn-profiel is als een uitgebreide versie van je cv, maar dan dynamisch en vindbaar. Je kunt er meer kwijt dan op een cv: media, aanbevelingen, publicaties, vrijwilligerswerk en een persoonlijk verhaal in de About-sectie. Tegelijkertijd bekijkt 72% van de recruiters het LinkedIn-profiel van een kandidaat na het lezen van het cv (LinkedIn 2024) — je profiel bevestigt of weerlegt wat op je cv staat.',
-                'Het cruciale verschil: een cv stuur je actief toe; LinkedIn brengt kansen naar jou. Mensen met een volledig ingevuld profiel hebben 40x meer kansen om een baan te vinden via LinkedIn dan mensen met een onvolledig profiel (LinkedIn 2024). Zelfs als je niet actief zoekt, kan een geoptimaliseerd profiel leiden tot interessante benaderingen van recruiters en potentiele werkgevers.',
+                'Recruiters gebruiken LinkedIn dagelijks om kandidaten te zoeken, te beoordelen en te benaderen. Een volledig en actueel profiel helpt hen snel begrijpen wat je doet, waar je ervaring ligt en voor welke functies je relevant kunt zijn.',
+                'Je LinkedIn-profiel is als een uitgebreide versie van je cv, maar dan dynamisch en vindbaar. Je kunt er meer kwijt dan op een cv: media, aanbevelingen, publicaties, vrijwilligerswerk en een persoonlijk verhaal in de About-sectie. Recruiters kunnen je profiel naast je cv leggen, dus datums, functietitels en werkgevers moeten onderling kloppen.',
+                'Het cruciale verschil: een cv stuur je actief toe; een goed LinkedIn-profiel kan ook gevonden worden wanneer je niet zelf solliciteert. Een duidelijke headline, relevante vaardigheden en volledig beschreven ervaring maken het gemakkelijker om je profiel te begrijpen en op passende zoektermen te vinden.',
             ],
             intentLinks: [
                 {
@@ -50,10 +50,10 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
         {
             id: 'profielfoto',
             title: 'Kies de juiste profielfoto en achtergrondafbeelding',
-            answerCapsule: 'Profielen met een professionele foto krijgen 21x meer weergaven. Je gezicht moet minimaal 60% van het beeld vullen, de achtergrond neutraal zijn en de expressie vriendelijk en professioneel.',
+            answerCapsule: 'Gebruik een recente foto die echt op je lijkt. Laat je gezicht ongeveer 60% van het beeld vullen en kies een rustige achtergrond en een natuurlijke, professionele expressie.',
             content: [
-                'Profielen met een foto krijgen tot 21 keer meer weergaven dan profielen zonder (LinkedIn 2024). Toch heeft een aanzienlijk deel van de Nederlandse gebruikers geen professionele profielfoto. Een professionele portretfoto is de meest impactvolle verbetering die je in vijf minuten aan je profiel kunt aanbrengen.',
-                'Kies een foto met goede belichting (daglicht of een zachte lampverlichting van voren), een neutrale of wazige achtergrond en een vriendelijke, zelfverzekerde gezichtsuitdrukking. Je gezicht moet minimaal 60% van het beeld vullen. Geen groepsfoto waaruit je bent uitgeknipt, geen vakantiegoto, geen foto van jaren geleden die je niet meer lijkt. Houd de foto elke 2 tot 3 jaar bij.',
+                'Een duidelijke profielfoto helpt mensen je herkennen wanneer zij je profiel, cv en berichten naast elkaar zien. LinkedIn adviseert een recente foto die weergeeft hoe je er dagelijks uitziet; ook een artistieke of AI-bewerkte weergave moet je eigen gelijkenis behouden.',
+                'Kies een foto met goede belichting (daglicht of zachte verlichting van voren), een rustige achtergrond en een natuurlijke, zelfverzekerde gezichtsuitdrukking. LinkedIn adviseert dat je gezicht ongeveer 60% van het beeld vult. Gebruik geen groepsfoto, sterk filter of oude foto die niet meer op je lijkt.',
                 'Voeg ook een achtergrondafbeelding toe — de lange banner bovenaan je profiel. Dit is een gratis reclamebord dat de meeste gebruikers leeg laten. Kies een afbeelding die past bij je vakgebied: een stadsfoto voor een urbanist, een coderegels-esthetiek voor een developer, een team-in-actie-foto voor een manager. Of gebruik een clean afbeelding met je professionele tagline erop. Dit maakt je profiel direct onderscheidend.',
             ],
             bullets: [
@@ -74,6 +74,11 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
                     href: '/cv-tips/foto-op-je-cv',
                     label: 'Lees wanneer een foto op je cv verstandig is',
                     description: 'Handig als je twijfelt of je dezelfde foto ook op je Nederlandse cv moet gebruiken.',
+                },
+                {
+                    href: 'https://www.linkedin.com/business/talent/blog/product-tips/tips-for-taking-professional-linkedin-profile-pictures',
+                    label: 'Bekijk de actuele profielfotorichtlijnen van LinkedIn',
+                    description: 'Primaire bron voor herkenbaarheid, uitsnede, achtergrond, kleding en belichting.',
                 },
             ],
         },
@@ -164,9 +169,9 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
         {
             id: 'aanbevelingen',
             title: 'Aanbevelingen: persoonlijke referenties op je profiel',
-            answerCapsule: 'Aanbevelingen zijn de meest geloofwaardige inhoud op je LinkedIn-profiel. Ze worden door 63% van de recruiters meegenomen in hun beoordeling — vraag er minimaal 3 aan van leidinggevenden of opdrachtgevers.',
+            answerCapsule: 'Aanbevelingen geven concrete sociale bewijskracht op je LinkedIn-profiel. Vraag een kleine set specifieke aanbevelingen aan mensen die je werk goed kennen.',
             content: [
-                'Aanbevelingen zijn persoonlijke referenties op je profiel, geschreven door collega\'s, leidinggevenden, klanten of opdrachtgevers. Ze wegen zwaarder dan endorsements en geven recruiters direct inzicht in hoe anderen je waarderen als professional. Uit onderzoek van LinkedIn (2024) neemt 63% van de recruiters aanbevelingen mee in hun beoordeling van een kandidaat.',
+                'Aanbevelingen zijn persoonlijke referenties op je profiel, geschreven door collega\'s, leidinggevenden, klanten of opdrachtgevers. Ze geven recruiters extra context over hoe anderen je samenwerking, vakkennis en resultaten ervaren.',
                 'Vraag aanbevelingen aan bij leidinggevenden of managers (het zwaarste gewicht), opdrachtgevers (voor freelancers en consultants onmisbaar), collega\'s met wie je intensief hebt samengewerkt, en klanten die je kunt benoemen. Streef naar minimaal 3 aanbevelingen op je profiel — meer is altijd beter, zolang ze specifiek en authentiek zijn.',
                 'Maak het je aanbevelingspartner gemakkelijk: stuur een persoonlijk berichtje met de context van jullie samenwerking en geef aan welke aspecten of prestaties je graag benadrukt wilt zien. Een goede aanbeveling beschrijft een specifieke samenwerking of prestatie met concrete details — niet alleen "X is een fijne collega" maar "Tijdens project Y stuurde X een team van 8 personen aan en leverde 3 weken voor schema op, ondanks een halvering van het budget."',
             ],
@@ -174,9 +179,9 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
         {
             id: 'open-to-work',
             title: 'Open to Work: wanneer en hoe gebruik je het?',
-            answerCapsule: 'Open to Work verhoogt je InMail-ontvangst met gemiddeld 40%. Je kunt instellen of alleen recruiters of ook je netwerk het ziet — kies bewust op basis van je huidige werksituatie.',
+            answerCapsule: 'Met Open to Work geef je gewenste functies, locaties en contractvormen door. Kies bewust of alleen recruiters of ook je netwerk deze beschikbaarheid mag zien.',
             content: [
-                'De Open to Work-instelling op LinkedIn geeft aan dat je openstaat voor nieuwe kansen. Profielen met Open to Work ontvangen gemiddeld 40% meer InMails van recruiters (LinkedIn 2024). Het is een van de makkelijkste manieren om je zichtbaarheid te vergroten als je actief zoekt. Maar gebruik het bewust: je huidige werkgever kan het zien als je niet goed instelelt wie het mag zien.',
+                'De Open to Work-instelling op LinkedIn geeft aan dat je openstaat voor nieuwe kansen en laat je gewenste functietitels, locaties en contractvormen vastleggen. Gebruik de zichtbaarheid bewust: je huidige werkgever kan de openbare versie zien.',
                 'Je hebt twee opties: zichtbaar voor iedereen (inclusief de groen "Open to Work"-banner op je foto — breed zichtbaar, ook voor je netwerk), of zichtbaar alleen voor LinkedIn Recruiter-gebruikers (betaalde recruiter-accounts — minder zichtbaar, maar beschermt je privacy tegenover je huidige werkgever). Als je nog in dienst bent, kies dan de tweede optie.',
                 'Vul de Open to Work-instellingen volledig in: welke functietitels zoek je, in welke locaties of remote, welk type contract (fulltime, parttime, freelance), en wanneer je beschikbaar bent. Hoe specifieker, hoe beter de match met recruiters die deze filters gebruiken in hun kandidaatszoekopdrachten.',
             ],
@@ -190,9 +195,9 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
         {
             id: 'linkedin-ssi',
             title: 'LinkedIn SSI en algoritmische zichtbaarheid',
-            answerCapsule: 'De LinkedIn Social Selling Index (SSI) boven de 70 geeft tot 45% meer profielweergaven. De vier SSI-pijlers zijn: sterk profiel, juiste mensen vinden, inzichten delen en relaties opbouwen.',
+            answerCapsule: 'De LinkedIn Social Selling Index is een indicatieve score rond profiel, netwerk, inzichten en relaties. Gebruik hem als diagnose, niet als garantie voor recruiterzichtbaarheid.',
             content: [
-                'LinkedIn berekent voor elk profiel een Social Selling Index (SSI) op basis van vier dimensies: hoe sterk je profiel is opgezet, hoe actief je de juiste mensen zoekt en toevoegt, hoe relevant de content is die je deelt, en hoe actief je relaties opbouwt via conversaties. Een SSI boven de 70 levert tot 45% meer profielweergaven op in recruiter-zoekopdrachten (LinkedIn 2024).',
+                'LinkedIn berekent een Social Selling Index (SSI) op basis van vier dimensies: hoe sterk je profiel is opgezet, hoe actief je relevante mensen vindt, hoe je inzichten deelt en hoe je relaties opbouwt. Gebruik deze score als praktische diagnose; LinkedIn publiceert geen garantie dat een bepaalde SSI-score automatisch meer recruiterweergaven oplevert.',
                 'Je kunt je eigen SSI-score gratis bekijken via linkedin.com/sales/ssi. Het geeft je direct inzicht in welke pijler het sterkst scoort en waar je kunt verbeteren. De makkelijkste winst zit vaak in pijler 1 (profiel completeren) en pijler 3 (content delen). Een compleet profiel en 1 relevante post per week verhogen je SSI al merkbaar.',
                 'Praktische acties om je SSI te verhogen: vul alle profielsecties volledig in (About, ervaring, opleiding, vaardigheden), voeg wekelijks 3 tot 5 nieuwe connecties toe die relevant zijn voor je vakgebied, deel 1 tot 2 keer per week een post of reactie op sectornieuws, en beantwoord berichten snel. Consistentie is belangrijker dan incidentele grote inspanning.',
             ],
@@ -200,9 +205,9 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
         {
             id: 'actief-zijn',
             title: 'Actief zijn op LinkedIn: wat en hoe vaak?',
-            answerCapsule: 'Actieve LinkedIn-gebruikers worden 4x vaker gevonden in recruiter-zoekopdrachten. Deel 1-2 keer per week iets relevants: een eigen inzicht, een branche-artikel of een reactie op een collega.',
+            answerCapsule: 'Regelmatige, inhoudelijke activiteit houdt je profiel actueel en zichtbaar in je netwerk. Kies een ritme dat je kunt volhouden en geef kwaliteit voorrang op volume.',
             content: [
-                'Een profiel alleen is niet genoeg. Actieve gebruikers worden 4x vaker gevonden in recruiter-zoekopdrachten dan passieve gebruikers (LinkedIn 2024). Dat betekent niet dat je dagelijks moet posten — maar een minimale activiteit van 1 tot 2 keer per week maakt een aantoonbaar verschil in je zichtbaarheid en reach.',
+                'Een goed profiel is de basis; relevante activiteit laat daarnaast zien waar je mee bezig bent en helpt je zichtbaar blijven in je netwerk. Je hoeft niet dagelijks te posten. Kies een regelmatig ritme dat je kunt volhouden en laat kwaliteit voorrang houden op volume.',
                 'De makkelijkste vorm van activiteit: reageer op posts van anderen in je vakgebied. Een doordachte reactie van 2 tot 3 zinnen is zichtbaar voor het netwerk van de poster — ook voor mensen die jou nog niet kennen. Dit vergroot je bereik zonder dat je zelf originele content hoeft te maken. Vergeet ook niet om collega\'s te feliciteren met nieuwe functies of jubilea — het is zichtbaar en wordt gewaardeerd.',
                 'Als je zelf wil posten: focus op vak-inhoudelijke inzichten, lessen uit je werk, ervaringen in een project, branchenieuws met jouw perspectief, of achter-de-schermen in je werk. Persoonlijke verhalen (een uitdaging overwonnen, een lesson learned) presteren op LinkedIn significant beter dan formele berichten. Gebruik 1 tot 3 relevante hashtags per post voor extra bereik.',
             ],
@@ -241,7 +246,7 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
         },
         {
             question: 'Hoe vaak moet ik content delen op LinkedIn?',
-            answer: 'Minimaal 1 post of substantiele reactie per week is al goed. Actieve gebruikers worden 4x vaker gevonden in recruiter-zoekopdrachten. Kwaliteit gaat boven kwantiteit: een doordachte reactie van 3 zinnen werkt beter dan een leeg "Leuk artikel!" commentaar.',
+            answer: 'Een wekelijkse post of inhoudelijke reactie is een praktisch startpunt, maar er is geen universeel minimum dat bereik garandeert. Kwaliteit gaat boven kwantiteit: een doordachte reactie werkt beter dan een leeg "Leuk artikel!" commentaar.',
         },
         {
             question: 'Hoeveel connecties moet ik hebben op LinkedIn?',
@@ -253,7 +258,7 @@ export const linkedinProfielOptimaliseren: BlogArticle = {
         },
         {
             question: 'Moet ik een foto op mijn LinkedIn-profiel zetten?',
-            answer: 'Ja. Profielen met een professionele foto krijgen tot 21x meer weergaven dan profielen zonder (LinkedIn 2024). Gebruik een professionele portretfoto met neutrale achtergrond. In Nederland is dit de standaard — een profiel zonder foto wekt argwaan bij recruiters.',
+            answer: 'Een duidelijke profielfoto helpt professionele contacten je herkennen. Gebruik een recente portretfoto met rustige achtergrond die eerlijk weergeeft hoe je eruitziet. LinkedIn adviseert bovendien dat je gezicht ongeveer 60% van het beeld vult.',
         },
         {
             question: 'Hoe bescherm ik mijn LinkedIn-activiteit als ik nog in dienst ben?',

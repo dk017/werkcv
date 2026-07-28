@@ -138,6 +138,13 @@ export default function EnglishPrivacyPage() {
                 tax periods. Technical and analytics data is not kept longer than needed for
                 product analysis, security, and error investigation.
               </p>
+              <p className="mt-2 font-medium leading-relaxed">
+                For the profile-photo feature, WerkCV does not retain original source photos after
+                the generation request is complete. Generated results are linked to your account so
+                you can return to them. You may request deletion of those results through
+                contact@werkcv.nl. Limited API log retention for security and abuse monitoring may
+                apply under OpenAI&apos;s current terms.
+              </p>
             </section>
 
             <section>

@@ -111,6 +111,13 @@ export default function PrivacyPage() {
                                 langer dan nodig voor productanalyse, beveiliging en foutonderzoek. Je kunt op elk moment
                                 verzoeken om verwijdering van gegevens die niet langer wettelijk of contractueel nodig zijn.
                             </p>
+                            <p className="font-medium leading-relaxed mt-2">
+                                Bij de profielfotofunctie bewaart WerkCV je oorspronkelijke bronfoto&apos;s niet nadat de
+                                generatieaanvraag is afgerond. Gegenereerde resultaten worden aan je account gekoppeld
+                                zodat je er later naar kunt terugkeren. Je kunt via contact@werkcv.nl verzoeken om deze
+                                resultaten te verwijderen. Voor verwerking via de OpenAI API kan beperkte logbewaring
+                                voor beveiliging en misbruikcontrole gelden volgens de actuele voorwaarden van OpenAI.
+                            </p>
                         </section>
 
                         <section>

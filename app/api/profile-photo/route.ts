@@ -8,6 +8,13 @@ import { CV_PROFILE_PHOTO_BUNDLE_PRODUCT } from "@/lib/polar";
 import { claimProfilePhotoBundle, hasAvailableProfilePhotoBundle } from "@/lib/profile-photo-entitlements";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
 import { saveProfilePhotoImage, StoredProfilePhotoImage } from "@/lib/profile-photo-storage";
+import {
+  buildProfilePhotoPrompt,
+  profilePhotoClothingPreferences,
+  profilePhotoExpressionPreferences,
+  type ProfilePhotoClothingPreference,
+  type ProfilePhotoExpressionPreference,
+} from "@/lib/profile-photo-prompt";
 
 export const runtime = "nodejs";
 
@@ -18,23 +25,6 @@ const MAX_REFINEMENT_LENGTH = 300;
 const MAX_REFINEMENTS = 2;
 const MAX_GENERATIONS = 1;
 const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
-
-const stylePrompts: Record<string, string> = {
-  executive:
-    "Professional corporate headshot of the person in the reference image, photographed in a high-end studio setting. Sharp business attire: tailored dark suit or blazer, crisp white or light blue shirt, subtle tie or elegant blouse for women. Neutral gradient background in warm charcoal or deep slate grey (#2C2C2C to #4A4A4A). Rembrandt lighting setup: single key light at 45 degrees with a soft fill reflector, creating gentle shadow depth on one side of the face. Expression: composed, authoritative, slight confident smile. Direct eye contact with lens. Shot at 85mm equivalent focal length, shallow depth of field, subject perfectly sharp. Color grading: slightly desaturated with lifted blacks for a premium editorial feel. No distracting background elements. LinkedIn-optimized 1:1 crop with face filling 60% of frame.",
-  creatief:
-    "Creative professional headshot of the person in the reference image, photographed with intentional editorial style. Smart-casual attire with a distinctive element: structured jacket in an interesting texture or a bold color pop accessory. Background: blurred modern workspace or studio environment with soft bokeh, warm neutral tones such as cream, terracotta, or soft sage. Natural window light from camera-left creating soft directional illumination with a subtle catch light in the eyes. Expression: approachable, engaged, genuine smile showing personality. Slight 3/4 body angle, but face turned toward camera with direct eye contact. Shot at 85mm, f/2.0. Color grading: warm, slightly elevated saturation, clean skin tones. Artful without being unprofessional. Instagram-portfolio ready, also clean enough for LinkedIn.",
-  tech:
-    "Modern tech founder headshot of the person in the reference image, clean and contemporary aesthetic. Smart-casual attire: quality crewneck, minimalist open-collar shirt, or unstructured blazer, no tie. Background: pure white, light concrete texture, or soft out-of-focus modern office interior in light greys and whites. Flat front lighting or softbox setup for an editorial-clean look with zero harsh shadows. Expression: confident, direct, slightly informal, approachable authority. Slight forward lean suggesting energy and engagement, while face remains front-facing and centered. Shot tightly framed head and shoulders, 85mm equivalent, very clean and uncluttered. Color grading: cool-neutral tones, high clarity, slightly high-key exposure. Y Combinator demo day meets Wired magazine cover: founder credibility without corporate stiffness.",
-  zorg:
-    "Trustworthy healthcare professional headshot of the person in the reference image. Attire: clean white coat over professional clothing, or neat clinical scrubs in navy or teal. Optional: stethoscope draped naturally around neck if it fits the image. Background: soft clinical white or very light grey, clean, sterile, reassuring. Gentle clamshell lighting for even, flattering, shadow-free illumination that communicates approachability and trust. Expression: warm, genuine, empathetic smile, the look that makes patients feel safe. Direct eye contact. Shot at 85mm, f/2.8, tight head-and-shoulders crop. Color grading: neutral and clean, slightly warm skin tones, crisp whites. No stylization: pure competence and care. Suitable for hospital website, Zorgkaart Nederland profile, and practice website.",
-  consultant:
-    "Intellectual authority headshot of the person in the reference image in a distinguished academic or consulting context. Smart professional attire: blazer or jacket, tweed, herringbone, or structured wool texture adds gravitas, open collar or subtle tie, no overly corporate feel. Background: soft-focus bookshelf filled with books, warm wood tones, or muted library interior, shot at f/1.8 to create rich background separation. Rembrandt or split lighting for intellectual depth, warm tungsten key light balanced with soft fill. Expression: thoughtful, composed, intelligent, slight hint of a knowing smile. Slight 3/4 body angle, face toward camera with direct eye contact. Color grading: warm, slightly desaturated, film-like quality with lifted shadows. Harvard Faculty meets McKinsey senior partner: credible, published, trusted.",
-  client:
-    "Energetic and approachable client-facing professional headshot of the person in the reference image. Polished business-casual attire: smart blazer, neat open collar, or professional blouse/shirt in approachable colors such as navy, cobalt, burgundy, or warm grey. Background: softly blurred modern office or collaborative workspace in warm neutral tones, friendly, not sterile. Butterfly or beauty-dish lighting for an open, welcoming, energetic look. Expression: genuine wide smile, open and warm, the face you want to pick up the phone to. Slight forward lean. Shot at 85mm, f/2.2. Color grading: warm, vibrant, slightly elevated contrast and saturation, energetic without being garish. Ideal for LinkedIn, CRM profiles, email signatures, and company team pages.",
-  linkedin:
-    "Clean universal professional headshot of the person in the reference image, optimized for CV and LinkedIn. Neat professional attire: plain blazer, button-up shirt or blouse in neutral or classic colors such as navy, white, grey, or black. Plain background in soft neutral grey (#E8E8E8 to #D0D0D0 gradient), or clean white, ATS and recruiter-safe. Even softbox or ring-light illumination, completely shadow-free and flattering. Expression: natural, pleasant, professional resting expression with a subtle approachable smile. Direct eye contact. Centered composition, face filling 55-65% of frame, standard LinkedIn 1:1 aspect ratio. Color grading: neutral, accurate skin tones, no stylization, no filters. Crisp and sharp throughout. Works on any CV template, any LinkedIn profile, any nationality, any industry: maximum versatility.",
-};
 
 function sanitizeFileName(name: string): string {
   const cleanName = name.replace(/[^a-zA-Z0-9._-]/g, "-").slice(0, 80);
@@ -64,21 +54,6 @@ function serializeImages(projectId: string, images: StoredProfilePhotoImage[]) {
   }));
 }
 
-function buildPrompt(style: string): string {
-  const selectedStyle = stylePrompts[style] ?? stylePrompts.executive;
-
-  return [
-    "Preserve the exact facial features, skin tone, age, and likeness of the person in the reference image. Only modify lighting, background, attire context, composition, and color grading as described. The result must be photorealistic, not illustrated, stylized, painted, or synthetic-looking.",
-    "Target the quality of a real professional LinkedIn studio portrait: natural skin texture, realistic hair detail, clear eyes, clean background separation, and believable clothing fabric. The photo should look like it came from a good local business photographer, not an AI filter.",
-    "If multiple images are provided, use the first image as the primary identity reference and the other images only as supporting references.",
-    "Recompose the person into an upright, front-facing portrait even if the input photo is sideways, angled, turned away, or a casual selfie. The face must be centered and looking directly into the camera with both eyes visible.",
-    "Do not preserve a side-facing pose from the input image. Correct head orientation, shoulder angle, and camera perspective into a professional front-facing studio portrait while preserving identity.",
-    "Frame the subject from the chest up with ample headroom and negative space above the head. Ensure the top of the head is not cropped. Keep the head vertical, not tilted or rotated.",
-    selectedStyle,
-    "Avoid glamour retouching, overly perfect skin, influencer styling, unrealistic beauty filters, logos, text, ID-photo stiffness, uniforms unless already present, and major changes to body, face, age, or ethnicity.",
-  ].join(" ");
-}
-
 function buildRefinementPrompt(instruction: string): string {
   const safeInstruction = instruction.trim().slice(0, MAX_REFINEMENT_LENGTH);
 
@@ -86,7 +61,7 @@ function buildRefinementPrompt(instruction: string): string {
     "Edit this generated professional portrait based on the user's refinement request.",
     `User request: "${safeInstruction}"`,
     "Keep the same overall portrait style, professional quality, lighting quality, crop, composition, and photorealistic look from the input image.",
-    "Preserve the exact facial identity, face shape, age, skin tone, hairstyle unless directly requested, eye appearance, and realistic skin texture.",
+    "Preserve the exact facial identity, face shape, age, skin tone, eye appearance, hairstyle, clothing, expression, mouth position, teeth visibility, and realistic skin texture unless the user directly requests a change to that specific attribute.",
     "Apply only the requested change. Do not re-style the image from scratch.",
     "If the user request conflicts with a professional CV, LinkedIn, or job-application profile photo, adapt it into the closest recruiter-safe professional version.",
     "Maintain a front-facing portrait, direct eye contact, chest-up crop, high-resolution photorealistic look, and clean professional presentation.",
@@ -205,6 +180,12 @@ export async function POST(request: NextRequest) {
     const mode = String(formData.get("mode") ?? "generate");
     const photos = getFilesFromFormData(formData);
     const style = String(formData.get("style") ?? "executive");
+    const clothingPreference = String(
+      formData.get("clothingPreference") ?? "keep"
+    ) as ProfilePhotoClothingPreference;
+    const expressionPreference = String(
+      formData.get("expressionPreference") ?? "keep"
+    ) as ProfilePhotoExpressionPreference;
     const refinement = String(formData.get("refinement") ?? "").trim();
 
     let project = projectId
@@ -241,6 +222,17 @@ export async function POST(request: NextRequest) {
     if (mode !== "generate" && mode !== "refine") {
       return NextResponse.json(
         { error: "Onbekende bewerkingsmodus." },
+        { status: 400 }
+      );
+    }
+
+    if (
+      mode === "generate" &&
+      (!profilePhotoClothingPreferences.has(clothingPreference) ||
+        !profilePhotoExpressionPreferences.has(expressionPreference))
+    ) {
+      return NextResponse.json(
+        { error: "Kies geldige voorkeuren voor kleding en gezichtsuitdrukking." },
         { status: 400 }
       );
     }
@@ -340,7 +332,10 @@ export async function POST(request: NextRequest) {
     const response = await openai.images.edit({
       model: "gpt-image-2",
       image: uploadables.length === 1 ? uploadables[0] : uploadables,
-      prompt: mode === "refine" ? buildRefinementPrompt(refinement) : buildPrompt(style),
+      prompt:
+        mode === "refine"
+          ? buildRefinementPrompt(refinement)
+          : buildProfilePhotoPrompt(style, clothingPreference, expressionPreference),
       n: mode === "refine" ? 2 : 4,
       size: "1024x1024",
       quality: "medium",
@@ -406,6 +401,9 @@ export async function POST(request: NextRequest) {
         properties: {
           projectId: project.id,
           style,
+          ...(mode === "generate"
+            ? { clothingPreference, expressionPreference }
+            : {}),
           imagesGenerated: storedImages.length,
           refinementCount: nextRefinementCount,
           generationCount: nextGenerationCount,

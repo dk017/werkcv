@@ -90,9 +90,13 @@ export default function VoorwaardenPage() {
                         <section>
                             <h2 className="text-lg font-black text-black mb-2">6. Intellectueel eigendom</h2>
                             <p className="font-medium leading-relaxed">
-                                De inhoud van je CV blijft jouw eigendom. De CV-templates, het ontwerp en de software
-                                van WerkCV.nl zijn en blijven eigendom van WerkCV.nl. Je krijgt een persoonlijk,
-                                niet-overdraagbaar gebruiksrecht op het gedownloade PDF-bestand.
+                                De persoonlijke inhoud die je invoert of uploadt blijft van jou. Je mag een door jou
+                                gekocht profielfotoresultaat gebruiken voor je eigen cv, LinkedIn-profiel,
+                                professionele biografie, bedrijfsprofiel en vergelijkbare persoonlijke professionele
+                                toepassingen. Je bent zelf verantwoordelijk voor de rechten op je bronmateriaal en
+                                voor een eerlijk en rechtmatig gebruik van het resultaat. De CV-templates, het ontwerp,
+                                de branding en de software van WerkCV.nl blijven eigendom van WerkCV.nl. Je krijgt een
+                                persoonlijk, niet-overdraagbaar gebruiksrecht op het gedownloade PDF-bestand.
                             </p>
                         </section>
 

@@ -124,6 +124,22 @@ export const routePairs = [
     useForHreflang: true,
     preserveSearch: false,
   },
+  {
+    id: "profile-photo",
+    nl: "/profielfoto-cv-maken",
+    en: "/en/profile-photo",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
+    id: "ai-headshot-source-photo-guide",
+    nl: "/ai-headshot-foto-tips",
+    en: "/en/ai-headshot-photo-requirements",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
 ] as const satisfies readonly RoutePair[];
 
 function normalizePath(path: string): string {

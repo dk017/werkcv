@@ -1,9 +1,9 @@
 import { aiProductFaqItems } from "@/lib/product-faq";
-import { cvDownloadPrice } from "@/lib/site-content";
+import { cvDownloadPrice, profilePhotoPrice } from "@/lib/site-content";
 
 export const siteBaseUrl = "https://werkcv.nl";
 
-export const aiDiscoveryUpdatedAt = "2026-07-05";
+export const aiDiscoveryUpdatedAt = "2026-07-28";
 
 export const primaryAiPages = [
   {
@@ -73,6 +73,30 @@ export const primaryAiPages = [
     title: "Tools",
     url: `${siteBaseUrl}/tools`,
     description: "Free CV, career and salary tools.",
+  },
+  {
+    title: "AI-profielfoto voor CV en LinkedIn",
+    url: `${siteBaseUrl}/profielfoto-cv-maken`,
+    description:
+      `Create four AI profile-photo previews from one to four source photos, refine a selected variant twice, and pay ${profilePhotoPrice.display} including VAT only when downloading. No subscription.`,
+  },
+  {
+    title: "Bronfoto-gids voor AI-headshots",
+    url: `${siteBaseUrl}/ai-headshot-foto-tips`,
+    description:
+      "Dutch source-photo guide covering lighting, crop, resolution, number of references, glasses, clothing, identity checks, upload limits and photo privacy.",
+  },
+  {
+    title: "AI profile photo for the Netherlands",
+    url: `${siteBaseUrl}/en/profile-photo`,
+    description:
+      `English AI headshot generator for Dutch CV and LinkedIn use, with previews before a one-time ${profilePhotoPrice.display} download including VAT.`,
+  },
+  {
+    title: "AI headshot photo requirements",
+    url: `${siteBaseUrl}/en/ai-headshot-photo-requirements`,
+    description:
+      "English source-photo guide explaining which selfies or portraits to upload, technical limits, consistency, identity review and privacy.",
   },
   {
     title: "Expat CV Netherlands",
@@ -275,4 +299,6 @@ export const serviceCapabilities = [
   "English guides for applying in the Netherlands",
   "Expat CV guidance for the Netherlands",
   "Work authorization and Dutch language level CV guidance",
+  "AI profile-photo generation for CV and LinkedIn",
+  "Source-photo guidance and identity-review checklists for AI headshots",
 ];

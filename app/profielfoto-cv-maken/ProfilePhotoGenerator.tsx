@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { track } from "@/lib/analytics";
 import { profilePhotoPrice } from "@/lib/site-content";
@@ -33,6 +33,17 @@ type StyleOption = {
   descriptionNl: string;
   descriptionEn: string;
 };
+
+type PhotoQualityWarning = "low-resolution" | "extreme-crop";
+
+type PhotoQualityCheck = {
+  width?: number;
+  height?: number;
+  warnings: PhotoQualityWarning[];
+};
+
+type ClothingPreference = "keep" | "adapt";
+type ExpressionPreference = "keep" | "approachable";
 
 const styleOptions: StyleOption[] = [
   {
@@ -120,6 +131,29 @@ function formatFileSize(size: number): string {
   return `${(size / 1024 / 1024).toFixed(1)} MB`;
 }
 
+async function inspectPhotoQuality(file: File): Promise<PhotoQualityCheck> {
+  try {
+    const bitmap = await createImageBitmap(file);
+    const width = bitmap.width;
+    const height = bitmap.height;
+    bitmap.close();
+
+    const warnings: PhotoQualityWarning[] = [];
+    if (Math.min(width, height) < 512) {
+      warnings.push("low-resolution");
+    }
+
+    const aspectRatio = width / height;
+    if (aspectRatio < 0.5 || aspectRatio > 2) {
+      warnings.push("extreme-crop");
+    }
+
+    return { width, height, warnings };
+  } catch {
+    return { warnings: [] };
+  }
+}
+
 function buildImageUrl(projectId: string, imageId: string): string {
   return `/api/profile-photo/images/${encodeURIComponent(imageId)}?projectId=${encodeURIComponent(projectId)}`;
 }
@@ -188,19 +222,28 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
   const pageAnchorPath = `${pagePath}#profielfoto-tool`;
   const editorPath = uiLanguage === "en" ? "/en/editor" : "/editor";
   const templatesPath = uiLanguage === "en" ? "/en/templates" : "/templates";
+  const sourcePhotoGuidePath =
+    uiLanguage === "en"
+      ? "/en/ai-headshot-photo-requirements"
+      : "/ai-headshot-foto-tips";
   const [authStatus, setAuthStatus] = useState<"loading" | "authenticated" | "anonymous">("loading");
   const [project, setProject] = useState<ProfilePhotoProject | null>(null);
   const [bundleIncluded, setBundleIncluded] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const [photoQualityChecks, setPhotoQualityChecks] = useState<PhotoQualityCheck[]>([]);
   const [style, setStyle] = useState("executive");
+  const [clothingPreference, setClothingPreference] = useState<ClothingPreference>("keep");
+  const [expressionPreference, setExpressionPreference] = useState<ExpressionPreference>("keep");
   const [images, setImages] = useState<GeneratedImage[]>([]);
   const [selectedImageId, setSelectedImageId] = useState<string | null>(null);
   const [refinement, setRefinement] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [isInspectingPhotos, setIsInspectingPhotos] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isRefining, setIsRefining] = useState(false);
   const [isCheckoutRedirecting, setIsCheckoutRedirecting] = useState(false);
+  const photoInspectionId = useRef(0);
 
   const selectedStyle = useMemo(
     () => styleOptions.find((option) => option.id === style) ?? styleOptions[0],
@@ -270,12 +313,15 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
     };
   }, [files]);
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+  async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+    const inspectionId = ++photoInspectionId.current;
     const selectedFiles = Array.from(event.target.files ?? []);
     setImages([]);
     setSelectedImageId(null);
     setRefinement("");
     setError(null);
+    setPhotoQualityChecks([]);
+    setIsInspectingPhotos(false);
 
     if (selectedFiles.length === 0) {
       setFiles([]);
@@ -313,6 +359,12 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
     }
 
     setFiles(selectedFiles);
+    setIsInspectingPhotos(true);
+    const qualityChecks = await Promise.all(selectedFiles.map(inspectPhotoQuality));
+    if (photoInspectionId.current === inspectionId) {
+      setPhotoQualityChecks(qualityChecks);
+      setIsInspectingPhotos(false);
+    }
   }
 
   async function generatePhoto() {
@@ -332,6 +384,13 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
     track("profile_photo_submit", {
       page_path: pagePath,
       style,
+      file_count: files.length,
+      clothing_preference: clothingPreference,
+      expression_preference: expressionPreference,
+      quality_warning_count: photoQualityChecks.reduce(
+        (total, check) => total + check.warnings.length,
+        0
+      ),
     });
 
     try {
@@ -343,6 +402,8 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
         formData.append("projectId", project.id);
       }
       formData.append("style", style);
+      formData.append("clothingPreference", clothingPreference);
+      formData.append("expressionPreference", expressionPreference);
 
       const response = await fetch("/api/profile-photo", {
         method: "POST",
@@ -577,14 +638,52 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
           {(project?.generationCount ?? 0) === 0 && (
             <div className="grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
               <div className="rounded-3xl border-2 border-dashed border-slate-300 bg-[#FFFEF9] p-5">
+                <div className="mb-5 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-2xl border-2 border-emerald-200 bg-emerald-50 p-4">
+                    <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-800">
+                      {tr("Werkt meestal goed", "Usually works well")}
+                    </p>
+                    <ul className="mt-2 space-y-1 text-xs font-bold leading-relaxed text-emerald-950">
+                      <li>{tr("• Recente foto die echt op je lijkt", "• Recent photo that looks like you")}</li>
+                      <li>{tr("• Gezicht groot en beide ogen zichtbaar", "• Face is large with both eyes visible")}</li>
+                      <li>{tr("• Zacht licht en geen beautyfilter", "• Soft light and no beauty filter")}</li>
+                    </ul>
+                  </div>
+                  <div className="rounded-2xl border-2 border-amber-200 bg-amber-50 p-4">
+                    <p className="text-xs font-black uppercase tracking-[0.16em] text-amber-900">
+                      {tr("Liever vermijden", "Best avoided")}
+                    </p>
+                    <ul className="mt-2 space-y-1 text-xs font-bold leading-relaxed text-amber-950">
+                      <li>{tr("• Groepsfoto, zonnebril of zwaar filter", "• Group photo, sunglasses or heavy filter")}</li>
+                      <li>{tr("• Wazig, donker of gezicht erg klein", "• Blurry, dark or very small face")}</li>
+                      <li>{tr("• Oude foto of sterk gedraaide houding", "• Old photo or strongly turned pose")}</li>
+                    </ul>
+                  </div>
+                </div>
+                <Link
+                  href={sourcePhotoGuidePath}
+                  className="mb-5 inline-flex text-xs font-black text-slate-700 underline decoration-2 underline-offset-4 hover:text-black"
+                  onClick={() =>
+                    track("landing_cta_click", {
+                      fromPath: pagePath,
+                      toPath: sourcePhotoGuidePath,
+                      label: "source_photo_guide",
+                    })
+                  }
+                >
+                  {tr(
+                    "Twijfel je over je foto's? Bekijk de volledige bronfoto-gids.",
+                    "Unsure about your photos? Read the complete source-photo guide."
+                  )}
+                </Link>
                 <label className="block">
                   <span className="text-sm font-black text-slate-900">
                     {tr("Upload je bestaande foto", "Upload your existing photo")}
                   </span>
                   <span className="mt-1 block text-sm font-medium leading-relaxed text-slate-600">
                     {tr(
-                      "Upload 1 tot 4 duidelijke foto's. De eerste foto is de hoofdreferentie; extra foto's helpen met herkenbaarheid. Alleen JPG, PNG of WebP.",
-                      "Upload 1 to 4 clear photos. The first photo is the main reference; extra photos help with recognizability. JPG, PNG or WebP only."
+                      "Upload 1 tot 4 duidelijke foto's. Zet je scherpste, meest recente foto eerst: die bepaalt vooral je gezicht. Extra foto's mogen andere lichte hoeken tonen, maar moeten dezelfde huidige uitstraling hebben. Alleen JPG, PNG of WebP.",
+                      "Upload 1 to 4 clear photos. Put your sharpest, most recent photo first: it is the main facial reference. Extra photos may show slightly different angles, but should reflect the same current appearance. JPG, PNG or WebP only."
                     )}
                   </span>
                   <input
@@ -595,6 +694,11 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
                     className="mt-4 block w-full text-sm font-bold text-slate-700 file:mr-4 file:rounded-full file:border-0 file:bg-black file:px-4 file:py-2 file:text-sm file:font-black file:text-white"
                   />
                 </label>
+                {isInspectingPhotos && (
+                  <p className="mt-3 text-xs font-bold text-slate-600" role="status">
+                    {tr("Fotoresolutie en uitsnede controleren...", "Checking photo resolution and crop...")}
+                  </p>
+                )}
 
                 {files.length > 0 && (
                   <div className="mt-4 rounded-2xl border border-slate-200 bg-white p-3">
@@ -602,28 +706,59 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
                       {tr("Gekozen foto's", "Selected photos")} ({files.length}/{maxFiles})
                     </p>
                     <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                      {files.map((file, index) => (
-                        <div key={`${file.name}-${file.lastModified}`} className="flex items-center gap-3">
-                          {previewUrls[index] && (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img
-                              src={previewUrls[index]}
-                              alt={tr(
-                                `Preview van geüploade profielfoto ${index + 1}`,
-                                `Preview of uploaded profile photo ${index + 1}`
+                      {files.map((file, index) => {
+                        const qualityCheck = photoQualityChecks[index];
+                        return (
+                          <div key={`${file.name}-${file.lastModified}`} className="flex items-start gap-3">
+                            {previewUrls[index] && (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={previewUrls[index]}
+                                alt={tr(
+                                  `Preview van geüploade profielfoto ${index + 1}`,
+                                  `Preview of uploaded profile photo ${index + 1}`
+                                )}
+                                className="h-20 w-20 rounded-2xl object-cover"
+                              />
+                            )}
+                            <div className="min-w-0 flex-1">
+                              <p className="truncate text-sm font-black text-slate-900">
+                                {index === 0 ? tr("Hoofdfoto: ", "Main photo: ") : tr(`Referentie ${index + 1}: `, `Reference ${index + 1}: `)}
+                                {file.name}
+                              </p>
+                              <p className="text-xs font-medium text-slate-500">
+                                {formatFileSize(file.size)}
+                                {qualityCheck?.width && qualityCheck.height
+                                  ? ` · ${qualityCheck.width} × ${qualityCheck.height}`
+                                  : ""}
+                              </p>
+                              {qualityCheck?.width &&
+                                qualityCheck.height &&
+                                qualityCheck.warnings.length === 0 && (
+                                  <p className="mt-1 text-xs font-bold text-emerald-700">
+                                    {tr("Basiscontrole in orde", "Basic quality check passed")}
+                                  </p>
+                                )}
+                              {qualityCheck?.warnings.includes("low-resolution") && (
+                                <p className="mt-1 text-xs font-bold leading-relaxed text-amber-800">
+                                  {tr(
+                                    "Waarschuwing: deze foto is vrij klein. Een grotere versie kan scherpere resultaten geven.",
+                                    "Warning: this photo is quite small. A larger version may produce sharper results."
+                                  )}
+                                </p>
                               )}
-                              className="h-20 w-20 rounded-2xl object-cover"
-                            />
-                          )}
-                          <div className="min-w-0">
-                            <p className="truncate text-sm font-black text-slate-900">
-                              {index === 0 ? tr("Hoofdfoto: ", "Main photo: ") : tr(`Referentie ${index + 1}: `, `Reference ${index + 1}: `)}
-                              {file.name}
-                            </p>
-                            <p className="text-xs font-medium text-slate-500">{formatFileSize(file.size)}</p>
+                              {qualityCheck?.warnings.includes("extreme-crop") && (
+                                <p className="mt-1 text-xs font-bold leading-relaxed text-amber-800">
+                                  {tr(
+                                    "Waarschuwing: de uitsnede is erg smal of breed. Gebruik liever een normale portret- of vierkante foto.",
+                                    "Warning: the crop is unusually narrow or wide. A regular portrait or square photo is safer."
+                                  )}
+                                </p>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 )}
@@ -636,28 +771,128 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
                 </p>
               </div>
 
-              <div>
-                <p className="text-sm font-black text-slate-900">
-                  {tr("Kies uitstraling", "Choose a style")}
-                </p>
-                <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                  {styleOptions.map((option) => (
+              <div className="space-y-6">
+                <div>
+                  <p className="text-sm font-black text-slate-900">
+                    {tr("Kies uitstraling", "Choose a style")}
+                  </p>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    {styleOptions.map((option) => (
+                      <button
+                        key={option.id}
+                        type="button"
+                        onClick={() => setStyle(option.id)}
+                        className={`rounded-2xl border-2 p-4 text-left transition-colors ${
+                          style === option.id
+                            ? "border-black bg-[#4ECDC4] text-black"
+                            : "border-slate-200 bg-white text-slate-700 hover:border-black"
+                        }`}
+                      >
+                        <span className="block text-sm font-black">{option.label}</span>
+                        <span className="mt-1 block text-xs font-medium leading-relaxed">
+                          {uiLanguage === "en" ? option.descriptionEn : option.descriptionNl}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-3xl border-2 border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-black text-slate-900">
+                    {tr("Wat mag er met je kleding gebeuren?", "What may change about your clothing?")}
+                  </p>
+                  <p className="mt-1 text-xs font-medium leading-relaxed text-slate-600">
+                    {tr(
+                      "Behoud is de veiligste keuze als je huidige kleding al geschikt is.",
+                      "Keeping it is the safest choice when your current clothing is already suitable."
+                    )}
+                  </p>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
                     <button
-                      key={option.id}
                       type="button"
-                      onClick={() => setStyle(option.id)}
+                      onClick={() => setClothingPreference("keep")}
                       className={`rounded-2xl border-2 p-4 text-left transition-colors ${
-                        style === option.id
-                          ? "border-black bg-[#4ECDC4] text-black"
+                        clothingPreference === "keep"
+                          ? "border-black bg-[#E9FFFC] text-black"
                           : "border-slate-200 bg-white text-slate-700 hover:border-black"
                       }`}
                     >
-                      <span className="block text-sm font-black">{option.label}</span>
+                      <span className="block text-sm font-black">
+                        {tr("Behoud mijn kleding", "Keep my clothing")}
+                      </span>
                       <span className="mt-1 block text-xs font-medium leading-relaxed">
-                        {uiLanguage === "en" ? option.descriptionEn : option.descriptionNl}
+                        {tr(
+                          "Zelfde kleding, kleur, halslijn en zichtbare accessoires.",
+                          "Keep the same clothing, colour, neckline and visible accessories."
+                        )}
                       </span>
                     </button>
-                  ))}
+                    <button
+                      type="button"
+                      onClick={() => setClothingPreference("adapt")}
+                      className={`rounded-2xl border-2 p-4 text-left transition-colors ${
+                        clothingPreference === "adapt"
+                          ? "border-black bg-[#E9FFFC] text-black"
+                          : "border-slate-200 bg-white text-slate-700 hover:border-black"
+                      }`}
+                    >
+                      <span className="block text-sm font-black">
+                        {tr("Maak kleding professioneler", "Adapt to professional clothing")}
+                      </span>
+                      <span className="mt-1 block text-xs font-medium leading-relaxed">
+                        {tr(
+                          "Eenvoudige kleding passend bij de stijl, zonder uniform, logo of beroepsattribuut.",
+                          "Simple clothing suited to the style, without uniforms, logos or professional props."
+                        )}
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="rounded-3xl border-2 border-slate-200 bg-slate-50 p-4">
+                  <p className="text-sm font-black text-slate-900">
+                    {tr("Welke gezichtsuitdrukking wil je?", "Which expression do you want?")}
+                  </p>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    <button
+                      type="button"
+                      onClick={() => setExpressionPreference("keep")}
+                      className={`rounded-2xl border-2 p-4 text-left transition-colors ${
+                        expressionPreference === "keep"
+                          ? "border-black bg-[#E9FFFC] text-black"
+                          : "border-slate-200 bg-white text-slate-700 hover:border-black"
+                      }`}
+                    >
+                      <span className="block text-sm font-black">
+                        {tr("Behoud mijn uitdrukking", "Keep my expression")}
+                      </span>
+                      <span className="mt-1 block text-xs font-medium leading-relaxed">
+                        {tr(
+                          "Zelfde mondstand, glimlach en zichtbaarheid van tanden.",
+                          "Keep the same mouth position, smile and teeth visibility."
+                        )}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setExpressionPreference("approachable")}
+                      className={`rounded-2xl border-2 p-4 text-left transition-colors ${
+                        expressionPreference === "approachable"
+                          ? "border-black bg-[#E9FFFC] text-black"
+                          : "border-slate-200 bg-white text-slate-700 hover:border-black"
+                      }`}
+                    >
+                      <span className="block text-sm font-black">
+                        {tr("Iets toegankelijker", "Slightly more approachable")}
+                      </span>
+                      <span className="mt-1 block text-xs font-medium leading-relaxed">
+                        {tr(
+                          "Alleen een subtiele verzachting, zonder brede of nieuwe glimlach.",
+                          "Only a subtle softening, without adding a broad or new smile."
+                        )}
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -674,12 +909,14 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
               <button
                 type="button"
                 onClick={generatePhoto}
-                disabled={isGenerating}
+                disabled={isGenerating || isInspectingPhotos}
                 className="w-full border-4 border-black bg-[#FFD166] px-5 py-4 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
               >
                 {isGenerating
                   ? tr("Profielfoto's worden gemaakt...", "Creating profile photos...")
-                  : tr("Maak 4 professionele varianten", "Create 4 professional variants")}
+                  : isInspectingPhotos
+                    ? tr("Foto's controleren...", "Checking photos...")
+                    : tr("Maak 4 professionele varianten", "Create 4 professional variants")}
               </button>
               <p className="mt-3 text-xs font-medium leading-relaxed text-slate-500">
                 {bundleIncluded

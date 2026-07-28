@@ -93,8 +93,12 @@ export default function EnglishTermsPage() {
               <h2 className="mb-2 text-lg font-black">6. Your content</h2>
               <p className="font-medium leading-relaxed">
                 You retain ownership of the personal content you enter. You confirm that you may
-                upload and process that content. WerkCV templates, software, branding, and original
-                website content remain protected by applicable intellectual-property rights.
+                upload and process that content. You may use a profile-photo result you purchased
+                for your own CV, LinkedIn profile, professional biography, company profile, and
+                similar personal professional purposes. You remain responsible for the rights to
+                your source material and for honest, lawful use of the result. WerkCV templates,
+                software, branding, and original website content remain protected by applicable
+                intellectual-property rights.
               </p>
             </section>
 

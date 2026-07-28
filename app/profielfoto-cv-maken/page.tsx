@@ -27,7 +27,7 @@ const faqItems = [
   {
     question: "Wat gebeurt er met mijn foto?",
     answer:
-      "WerkCV gebruikt je upload alleen om de AI-variant te maken. We vragen niet om LinkedIn-login. De gegenereerde foto's bewaren we in je account zodat je ze later opnieuw kunt downloaden.",
+      "WerkCV gebruikt je upload alleen voor de generatieaanvraag en bewaart je oorspronkelijke bronfoto daarna niet. De gegenereerde foto's bewaren we in je account zodat je er later naar kunt terugkeren. Je kunt WerkCV vragen om verwijdering.",
   },
   {
     question: "Kan WerkCV mijn LinkedIn-foto automatisch ophalen?",
@@ -38,6 +38,16 @@ const faqItems = [
     question: "Wat gaat de profielfoto-tool kosten?",
     answer:
       `De AI-profielfoto is een eenmalige add-on van ${profilePhotoPrice.display}. Je krijgt 4 startvarianten en 2 inbegrepen verfijningen. Combineer je hem met je CV, dan is de bundle ${applicationBundlePrice.display}. Er is geen abonnement.`,
+  },
+  {
+    question: "Mag ik de gedownloade foto professioneel gebruiken?",
+    answer:
+      "Ja. Je mag een gekocht resultaat gebruiken voor je eigen cv, LinkedIn-profiel, professionele biografie, bedrijfsprofiel en vergelijkbare persoonlijke professionele toepassingen. Gebruik alleen een foto die jou nog herkenbaar en eerlijk weergeeft.",
+  },
+  {
+    question: "Wat als de foto niet genoeg op mij lijkt?",
+    answer:
+      "Gebruik geen foto waarin je jezelf niet goed herkent. Kies de beste startvariant en gebruik de inbegrepen verfijningen voor een kleine correctie. Is geen enkele variant bruikbaar, neem dan contact op met WerkCV zodat we de generatie kunnen onderzoeken.",
   },
 ];
 
@@ -78,7 +88,7 @@ const valueComparison = [
 ];
 
 const trustStats = [
-  "Veel geciteerde LinkedIn-data meldt dat profielen met foto tot 21x meer profielweergaven en 9x meer connectieverzoeken kunnen krijgen dan profielen zonder foto.",
+  "Een duidelijke, recente foto helpt mensen je herkennen op LinkedIn, je cv en andere professionele profielen.",
   "Je betaalt pas als je een variant wilt downloaden; previewen kan eerst.",
   "Geen LinkedIn-login, geen scraping en geen abonnement.",
 ];
@@ -181,6 +191,9 @@ export default function ProfielfotoCvMakenPage() {
             </span>
           </Link>
           <nav className="hidden items-center gap-5 text-sm font-bold text-slate-600 sm:flex">
+            <Link href="/ai-headshot-foto-tips" className="hover:text-slate-900">
+              Fototips
+            </Link>
             <Link href="/cv-tips/foto-op-je-cv" className="hover:text-slate-900">
               Foto op je cv
             </Link>
@@ -212,12 +225,20 @@ export default function ProfielfotoCvMakenPage() {
               </p>
               <div className="mt-5 rounded-2xl border-2 border-black bg-white p-4">
                 <p className="text-sm font-black leading-relaxed text-slate-950">
-                  Een profielfoto is geen detail. Veel geciteerde LinkedIn-data meldt dat profielen met foto tot 21x
-                  meer profielweergaven en 9x meer connectieverzoeken kunnen krijgen dan profielen zonder foto.
+                  Gebruik een duidelijke, recente foto die eerlijk weergeeft hoe je eruitziet. Zo kunnen recruiters en
+                  professionele contacten je herkennen wanneer zij je cv en LinkedIn-profiel naast elkaar bekijken.
                 </p>
                 <p className="mt-2 text-xs font-bold leading-relaxed text-slate-600">
-                  Daarom focust WerkCV op een foto die herkenbaar blijft, professioneel oogt en past bij Nederlandse
-                  recruiters die je CV en LinkedIn naast elkaar bekijken.
+                  WerkCV focust daarom op een resultaat dat herkenbaar blijft. Dat sluit aan op de{" "}
+                  <a
+                    href="https://www.linkedin.com/business/talent/blog/product-tips/tips-for-taking-professional-linkedin-profile-pictures"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="underline decoration-2 underline-offset-2"
+                  >
+                    actuele profielfotorichtlijnen van LinkedIn
+                  </a>
+                  .
                 </p>
               </div>
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -274,7 +295,7 @@ export default function ProfielfotoCvMakenPage() {
           <section className="mb-8 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
             <div className="rounded-3xl border-4 border-black bg-[#FFD166] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-800">
-                Prijsanker
+                AI of een fotograaf?
               </p>
               <h2 className="mt-2 text-3xl font-black leading-tight text-black">
                 Geen afspraak van een uur als je alleen een nette sollicitatiefoto nodig hebt
@@ -340,7 +361,7 @@ export default function ProfielfotoCvMakenPage() {
         <section className="mx-auto max-w-6xl px-6 pb-12">
           <div className="rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-              Vertrouwen voor upload
+              Eerst previewen
             </p>
             <h2 className="mt-2 text-3xl font-black text-slate-950">
               Waarom eerst je profielfoto verbeteren?
