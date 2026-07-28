@@ -37,6 +37,7 @@ type GuideOverride = {
     faq?: SeoGuidePage['faq'];
     relatedLinks?: SeoGuidePage['relatedLinks'];
     sources?: SeoGuidePage['sources'];
+    dateModified?: string;
     ctaTitle?: string;
     ctaText?: string;
     ctaHref?: string;
@@ -2282,56 +2283,169 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
         ctaHref: '/en/editor',
     },
     'translate-resume-to-dutch-format': {
-        intro: 'Upload your PDF resume with the translator below and WerkCV will reshape its sections, keywords, and emphasis into the Dutch structure featured on this page.',
+        title: 'Translate Your Resume to Dutch CV Format',
+        description: 'Upload a PDF resume and turn it into an editable Dutch-format CV draft while keeping the source language and factual career details.',
+        metaTitle: 'Translate Your Resume to Dutch CV Format (2026) | WerkCV',
+        metaDesc: 'Upload a PDF resume, keep the original language, and create an editable Dutch-format CV draft. PDF only, up to 10 MB.',
+        keywords: [
+            'translate resume to dutch format',
+            'convert resume to dutch cv',
+            'dutch cv converter',
+            'resume translator netherlands',
+            'upload resume netherlands',
+        ],
+        intro: 'Upload your PDF resume below. WerkCV extracts its text, organizes the content into Dutch-market CV sections, keeps the source language, and saves an editable draft to your account for review.',
+        dateModified: '2026-07-28',
         sectionOverrides: {
-            wording: {
+            'recruiter-scan': {
+                title: 'How the resume translator works',
                 paragraphs: [
-                    'US/UK resumes often over-index on long narrative and under-index on role-specific summary. Dutch screening prefers concise relevance and practical proof.',
-                    'Start with the translator widget, then review the draft in the editor—it keeps your original language but reorders everything for Dutch recruiters.',
-                    'When translating format, preserve your achievements but trim non-essential context. Move strongest evidence to page one.',
+                    'Sign in and select a text-based PDF of up to 10 MB. WerkCV extracts the resume text and maps details such as contact information, roles, dates, education, skills and languages into editable CV fields.',
+                    'The formatter then reorganizes those fields into a Dutch-style CV draft while keeping the source language. The result is saved to your account and can be opened directly in the editor.',
+                    'This is an assisted import, not a final application document. Review every name, date, role and bullet before sending the CV to an employer.',
                 ],
                 bullets: [
-                    'Replace long paragraph summaries with 3-4 focused lines.',
-                    'Convert responsibility-heavy bullets into action + outcome statements.',
-                    'Rename sections to Dutch-market familiar structure and order.',
-                    'Upload your current PDF to the translator to get a Dutch-formatted draft instantly.',
+                    'Input: one PDF resume, up to 10 MB.',
+                    'Output: a structured, editable CV draft in a WerkCV template.',
+                    'Next step: verify the imported content and tailor it to the vacancy.',
+                ],
+            },
+            layout: {
+                title: 'What changes—and what stays',
+                paragraphs: [
+                    'The translator changes structure and emphasis rather than translating your writing into another language. It creates a fresh CV layout, so the visual design of the uploaded PDF is not preserved.',
+                    'The formatter is instructed to retain the facts already present in your resume. Because automated extraction can still make mistakes, the editor remains the place to confirm the final version.',
+                ],
+                bullets: [
+                    'Changes: section order, layout, summary emphasis and the presentation of existing experience.',
+                    'Stays: source language, employers, roles, education, skills and factual achievements.',
+                    'Not preserved: the original PDF design, columns, fonts, graphics and page composition.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/en/guides/cv-format-netherlands-english',
+                        label: 'See the full Netherlands CV format and section-order guide',
+                        description: 'Use the detailed guide when you want the reasoning behind the generated structure.',
+                    },
+                ],
+            },
+            wording: {
+                title: 'Review and improve the generated draft',
+                paragraphs: [
+                    'Start by checking the imported contact details, employers, role titles and dates against the source PDF. Scanned pages, unusual columns and complex tables can reduce extraction accuracy.',
+                    'Next, check that rewritten bullets still express what you actually did. Keep useful measurements and scope, remove generic wording, and never accept a claim you could not explain in an interview.',
+                    'Finally, tailor the profile, headline and strongest recent bullets to one vacancy. The translator does not know the requirements of a job unless you add that context yourself in the editor.',
+                ],
+                bullets: [
+                    'Compare every imported date and factual detail with the original PDF.',
+                    'Keep only edits that preserve the meaning of your experience.',
+                    'Tailor the final headline, profile and skills to the vacancy.',
+                    'Preview the complete PDF before downloading or applying.',
                 ],
                 intentLinks: [
                     {
                         href: '/en/dutch-cv-template',
-                        label: 'Open the translated draft in a Dutch-style CV template',
-                        description: 'Use the English template flow once your sections and wording are reorganized.',
+                        label: 'Compare the Dutch-style template approach',
+                        description: 'Use the template route if you prefer to build the CV manually instead of importing a PDF.',
                     },
                     {
                         href: '/en/templates',
-                        label: 'Compare templates before finalizing your Dutch-format CV',
-                        description: 'Pick the layout that best matches the role and the amount of experience you have.',
+                        label: 'Compare layouts for the imported draft',
+                        description: 'Choose a different template after the resume content has been converted.',
+                    },
+                ],
+            },
+            'ats-keywords': {
+                title: 'Make the result easier for an ATS to parse',
+                paragraphs: [
+                    'The generated draft uses structured fields, clear headings and selectable text. Those choices reduce common parsing risks, but no layout can guarantee acceptance by every applicant tracking system.',
+                    'Use vacancy terms only when they truthfully describe your experience. The translator creates the starting structure; it does not replace a vacancy-specific review.',
+                ],
+                bullets: [
+                    'Keep contact details and core experience in normal text.',
+                    'Use clear role titles, section labels and consistent dates.',
+                    'Avoid adding complex tables, charts or text inside images.',
+                    'Export the reviewed version as a clean PDF unless the employer requests another format.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/en/guides/netherlands-cv-keywords-ats',
+                        label: 'Tailor the imported CV to ATS keywords',
+                        description: 'Use the keyword guide after you have checked the converted structure and facts.',
                     },
                 ],
             },
             'special-case': {
+                title: 'File handling and privacy',
                 paragraphs: [
-                    'Before final export, compare your CV against the vacancy sentence-by-sentence and close wording gaps in title, skills, and outcomes.',
-                    'The best conversion keeps your original credibility while matching Dutch recruiter scan behavior.',
+                    'WerkCV processes the uploaded PDF to extract its text. Relevant CV text may be processed through the OpenAI API for the import and formatting functions you start.',
+                    'The structured result is saved as a CV document linked to your account. Upload only information you want processed for this service, and use the privacy page for details about service providers, retention and deletion requests.',
+                ],
+                bullets: [
+                    'Your CV is not automatically published as a public web page.',
+                    'The editable structured draft becomes part of your WerkCV account.',
+                    'You can request deletion of your CV or account data.',
                 ],
                 intentLinks: [
                     {
-                        href: '/en/dutch-cv-template',
-                        label: 'Finish inside the Dutch CV template flow',
-                        description: 'Move from translated structure into a polished export flow built for Netherlands applications.',
+                        href: '/en/privacy',
+                        label: 'Read the WerkCV privacy policy',
+                        description: 'See how uploads, saved CV data and AI-assisted processing are handled.',
                     },
                 ],
             },
         },
         checklist: [
-            'Original achievements are preserved; only structure and emphasis changed.',
-            'Summary is concise and role-specific for Dutch market expectations.',
-            'Top bullets are rewritten for measurable outcomes.',
-            'Section order follows Netherlands recruiter scanning patterns.',
-            'Vacancy terminology appears naturally in key sections.',
-            'Formatting remains ATS-safe and clean in PDF export.',
-            'Final version is tailored to one specific role, not generic.',
+            'Names, contact details, employers, roles and dates match the source PDF.',
+            'The source language has been retained throughout the draft.',
+            'Every rewritten claim remains factually accurate.',
+            'The profile and strongest bullets are tailored to the target vacancy.',
+            'Section headings and dates are clear and consistent.',
+            'The complete CV has been checked in preview before export.',
         ],
+        faq: [
+            {
+                question: 'Which files can I use with the resume translator?',
+                answer: 'This translator accepts PDF files up to 10 MB. Text-based PDFs give the importer the clearest source; scanned pages and complex visual layouts may require more manual correction.',
+            },
+            {
+                question: 'Does WerkCV translate my resume into Dutch?',
+                answer: 'No. The tool keeps the source language and converts the content into a Dutch-style CV structure. An English resume therefore becomes an English-language CV with Dutch-market organization.',
+            },
+            {
+                question: 'Will the converted CV keep my original design?',
+                answer: 'No. WerkCV extracts the content and places it in a new editable template. The original fonts, columns, graphics and page composition are not copied.',
+            },
+            {
+                question: 'Where is the converted resume saved?',
+                answer: 'The structured, editable CV draft is saved to your signed-in WerkCV account. It is not automatically published as a public page.',
+            },
+            {
+                question: 'Should I review the converted CV before applying?',
+                answer: 'Yes. Automated extraction and rewriting can make mistakes, especially with scans, tables and unusual columns. Check every factual detail and tailor the final draft to the vacancy.',
+            },
+        ],
+        relatedLinks: [
+            {
+                href: '/en/guides/cv-format-netherlands-english',
+                title: 'Netherlands CV format in English',
+                description: 'Check the section order and ATS guidance behind the converted draft.',
+            },
+            {
+                href: '/en/dutch-cv-template',
+                title: 'Dutch CV template in English',
+                description: 'Build manually from a Dutch-market template instead of importing a resume.',
+            },
+            {
+                href: '/en/guides/netherlands-cv-keywords-ats',
+                title: 'Netherlands CV keywords and ATS',
+                description: 'Tailor the reviewed draft to the language of a specific vacancy.',
+            },
+        ],
+        ctaTitle: 'Ready to convert your resume into a Dutch-format CV?',
+        ctaText: 'Upload your PDF, review the structured draft, and continue editing in your account.',
+        ctaHref: '/en/guides/translate-resume-to-dutch-format#resume-translator',
+        ctaButtonLabel: 'Upload your PDF',
     },
     'netherlands-cv-keywords-ats': {
         intro: 'This guide focuses on one thing: getting past ATS without sounding robotic. You need keyword relevance, but also clear, credible writing recruiters trust.',
@@ -2745,6 +2859,7 @@ function applyGuideOverride(page: SeoGuidePage, override?: GuideOverride): SeoGu
         faq: override.faq ?? page.faq,
         relatedLinks: override.relatedLinks ?? page.relatedLinks,
         sources: override.sources ?? page.sources,
+        dateModified: override.dateModified ?? page.dateModified,
         ctaTitle: override.ctaTitle ?? page.ctaTitle,
         ctaText: override.ctaText ?? page.ctaText,
         ctaHref: override.ctaHref ?? page.ctaHref,

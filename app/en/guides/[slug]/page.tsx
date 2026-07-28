@@ -75,6 +75,13 @@ export default async function EnglishWavePage({ params }: PageProps) {
     const primaryGuideLabel =
         page.ctaButtonLabel ||
         (primaryGuideIsEditor ? 'Open English editor' : 'Open English templates');
+    const dateModifiedLabel = page.dateModified
+        ? new Intl.DateTimeFormat('en-GB', {
+              month: 'long',
+              year: 'numeric',
+              timeZone: 'UTC',
+          }).format(new Date(`${page.dateModified}T00:00:00Z`))
+        : null;
 
     const jsonLd = {
         '@context': 'https://schema.org',
@@ -83,7 +90,15 @@ export default async function EnglishWavePage({ params }: PageProps) {
         description: metaDesc,
         inLanguage: 'en-NL',
         mainEntityOfPage: `https://werkcv.nl/en/guides/${page.slug}`,
-        author: { "@id": "https://werkcv.nl/#organization" },
+        image: `https://werkcv.nl/en/guides/${page.slug}/opengraph-image`,
+        author: {
+            '@type': 'Organization',
+            '@id': 'https://werkcv.nl/#organization',
+            name: 'WerkCV',
+            url: 'https://werkcv.nl',
+        },
+        publisher: { '@id': 'https://werkcv.nl/#organization' },
+        ...(page.dateModified ? { dateModified: page.dateModified } : {}),
     };
     const faqJsonLd = page.faq.length
         ? {
@@ -131,6 +146,10 @@ export default async function EnglishWavePage({ params }: PageProps) {
                 <div className="max-w-4xl mx-auto px-6 py-12">
                     <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">{page.title}</h1>
                     <p className="text-lg text-gray-700">{page.intro}</p>
+                    <p className="mt-4 text-sm font-semibold text-slate-600">
+                        Published by WerkCV
+                        {dateModifiedLabel ? ` · Updated ${dateModifiedLabel}` : ''}
+                    </p>
                     {page.sources && page.sources.length > 0 && (
                         <div className="mt-4 inline-flex items-center gap-2 bg-white border-3 border-black px-3 py-2 text-sm font-bold text-gray-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
                             <span className="h-2.5 w-2.5 rounded-full bg-[#4ECDC4] border border-black" />
@@ -266,7 +285,7 @@ export default async function EnglishWavePage({ params }: PageProps) {
                 </section>
 
                 {page.sources && page.sources.length > 0 && (
-                    <section className="mt-12">
+                    <section id="sources" className="mt-12 scroll-mt-6">
                         <h2 className="text-2xl font-black mb-4 text-gray-900">Sources</h2>
                         <div className="space-y-4">
                             {page.sources.map((source) => (

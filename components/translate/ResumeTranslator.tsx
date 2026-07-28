@@ -121,8 +121,8 @@ export default function ResumeTranslator() {
         <p className="text-xs uppercase tracking-[0.3em] text-slate-500 mb-2">Resume translator</p>
         <h2 className="text-2xl font-black text-gray-900">Translate your current resume into Dutch format</h2>
         <p className="text-sm text-slate-600 mt-2">
-          Upload a PDF and WerkCV will parse the sections, keep the original language, and reorganize the
-          entire resume into the Dutch format that works with our templates.
+          Upload a PDF and WerkCV will extract its content, keep the source language, and create an editable
+          Dutch-format CV draft. Review the imported details in the editor before applying.
         </p>
       </div>
 
@@ -165,8 +165,8 @@ export default function ResumeTranslator() {
         </button>
         <div className="flex flex-wrap gap-3 text-xs text-slate-500">
           <span>PDF only</span>
-          <span>Reformatted in seconds</span>
-          <span>Saves as a regular CV</span>
+          <span>Usually ready in seconds</span>
+          <span>Saves to your account</span>
         </div>
       </div>
 

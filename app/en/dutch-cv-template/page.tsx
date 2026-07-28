@@ -188,6 +188,13 @@ export default function DutchCvTemplatePage() {
           <p className="text-gray-700 max-w-3xl">
             A Dutch CV template is usually more direct and more structured than a generic international resume layout. Dutch recruiters tend to prefer a short summary, recent experience first, straightforward section labels, and a layout that feels professional rather than overly designed. The writing can stay in English, but the structure should feel local.
           </p>
+          <p className="mt-3 text-sm text-gray-600 max-w-3xl">
+            For the underlying Europass ordering guidance and Greenhouse parsing guidance, see the{" "}
+            <Link href="/en/guides/cv-format-netherlands-english#sources" className="font-bold underline">
+              source list in our Netherlands CV format guide
+            </Link>
+            .
+          </p>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {quickAnswerCards.map((card) => (
               <article key={card.title} className="border-2 border-black bg-[#FFFEF0] p-4">
@@ -281,42 +288,6 @@ export default function DutchCvTemplatePage() {
             </Link>
             <Link href="/prijzen" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
               View pricing model
-            </Link>
-          </div>
-        </div>
-
-        <div className="bg-white border-4 border-black p-6">
-          <h2 className="text-2xl font-black mb-3">Best next English routes</h2>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/en/guides/cv-format-netherlands-english" className="underline font-bold">
-              Netherlands CV format
-            </Link>
-            <Link href="/en/guides/cv-format-netherlands-english" className="underline font-bold">
-              CV format Netherlands English
-            </Link>
-            <Link href="/en/expat-cv-netherlands" className="underline font-bold">
-              Dutch CV for expats
-            </Link>
-            <Link href="/en/english-cv-example-netherlands" className="underline font-bold">
-              English CV example Netherlands
-            </Link>
-            <Link href="/en/dutch-cv-examples" className="underline font-bold">
-              Dutch CV examples in English
-            </Link>
-            <Link href="/en/linkedin-to-cv-netherlands" className="underline font-bold">
-              Convert your LinkedIn profile into a Dutch CV
-            </Link>
-            <Link href="/en/expat-cv-netherlands" className="underline font-bold">
-              Dutch CV for expats
-            </Link>
-            <Link href="/en/guides/netherlands-cv-keywords-ats" className="underline font-bold">
-              ATS keyword guide
-            </Link>
-            <Link href="/en/europass-vs-dutch-cv-netherlands" className="underline font-bold">
-              Europass vs Dutch CV
-            </Link>
-            <Link href="/en/linkedin-to-cv-netherlands" className="underline font-bold">
-              LinkedIn to CV Netherlands
             </Link>
           </div>
         </div>
