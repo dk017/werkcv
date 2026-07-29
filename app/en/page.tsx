@@ -620,7 +620,7 @@ export default function EnglishHubPage() {
       </section>
       <Footer uiLanguage="en" />
       <MobileStickyCta
-        text="Start free. Pay only for the PDF."
+        text="Start free. Final PDF €4.99 including VAT. No subscription."
         buttonLabel="Build my CV"
         href="/en/editor?template=professional&startSource=en_home_sticky"
         trackingLocation="english_hub_mobile_sticky"

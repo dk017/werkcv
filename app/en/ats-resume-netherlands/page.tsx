@@ -142,6 +142,9 @@ export default function AtsResumeNetherlandsPage() {
               Check my current CV
             </TrackedLandingLink>
           </div>
+          <p className="mt-4 text-sm font-semibold text-slate-700">
+            Start free. Final PDF €4.99 including VAT. No subscription.
+          </p>
         </div>
       </section>
 
@@ -259,7 +262,7 @@ export default function AtsResumeNetherlandsPage() {
         </div>
       </section>
       <MobileStickyCta
-        text="Build an ATS-safe Netherlands CV."
+        text="Start free. Final PDF €4.99 including VAT. No subscription."
         buttonLabel="Start CV"
         href="/en/editor"
         trackingLocation="ats_resume_netherlands_mobile_sticky"

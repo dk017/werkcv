@@ -60,9 +60,15 @@ export async function buildDodoCheckoutURL(
   const isDutchCheckout = resumeLanguage === "nl";
   const body: Record<string, unknown> = {
     product_cart: [{ product_id: DODO_PRODUCT_ID, quantity: 1 }],
-    allowed_payment_method_types: isDutchCheckout
-      ? ["ideal", "credit", "debit", "apple_pay", "google_pay"]
-      : ["credit", "debit", "apple_pay", "google_pay"],
+    // CV language does not determine payment preference. English-speaking job
+    // seekers in the Netherlands should still be able to pay with iDEAL.
+    allowed_payment_method_types: [
+      "ideal",
+      "credit",
+      "debit",
+      "apple_pay",
+      "google_pay",
+    ],
     billing_currency: "EUR",
     return_url: `${APP_URL}${getSuccessPathForLanguage(resumeLanguage, cvId)}`,
     cancel_url: `${APP_URL}${getEditorPathForLanguage(resumeLanguage, cvId)}`,

@@ -354,7 +354,7 @@ export default function MotivationLetterNetherlandsPage() {
         <FinalCtaSection
           title="Need the matching CV next?"
           description="Once your letter is clear, make sure the CV uses the same role focus, evidence and Dutch-market tone. That alignment usually matters more than adding extra flourish to either document."
-          supportLine="Start free in the English editor and pay only when you want the final PDF."
+          supportLine="Start free in the English editor. Final PDF €4.99 including VAT. No subscription."
           buttonLabel="Open English editor"
           buttonHref="/en/editor"
           trackingLocation="motivation-letter-netherlands:bottom_primary"

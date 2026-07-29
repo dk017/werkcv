@@ -244,7 +244,7 @@ export default function DataEngineerCvExamplePage() {
               </TrackedLandingLink>
             </div>
             <p className="mt-4 text-sm font-medium text-slate-500">
-              Free to edit. Pay only if you download the finished PDF.
+              Free to edit. The finished PDF costs €4.99 including VAT. No subscription.
             </p>
           </div>
 

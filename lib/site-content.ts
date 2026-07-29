@@ -3,6 +3,7 @@ export const siteName = "WerkCV";
 
 export const cvDownloadPrice = {
   display: "€4,99",
+  displayEn: "€4.99",
   value: "4.99",
   amountCents: 499,
   currency: "EUR",

@@ -362,8 +362,8 @@ export default function HowToWriteDutchCvWithoutSpeakingDutchPage() {
           <h2 className="text-3xl font-black">Build the CV in English, structure it for Dutch recruiters</h2>
           <p className="mt-3 max-w-3xl text-slate-200">
             Start with an English CV template, add honest language levels, and keep
-            the first page focused on role fit. You can edit for free and pay only
-            when you download the PDF.
+            the first page focused on role fit. You can edit for free; the final PDF costs
+            €4.99 including VAT. There is no subscription.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <TrackedLandingLink

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { track } from '@/lib/analytics';
+import { cvDownloadPrice } from '@/lib/site-content';
 
 type CtaVariantId = 'trust' | 'speed';
 
@@ -51,12 +52,12 @@ function getVariantCopy(
     return {
         trust: {
             title: 'Apply with more confidence',
-            text: 'Use a proven structure, highlight your strongest outcomes, and export a clean professional CV. One-time payment, no subscription.',
+            text: `Use a proven structure, highlight your strongest outcomes, and export a clean professional CV. Start free; the final PDF costs ${cvDownloadPrice.displayEn} including VAT. No subscription.`,
             button: 'Build my CV',
         },
         speed: {
             title: speedTitle,
-            text: speedText,
+            text: `${speedText} Start free; the final PDF costs ${cvDownloadPrice.displayEn} including VAT. No subscription.`,
             button: speedButton,
         },
     };

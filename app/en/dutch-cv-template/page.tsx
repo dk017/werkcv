@@ -104,7 +104,7 @@ const routeChoices = [
 
 const trustPoints = [
   "Build and compare templates before paying.",
-  "Pay only when you want the final PDF download.",
+  "Final PDF download: €4.99 including VAT.",
   "No subscription, no automatic renewal, no cancellation task.",
 ];
 

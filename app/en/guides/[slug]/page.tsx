@@ -316,7 +316,7 @@ export default async function EnglishWavePage({ params }: PageProps) {
                 />
             </article>
             <MobileStickyCta
-                text="Start free. Pay only for the PDF."
+                text="Start free. Final PDF €4.99 including VAT. No subscription."
                 buttonLabel="Start CV"
                 href={primaryGuideHref}
                 trackingLocation={`english_guide_mobile_sticky:${page.slug}`}

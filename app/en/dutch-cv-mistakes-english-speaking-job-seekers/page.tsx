@@ -334,7 +334,8 @@ export default function DutchCvMistakesEnglishSpeakingJobSeekersPage() {
           <h2 className="text-3xl font-black">Not sure which mistake is in your CV?</h2>
           <p className="mt-3 max-w-3xl text-slate-200">
             Upload your existing CV, check Dutch-market fit, then rebuild only the parts
-            that need work. You can edit for free and pay only if you download the PDF.
+            that need work. You can edit for free; the final PDF costs €4.99 including VAT.
+            There is no subscription.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <TrackedLandingLink

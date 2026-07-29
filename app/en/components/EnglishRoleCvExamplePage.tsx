@@ -3,6 +3,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import { EnglishUseExampleButton } from "@/components/cv-examples/EnglishUseExampleButton";
 import type { CVData } from "@/lib/cv";
+import { cvDownloadPrice } from "@/lib/site-content";
 
 type SourceLink = {
   label: string;
@@ -137,7 +138,9 @@ export function EnglishRoleCvExamplePage({
                 Choose another template
               </TrackedLandingLink>
             </div>
-            <p className="mt-4 text-sm font-medium text-slate-500">Free to edit. Pay only if you download the finished PDF.</p>
+            <p className="mt-4 text-sm font-medium text-slate-500">
+              Free to edit. The finished PDF costs {cvDownloadPrice.displayEn} including VAT. No subscription.
+            </p>
           </div>
 
           <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 shadow-sm">

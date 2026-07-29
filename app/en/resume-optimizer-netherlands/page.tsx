@@ -332,7 +332,7 @@ export default function ResumeOptimizerNetherlandsPage() {
         <FinalCtaSection
           title="Optimize your resume for Dutch job applications"
           description="Use the check to improve clarity, ATS readability, and role alignment, then build the final Dutch-style version in WerkCV."
-          supportLine="Start free. Pay only when you download your PDF. No subscription."
+          supportLine="Start free. Final PDF €4.99 including VAT. No subscription."
           buttonLabel="Create a Dutch CV"
           buttonHref="/en/editor"
           trackingLocation="resume-optimizer-netherlands:final_primary"

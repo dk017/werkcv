@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { cvDownloadPrice } from "@/lib/site-content";
 
 type SupportCard = {
   title: string;
@@ -71,6 +72,9 @@ export default function EnglishCvSupportPage({
               Main English CV route
             </Link>
           </div>
+          <p className="mt-4 text-sm font-semibold text-slate-700">
+            Start free. Final PDF: {cvDownloadPrice.displayEn} including VAT. No subscription.
+          </p>
         </div>
       </section>
 
@@ -117,8 +121,9 @@ export default function EnglishCvSupportPage({
           </h2>
           <p className="mt-3 max-w-3xl leading-relaxed text-gray-700">
             Keep the same transparent WerkCV pricing route: build for free, choose an English
-            template, and pay only when you want the final PDF. The value is not a generic resume
-            builder; it is a Dutch-market structure with English wording.
+            template, and pay {cvDownloadPrice.displayEn} including VAT only when you want the
+            final PDF. There is no subscription or automatic renewal. The value is not a generic
+            resume builder; it is a Dutch-market structure with English wording.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link href="/en/templates?startSource=en_support_bottom_templates" className="border-4 border-black bg-black px-5 py-3 font-bold text-white">

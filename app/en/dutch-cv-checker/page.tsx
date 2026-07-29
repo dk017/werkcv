@@ -311,7 +311,7 @@ export default function DutchCvCheckerPage() {
         <FinalCtaSection
           title="Need the final Dutch-style version next?"
           description="Use the check to spot the issues first, then move into the English WerkCV editor to rebuild the final version in a cleaner Dutch-market structure."
-          supportLine="Start free, stay on the English route, and only pay when you want the final PDF."
+          supportLine="Start free. Final PDF €4.99 including VAT. No subscription."
           buttonLabel="Open English editor"
           buttonHref="/en/editor"
           trackingLocation="dutch-cv-checker:bottom_primary"
