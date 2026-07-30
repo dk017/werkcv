@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
 import { cvDownloadPrice } from "@/lib/site-content";
 
@@ -24,7 +25,10 @@ export const metadata: Metadata = {
     alternates: {
         canonical: "https://werkcv.nl/prijzen",
         languages: {
+            "nl": "https://werkcv.nl/prijzen",
             "nl-NL": "https://werkcv.nl/prijzen",
+            "en-NL": "https://werkcv.nl/en/pricing",
+            "en": "https://werkcv.nl/en/pricing",
             "x-default": "https://werkcv.nl/prijzen",
         },
     },
@@ -152,12 +156,15 @@ export default function PrijzenPage() {
                             Werk<span className="bg-yellow-400 px-1">CV</span>.nl
                         </span>
                     </Link>
-                    <Link
-                        href="/editor"
-                        className="text-sm font-bold text-black bg-yellow-400 px-3 py-1 border-2 border-black hover:bg-yellow-300 transition-colors"
-                    >
-                        Maak gratis je cv
-                    </Link>
+                    <div className="flex items-center gap-3">
+                        <LanguageSwitcher tone="solid" />
+                        <Link
+                            href="/editor"
+                            className="text-sm font-bold text-black bg-yellow-400 px-3 py-1 border-2 border-black hover:bg-yellow-300 transition-colors"
+                        >
+                            Maak gratis je cv
+                        </Link>
+                    </div>
                 </div>
             </header>
 

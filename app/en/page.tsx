@@ -345,8 +345,9 @@ export default function EnglishHubPage() {
             Werk<span className="bg-yellow-400 px-1">CV</span>.nl
           </Link>
           <nav className="hidden items-center gap-6 text-sm font-bold text-black md:flex">
-            <Link href="/en/templates" className="hover:text-yellow-600 transition-colors">Templates</Link>
-            <Link href="/en/guides" className="hover:text-yellow-600 transition-colors">Guides</Link>
+             <Link href="/en/templates" className="hover:text-yellow-600 transition-colors">Templates</Link>
+             <Link href="/en/pricing" className="hover:text-yellow-600 transition-colors">Pricing</Link>
+             <Link href="/en/guides" className="hover:text-yellow-600 transition-colors">Guides</Link>
             <Link href="/en/dutch-cv-examples" className="hover:text-yellow-600 transition-colors">Examples</Link>
             <Link href="/tools" className="hover:text-yellow-600 transition-colors">Tools</Link>
           </nav>

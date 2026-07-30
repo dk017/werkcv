@@ -53,6 +53,7 @@ const englishMainLinks = [
     { href: "/en/templates", label: "CV Templates" },
     { href: "/en/dutch-cv-examples", label: "CV Examples" },
     { href: "/en/guides", label: "Netherlands CV Guides" },
+    { href: "/en/pricing", label: "Pricing" },
     { href: "/en/resume-optimizer-netherlands", label: "Resume Optimizer" },
     { href: "/en/profile-photo", label: "Profile Photo" },
     { href: "/en/motivation-letter-netherlands", label: "Motivation Letter" },

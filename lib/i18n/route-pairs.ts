@@ -29,6 +29,14 @@ export const routePairs = [
     preserveSearch: true,
   },
   {
+    id: "pricing",
+    nl: "/prijzen",
+    en: "/en/pricing",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
     id: "editor",
     nl: "/editor",
     en: "/en/editor",

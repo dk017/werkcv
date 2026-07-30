@@ -129,7 +129,7 @@ export default function EnglishCvSupportPage({
             <Link href="/en/templates?startSource=en_support_bottom_templates" className="border-4 border-black bg-black px-5 py-3 font-bold text-white">
               Choose template
             </Link>
-            <Link href="/prijzen" className="border-4 border-black bg-white px-5 py-3 font-bold text-black">
+            <Link href="/en/pricing" className="border-4 border-black bg-white px-5 py-3 font-bold text-black">
               View pricing model
             </Link>
           </div>

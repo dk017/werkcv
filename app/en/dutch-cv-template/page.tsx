@@ -286,7 +286,7 @@ export default function DutchCvTemplatePage() {
             <Link href="/en/editor?template=professional&startSource=en_dutch_cv_template_mid_editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
               Start in English
             </Link>
-            <Link href="/prijzen" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
+            <Link href="/en/pricing" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
               View pricing model
             </Link>
           </div>
