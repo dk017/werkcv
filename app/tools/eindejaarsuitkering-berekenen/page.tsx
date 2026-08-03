@@ -349,7 +349,8 @@ export default function EindejaarsuitkeringBerekenenPage() {
           eyebrow="Volgende stap na je pakketcheck"
           title="Vergelijk je totale pakket met je volgende baan"
           description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
-          primaryLabel="Bekijk cv zonder abonnement"
+          primaryLabel="Maak je CV voor je volgende baan"
+          primaryHref="/editor?template=professional&startSource=tool_eindejaarsuitkering_berekenen"
           insightText="Gebruik je eindejaarsuitkering samen met salaris, uren en vakantiegeld als je een aanbod vergelijkt of een nieuwe rol overweegt."
           intent="salary"
         />

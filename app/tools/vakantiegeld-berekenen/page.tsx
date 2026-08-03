@@ -502,7 +502,8 @@ export default function VakantiegeldBerekenenPage() {
                     title="Gebruik je vakantiegeldmoment om je cv klaar te zetten"
                     description="Ben je je loon, vakantiegeld of voorwaarden aan het vergelijken? Zet dan ook je cv klaar zonder abonnement, zodat je snel kunt reageren als er een betere kans voorbij komt."
                     insightText="Veel bezoekers gebruiken deze berekening om hun huidige pakket te checken. Als je merkt dat je verder wilt kijken, is een sterk Nederlands cv de logische volgende stap."
-                    primaryLabel="Maak je cv zonder abonnement"
+                    primaryLabel="Maak je CV voor je volgende baan"
+                    primaryHref="/editor?template=professional&startSource=tool_vakantiegeld_berekenen"
                     secondaryLabel="Bekijk eerst cv-templates"
                     intent="salary"
                     proofItems={["Gratis starten", "Eenmalig €4,99 bij PDF-download", "Geen abonnement"]}

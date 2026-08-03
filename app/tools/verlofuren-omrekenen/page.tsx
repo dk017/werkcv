@@ -200,15 +200,15 @@ export default function VerlofurenOmrekenenPage() {
             Maak je Nederlandse cv zonder abonnement. Je start gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden.
           </p>
           <TrackedToolLink
-            href="/cv-maken-zonder-abonnement"
+            href="/editor?template=professional&startSource=tool_verlofuren_omrekenen"
             eventName="tool_to_cv_cta_click"
             toolName="verlofuren-omrekenen"
             ctaIntent="legal"
             trackingLocation="verlofuren-omrekenen:bottom_bridge"
-            trackingLabel="Bekijk cv zonder abonnement"
+            trackingLabel="Maak je CV voor je volgende baan"
             className="mt-4 inline-flex border-2 border-black bg-[#4ECDC4] px-4 py-2 text-sm font-black text-slate-900 transition-colors hover:bg-teal-300"
           >
-            Bekijk cv zonder abonnement
+            Maak je CV voor je volgende baan
           </TrackedToolLink>
         </section>
 

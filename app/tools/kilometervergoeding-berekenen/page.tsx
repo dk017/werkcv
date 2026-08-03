@@ -244,7 +244,8 @@ export default function KilometervergoedingBerekenenPage() {
           eyebrow="Volgende stap na je aanbodcheck"
           title="Vergelijk je reiskosten met je volgende baan"
           description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
-          primaryLabel="Bekijk cv zonder abonnement"
+          primaryLabel="Maak je CV voor je volgende baan"
+          primaryHref="/editor?template=professional&startSource=tool_kilometervergoeding_berekenen"
           insightText="Reiskosten zijn onderdeel van je totale pakket. Gebruik je uitkomst wanneer je een nieuwe rol of werkgever vergelijkt."
           intent="salary"
         />
