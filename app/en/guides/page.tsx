@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { buildEnglishMetadata } from '../metadata';
 import { getEnglishWavePages } from '@/lib/seo-wave/data';
+import TrackedLandingLink from '@/components/analytics/TrackedLandingLink';
 
 export const metadata = buildEnglishMetadata({
     title: 'Netherlands CV Guides for Expats',
@@ -119,6 +120,22 @@ export default function EnglishGuidesHubPage() {
                             These pages work best when you enter by problem, not by random topic order.
                             Pick the guide that matches what is actually slowing down your next application.
                         </p>
+                        <div className="mt-6 flex flex-wrap gap-3">
+                            <TrackedLandingLink
+                                href="/en/editor?template=professional&startSource=en_guides_hub_hero"
+                                trackingLocation="en_guides_hub:hero_primary"
+                                trackingLabel="Build my English CV"
+                                className="inline-block border-4 border-black bg-[#4ECDC4] px-5 py-3 font-black text-black"
+                            >
+                                Build my English CV
+                            </TrackedLandingLink>
+                            <Link
+                                href="/en/templates?startSource=en_guides_hub_templates"
+                                className="inline-block border-4 border-black bg-white px-5 py-3 font-bold text-black"
+                            >
+                                Compare English templates
+                            </Link>
+                        </div>
                     </div>
 
                     <div className="mt-6 grid md:grid-cols-2 xl:grid-cols-4 gap-5">
@@ -186,12 +203,14 @@ export default function EnglishGuidesHubPage() {
                     >
                         Open English templates
                     </Link>
-                    <Link
-                        href="/en/editor"
-                        className="inline-block bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black"
+                    <TrackedLandingLink
+                        href="/en/editor?template=professional&startSource=en_guides_hub_bottom"
+                        trackingLocation="en_guides_hub:bottom_primary"
+                        trackingLabel="Open English editor"
+                        className="inline-block border-4 border-black bg-[#4ECDC4] px-5 py-3 font-bold text-black"
                     >
                         Open English editor
-                    </Link>
+                    </TrackedLandingLink>
                     <Link
                         href="/en"
                         className="inline-block bg-white text-black font-bold px-5 py-3 border-4 border-black"

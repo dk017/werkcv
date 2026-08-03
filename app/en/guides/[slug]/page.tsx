@@ -166,12 +166,14 @@ export default async function EnglishWavePage({ params }: PageProps) {
                             {primaryGuideLabel}
                         </TrackedLandingLink>
                         {!primaryGuideIsEditor ? (
-                            <Link
-                                href="/en/editor"
+                            <TrackedLandingLink
+                                href={`/en/editor?template=professional&startSource=en_guide_${page.slug}_editor`}
+                                trackingLocation={`english_guide_editor:${page.slug}`}
+                                trackingLabel="Open English editor"
                                 className="text-sm font-semibold text-slate-600 underline decoration-slate-400 underline-offset-4 hover:text-slate-950"
                             >
                                 Open English editor
-                            </Link>
+                            </TrackedLandingLink>
                         ) : null}
                         <Link
                             href="/en/guides"

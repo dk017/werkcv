@@ -126,7 +126,7 @@ export default function AtsResumeNetherlandsPage() {
           </p>
           <div className="mt-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
             <TrackedLandingLink
-              href="/en/editor"
+              href="/en/editor?template=professional&startSource=en_ats_resume_hero"
               trackingLocation="ats_resume_netherlands_hero"
               trackingLabel="build_ats_cv"
               className="bg-black text-white font-bold px-5 py-3 border-4 border-black"
@@ -253,9 +253,14 @@ export default function AtsResumeNetherlandsPage() {
           <Link href="/en/templates" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
             Build ATS-safe CV
           </Link>
-          <Link href="/en/editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+          <TrackedLandingLink
+            href="/en/editor?template=professional&startSource=en_ats_resume_bottom"
+            trackingLocation="ats_resume_netherlands_bottom"
+            trackingLabel="open_english_editor"
+            className="border-4 border-black bg-[#4ECDC4] px-5 py-3 font-bold text-black"
+          >
             Open English editor
-          </Link>
+          </TrackedLandingLink>
           <Link href="/en/guides" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
             Back to English Guides
           </Link>
@@ -264,7 +269,7 @@ export default function AtsResumeNetherlandsPage() {
       <MobileStickyCta
         text="Start free. Final PDF €4.99 including VAT. No subscription."
         buttonLabel="Start CV"
-        href="/en/editor"
+        href="/en/editor?template=professional&startSource=en_ats_resume_sticky"
         trackingLocation="ats_resume_netherlands_mobile_sticky"
         trackingLabel="build_ats_cv"
       />
