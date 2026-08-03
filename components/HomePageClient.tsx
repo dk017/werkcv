@@ -628,9 +628,9 @@ export default function HomePageClient({
                             <Link href="/gratis-cv-maken" className="font-black underline decoration-2 underline-offset-4">
                                 gratis een CV maken
                             </Link>
-                            , anderen willen snel een eerste versie{" "}
-                            <Link href="/cv-aanmaken" className="font-black underline decoration-2 underline-offset-4">
-                                aanmaken
+                            , anderen willen snel een professioneel CV{" "}
+                            <Link href="/cv-maken" className="font-black underline decoration-2 underline-offset-4">
+                                maken
                             </Link>
                             , op mobiel werken of direct weten hoe een eerste CV voor school, stage of bijbaan eruitziet. Daarom linken we hieronder direct naar de belangrijkste routes.
                         </p>
@@ -643,9 +643,9 @@ export default function HomePageClient({
                                 body: "Voor bezoekers die gratis willen starten, templates willen vergelijken en pas bij download willen betalen.",
                             },
                             {
-                                href: "/cv-aanmaken",
-                                title: "CV aanmaken",
-                                body: "Voor snelle starters die vanaf nul zonder blanco-pagina stress hun eerste versie willen opzetten.",
+                                href: "/cv-maken",
+                                title: "CV maken voor Nederlandse vacatures",
+                                body: "Voor snelle starters die vanaf nul een professioneel CV willen opzetten zonder blanco-pagina stress.",
                             },
                             {
                                 href: "/cv-maken-student",

@@ -2,17 +2,19 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
 import { cvDownloadPrice } from "@/lib/site-content";
 
 export const metadata: Metadata = {
-    title: `CV Maken Kosten 2026: Eenmalig ${cvDownloadPrice.display}, Geen Abonnement | WerkCV`,
-    description: `Maak en bewerk je CV gratis. Betaal pas bij PDF-download: eenmalig ${cvDownloadPrice.display} per CV, geen proefperiode en geen automatische verlenging.`,
+    title: `CV maken eenmalig betalen: ${cvDownloadPrice.display} per PDF, geen abonnement | WerkCV`,
+    description: `CV maken en eenmalig betalen? Bouw en bewerk je CV gratis en betaal pas bij PDF-download: ${cvDownloadPrice.display} per CV, geen proefperiode en geen automatische verlenging.`,
     keywords: [
         "cv maken kosten",
         "cv maker prijs",
         "cv downloaden prijs",
         "cv maken betaald",
+        "cv maken eenmalig betalen",
         "cv betalen per download",
         "cv.nl kosten",
         "goedkoop cv maken",
@@ -158,12 +160,14 @@ export default function PrijzenPage() {
                     </Link>
                     <div className="flex items-center gap-3">
                         <LanguageSwitcher tone="solid" />
-                        <Link
-                            href="/editor"
+                        <TrackedLandingLink
+                            href="/editor?template=professional&startSource=pricing_header"
+                            trackingLocation="prijzen:header_primary"
+                            trackingLabel="Maak gratis je cv"
                             className="text-sm font-bold text-black bg-yellow-400 px-3 py-1 border-2 border-black hover:bg-yellow-300 transition-colors"
                         >
                             Maak gratis je cv
-                        </Link>
+                        </TrackedLandingLink>
                     </div>
                 </div>
             </header>
@@ -182,7 +186,7 @@ export default function PrijzenPage() {
                         ))}
                     </div>
                     <h1 className="text-4xl md:text-5xl font-black text-black mb-4">
-                        CV maken kosten: eenmalig {cvDownloadPrice.display} per CV, geen abonnement
+                        CV maken en eenmalig betalen: {cvDownloadPrice.display} per PDF, geen abonnement
                     </h1>
                     <p className="text-lg font-medium text-black max-w-2xl mx-auto">
                         WerkCV kost {cvDownloadPrice.display} per CV-download. De kernbelofte is simpel: eerst gratis bouwen, pas betalen wanneer je jouw definitieve PDF echt wilt downloaden.
@@ -196,7 +200,7 @@ export default function PrijzenPage() {
                             href="/cv-maken-zonder-abonnement"
                             className="font-black text-black underline decoration-2 underline-offset-4"
                         >
-                            eenmalig betalen
+                            de vergelijking met abonnementen
                         </Link>{" "}
                         zich verhoudt tot abonnementen? Bekijk dan eerst de vergelijking.
                     </p>
@@ -245,12 +249,14 @@ export default function PrijzenPage() {
                                 ))}
                             </ul>
 
-                            <Link
-                                href="/editor"
+                            <TrackedLandingLink
+                                href="/editor?template=professional&startSource=pricing_card_primary"
+                                trackingLocation="prijzen:pricing_card_primary"
+                                trackingLabel="Maak gratis je CV"
                                 className="block w-full bg-yellow-400 text-black py-4 font-black text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
                             >
                                 Maak gratis je CV
-                            </Link>
+                            </TrackedLandingLink>
                             <p className="mt-3 text-xs font-bold text-gray-700">
                                 Afrekenen gebeurt pas wanneer je jouw PDF wilt downloaden.
                             </p>

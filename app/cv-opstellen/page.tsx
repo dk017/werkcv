@@ -506,11 +506,6 @@ export default function CvOpstellenPage() {
                   body: "De bredere gids als je behalve structuur ook hulp zoekt bij profieltekst, bullets en templatekeuze.",
                 },
                 {
-                  href: "/cv-aanmaken",
-                  title: "CV aanmaken",
-                  body: "Voor zoekers die eerst snel een eerste basisversie willen opzetten en daarna pas willen aanscherpen.",
-                },
-                {
                   href: "/curriculum-vitae-maken",
                   title: "Curriculum vitae maken",
                   body: "Formelere variant voor bezoekers die zakelijker taalgebruik gebruiken maar dezelfde opbouw nodig hebben.",
@@ -612,7 +607,7 @@ export default function CvOpstellenPage() {
                 Vergelijk templates
               </Link>
               <Link
-                href="/cv-aanmaken"
+                href="/cv-maken"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
                 Start met je basis-CV

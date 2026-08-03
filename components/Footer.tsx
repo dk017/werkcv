@@ -35,7 +35,7 @@ const toolLinks = [
 const cvIntentLinks = [
     { href: "/cv-maken-zonder-abonnement", label: "CV maken zonder abonnement" },
     { href: "/gratis-cv-maken", label: "Gratis CV maken" },
-    { href: "/cv-aanmaken", label: "CV aanmaken" },
+    { href: "/cv-opstellen", label: "CV opstellen" },
     { href: "/cv-maken-template", label: "CV maken template" },
     { href: "/cv-maken-student", label: "CV maken student" },
     { href: "/stage-cv-maken", label: "Stage CV maken" },

@@ -36,7 +36,7 @@ const guideGroups = [
     links: [
       { href: "/cv-maken", label: "CV maken" },
       { href: "/gratis-cv-maken", label: "Gratis CV maken" },
-      { href: "/cv-aanmaken", label: "CV aanmaken" },
+      { href: "/curriculum-vitae-maken", label: "Curriculum vitae maken" },
       { href: "/cv-opstellen", label: "CV opstellen" },
       { href: "/makkelijk-cv-maken", label: "Makkelijk CV maken" },
       { href: "/snel-cv-maken", label: "Snel CV maken" },

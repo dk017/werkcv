@@ -153,7 +153,7 @@ const sourceLinks = [
 
 const marketingTemplateIntentLinks = [
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken voor marketingrollen",
     description: "Start direct met een sollicitatieversie waarin campagne-impact en kanaalervaring centraal staan.",
   },

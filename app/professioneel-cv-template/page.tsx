@@ -45,7 +45,7 @@ const faqs = [
 
 const professionalIntentLinks = [
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken met een rustige template die vertrouwen opbouwt",
     description:
       "Open meteen een Nederlandse basisstructuur en vul die daarna met een zakelijke, overzichtelijke stijl in.",
@@ -165,7 +165,7 @@ export default function ProfessioneelCvTemplatePage() {
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                href="/cv-aanmaken"
+                href="/cv-maken"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 CV aanmaken met rustige template
@@ -234,7 +234,7 @@ export default function ProfessioneelCvTemplatePage() {
               </ul>
               <div className="mt-5 flex flex-wrap gap-3">
                 <Link
-                  href="/cv-aanmaken"
+                href="/cv-maken"
                   className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
                 >
                   Start met dit professionele CV
@@ -319,7 +319,7 @@ export default function ProfessioneelCvTemplatePage() {
             <div className="mt-6 space-y-4">
               {[
                 {
-                  href: "/cv-aanmaken",
+                  href: "/cv-maken",
                   title: "CV aanmaken",
                   body: "Open direct de rustige Nederlandse CV-structuur die past bij een zakelijke sollicitatie.",
                 },
@@ -388,7 +388,7 @@ export default function ProfessioneelCvTemplatePage() {
               </p>
             </div>
             <Link
-              href="/cv-aanmaken"
+              href="/cv-maken"
               className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >
               CV aanmaken

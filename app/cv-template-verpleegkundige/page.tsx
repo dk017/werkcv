@@ -153,7 +153,7 @@ const faqs = [
 
 const nurseTemplateIntentLinks = [
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken voor verpleegkundige functies",
     description: "Ga door naar een sollicitatieversie waarin BIG, klinische ervaring en teamfit direct zichtbaar zijn.",
   },

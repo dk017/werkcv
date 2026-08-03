@@ -141,10 +141,7 @@ export const metadata: Metadata = {
     "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 inclusief btw per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
   keywords: [
     "cv maken zonder abonnement",
-    "cv maken eenmalig betalen",
     "cv maken geen abonnement",
-    "cv eenmalig betalen",
-    "cv maker eenmalig",
     "cv builder zonder abonnement",
     "geen abonnement cv maker",
   ],
@@ -242,13 +239,21 @@ export default function CvMakenZonderAbonnementPage() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink
-                href="/templates"
+                href="/editor?template=professional&startSource=nl_no_subscription_hero"
                 trackingLocation="cv-maken-zonder-abonnement:hero_primary"
                 trackingLabel="Maak gratis je cv, betaal pas bij downloaden"
                 ctaEventName="cta_no_subscription_hero"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
                 Maak gratis je cv, betaal pas bij downloaden
+              </TrackedLandingLink>
+              <TrackedLandingLink
+                href="/templates?startSource=nl_no_subscription_templates"
+                trackingLocation="cv-maken-zonder-abonnement:hero_templates"
+                trackingLabel="Bekijk templates"
+                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+              >
+                Bekijk templates
               </TrackedLandingLink>
               <Link
                 href="/prijzen"
@@ -282,10 +287,10 @@ export default function CvMakenZonderAbonnementPage() {
 
         <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-xs font-black uppercase tracking-[0.22em] text-slate-600">
-            CV maker eenmalig
+            CV maker zonder abonnement
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            CV maker eenmalig betalen, zonder maandabonnement
+            Zo werkt CV maken zonder abonnement bij WerkCV
           </h2>
           <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
             Zoek je een cv maker waarbij je niet vastzit aan een proefperiode of maandbedrag?

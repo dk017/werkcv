@@ -65,9 +65,9 @@ const freeRouteChoices = [
     body: "Best if you mainly want to compare layouts before you start writing.",
   },
   {
-    href: "/cv-aanmaken",
-    title: "CV aanmaken",
-    body: "Best if you mostly need a first complete version from scratch with as little friction as possible.",
+    href: "/cv-opstellen",
+    title: "CV opstellen",
+    body: "Best if you need help with the right CV structure and section order before you start editing.",
   },
   {
     href: "/cv-maken",
@@ -244,10 +244,10 @@ export default function GratisCvMakenPage() {
               van betalen. Zoek je vooral een eerste basisversie vanaf nul? Gebruik
               dan{" "}
               <Link
-                href="/cv-aanmaken"
+                href="/cv-maken"
                 className="font-black text-black underline decoration-2 underline-offset-4"
               >
-                CV aanmaken
+                CV maken
               </Link>
               . Voor de brede workflow rond inhoud, structuur en ATS gebruik je de{" "}
               <Link
@@ -537,9 +537,9 @@ export default function GratisCvMakenPage() {
                   body: "Gebruik het hoofd-stappenplan als je behalve prijs ook inhoud en schrijfkwaliteit wilt verbeteren.",
                 },
                 {
-                  href: "/cv-aanmaken",
-                  title: "CV aanmaken",
-                  body: "Sterke vervolgroute voor mensen die vooral vanaf nul snel een eerste basisversie willen openen, zonder dat prijs of download het hoofdonderwerp is.",
+                  href: "/cv-opstellen",
+                  title: "CV opstellen",
+                  body: "Sterke vervolgroute voor mensen die eerst structuur, volgorde en inhoud per sectie willen aanscherpen.",
                 },
                 {
                   href: "/templates",

@@ -47,7 +47,7 @@ const freeTemplateIntentLinks = [
       "Gebruik de gratis template als startpunt en bouw daarna direct je eerste sollicitatieversie op.",
   },
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken met een structuur die bij je gekozen stijl past",
     description:
       "Open meteen een Nederlandse basisopbouw waarin profieltekst, ervaring en vaardigheden logisch staan.",
@@ -253,7 +253,7 @@ export default function GratisCvTemplatePage() {
                 </p>
                 <div className="mt-auto pt-5">
                   <Link
-                    href="/cv-aanmaken"
+                    href="/cv-maken"
                     className="inline-block border-2 border-black bg-yellow-400 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-black"
                   >
                     Start met deze stijl

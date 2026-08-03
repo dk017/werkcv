@@ -83,8 +83,8 @@ const relatedLinks = [
     body: "De sterkste vervolgstap als je het hele prijsmodel en de vergelijking met abonnementsmodellen wilt zien.",
   },
   {
-    href: "/cv-maken-eenmalig-betalen",
-    title: "CV maken en eenmalig betalen",
+    href: "/prijzen",
+    title: "Prijzen en eenmalig betalen",
     body: "Bekijk deze pagina als je meer zoekt op de combinatie van bouwen, betalen en later opnieuw downloaden.",
   },
   {
@@ -459,7 +459,7 @@ export default function CvDownloadenZonderAbonnementPage() {
                 Maak gratis je cv
               </TrackedLandingLink>
               <Link
-                href="/cv-maken-eenmalig-betalen"
+                href="/prijzen"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
                 Bekijk eenmalig betalen

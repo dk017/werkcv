@@ -114,7 +114,7 @@ const faqs = [
 
 const experienceIntentLinks = [
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken met sterke werkervaring als hoofdmotor",
     description:
       "Gebruik een structuur waarin recente functies en resultaat-bullets direct de meeste ruimte krijgen.",
@@ -233,7 +233,7 @@ export default function WerkervaringCvVoorbeeldenPage() {
                 Genereer je bullets
               </Link>
               <Link
-                href="/cv-aanmaken"
+                href="/cv-maken"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 CV aanmaken met deze bullets
@@ -382,7 +382,7 @@ export default function WerkervaringCvVoorbeeldenPage() {
                   body: "Genereer direct functiegerichte bullets die je kunt aanpassen op jouw situatie.",
                 },
                 {
-                  href: "/cv-aanmaken",
+                  href: "/cv-maken",
                   title: "CV aanmaken",
                   body: "Gebruik een structuur waarin werkervaring direct de kern van je sollicitatie wordt.",
                 },
@@ -458,7 +458,7 @@ export default function WerkervaringCvVoorbeeldenPage() {
                 Start bullets tool
               </Link>
               <Link
-                href="/cv-aanmaken"
+                href="/cv-maken"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
                 CV aanmaken met je bullets

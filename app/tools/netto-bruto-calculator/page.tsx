@@ -30,7 +30,7 @@ const faqItems = [
 
 const cvIntentLinks = [
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken zodra je weet welke salarisrange bij je past",
     description: "Gebruik je looninschatting om gerichter op functies te solliciteren die bij je doelbedrag horen.",
   },

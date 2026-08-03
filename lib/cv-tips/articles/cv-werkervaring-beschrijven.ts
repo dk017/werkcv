@@ -53,7 +53,7 @@ export const cvWerkervaringBeschrijven: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/cv-aanmaken',
+                    href: '/cv-maken',
                     label: 'CV aanmaken met de juiste werkervaring-volgorde al ingebouwd',
                     description: 'Gebruik een vaste structuur waarin recente functies automatisch vooraan staan.',
                 },

@@ -158,7 +158,7 @@ const sourceLinks = [
 
 const projectTemplateIntentLinks = [
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken voor projectfuncties",
     description: "Ga direct door naar een sollicitatieversie waarin delivery, governance en projectimpact centraal staan.",
   },

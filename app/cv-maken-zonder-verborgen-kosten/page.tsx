@@ -200,7 +200,7 @@ export default function CvMakenZonderVerborgenKostenPage() {
             <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
               Je start gratis, maakt je cv af en betaalt pas als je de PDF echt wilt gebruiken. Zo weet je vooraf waar je aan toe bent.
             </p>
-            <Link href="/cv-maken-eenmalig-betalen" className="mt-4 inline-block text-sm font-black text-black underline decoration-2 underline-offset-4">
+            <Link href="/prijzen" className="mt-4 inline-block text-sm font-black text-black underline decoration-2 underline-offset-4">
               Bekijk cv maken en eenmalig betalen
             </Link>
           </article>

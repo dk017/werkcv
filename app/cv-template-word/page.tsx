@@ -165,7 +165,7 @@ export default function CvTemplateWordPage() {
                 Bekijk CV templates
               </Link>
               <Link
-                href="/cv-aanmaken"
+                href="/cv-maken"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 CV aanmaken zonder Word

@@ -153,7 +153,7 @@ const sourceLinks = [
 
 const salesTemplateIntentLinks = [
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken voor verkoopfuncties",
     description: "Start direct met een sollicitatieversie waarin targets, adviesverkoop en klantcontact samenkomen.",
   },

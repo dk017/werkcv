@@ -38,7 +38,7 @@ const faqItems = [
 
 const vacationCvIntentLinks = [
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken voor een baanwissel",
     description: "Gebruik je verlof- en contractcheck als opstap naar een nieuwe sollicitatieversie.",
   },

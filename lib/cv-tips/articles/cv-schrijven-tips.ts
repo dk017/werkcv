@@ -48,7 +48,7 @@ export const cvSchrijvenTips: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/cv-aanmaken',
+                    href: '/cv-maken',
                     label: 'CV aanmaken met een heldere standaardstructuur',
                     description: 'Gebruik direct een Nederlandse opbouw zonder zelf de hele volgorde te moeten bedenken.',
                 },

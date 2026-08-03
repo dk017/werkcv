@@ -459,7 +459,7 @@ export default function CvNlOpzeggenPage() {
               cv maken zonder abonnement
             </Link>
             ,{" "}
-            <Link href="/cv-maken-eenmalig-betalen" className="font-black text-black underline">
+            <Link href="/prijzen" className="font-black text-black underline">
               een cv maken met eenmalige betaling
             </Link>
             , ons{" "}

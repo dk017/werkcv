@@ -70,9 +70,9 @@ const quickAnswerSteps = [
 
 const routeCards = [
   {
-    href: "/cv-aanmaken",
-    title: "CV aanmaken",
-    body: "Beste route als je nog vanaf nul begint en vooral snel een eerste complete basisversie wilt neerzetten.",
+    href: "/cv-opstellen",
+    title: "CV opstellen",
+    body: "Beste route als je vooral hulp zoekt bij volgorde, structuur en inhoud per CV-sectie.",
   },
   {
     href: "/gratis-cv-maken",
@@ -774,11 +774,6 @@ export default function CvMakenPage() {
                   href: "/gratis-cv-maken",
                   title: "Gratis CV maken",
                   body: "Legt direct uit hoe gratis starten, templatevergelijking en betalen bij PDF-download werken.",
-                },
-                {
-                  href: "/cv-aanmaken",
-                  title: "CV aanmaken",
-                  body: "Ideaal als je vooral vanaf nul snel een eerste versie wilt opzetten zonder opmaakstress.",
                 },
                 {
                   href: "/cv-opstellen",

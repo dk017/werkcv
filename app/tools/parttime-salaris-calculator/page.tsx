@@ -43,7 +43,7 @@ const faqItems = [
 
 const parttimeCvIntentLinks = [
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken voor je volgende stap",
     description: "Zet je salarisvergelijking direct om in een sollicitatieversie voor een andere rol of urenafspraak.",
   },

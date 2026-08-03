@@ -310,8 +310,8 @@ export default function MakkelijkCvMakenPage() {
         <section className="mb-14 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {[
             {
-              href: "/cv-aanmaken",
-              title: "CV aanmaken",
+              href: "/cv-maken",
+              title: "CV maken",
               body: "Voor de kortste route naar een eerste complete basisversie.",
             },
             {

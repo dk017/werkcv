@@ -31,7 +31,7 @@ const faqItems = [
 
 const cvIntentLinks = [
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken zodra je uurloon laat zien wat je volgende stap waard is",
     description: "Gebruik je uurlooncheck om gerichter te mikken op functies die beter betalen dan je huidige situatie.",
   },

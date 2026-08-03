@@ -101,8 +101,8 @@ const relatedLinks = [
     body: "De beste vervolgstap als het prijsmodel voor jou het doorslaggevende verschil is.",
   },
   {
-    href: "/cv-maken-eenmalig-betalen",
-    title: "CV maken en eenmalig betalen",
+    href: "/prijzen",
+    title: "Prijzen en eenmalig betalen",
     body: "Gebruik deze route als je vooral wilt begrijpen hoe gratis starten en betalen bij download samenwerkt.",
   },
   {

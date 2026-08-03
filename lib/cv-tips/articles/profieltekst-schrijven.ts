@@ -56,7 +56,7 @@ export const profieltekstSchrijven: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/cv-aanmaken',
+                    href: '/cv-maken',
                     label: 'CV aanmaken met direct de juiste profielopbouw',
                     description: 'Start vanuit een vaste Nederlandse structuur zodat je profieltekst logisch bovenaan je cv landt.',
                 },
@@ -183,7 +183,7 @@ export const profieltekstSchrijven: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/cv-aanmaken',
+                    href: '/cv-maken',
                     label: 'CV aanmaken met een basisversie die je per vacature kunt aanpassen',
                     description: 'Werk vanuit een vaste kern en wissel daarna alleen profieltekst, keywords en accenten per sollicitatie.',
                 },

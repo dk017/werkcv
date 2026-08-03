@@ -569,7 +569,7 @@ export default function ToolsPage() {
                                 gratis CV maken
                             </Link>
                             ,{" "}
-                            <Link href="/cv-aanmaken" className="font-black underline decoration-2 underline-offset-4">
+                            <Link href="/cv-maken" className="font-black underline decoration-2 underline-offset-4">
                                 CV aanmaken
                             </Link>
                             {" "}of een snellere route voor{" "}
@@ -587,7 +587,7 @@ export default function ToolsPage() {
                                 description: "Sterk voor bezoekers die gratis willen starten, vergelijken en pas betalen wanneer de PDF echt klaar is.",
                             },
                             {
-                                href: "/cv-aanmaken",
+                                href: "/cv-maken",
                                 title: "CV aanmaken",
                                 description: "Voor zoekers die vooral van lege pagina naar een eerste complete basisversie willen zonder layoutgedoe.",
                             },

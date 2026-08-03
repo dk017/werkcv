@@ -81,7 +81,7 @@ const summaryIntentLinks = [
       "Start met een basis-CV en werk daarna je profieltekst verder uit per vacature.",
   },
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken met de juiste plek voor je profieltekst",
     description:
       "Gebruik een Nederlandse opbouw waarin samenvatting, werkervaring en vaardigheden logisch op elkaar volgen.",
@@ -195,7 +195,7 @@ export default function CvSamenvattingVoorbeeldenPage() {
                 Maak je samenvatting in tool
               </Link>
               <Link
-                href="/cv-aanmaken"
+                href="/cv-maken"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 CV aanmaken met deze opening
@@ -310,7 +310,7 @@ export default function CvSamenvattingVoorbeeldenPage() {
                   body: "Zet je samenvatting direct in een gratis startflow als je eerst wilt schrijven en later pas wilt downloaden.",
                 },
                 {
-                  href: "/cv-aanmaken",
+                  href: "/cv-maken",
                   title: "CV aanmaken",
                   body: "Gebruik een heldere eerste basisstructuur waarin je samenvatting meteen op de juiste plek staat.",
                 },

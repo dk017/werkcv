@@ -43,12 +43,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.82,
         },
         {
-            url: `${baseUrl}/cv-aanmaken`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.81,
-        },
-        {
             url: `${baseUrl}/cv-opstellen`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
@@ -809,12 +803,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.82,
-        },
-        {
-            url: `${baseUrl}/cv-maken-eenmalig-betalen`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.81,
         },
         {
             url: `${baseUrl}/cv-maken-zonder-verborgen-kosten`,

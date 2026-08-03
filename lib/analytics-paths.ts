@@ -5,7 +5,6 @@ export const ANALYTICS_PRODUCT_PROGRESS_PATHS = [
   ...EDITOR_PATHS,
   ...TEMPLATE_PATHS,
   "/login",
-  "/cv-aanmaken",
   "/gratis-cv-maken",
 ] as const;
 
@@ -35,7 +34,6 @@ export function isFunnelCtaTargetPath(path: string): boolean {
     isTemplatePath(path) ||
     path.startsWith("/prijzen") ||
     path.startsWith("/cv-maken-zonder-abonnement") ||
-    path.startsWith("/cv-maken-eenmalig-betalen") ||
     path.startsWith("/cv-optimaliseren") ||
     path.startsWith("/cv-verbeteren") ||
     path.startsWith("/cv-checken") ||

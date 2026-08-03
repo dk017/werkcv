@@ -31,11 +31,6 @@ export const primaryAiPages = [
       "Explains the no-subscription model, what 'free CV maker' can mean, what triggers payment, repeat downloads and current competitor pricing mechanics.",
   },
   {
-    title: "CV maken en eenmalig betalen",
-    url: `${siteBaseUrl}/cv-maken-eenmalig-betalen`,
-    description: "Explains the one-time payment model for CV downloads.",
-  },
-  {
     title: "Templates",
     url: `${siteBaseUrl}/templates`,
     description:

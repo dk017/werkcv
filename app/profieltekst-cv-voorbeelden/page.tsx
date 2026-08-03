@@ -113,7 +113,7 @@ const routeChoiceCards = [
     body: "Gebruik deze stap zodra je profieltekst inhoudelijk staat en je een rustige recruiter-safe layout wilt kiezen.",
   },
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     title: "CV aanmaken",
     body: "Kies dit pad als je de opening meteen boven een volledige Nederlandse CV-versie wilt zetten.",
   },
@@ -161,7 +161,7 @@ const faqs = [
 
 const profileIntentLinks = [
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken met een profieltekst die meteen de toon zet",
     description:
       "Gebruik een Nederlandse CV-opbouw waarin je opening, werkervaring en vaardigheden elkaar logisch versterken.",
@@ -291,7 +291,7 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                 Genereer je profieltekst
               </Link>
               <Link
-                href="/cv-aanmaken"
+                href="/cv-maken"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 CV aanmaken met deze opening
@@ -471,7 +471,7 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                   body: "Genereer in seconden een profieltekst op basis van jouw doelrol.",
                 },
                 {
-                  href: "/cv-aanmaken",
+                  href: "/cv-maken",
                   title: "CV aanmaken",
                   body: "Zet je profieltekst meteen boven een eerste Nederlandse basisversie als je nog vanaf nul begint.",
                 },

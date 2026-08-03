@@ -58,6 +58,17 @@ const nextConfig: NextConfig = {
         // the brief's required 301 semantics for the consolidated URL.
         statusCode: 301,
       },
+      // Consolidate duplicate Dutch commercial intent onto the stronger owners.
+      {
+        source: '/cv-maken-eenmalig-betalen',
+        destination: '/prijzen',
+        statusCode: 301,
+      },
+      {
+        source: '/cv-aanmaken',
+        destination: '/cv-maken',
+        statusCode: 301,
+      },
       // Consolidate overlapping English CV intent onto one owner per cluster.
       {
         source: '/en/netherlands-cv-format',

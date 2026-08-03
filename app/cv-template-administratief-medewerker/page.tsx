@@ -143,7 +143,7 @@ const adminTemplateIntentLinks = [
     description: "Gebruik deze variant als je beschikbaarheid, overdracht en parttime uren extra goed moet positioneren.",
   },
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken voor administratief werk",
     description: "Gebruik een directe route naar een rustige sollicitatieversie voor administratie en backoffice.",
   },

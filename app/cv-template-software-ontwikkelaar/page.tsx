@@ -156,7 +156,7 @@ const faqs = [
 
 const developerTemplateIntentLinks = [
   {
-    href: "/cv-aanmaken",
+    href: "/cv-maken",
     label: "CV aanmaken voor software developers",
     description: "Start met een sollicitatieversie waarin stack, projectimpact en teamfit direct zichtbaar zijn.",
   },
