@@ -2,13 +2,13 @@ import { BlogArticle } from '../types';
 
 export const cvOpleidingVermelden: BlogArticle = {
     slug: 'cv-opleiding-vermelden',
-    title: 'Opleiding op je CV vermelden: voorbeelden, volgorde en diploma-uitleg',
-    description: 'Hoe vermeld je opleiding op je CV? Bekijk voorbeelden voor mbo, hbo, wo, lopende studies, niet-afgeronde opleidingen, certificaten en buitenlandse diploma\'s.',
+    title: 'Opleiding op je CV zetten: voorbeelden, volgorde en diploma\'s',
+    description: 'Opleiding op je CV zetten? Bekijk voorbeelden voor mbo, hbo, wo, lopende studies, certificaten en buitenlandse diploma\'s. Leer wat je vermeldt en waar de sectie hoort.',
     publishedAt: '2025-03-15',
     updatedAt: '2026-05-13',
 
-    metaTitle: 'Opleiding op je CV vermelden? Voorbeelden + volgorde 2026',
-    metaDesc: 'Opleiding op je CV zetten? Bekijk wat je vermeldt per opleiding, wat graad betekent, waar je de sectie plaatst en hoe je diploma\'s of certificaten noteert.',
+    metaTitle: 'Opleiding op je CV zetten: voorbeelden + diploma\'s | WerkCV',
+    metaDesc: 'Opleiding op je CV zetten? Bekijk voorbeelden voor mbo, hbo, wo, lopende studie, diploma\'s en certificaten. Inclusief juiste volgorde en duidelijke CV-regels.',
     keywords: [
         'opleiding cv',
         'opleiding vermelden cv',

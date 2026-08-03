@@ -2,10 +2,10 @@ import { BlogArticle } from '../types';
 
 export const sollicitatieBedankbrief: BlogArticle = {
     slug: 'sollicitatie-bedankbrief',
-    title: 'Bedankmail na sollicitatie: voorbeeld, timing en tips',
-    description: 'Wil je een bedankmail na sollicitatie of sollicitatiegesprek sturen? Bekijk voorbeeldteksten, de beste timing en wat je wel en niet schrijft.',
-    metaTitle: 'Bedankmail na sollicitatie: voorbeeld + timing | WerkCV.nl',
-    metaDesc: 'Bedankmail na sollicitatie sturen? Bekijk voorbeeldteksten, timing en tips voor na een sollicitatiegesprek, assessment of afwijzing.',
+    title: 'Bedankmail na sollicitatiegesprek: 3 voorbeelden + timing',
+    description: 'Een bedankmail na een sollicitatiegesprek schrijven? Bekijk drie voorbeelden voor na een gesprek, assessment of afwijzing en leer wat je op welk moment stuurt.',
+    metaTitle: 'Bedankmail na sollicitatiegesprek: 3 voorbeelden | WerkCV',
+    metaDesc: 'Bedankmail na een sollicitatiegesprek schrijven? Gebruik voorbeelden voor na een gesprek, assessment of afwijzing. Inclusief timing, onderwerpregel en veelgemaakte fouten.',
     category: 'solliciteren',
     keywords: [
         'bedankmail na sollicitatie',
@@ -14,6 +14,7 @@ export const sollicitatieBedankbrief: BlogArticle = {
         'sollicitatie bedankbrief',
         'bedankje na interview',
         'bedankmail na gesprek',
+        'bedankmail na aangenomen gesprek voorbeeld',
         'follow-up sollicitatie',
         'bedankmail voorbeeld',
         'bedanken na sollicitatie',
@@ -149,6 +150,10 @@ export const sollicitatieBedankbrief: BlogArticle = {
         },
     ],
     faq: [
+        {
+            question: 'Wat schrijf je in een bedankmail na een sollicitatiegesprek?',
+            answer: 'Bedank de gesprekspartner, noem één concreet onderwerp uit het gesprek, bevestig je interesse en verwijs kort naar de volgende stap. Houd de mail persoonlijk en meestal tussen 100 en 150 woorden.',
+        },
         {
             question: 'Moet ik altijd een bedankmail sturen na een sollicitatiegesprek?',
             answer: 'Niet verplicht, maar sterk aanbevolen. Slechts 24% van kandidaten doet het, terwijl 57% van recruiters het waardeert. Het is een eenvoudige manier om positief op te vallen na een gesprek.',

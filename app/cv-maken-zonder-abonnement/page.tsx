@@ -135,10 +135,10 @@ const relatedLinks = [
 
 export const metadata: Metadata = {
   title: {
-    absolute: "CV maken zonder abonnement - Eenmalig €4,99 per PDF | WerkCV",
+    absolute: "CV maken zonder abonnement: €4,99 per PDF | WerkCV",
   },
   description:
-    "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 inclusief btw per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
+    "CV maken zonder abonnement? Bouw gratis, bekijk je volledige CV en betaal eenmalig €4,99 bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.",
   keywords: [
     "cv maken zonder abonnement",
     "cv maken geen abonnement",
@@ -153,9 +153,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "CV maken zonder abonnement - Eenmalig €4,99 per PDF | WerkCV",
+    title: "CV maken zonder abonnement: €4,99 per PDF | WerkCV",
     description:
-      "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 inclusief btw per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
+      "CV maken zonder abonnement? Bouw gratis, bekijk je volledige CV en betaal eenmalig €4,99 bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.",
     url: pageUrl,
     siteName: "WerkCV",
     locale: "nl_NL",
@@ -171,9 +171,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "CV maken zonder abonnement - Eenmalig €4,99 per PDF | WerkCV",
+    title: "CV maken zonder abonnement: €4,99 per PDF | WerkCV",
     description:
-      "Bouw gratis je Nederlandse cv en betaal alleen bij PDF-download. Eenmalig €4,99 inclusief btw per CV, geen proefabonnement, geen maandkosten en niets om op te zeggen.",
+      "CV maken zonder abonnement? Bouw gratis, bekijk je volledige CV en betaal eenmalig €4,99 bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.",
     images: ["/opengraph-image"],
   },
 };
@@ -232,7 +232,7 @@ export default function CvMakenZonderAbonnementPage() {
               ))}
             </div>
             <h1 className="max-w-4xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV maken zonder abonnement
+              CV maken zonder abonnement: gratis bouwen, eenmalig betalen
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Maak gratis je Nederlandse cv, bekijk je voorbeeld en betaal pas éénmalig {cvDownloadPrice.display} inclusief btw als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en niets om later op te zeggen.

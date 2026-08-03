@@ -350,6 +350,10 @@ export default function Editor({
         "PDF downloaden",
         "Download PDF"
     );
+    const readyPanelDownloadCtaLabel = tr(
+        `PDF downloaden · eenmalig ${downloadPriceLabel}`,
+        `Download PDF · one-time ${downloadPriceLabel}`
+    );
     const toolbarCtaLabel = isReadyToDownload
         ? paidDownloadCtaLabel
         : isGuidedBuild && completionState.nextStep
@@ -1277,14 +1281,25 @@ export default function Editor({
                                             {tr("Klaar voor download", "Ready to download")}
                                         </p>
                                         <h2 className="mt-1 text-lg font-semibold text-slate-950">
-                                            {tr("Je CV is compleet genoeg om te versturen.", "Your CV is ready to send.")}
+                                            {tr("Je CV is klaar om te versturen.", "Your CV is ready to send.")}
                                         </h2>
                                         <p className="mt-1 text-sm font-medium text-slate-600">
                                             {tr(
-                                                `Download je PDF direct na de betaling. Eenmalig ${downloadPriceLabel}, geen abonnement en geen automatische verlenging.`,
-                                                `Download your PDF immediately after payment. One-time ${downloadPriceLabel}, no subscription and no automatic renewal.`
+                                                `Controleer eerst je volledige CV. De knop opent de betaalstap: daarna download je direct je PDF voor eenmalig ${downloadPriceLabel}. Geen abonnement en geen automatische verlenging.`,
+                                                `Review your complete CV first. The button opens checkout: after payment, download your PDF immediately for a one-time ${downloadPriceLabel}. No subscription and no automatic renewal.`
                                             )}
                                         </p>
+                                        <div className="mt-3 flex flex-wrap gap-2 text-xs font-bold text-emerald-800">
+                                            <span className="rounded-full border border-emerald-300 bg-white px-2.5 py-1">
+                                                {tr(`Eenmalig ${downloadPriceLabel}`, `One-time ${downloadPriceLabel}`)}
+                                            </span>
+                                            <span className="rounded-full border border-emerald-300 bg-white px-2.5 py-1">
+                                                {tr("Geen abonnement", "No subscription")}
+                                            </span>
+                                            <span className="rounded-full border border-emerald-300 bg-white px-2.5 py-1">
+                                                {tr("PDF direct na betaling", "PDF immediately after payment")}
+                                            </span>
+                                        </div>
                                     </div>
                                     <button
                                         type="button"
@@ -1294,7 +1309,7 @@ export default function Editor({
                                     >
                                         {isDownloading
                                             ? tr("Bezig...", "Working...")
-                                            : paidDownloadCtaLabel}
+                                            : readyPanelDownloadCtaLabel}
                                     </button>
                                 </div>
                             </section>

@@ -7,6 +7,7 @@ import { articleCategoryLabels, articleCategoryColors } from '@/lib/cv-tips/type
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import LinkedInToCvImporter from '@/components/translate/LinkedInToCvImporter';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
+import TrackedLandingLink from '@/components/analytics/TrackedLandingLink';
 import { normalizeBrandCopy } from '@/lib/seo-branding';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { getLanguageAlternates } from '@/lib/i18n/route-pairs';
@@ -90,6 +91,17 @@ export default async function ArticlePage({ params }: PageProps) {
     const publishedTime = toSchemaDate(article.publishedAt);
     const modifiedTime = article.updatedAt ? toSchemaDate(article.updatedAt) : undefined;
     const metaDesc = normalizeBrandCopy(article.metaDesc);
+    const articleEditorCta = article.slug === 'cv-opleiding-vermelden'
+        ? {
+            href: '/editor?template=professional&startSource=nl_guide_cv_opleiding_vermelden',
+            label: 'Maak je CV met een duidelijke opleidingssectie',
+        }
+        : article.slug === 'sollicitatie-bedankbrief'
+            ? {
+                href: '/editor?template=professional&startSource=nl_guide_sollicitatie_bedankbrief',
+                label: 'Maak je CV voor je volgende sollicitatie',
+            }
+            : null;
 
     // Resolve related CV examples
     const relatedExamples = article.relatedExampleSlugs
@@ -186,6 +198,16 @@ export default async function ArticlePage({ params }: PageProps) {
                     <p className="text-lg md:text-xl text-gray-700">
                         {article.description}
                     </p>
+                    {articleEditorCta ? (
+                        <TrackedLandingLink
+                            href={articleEditorCta.href}
+                            trackingLocation={`cv-tip:${article.slug}:hero_primary`}
+                            trackingLabel={articleEditorCta.label}
+                            className="mt-6 inline-block border-4 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                        >
+                            {articleEditorCta.label}
+                        </TrackedLandingLink>
+                    ) : null}
                 </div>
             </section>
 
@@ -387,12 +409,23 @@ export default async function ArticlePage({ params }: PageProps) {
                         Kies uit 13+ templates, vul je gegevens in en download als PDF.
                     </p>
                     <div className="flex flex-wrap gap-3">
-                        <Link
-                            href="/templates"
-                            className="inline-block bg-black text-white font-bold px-6 py-3 border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
-                        >
-                            Maak je CV
-                        </Link>
+                        {articleEditorCta ? (
+                            <TrackedLandingLink
+                                href={articleEditorCta.href}
+                                trackingLocation={`cv-tip:${article.slug}:inline_primary`}
+                                trackingLabel={articleEditorCta.label}
+                                className="inline-block bg-black text-white font-bold px-6 py-3 border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            >
+                                {articleEditorCta.label}
+                            </TrackedLandingLink>
+                        ) : (
+                            <Link
+                                href="/templates"
+                                className="inline-block bg-black text-white font-bold px-6 py-3 border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            >
+                                Maak je CV
+                            </Link>
+                        )}
                         <Link
                             href="/cv-voorbeelden"
                             className="inline-block bg-white text-black font-bold px-6 py-3 border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
@@ -472,12 +505,23 @@ export default async function ArticlePage({ params }: PageProps) {
                         Maak binnen 5 minuten een professioneel CV met onze templates en voorbeeldteksten.
                         Eenmalig €4,99, geen abonnement.
                     </p>
-                    <Link
-                        href="/templates"
-                        className="inline-block bg-black text-white font-bold px-8 py-4 text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
-                    >
-                        Maak je CV nu
-                    </Link>
+                    {articleEditorCta ? (
+                        <TrackedLandingLink
+                            href={articleEditorCta.href}
+                            trackingLocation={`cv-tip:${article.slug}:bottom_primary`}
+                            trackingLabel={articleEditorCta.label}
+                            className="inline-block bg-black text-white font-bold px-8 py-4 text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                        >
+                            {articleEditorCta.label}
+                        </TrackedLandingLink>
+                    ) : (
+                        <Link
+                            href="/templates"
+                            className="inline-block bg-black text-white font-bold px-8 py-4 text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                        >
+                            Maak je CV nu
+                        </Link>
+                    )}
                 </div>
             </section>
         </main>

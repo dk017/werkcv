@@ -7,8 +7,8 @@ import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
 import { cvDownloadPrice } from "@/lib/site-content";
 
 export const metadata: Metadata = {
-    title: `CV maken eenmalig betalen: ${cvDownloadPrice.display} per PDF, geen abonnement | WerkCV`,
-    description: `CV maken en eenmalig betalen? Bouw en bewerk je CV gratis en betaal pas bij PDF-download: ${cvDownloadPrice.display} per CV, geen proefperiode en geen automatische verlenging.`,
+    title: `CV maken kosten: ${cvDownloadPrice.display} per PDF, eenmalig betalen | WerkCV`,
+    description: `Wat kost een CV maken? Bij WerkCV bouw je gratis en betaal je eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.`,
     keywords: [
         "cv maken kosten",
         "cv maker prijs",
@@ -186,7 +186,7 @@ export default function PrijzenPage() {
                         ))}
                     </div>
                     <h1 className="text-4xl md:text-5xl font-black text-black mb-4">
-                        CV maken en eenmalig betalen: {cvDownloadPrice.display} per PDF, geen abonnement
+                        Wat kost een CV maken? Eenmalig {cvDownloadPrice.display} per PDF
                     </h1>
                     <p className="text-lg font-medium text-black max-w-2xl mx-auto">
                         WerkCV kost {cvDownloadPrice.display} per CV-download. De kernbelofte is simpel: eerst gratis bouwen, pas betalen wanneer je jouw definitieve PDF echt wilt downloaden.
@@ -206,6 +206,9 @@ export default function PrijzenPage() {
                     </p>
                     <p className="text-sm font-medium text-gray-700 max-w-2xl mx-auto mt-2">
                         Zoek je vooral op <span className="font-black text-black">cv maken betaald</span> of <span className="font-black text-black">cv betalen per download</span>? Dan is dit precies de pagina waar het prijsmodel wordt uitgelegd.
+                    </p>
+                    <p className="text-sm font-medium text-gray-700 max-w-2xl mx-auto mt-2">
+                        Wil je eerst je inhoud en template kiezen? Ga naar <Link href="/cv-maken" className="font-black text-black underline decoration-2 underline-offset-4">CV maken voor Nederlandse vacatures</Link>.
                     </p>
                 </div>
 

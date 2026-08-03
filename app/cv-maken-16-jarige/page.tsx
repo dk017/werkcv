@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { UseExampleButton } from "@/components/cv-voorbeelden/UseExampleButton";
+import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import Footer from "@/components/Footer";
 import { cv16Jarige } from "@/lib/cv-voorbeelden/examples/studenten-en-starters/cv-16-jarige";
 
@@ -32,6 +33,11 @@ const signals = [
 
 const faqs = [
   {
+    question: "Waar vind ik een cv 16-jarige voorbeeld?",
+    answer:
+      "Op deze pagina staat een ingevuld voorbeeld voor school, beschikbaarheid, bijbaan en eerste werkervaring. Gebruik het als startpunt en vervang alle voorbeeldgegevens door je eigen informatie.",
+  },
+  {
     question: "Hoe maak ik een cv als 16-jarige?",
     answer:
       "Begin met een korte profieltekst, schoolgegevens, beschikbaarheid en alles wat laat zien dat je verantwoordelijk en gemotiveerd bent: bijbaan, stage, vrijwilligerswerk, sport of schoolactiviteiten.",
@@ -54,9 +60,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken 16 Jarige - Eerste CV voor Bijbaan, Winkel of Horeca | WerkCV",
+  title: "CV maken als 16-jarige: voorbeeld voor bijbaan of stage | WerkCV",
   description:
-    "CV maken als 16-jarige? Zet school, beschikbaarheid, eerste ervaring en werkhouding om in een sterk eerste CV voor bijbaan of stage. Start gratis in de editor.",
+    "CV maken als 16-jarige? Bekijk een ingevuld voorbeeld voor bijbaan, winkel, horeca of stage. Inclusief school, beschikbaarheid en tips voor je eerste CV. Start gratis.",
   keywords: [
     "cv maken 16 jarige",
     "cv maken voor 16 jarige",
@@ -114,12 +120,14 @@ export default function CvMaken16JarigePage() {
               Werk<span className="bg-yellow-400 px-1">CV</span>.nl
             </span>
           </Link>
-          <Link
-            href="/editor"
+          <TrackedLandingLink
+            href="/editor?template=professional&startSource=nl_cv_16_jarige_header"
+            trackingLocation="cv-maken-16-jarige:header_primary"
+            trackingLabel="Start in editor"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
             Start in editor
-          </Link>
+          </TrackedLandingLink>
         </div>
       </header>
 
@@ -130,7 +138,7 @@ export default function CvMaken16JarigePage() {
               Jongeren-intentie
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV maken als 16-jarige voor bijbaan, winkel, horeca of eerste stage
+              CV maken als 16-jarige: voorbeeld voor bijbaan of eerste stage
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Op je 16e heb je vaak al iets meer ruimte voor bijbanen, winkelwerk,
@@ -143,6 +151,7 @@ export default function CvMaken16JarigePage() {
                 colorThemeId={cv16Jarige.colorThemeId}
                 sampleCV={cv16Jarige.sampleCV}
                 label="Start met ingevuld 16-jarigen CV"
+                startSource="role_example_page"
               />
               <Link
                 href="/cv-voorbeelden/studenten-en-starters/cv-16-jarige"
@@ -154,6 +163,9 @@ export default function CvMaken16JarigePage() {
             <p className="mt-4 max-w-2xl text-sm font-medium leading-relaxed text-slate-600">
               De eerste knop opent een vooraf ingevuld CV met voorbeeldtekst voor school,
               beschikbaarheid en eerste werkervaring. Vervang de voorbeeldgegevens daarna door je eigen gegevens.
+            </p>
+            <p className="mt-3 text-sm font-medium leading-relaxed text-slate-600">
+              Zoek je een algemene route? Bekijk ook <Link href="/cv-maken" className="font-black text-black underline decoration-2 underline-offset-4">CV maken voor Nederlandse vacatures</Link>.
             </p>
           </div>
 
@@ -215,6 +227,11 @@ export default function CvMaken16JarigePage() {
               href: "/cv-maken-student",
               title: "CV maken student",
               body: "Ga breder als je ook stage en startersrollen wilt meenemen.",
+            },
+            {
+              href: "/cv-maken",
+              title: "CV maken voor Nederlandse vacatures",
+              body: "Gebruik de algemene WerkCV-route als je CV niet alleen voor een bijbaan bedoeld is.",
             },
           ].map((item) => (
             <Link
