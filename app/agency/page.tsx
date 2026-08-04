@@ -5,6 +5,7 @@ import B2BLeadForm from "@/components/b2b/B2BLeadForm";
 import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
 import AgencyCtaLink from "@/components/agency/AgencyCtaLink";
 import AgencyCvSamplePair from "@/components/agency/AgencyCvSamplePair";
+import AgencyInteractiveDemo from "@/components/agency/AgencyInteractiveDemo";
 import { FAQJsonLd, OrganizationJsonLd } from "@/components/seo/JsonLd";
 import { isAgencyDodoConfigured } from "@/lib/dodo";
 
@@ -142,6 +143,12 @@ export default function AgencyPage() {
                 location="agency_hero_details"
                 className="text-sm font-black text-slate-700 underline decoration-2 underline-offset-4 hover:text-emerald-700"
               />
+              <AgencyCtaLink
+                href="#agency-demo"
+                label="Probeer de interactieve demo"
+                location="agency_hero_demo"
+                className="text-sm font-black text-slate-700 underline decoration-2 underline-offset-4 hover:text-emerald-700"
+              />
             </div>
             <div className="mt-6 grid max-w-xl grid-cols-2 gap-2 text-xs font-bold text-slate-600 sm:grid-cols-4">
               <span className="border border-slate-300 bg-white px-3 py-2">€149/maand</span>
@@ -199,6 +206,8 @@ export default function AgencyPage() {
             <AgencyCvSamplePair />
           </div>
         </section>
+
+        <AgencyInteractiveDemo />
 
         <section id="plan" className="grid gap-8 border-y-2 border-slate-900 py-14 lg:grid-cols-[1fr_0.85fr]">
           <div>

@@ -809,7 +809,7 @@ export default function HomePageClient({
                             },
                             {
                                 href: "/agency",
-                                title: "Agency pilot",
+                                title: "WerkCV Agency Plan",
                                 body: "Voor recruiters en boutique bureaus die kandidaat-CV's sneller in bureau-uitstraling willen opleveren.",
                             },
                             {

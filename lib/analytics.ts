@@ -119,6 +119,8 @@ export type AnalyticsEvent =
     | { event: 'landing_to_editor'; properties: { fromPath: string; toPath: string } }
     | { event: 'agency_checkout_started'; properties: { location: string; product: 'agency' } }
     | { event: 'agency_checkout_failed'; properties: { location: string; product: 'agency'; reason: string } }
+    | { event: 'agency_demo_started'; properties: { location: string; mode: 'sample' } }
+    | { event: 'agency_demo_field_changed'; properties: { field: 'name' | 'title' | 'summary' | 'experience' | 'skills'; mode: 'sample' } }
     // Authentication
     | { event: 'login_view'; properties: { locale: 'nl' | 'en'; nextPath: string } }
     | { event: 'login_code_requested'; properties: { locale: 'nl' | 'en'; nextPath: string } }
