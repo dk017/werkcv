@@ -5,6 +5,7 @@ import Editor from "./editor";
 import { createEditorDraft } from "@/lib/editor-drafts";
 import { cookies } from "next/headers";
 import { normalizeStartSource, PENDING_START_SOURCE_COOKIE, readEncodedStartSource } from "@/lib/start-source";
+import { isAgencyAccessError } from "@/lib/agency-access";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -49,11 +50,19 @@ export default async function EditorPage({
             redirect(`/templates?startSource=${encodeURIComponent(resolvedStartSource)}`);
         }
 
-        const cvId = await createEditorDraft({
-            templateId: draftTemplateId,
-            uiLanguage: "nl",
-            startSource: resolvedStartSource,
-        });
+        let cvId: string;
+        try {
+            cvId = await createEditorDraft({
+                templateId: draftTemplateId,
+                uiLanguage: "nl",
+                startSource: resolvedStartSource,
+            });
+        } catch (error) {
+            if (isAgencyAccessError(error)) {
+                redirect(`/agency/account?error=${encodeURIComponent(error.code)}`);
+            }
+            throw error;
+        }
         redirect(`/editor?id=${encodeURIComponent(cvId)}${uploadRequested ? "&upload=1" : ""}`);
     }
 
@@ -69,9 +78,10 @@ export default async function EditorPage({
             initialData={cv.data}
             id={id}
             initialTemplateId={cv.templateId}
-            initialColorThemeId={cv.colorThemeId}
-            accountEmail={user.email}
-            uiLanguage="nl"
-        />
+      initialColorThemeId={cv.colorThemeId}
+      accountEmail={user.email}
+      uiLanguage="nl"
+      agencyRouteLocked={cv.agencyRouteLocked}
+    />
     );
 }
