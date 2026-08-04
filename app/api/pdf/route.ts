@@ -5,6 +5,7 @@ import { CVData } from '@/lib/cv';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 import { reportOpsIncident } from '@/lib/ops-alerts';
 import { getDefaultThemeId } from '@/lib/templates/registry';
+import { getAgencyAccessForUser } from '@/lib/agency-access';
 
 export async function GET(request: NextRequest) {
     const user = await getCurrentUserFromRequest(request);
@@ -53,7 +54,16 @@ export async function GET(request: NextRequest) {
             },
         });
 
-        if (!order) {
+        let agencyPlanActive = false;
+        try {
+            agencyPlanActive = (await getAgencyAccessForUser(user.id)).state === 'active';
+        } catch (error) {
+            // A subscription lookup must never make the existing consumer
+            // download path fail closed because of an agency-only data issue.
+            console.error('agency_pdf_entitlement_lookup_failed', error);
+        }
+
+        if (!order && !agencyPlanActive) {
             return NextResponse.json(
                 { error: 'Payment required', code: 'PAYMENT_REQUIRED' },
                 { status: 402 }

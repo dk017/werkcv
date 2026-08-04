@@ -117,6 +117,8 @@ export type AnalyticsEvent =
       }
     | { event: 'landing_cta_click'; properties: { fromPath: string; toPath: string; label: string } }
     | { event: 'landing_to_editor'; properties: { fromPath: string; toPath: string } }
+    | { event: 'agency_checkout_started'; properties: { location: string; product: 'agency' } }
+    | { event: 'agency_checkout_failed'; properties: { location: string; product: 'agency'; reason: string } }
     // Authentication
     | { event: 'login_view'; properties: { locale: 'nl' | 'en'; nextPath: string } }
     | { event: 'login_code_requested'; properties: { locale: 'nl' | 'en'; nextPath: string } }

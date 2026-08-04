@@ -6,6 +6,7 @@ import { Prisma } from '@prisma/client';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 import { normalizeStartSource } from '@/lib/start-source';
 import { getDefaultThemeId, getTemplateConfig } from '@/lib/templates/registry';
+import { createCvDocumentForUser, isAgencyAccessError } from '@/lib/agency-access';
 
 function getCreateCvErrorMessage(error: unknown): string {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'ECONNREFUSED') {
@@ -58,18 +59,23 @@ export async function POST(request: NextRequest) {
     };
 
     try {
-        const cv = await prisma.cVDocument.create({
-            data: {
-                ...baseData,
-                attribution: attribution as unknown as Prisma.InputJsonValue | undefined,
-                sourceCluster: attribution?.firstTouchCluster || null,
-                sourceLocale: attribution?.locale || null,
-                startSource: startSource || null,
-                userId: user.id,
-            } as unknown as Prisma.CVDocumentCreateInput,
-        });
+        const cv = await createCvDocumentForUser({
+            ...baseData,
+            attribution: attribution as unknown as Prisma.InputJsonValue | undefined,
+            sourceCluster: attribution?.firstTouchCluster || null,
+            sourceLocale: attribution?.locale || null,
+            startSource: startSource || null,
+            userId: user.id,
+        } as Prisma.CVDocumentUncheckedCreateInput);
         return NextResponse.json({ cvId: cv.id });
-    } catch {
+    } catch (error) {
+        if (isAgencyAccessError(error)) {
+            const status = error.code === 'AGENCY_QUOTA_REACHED' ? 409 : 503;
+            return NextResponse.json(
+                { error: error.message, code: error.code },
+                { status },
+            );
+        }
         try {
             // Backward-compatible fallback if DB migration has not been applied yet
             const cv = await prisma.cVDocument.create({

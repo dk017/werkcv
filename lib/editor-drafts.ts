@@ -1,9 +1,9 @@
-import { prisma } from "@/lib/prisma";
 import { defaultCV, type CVData } from "@/lib/cv";
 import { getCurrentUser } from "@/lib/auth";
 import { getDefaultThemeId, getTemplateConfig } from "@/lib/templates/registry";
 import { Prisma } from "@prisma/client";
 import { normalizeStartSource } from "@/lib/start-source";
+import { createCvDocumentForUser } from "@/lib/agency-access";
 
 export type EditorUiLanguage = "nl" | "en";
 
@@ -29,18 +29,16 @@ export async function createEditorDraft(input: CreateEditorDraftInput): Promise<
     },
   };
 
-  const cv = await prisma.cVDocument.create({
-    data: {
-      title: input.uiLanguage === "en" ? "My CV" : "Mijn CV",
-      data: cvData,
-      templateId,
-      colorThemeId,
-      userId: user.id,
-      attribution: (user.attribution || undefined) as Prisma.InputJsonValue | undefined,
-      sourceCluster: user.sourceCluster || null,
-      sourceLocale: user.sourceLocale || input.uiLanguage,
-      startSource: normalizeStartSource(input.startSource),
-    },
+  const cv = await createCvDocumentForUser({
+    title: input.uiLanguage === "en" ? "My CV" : "Mijn CV",
+    data: cvData,
+    templateId,
+    colorThemeId,
+    userId: user.id,
+    attribution: (user.attribution || undefined) as Prisma.InputJsonValue | undefined,
+    sourceCluster: user.sourceCluster || null,
+    sourceLocale: user.sourceLocale || input.uiLanguage,
+    startSource: normalizeStartSource(input.startSource),
   });
 
   return cv.id;

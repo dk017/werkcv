@@ -59,6 +59,7 @@ interface EditorProps {
     initialColorThemeId: string;
     accountEmail: string;
     uiLanguage?: UiLanguage;
+    agencyRouteLocked?: boolean;
 }
 
 // Reusable input styles for cleaner, calmer form UI
@@ -268,6 +269,7 @@ export default function Editor({
     initialColorThemeId,
     accountEmail,
     uiLanguage = "nl",
+    agencyRouteLocked = false,
 }: EditorProps) {
     const isEnglish = uiLanguage === "en";
     const tr = (dutch: string, english: string) => (isEnglish ? english : dutch);
@@ -997,6 +999,10 @@ export default function Editor({
                         {isGuidedBuild ? (
                             <span className="hidden rounded-full border border-teal-200 bg-teal-50 px-2.5 py-1 text-[11px] font-bold text-teal-800 sm:inline-flex">
                                 {tr("Stap voor stap", "Guided build")}
+                            </span>
+                        ) : agencyRouteLocked ? (
+                            <span className="hidden rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-800 sm:inline-flex">
+                                {tr("Vaste agency-route", "Fixed agency route")}
                             </span>
                         ) : (
                             <div className="relative flex items-center gap-1 sm:gap-2">

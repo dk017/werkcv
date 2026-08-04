@@ -8,6 +8,8 @@ import { getCurrentUser } from '@/lib/auth'
 import { reportOpsIncident } from '@/lib/ops-alerts'
 import { getResumeLanguage } from '@/lib/resume-language'
 import { getDefaultThemeId } from '@/lib/templates/registry'
+import { createCvDocumentForUser } from '@/lib/agency-access'
+import { isAgencySubscriptionInPaidPeriod } from '@/lib/agency-plan'
 
 const userCVListSelect = {
     id: true,
@@ -59,14 +61,12 @@ export async function createCV(templateId: string = 'professional', colorThemeId
         }
     }
 
-    const cv = await prisma.cVDocument.create({
-        data: {
-            title: 'Mijn CV',
-            data: cvData,
-            templateId,
-            colorThemeId: colorThemeId || getDefaultThemeId(templateId),
-            userId: user.id,
-        }
+    const cv = await createCvDocumentForUser({
+        title: 'Mijn CV',
+        data: cvData,
+        templateId,
+        colorThemeId: colorThemeId || getDefaultThemeId(templateId),
+        userId: user.id,
     })
     return cv.id
 }
@@ -86,10 +86,17 @@ export async function getCVWithSettings(id: string) {
 
     const cv = await prisma.cVDocument.findFirst({ where: { id, userId: user.id } })
     if (!cv) return null
+    const agencySubscription = await prisma.agencySubscription.findUnique({
+        where: { userId: user.id },
+        select: { status: true, currentPeriodEnd: true },
+    })
     return {
         data: cv.data as unknown as CVData,
         templateId: cv.templateId,
         colorThemeId: cv.colorThemeId ?? getDefaultThemeId(cv.templateId),
+        agencyRouteLocked: agencySubscription
+            ? isAgencySubscriptionInPaidPeriod(agencySubscription)
+            : false,
     }
 }
 
@@ -112,6 +119,14 @@ export async function updateCVTemplate(id: string, templateId: string) {
     const user = await getCurrentUser();
     if (!user) return { success: false, error: 'AUTH_REQUIRED' };
 
+    const agencySubscription = await prisma.agencySubscription.findUnique({
+        where: { userId: user.id },
+        select: { status: true, currentPeriodEnd: true },
+    });
+    if (agencySubscription && isAgencySubscriptionInPaidPeriod(agencySubscription)) {
+        return { success: false, error: 'AGENCY_BRANDED_ROUTE_LOCKED' };
+    }
+
     const updated = await prisma.cVDocument.updateMany({
         where: { id, userId: user.id },
         data: { templateId }
@@ -123,6 +138,14 @@ export async function updateCVTemplate(id: string, templateId: string) {
 export async function updateCVColorTheme(id: string, colorThemeId: string) {
     const user = await getCurrentUser();
     if (!user) return { success: false, error: 'AUTH_REQUIRED' };
+
+    const agencySubscription = await prisma.agencySubscription.findUnique({
+        where: { userId: user.id },
+        select: { status: true, currentPeriodEnd: true },
+    });
+    if (agencySubscription && isAgencySubscriptionInPaidPeriod(agencySubscription)) {
+        return { success: false, error: 'AGENCY_BRANDED_ROUTE_LOCKED' };
+    }
 
     const updated = await prisma.cVDocument.updateMany({
         where: { id, userId: user.id },

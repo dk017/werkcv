@@ -3,10 +3,12 @@ import { getEditorPathForLanguage, getSuccessPathForLanguage } from "@/lib/edito
 import type { ResumeLanguage } from "@/lib/resume-language";
 import { CV_DOWNLOAD_PRODUCT } from "@/lib/polar";
 import type { CheckoutAddon, CheckoutProduct } from "@/lib/polar";
+import { AGENCY_PLAN_CODE } from "@/lib/agency-plan";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 const DODO_API_KEY = process.env.DODO_API_KEY || process.env.DODO_PAYMENTS_API_KEY;
 const DODO_PRODUCT_ID = process.env.DODO_PRODUCT_ID;
+const DODO_AGENCY_PRODUCT_ID = process.env.DODO_AGENCY_PRODUCT_ID;
 const DODO_ENVIRONMENT =
   process.env.DODO_ENVIRONMENT || process.env.DODO_PAYMENTS_ENVIRONMENT || "live_mode";
 
@@ -25,6 +27,10 @@ export type DodoCheckoutResult = {
   sessionId: string | null;
   siteHost: string | null;
 };
+
+export function isAgencyDodoConfigured(): boolean {
+  return Boolean(DODO_API_KEY && DODO_AGENCY_PRODUCT_ID);
+}
 
 export function getDodoSiteHost(): string | null {
   try {
@@ -112,6 +118,76 @@ export async function buildDodoCheckoutURL(
   const checkout = (await res.json()) as DodoCheckoutResponse;
   if (!checkout.checkout_url) {
     throw new Error("Dodo checkout URL is missing from response");
+  }
+
+  return {
+    checkoutUrl: checkout.checkout_url,
+    sessionId: checkout.session_id || null,
+    siteHost: getDodoSiteHost(),
+  };
+}
+
+export async function buildAgencyDodoCheckoutURL(email?: string): Promise<DodoCheckoutResult> {
+  if (!DODO_API_KEY) {
+    throw new Error("DODO_API_KEY is not configured");
+  }
+  if (!DODO_AGENCY_PRODUCT_ID) {
+    throw new Error("DODO_AGENCY_PRODUCT_ID is not configured");
+  }
+
+  const body: Record<string, unknown> = {
+    product_cart: [{ product_id: DODO_AGENCY_PRODUCT_ID, quantity: 1 }],
+    allowed_payment_method_types: [
+      "ideal",
+      "credit",
+      "debit",
+      "apple_pay",
+      "google_pay",
+    ],
+    billing_currency: "EUR",
+    return_url: `${APP_URL}/agency/account?status=success`,
+    cancel_url: `${APP_URL}/agency?checkout=cancelled`,
+    metadata: {
+      product: AGENCY_PLAN_CODE,
+      plan_code: AGENCY_PLAN_CODE,
+      site_host: getDodoSiteHost(),
+    },
+    customization: {
+      show_order_details: true,
+      theme: "light",
+    },
+    feature_flags: {
+      allow_currency_selection: false,
+      allow_discount_code: false,
+      allow_phone_number_collection: true,
+      allow_tax_id: true,
+      allow_customer_editing_business_name: true,
+    },
+    minimal_address: false,
+    force_language: "nl",
+  };
+
+  if (email) {
+    body.customer = { email };
+  }
+
+  const res = await fetch(`${DODO_API_BASE}/checkouts`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${DODO_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+
+  if (!res.ok) {
+    const error = await res.text();
+    throw new Error(`Dodo agency checkout failed (${res.status}): ${error}`);
+  }
+
+  const checkout = (await res.json()) as DodoCheckoutResponse;
+  if (!checkout.checkout_url) {
+    throw new Error("Dodo agency checkout URL is missing from response");
   }
 
   return {
