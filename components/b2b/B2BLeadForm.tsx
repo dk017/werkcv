@@ -17,6 +17,7 @@ type B2BLeadFormProps = {
   submitLabel: string;
   audienceLabel: string;
   audienceOptions: SelectOption[];
+  rolePlaceholder?: string;
   volumeLabel?: string;
   volumeOptions?: SelectOption[];
   goalLabel?: string;
@@ -81,6 +82,7 @@ export default function B2BLeadForm({
   submitLabel,
   audienceLabel,
   audienceOptions,
+  rolePlaceholder = "Bijvoorbeeld founder, coach of recruiter",
   volumeLabel = "Volume of bereik",
   volumeOptions = defaultVolumeOptions,
   goalLabel = "Wat wil je opzetten?",
@@ -251,7 +253,7 @@ export default function B2BLeadForm({
               onFocus={handleFieldFocus}
               onChange={(event) => handleChange("role", event.target.value)}
               className="w-full border-2 border-black bg-[#FFFEF0] px-4 py-3 text-sm font-medium text-black outline-none transition-colors focus:bg-white"
-              placeholder="Bijvoorbeeld founder, coach of recruiter"
+              placeholder={rolePlaceholder}
             />
             {getErrorMessage(fieldErrors, "role") ? (
               <span className="mt-2 block text-xs font-bold text-red-700">
