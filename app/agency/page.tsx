@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import B2BLeadForm from "@/components/b2b/B2BLeadForm";
+import AgencyCtaLink from "@/components/agency/AgencyCtaLink";
 import { FAQJsonLd, OrganizationJsonLd } from "@/components/seo/JsonLd";
 
 const painPoints = [
@@ -27,52 +28,28 @@ const painPoints = [
   },
 ];
 
-const planCards = [
-  {
-    title: "Starter",
-    price: "EUR149 / maand",
-    cap: "Tot 50 client-ready CV's",
-    fit: "Beste eerste stap voor solo recruiters, boutique bureaus en teams die eerst echte usage willen zien.",
-    bullets: [
-      "Sterke fit voor 10 tot 25 dossiers per maand",
-      "1 vaste branded route voor bureau of opdrachtgever",
-      "Handmatige intake en factuur, geen self-serve checkout",
-    ],
-    cta: "Vraag Starter intake aan",
-  },
-  {
-    title: "Team",
-    price: "EUR249 / maand",
-    cap: "Tot 150 client-ready CV's",
-    fit: "Voor bureaus waar kandidaat-CV formatting elke maand terugkomt en niet meer in Word moet blijven hangen.",
-    bullets: [
-      "Voor terugkerend teamvolume zonder enterprise-traject",
-      "Zelfde Dutch-first output en intake-aanpak",
-      "Logische volgende stap zodra Starter te klein voelt",
-    ],
-    cta: "Vraag Team intake aan",
-  },
-  {
-    title: "Custom",
-    price: "Op aanvraag",
-    cap: "150+ CV's of afwijkende workflow",
-    fit: "Voor bureaus met hogere volumes, specifieke redactie/privacy-eisen of afwijkende bureau-output.",
-    bullets: [
-      "Custom volume of aanvullende workflow-afspraken",
-      "Voor bureaus die al weten dat standaardroutes te klein zijn",
-      "Nog steeds intake-first, niet direct een groot softwareproject",
-    ],
-    cta: "Bespreek custom route",
-  },
-] as const;
+const pilotPlan = {
+  title: "Agency pilot",
+  price: "€149 / maand",
+  cap: "Tot 50 client-ready CV's · fair use",
+  fit: "Een duidelijke eerste route voor solo recruiters, boutique bureaus en detacheerders die CV-formattering eerst met echte cases willen testen.",
+  bullets: [
+    "30 dagen opzegbaar en gericht op 10 tot 25 dossiers per maand",
+    "1 vaste branded route voor bureau of opdrachtgever",
+    "Handmatige onboarding, template-setup, factuur en prioriteitssupport",
+    "Dutch-first output met vaste structuur en PDF-export",
+    "Privacy- en retentieafspraken vooraf; nog geen ATS-integratie of self-serve workspace",
+  ],
+  cta: "Vraag de agency pilot aan",
+} as const;
 
 const pilotIncludes = [
-  "Starter: EUR149 per maand tot 50 client-ready CV's",
-  "Team: EUR249 per maand tot 150 client-ready CV's",
-  "Custom volume-route op aanvraag als standaardtiers niet passen",
+  "Agency pilot: €149 per maand tot 50 client-ready CV's op fair-usebasis",
+  "30 dagen opzegbaar; bedoeld om 10 tot 25 dossiers per maand te valideren",
   "1 branded route in jouw bureau-uitstraling of die van de opdrachtgever",
   "Handmatige onboarding en eerste template-setup",
   "Factuur in plaats van consumenten-checkout",
+  "Dutch-first output met vaste structuur en PDF-export",
   "Nog geen self-serve workspace beloofd voordat usage is gevalideerd",
   "Fair-use en retentie-afspraken vooraf",
   "Support tijdens de startfase, zonder enterprise theater",
@@ -196,14 +173,14 @@ const pilotSteps = [
 
 const comparisonRows = [
   {
-    title: "Start klein: Starter-route of losse pilot",
+    title: "Start klein: één 30-daagse pilot",
     body:
-      "Voor bureaus die nog niet weten of dit terugkerend werk is. Je kiest de kleinste route die geloofwaardig te testen is: Starter als maandpilot, of in uitzonderingen een losse volume-afspraak.",
+      "Voor bureaus die willen zien of CV-formattering terugkerend tijd kost. We richten één route in, verwerken echte cases en houden de eerste stap klein en omkeerbaar.",
   },
   {
-    title: "Als het terugkomt: Team-route",
+    title: "Opschalen pas na echte usage",
     body:
-      "Voor bureaus die elke maand hetzelfde opmaak- en klantpresentatiegedoe terugzien. Dan is de Team-route logischer dan losse CV-prijzen, maar nog steeds zonder groot platformproject.",
+      "Pas wanneer volume, privacy-eisen en terugkerende workflow duidelijk zijn, bepalen we of een teamworkspace, extra templates of een hoger volumeplan logisch is.",
   },
 ];
 
@@ -232,7 +209,7 @@ const agencyProof = [
 
 const proofRoadmap = [
   "Hoeveel kandidaat-CV's een eerste bureau in de eerste maand echt door de route haalde",
-  "Of Starter of Team beter aansloot op de werkelijke usage",
+  "Of de pilotcapaciteit aansluit op de werkelijke maandusage",
   "Welke redactie- en privacyafspraken vooraf cruciaal bleken",
   "Welke tijdswinst recruiters of consultants werkelijk terugzagen per dossier",
 ];
@@ -247,11 +224,12 @@ const agencyAudienceOptions = [
   { value: "other", label: "Andere B2B kandidaatflow" },
 ];
 
-const agencyRouteOptions = [
-  { value: "starter", label: "Starter - tot 50 CV's per maand (EUR149)" },
-  { value: "team", label: "Team - tot 150 CV's per maand (EUR249)" },
-  { value: "custom", label: "Custom volume of afwijkende workflow" },
-  { value: "small-pilot", label: "Eerst klein valideren / nog niet scherp" },
+const agencyVolumeOptions = [
+  { value: "under-10", label: "Minder dan 10 CV's per maand" },
+  { value: "10-25", label: "10 tot 25 CV's per maand · sterke pilotfit" },
+  { value: "26-50", label: "26 tot 50 CV's per maand" },
+  { value: "50-plus", label: "Meer dan 50 CV's per maand" },
+  { value: "unknown", label: "Nog niet scherp" },
 ] as const;
 
 const faqs = [
@@ -261,9 +239,9 @@ const faqs = [
       "Nee. Het doel is niet om nog een losse CV-tool naast Word te zetten. WerkCV is bedoeld als Dutch-first CV-workflow waarmee bureaus bron-CV's en intake-informatie sneller omzetten naar consistente, ATS-proof kandidaat-CV's.",
   },
   {
-    question: "Kan ik klein beginnen zonder direct een maandabonnement?",
+    question: "Kan ik de workflow eerst klein testen?",
     answer:
-      "Ja. Als je nog geen terugkerend volume durft vast te leggen, kunnen we eerst een kleinere volume-afspraak of pay-per-CV test bespreken. Het maandmodel is pas logisch als dit echt terugkomt in je workflow.",
+      "Ja. De agency pilot is bedoeld als kleine, 30 dagen opzegbare eerste stap. We bespreken vooraf je volume, template en privacy-eisen, zodat je niet meteen aan een groot softwaretraject vastzit.",
   },
   {
     question: "Voor wie is deze workflow het meest geschikt?",
@@ -288,22 +266,18 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Agency CV workflow voor recruiters en boutique bureaus | WerkCV",
+  title: "CV formatteren voor recruiters | Kandidaat-CV in huisstijl | WerkCV",
   description:
-    "Dutch-first CV workflow voor recruiters, solo recruiters en boutique bureaus. Zet bron-CV's sneller om naar consistente, ATS-proof Nederlandse kandidaat-CV's zonder handmatig formatteren in Word.",
+    "CV formatteren voor recruiters, detacheerders en bureaus. Zet bron-CV's en intake om naar consistente kandidaat-CV's in jullie huisstijl. Vraag de pilot aan.",
   keywords: [
-    "word alternatief recruitment",
-    "cv workflow bureau",
-    "cv formatteren recruitment bureau",
-    "client-ready kandidaat cv",
-    "cv formatting software recruiters",
-    "kandidaat cv in huisstijl",
-    "cv anonimiseren recruiter",
-    "cv tool recruiter",
+    "cv formatteren voor recruiters",
+    "cv formatteren recruitment",
     "cv converter recruitment",
-    "cv opmaak bureau",
-    "agency cv formatting",
-    "recruitment cv template",
+    "cv software voor recruiters",
+    "kandidaat cv in huisstijl",
+    "cv opmaak in huisstijl",
+    "cv formatteren uitzendbureau",
+    "cv opmaak detacheringsbureau",
   ],
   alternates: {
     canonical: "https://werkcv.nl/agency",
@@ -365,40 +339,40 @@ export default function AgencyPage() {
           <div className="grid gap-8 lg:grid-cols-[1.08fr_0.92fr]">
             <div>
               <div className="mb-4 inline-block border-2 border-black bg-sky-200 px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-black">
-                Dutch-first CV workflow
+                CV formatteren voor recruiters
               </div>
               <h1 className="mb-4 text-4xl font-black text-black md:text-5xl">
-                Vervang Word in je kandidaat-CV workflow
+                Kandidaat-CV&apos;s formatteren in jullie bureau-huisstijl
               </h1>
               <p className="max-w-3xl text-lg font-medium leading-relaxed text-black">
-                WerkCV helpt recruiters, detacheerders en outplacementpartijen om van bron-CV of
-                intake naar een consistent, ATS-proof Nederlands kandidaat-CV te gaan zonder
-                handmatig formatteren in Word. Geen generieke internationale builder, maar een
-                vaste workflow voor bureaus die sneller en consistenter willen leveren.
+                WerkCV zet bron-CV&apos;s en intake-informatie om naar consistente, klantklare
+                kandidaat-CV&apos;s. Recruiters, detacheerders en consultancybureaus leveren zo
+                sneller in een vaste Dutch-first structuur, zonder ieder document opnieuw in Word
+                te formatteren.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3 text-sm font-black text-black">
-                <span className="border-2 border-black bg-white px-3 py-1">Starter EUR149 / 50 CV&apos;s</span>
-                <span className="border-2 border-black bg-white px-3 py-1">Team EUR249 / 150 CV&apos;s</span>
+                <span className="border-2 border-black bg-white px-3 py-1">€149 / maand</span>
+                <span className="border-2 border-black bg-white px-3 py-1">Tot 50 CV&apos;s · fair use</span>
+                <span className="border-2 border-black bg-white px-3 py-1">30 dagen opzegbaar</span>
                 <span className="border-2 border-black bg-white px-3 py-1">Intake + factuur</span>
                 <span className="border-2 border-black bg-white px-3 py-1">Dutch-first output</span>
-                <span className="border-2 border-black bg-white px-3 py-1">ATS-proof structuur</span>
-                <span className="border-2 border-black bg-white px-3 py-1">Consistente bureau-output</span>
+                <span className="border-2 border-black bg-white px-3 py-1">Eigen huisstijl</span>
               </div>
 
               <div className="mt-8 flex flex-col gap-4 sm:flex-row">
-                <a
+                <AgencyCtaLink
                   href="#b2b-lead-form"
+                  label="Vraag de agency pilot aan"
+                  location="agency_hero"
                   className="inline-block border-4 border-black bg-yellow-400 px-6 py-4 text-center text-lg font-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-                >
-                  Vraag agency intake aan
-                </a>
-                <a
-                  href="#routes"
+                />
+                <AgencyCtaLink
+                  href="#pilot-plan"
+                  label="Bekijk wat inbegrepen is"
+                  location="agency_hero_details"
                   className="inline-block border-4 border-black bg-white px-6 py-4 text-center text-lg font-black text-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-gray-50 hover:translate-x-[3px] hover:translate-y-[3px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-                >
-                  Bekijk routes
-                </a>
+                />
               </div>
               <p className="mt-3 text-sm font-bold text-slate-700">
                 Nog geen self-serve checkout. We starten via intake en factuur. Verwachte eerste
@@ -438,50 +412,45 @@ export default function AgencyPage() {
           </div>
         </section>
 
-        <section id="routes" className="mb-10">
+        <section id="pilot-plan" className="mb-10">
           <div className="mb-6 max-w-3xl">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Concrete routes
+              Eén duidelijke start
             </p>
             <h2 className="mt-2 text-3xl font-black text-black">
-              Kies eerst de kleinste route die je bureau echt kan valideren
+              Start met één agency pilot
             </h2>
             <p className="mt-4 text-sm font-medium leading-relaxed text-gray-700">
-              Dit is bewust nog geen checkoutpagina. Het doel is eerst interesse en echte usage
-              valideren. Daarom werken we met een intake, een heldere route en facturatie in
-              plaats van direct een self-serve agency-product te suggereren dat nog niet gebouwd is.
+              Dit is bewust nog geen checkoutpagina. Je krijgt één heldere pilotroute met intake,
+              template-setup en facturatie. Zo valideren we echte CV-usage voordat we een
+              multi-seat workspace of enterprise-integratie bouwen.
             </p>
           </div>
-          <div className="grid gap-6 lg:grid-cols-3">
-            {planCards.map((plan, index) => (
-              <article
-                key={plan.title}
-                className={`border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] ${
-                  index === 1 ? "bg-yellow-300" : "bg-white"
-                }`}
-              >
+          <article className="border-4 border-black bg-yellow-300 p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+              <div>
                 <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-700">
-                  {plan.title}
+                  {pilotPlan.title}
                 </p>
-                <h3 className="mt-2 text-3xl font-black text-black">{plan.price}</h3>
-                <p className="mt-1 text-sm font-black text-black">{plan.cap}</p>
-                <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
-                  {plan.fit}
+                <h3 className="mt-2 text-4xl font-black text-black">{pilotPlan.price}</h3>
+                <p className="mt-2 text-sm font-black text-black">{pilotPlan.cap}</p>
+                <p className="mt-4 text-sm font-medium leading-relaxed text-slate-800">
+                  {pilotPlan.fit}
                 </p>
-                <ul className="mt-5 space-y-2 text-sm font-bold leading-relaxed text-black">
-                  {plan.bullets.map((bullet) => (
-                    <li key={bullet}>&bull; {bullet}</li>
-                  ))}
-                </ul>
-                <a
+                <AgencyCtaLink
                   href="#b2b-lead-form"
+                  label={pilotPlan.cta}
+                  location="agency_pilot_plan"
                   className="mt-6 inline-block border-4 border-black bg-white px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                >
-                  {plan.cta}
-                </a>
-              </article>
-            ))}
-          </div>
+                />
+              </div>
+              <ul className="space-y-3 border-4 border-black bg-white p-5 text-sm font-bold leading-relaxed text-black">
+                {pilotPlan.bullets.map((bullet) => (
+                  <li key={bullet}>&bull; {bullet}</li>
+                ))}
+              </ul>
+            </div>
+          </article>
         </section>
 
         <section className="mb-10 space-y-6">
@@ -740,10 +709,10 @@ export default function AgencyPage() {
               <h3 className="mb-3 text-xl font-black text-black">Wat we het liefst meteen zien</h3>
               <ul className="space-y-2 text-sm font-bold leading-relaxed text-black">
                 <li>&bull; Hoe kandidaten nu hun bron-CV&apos;s aanleveren</li>
-                <li>&bull; Welke route nu het meest logisch voelt: Starter, Team of Custom</li>
+                <li>&bull; Hoeveel kandidaat-CV&apos;s je maandelijks verwerkt</li>
                 <li>&bull; Of je output in bureau- of opdrachtgeverstijl nodig hebt</li>
                 <li>&bull; Of contactgegevens of andere persoonsgegevens aangepast moeten worden</li>
-                <li>&bull; Of je klein wilt valideren of al weet dat volume structureel terugkomt</li>
+                <li>&bull; Of je de 30-daagse pilot klein wilt valideren</li>
               </ul>
             </div>
           </div>
@@ -751,17 +720,18 @@ export default function AgencyPage() {
           <B2BLeadForm
             pageType="agency"
             pagePath="/agency"
-            title="Vraag een agency intake aan"
-            description="Geen generieke salesform. We willen genoeg context om terug te komen met de kleinste werkbare route: Starter, Team of Custom. We reageren handmatig en factureren pas als er een echte fit is."
-            submitLabel="Stuur agency intake"
+            title="Vraag de 30-daagse agency pilot aan"
+            description="We starten met één duidelijke pilot: €149 per maand, tot 50 client-ready CV's op fair-usebasis. We reageren handmatig binnen 1 tot 2 werkdagen en bespreken eerst fit, volume, template en privacy."
+            submitLabel="Vraag de agency pilot aan"
             audienceLabel="Type organisatie"
             audienceOptions={agencyAudienceOptions}
-            volumeLabel="Welke route of volume past nu het best?"
-            volumeOptions={[...agencyRouteOptions]}
+            rolePlaceholder="Bijvoorbeeld eigenaar, recruiter of consultant"
+            volumeLabel="Hoeveel kandidaat-CV's verwerk je per maand?"
+            volumeOptions={[...agencyVolumeOptions]}
             goalLabel="Wat wil je precies verbeteren in je huidige workflow?"
-            goalPlaceholder="Beschrijf hoe kandidaten nu hun CV aanleveren, waar het werk in Word of handmatige formatting vastloopt, en welke route nu het meest logisch voelt."
+            goalPlaceholder="Beschrijf hoe kandidaten nu hun CV aanleveren, waar formatteren in Word vastloopt en wat je met de pilot wilt verbeteren."
             notesPlaceholder="Optioneel: link naar je website, voorbeeld van huidige output, privacy-eisen of vragen."
-            successMessage="Ontvangen. We reageren normaal binnen 1 tot 2 werkdagen met een concrete vervolgstap en de kleinste route die nu zinnig te testen is."
+            successMessage="Ontvangen. We reageren normaal binnen 1 tot 2 werkdagen met een concrete vervolgstap voor de agency pilot."
           />
         </section>
       </main>
