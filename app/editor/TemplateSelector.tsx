@@ -333,6 +333,8 @@ interface TemplateSelectorProps {
   data: CVData;
   isOpen: boolean;
   reviewMode?: boolean;
+  compactToolbar?: boolean;
+  triggerLabel?: string;
   onOpen: () => void;
   onClose: (reason: "dismissed" | "selected") => void;
   onSelectTemplate: (templateId: string, defaultThemeId: string) => void;
@@ -344,6 +346,8 @@ export default function TemplateSelector({
   data,
   isOpen,
   reviewMode = false,
+  compactToolbar = false,
+  triggerLabel,
   onOpen,
   onClose,
   onSelectTemplate,
@@ -352,6 +356,19 @@ export default function TemplateSelector({
   const isEnglish = uiLanguage === "en";
 
   const currentTemplate = templateList.find((template) => template.id === currentTemplateId);
+  const currentTemplateLabel = isEnglish ? currentTemplate?.name || "Template" : currentTemplate?.nameDutch || "Template";
+  const visibleTriggerLabel = triggerLabel || (
+    reviewMode
+      ? isEnglish ? "Review design" : "Ontwerp bekijken"
+      : currentTemplateLabel
+  );
+  const accessibleTriggerLabel = triggerLabel
+    ? `${triggerLabel}. ${isEnglish ? `Current template: ${currentTemplateLabel}` : `Huidig template: ${currentTemplateLabel}`}`
+    : reviewMode
+      ? visibleTriggerLabel
+      : isEnglish
+        ? `Choose template. Current: ${currentTemplateLabel}`
+        : `Template kiezen. Huidig: ${currentTemplateLabel}`;
   const templateModal = (
     <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto p-4 pt-16 sm:pt-20">
       <div className="fixed inset-0 bg-black/50" onClick={() => onClose("dismissed")} />
@@ -394,23 +411,11 @@ export default function TemplateSelector({
       <button
         type="button"
         onClick={onOpen}
-        title={
-          reviewMode
-            ? isEnglish
-              ? `Review design. Current template: ${currentTemplate?.name || "Template"}`
-              : `Ontwerp bekijken. Huidig template: ${currentTemplate?.nameDutch || "Template"}`
-            : undefined
-        }
-        aria-label={
-          reviewMode
-            ? isEnglish
-              ? `Review design. Current template: ${currentTemplate?.name || "Template"}`
-              : `Ontwerp bekijken. Huidig template: ${currentTemplate?.nameDutch || "Template"}`
-            : isEnglish
-              ? `Choose template. Current: ${currentTemplate?.name || "Template"}`
-              : `Template kiezen. Huidig: ${currentTemplate?.nameDutch || "Template"}`
-        }
-        className={`flex items-center gap-2 rounded-lg border px-3 py-1.5 text-sm font-semibold transition ${
+        title={reviewMode || triggerLabel ? accessibleTriggerLabel : undefined}
+        aria-label={accessibleTriggerLabel}
+        className={`flex items-center gap-2 rounded-lg border text-sm font-semibold transition ${
+          compactToolbar ? "h-9 w-9 justify-center px-0" : "px-3 py-1.5"
+        } ${
           reviewMode
             ? "border-blue-300 bg-blue-50 text-blue-800 hover:bg-blue-100"
             : "border-transparent bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -429,14 +434,8 @@ export default function TemplateSelector({
             d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"
           />
         </svg>
-        <span className="hidden sm:inline">
-          {reviewMode
-            ? isEnglish
-              ? "Review design"
-              : "Ontwerp bekijken"
-            : isEnglish
-              ? currentTemplate?.name || "Template"
-              : currentTemplate?.nameDutch || "Template"}
+        <span className={compactToolbar ? "hidden" : "hidden sm:inline"}>
+          {visibleTriggerLabel}
         </span>
       </button>
 

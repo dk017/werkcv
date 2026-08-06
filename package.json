@@ -18,6 +18,7 @@
     "analytics:paid": "npx tsx scripts/paid-attribution-report.ts",
     "analytics:opzeggen": "npx tsx scripts/opzeggen-funnel-report.ts",
     "analytics:google": "npx tsx scripts/google-insights-report.ts",
+    "mcp:gsc": "npx tsx scripts/gsc-mcp.ts",
     "i18n:validate-routes": "npx tsx scripts/validate-route-pairs.ts",
     "followups:scan": "npx tsx scripts/followups-scan.ts",
     "followups:send": "npx tsx scripts/followups-send.ts",
@@ -47,6 +48,7 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
+    "@modelcontextprotocol/server": "^2.0.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/pg": "^8.16.0",

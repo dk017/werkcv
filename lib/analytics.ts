@@ -119,6 +119,14 @@ export type AnalyticsEvent =
     | { event: 'landing_to_editor'; properties: { fromPath: string; toPath: string } }
     | { event: 'agency_checkout_started'; properties: { location: string; product: 'agency' } }
     | { event: 'agency_checkout_failed'; properties: { location: string; product: 'agency'; reason: string } }
+    | { event: 'agency_demo_started'; properties: { location: string; mode: 'sample' } }
+    | { event: 'agency_demo_field_changed'; properties: { field: 'name' | 'title' | 'summary' | 'experience' | 'skills'; mode: 'sample' } }
+    | { event: 'public_editor_viewed'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency' } }
+    | { event: 'public_editor_fullscreen_toggled'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency'; expanded: boolean } }
+    | { event: 'public_editor_download_intent'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency'; completionScore: number; templateId: string } }
+    | { event: 'public_editor_claim_started'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency' } }
+    | { event: 'public_editor_claim_completed'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency'; cvId: string } }
+    | { event: 'public_editor_claim_failed'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency'; reason: string } }
     // Authentication
     | { event: 'login_view'; properties: { locale: 'nl' | 'en'; nextPath: string } }
     | { event: 'login_code_requested'; properties: { locale: 'nl' | 'en'; nextPath: string } }

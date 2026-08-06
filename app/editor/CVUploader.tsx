@@ -11,14 +11,17 @@ interface CVUploaderProps {
   onParsed: (data: CVData) => void;
   onClose: () => void;
   uiLanguage?: UiLanguage;
+  endpoint?: string;
+  allowLegacyDoc?: boolean;
+  maxFileSizeMb?: number;
 }
 
 type UploadFileType = "pdf" | "doc" | "docx";
 
-function getUploadFileType(file: File): UploadFileType | null {
+function getUploadFileType(file: File, allowLegacyDoc: boolean): UploadFileType | null {
   const extension = file.name.split(".").pop()?.toLowerCase();
   if (file.type === "application/pdf" || extension === "pdf") return "pdf";
-  if (file.type === "application/msword" || extension === "doc") return "doc";
+  if (allowLegacyDoc && (file.type === "application/msword" || extension === "doc")) return "doc";
   if (
     file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     || extension === "docx"
@@ -41,6 +44,9 @@ export default function CVUploader({
   onParsed,
   onClose,
   uiLanguage = "nl",
+  endpoint = "/api/parse-cv-only",
+  allowLegacyDoc = true,
+  maxFileSizeMb = 10,
 }: CVUploaderProps) {
   const isEnglish = uiLanguage === "en";
   const [isDragging, setIsDragging] = useState(false);
@@ -51,7 +57,7 @@ export default function CVUploader({
 
   const handleFile = useCallback(
     async (file: File) => {
-      const fileType = getUploadFileType(file);
+      const fileType = getUploadFileType(file, allowLegacyDoc);
       if (!fileType) {
         track("cv_upload_failed", {
           cvId,
@@ -68,7 +74,7 @@ export default function CVUploader({
         return;
       }
 
-      if (file.size > 10 * 1024 * 1024) {
+      if (file.size > maxFileSizeMb * 1024 * 1024) {
         track("cv_upload_failed", {
           cvId,
           source,
@@ -78,8 +84,8 @@ export default function CVUploader({
         });
         setError(
           isEnglish
-            ? "File is too large. Maximum size is 10MB."
-            : "Bestand is te groot. Maximale grootte is 10MB.",
+             ? `File is too large. Maximum size is ${maxFileSizeMb}MB.`
+             : `Bestand is te groot. Maximale grootte is ${maxFileSizeMb}MB.`,
         );
         return;
       }
@@ -104,8 +110,9 @@ export default function CVUploader({
           isEnglish ? "Analyzing CV with AI..." : "CV wordt geanalyseerd met AI...",
         );
 
-        const response = await fetch("/api/parse-cv-only", {
+        const response = await fetch(endpoint, {
           method: "POST",
+          headers: { "x-werkcv-language": uiLanguage },
           body: formData,
         });
 
@@ -162,7 +169,7 @@ export default function CVUploader({
         setProgress("");
       }
     },
-    [cvId, isEnglish, onParsed, source, uiLanguage],
+    [allowLegacyDoc, cvId, endpoint, isEnglish, maxFileSizeMb, onParsed, source, uiLanguage],
   );
 
   const handleClose = useCallback(() => {
@@ -278,7 +285,7 @@ export default function CVUploader({
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept=".pdf,.doc,.docx"
+            accept={allowLegacyDoc ? ".pdf,.doc,.docx" : ".pdf,.docx"}
                   onChange={handleInputChange}
                   className="hidden"
                 />

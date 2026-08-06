@@ -4,6 +4,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { getAgencyAccessForUser } from "@/lib/agency-access";
 import { getAgencyStatusLabel } from "@/lib/agency-plan";
 import { prisma } from "@/lib/prisma";
+import AgencyDraftResume from "@/components/agency/AgencyDraftResume";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -81,6 +82,8 @@ export default async function AgencyAccountPage({
             De maandlimiet van 50 CV&apos;s is bereikt. Je kunt bestaande CV&apos;s blijven openen; nieuwe CV&apos;s zijn beschikbaar in de volgende periode.
           </div>
         ) : null}
+
+        <AgencyDraftResume canCreate={access.state === "active" && access.canCreate} />
 
         {access.state === "active" && access.period ? (
           <section className="mt-8 border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">

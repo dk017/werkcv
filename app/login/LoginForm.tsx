@@ -61,9 +61,10 @@ const loginCopy = {
 
 type LoginFormProps = {
   initialNext: string;
+  initialLocale?: keyof typeof loginCopy;
 };
 
-export default function LoginForm({ initialNext }: LoginFormProps) {
+export default function LoginForm({ initialNext, initialLocale }: LoginFormProps) {
   const router = useRouter();
   const [next] = useState(initialNext);
   const [email, setEmail] = useState("");
@@ -75,7 +76,7 @@ export default function LoginForm({ initialNext }: LoginFormProps) {
   const loginViewTrackedRef = useRef(false);
 
   const nextPath = normalizeAnalyticsPath(next);
-  const locale = nextPath.startsWith("/en") ? "en" : "nl";
+  const locale = initialLocale || (nextPath.startsWith("/en") ? "en" : "nl");
   const copy = loginCopy[locale];
   const isExampleStart =
     next.includes("startSource=example_page") ||

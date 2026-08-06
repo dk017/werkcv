@@ -143,7 +143,20 @@ async function getPdfjs() {
     return pdfjs;
 }
 
-export async function extractTextFromPDF(buffer: Buffer): Promise<string> {
+export type CvParserOptions = {
+    maxPdfPages?: number;
+    maxTextChars?: number;
+    signal?: AbortSignal;
+};
+
+function enforceTextLimit(text: string, maxTextChars?: number): string {
+    if (maxTextChars !== undefined && text.length > maxTextChars) {
+        throw new Error('CV text is too long to process');
+    }
+    return text;
+}
+
+export async function extractTextFromPDF(buffer: Buffer, options: CvParserOptions = {}): Promise<string> {
     const pdfjsLib = await getPdfjs();
     const data = new Uint8Array(buffer);
     const pdf: PDFDocumentProxy = await pdfjsLib.getDocument({
@@ -153,31 +166,37 @@ export async function extractTextFromPDF(buffer: Buffer): Promise<string> {
         useSystemFonts: true
     } as GetDocumentParams).promise;
 
+    if (options.maxPdfPages !== undefined && pdf.numPages > options.maxPdfPages) {
+        throw new Error('PDF has too many pages to process');
+    }
+
     let text = '';
     for (let i = 1; i <= pdf.numPages; i++) {
+        if (options.signal?.aborted) throw new Error('CV parsing was cancelled');
         const page: PDFPageProxy = await pdf.getPage(i);
         const content = await page.getTextContent();
         const pageText = content.items
             .map((item) => (item.str || ''))
             .join(' ');
         text += pageText + '\n';
+        enforceTextLimit(text, options.maxTextChars);
     }
 
     return text;
 }
 
-export async function extractTextFromDOCX(buffer: Buffer): Promise<string> {
+export async function extractTextFromDOCX(buffer: Buffer, options: CvParserOptions = {}): Promise<string> {
     const result = await mammoth.extractRawText({ buffer });
-    return result.value;
+    return enforceTextLimit(result.value, options.maxTextChars);
 }
 
-export async function extractTextFromFile(buffer: Buffer, filename: string): Promise<string> {
+export async function extractTextFromFile(buffer: Buffer, filename: string, options: CvParserOptions = {}): Promise<string> {
     const ext = filename.toLowerCase().split('.').pop();
 
     if (ext === 'pdf') {
-        return extractTextFromPDF(buffer);
+        return extractTextFromPDF(buffer, options);
     } else if (ext === 'docx' || ext === 'doc') {
-        return extractTextFromDOCX(buffer);
+        return extractTextFromDOCX(buffer, options);
     } else {
         throw new Error(`Unsupported file type: ${ext}`);
     }
@@ -185,7 +204,7 @@ export async function extractTextFromFile(buffer: Buffer, filename: string): Pro
 
 export async function parseCVWithAI(
     text: string,
-    options: { fallbackLanguage?: ResumeLanguage } = {}
+    options: { fallbackLanguage?: ResumeLanguage; signal?: AbortSignal } = {}
 ): Promise<CVData> {
     const systemPrompt = `You are a CV parser. Extract structured data from CV text and return ONLY valid JSON.
 
@@ -286,7 +305,7 @@ CRITICAL RULES:
                 ],
                 temperature: 0.1,
                 response_format: zodResponseFormat(aiParsedCvSchema, 'werkcv_cv_parser'),
-            });
+            }, options.signal ? { signal: options.signal } : undefined);
 
             const parsed = response.choices[0]?.message?.parsed;
             if (!parsed) {
@@ -310,8 +329,8 @@ CRITICAL RULES:
     );
 }
 
-export async function parseCV(buffer: Buffer, filename: string): Promise<CVData> {
-    const text = await extractTextFromFile(buffer, filename);
+export async function parseCV(buffer: Buffer, filename: string, options: CvParserOptions = {}): Promise<CVData> {
+    const text = await extractTextFromFile(buffer, filename, options);
 
     if (!text.trim()) {
         throw new Error('Could not extract text from file');
@@ -319,6 +338,7 @@ export async function parseCV(buffer: Buffer, filename: string): Promise<CVData>
 
     return parseCVWithAI(text, {
         fallbackLanguage: detectResumeLanguage(text, 'nl'),
+        signal: options.signal,
     });
 }
 

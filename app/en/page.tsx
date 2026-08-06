@@ -7,6 +7,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 import NavUserMenu from "@/components/NavUserMenu";
 import Footer from "@/components/Footer";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
 
 export const metadata = buildEnglishMetadata({
   title: "English CV Builder for Jobs in the Netherlands",
@@ -423,6 +424,11 @@ export default function EnglishHubPage() {
           </p>
         </div>
       </section>
+
+      <PublicEditorSection
+        locale="en"
+        source="public_editor_home_en"
+      />
 
       <section className="max-w-5xl mx-auto px-6 py-12">
         <div className="mb-12 border-4 border-black bg-[#FFF7E8] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">

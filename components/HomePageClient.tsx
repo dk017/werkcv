@@ -7,6 +7,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import NavUserMenu from "@/components/NavUserMenu";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
 import type { TemplateConfig } from "@/lib/templates";
 import { getStoredAttribution, track } from "@/lib/analytics";
 import { applicationBundlePrice, cvDownloadPrice, homepageFaqItems, profilePhotoPrice } from "@/lib/site-content";
@@ -332,6 +333,11 @@ export default function HomePageClient({
                     </div>
                 </div>
             </section>
+
+            <PublicEditorSection
+                locale="nl"
+                source="public_editor_home_nl"
+            />
 
             {/* ============================================================ */}
             {/* TRUST BAR - Factual product stats */}
@@ -809,7 +815,7 @@ export default function HomePageClient({
                             },
                             {
                                 href: "/agency",
-                                title: "Agency pilot",
+                                title: "WerkCV Agency Plan",
                                 body: "Voor recruiters en boutique bureaus die kandidaat-CV's sneller in bureau-uitstraling willen opleveren.",
                             },
                             {

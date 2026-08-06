@@ -37,6 +37,9 @@ yarn-error.log*
 # but allow the example template
 !.env.example
 
+# Google service-account credentials
+findintern-9c7fe0604d5d.json
+
 # vercel
 .vercel
 

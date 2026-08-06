@@ -1,9 +1,18 @@
 "use client";
-import { useState, useEffect, useCallback, useRef } from "react";
+import {
+    useState,
+    useEffect,
+    useCallback,
+    useRef,
+    type KeyboardEvent as ReactKeyboardEvent,
+    type PointerEvent as ReactPointerEvent,
+} from "react";
+import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { CVData } from "@/lib/cv";
 import { updateCV, updateCVTemplate, updateCVColorTheme, getCheckoutURL } from "../actions";
+import { savePublicDraft, type PublicEditorFlow } from "@/lib/public-cv-draft";
 import {
     ExperienceSection,
     EducationSection,
@@ -60,6 +69,18 @@ interface EditorProps {
     accountEmail: string;
     uiLanguage?: UiLanguage;
     agencyRouteLocked?: boolean;
+    mode?: "account" | "public";
+    publicDraftId?: string;
+    publicFlow?: PublicEditorFlow;
+    publicSource?: string;
+    onPublicDownloadRequest?: (input: {
+        data: CVData;
+        templateId: string;
+        colorThemeId: string;
+        draftId: string;
+        flow: PublicEditorFlow;
+        source: string;
+    }) => void | Promise<void>;
 }
 
 // Reusable input styles for cleaner, calmer form UI
@@ -67,8 +88,13 @@ const inputClass = "w-full rounded-md border border-slate-300 px-3 py-2 text-sm 
 const inputStyle = undefined;
 const DESKTOP_PREVIEW_SCALE = 0.58;
 const DESKTOP_PREVIEW_MIN_SCALE = 0.42;
-const DESKTOP_PREVIEW_MAX_SCALE = 1.08;
-const DESKTOP_PREVIEW_GUTTER_PX = 16;
+const DESKTOP_PREVIEW_MAX_SCALE = 1.4;
+const DESKTOP_PREVIEW_GUTTER_PX = 0;
+const EDITOR_PANE_WIDTH_STORAGE_KEY = "werkcv_editor_pane_width";
+const DEFAULT_EDITOR_PANE_WIDTH = 50;
+const MIN_EDITOR_PANE_WIDTH = 40;
+const MAX_EDITOR_PANE_WIDTH = 60;
+const COMPACT_EDITOR_TOOLBAR_WIDTH_PX = 980;
 const READY_TO_DOWNLOAD_TRACKED_PREFIX = 'werkcv_ready_to_download_tracked_';
 const CHECKOUT_FLOW_VARIANT = 'direct' as const;
 
@@ -270,8 +296,14 @@ export default function Editor({
     accountEmail,
     uiLanguage = "nl",
     agencyRouteLocked = false,
+    mode = "account",
+    publicDraftId,
+    publicFlow = "consumer",
+    publicSource = "public_editor",
+    onPublicDownloadRequest,
 }: EditorProps) {
     const isEnglish = uiLanguage === "en";
+    const isPublicMode = mode === "public";
     const tr = (dutch: string, english: string) => (isEnglish ? english : dutch);
     const normalizedInitialData = ensureEditorData(initialData, uiLanguage);
     const optionalSectionOptions = getOptionalSectionOptions(uiLanguage);
@@ -312,16 +344,22 @@ export default function Editor({
     const remainingCoreSteps = completionState.steps.filter((step) => !step.complete).length;
     const [isSaved, setIsSaved] = useState(true);
     const [isDownloading, setIsDownloading] = useState(false);
+    const [isPublicEditorFullscreen, setIsPublicEditorFullscreen] = useState(false);
     const [templateId, setTemplateId] = useState(initialTemplateId);
     const [colorThemeId, setColorThemeId] = useState(initialColorThemeId);
     const [showUploader, setShowUploader] = useState(false);
     const [uploaderSource, setUploaderSource] = useState<CvUploadSource>("toolbar");
     const [pageCount, setPageCount] = useState(1);
     const [desktopPreviewScale, setDesktopPreviewScale] = useState(DESKTOP_PREVIEW_SCALE);
+    const [editorPaneWidth, setEditorPaneWidth] = useState(DEFAULT_EDITOR_PANE_WIDTH);
+    const [panePreferenceLoaded, setPanePreferenceLoaded] = useState(false);
+    const [isDesktopSplit, setIsDesktopSplit] = useState(false);
+    const [isResizingPanes, setIsResizingPanes] = useState(false);
+    const [isCompactToolbar, setIsCompactToolbar] = useState(false);
     const [isTemplateSelectorOpen, setIsTemplateSelectorOpen] = useState(false);
     const [templateSelectorSource, setTemplateSelectorSource] = useState<TemplateSelectorSource>("toolbar");
     const [showPostUploadReview, setShowPostUploadReview] = useState(false);
-    const [showDesignWorkspace, setShowDesignWorkspace] = useState(() => !isCoreCvEmpty(normalizedInitialData));
+    const [showDesignWorkspace, setShowDesignWorkspace] = useState(() => isPublicMode || !isCoreCvEmpty(normalizedInitialData));
     const [showMobilePhoto, setShowMobilePhoto] = useState(() => Boolean(normalizedInitialData.personal.photo));
     const [suggestedTargetRole, setSuggestedTargetRole] = useState<string | null>(null);
     const [visibleOptionalSections, setVisibleOptionalSections] = useState<Record<OptionalSectionId, boolean>>(
@@ -335,7 +373,16 @@ export default function Editor({
     const [targetVacancy, setTargetVacancy] = useState('');
     const [atsLanguageLock, setAtsLanguageLock] = useState<AtsLanguageLock>('auto');
     const [matchImportFeedback, setMatchImportFeedback] = useState<MatchImportFeedback>({ status: 'idle' });
+    const publicStorageWarningRef = useRef(false);
+    const editorSplitRef = useRef<HTMLDivElement>(null);
+    const editorPaneRef = useRef<HTMLDivElement>(null);
     const desktopPreviewViewportRef = useRef<HTMLDivElement>(null);
+    const publicEditorScrollPositionRef = useRef<{ x: number; y: number } | null>(null);
+    const paneResizeRef = useRef<{
+        startX: number;
+        startWidth: number;
+        trackWidth: number;
+    } | null>(null);
     const progressMilestonesTrackedRef = useRef<Set<number>>(new Set());
     const completedSectionsTrackedRef = useRef<Set<CompletionStepId>>(new Set());
     const progressTrackingInitializedRef = useRef(false);
@@ -345,6 +392,216 @@ export default function Editor({
     const quickBuildViewedRef = useRef(false);
     const quickBuildStartedRef = useRef(false);
     const isGuidedBuild = !showDesignWorkspace && !isReadyToDownload;
+
+    useEffect(() => {
+        let storedWidth: number | null = null;
+        try {
+            const storedValue = window.sessionStorage.getItem(EDITOR_PANE_WIDTH_STORAGE_KEY);
+            if (storedValue) storedWidth = Number(storedValue);
+        } catch {
+            storedWidth = null;
+        }
+
+        if (storedWidth !== null && Number.isFinite(storedWidth)) {
+            setEditorPaneWidth(Math.min(MAX_EDITOR_PANE_WIDTH, Math.max(MIN_EDITOR_PANE_WIDTH, storedWidth)));
+        }
+        setPanePreferenceLoaded(true);
+    }, []);
+
+    useEffect(() => {
+        if (!panePreferenceLoaded) return;
+
+        try {
+            window.sessionStorage.setItem(
+                EDITOR_PANE_WIDTH_STORAGE_KEY,
+                String(Math.round(editorPaneWidth))
+            );
+        } catch {
+            // A blocked session storage should not affect editing.
+        }
+    }, [editorPaneWidth, panePreferenceLoaded]);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(min-width: 1024px)");
+        const updateDesktopSplitState = () => setIsDesktopSplit(mediaQuery.matches);
+
+        updateDesktopSplitState();
+        mediaQuery.addEventListener("change", updateDesktopSplitState);
+        return () => mediaQuery.removeEventListener("change", updateDesktopSplitState);
+    }, []);
+
+    useEffect(() => {
+        const pane = editorPaneRef.current;
+        if (!pane) return;
+
+        const updateToolbarDensity = () => {
+            setIsCompactToolbar(pane.getBoundingClientRect().width < COMPACT_EDITOR_TOOLBAR_WIDTH_PX);
+        };
+
+        updateToolbarDensity();
+
+        if (typeof ResizeObserver === "undefined") {
+            window.addEventListener("resize", updateToolbarDensity);
+            return () => window.removeEventListener("resize", updateToolbarDensity);
+        }
+
+        const observer = new ResizeObserver(updateToolbarDensity);
+        observer.observe(pane);
+        return () => observer.disconnect();
+    }, [isDesktopSplit, isGuidedBuild]);
+
+    useEffect(() => {
+        if (!isResizingPanes) return;
+
+        const handlePointerMove = (event: PointerEvent) => {
+            const resizeState = paneResizeRef.current;
+            if (!resizeState) return;
+
+            const deltaPercentage = ((event.clientX - resizeState.startX) / resizeState.trackWidth) * 100;
+            const nextWidth = Math.min(
+                MAX_EDITOR_PANE_WIDTH,
+                Math.max(MIN_EDITOR_PANE_WIDTH, resizeState.startWidth + deltaPercentage)
+            );
+            setEditorPaneWidth(nextWidth);
+        };
+        const stopResizing = () => {
+            paneResizeRef.current = null;
+            setIsResizingPanes(false);
+        };
+
+        window.addEventListener("pointermove", handlePointerMove);
+        window.addEventListener("pointerup", stopResizing);
+        window.addEventListener("pointercancel", stopResizing);
+
+        return () => {
+            window.removeEventListener("pointermove", handlePointerMove);
+            window.removeEventListener("pointerup", stopResizing);
+            window.removeEventListener("pointercancel", stopResizing);
+        };
+    }, [isResizingPanes]);
+
+    useEffect(() => {
+        if (!isResizingPanes) return;
+
+        const previousCursor = document.body.style.cursor;
+        const previousUserSelect = document.body.style.userSelect;
+        document.body.style.cursor = "col-resize";
+        document.body.style.userSelect = "none";
+
+        return () => {
+            document.body.style.cursor = previousCursor;
+            document.body.style.userSelect = previousUserSelect;
+        };
+    }, [isResizingPanes]);
+
+    const handlePaneResizePointerDown = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
+        if (!isDesktopSplit || isGuidedBuild || !editorSplitRef.current) return;
+
+        event.preventDefault();
+        paneResizeRef.current = {
+            startX: event.clientX,
+            startWidth: editorPaneWidth,
+            trackWidth: editorSplitRef.current.getBoundingClientRect().width,
+        };
+        setIsResizingPanes(true);
+    }, [editorPaneWidth, isDesktopSplit, isGuidedBuild]);
+
+    const handlePaneResizeKeyDown = useCallback((event: ReactKeyboardEvent<HTMLDivElement>) => {
+        let nextWidth: number | null = null;
+        if (event.key === "ArrowLeft") nextWidth = editorPaneWidth - 5;
+        if (event.key === "ArrowRight") nextWidth = editorPaneWidth + 5;
+        if (event.key === "Home") nextWidth = MIN_EDITOR_PANE_WIDTH;
+        if (event.key === "End") nextWidth = MAX_EDITOR_PANE_WIDTH;
+
+        if (nextWidth === null) return;
+
+        event.preventDefault();
+        setEditorPaneWidth(Math.min(MAX_EDITOR_PANE_WIDTH, Math.max(MIN_EDITOR_PANE_WIDTH, nextWidth)));
+    }, [editorPaneWidth]);
+
+    const resetPaneWidth = useCallback(() => {
+        setEditorPaneWidth(DEFAULT_EDITOR_PANE_WIDTH);
+    }, []);
+
+    useEffect(() => {
+        if (!isPublicEditorFullscreen) return;
+
+        const previousBodyOverflow = document.body.style.overflow;
+        const previousDocumentOverflow = document.documentElement.style.overflow;
+        const previousBodyOverflowAnchor = document.body.style.overflowAnchor;
+        const previousDocumentOverflowAnchor = document.documentElement.style.overflowAnchor;
+        document.body.style.overflow = "hidden";
+        document.documentElement.style.overflow = "hidden";
+        document.body.style.overflowAnchor = "none";
+        document.documentElement.style.overflowAnchor = "none";
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+                setIsPublicEditorFullscreen(false);
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => {
+            document.body.style.overflow = previousBodyOverflow;
+            document.documentElement.style.overflow = previousDocumentOverflow;
+            document.body.style.overflowAnchor = previousBodyOverflowAnchor;
+            document.documentElement.style.overflowAnchor = previousDocumentOverflowAnchor;
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [isPublicEditorFullscreen]);
+
+    const handlePublicEditorFullscreenToggle = () => {
+        if (!isPublicMode) return;
+
+        if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+        const expanded = !isPublicEditorFullscreen;
+        if (expanded) {
+            publicEditorScrollPositionRef.current = { x: window.scrollX, y: window.scrollY };
+        } else {
+            const scrollPosition = publicEditorScrollPositionRef.current;
+            if (scrollPosition) {
+                window.setTimeout(() => {
+                    if (publicEditorScrollPositionRef.current !== scrollPosition) return;
+                    window.scrollTo({ left: scrollPosition.x, top: scrollPosition.y, behavior: "auto" });
+                    publicEditorScrollPositionRef.current = null;
+                }, 50);
+            }
+        }
+        setIsPublicEditorFullscreen(expanded);
+        track("public_editor_fullscreen_toggled", {
+            location: publicSource,
+            uiLanguage,
+            flow: publicFlow,
+            expanded,
+        });
+    };
+
+    const persistPublicDraft = useCallback((currentData: CVData, nextTemplateId = templateId, nextColorThemeId = colorThemeId): boolean => {
+        if (!isPublicMode || !publicDraftId) return true;
+
+        const result = savePublicDraft({
+            version: 1,
+            draftId: publicDraftId,
+            data: currentData,
+            templateId: nextTemplateId,
+            colorThemeId: nextColorThemeId,
+            uiLanguage,
+            flow: publicFlow,
+            source: publicSource,
+            updatedAt: new Date().toISOString(),
+        });
+
+        if (!result.ok && !publicStorageWarningRef.current) {
+            publicStorageWarningRef.current = true;
+            alert(isEnglish
+                ? "Your browser could not temporarily save this CV. Remove the photo or sign in before continuing."
+                : "Je browser kan dit CV niet tijdelijk opslaan. Verwijder eventueel je foto of meld je eerst aan om verder te gaan.");
+        }
+
+        return result.ok;
+    }, [colorThemeId, isEnglish, isPublicMode, publicDraftId, publicFlow, publicSource, templateId, uiLanguage]);
     const downloadPriceLabel = uiLanguage === "en"
         ? cvDownloadPrice.display.replace(",", ".")
         : cvDownloadPrice.display;
@@ -377,15 +634,17 @@ export default function Editor({
     }, [id, templateId, uiLanguage]);
 
     useEffect(() => {
+        if (isPublicMode) return;
         if (typeof window === 'undefined') return;
         const params = new URLSearchParams(window.location.search);
         if (params.get('upload') === '1' && !uploadIntentHandledRef.current) {
             uploadIntentHandledRef.current = true;
             openUploader("route_intent");
         }
-    }, [openUploader]);
+    }, [isPublicMode, openUploader]);
 
     useEffect(() => {
+        if (isPublicMode) return;
         if (typeof window === 'undefined') return;
         const rawPendingExample = window.sessionStorage.getItem(PENDING_EXAMPLE_CV_STORAGE_KEY);
         if (!rawPendingExample) return;
@@ -434,9 +693,10 @@ export default function Editor({
         };
 
         void applyPendingExample();
-    }, [id, initialColorThemeId, initialTemplateId, reset, uiLanguage]);
+    }, [id, initialColorThemeId, initialTemplateId, isPublicMode, reset, uiLanguage]);
 
     useEffect(() => {
+        if (isPublicMode) return;
         if (typeof window === 'undefined' || matchImportHandledRef.current) return;
         const rawPendingMatch = window.sessionStorage.getItem(PENDING_CV_MATCH_STORAGE_KEY);
         if (!rawPendingMatch) return;
@@ -531,7 +791,7 @@ export default function Editor({
         };
 
         void applyPendingMatch();
-    }, [id, reset, uiLanguage]);
+    }, [id, isPublicMode, reset, uiLanguage]);
 
     useEffect(() => {
         const storedVacancy = window.sessionStorage.getItem(getTargetVacancySessionKey(id));
@@ -687,6 +947,12 @@ export default function Editor({
 
     const onSubmit = async (formData: CVData) => {
         setIsSaved(false);
+        if (isPublicMode) {
+            const saved = persistPublicDraft(formData);
+            setIsSaved(saved);
+            if (saved) maybeTrackCompletion(formData);
+            return;
+        }
         const res = await updateCV(id, formData);
         if (res.success) {
             setIsSaved(true);
@@ -713,8 +979,10 @@ export default function Editor({
                 isSavingRef.current = true;
                 try {
                     const currentData = watch() as CVData;
-                    const res = await updateCV(id, currentData);
-                    if (res.success) {
+                    const saved = isPublicMode
+                        ? persistPublicDraft(currentData)
+                        : (await updateCV(id, currentData)).success;
+                    if (saved) {
                         setIsSaved(true);
                         maybeTrackCompletion(currentData);
                     }
@@ -729,7 +997,7 @@ export default function Editor({
                 clearTimeout(autoSaveTimerRef.current);
             }
         };
-    }, [watch, id, maybeTrackCompletion]);
+    }, [isPublicMode, maybeTrackCompletion, persistPublicDraft, watch, id]);
 
     // Warn user before closing tab with unsaved changes
     useEffect(() => {
@@ -753,6 +1021,10 @@ export default function Editor({
         });
         setTemplateId(newTemplateId);
         setColorThemeId(defaultThemeId);
+        if (isPublicMode) {
+            setIsSaved(persistPublicDraft(watch() as CVData, newTemplateId, defaultThemeId));
+            return;
+        }
         await updateCVTemplate(id, newTemplateId);
         await updateCVColorTheme(id, defaultThemeId);
     };
@@ -786,6 +1058,10 @@ export default function Editor({
     const handleColorThemeChange = async (newThemeId: string) => {
         track('color_theme_changed', { themeId: newThemeId, templateId });
         setColorThemeId(newThemeId);
+        if (isPublicMode) {
+            setIsSaved(persistPublicDraft(watch() as CVData, templateId, newThemeId));
+            return;
+        }
         await updateCVColorTheme(id, newThemeId);
     };
 
@@ -805,6 +1081,7 @@ export default function Editor({
         setShowUploader(false);
         setIsSaved(false);
         setShowPostUploadReview(getCompletionState(normalizedData, uiLanguage).isReady);
+        persistPublicDraft(normalizedData);
         track('cv_uploaded', { cvId: id, fileType: 'parsed', templateId, entryMethod: 'upload' });
     };
 
@@ -863,6 +1140,7 @@ export default function Editor({
     };
 
     const handleAtsRewrite = async () => {
+        if (isPublicMode) return;
         setIsAtsRewriting(true);
         try {
             const targetRole = atsTargetRole.trim() || data.personal.title || '';
@@ -924,8 +1202,34 @@ export default function Editor({
 
     const handleDownload = async (source: DownloadSource = "toolbar") => {
         setIsDownloading(true);
-        track('pdf_download_started', { cvId: id, source, completionScore, templateId, pageCount });
+        if (isPublicMode) {
+            track('public_editor_download_intent', {
+                location: publicSource,
+                uiLanguage,
+                flow: publicFlow,
+                completionScore,
+                templateId,
+            });
+        } else {
+            track('pdf_download_started', { cvId: id, source, completionScore, templateId, pageCount });
+        }
         try {
+            if (isPublicMode) {
+                const formData = ensureEditorData(watch() as CVData, uiLanguage);
+                if (!persistPublicDraft(formData)) return;
+                if (publicDraftId && onPublicDownloadRequest) {
+                    await onPublicDownloadRequest({
+                        data: formData,
+                        templateId,
+                        colorThemeId,
+                        draftId: publicDraftId,
+                        flow: publicFlow,
+                        source: publicSource,
+                    });
+                }
+                return;
+            }
+
             // Always save latest data before generating PDF to prevent stale content
             const formData = watch();
             const res = await updateCV(id, formData);
@@ -987,34 +1291,81 @@ export default function Editor({
         }
     };
 
-    return (
-        <div className="flex flex-col lg:flex-row h-screen bg-[#FFFEF9] font-sans text-slate-900 overflow-hidden">
+    const desktopEditorPaneStyle = isDesktopSplit && !isGuidedBuild
+        ? { flex: `0 0 ${editorPaneWidth}%`, minWidth: 0 }
+        : undefined;
+    const desktopPreviewPaneStyle = isDesktopSplit && !isGuidedBuild
+        ? { flex: `0 0 ${100 - editorPaneWidth}%`, minWidth: 0 }
+        : undefined;
+
+    const editorMarkup = (
+        <div
+            ref={editorSplitRef}
+            className={`${isPublicEditorFullscreen ? "" : "relative"} flex flex-col lg:flex-row bg-[#FFFEF9] font-sans text-slate-900 overflow-hidden ${isResizingPanes ? "select-none" : ""} ${isPublicMode
+            ? isPublicEditorFullscreen
+                ? "fixed inset-0 z-[70] h-[100dvh] min-h-0 w-full rounded-none border-0 shadow-none"
+                : "h-[980px] min-h-[760px] rounded-2xl border border-slate-200 shadow-[0_20px_60px_rgba(15,23,42,0.12)] lg:h-[760px]"
+            : "h-screen"
+        }`}
+        >
             {/* Left: Editor Form */}
-            <div className={`flex w-full flex-col border-r-0 border-slate-200 bg-[#FFFEF9] z-10 h-screen ${isGuidedBuild ? "lg:w-full" : "lg:w-[54%] lg:border-r"}`}>
+            <div
+                ref={editorPaneRef}
+                className={`flex w-full min-h-0 flex-col border-r-0 border-slate-200 bg-[#FFFEF9] z-10 ${isPublicMode
+                ? isPublicEditorFullscreen
+                    ? "h-[55%] min-h-0 shrink-0 lg:h-auto lg:w-1/2 lg:flex-none lg:border-r"
+                    : "h-[540px] shrink-0 lg:h-auto lg:w-1/2 lg:flex-none lg:border-r"
+                : `h-screen ${isGuidedBuild ? "lg:w-full" : "lg:w-1/2 lg:flex-none lg:border-r"}`
+            }`}
+                style={desktopEditorPaneStyle}
+            >
                 {/* Toolbar */}
-                <div className="sticky top-0 z-20 flex h-14 items-center justify-between gap-3 border-b border-slate-200 bg-white/95 px-3 backdrop-blur sm:px-4">
+                <div className="sticky top-0 z-20 flex min-h-14 w-full min-w-0 items-center justify-between gap-2 border-b border-slate-200 bg-white/95 px-2 py-2 backdrop-blur sm:px-3">
                     {/* Left side - Logo and tools */}
-                    <div className="flex min-w-0 items-center gap-2">
-                        <Link href={isEnglish ? "/en" : "/"} className="hidden shrink-0 items-center gap-1 lg:flex">
+                    <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden sm:gap-2">
+                        <Link
+                            href={isEnglish ? "/en" : "/"}
+                            className={isCompactToolbar ? "hidden" : "hidden shrink-0 items-center gap-1 lg:flex"}
+                        >
                             <span className="font-semibold text-lg sm:text-xl tracking-tight text-slate-900">
                                 Werk<span className="bg-[#4ECDC4] px-1 rounded-sm">CV</span>.nl
                             </span>
                         </Link>
                         {isGuidedBuild ? (
-                            <span className="hidden rounded-full border border-teal-200 bg-teal-50 px-2.5 py-1 text-[11px] font-bold text-teal-800 sm:inline-flex">
+                            <span className={isCompactToolbar
+                                ? "hidden"
+                                : "hidden rounded-full border border-teal-200 bg-teal-50 px-2.5 py-1 text-[11px] font-bold text-teal-800 sm:inline-flex"}>
                                 {tr("Stap voor stap", "Guided build")}
                             </span>
                         ) : agencyRouteLocked ? (
-                            <span className="hidden rounded-md border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-800 sm:inline-flex">
-                                {tr("Vaste agency-route", "Fixed agency route")}
-                            </span>
-                        ) : (
-                            <div className="relative flex items-center gap-1 sm:gap-2">
+                            <div className="relative flex shrink-0 items-center gap-1 sm:gap-2">
                                 <TemplateSelector
                                     currentTemplateId={templateId}
                                     data={data}
                                     isOpen={isTemplateSelectorOpen}
                                     reviewMode={isReadyToDownload}
+                                    compactToolbar={false}
+                                    triggerLabel={tr("Design wijzigen", "Change design")}
+                                    onOpen={() => openTemplateSelector(isReadyToDownload ? "ready_state" : "toolbar")}
+                                    onClose={closeTemplateSelector}
+                                    onSelectTemplate={handleTemplateChange}
+                                    uiLanguage={uiLanguage}
+                                />
+                                <ColorThemePicker
+                                    templateId={templateId}
+                                    currentThemeId={colorThemeId}
+                                    onSelectTheme={handleColorThemeChange}
+                                    uiLanguage={uiLanguage}
+                                />
+                            </div>
+                        ) : (
+                            <div className="relative flex shrink-0 items-center gap-1 sm:gap-2">
+                                <TemplateSelector
+                                    currentTemplateId={templateId}
+                                    data={data}
+                                    isOpen={isTemplateSelectorOpen}
+                                    reviewMode={isReadyToDownload}
+                                    compactToolbar={isCompactToolbar}
                                     onOpen={() => openTemplateSelector(isReadyToDownload ? "ready_state" : "toolbar")}
                                     onClose={closeTemplateSelector}
                                     onSelectTemplate={handleTemplateChange}
@@ -1032,34 +1383,67 @@ export default function Editor({
 
                     {/* Right side - Save and Download */}
                     <div className="flex shrink-0 items-center">
-                        <div className="flex items-center gap-2 sm:gap-3">
+                        <div className="flex items-center gap-1 sm:gap-2">
                             {!isCurrentCvEmpty ? (
                                 <button
                                     type="button"
                                     onClick={() => openUploader("toolbar")}
-                                    className="inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white px-2.5 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 sm:px-3"
+                                    className={`inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 ${isCompactToolbar ? "w-9 px-0" : "px-2.5 sm:px-3"}`}
                                     title={tr("Upload je bestaande CV", "Upload your existing CV")}
                                     aria-label={tr("Upload je bestaande CV", "Upload your existing CV")}
                                 >
                                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                     </svg>
-                                    <span className="hidden sm:inline">{tr("CV uploaden", "Upload CV")}</span>
+                                    <span className={isCompactToolbar ? "hidden" : "hidden sm:inline"}>{tr("CV uploaden", "Upload CV")}</span>
+                                </button>
+                            ) : null}
+                            {isPublicMode ? (
+                                <button
+                                    type="button"
+                                    onClick={handlePublicEditorFullscreenToggle}
+                                    aria-pressed={isPublicEditorFullscreen}
+                                    className={`inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md border border-slate-300 bg-white text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 ${isCompactToolbar ? "w-9 px-0" : "px-2.5 sm:px-3"}`}
+                                    title={isPublicEditorFullscreen
+                                        ? tr("Volledig scherm sluiten", "Exit full screen")
+                                        : tr("Open in volledig scherm", "Open full screen")}
+                                    aria-label={isPublicEditorFullscreen
+                                        ? tr("Volledig scherm sluiten", "Exit full screen")
+                                        : tr("Open in volledig scherm", "Open full screen")}
+                                >
+                                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        {isPublicEditorFullscreen ? (
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.25} d="M9 4H4v5m0-5 6 6M15 20h5v-5m0 5-6-6" />
+                                        ) : (
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.25} d="M4 9V4h5M4 4l6 6m10 5v5h-5m5 0-6-6" />
+                                        )}
+                                    </svg>
+                                    <span className={isCompactToolbar ? "hidden" : "hidden md:inline"}>
+                                        {isPublicEditorFullscreen
+                                            ? tr("Sluiten", "Exit")
+                                            : tr("Volledig scherm", "Full screen")}
+                                    </span>
                                 </button>
                             ) : null}
                             <button
                                 onClick={handleSubmit(onSubmit)}
                                 disabled={isSubmitting || isSaved}
-                                className={`px-3 sm:px-4 py-2 font-semibold text-xs sm:text-sm rounded-md border transition-colors ${isSaved
+                                title={tr("CV opslaan", "Save CV")}
+                                aria-label={tr("CV opslaan", "Save CV")}
+                                className={`${isCompactToolbar ? "h-9 min-w-9 px-2" : "px-3 sm:px-4"} py-2 font-semibold text-xs sm:text-sm rounded-md border transition-colors ${isSaved
                                         ? "border-transparent bg-transparent text-emerald-700 cursor-default"
                                         : "bg-white text-slate-800 border-slate-300 hover:bg-slate-50"
                                     }`}
                             >
-                                {isSubmitting
-                                    ? tr("Opslaan...", "Saving...")
-                                    : isSaved
-                                        ? `✓ ${tr("Opgeslagen", "Saved")}`
-                                        : tr("Opslaan", "Save")}
+                                {isCompactToolbar ? (
+                                    isSubmitting ? "…" : isSaved ? "✓" : tr("Opslaan", "Save")
+                                ) : (
+                                    isSubmitting
+                                        ? tr("Opslaan...", "Saving...")
+                                        : isSaved
+                                            ? `✓ ${tr("Opgeslagen", "Saved")}`
+                                            : tr("Opslaan", "Save")
+                                )}
                             </button>
                             <button
                                 onClick={() => {
@@ -1070,24 +1454,34 @@ export default function Editor({
                                     handleDownload("toolbar");
                                 }}
                                 disabled={isDownloading}
-                                className={`px-3 sm:px-4 py-2 font-semibold text-xs sm:text-sm rounded-md border transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${isReadyToDownload
+                                aria-label={isDownloading ? tr("PDF wordt gemaakt", "Generating PDF") : toolbarCtaLabel}
+                                title={toolbarCtaLabel}
+                                className={`${isCompactToolbar ? "px-2" : "px-3 sm:px-4"} py-2 font-semibold text-xs sm:text-sm rounded-md border transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${isReadyToDownload
                                     ? "border-emerald-700 bg-emerald-600 text-white hover:bg-emerald-700"
                                     : "border-slate-800 bg-slate-900 text-white hover:bg-slate-800"
                                 }`}
                             >
                                 {isDownloading ? (
-                                    tr("Bezig...", "Working...")
+                                    isCompactToolbar ? "…" : tr("Bezig...", "Working...")
                                 ) : (
-                                    <>
-                                        <span className="sm:hidden">
-                                            {isReadyToDownload
-                                                ? "PDF"
-                                                : isGuidedBuild
-                                                    ? tr("Volgende", "Next")
-                                                    : tr("Afronden", "Finish")}
-                                        </span>
-                                        <span className="hidden sm:inline">{toolbarCtaLabel}</span>
-                                    </>
+                                    isCompactToolbar ? (
+                                        isReadyToDownload
+                                            ? "PDF"
+                                            : isGuidedBuild
+                                                ? tr("Volgende", "Next")
+                                                : tr("Afronden", "Finish")
+                                    ) : (
+                                        <>
+                                            <span className="sm:hidden">
+                                                {isReadyToDownload
+                                                    ? "PDF"
+                                                    : isGuidedBuild
+                                                        ? tr("Volgende", "Next")
+                                                        : tr("Afronden", "Finish")}
+                                            </span>
+                                            <span className="hidden sm:inline">{toolbarCtaLabel}</span>
+                                        </>
+                                    )
                                 )}
                             </button>
                         </div>
@@ -1096,7 +1490,7 @@ export default function Editor({
 
                 {/* Scrollable Form Area */}
                 <div
-                    className="flex-1 overflow-y-auto p-4 sm:p-5 scroll-smooth bg-[#FFFEF9]"
+                    className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-5 scroll-smooth bg-[#FFFEF9]"
                     onInputCapture={handleQuickBuildInput}
                 >
                     <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12">
@@ -1279,7 +1673,7 @@ export default function Editor({
                             </section>
                         ) : null}
 
-                        {isReadyToDownload && !showPostUploadReview ? (
+                        {isReadyToDownload && !showPostUploadReview && !isPublicMode ? (
                             <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm sm:p-5">
                                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                     <div>
@@ -1567,16 +1961,22 @@ export default function Editor({
 
                             <div className="mt-5 grid gap-4">
                                 <CvScoreWidget data={data} uiLanguage={uiLanguage} />
-                                <KeywordScannerWidget
-                                    data={data}
-                                    jobDescription={targetVacancy}
-                                    onJobDescriptionChange={setTargetVacancy}
-                                    uiLanguage={uiLanguage}
-                                />
+                                {!isPublicMode ? (
+                                    <KeywordScannerWidget
+                                        data={data}
+                                        jobDescription={targetVacancy}
+                                        onJobDescriptionChange={setTargetVacancy}
+                                        uiLanguage={uiLanguage}
+                                    />
+                                ) : (
+                                    <p className="rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs font-semibold leading-relaxed text-slate-600">
+                                        {tr("ATS- en vacaturematching komt beschikbaar nadat je je CV hebt opgeslagen.", "ATS and vacancy matching become available after you save your CV.")}
+                                    </p>
+                                )}
                             </div>
                         </section>
 
-                        {isReadyToDownload ? (
+                        {isReadyToDownload && !isPublicMode ? (
                             <>
                                 <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                                     <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
@@ -1659,8 +2059,38 @@ export default function Editor({
                 </div>
             </div>
 
+            {!isGuidedBuild ? (
+                <div
+                    role="separator"
+                    aria-orientation="vertical"
+                    aria-label={tr("Editor en preview verdelen", "Resize editor and preview")}
+                    aria-valuemin={MIN_EDITOR_PANE_WIDTH}
+                    aria-valuemax={MAX_EDITOR_PANE_WIDTH}
+                    aria-valuenow={Math.round(editorPaneWidth)}
+                    aria-valuetext={`${Math.round(editorPaneWidth)}% ${tr("editor", "editor")} / ${Math.round(100 - editorPaneWidth)}% ${tr("preview", "preview")}`}
+                    tabIndex={0}
+                    onPointerDown={handlePaneResizePointerDown}
+                    onKeyDown={handlePaneResizeKeyDown}
+                    onDoubleClick={resetPaneWidth}
+                    className="pointer-events-auto absolute inset-y-0 z-30 hidden w-5 -translate-x-1/2 touch-none items-center justify-center cursor-col-resize lg:flex"
+                    style={{ left: `${editorPaneWidth}%` }}
+                >
+                    <span className="flex h-16 w-2 items-center justify-center rounded-full border border-slate-300 bg-white shadow-sm transition-colors hover:border-emerald-400 hover:bg-emerald-50 focus-visible:border-emerald-500">
+                        <span className="h-8 w-0.5 rounded-full bg-slate-400" aria-hidden="true" />
+                    </span>
+                </div>
+            ) : null}
+
             {/* Right: Live Preview */}
-            {!isGuidedBuild ? <div className="hidden lg:flex flex-col lg:w-[46%] xl:w-[48%] bg-[#f0faf9] overflow-hidden">
+            {!isGuidedBuild ? <div
+                className={`flex flex-col bg-[#f0faf9] overflow-hidden ${isPublicMode
+                ? isPublicEditorFullscreen
+                    ? "h-[45%] min-h-0 shrink-0 lg:h-auto lg:w-1/2 lg:flex-none"
+                    : "h-[420px] shrink-0 lg:h-auto lg:w-1/2 lg:flex-none"
+                : "hidden lg:flex lg:w-1/2 lg:flex-none"
+            }`}
+                style={desktopPreviewPaneStyle}
+            >
                 {/* Fixed header */}
                 <div className="shrink-0 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200">
                     <span className="text-xs font-semibold text-slate-600">{tr("Live preview", "Live preview")}</span>
@@ -1683,7 +2113,7 @@ export default function Editor({
                 <div
                     ref={desktopPreviewViewportRef}
                     data-live-preview-viewport
-                    className="flex-1 overflow-y-auto p-4 xl:p-5 flex justify-center items-start"
+                    className="min-h-0 flex-1 overflow-y-auto p-2 flex justify-center items-start"
                 >
                     <ScaledCvPreview
                         data={data}
@@ -1697,19 +2127,21 @@ export default function Editor({
                 </div>
             </div> : null}
 
-            <EditorFeedbackWidget
-                accountEmail={accountEmail}
-                userName={data.personal.name}
-                uiLanguage={uiLanguage}
-                context={{
-                    cvId: id,
-                    uiLanguage,
-                    templateId,
-                    completionScore,
-                    pageCount,
-                    nextStep: completionState.nextStep?.id || null,
-                }}
-            />
+            {!isPublicMode ? (
+                <EditorFeedbackWidget
+                    accountEmail={accountEmail}
+                    userName={data.personal.name}
+                    uiLanguage={uiLanguage}
+                    context={{
+                        cvId: id,
+                        uiLanguage,
+                        templateId,
+                        completionScore,
+                        pageCount,
+                        nextStep: completionState.nextStep?.id || null,
+                    }}
+                />
+            ) : null}
 
             {/* CV Upload Modal */}
             {showUploader && (
@@ -1719,10 +2151,17 @@ export default function Editor({
                     onParsed={handleCVParsed}
                     onClose={() => setShowUploader(false)}
                     uiLanguage={uiLanguage}
+                    endpoint={isPublicMode ? "/api/public/cv/parse" : undefined}
+                    allowLegacyDoc={!isPublicMode}
+                    maxFileSizeMb={isPublicMode ? 5 : 10}
                 />
             )}
 
         </div>
     );
+
+    return isPublicEditorFullscreen && typeof document !== "undefined"
+        ? createPortal(editorMarkup, document.body)
+        : editorMarkup;
 }
 
