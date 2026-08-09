@@ -64,18 +64,22 @@ export async function buildDodoCheckoutURL(
   }
 
   const isDutchCheckout = resumeLanguage === "nl";
+  const allowedPaymentMethodTypes = [
+    "ideal",
+    "credit",
+    "debit",
+    "apple_pay",
+    "google_pay",
+    // Dodo filters this out unless the billing country is India and the
+    // adaptive billing currency is INR. Keeping cards in the list provides a
+    // global fallback when UPI is not eligible.
+    ...(isDutchCheckout ? [] : ["upi_collect"]),
+  ];
   const body: Record<string, unknown> = {
     product_cart: [{ product_id: DODO_PRODUCT_ID, quantity: 1 }],
-    // CV language does not determine payment preference. English-speaking job
-    // seekers in the Netherlands should still be able to pay with iDEAL.
-    allowed_payment_method_types: [
-      "ideal",
-      "credit",
-      "debit",
-      "apple_pay",
-      "google_pay",
-    ],
-    billing_currency: "EUR",
+    // English-speaking job seekers in the Netherlands can still use iDEAL;
+    // Dodo hides payment methods that are not eligible for the billing country.
+    allowed_payment_method_types: allowedPaymentMethodTypes,
     return_url: `${APP_URL}${getSuccessPathForLanguage(resumeLanguage, cvId)}`,
     cancel_url: `${APP_URL}${getEditorPathForLanguage(resumeLanguage, cvId)}`,
     metadata: {
@@ -89,7 +93,9 @@ export async function buildDodoCheckoutURL(
       theme: "light",
     },
     feature_flags: {
-      allow_currency_selection: false,
+      // International sessions use Dodo Adaptive Currency. Dutch sessions
+      // intentionally preserve the existing fixed-EUR checkout.
+      allow_currency_selection: !isDutchCheckout,
       allow_discount_code: false,
       allow_phone_number_collection: false,
     },
@@ -97,6 +103,7 @@ export async function buildDodoCheckoutURL(
   };
 
   if (isDutchCheckout) {
+    body.billing_currency = "EUR";
     body.billing_address = {
       country: "NL",
       zipcode: "1012JS",
