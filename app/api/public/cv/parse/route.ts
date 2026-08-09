@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cvSchema } from "@/lib/cv";
 import { parseCV } from "@/lib/cv-parser";
+import { isAllowedSameOriginRequest } from "@/lib/request-origin";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
 
 export const runtime = "nodejs";
@@ -23,11 +24,6 @@ function hasDocxSignature(buffer: Buffer): boolean {
   return buffer.subarray(0, 2).toString("ascii") === "PK" && buffer.includes(Buffer.from("[Content_Types].xml"));
 }
 
-function sameOriginWhenProvided(request: NextRequest): boolean {
-  const origin = request.headers.get("origin");
-  return !origin || origin === request.nextUrl.origin;
-}
-
 function isEnglishRequest(request: NextRequest): boolean {
   return request.headers.get("x-werkcv-language") !== "nl";
 }
@@ -47,7 +43,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (!sameOriginWhenProvided(request)) {
+  if (!isAllowedSameOriginRequest(request)) {
     return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
   }
 

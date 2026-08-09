@@ -8,6 +8,7 @@ import { normalizeStartSource } from "@/lib/start-source";
 import { getClientIp, checkRateLimit } from "@/lib/tools/rate-limit";
 import { prisma } from "@/lib/prisma";
 import { isPublicDraftId } from "@/lib/public-cv-draft";
+import { isAllowedSameOriginRequest } from "@/lib/request-origin";
 
 export const runtime = "nodejs";
 
@@ -20,22 +21,6 @@ function responseBody(body: Record<string, unknown>, status = 200) {
     status,
     headers: { "Cache-Control": "no-store" },
   });
-}
-
-function isSameOriginWhenProvided(request: NextRequest): boolean {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== request.nextUrl.origin) return false;
-
-  const referer = request.headers.get("referer");
-  if (referer) {
-    try {
-      if (new URL(referer).origin !== request.nextUrl.origin) return false;
-    } catch {
-      return false;
-    }
-  }
-
-  return true;
 }
 
 function parseFlow(value: unknown): PublicClaimFlow | null {
@@ -55,7 +40,7 @@ function getSafeTemplateAndTheme(templateIdInput: unknown, colorThemeIdInput: un
 }
 
 export async function POST(request: NextRequest) {
-  if (!isSameOriginWhenProvided(request)) {
+  if (!isAllowedSameOriginRequest(request, { checkReferer: true })) {
     return responseBody({ error: "Invalid request origin." }, 403);
   }
 
