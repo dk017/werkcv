@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { getCheckoutURL } from "@/app/actions";
 import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
 import { clearPublicDraft, readPublicDraft, type PublicEditorFlow } from "@/lib/public-cv-draft";
 import { getEditorPathForCv } from "@/lib/editor-path";
@@ -10,10 +11,11 @@ import { track } from "@/lib/analytics";
 type PublicDraftClaimClientProps = {
     draftId: string;
     flow: PublicEditorFlow;
+    intent: "download" | "resume";
 };
 
 type ClaimState =
-    | { status: "loading" }
+    | { status: "loading"; phase: "claim" | "checkout"; uiLanguage: "nl" | "en" }
     | { status: "error"; code: string; message: string; uiLanguage: "nl" | "en" }
     | { status: "success"; uiLanguage: "nl" | "en" };
 
@@ -38,15 +40,23 @@ function getErrorMessage(code: string, uiLanguage: "nl" | "en"): string {
     return messages[uiLanguage][code as keyof typeof messages[typeof uiLanguage]] || messages[uiLanguage].default;
 }
 
-export default function PublicDraftClaimClient({ draftId, flow }: PublicDraftClaimClientProps) {
-    const [state, setState] = useState<ClaimState>({ status: "loading" });
+export default function PublicDraftClaimClient({ draftId, flow, intent }: PublicDraftClaimClientProps) {
+    const [state, setState] = useState<ClaimState>({ status: "loading", phase: "claim", uiLanguage: "nl" });
+    const startedRef = useRef(false);
 
     useEffect(() => {
+        if (startedRef.current) return;
+        startedRef.current = true;
+
         let cancelled = false;
 
         const claimDraft = async () => {
             const snapshot = readPublicDraft(draftId);
             const uiLanguage = snapshot?.uiLanguage || "nl";
+
+            if (!cancelled) {
+                setState({ status: "loading", phase: "claim", uiLanguage });
+            }
 
             if (!snapshot || snapshot.flow !== flow) {
                 setState({
@@ -76,7 +86,12 @@ export default function PublicDraftClaimClient({ draftId, flow }: PublicDraftCla
                         source: snapshot.source,
                     }),
                 });
-                const result = await response.json().catch(() => null) as { cvId?: string; code?: string } | null;
+                const result = await response.json().catch(() => null) as {
+                    cvId?: string;
+                    code?: string;
+                    completionScore?: number;
+                    isReady?: boolean;
+                } | null;
 
                 if (!response.ok || typeof result?.cvId !== "string") {
                     const code = result?.code || "CLAIM_FAILED";
@@ -97,7 +112,6 @@ export default function PublicDraftClaimClient({ draftId, flow }: PublicDraftCla
                     return;
                 }
 
-                clearPublicDraft(draftId);
                 track("public_editor_claim_completed", {
                     location: snapshot.source,
                     uiLanguage: snapshot.uiLanguage,
@@ -106,7 +120,81 @@ export default function PublicDraftClaimClient({ draftId, flow }: PublicDraftCla
                 });
 
                 const editorPath = getEditorPathForCv(snapshot.data, result.cvId);
-                const nextPath = `${editorPath}${editorPath.includes("?") ? "&" : "?"}publicClaimed=1`;
+                const editorParams = new URLSearchParams({ publicClaimed: "1" });
+                if (intent === "download") editorParams.set("downloadIntent", "1");
+                const nextPath = `${editorPath}${editorPath.includes("?") ? "&" : "?"}${editorParams.toString()}`;
+                const completionScore = typeof result.completionScore === "number"
+                    ? Math.max(0, Math.min(100, Math.round(result.completionScore)))
+                    : 0;
+                const shouldStartCheckout = flow === "consumer" && intent === "download" && result.isReady === true;
+
+                if (shouldStartCheckout) {
+                    if (!cancelled) {
+                        setState({ status: "loading", phase: "checkout", uiLanguage: snapshot.uiLanguage });
+                    }
+                    track("public_editor_post_login_routed", {
+                        cvId: result.cvId,
+                        uiLanguage: snapshot.uiLanguage,
+                        destination: "checkout",
+                        completionScore,
+                        reason: "ready_download_intent",
+                    });
+                    track("checkout_start", {
+                        cvId: result.cvId,
+                        product: "cv-download",
+                        source: "public_editor_post_login",
+                    });
+
+                    try {
+                        const checkout = await getCheckoutURL(result.cvId, undefined, [], "cv-download");
+                        if (checkout.ok) {
+                            track("checkout_started", {
+                                cvId: result.cvId,
+                                product: "cv-download",
+                                source: "public_editor_post_login",
+                            });
+                            clearPublicDraft(draftId);
+                            window.location.assign(checkout.url);
+                            return;
+                        }
+
+                        track("checkout_failed", {
+                            cvId: result.cvId,
+                            product: "cv-download",
+                            source: "public_editor_post_login",
+                            reason: checkout.reason || checkout.code,
+                        });
+                    } catch {
+                        track("checkout_failed", {
+                            cvId: result.cvId,
+                            product: "cv-download",
+                            source: "public_editor_post_login",
+                            reason: "network_error",
+                        });
+                    }
+
+                    track("public_editor_post_login_routed", {
+                        cvId: result.cvId,
+                        uiLanguage: snapshot.uiLanguage,
+                        destination: "editor",
+                        completionScore,
+                        reason: "checkout_failed",
+                    });
+                    clearPublicDraft(draftId);
+                    window.location.assign(nextPath);
+                    return;
+                }
+
+                if (flow === "consumer") {
+                    track("public_editor_post_login_routed", {
+                        cvId: result.cvId,
+                        uiLanguage: snapshot.uiLanguage,
+                        destination: "editor",
+                        completionScore,
+                        reason: intent === "download" ? "incomplete" : "resume_without_download_intent",
+                    });
+                }
+                clearPublicDraft(draftId);
                 window.location.assign(nextPath);
             } catch {
                 track("public_editor_claim_failed", {
@@ -132,14 +220,26 @@ export default function PublicDraftClaimClient({ draftId, flow }: PublicDraftCla
         return () => {
             cancelled = true;
         };
-    }, [draftId, flow]);
+    }, [draftId, flow, intent]);
 
     if (state.status === "loading") {
+        const isEnglish = state.uiLanguage === "en";
+        const isPreparingCheckout = state.phase === "checkout";
         return (
             <div className="mx-auto max-w-xl border-2 border-slate-900 bg-white p-8 text-center shadow-[5px_5px_0px_0px_rgba(15,23,42,1)]">
                 <p className="text-sm font-black uppercase tracking-[0.16em] text-emerald-700">WerkCV</p>
-                <h1 className="mt-3 text-3xl font-black">{flow === "agency" ? "Agency-CV wordt opgeslagen" : "Je CV wordt opgeslagen"}</h1>
-                <p className="mt-3 text-sm font-semibold text-slate-600">Een moment. We zetten je browserconcept over naar je account.</p>
+                <h1 className="mt-3 text-3xl font-black">
+                    {isPreparingCheckout
+                        ? isEnglish ? "Preparing secure checkout" : "Veilige betaling voorbereiden"
+                        : flow === "agency"
+                            ? isEnglish ? "Saving your agency CV" : "Agency-CV wordt opgeslagen"
+                            : isEnglish ? "Saving your CV" : "Je CV wordt opgeslagen"}
+                </h1>
+                <p className="mt-3 text-sm font-semibold text-slate-600">
+                    {isPreparingCheckout
+                        ? isEnglish ? "Your CV is saved. You will continue to payment shortly." : "Je CV is opgeslagen. Je gaat zo verder naar de betaling."
+                        : isEnglish ? "One moment. We are moving your browser draft to your account." : "Een moment. We zetten je browserconcept over naar je account."}
+                </p>
             </div>
         );
     }

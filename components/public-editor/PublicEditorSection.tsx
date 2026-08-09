@@ -65,7 +65,12 @@ export default function PublicEditorSection({
             flow,
         });
 
-        const claimPath = `/editor/claim?draftId=${encodeURIComponent(draftId)}&flow=${encodeURIComponent(flow)}`;
+        const claimParams = new URLSearchParams({
+            draftId,
+            flow,
+            intent: "download",
+        });
+        const claimPath = `/editor/claim?${claimParams.toString()}`;
         const loginParams = new URLSearchParams({ next: claimPath });
         if (locale === "en") loginParams.set("locale", "en");
         window.location.assign(`/login?${loginParams.toString()}`);

@@ -9,6 +9,7 @@ import { getClientIp, checkRateLimit } from "@/lib/tools/rate-limit";
 import { prisma } from "@/lib/prisma";
 import { isPublicDraftId } from "@/lib/public-cv-draft";
 import { isAllowedSameOriginRequest } from "@/lib/request-origin";
+import { getCompletionState } from "@/lib/cv-completion";
 
 export const runtime = "nodejs";
 
@@ -88,6 +89,7 @@ export async function POST(request: NextRequest) {
     if (!parsedData.success) {
       return responseBody({ error: "The draft data is invalid.", code: "INVALID_DRAFT" }, 400);
     }
+    const completion = getCompletionState(parsedData.data as CVData, uiLanguage);
 
     const source = typeof body.source === "string" ? body.source.slice(0, 160) : "public_editor";
     const startSource = normalizeStartSource(`public:${flow}:${draftId}`);
@@ -100,7 +102,13 @@ export async function POST(request: NextRequest) {
     });
 
     if (existing) {
-      return responseBody({ success: true, cvId: existing.id, reused: true });
+      return responseBody({
+        success: true,
+        cvId: existing.id,
+        reused: true,
+        completionScore: completion.score,
+        isReady: completion.isReady,
+      });
     }
 
     if (flow === "agency") {
@@ -137,7 +145,14 @@ export async function POST(request: NextRequest) {
       startSource,
     });
 
-    return responseBody({ success: true, cvId: cv.id, reused: false, source });
+    return responseBody({
+      success: true,
+      cvId: cv.id,
+      reused: false,
+      source,
+      completionScore: completion.score,
+      isReady: completion.isReady,
+    });
   } catch (error) {
     if (isAgencyAccessError(error)) {
       return responseBody({ error: "The Agency Plan could not create this CV.", code: error.code }, 409);
