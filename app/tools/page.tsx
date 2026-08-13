@@ -182,9 +182,9 @@ const sections: ToolSection[] = [
             {
                 href: "/tools/opzeggingsbrief-generator",
                 title: "Opzeggingsbrief generator",
-                description: "Genereer een professionele opzeggingsbrief en regel je vertrek netjes.",
-                badge: "AI",
-                badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
+                description: "Maak een nette conceptbrief nadat je contract, cao, opzegtermijn en beoogde einddatum hebt gecontroleerd.",
+                badge: "Brief",
+                badgeClass: "bg-violet-100 text-violet-800 border-violet-300",
             },
             {
                 href: "/baan-wisselen",
@@ -350,6 +350,13 @@ const sections: ToolSection[] = [
                 badge: "AI",
                 badgeClass: "bg-teal-100 text-teal-800 border-teal-300",
             },
+            {
+                href: "/tools/jubileumtekst-generator",
+                title: "Werkjubileum tekst generator",
+                description: "Maak een persoonlijke tekst voor 5, 12,5 of 25 jaar in dienst, passend voor kaart, Teams, e-mail of LinkedIn.",
+                badge: "Tekst",
+                badgeClass: "bg-violet-100 text-violet-800 border-violet-300",
+            },
         ],
     },
     {
@@ -427,6 +434,7 @@ export const metadata: Metadata = {
         "30 regeling checker",
         "ats cv checker",
         "cv samenvatting generator",
+        "werkjubileum tekst generator",
         "kennismigrant salary checker",
         "zoekjaar checker",
     ],

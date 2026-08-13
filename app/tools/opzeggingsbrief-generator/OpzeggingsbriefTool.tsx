@@ -80,13 +80,14 @@ export default function OpzeggingsbriefTool() {
                             <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
                                 Datum brief (optioneel)
                             </label>
-                            <input value={datumBrief} onChange={e => setDatumBrief(e.target.value)} placeholder="bijv. 27 februari 2026" className={inputClass} />
+                            <input value={datumBrief} onChange={e => setDatumBrief(e.target.value)} placeholder="bijv. 12 augustus 2026" className={inputClass} />
                         </div>
                         <div>
                             <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
-                                Datum laatste werkdag <span className="text-red-500">*</span>
+                                Beoogde laatste werkdag <span className="text-red-500">*</span>
                             </label>
-                            <input value={datumEinde} onChange={e => setDatumEinde(e.target.value)} placeholder="bijv. 31 maart 2026" className={inputClass} />
+                            <input value={datumEinde} onChange={e => setDatumEinde(e.target.value)} placeholder="bijv. 30 september 2026" className={inputClass} />
+                            <p className="mt-1 text-xs font-medium text-slate-500">Controleer eerst je contract, cao en opzegtermijn.</p>
                         </div>
                     </div>
 
@@ -113,7 +114,7 @@ export default function OpzeggingsbriefTool() {
 
                     <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
                         <p className="text-xs font-bold text-amber-800">
-                            💡 Tip: Stuur de brief aangetekend of vraag een schriftelijke bevestiging van ontvangst.
+                            Tip: bewaar verzendbewijs en vraag een schriftelijke bevestiging van ontvangst én einddatum.
                         </p>
                     </div>
 

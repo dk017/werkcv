@@ -232,6 +232,26 @@ export default function EigenschappenCvVoorbeeldenPage() {
                 title: "CV voorbeelden",
                 body: "Zie hoe eigenschappen geloofwaardig landen zodra ze terugkomen in bullets en resultaten.",
               },
+              {
+                href: "/vaardigheden/karaktereigenschappen-lijst",
+                title: "Karaktereigenschappen lijst",
+                body: "Onderzoek positieve, neutrale en lastige eigenschappen voordat je een korte cv-selectie maakt.",
+              },
+              {
+                href: "/vaardigheden/negatieve-eigenschappen-sollicitatie",
+                title: "Negatieve eigenschappen in een gesprek",
+                body: "Kies een eerlijk verbeterpunt en onderbouw hoe je eraan werkt.",
+              },
+              {
+                href: "/vaardigheden/karaktereigenschappen-lijst",
+                title: "Karaktereigenschappen lijst",
+                body: "Onderzoek positieve, neutrale en lastige eigenschappen voordat je een korte cv-selectie maakt.",
+              },
+              {
+                href: "/vaardigheden/negatieve-eigenschappen-sollicitatie",
+                title: "Negatieve eigenschappen in een gesprek",
+                body: "Kies een eerlijk verbeterpunt en onderbouw hoe je eraan werkt.",
+              },
             ].map((item) => (
               <Link
                 key={item.href}

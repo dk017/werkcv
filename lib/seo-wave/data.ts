@@ -2083,20 +2083,25 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
         },
     },
     'cv-format-netherlands-english': {
-        title: 'CV Format Netherlands in English: Section Order, Examples and ATS Rules',
-        description: 'A practical Netherlands CV format guide for English-speaking applicants. Learn section order, page length, Europass context, ATS-safe formatting, wording examples and final checks.',
-        metaTitle: 'CV Format Netherlands in English (2026) | Examples + ATS Rules',
-        metaDesc: 'Use the right CV format for English applications in the Netherlands: section order, Europass context, ATS-safe layout, examples, language levels and checklist.',
+        title: 'Netherlands CV and Resume Format in English: Section Order, Examples and ATS Rules',
+        description: 'A practical Netherlands CV and resume format guide for English-speaking applicants. Learn section order, page length, Europass context, ATS-safe formatting, wording examples and final checks.',
+        metaTitle: 'Netherlands CV & Resume Format in English (2026) | ATS Rules',
+        metaDesc: 'Use the right Netherlands CV or resume format in English: section order, ATS-safe layout, examples, language levels, Europass context and checklist.',
         keywords: [
             'cv format netherlands english',
+            'netherlands cv format',
             'netherlands cv format english',
             'dutch cv format in english',
             'english cv format netherlands',
             'cv layout netherlands english',
             'dutch cv template english',
             'netherlands resume format',
+            'netherlands resume',
+            'dutch resume format',
+            'dutch resume template',
+            'netherlands cv template',
         ],
-        intro: 'Applying in English in the Netherlands does not mean using a generic US or UK resume. The safest format is a Dutch-market CV in English: clear contact details, a short role-specific profile, reverse-chronological experience, explicit language levels, and ATS-safe formatting. Use this page as the practical order and quality checklist before you export.',
+        intro: 'Applying in English in the Netherlands does not mean using a generic US or UK resume. The safest Netherlands resume format is a Dutch-market CV in English: clear contact details, a short role-specific profile, reverse-chronological experience, explicit language levels, and ATS-safe formatting. Use this page as the practical order and quality checklist before you export.',
         sources: [
             {
                 label: 'Europass: Create your CV',
@@ -2133,7 +2138,7 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                 title: 'Recommended Netherlands CV format in English',
                 paragraphs: [
                     'Use a familiar reverse-chronological CV structure. Europass guidance also emphasizes tailoring the CV to the application, keeping language readable, and placing recent experience first.',
-                    'For the Dutch market, keep the document practical: one page for starters or early-career profiles, two pages only when the second page contains relevant work, projects, certifications or technical detail.',
+                    'For the Dutch market, keep the document practical: one page for starters or early-career profiles, two pages only when the second page contains relevant work, projects, certifications or technical detail. This is the core logic behind a strong Netherlands resume format.',
                     'A good section order is: contact details, role headline, profile summary, work experience, education, skills/tools, languages, certifications, and optional links such as LinkedIn or portfolio.',
                 ],
                 bullets: [
@@ -2259,6 +2264,10 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
             {
                 question: 'How long should a Netherlands CV be?',
                 answer: 'One page is enough for starters and many early-career applicants. Two pages are fine when the extra content is relevant to the vacancy and still easy to scan.',
+            },
+            {
+                question: 'Is a Netherlands resume the same as a Dutch CV?',
+                answer: 'Usually yes. Resume is common English wording, while CV is the term used most often in the Netherlands. The important choice is the local structure: clear role focus, recent experience first, language levels and ATS-safe formatting.',
             },
         ],
         relatedLinks: [

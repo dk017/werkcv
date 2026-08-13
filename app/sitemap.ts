@@ -1,6 +1,8 @@
 import { MetadataRoute } from 'next';
 import { getAllCategories, getAllExamples } from '@/lib/cv-voorbeelden/registry';
 import { getAllArticles } from '@/lib/cv-tips/registry';
+import { getAllApplicationHelpArticles } from '@/lib/sollicitatiehulp/registry';
+import { getAllSkillGuideArticles } from '@/lib/vaardigheden-gids/registry';
 import { getDutchWavePages, getEnglishWavePages } from '@/lib/seo-wave/data';
 import { salaryRolePages } from '@/lib/tools/salary-role-pages';
 
@@ -547,6 +549,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.82,
         },
         {
+            url: `${baseUrl}/motivatiebrief-albert-heijn`,
+            lastModified: new Date('2026-08-12'),
+            changeFrequency: 'monthly',
+            priority: 0.76,
+        },
+        {
+            url: `${baseUrl}/motivatiebrief-kinderopvang`,
+            lastModified: new Date('2026-08-12'),
+            changeFrequency: 'monthly',
+            priority: 0.77,
+        },
+        {
             url: `${baseUrl}/tools/cv-score/methodologie`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
@@ -981,6 +995,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'eindejaarsuitkering-berekenen',
         'eu-blue-card-checker',
         'job-title-translator',
+        'jubileumtekst-generator',
         'kilometervergoeding-berekenen',
         'kennismigrant-salary-checker',
         'linkedin-naar-cv',
@@ -1064,6 +1079,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.75,
     }));
 
+    const applicationHelpArticles = getAllApplicationHelpArticles();
+    const applicationHelpPages: MetadataRoute.Sitemap = [
+        {
+            url: `${baseUrl}/sollicitatiehulp`,
+            lastModified: new Date('2026-08-12'),
+            changeFrequency: 'monthly' as const,
+            priority: 0.8,
+        },
+        ...applicationHelpArticles.map((article) => ({
+            url: `${baseUrl}/sollicitatiehulp/${article.slug}`,
+            lastModified: new Date(article.updatedAt),
+            changeFrequency: 'monthly' as const,
+            priority: 0.75,
+        })),
+    ];
+
+    const skillGuideArticles = getAllSkillGuideArticles();
+    const skillGuidePages: MetadataRoute.Sitemap = [
+        {
+            url: `${baseUrl}/vaardigheden`,
+            lastModified: new Date('2026-08-12'),
+            changeFrequency: 'monthly' as const,
+            priority: 0.8,
+        },
+        ...skillGuideArticles.map((article) => ({
+            url: `${baseUrl}/vaardigheden/${article.slug}`,
+            lastModified: new Date(article.updatedAt),
+            changeFrequency: 'monthly' as const,
+            priority: 0.75,
+        })),
+    ];
+
     const dutchWave = getDutchWavePages();
     const dutchWavePages: MetadataRoute.Sitemap = dutchWave.map((page) => ({
         url: `${baseUrl}/cv-gids/${page.slug}`,
@@ -1087,11 +1134,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...newCategoryPages,
         ...newExamplePages,
         ...articlePages,
+        ...applicationHelpPages,
+        ...skillGuidePages,
         ...dutchWavePages,
         ...englishWavePages,
     ];
 
-    const editoriallyDatedUrls = new Set(articlePages.map((page) => page.url));
+    const editoriallyDatedUrls = new Set([
+        ...articlePages.map((page) => page.url),
+        ...applicationHelpPages.map((page) => page.url),
+        ...skillGuidePages.map((page) => page.url),
+        `${baseUrl}/motivatiebrief-albert-heijn`,
+        `${baseUrl}/motivatiebrief-kinderopvang`,
+    ]);
 
     // Google ignores priority/changefreq. Only publish lastmod when it comes
     // from stored editorial metadata; filesystem mtimes become build timestamps

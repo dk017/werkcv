@@ -37,9 +37,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Motivatiebrief Voorbeeld 2026 – 6 Voorbeelden + Generator | WerkCV",
+  title: "Motivatiebrief Voorbeeld 2026 – 8 Voorbeelden + Generator | WerkCV",
   description:
-    "Bekijk 6 motivatiebrief voorbeelden voor starters, carrièreswitch, stage en meer. Kies je situatie en open direct een vooraf ingevulde generator.",
+    "Bekijk 8 motivatiebrief voorbeelden voor starters, carrièreswitch, stage, Albert Heijn en kinderopvang. Open direct een vooraf ingevulde generator.",
   keywords: [
     "motivatiebrief voorbeeld",
     "goede motivatiebrief",
@@ -214,6 +214,25 @@ export default function MotivatiebriefVoorbeeldPage() {
                 </Link>
               </article>
             ))}
+          </div>
+        </section>
+
+        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:p-8">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">Verdieping per werkgever of sector</p>
+          <h2 className="mt-2 text-2xl font-black text-black sm:text-3xl">Lees eerst wat in jouw context als bewijs telt</h2>
+          <p className="mt-3 max-w-4xl text-sm font-medium leading-relaxed text-slate-700">
+            Een vooraf ingevulde generator geeft je een snelle start. Deze verdiepende pagina&apos;s leggen ook uit
+            welke feiten je moet controleren, welke voorbeelden geloofwaardig zijn en waar een standaardbrief misgaat.
+          </p>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            <Link href="/motivatiebrief-albert-heijn" className="border-3 border-black bg-yellow-300 p-5" style={{ borderWidth: "3px" }}>
+              <h3 className="font-black text-black">Motivatiebrief Albert Heijn</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-700">Voor winkelrollen, bijbanen, beschikbaarheid en concreet klantgedrag.</p>
+            </Link>
+            <Link href="/motivatiebrief-kinderopvang" className="border-3 border-black bg-[#E9FBF8] p-5" style={{ borderWidth: "3px" }}>
+              <h3 className="font-black text-black">Motivatiebrief kinderopvang</h3>
+              <p className="mt-2 text-sm leading-relaxed text-slate-700">Voor pedagogisch handelen, kwalificaties, taalniveau en oudercontact.</p>
+            </Link>
           </div>
         </section>
 

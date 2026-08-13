@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import Footer from "@/components/Footer";
+import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
 import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import SollicitatiebriefTool from "./SollicitatiebriefTool";
 
 export const metadata: Metadata = buildDutchMetadata({
     title: "Sollicitatiebrief Generator 2026 | Gratis Brief Maken | WerkCV",
-    description: "Maak gratis een sollicitatiebrief op basis van functie, vacature en motivatie. Krijg direct een professionele brief die je kunt aanpassen.",
+    description: "Maak gratis een eerste sollicitatiebrief op basis van vacature-eisen en jouw controleerbare ervaring. Pas de brief daarna aan in je eigen stem.",
     path: "/tools/sollicitatiebrief-generator",
     keywords: [
         "sollicitatiebrief schrijven",
@@ -20,9 +21,49 @@ export const metadata: Metadata = buildDutchMetadata({
     ],
 });
 
+const faqItems = [
+    {
+        question: "Kan ik de gegenereerde sollicitatiebrief direct versturen?",
+        answer: "Gebruik de brief als eerste versie. Controleer alle feiten, de aanhef, de aansluiting op de vacature en of de tekst echt als jouw eigen stem klinkt voordat je hem verstuurt.",
+    },
+    {
+        question: "Moet ik de hele vacaturetekst plakken?",
+        answer: "Dat hoeft niet, maar de belangrijkste taken, eisen en vaardigheden helpen de generator om jouw bewijs aan de juiste vacaturepunten te koppelen. Verwijder namen, e-mailadressen en andere gegevens die niet nodig zijn.",
+    },
+    {
+        question: "Verzint de generator informatie over mij of het bedrijf?",
+        answer: "De generator krijgt de instructie om uitsluitend jouw invoer te gebruiken en ontbrekende feiten niet in te vullen. AI kan toch fouten maken; daarom moet je elke claim zelf controleren.",
+    },
+    {
+        question: "Welke informatie kan ik beter niet invullen?",
+        answer: "Plak geen BSN, medische gegevens, privégegevens van klanten of andere vertrouwelijke informatie. Deel alleen informatie die nodig is om de brief te schrijven.",
+    },
+    {
+        question: "Hoe lang wordt de sollicitatiebrief?",
+        answer: "De normale versies mikken op ongeveer 180 tot 240 woorden; de beknopte toon op ongeveer 140 tot 190 woorden. Volg altijd de instructies in de vacature als daar een andere lengte of vorm wordt gevraagd.",
+    },
+] as const;
+
 export default function SollicitatiebriefGeneratorPage() {
     return (
         <div className="min-h-screen bg-[#FFFEF9]">
+            <FAQJsonLd questions={[...faqItems]} />
+            <JsonLd
+                data={{
+                    "@context": "https://schema.org",
+                    "@type": "WebApplication",
+                    name: "WerkCV sollicitatiebrief generator",
+                    url: "https://werkcv.nl/tools/sollicitatiebrief-generator",
+                    applicationCategory: "BusinessApplication",
+                    operatingSystem: "Web",
+                    inLanguage: ["nl-NL", "en"],
+                    offers: {
+                        "@type": "Offer",
+                        price: "0",
+                        priceCurrency: "EUR",
+                    },
+                }}
+            />
             <header className="border-b-4 border-black bg-white">
                 <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2">
@@ -45,7 +86,7 @@ export default function SollicitatiebriefGeneratorPage() {
                         Sollicitatiebrief generator
                     </h1>
                     <p className="text-lg text-slate-600 font-medium">
-                        Vul je doelrol en motivatie in — onze AI schrijft binnen 30 seconden een professionele sollicitatiebrief die je direct kunt gebruiken.
+                        Plak de vacature, voeg jouw controleerbare bewijs toe en krijg een gerichte eerste versie. Controleer en herschrijf hem daarna in je eigen stem.
                     </p>
                     <p className="mt-3 text-sm font-bold text-slate-700">
                         Liever eerst inspiratie?{" "}
@@ -56,30 +97,11 @@ export default function SollicitatiebriefGeneratorPage() {
                         <Link href="/sollicitatiebrief-voorbeeld" className="underline decoration-2 underline-offset-2 text-slate-900">
                             Bekijk sollicitatiebrief voorbeelden
                         </Link>
-                        {" "}of{" "}
+                        {" "}of lees hoe je een{" "}
                         <Link href="/motivatiebrief-schrijven" className="underline decoration-2 underline-offset-2 text-slate-900">
-                            motivatiebrief schrijven
+                            motivatiebrief schrijft
                         </Link>
-                        {" "}of{" "}
-                        <Link href="/sollicitatiebrief-beginnen" className="underline decoration-2 underline-offset-2 text-slate-900">
-                            sollicitatiebrief beginnen
-                        </Link>
-                        {" "}of{" "}
-                        <Link href="/motivatiebrief-zonder-werkervaring" className="underline decoration-2 underline-offset-2 text-slate-900">
-                            motivatiebrief zonder werkervaring
-                        </Link>
-                        {" "}of{" "}
-                        <Link href="/open-sollicitatie-brief" className="underline decoration-2 underline-offset-2 text-slate-900">
-                            open sollicitatie schrijven
-                        </Link>
-                        {" "}of{" "}
-                        <Link href="/sollicitatiebrief-in-engels" className="underline decoration-2 underline-offset-2 text-slate-900">
-                            sollicitatiebrief in engels
-                        </Link>
-                        {" "}of{" "}
-                        <Link href="/en/motivation-letter-netherlands" className="underline decoration-2 underline-offset-2 text-slate-900">
-                            English letter for Dutch jobs
-                        </Link>
+                        .
                     </p>
                 </div>
 
@@ -123,7 +145,7 @@ export default function SollicitatiebriefGeneratorPage() {
                 <div className="mt-10 space-y-6">
                     <h2 className="text-xl font-black text-slate-900">Wat maakt een goede sollicitatiebrief?</h2>
                     <p className="text-slate-600 text-sm leading-relaxed">
-                        Een sterke sollicitatiebrief is geen herhaling van je CV. Het is een persoonlijk verhaal dat uitlegt waarom jij de juiste persoon bent voor díeze specifieke rol bij díet specifieke bedrijf.
+                        Een sterke sollicitatiebrief herhaalt je CV niet, maar koppelt relevante ervaring aan de functie en legt uit waarom je solliciteert. Gebruik concrete voorbeelden die je zelf kunt onderbouwen.
                     </p>
                     <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
                         <h3 className="font-black text-slate-900 text-sm mb-3">Structuur van een sterke sollicitatiebrief</h3>
@@ -131,7 +153,7 @@ export default function SollicitatiebriefGeneratorPage() {
                             {[
                                 ['Opening', 'Pakkende zin die direct je motivatie laat zien — geen "Hierbij solliciteer ik".'],
                                 ['Meerwaarde', 'Wat breng jij mee? Noem 1-2 concrete prestaties of vaardigheden die aansluiten op de vacature.'],
-                                ['Fit met het bedrijf', 'Laat zien dat je het bedrijf kent. Koppel hun missie aan jouw motivatie.'],
+                                ['Fit met rol of organisatie', 'Leg je echte reden uit. Noem alleen organisatiefeiten die je zelf hebt gecontroleerd.'],
                                 ['Afsluiting', 'Nodig uit voor een gesprek. Zelfverzekerd en concreet.'],
                             ].map(([stap, uitleg], i) => (
                                 <li key={i} className="flex items-start gap-3 text-xs text-slate-700">
@@ -142,6 +164,44 @@ export default function SollicitatiebriefGeneratorPage() {
                         </ol>
                     </div>
                 </div>
+
+                <section className="mt-10 border-t-2 border-slate-200 pt-8">
+                    <h2 className="text-xl font-black text-slate-900">Veelgestelde vragen</h2>
+                    <div className="mt-4 space-y-3">
+                        {faqItems.map((item) => (
+                            <details key={item.question} className="group rounded-xl border border-slate-200 bg-white p-4">
+                                <summary className="cursor-pointer list-none pr-6 text-sm font-black text-slate-900">
+                                    {item.question}
+                                </summary>
+                                <p className="mt-3 text-sm leading-relaxed text-slate-600">{item.answer}</p>
+                            </details>
+                        ))}
+                    </div>
+                </section>
+
+                <section className="mt-8 rounded-xl border border-slate-200 bg-slate-50 p-5">
+                    <h2 className="text-base font-black text-slate-900">Bronnen voor de schrijfrichtlijnen</h2>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                        De generator en controlelijst volgen advies van Nederlandse loopbaan- en taalbronnen. AI blijft een hulpmiddel: UWV adviseert om zelf de regie te houden en gegenereerde informatie te controleren.
+                    </p>
+                    <ul className="mt-3 space-y-2 text-sm font-bold">
+                        <li>
+                            <a href="https://www.fnv.nl/werk-inkomen/loopbaan/sollicitatiebrief" rel="noreferrer" target="_blank" className="text-teal-800 underline decoration-2 underline-offset-2">
+                                FNV — een sollicitatiebrief schrijven
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://inspiratie.uwv.nl/motivatiebrief-maken-met-chatgpt" rel="noreferrer" target="_blank" className="text-teal-800 underline decoration-2 underline-offset-2">
+                                UWV — motivatiebrief maken met AI
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://taalwinkel.uva.nl/tekstsoorten/motivatiebrief-en-cv/motivatiebrief/motivatiebrief.html" rel="noreferrer" target="_blank" className="text-teal-800 underline decoration-2 underline-offset-2">
+                                UvA Taalwinkel — motivatiebrief
+                            </a>
+                        </li>
+                    </ul>
+                </section>
 
                 <ToolToCvCTA
                     toolName="sollicitatiebrief-generator"

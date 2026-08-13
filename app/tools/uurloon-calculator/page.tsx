@@ -27,6 +27,18 @@ const faqItems = [
         question: "Moet vakantiegeld in je uurloon zitten?",
         answer: "Dat hangt af van de vergelijking die je wilt maken. WerkCV laat zowel het uurloon zonder als met vakantiegeld zien, zodat je beide kunt gebruiken.",
     },
+    {
+        question: "Met hoeveel uur per maand reken je bij een weekcontract?",
+        answer: "Voor een gemiddelde maand gebruik je uren per week × 52 ÷ 12. Dat is ongeveer 156 uur bij 36 uur per week, 164,7 uur bij 38 uur en 173,3 uur bij 40 uur. Een echte kalendermaand kan afwijken.",
+    },
+    {
+        question: "Is uurloon maal 160 hetzelfde als maandsalaris?",
+        answer: "Alleen als je bewust met 160 betaalde uren rekent. Voor een vast weekcontract is uren per week × 52 ÷ 12 nauwkeuriger: bij 40 uur is dat gemiddeld 173,3 uur per maand, niet 160.",
+    },
+    {
+        question: "Hoe vergelijk ik een uurloon inclusief vakantiegeld?",
+        answer: "Vermenigvuldig het kale bruto uurloon met 1 plus het vakantiegeldpercentage. Bij €20 per uur en 8% vakantiegeld is dat €21,60 inclusief vakantiegeld. Controleer of andere toeslagen al in het aangeboden all-in loon zitten.",
+    },
 ];
 
 const cvIntentLinks = [
@@ -53,8 +65,8 @@ const cvIntentLinks = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-    title: "Uurloon Berekenen — naar Maandloon Omrekenen (2026) | WerkCV",
-    description: "Bereken gratis je uurloon naar maandloon of andersom in 2026. Bekijk de formule, jaarloon, vakantiegeld en een uitgewerkt voorbeeld.",
+    title: "Uurloon Berekenen 2026 — Maandloon naar Uurloon | WerkCV",
+    description: "Bereken direct je bruto uurloon uit maandloon of jaarloon, of zet uurloon om naar maandloon. Met 36-, 38- en 40-urige werkweken en vakantiegeld.",
     path: "/tools/uurloon-calculator",
     keywords: [
         "uurloon berekenen",
@@ -66,6 +78,13 @@ export const metadata: Metadata = buildDutchMetadata({
         "bereken uurloon naar maandloon",
         "netto uurloon uitrekenen",
         "bruto netto uurloon omrekenen",
+        "bereken uurloon",
+        "uurloon uitrekenen",
+        "maandloon omrekenen naar uurloon",
+        "uurloon naar maandsalaris",
+        "uurloon berekenen 36 uur",
+        "uurloon berekenen 38 uur",
+        "uurloon berekenen 40 uur",
     ],
 });
 
@@ -102,43 +121,34 @@ export default function UurloonCalculatorPage() {
                             <span className="text-xs font-black uppercase tracking-wide bg-blue-100 text-blue-800 px-3 py-1 border border-blue-300 rounded-full">
                                 Geld
                             </span>
+                            <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
+                                Gecontroleerd 12 augustus 2026
+                            </span>
                         </div>
                         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-                            Uurloon calculator
+                            Uurloon berekenen uit maandloon of jaarsalaris
                         </h1>
                         <p className="text-lg text-slate-600 font-medium max-w-3xl">
                             Gebruik deze tool als je wilt weten wat je bruto uurloon is vanuit je maand- of jaarsalaris, of juist wat een uurloon betekent als bruto maandloon. Handig voor salarisvergelijking, onderhandelingen en controle tegen het minimumloon.
                         </p>
                         <div className="mt-6 flex flex-wrap gap-3">
+                            <Link
+                                href="#uurloon-calculator"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
+                            >
+                                Bereken mijn uurloon
+                            </Link>
                             <TrackedToolLink
-                                href="/cv-maken-zonder-abonnement"
+                                href="/editor?template=professional&startSource=uurloon_hero"
                                 eventName="tool_to_cv_cta_click"
                                 toolName="uurloon-calculator"
                                 ctaIntent="salary"
                                 trackingLocation="uurloon-calculator:hero_salary_to_cv"
                                 trackingLabel="Maak CV voor beter betaalde functies"
-                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
+                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
                             >
                                 Maak CV voor beter betaalde functies
                             </TrackedToolLink>
-                            <TrackedToolLink
-                                href="/cv-maken-zonder-abonnement"
-                                eventName="tool_to_cv_cta_click"
-                                toolName="uurloon-calculator"
-                                ctaVariant="secondary"
-                                ctaIntent="salary"
-                                trackingLocation="uurloon-calculator:hero_no_subscription"
-                                trackingLabel="CV maken zonder abonnement"
-                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
-                            >
-                                CV zonder abonnement
-                            </TrackedToolLink>
-                            <Link
-                                href="/beste-cv-maker-nederland"
-                                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
-                            >
-                                Beste CV maker NL
-                            </Link>
                         </div>
                     </div>
 
@@ -173,8 +183,60 @@ export default function UurloonCalculatorPage() {
                     </p>
                 </section>
 
-                <section className="mb-12">
+                <section id="uurloon-calculator" className="mb-12 scroll-mt-6">
                     <UurloonCalculatorTool />
+                </section>
+
+                <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Uurloon voorbeelden</p>
+                    <h2 className="mt-2 text-2xl font-black text-slate-900 sm:text-3xl">Maandloon naar uurloon bij 36, 38 en 40 uur</h2>
+                    <p className="mt-3 max-w-4xl text-sm leading-relaxed text-slate-700">
+                        Hetzelfde maandsalaris geeft een ander uurloon als de contractuele werkweek verschilt. Daarom is de urennorm uit je contract onmisbaar bij salarisvergelijking.
+                    </p>
+                    <div className="mt-5 overflow-x-auto">
+                        <table className="min-w-full border-collapse text-sm">
+                            <thead>
+                                <tr className="border-b-2 border-black text-left">
+                                    <th className="px-3 py-2">Bruto maandloon</th>
+                                    <th className="px-3 py-2">36 uur</th>
+                                    <th className="px-3 py-2">38 uur</th>
+                                    <th className="px-3 py-2">40 uur</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {[
+                                    ["€2.500", "€16,03", "€15,18", "€14,42"],
+                                    ["€3.000", "€19,23", "€18,22", "€17,31"],
+                                    ["€3.500", "€22,44", "€21,26", "€20,19"],
+                                    ["€4.000", "€25,64", "€24,29", "€23,08"],
+                                ].map((row) => (
+                                    <tr key={row[0]} className="border-b border-slate-200">
+                                        {row.map((cell, index) => (
+                                            <td key={cell} className={`px-3 py-3 text-slate-700 ${index === 0 ? "font-black" : "font-medium"}`}>{cell}</td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <p className="mt-4 text-xs leading-relaxed text-slate-600">
+                        Formule: bruto maandloon × 12 ÷ (uren per week × 52). Bedragen zijn afgerond op twee decimalen en exclusief vakantiegeld.
+                    </p>
+                </section>
+
+                <section className="mb-12 grid gap-6 lg:grid-cols-2">
+                    <div className="border-2 border-black bg-[#E9FFFC] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <h2 className="text-2xl font-black text-slate-900">Uurloon naar maandloon berekenen</h2>
+                        <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                            Vermenigvuldig je uurloon met je contracturen per week en met 52; deel daarna door 12. Bij €20 bruto per uur en 36 uur per week is de uitkomst €20 × 36 × 52 ÷ 12 = €3.120 bruto per gemiddelde maand.
+                        </p>
+                    </div>
+                    <div className="border-2 border-black bg-[#FFF7D6] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <h2 className="text-2xl font-black text-slate-900">Kaal uurloon, all-in loon of inclusief vakantiegeld?</h2>
+                        <p className="mt-3 text-sm leading-relaxed text-slate-700">
+                            Vergelijk aanbiedingen op dezelfde basis. Een all-in uurloon kan vakantiegeld, vakantie-uren of toeslagen bevatten; een kaal uurloon niet. De calculator toont vakantiegeld apart, maar je contract of loonstrook bepaalt welke componenten werkelijk zijn inbegrepen.
+                        </p>
+                    </div>
                 </section>
 
                 <RelatedToolsSection
@@ -253,6 +315,18 @@ export default function UurloonCalculatorPage() {
                     intent="salary"
                     resultState="uurloon_page_cta"
                 />
+
+                <section className="bg-slate-50 border-2 border-slate-200 p-6">
+                    <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Methodologie en bronnen</p>
+                    <p className="text-sm leading-relaxed text-slate-600">
+                        De calculator deelt het bruto jaarloon door 52 weken en de ingevoerde contracturen. Dat is een praktische contractvergelijking. Het CBS waarschuwt dat uurloonbegrippen kunnen verschillen doordat betaalde verlofuren, overwerk en bijzondere beloningen niet in iedere definitie hetzelfde worden behandeld.
+                    </p>
+                    <ul className="mt-3 space-y-2 text-sm text-slate-600">
+                        <li><a href="https://longreads.cbs.nl/dearbeidsmarktincijfers-2025/begrippen/" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">CBS - Uurloon en wekelijkse arbeidsduur</a></li>
+                        <li><a href="https://www.rijksoverheid.nl/onderwerpen/minimumloon/bedragen-minimumloon/bedragen-minimumloon-2026" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">Rijksoverheid - Bedragen minimumloon 2026</a></li>
+                        <li><Link href="/tools/vakantiegeld-berekenen" className="font-medium text-teal-700 hover:underline">WerkCV - Vakantiegeld apart berekenen</Link></li>
+                    </ul>
+                </section>
             </main>
 
             <Footer />

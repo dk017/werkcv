@@ -20,6 +20,13 @@ export interface ArticleFAQ {
     answer: string;
 }
 
+export interface ArticleSource {
+    publisher: string;
+    title: string;
+    url: string;
+    note: string;
+}
+
 export interface BlogArticle {
     slug: string;                    // URL slug: "cv-schrijven-tips"
     title: string;                   // Article title / H1
@@ -40,6 +47,7 @@ export interface BlogArticle {
 
     // FAQ (renders as accordion + JSON-LD FAQPage schema)
     faq: ArticleFAQ[];
+    sources?: ArticleSource[];        // Optional primary sources shown below the article
 
     // Internal linking
     relatedArticleSlugs: string[];   // Slugs of related blog articles

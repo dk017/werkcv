@@ -84,6 +84,30 @@ export const motivationLetterPresets: MotivationLetterPreset[] = [
       "Graag kom ik in contact over toekomstige administratieve mogelijkheden binnen uw organisatie. Met vier jaar ervaring in orderverwerking en klantcontact kan ik snel bijdragen aan een betrouwbare backoffice en duidelijke opvolging.",
     proofPrompts: ["Type organisatie", "Probleem dat je oplost", "Concrete open vraag"],
   },
+  {
+    slug: "albert-heijn",
+    label: "Albert Heijn",
+    eyebrow: "Supermarkt en bijbaan",
+    role: "Medewerker verkoopklaar bij Albert Heijn",
+    tone: "enthousiast",
+    context:
+      "Ik solliciteer als medewerker verkoopklaar bij Albert Heijn. In mijn huidige bijbaan vul ik schappen, help ik klanten en zorg ik dat mijn afdeling aan het einde van mijn dienst netjes is. Ik kan op donderdagavond en in het weekend werken. Schrijf een korte, persoonlijke motivatiebrief. Verbind mijn klantgerichtheid en zorgvuldigheid met de missie van Albert Heijn om beter eten bereikbaar te maken, maar doe niet alsof ik interne informatie over het filiaal ken.",
+    preview:
+      "Ik werk graag in een omgeving waar tempo en klantcontact samenkomen. In mijn huidige bijbaan heb ik geleerd om schappen zorgvuldig bij te vullen, vragen vriendelijk op te lossen en mijn afdeling netjes over te dragen.",
+    proofPrompts: ["Concrete winkelervaring", "Vaste beschikbaarheid", "Waarom dit filiaal of deze rol"],
+  },
+  {
+    slug: "kinderopvang",
+    label: "Kinderopvang",
+    eyebrow: "Pedagogisch medewerker",
+    role: "Pedagogisch medewerker kinderopvang",
+    tone: "professioneel",
+    context:
+      "Ik solliciteer als pedagogisch medewerker in de kinderopvang. Ik heb een passend mbo-diploma en twee jaar ervaring op een verticale groep. Ik organiseerde activiteiten rond taal en motoriek, hield observaties bij en besprak de ontwikkeling van kinderen zorgvuldig met ouders en collega's. Benoem veiligheid, ontwikkeling en oudercontact met concrete voorbeelden. Verzín geen certificaten of kwalificaties en laat mij de exacte vacature-eisen zelf controleren.",
+    preview:
+      "Kinderen een veilige basis bieden en tegelijk hun ontwikkeling gericht stimuleren is de kern van mijn werk. Op mijn huidige verticale groep vertaal ik observaties naar passende activiteiten en stem ik bijzonderheden zorgvuldig af met ouders en collega's.",
+    proofPrompts: ["Leeftijdsgroep en setting", "Activiteit of observatie met effect", "Diploma, taalniveau en certificaten"],
+  },
 ];
 
 export function getMotivationLetterPreset(slug: string | null | undefined) {

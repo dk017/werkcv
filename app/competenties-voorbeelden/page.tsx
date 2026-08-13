@@ -238,6 +238,16 @@ export default function CompetentiesVoorbeeldenPage() {
                 title: "CV voorbeelden",
                 body: "Zie hoe competenties geloofwaardig landen wanneer ze terugkomen in werkervaring en resultaatbulletpoints.",
               },
+              {
+                href: "/vaardigheden/daadkrachtig",
+                title: "Daadkrachtig: betekenis en bewijs",
+                body: "Zie het verschil tussen beslissen, uitvoeren en impulsief handelen, met concrete resultaatvoorbeelden.",
+              },
+              {
+                href: "/vaardigheden",
+                title: "Vaardigheden en eigenschappen gids",
+                body: "Verdiep cognitieve, didactische en persoonlijke begrippen zonder ze met competenties te verwarren.",
+              },
             ].map((item) => (
               <Link
                 key={item.href}

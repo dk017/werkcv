@@ -24,6 +24,10 @@ const faqItems = [
         answer: "Deze pagina rekent eerst je bruto vakantiegeld uit en geeft daarna een ruwe netto-indicatie op basis van 2026-loonheffingsaannames voor een werknemer onder AOW-leeftijd met loonheffingskorting. Je echte netto uitbetaling kan afwijken door bijzondere-beloningstabellen, pensioeninhouding en je persoonlijke situatie.",
     },
     {
+        question: "Hoeveel vakantiegeld krijg ik netto in 2026?",
+        answer: "Dat hangt af van je bruto loon, de opbouwperiode, loonheffingskorting en andere inhoudingen. De tool rekent eerst het bruto bedrag uit en geeft daarna een ruwe netto-indicatie; je loonstrook en werkgever blijven leidend.",
+    },
+    {
         question: "Wanneer wordt vakantiegeld meestal uitbetaald?",
         answer: "Vakantiegeld wordt meestal in mei of juni uitbetaald. Je werkgever mag daarvan afwijken als dit in je contract of cao staat.",
     },
@@ -146,6 +150,11 @@ export const metadata: Metadata = buildDutchMetadata({
         "vakantiegeld calculator",
         "vakantiegeld parttime",
         "vakantiegeld bij uit dienst",
+        "salaris inclusief vakantiegeld berekenen",
+        "hoeveel vakantiegeld krijg ik netto 2026",
+        "vakantiegeld bruto naar netto",
+        "vakantiegeld berekenen netto 2026",
+        "bruto netto vakantiegeld berekenen 2026",
     ],
 });
 
@@ -183,7 +192,7 @@ export default function VakantiegeldBerekenenPage() {
                                 Geld
                             </span>
                             <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                                Gecontroleerd en bijgewerkt 14 juli 2026
+                                Gecontroleerd en bijgewerkt 12 augustus 2026
                             </span>
                         </div>
                         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
@@ -241,6 +250,30 @@ export default function VakantiegeldBerekenenPage() {
 
                 <section className="mb-12">
                     <VakantiegeldTool />
+                </section>
+
+                <section className="mb-12 border-2 border-black bg-[#E9FFFC] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+                        Salaris inclusief vakantiegeld berekenen
+                    </p>
+                    <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
+                        Tel je vakantiegeld apart op bij je bruto jaarloon
+                    </h2>
+                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-700">
+                        Wil je je salaris inclusief vakantiegeld berekenen? Vermenigvuldig je bruto maandsalaris met 12 en tel daarna je vakantiegeld op. Bij €3.000 bruto per maand en 8% is dat €36.000 basisloon + €2.880 vakantiegeld = €38.880 bruto per jaar, vóór loonheffing en andere inhoudingen.
+                    </p>
+                    <div className="mt-5 grid gap-4 md:grid-cols-3">
+                        {[
+                            ["Bruto maandloon", "€3.000"],
+                            ["Vakantiegeld 8%", "€2.880 per jaar"],
+                            ["Jaartotaal inclusief vakantiegeld", "€38.880 bruto"],
+                        ].map(([label, value]) => (
+                            <div key={label} className="border-2 border-black bg-white p-4">
+                                <p className="text-xs font-black uppercase tracking-wide text-slate-500">{label}</p>
+                                <p className="mt-2 text-lg font-black text-slate-900">{value}</p>
+                            </div>
+                        ))}
+                    </div>
                 </section>
 
                 <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
@@ -518,7 +551,7 @@ export default function VakantiegeldBerekenenPage() {
                     </p>
                     <ul className="space-y-2 text-sm text-slate-600">
                         <li>
-                            <a href="https://www.rijksoverheid.nl/onderwerpen/vakantiedagen-en-vakantiegeld/vraag-en-antwoord/hoe-hoog-is-mijn-vakantiegeld" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
+                            <a href="https://www.rijksoverheid.nl/vraag-en-antwoord/vakantiedagen-en-vakantiegeld/hoe-hoog-is-mijn-vakantiegeld" target="_blank" rel="noopener noreferrer" className="font-medium text-teal-700 hover:underline">
                                 Rijksoverheid - Hoe hoog is mijn vakantiegeld?
                             </a>
                         </li>

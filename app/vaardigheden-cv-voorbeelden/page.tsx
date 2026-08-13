@@ -440,6 +440,21 @@ export default function VaardighedenCvVoorbeeldenPage() {
                   title: "Engels CV template",
                   body: "Plaats vaardigheden en taalniveau in een format dat ook voor internationale rollen werkt.",
                 },
+                {
+                  href: "/vaardigheden/cognitieve-vaardigheden",
+                  title: "Cognitieve vaardigheden",
+                  body: "Maak aandacht, redeneren en probleemoplossing concreet met observeerbaar werkbewijs.",
+                },
+                {
+                  href: "/vaardigheden/didactische-vaardigheden",
+                  title: "Didactische vaardigheden",
+                  body: "Vertaal uitleg, oefening, feedback en differentiatie naar sterke cv-bullets.",
+                },
+                {
+                  href: "/vaardigheden",
+                  title: "Alle vaardigheden en eigenschappen",
+                  body: "Gebruik de gids als je eerst het verschil tussen eigenschappen, denken en werkgedrag wilt begrijpen.",
+                },
               ].map((item) => (
                 <Link
                   key={item.href}

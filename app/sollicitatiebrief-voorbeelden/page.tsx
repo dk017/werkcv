@@ -160,7 +160,27 @@ const examples = [
     body: "Goede keuze als je brief te vlak voelt en je beter wilt uitleggen waarom juist deze rol en dit bedrijf logisch zijn voor jouw volgende stap.",
     notFor: "Mensen die vooral op zoek zijn naar functiegerichte zinnen per beroep.",
   },
+  {
+    title: "Motivatiebrief Albert Heijn",
+    href: "/motivatiebrief-albert-heijn",
+    label: "Werkgever",
+    bestFor: "Winkelmedewerkers en bijbanen bij Albert Heijn die klantgedrag en beschikbaarheid concreet willen maken.",
+    tone: "Toegankelijk, praktisch en servicegericht",
+    body: "Deze route helpt je om de officiële werkgeverscontext te scheiden van jouw eigen bewijs, bijvoorbeeld klantcontact, tempo, samenwerken en inzetbaarheid.",
+    notFor: "Sollicitaties bij andere supermarktketens; controleer dan eerst de werkgever en pas alle context aan.",
+  },
+  {
+    title: "Motivatiebrief kinderopvang",
+    href: "/motivatiebrief-kinderopvang",
+    label: "Sector",
+    bestFor: "Pedagogisch medewerkers die handelen, kwalificaties, taalniveau en oudercontact geloofwaardig willen onderbouwen.",
+    tone: "Warm, professioneel en verantwoordelijk",
+    body: "Gebruik dit voorbeeld om een persoonlijke motivatie te koppelen aan concreet pedagogisch gedrag en om wettelijke vereisten niet te verwarren met algemene eigenschappen.",
+    notFor: "Zorg- of onderwijsfuncties buiten de kinderopvang met andere bevoegdheden en verantwoordelijkheden.",
+  },
 ];
+
+const exampleCount = examples.length;
 
 const usageSteps = [
   "Kies eerst het voorbeeld dat het dichtst op jouw functie of situatie zit.",
@@ -217,9 +237,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "15 sollicitatiebrief voorbeelden in 2026 | Per functie en situatie | WerkCV",
+  title: `${exampleCount} sollicitatiebrief voorbeelden in 2026 | Per functie en situatie | WerkCV`,
   description:
-    "Bekijk 15 sollicitatiebrief voorbeelden voor verschillende functies en situaties in Nederland. Inclusief beste gebruik, toon, valkuilen en directe links naar diepere voorbeeldpagina's.",
+    `Bekijk ${exampleCount} sollicitatiebrief voorbeelden voor functies, werkgevers en situaties in Nederland. Inclusief gebruik, toon, valkuilen en verdiepende pagina's.`,
   keywords: [
     "sollicitatiebrief voorbeelden",
     "sollicitatiebrief voorbeeld",
@@ -239,9 +259,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "15 sollicitatiebrief voorbeelden | WerkCV",
+    title: `${exampleCount} sollicitatiebrief voorbeelden | WerkCV`,
     description:
-      "Van stage tot software developer: vergelijk 15 sollicitatiebrief voorbeelden per functie en situatie en kies direct de juiste route.",
+      `Van stage tot software developer: vergelijk ${exampleCount} sollicitatiebrief voorbeelden per functie, werkgever en situatie.`,
     url: pageUrl,
     type: "article",
     locale: "nl_NL",
@@ -271,7 +291,7 @@ export default function SollicitatiebriefVoorbeeldenPage() {
   const itemListSchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "15 sollicitatiebrief voorbeelden per functie en situatie",
+    name: `${exampleCount} sollicitatiebrief voorbeelden per functie en situatie`,
     itemListOrder: "https://schema.org/ItemListOrderAscending",
     numberOfItems: examples.length,
     itemListElement: examples.map((example, index) => ({
@@ -317,7 +337,7 @@ export default function SollicitatiebriefVoorbeeldenPage() {
               Listicle hub
             </p>
             <h1 className="max-w-4xl text-4xl font-black leading-tight text-black md:text-5xl">
-              15 sollicitatiebrief voorbeelden per functie en situatie
+              {exampleCount} sollicitatiebrief voorbeelden per functie en situatie
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Zoek je niet zomaar een sollicitatiebrief voorbeeld, maar het juiste
@@ -341,7 +361,7 @@ export default function SollicitatiebriefVoorbeeldenPage() {
             </div>
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               {[
-                "15 voorbeelden in 1 overzicht",
+                `${exampleCount} voorbeelden in 1 overzicht`,
                 "Per functie, situatie en taal",
                 "Direct door naar de juiste verdiepende pagina",
               ].map((item) => (

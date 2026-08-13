@@ -131,6 +131,7 @@ export default async function ArticlePage({ params }: PageProps) {
             '@type': 'WebPage',
             '@id': articleUrl,
         },
+        ...(article.sources?.length ? { citation: article.sources.map(source => source.url) } : {}),
     };
 
     // JSON-LD FAQPage schema (if FAQ exists)
@@ -371,6 +372,31 @@ export default async function ArticlePage({ params }: PageProps) {
                         </section>
                     ))}
                 </div>
+
+                {article.sources?.length ? (
+                    <section id="bronnen" className="mt-16 scroll-mt-24 border-t-4 border-black pt-9">
+                        <h2 className="text-3xl font-black mb-3 text-gray-900">Bronnen en controle</h2>
+                        <p className="max-w-3xl text-gray-700 leading-relaxed">
+                            Productfuncties en privacy-instellingen kunnen veranderen. Voor deze gids zijn de onderstaande
+                            officiële bronnen gecontroleerd; open LinkedIn Help als een knop of instelling anders heet.
+                        </p>
+                        <ul className="mt-6 space-y-4">
+                            {article.sources.map(source => (
+                                <li key={source.url} className="border-2 border-black bg-white p-4">
+                                    <a
+                                        href={source.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-black text-black underline decoration-2 underline-offset-4"
+                                    >
+                                        {source.publisher}: {source.title}
+                                    </a>
+                                    <p className="mt-2 text-sm font-medium leading-relaxed text-gray-700">{source.note}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                ) : null}
 
                 {/* FAQ Section */}
                 {article.faq.length > 0 && (

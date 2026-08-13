@@ -19,6 +19,7 @@ model User {
   sessions  Session[]
   pilotAccess PilotAccess?
   agencySubscription AgencySubscription?
+  agencyMatchPacks AgencyMatchPack[]
   profilePhotoProjects ProfilePhotoProject[]
 }
 
@@ -72,8 +73,35 @@ model CVDocument {
   startSource   String?
   userId       String?
   user         User?    @relation(fields: [userId], references: [id])
+  matchPack    AgencyMatchPack?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+}
+
+model AgencyMatchPack {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String
+  vacancyTitle    String?
+  vacancyText     String      @db.Text
+  locale          String      @default("nl")
+  sourceFileType  String?
+  candidateData   Json
+  anonymizedData  Json
+  analysis        Json
+  submissionData Json?
+  templateId      String      @default("professional")
+  colorThemeId    String      @default("classic-blue")
+  status          String      @default("analyzed")
+  cvDocumentId    String?     @unique
+  cvDocument      CVDocument? @relation(fields: [cvDocumentId], references: [id], onDelete: SetNull)
+  approvedAt      DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([userId, updatedAt])
+  @@index([userId, status])
 }
 
 model Template {

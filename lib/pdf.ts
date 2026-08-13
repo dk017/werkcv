@@ -1336,6 +1336,11 @@ export async function generatePDF(
 ): Promise<Buffer> {
     const html = buildHTML(data, templateId, colorThemeId);
 
+    return generatePDFFromHTML(html);
+}
+
+export async function generatePDFFromHTML(html: string): Promise<Buffer> {
+
     const browser = await puppeteer.launch({
         headless: true,
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,

@@ -55,7 +55,7 @@ export default async function AgencyAccountPage({
             <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">Agency account</p>
             <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Jouw WerkCV Agency Plan</h1>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
-              Maak en bewerk kandidaat-CV&apos;s via jouw vaste WerkCV-route. Eén nieuw CV telt als één van de 50 CV&apos;s in de huidige maandperiode.
+              Maak complete kandidaatvoorstellen en losse kandidaat-CV&apos;s via jouw vaste WerkCV-route. Een nieuw document of definitief goedgekeurd voorstel telt als één van de 50 slots.
             </p>
           </div>
 
@@ -79,7 +79,7 @@ export default async function AgencyAccountPage({
 
         {quotaError ? (
           <div className="mt-8 border-2 border-rose-500 bg-rose-50 p-4 text-sm font-semibold text-rose-950">
-            De maandlimiet van 50 CV&apos;s is bereikt. Je kunt bestaande CV&apos;s blijven openen; nieuwe CV&apos;s zijn beschikbaar in de volgende periode.
+            De maandlimiet van 50 kandidaatdocumenten en goedgekeurde voorstellen is bereikt. Bestaande documenten en voorstellen blijven beschikbaar.
           </div>
         ) : null}
 
@@ -90,7 +90,7 @@ export default async function AgencyAccountPage({
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Gebruik deze periode</p>
-                <p className="mt-1 text-3xl font-black">{access.used} / {access.period.allowance} CV&apos;s</p>
+                <p className="mt-1 text-3xl font-black">{access.used} / {access.period.allowance} voorstel-slots</p>
               </div>
               <p className="text-sm font-semibold text-slate-600">
                 Nieuwe periode vanaf {formatDate(access.period.endsAt)}
@@ -111,6 +111,12 @@ export default async function AgencyAccountPage({
                   Nieuw CV maken
                 </Link>
               ) : null}
+              <Link
+                href="/agency/account/matchpack"
+                className="inline-flex border-2 border-slate-900 bg-yellow-300 px-4 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-transform hover:translate-x-0.5 hover:translate-y-0.5"
+              >
+                Kandidaatvoorstel maken
+              </Link>
               <Link href="/templates" className="inline-flex border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700">
                 Templates bekijken
               </Link>
@@ -137,7 +143,7 @@ export default async function AgencyAccountPage({
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Laatste documenten</p>
-              <h2 className="mt-1 text-2xl font-black">Jouw CV&apos;s</h2>
+              <h2 className="mt-1 text-2xl font-black">Goedgekeurde en losse CV-documenten</h2>
             </div>
             <Link href="/agency" className="text-sm font-bold text-emerald-700 underline underline-offset-4">Agency-plan bekijken</Link>
           </div>

@@ -121,6 +121,18 @@ export type AnalyticsEvent =
     | { event: 'agency_checkout_failed'; properties: { location: string; product: 'agency'; reason: string } }
     | { event: 'agency_demo_started'; properties: { location: string; mode: 'sample' } }
     | { event: 'agency_demo_field_changed'; properties: { field: 'name' | 'title' | 'summary' | 'experience' | 'skills'; mode: 'sample' } }
+    | { event: 'agency_submission_demo_viewed'; properties: { location: string } }
+    | { event: 'agency_submission_demo_tab_changed'; properties: { tab: 'intro' | 'evidence' | 'gaps' | 'email' | 'outputs' } }
+    | { event: 'agency_sample_pack_downloaded'; properties: { variant: 'full' | 'anonymized' } }
+    | { event: 'agency_pilot_cta_clicked'; properties: { location: string } }
+    | { event: 'matchpack_analysis_started'; properties: { locale: 'nl' | 'en'; fileType: 'pdf' | 'docx' | 'unknown' } }
+    | { event: 'matchpack_analysis_completed'; properties: { locale: 'nl' | 'en'; requirementCount: number; scoreBand: string } }
+    | { event: 'matchpack_analysis_failed'; properties: { locale: 'nl' | 'en'; reason: string } }
+    | { event: 'matchpack_review_opened'; properties: { locale: 'nl' | 'en'; status: 'analyzed' | 'approved' } }
+    | { event: 'matchpack_draft_saved'; properties: { locale: 'nl' | 'en'; selectedVariant: 'full' | 'anonymized' } }
+    | { event: 'matchpack_approved'; properties: { locale: 'nl' | 'en'; selectedVariant: 'full' | 'anonymized'; requirementCount: number } }
+    | { event: 'matchpack_pdf_downloaded'; properties: { variant: 'full' | 'anonymized' } }
+    | { event: 'matchpack_email_copied'; properties: { locale: 'nl' | 'en' } }
     | { event: 'public_editor_viewed'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency' } }
     | { event: 'public_editor_fullscreen_toggled'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency'; expanded: boolean } }
     | { event: 'public_editor_download_intent'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency'; completionScore: number; templateId: string } }
@@ -211,6 +223,17 @@ export type AnalyticsEvent =
     | { event: 'quick_build_next_clicked'; properties: { cvId: string; step: string; completionScore: number } }
     | { event: 'quick_build_design_revealed'; properties: { cvId: string; completionScore: number } }
     | { event: 'quick_build_completed'; properties: { cvId: string; completionScore: number } }
+    | { event: 'voice_mode_opened'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; entryPoint: 'empty_state' | 'toolbar'; completionScore: number } }
+    | { event: 'voice_permission_result'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; result: 'granted' | 'denied' | 'unsupported' | 'error' } }
+    | { event: 'voice_answer_started'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; section: string } }
+    | { event: 'voice_answer_paused'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; section: string; durationSeconds: number } }
+    | { event: 'voice_answer_completed'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; section: string; durationSeconds: number; inputMethod: 'voice' | 'typed' | 'skipped' } }
+    | { event: 'voice_interview_reviewed'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; answerCount: number; totalDurationSeconds: number } }
+    | { event: 'voice_proposal_started'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; answerCount: number } }
+    | { event: 'voice_proposal_completed'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; changeCount: number } }
+    | { event: 'voice_proposal_failed'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; errorCode: string } }
+    | { event: 'voice_changes_applied'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; selectedChangeCount: number; completionScoreBefore: number; completionScoreAfter: number } }
+    | { event: 'voice_mode_cancelled'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; stage: string; answerCount: number } }
     // Template & theme
     | {
           event: 'template_selector_opened';

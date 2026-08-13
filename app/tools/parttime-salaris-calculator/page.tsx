@@ -32,6 +32,18 @@ const faqItems = [
     answer: "Deel je parttime salaris door je huidige uren en vermenigvuldig met de gewenste fulltime uren. Verdien je bijvoorbeeld € 2.880 bij 32 uur, dan is het equivalent bij 40 uur € 2.880 / 32 × 40 = € 3.600 bruto per maand.",
   },
   {
+    question: "Hoe bereken ik mijn parttime percentage?",
+    answer: "Deeltijdpercentage = je parttime uren ÷ de fulltime uren × 100. Werk je 32 uur bij een fulltime norm van 40 uur, dan werk je 80%. De cao of arbeidsovereenkomst bepaalt welke fulltime norm voor jouw functie geldt.",
+  },
+  {
+    question: "Hoeveel uur is 32 uur per week per maand?",
+    answer: "Gemiddeld is 32 uur per week ongeveer 138,7 uur per maand: 32 × 52 ÷ 12. Het echte aantal uren op een loonstrook kan per maand verschillen door de kalender en je rooster.",
+  },
+  {
+    question: "Hoeveel uur is fulltime in Nederland?",
+    answer: "Er is geen algemene wettelijke fulltime norm die voor iedere baan hetzelfde is. In cao's en contracten is fulltime vaak 36, 38 of 40 uur per week. Het CBS gebruikt voor arbeidsmarktstatistiek 35 uur of meer als voltijd, maar voor je salarisberekening telt de voltijdnorm van jouw werkgever of cao.",
+  },
+  {
     question: "Wat is het minimumloon bij parttime werken in 2026?",
     answer: "Sinds 2024 is er geen vast wettelijk minimum maandloon meer. De wettelijke basis is een minimumuurloon. Voor werknemers van 21 jaar en ouder was dit van januari tot en met juni 2026 € 14,71 en is dit sinds 1 juli 2026 € 14,99 bruto per uur.",
   },
@@ -82,6 +94,17 @@ export const metadata: Metadata = buildDutchMetadata({
     "fulltime naar parttime berekenen",
     "parttime naar fulltime berekenen",
     "salaris 40 uur naar 32 uur berekenen",
+    "salaris berekenen parttime",
+    "salaris parttime berekenen",
+    "fulltime salaris naar parttime",
+    "salaris omrekenen naar 32 uur",
+    "32 uur per week salaris",
+    "32 uur per week hoeveel uur per maand",
+    "24 uur per week hoeveel uur per maand",
+    "fulltime hoeveel uur",
+    "hoeveel uur is fulltime",
+    "fulltime uren per week",
+    "36 38 of 40 uur fulltime",
     "minimumloon parttime 2026",
   ],
 });
@@ -120,7 +143,7 @@ export default function ParttimeSalarisCalculatorPage() {
                 Geld
               </span>
               <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                Bijgewerkt 14 juli 2026
+                Gecontroleerd en bijgewerkt 12 augustus 2026
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
@@ -130,28 +153,23 @@ export default function ParttimeSalarisCalculatorPage() {
               Reken je salaris van fulltime naar parttime of van parttime naar fulltime. Vergelijk direct je bruto maandloon, jaarloon, uurloon en vakantiegeld bij veelgebruikte werkweken.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <TrackedToolLink
-                href="/cv-maken-zonder-abonnement"
-                eventName="tool_to_cv_cta_click"
-                toolName="parttime-salaris-calculator"
-                ctaIntent="salary"
-                trackingLocation="parttime-salaris-calculator:hero_salary_to_cv"
-                trackingLabel="Bekijk cv zonder abonnement"
+              <Link
+                href="#calculator"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black hover:bg-teal-300 transition-colors"
               >
-                Bekijk cv zonder abonnement
-              </TrackedToolLink>
+                Start berekening
+              </Link>
               <TrackedToolLink
-                href="/cv-maken-zonder-abonnement"
+                href="/editor?template=professional&startSource=parttime_salary_hero"
                 eventName="tool_to_cv_cta_click"
                 toolName="parttime-salaris-calculator"
                 ctaVariant="secondary"
                 ctaIntent="salary"
-                trackingLocation="parttime-salaris-calculator:hero_no_subscription"
-                trackingLabel="CV maken zonder abonnement"
+                trackingLocation="parttime-salaris-calculator:hero_salary_to_cv"
+                trackingLabel="Maak je CV voor je volgende baan"
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-200 transition-colors"
               >
-                CV zonder abonnement
+                Maak je CV voor je volgende baan
               </TrackedToolLink>
               <Link
                 href="/templates"
@@ -192,6 +210,7 @@ export default function ParttimeSalarisCalculatorPage() {
           <p className="mb-3 text-xs font-black uppercase tracking-[0.18em] text-slate-500">Ga direct naar</p>
           <div className="flex flex-wrap gap-2 text-sm font-black">
             <a href="#calculator" className="border border-slate-300 px-3 py-2 hover:bg-slate-100">Calculator</a>
+            <a href="#fulltime-uren" className="border border-slate-300 px-3 py-2 hover:bg-slate-100">Hoeveel uur is fulltime?</a>
             <a href="#uren-voorbeelden" className="border border-slate-300 px-3 py-2 hover:bg-slate-100">40, 36, 32 en 24 uur</a>
             <a href="#uitleg" className="border border-slate-300 px-3 py-2 hover:bg-slate-100">Formule en uitleg</a>
             <a href="#veelgestelde-vragen" className="border border-slate-300 px-3 py-2 hover:bg-slate-100">Veelgestelde vragen</a>
@@ -200,6 +219,29 @@ export default function ParttimeSalarisCalculatorPage() {
 
         <section id="calculator" className="mb-12 scroll-mt-6">
           <ParttimeSalarisTool />
+        </section>
+
+        <section id="fulltime-uren" className="mb-12 scroll-mt-6 border-4 border-black bg-[#FFF7D6] p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">Fulltime hoeveel uur?</p>
+          <h2 className="mt-2 text-2xl font-black text-slate-900 sm:text-3xl">Fulltime is meestal 36, 38 of 40 uur per week</h2>
+          <p className="mt-3 max-w-4xl text-sm leading-relaxed text-slate-700">
+            Nederland heeft geen algemene wettelijke regel die fulltime voor iedere werknemer op precies 40 uur zet. De normale voltijdwerkweek volgt uit je cao, arbeidsovereenkomst of bedrijfsregeling en is vaak 36, 38 of 40 uur. Voor de berekening op deze pagina gebruik je daarom niet automatisch 40, maar de fulltime uren die bij jouw functie horen.
+          </p>
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            {[
+              ["36 uur", "Komt onder meer voor in sectoren met arbeidsduurverkorting of een 36-urige cao-norm."],
+              ["38 uur", "Wordt in verschillende cao's gebruikt als volledige werkweek."],
+              ["40 uur", "Is gebruikelijk bij veel bedrijven, maar niet de enige fulltime norm."],
+            ].map(([hours, explanation]) => (
+              <div key={hours} className="border-2 border-black bg-white p-4">
+                <h3 className="text-lg font-black text-slate-900">{hours} fulltime</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-700">{explanation}</p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-4 text-xs leading-relaxed text-slate-600">
+            Let op het verschil tussen een contractnorm en een statistische indeling: het CBS noemt 35 uur of meer voltijd voor arbeidsmarktstatistiek. Dat maakt 35 uur nog niet automatisch de fulltime salarisnorm in jouw contract.
+          </p>
         </section>
 
         <section id="uitleg" className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-12 scroll-mt-6">
@@ -248,6 +290,51 @@ export default function ParttimeSalarisCalculatorPage() {
             </table>
           </div>
           <p className="mt-4 text-sm text-slate-700">Andersom werkt dezelfde verhouding: verdien je € 2.880 bij 32 uur, dan is het fulltime-equivalent bij 40 uur € 2.880 × 40 / 32 = € 3.600 bruto per maand.</p>
+        </section>
+
+        <section className="mb-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="border-2 border-black bg-[#E9FFFC] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">Parttime loon berekenen</p>
+            <h2 className="mt-2 text-2xl font-black text-slate-900">Parttime percentage berekenen</h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-700">
+              Deel je gewenste uren door de fulltime norm en vermenigvuldig met 100. Bij 32 uur op een 40-urige werkweek is dat 32 ÷ 40 × 100 = 80%. Gebruik in de calculator altijd de fulltime norm uit je cao of contract; die kan 36 uur zijn in plaats van 40.
+            </p>
+            <ul className="mt-4 space-y-2 text-sm font-medium text-slate-700">
+              <li>40 → 32 uur = 80%</li>
+              <li>40 → 24 uur = 60%</li>
+              <li>36 → 32 uur = 88,89%</li>
+            </ul>
+          </div>
+          <div className="border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Uren per maand</p>
+            <h2 className="mt-2 text-2xl font-black text-slate-900">Hoeveel uur is een parttime contract per maand?</h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-700">
+              Voor een gemiddelde maand reken je met uren per week × 52 ÷ 12. Dat is een gemiddelde voor planning en vergelijking; je werkelijke maand kan door de kalender iets hoger of lager uitvallen.
+            </p>
+            <div className="mt-4 overflow-x-auto">
+              <table className="min-w-full border-collapse text-sm">
+                <thead>
+                  <tr className="border-b-2 border-black text-left">
+                    <th className="px-3 py-2">Contract</th>
+                    <th className="px-3 py-2">Gemiddeld per maand</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    ["24 uur per week", "104 uur"],
+                    ["28 uur per week", "121,3 uur"],
+                    ["32 uur per week", "138,7 uur"],
+                    ["36 uur per week", "156 uur"],
+                  ].map(([contract, monthlyHours]) => (
+                    <tr key={contract} className="border-b border-slate-200">
+                      <td className="px-3 py-2 font-medium text-slate-700">{contract}</td>
+                      <td className="px-3 py-2 font-medium text-slate-700">{monthlyHours}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </section>
 
         <section className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-6 mb-12">
@@ -369,6 +456,16 @@ export default function ParttimeSalarisCalculatorPage() {
               Deze tool gebruikt een pro-rata omzetting tussen fulltime en parttime uren. De juridische basis voor het wijzigen van je arbeidsduur en de gevolgen voor je salaris liggen in de afspraken met je werkgever, cao en contract. Sinds 2024 is het minimumloon een uurloon. Voor werknemers van 21 jaar en ouder was dit € 14,71 per uur van januari tot en met juni 2026 en is dit sinds 1 juli 2026 € 14,99 bruto per uur.
             </p>
             <ul className="space-y-2">
+              <li>
+                <a
+                  href="https://longreads.cbs.nl/dearbeidsmarktincijfers-2025/begrippen/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-teal-700 hover:underline"
+                >
+                  CBS - Voltijd, voltijdbaan en wekelijkse arbeidsduur
+                </a>
+              </li>
               <li>
                 <a
                   href="https://www.rijksoverheid.nl/onderwerpen/arbeidsovereenkomst-en-cao/vraag-en-antwoord/wanneer-mag-ik-meer-of-minder-uren-werken"

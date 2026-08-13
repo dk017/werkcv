@@ -53,6 +53,22 @@ const faqItems = [
     question: "Wordt een eindejaarsuitkering anders belast dan normaal loon?",
     answer: "Het blijft onderdeel van je loon, maar op de loonstrook kan de inhouding anders aanvoelen door de manier waarop werkgevers loonheffing op bijzondere beloningen toepassen. Daardoor kan bruto en netto verder uit elkaar liggen dan je verwacht.",
   },
+  {
+    question: "Hoe bereken ik mijn eindejaarsuitkering?",
+    answer: "Bij een percentage bereken je eerst je bruto jaarloon en vermenigvuldig je dat met het percentage uit je cao of contract. Bij een vaste 13e maand is de bruto uitkering meestal één extra bruto maandsalaris. Een pro-rata regeling vermenigvuldigt die uitkomst daarna met het deel van het jaar dat je hebt gewerkt.",
+  },
+  {
+    question: "Hoeveel eindejaarsuitkering krijg ik netto?",
+    answer: "Dat hangt af van je totale jaarinkomen, loonheffingskorting en de inhouding op bijzondere beloningen. Deze pagina geeft een netto-indicatie door het geschatte netto jaarinkomen met en zonder uitkering te vergelijken; je loonstrook blijft leidend.",
+  },
+  {
+    question: "Is een eindejaarspremie hetzelfde als een eindejaarsuitkering?",
+    answer: "De termen worden soms door elkaar gebruikt. In Nederland bepalen je cao, arbeidsovereenkomst of regeling welke uitkering geldt. Zoek je op eindejaarspremie, controleer dan vooral of jouw werkgever een percentage, een vaste 13e maand of een pro-rata regeling bedoelt.",
+  },
+  {
+    question: "Welk percentage is een 13e maand?",
+    answer: "Een volledige extra maand is ongeveer 8,33% van twaalf bruto maandsalarissen. Dat percentage is alleen een handige omrekening; je contract of cao kan een andere grondslag, bonus of uitbetalingsregel gebruiken.",
+  },
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
@@ -74,6 +90,12 @@ export const metadata: Metadata = buildDutchMetadata({
     "eindejaarsuitkering en 13e maand",
     "wanneer eindejaarsuitkering",
     "bijzonder tarief eindejaarsuitkering",
+    "hoe bereken ik mijn eindejaarsuitkering",
+    "hoe bereken je eindejaarsuitkering",
+    "eindejaarspremie berekenen",
+    "13e maand netto berekenen",
+    "13e maand percentage",
+    "13e maand belasting",
   ],
 });
 
@@ -111,7 +133,7 @@ export default function EindejaarsuitkeringBerekenenPage() {
                 Geld
               </span>
               <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
-                Bijgewerkt 14 juli 2026
+                Gecontroleerd en bijgewerkt 12 augustus 2026
               </span>
             </div>
             <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
@@ -202,6 +224,23 @@ export default function EindejaarsuitkeringBerekenenPage() {
           <p className="mt-3 text-sm font-black text-slate-900">
             Formule: bruto eindejaarsuitkering = bruto jaarloon × het percentage uit je cao of contract.
           </p>
+        </section>
+
+        <section className="mb-12 grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">13e maand berekenen</p>
+            <h2 className="mt-2 text-2xl font-black text-slate-900">8,33% of één extra bruto maandloon?</h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-700">
+              Een volledige 13e maand is meestal één extra bruto maandsalaris. Omgerekend is dat ongeveer 8,33% van twaalf bruto maandsalarissen: €3.000 bruto per maand betekent dan ongeveer €3.000 bruto eindejaarsuitkering. Bij een percentage of pro-rata regeling kan je contract een andere grondslag gebruiken.
+            </p>
+          </div>
+          <div className="border-2 border-black bg-[#E9FFFC] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">Netto eindejaarsuitkering</p>
+            <h2 className="mt-2 text-2xl font-black text-slate-900">Waarom je loonstrook lager uitvalt</h2>
+            <p className="mt-3 text-sm leading-relaxed text-slate-700">
+              Een extra uitkering blijft loon. De loonheffing op bijzondere beloningen kan daardoor hoger aanvoelen dan de inhouding op je normale maandloon. Gebruik de calculator voor een indicatie en vergelijk het resultaat daarna met je eigen cao en loonstrook.
+            </p>
+          </div>
         </section>
 
         <section id="eindejaarsuitkering-calculator" className="mb-12 scroll-mt-6">
@@ -392,6 +431,16 @@ export default function EindejaarsuitkeringBerekenenPage() {
                   className="font-medium text-teal-700 hover:underline"
                 >
                   Belastingdienst - Loonbelastingtabellen en bijzondere beloningen
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://download.belastingdienst.nl/belastingdienst/docs/handboek-loonheffingen-lh0221t61fd.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-teal-700 hover:underline"
+                >
+                  Belastingdienst - Handboek Loonheffingen 2026, bijzondere beloningen
                 </a>
               </li>
             </ul>
