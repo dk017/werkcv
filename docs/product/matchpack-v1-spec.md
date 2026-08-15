@@ -1,6 +1,8 @@
 # WerkCV MatchPack v1.1
 
-Status: implementation verified; production deployment is included in this release.
+Status: implementation and production deployment verified. The product is
+available in early production. Controlled candidate-proposal cases are still
+required before publishing quality, acceptance or time-saving claims.
 
 ## Product promise
 
@@ -9,7 +11,8 @@ MatchPack turns one candidate CV and one vacancy into an agency-ready review pac
 1. Extract the candidate CV into the existing WerkCV structure.
 2. Extract the concrete vacancy requirements and map them to evidence in the CV.
 3. Produce a concise, evidence-backed fit summary for the recruiter.
-4. Produce the branded full CV and a separate anonymised CV draft.
+4. Produce a full CV using the Agency Plan's configured company name, standard
+   template and colour, plus a separate redacted/anonymised CV draft.
 5. Let the recruiter correct extracted CV data and edit the client introduction, email and confirmed commercial details.
 6. Require human approval before the frozen snapshot becomes a complete client-facing submission and uses one monthly slot.
 
@@ -41,7 +44,9 @@ An approved pack is immutable. Before approval, the recruiter may correct the st
 - Only structured CV data, vacancy text, validated analysis, submission copy and derived anonymised data are stored. The uploaded binary and raw extracted CV text are not stored.
 - A draft analysis does not consume quota. Approval creates one `CVDocument` and one existing `AgencyCvUsage` row in the same serializable transaction.
 - Approval is idempotent. A repeated click or concurrent request returns the existing linked CV instead of consuming another slot.
-- The agency plan's configured template and colour are used for the full and anonymised outputs. The existing agency-branded route lock remains intact.
+- The Agency Plan's configured company name, standard template and colour are
+  used for the full and redacted outputs. v1 does not provide logo upload,
+  bespoke templates or multiple brand profiles.
 
 ## Evidence rules
 
@@ -67,7 +72,13 @@ The v1 anonymised draft removes or replaces:
 - reference contact details and reference names;
 - direct contact-like strings found in free text (email addresses, phone numbers, URLs and postal codes).
 
-Company names, schools and project names are retained in v1 because reliably removing them without damaging the candidate story requires a separate review experience. The UI explicitly labels the result as an anonymised draft and requires the recruiter to review it before sharing. We do not claim that it is legally anonymous or AVG-proof.
+Company names, schools and project names are retained in v1 because reliably
+removing them without damaging the candidate story requires a separate review
+experience. A candidate name embedded inside narrative CV text may also remain;
+the automatic scrubber clears structured identity fields and contact-like text
+but is not a complete entity-redaction system. The UI labels the result as an
+anonymised draft and requires the recruiter to review it before sharing. We do
+not claim that it is legally anonymous or AVG-proof.
 
 ## Security boundaries
 

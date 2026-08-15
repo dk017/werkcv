@@ -150,7 +150,7 @@ export default function AgencyInteractiveDemo() {
             Zie hoe een klant-CV er direct rustiger en voorstelbaar uitziet.
           </h2>
           <p className="mt-4 leading-relaxed text-slate-600">
-            Klik door een fictief Nederlands kandidaatprofiel en pas een paar velden aan. Je ziet dezelfde vaste CV-route die je bureau na onboarding voor nieuwe CV&apos;s gebruikt.
+            Klik door een fictief Nederlands kandidaatprofiel en pas een paar velden aan. Je ziet dezelfde vaste CV-route die je bureau met Agency-toegang voor nieuwe CV&apos;s gebruikt.
           </p>
           <div className="mt-6 space-y-3 text-sm font-bold text-slate-700">
             <p className="flex gap-2"><span className="text-emerald-700">✓</span> Geen login voor deze demo</p>
@@ -256,7 +256,7 @@ export default function AgencyInteractiveDemo() {
 
               <div className="mt-5 border-t-2 border-slate-200 pt-4">
                 <p className="text-xs leading-relaxed text-slate-500">
-                  Dit is een preview van de vaste branded route. Na onboarding richten we één route zorgvuldig voor jullie bureau in.
+                  Dit is een preview van de vaste voorstelroute. Met de Agency-toegang maakt jouw bureau voorstellen in een consistente opmaak.
                 </p>
                 <AgencyCheckoutButton
                   location="agency_demo"

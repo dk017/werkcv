@@ -124,7 +124,30 @@ export type AnalyticsEvent =
     | { event: 'agency_submission_demo_viewed'; properties: { location: string } }
     | { event: 'agency_submission_demo_tab_changed'; properties: { tab: 'intro' | 'evidence' | 'gaps' | 'email' | 'outputs' } }
     | { event: 'agency_sample_pack_downloaded'; properties: { variant: 'full' | 'anonymized' } }
-    | { event: 'agency_pilot_cta_clicked'; properties: { location: string } }
+    | { event: 'agency_hub_viewed'; properties: { path: string } }
+    | { event: 'agency_guide_index_viewed'; properties: { path: string } }
+    | { event: 'agency_guide_viewed'; properties: { path: string; slug: string } }
+    | {
+          event: 'agency_content_cta_clicked';
+          properties: {
+              path: string;
+              location: string;
+              destination: string;
+              intent: 'learn' | 'product' | 'login' | 'sample' | 'knowledge';
+          };
+      }
+    | {
+          event: 'agency_roi_completed';
+          properties: {
+              path: string;
+              submissions: number;
+              minutes: number;
+              hourlyCost: number;
+              reductionPercent: number;
+              potentialHoursSaved: number;
+              potentialCostSaved: number;
+          };
+      }
     | { event: 'matchpack_analysis_started'; properties: { locale: 'nl' | 'en'; fileType: 'pdf' | 'docx' | 'unknown' } }
     | { event: 'matchpack_analysis_completed'; properties: { locale: 'nl' | 'en'; requirementCount: number; scoreBand: string } }
     | { event: 'matchpack_analysis_failed'; properties: { locale: 'nl' | 'en'; reason: string } }
