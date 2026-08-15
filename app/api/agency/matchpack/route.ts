@@ -15,6 +15,7 @@ import {
 } from "@/lib/agency-matchpack";
 import { matchCvVacature } from "@/lib/tools/cv-vacature-match";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
+import { isAllowedSameOriginRequest } from "@/lib/request-origin";
 
 export const runtime = "nodejs";
 
@@ -31,20 +32,6 @@ function json(body: Record<string, unknown>, status = 200) {
     status,
     headers: { "Cache-Control": "no-store" },
   });
-}
-
-function isSameOriginWhenProvided(request: NextRequest): boolean {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== request.nextUrl.origin) return false;
-
-  const referer = request.headers.get("referer");
-  if (!referer) return true;
-
-  try {
-    return new URL(referer).origin === request.nextUrl.origin;
-  } catch {
-    return false;
-  }
 }
 
 function getExtension(name: string): string {
@@ -74,7 +61,7 @@ function errorCode(error: unknown): string {
 }
 
 export async function POST(request: NextRequest) {
-  if (!isSameOriginWhenProvided(request)) {
+  if (!isAllowedSameOriginRequest(request, { checkReferer: true })) {
     return json({ error: "Invalid request origin.", code: "INVALID_ORIGIN" }, 403);
   }
 

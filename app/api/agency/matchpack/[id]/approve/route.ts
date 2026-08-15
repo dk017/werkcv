@@ -14,6 +14,7 @@ import {
 } from "@/lib/agency-matchpack";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
+import { isAllowedSameOriginRequest } from "@/lib/request-origin";
 
 export const runtime = "nodejs";
 
@@ -22,18 +23,6 @@ function json(body: Record<string, unknown>, status = 200) {
     status,
     headers: { "Cache-Control": "no-store" },
   });
-}
-
-function isSameOriginWhenProvided(request: NextRequest): boolean {
-  const origin = request.headers.get("origin");
-  if (origin && origin !== request.nextUrl.origin) return false;
-  const referer = request.headers.get("referer");
-  if (!referer) return true;
-  try {
-    return new URL(referer).origin === request.nextUrl.origin;
-  } catch {
-    return false;
-  }
 }
 
 function accessErrorResponse(error: AgencyAccessError) {
@@ -49,7 +38,7 @@ export async function POST(
   request: NextRequest,
   context: { params: Promise<{ id: string }> },
 ) {
-  if (!isSameOriginWhenProvided(request)) {
+  if (!isAllowedSameOriginRequest(request, { checkReferer: true })) {
     return json({ error: "Invalid request origin.", code: "INVALID_ORIGIN" }, 403);
   }
 
