@@ -11,7 +11,7 @@ import { isAgencyDodoConfigured } from "@/lib/dodo";
 export const metadata: Metadata = {
   title: "Kandidaatvoorstel maken voor opdrachtgevers | WerkCV Agency",
   description:
-    "Van kandidaat-CV en vacature naar bewijs per functie-eis, recruiter-review en een volledig of geredigeerd kandidaatvoorstel als PDF.",
+    "Van kandidaat-CV en vacature naar bewijs per functie-eis, recruiter-review en een volledig of optioneel concept zonder directe contactgegevens als PDF.",
   alternates: { canonical: "https://werkcv.nl/agency" },
   openGraph: {
     title: "Van kandidaat-CV en vacature naar een compleet klantvoorstel",
@@ -30,7 +30,7 @@ const planItems = [
   "Tot 50 nieuwe kandidaatdocumenten of goedgekeurde voorstellen per betaalde maand",
   "Vacature-eisen gekoppeld aan concreet CV-bewijs",
   "Bewerkbare klantintroductie en begeleidende e-mail",
-  "Volledig voorstel en geredigeerd concept in consistente agency-opmaak",
+  "Volledig voorstel en optioneel concept zonder directe contactgegevens in consistente agency-opmaak",
   "Nederlandse en Engelse output",
   "Eén account, handmatige onboarding en priority support",
 ];
@@ -38,7 +38,7 @@ const planItems = [
 const faqs = [
   {
     question: "Wat is een compleet kandidaatvoorstel in WerkCV?",
-    answer: "Een goedgekeurd voorstel bestaat uit een introductiepagina in de ingestelde agency-opmaak, de door de recruiter bevestigde voorstelgegevens en een volledig of geredigeerd CV. De begeleidende e-mail kan direct worden gekopieerd. De interne bewijsmatrix en recruiternotities worden niet meegestuurd.",
+    answer: "Een goedgekeurd voorstel bestaat uit een introductiepagina in de ingestelde agency-opmaak, de door de recruiter bevestigde voorstelgegevens en de gekozen CV-versie. De begeleidende e-mail kan direct worden gekopieerd. De interne bewijsmatrix en recruiternotities worden niet meegestuurd.",
   },
   {
     question: "Vult WerkCV ontbrekende kandidaatdata automatisch in?",
@@ -49,7 +49,7 @@ const faqs = [
     answer: "Een nieuw los CV-document of de definitieve goedkeuring van een kandidaatvoorstel telt als één slot. Analyseren, een concept opslaan, opnieuw openen en hetzelfde pakket opnieuw downloaden tellen niet opnieuw.",
   },
   {
-    question: "Is het geredigeerde concept automatisch anoniem of AVG-proof?",
+    question: "Is de versie zonder directe contactgegevens automatisch anoniem of AVG-proof?",
     answer: "Nee. WerkCV maakt gestructureerde naam- en contactvelden leeg en filtert contactachtige tekst. Namen in lopende tekst, bedrijfsnamen, scholen en projecten kunnen zichtbaar blijven. De recruiter moet het PDF-bestand, de grondslag voor verwerking en het doel van delen zelf controleren.",
   },
   {
@@ -103,16 +103,16 @@ export default function AgencyPage() {
           <div>
             <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Voor recruitmentbureaus en detacheerders</p>
             <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">Maak ieder kandidaatvoorstel verdedigbaar vóór het naar de klant gaat.</h1>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">WerkCV legt functie-eisen naast concreet CV-bewijs, houdt ontbrekende informatie zichtbaar en brengt bevestigde voorstelgegevens samen in één review. U keurt de snapshot goed en downloadt daarna een volledig voorstel of geredigeerd concept als PDF.</p>
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">WerkCV legt functie-eisen naast concreet CV-bewijs, houdt ontbrekende informatie zichtbaar en brengt bevestigde voorstelgegevens samen in één review. U keurt de snapshot goed en kiest daarna een volledig voorstel of een optioneel concept zonder directe contactgegevens als PDF.</p>
             <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
               <CheckoutAction location="agency_hero_checkout" />
               <a href="#voorbeeld" className="text-sm font-black text-slate-700 underline decoration-2 underline-offset-4 hover:text-emerald-700">Bekijk eerst het complete voorbeeld</a>
             </div>
-            <div className="mt-7 flex flex-wrap gap-2 text-xs font-bold text-slate-600"><span className="border border-slate-300 bg-white px-3 py-2">Bewijs, geen aannames</span><span className="border border-slate-300 bg-white px-3 py-2">Menselijke goedkeuring</span><span className="border border-slate-300 bg-white px-3 py-2">NL + EN</span><span className="border border-slate-300 bg-white px-3 py-2">Volledig + geredigeerd concept</span></div>
+            <div className="mt-7 flex flex-wrap gap-2 text-xs font-bold text-slate-600"><span className="border border-slate-300 bg-white px-3 py-2">Bewijs, geen aannames</span><span className="border border-slate-300 bg-white px-3 py-2">Menselijke goedkeuring</span><span className="border border-slate-300 bg-white px-3 py-2">NL + EN</span><span className="border border-slate-300 bg-white px-3 py-2">Volledig + contactvrij concept</span></div>
           </div>
 
           <div className="relative border-2 border-slate-900 bg-white p-5 shadow-[8px_8px_0px_0px_rgba(78,205,196,1)] sm:p-7">
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">WerkCV MatchPack</p><h2 className="mt-2 text-2xl font-black">Eén review. Eén goedgekeurde bron. Twee klantpakketten.</h2>
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">WerkCV MatchPack</p><h2 className="mt-2 text-2xl font-black">Eén review. Eén goedgekeurde bron. Jouw gekozen klantpakket.</h2>
             <div className="mt-6 grid grid-cols-[1fr_auto_1fr] items-center gap-2 text-center text-xs font-black"><div className="border-2 border-slate-900 bg-yellow-200 p-4">Kandidaat-CV<br />+ vacature</div><span className="text-xl">→</span><div className="border-2 border-slate-900 bg-emerald-100 p-4">Bewijs<br />+ open punten</div></div>
             <div className="mx-auto my-2 w-fit text-xl font-black">↓</div>
             <div className="grid gap-3 sm:grid-cols-2"><div className="border-2 border-slate-900 p-4"><p className="font-black">Recruiter ziet</p><p className="mt-2 text-xs leading-relaxed text-slate-600">Bewijsmatrix, hiaten, correcties, intern commentaar en verplichte review.</p></div><div className="border-2 border-slate-900 bg-slate-950 p-4 text-white"><p className="font-black">Klant ontvangt</p><p className="mt-2 text-xs leading-relaxed text-slate-300">Introductie, bevestigde gegevens en het gekozen PDF-pakket in consistente opmaak.</p></div></div>
@@ -128,12 +128,12 @@ export default function AgencyPage() {
             ["1", "Upload en plak", "Upload een tekstgebaseerd PDF- of DOCX-CV en plak de volledige vacature."],
             ["2", "Controleer bewijs", "Zie per functie-eis wat sterk, gedeeltelijk of niet aantoonbaar is in het CV."],
             ["3", "Corrigeer en vul aan", "Herstel extractiefouten en voeg alleen bevestigde commerciële gegevens toe."],
-            ["4", "Keur één snapshot goed", "Download een volledig voorstel of geredigeerd concept en kopieer de begeleidende e-mail."],
+            ["4", "Keur één snapshot goed", "Kies de klantversie, download het voorstel en kopieer de begeleidende e-mail."],
           ].map(([number, title, body]) => <article key={number} className="border-2 border-slate-900 bg-white p-5"><span className="flex h-9 w-9 items-center justify-center bg-emerald-400 text-sm font-black">{number}</span><h3 className="mt-4 font-black">{title}</h3><p className="mt-2 text-sm leading-relaxed text-slate-600">{body}</p></article>)}</div>
         </section>
 
         <section className="border-y-2 border-slate-900 py-14">
-          <div className="grid gap-8 lg:grid-cols-2"><div><p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">Wat WerkCV bewust wel doet</p><ul className="mt-5 space-y-3 text-sm font-semibold leading-relaxed">{["Vacature-eisen koppelen aan zichtbaar CV-bewijs.", "Ontbrekende informatie als open punt tonen.", "Correcties vóór goedkeuring in beide CV-versies verwerken.", "Gestructureerde naam- en contactvelden in een conceptversie leegmaken.", "Menselijke controle vereisen vóór het slot wordt gebruikt."].map((item) => <li key={item} className="flex gap-3"><span className="font-black text-emerald-700">✓</span>{item}</li>)}</ul></div><div className="border-2 border-amber-400 bg-amber-50 p-6"><p className="text-xs font-black uppercase tracking-[0.18em] text-amber-800">Wat WerkCV niet belooft</p><ul className="mt-5 space-y-3 text-sm font-semibold leading-relaxed text-amber-950">{["Geen verzonnen ervaring, beschikbaarheid, salaris of resultaten.", "Geen automatische selectie- of plaatsingsbeslissing.", "Geen garantie dat een geredigeerd concept juridisch anoniem is.", "Nog geen ATS-integratie, bulkverwerking of automatische verzending.", "Nog geen gedeelde teamrollen of klantportaal."].map((item) => <li key={item} className="flex gap-3"><span className="font-black">—</span>{item}</li>)}</ul></div></div>
+          <div className="grid gap-8 lg:grid-cols-2"><div><p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">Wat WerkCV bewust wel doet</p><ul className="mt-5 space-y-3 text-sm font-semibold leading-relaxed">{["Vacature-eisen koppelen aan zichtbaar CV-bewijs.", "Ontbrekende informatie als open punt tonen.", "Correcties vóór goedkeuring in beide CV-versies verwerken.", "Een optionele versie zonder directe contactgegevens aanbieden.", "Menselijke controle vereisen vóór het slot wordt gebruikt."].map((item) => <li key={item} className="flex gap-3"><span className="font-black text-emerald-700">✓</span>{item}</li>)}</ul></div><div className="border-2 border-amber-400 bg-amber-50 p-6"><p className="text-xs font-black uppercase tracking-[0.18em] text-amber-800">Wat WerkCV niet belooft</p><ul className="mt-5 space-y-3 text-sm font-semibold leading-relaxed text-amber-950">{["Geen verzonnen ervaring, beschikbaarheid, salaris of resultaten.", "Geen automatische selectie- of plaatsingsbeslissing.", "Geen garantie dat een versie zonder directe contactgegevens juridisch anoniem is.", "Nog geen ATS-integratie, bulkverwerking of automatische verzending.", "Nog geen gedeelde teamrollen of klantportaal."].map((item) => <li key={item} className="flex gap-3"><span className="font-black">—</span>{item}</li>)}</ul></div></div>
         </section>
 
         <AgencyRoiCalculator />

@@ -52,7 +52,7 @@ export default async function AgencyMatchPackPage() {
         <section className="mt-8 max-w-4xl">
           <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">WerkCV MatchPack</p>
           <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Van CV en vacature naar een compleet kandidaatvoorstel.</h1>
-          <p className="mt-4 text-base leading-relaxed text-slate-600">Controleer bewijs per functie-eis, corrigeer de brondata en maak één consistente klantintroductie met volledig CV of geredigeerd concept. Pas bij jouw definitieve goedkeuring wordt een voorstel-slot gebruikt.</p>
+          <p className="mt-4 text-base leading-relaxed text-slate-600">Controleer bewijs per functie-eis, corrigeer de brondata en maak één consistente klantintroductie. Kies daarna bewust tussen een volledig voorstel of een concept zonder directe contactgegevens. Pas bij jouw definitieve goedkeuring wordt een voorstel-slot gebruikt.</p>
         </section>
 
         {access.state === "active" ? (
@@ -87,8 +87,8 @@ export default async function AgencyMatchPackPage() {
 
         <section className="mt-10 grid gap-4 border-t-2 border-slate-900 pt-6 text-sm text-slate-600 md:grid-cols-3">
           <div><p className="font-black text-slate-900">1. Onderbouw</p><p className="mt-1 leading-relaxed">Vacature-eisen worden gekoppeld aan concreet CV-bewijs en openstaande punten.</p></div>
-          <div><p className="font-black text-slate-900">2. Corrigeer</p><p className="mt-1 leading-relaxed">Eén gecontroleerde bron voedt het voorblad, volledige CV en geredigeerde concept.</p></div>
-          <div><p className="font-black text-slate-900">3. Keur goed</p><p className="mt-1 leading-relaxed">Na jouw checklist wordt één voorstel-slot gebruikt en zijn beide pakketten beschikbaar.</p></div>
+          <div><p className="font-black text-slate-900">2. Corrigeer</p><p className="mt-1 leading-relaxed">Eén gecontroleerde bron voedt het voorblad, volledige CV en optionele versie zonder directe contactgegevens.</p></div>
+          <div><p className="font-black text-slate-900">3. Keur goed</p><p className="mt-1 leading-relaxed">Na jouw checklist wordt één voorstel-slot gebruikt en kun je de gekozen klantversie downloaden.</p></div>
         </section>
       </div>
     </main>

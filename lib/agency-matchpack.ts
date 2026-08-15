@@ -272,8 +272,8 @@ export function anonymizeCvData(input: CVData, locale: MatchPackLocale = "nl"): 
     data: normalized,
     removedFields,
     reviewWarning: locale === "en"
-      ? "Anonymised draft. Review company names, schools and project details before sharing with a client."
-      : "Geanonimiseerd concept. Controleer bedrijfsnamen, scholen en projectdetails voordat je dit met een klant deelt.",
+      ? "Direct contact details removed. Review company names, schools and project details before sharing with a client."
+      : "Directe contactgegevens verwijderd. Controleer bedrijfsnamen, scholen en projectdetails voordat je dit met een klant deelt.",
   };
 }
 
