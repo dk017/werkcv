@@ -124,6 +124,10 @@ export type AnalyticsEvent =
     | { event: 'agency_submission_demo_viewed'; properties: { location: string } }
     | { event: 'agency_submission_demo_tab_changed'; properties: { tab: 'intro' | 'evidence' | 'gaps' | 'email' | 'outputs' } }
     | { event: 'agency_sample_pack_downloaded'; properties: { variant: 'full' | 'anonymized' } }
+    | { event: 'agency_sample_output_viewed'; properties: { variant: 'full' | 'anonymized'; location: string } }
+    | { event: 'agency_workspace_started'; properties: { location: string } }
+    | { event: 'agency_docx_cta_clicked'; properties: { path: string; location: string } }
+    | { event: 'agency_redaction_cta_clicked'; properties: { path: string; location: string } }
     | { event: 'agency_hub_viewed'; properties: { path: string } }
     | { event: 'agency_guide_index_viewed'; properties: { path: string } }
     | { event: 'agency_guide_viewed'; properties: { path: string; slug: string } }
@@ -155,7 +159,9 @@ export type AnalyticsEvent =
     | { event: 'matchpack_draft_saved'; properties: { locale: 'nl' | 'en'; selectedVariant: 'full' | 'anonymized' } }
     | { event: 'matchpack_approved'; properties: { locale: 'nl' | 'en'; selectedVariant: 'full' | 'anonymized'; requirementCount: number } }
     | { event: 'matchpack_pdf_downloaded'; properties: { variant: 'full' | 'anonymized' } }
+    | { event: 'matchpack_docx_downloaded'; properties: { variant: 'full' | 'anonymized' } }
     | { event: 'matchpack_email_copied'; properties: { locale: 'nl' | 'en' } }
+    | { event: 'matchpack_client_outcome_saved'; properties: { status: 'unknown' | 'pending' | 'accepted' | 'rejected' | 'withdrawn' } }
     | { event: 'public_editor_viewed'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency' } }
     | { event: 'public_editor_fullscreen_toggled'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency'; expanded: boolean } }
     | { event: 'public_editor_download_intent'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency'; completionScore: number; templateId: string } }
