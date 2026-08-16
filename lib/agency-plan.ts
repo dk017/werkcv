@@ -1,5 +1,5 @@
 export const AGENCY_PLAN_CODE = "agency" as const;
-export const AGENCY_PLAN_NAME = "WerkCV Agency Plan" as const;
+export const AGENCY_PLAN_NAME = "WerkCV MatchPack · Agency" as const;
 export const AGENCY_MONTHLY_CV_LIMIT = 50;
 export const AGENCY_MONTHLY_PRICE_CENTS = 14900;
 export const AGENCY_CURRENCY = "EUR" as const;

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { getAgencyAccessForUser } from "@/lib/agency-access";
+import { canCreateAgencyWork, canEditAgency, getAgencyAccessForUser } from "@/lib/agency-access";
 import { prisma } from "@/lib/prisma";
 import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
 import AgencyMatchPackWorkspace from "@/components/agency/AgencyMatchPackWorkspace";
@@ -18,7 +18,7 @@ export default async function AgencyMatchPackPage() {
 
   const packs = access.state === "active"
     ? await prisma.agencyMatchPack.findMany({
-      where: { userId: user.id },
+      where: { userId: access.ownerUserId || user.id },
       orderBy: { updatedAt: "desc" },
       take: 25,
       select: {
@@ -52,7 +52,7 @@ export default async function AgencyMatchPackPage() {
         <section className="mt-8 max-w-4xl">
           <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">WerkCV MatchPack</p>
           <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Van CV en vacature naar een compleet kandidaatvoorstel.</h1>
-          <p className="mt-4 text-base leading-relaxed text-slate-600">Controleer bewijs per functie-eis, corrigeer de brondata en maak één consistente klantintroductie. Kies daarna bewust tussen een volledig voorstel of een concept zonder directe contactgegevens. Pas bij jouw definitieve goedkeuring wordt een voorstel-slot gebruikt.</p>
+          <p className="mt-4 text-base leading-relaxed text-slate-600">Controleer bewijs per functie-eis, corrigeer de brondata en maak één consistente klantintroductie. Kies daarna bewust tussen een volledig voorstel of een versie zonder directe contactgegevens. Pas bij jouw definitieve goedkeuring wordt een voorstel-slot gebruikt.</p>
         </section>
 
         {access.state === "active" ? (
@@ -66,16 +66,19 @@ export default async function AgencyMatchPackPage() {
             initialUsed={access.used}
             allowance={allowance}
             canCreate={access.canCreate}
+            canCreateWork={canCreateAgencyWork(access)}
+            canApprove={canEditAgency(access)}
+            canOpenCv={access.isOwner}
           />
         ) : (
           <section className="mt-8 max-w-2xl border-4 border-slate-900 bg-yellow-300 p-6 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]">
-            <h2 className="text-2xl font-black">Een actief Agency Plan is nodig</h2>
+            <h2 className="text-2xl font-black">Een actieve Agency-billing tier is nodig</h2>
             <p className="mt-3 text-sm font-semibold leading-relaxed text-slate-800">
               MatchPack verwerkt kandidaatdata en gebruikt de bestaande agency-quota pas bij definitieve goedkeuring. Activeer eerst het plan om de private workspace te openen.
             </p>
             {access.state === "none" ? (
               <AgencyCheckoutButton
-                label="Start Agency Plan · €149/maand"
+                label="Start MatchPack · Agency €149/maand"
                 location="agency_matchpack_locked"
                 className="mt-5 border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]"
               />

@@ -815,8 +815,8 @@ export default function HomePageClient({
                             },
                             {
                                 href: "/agency",
-                                title: "WerkCV Agency Plan",
-                                body: "Voor recruiters en boutique bureaus die kandidaat-CV's sneller in bureau-uitstraling willen opleveren.",
+                                title: "WerkCV MatchPack",
+                                body: "Voor recruiters en boutique bureaus die onderbouwde kandidaatvoorstellen sneller in bureau-uitstraling willen opleveren.",
                             },
                             {
                                 href: "/partners",

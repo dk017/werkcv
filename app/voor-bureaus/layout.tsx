@@ -4,6 +4,9 @@ import { OrganizationJsonLd } from "@/components/seo/JsonLd";
 
 const navLinks = [
   { href: "/voor-bureaus", label: "Overzicht" },
+  { href: "/voor-bureaus/kennisbank/cv-in-huisstijl-recruitmentbureau", label: "CV in huisstijl" },
+  { href: "/voor-bureaus/kennisbank/cv-anonimiseren-recruitment", label: "Privacy en redactie" },
+  { href: "/voor-bureaus/kennisbank/kandidaat-voorstellen-opdrachtgever", label: "Kandidaatprofiel / voorstel" },
   { href: "/voor-bureaus/kennisbank", label: "Kennisbank" },
   { href: "/agency#voorbeeld", label: "Voorbeeld" },
   { href: "/agency#plan", label: "Prijs" },

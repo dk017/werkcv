@@ -15,7 +15,7 @@ const path = "/voor-bureaus";
 export const metadata: Metadata = {
   title: "WerkCV voor recruitmentbureaus en detacheerders",
   description:
-    "Maak controleerbare kandidaatvoorstellen met CV-bewijs per functie-eis, zichtbare open punten, recruiter-review en consistente PDF-output.",
+    "Maak controleerbare kandidaatvoorstellen met CV-bewijs per functie-eis, zichtbare open punten, recruiter-review en consistente PDF- en DOCX-output.",
   alternates: { canonical: `https://werkcv.nl${path}` },
   openGraph: {
     title: "Van kandidaat-CV naar een voorstel dat uw opdrachtgever kan beoordelen",
@@ -42,8 +42,8 @@ const frictionPoints = [
     body: "Beschikbaarheid, tarief of specifieke toolervaring raakt gemakkelijk vermengd met aannames of losse intake-notities.",
   },
   {
-    title: "Volledige en geredigeerde versies lopen uiteen",
-    body: "Losse Word- en PDF-versies maken het moeilijk om te zien welke inhoud daadwerkelijk is gecontroleerd.",
+    title: "Volledige en contactvrije versies lopen uiteen",
+    body: "Losse bron-, volledige en versies zonder directe contactgegevens maken het moeilijk om te zien welke inhoud daadwerkelijk is gecontroleerd.",
   },
 ];
 
@@ -51,12 +51,12 @@ const workflow = [
   ["1", "Breng bron en vraag samen", "Upload één tekstgebaseerd PDF- of DOCX-CV en plak de volledige vacature."],
   ["2", "Controleer de bewijsmatrix", "Bekijk per functie-eis wat sterk, gedeeltelijk of niet aantoonbaar is in het CV."],
   ["3", "Bevestig de feiten", "Corrigeer extracties en vul alleen gegevens in die met de kandidaat zijn gecontroleerd."],
-  ["4", "Keur de snapshot goed", "Maak een volledig voorstel of geredigeerd concept als PDF en kopieer de begeleidende e-mail."],
+  ["4", "Keur de snapshot goed", "Kies een volledig voorstel of optionele versie zonder directe contactgegevens als PDF en kopieer de begeleidende e-mail."],
 ] as const;
 
 const decisionRows = [
   ["U wilt alleen een kandidaat-CV opmaken", "Agency CV-route", "Een consistente CV-PDF vanuit de bestaande editor."],
-  ["U stelt een kandidaat voor op een concrete vacature", "MatchPack", "Functie-eisen, CV-bewijs, open punten, voorstelgegevens en PDF."],
+  ["U stelt een kandidaat voor op een concrete vacature", "MatchPack", "Functie-eisen, CV-bewijs, open punten, voorstelgegevens en PDF + DOCX."],
   ["U verwerkt veel kandidaten tegelijk", "Nog niet ondersteund", "De huidige workflow behandelt één kandidaat en één vacature per voorstel."],
   ["U wilt rechtstreeks synchroniseren met een ATS", "Nog niet ondersteund", "WerkCV levert PDF-output en een kopieerbare e-mail, geen ATS-koppeling."],
 ] as const;
@@ -73,24 +73,24 @@ const faqs = [
       "Nee. Beschikbaarheid, opzegtermijn, salaris- of tariefindicatie en kandidaatwensen blijven leeg totdat de recruiter ze zelf bevestigt. Ontbrekend bewijs blijft zichtbaar in plaats van te worden omgezet in een overtuigend klinkende aanname.",
   },
   {
-    question: "Levert WerkCV een Word-bestand?",
+    question: "Levert MatchPack een DOCX-bestand?",
     answer:
-      "Nee. U kunt een tekstgebaseerd DOCX- of PDF-CV uploaden, maar de huidige klantoutput is PDF. De introductie en begeleidende e-mail zijn vóór goedkeuring bewerkbaar in de WerkCV-workspace.",
+      "Ja. Na goedkeuring kun je de gekozen klantversie als PDF én DOCX downloaden. De introductie en begeleidende e-mail zijn vóór goedkeuring bewerkbaar in de MatchPack-workspace.",
   },
   {
-    question: "Is het geredigeerde CV automatisch anoniem of AVG-proof?",
+    question: "Is de versie zonder directe contactgegevens automatisch anoniem of AVG-proof?",
     answer:
       "Nee. WerkCV maakt gestructureerde naam- en contactvelden leeg en filtert contactachtige tekst, maar namen in lopende tekst, werkgevers, opleidingen of projecten kunnen iemand nog herkenbaar maken. De recruiter moet het concept altijd controleren en blijft verantwoordelijk voor de grondslag en het doel van delen.",
   },
   {
     question: "Kan een heel recruitmentteam in hetzelfde account werken?",
     answer:
-      "De huidige versie is ingericht voor één betalende accounteigenaar. Gedeelde teamrollen, uitgebreide rechten, bulkverwerking en een klantportaal zijn nog geen onderdeel van het Agency Plan.",
+      "De eigenaar kan editors, reviewers en viewers toevoegen. Rollen bepalen wie kan maken, controleren, goedkeuren of alleen lezen. Bulkverwerking en een klantportaal zijn nog niet inbegrepen.",
   },
   {
-    question: "Wat kost WerkCV Agency?",
+    question: "Wat kost de Agency-billing tier voor MatchPack?",
     answer:
-      "WerkCV Agency kost €149 per betaalde maand en omvat maximaal 50 nieuwe kandidaatdocumenten of definitief goedgekeurde voorstellen. Analyse, conceptreview en opnieuw downloaden van hetzelfde goedgekeurde voorstel gebruiken niet opnieuw een slot.",
+      "De Agency-billing tier kost €149 per betaalde maand en omvat maximaal 50 nieuwe kandidaatdocumenten of definitief goedgekeurde voorstellen. Analyse, conceptreview en opnieuw downloaden van hetzelfde goedgekeurde voorstel gebruiken niet opnieuw een slot.",
   },
 ];
 
@@ -105,7 +105,7 @@ export default function VoorBureausPage() {
     datePublished: AGENCY_CONTENT_PUBLISHED,
     dateModified: AGENCY_CONTENT_MODIFIED,
     isPartOf: { "@id": "https://werkcv.nl/#website" },
-    about: { "@type": "SoftwareApplication", name: "WerkCV Agency", url: "https://werkcv.nl/agency" },
+    about: { "@type": "SoftwareApplication", name: "WerkCV MatchPack", url: "https://werkcv.nl/agency" },
   };
 
   return (
@@ -127,11 +127,11 @@ export default function VoorBureausPage() {
               Bekijk de werkwijze
             </AgencyContentLink>
             <AgencyContentLink href="/agency#plan" path={path} location="hub_hero" intent="product" className={secondaryButtonClass}>
-              Start WerkCV Agency
+              Start MatchPack · Agency
             </AgencyContentLink>
           </div>
           <p className="mt-5 text-sm font-semibold text-slate-500">
-            Voor recruitmentbureaus, detacheerders en staffingteams die kandidaten op concrete vacatures voorstellen.
+            Voor recruitmentbureaus, werving-en-selectiebureaus, detacheerders, outplacement- en re-integratiebureaus en loopbaancoaches die kandidaten op concrete vacatures of trajecten begeleiden.
           </p>
         </div>
 
@@ -254,18 +254,20 @@ export default function VoorBureausPage() {
           <div>
             <p className="text-xs font-black uppercase tracking-[0.18em] text-yellow-300">Maak de onderbouwing zichtbaar</p>
             <h2 className="mt-2 max-w-2xl text-3xl font-black">Geef uw opdrachtgever minder zoekwerk en uw recruiter meer controle.</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">Bekijk eerst het fictieve voorstel. Start daarna het Agency Plan wanneer de werkwijze past.</p>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">Bekijk eerst het fictieve voorstel. Start daarna MatchPack met de Agency-billing tier wanneer de werkwijze past.</p>
           </div>
           <div className="flex shrink-0 flex-col gap-3">
             <AgencyContentLink href="/agency#voorbeeld" path={path} location="hub_bottom" intent="sample" className="border-2 border-white bg-white px-5 py-3 text-center text-sm font-black text-slate-950">
               Bekijk het voorbeeld
             </AgencyContentLink>
             <AgencyContentLink href="/agency#plan" path={path} location="hub_bottom" intent="product" className="border-2 border-white bg-yellow-300 px-5 py-3 text-center text-sm font-black text-slate-950">
-              Start Agency · €149/maand
+              Start MatchPack · Agency €149/maand
             </AgencyContentLink>
           </div>
         </div>
       </section>
+
+      <p className="mt-5 text-center text-xs font-semibold text-slate-500"><Link href="/agency/privacy" className="text-emerald-700 underline underline-offset-4">Privacy, retentie en DPA-informatie</Link></p>
 
       <FAQJsonLd questions={faqs} />
       <JsonLd data={webpageSchema} />

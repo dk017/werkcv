@@ -1,5 +1,5 @@
-export const AGENCY_CONTENT_PUBLISHED = "2026-08-15";
-export const AGENCY_CONTENT_MODIFIED = "2026-08-15";
+export const AGENCY_CONTENT_PUBLISHED = "2026-08-16";
+export const AGENCY_CONTENT_MODIFIED = "2026-08-16";
 
 export type AgencyKnowledgeGuide = {
   slug: string;
@@ -25,21 +25,21 @@ export const agencyKnowledgeGuides: AgencyKnowledgeGuide[] = [
   {
     slug: "cv-in-huisstijl-recruitmentbureau",
     href: "/voor-bureaus/kennisbank/cv-in-huisstijl-recruitmentbureau",
-    title: "Hoe maakt u kandidaat-CV's consistent zonder de inhoud te veranderen?",
+    title: "Hoe zet u een kandidaat-CV in de huisstijl van uw recruitmentbureau?",
     description:
-      "Een praktische controleaanpak voor bronbestand, opmaak, voorblad en inhoudelijke wijzigingen.",
-    readingTime: "Gids in voorbereiding",
-    status: "planned",
+      "Bewaar de bron, voeg controleerbare branding toe en controleer iedere klantversie vóór verzending.",
+    readingTime: "10 minuten",
+    status: "published",
     theme: "yellow",
   },
   {
     slug: "cv-anonimiseren-recruitment",
     href: "/voor-bureaus/kennisbank/cv-anonimiseren-recruitment",
-    title: "Wat moet u controleren voordat u een geredigeerd CV deelt?",
+    title: "CV anonimiseren voor een opdrachtgever: wat moet een recruiter controleren?",
     description:
-      "Directe en indirecte identificatie, menselijke controle en veilig documentbeheer uitgelegd.",
-    readingTime: "Gids in voorbereiding",
-    status: "planned",
+      "Directe en indirecte identificatie, menselijke controle en documentbeheer zonder garantie op juridische anonimiteit.",
+    readingTime: "12 minuten",
+    status: "published",
     theme: "sky",
   },
 ];

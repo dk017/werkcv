@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { getCurrentUserFromRequest } from "@/lib/auth";
-import { getAgencyAccessForUser } from "@/lib/agency-access";
+import { canEditAgency, canCreateAgencyWork, getAgencyAccessForUser } from "@/lib/agency-access";
 import {
   anonymizeCvData,
+  applyEvidenceReviews,
   createDefaultMatchPackSubmission,
   matchPackDraftUpdateSchema,
   parseStoredMatchPackAnalysis,
@@ -55,7 +56,7 @@ export async function GET(
 
   const id = await getId(context.params);
   const pack = await prisma.agencyMatchPack.findFirst({
-    where: { id, userId: result.user.id },
+    where: { id, userId: result.access.ownerUserId || result.user.id },
     select: {
       id: true,
       title: true,
@@ -63,10 +64,13 @@ export async function GET(
       vacancyText: true,
       locale: true,
       sourceFileType: true,
+      sourceTextDigest: true,
+      originalCandidateData: true,
       candidateData: true,
       anonymizedData: true,
       analysis: true,
       submissionData: true,
+      outcomeData: true,
       templateId: true,
       colorThemeId: true,
       status: true,
@@ -74,6 +78,17 @@ export async function GET(
       approvedAt: true,
       createdAt: true,
       updatedAt: true,
+      revisions: {
+        select: {
+          id: true,
+          version: true,
+          reason: true,
+          changedFields: true,
+          createdById: true,
+          createdAt: true,
+        },
+        orderBy: { version: "desc" },
+      },
     },
   });
 
@@ -92,7 +107,14 @@ export async function GET(
         pack.vacancyTitle || "",
         pack.locale === "en" ? "en" : "nl",
       );
-    return json({ success: true, pack: { ...pack, submissionData } });
+    return json({
+      success: true,
+      pack: {
+        ...pack,
+        originalCandidateData: pack.originalCandidateData || pack.candidateData,
+        submissionData,
+      },
+    });
   } catch {
     return json({ error: "This MatchPack is invalid and cannot be opened.", code: "INVALID_PACK" }, 500);
   }
@@ -108,6 +130,7 @@ export async function PATCH(
 
   const result = await getAgencyUser(request);
   if ("response" in result) return result.response;
+  if (!canEditAgency(result.access)) return json({ error: "Your agency role is read-only.", code: "ROLE_READ_ONLY" }, 403);
 
   const rateLimit = checkRateLimit(`${result.user.id}:${getClientIp(request).slice(0, 120)}`, {
     bucket: "agency-matchpack-update",
@@ -123,8 +146,15 @@ export async function PATCH(
 
   const id = await getId(context.params);
   const pack = await prisma.agencyMatchPack.findFirst({
-    where: { id, userId: result.user.id },
-    select: { id: true, status: true, locale: true },
+    where: { id, userId: result.access.ownerUserId || result.user.id },
+    select: {
+      id: true,
+      status: true,
+      locale: true,
+      candidateData: true,
+      submissionData: true,
+      analysis: true,
+    },
   });
   if (!pack) return json({ error: "MatchPack not found.", code: "NOT_FOUND" }, 404);
   if (pack.status !== "analyzed") {
@@ -140,28 +170,86 @@ export async function PATCH(
     }, 400);
   }
 
+  const existingCandidate = parseStoredMatchPackData(pack.candidateData);
+  const existingSubmission = pack.submissionData
+    ? parseStoredMatchPackSubmission(pack.submissionData)
+    : createDefaultMatchPackSubmission(
+      existingCandidate,
+      parseStoredMatchPackAnalysis(pack.analysis).result,
+      "",
+      pack.locale === "en" ? "en" : "nl",
+    );
+  const existingAnalysis = parseStoredMatchPackAnalysis(pack.analysis);
+  const updatedAnalysis = applyEvidenceReviews(existingAnalysis, payload.data.evidenceReviews, result.user.id);
   const anonymized = anonymizeCvData(payload.data.candidateData, pack.locale === "en" ? "en" : "nl");
-  const updateResult = await prisma.agencyMatchPack.updateMany({
-    where: { id: pack.id, userId: result.user.id, status: "analyzed" },
-    data: {
-      candidateData: payload.data.candidateData as unknown as Prisma.InputJsonValue,
-      anonymizedData: anonymized.data as unknown as Prisma.InputJsonValue,
-      submissionData: payload.data.submissionData as unknown as Prisma.InputJsonValue,
-    },
+  const changedFields = [
+    JSON.stringify(existingCandidate) !== JSON.stringify(payload.data.candidateData) ? "candidateData" : null,
+    JSON.stringify(existingSubmission) !== JSON.stringify(payload.data.submissionData) ? "submissionData" : null,
+    JSON.stringify(existingAnalysis) !== JSON.stringify(updatedAnalysis) ? "analysis" : null,
+  ].filter((field): field is string => Boolean(field));
+
+  const updated = await prisma.$transaction(async (tx) => {
+    const updateResult = await tx.agencyMatchPack.updateMany({
+      where: { id: pack.id, userId: result.access.ownerUserId || result.user.id, status: "analyzed" },
+      data: {
+        candidateData: payload.data.candidateData as unknown as Prisma.InputJsonValue,
+        anonymizedData: anonymized.data as unknown as Prisma.InputJsonValue,
+        submissionData: payload.data.submissionData as unknown as Prisma.InputJsonValue,
+        analysis: updatedAnalysis as unknown as Prisma.InputJsonValue,
+      },
+    });
+    if (updateResult.count !== 1) {
+      throw new Error("PACK_LOCKED");
+    }
+
+    const latestRevision = await tx.agencyMatchPackRevision.findFirst({
+      where: { matchPackId: pack.id },
+      orderBy: { version: "desc" },
+      select: { version: true },
+    });
+    await tx.agencyMatchPackRevision.create({
+      data: {
+        matchPackId: pack.id,
+        version: (latestRevision?.version || 0) + 1,
+        reason: "draft_saved",
+        candidateData: payload.data.candidateData as unknown as Prisma.InputJsonValue,
+        submissionData: payload.data.submissionData as unknown as Prisma.InputJsonValue,
+        analysis: updatedAnalysis as unknown as Prisma.InputJsonValue,
+        changedFields: changedFields.length ? changedFields : ["review"],
+        createdById: result.user.id,
+      },
+    });
+
+    return tx.agencyMatchPack.findUniqueOrThrow({
+      where: { id: pack.id },
+      select: {
+        id: true,
+        candidateData: true,
+        anonymizedData: true,
+        analysis: true,
+        submissionData: true,
+        updatedAt: true,
+        revisions: {
+          select: {
+            id: true,
+            version: true,
+            reason: true,
+            changedFields: true,
+            createdById: true,
+            createdAt: true,
+          },
+          orderBy: { version: "desc" },
+        },
+      },
+    });
+  }).catch((error) => {
+    if (error instanceof Error && error.message === "PACK_LOCKED") return null;
+    throw error;
   });
-  if (updateResult.count !== 1) {
+
+  if (!updated) {
     return json({ error: "This submission was approved while you were editing it. Reload the page.", code: "PACK_LOCKED" }, 409);
   }
-  const updated = await prisma.agencyMatchPack.findUniqueOrThrow({
-    where: { id: pack.id },
-    select: {
-      id: true,
-      candidateData: true,
-      anonymizedData: true,
-      submissionData: true,
-      updatedAt: true,
-    },
-  });
 
   return json({ success: true, pack: updated });
 }
@@ -176,6 +264,9 @@ export async function DELETE(
 
   const user = await getCurrentUserFromRequest(request);
   if (!user) return json({ error: "Authentication required.", code: "AUTH_REQUIRED" }, 401);
+  const access = await getAgencyAccessForUser(user.id);
+  if (access.state !== "active") return json({ error: "An active Agency Plan is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
+  if (!canCreateAgencyWork(access)) return json({ error: "Your agency role cannot delete proposals.", code: "ROLE_READ_ONLY" }, 403);
 
   const rateLimit = checkRateLimit(`${user.id}:${getClientIp(request).slice(0, 120)}`, {
     bucket: "agency-matchpack-delete",
@@ -186,7 +277,7 @@ export async function DELETE(
 
   const id = await getId(context.params);
   const pack = await prisma.agencyMatchPack.findFirst({
-    where: { id, userId: user.id },
+    where: { id, userId: access.ownerUserId || user.id },
     select: { id: true, cvDocumentId: true },
   });
   if (!pack) return json({ error: "MatchPack not found.", code: "NOT_FOUND" }, 404);

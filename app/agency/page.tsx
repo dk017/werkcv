@@ -9,9 +9,9 @@ import { FAQJsonLd, JsonLd, OrganizationJsonLd } from "@/components/seo/JsonLd";
 import { isAgencyDodoConfigured } from "@/lib/dodo";
 
 export const metadata: Metadata = {
-  title: "Kandidaatvoorstel maken voor opdrachtgevers | WerkCV Agency",
+  title: "MatchPack voor recruitmentbureaus | WerkCV",
   description:
-    "Van kandidaat-CV en vacature naar bewijs per functie-eis, recruiter-review en een volledig of optioneel concept zonder directe contactgegevens als PDF.",
+    "Van kandidaat-CV en vacature naar bewijs per functie-eis, recruiter-review en een volledig of optioneel concept zonder directe contactgegevens als PDF of DOCX.",
   alternates: { canonical: "https://werkcv.nl/agency" },
   openGraph: {
     title: "Van kandidaat-CV en vacature naar een compleet klantvoorstel",
@@ -30,9 +30,9 @@ const planItems = [
   "Tot 50 nieuwe kandidaatdocumenten of goedgekeurde voorstellen per betaalde maand",
   "Vacature-eisen gekoppeld aan concreet CV-bewijs",
   "Bewerkbare klantintroductie en begeleidende e-mail",
-  "Volledig voorstel en optioneel concept zonder directe contactgegevens in consistente agency-opmaak",
+  "Volledig voorstel en optioneel concept zonder directe contactgegevens in consistente bureau-opmaak",
   "Nederlandse en Engelse output",
-  "Eén account, handmatige onboarding en priority support",
+  "Herbruikbare bureau-templates, teamrollen en versiegeschiedenis",
 ];
 
 const faqs = [
@@ -54,15 +54,23 @@ const faqs = [
   },
   {
     question: "Krijgt mijn hele team toegang?",
-    answer: "De huidige versie gebruikt één account voor de betalende eigenaar. Gedeelde teamaccounts, rollen en uitgebreide rechten zijn nog geen onderdeel van dit plan.",
+    answer: "De eigenaar kan editors, reviewers en viewers toevoegen. Editors maken en wijzigen, reviewers controleren en keuren goed en viewers lezen mee.",
+  },
+  {
+    question: "Welke bestanden kan ik aan een klant geven?",
+    answer: "Na goedkeuring kun je de gekozen versie als PDF én DOCX downloaden. De volledige versie en de versie zonder directe contactgegevens komen uit dezelfde gecontroleerde snapshot.",
   },
   {
     question: "Heeft WerkCV een ATS-integratie of bulkverwerking?",
-    answer: "Nog niet. De huidige workflow verwerkt één kandidaat en één vacature per voorstel en levert PDF-output plus een kopieerbare e-mail. ATS-integraties, bulkverwerking en automatische verzending worden niet stilzwijgend beloofd.",
+    answer: "MatchPack is geen ATS. De eerste uitwisselroute is CSV voor een CV-register en MatchPack-overzicht; directe ATS-koppelingen en bulkverwerking zijn nog niet inbegrepen.",
   },
   {
     question: "Kan ik eerst zien wat WerkCV oplevert?",
-    answer: "Ja. Bekijk en download het fictieve HR-adviseurvoorbeeld op deze pagina. Als de werkwijze past, start u het Agency Plan en verwerkt u kandidaatdata uitsluitend via het beveiligde account, niet via een openbaar formulier.",
+    answer: "Ja. Bekijk en download het fictieve HR-adviseurvoorbeeld op deze pagina. Als de werkwijze past, start u de Agency-billing tier en verwerkt u kandidaatdata uitsluitend via het beveiligde account, niet via een openbaar formulier.",
+  },
+  {
+    question: "Hoe lang blijft MatchPack-data bewaard?",
+    answer: "Het bronbestand zelf wordt niet opgeslagen; vacaturetekst, gestructureerde kandidaatdata en revisies blijven bewaard totdat je ze verwijdert in Instellingen. Bekijk de actuele retentie- en DPA-informatie op de privacy-pagina.",
   },
 ];
 
@@ -70,14 +78,14 @@ function CheckoutAction({ location }: { location: string }) {
   if (!isAgencyDodoConfigured()) {
     return <AgencyCtaLink href="/contact" label="Neem contact op" location={`${location}_contact_fallback`} className={primaryButtonClass} />;
   }
-  return <AgencyCheckoutButton location={location} label="Start Agency · €149/maand" className={primaryButtonClass} />;
+  return <AgencyCheckoutButton location={location} label="Start MatchPack · Agency €149/maand" className={primaryButtonClass} />;
 }
 
 export default function AgencyPage() {
   const softwareJsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
-    name: "WerkCV Agency",
+    name: "WerkCV MatchPack",
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     url: "https://werkcv.nl/agency",
@@ -103,7 +111,7 @@ export default function AgencyPage() {
           <div>
             <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Voor recruitmentbureaus en detacheerders</p>
             <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">Maak ieder kandidaatvoorstel verdedigbaar vóór het naar de klant gaat.</h1>
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">WerkCV legt functie-eisen naast concreet CV-bewijs, houdt ontbrekende informatie zichtbaar en brengt bevestigde voorstelgegevens samen in één review. U keurt de snapshot goed en kiest daarna een volledig voorstel of een optioneel concept zonder directe contactgegevens als PDF.</p>
+            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">WerkCV legt functie-eisen naast concreet CV-bewijs, houdt ontbrekende informatie zichtbaar en brengt bevestigde voorstelgegevens samen in één review. U keurt de snapshot goed en kiest daarna een volledig voorstel of een optionele versie zonder directe contactgegevens als PDF of DOCX.</p>
             <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
               <CheckoutAction location="agency_hero_checkout" />
               <a href="#voorbeeld" className="text-sm font-black text-slate-700 underline decoration-2 underline-offset-4 hover:text-emerald-700">Bekijk eerst het complete voorbeeld</a>
@@ -133,18 +141,19 @@ export default function AgencyPage() {
         </section>
 
         <section className="border-y-2 border-slate-900 py-14">
-          <div className="grid gap-8 lg:grid-cols-2"><div><p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">Wat WerkCV bewust wel doet</p><ul className="mt-5 space-y-3 text-sm font-semibold leading-relaxed">{["Vacature-eisen koppelen aan zichtbaar CV-bewijs.", "Ontbrekende informatie als open punt tonen.", "Correcties vóór goedkeuring in beide CV-versies verwerken.", "Een optionele versie zonder directe contactgegevens aanbieden.", "Menselijke controle vereisen vóór het slot wordt gebruikt."].map((item) => <li key={item} className="flex gap-3"><span className="font-black text-emerald-700">✓</span>{item}</li>)}</ul></div><div className="border-2 border-amber-400 bg-amber-50 p-6"><p className="text-xs font-black uppercase tracking-[0.18em] text-amber-800">Wat WerkCV niet belooft</p><ul className="mt-5 space-y-3 text-sm font-semibold leading-relaxed text-amber-950">{["Geen verzonnen ervaring, beschikbaarheid, salaris of resultaten.", "Geen automatische selectie- of plaatsingsbeslissing.", "Geen garantie dat een versie zonder directe contactgegevens juridisch anoniem is.", "Nog geen ATS-integratie, bulkverwerking of automatische verzending.", "Nog geen gedeelde teamrollen of klantportaal."].map((item) => <li key={item} className="flex gap-3"><span className="font-black">—</span>{item}</li>)}</ul></div></div>
+          <div className="grid gap-8 lg:grid-cols-2"><div><p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">Wat WerkCV bewust wel doet</p><ul className="mt-5 space-y-3 text-sm font-semibold leading-relaxed">{["Vacature-eisen koppelen aan zichtbaar CV-bewijs.", "Ontbrekende informatie als open punt tonen.", "Correcties vóór goedkeuring in beide CV-versies verwerken.", "PDF én DOCX uit dezelfde gecontroleerde snapshot maken.", "Menselijke controle vereisen vóór het slot wordt gebruikt."].map((item) => <li key={item} className="flex gap-3"><span className="font-black text-emerald-700">✓</span>{item}</li>)}</ul></div><div className="border-2 border-amber-400 bg-amber-50 p-6"><p className="text-xs font-black uppercase tracking-[0.18em] text-amber-800">Wat WerkCV niet belooft</p><ul className="mt-5 space-y-3 text-sm font-semibold leading-relaxed text-amber-950">{["Geen verzonnen ervaring, beschikbaarheid, salaris of resultaten.", "Geen automatische selectie- of plaatsingsbeslissing.", "Geen garantie dat een versie zonder directe contactgegevens juridisch anoniem is.", "Geen ATS: CSV-uitwisseling is de eerste import/export-route.", "Geen automatische verzending naar klanten."].map((item) => <li key={item} className="flex gap-3"><span className="font-black">—</span>{item}</li>)}</ul></div></div>
         </section>
 
         <AgencyRoiCalculator />
 
         <section id="plan" className="py-14 sm:py-20">
-          <div className="grid gap-8 lg:grid-cols-[1fr_0.72fr] lg:items-start"><div><p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">Eén startplan</p><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">WerkCV Agency</h2><p className="mt-3 max-w-2xl text-lg font-bold leading-relaxed text-slate-700">€149 per maand · tot 50 nieuwe kandidaatdocumenten of goedgekeurde voorstellen.</p><ul className="mt-6 grid gap-3 text-sm font-semibold leading-relaxed sm:grid-cols-2">{planItems.map((item) => <li key={item} className="flex gap-2"><span className="font-black text-emerald-700">✓</span><span>{item}</span></li>)}</ul><p className="mt-5 max-w-2xl text-xs leading-relaxed text-slate-500">Analyse en conceptreview kosten geen slot. Losse nieuwe CV-documenten en definitief goedgekeurde voorstellen delen momenteel dezelfde maandlimiet.</p></div><div className="border-2 border-slate-900 bg-yellow-300 p-6 shadow-[5px_5px_0px_0px_rgba(15,23,42,1)]"><p className="text-xs font-black uppercase tracking-[0.18em] text-slate-700">Agency Starter</p><p className="mt-3 text-5xl font-black tracking-tight">€149</p><p className="mt-1 text-sm font-black text-slate-700">per maand · maximaal 50 slots</p><div className="mt-6"><CheckoutAction location="agency_plan_card" /></div><p className="mt-4 text-xs font-semibold leading-relaxed text-slate-700">Bij volledig gebruik is dat €2,98 per nieuw kandidaatdocument of goedgekeurd voorstel. Bewerken en opnieuw downloaden tellen niet opnieuw.</p></div></div>
+          <div className="grid gap-8 lg:grid-cols-[1fr_0.72fr] lg:items-start"><div><p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">MatchPack · Agency billing tier</p><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">MatchPack voor bureaus</h2><p className="mt-3 max-w-2xl text-lg font-bold leading-relaxed text-slate-700">€149 per maand · tot 50 nieuwe kandidaatdocumenten of goedgekeurde voorstellen.</p><ul className="mt-6 grid gap-3 text-sm font-semibold leading-relaxed sm:grid-cols-2">{planItems.map((item) => <li key={item} className="flex gap-2"><span className="font-black text-emerald-700">✓</span><span>{item}</span></li>)}</ul><p className="mt-5 max-w-2xl text-xs leading-relaxed text-slate-500">Analyse en conceptreview kosten geen slot. Losse nieuwe CV-documenten en definitief goedgekeurde voorstellen delen momenteel dezelfde maandlimiet.</p></div><div className="border-2 border-slate-900 bg-yellow-300 p-6 shadow-[5px_5px_0px_0px_rgba(15,23,42,1)]"><p className="text-xs font-black uppercase tracking-[0.18em] text-slate-700">Agency billing tier</p><p className="mt-3 text-5xl font-black tracking-tight">€149</p><p className="mt-1 text-sm font-black text-slate-700">per maand · maximaal 50 slots</p><div className="mt-6"><CheckoutAction location="agency_plan_card" /></div><p className="mt-4 text-xs font-semibold leading-relaxed text-slate-700">Bij volledig gebruik is dat €2,98 per nieuw kandidaatdocument of goedgekeurd voorstel. Bewerken en opnieuw downloaden tellen niet opnieuw.</p></div></div>
         </section>
 
         <section className="py-14"><h2 className="text-3xl font-black tracking-tight">Veelgestelde vragen</h2><div className="mt-6 space-y-3">{faqs.map((faq) => <details key={faq.question} className="border-2 border-slate-200 bg-white p-4"><summary className="cursor-pointer font-black">{faq.question}</summary><p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">{faq.answer}</p></details>)}</div></section>
 
-        <section className="border-2 border-slate-900 bg-slate-950 p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)] sm:p-8"><div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-xs font-black uppercase tracking-[0.18em] text-yellow-300">Van CV-bestand naar klantvoorstel</p><h2 className="mt-2 text-3xl font-black">Beoordeel eerst het voorbeeld. Start alleen als de werkwijze past.</h2><p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300">Geen verkoopgesprek nodig: het Agency Plan en de beveiligde workspace zijn direct beschikbaar.</p></div><div className="flex flex-col gap-3 sm:items-end"><a href="#voorbeeld" className="inline-flex min-h-12 items-center justify-center border-2 border-white bg-white px-5 py-3 text-sm font-black text-slate-950">Bekijk voorbeeld</a><CheckoutAction location="agency_bottom_checkout" /></div></div></section>
+        <section className="border-2 border-slate-900 bg-slate-950 p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)] sm:p-8"><div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-xs font-black uppercase tracking-[0.18em] text-yellow-300">Van CV-bestand naar klantvoorstel</p><h2 className="mt-2 text-3xl font-black">Beoordeel eerst het voorbeeld. Start alleen als de werkwijze past.</h2><p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300">Geen verkoopgesprek nodig: MatchPack en de Agency-billing tier zijn direct beschikbaar.</p></div><div className="flex flex-col gap-3 sm:items-end"><a href="#voorbeeld" className="inline-flex min-h-12 items-center justify-center border-2 border-white bg-white px-5 py-3 text-sm font-black text-slate-950">Bekijk voorbeeld</a><CheckoutAction location="agency_bottom_checkout" /></div></div></section>
+        <p className="mt-5 text-center text-xs font-semibold text-slate-500"><Link href="/agency/privacy" className="text-emerald-700 underline underline-offset-4">Privacy, retentie en DPA-informatie</Link></p>
       </main>
 
       <FAQJsonLd questions={faqs} />

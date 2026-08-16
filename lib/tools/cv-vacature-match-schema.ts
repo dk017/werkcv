@@ -1,5 +1,19 @@
 import { z } from "zod";
 
+export const evidenceReferenceSchema = z.object({
+  sourcePage: z.number().int().positive().nullable(),
+  sourceLine: z.number().int().positive(),
+  sourceSection: z.string(),
+  snippet: z.string(),
+  match: z.enum(["exact", "approximate", "not_found"]),
+  reviewerStatus: z.enum(["unreviewed", "confirmed", "corrected", "rejected"]),
+  reviewerNote: z.string(),
+  reviewedAt: z.string().nullable(),
+  reviewerId: z.string().nullable(),
+});
+
+export type EvidenceReference = z.infer<typeof evidenceReferenceSchema>;
+
 export const requirementSchema = z.object({
   requirement: z.string(),
   vacancyEvidence: z.string(),
@@ -7,6 +21,7 @@ export const requirementSchema = z.object({
   status: z.enum(["strong", "partial", "missing"]),
   cvEvidence: z.string(),
   honestAction: z.string(),
+  evidenceReference: evidenceReferenceSchema.optional(),
 });
 
 export const aiAnalysisSchema = z.object({

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import {
   anonymizeCvData,
+  attachEvidenceReferences,
   createDefaultMatchPackSubmission,
   createMatchPackAnalysis,
   matchPackDraftUpdateSchema,
@@ -10,6 +11,7 @@ import {
   scrubKnownCandidateName,
 } from "@/lib/agency-matchpack";
 import { cvSchema, sampleCV } from "@/lib/cv";
+import { cvDataFromCsvRow, parseCsv } from "@/lib/agency-csv";
 
 function fixtureResult() {
   return {
@@ -84,6 +86,15 @@ const analysis = createMatchPackAnalysis(fixtureResult(), anonymized);
 assert.equal(analysis.version, 1);
 assert.equal(analysis.result.requirements[0]?.status, "strong");
 assert.ok(analysis.anonymization.removedFields.length > 0);
+const traceFixture = fixtureResult();
+traceFixture.requirements[0].cvEvidence = "Java";
+const traced = attachEvidenceReferences(traceFixture, "Skills\nJava\nDocker\n", "docx");
+assert.equal(traced.requirements[0]?.evidenceReference?.sourceLine, 2, "evidence references keep a source line");
+assert.equal(traced.requirements[0]?.evidenceReference?.snippet, "Java");
+assert.equal(traced.requirements[0]?.evidenceReference?.reviewerStatus, "unreviewed");
+const csvRows = parseCsv('title,name,professionalTitle,skills\r\nSample CV,Alex Example,HR adviseur,"AFAS|Power BI"\r\n');
+assert.equal(csvRows[0]?.skills, "AFAS|Power BI");
+assert.equal(cvDataFromCsvRow(csvRows[0] || {}).skills.length, 2, "CSV skills are imported as separate skills");
 assert.match(scrubAnonymizedText("candidate@example.com +31 6 1234 5678 https://example.com"), /contact verwijderd/);
 assert.match(scrubAnonymizedText("candidate@example.com +31 6 1234 5678 https://example.com", "en"), /contact removed/);
 const scrubbedName = scrubKnownCandidateName("Nina de Vries heeft ervaring. Nina is beschikbaar.", "Nina de Vries", "nl");

@@ -10,7 +10,7 @@ type AgencyCheckoutButtonProps = {
 };
 
 export default function AgencyCheckoutButton({
-  label = "Start met WerkCV Agency",
+  label = "Start MatchPack · Agency",
   location,
   className = "",
 }: AgencyCheckoutButtonProps) {

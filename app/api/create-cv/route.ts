@@ -6,7 +6,7 @@ import { Prisma } from '@prisma/client';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 import { normalizeStartSource } from '@/lib/start-source';
 import { getDefaultThemeId, getTemplateConfig } from '@/lib/templates/registry';
-import { createCvDocumentForUser, isAgencyAccessError } from '@/lib/agency-access';
+import { canCreateAgencyWork, createCvDocumentForUser, getAgencyAccessForUser, isAgencyAccessError } from '@/lib/agency-access';
 
 function getCreateCvErrorMessage(error: unknown): string {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'ECONNREFUSED') {
@@ -58,6 +58,16 @@ export async function POST(request: NextRequest) {
         colorThemeId: colorThemeId || getDefaultThemeId(templateId),
     };
 
+    const agencyAccess = await getAgencyAccessForUser(user.id);
+    const agencyOwnerId = agencyAccess.state === 'active' ? agencyAccess.ownerUserId : null;
+    if (agencyOwnerId && !canCreateAgencyWork(agencyAccess)) {
+        return NextResponse.json(
+            { error: 'Your agency role can review existing work but cannot create new CVs.', code: 'ROLE_READ_ONLY' },
+            { status: 403 },
+        );
+    }
+    const effectiveUserId = agencyOwnerId || user.id;
+
     try {
         const cv = await createCvDocumentForUser({
             ...baseData,
@@ -65,7 +75,7 @@ export async function POST(request: NextRequest) {
             sourceCluster: attribution?.firstTouchCluster || null,
             sourceLocale: attribution?.locale || null,
             startSource: startSource || null,
-            userId: user.id,
+            userId: effectiveUserId,
         } as Prisma.CVDocumentUncheckedCreateInput);
         return NextResponse.json({ cvId: cv.id });
     } catch (error) {
@@ -81,7 +91,7 @@ export async function POST(request: NextRequest) {
             const cv = await prisma.cVDocument.create({
                 data: {
                     ...baseData,
-                    userId: user.id,
+                    userId: effectiveUserId,
                 },
             });
             return NextResponse.json({ cvId: cv.id });

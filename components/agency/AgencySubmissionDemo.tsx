@@ -30,6 +30,9 @@ export default function AgencySubmissionDemo() {
   const selectTab = (tab: DemoTab) => {
     setActiveTab(tab);
     track("agency_submission_demo_tab_changed", { tab });
+    if (tab === "outputs") {
+      track("agency_sample_output_viewed", { variant: "full", location: "agency_submission_demo" });
+    }
   };
 
   return (

@@ -270,7 +270,7 @@ export default function AgencyInteractiveDemo() {
               <div className="mb-3 flex flex-wrap items-center justify-between gap-3 text-white">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-300">Live preview</p>
-                  <p className="mt-1 text-sm font-bold text-slate-200">WerkCV Agency route · Professional</p>
+                  <p className="mt-1 text-sm font-bold text-slate-200">WerkCV MatchPack · Professional</p>
                 </div>
                 <span className="border border-slate-700 px-3 py-1 text-xs font-bold text-slate-300">
                   {pageCount} {pageCount === 1 ? "pagina" : "pagina's"}

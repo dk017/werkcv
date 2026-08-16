@@ -69,7 +69,7 @@ const faqs = [
   {
     question: "Wat moet er in een professioneel kandidaatvoorstel staan?",
     answer:
-      "Neem minimaal de doelrol, een korte relevante samenvatting, bewijs voor de belangrijkste functie-eisen, bevestigde beschikbaarheid en praktische voorwaarden, zichtbare open punten en het passende volledige of geredigeerde CV op. Houd interne recruiternotities buiten het klantdocument.",
+      "Neem minimaal de doelrol, een korte relevante samenvatting, bewijs voor de belangrijkste functie-eisen, bevestigde beschikbaarheid en praktische voorwaarden, zichtbare open punten en het passende volledige of contactvrije kandidaat-CV op. Houd interne recruiternotities buiten het klantdocument.",
   },
   {
     question: "Hoe schrijft u een goede kandidaatintroductie?",
@@ -97,9 +97,9 @@ const faqs = [
       "Gebruik AI niet als zelfstandig selectieoordeel. AI kan eisen structureren en mogelijke bewijsplaatsen aanwijzen, maar de bron kan onvolledig zijn en de analyse kan fouten bevatten. De NVP Sollicitatiecode benadrukt transparantie, zorgvuldig databeheer en menselijk toezicht bij AI in werving en selectie.",
   },
   {
-    question: "Wanneer gebruikt u een volledig of geredigeerd kandidaat-CV?",
+    question: "Wanneer gebruikt u een volledig of contactvrij kandidaat-CV?",
     answer:
-      "Gebruik de versie die past bij het afgesproken doel, de verwachtingen van de kandidaat en uw grondslag voor delen. Een geredigeerd concept kan directe velden verwijderen, maar werkgevers, opleidingen, projecten of tekstfragmenten kunnen de kandidaat nog herkenbaar maken. Controleer daarom het echte PDF-bestand vóór verzending.",
+      "Gebruik de versie die past bij het afgesproken doel, de verwachtingen van de kandidaat en uw grondslag voor delen. Een versie zonder directe contactgegevens kan directe velden verwijderen, maar werkgevers, opleidingen, projecten of tekstfragmenten kunnen de kandidaat nog herkenbaar maken. Controleer daarom het echte PDF-bestand vóór verzending.",
   },
 ];
 
@@ -153,10 +153,10 @@ export default function CandidateProposalGuidePage() {
             <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Kandidaatvoorstel · praktische gids</p>
             <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">Hoe stelt u een kandidaat professioneel voor aan een opdrachtgever?</h1>
             <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-700">
-              Een professioneel kandidaatvoorstel verbindt de belangrijkste functie-eisen aan controleerbaar CV-bewijs en houdt onbevestigde informatie zichtbaar. Voeg een korte kandidaatintroductie, beschikbaarheid, locatie, uren, salaris- of tariefindicatie en opzegtermijn alleen toe wanneer deze zijn bevestigd. Scheid interne recruiternotities van klantinformatie en controleer de volledige of geredigeerde PDF vóór verzending.
+              Een professioneel kandidaatvoorstel verbindt de belangrijkste functie-eisen aan controleerbaar CV-bewijs en houdt onbevestigde informatie zichtbaar. Voeg een korte kandidaatintroductie, beschikbaarheid, locatie, uren, salaris- of tariefindicatie en opzegtermijn alleen toe wanneer deze zijn bevestigd. Scheid interne recruiternotities van klantinformatie en controleer de volledige of contactvrije PDF vóór verzending.
             </p>
             <div className="mt-6 flex flex-wrap gap-3 text-xs font-bold text-slate-600">
-              <span className="border border-slate-300 bg-white px-3 py-2">Gepubliceerd 15 augustus 2026</span>
+              <span className="border border-slate-300 bg-white px-3 py-2">Gepubliceerd 16 augustus 2026</span>
               <span className="border border-slate-300 bg-white px-3 py-2">12 minuten leestijd</span>
               <span className="border border-slate-300 bg-white px-3 py-2">Operationele uitleg, geen juridisch advies</span>
             </div>
@@ -228,9 +228,9 @@ export default function CandidateProposalGuidePage() {
               </div>
             </div>
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-sky-700">Volledig of geredigeerd</p>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-sky-700">Volledig of contactvrij</p>
               <h2 className="mt-3 text-3xl font-black tracking-tight">Redactie is een controleproces, geen vinkje.</h2>
-              <p className="mt-5 text-sm leading-relaxed text-slate-600">Een geredigeerd concept kan naam- en contactvelden verwijderen, maar de kandidaat kan herkenbaar blijven door werkgevers, opleidingen, projecten, locaties, datums of een naam in lopende tekst. Controleer daarom de uiteindelijke PDF en leg binnen uw bureau vast waarom en met wie de gegevens worden gedeeld.</p>
+              <p className="mt-5 text-sm leading-relaxed text-slate-600">Een versie zonder directe contactgegevens kan naam- en contactvelden verwijderen, maar de kandidaat kan herkenbaar blijven door werkgevers, opleidingen, projecten, locaties, datums of een naam in lopende tekst. Controleer daarom de uiteindelijke PDF en leg binnen uw bureau vast waarom en met wie de gegevens worden gedeeld.</p>
               <div className="mt-5 border-2 border-amber-400 bg-amber-50 p-4 text-sm font-semibold leading-relaxed text-amber-950">WerkCV garandeert geen juridische anonimiteit of AVG-compliance. Raadpleeg bij twijfel uw privacyprofessional of juridisch adviseur.</div>
             </div>
           </div>
@@ -265,7 +265,7 @@ export default function CandidateProposalGuidePage() {
               ["2", "Controleer het bron-CV", "Zoek concreet bewijs en onderscheid een genoemd zoekwoord van aantoonbare ervaring."],
               ["3", "Vul de intakegaten", "Vraag actuele beschikbaarheid, voorwaarden en wensen rechtstreeks na."],
               ["4", "Scheid intern en extern", "Houd hypotheses en gevoelige notities buiten het klantdocument."],
-              ["5", "Controleer beide versies", "Lees de volledige én eventueel geredigeerde PDF als echte ontvanger."],
+              ["5", "Controleer beide versies", "Lees de volledige én eventueel contactvrije PDF als echte ontvanger."],
               ["6", "Leg de snapshot vast", "Verstuur alleen de versie die de recruiter inhoudelijk heeft goedgekeurd."],
             ].map(([number, title, body]) => <li key={number} className="border-2 border-slate-950 bg-white p-5"><span className="font-mono text-sm font-black text-emerald-700">0{number}</span><h3 className="mt-3 font-black">{title}</h3><p className="mt-2 text-sm leading-relaxed text-slate-600">{body}</p></li>)}
           </ol>

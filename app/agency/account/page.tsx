@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { getAgencyAccessForUser } from "@/lib/agency-access";
+import { canCreateAgencyWork, getAgencyAccessForUser } from "@/lib/agency-access";
 import { getAgencyStatusLabel } from "@/lib/agency-plan";
 import { prisma } from "@/lib/prisma";
 import AgencyDraftResume from "@/components/agency/AgencyDraftResume";
@@ -31,7 +31,7 @@ export default async function AgencyAccountPage({
 
   const access = await getAgencyAccessForUser(user.id);
   const documents = await prisma.cVDocument.findMany({
-    where: { userId: user.id },
+    where: { userId: access.ownerUserId || user.id },
     orderBy: { updatedAt: "desc" },
     take: 5,
     select: { id: true, title: true, updatedAt: true },
@@ -47,20 +47,20 @@ export default async function AgencyAccountPage({
           <Link href="/agency" className="text-xl font-black tracking-tight">
             Werk<span className="bg-[#4ECDC4] px-1">CV</span>.nl
           </Link>
-          <span className="text-sm font-semibold text-slate-600">{user.email}</span>
+          <div className="flex flex-wrap items-center gap-4 text-sm font-semibold"><Link href="/agency/account/settings" className="text-emerald-700 underline underline-offset-4">Instellingen & team</Link><Link href="/agency/account/insights" className="text-emerald-700 underline underline-offset-4">Inzichten</Link><span className="text-slate-600">{user.email} · {access.role}</span></div>
         </header>
 
         <section className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">Agency account</p>
-            <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Jouw WerkCV Agency Plan</h1>
+            <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Jouw WerkCV MatchPack-workspace</h1>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
               Maak complete kandidaatvoorstellen en losse kandidaat-CV&apos;s via jouw vaste WerkCV-route. Een nieuw document of definitief goedgekeurd voorstel telt als één van de 50 slots.
             </p>
           </div>
 
           <div className="border-4 border-slate-900 bg-yellow-300 p-5 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.16em]">WerkCV Agency Plan</p>
+            <p className="text-xs font-black uppercase tracking-[0.16em]">Agency billing tier</p>
             <p className="mt-2 text-4xl font-black">€149 <span className="text-base">/ maand</span></p>
             <p className="mt-2 text-sm font-bold">{statusLabel}</p>
             {access.subscription?.currentPeriodEnd ? (
@@ -83,7 +83,7 @@ export default async function AgencyAccountPage({
           </div>
         ) : null}
 
-        <AgencyDraftResume canCreate={access.state === "active" && access.canCreate} />
+        <AgencyDraftResume canCreate={access.state === "active" && access.canCreate && access.isOwner && canCreateAgencyWork(access)} />
 
         {access.state === "active" && access.period ? (
           <section className="mt-8 border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
@@ -103,7 +103,7 @@ export default async function AgencyAccountPage({
               />
             </div>
             <div className="mt-5 flex flex-wrap gap-3">
-              {access.canCreate ? (
+              {access.canCreate && access.isOwner && canCreateAgencyWork(access) ? (
                 <Link
                   href="/editor?template=professional&startSource=agency_plan"
                   className="inline-flex border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-transform hover:translate-x-0.5 hover:translate-y-0.5"
@@ -115,7 +115,7 @@ export default async function AgencyAccountPage({
                 href="/agency/account/matchpack"
                 className="inline-flex border-2 border-slate-900 bg-yellow-300 px-4 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-transform hover:translate-x-0.5 hover:translate-y-0.5"
               >
-                Kandidaatvoorstel maken
+                MatchPack maken
               </Link>
               <Link href="/templates" className="inline-flex border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700">
                 Templates bekijken
@@ -124,10 +124,10 @@ export default async function AgencyAccountPage({
           </section>
         ) : access.state === "none" ? (
           <section className="mt-8 border-2 border-slate-900 bg-white p-6">
-            <h2 className="text-2xl font-black">Nog geen Agency Plan gekoppeld</h2>
+            <h2 className="text-2xl font-black">Nog geen Agency billing tier gekoppeld</h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">Start via de agency-pagina of gebruik hetzelfde e-mailadres als tijdens checkout.</p>
             <Link href="/agency" className="mt-5 inline-flex border-2 border-slate-900 bg-yellow-300 px-4 py-3 text-sm font-black">
-              Bekijk het Agency Plan
+              Bekijk MatchPack voor bureaus
             </Link>
           </section>
         ) : (
@@ -145,14 +145,16 @@ export default async function AgencyAccountPage({
               <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Laatste documenten</p>
               <h2 className="mt-1 text-2xl font-black">Goedgekeurde en losse CV-documenten</h2>
             </div>
-            <Link href="/agency" className="text-sm font-bold text-emerald-700 underline underline-offset-4">Agency-plan bekijken</Link>
+            <div className="flex flex-wrap gap-3 text-sm font-bold"><Link href="/agency/account/matchpack" className="text-emerald-700 underline underline-offset-4">MatchPacks bekijken</Link><Link href="/agency" className="text-emerald-700 underline underline-offset-4">Productinformatie</Link></div>
           </div>
           <div className="mt-4 divide-y-2 divide-slate-100 border-2 border-slate-200 bg-white">
-            {documents.length ? documents.map((document) => (
+            {documents.length ? documents.map((document) => access.isOwner ? (
               <Link key={document.id} href={`/editor?id=${encodeURIComponent(document.id)}`} className="flex items-center justify-between gap-4 px-4 py-4 hover:bg-slate-50">
                 <span className="min-w-0 truncate text-sm font-bold">{document.title || "Mijn CV"}</span>
                 <span className="shrink-0 text-xs font-semibold text-slate-500">{formatDate(document.updatedAt)}</span>
               </Link>
+            ) : (
+              <div key={document.id} className="flex items-center justify-between gap-4 px-4 py-4"><span className="min-w-0 truncate text-sm font-bold">{document.title || "Mijn CV"}</span><span className="shrink-0 text-xs font-semibold text-slate-500">{formatDate(document.updatedAt)}</span></div>
             )) : (
               <p className="px-4 py-5 text-sm font-semibold text-slate-500">Nog geen CV&apos;s aangemaakt.</p>
             )}

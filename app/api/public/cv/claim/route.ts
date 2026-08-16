@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { cvSchema, type CVData } from "@/lib/cv";
 import { getCurrentUserFromRequest } from "@/lib/auth";
-import { createCvDocumentForUser, getAgencyAccessForUser, isAgencyAccessError } from "@/lib/agency-access";
+import { canCreateAgencyWork, createCvDocumentForUser, getAgencyAccessForUser, isAgencyAccessError } from "@/lib/agency-access";
 import { getDefaultThemeId, getTemplateConfig } from "@/lib/templates/registry";
 import { normalizeStartSource } from "@/lib/start-source";
 import { getClientIp, checkRateLimit } from "@/lib/tools/rate-limit";
@@ -111,6 +111,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    let effectiveUserId = user.id;
     if (flow === "agency") {
       const access = await getAgencyAccessForUser(user.id);
       if (access.state !== "active") {
@@ -125,6 +126,10 @@ export async function POST(request: NextRequest) {
           code: "AGENCY_QUOTA_REACHED",
         }, 409);
       }
+      if (!canCreateAgencyWork(access)) {
+        return responseBody({ error: "Your agency role cannot create new CVs.", code: "ROLE_READ_ONLY" }, 403);
+      }
+      effectiveUserId = access.ownerUserId || user.id;
     }
 
     const { templateId, colorThemeId } = getSafeTemplateAndTheme(body.templateId, body.colorThemeId);
@@ -138,7 +143,7 @@ export async function POST(request: NextRequest) {
       data,
       templateId,
       colorThemeId,
-      userId: user.id,
+      userId: effectiveUserId,
       attribution: (user.attribution || undefined) as Prisma.InputJsonValue | undefined,
       sourceCluster: "public-editor",
       sourceLocale: uiLanguage,

@@ -8,9 +8,8 @@ import {
   parseStoredMatchPackData,
   parseStoredMatchPackSubmission,
 } from "@/lib/agency-matchpack";
-import { generateAgencySubmissionPDF } from "@/lib/agency-submission-pdf";
+import { generateAgencySubmissionDOCX } from "@/lib/agency-docx";
 import { prisma } from "@/lib/prisma";
-import { getDefaultThemeId } from "@/lib/templates/registry";
 
 export const runtime = "nodejs";
 
@@ -26,14 +25,10 @@ export async function GET(
   if (!user) return json({ error: "Authentication required.", code: "AUTH_REQUIRED" }, 401);
 
   const access = await getAgencyAccessForUser(user.id);
-  if (access.state !== "active") {
-    return json({ error: "An active Agency Plan is required for MatchPack exports.", code: "AGENCY_PLAN_REQUIRED" }, 409);
-  }
+  if (access.state !== "active") return json({ error: "An active Agency Plan is required for MatchPack exports.", code: "AGENCY_PLAN_REQUIRED" }, 409);
 
   const variant = request.nextUrl.searchParams.get("variant") || "full";
-  if (variant !== "full" && variant !== "anonymized") {
-    return json({ error: "Invalid export variant.", code: "INVALID_VARIANT" }, 400);
-  }
+  if (variant !== "full" && variant !== "anonymized") return json({ error: "Invalid export variant.", code: "INVALID_VARIANT" }, 400);
 
   const { id: rawId } = await context.params;
   const id = rawId.trim().slice(0, 120);
@@ -49,20 +44,18 @@ export async function GET(
       locale: true,
       templateId: true,
       colorThemeId: true,
-      agencyTemplate: {
-        select: { companyName: true, website: true, headerText: true, footerText: true },
-      },
       status: true,
       cvDocumentId: true,
       approvedAt: true,
       outcomeData: true,
+      agencyTemplate: {
+        select: { companyName: true, website: true, headerText: true, footerText: true },
+      },
     },
   });
 
   if (!pack) return json({ error: "MatchPack not found.", code: "NOT_FOUND" }, 404);
-  if (pack.status !== "approved" || !pack.cvDocumentId) {
-    return json({ error: "Approve the MatchPack before exporting it.", code: "APPROVAL_REQUIRED" }, 409);
-  }
+  if (pack.status !== "approved" || !pack.cvDocumentId) return json({ error: "Approve the MatchPack before exporting it.", code: "APPROVAL_REQUIRED" }, 409);
 
   try {
     const fullData = parseStoredMatchPackData(pack.candidateData);
@@ -70,23 +63,18 @@ export async function GET(
     const analysis = parseStoredMatchPackAnalysis(pack.analysis);
     const submission = pack.submissionData
       ? parseStoredMatchPackSubmission(pack.submissionData)
-      : createDefaultMatchPackSubmission(
-        fullData,
-        analysis.result,
-        pack.vacancyTitle || "",
-        pack.locale === "en" ? "en" : "nl",
-      );
-    const pdfBuffer = await generateAgencySubmissionPDF({
+      : createDefaultMatchPackSubmission(fullData, analysis.result, pack.vacancyTitle || "", pack.locale === "en" ? "en" : "nl");
+    const docxBuffer = await generateAgencySubmissionDOCX({
       candidateData: data,
       analysis,
       submission,
       vacancyTitle: pack.vacancyTitle || "",
       locale: pack.locale === "en" ? "en" : "nl",
       variant,
-      templateId: pack.templateId,
-      colorThemeId: pack.colorThemeId || getDefaultThemeId(pack.templateId),
       companyName: pack.agencyTemplate?.companyName || access.subscription?.companyName,
-      sourceCandidateName: fullData.personal.name,
+      website: pack.agencyTemplate?.website || access.subscription?.website,
+      headerText: pack.agencyTemplate?.headerText,
+      footerText: pack.agencyTemplate?.footerText,
     });
     const exportedAt = new Date();
     const existingOutcome = pack.outcomeData && typeof pack.outcomeData === "object" && !Array.isArray(pack.outcomeData)
@@ -105,24 +93,19 @@ export async function GET(
       }).catch(() => undefined);
     }
     const filename = variant === "anonymized"
-      ? "werkcv-kandidaatvoorstel-geanonimiseerd.pdf"
-      : "werkcv-kandidaatvoorstel-volledig.pdf";
+      ? "werkcv-kandidaatvoorstel-zonder-directe-contactgegevens.docx"
+      : "werkcv-kandidaatvoorstel-volledig.docx";
 
-    return new NextResponse(new Uint8Array(pdfBuffer), {
+    return new NextResponse(new Uint8Array(docxBuffer), {
       status: 200,
       headers: {
-        "Content-Type": "application/pdf",
+        "Content-Type": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         "Content-Disposition": `attachment; filename="${filename}"`,
         "Cache-Control": "private, no-store",
       },
     });
   } catch (error) {
-    console.error("agency_matchpack_pdf_failed", {
-      userId: user.id,
-      packId: pack.id,
-      variant,
-      code: error instanceof Error ? error.name : "unknown",
-    });
-    return json({ error: "The MatchPack PDF could not be generated.", code: "PDF_ERROR" }, 500);
+    console.error("agency_matchpack_docx_failed", { userId: user.id, packId: id, code: error instanceof Error ? error.name : "unknown" });
+    return json({ error: "The MatchPack DOCX could not be generated.", code: "DOCX_ERROR" }, 500);
   }
 }

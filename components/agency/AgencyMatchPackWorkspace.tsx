@@ -1,11 +1,12 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { CVData } from "@/lib/cv";
 import {
   scrubAnonymizedText,
   scrubKnownCandidateName,
+  type MatchPackOutcome,
   type MatchPackAnalysis,
   type MatchPackSubmission,
 } from "@/lib/agency-matchpack";
@@ -23,16 +24,28 @@ type PackSummary = {
   approvedAt: string | null;
   createdAt: string;
   updatedAt: string;
+  outcomeStatus?: MatchPackOutcome["status"];
 };
 
 type PackDetail = PackSummary & {
   vacancyText: string;
   candidateData: CVData;
+  originalCandidateData: CVData;
   anonymizedData: CVData;
   analysis: MatchPackAnalysis;
   submissionData: MatchPackSubmission;
+  outcomeData?: MatchPackOutcome | null;
+  sourceTextDigest?: string | null;
   templateId: string;
   colorThemeId: string;
+  revisions: Array<{
+    id: string;
+    version: number;
+    reason: string;
+    changedFields: string[];
+    createdById: string;
+    createdAt: string;
+  }>;
 };
 
 type AgencyMatchPackWorkspaceProps = {
@@ -40,6 +53,9 @@ type AgencyMatchPackWorkspaceProps = {
   initialUsed: number;
   allowance: number;
   canCreate: boolean;
+  canCreateWork: boolean;
+  canApprove: boolean;
+  canOpenCv: boolean;
 };
 
 type ReviewStep = "fit" | "source" | "message" | "output" | "approve";
@@ -87,6 +103,7 @@ function toSummary(pack: PackDetail | PackSummary): PackSummary {
     approvedAt: pack.approvedAt,
     createdAt: pack.createdAt,
     updatedAt: pack.updatedAt,
+    outcomeStatus: "outcomeData" in pack && pack.outcomeData ? pack.outcomeData.status : pack.outcomeStatus,
   };
 }
 
@@ -102,12 +119,55 @@ function getStatusTone(status: string): string {
   return "border-rose-200 bg-rose-50 text-rose-800";
 }
 
+function reviewerStatusLabel(status: string): string {
+  if (status === "confirmed") return "Bevestigd";
+  if (status === "corrected") return "Gecorrigeerd";
+  if (status === "rejected") return "Afgewezen";
+  return "Nog te beoordelen";
+}
+
+function getCandidateChanges(original: CVData, current: CVData): Array<{ label: string; before: string; after: string }> {
+  const changes: Array<{ label: string; before: string; after: string }> = [];
+  const compare = (label: string, before: string, after: string) => {
+    if (before.trim() !== after.trim()) changes.push({ label, before: before || "—", after: after || "—" });
+  };
+
+  compare("Naam", original.personal.name, current.personal.name);
+  compare("Professionele titel", original.personal.title, current.personal.title);
+  compare("Profielsamenvatting", original.personal.summary, current.personal.summary);
+  compare("Vaardigheden", original.skills.map((item) => item.name).join(", "), current.skills.map((item) => item.name).join(", "));
+  if (original.experience.length !== current.experience.length) changes.push({ label: "Aantal werkervaringen", before: String(original.experience.length), after: String(current.experience.length) });
+  if (original.education.length !== current.education.length) changes.push({ label: "Aantal opleidingen", before: String(original.education.length), after: String(current.education.length) });
+  current.experience.forEach((experience, index) => {
+    const before = original.experience[index];
+    if (!before) return;
+    compare(`Werkervaring ${index + 1} · functie`, before.role, experience.role);
+    compare(`Werkervaring ${index + 1} · organisatie`, before.company, experience.company);
+    compare(`Werkervaring ${index + 1} · beschrijving`, before.description, experience.description);
+    compare(`Werkervaring ${index + 1} · resultaten`, before.highlights.join(" | "), experience.highlights.join(" | "));
+  });
+  current.education.forEach((education, index) => {
+    const before = original.education[index];
+    if (!before) return;
+    compare(`Opleiding ${index + 1} · opleiding`, before.degree, education.degree);
+    compare(`Opleiding ${index + 1} · instelling`, before.school, education.school);
+  });
+  return changes.slice(0, 24);
+}
+
 export default function AgencyMatchPackWorkspace({
   initialPacks,
   initialUsed,
   allowance,
   canCreate,
+  canCreateWork,
+  canApprove,
+  canOpenCv,
 }: AgencyMatchPackWorkspaceProps) {
+  useEffect(() => {
+    track("agency_workspace_started", { location: "agency_matchpack_workspace" });
+  }, []);
+
   const [packs, setPacks] = useState<PackSummary[]>(initialPacks);
   const [activePack, setActivePack] = useState<PackDetail | null>(null);
   const [vacancyTitle, setVacancyTitle] = useState("");
@@ -125,11 +185,16 @@ export default function AgencyMatchPackWorkspace({
   const [reviewStep, setReviewStep] = useState<ReviewStep>("fit");
   const [evidenceFilter, setEvidenceFilter] = useState<EvidenceFilter>("all");
   const [previewVariant, setPreviewVariant] = useState<"full" | "anonymized">("full");
+  const [outcomeStatus, setOutcomeStatus] = useState<MatchPackOutcome["status"]>("unknown");
+  const [outcomeNote, setOutcomeNote] = useState("");
+  const [isOutcomeBusy, setIsOutcomeBusy] = useState(false);
+  const reviewStartedAtRef = useRef<number | null>(null);
+  const workflowStartedAtRef = useRef<number | null>(null);
 
   const reviewReady = checkedItems.every(Boolean);
   const activeResult = activePack?.analysis.result;
   const activeIsApproved = activePack?.status === "approved" && Boolean(activePack.cvDocumentId);
-  const hasQuota = canCreate && used < allowance;
+  const hasQuota = canApprove && canCreate && used < allowance;
   const usagePercent = Math.min(100, (used / Math.max(1, allowance)) * 100);
   const filteredRequirements = activeResult?.requirements.filter((requirement) => (
     evidenceFilter === "all" || requirement.status === evidenceFilter
@@ -153,6 +218,10 @@ export default function AgencyMatchPackWorkspace({
     setReviewStep("fit");
     setEvidenceFilter("all");
     setPreviewVariant("full");
+    setOutcomeStatus("unknown");
+    setOutcomeNote("");
+    reviewStartedAtRef.current = null;
+    workflowStartedAtRef.current = null;
   };
 
   const updateCandidatePersonal = (field: keyof CVData["personal"], value: string) => {
@@ -223,8 +292,48 @@ export default function AgencyMatchPackWorkspace({
     setIsDirty(true);
   };
 
+  const updateEvidenceReview = (
+    requirementIndex: number,
+    reviewerStatus: "unreviewed" | "confirmed" | "corrected" | "rejected",
+    reviewerNote: string,
+  ) => {
+    setActivePack((current) => {
+      if (!current) return current;
+      return {
+        ...current,
+        analysis: {
+          ...current.analysis,
+          result: {
+            ...current.analysis.result,
+            requirements: current.analysis.result.requirements.map((requirement, index) => index === requirementIndex
+              ? {
+                ...requirement,
+                evidenceReference: {
+                  sourcePage: requirement.evidenceReference?.sourcePage ?? null,
+                  sourceLine: requirement.evidenceReference?.sourceLine || 1,
+                  sourceSection: requirement.evidenceReference?.sourceSection || "CV-bron",
+                  snippet: requirement.evidenceReference?.snippet || "",
+                  match: requirement.evidenceReference?.match || "not_found",
+                  reviewerStatus,
+                  reviewerNote,
+                  reviewedAt: new Date().toISOString(),
+                  reviewerId: "current-user",
+                },
+              }
+              : requirement),
+          },
+        },
+      };
+    });
+    setIsDirty(true);
+  };
+
   const handleAnalyze = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!canCreateWork) {
+      setError("Je rol kan bestaande MatchPacks beoordelen, maar geen nieuwe maken.");
+      return;
+    }
     if (!file) {
       setError("Upload eerst het CV van de kandidaat.");
       return;
@@ -237,6 +346,7 @@ export default function AgencyMatchPackWorkspace({
     setIsBusy(true);
     setError(null);
     setNotice(null);
+    workflowStartedAtRef.current = Date.now();
     const fileType = file.name.toLowerCase().endsWith(".pdf")
       ? "pdf"
       : file.name.toLowerCase().endsWith(".docx") ? "docx" : "unknown";
@@ -260,6 +370,9 @@ export default function AgencyMatchPackWorkspace({
       }
 
       setActivePack(body.pack);
+      reviewStartedAtRef.current = Date.now();
+      setOutcomeStatus(body.pack.outcomeData?.status || "unknown");
+      setOutcomeNote(body.pack.outcomeData?.note || "");
       setPacks((current) => [toSummary(body.pack as PackDetail), ...current.filter((pack) => pack.id !== body.pack?.id)]);
       setCheckedItems([false, false, false, false]);
       setIsDirty(false);
@@ -289,6 +402,10 @@ export default function AgencyMatchPackWorkspace({
       const body = await response.json().catch(() => null) as { pack?: PackDetail; error?: string } | null;
       if (!response.ok || !body?.pack) throw new Error(body?.error || "De MatchPack kon niet worden geopend.");
       setActivePack(body.pack);
+      reviewStartedAtRef.current = Date.now();
+      workflowStartedAtRef.current = null;
+      setOutcomeStatus(body.pack.outcomeData?.status || "unknown");
+      setOutcomeNote(body.pack.outcomeData?.note || "");
       setCheckedItems([false, false, false, false]);
       setIsDirty(false);
       setReviewStep("fit");
@@ -306,7 +423,7 @@ export default function AgencyMatchPackWorkspace({
   };
 
   const saveDraft = async () => {
-    if (!activePack || activeIsApproved) return;
+    if (!activePack || activeIsApproved || !canApprove) return;
     setIsBusy(true);
     setError(null);
     setNotice(null);
@@ -317,14 +434,19 @@ export default function AgencyMatchPackWorkspace({
         body: JSON.stringify({
           candidateData: activePack.candidateData,
           submissionData: activePack.submissionData,
+          evidenceReviews: activePack.analysis.result.requirements.map((requirement, requirementIndex) => ({
+            requirementIndex,
+            reviewerStatus: requirement.evidenceReference?.reviewerStatus || "unreviewed",
+            reviewerNote: requirement.evidenceReference?.reviewerNote || "",
+          })),
         }),
       });
       const body = await response.json().catch(() => null) as {
-        pack?: Pick<PackDetail, "candidateData" | "anonymizedData" | "submissionData" | "updatedAt">;
+        pack?: Pick<PackDetail, "candidateData" | "anonymizedData" | "analysis" | "submissionData" | "updatedAt" | "revisions">;
         error?: string;
       } | null;
       if (!response.ok || !body?.pack) throw new Error(body?.error || "Het concept kon niet worden opgeslagen.");
-      setActivePack((current) => current ? { ...current, ...body.pack } : current);
+       setActivePack((current) => current ? { ...current, ...body.pack } : current);
       setPacks((current) => current.map((pack) => pack.id === activePack.id
         ? { ...pack, updatedAt: body.pack?.updatedAt || pack.updatedAt }
         : pack));
@@ -343,7 +465,7 @@ export default function AgencyMatchPackWorkspace({
   };
 
   const approvePack = async () => {
-    if (!activePack || !reviewReady || activeIsApproved || isDirty) return;
+    if (!activePack || !reviewReady || activeIsApproved || isDirty || !canApprove) return;
     setIsBusy(true);
     setError(null);
     setNotice(null);
@@ -351,6 +473,19 @@ export default function AgencyMatchPackWorkspace({
       const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/approve`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          reviewDurationSeconds: reviewStartedAtRef.current
+            ? Math.max(0, Math.round((Date.now() - reviewStartedAtRef.current) / 1000))
+            : null,
+          uploadToApprovalSeconds: workflowStartedAtRef.current
+            ? Math.max(0, Math.round((Date.now() - workflowStartedAtRef.current) / 1000))
+            : null,
+          correctionsCount: getCandidateChanges(activePack.originalCandidateData, activePack.candidateData).length,
+          unsupportedClaimsCaught: activePack.analysis.result.requirements.filter((requirement) => (
+            requirement.evidenceReference?.reviewerStatus === "corrected"
+            || requirement.evidenceReference?.reviewerStatus === "rejected"
+          )).length,
+        }),
       });
       const body = await response.json().catch(() => null) as {
         cvId?: string;
@@ -387,7 +522,7 @@ export default function AgencyMatchPackWorkspace({
 
   const chooseOutputVariant = (variant: "full" | "anonymized") => {
     setPreviewVariant(variant);
-    if (!activePack || activeIsApproved || activePack.submissionData.selectedVariant === variant) return;
+    if (!activePack || activeIsApproved || !canApprove || activePack.submissionData.selectedVariant === variant) return;
     updateSubmission("selectedVariant", variant);
   };
 
@@ -413,7 +548,7 @@ export default function AgencyMatchPackWorkspace({
   };
 
   const deletePack = async () => {
-    if (!activePack || activeIsApproved) return;
+    if (!activePack || activeIsApproved || !canApprove) return;
     if (!window.confirm("Deze ongekeurde MatchPack verwijderen?")) return;
 
     setIsBusy(true);
@@ -432,6 +567,34 @@ export default function AgencyMatchPackWorkspace({
     }
   };
 
+  const saveOutcome = async () => {
+    if (!activePack || activePack.status !== "approved") return;
+    setIsOutcomeBusy(true);
+    setError(null);
+    try {
+      const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/outcome`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: outcomeStatus, note: outcomeNote }),
+      });
+      const body = await response.json().catch(() => null) as { outcomeData?: MatchPackOutcome; error?: string } | null;
+      if (!response.ok || !body?.outcomeData) throw new Error(body?.error || "De klantstatus kon niet worden opgeslagen.");
+      const savedOutcome = body.outcomeData;
+      setActivePack((current) => current ? { ...current, outcomeData: savedOutcome, outcomeStatus: savedOutcome.status } : current);
+      setPacks((current) => current.map((pack) => pack.id === activePack.id ? { ...pack, outcomeStatus: savedOutcome.status } : pack));
+      setNotice("Klantstatus opgeslagen.");
+      track("matchpack_client_outcome_saved", { status: savedOutcome.status });
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "De klantstatus kon niet worden opgeslagen.");
+    } finally {
+      setIsOutcomeBusy(false);
+    }
+  };
+
+  const visibleSourceChanges = activePack
+    ? getCandidateChanges(activePack.originalCandidateData, activePack.candidateData)
+    : [];
+
   return (
     <div className="mt-8 grid gap-8 xl:grid-cols-[280px_minmax(0,1fr)]">
       <aside className="h-fit border-2 border-slate-900 bg-white p-4 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
@@ -443,6 +606,7 @@ export default function AgencyMatchPackWorkspace({
           <button
             type="button"
             onClick={resetWorkspace}
+            disabled={!canCreateWork}
             className="border-2 border-slate-900 bg-yellow-300 px-3 py-2 text-xs font-black"
           >
             Nieuw
@@ -487,6 +651,7 @@ export default function AgencyMatchPackWorkspace({
       <section className="min-w-0">
         {error ? <div className="mb-5 border-2 border-rose-500 bg-rose-50 p-4 text-sm font-semibold text-rose-900" role="alert">{error}</div> : null}
         {notice ? <div className="mb-5 border-2 border-emerald-500 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900" role="status">{notice}</div> : null}
+        {!canApprove ? <div className="mb-5 border-2 border-slate-300 bg-slate-50 p-4 text-sm font-semibold text-slate-700">Je rol is alleen-lezen. Je kunt MatchPacks openen, maar niet wijzigen of goedkeuren.</div> : null}
 
         {!activePack ? (
           <form onSubmit={handleAnalyze} className="border-2 border-slate-900 bg-white p-5 shadow-[5px_5px_0px_0px_rgba(78,205,196,1)] sm:p-7">
@@ -534,8 +699,8 @@ export default function AgencyMatchPackWorkspace({
 
             <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t-2 border-slate-100 pt-5">
               <p className="max-w-xl text-xs font-semibold leading-relaxed text-slate-500">De upload en vacaturetekst worden alleen binnen je beveiligde agency-account verwerkt. Het originele bestand wordt niet opgeslagen; het gecontroleerde concept blijft beschikbaar in je account.</p>
-              <button type="submit" disabled={isBusy || !hasQuota} className="border-2 border-slate-900 bg-emerald-400 px-5 py-3 text-sm font-black text-slate-950 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] disabled:cursor-not-allowed disabled:opacity-50">
-                {isBusy ? "Voorstel analyseren…" : hasQuota ? "Analyseer en maak concept" : "Maandlimiet bereikt"}
+      <button type="submit" disabled={isBusy || !hasQuota || !canCreateWork} className="border-2 border-slate-900 bg-emerald-400 px-5 py-3 text-sm font-black text-slate-950 shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] disabled:cursor-not-allowed disabled:opacity-50">
+                {isBusy ? "Voorstel analyseren…" : !canCreateWork ? "Je rol kan geen nieuwe MatchPacks maken" : hasQuota ? "Analyseer en maak concept" : "Maandlimiet bereikt"}
               </button>
             </div>
           </form>
@@ -600,8 +765,23 @@ export default function AgencyMatchPackWorkspace({
                   <div className="mt-5 flex flex-wrap gap-2" role="group" aria-label="Filter bewijsstatus">
                     {(["all", "strong", "partial", "missing"] as const).map((filter) => <button key={filter} type="button" onClick={() => setEvidenceFilter(filter)} className={`border-2 px-3 py-2 text-xs font-black ${evidenceFilter === filter ? "border-slate-900 bg-slate-900 text-white" : "border-slate-200 bg-white text-slate-700 hover:border-slate-400"}`}>{filter === "all" ? "Alle" : filter === "strong" ? "Sterk" : filter === "partial" ? "Gedeeltelijk" : "Ontbreekt"}</button>)}
                   </div>
-                  <div className="mt-4 space-y-3 md:hidden">{filteredRequirements.map((requirement) => <article key={`${requirement.requirement}-${requirement.vacancyEvidence}`} className="border-2 border-slate-200 bg-slate-50 p-4"><div className="flex flex-wrap items-start justify-between gap-2"><p className="font-black">{requirement.requirement}</p><span className={`inline-flex border px-2 py-1 text-xs font-black ${getStatusTone(requirement.status)}`}>{getStatusText(requirement.status)}</span></div><p className="mt-2 text-xs leading-relaxed text-slate-500">“{requirement.vacancyEvidence}”</p><p className="mt-3 text-xs leading-relaxed text-slate-700"><span className="font-black">CV-bewijs:</span> {requirement.cvEvidence || "Geen concreet bewijs gevonden."}</p><p className="mt-2 text-xs leading-relaxed text-slate-700"><span className="font-black">Eerlijke actie:</span> {requirement.honestAction}</p></article>)}</div>
-                  <div className="mt-4 hidden overflow-x-auto md:block"><table className="w-full min-w-[760px] border-collapse text-left text-sm"><thead><tr className="border-b-2 border-slate-900 text-xs uppercase tracking-[0.1em] text-slate-500"><th className="px-3 py-3">Vacature-eis</th><th className="px-3 py-3">Status</th><th className="px-3 py-3">CV-bewijs</th><th className="px-3 py-3">Eerlijke actie</th></tr></thead><tbody>{filteredRequirements.map((requirement) => <tr key={`${requirement.requirement}-${requirement.vacancyEvidence}`} className="border-b border-slate-100 align-top"><td className="px-3 py-4"><p className="font-black">{requirement.requirement}</p><p className="mt-1 text-xs leading-relaxed text-slate-500">“{requirement.vacancyEvidence}”</p></td><td className="px-3 py-4"><span className={`inline-flex border px-2 py-1 text-xs font-black ${getStatusTone(requirement.status)}`}>{getStatusText(requirement.status)}</span></td><td className="px-3 py-4 text-xs leading-relaxed text-slate-700">{requirement.cvEvidence || "Geen concreet bewijs gevonden."}</td><td className="px-3 py-4 text-xs leading-relaxed text-slate-700">{requirement.honestAction}</td></tr>)}</tbody></table></div>
+                   <div className="mt-4 space-y-3 md:hidden">{filteredRequirements.map((requirement) => {
+                     const requirementIndex = activeResult.requirements.indexOf(requirement);
+                     const reference = requirement.evidenceReference;
+                     return <article key={`${requirement.requirement}-${requirement.vacancyEvidence}`} className="border-2 border-slate-200 bg-slate-50 p-4">
+                       <div className="flex flex-wrap items-start justify-between gap-2"><p className="font-black">{requirement.requirement}</p><span className={`inline-flex border px-2 py-1 text-xs font-black ${getStatusTone(requirement.status)}`}>{getStatusText(requirement.status)}</span></div>
+                       <p className="mt-2 text-xs leading-relaxed text-slate-500">Vacaturebron: “{requirement.vacancyEvidence}”</p>
+                       <p className="mt-3 text-xs leading-relaxed text-slate-700"><span className="font-black">CV-bewijs:</span> {requirement.cvEvidence || "Geen concreet bewijs gevonden."}</p>
+                       <div className="mt-3 border-l-4 border-emerald-400 bg-white p-3 text-xs leading-relaxed text-slate-700"><p className="font-black">Bronverwijzing</p><p className="mt-1">{reference?.sourcePage ? `PDF-pagina ${reference.sourcePage}` : `Regel ${reference?.sourceLine || "—"}`} · {reference?.sourceSection || "Niet gevonden"}</p><p className="mt-1 italic">{reference?.snippet ? `“${reference.snippet}”` : "Geen exact bronfragment gevonden."}</p></div>
+                       <p className="mt-2 text-xs leading-relaxed text-slate-700"><span className="font-black">Eerlijke actie:</span> {requirement.honestAction}</p>
+                       <label className="mt-3 block text-xs font-black text-slate-600">Reviewstatus<select className={`${inputClassName} mt-1`} value={reference?.reviewerStatus || "unreviewed"} onChange={(event) => updateEvidenceReview(requirementIndex, event.target.value as "unreviewed" | "confirmed" | "corrected" | "rejected", reference?.reviewerNote || "")} disabled={activeIsApproved}><option value="unreviewed">Nog te beoordelen</option><option value="confirmed">Bevestigd</option><option value="corrected">Gecorrigeerd</option><option value="rejected">Afgewezen</option></select></label>
+                     </article>;
+                   })}</div>
+                   <div className="mt-4 hidden overflow-x-auto md:block"><table className="w-full min-w-[1,140px] border-collapse text-left text-sm"><thead><tr className="border-b-2 border-slate-900 text-xs uppercase tracking-[0.1em] text-slate-500"><th className="px-3 py-3">Vacature-eis</th><th className="px-3 py-3">Status</th><th className="px-3 py-3">CV-bewijs</th><th className="px-3 py-3">Bronverwijzing</th><th className="px-3 py-3">Review</th><th className="px-3 py-3">Eerlijke actie</th></tr></thead><tbody>{filteredRequirements.map((requirement) => {
+                     const requirementIndex = activeResult.requirements.indexOf(requirement);
+                     const reference = requirement.evidenceReference;
+                     return <tr key={`${requirement.requirement}-${requirement.vacancyEvidence}`} className="border-b border-slate-100 align-top"><td className="px-3 py-4"><p className="font-black">{requirement.requirement}</p><p className="mt-1 text-xs leading-relaxed text-slate-500">“{requirement.vacancyEvidence}”</p></td><td className="px-3 py-4"><span className={`inline-flex border px-2 py-1 text-xs font-black ${getStatusTone(requirement.status)}`}>{getStatusText(requirement.status)}</span></td><td className="px-3 py-4 text-xs leading-relaxed text-slate-700">{requirement.cvEvidence || "Geen concreet bewijs gevonden."}</td><td className="px-3 py-4 text-xs leading-relaxed text-slate-700"><p>{reference?.sourcePage ? `PDF-pagina ${reference.sourcePage}` : `Regel ${reference?.sourceLine || "—"}`}</p><p className="mt-1 text-[11px] italic">{reference?.snippet || "Geen exact bronfragment gevonden."}</p></td><td className="px-3 py-4"><select className="border-2 border-slate-300 bg-white px-2 py-2 text-xs font-bold" value={reference?.reviewerStatus || "unreviewed"} onChange={(event) => updateEvidenceReview(requirementIndex, event.target.value as "unreviewed" | "confirmed" | "corrected" | "rejected", reference?.reviewerNote || "")} disabled={activeIsApproved}><option value="unreviewed">Nog te beoordelen</option><option value="confirmed">Bevestigd</option><option value="corrected">Gecorrigeerd</option><option value="rejected">Afgewezen</option></select><p className="mt-1 text-[11px] font-bold text-slate-500">{reviewerStatusLabel(reference?.reviewerStatus || "unreviewed")}</p></td><td className="px-3 py-4 text-xs leading-relaxed text-slate-700">{requirement.honestAction}</td></tr>;
+                   })}</tbody></table></div>
                   {filteredRequirements.length === 0 ? <p className="mt-4 border-2 border-dashed border-slate-300 p-4 text-sm font-semibold text-slate-600">Geen eisen met deze status.</p> : null}
                 </section>
 
@@ -619,9 +799,23 @@ export default function AgencyMatchPackWorkspace({
                       <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">Deze gecontroleerde bron voedt beide uitvoerversies. Corrigeer alleen extractiefouten en voeg geen onbevestigde claims toe.</p>
                     </div>
                     {isDirty ? <span className="border-2 border-amber-300 bg-amber-50 px-3 py-2 text-xs font-black text-amber-900">Niet-opgeslagen wijzigingen</span> : <span className="border-2 border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-black text-emerald-800">Brondata gesynchroniseerd</span>}
-                  </div>
+                   </div>
 
-                  <details className="mt-5 border-2 border-slate-200 bg-slate-50 p-4" open={!activeIsApproved}>
+                   <div className="mt-5 grid gap-4 lg:grid-cols-2">
+                     <div className="border-2 border-slate-900 bg-slate-50 p-4">
+                       <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-600">Bron → uitvoer</p>
+                       <p className="mt-2 text-sm font-bold text-slate-800">De goedgekeurde output gebruikt de gecorrigeerde brondata. Controleer hieronder wat sinds de eerste extractie is gewijzigd.</p>
+                       {activePack.sourceTextDigest ? <p className="mt-2 break-all text-[11px] font-semibold text-slate-500">Bronfingerprint: {activePack.sourceTextDigest.slice(0, 16)}…</p> : null}
+                       {visibleSourceChanges.length ? <ul className="mt-3 space-y-2 text-xs leading-relaxed">{visibleSourceChanges.map((change) => <li key={change.label} className="border-l-4 border-amber-400 bg-white p-2"><span className="font-black">{change.label}</span><br /><span className="text-rose-800">Bron: {change.before}</span><br /><span className="text-emerald-800">Uitvoer: {change.after}</span></li>)}</ul> : <p className="mt-3 text-xs font-semibold text-slate-500">Nog geen inhoudelijke correcties sinds de eerste extractie.</p>}
+                       <p className="mt-3 text-[11px] font-semibold text-slate-500">Contactvrije uitvoer verwijdert daarnaast de directe velden die in de waarschuwing staan; controleer indirecte herkenbaarheid zelf.</p>
+                     </div>
+                     <div className="border-2 border-slate-200 bg-white p-4">
+                       <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-600">Versiegeschiedenis</p>
+                       <div className="mt-3 space-y-2">{activePack.revisions?.length ? activePack.revisions.slice(0, 8).map((revision) => <div key={revision.id} className="flex items-start justify-between gap-3 border-b border-slate-100 pb-2 text-xs"><div><p className="font-black">v{revision.version} · {revision.reason === "analysis_created" ? "Analyse aangemaakt" : "Concept opgeslagen"}</p><p className="mt-1 text-slate-500">{revision.changedFields.join(", ")}</p></div><time className="shrink-0 font-semibold text-slate-500">{formatDate(revision.createdAt)}</time></div>) : <p className="text-xs font-semibold text-slate-500">Nog geen versies opgeslagen.</p>}</div>
+                     </div>
+                   </div>
+
+                   <details className="mt-5 border-2 border-slate-200 bg-slate-50 p-4" open={!activeIsApproved}>
                     <summary className="cursor-pointer font-black">Persoons- en profielgegevens</summary>
                     <div className="mt-4 grid gap-4 sm:grid-cols-2">
                       {([
@@ -718,9 +912,20 @@ export default function AgencyMatchPackWorkspace({
                     {["Ik heb de vacature-eisen, het CV-bewijs en alle correcties gecontroleerd.", "Ik heb de introductie, commerciële gegevens en begeleidende e-mail gecontroleerd.", `Ik heb de gekozen uitvoerversie (${activePack.submissionData.selectedVariant === "full" ? "volledig voorstel" : "zonder directe contactgegevens"}) gecontroleerd.`, "Ik bevestig dat mijn bureau bevoegd is om deze kandidaatdata voor deze vacature te verwerken en te delen."] .map((label, index) => <label key={label} className="flex items-start gap-3"><input type="checkbox" className="mt-0.5 h-5 w-5 accent-emerald-600" checked={checkedItems[index] || false} onChange={(event) => setCheckedItems((current) => current.map((value, itemIndex) => itemIndex === index ? event.target.checked : value))} disabled={activeIsApproved || isDirty} /><span>{label}</span></label>)}
                   </div>
                   <div className="mt-6 flex flex-wrap items-center gap-3 border-t-2 border-yellow-200 pt-5">
-                    {!activeIsApproved ? <button type="button" onClick={() => void approvePack()} disabled={!reviewReady || isBusy || !hasQuota || isDirty} className="border-2 border-slate-900 bg-emerald-400 px-5 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] disabled:cursor-not-allowed disabled:opacity-50">{isBusy ? "Goedkeuren…" : isDirty ? "Sla wijzigingen eerst op" : hasQuota ? "Goedkeuren en 1 voorstel-slot gebruiken" : "Maandlimiet bereikt"}</button> : <><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/pdf?variant=${activePack.submissionData.selectedVariant === "full" ? "full" : "anonymized"}`} onClick={() => track("matchpack_pdf_downloaded", { variant: activePack.submissionData.selectedVariant })} className="border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black">Gekozen versie downloaden</a><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/pdf?variant=${activePack.submissionData.selectedVariant === "full" ? "anonymized" : "full"}`} onClick={() => track("matchpack_pdf_downloaded", { variant: activePack.submissionData.selectedVariant === "full" ? "anonymized" : "full" })} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black">Andere versie downloaden</a>{activePack.cvDocumentId ? <Link href={`/editor?id=${encodeURIComponent(activePack.cvDocumentId)}`} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700">Goedgekeurd CV openen</Link> : null}</>}
+                    {!activeIsApproved ? <button type="button" onClick={() => void approvePack()} disabled={!reviewReady || isBusy || !hasQuota || isDirty} className="border-2 border-slate-900 bg-emerald-400 px-5 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] disabled:cursor-not-allowed disabled:opacity-50">{isBusy ? "Goedkeuren…" : isDirty ? "Sla wijzigingen eerst op" : hasQuota ? "Goedkeuren en 1 voorstel-slot gebruiken" : "Maandlimiet bereikt"}</button> : <><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/pdf?variant=${activePack.submissionData.selectedVariant === "full" ? "full" : "anonymized"}`} onClick={() => track("matchpack_pdf_downloaded", { variant: activePack.submissionData.selectedVariant })} className="border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black">Gekozen PDF downloaden</a><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/docx?variant=${activePack.submissionData.selectedVariant === "full" ? "full" : "anonymized"}`} onClick={() => track("matchpack_docx_downloaded", { variant: activePack.submissionData.selectedVariant })} className="border-2 border-slate-900 bg-yellow-300 px-4 py-3 text-sm font-black">Gekozen DOCX downloaden</a><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/pdf?variant=${activePack.submissionData.selectedVariant === "full" ? "anonymized" : "full"}`} onClick={() => track("matchpack_pdf_downloaded", { variant: activePack.submissionData.selectedVariant === "full" ? "anonymized" : "full" })} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black">Andere PDF downloaden</a>{activePack.cvDocumentId && canOpenCv ? <Link href={`/editor?id=${encodeURIComponent(activePack.cvDocumentId)}`} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700">Goedgekeurd CV openen</Link> : null}</>}
                     {!activeIsApproved ? <button type="button" onClick={() => void deletePack()} disabled={isBusy} className="border-2 border-rose-200 bg-white px-4 py-3 text-sm font-black text-rose-700 disabled:opacity-50">Verwijder concept</button> : <span className="text-xs font-bold text-emerald-800">Goedgekeurd op {formatDate(activePack.approvedAt)}</span>}
                   </div>
+                </section> : null}
+
+                {activeIsApproved ? <section className="border-2 border-slate-900 bg-emerald-50 p-5 sm:p-6">
+                  <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-800">Resultaat volgen</p>
+                  <h3 className="mt-2 text-2xl font-black">Wat deed de opdrachtgever met dit voorstel?</h3>
+                  <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-700">Leg de uitkomst vast zodra je die weet. Deze gegevens blijven intern en helpen ons echte acceptatie, correcties en herhaalgebruik te meten.</p>
+                  <div className="mt-5 grid gap-4 sm:grid-cols-[220px_1fr]">
+                    <label className="text-xs font-black text-slate-600">Klantstatus<select className={`${inputClassName} mt-2`} value={outcomeStatus} onChange={(event) => setOutcomeStatus(event.target.value as MatchPackOutcome["status"])}><option value="unknown">Nog onbekend</option><option value="pending">In behandeling</option><option value="accepted">Geaccepteerd</option><option value="rejected">Afgewezen</option><option value="withdrawn">Ingetrokken</option></select></label>
+                    <label className="text-xs font-black text-slate-600">Notitie (optioneel)<textarea className={`${inputClassName} mt-2 min-h-24`} value={outcomeNote} onChange={(event) => setOutcomeNote(event.target.value)} maxLength={1_000} placeholder="Bijv. klant wil een gesprek plannen." /></label>
+                  </div>
+                  <button type="button" onClick={() => void saveOutcome()} disabled={isOutcomeBusy} className="mt-4 border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black disabled:opacity-50">{isOutcomeBusy ? "Opslaan…" : "Klantstatus opslaan"}</button>
                 </section> : null}
 
                 <div className="flex flex-wrap items-center justify-between gap-3 border-t-2 border-slate-100 pt-5">

@@ -789,20 +789,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.66,
         },
         {
+            url: `${baseUrl}/agency/privacy`,
+            lastModified: new Date('2026-08-16'),
+            changeFrequency: 'monthly',
+            priority: 0.48,
+        },
+        {
             url: `${baseUrl}/voor-bureaus`,
-            lastModified: new Date('2026-08-15'),
+            lastModified: new Date('2026-08-16'),
             changeFrequency: 'monthly',
             priority: 0.72,
         },
         {
             url: `${baseUrl}/voor-bureaus/kennisbank`,
-            lastModified: new Date('2026-08-15'),
+            lastModified: new Date('2026-08-16'),
             changeFrequency: 'monthly',
             priority: 0.66,
         },
         {
             url: `${baseUrl}/voor-bureaus/kennisbank/kandidaat-voorstellen-opdrachtgever`,
-            lastModified: new Date('2026-08-15'),
+            lastModified: new Date('2026-08-16'),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/voor-bureaus/kennisbank/cv-in-huisstijl-recruitmentbureau`,
+            lastModified: new Date('2026-08-16'),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/voor-bureaus/kennisbank/cv-anonimiseren-recruitment`,
+            lastModified: new Date('2026-08-16'),
             changeFrequency: 'monthly',
             priority: 0.7,
         },
@@ -1141,6 +1159,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     );
     const englishWavePages: MetadataRoute.Sitemap = englishWave.map((page) => ({
         url: `${baseUrl}/en/guides/${page.slug}`,
+        ...(page.dateModified ? { lastModified: new Date(page.dateModified) } : {}),
         changeFrequency: 'monthly' as const,
         priority: 0.73,
     }));
@@ -1164,6 +1183,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...skillGuidePages.map((page) => page.url),
         `${baseUrl}/motivatiebrief-albert-heijn`,
         `${baseUrl}/motivatiebrief-kinderopvang`,
+        ...englishWavePages.filter((page) => page.lastModified).map((page) => page.url),
     ]);
 
     // Google ignores priority/changefreq. Only publish lastmod when it comes

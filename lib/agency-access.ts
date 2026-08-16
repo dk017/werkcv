@@ -23,6 +23,7 @@ export class AgencyAccessError extends Error {
 
 type AgencySubscriptionLike = {
   id: string;
+  userId: string;
   status: string;
   monthlyLimit: number;
   currentPeriodStart: Date | null;
@@ -37,6 +38,9 @@ type AgencySubscriptionLike = {
 
 export type AgencyAccessSnapshot = {
   subscription: AgencySubscriptionLike | null;
+  ownerUserId: string | null;
+  role: "owner" | "editor" | "reviewer" | "viewer";
+  isOwner: boolean;
   period: {
     id: string;
     startsAt: Date;
@@ -130,10 +134,41 @@ async function findAgencySubscription(userId: string) {
 }
 
 export async function getAgencyAccessForUser(userId: string): Promise<AgencyAccessSnapshot> {
-  const subscription = await findAgencySubscription(userId);
+  const directSubscription = await findAgencySubscription(userId);
+  let subscription = directSubscription;
+  let role: AgencyAccessSnapshot["role"] = directSubscription ? "owner" : "viewer";
+  let ownerUserId: string | null = directSubscription?.userId || null;
+
+  if (!subscription) {
+    const memberUser = await prisma.user.findUnique({ where: { id: userId }, select: { email: true } });
+    if (memberUser) {
+      const membership = await prisma.agencyTeamMember.findFirst({
+        where: {
+          OR: [{ userId }, { email: memberUser.email }],
+          status: { in: ["invited", "active"] },
+        },
+        include: { subscription: true },
+        orderBy: { createdAt: "desc" },
+      });
+      if (membership) {
+        subscription = membership.subscription;
+        role = membership.role === "editor" || membership.role === "reviewer" || membership.role === "viewer"
+          ? membership.role
+          : "editor";
+        ownerUserId = subscription.userId;
+        if (!membership.userId) {
+          await prisma.agencyTeamMember.update({ where: { id: membership.id }, data: { userId, status: "active", acceptedAt: new Date() } }).catch(() => undefined);
+        }
+      }
+    }
+  }
+
   if (!subscription) {
     return {
       subscription: null,
+      ownerUserId: null,
+      role: "viewer",
+      isOwner: false,
       period: null,
       used: 0,
       remaining: 0,
@@ -147,6 +182,9 @@ export async function getAgencyAccessForUser(userId: string): Promise<AgencyAcce
   if (status === "pending") {
     return {
       subscription,
+      ownerUserId,
+      role,
+      isOwner: role === "owner",
       period: null,
       used: 0,
       remaining: 0,
@@ -158,6 +196,9 @@ export async function getAgencyAccessForUser(userId: string): Promise<AgencyAcce
   if (!isAgencySubscriptionInPaidPeriod(subscription, now)) {
     return {
       subscription,
+      ownerUserId,
+      role,
+      isOwner: role === "owner",
       period: null,
       used: 0,
       remaining: 0,
@@ -170,6 +211,9 @@ export async function getAgencyAccessForUser(userId: string): Promise<AgencyAcce
   if (!period) {
     return {
       subscription,
+      ownerUserId,
+      role,
+      isOwner: role === "owner",
       period: null,
       used: 0,
       remaining: 0,
@@ -182,12 +226,27 @@ export async function getAgencyAccessForUser(userId: string): Promise<AgencyAcce
   const remaining = Math.max(0, period.allowance - used);
   return {
     subscription,
+    ownerUserId,
+    role,
+    isOwner: role === "owner",
     period,
     used,
     remaining,
     canCreate: remaining > 0,
     state: "active",
   };
+}
+
+export function canEditAgency(access: Pick<AgencyAccessSnapshot, "role">): boolean {
+  return access.role === "owner" || access.role === "editor" || access.role === "reviewer";
+}
+
+export function canCreateAgencyWork(access: Pick<AgencyAccessSnapshot, "role">): boolean {
+  return access.role === "owner" || access.role === "editor";
+}
+
+export function canManageAgency(access: Pick<AgencyAccessSnapshot, "role">): boolean {
+  return access.role === "owner";
 }
 
 /**
@@ -249,6 +308,13 @@ export async function createCvDocumentForUser(data: CvCreateData) {
 type MatchPackApprovalData = {
   userId: string;
   matchPackId: string;
+  approvedById?: string;
+  metrics?: {
+    reviewDurationSeconds: number | null;
+    uploadToApprovalSeconds: number | null;
+    correctionsCount: number;
+    unsupportedClaimsCaught: number;
+  };
 };
 
 /**
@@ -340,6 +406,13 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
         cvDocumentId: cv.id,
         status: "approved",
         approvedAt: new Date(),
+        approvedById: data.approvedById || data.userId,
+        outcomeData: (data.metrics || {
+          reviewDurationSeconds: null,
+          uploadToApprovalSeconds: null,
+          correctionsCount: 0,
+          unsupportedClaimsCaught: 0,
+        }) as unknown as Prisma.InputJsonValue,
       },
     });
 

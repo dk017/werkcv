@@ -20,6 +20,8 @@ model User {
   pilotAccess PilotAccess?
   agencySubscription AgencySubscription?
   agencyMatchPacks AgencyMatchPack[]
+  agencyTeamMemberships AgencyTeamMember[]
+  agencyTemplates AgencyTemplate[]
   profilePhotoProjects ProfilePhotoProject[]
 }
 
@@ -87,21 +89,64 @@ model AgencyMatchPack {
   vacancyText     String      @db.Text
   locale          String      @default("nl")
   sourceFileType  String?
+  sourceTextDigest String?
+  originalCandidateData Json?
   candidateData   Json
   anonymizedData  Json
   analysis        Json
   submissionData Json?
+  outcomeData     Json?
   templateId      String      @default("professional")
   colorThemeId    String      @default("classic-blue")
+  agencyTemplateId String?
+  agencyTemplate AgencyTemplate? @relation(fields: [agencyTemplateId], references: [id], onDelete: SetNull)
   status          String      @default("analyzed")
   cvDocumentId    String?     @unique
   cvDocument      CVDocument? @relation(fields: [cvDocumentId], references: [id], onDelete: SetNull)
   approvedAt      DateTime?
+  approvedById    String?
+  revisions       AgencyMatchPackRevision[]
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
 
   @@index([userId, updatedAt])
   @@index([userId, status])
+}
+
+model AgencyMatchPackRevision {
+  id          String          @id @default(cuid())
+  matchPackId String
+  matchPack   AgencyMatchPack @relation(fields: [matchPackId], references: [id], onDelete: Cascade)
+  version     Int
+  reason      String          @default("draft_saved")
+  candidateData Json
+  submissionData Json
+  analysis    Json
+  changedFields String[]      @default([])
+  createdById String
+  createdAt   DateTime        @default(now())
+
+  @@unique([matchPackId, version])
+  @@index([matchPackId, createdAt])
+}
+
+model AgencyTemplate {
+  id            String           @id @default(cuid())
+  ownerId       String
+  owner         User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name          String
+  templateId    String           @default("professional")
+  colorThemeId  String           @default("classic-blue")
+  companyName   String?
+  website       String?
+  headerText    String?
+  footerText    String?
+  isDefault     Boolean          @default(false)
+  matchPacks    AgencyMatchPack[]
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([ownerId, isDefault])
 }
 
 model Template {
@@ -168,9 +213,28 @@ model AgencySubscription {
   updatedAt              DateTime            @updatedAt
   usagePeriods           AgencyUsagePeriod[]
   payments               AgencyPayment[]
+  teamMembers            AgencyTeamMember[]
 
   @@index([status, currentPeriodEnd])
   @@index([externalCustomerId])
+}
+
+model AgencyTeamMember {
+  id             String             @id @default(cuid())
+  subscriptionId String
+  subscription   AgencySubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  userId         String?
+  user           User?              @relation(fields: [userId], references: [id], onDelete: SetNull)
+  email          String
+  role           String             @default("editor")
+  status         String             @default("invited")
+  invitedAt      DateTime           @default(now())
+  acceptedAt     DateTime?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  @@unique([subscriptionId, email])
+  @@index([email, status])
 }
 
 model AgencyUsagePeriod {

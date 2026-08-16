@@ -23,7 +23,7 @@ export const b2bLeadPayloadSchema = z.object({
 export type B2BLeadPayload = z.infer<typeof b2bLeadPayloadSchema>;
 
 const PAGE_LABELS: Record<B2BLeadPage, string> = {
-  agency: "WerkCV Agency Plan",
+  agency: "WerkCV MatchPack · Agency",
   coach: "Coach samenwerking",
   partner: "Partner samenwerking",
 };

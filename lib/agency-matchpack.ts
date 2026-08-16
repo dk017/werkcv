@@ -2,6 +2,8 @@ import { z } from "zod";
 import { cvSchema, type CVData } from "@/lib/cv";
 import {
   cvVacatureMatchResultSchema,
+  evidenceReferenceSchema,
+  type EvidenceReference,
   type CvVacatureMatchResult,
 } from "@/lib/tools/cv-vacature-match-schema";
 
@@ -47,13 +49,23 @@ export const matchPackSubmissionSchema = z.object({
 export const matchPackDraftUpdateSchema = z.object({
   candidateData: cvSchema,
   submissionData: matchPackSubmissionSchema,
+  evidenceReviews: z.array(z.object({
+    requirementIndex: z.number().int().min(0).max(32),
+    reviewerStatus: z.enum(["unreviewed", "confirmed", "corrected", "rejected"]),
+    reviewerNote: z.string().trim().max(400).default(""),
+  })).max(32).default([]),
 });
 
 export type MatchPackSubmission = z.infer<typeof matchPackSubmissionSchema>;
+export type MatchPackEvidenceReview = z.infer<typeof matchPackDraftUpdateSchema>["evidenceReviews"][number];
 
 export const matchPackAnalysisSchema = z.object({
   version: z.literal(1),
   result: cvVacatureMatchResultSchema,
+  source: z.object({
+    fileType: z.enum(["pdf", "docx", "unknown"]),
+    digest: z.string().max(128),
+  }).optional(),
   anonymization: z.object({
     mode: z.literal("direct-identifiers"),
     removedFields: z.array(z.string()).min(1),
@@ -62,6 +74,19 @@ export const matchPackAnalysisSchema = z.object({
 });
 
 export type MatchPackAnalysis = z.infer<typeof matchPackAnalysisSchema>;
+
+export const matchPackOutcomeSchema = z.object({
+  status: z.enum(["unknown", "pending", "accepted", "rejected", "withdrawn"]),
+  note: z.string().trim().max(1_000).default(""),
+  reviewDurationSeconds: z.number().int().nonnegative().nullable().optional(),
+  uploadToApprovalSeconds: z.number().int().nonnegative().nullable().optional(),
+  correctionsCount: z.number().int().nonnegative().optional(),
+  unsupportedClaimsCaught: z.number().int().nonnegative().optional(),
+  firstExportedAt: z.string().nullable().optional(),
+  approvedToExportSeconds: z.number().int().nonnegative().nullable().optional(),
+});
+
+export type MatchPackOutcome = z.infer<typeof matchPackOutcomeSchema>;
 
 function getCandidateReference(candidateData: CVData, locale: MatchPackLocale): string {
   const role = candidateData.personal.title.trim();
@@ -277,13 +302,147 @@ export function anonymizeCvData(input: CVData, locale: MatchPackLocale = "nl"): 
   };
 }
 
+function normalizeEvidenceText(value: string): string {
+  return value
+    .toLocaleLowerCase("nl-NL")
+    .replace(/[\u2018\u2019]/g, "'")
+    .replace(/[^\p{L}\p{N}%+.#/-]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function guessEvidenceSection(lines: string[], index: number): string {
+  for (let cursor = index; cursor >= 0; cursor -= 1) {
+    const candidate = lines[cursor]?.trim() || "";
+    if (!candidate || candidate.length > 72) continue;
+    if (/[.!?]$/.test(candidate)) continue;
+    if (candidate.split(/\s+/).length <= 8) return candidate;
+  }
+  return "CV-bron";
+}
+
+function locateEvidenceReference(
+  cvText: string,
+  evidence: string,
+  sourceFileType: "pdf" | "docx" | "unknown",
+): EvidenceReference {
+  const lines = cvText.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  const normalizedEvidence = normalizeEvidenceText(evidence);
+  const emptyReference = evidenceReferenceSchema.parse({
+    sourcePage: null,
+    sourceLine: 1,
+    sourceSection: "Niet gevonden in bron",
+    snippet: "",
+    match: "not_found",
+    reviewerStatus: "unreviewed",
+    reviewerNote: "",
+    reviewedAt: null,
+    reviewerId: null,
+  });
+
+  if (!normalizedEvidence || !lines.length) return emptyReference;
+
+  const exactIndex = lines.findIndex((line) => normalizeEvidenceText(line).includes(normalizedEvidence));
+  if (exactIndex >= 0) {
+    return evidenceReferenceSchema.parse({
+      sourcePage: sourceFileType === "pdf" ? exactIndex + 1 : null,
+      sourceLine: exactIndex + 1,
+      sourceSection: guessEvidenceSection(lines, exactIndex),
+      snippet: lines[exactIndex].slice(0, 500),
+      match: "exact",
+      reviewerStatus: "unreviewed",
+      reviewerNote: "",
+      reviewedAt: null,
+      reviewerId: null,
+    });
+  }
+
+  const evidenceTokens = new Set(normalizedEvidence.split(" ").filter((token) => token.length >= 3));
+  let bestIndex = -1;
+  let bestScore = 0;
+  lines.forEach((line, index) => {
+    const lineTokens = new Set(normalizeEvidenceText(line).split(" ").filter((token) => token.length >= 3));
+    if (!lineTokens.size || !evidenceTokens.size) return;
+    const overlap = [...evidenceTokens].filter((token) => lineTokens.has(token)).length / evidenceTokens.size;
+    if (overlap > bestScore) {
+      bestScore = overlap;
+      bestIndex = index;
+    }
+  });
+
+  if (bestIndex < 0 || bestScore < 0.35) return emptyReference;
+  return evidenceReferenceSchema.parse({
+    sourcePage: sourceFileType === "pdf" ? bestIndex + 1 : null,
+    sourceLine: bestIndex + 1,
+    sourceSection: guessEvidenceSection(lines, bestIndex),
+    snippet: lines[bestIndex].slice(0, 500),
+    match: "approximate",
+    reviewerStatus: "unreviewed",
+    reviewerNote: "Controleer de bronzin handmatig; de AI-tekst was geen exacte tekstmatch.",
+    reviewedAt: null,
+    reviewerId: null,
+  });
+}
+
+export function attachEvidenceReferences(
+  result: CvVacatureMatchResult,
+  cvText: string,
+  sourceFileType: "pdf" | "docx" | "unknown",
+): CvVacatureMatchResult {
+  return cvVacatureMatchResultSchema.parse({
+    ...result,
+    requirements: result.requirements.map((requirement) => ({
+      ...requirement,
+      evidenceReference: locateEvidenceReference(cvText, requirement.cvEvidence, sourceFileType),
+    })),
+  });
+}
+
+export function applyEvidenceReviews(
+  analysis: MatchPackAnalysis,
+  reviews: MatchPackEvidenceReview[],
+  reviewerId: string,
+  reviewedAt = new Date().toISOString(),
+): MatchPackAnalysis {
+  const reviewMap = new Map(reviews.map((review) => [review.requirementIndex, review]));
+  return matchPackAnalysisSchema.parse({
+    ...analysis,
+    result: {
+      ...analysis.result,
+      requirements: analysis.result.requirements.map((requirement, index) => {
+        const review = reviewMap.get(index);
+        if (!review) return requirement;
+        return {
+          ...requirement,
+          evidenceReference: evidenceReferenceSchema.parse({
+            ...(requirement.evidenceReference || locateEvidenceReference("", "", "unknown")),
+            reviewerStatus: review.reviewerStatus,
+            reviewerNote: review.reviewerNote,
+            reviewedAt,
+            reviewerId,
+          }),
+        };
+      }),
+    },
+  });
+}
+
+export function countEvidenceCorrections(analysis: MatchPackAnalysis): number {
+  return analysis.result.requirements.filter((requirement) => (
+    requirement.evidenceReference?.reviewerStatus === "corrected"
+    || requirement.evidenceReference?.reviewerStatus === "rejected"
+  )).length;
+}
+
 export function createMatchPackAnalysis(
   result: CvVacatureMatchResult,
   anonymization: AnonymizedCvData,
+  source?: { fileType: "pdf" | "docx" | "unknown"; digest: string },
 ): MatchPackAnalysis {
   return matchPackAnalysisSchema.parse({
     version: 1,
     result,
+    source,
     anonymization: {
       mode: "direct-identifiers",
       removedFields: anonymization.removedFields,

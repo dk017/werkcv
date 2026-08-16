@@ -38,7 +38,7 @@ const questionsByStage = [
   },
   {
     stage: "Voor verzending",
-    questions: ["Zijn introductie, beschikbaarheid en tarief bevestigd?", "Is de juiste volledige of geredigeerde versie gekozen?", "Kan de opdrachtgever de belangrijkste aansluiting snel controleren?"],
+    questions: ["Zijn introductie, beschikbaarheid en tarief bevestigd?", "Is de juiste volledige of versie zonder directe contactgegevens gekozen?", "Kan de opdrachtgever de belangrijkste aansluiting snel controleren?"],
   },
 ];
 
@@ -130,7 +130,7 @@ export default function AgencyKnowledgeIndexPage() {
               Bekijk de werkwijze
             </AgencyContentLink>
             <AgencyContentLink href="/agency#plan" path={path} location="index_bottom" intent="product" className="border-2 border-white bg-yellow-300 px-5 py-3 text-center text-sm font-black text-slate-950">
-              Bekijk het Agency Plan
+              Bekijk MatchPack · Agency billing
             </AgencyContentLink>
           </div>
         </div>

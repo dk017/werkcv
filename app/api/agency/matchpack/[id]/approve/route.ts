@@ -3,6 +3,7 @@ import { getCurrentUserFromRequest } from "@/lib/auth";
 import {
   AgencyAccessError,
   approveAgencyMatchPackForUser,
+  canEditAgency,
   getAgencyAccessForUser,
   isAgencyAccessError,
 } from "@/lib/agency-access";
@@ -45,6 +46,10 @@ export async function POST(
   const user = await getCurrentUserFromRequest(request);
   if (!user) return json({ error: "Authentication required.", code: "AUTH_REQUIRED" }, 401);
 
+  const access = await getAgencyAccessForUser(user.id);
+  if (access.state !== "active") return json({ error: "An active Agency Plan is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
+  if (!canEditAgency(access)) return json({ error: "Your agency role cannot approve proposals.", code: "ROLE_READ_ONLY" }, 403);
+
   const rateLimit = checkRateLimit(`${user.id}:${getClientIp(request).slice(0, 120)}`, {
     bucket: "agency-matchpack-approve",
     maxRequests: 20,
@@ -55,7 +60,7 @@ export async function POST(
   const { id: rawId } = await context.params;
   const id = rawId.trim().slice(0, 120);
   const pack = await prisma.agencyMatchPack.findFirst({
-    where: { id, userId: user.id },
+    where: { id, userId: access.ownerUserId || user.id },
     select: {
       id: true,
       title: true,
@@ -66,6 +71,7 @@ export async function POST(
       locale: true,
       templateId: true,
       colorThemeId: true,
+      outcomeData: true,
       status: true,
       cvDocumentId: true,
     },
@@ -97,20 +103,34 @@ export async function POST(
   }
 
   try {
+    const payload = await request.json().catch(() => null) as {
+      reviewDurationSeconds?: number | null;
+      uploadToApprovalSeconds?: number | null;
+      correctionsCount?: number;
+      unsupportedClaimsCaught?: number;
+    } | null;
+    const metrics = {
+      reviewDurationSeconds: typeof payload?.reviewDurationSeconds === "number" ? Math.min(86_400, Math.max(0, Math.round(payload.reviewDurationSeconds))) : null,
+      uploadToApprovalSeconds: typeof payload?.uploadToApprovalSeconds === "number" ? Math.min(86_400, Math.max(0, Math.round(payload.uploadToApprovalSeconds))) : null,
+      correctionsCount: typeof payload?.correctionsCount === "number" ? Math.min(500, Math.max(0, Math.round(payload.correctionsCount))) : 0,
+      unsupportedClaimsCaught: typeof payload?.unsupportedClaimsCaught === "number" ? Math.min(100, Math.max(0, Math.round(payload.unsupportedClaimsCaught))) : 0,
+    };
     const result = await approveAgencyMatchPackForUser({
-      userId: user.id,
+      userId: access.ownerUserId || user.id,
       matchPackId: pack.id,
+      approvedById: user.id,
+      metrics,
     });
-    const access = await getAgencyAccessForUser(user.id);
+    const updatedAccess = await getAgencyAccessForUser(user.id);
 
     return json({
       success: true,
       cvId: result.cv.id,
       reused: result.reused,
       quota: {
-        used: access.used,
-        allowance: access.period?.allowance || 50,
-        remaining: access.remaining,
+        used: updatedAccess.used,
+        allowance: updatedAccess.period?.allowance || 50,
+        remaining: updatedAccess.remaining,
       },
     });
   } catch (error) {

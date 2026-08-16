@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createHash } from "node:crypto";
 import { Prisma } from "@prisma/client";
 import { getCurrentUserFromRequest } from "@/lib/auth";
-import { getAgencyAccessForUser } from "@/lib/agency-access";
+import { canCreateAgencyWork, getAgencyAccessForUser } from "@/lib/agency-access";
 import { prisma } from "@/lib/prisma";
 import { extractTextFromFile, parseCVText } from "@/lib/cv-parser";
 import {
   anonymizeCvData,
+  attachEvidenceReferences,
   createDefaultMatchPackSubmission,
   createMatchPackAnalysis,
   MATCH_PACK_MAX_CV_TEXT_CHARS,
@@ -91,6 +93,9 @@ export async function POST(request: NextRequest) {
         : "AGENCY_PLAN_REQUIRED",
     }, 409);
   }
+  if (!canCreateAgencyWork(access)) {
+    return json({ error: "Your agency role can review existing proposals but cannot create new ones.", code: "ROLE_READ_ONLY" }, 403);
+  }
 
   let stage = "read_form_data";
   try {
@@ -142,9 +147,16 @@ export async function POST(request: NextRequest) {
     const candidateData = await parseCVText(cvText, input.data.locale);
 
     stage = "analyse_match";
-    const result = await matchCvVacature(cvText, input.data.vacancyText, input.data.locale);
+    const result = attachEvidenceReferences(
+      await matchCvVacature(cvText, input.data.vacancyText, input.data.locale),
+      cvText,
+      extension === "pdf" || extension === "docx" ? extension : "unknown",
+    );
     const anonymized = anonymizeCvData(candidateData, input.data.locale);
-    const analysis = createMatchPackAnalysis(result, anonymized);
+    const analysis = createMatchPackAnalysis(result, anonymized, {
+      fileType: extension === "pdf" || extension === "docx" ? extension : "unknown",
+      digest: createHash("sha256").update(cvText).digest("hex"),
+    });
     const submissionData = createDefaultMatchPackSubmission(
       candidateData,
       result,
@@ -156,20 +168,39 @@ export async function POST(request: NextRequest) {
       .slice(0, 160);
 
     stage = "save_pack";
+    const ownerUserId = access.ownerUserId || user.id;
+    const defaultAgencyTemplate = await prisma.agencyTemplate.findFirst({
+      where: { ownerId: ownerUserId, isDefault: true },
+      select: { id: true, templateId: true, colorThemeId: true },
+    });
     const pack = await prisma.agencyMatchPack.create({
       data: {
-        userId: user.id,
+        userId: ownerUserId,
         title: title || "MatchPack",
         vacancyTitle: input.data.vacancyTitle || null,
         vacancyText: input.data.vacancyText,
         locale: input.data.locale,
         sourceFileType: extension,
+        sourceTextDigest: createHash("sha256").update(cvText).digest("hex"),
+        originalCandidateData: candidateData as unknown as Prisma.InputJsonValue,
         candidateData: candidateData as unknown as Prisma.InputJsonValue,
         anonymizedData: anonymized.data as unknown as Prisma.InputJsonValue,
         analysis: analysis as unknown as Prisma.InputJsonValue,
         submissionData: submissionData as unknown as Prisma.InputJsonValue,
-        templateId: access.subscription?.templateId || "professional",
-        colorThemeId: access.subscription?.colorThemeId || "classic-blue",
+        revisions: {
+          create: {
+            version: 1,
+            reason: "analysis_created",
+            candidateData: candidateData as unknown as Prisma.InputJsonValue,
+            submissionData: submissionData as unknown as Prisma.InputJsonValue,
+            analysis: analysis as unknown as Prisma.InputJsonValue,
+            changedFields: ["candidateData", "analysis", "submissionData"],
+            createdById: user.id,
+          },
+        },
+        templateId: defaultAgencyTemplate?.templateId || access.subscription?.templateId || "professional",
+        colorThemeId: defaultAgencyTemplate?.colorThemeId || access.subscription?.colorThemeId || "classic-blue",
+        agencyTemplateId: defaultAgencyTemplate?.id || null,
         status: "analyzed",
       },
       select: {
@@ -189,6 +220,19 @@ export async function POST(request: NextRequest) {
         approvedAt: true,
         createdAt: true,
         updatedAt: true,
+        sourceTextDigest: true,
+        originalCandidateData: true,
+        revisions: {
+          select: {
+            id: true,
+            version: true,
+            reason: true,
+            changedFields: true,
+            createdById: true,
+            createdAt: true,
+          },
+          orderBy: { version: "desc" },
+        },
       },
     });
 

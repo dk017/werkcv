@@ -22,15 +22,15 @@ type ClaimState =
 function getErrorMessage(code: string, uiLanguage: "nl" | "en"): string {
     const messages = {
         nl: {
-            AGENCY_PLAN_REQUIRED: "Je hebt een actief Agency Plan nodig om een klant-CV op te slaan.",
-            AGENCY_PLAN_PENDING: "Je Agency Plan wordt nog geactiveerd. Open je agency-account om de status te controleren.",
+            AGENCY_PLAN_REQUIRED: "Je hebt een actieve Agency-billing tier nodig om een klant-CV op te slaan.",
+            AGENCY_PLAN_PENDING: "Je Agency-billing tier wordt nog geactiveerd. Open je agency-account om de status te controleren.",
             AGENCY_QUOTA_REACHED: "De limiet van 50 CV's voor deze maand is bereikt.",
             DRAFT_TOO_LARGE: "Dit concept is te groot om veilig over te zetten. Verwijder eventueel de foto en probeer opnieuw.",
             default: "We konden je concept niet opslaan. Probeer het opnieuw.",
         },
         en: {
-            AGENCY_PLAN_REQUIRED: "You need an active Agency Plan to save a client CV.",
-            AGENCY_PLAN_PENDING: "Your Agency Plan is still being activated. Open your agency account to check the status.",
+            AGENCY_PLAN_REQUIRED: "You need an active Agency billing tier to save a client CV.",
+            AGENCY_PLAN_PENDING: "Your Agency billing tier is still being activated. Open your agency account to check the status.",
             AGENCY_QUOTA_REACHED: "The 50-CV monthly limit has been reached.",
             DRAFT_TOO_LARGE: "This draft is too large to transfer safely. Remove the photo and try again.",
             default: "We could not save your draft. Please try again.",
@@ -258,7 +258,7 @@ export default function PublicDraftClaimClient({ draftId, flow, intent }: Public
             {isAgencyPlanRequired ? (
                 <div className="mt-6">
                     <AgencyCheckoutButton
-                        label={isEnglish ? "Start Agency Plan · €149/month" : "Start Agency Plan · €149/maand"}
+                        label={isEnglish ? "Start MatchPack · Agency €149/month" : "Start MatchPack · Agency €149/maand"}
                         location="public_editor_claim_agency_required"
                         className="w-full border-2 border-slate-900 bg-yellow-300 px-4 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)]"
                     />
