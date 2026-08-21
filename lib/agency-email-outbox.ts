@@ -1,17 +1,29 @@
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { sendAgencyTransactionalEmail, type AgencyTransactionalEmailKind } from "@/lib/email";
 
 export async function enqueueAgencyWelcomeEmail(input: { subscriptionId: string; recipientEmail: string; locale?: string }) {
-  return prisma.agencyTransactionalEmail.upsert({
-    where: { subscriptionId_kind: { subscriptionId: input.subscriptionId, kind: "agency_welcome_v1" } },
-    update: {},
-    create: {
-      subscriptionId: input.subscriptionId,
-      kind: "agency_welcome_v1",
-      recipientEmail: input.recipientEmail.trim().toLowerCase(),
-      locale: input.locale === "en" ? "en" : "nl",
-    },
-  });
+  const where = { subscriptionId_kind: { subscriptionId: input.subscriptionId, kind: "agency_welcome_v1" } };
+  try {
+    return await prisma.agencyTransactionalEmail.upsert({
+      where,
+      update: {},
+      create: {
+        subscriptionId: input.subscriptionId,
+        kind: "agency_welcome_v1",
+        recipientEmail: input.recipientEmail.trim().toLowerCase(),
+        locale: input.locale === "en" ? "en" : "nl",
+      },
+    });
+  } catch (error) {
+    // Two webhook retries may race before either transaction observes the row.
+    // Treat the expected unique-key winner as the same idempotent enqueue.
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+      const existing = await prisma.agencyTransactionalEmail.findUnique({ where });
+      if (existing) return existing;
+    }
+    throw error;
+  }
 }
 
 export async function processAgencyEmailOutbox(limit = 20, options: {

@@ -64,7 +64,11 @@ async function main() {
   runPrisma(["migrate", "diff", "--exit-code", "--from-config-datasource", "--to-schema=prisma/schema.prisma"], databaseUrl(databaseNames.legacy));
 
   const docker = process.platform === "win32" ? "docker.exe" : "docker";
-  const dump = spawnSync(docker, ["compose", "exec", "-T", "db", "pg_dump", "-U", baseUrl.username || "postgres", "--no-owner", "--no-privileges", databaseNames.legacy], { cwd: process.cwd(), encoding: "utf8" });
+  const dump = spawnSync(docker, ["compose", "exec", "-T", "db", "pg_dump", "-U", baseUrl.username || "postgres", "--no-owner", "--no-privileges", databaseNames.legacy], {
+    cwd: process.cwd(),
+    encoding: "utf8",
+    maxBuffer: 32 * 1024 * 1024,
+  });
   if (dump.status !== 0 || !dump.stdout) throw new Error("BACKUP_FAILED");
   const restored = spawnSync(docker, ["compose", "exec", "-T", "db", "psql", "-U", baseUrl.username || "postgres", "-d", databaseNames.restore, "-v", "ON_ERROR_STOP=1"], { cwd: process.cwd(), input: dump.stdout, encoding: "utf8" });
   if (restored.status !== 0) throw new Error("RESTORE_FAILED");

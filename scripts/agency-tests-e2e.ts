@@ -110,9 +110,15 @@ async function moveToApprovalStep(page: import("puppeteer").Page) {
 async function main() {
   const seeded = await seed();
   stage = "start_server";
-  const server = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "-p", String(port)], {
+  const server = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "-p", String(port), "-H", "127.0.0.1"], {
     cwd: process.cwd(),
-    env: { ...process.env, DATABASE_URL: process.env.AGENCY_TEST_DATABASE_URL!, AUTH_SESSION_SECRET: secret, OPENAI_API_KEY: "sk-test", NEXT_PUBLIC_APP_URL: baseUrl },
+    env: {
+      ...process.env,
+      DATABASE_URL: process.env.AGENCY_TEST_DATABASE_URL!,
+      AUTH_SESSION_SECRET: secret,
+      OPENAI_API_KEY: "sk-test",
+      NEXT_PUBLIC_APP_URL: baseUrl,
+    },
     stdio: ["ignore", "pipe", "pipe"],
   });
   let serverDiagnostic = "";
