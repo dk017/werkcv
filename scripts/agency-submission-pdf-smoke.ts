@@ -1,7 +1,14 @@
+import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
+import JSZip from "jszip";
+import { createCanvas } from "@napi-rs/canvas";
 import { generateAgencySubmissionPDF } from "@/lib/agency-submission-pdf";
-import { createDefaultMatchPackSubmission, createMatchPackAnalysis, anonymizeCvData } from "@/lib/agency-matchpack";
+import { createDefaultMatchPackSubmission, createMatchPackAnalysis, anonymizeCvData, attachEvidenceReferences } from "@/lib/agency-matchpack";
+import { applyEvidenceReviews } from "@/lib/agency-matchpack-review";
+import { buildApprovedMatchPackOutput } from "@/lib/agency-output-projection";
+import { createMatchPackSource } from "@/lib/agency-matchpack-source";
+import { generateAgencySubmissionDOCX } from "@/lib/agency-docx";
 import { sampleCV } from "@/lib/cv";
 
 const candidateData = structuredClone(sampleCV);
@@ -75,33 +82,135 @@ const result = {
   limitations: ["De analyse gebruikt alleen de aangeleverde vacature- en CV-tekst."],
 };
 
+const source = createMatchPackSource("docx", [
+  "Bachelor HRM en zeven jaar HR-ervaring.",
+  "Adviseerde 24 teamleiders over HR-vraagstukken.",
+  "HR-systemen genoemd, maar AFAS niet expliciet.",
+].join("\n"));
+const vacancyText = [
+  "Hbo werk- en denkniveau",
+  "Adviseert het management",
+  "Ervaring met AFAS is een pre",
+  "Startdatum 1 oktober",
+].join("\n");
+const referencedResult = attachEvidenceReferences(result, source.text, "docx", vacancyText, source.sourceMap);
 const anonymized = anonymizeCvData(candidateData, "nl");
-const analysis = createMatchPackAnalysis(result, anonymized);
+const baseAnalysis = createMatchPackAnalysis(referencedResult, anonymized, { fileType: "docx", digest: source.digest });
+const analysis = applyEvidenceReviews(baseAnalysis, referencedResult.requirements.map((requirement, requirementIndex) => ({
+  requirementIndex,
+  reviewerStatus: requirement.status === "missing" ? "rejected" as const : "confirmed" as const,
+  reviewerNote: requirement.status === "missing" ? "Niet aanwezig in het CV." : "",
+  reviewedEvidence: requirement.status === "missing" ? "" : requirement.cvEvidence,
+  reviewedSource: null,
+})), "test-reviewer", source.text, source.sourceMap);
 const submission = createDefaultMatchPackSubmission(candidateData, result, "HR-adviseur", "nl");
 submission.commercial.hoursPerWeek = "32-36 uur";
 submission.commercial.workLocation = "Regio Utrecht / hybride";
 submission.clientIntroduction = result.summary;
 
+async function extractGeneratedPdfText(buffer: Buffer): Promise<string> {
+  const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.js");
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "";
+  const pdf = await pdfjsLib.getDocument({
+    data: new Uint8Array(buffer),
+    useWorkerFetch: false,
+    isEvalSupported: false,
+    useSystemFonts: true,
+  }).promise;
+  let text = "";
+  for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+    const page = await pdf.getPage(pageNumber);
+    const content = await page.getTextContent();
+    text += content.items.map((item) => ("str" in item ? item.str : "")).join(" ") + "\n";
+  }
+  return text;
+}
+
+async function renderGeneratedPdf(buffer: Buffer, outputDirectory: string, name: string) {
+  const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.js");
+  pdfjsLib.GlobalWorkerOptions.workerSrc = "";
+  const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(buffer), useWorkerFetch: false, isEvalSupported: false, useSystemFonts: true }).promise;
+  for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+    const page = await pdf.getPage(pageNumber);
+    const viewport = page.getViewport({ scale: 1.35 });
+    const canvas = createCanvas(Math.ceil(viewport.width), Math.ceil(viewport.height));
+    await page.render({ canvasContext: canvas.getContext("2d") as never, viewport }).promise;
+    await writeFile(path.join(outputDirectory, `${name}-page-${pageNumber}.png`), canvas.toBuffer("image/png"));
+  }
+}
+
 async function main() {
   const outputDirectory = path.resolve("output/pdf");
   await mkdir(outputDirectory, { recursive: true });
+  const directIdentifiers = [
+    candidateData.personal.name,
+    candidateData.personal.email,
+    candidateData.personal.phone,
+    candidateData.personal.address,
+    candidateData.personal.postalCode,
+  ];
   for (const variant of ["full", "anonymized"] as const) {
-    const pdf = await generateAgencySubmissionPDF({
-      candidateData: variant === "full" ? candidateData : anonymized.data,
+    const output = buildApprovedMatchPackOutput({
+      candidateData,
       analysis,
       submission,
       vacancyTitle: "HR-adviseur",
+      vacancyText,
+      sourceText: source.text,
+      sourceMap: source.sourceMap,
       locale: "nl",
-      variant,
+      variant: variant === "full" ? "full" : "contact_free",
+    });
+    assert.equal(output.evidence.find((item) => item.requirement.includes("AFAS"))?.qualification, "partial", "partial evidence must remain visibly qualified");
+    assert.ok(output.openItems.some((item) => item.requirement.includes("AFAS")), "partly supported requirements must remain visible as open items");
+    const pdf = await generateAgencySubmissionPDF({
+      output,
       templateId: "professional",
       colorThemeId: "classic-blue",
       companyName: "Voorbeeld Recruitment",
-      sourceCandidateName: candidateData.personal.name,
     });
     const outputPath = path.join(outputDirectory, `werkcv-kandidaatvoorstel-${variant}-smoke.pdf`);
     await writeFile(outputPath, pdf);
-    console.log(`${outputPath}\n${pdf.length} bytes`);
+    await renderGeneratedPdf(pdf, outputDirectory, `werkcv-kandidaatvoorstel-${variant}-smoke`);
+    const pdfText = await extractGeneratedPdfText(pdf);
+    assert.ok(pdfText.length > 200, `${variant} PDF should contain extractable text`);
+    assert.match(pdfText, /HR-adviseur/i, `${variant} PDF should contain the proposal title`);
+    assert.match(pdfText, /Deels onderbouwd.*verifiëren/i, `${variant} PDF should label partial evidence without implying the requirement is met`);
+    assert.match(pdfText, /Nog te verifiëren/i, `${variant} PDF should expose open items`);
+    if (variant === "full") {
+      assert.match(pdfText, /Nina de Vries/i, "full PDF should contain the fictional candidate name");
+      assert.match(pdfText, /nina\.devries@example\.com/i, "full PDF should contain the fictional email");
+    } else {
+      for (const identifier of directIdentifiers) {
+        assert.doesNotMatch(pdfText, new RegExp(identifier.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i"), `contact-free PDF must not contain ${identifier}`);
+      }
+      assert.match(pdfText, /Directe contactgegevens verwijderd/i, "contact-free PDF should retain its warning");
+    }
+
+    const docx = await generateAgencySubmissionDOCX({
+      output,
+      companyName: "Voorbeeld Recruitment",
+    });
+    const docxPath = path.join(outputDirectory, `werkcv-kandidaatvoorstel-${variant}-smoke.docx`);
+    await writeFile(docxPath, docx);
+    const zip = await JSZip.loadAsync(docx);
+    for (const part of ["[Content_Types].xml", "word/document.xml", "word/styles.xml", "word/numbering.xml", "word/footer1.xml", "word/_rels/document.xml.rels"]) {
+      assert.ok(zip.file(part), `${variant} DOCX should contain ${part}`);
+    }
+    const documentXml = await zip.file("word/document.xml")!.async("string");
+    assert.match(documentXml, /HR-adviseur/i, `${variant} DOCX should contain the proposal title`);
+    assert.match(documentXml, /Deels onderbouwd[^<]*verifiëren/i, `${variant} DOCX should qualify partial evidence`);
+    assert.match(documentXml, /Openstaande punten/i, `${variant} DOCX should expose open items`);
+    if (variant === "full") {
+      assert.match(documentXml, /nina\.devries@example\.com/i, "full DOCX should contain the fictional email");
+    } else {
+      assert.doesNotMatch(documentXml, /nina\.devries@example\.com|06 1234 5678|3511 AA/i, "contact-free DOCX must not contain direct identifiers");
+      const footerXml = await zip.file("word/footer1.xml")!.async("string");
+      assert.match(footerXml, /Opgesteld met WerkCV MatchPack/i, "DOCX footer should be present");
+    }
+    console.log(`${outputPath}\n${pdf.length} bytes\n${docxPath}\n${docx.length} bytes`);
   }
+  console.log("Agency PDF/DOCX output smoke checks passed.");
 }
 
 main().catch((error) => {

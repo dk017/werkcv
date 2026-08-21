@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import AnalyticsProvider from "@/components/AnalyticsProvider";
 import BuildVersionGuard from "@/components/BuildVersionGuard";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { SharedSiteJsonLd } from "@/components/seo/JsonLd";
+import BrandRouteBoundary from "@/components/brand/BrandRouteBoundary";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,6 +16,12 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const manrope = Manrope({
+  variable: "--font-manrope",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -90,7 +97,7 @@ export default function RootLayout({
         <SharedSiteJsonLd />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased notranslate`}
+        className={`${geistSans.variable} ${geistMono.variable} ${manrope.variable} antialiased notranslate`}
       >
         <Script id="microsoft-clarity" strategy="lazyOnload">
           {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "wpik4m2kyh");`}
@@ -98,7 +105,7 @@ export default function RootLayout({
         <GoogleAnalytics />
         <AnalyticsProvider />
         <BuildVersionGuard />
-        {children}
+        <BrandRouteBoundary>{children}</BrandRouteBoundary>
       </body>
     </html>
   );

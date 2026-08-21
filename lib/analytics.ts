@@ -131,6 +131,14 @@ export type AnalyticsEvent =
     | { event: 'agency_hub_viewed'; properties: { path: string } }
     | { event: 'agency_guide_index_viewed'; properties: { path: string } }
     | { event: 'agency_guide_viewed'; properties: { path: string; slug: string } }
+    | { event: 'agency_evidence_checker_viewed'; properties: { locale: 'nl' | 'en' } }
+    | { event: 'agency_evidence_checker_sample_loaded'; properties: { locale: 'nl' | 'en' } }
+    | { event: 'agency_evidence_checker_started'; properties: { locale: 'nl' | 'en'; inputType: 'file' | 'text'; sample: boolean } }
+    | { event: 'agency_evidence_checker_completed'; properties: { locale: 'nl' | 'en'; requirementCount: number; missingCount: number; sample: boolean } }
+    | { event: 'agency_evidence_checker_failed'; properties: { locale: 'nl' | 'en'; reason: string } }
+    | { event: 'agency_evidence_checker_cta_clicked'; properties: { locale: 'nl' | 'en'; destination: 'agency' | 'guide' } }
+    | { event: 'agency_onboarding_step_clicked'; properties: { step: string } }
+    | { event: 'agency_onboarding_dismissed'; properties: { completed: number; total: number } }
     | {
           event: 'agency_content_cta_clicked';
           properties: {

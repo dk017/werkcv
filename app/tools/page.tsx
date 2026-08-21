@@ -269,6 +269,27 @@ const sections: ToolSection[] = [
         ],
     },
     {
+        eyebrow: "Recruitmentbureaus",
+        title: "Controleer een kandidaatvoorstel",
+        description: "Gratis kwaliteitscheck voor recruiters die een CV en vacature willen verbinden zonder onbewezen claims als feiten te presenteren.",
+        tools: [
+            {
+                href: "/tools/kandidaatvoorstel-checker",
+                title: "Gratis kandidaatvoorstel evidence checker",
+                description: "Zie per vacature-eis welk CV-bewijs sterk, gedeeltelijk of ontbrekend is en welke punten je nog moet bevestigen.",
+                badge: "Recruiter",
+                badgeClass: "bg-yellow-100 text-yellow-900 border-yellow-300",
+            },
+            {
+                href: "/voor-bureaus/kennisbank/matchpack-handleiding",
+                title: "MatchPack handleiding",
+                description: "Lees de controleerbare workflow voor bewijs, correcties, versies, output, retentie en rollen.",
+                badge: "Gids",
+                badgeClass: "bg-slate-100 text-slate-800 border-slate-300",
+            },
+        ],
+    },
+    {
         eyebrow: "CV & sollicitatie",
         title: "Van vacature naar sterk CV",
         description: "AI-tools die direct aansluiten op de kern van WerkCV: beter schrijven, beter matchen en sneller solliciteren.",

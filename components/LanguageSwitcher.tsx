@@ -8,7 +8,7 @@ import { track } from "@/lib/analytics";
 
 type LanguageSwitcherProps = {
   className?: string;
-  tone?: "light" | "solid";
+  tone?: "light" | "solid" | "brand";
 };
 
 function withSearch(path: string, search: string): string {
@@ -35,7 +35,9 @@ function LanguageSwitcherInner({
     : counterpart;
 
   const baseClass =
-    tone === "solid"
+    tone === "brand"
+      ? "wk-language-switcher"
+      : tone === "solid"
       ? "border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-black transition-colors hover:bg-yellow-100"
       : "rounded-full border border-slate-300 bg-white/90 px-3 py-1.5 text-xs font-black uppercase tracking-[0.14em] text-slate-800 shadow-sm transition-colors hover:bg-slate-50";
 

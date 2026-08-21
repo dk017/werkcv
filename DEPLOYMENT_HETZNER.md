@@ -103,6 +103,59 @@ Expected result:
 - `werkcv-db-1` remains healthy.
 - No production build runs on the VPS.
 
+## Prisma Migration Baseline and Forward Migrations
+
+The application uses reviewed Prisma migrations. The container must never use
+`prisma db push` against production. The first migration,
+`20260820000000_baseline`, describes the pre-MatchPack-retention schema. The
+forward migrations add retention/deletion receipts and the persisted onboarding
+dismissal state.
+
+Before the first migration-based production release, an authorised operator
+must:
+
+1. Take and verify a PostgreSQL backup.
+2. Rehearse the baseline and forward migration on an empty database and a
+   sanitised schema-equivalent copy.
+3. Confirm the existing production schema has no destructive difference from
+   the baseline.
+4. Run the exact Prisma 7 command below once against production to record the
+   already-existing schema as baselined; this does not replay table creation:
+
+```bash
+docker compose -p werkcv -f docker-compose.ghcr.yml run --rm --entrypoint prisma app \
+  migrate resolve --applied 20260820000000_baseline \
+  --schema prisma/schema.prisma
+```
+
+5. Start the reviewed image. Its entrypoint runs `prisma migrate deploy`, which
+   applies only forward migrations not yet recorded.
+
+Do not run the resolve command without the backup, schema comparison and
+explicit release approval. If a migration fails, keep the previous image out
+of service and use the documented backup/forward-repair procedure; do not
+improvise a destructive down migration.
+
+## Agency retention sweep
+
+The retention service is deliberately scheduler-independent. A dry run is the
+safe default:
+
+```bash
+npm run agency:retention:dry-run
+```
+
+Deletion requires both `--execute` and
+`AGENCY_RETENTION_EXECUTE_CONFIRM=I_UNDERSTAND_RETENTION_DELETE`. Do not add a
+cron job or timer until the actual production scheduler, working directory,
+database environment and log destination on the Hetzner host have been
+verified. The repository does not claim that a scheduler is currently active.
+
+After that verification, configure a daily bounded run using the production
+image or a reviewed maintenance container, capture only counts/IDs/error codes,
+and alert on a non-zero error count. Never place candidate text or vacancy text
+in the scheduler command line or its logs.
+
 If you intentionally deploy from another branch, use the branch name in `--ref`, but still push or fast-forward `main` afterward so `main` remains the production source of truth.
 
 ## Manual Server Deploy From A Prebuilt Image

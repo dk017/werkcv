@@ -399,6 +399,12 @@ export default function SoftwareEngineerCvExamplePage() {
             <Link href="/en/templates" className="text-emerald-700 underline">
               English CV templates
             </Link>
+            <Link href="/en/guides/startup-vs-corporate-cv-netherlands" className="text-emerald-700 underline">
+              Startup vs corporate CV guide
+            </Link>
+            <Link href="/en/guides/creative-cv-templates-netherlands" className="text-emerald-700 underline">
+              Creative CV template guide
+            </Link>
           </div>
         </section>
       </article>

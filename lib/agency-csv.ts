@@ -2,7 +2,15 @@ import type { CVData } from "@/lib/cv";
 
 export type AgencyCsvRow = Record<string, string>;
 
+export class AgencyCsvError extends Error {
+  constructor(public readonly code: "CSV_INVALID" | "CSV_DUPLICATE_HEADER" | "CSV_EMPTY_HEADER", message: string) {
+    super(message);
+    this.name = "AgencyCsvError";
+  }
+}
+
 export function parseCsv(input: string): AgencyCsvRow[] {
+  input = input.replace(/^\uFEFF/u, "");
   const rows: string[][] = [];
   let row: string[] = [];
   let cell = "";
@@ -34,6 +42,7 @@ export function parseCsv(input: string): AgencyCsvRow[] {
       cell += char;
     }
   }
+  if (quoted) throw new AgencyCsvError("CSV_INVALID", "The CSV contains an unclosed quoted cell.");
   if (cell.length || row.length) {
     row.push(cell);
     rows.push(row);
@@ -41,13 +50,19 @@ export function parseCsv(input: string): AgencyCsvRow[] {
 
   const headers = (rows.shift() || []).map((header) => header.trim().toLowerCase());
   if (!headers.length) return [];
+  if (headers.some((header) => !header)) throw new AgencyCsvError("CSV_EMPTY_HEADER", "Every CSV column needs a header.");
+  if (new Set(headers).size !== headers.length) throw new AgencyCsvError("CSV_DUPLICATE_HEADER", "CSV headers must be unique.");
   return rows
     .filter((values) => values.some((value) => value.trim()))
-    .map((values) => Object.fromEntries(headers.map((header, index) => [header, (values[index] || "").trim()])));
+    .map((values) => {
+      if (values.length > headers.length) throw new AgencyCsvError("CSV_INVALID", "A CSV row contains more values than headers.");
+      return Object.fromEntries(headers.map((header, index) => [header, (values[index] || "").trim()]));
+    });
 }
 
 export function csvEscape(value: unknown): string {
-  const text = value == null ? "" : String(value);
+  const raw = value == null ? "" : String(value);
+  const text = /^[\s]*[=+\-@]/u.test(raw) ? `'${raw}` : raw;
   return /[",\n\r]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 }
 

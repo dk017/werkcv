@@ -73,7 +73,7 @@ export default function PrivacyPage() {
                                 <li>Het aanmaken en opslaan van je CV</li>
                                 <li>Het genereren en leveren van je PDF-download</li>
                                 <li>Het verwerken van betalingen</li>
-                                <li>Het uitvoeren van AI-functies die je zelf start, zoals CV-import, optimalisatie of tekstgeneratie</li>
+                                <li>Het uitvoeren van AI-functies die je zelf start, zoals CV-import, optimalisatie, tekstgeneratie of het gesproken CV-interview</li>
                                 <li>Het meten en verbeteren van de werking, betrouwbaarheid en gebruiksvriendelijkheid van WerkCV</li>
                                 <li>Het voorkomen van misbruik en het oplossen van technische problemen</li>
                             </ul>
@@ -118,6 +118,12 @@ export default function PrivacyPage() {
                                 resultaten te verwijderen. Voor verwerking via de OpenAI API kan beperkte logbewaring
                                 voor beveiliging en misbruikcontrole gelden volgens de actuele voorwaarden van OpenAI.
                             </p>
+                            <p className="font-medium leading-relaxed mt-2">
+                                Bij het gesproken CV-interview wordt audio live verwerkt voor transcriptie. WerkCV slaat
+                                de ruwe audio niet op. Onvoltooide tekstantwoorden kunnen maximaal 24 uur tijdelijk in
+                                de sessieopslag van je eigen browser blijven staan, zodat je na verversen kunt doorgaan.
+                                Je kunt dit concept vanuit het interview direct verwijderen.
+                            </p>
                         </section>
 
                         <section>
@@ -128,7 +134,7 @@ export default function PrivacyPage() {
                             <ul className="list-disc pl-6 space-y-1 font-medium">
                                 <li><strong>Dodo Payments</strong> - voor de standaard CV-download, betaling, belastingafhandeling en facturatie</li>
                                 <li><strong>Polar</strong> - voor betalingen van bepaalde aanvullende producten</li>
-                                <li><strong>OpenAI</strong> - voor AI-functies die je zelf start, zoals CV-import, analyse, herschrijven en tekstgeneratie</li>
+                                <li><strong>OpenAI</strong> - voor AI-functies die je zelf start, zoals CV-import, analyse, herschrijven, tekstgeneratie en live spraaktranscriptie</li>
                                 <li><strong>Hetzner</strong> - voor hosting en opslag binnen de EU</li>
                                 <li><strong>Google Analytics</strong> - voor website- en gebruiksstatistieken</li>
                                 <li><strong>Microsoft Clarity</strong> - voor geaggregeerde gebruiksanalyse en het opsporen van UX-problemen</li>

@@ -1,18 +1,25 @@
 import { z } from "zod";
 
-export const evidenceReferenceSchema = z.object({
+export const sourceReferenceSchema = z.object({
   sourcePage: z.number().int().positive().nullable(),
   sourceLine: z.number().int().positive(),
   sourceSection: z.string(),
   snippet: z.string(),
   match: z.enum(["exact", "approximate", "not_found"]),
+});
+
+export const evidenceReferenceSchema = sourceReferenceSchema.extend({
+  version: z.literal(1).default(1),
   reviewerStatus: z.enum(["unreviewed", "confirmed", "corrected", "rejected"]),
-  reviewerNote: z.string(),
+  reviewerNote: z.string().max(400),
+  reviewedEvidence: z.string().max(600).default(""),
+  reviewedSource: sourceReferenceSchema.nullable().default(null),
   reviewedAt: z.string().nullable(),
   reviewerId: z.string().nullable(),
 });
 
 export type EvidenceReference = z.infer<typeof evidenceReferenceSchema>;
+export type SourceReference = z.infer<typeof sourceReferenceSchema>;
 
 export const requirementSchema = z.object({
   requirement: z.string(),
@@ -21,6 +28,7 @@ export const requirementSchema = z.object({
   status: z.enum(["strong", "partial", "missing"]),
   cvEvidence: z.string(),
   honestAction: z.string(),
+  vacancyReference: sourceReferenceSchema.optional(),
   evidenceReference: evidenceReferenceSchema.optional(),
 });
 

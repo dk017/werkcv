@@ -799,6 +799,11 @@ export default function ExpatCvNetherlandsPage() {
                 title: "English-speaking companies",
                 body: "Move from employer search to CV localization and route checks.",
               },
+              {
+                href: "/en/guides/recent-graduate-cv-netherlands",
+                title: "Recent graduate CV guide",
+                body: "Turn projects, internships and study evidence into a focused starter CV.",
+              },
             ].map((link) => (
               <Link
                 key={link.href}

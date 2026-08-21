@@ -4,6 +4,8 @@ Date: 2026-08-15
 Status: corrected source of truth for implementation
 Commercial release label: available / early production
 
+> Superseded for implementation by `docs/product/agency-production-readiness-spec.md` (2026-08-20). Historical capability rows below are retained for context and must not override the current repository or the production-readiness specification.
+
 ## 1. Decision
 
 WerkCV may proceed with the English guide work and a separate Dutch agency

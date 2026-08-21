@@ -1,10 +1,11 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { canCreateAgencyWork, canEditAgency, getAgencyAccessForUser } from "@/lib/agency-access";
+import { canApproveAgencyWork, canCreateAgencyWork, canDeleteAgencyDraft, canDeleteApprovedAgencyWork, getAgencyAccessForUser } from "@/lib/agency-access";
 import { prisma } from "@/lib/prisma";
 import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
 import AgencyMatchPackWorkspace from "@/components/agency/AgencyMatchPackWorkspace";
+import { BrandShell } from "@/components/brand/BrandShell";
+import { SiteHeader } from "@/components/brand/SiteHeader";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -30,25 +31,25 @@ export default async function AgencyMatchPackPage() {
         status: true,
         cvDocumentId: true,
         approvedAt: true,
+        retentionExpiresAt: true,
         createdAt: true,
         updatedAt: true,
+        clientOutcome: true,
       },
     })
     : [];
 
   return (
+    <BrandShell>
+      <SiteHeader
+        navItems={[]}
+        backHref="/agency/account"
+        backLabel="Agency account"
+        context="MatchPack"
+        rightContent={<span className="wk-account-email">{user.email}</span>}
+      />
     <main className="min-h-screen bg-[#FFFEF9] px-4 py-8 text-slate-900 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <header className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-slate-900 pb-5">
-          <Link href="/agency/account" className="text-xl font-black tracking-tight">
-            Werk<span className="bg-[#4ECDC4] px-1">CV</span>.nl
-          </Link>
-          <div className="flex flex-wrap items-center gap-4 text-sm font-semibold">
-            <Link href="/agency/account" className="text-emerald-700 underline underline-offset-4">← Agency account</Link>
-            <span className="text-slate-500">{user.email}</span>
-          </div>
-        </header>
-
         <section className="mt-8 max-w-4xl">
           <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">WerkCV MatchPack</p>
           <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Van CV en vacature naar een compleet kandidaatvoorstel.</h1>
@@ -60,14 +61,18 @@ export default async function AgencyMatchPackPage() {
             initialPacks={packs.map((pack) => ({
               ...pack,
               approvedAt: pack.approvedAt?.toISOString() || null,
+              retentionExpiresAt: pack.retentionExpiresAt?.toISOString() || null,
               createdAt: pack.createdAt.toISOString(),
               updatedAt: pack.updatedAt.toISOString(),
+              outcomeStatus: pack.clientOutcome as "unknown" | "pending" | "accepted" | "rejected" | "withdrawn",
             }))}
             initialUsed={access.used}
             allowance={allowance}
             canCreate={access.canCreate}
             canCreateWork={canCreateAgencyWork(access)}
-            canApprove={canEditAgency(access)}
+            canApprove={canApproveAgencyWork(access)}
+            canDeleteDraft={canDeleteAgencyDraft(access)}
+            canDeleteApproved={canDeleteApprovedAgencyWork(access)}
             canOpenCv={access.isOwner}
           />
         ) : (
@@ -95,5 +100,6 @@ export default async function AgencyMatchPackPage() {
         </section>
       </div>
     </main>
+    </BrandShell>
   );
 }

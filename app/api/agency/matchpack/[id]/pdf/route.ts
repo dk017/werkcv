@@ -1,16 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Prisma } from "@prisma/client";
 import { getCurrentUserFromRequest } from "@/lib/auth";
-import { getAgencyAccessForUser } from "@/lib/agency-access";
-import {
-  createDefaultMatchPackSubmission,
-  parseStoredMatchPackAnalysis,
-  parseStoredMatchPackData,
-  parseStoredMatchPackSubmission,
-} from "@/lib/agency-matchpack";
+import { canExportAgencyWork, getAgencyAccessForUser } from "@/lib/agency-access";
+import { parseStoredMatchPackAnalysis, parseStoredMatchPackData, parseStoredMatchPackSubmission } from "@/lib/agency-matchpack";
 import { generateAgencySubmissionPDF } from "@/lib/agency-submission-pdf";
+import { buildApprovedMatchPackOutput, MatchPackOutputError } from "@/lib/agency-output-projection";
+import { matchPackSourceMapSchema } from "@/lib/agency-matchpack-source";
 import { prisma } from "@/lib/prisma";
 import { getDefaultThemeId } from "@/lib/templates/registry";
+import { ApprovedSnapshotIntegrityError, assertApprovedSnapshotIntegrity } from "@/lib/agency-matchpack-approval";
 
 export const runtime = "nodejs";
 
@@ -29,6 +26,7 @@ export async function GET(
   if (access.state !== "active") {
     return json({ error: "An active Agency Plan is required for MatchPack exports.", code: "AGENCY_PLAN_REQUIRED" }, 409);
   }
+  if (!canExportAgencyWork(access)) return json({ error: "Your agency role cannot export documents.", code: "ROLE_FORBIDDEN" }, 403);
 
   const variant = request.nextUrl.searchParams.get("variant") || "full";
   if (variant !== "full" && variant !== "anonymized") {
@@ -46,16 +44,23 @@ export async function GET(
       analysis: true,
       submissionData: true,
       vacancyTitle: true,
+      vacancyText: true,
+      sourceText: true,
+      sourceMap: true,
       locale: true,
       templateId: true,
       colorThemeId: true,
+      agencyTemplateId: true,
+      approvalData: true,
+      approvedRevisionVersion: true,
+      approvedSnapshotDigest: true,
       agencyTemplate: {
         select: { companyName: true, website: true, headerText: true, footerText: true },
       },
       status: true,
       cvDocumentId: true,
       approvedAt: true,
-      outcomeData: true,
+      firstExportedAt: true,
     },
   });
 
@@ -66,44 +71,44 @@ export async function GET(
 
   try {
     const fullData = parseStoredMatchPackData(pack.candidateData);
-    const data = variant === "anonymized" ? parseStoredMatchPackData(pack.anonymizedData) : fullData;
     const analysis = parseStoredMatchPackAnalysis(pack.analysis);
-    const submission = pack.submissionData
-      ? parseStoredMatchPackSubmission(pack.submissionData)
-      : createDefaultMatchPackSubmission(
-        fullData,
-        analysis.result,
-        pack.vacancyTitle || "",
-        pack.locale === "en" ? "en" : "nl",
-      );
-    const pdfBuffer = await generateAgencySubmissionPDF({
-      candidateData: data,
+    if (!pack.submissionData || !pack.sourceText || !pack.sourceMap) {
+      return json({ error: "The approved source snapshot is incomplete.", code: "EVIDENCE_UNRESOLVED" }, 409);
+    }
+    const submission = parseStoredMatchPackSubmission(pack.submissionData);
+    assertApprovedSnapshotIntegrity({
+      candidateData: fullData,
+      submissionData: submission,
+      analysis,
+      templateId: pack.templateId,
+      colorThemeId: pack.colorThemeId,
+      agencyTemplateId: pack.agencyTemplateId,
+      approvalData: pack.approvalData,
+      approvedRevisionVersion: pack.approvedRevisionVersion,
+      approvedSnapshotDigest: pack.approvedSnapshotDigest,
+    });
+    const output = buildApprovedMatchPackOutput({
+      candidateData: fullData,
       analysis,
       submission,
       vacancyTitle: pack.vacancyTitle || "",
+      vacancyText: pack.vacancyText,
+      sourceText: pack.sourceText,
+      sourceMap: matchPackSourceMapSchema.parse(pack.sourceMap),
       locale: pack.locale === "en" ? "en" : "nl",
-      variant,
+      variant: variant === "anonymized" ? "contact_free" : "full",
+    });
+    const pdfBuffer = await generateAgencySubmissionPDF({
+      output,
       templateId: pack.templateId,
       colorThemeId: pack.colorThemeId || getDefaultThemeId(pack.templateId),
       companyName: pack.agencyTemplate?.companyName || access.subscription?.companyName,
-      sourceCandidateName: fullData.personal.name,
     });
     const exportedAt = new Date();
-    const existingOutcome = pack.outcomeData && typeof pack.outcomeData === "object" && !Array.isArray(pack.outcomeData)
-      ? pack.outcomeData as Record<string, unknown>
-      : {};
-    if (!existingOutcome.firstExportedAt) {
-      await prisma.agencyMatchPack.update({
-        where: { id: pack.id },
-        data: {
-          outcomeData: {
-            ...existingOutcome,
-            firstExportedAt: exportedAt.toISOString(),
-            approvedToExportSeconds: pack.approvedAt ? Math.max(0, Math.round((exportedAt.getTime() - pack.approvedAt.getTime()) / 1000)) : null,
-          } as unknown as Prisma.InputJsonValue,
-        },
-      }).catch(() => undefined);
-    }
+    if (!pack.firstExportedAt) await prisma.agencyMatchPack.updateMany({
+      where: { id: pack.id, firstExportedAt: null },
+      data: { firstExportedAt: exportedAt },
+    }).catch(() => undefined);
     const filename = variant === "anonymized"
       ? "werkcv-kandidaatvoorstel-geanonimiseerd.pdf"
       : "werkcv-kandidaatvoorstel-volledig.pdf";
@@ -117,6 +122,7 @@ export async function GET(
       },
     });
   } catch (error) {
+    if (error instanceof MatchPackOutputError || error instanceof ApprovedSnapshotIntegrityError) return json({ error: error.message, code: error.code }, 409);
     console.error("agency_matchpack_pdf_failed", {
       userId: user.id,
       packId: pack.id,

@@ -48,6 +48,26 @@ const pages = [
     description: "Use an ATS-safe Dutch-style CV template in English for jobs in the Netherlands.",
   },
   {
+    href: "/en/guides/one-page-cv-netherlands",
+    title: "One-Page or Two-Page CV",
+    description: "Choose the right length for your evidence instead of forcing every profile onto one page.",
+  },
+  {
+    href: "/en/guides/startup-vs-corporate-cv-netherlands",
+    title: "Startup vs Corporate CV",
+    description: "Tailor ownership, scale, governance and keywords to the role and organisation.",
+  },
+  {
+    href: "/en/guides/creative-cv-templates-netherlands",
+    title: "Creative CV Templates",
+    description: "Decide when visual branding is useful and how to keep the text readable for ATS and humans.",
+  },
+  {
+    href: "/en/guides/recent-graduate-cv-netherlands",
+    title: "Recent Graduate CV",
+    description: "Turn projects, thesis work, internships, volunteering and part-time jobs into evidence.",
+  },
+  {
     href: "/en/dutch-cv-checker",
     title: "Dutch CV Checker",
     description: "Check whether your current English CV fits Dutch recruiter expectations before you rebuild it.",

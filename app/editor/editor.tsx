@@ -60,6 +60,7 @@ import type { CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match";
 import { suggestTargetRoleFromExperience } from "@/lib/cv-normalize";
 import ScaledCvPreview, { A4_WIDTH_PX } from "./ScaledCvPreview";
 import EditorFeedbackWidget from "./EditorFeedbackWidget";
+import VoiceCvAssistant from "./VoiceCvAssistant";
 
 interface EditorProps {
     initialData: CVData;
@@ -69,6 +70,7 @@ interface EditorProps {
     accountEmail: string;
     uiLanguage?: UiLanguage;
     agencyRouteLocked?: boolean;
+    voiceEnabled?: boolean;
     mode?: "account" | "public";
     publicDraftId?: string;
     publicFlow?: PublicEditorFlow;
@@ -296,6 +298,7 @@ export default function Editor({
     accountEmail,
     uiLanguage = "nl",
     agencyRouteLocked = false,
+    voiceEnabled = false,
     mode = "account",
     publicDraftId,
     publicFlow = "consumer",
@@ -348,6 +351,8 @@ export default function Editor({
     const [templateId, setTemplateId] = useState(initialTemplateId);
     const [colorThemeId, setColorThemeId] = useState(initialColorThemeId);
     const [showUploader, setShowUploader] = useState(false);
+    const [showVoiceAssistant, setShowVoiceAssistant] = useState(false);
+    const [voiceEntryPoint, setVoiceEntryPoint] = useState<"empty_state" | "toolbar">("empty_state");
     const [uploaderSource, setUploaderSource] = useState<CvUploadSource>("toolbar");
     const [pageCount, setPageCount] = useState(1);
     const [desktopPreviewScale, setDesktopPreviewScale] = useState(DESKTOP_PREVIEW_SCALE);
@@ -1085,6 +1090,23 @@ export default function Editor({
         track('cv_uploaded', { cvId: id, fileType: 'parsed', templateId, entryMethod: 'upload' });
     };
 
+    const openVoiceAssistant = (entryPoint: "empty_state" | "toolbar") => {
+        setVoiceEntryPoint(entryPoint);
+        setShowVoiceAssistant(true);
+    };
+
+    const handleVoiceCvApplied = (voiceData: CVData) => {
+        const normalizedData = ensureEditorData(voiceData, uiLanguage);
+        reset(normalizedData);
+        setShowDesignWorkspace(true);
+        setAtsTargetRole(normalizedData.personal.title);
+        setVisibleOptionalSections(deriveVisibleOptionalSections(normalizedData));
+        setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
+        setShowVoiceAssistant(false);
+        setIsSaved(false);
+        persistPublicDraft(normalizedData);
+    };
+
     const revealDesignWorkspace = () => {
         setShowDesignWorkspace(true);
         track('quick_build_design_revealed', { cvId: id, completionScore });
@@ -1398,6 +1420,20 @@ export default function Editor({
                                     <span className={isCompactToolbar ? "hidden" : "hidden sm:inline"}>{tr("CV uploaden", "Upload CV")}</span>
                                 </button>
                             ) : null}
+                            {voiceEnabled && !isPublicMode && !isCurrentCvEmpty ? (
+                                <button
+                                    type="button"
+                                    onClick={() => openVoiceAssistant("toolbar")}
+                                    className={`inline-flex h-9 shrink-0 items-center justify-center gap-2 rounded-md border border-teal-300 bg-teal-50 text-xs font-semibold text-teal-900 transition-colors hover:bg-teal-100 ${isCompactToolbar ? "w-9 px-0" : "px-2.5 sm:px-3"}`}
+                                    title={tr("CV aanvullen met stem", "Improve CV with voice")}
+                                    aria-label={tr("CV aanvullen met stem", "Improve CV with voice")}
+                                >
+                                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.25} d="M12 18.5a6.5 6.5 0 006.5-6.5M12 18.5A6.5 6.5 0 015.5 12M12 18.5V22m-4 0h8M12 15a3 3 0 003-3V5a3 3 0 00-6 0v7a3 3 0 003 3z" />
+                                    </svg>
+                                    <span className={isCompactToolbar ? "hidden" : "hidden sm:inline"}>{tr("Met stem", "Voice")}</span>
+                                </button>
+                            ) : null}
                             {isPublicMode ? (
                                 <button
                                     type="button"
@@ -1536,6 +1572,11 @@ export default function Editor({
                                     ) : null}
                                 </div>
                                 <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-slate-100 pt-3 text-xs font-semibold">
+                                    {voiceEnabled && !isPublicMode ? (
+                                        <button type="button" onClick={() => openVoiceAssistant("empty_state")} className="rounded-lg bg-teal-700 px-3 py-2 font-black text-white no-underline hover:bg-teal-800">
+                                            🎙 {tr("Bouw je CV met je stem", "Build your CV with voice")}
+                                        </button>
+                                    ) : null}
                                     <button type="button" onClick={() => openUploader("empty_state")} className="text-teal-800 underline underline-offset-2 hover:text-teal-950">
                                         {tr("Heb je al een CV? Upload het", "Already have a CV? Upload it")}
                                     </button>
@@ -2156,6 +2197,16 @@ export default function Editor({
                     maxFileSizeMb={isPublicMode ? 5 : 10}
                 />
             )}
+            {showVoiceAssistant && voiceEnabled && !isPublicMode ? (
+                <VoiceCvAssistant
+                    cvId={id}
+                    uiLanguage={uiLanguage}
+                    currentCv={watch() as CVData}
+                    entryPoint={voiceEntryPoint}
+                    onApply={handleVoiceCvApplied}
+                    onClose={() => setShowVoiceAssistant(false)}
+                />
+            ) : null}
 
         </div>
     );

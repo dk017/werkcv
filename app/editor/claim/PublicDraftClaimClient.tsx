@@ -24,14 +24,14 @@ function getErrorMessage(code: string, uiLanguage: "nl" | "en"): string {
         nl: {
             AGENCY_PLAN_REQUIRED: "Je hebt een actieve Agency-billing tier nodig om een klant-CV op te slaan.",
             AGENCY_PLAN_PENDING: "Je Agency-billing tier wordt nog geactiveerd. Open je agency-account om de status te controleren.",
-            AGENCY_QUOTA_REACHED: "De limiet van 50 CV's voor deze maand is bereikt.",
+            AGENCY_QUOTA_REACHED: "De gedeelde Agency-limiet van 50 slots voor deze maand is bereikt.",
             DRAFT_TOO_LARGE: "Dit concept is te groot om veilig over te zetten. Verwijder eventueel de foto en probeer opnieuw.",
             default: "We konden je concept niet opslaan. Probeer het opnieuw.",
         },
         en: {
             AGENCY_PLAN_REQUIRED: "You need an active Agency billing tier to save a client CV.",
             AGENCY_PLAN_PENDING: "Your Agency billing tier is still being activated. Open your agency account to check the status.",
-            AGENCY_QUOTA_REACHED: "The 50-CV monthly limit has been reached.",
+            AGENCY_QUOTA_REACHED: "The shared Agency allowance of 50 slots has been reached.",
             DRAFT_TOO_LARGE: "This draft is too large to transfer safely. Remove the photo and try again.",
             default: "We could not save your draft. Please try again.",
         },

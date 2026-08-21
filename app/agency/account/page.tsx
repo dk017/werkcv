@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { canCreateAgencyWork, getAgencyAccessForUser } from "@/lib/agency-access";
+import { canCreateAgencyWork, canManageAgency, getAgencyAccessForUser, needsAgencyRetentionAcknowledgement } from "@/lib/agency-access";
 import { getAgencyStatusLabel } from "@/lib/agency-plan";
 import { prisma } from "@/lib/prisma";
 import AgencyDraftResume from "@/components/agency/AgencyDraftResume";
+import AgencyOnboardingChecklist, { type AgencyOnboardingItem } from "@/components/agency/AgencyOnboardingChecklist";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -39,6 +40,31 @@ export default async function AgencyAccountPage({
   const statusLabel = access.subscription ? getAgencyStatusLabel(access.subscription) : "Nog geen plan";
   const quotaError = errorCode === "AGENCY_QUOTA_REACHED";
   const activationPending = checkoutStatus === "success" && access.state !== "active";
+  let onboardingItems: AgencyOnboardingItem[] = [];
+
+  if (access.state === "active" && access.subscription && access.ownerUserId && canManageAgency(access)) {
+    const [defaultTemplate, packs] = await Promise.all([
+      prisma.agencyTemplate.findFirst({ where: { ownerId: access.ownerUserId, isDefault: true }, select: { id: true } }),
+      prisma.agencyMatchPack.findMany({
+        where: { userId: access.ownerUserId },
+        orderBy: { updatedAt: "desc" },
+        take: 100,
+        select: { status: true, firstExportedAt: true, clientOutcome: true },
+      }),
+    ]);
+    const approved = packs.some((pack) => pack.status === "approved");
+    const exported = packs.some((pack) => Boolean(pack.firstExportedAt));
+    const outcomeRecorded = packs.some((pack) => ["pending", "accepted", "rejected", "withdrawn"].includes(pack.clientOutcome));
+    onboardingItems = [
+      { id: "example", label: "Bekijk het fictieve MatchPack-voorbeeld", href: "/agency#voorbeeld", done: Boolean(access.subscription.onboardingExampleViewedAt), detail: "Zie welke bewijsregels intern blijven en wat een klant ontvangt." },
+      { id: "retention", label: "Kies je bewaartermijn", href: "/agency/account/settings#retention", done: Boolean(access.subscription.retentionPolicySetAt), detail: "Nieuwe accounts starten met 90 dagen; je kunt 30, 90, 180 of 365 dagen kiezen." },
+      { id: "template", label: "Stel je bureautemplate in", href: "/agency/account/settings#templates", done: Boolean(defaultTemplate), detail: "Gebruik je logo-/huisstijlgegevens en herbruikbare exportinstellingen." },
+      { id: "matchpack", label: "Maak je eerste MatchPack", href: "/agency/account/matchpack", done: packs.length > 0, detail: "Analyse en conceptreview gebruiken nog geen slot." },
+      { id: "approval", label: "Controleer en keur het voorstel goed", href: "/agency/account/matchpack", done: approved, detail: "Bevestig bronbewijs, kandidaatdata, commerciële feiten en e-mail vóór goedkeuring." },
+      { id: "export", label: "Download PDF of DOCX", href: "/agency/account/matchpack", done: exported, detail: "Full en contactvrije output komen uit dezelfde goedgekeurde snapshot." },
+      { id: "outcome", label: "Leg de klantuitkomst vast", href: "/agency/account/matchpack", done: outcomeRecorded, detail: "Sla alleen een status en korte productfeedback op; geen kandidaattekst." },
+    ];
+  }
 
   return (
     <main className="min-h-screen bg-[#FFFEF9] px-4 py-8 text-slate-900 sm:px-6 lg:px-8">
@@ -81,6 +107,18 @@ export default async function AgencyAccountPage({
           <div className="mt-8 border-2 border-rose-500 bg-rose-50 p-4 text-sm font-semibold text-rose-950">
             De maandlimiet van 50 kandidaatdocumenten en goedgekeurde voorstellen is bereikt. Bestaande documenten en voorstellen blijven beschikbaar.
           </div>
+        ) : null}
+
+        {needsAgencyRetentionAcknowledgement(access) ? (
+          <div className="mt-8 border-2 border-amber-600 bg-amber-50 p-4 text-sm font-semibold text-amber-950">
+            <p className="font-black">Kies eerst je bewaartermijn</p>
+            <p className="mt-1">Je bestaande MatchPack-inhoud wordt niet stilzwijgend verwijderd. Kies in Instellingen een retentiebeleid voordat automatische verwijdering actief wordt.</p>
+            <Link href="/agency/account/settings" className="mt-3 inline-flex border-2 border-slate-900 bg-yellow-300 px-3 py-2 text-xs font-black">Retentiebeleid instellen</Link>
+          </div>
+        ) : null}
+
+        {onboardingItems.length && !access.subscription?.onboardingDismissedAt ? (
+          <AgencyOnboardingChecklist items={onboardingItems} />
         ) : null}
 
         <AgencyDraftResume canCreate={access.state === "active" && access.canCreate && access.isOwner && canCreateAgencyWork(access)} />

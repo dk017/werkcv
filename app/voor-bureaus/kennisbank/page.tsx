@@ -84,7 +84,13 @@ export default function AgencyKnowledgeIndexPage() {
       </section>
 
       <section className="border-y-2 border-slate-950 py-12 sm:py-16">
-        <div className="grid gap-5 lg:grid-cols-3">
+        <div className="grid gap-5 lg:grid-cols-4">
+          <Link href="/tools/kandidaatvoorstel-checker" className="border-2 border-slate-950 bg-yellow-100 p-6 transition-colors hover:bg-yellow-200">
+            <div className="flex items-center justify-between gap-3"><span className="text-xs font-black uppercase tracking-[0.14em] text-slate-600">Gratis tool</span><span className="text-xs font-bold text-slate-500">5 minuten</span></div>
+            <h2 className="mt-5 text-2xl font-black leading-tight">Controleer CV-bewijs vóór u een kandidaat voorstelt</h2>
+            <p className="mt-4 text-sm leading-relaxed text-slate-700">Plak één CV en één vacature. Zie bronregels, open punten en recruiter-acties in een eerste bewijsmatrix.</p>
+            <p className="mt-6 text-sm font-black">Start de evidence checker →</p>
+          </Link>
           {agencyKnowledgeGuides.map((guide) => {
             const published = guide.status === "published";
             const article = (

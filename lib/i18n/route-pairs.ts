@@ -69,6 +69,14 @@ export const routePairs = [
     preserveSearch: false,
   },
   {
+    id: "candidate-proposal-checker",
+    nl: "/tools/kandidaatvoorstel-checker",
+    en: "/en/candidate-proposal-checker",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
     id: "resume-optimizer",
     nl: "/cv-optimaliseren",
     en: "/en/resume-optimizer-netherlands",

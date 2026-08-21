@@ -116,6 +116,7 @@ export default function AgencyPage() {
               <CheckoutAction location="agency_hero_checkout" />
               <a href="#voorbeeld" className="text-sm font-black text-slate-700 underline decoration-2 underline-offset-4 hover:text-emerald-700">Bekijk eerst het complete voorbeeld</a>
             </div>
+            <Link href="/tools/kandidaatvoorstel-checker" className="mt-4 inline-flex text-sm font-black text-emerald-800 underline decoration-2 underline-offset-4">Probeer gratis de eerste bewijscontrole →</Link>
             <div className="mt-7 flex flex-wrap gap-2 text-xs font-bold text-slate-600"><span className="border border-slate-300 bg-white px-3 py-2">Bewijs, geen aannames</span><span className="border border-slate-300 bg-white px-3 py-2">Menselijke goedkeuring</span><span className="border border-slate-300 bg-white px-3 py-2">NL + EN</span><span className="border border-slate-300 bg-white px-3 py-2">Volledig + contactvrij concept</span></div>
           </div>
 
@@ -153,7 +154,7 @@ export default function AgencyPage() {
         <section className="py-14"><h2 className="text-3xl font-black tracking-tight">Veelgestelde vragen</h2><div className="mt-6 space-y-3">{faqs.map((faq) => <details key={faq.question} className="border-2 border-slate-200 bg-white p-4"><summary className="cursor-pointer font-black">{faq.question}</summary><p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-600">{faq.answer}</p></details>)}</div></section>
 
         <section className="border-2 border-slate-900 bg-slate-950 p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)] sm:p-8"><div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-xs font-black uppercase tracking-[0.18em] text-yellow-300">Van CV-bestand naar klantvoorstel</p><h2 className="mt-2 text-3xl font-black">Beoordeel eerst het voorbeeld. Start alleen als de werkwijze past.</h2><p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-300">Geen verkoopgesprek nodig: MatchPack en de Agency-billing tier zijn direct beschikbaar.</p></div><div className="flex flex-col gap-3 sm:items-end"><a href="#voorbeeld" className="inline-flex min-h-12 items-center justify-center border-2 border-white bg-white px-5 py-3 text-sm font-black text-slate-950">Bekijk voorbeeld</a><CheckoutAction location="agency_bottom_checkout" /></div></div></section>
-        <p className="mt-5 text-center text-xs font-semibold text-slate-500"><Link href="/agency/privacy" className="text-emerald-700 underline underline-offset-4">Privacy, retentie en DPA-informatie</Link></p>
+        <p className="mt-5 text-center text-xs font-semibold text-slate-500"><Link href="/agency/privacy#subprocessors" className="text-emerald-700 underline underline-offset-4">Privacy, retentie en DPA-informatie</Link></p>
       </main>
 
       <FAQJsonLd questions={faqs} />

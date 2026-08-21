@@ -4,6 +4,8 @@ Status: implementation and production deployment verified. The product is
 available in early production. Controlled candidate-proposal cases are still
 required before publishing quality, acceptance or time-saving claims.
 
+> Superseded for implementation by `docs/product/agency-production-readiness-spec.md` (2026-08-20). Use this document for historical v1 context only; do not follow its outdated capability exclusions.
+
 ## Product promise
 
 MatchPack turns one candidate CV and one vacancy into an agency-ready review pack:

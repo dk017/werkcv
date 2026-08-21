@@ -3,9 +3,14 @@ import { cvSchema, type CVData } from "@/lib/cv";
 import {
   cvVacatureMatchResultSchema,
   evidenceReferenceSchema,
+  sourceReferenceSchema,
   type EvidenceReference,
   type CvVacatureMatchResult,
 } from "@/lib/tools/cv-vacature-match-schema";
+import {
+  resolveMatchPackSourceReference,
+  type MatchPackSourceMapV1,
+} from "@/lib/agency-matchpack-source";
 
 export type MatchPackLocale = "nl" | "en";
 
@@ -53,6 +58,8 @@ export const matchPackDraftUpdateSchema = z.object({
     requirementIndex: z.number().int().min(0).max(32),
     reviewerStatus: z.enum(["unreviewed", "confirmed", "corrected", "rejected"]),
     reviewerNote: z.string().trim().max(400).default(""),
+    reviewedEvidence: z.string().trim().max(600).default(""),
+    reviewedSource: sourceReferenceSchema.nullable().default(null),
   })).max(32).default([]),
 });
 
@@ -77,7 +84,8 @@ export type MatchPackAnalysis = z.infer<typeof matchPackAnalysisSchema>;
 
 export const matchPackOutcomeSchema = z.object({
   status: z.enum(["unknown", "pending", "accepted", "rejected", "withdrawn"]),
-  note: z.string().trim().max(1_000).default(""),
+  note: z.string().trim().max(1_000).refine((value) => !(/[\w.%+-]+@[\w.-]+\.[A-Z]{2,}/iu.test(value) || /https?:\/\//iu.test(value) || /(?<!\w)\+?\d[\d\s().-]{7,}\d(?!\w)/u.test(value)), "Do not include candidate contact details or links in product feedback.").default(""),
+  issueCategory: z.enum(["evidence", "parsing", "editing", "pdf", "docx", "privacy", "other"]).default("other"),
   reviewDurationSeconds: z.number().int().nonnegative().nullable().optional(),
   uploadToApprovalSeconds: z.number().int().nonnegative().nullable().optional(),
   correctionsCount: z.number().int().nonnegative().optional(),
@@ -209,10 +217,6 @@ export function scrubKnownCandidateName(
     .trim();
 }
 
-function scrubList(values: string[] | undefined, locale: MatchPackLocale): string[] {
-  return (values || []).map((value) => scrubAnonymizedText(value, locale)).filter(Boolean);
-}
-
 /**
  * Creates the v1 client-share draft from structured CV data. The returned
  * object always passes the existing CV schema, so the normal PDF renderer can
@@ -221,6 +225,11 @@ function scrubList(values: string[] | undefined, locale: MatchPackLocale): strin
 export function anonymizeCvData(input: CVData, locale: MatchPackLocale = "nl"): AnonymizedCvData {
   const source = cvSchema.parse(input);
   const candidateLabel = locale === "en" ? "Candidate profile" : "Kandidaatprofiel";
+  const scrub = (value: string): string => scrubKnownCandidateName(
+    scrubAnonymizedText(value, locale),
+    source.personal.name,
+    locale,
+  );
 
   const data: CVData = {
     ...source,
@@ -241,45 +250,45 @@ export function anonymizeCvData(input: CVData, locale: MatchPackLocale = "nl"): 
       github: "",
       website: "",
       photo: "",
-      summary: scrubAnonymizedText(source.personal.summary, locale),
+      summary: scrub(source.personal.summary),
     },
     experience: source.experience.map((item) => ({
       ...item,
       location: "",
-      description: scrubAnonymizedText(item.description, locale),
-      highlights: scrubList(item.highlights, locale),
+      description: scrub(item.description),
+      highlights: item.highlights.map(scrub).filter(Boolean),
     })),
     education: source.education.map((item) => ({
       ...item,
       location: "",
-      description: scrubAnonymizedText(item.description, locale),
+      description: scrub(item.description),
     })),
     internships: source.internships.map((item) => ({
       ...item,
       location: "",
-      description: scrubAnonymizedText(item.description, locale),
-      highlights: scrubList(item.highlights, locale),
+      description: scrub(item.description),
+      highlights: item.highlights.map(scrub).filter(Boolean),
     })),
-    interests: scrubList(source.interests, locale),
-    properties: scrubList(source.properties, locale),
-    skills: source.skills.map((item) => ({ ...item, name: scrubAnonymizedText(item.name, locale) })),
-    languages: source.languages.map((item) => ({ ...item, name: scrubAnonymizedText(item.name, locale) })),
+    interests: source.interests.map(scrub).filter(Boolean),
+    properties: (source.properties || []).map(scrub).filter(Boolean),
+    skills: source.skills.map((item) => ({ ...item, name: scrub(item.name) })),
+    languages: source.languages.map((item) => ({ ...item, name: scrub(item.name) })),
     courses: source.courses.map((item) => ({
       ...item,
-      name: scrubAnonymizedText(item.name, locale),
-      institution: scrubAnonymizedText(item.institution, locale),
+      name: scrub(item.name),
+      institution: scrub(item.institution),
     })),
-    awards: scrubList(source.awards, locale),
+    awards: source.awards.map(scrub).filter(Boolean),
     references: [],
     sideActivities: (source.sideActivities || []).map((item) => ({
       ...item,
-      title: scrubAnonymizedText(item.title, locale),
-      organization: scrubAnonymizedText(item.organization, locale),
-      description: scrubAnonymizedText(item.description, locale),
+      title: scrub(item.title),
+      organization: scrub(item.organization),
+      description: scrub(item.description),
     })),
     customSections: (source.customSections || []).map((section) => ({
-      title: scrubAnonymizedText(section.title, locale),
-      items: scrubList(section.items, locale),
+      title: scrub(section.title),
+      items: section.items.map(scrub).filter(Boolean),
     })),
   };
 
@@ -302,83 +311,18 @@ export function anonymizeCvData(input: CVData, locale: MatchPackLocale = "nl"): 
   };
 }
 
-function normalizeEvidenceText(value: string): string {
-  return value
-    .toLocaleLowerCase("nl-NL")
-    .replace(/[\u2018\u2019]/g, "'")
-    .replace(/[^\p{L}\p{N}%+.#/-]+/gu, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function guessEvidenceSection(lines: string[], index: number): string {
-  for (let cursor = index; cursor >= 0; cursor -= 1) {
-    const candidate = lines[cursor]?.trim() || "";
-    if (!candidate || candidate.length > 72) continue;
-    if (/[.!?]$/.test(candidate)) continue;
-    if (candidate.split(/\s+/).length <= 8) return candidate;
-  }
-  return "CV-bron";
-}
-
 function locateEvidenceReference(
   cvText: string,
   evidence: string,
-  sourceFileType: "pdf" | "docx" | "unknown",
+  sourceMap?: MatchPackSourceMapV1 | null,
 ): EvidenceReference {
-  const lines = cvText.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
-  const normalizedEvidence = normalizeEvidenceText(evidence);
-  const emptyReference = evidenceReferenceSchema.parse({
-    sourcePage: null,
-    sourceLine: 1,
-    sourceSection: "Niet gevonden in bron",
-    snippet: "",
-    match: "not_found",
-    reviewerStatus: "unreviewed",
-    reviewerNote: "",
-    reviewedAt: null,
-    reviewerId: null,
-  });
-
-  if (!normalizedEvidence || !lines.length) return emptyReference;
-
-  const exactIndex = lines.findIndex((line) => normalizeEvidenceText(line).includes(normalizedEvidence));
-  if (exactIndex >= 0) {
-    return evidenceReferenceSchema.parse({
-      sourcePage: sourceFileType === "pdf" ? exactIndex + 1 : null,
-      sourceLine: exactIndex + 1,
-      sourceSection: guessEvidenceSection(lines, exactIndex),
-      snippet: lines[exactIndex].slice(0, 500),
-      match: "exact",
-      reviewerStatus: "unreviewed",
-      reviewerNote: "",
-      reviewedAt: null,
-      reviewerId: null,
-    });
-  }
-
-  const evidenceTokens = new Set(normalizedEvidence.split(" ").filter((token) => token.length >= 3));
-  let bestIndex = -1;
-  let bestScore = 0;
-  lines.forEach((line, index) => {
-    const lineTokens = new Set(normalizeEvidenceText(line).split(" ").filter((token) => token.length >= 3));
-    if (!lineTokens.size || !evidenceTokens.size) return;
-    const overlap = [...evidenceTokens].filter((token) => lineTokens.has(token)).length / evidenceTokens.size;
-    if (overlap > bestScore) {
-      bestScore = overlap;
-      bestIndex = index;
-    }
-  });
-
-  if (bestIndex < 0 || bestScore < 0.35) return emptyReference;
+  const reference = resolveMatchPackSourceReference(cvText, evidence, sourceMap);
   return evidenceReferenceSchema.parse({
-    sourcePage: sourceFileType === "pdf" ? bestIndex + 1 : null,
-    sourceLine: bestIndex + 1,
-    sourceSection: guessEvidenceSection(lines, bestIndex),
-    snippet: lines[bestIndex].slice(0, 500),
-    match: "approximate",
+    ...reference,
     reviewerStatus: "unreviewed",
-    reviewerNote: "Controleer de bronzin handmatig; de AI-tekst was geen exacte tekstmatch.",
+    reviewerNote: reference.match === "approximate"
+      ? "Controleer de bronzin handmatig; de AI-tekst was geen exacte tekstmatch."
+      : "",
     reviewedAt: null,
     reviewerId: null,
   });
@@ -388,50 +332,42 @@ export function attachEvidenceReferences(
   result: CvVacatureMatchResult,
   cvText: string,
   sourceFileType: "pdf" | "docx" | "unknown",
+  vacancyText = "",
+  sourceMap?: MatchPackSourceMapV1 | null,
 ): CvVacatureMatchResult {
+  const usableSourceMap = sourceFileType === "pdf" || sourceFileType === "docx" ? sourceMap : null;
   return cvVacatureMatchResultSchema.parse({
     ...result,
-    requirements: result.requirements.map((requirement) => ({
-      ...requirement,
-      evidenceReference: locateEvidenceReference(cvText, requirement.cvEvidence, sourceFileType),
-    })),
+    requirements: result.requirements.map((requirement) => {
+      const evidenceReference = locateEvidenceReference(cvText, requirement.cvEvidence, usableSourceMap);
+      const rawVacancyReference = vacancyText.trim()
+        ? locateEvidenceReference(vacancyText, requirement.vacancyEvidence)
+        : null;
+      const vacancyReference = rawVacancyReference
+        ? sourceReferenceSchema.parse({
+          sourcePage: rawVacancyReference.sourcePage,
+          sourceLine: rawVacancyReference.sourceLine,
+          sourceSection: rawVacancyReference.sourceSection,
+          snippet: rawVacancyReference.snippet,
+          match: rawVacancyReference.match,
+        })
+        : undefined;
+      const status = requirement.status === "missing"
+        || evidenceReference.match === "not_found"
+        || vacancyReference?.match === "not_found"
+        ? "missing"
+        : requirement.status === "strong"
+          && (evidenceReference.match === "approximate" || vacancyReference?.match === "approximate")
+          ? "partial"
+          : requirement.status;
+      return {
+        ...requirement,
+        status,
+        ...(vacancyReference ? { vacancyReference } : {}),
+        evidenceReference,
+      };
+    }),
   });
-}
-
-export function applyEvidenceReviews(
-  analysis: MatchPackAnalysis,
-  reviews: MatchPackEvidenceReview[],
-  reviewerId: string,
-  reviewedAt = new Date().toISOString(),
-): MatchPackAnalysis {
-  const reviewMap = new Map(reviews.map((review) => [review.requirementIndex, review]));
-  return matchPackAnalysisSchema.parse({
-    ...analysis,
-    result: {
-      ...analysis.result,
-      requirements: analysis.result.requirements.map((requirement, index) => {
-        const review = reviewMap.get(index);
-        if (!review) return requirement;
-        return {
-          ...requirement,
-          evidenceReference: evidenceReferenceSchema.parse({
-            ...(requirement.evidenceReference || locateEvidenceReference("", "", "unknown")),
-            reviewerStatus: review.reviewerStatus,
-            reviewerNote: review.reviewerNote,
-            reviewedAt,
-            reviewerId,
-          }),
-        };
-      }),
-    },
-  });
-}
-
-export function countEvidenceCorrections(analysis: MatchPackAnalysis): number {
-  return analysis.result.requirements.filter((requirement) => (
-    requirement.evidenceReference?.reviewerStatus === "corrected"
-    || requirement.evidenceReference?.reviewerStatus === "rejected"
-  )).length;
 }
 
 export function createMatchPackAnalysis(

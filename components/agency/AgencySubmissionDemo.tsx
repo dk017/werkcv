@@ -50,8 +50,8 @@ export default function AgencySubmissionDemo() {
         </div>
 
         <div className="min-w-0 border-2 border-slate-900 bg-white shadow-[6px_6px_0px_0px_rgba(78,205,196,1)]">
-          <div className="flex gap-2 overflow-x-auto border-b-2 border-slate-900 bg-slate-50 p-3" role="tablist" aria-label="Voorbeeld kandidaatvoorstel">
-            {tabs.map((tab) => <button key={tab.id} type="button" role="tab" aria-selected={activeTab === tab.id} onClick={() => selectTab(tab.id)} className={`shrink-0 border-2 px-3 py-2 text-xs font-black ${activeTab === tab.id ? "border-slate-900 bg-emerald-400" : "border-slate-200 bg-white text-slate-600"}`}>{tab.label}</button>)}
+          <div className="flex flex-wrap gap-2 border-b-2 border-slate-900 bg-slate-50 p-3" role="tablist" aria-label="Voorbeeld kandidaatvoorstel">
+            {tabs.map((tab) => <button key={tab.id} type="button" role="tab" aria-selected={activeTab === tab.id} onClick={() => selectTab(tab.id)} className={`border-2 px-3 py-2 text-xs font-black ${activeTab === tab.id ? "border-slate-900 bg-emerald-400" : "border-slate-200 bg-white text-slate-600"}`}>{tab.label}</button>)}
           </div>
 
           <div className="min-h-[420px] p-5 sm:p-7">

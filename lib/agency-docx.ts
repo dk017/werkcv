@@ -1,14 +1,8 @@
 import JSZip from "jszip";
-import type { CVData } from "@/lib/cv";
-import type { MatchPackAnalysis, MatchPackSubmission } from "@/lib/agency-matchpack";
+import type { ApprovedMatchPackOutput } from "@/lib/agency-output-projection";
 
 type AgencyDocxInput = {
-  candidateData: CVData;
-  submission: MatchPackSubmission;
-  analysis: MatchPackAnalysis;
-  vacancyTitle: string;
-  locale: "nl" | "en";
-  variant: "full" | "anonymized";
+  output: ApprovedMatchPackOutput;
   companyName?: string | null;
   website?: string | null;
   headerText?: string | null;
@@ -45,7 +39,8 @@ function table(rows: Array<[string, string]>): string {
 }
 
 function documentXml(input: AgencyDocxInput): string {
-  const { candidateData, submission, vacancyTitle, variant, companyName, website, headerText, locale } = input;
+  const { candidateData, submission, vacancyTitle, locale } = input.output;
+  const { companyName, website, headerText } = input;
   const fullName = text(candidateData.personal.name) || (locale === "en" ? "Candidate profile" : "Kandidaatprofiel");
   const role = text(vacancyTitle) || text(candidateData.personal.title) || (locale === "en" ? "Candidate proposal" : "Kandidaatvoorstel");
   const labels = locale === "en"
@@ -57,6 +52,22 @@ function documentXml(input: AgencyDocxInput): string {
   paragraphs.push(paragraph(`${fullName} · ${role}`, "Title"));
   if (website) paragraphs.push(paragraph(website, "Subtitle"));
   paragraphs.push(paragraph(submission.clientIntroduction, "Heading1"));
+
+  if (input.output.evidence.length) {
+    paragraphs.push(paragraph(locale === "en" ? "Reviewed evidence" : "Gecontroleerd bewijs", "Heading1"));
+    input.output.evidence.forEach((item) => {
+      const qualification = item.qualification === "strong"
+        ? (locale === "en" ? "Supported" : "Onderbouwd")
+        : (locale === "en" ? "Partly supported — verify" : "Deels onderbouwd — verifiëren");
+      paragraphs.push(paragraph(`${item.requirement} · ${qualification}`, "Heading2"));
+      paragraphs.push(paragraph(item.evidence));
+      paragraphs.push(paragraph(`${item.source.page ? `PDF p. ${item.source.page}` : `Regel ${item.source.line}`} · ${item.source.section}${item.source.match === "approximate" ? " · approximate" : ""}`, "Caption"));
+    });
+  }
+  if (input.output.openItems.length) {
+    paragraphs.push(paragraph(locale === "en" ? "Open items" : "Openstaande punten", "Heading1"));
+    input.output.openItems.forEach((item) => paragraphs.push(bullet(`${item.requirement} — ${item.action}`)));
+  }
 
   const commercialRows: Array<[string, string]> = [];
   const commercial = submission.commercial;
@@ -95,16 +106,14 @@ function documentXml(input: AgencyDocxInput): string {
     candidateData.skills.forEach((skill) => paragraphs.push(bullet(skill.name)));
   }
 
-  if (variant === "anonymized") {
-    const warning = locale === "en"
-      ? "Direct contact details removed. Review company names, schools and project details before sharing."
-      : "Directe contactgegevens verwijderd. Controleer bedrijfsnamen, scholen en projectdetails voordat je dit deelt.";
+  if (input.output.variant === "contact_free") {
+    const warning = input.output.contactFreeWarning;
     paragraphs.push(paragraph(labels.review, "Heading1"));
     paragraphs.push(paragraph(warning));
   }
 
   const contact = [text(candidateData.personal.email), text(candidateData.personal.phone), text(candidateData.personal.location)].filter(Boolean).join(" · ");
-  if (contact && variant === "full") paragraphs.push(paragraph(`${labels.contact}: ${contact}`, "Caption"));
+  if (contact && input.output.variant === "full") paragraphs.push(paragraph(`${labels.contact}: ${contact}`, "Caption"));
 
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${paragraphs.join("")}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1080" w:right="1080" w:bottom="1080" w:left="1080"/><w:footerReference w:type="default" r:id="rId1"/></w:sectPr></w:body></w:document>`.replace("xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"", "xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"").replace("<w:footerReference w:type=\"default\" r:id=\"rId1\"/>", `<w:footerReference w:type="default" r:id="rId1"/>`);
 }
@@ -114,17 +123,22 @@ function stylesXml(): string {
 }
 
 function footerXml(input: AgencyDocxInput): string {
-  const footer = input.footerText || (input.locale === "en" ? "Prepared with WerkCV MatchPack" : "Opgesteld met WerkCV MatchPack");
+  const footer = input.footerText || (input.output.locale === "en" ? "Prepared with WerkCV MatchPack" : "Opgesteld met WerkCV MatchPack");
   return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:ftr xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:p><w:pPr><w:jc w:val="center"/></w:pPr><w:r><w:t>${escapeXml(footer)}</w:t></w:r></w:p></w:ftr>`;
+}
+
+function numberingXml(): string {
+  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:numbering xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:abstractNum w:abstractNumId="0"><w:multiLevelType w:val="singleLevel"/><w:lvl w:ilvl="0"><w:start w:val="1"/><w:numFmt w:val="bullet"/><w:lvlText w:val="•"/><w:lvlJc w:val="left"/><w:pPr><w:tabs><w:tab w:val="num" w:pos="720"/></w:tabs><w:ind w:left="720" w:hanging="360"/></w:pPr><w:rPr><w:rFonts w:ascii="Arial" w:hAnsi="Arial"/></w:rPr></w:lvl></w:abstractNum><w:num w:numId="1"><w:abstractNumId w:val="0"/></w:num></w:numbering>`;
 }
 
 export async function generateAgencySubmissionDOCX(input: AgencyDocxInput): Promise<Buffer> {
   const zip = new JSZip();
-  zip.file("[Content_Types].xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/></Types>`);
+  zip.file("[Content_Types].xml", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/><Override PartName="/word/numbering.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml"/><Override PartName="/word/footer1.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.footer+xml"/></Types>`);
   zip.file("_rels/.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`);
   zip.file("word/document.xml", documentXml(input));
   zip.file("word/styles.xml", stylesXml());
+  zip.file("word/numbering.xml", numberingXml());
   zip.file("word/footer1.xml", footerXml(input));
-  zip.file("word/_rels/document.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>`);
+  zip.file("word/_rels/document.xml.rels", `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/footer" Target="footer1.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering" Target="numbering.xml"/></Relationships>`);
   return zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE" });
 }

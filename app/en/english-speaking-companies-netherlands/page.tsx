@@ -95,6 +95,11 @@ export default function EnglishSpeakingCompaniesNetherlandsPage() {
           body: "Review role-based examples and adapt them for your own English CV.",
         },
         {
+          href: "/en/guides/startup-vs-corporate-cv-netherlands",
+          label: "Startup vs corporate CV guide",
+          body: "Choose the evidence and emphasis that fit the employer context.",
+        },
+        {
           href: "/tools/kennismigrant-salary-checker",
           label: "Highly skilled migrant salary checker",
           body: "Check whether salary thresholds matter for your target employers or route.",

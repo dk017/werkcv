@@ -44,6 +44,9 @@ function getEmailTransporter() {
         port,
         secure: port === 465,
         auth: { user, pass },
+        connectionTimeout: 5000,
+        greetingTimeout: 5000,
+        socketTimeout: 5000,
     });
 }
 
@@ -83,22 +86,40 @@ export async function requestEmailLoginCode(
         },
     });
 
+    const useLocalDevCode = process.env.NODE_ENV !== 'production' && process.env.AUTH_DEV_CODE !== 'false';
+    if (useLocalDevCode) {
+        console.log(`auth_dev_code ${email} ${code}`);
+        return { devCode: code };
+    }
+
     const transporter = getEmailTransporter();
     const from = process.env.AUTH_FROM_EMAIL || process.env.SMTP_USER || 'noreply@werkcv.nl';
     if (transporter) {
-        const isEnglish = locale === 'en';
-        await transporter.sendMail({
-            from,
-            to: email,
-            subject: isEnglish ? 'Your WerkCV login code' : 'Je WerkCV login code',
-            text: isEnglish
-                ? `Your login code is ${code}. This code expires in ${LOGIN_CODE_TTL_MINUTES} minutes.`
-                : `Je login code is ${code}. Deze code verloopt over ${LOGIN_CODE_TTL_MINUTES} minuten.`,
-            html: isEnglish
-                ? `<p>Your login code is <strong>${code}</strong>.</p><p>This code expires in ${LOGIN_CODE_TTL_MINUTES} minutes.</p>`
-                : `<p>Je login code is <strong>${code}</strong>.</p><p>Deze code verloopt over ${LOGIN_CODE_TTL_MINUTES} minuten.</p>`,
-        });
-        return {};
+        try {
+            const isEnglish = locale === 'en';
+            await transporter.sendMail({
+                from,
+                to: email,
+                subject: isEnglish ? 'Your WerkCV login code' : 'Je WerkCV login code',
+                text: isEnglish
+                    ? `Your login code is ${code}. This code expires in ${LOGIN_CODE_TTL_MINUTES} minutes.`
+                    : `Je login code is ${code}. Deze code verloopt over ${LOGIN_CODE_TTL_MINUTES} minuten.`,
+                html: isEnglish
+                    ? `<p>Your login code is <strong>${code}</strong>.</p><p>This code expires in ${LOGIN_CODE_TTL_MINUTES} minutes.</p>`
+                    : `<p>Je login code is <strong>${code}</strong>.</p><p>Deze code verloopt over ${LOGIN_CODE_TTL_MINUTES} minuten.</p>`,
+            });
+            return {};
+        } catch (error) {
+            if (process.env.NODE_ENV === 'production') throw error;
+
+            // Local development should remain usable when the configured SMTP
+            // provider is unreachable or has an expired credential. The code
+            // is shown only by the development login UI; production never uses
+            // this fallback.
+            console.warn('auth_smtp_failed_dev_fallback', {
+                errorType: error instanceof Error ? error.name : 'UNKNOWN',
+            });
+        }
     }
 
     console.log(`auth_dev_code ${email} ${code}`);

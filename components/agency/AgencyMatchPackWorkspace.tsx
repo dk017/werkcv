@@ -4,8 +4,6 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { CVData } from "@/lib/cv";
 import {
-  scrubAnonymizedText,
-  scrubKnownCandidateName,
   type MatchPackOutcome,
   type MatchPackAnalysis,
   type MatchPackSubmission,
@@ -22,6 +20,7 @@ type PackSummary = {
   status: string;
   cvDocumentId: string | null;
   approvedAt: string | null;
+  retentionExpiresAt: string | null;
   createdAt: string;
   updatedAt: string;
   outcomeStatus?: MatchPackOutcome["status"];
@@ -34,7 +33,7 @@ type PackDetail = PackSummary & {
   anonymizedData: CVData;
   analysis: MatchPackAnalysis;
   submissionData: MatchPackSubmission;
-  outcomeData?: MatchPackOutcome | null;
+  outcomeData?: (MatchPackOutcome & { sendability?: "sent" | "corrected" | "not_usable" | "not_sent" }) | null;
   sourceTextDigest?: string | null;
   templateId: string;
   colorThemeId: string;
@@ -55,6 +54,8 @@ type AgencyMatchPackWorkspaceProps = {
   canCreate: boolean;
   canCreateWork: boolean;
   canApprove: boolean;
+  canDeleteDraft: boolean;
+  canDeleteApproved: boolean;
   canOpenCv: boolean;
 };
 
@@ -70,7 +71,7 @@ const reviewSteps: Array<{ id: ReviewStep; label: string; hint: string }> = [
 ];
 
 const inputClassName =
-  "w-full border-2 border-slate-300 bg-white px-3 py-3 text-sm font-semibold text-slate-900 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100";
+  "wk-input w-full px-3 py-3 text-sm font-semibold outline-none transition-colors";
 
 function formatDate(value: string | null): string {
   if (!value) return "—";
@@ -79,6 +80,12 @@ function formatDate(value: string | null): string {
     month: "short",
     year: "numeric",
   }).format(new Date(value));
+}
+
+function isExpiringSoon(value: string | null): boolean {
+  if (!value) return false;
+  const remaining = new Date(value).getTime() - Date.now();
+  return remaining >= 0 && remaining <= 14 * 24 * 60 * 60 * 1000;
 }
 
 function statusLabel(status: string): string {
@@ -101,6 +108,7 @@ function toSummary(pack: PackDetail | PackSummary): PackSummary {
     status: pack.status,
     cvDocumentId: pack.cvDocumentId,
     approvedAt: pack.approvedAt,
+    retentionExpiresAt: pack.retentionExpiresAt,
     createdAt: pack.createdAt,
     updatedAt: pack.updatedAt,
     outcomeStatus: "outcomeData" in pack && pack.outcomeData ? pack.outcomeData.status : pack.outcomeStatus,
@@ -162,6 +170,8 @@ export default function AgencyMatchPackWorkspace({
   canCreate,
   canCreateWork,
   canApprove,
+  canDeleteDraft,
+  canDeleteApproved,
   canOpenCv,
 }: AgencyMatchPackWorkspaceProps) {
   useEffect(() => {
@@ -187,12 +197,18 @@ export default function AgencyMatchPackWorkspace({
   const [previewVariant, setPreviewVariant] = useState<"full" | "anonymized">("full");
   const [outcomeStatus, setOutcomeStatus] = useState<MatchPackOutcome["status"]>("unknown");
   const [outcomeNote, setOutcomeNote] = useState("");
+  const [outcomeIssueCategory, setOutcomeIssueCategory] = useState<NonNullable<MatchPackOutcome["issueCategory"]>>("other");
+  const [feedbackSendability, setFeedbackSendability] = useState<"sent" | "corrected" | "not_usable" | "not_sent">("sent");
   const [isOutcomeBusy, setIsOutcomeBusy] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const reviewStartedAtRef = useRef<number | null>(null);
   const workflowStartedAtRef = useRef<number | null>(null);
 
-  const reviewReady = checkedItems.every(Boolean);
   const activeResult = activePack?.analysis.result;
+  const evidenceReviewReady = Boolean(activeResult?.requirements.length)
+    && activeResult!.requirements.every((requirement) => requirement.evidenceReference?.reviewerStatus !== "unreviewed");
+  const reviewReady = checkedItems.every(Boolean) && evidenceReviewReady;
   const activeIsApproved = activePack?.status === "approved" && Boolean(activePack.cvDocumentId);
   const hasQuota = canApprove && canCreate && used < allowance;
   const usagePercent = Math.min(100, (used / Math.max(1, allowance)) * 100);
@@ -207,6 +223,8 @@ export default function AgencyMatchPackWorkspace({
 
   const resetWorkspace = () => {
     setActivePack(null);
+    setShowDeleteConfirmation(false);
+    setDeleteConfirmation("");
     setVacancyTitle("");
     setVacancyText("");
     setLocale("nl");
@@ -309,6 +327,7 @@ export default function AgencyMatchPackWorkspace({
               ? {
                 ...requirement,
                 evidenceReference: {
+                  version: 1,
                   sourcePage: requirement.evidenceReference?.sourcePage ?? null,
                   sourceLine: requirement.evidenceReference?.sourceLine || 1,
                   sourceSection: requirement.evidenceReference?.sourceSection || "CV-bron",
@@ -316,11 +335,47 @@ export default function AgencyMatchPackWorkspace({
                   match: requirement.evidenceReference?.match || "not_found",
                   reviewerStatus,
                   reviewerNote,
-                  reviewedAt: new Date().toISOString(),
-                  reviewerId: "current-user",
+                  reviewedEvidence: reviewerStatus === "rejected" || reviewerStatus === "unreviewed"
+                    ? ""
+                    : requirement.evidenceReference?.reviewedEvidence || requirement.cvEvidence,
+                  reviewedSource: reviewerStatus === "rejected" || reviewerStatus === "unreviewed"
+                    ? null
+                    : requirement.evidenceReference?.reviewedSource || {
+                      sourcePage: requirement.evidenceReference?.sourcePage ?? null,
+                      sourceLine: requirement.evidenceReference?.sourceLine || 1,
+                      sourceSection: requirement.evidenceReference?.sourceSection || "CV-bron",
+                      snippet: requirement.evidenceReference?.snippet || "",
+                      match: requirement.evidenceReference?.match || "not_found",
+                    },
+                  reviewedAt: reviewerStatus === "unreviewed" ? null : new Date().toISOString(),
+                  reviewerId: reviewerStatus === "unreviewed" ? null : "current-user",
                 },
               }
               : requirement),
+          },
+        },
+      };
+    });
+    setIsDirty(true);
+  };
+
+  const updateEvidenceDetail = (requirementIndex: number, field: "reviewedEvidence" | "reviewerNote" | "sourceSnippet", value: string) => {
+    setActivePack((current) => {
+      if (!current) return current;
+      return {
+        ...current,
+        analysis: {
+          ...current.analysis,
+          result: {
+            ...current.analysis.result,
+            requirements: current.analysis.result.requirements.map((requirement, index) => {
+              if (index !== requirementIndex || !requirement.evidenceReference) return requirement;
+              const evidenceReference = requirement.evidenceReference;
+              if (field === "sourceSnippet") {
+                return { ...requirement, evidenceReference: { ...evidenceReference, reviewedSource: evidenceReference.reviewedSource ? { ...evidenceReference.reviewedSource, snippet: value } : null } };
+              }
+              return { ...requirement, evidenceReference: { ...evidenceReference, [field]: value } };
+            }),
           },
         },
       };
@@ -373,6 +428,8 @@ export default function AgencyMatchPackWorkspace({
       reviewStartedAtRef.current = Date.now();
       setOutcomeStatus(body.pack.outcomeData?.status || "unknown");
       setOutcomeNote(body.pack.outcomeData?.note || "");
+      setOutcomeIssueCategory(body.pack.outcomeData?.issueCategory || "other");
+      setFeedbackSendability(body.pack.outcomeData?.sendability || "sent");
       setPacks((current) => [toSummary(body.pack as PackDetail), ...current.filter((pack) => pack.id !== body.pack?.id)]);
       setCheckedItems([false, false, false, false]);
       setIsDirty(false);
@@ -406,6 +463,8 @@ export default function AgencyMatchPackWorkspace({
       workflowStartedAtRef.current = null;
       setOutcomeStatus(body.pack.outcomeData?.status || "unknown");
       setOutcomeNote(body.pack.outcomeData?.note || "");
+      setOutcomeIssueCategory(body.pack.outcomeData?.issueCategory || "other");
+      setFeedbackSendability(body.pack.outcomeData?.sendability || "sent");
       setCheckedItems([false, false, false, false]);
       setIsDirty(false);
       setReviewStep("fit");
@@ -423,7 +482,7 @@ export default function AgencyMatchPackWorkspace({
   };
 
   const saveDraft = async () => {
-    if (!activePack || activeIsApproved || !canApprove) return;
+    if (!activePack || activeIsApproved || (!canCreateWork && !canApprove)) return;
     setIsBusy(true);
     setError(null);
     setNotice(null);
@@ -438,6 +497,8 @@ export default function AgencyMatchPackWorkspace({
             requirementIndex,
             reviewerStatus: requirement.evidenceReference?.reviewerStatus || "unreviewed",
             reviewerNote: requirement.evidenceReference?.reviewerNote || "",
+            reviewedEvidence: requirement.evidenceReference?.reviewedEvidence || "",
+            reviewedSource: requirement.evidenceReference?.reviewedSource || null,
           })),
         }),
       });
@@ -474,22 +535,22 @@ export default function AgencyMatchPackWorkspace({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          reviewDurationSeconds: reviewStartedAtRef.current
-            ? Math.max(0, Math.round((Date.now() - reviewStartedAtRef.current) / 1000))
-            : null,
-          uploadToApprovalSeconds: workflowStartedAtRef.current
-            ? Math.max(0, Math.round((Date.now() - workflowStartedAtRef.current) / 1000))
-            : null,
-          correctionsCount: getCandidateChanges(activePack.originalCandidateData, activePack.candidateData).length,
-          unsupportedClaimsCaught: activePack.analysis.result.requirements.filter((requirement) => (
-            requirement.evidenceReference?.reviewerStatus === "corrected"
-            || requirement.evidenceReference?.reviewerStatus === "rejected"
-          )).length,
+          version: 1,
+          expectedUpdatedAt: activePack.updatedAt,
+          expectedRevisionVersion: activePack.revisions[0]?.version || 1,
+          selectedVariant: activePack.submissionData.selectedVariant === "full" ? "full" : "contact_free",
+          confirmations: {
+            evidenceReviewed: checkedItems[0] === true,
+            candidateDataReviewed: checkedItems[1] === true,
+            clientCopyReviewed: checkedItems[2] === true,
+            sharingAuthorityConfirmed: checkedItems[3] === true,
+          },
         }),
       });
       const body = await response.json().catch(() => null) as {
         cvId?: string;
         reused?: boolean;
+        retentionExpiresAt?: string | null;
         quota?: { used?: number; remaining?: number };
         error?: string;
       } | null;
@@ -500,11 +561,12 @@ export default function AgencyMatchPackWorkspace({
       setActivePack((current) => current ? {
         ...current,
         status: "approved",
-        cvDocumentId: body.cvId || current.cvDocumentId,
-        approvedAt: new Date().toISOString(),
+         cvDocumentId: body.cvId || current.cvDocumentId,
+         approvedAt: new Date().toISOString(),
+         retentionExpiresAt: body.retentionExpiresAt || current.retentionExpiresAt,
       } : current);
       setPacks((current) => current.map((pack) => pack.id === activePack.id
-        ? { ...pack, status: "approved", cvDocumentId: body.cvId || pack.cvDocumentId, approvedAt: new Date().toISOString() }
+         ? { ...pack, status: "approved", cvDocumentId: body.cvId || pack.cvDocumentId, approvedAt: new Date().toISOString(), retentionExpiresAt: body.retentionExpiresAt || pack.retentionExpiresAt }
         : pack));
       if (typeof body.quota?.used === "number") setUsed(body.quota.used);
       setNotice(body.reused ? "Dit kandidaatvoorstel was al goedgekeurd." : "Goedgekeurd. Eén voorstel-slot is nu gebruikt en de gekozen klantversie staat klaar.");
@@ -536,25 +598,31 @@ export default function AgencyMatchPackWorkspace({
     if (!activePack) return;
     try {
       const locale = activePack.locale === "en" ? "en" : "nl";
-      const prepare = (value: string) => activePack.submissionData.selectedVariant === "anonymized"
-        ? scrubKnownCandidateName(scrubAnonymizedText(value, locale), activePack.candidateData.personal.name, locale)
-        : value;
-      await navigator.clipboard.writeText(`${prepare(activePack.submissionData.clientEmailSubject)}\n\n${prepare(activePack.submissionData.clientEmailBody)}`);
+      const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/client-copy`);
+      const body = await response.json().catch(() => null) as { copy?: { emailSubject: string; emailBody: string }; error?: string } | null;
+      if (!response.ok || !body?.copy) throw new Error(body?.error || "De gecontroleerde e-mail kon niet worden voorbereid.");
+      await navigator.clipboard.writeText(`${body.copy.emailSubject}\n\n${body.copy.emailBody}`);
       setNotice("Onderwerp en e-mailtekst gekopieerd.");
       track("matchpack_email_copied", { locale });
-    } catch {
-      setError("Kopiëren lukte niet. Selecteer de e-mailtekst handmatig.");
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Kopiëren lukte niet.");
     }
   };
 
   const deletePack = async () => {
-    if (!activePack || activeIsApproved || !canApprove) return;
-    if (!window.confirm("Deze ongekeurde MatchPack verwijderen?")) return;
+    if (!activePack) return;
+    if (activeIsApproved && !canDeleteApproved) return;
+    if (!activeIsApproved && !canDeleteDraft) return;
+    if (activeIsApproved && deleteConfirmation !== "DELETE MATCHPACK") return;
 
     setIsBusy(true);
     setError(null);
     try {
-      const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}`, { method: "DELETE" });
+      const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(activeIsApproved ? { confirmation: deleteConfirmation } : {}),
+      });
       const body = await response.json().catch(() => null) as { error?: string } | null;
       if (!response.ok) throw new Error(body?.error || "De MatchPack kon niet worden verwijderd.");
       setPacks((current) => current.filter((pack) => pack.id !== activePack.id));
@@ -575,12 +643,21 @@ export default function AgencyMatchPackWorkspace({
       const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/outcome`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: outcomeStatus, note: outcomeNote }),
+        body: JSON.stringify({ status: outcomeStatus }),
       });
-      const body = await response.json().catch(() => null) as { outcomeData?: MatchPackOutcome; error?: string } | null;
-      if (!response.ok || !body?.outcomeData) throw new Error(body?.error || "De klantstatus kon niet worden opgeslagen.");
-      const savedOutcome = body.outcomeData;
-      setActivePack((current) => current ? { ...current, outcomeData: savedOutcome, outcomeStatus: savedOutcome.status } : current);
+      const body = await response.json().catch(() => null) as { outcome?: { status: MatchPackOutcome["status"] }; error?: string } | null;
+      if (!response.ok || !body?.outcome) throw new Error(body?.error || "De klantstatus kon niet worden opgeslagen.");
+      if (outcomeNote.trim()) {
+        const feedbackResponse = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/feedback`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ version: 1, sendability: feedbackSendability, issueCategories: [outcomeIssueCategory], note: outcomeNote }),
+        });
+        const feedbackBody = await feedbackResponse.json().catch(() => null) as { error?: string } | null;
+        if (!feedbackResponse.ok) throw new Error(feedbackBody?.error || "De productfeedback kon niet worden opgeslagen.");
+      }
+      const savedOutcome = body.outcome;
+      setActivePack((current) => current ? { ...current, outcomeData: { status: savedOutcome.status, note: outcomeNote, issueCategory: outcomeIssueCategory, sendability: feedbackSendability }, outcomeStatus: savedOutcome.status } : current);
       setPacks((current) => current.map((pack) => pack.id === activePack.id ? { ...pack, outcomeStatus: savedOutcome.status } : pack));
       setNotice("Klantstatus opgeslagen.");
       track("matchpack_client_outcome_saved", { status: savedOutcome.status });
@@ -766,21 +843,24 @@ export default function AgencyMatchPackWorkspace({
                     {(["all", "strong", "partial", "missing"] as const).map((filter) => <button key={filter} type="button" onClick={() => setEvidenceFilter(filter)} className={`border-2 px-3 py-2 text-xs font-black ${evidenceFilter === filter ? "border-slate-900 bg-slate-900 text-white" : "border-slate-200 bg-white text-slate-700 hover:border-slate-400"}`}>{filter === "all" ? "Alle" : filter === "strong" ? "Sterk" : filter === "partial" ? "Gedeeltelijk" : "Ontbreekt"}</button>)}
                   </div>
                    <div className="mt-4 space-y-3 md:hidden">{filteredRequirements.map((requirement) => {
-                     const requirementIndex = activeResult.requirements.indexOf(requirement);
-                     const reference = requirement.evidenceReference;
-                     return <article key={`${requirement.requirement}-${requirement.vacancyEvidence}`} className="border-2 border-slate-200 bg-slate-50 p-4">
-                       <div className="flex flex-wrap items-start justify-between gap-2"><p className="font-black">{requirement.requirement}</p><span className={`inline-flex border px-2 py-1 text-xs font-black ${getStatusTone(requirement.status)}`}>{getStatusText(requirement.status)}</span></div>
-                       <p className="mt-2 text-xs leading-relaxed text-slate-500">Vacaturebron: “{requirement.vacancyEvidence}”</p>
+                      const requirementIndex = activeResult.requirements.indexOf(requirement);
+                      const reference = requirement.evidenceReference;
+                      const vacancyReference = requirement.vacancyReference;
+                      return <article key={`${requirement.requirement}-${requirement.vacancyEvidence}`} className="border-2 border-slate-200 bg-slate-50 p-4">
+                        <div className="flex flex-wrap items-start justify-between gap-2"><p className="font-black">{requirement.requirement}</p><span className={`inline-flex border px-2 py-1 text-xs font-black ${getStatusTone(requirement.status)}`}>{getStatusText(requirement.status)}</span></div>
+                        <p className="mt-2 text-xs leading-relaxed text-slate-500">Vacaturebron: {vacancyReference?.snippet ? `“${vacancyReference.snippet}” · Regel ${vacancyReference.sourceLine} · ${vacancyReference.sourceSection}` : "Geen exact bronfragment gevonden; controleer de originele vacature."}</p>
                        <p className="mt-3 text-xs leading-relaxed text-slate-700"><span className="font-black">CV-bewijs:</span> {requirement.cvEvidence || "Geen concreet bewijs gevonden."}</p>
                        <div className="mt-3 border-l-4 border-emerald-400 bg-white p-3 text-xs leading-relaxed text-slate-700"><p className="font-black">Bronverwijzing</p><p className="mt-1">{reference?.sourcePage ? `PDF-pagina ${reference.sourcePage}` : `Regel ${reference?.sourceLine || "—"}`} · {reference?.sourceSection || "Niet gevonden"}</p><p className="mt-1 italic">{reference?.snippet ? `“${reference.snippet}”` : "Geen exact bronfragment gevonden."}</p></div>
                        <p className="mt-2 text-xs leading-relaxed text-slate-700"><span className="font-black">Eerlijke actie:</span> {requirement.honestAction}</p>
-                       <label className="mt-3 block text-xs font-black text-slate-600">Reviewstatus<select className={`${inputClassName} mt-1`} value={reference?.reviewerStatus || "unreviewed"} onChange={(event) => updateEvidenceReview(requirementIndex, event.target.value as "unreviewed" | "confirmed" | "corrected" | "rejected", reference?.reviewerNote || "")} disabled={activeIsApproved}><option value="unreviewed">Nog te beoordelen</option><option value="confirmed">Bevestigd</option><option value="corrected">Gecorrigeerd</option><option value="rejected">Afgewezen</option></select></label>
+                        <label className="mt-3 block text-xs font-black text-slate-600">Reviewstatus<select className={`${inputClassName} mt-1`} value={reference?.reviewerStatus || "unreviewed"} onChange={(event) => updateEvidenceReview(requirementIndex, event.target.value as "unreviewed" | "confirmed" | "corrected" | "rejected", reference?.reviewerNote || "")} disabled={activeIsApproved}><option value="unreviewed">Nog te beoordelen</option><option value="confirmed">Bevestigd</option><option value="corrected">Gecorrigeerd</option><option value="rejected">Afgewezen</option></select></label>
+                        {reference?.reviewerStatus === "corrected" ? <div className="mt-3 space-y-3"><label className="block text-xs font-black text-slate-600">Gecorrigeerd bewijs<textarea className={`${inputClassName} mt-1 min-h-20`} value={reference.reviewedEvidence} onChange={(event) => updateEvidenceDetail(requirementIndex, "reviewedEvidence", event.target.value)} maxLength={600} disabled={activeIsApproved} /></label><label className="block text-xs font-black text-slate-600">Exact bronfragment<textarea className={`${inputClassName} mt-1 min-h-20`} value={reference.reviewedSource?.snippet || ""} onChange={(event) => updateEvidenceDetail(requirementIndex, "sourceSnippet", event.target.value)} maxLength={500} disabled={activeIsApproved} /></label><label className="block text-xs font-black text-slate-600">Waarom gecorrigeerd?<textarea className={`${inputClassName} mt-1 min-h-20`} value={reference.reviewerNote} onChange={(event) => updateEvidenceDetail(requirementIndex, "reviewerNote", event.target.value)} maxLength={400} disabled={activeIsApproved} /></label></div> : null}
                      </article>;
                    })}</div>
                    <div className="mt-4 hidden overflow-x-auto md:block"><table className="w-full min-w-[1,140px] border-collapse text-left text-sm"><thead><tr className="border-b-2 border-slate-900 text-xs uppercase tracking-[0.1em] text-slate-500"><th className="px-3 py-3">Vacature-eis</th><th className="px-3 py-3">Status</th><th className="px-3 py-3">CV-bewijs</th><th className="px-3 py-3">Bronverwijzing</th><th className="px-3 py-3">Review</th><th className="px-3 py-3">Eerlijke actie</th></tr></thead><tbody>{filteredRequirements.map((requirement) => {
-                     const requirementIndex = activeResult.requirements.indexOf(requirement);
-                     const reference = requirement.evidenceReference;
-                     return <tr key={`${requirement.requirement}-${requirement.vacancyEvidence}`} className="border-b border-slate-100 align-top"><td className="px-3 py-4"><p className="font-black">{requirement.requirement}</p><p className="mt-1 text-xs leading-relaxed text-slate-500">“{requirement.vacancyEvidence}”</p></td><td className="px-3 py-4"><span className={`inline-flex border px-2 py-1 text-xs font-black ${getStatusTone(requirement.status)}`}>{getStatusText(requirement.status)}</span></td><td className="px-3 py-4 text-xs leading-relaxed text-slate-700">{requirement.cvEvidence || "Geen concreet bewijs gevonden."}</td><td className="px-3 py-4 text-xs leading-relaxed text-slate-700"><p>{reference?.sourcePage ? `PDF-pagina ${reference.sourcePage}` : `Regel ${reference?.sourceLine || "—"}`}</p><p className="mt-1 text-[11px] italic">{reference?.snippet || "Geen exact bronfragment gevonden."}</p></td><td className="px-3 py-4"><select className="border-2 border-slate-300 bg-white px-2 py-2 text-xs font-bold" value={reference?.reviewerStatus || "unreviewed"} onChange={(event) => updateEvidenceReview(requirementIndex, event.target.value as "unreviewed" | "confirmed" | "corrected" | "rejected", reference?.reviewerNote || "")} disabled={activeIsApproved}><option value="unreviewed">Nog te beoordelen</option><option value="confirmed">Bevestigd</option><option value="corrected">Gecorrigeerd</option><option value="rejected">Afgewezen</option></select><p className="mt-1 text-[11px] font-bold text-slate-500">{reviewerStatusLabel(reference?.reviewerStatus || "unreviewed")}</p></td><td className="px-3 py-4 text-xs leading-relaxed text-slate-700">{requirement.honestAction}</td></tr>;
+                      const requirementIndex = activeResult.requirements.indexOf(requirement);
+                      const reference = requirement.evidenceReference;
+                      const vacancyReference = requirement.vacancyReference;
+                       return <tr key={`${requirement.requirement}-${requirement.vacancyEvidence}`} className="border-b border-slate-100 align-top"><td className="px-3 py-4"><p className="font-black">{requirement.requirement}</p><p className="mt-1 text-xs leading-relaxed text-slate-500">{vacancyReference?.snippet ? `“${vacancyReference.snippet}” · Regel ${vacancyReference.sourceLine} · ${vacancyReference.sourceSection}` : "Geen exact bronfragment gevonden; controleer de originele vacature."}</p></td><td className="px-3 py-4"><span className={`inline-flex border px-2 py-1 text-xs font-black ${getStatusTone(requirement.status)}`}>{getStatusText(requirement.status)}</span></td><td className="px-3 py-4 text-xs leading-relaxed text-slate-700">{requirement.cvEvidence || "Geen concreet bewijs gevonden."}</td><td className="px-3 py-4 text-xs leading-relaxed text-slate-700"><p>{reference?.sourcePage ? `PDF-pagina ${reference.sourcePage}` : `Regel ${reference?.sourceLine || "—"}`}</p><p className="mt-1 text-[11px] italic">{reference?.snippet || "Geen exact bronfragment gevonden."}</p>{reference?.reviewerStatus === "corrected" ? <><textarea aria-label="Gecorrigeerd bewijs" className={`${inputClassName} mt-2 min-h-20`} value={reference.reviewedEvidence} onChange={(event) => updateEvidenceDetail(requirementIndex, "reviewedEvidence", event.target.value)} maxLength={600} disabled={activeIsApproved} /><textarea aria-label="Exact bronfragment" className={`${inputClassName} mt-2 min-h-20`} value={reference.reviewedSource?.snippet || ""} onChange={(event) => updateEvidenceDetail(requirementIndex, "sourceSnippet", event.target.value)} maxLength={500} disabled={activeIsApproved} /></> : null}</td><td className="px-3 py-4"><select className="border-2 border-slate-300 bg-white px-2 py-2 text-xs font-bold" value={reference?.reviewerStatus || "unreviewed"} onChange={(event) => updateEvidenceReview(requirementIndex, event.target.value as "unreviewed" | "confirmed" | "corrected" | "rejected", reference?.reviewerNote || "")} disabled={activeIsApproved}><option value="unreviewed">Nog te beoordelen</option><option value="confirmed">Bevestigd</option><option value="corrected">Gecorrigeerd</option><option value="rejected">Afgewezen</option></select><p className="mt-1 text-[11px] font-bold text-slate-500">{reviewerStatusLabel(reference?.reviewerStatus || "unreviewed")}</p>{reference?.reviewerStatus === "corrected" ? <textarea aria-label="Reden voor correctie" className={`${inputClassName} mt-2 min-h-20`} value={reference.reviewerNote} onChange={(event) => updateEvidenceDetail(requirementIndex, "reviewerNote", event.target.value)} maxLength={400} disabled={activeIsApproved} /> : null}</td><td className="px-3 py-4 text-xs leading-relaxed text-slate-700">{requirement.honestAction}</td></tr>;
                    })}</tbody></table></div>
                   {filteredRequirements.length === 0 ? <p className="mt-4 border-2 border-dashed border-slate-300 p-4 text-sm font-semibold text-slate-600">Geen eisen met deze status.</p> : null}
                 </section>
@@ -911,10 +991,14 @@ export default function AgencyMatchPackWorkspace({
                   <div className="mt-4 space-y-3 text-sm font-semibold text-slate-800">
                     {["Ik heb de vacature-eisen, het CV-bewijs en alle correcties gecontroleerd.", "Ik heb de introductie, commerciële gegevens en begeleidende e-mail gecontroleerd.", `Ik heb de gekozen uitvoerversie (${activePack.submissionData.selectedVariant === "full" ? "volledig voorstel" : "zonder directe contactgegevens"}) gecontroleerd.`, "Ik bevestig dat mijn bureau bevoegd is om deze kandidaatdata voor deze vacature te verwerken en te delen."] .map((label, index) => <label key={label} className="flex items-start gap-3"><input type="checkbox" className="mt-0.5 h-5 w-5 accent-emerald-600" checked={checkedItems[index] || false} onChange={(event) => setCheckedItems((current) => current.map((value, itemIndex) => itemIndex === index ? event.target.checked : value))} disabled={activeIsApproved || isDirty} /><span>{label}</span></label>)}
                   </div>
+                  {!evidenceReviewReady && !activeIsApproved ? <p className="mt-4 border-2 border-amber-300 bg-white p-3 text-xs font-bold text-amber-900">Beoordeel eerst elke vacature-eis als bevestigd, gecorrigeerd of afgewezen. Niet-beoordeelde regels kunnen niet worden goedgekeurd.</p> : null}
                   <div className="mt-6 flex flex-wrap items-center gap-3 border-t-2 border-yellow-200 pt-5">
                     {!activeIsApproved ? <button type="button" onClick={() => void approvePack()} disabled={!reviewReady || isBusy || !hasQuota || isDirty} className="border-2 border-slate-900 bg-emerald-400 px-5 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] disabled:cursor-not-allowed disabled:opacity-50">{isBusy ? "Goedkeuren…" : isDirty ? "Sla wijzigingen eerst op" : hasQuota ? "Goedkeuren en 1 voorstel-slot gebruiken" : "Maandlimiet bereikt"}</button> : <><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/pdf?variant=${activePack.submissionData.selectedVariant === "full" ? "full" : "anonymized"}`} onClick={() => track("matchpack_pdf_downloaded", { variant: activePack.submissionData.selectedVariant })} className="border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black">Gekozen PDF downloaden</a><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/docx?variant=${activePack.submissionData.selectedVariant === "full" ? "full" : "anonymized"}`} onClick={() => track("matchpack_docx_downloaded", { variant: activePack.submissionData.selectedVariant })} className="border-2 border-slate-900 bg-yellow-300 px-4 py-3 text-sm font-black">Gekozen DOCX downloaden</a><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/pdf?variant=${activePack.submissionData.selectedVariant === "full" ? "anonymized" : "full"}`} onClick={() => track("matchpack_pdf_downloaded", { variant: activePack.submissionData.selectedVariant === "full" ? "anonymized" : "full" })} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black">Andere PDF downloaden</a>{activePack.cvDocumentId && canOpenCv ? <Link href={`/editor?id=${encodeURIComponent(activePack.cvDocumentId)}`} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700">Goedgekeurd CV openen</Link> : null}</>}
-                    {!activeIsApproved ? <button type="button" onClick={() => void deletePack()} disabled={isBusy} className="border-2 border-rose-200 bg-white px-4 py-3 text-sm font-black text-rose-700 disabled:opacity-50">Verwijder concept</button> : <span className="text-xs font-bold text-emerald-800">Goedgekeurd op {formatDate(activePack.approvedAt)}</span>}
+                    {!activeIsApproved && canDeleteDraft ? <button type="button" onClick={() => setShowDeleteConfirmation(true)} disabled={isBusy} className="border-2 border-rose-200 bg-white px-4 py-3 text-sm font-black text-rose-700 disabled:opacity-50">Verwijder concept</button> : null}
+                    {activeIsApproved && canDeleteApproved ? <button type="button" onClick={() => setShowDeleteConfirmation(true)} disabled={isBusy} className="border-2 border-rose-200 bg-white px-4 py-3 text-sm font-black text-rose-700 disabled:opacity-50">Voorstel en gekoppeld CV verwijderen</button> : null}
+                    <span className={`text-xs font-bold ${isExpiringSoon(activePack.retentionExpiresAt) ? "text-amber-800" : "text-emerald-800"}`}>{activeIsApproved ? `Goedgekeurd op ${formatDate(activePack.approvedAt)}` : "Concept"}{activePack.retentionExpiresAt ? ` · vervalt ${formatDate(activePack.retentionExpiresAt)}` : " · retentie nog niet geactiveerd"}{isExpiringSoon(activePack.retentionExpiresAt) ? " · verloopt binnen 14 dagen" : ""}</span>
                   </div>
+                  {showDeleteConfirmation && ((activeIsApproved && canDeleteApproved) || (!activeIsApproved && canDeleteDraft)) ? <div className="mt-4 border-2 border-rose-500 bg-white p-4" role="region" aria-label="MatchPack verwijderen bevestigen"><p className="text-sm font-black text-rose-900">{activeIsApproved ? "Dit verwijdert het goedgekeurde voorstel en het gekoppelde CV. Het gebruikte slot blijft geteld." : "Dit verwijdert dit ongekeurde MatchPack-concept."}</p>{activeIsApproved ? <label className="mt-3 block text-xs font-black uppercase tracking-wide text-rose-800">Typ DELETE MATCHPACK<input className={`${inputClassName} mt-2`} value={deleteConfirmation} onChange={(event) => setDeleteConfirmation(event.target.value)} autoComplete="off" /></label> : null}<div className="mt-3 flex flex-wrap gap-2"><button type="button" disabled={isBusy || (activeIsApproved && deleteConfirmation !== "DELETE MATCHPACK")} onClick={() => void deletePack()} className="border-2 border-rose-700 bg-rose-100 px-4 py-2 text-sm font-black text-rose-900 disabled:opacity-50">Definitief verwijderen</button><button type="button" disabled={isBusy} onClick={() => { setShowDeleteConfirmation(false); setDeleteConfirmation(""); }} className="border-2 border-slate-300 bg-white px-4 py-2 text-sm font-black">Annuleren</button></div></div> : null}
                 </section> : null}
 
                 {activeIsApproved ? <section className="border-2 border-slate-900 bg-emerald-50 p-5 sm:p-6">
@@ -923,7 +1007,9 @@ export default function AgencyMatchPackWorkspace({
                   <p className="mt-2 max-w-3xl text-sm leading-relaxed text-slate-700">Leg de uitkomst vast zodra je die weet. Deze gegevens blijven intern en helpen ons echte acceptatie, correcties en herhaalgebruik te meten.</p>
                   <div className="mt-5 grid gap-4 sm:grid-cols-[220px_1fr]">
                     <label className="text-xs font-black text-slate-600">Klantstatus<select className={`${inputClassName} mt-2`} value={outcomeStatus} onChange={(event) => setOutcomeStatus(event.target.value as MatchPackOutcome["status"])}><option value="unknown">Nog onbekend</option><option value="pending">In behandeling</option><option value="accepted">Geaccepteerd</option><option value="rejected">Afgewezen</option><option value="withdrawn">Ingetrokken</option></select></label>
-                    <label className="text-xs font-black text-slate-600">Notitie (optioneel)<textarea className={`${inputClassName} mt-2 min-h-24`} value={outcomeNote} onChange={(event) => setOutcomeNote(event.target.value)} maxLength={1_000} placeholder="Bijv. klant wil een gesprek plannen." /></label>
+                    <label className="text-xs font-black text-slate-600">Verzendbaarheid<select className={`${inputClassName} mt-2`} value={feedbackSendability} onChange={(event) => setFeedbackSendability(event.target.value as typeof feedbackSendability)}><option value="sent">Verzonden zoals gemaakt</option><option value="corrected">Eerst gecorrigeerd</option><option value="not_usable">Niet bruikbaar</option><option value="not_sent">Niet verzonden</option></select></label>
+                    <label className="text-xs font-black text-slate-600">Feedbackcategorie<select className={`${inputClassName} mt-2`} value={outcomeIssueCategory} onChange={(event) => setOutcomeIssueCategory(event.target.value as NonNullable<MatchPackOutcome["issueCategory"]>)}><option value="evidence">Bewijs</option><option value="parsing">Uitlezen</option><option value="editing">Bewerken</option><option value="pdf">PDF</option><option value="docx">DOCX</option><option value="privacy">Privacy</option><option value="other">Overig</option></select></label>
+                    <label className="text-xs font-black text-slate-600 sm:col-span-2">Productfeedback (optioneel)<textarea className={`${inputClassName} mt-2 min-h-24`} value={outcomeNote} onChange={(event) => setOutcomeNote(event.target.value)} maxLength={500} placeholder="Bijv. bewijscontrole was duidelijk; DOCX had nog handmatige opmaak nodig." /><span className="mt-1 block text-[11px] font-semibold text-slate-500">Gebruik geen kandidaatnaam, CV-/vacaturetekst, contactgegevens of links.</span></label>
                   </div>
                   <button type="button" onClick={() => void saveOutcome()} disabled={isOutcomeBusy} className="mt-4 border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black disabled:opacity-50">{isOutcomeBusy ? "Opslaan…" : "Klantstatus opslaan"}</button>
                 </section> : null}

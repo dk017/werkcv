@@ -1,6 +1,7 @@
 import { getPilotRoleGuidePages } from './programmatic-builders';
 import { extraDutchEditorialPages } from './extra-dutch-pages';
 import { SeoGuidePage } from './types';
+import { englishQuestionGuides } from './english-question-guides';
 
 type DutchSeed = {
     slug: string;
@@ -42,6 +43,7 @@ type GuideOverride = {
     ctaText?: string;
     ctaHref?: string;
     ctaButtonLabel?: string;
+    additionalSections?: SeoGuidePage['sections'];
     sectionOverrides?: Record<string, SectionOverride>;
 };
 
@@ -398,6 +400,130 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
                 ],
             },
         },
+        additionalSections: [
+            {
+                id: 'startup-vs-corporate',
+                title: 'Hoe stem je een CV af op een Nederlandse startup of corporate werkgever?',
+                paragraphs: [
+                    'Een startup-CV en corporate-CV hebben dezelfde heldere Nederlandse basis. Je verandert vooral welk bewijs je bovenaan zet voor de werkomgeving, de vacature en de persoon die selecteert.',
+                    'Bij startups en scale-ups benadruk je eigenaarschap in een veranderlijke omgeving: wat je hebt gebouwd, gelanceerd, getest of verbeterd, hoe je over teams heen werkte en hoe dicht je bij klant of product stond. Gebruik termen als ownership, experimenten of go-to-market alleen wanneer ze je echte ervaring beschrijven.',
+                    'Bij corporate functies laat je schaal en betrouwbare uitvoering zien: scope, stakeholders, procesverbetering, risico of compliance, budgetten, systemen en KPI’s. Zet certificaten, talen en de omvang of complexiteit van je verantwoordelijkheden duidelijk neer wanneer die relevant zijn.',
+                    'Pas dus vooral de bovenste helft van je CV aan. Een startup-versie kan beginnen met hands-on eigenaarschap en breedte; een corporate-versie met schaal, structuur en stakeholderdelivery. Houd beide versies feitelijk, compact en ATS-leesbaar.',
+                ],
+                comparisonTable: {
+                    columns: ['Wat benadruk je?', 'Startup of scale-up', 'Corporate of enterprise'],
+                    rows: [
+                        {
+                            label: 'Profiel',
+                            primary: 'Eigenaarschap, aanpassingsvermogen en klant- of productnabijheid.',
+                            secondary: 'Rolomvang, betrouwbare levering, stakeholders en domeinkennis.',
+                        },
+                        {
+                            label: 'Werkervaring',
+                            primary: 'Gebouwd, gelanceerd, getest of verbeterd; samenwerking over teams heen.',
+                            secondary: 'Aangestuurd, geleverd of gestandaardiseerd; schaal, governance en KPI’s.',
+                        },
+                        {
+                            label: 'Bewijs',
+                            primary: 'Experimenten, adoptie, activatie, doorlooptijd, klantfeedback of omzetimpact.',
+                            secondary: 'Budget, volume, SLA, besparing, kwaliteit, compliance of continuïteit.',
+                        },
+                        {
+                            label: 'Opmaak',
+                            primary: 'Iets meer persoonlijkheid mag, zolang tekst selecteerbaar en scanbaar blijft.',
+                            secondary: 'Een rustige eenkolomsopmaak is het veiligst voor portals en screening.',
+                        },
+                    ],
+                },
+                bullets: [
+                    'Lees de vacature en onderzoek de bedrijfstaal; niet elke startup wil een informeel CV en niet elk corporate bedrijf een stijve presentatie.',
+                    'Houd je loopbaanfeiten gelijk en wijzig vooral kopregel, profiel, volgorde en sterkste bullets.',
+                    'Link alleen naar een portfolio, case of GitHub als die link actuele en relevante bewijsvoering bevat.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/cv-tips/ats-vriendelijk-cv',
+                        label: 'Maak je CV ATS-vriendelijk',
+                        description: 'Houd je doelgroepgerichte bewijs leesbaar voor zowel software als recruiter.',
+                    },
+                    {
+                        href: '/cv-tips/cv-template-kiezen',
+                        label: 'Kies de juiste CV-template',
+                        description: 'Gebruik een rustige basis en voeg alleen visuele persoonlijkheid toe als de context dat ondersteunt.',
+                    },
+                ],
+            },
+            {
+                id: 'cv-length',
+                title: '1 of 2 pagina’s op een CV in Nederland?',
+                paragraphs: [
+                    'Werkgevers hebben geen universele voorkeur. Nederlandse loopbaanbegeleiding behandelt één tot twee pagina’s als normaal. De beste regel is: gebruik de kortste versie die alle relevante bewijs voor deze vacature bewaart.',
+                    'Kies één pagina voor studenten, starters en kandidaten met een beperkte maar duidelijke relevante geschiedenis. Twee pagina’s zijn logisch wanneer pagina twee relevante functies, projecten, certificaten, technische diepgang of leiderschap toevoegt. Schrap sterke bewijzen niet alleen om een willekeurige paginagrens te halen.',
+                    'Pagina één moet zelfstandig overtuigen met doelrol, profiel, recente resultaten, vaardigheden en talen. Pagina twee moet het verhaal verdiepen en geen opvulling of irrelevante oude details bevatten. Bestaat pagina twee uit slechts enkele regels, bewerk dan terug naar één pagina.',
+                ],
+                comparisonTable: {
+                    columns: ['Situatie', 'Eén pagina is meestal genoeg', 'Twee pagina’s zijn logisch'],
+                    rows: [
+                        {
+                            label: 'Student of starter',
+                            primary: 'Opleiding, projecten, stages en relevante bijbaan.',
+                            secondary: 'Meerdere substantiële projecten of stages vragen om extra bewijsruimte.',
+                        },
+                        {
+                            label: 'Junior',
+                            primary: 'Een duidelijke doelrol met enkele relevante functies.',
+                            secondary: 'Meerdere direct relevante functies of een carrièreswitch vraagt context.',
+                        },
+                        {
+                            label: 'Medior of senior',
+                            primary: 'Een smalle specialisatie of korte loopbaan met weinig herhaling.',
+                            secondary: 'Relevante leiding, schaal, certificaten, projecten of domeindiepte.',
+                        },
+                    ],
+                },
+                bullets: [
+                    'Schrap eerst irrelevante details, herhaalde taken en oude functies met weinig waarde.',
+                    'Maak het lettertype niet kleiner dan prettig leesbaar om één pagina af te dwingen.',
+                    'Laat de vacature bepalen welk bewijs ruimte verdient; relevantie is belangrijker dan een vaste regel.',
+                ],
+            },
+            {
+                id: 'creative-templates',
+                title: 'Zijn creatieve CV-templates geaccepteerd in Nederland?',
+                paragraphs: [
+                    'Soms, maar creatief betekent niet automatisch decoratief. Voor design-, branding- en contentfuncties kan een beheerste visuele identiteit helpen, vooral bij een directe menselijke beoordeling. Je portfolio en relevante werk blijven het belangrijkste bewijs.',
+                    'Voor corporate portals, bureaus, gereguleerde werkgevers en internationale bedrijven met ATS is een eenvoudige eenkolomsversie veiliger. Afbeeldingen, tekst als plaatje, complexe tabellen, tekstvakken, kop- en voetteksten of meerdere kolommen kunnen het uitlezen bemoeilijken.',
+                    'Bewaar daarom een ATS-veilige masterversie en maak alleen een terughoudende visuele variant als de werkgever of context daar ruimte voor geeft. Skillbars, sterren en grafieken vervangen geen concreet bewijs.',
+                ],
+                bullets: [
+                    'Gebruik typografie, witruimte en maximaal één accentkleur voor persoonlijkheid zonder inhoud te verstoppen.',
+                    'Zet naam, contactgegevens, datums, koppen en functietitels als normale selecteerbare tekst.',
+                    'Zet bij creatieve functies portfolio en relevante resultaten boven decoratieve elementen.',
+                    'Volg de instructies van het sollicitatieportal en kies bij twijfel de rustigere versie.',
+                ],
+            },
+            {
+                id: 'graduate-without-experience',
+                title: 'Hoe maak je als starter een sterk CV zonder veel werkervaring?',
+                paragraphs: [
+                    'Bied geen excuses aan voor beperkte ervaring. Bouw je CV rond bewijs dat je iets hebt uitgevoerd: stages, studie- of eigen projecten, scriptie, bijbanen, vrijwilligerswerk, commissies, competities, freelance werk, open source of relevante vakken.',
+                    'Zet opleiding, afstudeerdatum en beschikbaarheid hoog wanneer die informatie helpt. Beschrijf per project wat je deed, welke tool of methode je gebruikte, wat de omvang was en wat je opleverde. Gebruik echte resultaten en verzin geen bedrijfsmetrics.',
+                    'Een gerichte CV van één pagina is meestal een goed startpunt. Vervang een algemeen studentenprofiel door doelrol, relevante tools, taalniveau en twee of drie bewijsbullets. Een bijbaan telt mee als je betrouwbaarheid, klantcontact, planning of teamwork laat zien.',
+                ],
+                exampleTitle: 'Voorbeelden voor een starter-CV',
+                exampleItems: [
+                    'Studieproject: Een churnanalyse in Python gebouwd op een cursusdataset en drie retentieadviezen aan een projectteam van vijf studenten gepresenteerd.',
+                    'Bijbaan: Zes nieuwe collega’s ingewerkt op openings- en sluitprocedures tijdens drukke weekenddiensten.',
+                    'Studievereniging: Werkgeversbijeenkomsten georganiseerd en sprekers, promotie en logistiek op de dag zelf gecoördineerd.',
+                ],
+                bullets: [
+                    'Gebruik Projecten of Relevante ervaring als formele werkervaring beperkt is.',
+                    'Noem alleen vaardigheden die je in een opdracht of gesprek kunt demonstreren; laat tools in projectbullets terugkomen.',
+                    'Voeg alleen een directe portfolio-, GitHub- of LinkedIn-link toe als er relevant afgerond werk op staat.',
+                    'Houd irrelevante vakken en schooldetails kort en geef ruimte aan bewijs en beschikbaarheid.',
+                ],
+            },
+        ],
         faq: [
             {
                 question: 'Mag ik volledig in het Engels solliciteren in Nederland?',
@@ -414,6 +540,22 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
             {
                 question: 'Wat is de meest gemaakte fout van expats op CV?',
                 answer: 'Te generieke, lange summaries zonder lokale context. Korte, resultaatgerichte formulering werkt beter in de Nederlandse markt.',
+            },
+            {
+                question: 'Hoe stem ik mijn CV af op een Nederlandse startup versus corporate werkgever?',
+                answer: 'Leg bij startups de nadruk op eigenaarschap, breedte, experimenten en klant- of productimpact. Leg bij corporate functies de nadruk op schaal, stakeholders, processen, governance, risico en KPI’s. Houd je feiten gelijk en pas vooral profiel en sterkste bullets aan.',
+            },
+            {
+                question: 'Hebben werkgevers in Nederland liever een CV van één of twee pagina’s?',
+                answer: 'Er is geen vaste voorkeur. Eén gerichte pagina past meestal bij starters; twee pagina’s zijn prima als de tweede pagina relevante ervaring, projecten of certificaten toevoegt en geen opvulling bevat.',
+            },
+            {
+                question: 'Zijn creatieve CV-templates geaccepteerd in Nederland?',
+                answer: 'Soms, vooral bij creatieve functies of directe menselijke beoordeling. Gebruik voor portals en ATS een rustige eenkolomsversie met selecteerbare tekst en laat je portfolio de creativiteit bewijzen.',
+            },
+            {
+                question: 'Hoe maak ik als pas afgestudeerde een sterk CV zonder veel ervaring?',
+                answer: 'Gebruik stages, studie- en eigen projecten, scriptie, bijbanen, vrijwilligerswerk en commissies als bewijs. Beschrijf je actie, tools en resultaat, zet opleiding en beschikbaarheid duidelijk neer en houd de CV gericht op één pagina.',
             },
         ],
     },
@@ -2118,7 +2260,33 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                 href: 'https://support.greenhouse.io/hc/en-us/articles/200989175-Unsuccessful-resume-parse',
                 note: 'Official ATS support page listing parsing risks such as graphics, photos, image files, complex tables, headers, footers, text boxes, columns and unclear sections. Checked May 2026.',
             },
+            {
+                label: 'StartupAmsterdam: Advice from Amsterdam startup recruiters',
+                href: 'https://www.iamsterdam.com/en/business/startupamsterdam/insights-interviews/8-tips-for-getting-your-dream-job-at-a-startup',
+                note: 'Recruiter guidance on targeting the right startup, researching the company, showing relevance and keeping the CV concise. Checked August 2026.',
+            },
+            {
+                label: 'Delft Career Days: How do I write a perfect CV?',
+                href: 'https://dcd.tudelft.nl/en/blog/how-do-i-write-a-perfect-cv/',
+                note: 'Dutch university career guidance on the one- versus two-page decision, reverse chronology, quantification and readable layout. Checked August 2026.',
+            },
+            {
+                label: 'Leiden International Centre: Update your CV for the Dutch job market',
+                href: 'https://www.leideninternationalcentre.nl/get-advice/blogs/how-to-update-your-cv-for-the-dutch-job-market-without-overcomplicating-it',
+                note: 'Netherlands-focused guidance on relevance, tailoring, achievement bullets and the normal one- to two-page range. Checked August 2026.',
+            },
+            {
+                label: 'WorkBlok: What recruiters want to see in 2026',
+                href: 'https://www.workblok.nl/en/blog/cv-dat-opvalt-in-2026',
+                note: 'Dutch CV guidance that emphasizes calm presentation, relevance and fast recruiter comprehension over decorative design. Checked August 2026.',
+            },
+            {
+                label: 'GradGuide: How to write a Dutch CV for graduates',
+                href: 'https://www.gradguide.nl/en/blog/how-to-write-a-cv',
+                note: 'Recent Netherlands-specific graduate guidance on concise structure, projects, internships, ATS readability and direct evidence. Checked August 2026.',
+            },
         ],
+        dateModified: '2026-08-15',
         sectionOverrides: {
             'recruiter-scan': {
                 title: 'What Dutch recruiters expect from an English CV',
@@ -2235,13 +2403,175 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                 ],
             },
         },
+        additionalSections: [
+            {
+                id: 'startup-vs-corporate',
+                title: 'How to tailor your CV for Dutch startup and corporate roles',
+                paragraphs: [
+                    'There is no separate startup CV or corporate CV format. Keep a clear Dutch-market base and change the evidence you foreground for the environment, the vacancy and the hiring audience.',
+                    'For startups and scale-ups, show ownership in changing conditions: what you built, launched, tested, learned or improved; how you worked across functions; and how close you were to customers or the product. Use terms such as ownership, experimentation, go-to-market or 0-to-1 only when they describe real work.',
+                    'For corporate roles, show scale and dependable execution: scope, stakeholders, process improvement, risk or compliance, budgets, systems and repeatable KPIs. Make formal certifications, languages and the size or complexity of your responsibilities easy to find when they matter.',
+                    'Tailor the first half page, not your facts. A startup version may lead with hands-on ownership and breadth; a corporate version may lead with scale, controls and stakeholder delivery. Both should remain concise, honest and ATS-readable.',
+                ],
+                comparisonTable: {
+                    columns: ['What to foreground', 'Startup or scale-up', 'Corporate or enterprise'],
+                    rows: [
+                        {
+                            label: 'Profile',
+                            primary: 'Hands-on ownership, adaptability and customer or product proximity.',
+                            secondary: 'Role scope, dependable delivery, stakeholders and domain depth.',
+                        },
+                        {
+                            label: 'Experience bullets',
+                            primary: 'Built, launched, tested or improved; cross-functional work and learning speed.',
+                            secondary: 'Managed, delivered or standardised; scale, governance, risk and measurable KPIs.',
+                        },
+                        {
+                            label: 'Proof',
+                            primary: 'Experiments, adoption, activation, cycle time, customer feedback or revenue impact.',
+                            secondary: 'Budget, volume, SLA, savings, quality, compliance or operational reliability.',
+                        },
+                        {
+                            label: 'Presentation',
+                            primary: 'A little more personality is fine, but keep text selectable and easy to scan.',
+                            secondary: 'A conservative one-column layout is safest for portals and structured screening.',
+                        },
+                    ],
+                },
+                bullets: [
+                    'Read the company stage and job description; do not assume every startup wants a casual CV or every corporate employer wants a stiff one.',
+                    'Keep the same factual career history and change the order, headline, profile and strongest bullets for the role.',
+                    'Link to a portfolio, product case study or GitHub only when it proves the role fit and the link is current.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/en/guides/netherlands-cv-keywords-ats',
+                        label: 'Match your CV to the vacancy language',
+                        description: 'Use the role description to decide which startup or corporate signals deserve the most space.',
+                    },
+                    {
+                        href: '/en/ats-resume-netherlands',
+                        label: 'Check the ATS-safe version before uploading',
+                        description: 'Keep the evidence tailored without letting the visual treatment hide or break core text.',
+                    },
+                ],
+            },
+            {
+                id: 'cv-length',
+                title: 'One-page or two-page CVs in the Netherlands?',
+                paragraphs: [
+                    'Employers do not have one universal page preference. Netherlands-focused guidance commonly treats one to two pages as normal; the better rule is the shortest document that preserves the evidence needed for this role.',
+                    'Choose one page for students, graduates, early-career candidates or a focused career change with limited relevant history. Choose two pages when the second page adds relevant roles, projects, certifications, technical scope, publications or leadership evidence. Mid-career and senior candidates should not delete useful proof just to meet an arbitrary one-page rule.',
+                    'Make page one self-sufficient: target role, profile, strongest recent evidence, skills and languages should be visible without requiring the recruiter to continue. Page two should extend the case, not contain filler or unrelated early history. If it contains only a few lines, edit back to one page.',
+                ],
+                comparisonTable: {
+                    columns: ['Profile or situation', 'One page is usually enough', 'Two pages are justified'],
+                    rows: [
+                        {
+                            label: 'Student or graduate',
+                            primary: 'Education, projects, internships and relevant part-time work.',
+                            secondary: 'Several substantial projects or internships need room for proof.',
+                        },
+                        {
+                            label: 'Early career',
+                            primary: 'A focused target and a few directly relevant roles.',
+                            secondary: 'Several relevant roles or career-change evidence need context.',
+                        },
+                        {
+                            label: 'Mid or senior',
+                            primary: 'A narrow niche or shorter career history with little repetition.',
+                            secondary: 'Relevant leadership, scale, certifications, projects or domain depth.',
+                        },
+                        {
+                            label: 'Any profile',
+                            primary: 'The second page would repeat tasks or add filler.',
+                            secondary: 'Removing content would hide proof that matches the vacancy.',
+                        },
+                    ],
+                },
+                bullets: [
+                    'Cut unrelated details, repeated responsibilities and old low-value entries before cutting recent achievements.',
+                    'Do not shrink the font or spacing until the document becomes difficult to scan.',
+                    'Use the vacancy to decide what earns space: relevance matters more than a page-count rule.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/en/guides/one-page-cv-netherlands',
+                        label: 'Use the one-page decision guide',
+                        description: 'See what to cut first and how to keep a focused one-page version evidence-led.',
+                    },
+                ],
+            },
+            {
+                id: 'creative-templates',
+                title: 'Are creative CV templates accepted by employers in the Netherlands?',
+                paragraphs: [
+                    'Sometimes, but creative does not mean decorative. For design, branding, content or other visually led roles—and for a direct, human-reviewed application—a restrained visual identity can help. The portfolio and relevant work remain the main proof.',
+                    'For corporate portals, agencies, regulated employers and international companies using ATS, use a simple one-column master CV. Graphics, photos, image-based text, complex tables, text boxes, headers, footers or multi-column layouts can reduce parsing reliability, so essential information should remain selectable text.',
+                    'A practical approach is to keep two versions from the same factual content: an ATS-safe upload version and a restrained visual version only when the employer or context invites it. Do not use skill bars, star ratings or charts as substitutes for evidence.',
+                ],
+                bullets: [
+                    'Use typography, spacing and one accent colour to create personality without hiding content.',
+                    'Keep your name, contact details, dates, headings and job titles in normal text.',
+                    'For creative jobs, place the portfolio link and two or three relevant case-study outcomes above decorative elements.',
+                    'When the job portal specifies a format or does not invite creative material, follow the instruction and choose the safer version.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/en/ats-resume-netherlands',
+                        label: 'Build an ATS-friendly Netherlands CV',
+                        description: 'Use a content-first version for portals and employers where parsing reliability matters.',
+                    },
+                    {
+                        href: '/en/templates',
+                        label: 'Browse restrained CV templates',
+                        description: 'Choose visual hierarchy and personality without sacrificing recruiter scanability.',
+                    },
+                ],
+            },
+            {
+                id: 'graduate-without-experience',
+                title: 'How can graduates create a strong CV without much experience?',
+                paragraphs: [
+                    'Do not apologise for limited experience. Build the CV around evidence of doing: internships, university or personal projects, thesis work, part-time jobs, volunteering, societies, competitions, freelance work, open-source contributions or relevant coursework. The question is what you owned and delivered, not whether it happened inside a large employer.',
+                    'Put education, graduation date and availability near the top when they help. For every project, show the action, tool or method, scope and outcome. Use real outcomes such as a working prototype, users, dataset size, deadline, grade when strong, presentation or feedback; never invent business metrics.',
+                    'A focused one-page CV is usually the right starting point. Replace a generic student profile with a target role, relevant tools, language level and two or three evidence bullets. Part-time work counts when you show reliability, customer contact, planning or teamwork instead of calling it unrelated.',
+                ],
+                exampleTitle: 'Graduate bullet examples',
+                exampleItems: [
+                    'University project: Built a Python churn analysis from a course dataset and presented three retention recommendations to a five-person project team.',
+                    'Part-time work: Trained six new colleagues on opening and closing procedures while maintaining service during weekend peaks.',
+                    'Student society: Organised employer events for fellow students and coordinated speakers, promotion and on-the-day logistics.',
+                ],
+                bullets: [
+                    'Use a Projects or Relevant Experience section if formal employment is limited.',
+                    'List only skills you can demonstrate in a task or interview; show tools inside project bullets.',
+                    'Add a direct portfolio, GitHub or LinkedIn link only when it contains relevant, finished work.',
+                    'Keep unrelated coursework and school details brief; give space to evidence and availability.',
+                ],
+                intentLinks: [
+                    {
+                        href: '/en/guides/cv-for-international-students-netherlands',
+                        label: 'Read the international student and graduate guide',
+                        description: 'Turn projects, internships and part-time work into stronger early-career evidence.',
+                    },
+                    {
+                        href: '/en/dutch-cv-template',
+                        label: 'Start a Dutch-market CV in English',
+                        description: 'Use a clear structure that gives education and practical evidence the right priority.',
+                    },
+                ],
+            },
+        ],
         checklist: [
             'The first half page shows target role, city or relocation context, language level and strongest proof.',
             'Experience is reverse-chronological and recent roles contain evidence bullets, not only task lists.',
             'The CV is tailored to one vacancy and uses relevant vacancy terms naturally.',
+            'The headline, profile and top bullets reflect the company context: startup ownership or corporate scale and reliability.',
             'Dutch and English language levels are explicit and honest.',
             'Work authorization or sponsorship context is included only when it reduces uncertainty.',
             'Layout uses real text, clear headings and one-column structure for ATS readability.',
+            'Graduates use projects, internships, part-time work or volunteering as evidence instead of apologising for limited experience.',
             'The CV is exported as a clean PDF with a professional file name.',
         ],
         faq: [
@@ -2262,12 +2592,24 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
                 answer: 'Usually it is optional. If the vacancy does not request a photo, prioritize a clean content-first layout. Add a photo only if it is professional and does not hurt ATS readability or page-one clarity.',
             },
             {
-                question: 'How long should a Netherlands CV be?',
-                answer: 'One page is enough for starters and many early-career applicants. Two pages are fine when the extra content is relevant to the vacancy and still easy to scan.',
+                question: 'Do employers in the Netherlands prefer one-page or two-page CVs?',
+                answer: 'There is no universal preference. One focused page is usually enough for students, graduates and early-career applicants; two pages are acceptable when the second page adds relevant evidence and remains easy to scan.',
             },
             {
                 question: 'Is a Netherlands resume the same as a Dutch CV?',
                 answer: 'Usually yes. Resume is common English wording, while CV is the term used most often in the Netherlands. The important choice is the local structure: clear role focus, recent experience first, language levels and ATS-safe formatting.',
+            },
+            {
+                question: 'How do I tailor my CV for Dutch startup jobs versus corporate roles?',
+                answer: 'For startups, foreground ownership, breadth, experimentation and customer or product impact. For corporate roles, foreground scale, stakeholders, process, governance, risk and repeatable KPIs. Keep the same factual history and tailor the headline, profile and strongest bullets to the vacancy.',
+            },
+            {
+                question: 'Are creative CV templates accepted by employers in the Netherlands?',
+                answer: 'Sometimes, especially for visually led roles or direct human-reviewed applications. For corporate portals, agencies and ATS-heavy hiring, use a clean one-column version with selectable text; let your portfolio demonstrate creativity instead of relying on decorative graphics.',
+            },
+            {
+                question: 'How can recent graduates create a strong CV without much experience?',
+                answer: 'Use education, internships, projects, thesis work, part-time jobs, volunteering and societies as evidence. Show what you did, which tools you used and what you delivered, then keep the CV focused on one page with a clear target role and availability.',
             },
         ],
         relatedLinks: [
@@ -2883,6 +3225,14 @@ function applyGuideOverride(page: SeoGuidePage, override?: GuideOverride): SeoGu
         });
     }
 
+    if (override.additionalSections?.length) {
+        const existingSectionIds = new Set(next.sections.map((section) => section.id));
+        next.sections = [
+            ...next.sections,
+            ...override.additionalSections.filter((section) => !existingSectionIds.has(section.id)),
+        ];
+    }
+
     return next;
 }
 
@@ -3077,9 +3427,14 @@ function getEnglishRelatedLinks(seed: EnglishSeed): SeoGuidePage['relatedLinks']
                 description: 'Once format is right, layer in vacancy language and ATS-safe wording.',
             },
             {
-                href: '/en/guides/one-page-cv-netherlands',
-                title: 'One-page CV in the Netherlands',
-                description: 'Decide how much experience to keep once your structure is fixed.',
+                href: '/en/guides/startup-vs-corporate-cv-netherlands',
+                title: 'Startup versus corporate CV',
+                description: 'Choose the evidence and emphasis that fit the employer context.',
+            },
+            {
+                href: '/en/guides/creative-cv-templates-netherlands',
+                title: 'Creative CV templates',
+                description: 'Decide when restrained visual branding is appropriate for the application route.',
             },
         ],
         'netherlands-cv-without-dutch-language': [
@@ -3149,6 +3504,11 @@ function getEnglishRelatedLinks(seed: EnglishSeed): SeoGuidePage['relatedLinks']
                 title: 'ATS keyword guide',
                 description: 'Translate coursework, tools, and project work into the vacancy language.',
             },
+            {
+                href: '/en/guides/recent-graduate-cv-netherlands',
+                title: 'Recent graduate CV',
+                description: 'Use the differentiated route when you have graduated and need an evidence-led starter CV.',
+            },
         ],
         'netherlands-cv-keywords-ats': [
             {
@@ -3204,7 +3564,7 @@ function getEnglishRelatedLinks(seed: EnglishSeed): SeoGuidePage['relatedLinks']
     };
 
     const selected = contextualLinks[seed.slug] ?? defaultLinks;
-    return selected.filter((link) => !link.href.endsWith(`/${seed.slug}`)).slice(0, 3);
+    return selected.filter((link) => !link.href.endsWith(`/${seed.slug}`)).slice(0, 4);
 }
 
 function toDutchGuide(seed: DutchSeed): SeoGuidePage {
@@ -6700,7 +7060,10 @@ const dutchWavePages = mergeUniqueGuidePages(
     extraDutchEditorialPages,
     getPilotRoleGuidePages()
 );
-const englishWavePages = englishSeeds.map(toEnglishGuide);
+const englishWavePages = mergeUniqueGuidePages(
+    englishQuestionGuides,
+    englishSeeds.map(toEnglishGuide),
+);
 
 const dutchMap = new Map(dutchWavePages.map((page) => [page.slug, page]));
 const englishMap = new Map(englishWavePages.map((page) => [page.slug, page]));

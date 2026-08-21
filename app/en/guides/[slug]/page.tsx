@@ -39,14 +39,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             canonical: `https://werkcv.nl${path}`,
             ...(languageAlternates ? { languages: languageAlternates } : {}),
         },
-        openGraph: {
-            title: metaTitle,
-            description: metaDesc,
-            type: 'article',
-            siteName: 'WerkCV',
-            locale: 'en_NL',
-            url: `https://werkcv.nl${path}`,
-            images: [
+            openGraph: {
+                title: metaTitle,
+                description: metaDesc,
+                type: 'article',
+                siteName: 'WerkCV',
+                locale: 'en_NL',
+                url: `https://werkcv.nl${path}`,
+                ...(page.datePublished ? { publishedTime: page.datePublished } : {}),
+                ...(page.dateModified ? { modifiedTime: page.dateModified } : {}),
+                images: [
                 {
                     url: imageUrl,
                     width: 1200,
@@ -98,6 +100,7 @@ export default async function EnglishWavePage({ params }: PageProps) {
             url: 'https://werkcv.nl',
         },
         publisher: { '@id': 'https://werkcv.nl/#organization' },
+        ...(page.datePublished ? { datePublished: page.datePublished } : {}),
         ...(page.dateModified ? { dateModified: page.dateModified } : {}),
     };
     const faqJsonLd = page.faq.length
@@ -121,7 +124,6 @@ export default async function EnglishWavePage({ params }: PageProps) {
         { label: 'Expat CV Guides', href: '/en/guides' },
         { label: page.title, href: `/en/guides/${page.slug}` },
     ];
-
     return (
         <main className="min-h-screen bg-[#FFFEF9] pb-20 md:pb-0">
             <script
@@ -222,6 +224,28 @@ export default async function EnglishWavePage({ params }: PageProps) {
                                             </li>
                                         ))}
                                     </ul>
+                                )}
+                                {section.comparisonTable && (
+                                    <div className="mt-5 overflow-x-auto border-3 border-black bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                                        <table className="w-full min-w-[720px] border-collapse text-left text-sm">
+                                            <thead className="bg-black text-white">
+                                                <tr>
+                                                    {section.comparisonTable.columns.map((column) => (
+                                                        <th key={column} className="p-3 font-black">{column}</th>
+                                                    ))}
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {section.comparisonTable.rows.map((row) => (
+                                                    <tr key={row.label} className="border-t border-slate-200 align-top">
+                                                        <th className="p-3 font-black text-gray-900">{row.label}</th>
+                                                        <td className="p-3 leading-relaxed text-gray-700">{row.primary}</td>
+                                                        <td className="p-3 leading-relaxed text-gray-700">{row.secondary}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 )}
                                 {section.exampleTitle && section.exampleItems && section.exampleItems.length > 0 && (
                                     <div className="mt-4 bg-white border-3 border-black p-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">

@@ -3,17 +3,12 @@ import { getCurrentUserFromRequest } from "@/lib/auth";
 import {
   AgencyAccessError,
   approveAgencyMatchPackForUser,
-  canEditAgency,
+  canApproveAgencyWork,
   getAgencyAccessForUser,
   isAgencyAccessError,
 } from "@/lib/agency-access";
-import {
-  createDefaultMatchPackSubmission,
-  parseStoredMatchPackAnalysis,
-  parseStoredMatchPackData,
-  parseStoredMatchPackSubmission,
-} from "@/lib/agency-matchpack";
-import { prisma } from "@/lib/prisma";
+import { matchPackApprovalRequestSchema, MatchPackReviewError } from "@/lib/agency-matchpack-review";
+import { MatchPackOutputError } from "@/lib/agency-output-projection";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
 import { isAllowedSameOriginRequest } from "@/lib/request-origin";
 
@@ -28,9 +23,10 @@ function json(body: Record<string, unknown>, status = 200) {
 
 function accessErrorResponse(error: AgencyAccessError) {
   const messages: Record<string, string> = {
-    AGENCY_QUOTA_REACHED: "The 50-CV monthly limit has been reached.",
+    AGENCY_QUOTA_REACHED: "The shared 50-slot allowance has been reached.",
     AGENCY_PERIOD_UNAVAILABLE: "The current billing period is not ready yet.",
     AGENCY_SUBSCRIPTION_INACTIVE: "An active Agency Plan is required to approve this MatchPack.",
+    RETENTION_POLICY_REQUIRED: "Choose and confirm the Agency retention period before approving this MatchPack.",
   };
   return json({ error: messages[error.code] || "The agency plan could not approve this MatchPack.", code: error.code }, 409);
 }
@@ -48,7 +44,7 @@ export async function POST(
 
   const access = await getAgencyAccessForUser(user.id);
   if (access.state !== "active") return json({ error: "An active Agency Plan is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
-  if (!canEditAgency(access)) return json({ error: "Your agency role cannot approve proposals.", code: "ROLE_READ_ONLY" }, 403);
+  if (!canApproveAgencyWork(access)) return json({ error: "Your agency role cannot approve proposals.", code: "ROLE_FORBIDDEN" }, 403);
 
   const rateLimit = checkRateLimit(`${user.id}:${getClientIp(request).slice(0, 120)}`, {
     bucket: "agency-matchpack-approve",
@@ -59,67 +55,23 @@ export async function POST(
 
   const { id: rawId } = await context.params;
   const id = rawId.trim().slice(0, 120);
-  const pack = await prisma.agencyMatchPack.findFirst({
-    where: { id, userId: access.ownerUserId || user.id },
-    select: {
-      id: true,
-      title: true,
-      candidateData: true,
-      submissionData: true,
-      analysis: true,
-      vacancyTitle: true,
-      locale: true,
-      templateId: true,
-      colorThemeId: true,
-      outcomeData: true,
-      status: true,
-      cvDocumentId: true,
-    },
-  });
-  if (!pack) return json({ error: "MatchPack not found.", code: "NOT_FOUND" }, 404);
-  if (pack.status === "approved" && pack.cvDocumentId) {
-    return json({ success: true, cvId: pack.cvDocumentId, reused: true });
-  }
-  if (pack.status !== "analyzed") {
-    return json({ error: "This MatchPack cannot be approved again.", code: "PACK_LOCKED" }, 409);
-  }
-
-  let data;
-  try {
-    data = parseStoredMatchPackData(pack.candidateData);
-    const analysis = parseStoredMatchPackAnalysis(pack.analysis);
-    if (pack.submissionData) {
-      parseStoredMatchPackSubmission(pack.submissionData);
-    } else {
-      createDefaultMatchPackSubmission(
-        data,
-        analysis.result,
-        pack.vacancyTitle || "",
-        pack.locale === "en" ? "en" : "nl",
-      );
-    }
-  } catch {
-    return json({ error: "This MatchPack has invalid submission data.", code: "INVALID_PACK" }, 500);
+  const payload = matchPackApprovalRequestSchema.safeParse(await request.json().catch(() => null));
+  if (!payload.success) {
+    return json({
+      error: "Complete all approval confirmations and reload if this draft has changed.",
+      code: "APPROVAL_CONFIRMATION_REQUIRED",
+    }, 400);
   }
 
   try {
-    const payload = await request.json().catch(() => null) as {
-      reviewDurationSeconds?: number | null;
-      uploadToApprovalSeconds?: number | null;
-      correctionsCount?: number;
-      unsupportedClaimsCaught?: number;
-    } | null;
-    const metrics = {
-      reviewDurationSeconds: typeof payload?.reviewDurationSeconds === "number" ? Math.min(86_400, Math.max(0, Math.round(payload.reviewDurationSeconds))) : null,
-      uploadToApprovalSeconds: typeof payload?.uploadToApprovalSeconds === "number" ? Math.min(86_400, Math.max(0, Math.round(payload.uploadToApprovalSeconds))) : null,
-      correctionsCount: typeof payload?.correctionsCount === "number" ? Math.min(500, Math.max(0, Math.round(payload.correctionsCount))) : 0,
-      unsupportedClaimsCaught: typeof payload?.unsupportedClaimsCaught === "number" ? Math.min(100, Math.max(0, Math.round(payload.unsupportedClaimsCaught))) : 0,
-    };
     const result = await approveAgencyMatchPackForUser({
       userId: access.ownerUserId || user.id,
-      matchPackId: pack.id,
+      matchPackId: id,
       approvedById: user.id,
-      metrics,
+      expectedUpdatedAt: new Date(payload.data.expectedUpdatedAt),
+      expectedRevisionVersion: payload.data.expectedRevisionVersion,
+      selectedVariant: payload.data.selectedVariant,
+      confirmations: payload.data.confirmations,
     });
     const updatedAccess = await getAgencyAccessForUser(user.id);
 
@@ -127,6 +79,7 @@ export async function POST(
       success: true,
       cvId: result.cv.id,
       reused: result.reused,
+      retentionExpiresAt: result.retentionExpiresAt,
       quota: {
         used: updatedAccess.used,
         allowance: updatedAccess.period?.allowance || 50,
@@ -135,15 +88,23 @@ export async function POST(
     });
   } catch (error) {
     if (isAgencyAccessError(error)) return accessErrorResponse(error);
+    if (error instanceof MatchPackReviewError) return json({ error: error.message, code: error.code }, 409);
+    if (error instanceof MatchPackOutputError) return json({ error: error.message, code: error.code }, 409);
     if (error instanceof Error && error.message === "MATCH_PACK_NOT_FOUND") {
       return json({ error: "MatchPack not found.", code: "NOT_FOUND" }, 404);
     }
     if (error instanceof Error && error.message === "MATCH_PACK_ALREADY_APPROVED") {
       return json({ error: "This MatchPack was already approved.", code: "PACK_LOCKED" }, 409);
     }
+    if (error instanceof Error && error.message === "PACK_STALE") {
+      return json({ error: "This MatchPack changed. Reload it before approving.", code: "PACK_STALE" }, 409);
+    }
+    if (error instanceof Error && error.message === "EVIDENCE_UNRESOLVED") {
+      return json({ error: "The saved source cannot be verified. Review the source evidence again.", code: "EVIDENCE_UNRESOLVED" }, 409);
+    }
     console.error("agency_matchpack_approval_failed", {
       userId: user.id,
-      packId: pack.id,
+      packId: id,
       code: error instanceof Error ? error.name : "unknown",
     });
     return json({ error: "The MatchPack could not be approved.", code: "APPROVAL_FAILED" }, 500);

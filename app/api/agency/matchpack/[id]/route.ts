@@ -1,19 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { getCurrentUserFromRequest } from "@/lib/auth";
-import { canEditAgency, canCreateAgencyWork, getAgencyAccessForUser } from "@/lib/agency-access";
+import {
+  canEditAgencyDraft,
+  canDeleteAgencyDraft,
+  canDeleteApprovedAgencyWork,
+  getAgencyAccessForUser,
+} from "@/lib/agency-access";
 import {
   anonymizeCvData,
-  applyEvidenceReviews,
   createDefaultMatchPackSubmission,
   matchPackDraftUpdateSchema,
   parseStoredMatchPackAnalysis,
   parseStoredMatchPackData,
   parseStoredMatchPackSubmission,
 } from "@/lib/agency-matchpack";
+import { applyEvidenceReviews, MatchPackReviewError } from "@/lib/agency-matchpack-review";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
 import { isAllowedSameOriginRequest } from "@/lib/request-origin";
+import { calculateNewPackRetentionExpiry, deleteAgencyMatchPackContent } from "@/lib/agency-retention";
 
 export const runtime = "nodejs";
 
@@ -70,12 +76,14 @@ export async function GET(
       anonymizedData: true,
       analysis: true,
       submissionData: true,
-      outcomeData: true,
+      clientOutcome: true,
+      productFeedbackData: true,
       templateId: true,
       colorThemeId: true,
       status: true,
       cvDocumentId: true,
       approvedAt: true,
+      retentionExpiresAt: true,
       createdAt: true,
       updatedAt: true,
       revisions: {
@@ -113,6 +121,18 @@ export async function GET(
         ...pack,
         originalCandidateData: pack.originalCandidateData || pack.candidateData,
         submissionData,
+        outcomeData: {
+          status: pack.clientOutcome,
+          note: pack.productFeedbackData && typeof pack.productFeedbackData === "object" && !Array.isArray(pack.productFeedbackData)
+            ? String((pack.productFeedbackData as Record<string, unknown>).note || "")
+            : "",
+          issueCategory: pack.productFeedbackData && typeof pack.productFeedbackData === "object" && !Array.isArray(pack.productFeedbackData)
+            ? String(((pack.productFeedbackData as Record<string, unknown>).issueCategories as string[] | undefined)?.[0] || "other")
+            : "other",
+          sendability: pack.productFeedbackData && typeof pack.productFeedbackData === "object" && !Array.isArray(pack.productFeedbackData)
+            ? String((pack.productFeedbackData as Record<string, unknown>).sendability || "sent")
+            : "sent",
+        },
       },
     });
   } catch {
@@ -130,7 +150,10 @@ export async function PATCH(
 
   const result = await getAgencyUser(request);
   if ("response" in result) return result.response;
-  if (!canEditAgency(result.access)) return json({ error: "Your agency role is read-only.", code: "ROLE_READ_ONLY" }, 403);
+  if (!canEditAgencyDraft(result.access)) return json({ error: "Your agency role is read-only.", code: "ROLE_READ_ONLY" }, 403);
+  if (!result.access.subscription?.retentionPolicySetAt) {
+    return json({ error: "Choose and confirm the Agency retention period before saving.", code: "RETENTION_POLICY_REQUIRED" }, 409);
+  }
 
   const rateLimit = checkRateLimit(`${result.user.id}:${getClientIp(request).slice(0, 120)}`, {
     bucket: "agency-matchpack-update",
@@ -154,6 +177,8 @@ export async function PATCH(
       candidateData: true,
       submissionData: true,
       analysis: true,
+      sourceText: true,
+      sourceMap: true,
     },
   });
   if (!pack) return json({ error: "MatchPack not found.", code: "NOT_FOUND" }, 404);
@@ -180,7 +205,27 @@ export async function PATCH(
       pack.locale === "en" ? "en" : "nl",
     );
   const existingAnalysis = parseStoredMatchPackAnalysis(pack.analysis);
-  const updatedAnalysis = applyEvidenceReviews(existingAnalysis, payload.data.evidenceReviews, result.user.id);
+  if (!pack.sourceText || !pack.sourceMap) {
+    return json({
+      error: "This older MatchPack has no verifiable source record. Create a new MatchPack from the original CV.",
+      code: "EVIDENCE_UNRESOLVED",
+    }, 409);
+  }
+  let updatedAnalysis;
+  try {
+    updatedAnalysis = applyEvidenceReviews(
+      existingAnalysis,
+      payload.data.evidenceReviews,
+      result.user.id,
+      pack.sourceText,
+      pack.sourceMap,
+    );
+  } catch (error) {
+    if (error instanceof MatchPackReviewError) {
+      return json({ error: error.message, code: error.code }, 409);
+    }
+    throw error;
+  }
   const anonymized = anonymizeCvData(payload.data.candidateData, pack.locale === "en" ? "en" : "nl");
   const changedFields = [
     JSON.stringify(existingCandidate) !== JSON.stringify(payload.data.candidateData) ? "candidateData" : null,
@@ -189,6 +234,7 @@ export async function PATCH(
   ].filter((field): field is string => Boolean(field));
 
   const updated = await prisma.$transaction(async (tx) => {
+    const savedAt = new Date();
     const updateResult = await tx.agencyMatchPack.updateMany({
       where: { id: pack.id, userId: result.access.ownerUserId || result.user.id, status: "analyzed" },
       data: {
@@ -196,6 +242,8 @@ export async function PATCH(
         anonymizedData: anonymized.data as unknown as Prisma.InputJsonValue,
         submissionData: payload.data.submissionData as unknown as Prisma.InputJsonValue,
         analysis: updatedAnalysis as unknown as Prisma.InputJsonValue,
+        updatedAt: savedAt,
+        retentionExpiresAt: calculateNewPackRetentionExpiry(result.access.subscription!.retentionDays, savedAt),
       },
     });
     if (updateResult.count !== 1) {
@@ -266,7 +314,7 @@ export async function DELETE(
   if (!user) return json({ error: "Authentication required.", code: "AUTH_REQUIRED" }, 401);
   const access = await getAgencyAccessForUser(user.id);
   if (access.state !== "active") return json({ error: "An active Agency Plan is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
-  if (!canCreateAgencyWork(access)) return json({ error: "Your agency role cannot delete proposals.", code: "ROLE_READ_ONLY" }, 403);
+  if (!access.subscription || !access.ownerUserId) return json({ error: "An active Agency subscription is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
 
   const rateLimit = checkRateLimit(`${user.id}:${getClientIp(request).slice(0, 120)}`, {
     bucket: "agency-matchpack-delete",
@@ -278,16 +326,32 @@ export async function DELETE(
   const id = await getId(context.params);
   const pack = await prisma.agencyMatchPack.findFirst({
     where: { id, userId: access.ownerUserId || user.id },
-    select: { id: true, cvDocumentId: true },
+    select: { id: true, status: true, updatedAt: true, retentionExpiresAt: true },
   });
   if (!pack) return json({ error: "MatchPack not found.", code: "NOT_FOUND" }, 404);
-  if (pack.cvDocumentId) {
-    return json({
-      error: "Approved MatchPacks are locked because their CV is part of the agency record.",
-      code: "APPROVED_PACK_LOCKED",
-    }, 409);
+
+  const isApproved = pack.status === "approved";
+  if (isApproved && !canDeleteApprovedAgencyWork(access)) {
+    return json({ error: "Only the agency owner can delete an approved MatchPack.", code: "ROLE_FORBIDDEN" }, 403);
+  }
+  if (!isApproved && !canDeleteAgencyDraft(access)) {
+    return json({ error: "Your agency role cannot delete this draft.", code: "ROLE_FORBIDDEN" }, 403);
   }
 
-  await prisma.agencyMatchPack.delete({ where: { id: pack.id } });
-  return json({ success: true });
+  const body = await request.json().catch(() => null) as { confirmation?: string } | null;
+  if (isApproved && body?.confirmation !== "DELETE MATCHPACK") {
+    return json({ error: "Type DELETE MATCHPACK to confirm deleting the approved proposal and linked CV.", code: "CONFIRMATION_REQUIRED" }, 400);
+  }
+
+  const result = await deleteAgencyMatchPackContent({
+    matchPackId: pack.id,
+    ownerUserId: access.ownerUserId,
+    subscriptionId: access.subscription.id,
+    actorUserId: user.id,
+    reason: isApproved ? "approved_matchpack_deletion" : "draft_matchpack_deletion",
+    expectedUpdatedAt: pack.updatedAt,
+    expectedRetentionExpiresAt: pack.retentionExpiresAt,
+  });
+  if (!result) return json({ error: "This MatchPack changed while it was being deleted. Reload and try again.", code: "PACK_LOCKED" }, 409);
+  return json({ success: true, receipt: result });
 }

@@ -13,7 +13,7 @@ type PDFDocumentProxy = {
 };
 
 type PDFPageProxy = {
-    getTextContent(): Promise<{ items: Array<{ str?: string }> }>;
+    getTextContent(): Promise<{ items: Array<{ str?: string; hasEOL?: boolean }> }>;
 };
 
 type GetDocumentParams = {
@@ -149,6 +149,12 @@ export type CvParserOptions = {
     signal?: AbortSignal;
 };
 
+export type ExtractedCvText = {
+    text: string;
+    fileType: "pdf" | "docx";
+    pages: Array<{ pageNumber: number; text: string }>;
+};
+
 function enforceTextLimit(text: string, maxTextChars?: number): string {
     if (maxTextChars !== undefined && text.length > maxTextChars) {
         throw new Error('CV text is too long to process');
@@ -156,7 +162,25 @@ function enforceTextLimit(text: string, maxTextChars?: number): string {
     return text;
 }
 
-export async function extractTextFromPDF(buffer: Buffer, options: CvParserOptions = {}): Promise<string> {
+function textContentLines(items: Array<{ str?: string; hasEOL?: boolean }>): string[] {
+    const lines: string[] = [];
+    let current = "";
+    const flush = () => {
+        const line = current.replace(/\s+/g, " ").trim();
+        if (line) lines.push(line);
+        current = "";
+    };
+
+    for (const item of items) {
+        const value = (item.str || "").trim();
+        if (value) current = current ? `${current} ${value}` : value;
+        if (item.hasEOL) flush();
+    }
+    flush();
+    return lines;
+}
+
+export async function extractTextFromPDFWithPages(buffer: Buffer, options: CvParserOptions = {}): Promise<ExtractedCvText> {
     const pdfjsLib = await getPdfjs();
     const data = new Uint8Array(buffer);
     const pdf: PDFDocumentProxy = await pdfjsLib.getDocument({
@@ -170,24 +194,45 @@ export async function extractTextFromPDF(buffer: Buffer, options: CvParserOption
         throw new Error('PDF has too many pages to process');
     }
 
-    let text = '';
+    const pages: ExtractedCvText["pages"] = [];
+    let text = "";
     for (let i = 1; i <= pdf.numPages; i++) {
         if (options.signal?.aborted) throw new Error('CV parsing was cancelled');
         const page: PDFPageProxy = await pdf.getPage(i);
         const content = await page.getTextContent();
-        const pageText = content.items
-            .map((item) => (item.str || ''))
-            .join(' ');
-        text += pageText + '\n';
+        const pageText = textContentLines(content.items).join("\n");
+        pages.push({ pageNumber: i, text: pageText });
+        text += `${pageText}\n`;
         enforceTextLimit(text, options.maxTextChars);
     }
 
-    return text;
+    return { text, fileType: "pdf", pages };
+}
+
+export async function extractTextFromPDF(buffer: Buffer, options: CvParserOptions = {}): Promise<string> {
+    return (await extractTextFromPDFWithPages(buffer, options)).text;
 }
 
 export async function extractTextFromDOCX(buffer: Buffer, options: CvParserOptions = {}): Promise<string> {
     const result = await mammoth.extractRawText({ buffer });
     return enforceTextLimit(result.value, options.maxTextChars);
+}
+
+export async function extractTextFromFileWithPages(
+    buffer: Buffer,
+    filename: string,
+    options: CvParserOptions = {},
+): Promise<ExtractedCvText> {
+    const ext = filename.toLowerCase().split('.').pop();
+    if (ext === "pdf") return extractTextFromPDFWithPages(buffer, options);
+    if (ext === "docx" || ext === "doc") {
+        return {
+            text: await extractTextFromDOCX(buffer, options),
+            fileType: "docx",
+            pages: [],
+        };
+    }
+    throw new Error(`Unsupported file type: ${ext}`);
 }
 
 export async function extractTextFromFile(buffer: Buffer, filename: string, options: CvParserOptions = {}): Promise<string> {

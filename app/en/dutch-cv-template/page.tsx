@@ -14,6 +14,12 @@ export const metadata = buildEnglishMetadata({
     "dutch cv format template",
     "english cv netherlands",
     "netherlands resume template",
+    "netherlands resume",
+    "netherlands resume format",
+    "dutch resume format",
+    "dutch resume template",
+    "netherlands cv template free download",
+    "netherlands cv template",
     "netherlands resume download templates",
     "ats cv template netherlands",
     "expat cv template",
@@ -30,9 +36,9 @@ const steps = [
 
 const quickAnswerCards = [
   {
-    title: "Simple one-column layout",
+    title: "Netherlands resume format: simple one-column layout",
     body:
-      "A Dutch CV template usually works best when the structure is plain, easy to scan, and free of decorative blocks that hurt ATS readability.",
+      "A Netherlands resume format is usually the same practical document as a Dutch CV: plain, easy to scan, and free of decorative blocks that hurt ATS readability.",
   },
   {
     title: "Reverse-chronological work history",
@@ -135,6 +141,11 @@ const faqs = [
     answer:
       "Most profiles should stay within one to two pages, focused on relevant experience and results.",
   },
+  {
+    question: "Can I download a free Netherlands CV template?",
+    answer:
+      "You can compare templates and start building for free in WerkCV. The final PDF download is a one-time €4.99 including VAT, with no subscription or automatic renewal.",
+  },
 ];
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -202,6 +213,21 @@ export default function DutchCvTemplatePage() {
                 <p className="mt-2 text-sm leading-relaxed text-gray-700">{card.body}</p>
               </article>
             ))}
+          </div>
+        </div>
+
+        <div className="bg-[#FFF7E8] border-4 border-black p-6">
+          <h2 className="text-2xl font-black mb-3">Netherlands resume format and free template expectations</h2>
+          <p className="text-gray-700 max-w-3xl">
+            If you search for a Netherlands resume template or a Dutch resume format, you are usually looking for the same essentials: a clear target role, reverse-chronological experience, honest language levels, and a clean PDF that recruiters and ATS software can read. Start free, compare the layouts, and only pay once if you want to download the final PDF.
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3">
+            <Link href="/en/templates?startSource=en_dutch_cv_template_resume_format" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
+              Compare free templates
+            </Link>
+            <Link href="/en/editor?template=professional&startSource=en_dutch_cv_template_resume_format_editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+              Start the English CV
+            </Link>
           </div>
         </div>
 
@@ -289,6 +315,18 @@ export default function DutchCvTemplatePage() {
             <Link href="/en/pricing" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
               View pricing model
             </Link>
+          </div>
+        </div>
+
+        <div className="bg-white border-4 border-black p-6">
+          <h2 className="text-2xl font-black mb-3">Frequently asked questions about a Netherlands resume</h2>
+          <div className="divide-y-2 divide-slate-200">
+            {faqs.map((item) => (
+              <div key={item.question} className="py-4 first:pt-0 last:pb-0">
+                <h3 className="font-black text-black">{item.question}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-gray-700">{item.answer}</p>
+              </div>
+            ))}
           </div>
         </div>
 

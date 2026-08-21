@@ -44,6 +44,11 @@ const faqItems = [
     answer:
       "Tot €0,25 per kilometer in 2026 is de vergoeding belastingvrij. Komt je werkgever daarboven, dan is alleen het meerdere belastbaar.",
   },
+  {
+    question: "Vanaf hoeveel kilometer krijg ik reiskostenvergoeding?",
+    answer:
+      "Er is geen algemene wettelijke minimumafstand die iedere werkgever moet vergoeden. Of je reiskosten krijgt, tegen welk tarief en vanaf welke afstand staat meestal in je cao, contract of bedrijfsregeling. De €0,25 per kilometer is een maximaal onbelast bedrag in 2026, geen automatisch recht op betaling.",
+  },
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
@@ -61,6 +66,10 @@ export const metadata: Metadata = buildDutchMetadata({
     "woon werk kilometervergoeding berekenen",
     "ov vergoeding berekenen",
     "kilometervergoeding ov berekenen",
+    "reiskostenvergoeding 2026 vanaf hoeveel km",
+    "vanaf hoeveel km reiskostenvergoeding",
+    "km vergoeding berekenen",
+    "woon werk vergoeding berekenen",
   ],
 });
 
@@ -162,6 +171,26 @@ export default function KilometervergoedingBerekenenPage() {
           <p className="mt-3 text-xs leading-relaxed text-slate-600">
             Bron: Belastingdienst, update 25 juni 2026. De verhoging naar €0,25 geldt met terugwerkende kracht vanaf 1 januari 2026.
           </p>
+        </section>
+
+        <section className="mb-12 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">Reiskostenvergoeding 2026 vanaf hoeveel km?</p>
+          <h2 className="mt-2 text-2xl font-black text-slate-900">De afstand bepaalt niet automatisch je recht</h2>
+          <p className="mt-3 max-w-4xl text-sm leading-relaxed text-slate-700">
+            Voor een vergoeding van je werkgever bestaat geen algemene minimumafstand die voor iedereen geldt. Controleer daarom eerst je cao, contract of mobiliteitsregeling. De fiscale grens van €0,25 per kilometer in 2026 zegt hoeveel je werkgever maximaal onbelast kan vergoeden; het is niet hetzelfde als een verplichting om iedere kilometer te betalen.
+          </p>
+          <div className="mt-5 grid gap-4 md:grid-cols-3">
+            {[
+              ["Eigen vervoer", "Kilometers enkele reis × 2 × reisdagen × tarief."],
+              ["Openbaar vervoer", "Werkelijke OV-kosten of kilometers, afhankelijk van de regeling."],
+              ["OV-reisaftrek", "Een andere belastingregeling met eigen voorwaarden; verwar die niet met werkgeversvergoeding."],
+            ].map(([label, description]) => (
+              <div key={label} className="border-2 border-black bg-[#FFFEF0] p-4">
+                <h3 className="text-sm font-black text-slate-900">{label}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-700">{description}</p>
+              </div>
+            ))}
+          </div>
         </section>
 
         <section className="mb-12">
@@ -275,7 +304,7 @@ export default function KilometervergoedingBerekenenPage() {
             </li>
             <li>
               <a
-                href="https://www.rijksoverheid.nl/onderwerpen/inkomstenbelasting/vraag-en-antwoord/wat-is-de-maximale-kilometervergoeding-die-ik-van-mijn-werkgever-kan-ontvangen"
+                href="https://www.rijksoverheid.nl/vraag-en-antwoord/inkomstenbelasting/wat-is-de-maximale-kilometervergoeding-die-ik-van-mijn-werkgever-kan-ontvangen"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium text-teal-700 hover:underline"

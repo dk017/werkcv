@@ -567,10 +567,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.62,
         },
         {
+            url: `${baseUrl}/tools/kandidaatvoorstel-checker`,
+            lastModified: new Date('2026-08-20'),
+            changeFrequency: 'weekly',
+            priority: 0.78,
+        },
+        {
             url: `${baseUrl}/en`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.8,
+        },
+        {
+            url: `${baseUrl}/en/candidate-proposal-checker`,
+            lastModified: new Date('2026-08-20'),
+            changeFrequency: 'weekly',
+            priority: 0.75,
         },
         {
             url: `${baseUrl}/en/expat-cv-netherlands`,
@@ -811,6 +823,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date('2026-08-16'),
             changeFrequency: 'monthly',
             priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/voor-bureaus/kennisbank/matchpack-handleiding`,
+            lastModified: new Date('2026-08-20'),
+            changeFrequency: 'weekly',
+            priority: 0.78,
         },
         {
             url: `${baseUrl}/voor-bureaus/kennisbank/cv-in-huisstijl-recruitmentbureau`,

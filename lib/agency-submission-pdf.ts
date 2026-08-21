@@ -1,22 +1,14 @@
 import { buildHTML, generatePDFFromHTML } from "@/lib/pdf";
-import type { CVData } from "@/lib/cv";
-import type { MatchPackAnalysis, MatchPackLocale, MatchPackSubmission } from "@/lib/agency-matchpack";
-import { scrubAnonymizedText, scrubKnownCandidateName } from "@/lib/agency-matchpack";
+import type { ApprovedMatchPackOutput } from "@/lib/agency-output-projection";
 import { escapeHtml, nl2br } from "@/lib/templates/html/utils";
 import { getThemeForTemplate } from "@/lib/templates";
 import { templateRegistry } from "@/lib/templates/registry";
 
 type SubmissionPdfOptions = {
-  candidateData: CVData;
-  analysis: MatchPackAnalysis;
-  submission: MatchPackSubmission;
-  vacancyTitle: string;
-  locale: MatchPackLocale;
-  variant: "full" | "anonymized";
+  output: ApprovedMatchPackOutput;
   templateId: string;
   colorThemeId: string;
   companyName?: string | null;
-  sourceCandidateName: string;
 };
 
 function valueRow(label: string, value: string): string {
@@ -28,33 +20,24 @@ function valueRow(label: string, value: string): string {
 }
 
 function buildCoverPage(options: SubmissionPdfOptions): string {
-  const { submission, analysis, locale, variant } = options;
+  const { output } = options;
+  const { submission, locale } = output;
   const isEnglish = locale === "en";
   const theme = getThemeForTemplate(templateRegistry, options.templateId, options.colorThemeId);
-  const role = options.vacancyTitle.trim() || analysis.result.perceivedRole.trim() || options.candidateData.personal.title.trim();
-  const candidateName = variant === "anonymized"
+  const role = output.vacancyTitle.trim() || output.candidateData.personal.title.trim();
+  const candidateName = output.variant === "contact_free"
     ? (isEnglish ? "Candidate profile" : "Kandidaatprofiel")
-    : options.candidateData.personal.name.trim() || (isEnglish ? "Candidate" : "Kandidaat");
-  const safeText = (value: string) => variant === "anonymized"
-    ? scrubKnownCandidateName(
-      scrubAnonymizedText(value, locale),
-      options.sourceCandidateName,
-      locale,
-    )
-    : value;
-  const introduction = safeText(submission.clientIntroduction);
-  const strongEvidence = analysis.result.requirements
-    .filter((requirement) => requirement.status !== "missing" && requirement.cvEvidence.trim())
-    .slice(0, 4);
-  const openItems = analysis.result.requirements
-    .filter((requirement) => requirement.status !== "strong")
-    .slice(0, 3);
+    : output.candidateData.personal.name.trim() || (isEnglish ? "Candidate" : "Kandidaat");
+  const reviewedEvidence = output.evidence.slice(0, 4);
+  const openItems = output.openItems.slice(0, 3);
   const labels = isEnglish
     ? {
       eyebrow: "Candidate submission",
       forRole: "For the role",
       introduction: "Recruiter introduction",
-      evidence: "Evidence-backed fit",
+      evidence: "Reviewed evidence",
+      strong: "Supported",
+      partial: "Partly supported — verify",
       open: "Items to verify",
       details: "Submission details",
       availability: "Availability",
@@ -69,7 +52,9 @@ function buildCoverPage(options: SubmissionPdfOptions): string {
       eyebrow: "Kandidaatvoorstel",
       forRole: "Voor de rol",
       introduction: "Introductie door recruiter",
-      evidence: "Onderbouwde aansluiting",
+      evidence: "Gecontroleerd bewijs",
+      strong: "Onderbouwd",
+      partial: "Deels onderbouwd — verifiëren",
       open: "Nog te verifiëren",
       details: "Voorstelgegevens",
       availability: "Beschikbaarheid",
@@ -80,6 +65,9 @@ function buildCoverPage(options: SubmissionPdfOptions): string {
       preferences: "Wensen kandidaat",
       warning: "Opgesteld voor menselijke controle. Ontbrekende informatie wordt niet ingevuld.",
     };
+  const warning = output.variant === "contact_free"
+    ? output.contactFreeWarning
+    : labels.warning;
 
   return `<section style="width:210mm;min-height:297mm;padding:20mm 18mm 16mm;background:#fff;page-break-after:always;font-family:Inter,Arial,sans-serif;color:#0f172a;position:relative;">
     <div style="height:8px;background:${theme.primary};margin:-20mm -18mm 18mm;"></div>
@@ -94,38 +82,39 @@ function buildCoverPage(options: SubmissionPdfOptions): string {
 
     <div style="margin-top:24px;padding:18px;border:2px solid #0f172a;background:#f8fafc;">
       <p style="font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;color:${theme.primary};">${escapeHtml(labels.introduction)}</p>
-      <p style="font-size:13px;line-height:1.65;margin-top:10px;">${nl2br(introduction)}</p>
+      <p style="font-size:13px;line-height:1.65;margin-top:10px;">${nl2br(submission.clientIntroduction)}</p>
     </div>
 
-    ${strongEvidence.length ? `<div style="margin-top:22px;">
+    ${reviewedEvidence.length ? `<div style="margin-top:22px;">
       <h2 style="font-size:15px;margin:0 0 10px;font-weight:850;">${escapeHtml(labels.evidence)}</h2>
-      ${strongEvidence.map((item) => `<div style="margin-top:8px;padding-left:12px;border-left:4px solid ${theme.primary};">
-        <p style="font-size:12px;font-weight:800;">${escapeHtml(item.requirement)}</p>
-        <p style="font-size:11px;line-height:1.45;margin-top:3px;color:#475569;">${escapeHtml(safeText(item.cvEvidence))}</p>
+      ${reviewedEvidence.map((item) => `<div style="margin-top:8px;padding-left:12px;border-left:4px solid ${item.qualification === "strong" ? theme.primary : "#f59e0b"};">
+        <p style="font-size:12px;font-weight:800;">${escapeHtml(item.requirement)} <span style="margin-left:5px;padding:2px 5px;background:${item.qualification === "strong" ? "#dcfce7" : "#fef3c7"};color:${item.qualification === "strong" ? "#166534" : "#92400e"};font-size:8px;text-transform:uppercase;letter-spacing:.05em;">${escapeHtml(item.qualification === "strong" ? labels.strong : labels.partial)}</span></p>
+        <p style="font-size:11px;line-height:1.45;margin-top:3px;color:#475569;">${escapeHtml(item.evidence)}</p>
+        <p style="font-size:9px;line-height:1.4;margin-top:3px;color:#64748b;">${escapeHtml(item.source.page ? `PDF p. ${item.source.page}` : `Regel ${item.source.line}`)} · ${escapeHtml(item.source.section)}${item.source.match === "approximate" ? " · benaderde bronmatch" : ""}</p>
       </div>`).join("")}
     </div>` : ""}
 
     ${openItems.length ? `<div style="margin-top:22px;padding:14px;background:#fffbeb;border:1px solid #fbbf24;">
       <h2 style="font-size:13px;margin:0;font-weight:850;">${escapeHtml(labels.open)}</h2>
-      <ul style="margin:8px 0 0;padding-left:18px;font-size:11px;line-height:1.5;color:#713f12;">${openItems.map((item) => `<li>${escapeHtml(item.requirement)} - ${escapeHtml(item.honestAction)}</li>`).join("")}</ul>
+      <ul style="margin:8px 0 0;padding-left:18px;font-size:11px;line-height:1.5;color:#713f12;">${openItems.map((item) => `<li>${escapeHtml(item.requirement)} - ${escapeHtml(item.action)}</li>`).join("")}</ul>
     </div>` : ""}
 
     <div style="margin-top:22px;">
       <h2 style="font-size:15px;margin:0 0 4px;font-weight:850;">${escapeHtml(labels.details)}</h2>
-      ${valueRow(labels.availability, safeText(submission.commercial.availability))}
-      ${valueRow(labels.notice, safeText(submission.commercial.noticePeriod))}
-      ${valueRow(labels.salary, safeText(submission.commercial.salaryIndication))}
-      ${valueRow(labels.hours, safeText(submission.commercial.hoursPerWeek))}
-      ${valueRow(labels.location, safeText(submission.commercial.workLocation))}
-      ${valueRow(labels.preferences, safeText(submission.commercial.candidatePreferences))}
+      ${valueRow(labels.availability, submission.commercial.availability)}
+      ${valueRow(labels.notice, submission.commercial.noticePeriod)}
+      ${valueRow(labels.salary, submission.commercial.salaryIndication)}
+      ${valueRow(labels.hours, submission.commercial.hoursPerWeek)}
+      ${valueRow(labels.location, submission.commercial.workLocation)}
+      ${valueRow(labels.preferences, submission.commercial.candidatePreferences)}
     </div>
 
-    <p style="position:absolute;left:18mm;right:18mm;bottom:12mm;padding-top:8px;border-top:1px solid #cbd5e1;font-size:9px;color:#64748b;">${escapeHtml(labels.warning)}</p>
+    <p style="position:absolute;left:18mm;right:18mm;bottom:12mm;padding-top:8px;border-top:1px solid #cbd5e1;font-size:9px;color:#64748b;">${escapeHtml(warning)}</p>
   </section>`;
 }
 
 export async function generateAgencySubmissionPDF(options: SubmissionPdfOptions): Promise<Buffer> {
-  const cvHtml = buildHTML(options.candidateData, options.templateId, options.colorThemeId);
+  const cvHtml = buildHTML(options.output.candidateData, options.templateId, options.colorThemeId);
   const coverPage = buildCoverPage(options);
   const combinedHtml = cvHtml
     .replace("</style>", `@page { margin: 0; size: A4; }</style>`)

@@ -1,15 +1,25 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { cvSchema } from "@/lib/cv";
 import {
   AGENCY_MONTHLY_CV_LIMIT,
   isAgencySubscriptionInPaidPeriod,
 } from "@/lib/agency-plan";
+import { calculateRetentionExpiry } from "@/lib/agency-retention";
+import {
+  parseStoredMatchPackAnalysis,
+  parseStoredMatchPackData,
+  parseStoredMatchPackSubmission,
+} from "@/lib/agency-matchpack";
+import { createApprovedSnapshotDigest, approvalDataSchema } from "@/lib/agency-matchpack-approval";
+import { buildApprovedMatchPackOutput } from "@/lib/agency-output-projection";
+import { validateMatchPackReviewForApproval } from "@/lib/agency-matchpack-review";
+import { matchPackSourceMapSchema } from "@/lib/agency-matchpack-source";
 
 export type AgencyAccessErrorCode =
   | "AGENCY_QUOTA_REACHED"
   | "AGENCY_PERIOD_UNAVAILABLE"
-  | "AGENCY_SUBSCRIPTION_INACTIVE";
+  | "AGENCY_SUBSCRIPTION_INACTIVE"
+  | "RETENTION_POLICY_REQUIRED";
 
 export class AgencyAccessError extends Error {
   readonly code: AgencyAccessErrorCode;
@@ -34,6 +44,12 @@ type AgencySubscriptionLike = {
   website: string | null;
   templateId: string;
   colorThemeId: string;
+  retentionDays: number;
+  retentionPolicySetAt: Date | null;
+  retentionUpdatedAt: Date | null;
+  onboardingDismissedAt: Date | null;
+  onboardingExampleViewedAt: Date | null;
+  excludeFromProductMetrics: boolean;
 };
 
 export type AgencyAccessSnapshot = {
@@ -238,15 +254,49 @@ export async function getAgencyAccessForUser(userId: string): Promise<AgencyAcce
 }
 
 export function canEditAgency(access: Pick<AgencyAccessSnapshot, "role">): boolean {
-  return access.role === "owner" || access.role === "editor" || access.role === "reviewer";
+  return canEditAgencyDraft(access);
 }
 
 export function canCreateAgencyWork(access: Pick<AgencyAccessSnapshot, "role">): boolean {
   return access.role === "owner" || access.role === "editor";
 }
 
+export function canViewAgencyWork(access: Pick<AgencyAccessSnapshot, "role">): boolean {
+  return access.role === "owner" || access.role === "editor" || access.role === "reviewer" || access.role === "viewer";
+}
+
+export function canEditAgencyDraft(access: Pick<AgencyAccessSnapshot, "role">): boolean {
+  return access.role === "owner" || access.role === "editor" || access.role === "reviewer";
+}
+
+export function canReviewAgencyEvidence(access: Pick<AgencyAccessSnapshot, "role">): boolean {
+  return canEditAgencyDraft(access);
+}
+
+export function canApproveAgencyWork(access: Pick<AgencyAccessSnapshot, "role">): boolean {
+  return access.role === "owner" || access.role === "reviewer";
+}
+
+export function canExportAgencyWork(access: Pick<AgencyAccessSnapshot, "role">): boolean {
+  return access.role === "owner" || access.role === "editor" || access.role === "reviewer";
+}
+
+export function canDeleteAgencyDraft(access: Pick<AgencyAccessSnapshot, "role">): boolean {
+  return access.role === "owner" || access.role === "editor";
+}
+
+export function canDeleteApprovedAgencyWork(access: Pick<AgencyAccessSnapshot, "role">): boolean {
+  return access.role === "owner";
+}
+
 export function canManageAgency(access: Pick<AgencyAccessSnapshot, "role">): boolean {
   return access.role === "owner";
+}
+
+export function needsAgencyRetentionAcknowledgement(
+  access: Pick<AgencyAccessSnapshot, "subscription" | "state">,
+): boolean {
+  return access.state === "active" && Boolean(access.subscription) && !access.subscription?.retentionPolicySetAt;
 }
 
 /**
@@ -271,6 +321,9 @@ export async function createCvDocumentForUser(data: CvCreateData) {
         "The agency subscription is no longer active.",
       );
     }
+    if (!currentSubscription.retentionPolicySetAt) {
+      throw new AgencyAccessError("RETENTION_POLICY_REQUIRED", "Choose the Agency retention period before creating a CV.");
+    }
 
     const period = await ensureCurrentUsagePeriod(tx, currentSubscription, new Date());
     if (!period) {
@@ -284,7 +337,7 @@ export async function createCvDocumentForUser(data: CvCreateData) {
     if (used >= period.allowance) {
       throw new AgencyAccessError(
         "AGENCY_QUOTA_REACHED",
-        "The agency plan has reached its monthly CV limit.",
+        "The shared 50-slot allowance has been reached.",
       );
     }
 
@@ -305,15 +358,52 @@ export async function createCvDocumentForUser(data: CvCreateData) {
   });
 }
 
+export async function createAgencyCvDocumentsAtomically(userId: string, rows: CvCreateData[]) {
+  if (!rows.length || rows.length > 100) throw new Error("INVALID_IMPORT_SIZE");
+  return withSerializableRetry(async (tx) => {
+    const currentSubscription = await tx.agencySubscription.findUnique({ where: { userId } });
+    if (!currentSubscription || !isAgencySubscriptionInPaidPeriod(currentSubscription)) {
+      throw new AgencyAccessError("AGENCY_SUBSCRIPTION_INACTIVE", "The agency subscription is no longer active.");
+    }
+    if (!currentSubscription.retentionPolicySetAt) {
+      throw new AgencyAccessError("RETENTION_POLICY_REQUIRED", "Choose the Agency retention period before importing CVs.");
+    }
+    const period = await ensureCurrentUsagePeriod(tx, currentSubscription, new Date());
+    if (!period) throw new AgencyAccessError("AGENCY_PERIOD_UNAVAILABLE", "The agency billing period is not available yet.");
+    const used = await tx.agencyCvUsage.count({ where: { periodId: period.id } });
+    if (used + rows.length > period.allowance) {
+      throw new AgencyAccessError("AGENCY_QUOTA_REACHED", "The shared 50-slot allowance has insufficient remaining slots.");
+    }
+
+    const created = [];
+    for (const row of rows) {
+      const cv = await tx.cVDocument.create({
+        data: {
+          ...row,
+          userId,
+          templateId: currentSubscription.templateId || row.templateId,
+          colorThemeId: currentSubscription.colorThemeId || row.colorThemeId,
+        },
+      });
+      await tx.agencyCvUsage.create({ data: { periodId: period.id, cvId: cv.id } });
+      created.push(cv);
+    }
+    return created;
+  });
+}
+
 type MatchPackApprovalData = {
   userId: string;
   matchPackId: string;
-  approvedById?: string;
-  metrics?: {
-    reviewDurationSeconds: number | null;
-    uploadToApprovalSeconds: number | null;
-    correctionsCount: number;
-    unsupportedClaimsCaught: number;
+  approvedById: string;
+  expectedUpdatedAt: Date;
+  expectedRevisionVersion: number;
+  selectedVariant: "full" | "contact_free";
+  confirmations: {
+    evidenceReviewed: true;
+    candidateDataReviewed: true;
+    clientCopyReviewed: true;
+    sharingAuthorityConfirmed: true;
   };
 };
 
@@ -330,10 +420,25 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
         id: true,
         title: true,
         candidateData: true,
+        submissionData: true,
+        analysis: true,
+        vacancyTitle: true,
+        vacancyText: true,
+        locale: true,
+        sourceText: true,
+        sourceMap: true,
         templateId: true,
         colorThemeId: true,
+        agencyTemplateId: true,
         cvDocumentId: true,
         status: true,
+        retentionExpiresAt: true,
+        updatedAt: true,
+        revisions: {
+          select: { version: true },
+          orderBy: { version: "desc" },
+          take: 1,
+        },
       },
     });
 
@@ -345,14 +450,12 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
       const cv = await tx.cVDocument.findFirst({
         where: { id: pack.cvDocumentId, userId: data.userId },
       });
-      if (cv) return { cv, reused: true };
+      if (cv) return { cv, reused: true, retentionExpiresAt: pack.retentionExpiresAt };
     }
 
     if (pack.status === "approved") {
       throw new Error("MATCH_PACK_ALREADY_APPROVED");
     }
-
-    const approvedData = cvSchema.parse(pack.candidateData);
 
     const currentSubscription = await tx.agencySubscription.findUnique({
       where: { userId: data.userId },
@@ -363,6 +466,45 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
         "The agency subscription is no longer active.",
       );
     }
+    if (!currentSubscription.retentionPolicySetAt) {
+      throw new AgencyAccessError(
+        "RETENTION_POLICY_REQUIRED",
+        "Choose the Agency retention period before approving a MatchPack.",
+      );
+    }
+    if (pack.updatedAt.getTime() !== data.expectedUpdatedAt.getTime()
+      || pack.revisions[0]?.version !== data.expectedRevisionVersion) {
+      throw new Error("PACK_STALE");
+    }
+    if (!pack.sourceText || !pack.sourceMap || !pack.submissionData) {
+      throw new Error("EVIDENCE_UNRESOLVED");
+    }
+
+    const approvedData = parseStoredMatchPackData(pack.candidateData);
+    const analysis = parseStoredMatchPackAnalysis(pack.analysis);
+    const sourceMap = matchPackSourceMapSchema.parse(pack.sourceMap);
+    const storedSubmission = parseStoredMatchPackSubmission(pack.submissionData);
+    const submissionData = {
+      ...storedSubmission,
+      selectedVariant: data.selectedVariant === "contact_free" ? "anonymized" as const : "full" as const,
+    };
+    const serverMetrics = validateMatchPackReviewForApproval({
+      analysis,
+      sourceText: pack.sourceText,
+      sourceMap,
+      vacancyText: pack.vacancyText,
+    });
+    buildApprovedMatchPackOutput({
+      candidateData: approvedData,
+      analysis,
+      submission: submissionData,
+      vacancyTitle: pack.vacancyTitle || "",
+      vacancyText: pack.vacancyText,
+      sourceText: pack.sourceText,
+      sourceMap,
+      locale: pack.locale === "en" ? "en" : "nl",
+      variant: data.selectedVariant,
+    });
 
     const period = await ensureCurrentUsagePeriod(tx, currentSubscription, new Date());
     if (!period) {
@@ -376,7 +518,7 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
     if (used >= period.allowance) {
       throw new AgencyAccessError(
         "AGENCY_QUOTA_REACHED",
-        "The agency plan has reached its monthly CV limit.",
+        "The shared 50-slot allowance has been reached.",
       );
     }
 
@@ -400,23 +542,56 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
       },
     });
 
-    await tx.agencyMatchPack.update({
-      where: { id: data.matchPackId },
+    const approvedAt = new Date();
+    const retentionExpiresAt = currentSubscription.retentionPolicySetAt
+      ? calculateRetentionExpiry(
+        { status: "approved", approvedAt, updatedAt: approvedAt },
+        currentSubscription.retentionDays,
+        approvedAt,
+      )
+      : null;
+    const approvalData = approvalDataSchema.parse({
+      version: 1,
+      selectedVariant: data.selectedVariant,
+      confirmations: data.confirmations,
+      approvedAt: approvedAt.toISOString(),
+      approvedById: data.approvedById,
+      revisionVersion: data.expectedRevisionVersion,
+    });
+    const approvedSnapshotDigest = createApprovedSnapshotDigest({
+      candidateData: approvedData,
+      submissionData,
+      analysis,
+      selectedVariant: data.selectedVariant,
+      templateId: pack.templateId,
+      colorThemeId: pack.colorThemeId,
+      agencyTemplateId: pack.agencyTemplateId,
+      revisionVersion: data.expectedRevisionVersion,
+    });
+    const updateResult = await tx.agencyMatchPack.updateMany({
+      where: {
+        id: data.matchPackId,
+        userId: data.userId,
+        status: "analyzed",
+        updatedAt: data.expectedUpdatedAt,
+      },
       data: {
         cvDocumentId: cv.id,
         status: "approved",
-        approvedAt: new Date(),
-        approvedById: data.approvedById || data.userId,
-        outcomeData: (data.metrics || {
-          reviewDurationSeconds: null,
-          uploadToApprovalSeconds: null,
-          correctionsCount: 0,
-          unsupportedClaimsCaught: 0,
-        }) as unknown as Prisma.InputJsonValue,
+        approvedAt,
+        approvedById: data.approvedById,
+        approvalData: approvalData as unknown as Prisma.InputJsonValue,
+        approvedRevisionVersion: data.expectedRevisionVersion,
+        approvedSnapshotDigest,
+        submissionData: submissionData as unknown as Prisma.InputJsonValue,
+        correctionsCount: serverMetrics.correctionsCount,
+        unsupportedClaimsCaught: serverMetrics.unsupportedClaimsCaught,
+        retentionExpiresAt,
       },
     });
+    if (updateResult.count !== 1) throw new Error("PACK_STALE");
 
-    return { cv, reused: false };
+    return { cv, reused: false, retentionExpiresAt };
   });
 }
 

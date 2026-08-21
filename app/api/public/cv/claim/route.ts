@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
       }
       if (!access.canCreate) {
         return responseBody({
-          error: "The Agency Plan has reached its monthly CV limit.",
+          error: "The shared Agency 50-slot allowance has been reached.",
           code: "AGENCY_QUOTA_REACHED",
         }, 409);
       }

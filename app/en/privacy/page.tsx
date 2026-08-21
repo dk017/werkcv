@@ -69,7 +69,7 @@ export default function EnglishPrivacyPage() {
               <ul className="list-disc space-y-1 pl-6 font-medium">
                 <li>Create, save, edit, and export your CV</li>
                 <li>Process payments and provide paid download access</li>
-                <li>Run AI features you actively request, such as import, analysis, or rewriting</li>
+                <li>Run AI features you actively request, such as import, analysis, rewriting, or the guided voice interview</li>
                 <li>Send login codes, service messages, and support replies</li>
                 <li>Measure reliability and improve the website and editor</li>
                 <li>Prevent abuse, investigate errors, and protect the service</li>
@@ -144,6 +144,12 @@ export default function EnglishPrivacyPage() {
                 you can return to them. You may request deletion of those results through
                 contact@werkcv.nl. Limited API log retention for security and abuse monitoring may
                 apply under OpenAI&apos;s current terms.
+              </p>
+              <p className="mt-2 font-medium leading-relaxed">
+                During the guided voice interview, audio is processed live for transcription.
+                WerkCV does not store raw audio. Unfinished text answers may remain temporarily in
+                your browser&apos;s session storage for up to 24 hours so you can recover them after a
+                refresh. You can discard that draft directly from the interview.
               </p>
             </section>
 

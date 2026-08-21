@@ -1044,7 +1044,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, _templateId: str
                 <div class="cv-item" style="margin-bottom: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
                         <h3 style="font-weight: bold; font-size: 14px; margin: 0; color: ${theme.text};">${e(exp.role)}</h3>
-                        <span style="font-size: 12px; color: ${theme.textMuted}; white-space: nowrap; text-align: left; width: 96px; flex: 0 0 96px;">${e(formatResumeDateRange(exp.start, exp.end, data))}</span>
+                        <span style="font-size: 12px; line-height: 1.35; color: ${theme.textMuted}; text-align: right; width: 160px; flex: 0 1 160px; overflow-wrap: anywhere;">${e(formatResumeDateRange(exp.start, exp.end, data))}</span>
                     </div>
                     <div style="font-size: 13px; color: ${theme.secondary}; margin-top: 2px;">
                         ${e(exp.company)}${exp.location ? ` | ${e(exp.location)}` : ''}
@@ -1069,7 +1069,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, _templateId: str
                 <div class="cv-item" style="margin-bottom: 16px;">
                     <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
                         <h3 style="font-weight: bold; font-size: 13px; margin: 0; color: ${theme.text};">${e(intern.role)}</h3>
-                        <span style="font-size: 12px; color: ${theme.textMuted}; white-space: nowrap; text-align: left; width: 96px; flex: 0 0 96px;">${e(formatResumeDateRange(intern.start, intern.end, data))}</span>
+                        <span style="font-size: 12px; line-height: 1.35; color: ${theme.textMuted}; text-align: right; width: 160px; flex: 0 1 160px; overflow-wrap: anywhere;">${e(formatResumeDateRange(intern.start, intern.end, data))}</span>
                     </div>
                     <div style="font-size: 12px; color: ${theme.textMuted}; margin-top: 2px;">${e(intern.company)}</div>
                     ${intern.description ? `<p style="font-size: 12px; margin-top: 6px; line-height: 1.5; color: ${theme.textMuted};">${nl2brLinkified(intern.description)}</p>` : ''}
@@ -1095,7 +1095,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, _templateId: str
                         <div style="font-size: 12px; color: ${theme.textMuted}; margin-top: 2px;">${e(edu.school)}${edu.location ? `, ${e(formatResumeInlineValue(edu.location, data))}` : ''}</div>
                         ${edu.description ? `<p style="font-size: 12px; line-height: 1.5; color: ${theme.textMuted}; margin-top: 4px;">${nl2brLinkified(edu.description)}</p>` : ''}
                     </div>
-                    <span style="font-size: 12px; color: ${theme.textMuted}; white-space: nowrap; text-align: left; width: 96px; flex: 0 0 96px;">${e(formatResumeDateRange(edu.start, edu.end, data))}</span>
+                    <span style="font-size: 12px; line-height: 1.35; color: ${theme.textMuted}; text-align: right; width: 160px; flex: 0 1 160px; overflow-wrap: anywhere;">${e(formatResumeDateRange(edu.start, edu.end, data))}</span>
                 </div>
             `).join('')}
         </div>

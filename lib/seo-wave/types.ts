@@ -57,6 +57,7 @@ export interface SeoGuidePage {
     faq: SeoFaq[];
     relatedLinks: SeoRelatedLink[];
     sources?: SeoSourceLink[];
+    datePublished?: string;
     dateModified?: string;
     ctaTitle: string;
     ctaText: string;

@@ -111,6 +111,10 @@ export const englishRoleExamples: Record<"dataAnalyst" | "projectManager" | "bus
     mistakes: ["Writing a feature list instead of showing product outcomes.", "Claiming revenue or growth without explaining contribution.", "Leaving customer research and prioritisation invisible.", "Listing every framework while hiding decision quality.", "Using a generic summary across unrelated product domains."],
     bottomTitle: "Build from this product manager example", bottomBody: "Replace the fictional details with your own product scope, decisions, cross-functional work, and defensible metrics.", sources: commonSources,
     faqs: [{ question: "Which metrics should product managers include?", answer: "Choose metrics you genuinely influenced, such as activation, retention, adoption, conversion, revenue, support volume, or delivery time." }, { question: "Should a product CV include a portfolio?", answer: "It can help when it explains decisions and outcomes without exposing confidential information." }, { question: "How long should a product manager CV be?", answer: "One page can work early in your career; two focused pages are acceptable for several relevant product roles." }],
-    relatedLinks: [{ href: "/en/english-cv-example-business-analyst-netherlands", label: "Business analyst CV example" }, { href: "/en/english-cv-example-software-engineer-netherlands", label: "Software engineer CV example" }],
+    relatedLinks: [
+      { href: "/en/english-cv-example-business-analyst-netherlands", label: "Business analyst CV example" },
+      { href: "/en/english-cv-example-software-engineer-netherlands", label: "Software engineer CV example" },
+      { href: "/en/guides/startup-vs-corporate-cv-netherlands", label: "Startup vs corporate CV guide" },
+    ],
   },
 };

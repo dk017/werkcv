@@ -5,7 +5,13 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import type { UiLanguage } from '@/lib/ui-language';
 
-export default function NavUserMenu({ uiLanguage = 'nl' }: { uiLanguage?: UiLanguage }) {
+export default function NavUserMenu({
+    uiLanguage = 'nl',
+    tone = 'default',
+}: {
+    uiLanguage?: UiLanguage;
+    tone?: 'default' | 'brand';
+}) {
     const router = useRouter();
     const pathname = usePathname();
     const isEnglish = uiLanguage === 'en';
@@ -23,6 +29,13 @@ export default function NavUserMenu({ uiLanguage = 'nl' }: { uiLanguage?: UiLang
 
     if (!loaded) return null;
 
+    const linkClass = tone === 'brand'
+        ? 'wk-user-menu-link'
+        : 'font-bold text-sm text-black hover:text-yellow-600 transition-colors';
+    const quietClass = tone === 'brand'
+        ? 'wk-user-menu-quiet'
+        : 'text-xs font-bold text-gray-500 hover:text-black transition-colors disabled:opacity-50';
+
     if (!email) {
         const currentPath = pathname || (isEnglish ? '/en' : '/');
         const loginNext = currentPath.startsWith('/en') ? '/en/editor' : '/editor';
@@ -30,7 +43,7 @@ export default function NavUserMenu({ uiLanguage = 'nl' }: { uiLanguage?: UiLang
         return (
             <Link
                 href={`/login?next=${encodeURIComponent(loginNext)}`}
-                className="font-bold text-sm text-black hover:text-yellow-600 transition-colors"
+                className={linkClass}
             >
                 {isEnglish ? 'Log in' : 'Inloggen'}
             </Link>
@@ -48,20 +61,20 @@ export default function NavUserMenu({ uiLanguage = 'nl' }: { uiLanguage?: UiLang
         <div className="flex items-center gap-3">
             <Link
                 href="/mijn-cvs"
-                className="font-bold text-sm text-black hover:text-yellow-600 transition-colors"
+                className={linkClass}
             >
                 {isEnglish ? 'My CVs' : "Mijn CV's"}
             </Link>
             <Link
                 href={isEnglish ? '/en/profile-photo' : '/profielfoto-cv-maken'}
-                className="font-bold text-sm text-black hover:text-yellow-600 transition-colors"
+                className={linkClass}
             >
                 {isEnglish ? 'Profile photos' : "Profielfoto's"}
             </Link>
             <button
                 onClick={handleLogout}
                 disabled={loggingOut}
-                className="text-xs font-bold text-gray-500 hover:text-black transition-colors disabled:opacity-50"
+                className={`${quietClass} disabled:opacity-50`}
             >
                 {loggingOut ? '...' : isEnglish ? 'Log out' : 'Uitloggen'}
             </button>

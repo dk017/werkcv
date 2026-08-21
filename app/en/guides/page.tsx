@@ -35,6 +35,26 @@ export default function EnglishGuidesHubPage() {
             description: 'Use this route for internships, part-time work, projects, and first full-time applications.',
         },
         {
+            href: '/en/guides/recent-graduate-cv-netherlands',
+            title: 'Recently graduated?',
+            description: 'Build a focused CV from projects, thesis work, internships and transferable evidence.',
+        },
+        {
+            href: '/en/guides/startup-vs-corporate-cv-netherlands',
+            title: 'Startup or corporate role?',
+            description: 'Choose the evidence and language that fit the actual operating context.',
+        },
+        {
+            href: '/en/guides/creative-cv-templates-netherlands',
+            title: 'Considering a creative template?',
+            description: 'Check portfolio, visual branding and ATS-safe fallbacks before exporting.',
+        },
+        {
+            href: '/en/guides/one-page-cv-netherlands',
+            title: 'Unsure about page length?',
+            description: 'Use the one-page versus two-page decision guide for Dutch applications.',
+        },
+        {
             href: '/en/guides/netherlands-cv-keywords-ats',
             title: 'Low interview rate?',
             description: 'Go here if structure is okay but your wording, keywords, or ATS match is weak.',

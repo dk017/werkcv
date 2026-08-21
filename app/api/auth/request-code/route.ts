@@ -15,6 +15,17 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             );
         }
+        if (error && typeof error === 'object' && 'code' in error && error.code === 'ECONNREFUSED') {
+            return NextResponse.json(
+                {
+                    error: process.env.NODE_ENV === 'production'
+                        ? 'The login service is temporarily unavailable. Please try again later.'
+                        : 'The local database is not running. Start Docker Desktop and run: docker compose up -d db',
+                    code: 'DATABASE_UNAVAILABLE',
+                },
+                { status: 503 }
+            );
+        }
         console.error('request-code failed', error);
         return NextResponse.json(
             { error: 'Failed to request login code', code: 'REQUEST_CODE_FAILED' },

@@ -8,33 +8,33 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  attribution Json?
-  sourceCluster String?
-  sourceLocale String?
-  sourcePath String?
-  createdAt DateTime @default(now())
-  documents CVDocument[]
-  sessions  Session[]
-  pilotAccess PilotAccess?
-  agencySubscription AgencySubscription?
-  agencyMatchPacks AgencyMatchPack[]
+  id                    String                @id @default(uuid())
+  email                 String                @unique
+  attribution           Json?
+  sourceCluster         String?
+  sourceLocale          String?
+  sourcePath            String?
+  createdAt             DateTime              @default(now())
+  documents             CVDocument[]
+  sessions              Session[]
+  pilotAccess           PilotAccess?
+  agencySubscription    AgencySubscription?
+  agencyMatchPacks      AgencyMatchPack[]
   agencyTeamMemberships AgencyTeamMember[]
-  agencyTemplates AgencyTemplate[]
-  profilePhotoProjects ProfilePhotoProject[]
+  agencyTemplates       AgencyTemplate[]
+  profilePhotoProjects  ProfilePhotoProject[]
 }
 
 model PilotAccess {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  expiresAt   DateTime
-  notes       String?
-  createdAt   DateTime @default(now())
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  notes     String?
+  createdAt DateTime @default(now())
 
-  @@index([userId])
   @@unique([userId])
+  @@index([userId])
 }
 
 model Session {
@@ -50,101 +50,115 @@ model Session {
 }
 
 model LoginCode {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   email     String
   codeHash  String
   expiresAt DateTime
   usedAt    DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 
   @@index([email, createdAt])
   @@index([expiresAt])
 }
 
 model CVDocument {
-  id           String   @id @default(uuid())
-  title        String
-  data         Json
-  templateId   String   @default("professional")
-  colorThemeId String   @default("classic-blue")
-  coverLetter  String?  @db.Text
+  id                   String           @id @default(uuid())
+  title                String
+  data                 Json
+  templateId           String           @default("professional")
+  colorThemeId         String           @default("classic-blue")
+  coverLetter          String?          @db.Text
   coverLetterUpdatedAt DateTime?
-  attribution  Json?
-  sourceCluster String?
-  sourceLocale  String?
-  startSource   String?
-  userId       String?
-  user         User?    @relation(fields: [userId], references: [id])
-  matchPack    AgencyMatchPack?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  attribution          Json?
+  sourceCluster        String?
+  sourceLocale         String?
+  startSource          String?
+  userId               String?
+  user                 User?            @relation(fields: [userId], references: [id])
+  matchPack            AgencyMatchPack?
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
 }
 
 model AgencyMatchPack {
-  id              String      @id @default(cuid())
-  userId          String
-  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  title           String
-  vacancyTitle    String?
-  vacancyText     String      @db.Text
-  locale          String      @default("nl")
-  sourceFileType  String?
-  sourceTextDigest String?
+  id                    String                    @id @default(cuid())
+  userId                String
+  user                  User                      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title                 String
+  vacancyTitle          String?
+  vacancyText           String                    @db.Text
+  locale                String                    @default("nl")
+  sourceFileType        String?
+  sourceText            String?                   @db.Text
+  sourceMap             Json?
+  sourceTextDigest      String?
   originalCandidateData Json?
-  candidateData   Json
-  anonymizedData  Json
-  analysis        Json
-  submissionData Json?
-  outcomeData     Json?
-  templateId      String      @default("professional")
-  colorThemeId    String      @default("classic-blue")
-  agencyTemplateId String?
-  agencyTemplate AgencyTemplate? @relation(fields: [agencyTemplateId], references: [id], onDelete: SetNull)
-  status          String      @default("analyzed")
-  cvDocumentId    String?     @unique
-  cvDocument      CVDocument? @relation(fields: [cvDocumentId], references: [id], onDelete: SetNull)
-  approvedAt      DateTime?
-  approvedById    String?
-  revisions       AgencyMatchPackRevision[]
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
+  candidateData         Json
+  anonymizedData        Json
+  analysis              Json
+  submissionData        Json?
+  outcomeData           Json?
+  templateId            String                    @default("professional")
+  colorThemeId          String                    @default("classic-blue")
+  agencyTemplateId      String?
+  agencyTemplate        AgencyTemplate?           @relation(fields: [agencyTemplateId], references: [id], onDelete: SetNull)
+  status                String                    @default("analyzed")
+  cvDocumentId          String?                   @unique
+  cvDocument            CVDocument?               @relation(fields: [cvDocumentId], references: [id], onDelete: SetNull)
+  approvedAt            DateTime?
+  approvedById          String?
+  approvalData          Json?
+  approvedRevisionVersion Int?
+  approvedSnapshotDigest String?
+  firstExportedAt       DateTime?
+  correctionsCount      Int                       @default(0)
+  unsupportedClaimsCaught Int                     @default(0)
+  clientOutcome         String                    @default("unknown")
+  clientOutcomeRecordedAt DateTime?
+  clientOutcomeRecordedById String?
+  productFeedbackData   Json?
+  retentionExpiresAt    DateTime?
+  revisions             AgencyMatchPackRevision[]
+  createdAt             DateTime                  @default(now())
+  updatedAt             DateTime                  @updatedAt
 
   @@index([userId, updatedAt])
   @@index([userId, status])
+  @@index([retentionExpiresAt, status])
 }
 
 model AgencyMatchPackRevision {
-  id          String          @id @default(cuid())
-  matchPackId String
-  matchPack   AgencyMatchPack @relation(fields: [matchPackId], references: [id], onDelete: Cascade)
-  version     Int
-  reason      String          @default("draft_saved")
-  candidateData Json
+  id             String          @id @default(cuid())
+  matchPackId    String
+  matchPack      AgencyMatchPack @relation(fields: [matchPackId], references: [id], onDelete: Cascade)
+  version        Int
+  reason         String          @default("draft_saved")
+  candidateData  Json
   submissionData Json
-  analysis    Json
-  changedFields String[]      @default([])
-  createdById String
-  createdAt   DateTime        @default(now())
+  analysis       Json
+  changedFields  String[]        @default([])
+  createdById    String
+  createdAt      DateTime        @default(now())
 
   @@unique([matchPackId, version])
   @@index([matchPackId, createdAt])
 }
 
 model AgencyTemplate {
-  id            String           @id @default(cuid())
-  ownerId       String
-  owner         User             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  name          String
-  templateId    String           @default("professional")
-  colorThemeId  String           @default("classic-blue")
-  companyName   String?
-  website       String?
-  headerText    String?
-  footerText    String?
-  isDefault     Boolean          @default(false)
-  matchPacks    AgencyMatchPack[]
-  createdAt     DateTime         @default(now())
-  updatedAt     DateTime         @updatedAt
+  id           String            @id @default(cuid())
+  ownerId      String
+  owner        User              @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  name         String
+  templateId   String            @default("professional")
+  colorThemeId String            @default("classic-blue")
+  companyName  String?
+  website      String?
+  headerText   String?
+  footerText   String?
+  isDefault    Boolean           @default(false)
+  matchPacks   AgencyMatchPack[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
 
   @@index([ownerId, isDefault])
 }
@@ -157,66 +171,93 @@ model Template {
 }
 
 model Order {
-  id        String   @id @default(uuid())
-  email     String
-  cvId      String?
-  product   String
-  amountCents Int?
-  currency  String?
-  addons    String[] @default([])
-  attribution Json?
-  sourceCluster String?
-  lemonId   String?  @unique
-  paidAt    DateTime?
-  createdAt DateTime @default(now())
+  id                  String               @id @default(uuid())
+  email               String
+  cvId                String?
+  product             String
+  amountCents         Int?
+  currency            String?
+  addons              String[]             @default([])
+  attribution         Json?
+  sourceCluster       String?
+  lemonId             String?              @unique
+  paidAt              DateTime?
+  createdAt           DateTime             @default(now())
   profilePhotoProject ProfilePhotoProject?
 }
 
 model PaymentCheckout {
-  id                 String   @id @default(cuid())
+  id                 String    @id @default(cuid())
   provider           String
-  externalCheckoutId String   @unique
+  externalCheckoutId String    @unique
   cvId               String?
   email              String?
   siteHost           String?
   product            String?
   completedAt        DateTime?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 
   @@index([provider, createdAt])
   @@index([cvId])
 }
 
 model AgencySubscription {
-  id                     String              @id @default(cuid())
-  userId                 String              @unique
-  user                   User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  planCode               String              @default("agency")
-  provider               String              @default("dodo")
-  status                 String              @default("pending")
+  id                     String                  @id @default(cuid())
+  userId                 String                  @unique
+  user                   User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planCode               String                  @default("agency")
+  provider               String                  @default("dodo")
+  status                 String                  @default("pending")
   productId              String?
-  externalSubscriptionId String?             @unique
+  externalSubscriptionId String?                 @unique
   externalCustomerId     String?
-  checkoutSessionId      String?             @unique
+  checkoutSessionId      String?                 @unique
   companyName            String?
   website                String?
-  monthlyLimit           Int                 @default(50)
-  templateId             String              @default("professional")
-  colorThemeId           String              @default("classic-blue")
+  monthlyLimit           Int                     @default(50)
+  templateId             String                  @default("professional")
+  colorThemeId           String                  @default("classic-blue")
+  retentionDays          Int                     @default(90)
+  retentionPolicySetAt   DateTime?
+  retentionUpdatedAt     DateTime?
+  onboardingDismissedAt  DateTime?
+  onboardingExampleViewedAt DateTime?
+  excludeFromProductMetrics Boolean               @default(false)
   currentPeriodStart     DateTime?
   currentPeriodEnd       DateTime?
-  cancelAtPeriodEnd      Boolean             @default(false)
+  cancelAtPeriodEnd      Boolean                 @default(false)
   canceledAt             DateTime?
   metadata               Json?
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
   usagePeriods           AgencyUsagePeriod[]
   payments               AgencyPayment[]
   teamMembers            AgencyTeamMember[]
+  deletionReceipts       AgencyDeletionReceipt[]
+  transactionalEmails    AgencyTransactionalEmail[]
 
   @@index([status, currentPeriodEnd])
   @@index([externalCustomerId])
+}
+
+model AgencyTransactionalEmail {
+  id             String             @id @default(cuid())
+  subscriptionId String
+  subscription   AgencySubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  kind           String
+  recipientEmail String
+  locale         String             @default("nl")
+  status         String             @default("pending")
+  attemptCount   Int                @default(0)
+  claimedAt      DateTime?
+  sentAt         DateTime?
+  lastErrorCode  String?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+
+  @@unique([subscriptionId, kind])
+  @@index([status, createdAt])
 }
 
 model AgencyTeamMember {
@@ -237,14 +278,31 @@ model AgencyTeamMember {
   @@index([email, status])
 }
 
+model AgencyDeletionReceipt {
+  id                 String             @id @default(cuid())
+  subscriptionId     String
+  subscription       AgencySubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  actorUserId        String?
+  reason             String
+  matchPacksDeleted  Int                @default(0)
+  revisionsDeleted   Int                @default(0)
+  cvDocumentsDeleted Int                @default(0)
+  templatesDeleted   Int                @default(0)
+  teamMembersDeleted Int                @default(0)
+  retentionDays      Int?
+  createdAt          DateTime           @default(now())
+
+  @@index([subscriptionId, createdAt])
+}
+
 model AgencyUsagePeriod {
-  id             String              @id @default(cuid())
+  id             String             @id @default(cuid())
   subscriptionId String
-  subscription   AgencySubscription  @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  subscription   AgencySubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
   startsAt       DateTime
   endsAt         DateTime
-  allowance      Int                 @default(50)
-  createdAt      DateTime            @default(now())
+  allowance      Int                @default(50)
+  createdAt      DateTime           @default(now())
   cvUsages       AgencyCvUsage[]
 
   @@unique([subscriptionId, startsAt])
@@ -252,48 +310,48 @@ model AgencyUsagePeriod {
 }
 
 model AgencyCvUsage {
-  id         String            @id @default(cuid())
-  periodId   String
-  period     AgencyUsagePeriod @relation(fields: [periodId], references: [id], onDelete: Cascade)
-  cvId       String
-  countedAt  DateTime          @default(now())
+  id        String            @id @default(cuid())
+  periodId  String
+  period    AgencyUsagePeriod @relation(fields: [periodId], references: [id], onDelete: Cascade)
+  cvId      String
+  countedAt DateTime          @default(now())
 
   @@unique([periodId, cvId])
   @@index([periodId, countedAt])
 }
 
 model AgencyPayment {
-  id                  String              @id @default(cuid())
-  subscriptionId      String
-  subscription        AgencySubscription  @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
-  externalPaymentId   String              @unique
-  checkoutSessionId   String?
-  amountCents         Int?
-  currency            String?
-  status              String              @default("paid")
-  paidAt              DateTime?
-  metadata            Json?
-  createdAt           DateTime            @default(now())
+  id                String             @id @default(cuid())
+  subscriptionId    String
+  subscription      AgencySubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  externalPaymentId String             @unique
+  checkoutSessionId String?
+  amountCents       Int?
+  currency          String?
+  status            String             @default("paid")
+  paidAt            DateTime?
+  metadata          Json?
+  createdAt         DateTime           @default(now())
 
   @@index([subscriptionId, paidAt])
   @@index([checkoutSessionId])
 }
 
 model ProfilePhotoProject {
-  id        String   @id @default(cuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  orderId   String?  @unique
-  order     Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
-  status    String   @default("pending")
-  style     String?
-  sourceImageCount Int @default(0)
-  generationCount Int @default(0)
-  refinementCount Int @default(0)
-  images    Json?
-  attribution Json?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orderId          String?  @unique
+  order            Order?   @relation(fields: [orderId], references: [id], onDelete: SetNull)
+  status           String   @default("pending")
+  style            String?
+  sourceImageCount Int      @default(0)
+  generationCount  Int      @default(0)
+  refinementCount  Int      @default(0)
+  images           Json?
+  attribution      Json?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   @@index([userId, createdAt])
   @@index([status])
@@ -346,11 +404,11 @@ model FollowupTask {
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 
+  @@unique([email, type, relatedCvId])
+  @@unique([email, type, relatedOrderId])
   @@index([status, dueAt])
   @@index([email])
   @@index([type])
-  @@unique([email, type, relatedCvId])
-  @@unique([email, type, relatedOrderId])
 }
 
 model EmailMessage {
@@ -376,39 +434,39 @@ model EmailMessage {
 }
 
 model MailboxSyncState {
-  id          String   @id @default(cuid())
-  folder      String   @unique
-  uidValidity Int?
-  lastUid     Int      @default(0)
+  id           String    @id @default(cuid())
+  folder       String    @unique
+  uidValidity  Int?
+  lastUid      Int       @default(0)
   lastSyncedAt DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model JobSource {
-  id                   String          @id @default(cuid())
-  slug                 String          @unique
-  companyName          String
-  companySlug          String
-  segment              String?
-  city                 String?
-  countryCode          String?
-  englishFit           JobEnglishFit   @default(medium)
-  providerHint         String?
-  provider             JobProvider
-  sourceKey            String?
-  apiUrl               String?         @db.Text
-  careersUrl           String          @db.Text
-  status               JobSourceStatus @default(research)
-  priority             Int             @default(100)
-  notes                String?         @db.Text
-  isActive             Boolean         @default(true)
-  lastFetchedAt        DateTime?
+  id                    String          @id @default(cuid())
+  slug                  String          @unique
+  companyName           String
+  companySlug           String
+  segment               String?
+  city                  String?
+  countryCode           String?
+  englishFit            JobEnglishFit   @default(medium)
+  providerHint          String?
+  provider              JobProvider
+  sourceKey             String?
+  apiUrl                String?         @db.Text
+  careersUrl            String          @db.Text
+  status                JobSourceStatus @default(research)
+  priority              Int             @default(100)
+  notes                 String?         @db.Text
+  isActive              Boolean         @default(true)
+  lastFetchedAt         DateTime?
   lastSuccessfulFetchAt DateTime?
-  lastError            String?         @db.Text
-  jobs                 Job[]
-  createdAt            DateTime        @default(now())
-  updatedAt            DateTime        @updatedAt
+  lastError             String?         @db.Text
+  jobs                  Job[]
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
 
   @@unique([provider, sourceKey])
   @@index([companySlug])
@@ -495,43 +553,43 @@ model JobListingPage {
 // SEO Silo Architecture - Categories for CV examples
 model CVCategory {
   id          String       @id @default(cuid())
-  slug        String       @unique  // URL slug: "ict-en-software", "backend-developer-nodejs"
-  name        String                // Display name: "ICT & Software"
-  nameDutch   String                // Dutch name for UI
+  slug        String       @unique // URL slug: "ict-en-software", "backend-developer-nodejs"
+  name        String // Display name: "ICT & Software"
+  nameDutch   String // Dutch name for UI
   description String       @db.Text // SEO description for the page
-  type        CategoryType          // pillar, subhub, or spoke
+  type        CategoryType // pillar, subhub, or spoke
 
   // Hierarchy
-  parentId    String?
-  parent      CVCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
-  children    CVCategory[] @relation("CategoryHierarchy")
+  parentId String?
+  parent   CVCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children CVCategory[] @relation("CategoryHierarchy")
 
   // Content
-  sampleCV    Json?                 // Pre-filled sample CV data for this niche
-  heroTitle   String?               // Hero section title
-  heroText    String?      @db.Text // Hero section description
-  tips        String[]              // Array of tips for this CV type
+  sampleCV  Json? // Pre-filled sample CV data for this niche
+  heroTitle String? // Hero section title
+  heroText  String?  @db.Text // Hero section description
+  tips      String[] // Array of tips for this CV type
 
   // SEO
-  metaTitle   String                // <title> tag
-  metaDesc    String                // meta description
-  keywords    String[]              // Target keywords
+  metaTitle String // <title> tag
+  metaDesc  String // meta description
+  keywords  String[] // Target keywords
 
   // Sibling linking (for internal links)
-  siblingIds  String[]              // IDs of related categories to link to
+  siblingIds String[] // IDs of related categories to link to
 
   // Tracking
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([parentId])
   @@index([type])
 }
 
 enum CategoryType {
-  pillar   // Top-level hub: /cv-voorbeeld/ict-en-software
-  subhub   // Mid-level: /cv-voorbeeld/ict-en-software/developer
-  spoke    // Long-tail: /cv-voorbeeld/ict-en-software/backend-developer-nodejs
+  pillar // Top-level hub: /cv-voorbeeld/ict-en-software
+  subhub // Mid-level: /cv-voorbeeld/ict-en-software/developer
+  spoke // Long-tail: /cv-voorbeeld/ict-en-software/backend-developer-nodejs
 }
 
 enum JobProvider {
@@ -613,4 +671,3 @@ enum JobListingKind {
   role_family_nl
   starter_nl
 }
-

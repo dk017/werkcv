@@ -107,6 +107,12 @@ export async function updateCV(id: string, data: CVData) {
     const parsed = cvSchema.safeParse(data)
     if (!parsed.success) return { success: false, error: parsed.error }
 
+    const locked = await prisma.agencyMatchPack.findFirst({
+        where: { cvDocumentId: id, status: "approved", userId: user.id },
+        select: { id: true },
+    });
+    if (locked) return { success: false, error: 'MATCHPACK_SNAPSHOT_LOCKED' };
+
     const updated = await prisma.cVDocument.updateMany({
         where: { id, userId: user.id },
         data: { data: parsed.data }
@@ -118,6 +124,12 @@ export async function updateCV(id: string, data: CVData) {
 export async function updateCVTemplate(id: string, templateId: string) {
     const user = await getCurrentUser();
     if (!user) return { success: false, error: 'AUTH_REQUIRED' };
+
+    const locked = await prisma.agencyMatchPack.findFirst({
+        where: { cvDocumentId: id, status: "approved", userId: user.id },
+        select: { id: true },
+    });
+    if (locked) return { success: false, error: 'MATCHPACK_SNAPSHOT_LOCKED' };
 
     const agencySubscription = await prisma.agencySubscription.findUnique({
         where: { userId: user.id },
@@ -138,6 +150,12 @@ export async function updateCVTemplate(id: string, templateId: string) {
 export async function updateCVColorTheme(id: string, colorThemeId: string) {
     const user = await getCurrentUser();
     if (!user) return { success: false, error: 'AUTH_REQUIRED' };
+
+    const locked = await prisma.agencyMatchPack.findFirst({
+        where: { cvDocumentId: id, status: "approved", userId: user.id },
+        select: { id: true },
+    });
+    if (locked) return { success: false, error: 'MATCHPACK_SNAPSHOT_LOCKED' };
 
     const agencySubscription = await prisma.agencySubscription.findUnique({
         where: { userId: user.id },

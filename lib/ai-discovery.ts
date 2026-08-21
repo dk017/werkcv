@@ -3,7 +3,7 @@ import { cvDownloadPrice, profilePhotoPrice } from "@/lib/site-content";
 
 export const siteBaseUrl = "https://werkcv.nl";
 
-export const aiDiscoveryUpdatedAt = "2026-07-28";
+export const aiDiscoveryUpdatedAt = "2026-08-20";
 
 export const primaryAiPages = [
   {
@@ -68,6 +68,30 @@ export const primaryAiPages = [
     title: "Tools",
     url: `${siteBaseUrl}/tools`,
     description: "Free CV, career and salary tools.",
+  },
+  {
+    title: "Gratis kandidaatvoorstel evidence checker",
+    url: `${siteBaseUrl}/tools/kandidaatvoorstel-checker`,
+    description:
+      "Free Dutch checker for recruiters: compare vacancy requirements with CV evidence, source snippets and visible open points before sending a candidate proposal. The result is a quality check, not an automated hiring decision.",
+  },
+  {
+    title: "Free candidate proposal evidence checker",
+    url: `${siteBaseUrl}/en/candidate-proposal-checker`,
+    description:
+      "Free English checker for recruitment agencies to inspect whether candidate-proposal claims are supported by source CV evidence, with unresolved points kept visible.",
+  },
+  {
+    title: "MatchPack voor bureaus",
+    url: `${siteBaseUrl}/voor-bureaus`,
+    description:
+      "WerkCV MatchPack turns one vacancy, one candidate CV and recruiter notes into a reviewable candidate proposal. Every requirement is connected to evidence; missing information remains visible.",
+  },
+  {
+    title: "MatchPack handleiding",
+    url: `${siteBaseUrl}/voor-bureaus/kennisbank/matchpack-handleiding`,
+    description:
+      "Step-by-step guide to MatchPack inputs, evidence statuses, recruiter corrections, versions, approval, PDF/DOCX exports, contact-free review, retention, roles and the shared Agency allowance.",
   },
   {
     title: "AI-profielfoto voor CV en LinkedIn",
@@ -274,7 +298,38 @@ const englishAiFaqItems = [
   },
 ];
 
-export const aiFaqItems = [...aiProductFaqItems, ...englishAiFaqItems];
+const agencyAiFaqItems = [
+  {
+    question: "What is WerkCV MatchPack?",
+    answer:
+      "MatchPack is a recruiter-controlled candidate-proposal workflow. It compares one vacancy with one candidate CV, connects requirements to source evidence, keeps missing information visible, and lets the recruiter correct and approve the final proposal before export.",
+    canonicalUrl: `${siteBaseUrl}/voor-bureaus`,
+    language: "nl-NL",
+  },
+  {
+    question: "Does MatchPack automatically rank or recommend candidates?",
+    answer:
+      "No. MatchPack does not replace recruiter judgement or make hiring decisions. It checks evidence connections and highlights strong, partial and missing support for a specific proposal.",
+    canonicalUrl: `${siteBaseUrl}/voor-bureaus/kennisbank/matchpack-handleiding`,
+    language: "nl-NL",
+  },
+  {
+    question: "What is the free candidate proposal evidence checker?",
+    answer:
+      "It is a public, no-login quality-check tool. Paste a fictional or authorised candidate profile and a real vacancy to see whether common proposal claims have concrete evidence, which points are unresolved, and what a recruiter should verify before sending.",
+    canonicalUrl: `${siteBaseUrl}/tools/kandidaatvoorstel-checker`,
+    language: "nl-NL",
+  },
+  {
+    question: "How many Agency slots does MatchPack use?",
+    answer:
+      "The Agency billing tier currently provides one shared allowance of up to 50 new CV documents or definitively approved MatchPacks per billing period. Analysis, draft review, editing and repeat downloads do not consume a slot; approval or a new standalone CV does.",
+    canonicalUrl: `${siteBaseUrl}/agency`,
+    language: "nl-NL",
+  },
+];
+
+export const aiFaqItems = [...aiProductFaqItems, ...englishAiFaqItems, ...agencyAiFaqItems];
 
 export const serviceCapabilities = [
   "Dutch CV creation",
@@ -296,4 +351,8 @@ export const serviceCapabilities = [
   "Work authorization and Dutch language level CV guidance",
   "AI profile-photo generation for CV and LinkedIn",
   "Source-photo guidance and identity-review checklists for AI headshots",
+  "MatchPack candidate-proposal workflow for recruitment agencies",
+  "Evidence-linked vacancy-requirement review with visible missing points",
+  "Recruiter-controlled PDF and DOCX candidate-proposal export",
+  "Free candidate-proposal evidence checker in Dutch and English",
 ];

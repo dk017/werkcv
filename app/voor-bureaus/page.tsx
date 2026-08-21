@@ -130,6 +130,9 @@ export default function VoorBureausPage() {
               Start MatchPack · Agency
             </AgencyContentLink>
           </div>
+          <Link href="/tools/kandidaatvoorstel-checker" className="mt-5 inline-flex text-sm font-black text-emerald-800 underline decoration-2 underline-offset-4">
+            Probeer eerst gratis de Candidate Proposal Evidence Checker →
+          </Link>
           <p className="mt-5 text-sm font-semibold text-slate-500">
             Voor recruitmentbureaus, werving-en-selectiebureaus, detacheerders, outplacement- en re-integratiebureaus en loopbaancoaches die kandidaten op concrete vacatures of trajecten begeleiden.
           </p>

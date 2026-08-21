@@ -3,7 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: 'standalone',
   serverExternalPackages: ['@napi-rs/canvas', 'pdfjs-dist'],
-  turbopack: {},
+  turbopack: {
+    root: process.cwd(),
+  },
 
   async headers() {
     // Keep this policy in report-only mode until production violation reports
@@ -20,7 +22,7 @@ const nextConfig: NextConfig = {
       "style-src 'self' 'unsafe-inline' https://unpkg.com",
       "img-src 'self' data: blob: https://*.clarity.ms https://c.bing.com https://*.tile.openstreetmap.org",
       "font-src 'self' data:",
-      "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com",
+      "connect-src 'self' https://api.openai.com https://www.google-analytics.com https://*.google-analytics.com https://www.googletagmanager.com https://*.clarity.ms https://c.bing.com",
       "worker-src 'self' blob:",
       "upgrade-insecure-requests",
     ].join("; ");
@@ -38,7 +40,7 @@ const nextConfig: NextConfig = {
           { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
           {
             key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            value: 'camera=(), microphone=(self), geolocation=()',
           },
           {
             key: 'Content-Security-Policy-Report-Only',

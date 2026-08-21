@@ -4,6 +4,46 @@ import { prisma } from '@/lib/prisma';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { classifyTrafficSource, parseUserAgent } from '@/lib/analytics-source';
 import { geolocateIp, getClientIp } from '@/lib/geoip';
+import { z } from 'zod';
+
+const shortText = z.string().trim().max(120);
+const agencyLocale = z.enum(['nl', 'en']);
+const agencyEventSchemas: Record<string, z.ZodTypeAny> = {
+    agency_hub_viewed: z.object({ path: shortText }).strict(),
+    agency_guide_index_viewed: z.object({ path: shortText }).strict(),
+    agency_guide_viewed: z.object({ path: shortText, slug: shortText }).strict(),
+    agency_content_cta_clicked: z.object({ path: shortText, location: shortText, destination: shortText }).strict(),
+    agency_roi_completed: z.object({ recruiters: z.number().nonnegative().max(10000), proposalsPerRecruiter: z.number().nonnegative().max(10000), minutesSaved: z.number().nonnegative().max(10000) }).strict(),
+    agency_checkout_started: z.object({ location: shortText, product: z.literal('agency') }).strict(),
+    agency_checkout_failed: z.object({ location: shortText, product: z.literal('agency'), reason: shortText }).strict(),
+    agency_demo_started: z.object({ location: shortText, mode: z.literal('sample') }).strict(),
+    agency_demo_field_changed: z.object({ field: z.enum(['name', 'title', 'summary', 'experience', 'skills']), mode: z.literal('sample') }).strict(),
+    agency_submission_demo_viewed: z.object({ location: shortText }).strict(),
+    agency_submission_demo_tab_changed: z.object({ tab: z.enum(['intro', 'evidence', 'gaps', 'email', 'outputs']) }).strict(),
+    agency_sample_pack_downloaded: z.object({ variant: z.enum(['full', 'anonymized']) }).strict(),
+    agency_sample_output_viewed: z.object({ variant: z.enum(['full', 'anonymized']), location: shortText }).strict(),
+    agency_workspace_started: z.object({ location: shortText }).strict(),
+    agency_docx_cta_clicked: z.object({ path: shortText, location: shortText }).strict(),
+    agency_redaction_cta_clicked: z.object({ path: shortText, location: shortText }).strict(),
+    agency_evidence_checker_viewed: z.object({ locale: agencyLocale }).strict(),
+    agency_evidence_checker_sample_loaded: z.object({ locale: agencyLocale }).strict(),
+    agency_evidence_checker_started: z.object({ locale: agencyLocale, inputType: z.enum(['file', 'text']), sample: z.boolean() }).strict(),
+    agency_evidence_checker_completed: z.object({ locale: agencyLocale, requirementCount: z.number().int().nonnegative().max(100), missingCount: z.number().int().nonnegative().max(100), sample: z.boolean() }).strict(),
+    agency_evidence_checker_failed: z.object({ locale: agencyLocale, reason: shortText }).strict(),
+    agency_evidence_checker_cta_clicked: z.object({ locale: agencyLocale, destination: z.enum(['agency', 'guide']) }).strict(),
+    agency_onboarding_step_clicked: z.object({ step: shortText }).strict(),
+    agency_onboarding_dismissed: z.object({ completed: z.number().int().nonnegative().max(20), total: z.number().int().positive().max(20) }).strict(),
+    matchpack_analysis_started: z.object({ locale: agencyLocale, fileType: z.enum(['pdf', 'docx', 'unknown']) }).strict(),
+    matchpack_analysis_completed: z.object({ locale: agencyLocale, requirementCount: z.number().int().nonnegative().max(100), scoreBand: shortText }).strict(),
+    matchpack_analysis_failed: z.object({ locale: agencyLocale, reason: shortText }).strict(),
+    matchpack_review_opened: z.object({ locale: agencyLocale, status: z.enum(['analyzed', 'approved']) }).strict(),
+    matchpack_draft_saved: z.object({ locale: agencyLocale, selectedVariant: z.enum(['full', 'anonymized']) }).strict(),
+    matchpack_approved: z.object({ locale: agencyLocale, selectedVariant: z.enum(['full', 'anonymized']), requirementCount: z.number().int().nonnegative().max(100) }).strict(),
+    matchpack_pdf_downloaded: z.object({ variant: z.enum(['full', 'anonymized']) }).strict(),
+    matchpack_docx_downloaded: z.object({ variant: z.enum(['full', 'anonymized']) }).strict(),
+    matchpack_email_copied: z.object({ locale: agencyLocale }).strict(),
+    matchpack_client_outcome_saved: z.object({ status: z.enum(['unknown', 'pending', 'accepted', 'rejected', 'withdrawn']) }).strict(),
+};
 
 const PERSISTED_FUNNEL_EVENTS = new Set([
     'page_view',
@@ -99,6 +139,17 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'quick_build_next_clicked',
     'quick_build_design_revealed',
     'quick_build_completed',
+    'voice_mode_opened',
+    'voice_permission_result',
+    'voice_answer_started',
+    'voice_answer_paused',
+    'voice_answer_completed',
+    'voice_interview_reviewed',
+    'voice_proposal_started',
+    'voice_proposal_completed',
+    'voice_proposal_failed',
+    'voice_changes_applied',
+    'voice_mode_cancelled',
     'template_selector_opened',
     'template_selector_closed',
     'template_selected',
@@ -127,6 +178,40 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'contact_form_started',
     'contact_form_submitted',
     'contact_form_failed',
+    'agency_hub_viewed',
+    'agency_guide_index_viewed',
+    'agency_guide_viewed',
+    'agency_content_cta_clicked',
+    'agency_roi_completed',
+    'agency_checkout_started',
+    'agency_checkout_failed',
+    'agency_demo_started',
+    'agency_demo_field_changed',
+    'agency_submission_demo_viewed',
+    'agency_submission_demo_tab_changed',
+    'agency_sample_pack_downloaded',
+    'agency_sample_output_viewed',
+    'agency_workspace_started',
+    'agency_docx_cta_clicked',
+    'agency_redaction_cta_clicked',
+    'matchpack_analysis_started',
+    'matchpack_analysis_completed',
+    'matchpack_analysis_failed',
+    'matchpack_review_opened',
+    'matchpack_draft_saved',
+    'matchpack_approved',
+    'matchpack_pdf_downloaded',
+    'matchpack_email_copied',
+    'matchpack_docx_downloaded',
+    'matchpack_client_outcome_saved',
+    'agency_evidence_checker_viewed',
+    'agency_evidence_checker_sample_loaded',
+    'agency_evidence_checker_started',
+    'agency_evidence_checker_completed',
+    'agency_evidence_checker_failed',
+    'agency_evidence_checker_cta_clicked',
+    'agency_onboarding_step_clicked',
+    'agency_onboarding_dismissed',
 ]);
 
 type PrismaWithOptionalAnalytics = typeof prisma & {
@@ -163,8 +248,17 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Missing event name' }, { status: 400 });
         }
         const safeAttribution = sanitizeAttribution(attribution);
-        const safeProperties: Record<string, unknown> =
+        const rawProperties: Record<string, unknown> =
             properties && typeof properties === 'object' ? properties : {};
+        const agencySchema = agencyEventSchemas[event];
+        if ((event.startsWith('agency_') || event.startsWith('matchpack_')) && !agencySchema) {
+            return NextResponse.json({ error: 'Unsupported event' }, { status: 400 });
+        }
+        const parsedAgencyProperties = agencySchema?.safeParse(rawProperties);
+        if (parsedAgencyProperties && !parsedAgencyProperties.success) {
+            return NextResponse.json({ error: 'Invalid event properties' }, { status: 400 });
+        }
+        const safeProperties = (parsedAgencyProperties?.data || rawProperties) as Record<string, unknown>;
         const cvId = typeof safeProperties.cvId === 'string' ? safeProperties.cvId : null;
         const orderId = typeof safeProperties.orderId === 'string' ? safeProperties.orderId : null;
         const cluster = safeAttribution?.firstTouchCluster || null;

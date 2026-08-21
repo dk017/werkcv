@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { AGENCY_MONTHLY_CV_LIMIT, AGENCY_PLAN_CODE, AGENCY_CURRENCY } from "@/lib/agency-plan";
+import { enqueueAgencyWelcomeEmail } from "@/lib/agency-email-outbox";
 
 export type AgencyBillingSyncInput = {
   eventType: string;
@@ -96,6 +97,12 @@ export async function syncAgencyBilling(input: AgencyBillingSyncInput) {
     companyName: input.companyName || subscription?.companyName || null,
     website: input.website || subscription?.website || null,
     monthlyLimit: AGENCY_MONTHLY_CV_LIMIT,
+    retentionPolicySetAt: subscription
+      ? subscription.retentionPolicySetAt
+      : (status === "active" && endsAt > now ? now : null),
+    retentionUpdatedAt: subscription
+      ? subscription.retentionUpdatedAt
+      : (status === "active" && endsAt > now ? now : null),
     currentPeriodStart: startsAt,
     currentPeriodEnd: endsAt,
     cancelAtPeriodEnd: input.cancelAtPeriodEnd ?? subscription?.cancelAtPeriodEnd ?? false,
@@ -152,6 +159,10 @@ export async function syncAgencyBilling(input: AgencyBillingSyncInput) {
         paidAt: input.payment.paidAt || now,
       },
     });
+  }
+
+  if (["active", "cancelled", "canceled"].includes(status) && endsAt > now) {
+    await enqueueAgencyWelcomeEmail({ subscriptionId: saved.id, recipientEmail: email, locale: "nl" });
   }
 
   return saved;

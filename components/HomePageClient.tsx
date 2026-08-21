@@ -7,6 +7,8 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import NavUserMenu from "@/components/NavUserMenu";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { BrandShell } from "@/components/brand/BrandShell";
+import { SiteHeader } from "@/components/brand/SiteHeader";
 import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
 import type { TemplateConfig } from "@/lib/templates";
 import { getStoredAttribution, track } from "@/lib/analytics";
@@ -184,6 +186,7 @@ export default function HomePageClient({
     ];
 
     return (
+        <BrandShell>
         <div
             className="min-h-screen bg-[#FFFEF0]"
             onDrop={handleDrop}
@@ -229,42 +232,17 @@ export default function HomePageClient({
                 </div>
             )}
 
-            {/* ============================================================ */}
-            {/* HEADER - Sticky with navigation */}
-            {/* ============================================================ */}
-            <header className="relative z-10 border-b-4 border-black bg-white sticky top-0">
-                <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Link href="/" className="font-black text-2xl sm:text-3xl tracking-tight text-black">
-                            Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-                        </Link>
-                    </div>
-                    <nav className="hidden md:flex items-center gap-6 text-sm font-bold text-black">
-                        <Link href="/templates" className="hover:text-yellow-600 transition-colors">Templates</Link>
-                        <Link href="/cv-voorbeelden" className="hover:text-yellow-600 transition-colors">CV Voorbeelden</Link>
-                        <Link href="/cv-tips" className="hover:text-yellow-600 transition-colors">CV Tips</Link>
-                        <Link href="/tools" className="hover:text-yellow-600 transition-colors">Tools</Link>
-                        <Link href="/prijzen" className="hover:text-yellow-600 transition-colors">Prijzen</Link>
-                    </nav>
-                    <div className="flex items-center gap-2 sm:gap-4">
-                        <LanguageSwitcher tone="solid" className="inline-flex" />
-                        <NavUserMenu />
-                        <Link
-                            href="/editor?template=professional&startSource=home_header"
-                            onClick={() => track('cta_clicked', { location: 'header', label: 'Begin gratis' })}
-                            className="bg-yellow-400 text-black px-4 py-2 font-black text-sm border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-                            style={{ borderWidth: '3px' }}
-                        >
-                            Begin gratis
-                        </Link>
-                    </div>
-                </div>
-            </header>
+            <SiteHeader
+                rightContent={<><LanguageSwitcher tone="brand" /><NavUserMenu tone="brand" /></>}
+                primaryHref="/editor?template=professional&startSource=home_header"
+                primaryLabel="Begin gratis"
+                primaryOnClick={() => track('cta_clicked', { location: 'header', label: 'Begin gratis' })}
+            />
 
             {/* ============================================================ */}
             {/* HERO - Two column with template mockup */}
             {/* ============================================================ */}
-            <section className="relative z-10 border-b-4 border-black bg-gradient-to-br from-[#FFFEF0] via-yellow-50 to-blue-50 overflow-hidden">
+            <section className="relative z-10 border-b border-black bg-gradient-to-br from-[#FFFEF0] via-yellow-50 to-blue-50 overflow-hidden">
                 {/* Decorative elements */}
                 <div className="absolute top-16 left-8 w-24 h-24 bg-yellow-300 rounded-full opacity-30" />
                 <div className="absolute bottom-16 right-12 w-32 h-32 bg-blue-300 rounded-full opacity-20" />
@@ -274,19 +252,19 @@ export default function HomePageClient({
                     <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
                         {/* Left: Copy */}
                         <div className="flex-1 text-center lg:text-left">
-                            <div className="mb-4 inline-block bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700 border-2 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]">
+                            <div className="wk-eyebrow mb-4">
                                 Nederlandse CV builder
                             </div>
-                            <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-black leading-tight mb-6">
+                            <h1 className="max-w-3xl text-4xl sm:text-5xl md:text-6xl font-black text-black leading-tight mb-6">
                                 Maak een{" "}
-                                <span className="bg-yellow-400 px-2 -rotate-1 inline-block border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                                <span className="wk-hero-highlight">
                                     ATS-vriendelijk
                                 </span>{" "}
                                 CV voor Nederlandse vacatures
                             </h1>
                             <p className="text-lg md:text-xl font-medium text-gray-700 mb-8 max-w-xl mx-auto lg:mx-0">
                                 WerkCV.nl helpt je snel een professioneel CV op te bouwen met {templateCount}+ templates die rustig, recruiter-proof en ATS-vriendelijk blijven. Maak je CV eerst af, bekijk de volledige preview en betaal pas als je de PDF echt wilt downloaden.{" "}
-                                <span className="bg-blue-200 px-1">
+                                <span className="wk-inline-highlight">
                                     Geen abonnement:{" "}
                                     <Link href="/cv-maken-zonder-abonnement" className="underline decoration-2 underline-offset-2">
                                         eenmalig betalen
@@ -298,13 +276,13 @@ export default function HomePageClient({
                                 <Link
                                     href="/editor?template=professional&startSource=home_hero_primary"
                                     onClick={() => track('cta_clicked', { location: 'hero', label: 'Begin nu gratis' })}
-                                    className="bg-yellow-400 text-black px-8 py-4 font-black text-lg border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
+                                    className="wk-button wk-button-primary min-h-12 px-7 text-base"
                                 >
                                     Begin nu gratis
                                 </Link>
                                 <button
                                     onClick={() => { track('cta_clicked', { location: 'hero', label: 'Upload bestaand CV' }); fileInputRef.current?.click(); }}
-                                    className="bg-white text-black px-8 py-4 font-black text-lg border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center cursor-pointer"
+                                    className="wk-button wk-button-secondary min-h-12 px-7 text-base"
                                 >
                                     Upload bestaand CV
                                 </button>
@@ -321,10 +299,10 @@ export default function HomePageClient({
                                 .
                             </div>
                             <div className="mt-5 flex flex-wrap gap-3 justify-center lg:justify-start text-xs font-black uppercase tracking-[0.2em] text-black">
-                                <span className="px-3 py-1 border-2 border-black bg-white">Voor Nederlandse sollicitaties</span>
-                                <span className="px-3 py-1 border-2 border-black bg-white">ATS-vriendelijke templates</span>
-                                <span className="px-3 py-1 border-2 border-black bg-white">Eenmalig per CV</span>
-                                <span className="px-3 py-1 border-2 border-black bg-white">Later opnieuw downloaden</span>
+                                <span className="wk-trust-pill">Voor Nederlandse sollicitaties</span>
+                                <span className="wk-trust-pill">ATS-vriendelijke templates</span>
+                                <span className="wk-trust-pill">Eenmalig per CV</span>
+                                <span className="wk-trust-pill">Later opnieuw downloaden</span>
                             </div>
                         </div>
 
@@ -866,8 +844,9 @@ export default function HomePageClient({
             {/* ============================================================ */}
             {/* FOOTER */}
             {/* ============================================================ */}
-            <Footer />
+            <Footer variant="brand" />
         </div>
+        </BrandShell>
     );
 }
 

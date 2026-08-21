@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createHash } from "node:crypto";
 import { Prisma } from "@prisma/client";
 import { getCurrentUserFromRequest } from "@/lib/auth";
 import { canCreateAgencyWork, getAgencyAccessForUser } from "@/lib/agency-access";
 import { prisma } from "@/lib/prisma";
-import { extractTextFromFile, parseCVText } from "@/lib/cv-parser";
+import { extractTextFromFileWithPages, parseCVText } from "@/lib/cv-parser";
+import { createMatchPackSource } from "@/lib/agency-matchpack-source";
 import {
   anonymizeCvData,
   attachEvidenceReferences,
@@ -18,6 +18,7 @@ import {
 import { matchCvVacature } from "@/lib/tools/cv-vacature-match";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
 import { isAllowedSameOriginRequest } from "@/lib/request-origin";
+import { calculateNewPackRetentionExpiry } from "@/lib/agency-retention";
 
 export const runtime = "nodejs";
 
@@ -96,6 +97,12 @@ export async function POST(request: NextRequest) {
   if (!canCreateAgencyWork(access)) {
     return json({ error: "Your agency role can review existing proposals but cannot create new ones.", code: "ROLE_READ_ONLY" }, 403);
   }
+  if (!access.subscription?.retentionPolicySetAt) {
+    return json({
+      error: "Choose and confirm your Agency retention period before creating a MatchPack.",
+      code: "RETENTION_POLICY_REQUIRED",
+    }, 409);
+  }
 
   let stage = "read_form_data";
   try {
@@ -132,10 +139,12 @@ export async function POST(request: NextRequest) {
     }
 
     stage = "extract_text";
-    const cvText = (await extractTextFromFile(buffer, `upload.${extension}`, {
+    const extracted = await extractTextFromFileWithPages(buffer, `upload.${extension}`, {
       maxPdfPages: MATCH_PACK_MAX_PDF_PAGES,
       maxTextChars: MATCH_PACK_MAX_CV_TEXT_CHARS,
-    })).trim();
+    });
+    const source = createMatchPackSource(extracted.fileType, extracted.text, extracted.pages);
+    const cvText = source.text;
     if (cvText.length < 120) {
       return json({
         error: "We could not find enough readable text in this CV. Use a text-based PDF or DOCX.",
@@ -151,11 +160,13 @@ export async function POST(request: NextRequest) {
       await matchCvVacature(cvText, input.data.vacancyText, input.data.locale),
       cvText,
       extension === "pdf" || extension === "docx" ? extension : "unknown",
+      input.data.vacancyText,
+      source.sourceMap,
     );
     const anonymized = anonymizeCvData(candidateData, input.data.locale);
     const analysis = createMatchPackAnalysis(result, anonymized, {
       fileType: extension === "pdf" || extension === "docx" ? extension : "unknown",
-      digest: createHash("sha256").update(cvText).digest("hex"),
+      digest: source.digest,
     });
     const submissionData = createDefaultMatchPackSubmission(
       candidateData,
@@ -173,6 +184,9 @@ export async function POST(request: NextRequest) {
       where: { ownerId: ownerUserId, isDefault: true },
       select: { id: true, templateId: true, colorThemeId: true },
     });
+    const retentionExpiresAt = access.subscription?.retentionPolicySetAt
+      ? calculateNewPackRetentionExpiry(access.subscription.retentionDays)
+      : null;
     const pack = await prisma.agencyMatchPack.create({
       data: {
         userId: ownerUserId,
@@ -181,7 +195,9 @@ export async function POST(request: NextRequest) {
         vacancyText: input.data.vacancyText,
         locale: input.data.locale,
         sourceFileType: extension,
-        sourceTextDigest: createHash("sha256").update(cvText).digest("hex"),
+        sourceText: source.text,
+        sourceMap: source.sourceMap as unknown as Prisma.InputJsonValue,
+        sourceTextDigest: source.digest,
         originalCandidateData: candidateData as unknown as Prisma.InputJsonValue,
         candidateData: candidateData as unknown as Prisma.InputJsonValue,
         anonymizedData: anonymized.data as unknown as Prisma.InputJsonValue,
@@ -201,6 +217,7 @@ export async function POST(request: NextRequest) {
         templateId: defaultAgencyTemplate?.templateId || access.subscription?.templateId || "professional",
         colorThemeId: defaultAgencyTemplate?.colorThemeId || access.subscription?.colorThemeId || "classic-blue",
         agencyTemplateId: defaultAgencyTemplate?.id || null,
+        retentionExpiresAt,
         status: "analyzed",
       },
       select: {
@@ -218,6 +235,7 @@ export async function POST(request: NextRequest) {
         status: true,
         cvDocumentId: true,
         approvedAt: true,
+        retentionExpiresAt: true,
         createdAt: true,
         updatedAt: true,
         sourceTextDigest: true,
