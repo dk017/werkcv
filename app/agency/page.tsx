@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
 import AgencyCtaLink from "@/components/agency/AgencyCtaLink";
 import AgencySubmissionDemo from "@/components/agency/AgencySubmissionDemo";
+import AgencyInteractiveDemo from "@/components/agency/AgencyInteractiveDemo";
 import AgencyRoiCalculator from "@/components/agency/AgencyRoiCalculator";
 import { FAQJsonLd, JsonLd, OrganizationJsonLd } from "@/components/seo/JsonLd";
 import { isAgencyDodoConfigured } from "@/lib/dodo";
@@ -130,6 +131,7 @@ export default function AgencyPage() {
         </section>
 
         <AgencySubmissionDemo />
+        <AgencyInteractiveDemo />
 
         <section id="hoe-het-werkt" className="py-14 sm:py-20">
           <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">Van bron naar gecontroleerd voorstel</p><h2 className="mt-3 max-w-3xl text-3xl font-black tracking-tight sm:text-4xl">De recruiter blijft beslissen. WerkCV maakt het voorbereidende werk controleerbaar.</h2>

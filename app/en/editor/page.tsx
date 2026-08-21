@@ -6,7 +6,6 @@ import { createEditorDraft } from "@/lib/editor-drafts";
 import { cookies } from "next/headers";
 import { normalizeStartSource, PENDING_START_SOURCE_COOKIE, readEncodedStartSource } from "@/lib/start-source";
 import { isAgencyAccessError } from "@/lib/agency-access";
-import { isVoiceCvEnabled } from "@/lib/voice-feature";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -82,7 +81,6 @@ export default async function EnglishEditorPage({
       accountEmail={user.email}
       uiLanguage="en"
       agencyRouteLocked={cv.agencyRouteLocked}
-      voiceEnabled={isVoiceCvEnabled()}
     />
   );
 }

@@ -668,7 +668,6 @@ export function track<E extends AnalyticsEvent['event']>(
     sendToGA4(event, properties);
 
 }
-
 // ============================================================
 // Internal endpoint — fire-and-forget via sendBeacon + fetch fallback
 // ============================================================

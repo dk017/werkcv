@@ -94,7 +94,6 @@ const inputClassName =
 function getSkillsValue(data: CVData): string {
   return data.skills.map((skill) => skill.name).join(", ");
 }
-
 export default function AgencyInteractiveDemo() {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<CVData>(initialDemoData);

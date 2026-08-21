@@ -18,7 +18,6 @@ function formatDate(value: Date | null | undefined): string {
     year: "numeric",
   }).format(value);
 }
-
 export default async function AgencyAccountPage({
   searchParams,
 }: {
