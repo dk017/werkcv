@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
 import AgencyAccountShell from "@/components/agency/AgencyAccountShell";
 import AgencyMatchPackWorkspace from "@/components/agency/AgencyMatchPackWorkspace";
+import { candidateAcknowledgementEnabled, proposalClaimVerifierEnabled } from "@/lib/agency-feature-flags";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -66,6 +67,8 @@ export default async function AgencyMatchPackPage() {
             canDeleteDraft={canDeleteAgencyDraft(access)}
             canDeleteApproved={canDeleteApprovedAgencyWork(access)}
             canOpenCv={access.isOwner}
+            claimVerifierEnabled={proposalClaimVerifierEnabled()}
+            candidateAcknowledgementEnabled={candidateAcknowledgementEnabled()}
           />
         ) : (
           <section className="wk-agency-panel wk-agency-locked-state max-w-2xl">

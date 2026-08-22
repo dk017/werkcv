@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import CandidateProposalEvidenceChecker from "@/components/agency/CandidateProposalEvidenceChecker";
+import ProposalClaimVerifier from "@/components/agency/ProposalClaimVerifier";
 import CandidateProposalEvidenceGuide from "@/components/agency/CandidateProposalEvidenceGuide";
 import { BrandShell } from "@/components/brand/BrandShell";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getLanguageAlternates } from "@/lib/i18n/route-pairs";
+import { proposalClaimVerifierEnabled } from "@/lib/agency-feature-flags";
 
 const pageUrl = "https://werkcv.nl/en/candidate-proposal-checker";
 const title = "Free candidate proposal evidence checker for recruitment agencies | WerkCV";
@@ -37,7 +39,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function CandidateProposalCheckerEnglishPage() {
+export default async function CandidateProposalCheckerEnglishPage({ searchParams }: { searchParams: Promise<{ mode?: string }> }) {
+  const enabled = proposalClaimVerifierEnabled();
+  const mode = (await searchParams).mode;
   const webApplicationSchema = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -72,7 +76,7 @@ export default function CandidateProposalCheckerEnglishPage() {
 
   return (
     <BrandShell>
-      <CandidateProposalEvidenceChecker locale="en" />
+      {enabled && mode !== "requirements" ? <ProposalClaimVerifier locale="en" /> : <CandidateProposalEvidenceChecker locale="en" claimVerifierEnabled={enabled} />}
       <section className="mx-auto max-w-6xl px-5 pt-8 sm:px-6">
         <Breadcrumbs items={[{ label: "Home", href: "/en" }, { label: "Candidate proposal checker", href: "/en/candidate-proposal-checker" }]} />
       </section>

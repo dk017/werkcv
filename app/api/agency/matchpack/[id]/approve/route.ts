@@ -11,6 +11,7 @@ import { matchPackApprovalRequestSchema, MatchPackReviewError } from "@/lib/agen
 import { MatchPackOutputError } from "@/lib/agency-output-projection";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
 import { isAllowedSameOriginRequest } from "@/lib/request-origin";
+import { AgencyClaimGateError } from "@/lib/agency-claim-review";
 
 export const runtime = "nodejs";
 
@@ -90,6 +91,7 @@ export async function POST(
     if (isAgencyAccessError(error)) return accessErrorResponse(error);
     if (error instanceof MatchPackReviewError) return json({ error: error.message, code: error.code }, 409);
     if (error instanceof MatchPackOutputError) return json({ error: error.message, code: error.code }, 409);
+    if (error instanceof AgencyClaimGateError) return json({ error: error.message, code: error.code }, 409);
     if (error instanceof Error && error.message === "MATCH_PACK_NOT_FOUND") {
       return json({ error: "MatchPack not found.", code: "NOT_FOUND" }, 404);
     }
@@ -101,6 +103,15 @@ export async function POST(
     }
     if (error instanceof Error && error.message === "EVIDENCE_UNRESOLVED") {
       return json({ error: "The saved source cannot be verified. Review the source evidence again.", code: "EVIDENCE_UNRESOLVED" }, 409);
+    }
+    if (error instanceof Error && error.message === "CANDIDATE_REVIEW_REQUIRED") {
+      return json({ error: "The candidate must acknowledge the current version, or an eligible owner/reviewer override must be recorded.", code: "CANDIDATE_REVIEW_REQUIRED" }, 409);
+    }
+    if (error instanceof Error && error.message === "CANDIDATE_DECLINED") {
+      return json({ error: "The candidate declined sharing this version. Approval is blocked.", code: "CANDIDATE_DECLINED" }, 409);
+    }
+    if (error instanceof Error && error.message === "CANDIDATE_CORRECTIONS_PENDING") {
+      return json({ error: "Resolve the candidate's corrections and send a new review before approval.", code: "CANDIDATE_CORRECTIONS_PENDING" }, 409);
     }
     console.error("agency_matchpack_approval_failed", {
       userId: user.id,

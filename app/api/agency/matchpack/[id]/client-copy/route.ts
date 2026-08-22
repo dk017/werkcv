@@ -20,7 +20,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
   const pack = await prisma.agencyMatchPack.findFirst({
     where: { id: rawId.trim().slice(0, 120), userId: access.ownerUserId || user.id },
     select: {
-      candidateData: true, analysis: true, submissionData: true, vacancyTitle: true, vacancyText: true, sourceText: true, sourceMap: true, locale: true,
+      candidateData: true, analysis: true, claimVerificationData: true, submissionData: true, vacancyTitle: true, vacancyText: true, sourceText: true, sourceMap: true, locale: true,
       status: true, templateId: true, colorThemeId: true, agencyTemplateId: true, approvalData: true, approvedRevisionVersion: true, approvedSnapshotDigest: true,
     },
   });
@@ -34,6 +34,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
       candidateData,
       submissionData: submission,
       analysis,
+      claimVerificationData: pack.claimVerificationData,
       templateId: pack.templateId,
       colorThemeId: pack.colorThemeId,
       agencyTemplateId: pack.agencyTemplateId,

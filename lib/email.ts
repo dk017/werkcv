@@ -1,6 +1,14 @@
 import nodemailer from "nodemailer";
 
-export type AgencyTransactionalEmailKind = "agency_welcome_v1";
+export type AgencyTransactionalEmailKind = "agency_welcome_v1" | "candidate_acknowledgement_invite_v1";
+
+export type CandidateAcknowledgementEmailPayload = {
+  invitationUrl: string;
+  agencyName: string;
+  recipientOrganization: string;
+  vacancyTitle: string;
+  expiresAt: string;
+};
 
 function transporter() {
   const host = process.env.SMTP_HOST;
@@ -15,7 +23,34 @@ function transporter() {
   });
 }
 
-export function agencyTransactionalEmailTemplate(kind: AgencyTransactionalEmailKind, locale: string) {
+export function agencyTransactionalEmailTemplate(kind: AgencyTransactionalEmailKind, locale: string, payload?: CandidateAcknowledgementEmailPayload) {
+  if (kind === "candidate_acknowledgement_invite_v1") {
+    if (!payload) throw new Error("EMAIL_PAYLOAD_MISSING");
+    if (locale === "en") return {
+      subject: `${payload.agencyName} asks you to check a candidate proposal`,
+      text: [
+        `${payload.agencyName} plans to present your information to ${payload.recipientOrganization} for the vacancy ${payload.vacancyTitle}.`,
+        "",
+        "Open the secure review to check the exact CV and client-facing information, suggest corrections, confirm the displayed version or decline sharing this version.",
+        payload.invitationUrl,
+        "",
+        `The invitation expires on ${new Date(payload.expiresAt).toLocaleString("en-GB", { timeZone: "Europe/Amsterdam" })}.`,
+        "Opening the link confirms control of this mailbox only. It is not identity verification or an electronic signature.",
+      ].join("\n"),
+    };
+    return {
+      subject: `${payload.agencyName} vraagt je een kandidaatvoorstel te controleren`,
+      text: [
+        `${payload.agencyName} wil jouw informatie voorstellen aan ${payload.recipientOrganization} voor de vacature ${payload.vacancyTitle}.`,
+        "",
+        "Open de beveiligde review om het exacte CV en de klantinformatie te controleren, correcties voor te stellen, deze versie te bevestigen of het delen van deze versie af te wijzen.",
+        payload.invitationUrl,
+        "",
+        `De uitnodiging verloopt op ${new Date(payload.expiresAt).toLocaleString("nl-NL", { timeZone: "Europe/Amsterdam" })}.`,
+        "Het openen van de link bevestigt alleen toegang tot deze mailbox. Het is geen identiteitscontrole of elektronische handtekening.",
+      ].join("\n"),
+    };
+  }
   if (kind !== "agency_welcome_v1") throw new Error("EMAIL_TEMPLATE_NOT_FOUND");
   if (locale === "en") {
     return {
@@ -55,10 +90,11 @@ export async function sendAgencyTransactionalEmail(input: {
   kind: AgencyTransactionalEmailKind;
   recipientEmail: string;
   locale: string;
+  payload?: CandidateAcknowledgementEmailPayload;
 }) {
   const smtp = transporter();
   if (!smtp) throw new Error("SMTP_NOT_CONFIGURED");
-  const template = agencyTransactionalEmailTemplate(input.kind, input.locale);
+  const template = agencyTransactionalEmailTemplate(input.kind, input.locale, input.payload);
   await smtp.sendMail({
     from: process.env.AUTH_FROM_EMAIL || process.env.SMTP_USER || "noreply@werkcv.nl",
     to: input.recipientEmail,

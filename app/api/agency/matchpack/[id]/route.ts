@@ -75,6 +75,7 @@ export async function GET(
       candidateData: true,
       anonymizedData: true,
       analysis: true,
+      claimVerificationData: true,
       submissionData: true,
       clientOutcome: true,
       productFeedbackData: true,
@@ -177,6 +178,7 @@ export async function PATCH(
       candidateData: true,
       submissionData: true,
       analysis: true,
+      claimVerificationData: true,
       sourceText: true,
       sourceMap: true,
     },
@@ -232,6 +234,7 @@ export async function PATCH(
     JSON.stringify(existingSubmission) !== JSON.stringify(payload.data.submissionData) ? "submissionData" : null,
     JSON.stringify(existingAnalysis) !== JSON.stringify(updatedAnalysis) ? "analysis" : null,
   ].filter((field): field is string => Boolean(field));
+  const clientVisibleChanged = changedFields.includes("candidateData") || changedFields.includes("submissionData");
 
   const updated = await prisma.$transaction(async (tx) => {
     const savedAt = new Date();
@@ -242,6 +245,7 @@ export async function PATCH(
         anonymizedData: anonymized.data as unknown as Prisma.InputJsonValue,
         submissionData: payload.data.submissionData as unknown as Prisma.InputJsonValue,
         analysis: updatedAnalysis as unknown as Prisma.InputJsonValue,
+        ...(clientVisibleChanged ? { claimVerificationData: Prisma.DbNull } : {}),
         updatedAt: savedAt,
         retentionExpiresAt: calculateNewPackRetentionExpiry(result.access.subscription!.retentionDays, savedAt),
       },
@@ -263,10 +267,20 @@ export async function PATCH(
         candidateData: payload.data.candidateData as unknown as Prisma.InputJsonValue,
         submissionData: payload.data.submissionData as unknown as Prisma.InputJsonValue,
         analysis: updatedAnalysis as unknown as Prisma.InputJsonValue,
+        claimVerificationData: clientVisibleChanged
+          ? Prisma.DbNull
+          : pack.claimVerificationData as Prisma.InputJsonValue,
         changedFields: changedFields.length ? changedFields : ["review"],
         createdById: result.user.id,
       },
     });
+
+    if (clientVisibleChanged) {
+      await tx.agencyCandidateReview.updateMany({
+        where: { matchPackId: pack.id, status: { notIn: ["revoked", "stale"] } },
+        data: { status: "stale", revokedAt: savedAt, tokenHash: null },
+      });
+    }
 
     return tx.agencyMatchPack.findUniqueOrThrow({
       where: { id: pack.id },
@@ -275,6 +289,7 @@ export async function PATCH(
         candidateData: true,
         anonymizedData: true,
         analysis: true,
+        claimVerificationData: true,
         submissionData: true,
         updatedAt: true,
         revisions: {

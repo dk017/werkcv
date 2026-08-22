@@ -151,6 +151,7 @@ async function deletePackContent(
       updatedAt: true,
       retentionExpiresAt: true,
       cvDocumentId: true,
+      candidateReviews: { select: { id: true } },
     },
   });
   if (!pack) return null;
@@ -163,6 +164,11 @@ async function deletePackContent(
   }
 
   const revisionsDeleted = await tx.agencyMatchPackRevision.count({ where: { matchPackId: pack.id } });
+  if (pack.candidateReviews.length) {
+    await tx.agencyTransactionalEmail.deleteMany({
+      where: { entityType: "candidate_review", entityId: { in: pack.candidateReviews.map((review) => review.id) } },
+    });
+  }
   let cvDocumentsDeleted = 0;
 
   if (pack.cvDocumentId) {

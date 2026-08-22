@@ -10,7 +10,9 @@ import {
   parseStoredMatchPackData,
   parseStoredMatchPackSubmission,
 } from "@/lib/agency-matchpack";
-import { createApprovedSnapshotDigest, approvalDataSchema } from "@/lib/agency-matchpack-approval";
+import { createApprovedSnapshotDigest, createApprovedSnapshotDigestV2, approvalDataSchema } from "@/lib/agency-matchpack-approval";
+import { assertClaimsReadyForApproval } from "@/lib/agency-claim-review";
+import { candidateAcknowledgementEnabled, proposalClaimVerifierEnabled } from "@/lib/agency-feature-flags";
 import { buildApprovedMatchPackOutput } from "@/lib/agency-output-projection";
 import { validateMatchPackReviewForApproval } from "@/lib/agency-matchpack-review";
 import { matchPackSourceMapSchema } from "@/lib/agency-matchpack-source";
@@ -50,6 +52,9 @@ type AgencySubscriptionLike = {
   onboardingDismissedAt: Date | null;
   onboardingExampleViewedAt: Date | null;
   excludeFromProductMetrics: boolean;
+  legalName: string | null;
+  privacyPolicyUrl: string | null;
+  privacyContactEmail: string | null;
 };
 
 export type AgencyAccessSnapshot = {
@@ -422,6 +427,7 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
         candidateData: true,
         submissionData: true,
         analysis: true,
+        claimVerificationData: true,
         vacancyTitle: true,
         vacancyText: true,
         locale: true,
@@ -438,6 +444,14 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
           select: { version: true },
           orderBy: { version: "desc" },
           take: 1,
+        },
+        candidateReviews: {
+          orderBy: { createdAt: "desc" },
+          take: 1,
+          include: {
+            suggestions: { where: { status: "pending" }, select: { id: true } },
+            events: { where: { type: "override_recorded" }, orderBy: { createdAt: "desc" }, take: 1 },
+          },
         },
       },
     });
@@ -478,6 +492,56 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
     }
     if (!pack.sourceText || !pack.sourceMap || !pack.submissionData) {
       throw new Error("EVIDENCE_UNRESOLVED");
+    }
+
+    const claimGateEnabled = proposalClaimVerifierEnabled();
+    const acknowledgementGateEnabled = candidateAcknowledgementEnabled();
+    const latestCandidateReview = pack.candidateReviews[0] || null;
+    let candidateReviewAssurance: {
+      kind: "candidate_acknowledgement";
+      reviewId: string;
+      snapshotDigest: string;
+      respondedAt: string;
+    } | {
+      kind: "reviewer_override";
+      reviewId: string;
+      eventId: string;
+      reason: string;
+      overriddenAt: string;
+      overriddenById: string;
+    } | null = null;
+
+    if (acknowledgementGateEnabled) {
+      if (!latestCandidateReview || latestCandidateReview.revisionVersion !== data.expectedRevisionVersion) {
+        throw new Error("CANDIDATE_REVIEW_REQUIRED");
+      }
+      if (latestCandidateReview.candidateResponse === "declined") throw new Error("CANDIDATE_DECLINED");
+      if (latestCandidateReview.suggestions.length || latestCandidateReview.candidateResponse === "corrections_requested") {
+        throw new Error("CANDIDATE_CORRECTIONS_PENDING");
+      }
+      if (latestCandidateReview.candidateResponse === "confirmed" && latestCandidateReview.respondedAt) {
+        candidateReviewAssurance = {
+          kind: "candidate_acknowledgement",
+          reviewId: latestCandidateReview.id,
+          snapshotDigest: latestCandidateReview.snapshotDigest,
+          respondedAt: latestCandidateReview.respondedAt.toISOString(),
+        };
+      } else if (latestCandidateReview.status === "overridden" && latestCandidateReview.overrideReason
+        && latestCandidateReview.overriddenAt && latestCandidateReview.overriddenById && latestCandidateReview.events[0]) {
+        candidateReviewAssurance = {
+          kind: "reviewer_override",
+          reviewId: latestCandidateReview.id,
+          eventId: latestCandidateReview.events[0].id,
+          reason: latestCandidateReview.overrideReason,
+          overriddenAt: latestCandidateReview.overriddenAt.toISOString(),
+          overriddenById: latestCandidateReview.overriddenById,
+        };
+      } else {
+        throw new Error("CANDIDATE_REVIEW_REQUIRED");
+      }
+    }
+    if (claimGateEnabled) {
+      assertClaimsReadyForApproval(pack.claimVerificationData, candidateReviewAssurance?.kind === "candidate_acknowledgement");
     }
 
     const approvedData = parseStoredMatchPackData(pack.candidateData);
@@ -551,23 +615,37 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
       )
       : null;
     const approvalData = approvalDataSchema.parse({
-      version: 1,
+      version: claimGateEnabled || acknowledgementGateEnabled ? 2 : 1,
       selectedVariant: data.selectedVariant,
       confirmations: data.confirmations,
       approvedAt: approvedAt.toISOString(),
       approvedById: data.approvedById,
       revisionVersion: data.expectedRevisionVersion,
+      ...(claimGateEnabled || acknowledgementGateEnabled ? { candidateReviewAssurance } : {}),
     });
-    const approvedSnapshotDigest = createApprovedSnapshotDigest({
-      candidateData: approvedData,
-      submissionData,
-      analysis,
-      selectedVariant: data.selectedVariant,
-      templateId: pack.templateId,
-      colorThemeId: pack.colorThemeId,
-      agencyTemplateId: pack.agencyTemplateId,
-      revisionVersion: data.expectedRevisionVersion,
-    });
+    const approvedSnapshotDigest = approvalData.version === 1
+      ? createApprovedSnapshotDigest({
+        candidateData: approvedData,
+        submissionData,
+        analysis,
+        selectedVariant: data.selectedVariant,
+        templateId: pack.templateId,
+        colorThemeId: pack.colorThemeId,
+        agencyTemplateId: pack.agencyTemplateId,
+        revisionVersion: data.expectedRevisionVersion,
+      })
+      : createApprovedSnapshotDigestV2({
+        candidateData: approvedData,
+        submissionData,
+        analysis,
+        claimVerificationData: pack.claimVerificationData,
+        candidateReviewAssurance,
+        selectedVariant: data.selectedVariant,
+        templateId: pack.templateId,
+        colorThemeId: pack.colorThemeId,
+        agencyTemplateId: pack.agencyTemplateId,
+        revisionVersion: data.expectedRevisionVersion,
+      });
     const updateResult = await tx.agencyMatchPack.updateMany({
       where: {
         id: data.matchPackId,

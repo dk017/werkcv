@@ -573,6 +573,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.78,
         },
         {
+            url: `${baseUrl}/voor-bureaus/methodologie/claim-evidence-benchmark`,
+            lastModified: new Date('2026-08-22'),
+            changeFrequency: 'monthly',
+            priority: 0.68,
+        },
+        {
             url: `${baseUrl}/en`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -583,6 +589,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date('2026-08-20'),
             changeFrequency: 'weekly',
             priority: 0.75,
+        },
+        {
+            url: `${baseUrl}/en/agency/methodology/claim-evidence-benchmark`,
+            lastModified: new Date('2026-08-22'),
+            changeFrequency: 'monthly',
+            priority: 0.65,
         },
         {
             url: `${baseUrl}/en/expat-cv-netherlands`,

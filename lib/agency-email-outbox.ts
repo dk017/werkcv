@@ -3,7 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { sendAgencyTransactionalEmail, type AgencyTransactionalEmailKind } from "@/lib/email";
 
 export async function enqueueAgencyWelcomeEmail(input: { subscriptionId: string; recipientEmail: string; locale?: string }) {
-  const where = { subscriptionId_kind: { subscriptionId: input.subscriptionId, kind: "agency_welcome_v1" } };
+  const dedupeKey = `agency:${input.subscriptionId}:agency_welcome_v1`;
+  const where = { dedupeKey };
   try {
     return await prisma.agencyTransactionalEmail.upsert({
       where,
@@ -11,6 +12,7 @@ export async function enqueueAgencyWelcomeEmail(input: { subscriptionId: string;
       create: {
         subscriptionId: input.subscriptionId,
         kind: "agency_welcome_v1",
+        dedupeKey,
         recipientEmail: input.recipientEmail.trim().toLowerCase(),
         locale: input.locale === "en" ? "en" : "nl",
       },
@@ -57,6 +59,10 @@ export async function processAgencyEmailOutbox(limit = 20, options: {
         locale: job.locale,
       });
       await prisma.agencyTransactionalEmail.update({ where: { id: job.id }, data: { status: "sent", sentAt: new Date() } });
+      if (job.entityType === "candidate_review" && job.entityId) {
+        await prisma.agencyCandidateReview.updateMany({ where: { id: job.entityId }, data: { status: "sent", sentAt: new Date() } });
+        await prisma.agencyCandidateReviewEvent.create({ data: { reviewId: job.entityId, type: "email_sent", actorType: "system", metadata: { emailJobId: job.id } } });
+      }
       sent += 1;
     } catch (error) {
       const code = error instanceof Error && error.message === "SMTP_NOT_CONFIGURED"

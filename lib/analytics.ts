@@ -137,6 +137,13 @@ export type AnalyticsEvent =
     | { event: 'agency_evidence_checker_completed'; properties: { locale: 'nl' | 'en'; requirementCount: number; missingCount: number; sample: boolean } }
     | { event: 'agency_evidence_checker_failed'; properties: { locale: 'nl' | 'en'; reason: string } }
     | { event: 'agency_evidence_checker_cta_clicked'; properties: { locale: 'nl' | 'en'; destination: 'agency' | 'guide' } }
+    | { event: 'proposal_claim_verifier_viewed'; properties: { locale: 'nl' | 'en' } }
+    | { event: 'proposal_claim_verifier_sample_loaded'; properties: { locale: 'nl' | 'en' } }
+    | { event: 'proposal_claim_verifier_started'; properties: { locale: 'nl' | 'en'; inputType: 'file' | 'text' } }
+    | { event: 'proposal_claim_verifier_completed'; properties: { locale: 'nl' | 'en'; claimCount: number; unsupportedCount: number; confirmationCount: number } }
+    | { event: 'proposal_claim_verifier_failed'; properties: { locale: 'nl' | 'en'; reason: string } }
+    | { event: 'proposal_claim_methodology_clicked'; properties: { locale: 'nl' | 'en' } }
+    | { event: 'proposal_claim_verifier_cta_clicked'; properties: { locale: 'nl' | 'en'; destination: 'agency' } }
     | { event: 'agency_onboarding_step_clicked'; properties: { step: string } }
     | { event: 'agency_onboarding_dismissed'; properties: { completed: number; total: number } }
     | {

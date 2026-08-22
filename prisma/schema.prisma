@@ -95,6 +95,7 @@ model AgencyMatchPack {
   candidateData         Json
   anonymizedData        Json
   analysis              Json
+  claimVerificationData Json?
   submissionData        Json?
   outcomeData           Json?
   templateId            String                    @default("professional")
@@ -118,6 +119,7 @@ model AgencyMatchPack {
   productFeedbackData   Json?
   retentionExpiresAt    DateTime?
   revisions             AgencyMatchPackRevision[]
+  candidateReviews      AgencyCandidateReview[]
   createdAt             DateTime                  @default(now())
   updatedAt             DateTime                  @updatedAt
 
@@ -135,6 +137,7 @@ model AgencyMatchPackRevision {
   candidateData  Json
   submissionData Json
   analysis       Json
+  claimVerificationData Json?
   changedFields  String[]        @default([])
   createdById    String
   createdAt      DateTime        @default(now())
@@ -235,6 +238,10 @@ model AgencySubscription {
   teamMembers            AgencyTeamMember[]
   deletionReceipts       AgencyDeletionReceipt[]
   transactionalEmails    AgencyTransactionalEmail[]
+  candidateReviews       AgencyCandidateReview[]
+  legalName              String?
+  privacyPolicyUrl       String?
+  privacyContactEmail    String?
 
   @@index([status, currentPeriodEnd])
   @@index([externalCustomerId])
@@ -245,6 +252,9 @@ model AgencyTransactionalEmail {
   subscriptionId String
   subscription   AgencySubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
   kind           String
+  dedupeKey      String             @unique
+  entityType     String?
+  entityId       String?
   recipientEmail String
   locale         String             @default("nl")
   status         String             @default("pending")
@@ -255,8 +265,95 @@ model AgencyTransactionalEmail {
   createdAt      DateTime           @default(now())
   updatedAt      DateTime           @updatedAt
 
-  @@unique([subscriptionId, kind])
   @@index([status, createdAt])
+  @@index([entityType, entityId])
+}
+
+model AgencyCandidateReview {
+  id                    String                              @id @default(cuid())
+  subscriptionId        String
+  subscription          AgencySubscription                  @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  matchPackId           String
+  matchPack             AgencyMatchPack                     @relation(fields: [matchPackId], references: [id], onDelete: Cascade)
+  revisionVersion       Int
+  snapshotDigest        String
+  snapshotData          Json
+  candidateEmail        String
+  recipientOrganization String
+  vacancyTitle          String
+  selectedVariant       String
+  locale                String                              @default("nl")
+  statementVersion      String                              @default("candidate_acknowledgement_v1")
+  status                String                              @default("draft")
+  tokenHash             String?                             @unique
+  tokenExpiresAt        DateTime?
+  tokenConsumedAt       DateTime?
+  invitedAt             DateTime?
+  sentAt                DateTime?
+  openedAt              DateTime?
+  respondedAt           DateTime?
+  revokedAt             DateTime?
+  candidateResponse     String?
+  overrideReason        String?
+  overriddenAt          DateTime?
+  overriddenById        String?
+  createdById           String
+  retentionExpiresAt    DateTime?
+  sessions              AgencyCandidateReviewSession[]
+  suggestions           AgencyCandidateReviewSuggestion[]
+  events                AgencyCandidateReviewEvent[]
+  createdAt             DateTime                            @default(now())
+  updatedAt             DateTime                            @updatedAt
+
+  @@unique([matchPackId, revisionVersion, snapshotDigest])
+  @@index([matchPackId, status, createdAt])
+  @@index([subscriptionId, createdAt])
+  @@index([retentionExpiresAt, status])
+}
+
+model AgencyCandidateReviewSession {
+  id          String                @id @default(cuid())
+  reviewId    String
+  review      AgencyCandidateReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  secretHash  String                @unique
+  expiresAt   DateTime
+  revokedAt   DateTime?
+  createdAt   DateTime              @default(now())
+
+  @@index([reviewId, expiresAt])
+}
+
+model AgencyCandidateReviewSuggestion {
+  id             String                @id @default(cuid())
+  reviewId       String
+  review         AgencyCandidateReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  targetType     String
+  targetPath     String
+  originalValue  String                @db.Text
+  proposedValue  String                @db.Text
+  candidateNote  String                @default("") @db.Text
+  status         String                @default("pending")
+  resolvedById   String?
+  resolvedAt     DateTime?
+  reviewerNote   String                @default("") @db.Text
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+
+  @@index([reviewId, status])
+}
+
+model AgencyCandidateReviewEvent {
+  id          String                @id @default(cuid())
+  reviewId    String
+  review      AgencyCandidateReview @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  type        String
+  actorType   String
+  actorUserId String?
+  metadata    Json?
+  createdAt   DateTime              @default(now())
+
+  @@index([reviewId, createdAt])
+  @@index([type, createdAt])
 }
 
 model AgencyTeamMember {

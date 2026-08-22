@@ -22,6 +22,7 @@ type ApiResponse = {
 
 type CandidateProposalEvidenceCheckerProps = {
   locale?: CvMatchLocale;
+  claimVerifierEnabled?: boolean;
 };
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -336,7 +337,7 @@ function SummaryCard({ label, value, tone }: { label: string; value: number; ton
   return <div className={`wk-checker-summary ${toneClass}`}><p className="text-2xl font-black text-slate-950">{value}</p><p className="mt-1 text-xs font-black uppercase tracking-[0.08em] text-slate-600">{label}</p></div>;
 }
 
-export default function CandidateProposalEvidenceChecker({ locale = "nl" }: CandidateProposalEvidenceCheckerProps) {
+export default function CandidateProposalEvidenceChecker({ locale = "nl", claimVerifierEnabled = false }: CandidateProposalEvidenceCheckerProps) {
   const copy = getCopy(locale);
   const [inputMode, setInputMode] = useState<InputMode>("text");
   const [cvText, setCvText] = useState("");
@@ -466,6 +467,10 @@ export default function CandidateProposalEvidenceChecker({ locale = "nl" }: Cand
             </div>
             <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight sm:text-6xl">{copy.title}</h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">{copy.intro}</p>
+            {claimVerifierEnabled ? <nav className="mt-7 flex flex-wrap gap-2" aria-label={locale === "en" ? "Checker mode" : "Controlemodus"}>
+              <Link href={locale === "en" ? "/en/candidate-proposal-checker" : "/tools/kandidaatvoorstel-checker"} className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-extrabold text-slate-700">{locale === "en" ? "Proposal claims vs CV" : "Voorstelclaims vs CV"}</Link>
+              <Link href={`${locale === "en" ? "/en/candidate-proposal-checker" : "/tools/kandidaatvoorstel-checker"}?mode=requirements`} aria-current="page" className="rounded-full bg-slate-950 px-4 py-2 text-sm font-extrabold text-white">{locale === "en" ? "Vacancy requirements vs CV" : "Vacature-eisen vs CV"}</Link>
+            </nav> : null}
             <ul className="mt-7 grid max-w-5xl gap-3 md:grid-cols-3">
               {copy.trust.map((item) => <li key={item} className="flex gap-2 border border-teal-300 bg-white px-4 py-3 text-sm font-bold text-slate-800"><span className="text-teal-700">✓</span><span>{item}</span></li>)}
             </ul>

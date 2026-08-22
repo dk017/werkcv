@@ -10,6 +10,7 @@ import {
 } from "@/lib/agency-matchpack";
 import { track } from "@/lib/analytics";
 import ScaledCvPreview from "@/app/editor/ScaledCvPreview";
+import type { ProposalClaimVerificationV1 } from "@/lib/tools/proposal-claim-verifier-schema";
 
 export type AgencyMatchPackSummary = {
   id: string;
@@ -33,6 +34,7 @@ export type AgencyMatchPackDetail = AgencyMatchPackSummary & {
   anonymizedData: CVData;
   analysis: MatchPackAnalysis;
   submissionData: MatchPackSubmission;
+  claimVerificationData?: ProposalClaimVerificationV1 | null;
   outcomeData?: (MatchPackOutcome & { sendability?: "sent" | "corrected" | "not_usable" | "not_sent" }) | null;
   sourceTextDigest?: string | null;
   templateId: string;
@@ -58,6 +60,22 @@ type AgencyMatchPackWorkspaceProps = {
   canDeleteDraft: boolean;
   canDeleteApproved: boolean;
   canOpenCv: boolean;
+  claimVerifierEnabled?: boolean;
+  candidateAcknowledgementEnabled?: boolean;
+};
+
+type CandidateReviewSummary = {
+  id: string;
+  revisionVersion: number;
+  status: string;
+  candidateEmail: string;
+  recipientOrganization: string;
+  vacancyTitle: string;
+  candidateResponse: string | null;
+  sentAt: string | null;
+  respondedAt: string | null;
+  tokenExpiresAt: string | null;
+  suggestions: Array<{ id: string; targetPath: string; proposedValue: string; candidateNote: string; status: string }>;
 };
 
 type ReviewStep = "fit" | "source" | "message" | "output" | "approve";
@@ -175,6 +193,8 @@ export default function AgencyMatchPackWorkspace({
   canDeleteDraft,
   canDeleteApproved,
   canOpenCv,
+  claimVerifierEnabled = false,
+  candidateAcknowledgementEnabled = false,
 }: AgencyMatchPackWorkspaceProps) {
   useEffect(() => {
     track("agency_workspace_started", { location: "agency_matchpack_workspace" });
@@ -204,13 +224,24 @@ export default function AgencyMatchPackWorkspace({
   const [isOutcomeBusy, setIsOutcomeBusy] = useState(false);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [candidateReviews, setCandidateReviews] = useState<CandidateReviewSummary[]>([]);
+  const [candidateInvite, setCandidateInvite] = useState({ candidateEmail: "", recipientOrganization: "", vacancyTitle: "", selectedVariant: "full" as "full" | "contact_free" });
+  const [overrideReason, setOverrideReason] = useState("");
   const reviewStartedAtRef = useRef<number | null>(null);
   const workflowStartedAtRef = useRef<number | null>(null);
 
   const activeResult = activePack?.analysis.result;
   const evidenceReviewReady = Boolean(activeResult?.requirements.length)
     && activeResult!.requirements.every((requirement) => requirement.evidenceReference?.reviewerStatus !== "unreviewed");
-  const reviewReady = checkedItems.every(Boolean) && evidenceReviewReady;
+  const claims = activePack?.claimVerificationData?.claims || [];
+  const claimsReadyForCandidate = !claimVerifierEnabled || (claims.length > 0 && claims.every((claim) => {
+    if (claim.verdict === "unsupported" || claim.verdict === "contradicted") return claim.reviewer.status === "corrected" || claim.reviewer.status === "removed";
+    if (claim.verdict === "partially_supported" || claim.verdict === "not_checkable") return ["accepted", "corrected", "removed"].includes(claim.reviewer.status);
+    return true;
+  }));
+  const latestCandidateReview = candidateReviews[0] || null;
+  const candidateReady = !candidateAcknowledgementEnabled || latestCandidateReview?.candidateResponse === "confirmed" || latestCandidateReview?.status === "overridden";
+  const reviewReady = checkedItems.every(Boolean) && evidenceReviewReady && claimsReadyForCandidate && candidateReady;
   const activeIsApproved = activePack?.status === "approved" && Boolean(activePack.cvDocumentId);
   const hasQuota = canApprove && canCreate && used < allowance;
   const usagePercent = Math.min(100, (used / Math.max(1, allowance)) * 100);
@@ -461,6 +492,7 @@ export default function AgencyMatchPackWorkspace({
       const body = await response.json().catch(() => null) as { pack?: AgencyMatchPackDetail; error?: string } | null;
       if (!response.ok || !body?.pack) throw new Error(body?.error || "De MatchPack kon niet worden geopend.");
       setActivePack(body.pack);
+      if (candidateAcknowledgementEnabled) void loadCandidateReviews(body.pack.id);
       reviewStartedAtRef.current = Date.now();
       workflowStartedAtRef.current = null;
       setOutcomeStatus(body.pack.outcomeData?.status || "unknown");
@@ -481,6 +513,75 @@ export default function AgencyMatchPackWorkspace({
     } finally {
       setIsBusy(false);
     }
+  };
+
+  const loadCandidateReviews = async (packId: string) => {
+    const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(packId)}/candidate-review`, { cache: "no-store" });
+    const body = await response.json().catch(() => ({})) as { reviews?: CandidateReviewSummary[] };
+    if (response.ok && Array.isArray(body.reviews)) setCandidateReviews(body.reviews);
+  };
+
+  const runClaimVerification = async () => {
+    if (!activePack || isDirty) return;
+    setIsBusy(true); setError(null); setNotice(null);
+    try {
+      const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/claims`, { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+      const body = await response.json().catch(() => ({})) as { verification?: ProposalClaimVerificationV1; revisionVersion?: number; error?: string };
+      if (!response.ok || !body.verification) throw new Error(body.error || "De claims konden niet worden gecontroleerd.");
+      setActivePack((current) => current ? { ...current, claimVerificationData: body.verification!, updatedAt: new Date().toISOString(), revisions: body.revisionVersion ? [{ id: `claim-${body.revisionVersion}`, version: body.revisionVersion, reason: "claim_review_saved", changedFields: ["claimVerificationData"], createdById: "", createdAt: new Date().toISOString() }, ...current.revisions] : current.revisions } : current);
+      setNotice("Klantclaims gecontroleerd. Beoordeel de gemarkeerde claims vóór de kandidaatuitnodiging.");
+    } catch (caught) { setError(caught instanceof Error ? caught.message : "De claims konden niet worden gecontroleerd."); }
+    finally { setIsBusy(false); }
+  };
+
+  const reviewClaim = async (claimId: string, status: "accepted" | "corrected" | "removed") => {
+    if (!activePack) return;
+    setIsBusy(true); setError(null);
+    try {
+      const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/claims`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ reviews: [{ claimId, status, note: "" }] }) });
+      const body = await response.json().catch(() => ({})) as { verification?: ProposalClaimVerificationV1; revisionVersion?: number; error?: string };
+      if (!response.ok || !body.verification) throw new Error(body.error || "De claimreview kon niet worden opgeslagen.");
+      setActivePack((current) => current ? { ...current, claimVerificationData: body.verification!, updatedAt: new Date().toISOString(), revisions: body.revisionVersion ? [{ id: `claim-${body.revisionVersion}`, version: body.revisionVersion, reason: "claim_review_saved", changedFields: ["claimVerificationData"], createdById: "", createdAt: new Date().toISOString() }, ...current.revisions] : current.revisions } : current);
+    } catch (caught) { setError(caught instanceof Error ? caught.message : "De claimreview kon niet worden opgeslagen."); }
+    finally { setIsBusy(false); }
+  };
+
+  const inviteCandidate = async () => {
+    if (!activePack || !claimsReadyForCandidate) return;
+    setIsBusy(true); setError(null); setNotice(null);
+    try {
+      const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/candidate-review`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...candidateInvite, vacancyTitle: candidateInvite.vacancyTitle || activePack.vacancyTitle || activePack.title, selectedVariant: activePack.submissionData.selectedVariant === "full" ? "full" : "contact_free" }) });
+      const body = await response.json().catch(() => ({})) as { error?: string };
+      if (!response.ok) throw new Error(body.error || "De kandidaatuitnodiging kon niet worden verzonden.");
+      await loadCandidateReviews(activePack.id);
+      setNotice("De kandidaatuitnodiging is verzonden. Goedkeuring blijft geblokkeerd tot bevestiging of een toegestane override.");
+    } catch (caught) { setError(caught instanceof Error ? caught.message : "De kandidaatuitnodiging kon niet worden verzonden."); }
+    finally { setIsBusy(false); }
+  };
+
+  const recordOverride = async () => {
+    if (!activePack) return;
+    setIsBusy(true); setError(null);
+    try {
+      const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/candidate-review/override`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ reason: overrideReason }) });
+      const body = await response.json().catch(() => ({})) as { error?: string };
+      if (!response.ok) throw new Error(body.error || "De override kon niet worden vastgelegd.");
+      await loadCandidateReviews(activePack.id); setOverrideReason(""); setNotice("Override vastgelegd in het onveranderbare gebeurtenislog.");
+    } catch (caught) { setError(caught instanceof Error ? caught.message : "De override kon niet worden vastgelegd."); }
+    finally { setIsBusy(false); }
+  };
+
+  const resolveCandidateSuggestion = async (suggestionId: string, status: "accepted" | "rejected") => {
+    if (!activePack) return;
+    setIsBusy(true); setError(null);
+    try {
+      const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/candidate-review/suggestions/${encodeURIComponent(suggestionId)}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ status, reviewerNote: "" }) });
+      const body = await response.json().catch(() => ({})) as { error?: string };
+      if (!response.ok) throw new Error(body.error || "De correctie kon niet worden verwerkt.");
+      await openPack(activePack.id);
+      setNotice(status === "accepted" ? "Correctie verwerkt in een nieuwe revisie. Controleer de klantclaims opnieuw en stuur daarna een nieuwe uitnodiging." : "Correctie afgewezen en vastgelegd. Stuur een nieuwe uitnodiging om deze versie opnieuw te laten bevestigen.");
+    } catch (caught) { setError(caught instanceof Error ? caught.message : "De correctie kon niet worden verwerkt."); }
+    finally { setIsBusy(false); }
   };
 
   const saveDraft = async () => {
@@ -505,7 +606,7 @@ export default function AgencyMatchPackWorkspace({
         }),
       });
       const body = await response.json().catch(() => null) as {
-        pack?: Pick<AgencyMatchPackDetail, "candidateData" | "anonymizedData" | "analysis" | "submissionData" | "updatedAt" | "revisions">;
+        pack?: Pick<AgencyMatchPackDetail, "candidateData" | "anonymizedData" | "analysis" | "submissionData" | "claimVerificationData" | "updatedAt" | "revisions">;
         error?: string;
       } | null;
       if (!response.ok || !body?.pack) throw new Error(body?.error || "Het concept kon niet worden opgeslagen.");
@@ -971,6 +1072,10 @@ export default function AgencyMatchPackWorkspace({
                   </div>
 
                   {!activeIsApproved ? <button type="button" onClick={() => void saveDraft()} disabled={!isDirty || isBusy} className="mt-5 border-2 border-slate-900 bg-emerald-400 px-5 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] disabled:cursor-not-allowed disabled:opacity-50">{isBusy ? "Opslaan…" : isDirty ? "Sla gecontroleerd concept op" : "Concept opgeslagen"}</button> : null}
+                  {claimVerifierEnabled && !activeIsApproved ? <div className="mt-6 border-t-2 border-emerald-200 pt-5">
+                    <div className="flex flex-wrap items-start justify-between gap-4"><div><p className="text-xs font-black uppercase tracking-[0.14em] text-emerald-800">Pre-send claimcontrole</p><h4 className="mt-1 text-xl font-black">Controleer iedere klantclaim tegen het originele CV</h4><p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-700">Geen matchscore of selectieadvies. Vacaturetekst is context, nooit bewijs over de kandidaat.</p></div><button type="button" onClick={() => void runClaimVerification()} disabled={isDirty || isBusy} className="border-2 border-slate-900 bg-white px-4 py-3 text-sm font-black disabled:opacity-50">{activePack.claimVerificationData ? "Claims opnieuw controleren" : "Controleer klantclaims"}</button></div>
+                    {activePack.claimVerificationData ? <div className="mt-5 space-y-3">{activePack.claimVerificationData.claims.map((claim) => <article key={claim.id} className="border-2 border-slate-200 bg-white p-4"><div className="flex flex-wrap items-start justify-between gap-2"><p className="max-w-2xl font-black">“{claim.claim}”</p><span className={`border px-2 py-1 text-xs font-black ${claim.verdict === "supported" ? "border-emerald-300 bg-emerald-50 text-emerald-800" : claim.verdict === "unsupported" || claim.verdict === "contradicted" ? "border-rose-300 bg-rose-50 text-rose-800" : "border-amber-300 bg-amber-50 text-amber-900"}`}>{claim.verdict.replaceAll("_", " ")}</span></div><p className="mt-2 text-sm leading-6 text-slate-700">{claim.explanation}</p>{claim.evidence.map((evidence) => <blockquote key={`${evidence.start}-${evidence.end}`} className="mt-3 border-l-4 border-emerald-400 bg-slate-50 p-3 text-sm"><p>“{evidence.snippet}”</p><footer className="mt-1 text-xs font-bold text-slate-500">{evidence.sourceSection} · regel {evidence.sourceLine}{evidence.sourcePage ? ` · pagina ${evidence.sourcePage}` : ""}</footer></blockquote>)}{claim.verdict === "unsupported" || claim.verdict === "contradicted" ? <div className="mt-3 flex flex-wrap gap-2"><button type="button" disabled={isBusy} onClick={() => void reviewClaim(claim.id, "corrected")} className="border border-slate-900 px-3 py-2 text-xs font-black">Tekst is gecorrigeerd</button><button type="button" disabled={isBusy} onClick={() => void reviewClaim(claim.id, "removed")} className="border border-slate-900 px-3 py-2 text-xs font-black">Claim is verwijderd</button></div> : claim.verdict === "partially_supported" || claim.verdict === "not_checkable" ? <div className="mt-3 flex flex-wrap gap-2"><button type="button" disabled={isBusy} onClick={() => void reviewClaim(claim.id, "accepted")} className="border border-slate-900 px-3 py-2 text-xs font-black">Bewust behouden</button><button type="button" disabled={isBusy} onClick={() => void reviewClaim(claim.id, "removed")} className="border border-slate-900 px-3 py-2 text-xs font-black">Verwijderd</button></div> : null}<p className="mt-2 text-xs font-bold text-slate-500">Reviewerstatus: {claim.reviewer.status}</p></article>)}</div> : null}
+                  </div> : null}
                 </section> : null}
 
                 {reviewStep === "output" ? <section className="border-2 border-slate-900 bg-white p-5 sm:p-6">
@@ -990,6 +1095,7 @@ export default function AgencyMatchPackWorkspace({
                 {reviewStep === "approve" ? <section className="border-2 border-slate-900 bg-yellow-50 p-5 sm:p-6">
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-700">Approval checklist</p>
                   <h3 className="mt-2 text-2xl font-black">Jij blijft de eindredacteur</h3>
+                  {candidateAcknowledgementEnabled && !activeIsApproved ? <div className="mt-5 border-2 border-slate-900 bg-white p-4 sm:p-5"><p className="text-xs font-black uppercase tracking-[0.14em] text-emerald-700">Kandidaatbevestiging</p><h4 className="mt-1 text-xl font-black">Laat de kandidaat de exacte klantversie controleren</h4><p className="mt-2 text-sm leading-6 text-slate-600">De ontvangende organisatie moet bij naam bekend zijn. Bevestiging geldt alleen voor deze revisie en is geen identiteitstoets, toestemmingstekst of elektronische handtekening.</p>{latestCandidateReview ? <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm"><p className="font-black">Status: {latestCandidateReview.status.replaceAll("_", " ")}</p><p className="mt-1 break-words text-slate-600">{latestCandidateReview.candidateEmail} · {latestCandidateReview.recipientOrganization}</p>{latestCandidateReview.suggestions.length ? <div className="mt-3 space-y-2">{latestCandidateReview.suggestions.map((suggestion) => <div key={suggestion.id} className="border-l-4 border-amber-400 bg-white p-2"><strong>{suggestion.targetPath}</strong><br />{suggestion.proposedValue}<br /><span className="text-xs font-bold">Status: {suggestion.status}</span>{suggestion.status === "pending" ? <div className="mt-2 flex flex-wrap gap-2"><button type="button" onClick={() => void resolveCandidateSuggestion(suggestion.id, "accepted")} className="border border-slate-900 px-2 py-1 text-xs font-black">Accepteren</button><button type="button" onClick={() => void resolveCandidateSuggestion(suggestion.id, "rejected")} className="border border-slate-900 px-2 py-1 text-xs font-black">Afwijzen</button></div> : null}</div>)}</div> : null}</div> : null}<div className="mt-4 grid gap-3 sm:grid-cols-2"><label className="text-xs font-black text-slate-600">E-mail kandidaat<input type="email" className={`${inputClassName} mt-1`} value={candidateInvite.candidateEmail} onChange={(event) => setCandidateInvite({ ...candidateInvite, candidateEmail: event.target.value })} /></label><label className="text-xs font-black text-slate-600">Ontvangende organisatie<input className={`${inputClassName} mt-1`} value={candidateInvite.recipientOrganization} onChange={(event) => setCandidateInvite({ ...candidateInvite, recipientOrganization: event.target.value })} /></label><label className="text-xs font-black text-slate-600 sm:col-span-2">Vacature<input className={`${inputClassName} mt-1`} value={candidateInvite.vacancyTitle || activePack.vacancyTitle || ""} onChange={(event) => setCandidateInvite({ ...candidateInvite, vacancyTitle: event.target.value })} /></label></div><button type="button" onClick={() => void inviteCandidate()} disabled={isBusy || isDirty || !claimsReadyForCandidate || !candidateInvite.candidateEmail || !candidateInvite.recipientOrganization} className="mt-4 border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black disabled:opacity-50">{latestCandidateReview ? "Nieuwe beveiligde uitnodiging sturen" : "Kandidaat uitnodigen"}</button>{canApprove && latestCandidateReview && !candidateReady && latestCandidateReview.candidateResponse !== "declined" && latestCandidateReview.candidateResponse !== "corrections_requested" ? <div className="mt-5 border-t border-slate-200 pt-4"><label className="text-xs font-black text-slate-600">Override bij niet-beschikbare of onbeantwoorde uitnodiging<textarea className={`${inputClassName} mt-2 min-h-20`} minLength={20} maxLength={500} value={overrideReason} onChange={(event) => setOverrideReason(event.target.value)} /></label><button type="button" disabled={overrideReason.trim().length < 20 || isBusy} onClick={() => void recordOverride()} className="mt-3 border-2 border-slate-900 bg-white px-4 py-3 text-sm font-black disabled:opacity-50">Override vastleggen</button></div> : null}</div> : null}
                   <div className="mt-4 space-y-3 text-sm font-semibold text-slate-800">
                     {["Ik heb de vacature-eisen, het CV-bewijs en alle correcties gecontroleerd.", "Ik heb de introductie, commerciële gegevens en begeleidende e-mail gecontroleerd.", `Ik heb de gekozen uitvoerversie (${activePack.submissionData.selectedVariant === "full" ? "volledig voorstel" : "zonder directe contactgegevens"}) gecontroleerd.`, "Ik bevestig dat mijn bureau bevoegd is om deze kandidaatdata voor deze vacature te verwerken en te delen."] .map((label, index) => <label key={label} className="flex items-start gap-3"><input type="checkbox" className="mt-0.5 h-5 w-5 accent-emerald-600" checked={checkedItems[index] || false} onChange={(event) => setCheckedItems((current) => current.map((value, itemIndex) => itemIndex === index ? event.target.checked : value))} disabled={activeIsApproved || isDirty} /><span>{label}</span></label>)}
                   </div>

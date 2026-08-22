@@ -42,6 +42,7 @@ export type AgencySettingsVisualFixture = {
   templates: AgencyTemplateFixture[];
   members: AgencyTeamMemberFixture[];
   retention: AgencyRetentionFixture;
+  privacy?: { legalName: string; privacyPolicyUrl: string; privacyContactEmail: string };
 };
 
 type RetentionPreview = {
@@ -75,6 +76,7 @@ export default function AgencySettingsPanel({ owner, canImport, role, visualFixt
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [privacyForm, setPrivacyForm] = useState(visualFixture?.privacy || { legalName: "", privacyPolicyUrl: "", privacyContactEmail: "" });
   const [templateForm, setTemplateForm] = useState({
     name: "Mijn bureaustijl",
     templateId: "professional",
@@ -89,10 +91,11 @@ export default function AgencySettingsPanel({ owner, canImport, role, visualFixt
   const importRef = useRef<HTMLInputElement | null>(null);
 
   const load = async () => {
-    const [templateResponse, teamResponse, retentionResponse] = await Promise.all([
+    const [templateResponse, teamResponse, retentionResponse, privacyResponse] = await Promise.all([
       fetch("/api/agency/templates", { cache: "no-store" }),
       fetch("/api/agency/team", { cache: "no-store" }),
       fetch("/api/agency/retention", { cache: "no-store" }),
+      fetch("/api/agency/privacy-settings", { cache: "no-store" }),
     ]);
     const templateResult = await readResponse(templateResponse);
     const teamResult = await readResponse(teamResponse);
@@ -105,6 +108,8 @@ export default function AgencySettingsPanel({ owner, canImport, role, visualFixt
       setRetentionChoice(String(loaded.retentionDays));
     }
     if (templateResult.error && teamResult.error) setError(templateResult.error);
+    const privacyResult = await readResponse(privacyResponse);
+    if (privacyResult.data?.settings) setPrivacyForm(privacyResult.data.settings as typeof privacyForm);
   };
 
   useEffect(() => {
@@ -122,6 +127,16 @@ export default function AgencySettingsPanel({ owner, canImport, role, visualFixt
     if (result.error) { setError(result.error); return; }
     setNotice("Template opgeslagen. Nieuwe MatchPacks gebruiken de standaardstijl.");
     await load();
+  };
+
+  const savePrivacy = async (event: FormEvent) => {
+    event.preventDefault();
+    setBusy(true); setError(null); setNotice(null);
+    const response = await fetch("/api/agency/privacy-settings", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(privacyForm) });
+    const result = await readResponse(response);
+    setBusy(false);
+    if (result.error) { setError(result.error); return; }
+    setNotice("Privacy- en afzendergegevens opgeslagen voor kandidaatbevestigingen.");
   };
 
   const addMember = async (event: FormEvent) => {
@@ -247,6 +262,18 @@ export default function AgencySettingsPanel({ owner, canImport, role, visualFixt
           <div className="mt-4 flex flex-wrap gap-2"><button type="button" disabled={busy || (pendingRetention.requiresConfirmation && retentionConfirmation !== "APPLY RETENTION POLICY")} onClick={() => void applyRetention()} className="border-2 border-slate-900 bg-emerald-400 px-4 py-2 text-sm font-black disabled:opacity-50">Beleid definitief toepassen</button><button type="button" disabled={busy} onClick={() => { setPendingRetention(null); setRetentionConfirmation(""); }} className="border-2 border-slate-300 bg-white px-4 py-2 text-sm font-black">Annuleren</button></div>
         </div> : null}
         <p className="mt-3 text-xs font-semibold text-slate-600">{retention?.needsAcknowledgement ? "Kies en bevestig een beleid om bestaande inhoud te activeren." : "Beleid actief; de exacte vervaldatum staat op elk MatchPack."}</p>
+      </section>
+
+      <section id="candidate-privacy" className="border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+        <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Kandidaatbevestiging</p>
+        <h2 className="mt-1 text-2xl font-black">Juridische naam en privacycontact</h2>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">Deze gegevens staan in iedere kandidaatuitnodiging. WerkCV bepaalt niet welke AVG-grondslag jouw bureau gebruikt; zorg dat je eigen privacyverklaring het doel, de ontvangers en de bewaartermijn duidelijk uitlegt.</p>
+        <form onSubmit={savePrivacy} className="mt-5 grid gap-3 md:grid-cols-2">
+          <label className="text-xs font-black uppercase tracking-wide text-slate-600">Juridische bureaunaam<input required className={inputClass} value={privacyForm.legalName} onChange={(event) => setPrivacyForm({ ...privacyForm, legalName: event.target.value })} /></label>
+          <label className="text-xs font-black uppercase tracking-wide text-slate-600">Privacycontact<input required type="email" className={inputClass} value={privacyForm.privacyContactEmail} onChange={(event) => setPrivacyForm({ ...privacyForm, privacyContactEmail: event.target.value })} /></label>
+          <label className="text-xs font-black uppercase tracking-wide text-slate-600 md:col-span-2">URL privacyverklaring<input required type="url" placeholder="https://bureau.nl/privacy" className={inputClass} value={privacyForm.privacyPolicyUrl} onChange={(event) => setPrivacyForm({ ...privacyForm, privacyPolicyUrl: event.target.value })} /></label>
+          <button disabled={!owner || busy} className="border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black disabled:opacity-50 md:w-fit">Gegevens opslaan</button>
+        </form>
       </section>
 
       <section id="templates" className="border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
