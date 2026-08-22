@@ -9,6 +9,7 @@ import { reportOpsIncident } from '@/lib/ops-alerts'
 import { getResumeLanguage } from '@/lib/resume-language'
 import { getDefaultThemeId } from '@/lib/templates/registry'
 import { isAgencyCvStartSource } from '@/lib/agency-access'
+import { Prisma } from '@prisma/client'
 
 const userCVListSelect = {
     id: true,
@@ -61,11 +62,17 @@ export async function createCV(templateId: string = 'professional', colorThemeId
     }
 
     const cv = await prisma.cVDocument.create({
-        title: 'Mijn CV',
-        data: cvData,
-        templateId,
-        colorThemeId: colorThemeId || getDefaultThemeId(templateId),
-        userId: user.id,
+        data: {
+            title: 'Mijn CV',
+            // Prisma's JSON input type intentionally excludes `undefined`, while
+            // CVData has a few optional sections. The schema has already validated
+            // the value; this cast keeps the consumer path JSON-compatible without
+            // reintroducing Agency quota/retention handling.
+            data: cvData as unknown as Prisma.InputJsonValue,
+            templateId,
+            colorThemeId: colorThemeId || getDefaultThemeId(templateId),
+            userId: user.id,
+        },
     })
     return cv.id
 }
