@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
@@ -149,52 +148,29 @@ const breadcrumbJsonLd = {
 
 export default function EnglishPricingPage() {
   return (
-    <div className="min-h-screen bg-[#FFFEF0] pb-24 md:pb-0">
+    <main className="pb-24 md:pb-0">
       <FAQJsonLd questions={[...pricingFaqs]} />
       <JsonLd data={productJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
 
-      <header className="relative z-10 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-4">
-          <Link href="/en" className="flex items-center gap-2">
-            <span className="text-2xl font-black tracking-tight text-black">
-              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-            </span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <LanguageSwitcher tone="solid" />
-            <TrackedLandingLink
-              href={editorHref}
-              trackingLocation="en_pricing_header"
-              trackingLabel="build_cv"
-              className="hidden border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300 sm:inline-block"
-            >
-              Build my CV
-            </TrackedLandingLink>
-          </div>
-        </div>
-      </header>
-
-      <main className="relative z-10 mx-auto max-w-5xl px-6 py-14">
-        <section className="text-center">
+      <section className="wk-section">
+        <div className="wk-container max-w-4xl text-center">
           <div className="mb-5 flex flex-wrap justify-center gap-2">
             {priceBadges.map((badge) => (
-              <span
-                key={badge}
-                className="border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-black"
-              >
+              <span key={badge} className="wk-trust-pill">
                 {badge}
               </span>
             ))}
           </div>
-          <h1 className="mx-auto max-w-4xl text-4xl font-black leading-tight text-black md:text-6xl">
-            One professional CV PDF for {cvDownloadPrice.displayEn}
+          <h1 className="mx-auto max-w-4xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+            One professional CV PDF for{" "}
+            <span className="wk-hero-highlight">{cvDownloadPrice.displayEn}</span>
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-lg font-medium leading-relaxed text-slate-700">
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[var(--wk-ink-muted)]">
             Build your English CV for the Netherlands, compare templates and review the complete
             result for free. Pay only when you want the finished PDF.
           </p>
-          <p className="mx-auto mt-3 max-w-2xl text-sm font-black text-black">
+          <p className="mx-auto mt-3 max-w-2xl text-sm font-semibold text-[var(--wk-ink)]">
             One payment. No trial, subscription, automatic renewal or hidden monthly charge.
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
@@ -202,157 +178,170 @@ export default function EnglishPricingPage() {
               href={editorHref}
               trackingLocation="en_pricing_hero"
               trackingLabel="build_cv_free"
-              className="border-4 border-black bg-yellow-400 px-7 py-4 text-lg font-black text-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+              className="wk-button wk-button-primary px-7 py-4 text-lg"
             >
               Build my CV for free
             </TrackedLandingLink>
-            <Link
-              href="#how-payment-works"
-              className="border-4 border-black bg-white px-7 py-4 text-lg font-black text-black"
-            >
+            <Link href="#how-payment-works" className="wk-button wk-button-secondary px-7 py-4 text-lg">
               How payment works
             </Link>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mx-auto mt-14 max-w-3xl border-4 border-black bg-yellow-300 p-7 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:p-9">
-          <div className="text-center">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-700">
-              One-time CV download
-            </p>
-            <p className="mt-2 text-6xl font-black text-black">{cvDownloadPrice.displayEn}</p>
-            <p className="mt-1 text-sm font-black text-slate-700">Including VAT</p>
-            <p className="mt-3 text-lg font-bold text-black">One finished CV document as PDF</p>
+      <section className="wk-section pt-0">
+        <div className="wk-container max-w-3xl">
+          <div className="wk-card p-7 md:p-9">
+            <div className="text-center">
+              <p className="wk-eyebrow">
+                <span>One-time CV download</span>
+              </p>
+              <p className="mt-3 text-6xl font-semibold text-[var(--wk-ink)]">{cvDownloadPrice.displayEn}</p>
+              <p className="mt-1 text-sm font-semibold text-[var(--wk-ink-muted)]">Including VAT</p>
+              <p className="mt-3 text-lg font-semibold text-[var(--wk-ink)]">One finished CV document as PDF</p>
+            </div>
+
+            <ul className="mt-8 grid gap-3 md:grid-cols-2">
+              {includedFeatures.map((feature) => (
+                <li
+                  key={feature}
+                  className="flex items-start gap-3 rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-3"
+                >
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--wk-success-soft)] text-sm font-semibold text-[var(--wk-success)]">
+                    ✓
+                  </span>
+                  <span className="text-sm font-medium leading-6 text-[var(--wk-ink)]">{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            <TrackedLandingLink
+              href="/en/editor?template=professional&startSource=en_pricing_card"
+              trackingLocation="en_pricing_card"
+              trackingLabel="start_free"
+              className="wk-button wk-button-primary mt-8 w-full px-6 py-4 text-lg"
+            >
+              Start free — pay only for the PDF
+            </TrackedLandingLink>
           </div>
+        </div>
+      </section>
 
-          <ul className="mt-7 grid gap-3 md:grid-cols-2">
-            {includedFeatures.map((feature) => (
-              <li key={feature} className="flex items-start gap-3 border-2 border-black bg-white p-3">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center border-2 border-black bg-green-400 text-sm font-black">
-                  ✓
-                </span>
-                <span className="text-sm font-semibold leading-relaxed text-black">{feature}</span>
-              </li>
-            ))}
-          </ul>
-
-          <TrackedLandingLink
-            href="/en/editor?template=professional&startSource=en_pricing_card"
-            trackingLocation="en_pricing_card"
-            trackingLabel="start_free"
-            className="mt-7 block w-full border-4 border-black bg-black px-6 py-4 text-center text-lg font-black text-white"
-          >
-            Start free — pay only for the PDF
-          </TrackedLandingLink>
-        </section>
-
-        <section id="how-payment-works" className="scroll-mt-8 py-16">
+      <section id="how-payment-works" className="wk-section scroll-mt-24 pt-0">
+        <div className="wk-container">
           <div className="text-center">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Transparent from start to finish
-            </p>
-            <h2 className="mt-2 text-3xl font-black text-black md:text-4xl">
+            <div className="wk-eyebrow mb-3">
+              <span>Transparent from start to finish</span>
+            </div>
+            <h2 className="text-3xl font-semibold text-[var(--wk-ink)] md:text-4xl">
               How payment works
             </h2>
           </div>
           <div className="mt-8 grid gap-5 md:grid-cols-3">
             {paymentSteps.map((step) => (
-              <article
-                key={step.number}
-                className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <span className="flex h-11 w-11 items-center justify-center border-[3px] border-black bg-[#4ECDC4] text-xl font-black">
+              <article key={step.number} className="wk-card p-6">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[var(--wk-accent-soft)] text-xl font-semibold text-[var(--wk-primary)]">
                   {step.number}
                 </span>
-                <h3 className="mt-4 text-xl font-black text-black">{step.title}</h3>
-                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">{step.body}</p>
+                <h3 className="mt-4 text-xl font-semibold text-[var(--wk-ink)]">{step.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{step.body}</p>
               </article>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="grid gap-6 md:grid-cols-2">
-          <article className="border-4 border-black bg-white p-7 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">
-              What one payment unlocks
-            </p>
-            <h2 className="mt-2 text-2xl font-black text-black">The same CV stays unlocked</h2>
-            <p className="mt-3 font-medium leading-relaxed text-slate-700">
-              You can edit the content, change the template or colour, and download that paid CV
-              again without another payment.
-            </p>
-            <p className="mt-4 border-2 border-black bg-[#FFF7E8] p-4 text-sm font-bold leading-relaxed text-black">
-              A separate new CV document has its own one-time {cvDownloadPrice.displayEn} PDF
-              payment. We show this clearly before checkout.
-            </p>
-          </article>
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-6 md:grid-cols-2">
+            <article className="wk-card p-7">
+              <div className="wk-eyebrow mb-3">
+                <span>What one payment unlocks</span>
+              </div>
+              <h2 className="text-2xl font-semibold text-[var(--wk-ink)]">The same CV stays unlocked</h2>
+              <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">
+                You can edit the content, change the template or colour, and download that paid CV
+                again without another payment.
+              </p>
+              <p className="mt-4 rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)] p-4 text-sm font-medium leading-6 text-[var(--wk-ink)]">
+                A separate new CV document has its own one-time {cvDownloadPrice.displayEn} PDF
+                payment. We show this clearly before checkout.
+              </p>
+            </article>
 
-          <article className="border-4 border-black bg-[#E9FFFC] p-7 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">
-              Secure hosted checkout
-            </p>
-            <h2 className="mt-2 text-2xl font-black text-black">Payment methods</h2>
-            <p className="mt-3 font-medium leading-relaxed text-slate-700">
-              Payment is handled by Dodo Payments. Eligible customers may see iDEAL, credit or
-              debit cards, Apple Pay or Google Pay.
-            </p>
-            <p className="mt-4 text-sm font-semibold leading-relaxed text-slate-700">
-              The exact methods displayed depend on your country, device, bank and payment-provider
-              availability.
-            </p>
-          </article>
-        </section>
+            <article className="wk-card p-7">
+              <div className="wk-eyebrow mb-3">
+                <span>Secure hosted checkout</span>
+              </div>
+              <h2 className="text-2xl font-semibold text-[var(--wk-ink)]">Payment methods</h2>
+              <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">
+                Payment is handled by Dodo Payments. Eligible customers may see iDEAL, credit or
+                debit cards, Apple Pay or Google Pay.
+              </p>
+              <p className="mt-4 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                The exact methods displayed depend on your country, device, bank and payment-provider
+                availability.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
 
-        <section className="mt-16">
+      <section className="wk-section pt-0">
+        <div className="wk-container">
           <div className="text-center">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Clear answers before you start
-            </p>
-            <h2 className="mt-2 text-3xl font-black text-black">Pricing FAQ</h2>
+            <div className="wk-eyebrow mb-3">
+              <span>Clear answers before you start</span>
+            </div>
+            <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">Pricing FAQ</h2>
           </div>
           <div className="mx-auto mt-8 max-w-3xl space-y-4">
             {pricingFaqs.map((faq) => (
-              <details
-                key={faq.question}
-                className="group border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <summary className="flex cursor-pointer items-center justify-between p-4 font-black text-black">
+              <details key={faq.question} className="wk-card group">
+                <summary className="flex cursor-pointer items-center justify-between p-4 font-semibold text-[var(--wk-ink)]">
                   {faq.question}
-                  <span className="ml-3 text-xl transition-transform group-open:rotate-45">+</span>
+                  <span className="ml-3 text-xl text-[var(--wk-ink-muted)] transition-transform group-open:rotate-45">+</span>
                 </summary>
-                <p className="border-t-2 border-black px-4 pb-4 pt-3 font-medium leading-relaxed text-slate-700">
+                <p className="border-t border-[var(--wk-border)] px-4 pb-4 pt-3 leading-7 text-[var(--wk-ink-muted)]">
                   {faq.answer}
                 </p>
               </details>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-16 border-4 border-black bg-black p-8 text-center text-white">
-          <h2 className="text-3xl font-black">Finish the CV first. Decide after the preview.</h2>
-          <p className="mx-auto mt-3 max-w-2xl font-medium leading-relaxed text-slate-200">
-            Start free and pay {cvDownloadPrice.displayEn} including VAT only when you want the
-            final PDF. No subscription or automatic renewal.
-          </p>
-          <TrackedLandingLink
-            href="/en/editor?template=professional&startSource=en_pricing_bottom"
-            trackingLocation="en_pricing_bottom"
-            trackingLabel="build_cv"
-            className="mt-6 inline-block border-4 border-white bg-yellow-400 px-7 py-4 text-lg font-black text-black"
-          >
-            Build my CV
-          </TrackedLandingLink>
-        </section>
-      </main>
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-8 text-center md:p-12">
+            <h2 className="text-3xl font-semibold text-[var(--wk-primary-contrast)]">
+              Finish the CV first. Decide after the preview.
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl leading-8 text-[var(--wk-primary-contrast)]/80">
+              Start free and pay {cvDownloadPrice.displayEn} including VAT only when you want the
+              final PDF. No subscription or automatic renewal.
+            </p>
+            <TrackedLandingLink
+              href="/en/editor?template=professional&startSource=en_pricing_bottom"
+              trackingLocation="en_pricing_bottom"
+              trackingLabel="build_cv"
+              className="wk-button wk-button-accent mt-7 px-7 py-4 text-lg"
+            >
+              Build my CV
+            </TrackedLandingLink>
+          </div>
+        </div>
+      </section>
 
-      <Footer uiLanguage="en" />
+      <Footer variant="brand" uiLanguage="en" />
       <MobileStickyCta
         text={`Start free. Final PDF ${cvDownloadPrice.displayEn}.`}
         buttonLabel="Build CV"
         href="/en/editor?template=professional&startSource=en_pricing_sticky"
         trackingLocation="en_pricing_mobile_sticky"
         trackingLabel="build_cv"
+        variant="brand"
       />
-    </div>
+    </main>
   );
 }

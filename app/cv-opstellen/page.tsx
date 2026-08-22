@@ -205,417 +205,409 @@ export default function CvOpstellenPage() {
     ],
   };
   return (
-    <div className="min-h-screen bg-[#FFFEF0]">
-      <header className="relative z-10 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-black tracking-tight text-black">
-              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-            </span>
-          </Link>
-          <Link
-            href="/editor"
-            className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
-          >
-            Start in editor
-          </Link>
-        </div>
-      </header>
-
-      <main className="relative z-10 mx-auto max-w-5xl px-6 py-14">
-        <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <div>
-            <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Structuur-intentie: CV opstellen
-            </p>
-            <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV opstellen met de juiste volgorde en inhoud per sectie
-            </h1>
-            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Veel kandidaten weten wat ze willen vertellen, maar niet hoe ze hun CV logisch moeten opstellen. Op deze pagina krijg je een duidelijk opbouwmodel, voorbeelden per sectie en
-              varianten voor starter, medior en carriere switch. Zo zet je snel een CV neer dat zowel recruiters als ATS-systemen goed kunnen lezen.
-            </p>
-            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
-              Deze pagina bezit dus vooral de structuur- en volgorde-intentie. Voor
-              de bredere route met ook templatekeuze, gratis starten en andere sub-intents
-              ga je terug naar{" "}
-              <Link
-                href="/cv-maken"
-                className="font-black text-black underline decoration-2 underline-offset-4"
-              >
-                CV maken
-              </Link>
-              .
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                href="/templates"
-                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              >
-                Kies template voor je opbouw
-              </Link>
-              <Link
-                href="/cv-opmaak-voorbeeld"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Bekijk cv opmaak voorbeelden
-              </Link>
-              <Link
-                href="/cv-maken"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Naar complete CV gids
-              </Link>
-            </div>
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
-              {[
-                "Volgorde + sectie-opbouw",
-                "Voorbeelden en foutcorrecties",
-                "Start gratis, betaal bij download",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="border-3 border-black bg-white px-4 py-3 text-sm font-black text-black"
-                  style={{ borderWidth: "3px" }}
+    <main>
+      <section className="wk-section">
+        <div className="wk-container">
+          <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+            <div>
+              <div className="wk-eyebrow mb-3">
+                <span>Structuur-intentie: CV opstellen</span>
+              </div>
+              <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+                <span className="wk-hero-highlight">CV opstellen</span> met de juiste volgorde en
+                inhoud per sectie
+              </h1>
+              <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
+                Veel kandidaten weten wat ze willen vertellen, maar niet hoe ze hun CV logisch
+                moeten opstellen. Op deze pagina krijg je een duidelijk opbouwmodel, voorbeelden
+                per sectie en varianten voor starter, medior en carriere switch. Zo zet je snel een
+                CV neer dat zowel recruiters als ATS-systemen goed kunnen lezen.
+              </p>
+              <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--wk-ink-muted)]">
+                Deze pagina bezit dus vooral de structuur- en volgorde-intentie. Voor de bredere
+                route met ook templatekeuze, gratis starten en andere sub-intents ga je terug naar{" "}
+                <Link
+                  href="/cv-maken"
+                  className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
                 >
-                  {item}
-                </div>
-              ))}
+                  CV maken
+                </Link>
+                .
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/templates" className="wk-button wk-button-primary">
+                  Kies template voor je opbouw
+                </Link>
+                <Link href="/cv-opmaak-voorbeeld" className="wk-button wk-button-secondary">
+                  Bekijk cv opmaak voorbeelden
+                </Link>
+                <Link href="/cv-maken" className="wk-button wk-button-secondary">
+                  Naar complete CV gids
+                </Link>
+              </div>
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                {[
+                  "Volgorde + sectie-opbouw",
+                  "Voorbeelden en foutcorrecties",
+                  "Start gratis, betaal bij download",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] px-4 py-3 text-sm font-semibold text-[var(--wk-ink)]"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="wk-card h-fit p-6">
+              <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
+                Snelle check voor een goed opgesteld CV
+              </h2>
+              <ul className="mt-5 space-y-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                <li>
+                  <strong className="text-[var(--wk-ink)]">Duidelijke secties:</strong> profiel,
+                  werkervaring, opleiding, vaardigheden.
+                </li>
+                <li>
+                  <strong className="text-[var(--wk-ink)]">Logische volgorde:</strong> meest
+                  relevante info bovenaan.
+                </li>
+                <li>
+                  <strong className="text-[var(--wk-ink)]">Korte bullets:</strong> geen lange lappen
+                  tekst.
+                </li>
+                <li>
+                  <strong className="text-[var(--wk-ink)]">Vacaturematch:</strong> termen en
+                  prioriteiten sluiten aan op de rol.
+                </li>
+              </ul>
+              <div className="mt-6 border-t border-[var(--wk-border)] pt-5">
+                <Link
+                  href="/tools/cv-keywords"
+                  className="text-sm font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
+                >
+                  Controleer je vacaturematch met de keywords tool
+                </Link>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">Snelle check voor een goed opgesteld CV</h2>
-            <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-              <li>
-                <strong className="text-black">Duidelijke secties:</strong> profiel, werkervaring, opleiding, vaardigheden.
-              </li>
-              <li>
-                <strong className="text-black">Logische volgorde:</strong> meest relevante info bovenaan.
-              </li>
-              <li>
-                <strong className="text-black">Korte bullets:</strong> geen lange lappen tekst.
-              </li>
-              <li>
-                <strong className="text-black">Vacaturematch:</strong> termen en prioriteiten sluiten aan op de rol.
-              </li>
-            </ul>
-            <div className="mt-6 border-t-4 border-black pt-5">
-              <Link
-                href="/tools/cv-keywords"
-                className="text-sm font-black text-black underline decoration-2 underline-offset-4"
-              >
-                Controleer je vacaturematch met de keywords tool
-              </Link>
-            </div>
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-eyebrow mb-3">
+            <span>Structuurmodel</span>
           </div>
-        </section>
-
-        <section className="mb-14">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Structuurmodel
-          </p>
-          <h2 className="mt-2 text-3xl font-black text-black">
+          <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
             CV opstellen in 6 vaste onderdelen
           </h2>
-          <div className="mt-6 grid gap-5 md:grid-cols-2">
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
             {structureSteps.map((step) => (
-              <article
-                key={step.title}
-                className="border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <h3 className="text-lg font-black text-black">{step.title}</h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{step.body}</p>
+              <article key={step.title} className="wk-card p-5 md:p-6">
+                <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{step.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">{step.body}</p>
               </article>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14 grid gap-6 md:grid-cols-3">
-          {roleVariants.map((variant) => (
-            <article
-              key={variant.title}
-              className="border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-            >
-              <h3 className="text-xl font-black text-black">{variant.title}</h3>
-              <ul className="mt-4 space-y-2 text-sm font-medium leading-relaxed text-slate-700">
-                {variant.bullets.map((bullet) => (
-                  <li key={bullet}>{bullet}</li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </section>
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-6 md:grid-cols-3">
+            {roleVariants.map((variant) => (
+              <article key={variant.title} className="wk-card p-5">
+                <h3 className="text-xl font-semibold text-[var(--wk-ink)]">{variant.title}</h3>
+                <ul className="mt-4 space-y-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                  {variant.bullets.map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
 
-        <section className="mb-14">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Voorbeeldblokken
-          </p>
-          <h2 className="mt-2 text-3xl font-black text-black">
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-eyebrow mb-3">
+            <span>Voorbeeldblokken</span>
+          </div>
+          <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
             Zo ziet een goed opgesteld CV eruit in de praktijk
           </h2>
-          <div className="mt-6 space-y-5">
+          <div className="mt-8 grid gap-5 lg:grid-cols-3">
             {sectionExamples.map((item) => (
-              <article
-                key={item.title}
-                className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <h3 className="text-lg font-black text-black">{item.title}</h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{item.text}</p>
+              <article key={item.title} className="wk-card p-6">
+                <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.text}</p>
               </article>
             ))}
           </div>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/tools/profieltekst-generator"
-              className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
+              className="wk-button wk-button-primary wk-button-small"
             >
               Genereer profieltekst
             </Link>
             <Link
               href="/tools/werkervaring-bullets"
-              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+              className="wk-button wk-button-secondary wk-button-small"
             >
               Maak werkervaring bullets
             </Link>
             <Link
               href="/vaardigheden-cv-voorbeelden"
-              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+              className="wk-button wk-button-secondary wk-button-small"
             >
               Bekijk vaardigheden voorbeelden
             </Link>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14">
-          <div className="mb-6 flex items-end justify-between gap-4">
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-                Aanbevolen templates
-              </p>
-              <h2 className="text-3xl font-black text-black">
+              <div className="wk-eyebrow mb-3">
+                <span>Aanbevolen templates</span>
+              </div>
+              <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
                 Kies een layout die je opstelling ondersteunt
               </h2>
             </div>
-            <Link href="/templates" className="text-sm font-black text-black underline decoration-2 underline-offset-4">
+            <Link
+              href="/templates"
+              className="text-sm font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
+            >
               Bekijk alle templates
             </Link>
           </div>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {topTemplates.map((template) => (
-              <article
-                key={template.id}
-                className="flex h-full flex-col border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+              <article key={template.id} className="wk-card flex h-full flex-col p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
                   {template.nameDutch}
                 </p>
-                <h3 className="mt-2 text-xl font-black text-black">{template.name}</h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+                <h3 className="mt-2 text-xl font-semibold text-[var(--wk-ink)]">{template.name}</h3>
+                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
                   {template.description}
                 </p>
                 <div className="mt-auto pt-5">
-                  <Link
-                    href="/templates"
-                    className="inline-block border-2 border-black bg-yellow-400 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-black"
-                  >
+                  <Link href="/templates" className="wk-button wk-button-primary wk-button-small">
                     Vergelijk templates
                   </Link>
                 </div>
               </article>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14 grid gap-6 lg:grid-cols-[1fr_0.9fr]">
-          <div className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
-              Fouten en fixes
-            </p>
-            <h2 className="mt-2 text-2xl font-black">
-              Veelgemaakte fouten bij CV opstellen
-            </h2>
-            <div className="mt-4 space-y-3">
-              {mistakes.map((item) => (
-                <div key={item.title}>
-                  <p className="text-sm font-bold leading-relaxed text-slate-100">{item.title}</p>
-                  <p className="text-sm font-medium leading-relaxed text-slate-300">{item.fix}</p>
-                </div>
-              ))}
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
+            <div className="wk-card wk-card-warning p-6">
+              <div className="wk-eyebrow mb-3">
+                <span>Fouten en fixes</span>
+              </div>
+              <h2 className="text-2xl font-semibold text-[var(--wk-ink)]">
+                Veelgemaakte fouten bij CV opstellen
+              </h2>
+              <div className="mt-4 space-y-3">
+                {mistakes.map((item) => (
+                  <div key={item.title}>
+                    <p className="text-sm font-semibold leading-6 text-[var(--wk-ink)]">
+                      {item.title}
+                    </p>
+                    <p className="text-sm leading-6 text-[var(--wk-ink-muted)]">{item.fix}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="wk-card p-6">
+              <div className="wk-eyebrow mb-3">
+                <span>ATS-check</span>
+              </div>
+              <h2 className="text-2xl font-semibold text-[var(--wk-ink)]">
+                ATS-vriendelijke opstelling checklist
+              </h2>
+              <ul className="mt-4 space-y-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                {atsChecklist.map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--wk-success-soft)] text-[var(--wk-success)]">
+                      <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 border-t border-[var(--wk-border)] pt-4">
+                <Link
+                  href="/ats-cv-template"
+                  className="text-sm font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
+                >
+                  Vergelijk met ATS CV template
+                </Link>
+              </div>
             </div>
           </div>
-          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              ATS-check
-            </p>
-            <h2 className="mt-2 text-2xl font-black text-black">
-              ATS-vriendelijke opstelling checklist
-            </h2>
-            <ul className="mt-4 space-y-2 text-sm font-medium leading-relaxed text-slate-700">
-              {atsChecklist.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <div className="mt-6 border-t-2 border-black pt-4">
-              <Link
-                href="/ats-cv-template"
-                className="text-sm font-black text-black underline decoration-2 underline-offset-4"
-              >
-                Vergelijk met ATS CV template
-              </Link>
-            </div>
-          </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Bronnen en checkdatum
-          </p>
-          <h2 className="mt-2 text-3xl font-black text-black">
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-eyebrow mb-3">
+            <span>Bronnen en checkdatum</span>
+          </div>
+          <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
             Onderbouwde richtlijnen (gecheckt op 8 maart 2026)
           </h2>
-          <div className="mt-6 space-y-3">
+          <div className="mt-8 space-y-3">
             {sources.map((source) => (
               <a
                 key={source.href}
                 href={source.href}
                 target="_blank"
                 rel="noreferrer"
-                className="block border-2 border-black bg-white p-4 text-sm font-medium text-slate-700 transition-colors hover:bg-yellow-100"
+                className="block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-4 text-sm leading-6 text-[var(--wk-ink-muted)] transition-colors hover:bg-[var(--wk-accent-soft)]"
               >
-                <span className="font-black text-black">{source.label}</span>
+                <span className="font-semibold text-[var(--wk-ink)]">{source.label}</span>
                 <span className="mt-1 block break-all">{source.href}</span>
               </a>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14 grid gap-6 md:grid-cols-2">
-          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Verwante intenties
-            </p>
-            <h2 className="mt-2 text-2xl font-black text-black">
-              Pagina&apos;s die dicht op CV opstellen zitten
-            </h2>
-            <div className="mt-4 space-y-4">
-              {[
-                {
-                  href: "/cv-maken",
-                  title: "CV maken",
-                  body: "De bredere gids als je behalve structuur ook hulp zoekt bij profieltekst, bullets en templatekeuze.",
-                },
-                {
-                  href: "/curriculum-vitae-maken",
-                  title: "Curriculum vitae maken",
-                  body: "Formelere variant voor bezoekers die zakelijker taalgebruik gebruiken maar dezelfde opbouw nodig hebben.",
-                },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block border-2 border-black bg-[#FFFEF0] p-4 transition-colors hover:bg-yellow-100"
-                >
-                  <p className="text-sm font-black text-black">{item.title}</p>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
-                    {item.body}
-                  </p>
-                </Link>
-              ))}
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-6 md:grid-cols-2">
+            <div className="wk-card p-6">
+              <div className="wk-eyebrow mb-3">
+                <span>Verwante intenties</span>
+              </div>
+              <h2 className="text-2xl font-semibold text-[var(--wk-ink)]">
+                Pagina&apos;s die dicht op CV opstellen zitten
+              </h2>
+              <div className="mt-4 grid gap-4">
+                {[
+                  {
+                    href: "/cv-maken",
+                    title: "CV maken",
+                    body: "De bredere gids als je behalve structuur ook hulp zoekt bij profieltekst, bullets en templatekeuze.",
+                  },
+                  {
+                    href: "/curriculum-vitae-maken",
+                    title: "Curriculum vitae maken",
+                    body: "Formelere variant voor bezoekers die zakelijker taalgebruik gebruiken maar dezelfde opbouw nodig hebben.",
+                  },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 transition-colors hover:border-[var(--wk-primary)]"
+                  >
+                    <p className="text-sm font-semibold text-[var(--wk-ink)]">{item.title}</p>
+                    <p className="mt-1 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.body}</p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="wk-card p-6">
+              <div className="wk-eyebrow mb-3">
+                <span>Prijs- en startintentie</span>
+              </div>
+              <h2 className="text-2xl font-semibold text-[var(--wk-ink)]">
+                Routes voor gratis starten of direct bouwen
+              </h2>
+              <div className="mt-4 grid gap-4">
+                {[
+                  {
+                    href: "/gratis-cv-maken",
+                    title: "Gratis CV maken",
+                    body: "Legt helder uit hoe gratis starten werkt en wanneer de eenmalige betaling pas in beeld komt.",
+                  },
+                  {
+                    href: "/online-cv-maken",
+                    title: "Online CV maken",
+                    body: "Logische vervolgroute voor bezoekers die structuur zoeken, maar liever meteen online in een builder werken.",
+                  },
+                  {
+                    href: "/prijzen",
+                    title: "Prijzen",
+                    body: "Bekijk het betaalmodel als je wilt snappen hoe gratis bewerken en betaald downloaden samenkomen.",
+                  },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 transition-colors hover:border-[var(--wk-primary)]"
+                  >
+                    <p className="text-sm font-semibold text-[var(--wk-ink)]">{item.title}</p>
+                    <p className="mt-1 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.body}</p>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
-          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Prijs- en startintentie
-            </p>
-            <h2 className="mt-2 text-2xl font-black text-black">
-              Routes voor gratis starten of direct bouwen
-            </h2>
-            <div className="mt-4 space-y-4">
-              {[
-                {
-                  href: "/gratis-cv-maken",
-                  title: "Gratis CV maken",
-                  body: "Legt helder uit hoe gratis starten werkt en wanneer de eenmalige betaling pas in beeld komt.",
-                },
-                {
-                  href: "/online-cv-maken",
-                  title: "Online CV maken",
-                  body: "Logische vervolgroute voor bezoekers die structuur zoeken, maar liever meteen online in een builder werken.",
-                },
-                {
-                  href: "/prijzen",
-                  title: "Prijzen",
-                  body: "Bekijk het betaalmodel als je wilt snappen hoe gratis bewerken en betaald downloaden samenkomen.",
-                },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block border-2 border-black bg-[#FFFEF0] p-4 transition-colors hover:bg-yellow-100"
-                >
-                  <p className="text-sm font-black text-black">{item.title}</p>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
-                    {item.body}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14">
-          <h2 className="text-center text-3xl font-black text-black">
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <h2 className="text-center text-3xl font-semibold text-[var(--wk-ink)]">
             Veelgestelde vragen over CV opstellen
           </h2>
           <div className="mx-auto mt-8 max-w-3xl space-y-4">
             {faqs.map((faq) => (
-              <details
-                key={faq.question}
-                className="group border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <summary className="flex cursor-pointer items-center justify-between p-4 text-left text-base font-black text-black">
+              <details key={faq.question} className="wk-card p-5">
+                <summary className="cursor-pointer font-semibold text-[var(--wk-ink)]">
                   {faq.question}
-                  <span className="ml-3 text-xl transition-transform group-open:rotate-45">+</span>
                 </summary>
-                <div className="border-t-2 border-black px-4 pb-4 pt-3 text-sm font-medium leading-relaxed text-slate-700">
-                  {faq.answer}
-                </div>
+                <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">{faq.answer}</p>
               </details>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
-                Klaar om je CV echt goed op te stellen?
-              </p>
-              <h2 className="mt-2 text-3xl font-black text-black">
-                Zet de juiste structuur direct om naar je eigen CV
-              </h2>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
-                Gebruik deze opbouw, kies daarna een rustige template en werk je CV zonder opmaakgedoe verder uit.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/templates"
-                className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Vergelijk templates
-              </Link>
-              <Link
-                href="/cv-maken"
-                className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
-              >
-                Start met je basis-CV
-              </Link>
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-8 md:p-12">
+            <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+              <div className="max-w-3xl">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-primary-contrast)]/80">
+                  Klaar om je CV echt goed op te stellen?
+                </p>
+                <h2 className="mt-2 text-3xl font-semibold text-[var(--wk-primary-contrast)]">
+                  Zet de juiste structuur direct om naar je eigen CV
+                </h2>
+                <p className="mt-2 text-sm leading-7 text-[var(--wk-primary-contrast)]/80 sm:text-base">
+                  Gebruik deze opbouw, kies daarna een rustige template en werk je CV zonder
+                  opmaakgedoe verder uit.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <Link href="/templates" className="wk-button wk-button-secondary">
+                  Vergelijk templates
+                </Link>
+                <Link href="/cv-maken" className="wk-button wk-button-accent">
+                  Start met je basis-CV
+                </Link>
+              </div>
             </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
       <script
         type="application/ld+json"
@@ -626,7 +618,7 @@ export default function CvOpstellenPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <Footer />
-    </div>
+      <Footer variant="brand" />
+    </main>
   );
 }

@@ -461,65 +461,65 @@ export const metadata: Metadata = {
     ],
 };
 
+const badgeToneByLabel: Record<string, string> = {
+    "NL wetgeving": "wk-badge-success",
+    "Geld": "wk-badge-accent",
+    "AI": "wk-badge-accent",
+    "AI foto": "wk-badge-warning",
+    "Expat": "wk-badge-warning",
+    "Recruiter": "wk-badge-warning",
+    "Brief": "wk-badge-warning",
+    "Gids": "",
+    "Workflow": "",
+    "Tekst": "",
+};
+
 function ToolCardView({ tool }: { tool: ToolCard }) {
     return (
         <Link
             href={tool.href}
-            className="group bg-white border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all p-5 block"
+            className="wk-card group block p-5 transition-transform hover:-translate-y-0.5"
         >
-            <div className="flex items-start justify-between gap-3 mb-2">
-                <h2 className="font-black text-slate-900 text-sm leading-tight group-hover:text-teal-700 transition-colors">
+            <div className="mb-2 flex items-start justify-between gap-3">
+                <h2 className="text-sm font-semibold leading-tight text-[var(--wk-ink)] transition-colors group-hover:text-[var(--wk-primary)]">
                     {tool.title}
                 </h2>
-                <span className={`flex-shrink-0 text-[10px] font-black uppercase tracking-wide px-2 py-0.5 rounded-full border ${tool.badgeClass}`}>
+                <span className={`wk-badge flex-shrink-0 ${badgeToneByLabel[tool.badge] ?? ""}`}>
                     {tool.badge}
                 </span>
             </div>
-            <p className="text-xs text-slate-500 leading-relaxed">{tool.description}</p>
+            <p className="text-xs leading-5 text-[var(--wk-ink-muted)]">{tool.description}</p>
         </Link>
     );
 }
 
 export default function ToolsPage() {
     return (
-        <div className="min-h-screen bg-[#FFFEF9]">
-            <header className="border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2">
-                        <span className="font-black text-2xl tracking-tight text-black">
-                            Werk<span className="bg-[#4ECDC4] px-1">CV</span>.nl
-                        </span>
-                    </Link>
-                    <Link href="/" className="text-sm font-bold text-slate-600 hover:text-slate-900 transition-colors">
-                        ← Home
-                    </Link>
-                </div>
-            </header>
-
-            <div className="max-w-6xl mx-auto px-6 py-12">
-                <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_0.7fr] gap-6 mb-12">
+        <main>
+            <div className="wk-container py-12">
+                <div className="mb-12 grid grid-cols-1 gap-6 lg:grid-cols-[1.3fr_0.7fr]">
                     <div>
-                        <div className="flex flex-wrap gap-2 mb-4">
-                            <span className="text-xs font-black uppercase tracking-wide bg-teal-100 text-teal-800 px-3 py-1 border border-teal-300 rounded-full">
+                        <div className="mb-4 flex flex-wrap gap-2">
+                            <span className="wk-badge wk-badge-accent">
                                 {totalTools} live tools
                             </span>
-                            <span className="text-xs font-black uppercase tracking-wide bg-emerald-100 text-emerald-800 px-3 py-1 border border-emerald-300 rounded-full">
+                            <span className="wk-badge wk-badge-success">
                                 NL wetgeving + AI + Expat
                             </span>
-                            <span className="text-xs font-black uppercase tracking-wide bg-slate-100 text-slate-700 px-3 py-1 border border-slate-300 rounded-full">
+                            <span className="wk-badge">
                                 Bijgewerkt 19 maart 2026
                             </span>
                         </div>
-                        <h1 className="text-3xl sm:text-5xl font-black text-slate-900 mb-4 leading-tight">
-                            Gratis tools voor CV, sollicitatie en werken in Nederland
+                        <h1 className="mb-4 text-3xl font-semibold leading-tight text-[var(--wk-ink)] sm:text-5xl">
+                            <span className="wk-hero-highlight">Gratis tools</span> voor CV, sollicitatie en werken in Nederland
                         </h1>
-                        <p className="text-lg text-slate-600 font-medium max-w-3xl">
+                        <p className="max-w-3xl text-lg font-medium leading-8 text-[var(--wk-ink-muted)]">
                             WerkCV is niet alleen een CV-builder. Dit is ook je gereedschapskist voor sollicitaties, salaris, contractvragen en expat-proof job search in Nederland.
                         </p>
                     </div>
 
-                    <div className="bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-                        <p className="text-xs font-black uppercase tracking-wide text-slate-500 mb-3">
+                    <div className="wk-card p-6">
+                        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
                             Waarom deze hub werkt
                         </p>
                         <div className="space-y-3">
@@ -530,10 +530,10 @@ export default function ToolsPage() {
                                 "Expat-tools sluiten aan op Nederlands solliciteren en IND-routes.",
                             ].map((item, index) => (
                                 <div key={item} className="flex gap-3">
-                                    <span className="text-teal-600 font-black">
+                                    <span className="font-semibold text-[var(--wk-primary)]">
                                         {String(index + 1).padStart(2, "0")}
                                     </span>
-                                    <p className="text-sm text-slate-600 leading-relaxed">{item}</p>
+                                    <p className="text-sm leading-6 text-[var(--wk-ink-muted)]">{item}</p>
                                 </div>
                             ))}
                         </div>
@@ -541,20 +541,20 @@ export default function ToolsPage() {
                 </div>
 
                 <section className="mb-12">
-                    <div className="flex items-end justify-between gap-4 mb-5">
+                    <div className="mb-5 flex items-end justify-between gap-4">
                         <div>
-                            <p className="text-xs font-black uppercase tracking-[0.2em] text-teal-700 mb-2">
-                                Populair nu
-                            </p>
-                            <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+                            <div className="wk-eyebrow mb-2">
+                                <span>Populair nu</span>
+                            </div>
+                            <h2 className="text-2xl font-semibold text-[var(--wk-ink)] sm:text-3xl">
                                 Tools met de hoogste intent
                             </h2>
                         </div>
-                        <p className="hidden md:block text-sm text-slate-500 max-w-lg text-right">
+                        <p className="hidden max-w-lg text-right text-sm leading-6 text-[var(--wk-ink-muted)] md:block">
                             Dit zijn de tools met de sterkste combinatie van zoekintentie, lokale relevantie en productfit voor WerkCV.
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {featuredTools.map((tool) => (
                             <ToolCardView key={tool.href} tool={tool} />
                         ))}
@@ -565,17 +565,17 @@ export default function ToolsPage() {
                     {sections.map((section) => (
                         <section key={section.title}>
                             <div className="mb-5">
-                                <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
+                                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--wk-ink-muted)]">
                                     {section.eyebrow}
                                 </p>
-                                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">
+                                <h2 className="mb-2 text-2xl font-semibold text-[var(--wk-ink)] sm:text-3xl">
                                     {section.title}
                                 </h2>
-                                <p className="text-sm sm:text-base text-slate-600 max-w-3xl">
+                                <p className="max-w-3xl text-sm leading-7 text-[var(--wk-ink-muted)] sm:text-base">
                                     {section.description}
                                 </p>
                             </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                                 {section.tools.map((tool) => (
                                     <ToolCardView key={`${section.title}-${tool.href}`} tool={tool} />
                                 ))}
@@ -584,31 +584,31 @@ export default function ToolsPage() {
                     ))}
                 </div>
 
-                <section className="mt-12 border-4 border-black bg-white p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+                <section className="wk-card mt-12 p-8">
                     <div className="max-w-4xl">
-                        <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">
-                            Van tool-intentie naar CV-intentie
-                        </p>
-                        <h2 className="text-2xl sm:text-3xl font-black text-slate-900">
+                        <div className="wk-eyebrow mb-3">
+                            <span>Van tool-intentie naar CV-intentie</span>
+                        </div>
+                        <h2 className="text-2xl font-semibold text-[var(--wk-ink)] sm:text-3xl">
                             Veel bezoekers beginnen met een tool, maar eindigen bij een nieuw CV
                         </h2>
-                        <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed">
+                        <p className="mt-4 text-sm leading-7 text-[var(--wk-ink-muted)] sm:text-base">
                             Dat geldt vooral voor salaris-, WW- en parttime-vragen. Wie zijn loon vergelijkt of contractruimte onderzoekt, zoekt vaak daarna ook naar{" "}
-                            <Link href="/gratis-cv-maken" className="font-black underline decoration-2 underline-offset-4">
+                            <Link href="/gratis-cv-maken" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                                 gratis CV maken
                             </Link>
                             ,{" "}
-                            <Link href="/cv-maken" className="font-black underline decoration-2 underline-offset-4">
+                            <Link href="/cv-maken" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                                 CV aanmaken
                             </Link>
                             {" "}of een snellere route voor{" "}
-                            <Link href="/cv-maken-op-mobiel" className="font-black underline decoration-2 underline-offset-4">
+                            <Link href="/cv-maken-op-mobiel" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                                 CV maken op mobiel
                             </Link>
                             . Daarom koppelen we de sterkste intentpagina&apos;s hieronder aan deze toolhub.
                         </p>
                     </div>
-                    <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+                    <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                         {[
                             {
                                 href: "/gratis-cv-maken",
@@ -634,35 +634,35 @@ export default function ToolsPage() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className="block border-2 border-black bg-[#FFFEF9] p-4 hover:bg-teal-50 transition-colors"
+                                className="block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 transition-colors hover:bg-[var(--wk-accent-soft)]"
                             >
-                                <p className="text-sm font-black text-slate-900">{item.title}</p>
-                                <p className="mt-2 text-sm text-slate-600 leading-relaxed">{item.description}</p>
+                                <p className="text-sm font-semibold text-[var(--wk-ink)]">{item.title}</p>
+                                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.description}</p>
                             </Link>
                         ))}
                     </div>
                 </section>
 
-                <section className="mt-12 bg-black text-white p-8 border-4 border-black shadow-[6px_6px_0px_0px_rgba(78,205,196,1)]">
-                    <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-6 items-center">
+                <section className="mt-12 rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-8">
+                    <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-[1.1fr_0.9fr]">
                         <div>
-                            <h2 className="text-2xl sm:text-3xl font-black mb-3">
+                            <h2 className="mb-3 text-2xl font-semibold text-[var(--wk-primary-contrast)] sm:text-3xl">
                                 Klaar om van tool naar actie te gaan?
                             </h2>
-                            <p className="text-sm sm:text-base text-slate-300 max-w-2xl">
+                            <p className="max-w-2xl text-sm leading-7 text-[var(--wk-primary-contrast)]/80 sm:text-base">
                                 Gebruik de tools om duidelijkheid te krijgen, en stap daarna direct door naar je CV of sollicitatiebrief.
                             </p>
                         </div>
-                        <div className="flex flex-col sm:flex-row gap-3">
+                        <div className="flex flex-col gap-3 sm:flex-row">
                             <Link
                                 href="/editor"
-                                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-white hover:bg-teal-300 transition-colors"
+                                className="wk-button wk-button-accent flex-1"
                             >
                                 Maak gratis je CV
                             </Link>
                             <Link
                                 href="/cv-maken"
-                                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 bg-transparent text-white font-black text-sm border-2 border-white hover:bg-white hover:text-black transition-colors"
+                                className="wk-button wk-button-secondary flex-1"
                             >
                                 Lees hoe je een sterk CV maakt
                             </Link>
@@ -671,7 +671,7 @@ export default function ToolsPage() {
                 </section>
             </div>
 
-            <Footer />
-        </div>
+            <Footer variant="brand" />
+        </main>
     );
 }

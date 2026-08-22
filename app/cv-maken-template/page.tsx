@@ -117,257 +117,237 @@ export default function CvMakenTemplatePage() {
     ],
   };
   return (
-    <div className="min-h-screen bg-[#FFFEF0]">
-      <header className="relative z-10 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-black tracking-tight text-black">
-              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-            </span>
-          </Link>
-          <Link
-            href="/editor"
-            className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
-          >
-            Start in editor
-          </Link>
-        </div>
-      </header>
-
-      <main className="relative z-10 mx-auto max-w-5xl px-6 py-14">
-        <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <div>
-            <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Template-intentie
-            </p>
-            <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV maken template kiezen zonder te verdwalen in te veel layouts
-            </h1>
-            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Wie zoekt op <strong>cv maken template</strong> wil meestal snel een
-              goede layout kiezen en daarna verder met de inhoud. Op deze pagina
-              helpen we je de beste CV-template selecteren op basis van rol,
-              uitstraling en scanbaarheid, zodat je daarna direct kunt starten in
-              de editor. Een CV-template wordt in het Nederlands ook wel een
-              CV-sjabloon genoemd; beide termen bedoelen hier dezelfde vaste layout.
-            </p>
-            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
-              Zie dit als de keuzehulp voor layout- en template-intentie. Voor het
-              volledige stappenplan rond inhoud, schrijfkwaliteit en vacaturematch
-              gebruik je daarna beter de{" "}
-              <Link
-                href="/cv-maken"
-                className="font-black text-black underline decoration-2 underline-offset-4"
-              >
-                hoofdgids CV maken
-              </Link>
-              .
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                href="/templates"
-                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              >
-                Bekijk alle templates
-              </Link>
-              <Link
-                href="/editor"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Start direct met invullen
-              </Link>
-            </div>
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
-              {[
-                "Rustige en moderne layouts",
-                "Vergelijk op echte inhoud",
-                "Eenmalig betalen bij download",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="border-3 border-black bg-white px-4 py-3 text-sm font-black text-black"
-                  style={{ borderWidth: "3px" }}
+    <main>
+      <section className="wk-section">
+        <div className="wk-container">
+          <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+            <div>
+              <div className="wk-eyebrow mb-3">
+                <span>Template-intentie</span>
+              </div>
+              <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+                <span className="wk-hero-highlight">CV maken template</span> kiezen zonder te
+                verdwalen in te veel layouts
+              </h1>
+              <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
+                Wie zoekt op <strong className="font-semibold text-[var(--wk-ink)]">cv maken template</strong> wil
+                meestal snel een goede layout kiezen en daarna verder met de inhoud. Op deze pagina
+                helpen we je de beste CV-template selecteren op basis van rol, uitstraling en
+                scanbaarheid, zodat je daarna direct kunt starten in de editor. Een CV-template
+                wordt in het Nederlands ook wel een CV-sjabloon genoemd; beide termen bedoelen hier
+                dezelfde vaste layout.
+              </p>
+              <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--wk-ink-muted)]">
+                Zie dit als de keuzehulp voor layout- en template-intentie. Voor het volledige
+                stappenplan rond inhoud, schrijfkwaliteit en vacaturematch gebruik je daarna beter
+                de{" "}
+                <Link
+                  href="/cv-maken"
+                  className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
                 >
-                  {item}
+                  hoofdgids CV maken
+                </Link>
+                .
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/templates" className="wk-button wk-button-primary">
+                  Bekijk alle templates
+                </Link>
+                <Link href="/editor" className="wk-button wk-button-secondary">
+                  Start direct met invullen
+                </Link>
+              </div>
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                {[
+                  "Rustige en moderne layouts",
+                  "Vergelijk op echte inhoud",
+                  "Eenmalig betalen bij download",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] px-4 py-3 text-sm font-semibold text-[var(--wk-ink)]"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="wk-card h-fit p-6">
+              <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
+                Wat maakt een goede CV-template?
+              </h2>
+              <ul className="mt-5 space-y-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                <li>
+                  <strong className="font-semibold text-[var(--wk-ink)]">Scanbaar:</strong> secties
+                  en koppen zijn direct duidelijk.
+                </li>
+                <li>
+                  <strong className="font-semibold text-[var(--wk-ink)]">Passend:</strong> de
+                  uitstraling klopt met je rol en sector.
+                </li>
+                <li>
+                  <strong className="font-semibold text-[var(--wk-ink)]">Rustig:</strong> inhoud
+                  krijgt ruimte zonder designruis.
+                </li>
+                <li>
+                  <strong className="font-semibold text-[var(--wk-ink)]">Praktisch:</strong> je
+                  kunt snel vergelijken en door naar de definitieve versie.
+                </li>
+              </ul>
+              <div className="mt-6 border-t border-[var(--wk-border)] pt-5">
+                <Link
+                  href="/templates"
+                  className="text-sm font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
+                >
+                  Bekijk alle CV-templates en sjablonen
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-6 md:grid-cols-2">
+            {featuredTemplates.map((template) => (
+              <article key={template.id} className="wk-card p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
+                  Template
+                </p>
+                <h2 className="mt-2 text-2xl font-semibold text-[var(--wk-ink)]">
+                  {template.nameDutch}
+                </h2>
+                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                  {templateUseCases[template.id] ?? template.description}
+                </p>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <Link
+                    href="/editor"
+                    className="wk-button wk-button-primary wk-button-small"
+                  >
+                    Gebruik in editor
+                  </Link>
+                  <Link
+                    href="/templates"
+                    className="wk-button wk-button-secondary wk-button-small"
+                  >
+                    Vergelijk layouts
+                  </Link>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-card p-6 md:p-8">
+            <div className="wk-eyebrow mb-3">
+              <span>Keuzeproces</span>
+            </div>
+            <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+              Zo kies je de beste CV-template zonder tijd te verliezen
+            </h2>
+            <div className="mt-6 space-y-4">
+              {selectionSteps.map((step, index) => (
+                <div key={step.title} className="flex gap-4">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--wk-accent-soft)] text-sm font-semibold text-[var(--wk-primary)]">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{step.title}</h3>
+                    <p className="mt-1 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                      {step.body}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">
-              Wat maakt een goede CV-template?
-            </h2>
-            <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-              <li>
-                <strong className="text-black">Scanbaar:</strong> secties en koppen
-                zijn direct duidelijk.
-              </li>
-              <li>
-                <strong className="text-black">Passend:</strong> de uitstraling klopt
-                met je rol en sector.
-              </li>
-              <li>
-                <strong className="text-black">Rustig:</strong> inhoud krijgt ruimte
-                zonder designruis.
-              </li>
-              <li>
-                <strong className="text-black">Praktisch:</strong> je kunt snel
-                vergelijken en door naar de definitieve versie.
-              </li>
-            </ul>
-            <div className="mt-6 border-t-4 border-black pt-5">
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {[
+              {
+                href: "/curriculum-vitae-template",
+                title: "Curriculum vitae template",
+                body: "Speciaal voor formelere template-intentie en rustige, zakelijke layouts.",
+              },
+              {
+                href: "/templates",
+                title: "Alle CV-templates",
+                body: "Vergelijk alle layouts met je eigen inhoud en kies daarna de beste versie.",
+              },
+              {
+                href: "/cv-maken",
+                title: "CV maken",
+                body: "Ga hierna verder als de layout gekozen is en je de inhoud recruiter-proof wilt aanscherpen.",
+              },
+              {
+                href: "/cv-opmaken",
+                title: "CV opmaken",
+                body: "Verbeter de layout verder nadat je de juiste template hebt gekozen.",
+              },
+            ].map((item) => (
               <Link
-                href="/templates"
-                className="text-sm font-black text-black underline decoration-2 underline-offset-4"
+                key={item.href}
+                href={item.href}
+                className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 transition-colors hover:border-[var(--wk-primary)]"
               >
-                Bekijk alle CV-templates en sjablonen
+                <p className="text-sm font-semibold text-[var(--wk-ink)]">{item.title}</p>
+                <p className="mt-1 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.body}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-8 md:p-12">
+            <h2 className="max-w-3xl text-3xl font-semibold text-[var(--wk-primary-contrast)]">
+              Kies je template, vul je inhoud in en download pas wanneer alles klopt
+            </h2>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-[var(--wk-primary-contrast)]/80 sm:text-base">
+              WerkCV is gebouwd voor mensen die eerst een goede template willen kiezen, daarna hun
+              inhoud willen aanscherpen en pas op het einde willen betalen voor de PDF. Dat maakt
+              template-zoekintentie direct bruikbaar voor echte sollicitaties.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/templates" className="wk-button wk-button-accent">
+                Vergelijk templates
+              </Link>
+              <Link href="/prijzen" className="wk-button wk-button-secondary">
+                Bekijk prijzen
               </Link>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14 grid gap-6 md:grid-cols-2">
-          {featuredTemplates.map((template) => (
-            <article
-              key={template.id}
-              className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-            >
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">
-                Template
-              </p>
-              <h2 className="mt-2 text-2xl font-black text-black">
-                {template.nameDutch}
-              </h2>
-              <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                {templateUseCases[template.id] ?? template.description}
-              </p>
-              <div className="mt-5 flex flex-wrap gap-3">
-                <Link
-                  href="/editor"
-                  className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
-                >
-                  Gebruik in editor
-                </Link>
-                <Link
-                  href="/templates"
-                  className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
-                >
-                  Vergelijk layouts
-                </Link>
-              </div>
-            </article>
-          ))}
-        </section>
-
-        <section className="mb-14 border-4 border-black bg-white p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Keuzeproces
-          </p>
-          <h2 className="mt-2 text-3xl font-black text-black">
-            Zo kies je de beste CV-template zonder tijd te verliezen
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+            Veelgestelde vragen over CV templates
           </h2>
-          <div className="mt-6 space-y-4">
-            {selectionSteps.map((step, index) => (
-              <div key={step.title} className="flex gap-4">
-                <div
-                  className="flex h-9 w-9 flex-shrink-0 items-center justify-center border-3 border-black bg-[#FFFEF0] text-sm font-black text-black"
-                  style={{ borderWidth: "3px" }}
-                >
-                  {index + 1}
-                </div>
-                <div>
-                  <h3 className="text-lg font-black text-black">{step.title}</h3>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
-                    {step.body}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {[
-            {
-              href: "/curriculum-vitae-template",
-              title: "Curriculum vitae template",
-              body: "Speciaal voor formelere template-intentie en rustige, zakelijke layouts.",
-            },
-            {
-              href: "/templates",
-              title: "Alle CV-templates",
-              body: "Vergelijk alle layouts met je eigen inhoud en kies daarna de beste versie.",
-            },
-            {
-              href: "/cv-maken",
-              title: "CV maken",
-              body: "Ga hierna verder als de layout gekozen is en je de inhoud recruiter-proof wilt aanscherpen.",
-            },
-            {
-              href: "/cv-opmaken",
-              title: "CV opmaken",
-              body: "Verbeter de layout verder nadat je de juiste template hebt gekozen.",
-            },
-          ].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-colors hover:bg-yellow-100"
-            >
-              <p className="text-sm font-black text-black">{item.title}</p>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
-                {item.body}
-              </p>
-            </Link>
-          ))}
-        </section>
-
-        <section className="mb-14 border-4 border-black bg-black p-8 text-white shadow-[8px_8px_0px_0px_rgba(250,204,21,1)]">
-          <h2 className="text-3xl font-black">
-            Kies je template, vul je inhoud in en download pas wanneer alles klopt
-          </h2>
-          <p className="mt-4 max-w-3xl text-base font-medium leading-relaxed text-slate-200">
-            WerkCV is gebouwd voor mensen die eerst een goede template willen kiezen,
-            daarna hun inhoud willen aanscherpen en pas op het einde willen betalen
-            voor de PDF. Dat maakt template-zoekintentie direct bruikbaar voor echte
-            sollicitaties.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              href="/templates"
-              className="border-4 border-white bg-yellow-400 px-5 py-3 text-base font-black text-black"
-            >
-              Vergelijk templates
-            </Link>
-            <Link
-              href="/prijzen"
-              className="border-4 border-white bg-transparent px-5 py-3 text-base font-black text-white"
-            >
-              Bekijk prijzen
-            </Link>
-          </div>
-        </section>
-
-        <section className="mb-14">
-          <h2 className="text-3xl font-black text-black">Veelgestelde vragen over CV templates</h2>
-          <div className="mt-6 space-y-4">
+          <div className="mt-8 space-y-4">
             {faqs.map((faq) => (
-              <article
-                key={faq.question}
-                className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <h3 className="text-lg font-black text-black">{faq.question}</h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                  {faq.answer}
-                </p>
-              </article>
+              <details key={faq.question} className="wk-card p-5">
+                <summary className="cursor-pointer font-semibold text-[var(--wk-ink)]">
+                  {faq.question}
+                </summary>
+                <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">{faq.answer}</p>
+              </details>
             ))}
           </div>
-        </section>
-      </main>
-
-      <Footer />
+        </div>
+      </section>
 
       <script
         type="application/ld+json"
@@ -377,6 +357,8 @@ export default function CvMakenTemplatePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-          </div>
+
+      <Footer variant="brand" />
+    </main>
   );
 }

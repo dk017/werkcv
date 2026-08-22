@@ -113,204 +113,206 @@ export default function CvMakenStudentPage() {
     ],
   };
   return (
-    <div className="min-h-screen bg-[#FFFEF0]">
-      <header className="relative z-10 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-black tracking-tight text-black">
-              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-            </span>
-          </Link>
-          <Link
-            href="/editor"
-            className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
-          >
-            Start in editor
-          </Link>
-        </div>
-      </header>
+    <main>
+      <section className="wk-section">
+        <div className="wk-container">
+          <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+            <div>
+              <div className="wk-eyebrow mb-3">
+                <span>Student-intentie</span>
+              </div>
+              <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+                <span className="wk-hero-highlight">CV maken als student</span> zonder vast te
+                lopen op weinig werkervaring
+              </h1>
+              <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
+                Een goed student-CV draait niet om jarenlang werkverleden, maar om slim laten zien
+                wat je al hebt gedaan: stage, schoolprojecten, bijbaan, bestuur,
+                vrijwilligerswerk en vaardigheden. WerkCV helpt je die ervaring om te zetten in een
+                rustige, recruiter-proof versie.
+              </p>
+              <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--wk-ink-muted)]">
+                Deze route is specifiek voor stage, bijbaan, trainee en starter-intentie. Zoek je
+                eerst het brede stappenplan voor een algemeen CV? Gebruik dan de{" "}
+                <Link
+                  href="/cv-maken"
+                  className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
+                >
+                  hoofdgids CV maken
+                </Link>
+                .
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/editor" className="wk-button wk-button-primary">
+                  Start je student-CV
+                </Link>
+                <Link
+                  href="/cv-voorbeelden/studenten-en-starters/student-cv"
+                  className="wk-button wk-button-secondary"
+                >
+                  Bekijk student voorbeeld
+                </Link>
+              </div>
+            </div>
 
-      <main className="relative z-10 mx-auto max-w-5xl px-6 py-14">
-        <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <div>
-            <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Student-intentie
-            </p>
-            <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV maken als student zonder vast te lopen op weinig werkervaring
-            </h1>
-            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Een goed student-CV draait niet om jarenlang werkverleden, maar om
-              slim laten zien wat je al hebt gedaan: stage, schoolprojecten, bijbaan,
-              bestuur, vrijwilligerswerk en vaardigheden. WerkCV helpt je die
-              ervaring om te zetten in een rustige, recruiter-proof versie.
-            </p>
-            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
-              Deze route is specifiek voor stage, bijbaan, trainee en starter-intentie.
-              Zoek je eerst het brede stappenplan voor een algemeen CV? Gebruik dan de{" "}
-              <Link
-                href="/cv-maken"
-                className="font-black text-black underline decoration-2 underline-offset-4"
-              >
-                hoofdgids CV maken
-              </Link>
-              .
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                href="/editor"
-                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              >
-                Start je student-CV
-              </Link>
-              <Link
-                href="/cv-voorbeelden/studenten-en-starters/student-cv"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Bekijk student voorbeeld
-              </Link>
+            <div className="wk-card h-fit p-6">
+              <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
+                Wat recruiters wél willen zien
+              </h2>
+              <ul className="mt-5 space-y-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                {[
+                  "Een duidelijke doelrol: stage, bijbaan, trainee of junior functie.",
+                  "Praktisch bewijs uit studie, stage, project of bijbaan.",
+                  "Een korte profieltekst die motivatie en richting laat zien.",
+                  "Een rustige template die je potentie professioneel presenteert.",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--wk-success-soft)] text-[var(--wk-success)]">
+                      <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">Wat recruiters wél willen zien</h2>
-            <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-              <li>Een duidelijke doelrol: stage, bijbaan, trainee of junior functie.</li>
-              <li>Praktisch bewijs uit studie, stage, project of bijbaan.</li>
-              <li>Een korte profieltekst die motivatie en richting laat zien.</li>
-              <li>Een rustige template die je potentie professioneel presenteert.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="mb-14 grid gap-6 md:grid-cols-2">
-          {featuredTemplates.map((template) => (
-            <article
-              key={template.id}
-              className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-            >
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">
-                Template
-              </p>
-              <h2 className="mt-2 text-2xl font-black text-black">{template.nameDutch}</h2>
-              <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                {studentUseCases[template.id] ?? template.description}
-              </p>
-              <div className="mt-5 flex flex-wrap gap-3">
-                <Link
-                  href="/editor"
-                  className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
-                >
-                  Gebruik deze template
-                </Link>
-                <Link
-                  href="/templates"
-                  className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
-                >
-                  Vergelijk layouts
-                </Link>
-              </div>
-            </article>
-          ))}
-        </section>
-
-        <section className="mb-14 border-4 border-black bg-white p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Stappenplan
-          </p>
-          <h2 className="mt-2 text-3xl font-black text-black">
-            Zo maak je als student snel een sterk CV
-          </h2>
-          <div className="mt-6 space-y-4">
-            {studentSteps.map((step, index) => (
-              <div key={step.title} className="flex gap-4">
-                <div
-                  className="flex h-9 w-9 flex-shrink-0 items-center justify-center border-3 border-black bg-[#FFFEF0] text-sm font-black text-black"
-                  style={{ borderWidth: "3px" }}
-                >
-                  {index + 1}
-                </div>
-                <div>
-                  <h3 className="text-lg font-black text-black">{step.title}</h3>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
-                    {step.body}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {[
-            {
-              href: "/cv-voorbeelden/studenten-en-starters/student-cv",
-              title: "CV voorbeeld student",
-              body: "Bekijk hoe een sterk studentprofiel is opgebouwd.",
-            },
-            {
-              href: "/cv-voorbeelden/studenten-en-starters/stage-cv",
-              title: "CV voorbeeld stage",
-              body: "Zie hoe je stage-intentie en studieprojecten sterk koppelt.",
-            },
-            {
-              href: "/cv-tips/cv-maken-als-student",
-              title: "CV tips voor studenten",
-              body: "Lees extra uitleg over lengte, inhoud en veelgemaakte fouten.",
-            },
-            {
-              href: "/stage-cv-maken",
-              title: "Stage CV maken",
-              body: "Ga door naar de aparte stage-zoekintentie.",
-            },
-            {
-              href: "/cv-gids/cv-voorbeeld-student-bijbaan",
-              title: "CV voorbeeld student bijbaan",
-              body: "Pak een kort, scanbaar voorbeeld voor winkel-, horeca- of logistiek werk naast je studie.",
-            },
-            {
-              href: "/cv-middelbare-school-student",
-              title: "CV middelbare school student",
-              body: "Gebruik deze route als je nog op school zit en een eerste CV zoekt voor stage of bijbaan.",
-            },
-            {
-              href: "/cv-gids/cv-voorbeeld-zonder-ervaring",
-              title: "CV zonder ervaring",
-              body: "Gebruik de BOFU gids als school, stage en kleine jobs nu nog je belangrijkste bewijs zijn.",
-            },
-          ].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-colors hover:bg-yellow-100"
-            >
-              <p className="text-sm font-black text-black">{item.title}</p>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
-                {item.body}
-              </p>
-            </Link>
-          ))}
-        </section>
-
-        <section className="mb-14">
-          <h2 className="text-3xl font-black text-black">Veelgestelde vragen over student-CV&apos;s</h2>
-          <div className="mt-6 space-y-4">
-            {faqs.map((faq) => (
-              <article
-                key={faq.question}
-                className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <h3 className="text-lg font-black text-black">{faq.question}</h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                  {faq.answer}
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-6 md:grid-cols-2">
+            {featuredTemplates.map((template) => (
+              <article key={template.id} className="wk-card p-6">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
+                  Template
                 </p>
+                <h2 className="mt-2 text-2xl font-semibold text-[var(--wk-ink)]">
+                  {template.nameDutch}
+                </h2>
+                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                  {studentUseCases[template.id] ?? template.description}
+                </p>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <Link
+                    href="/editor"
+                    className="wk-button wk-button-primary wk-button-small"
+                  >
+                    Gebruik deze template
+                  </Link>
+                  <Link
+                    href="/templates"
+                    className="wk-button wk-button-secondary wk-button-small"
+                  >
+                    Vergelijk layouts
+                  </Link>
+                </div>
               </article>
             ))}
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
-      <Footer />
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-card p-6 md:p-8">
+            <div className="wk-eyebrow mb-3">
+              <span>Stappenplan</span>
+            </div>
+            <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+              Zo maak je als student snel een sterk CV
+            </h2>
+            <div className="mt-6 space-y-4">
+              {studentSteps.map((step, index) => (
+                <div key={step.title} className="flex gap-4">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--wk-accent-soft)] text-sm font-semibold text-[var(--wk-primary)]">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{step.title}</h3>
+                    <p className="mt-1 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                      {step.body}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {[
+              {
+                href: "/cv-voorbeelden/studenten-en-starters/student-cv",
+                title: "CV voorbeeld student",
+                body: "Bekijk hoe een sterk studentprofiel is opgebouwd.",
+              },
+              {
+                href: "/cv-voorbeelden/studenten-en-starters/stage-cv",
+                title: "CV voorbeeld stage",
+                body: "Zie hoe je stage-intentie en studieprojecten sterk koppelt.",
+              },
+              {
+                href: "/cv-tips/cv-maken-als-student",
+                title: "CV tips voor studenten",
+                body: "Lees extra uitleg over lengte, inhoud en veelgemaakte fouten.",
+              },
+              {
+                href: "/stage-cv-maken",
+                title: "Stage CV maken",
+                body: "Ga door naar de aparte stage-zoekintentie.",
+              },
+              {
+                href: "/cv-gids/cv-voorbeeld-student-bijbaan",
+                title: "CV voorbeeld student bijbaan",
+                body: "Pak een kort, scanbaar voorbeeld voor winkel-, horeca- of logistiek werk naast je studie.",
+              },
+              {
+                href: "/cv-middelbare-school-student",
+                title: "CV middelbare school student",
+                body: "Gebruik deze route als je nog op school zit en een eerste CV zoekt voor stage of bijbaan.",
+              },
+              {
+                href: "/cv-gids/cv-voorbeeld-zonder-ervaring",
+                title: "CV zonder ervaring",
+                body: "Gebruik de BOFU gids als school, stage en kleine jobs nu nog je belangrijkste bewijs zijn.",
+              },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 transition-colors hover:border-[var(--wk-primary)]"
+              >
+                <p className="text-sm font-semibold text-[var(--wk-ink)]">{item.title}</p>
+                <p className="mt-1 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.body}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+            Veelgestelde vragen over student-CV&apos;s
+          </h2>
+          <div className="mt-8 space-y-4">
+            {faqs.map((faq) => (
+              <details key={faq.question} className="wk-card p-5">
+                <summary className="cursor-pointer font-semibold text-[var(--wk-ink)]">
+                  {faq.question}
+                </summary>
+                <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <script
         type="application/ld+json"
@@ -320,6 +322,8 @@ export default function CvMakenStudentPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-          </div>
+
+      <Footer variant="brand" />
+    </main>
   );
 }

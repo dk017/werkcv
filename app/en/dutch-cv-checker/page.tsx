@@ -115,37 +115,10 @@ export const metadata = buildEnglishMetadata({
 
 export default function DutchCvCheckerPage() {
   return (
-    <div className="min-h-screen bg-[#FFFEF9]">
+    <main>
       <FAQJsonLd questions={faqItems} />
 
-      <header className="border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/en" className="flex items-center gap-2">
-            <span className="text-2xl font-black tracking-tight text-black">
-              Werk<span className="bg-[#4ECDC4] px-1">CV</span>.nl
-            </span>
-          </Link>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/en/dutch-cv-template"
-              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
-            >
-              Dutch CV template
-            </Link>
-            <TrackedLandingLink
-              href="/en/editor"
-              trackingLocation="dutch-cv-checker:header_primary"
-              trackingLabel="Open English editor"
-              ctaEventName="cta_resume_optimizer_en_hero"
-              className="border-2 border-black bg-[#4ECDC4] px-4 py-2 text-sm font-black text-black"
-            >
-              Open English editor
-            </TrackedLandingLink>
-          </div>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-6xl px-6 py-10 pb-28 md:pb-10">
+      <div className="wk-container py-10 pb-28 md:pb-10">
         <div className="mb-8">
           <Breadcrumbs
             items={[
@@ -159,22 +132,19 @@ export default function DutchCvCheckerPage() {
           <div>
             <div className="mb-4 flex flex-wrap gap-2">
               {["Dutch CV check", "ATS readability", "1-2 pages", "Photo optional"].map((badge) => (
-                <span
-                  key={badge}
-                  className="border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-black"
-                >
+                <span key={badge} className="wk-trust-pill">
                   {badge}
                 </span>
               ))}
             </div>
-            <h1 className="max-w-4xl text-4xl font-black leading-tight text-black md:text-5xl">
-              Check whether your CV fits Dutch recruiter expectations
+            <h1 className="max-w-4xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+              Check whether your CV fits <span className="wk-hero-highlight">Dutch recruiter</span> expectations
             </h1>
-            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
+            <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
               Use this page when your CV is already in English, but you want to know whether it still works for jobs in the Netherlands. The check focuses on ATS readability and the local signals recruiters usually expect: clear section order, direct summaries, reverse-chronological experience, language levels and LinkedIn consistency.
             </p>
-            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
-              This page was shaped against current public guidance from Work in NL and Europass, plus recent expat forum questions around photo use, references, page length and LinkedIn alignment, checked on <span className="font-black text-black">{checkedDate}</span>.
+            <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--wk-ink-muted)]">
+              This page was shaped against current public guidance from Work in NL and Europass, plus recent expat forum questions around photo use, references, page length and LinkedIn alignment, checked on <span className="font-semibold text-[var(--wk-ink)]">{checkedDate}</span>.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink
@@ -182,27 +152,24 @@ export default function DutchCvCheckerPage() {
                 trackingLocation="dutch-cv-checker:hero_primary"
                 trackingLabel="Check my Dutch CV fit"
                 ctaEventName="cta_resume_optimizer_en_hero"
-                className="border-4 border-black bg-[#4ECDC4] px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                className="wk-button wk-button-primary"
               >
                 Check my Dutch CV fit
               </TrackedLandingLink>
-              <Link
-                href="/en/dutch-cv-template"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
+              <Link href="/en/dutch-cv-template" className="wk-button wk-button-secondary">
                 Build the Dutch-style version
               </Link>
             </div>
           </div>
 
-          <aside className="h-fit border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Best use
-            </p>
-            <h2 className="mt-2 text-2xl font-black text-black">
+          <aside className="wk-card h-fit p-6">
+            <div className="wk-eyebrow mb-2">
+              <span>Best use</span>
+            </div>
+            <h2 className="mt-2 text-2xl font-semibold text-[var(--wk-ink)]">
               Check first, rebuild second
             </h2>
-            <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
+            <div className="mt-4 space-y-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
               <p>1. Upload or paste your current CV.</p>
               <p>2. Fix the structural and ATS issues first.</p>
               <p>3. Rebuild the final version in a cleaner Dutch-style format.</p>
@@ -210,7 +177,7 @@ export default function DutchCvCheckerPage() {
           </aside>
         </section>
 
-        <section id="checker" className="mb-12">
+        <section id="checker" className="mb-12 scroll-mt-24">
           <AtsCheckerTool
             locale="en"
             editorHref="/en/editor"
@@ -221,28 +188,28 @@ export default function DutchCvCheckerPage() {
         </section>
 
         <section className="mb-12 grid gap-6 lg:grid-cols-2">
-          <article className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Official baseline
-            </p>
-            <h2 className="mt-2 text-3xl font-black text-black">
+          <article className="wk-card p-6">
+            <div className="wk-eyebrow mb-2">
+              <span>Official baseline</span>
+            </div>
+            <h2 className="mt-2 text-3xl font-semibold text-[var(--wk-ink)]">
               What current Dutch and EU guidance keeps consistent
             </h2>
-            <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
+            <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--wk-ink-muted)]">
               <p>Work in NL says a CV should clearly show who you are, what you can do and where you have worked, and that readers should be able to understand your education and work experience quickly.</p>
               <p>Europass emphasizes the same fundamentals: tailor the profile, focus on the facts that match the vacancy, use clear language and keep experience in reverse chronological order.</p>
               <p>So the Dutch CV check is less about visual style and more about clarity, relevance and easy scanning.</p>
             </div>
           </article>
 
-          <article className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              What this check should catch
-            </p>
-            <h2 className="mt-2 text-3xl font-black text-black">
+          <article className="wk-card p-6">
+            <div className="wk-eyebrow mb-2">
+              <span>What this check should catch</span>
+            </div>
+            <h2 className="mt-2 text-3xl font-semibold text-[var(--wk-ink)]">
               The issues internationals most often miss
             </h2>
-            <ul className="mt-4 list-disc space-y-3 pl-5 text-sm font-medium leading-relaxed text-slate-700 marker:text-black">
+            <ul className="mt-4 list-disc space-y-3 pl-5 text-sm leading-7 text-[var(--wk-ink-muted)] marker:text-[var(--wk-ink)]">
               <li>Your summary is too generic and does not match the Dutch vacancy language.</li>
               <li>Your CV is readable in English, but too decorative or too broad for ATS parsing.</li>
               <li>Your contact details, city, language levels or LinkedIn profile are missing or inconsistent.</li>
@@ -252,20 +219,17 @@ export default function DutchCvCheckerPage() {
         </section>
 
         <section className="mb-12">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Recent expat signal
-          </p>
-          <h2 className="mt-2 text-3xl font-black text-black">
+          <div className="wk-eyebrow mb-2">
+            <span>Recent expat signal</span>
+          </div>
+          <h2 className="mt-2 text-3xl font-semibold text-[var(--wk-ink)]">
             Common questions people keep asking about Dutch CVs
           </h2>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {localSignals.map((item) => (
-              <article
-                key={item.title}
-                className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <h3 className="text-lg font-black text-black">{item.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-700">{item.body}</p>
+              <article key={item.title} className="wk-card p-5">
+                <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.body}</p>
               </article>
             ))}
           </div>
@@ -274,10 +238,10 @@ export default function DutchCvCheckerPage() {
         <WhyWerkCvSection locale="en" />
 
         <section className="mb-12">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Sources checked
-          </p>
-          <h2 className="mt-2 text-3xl font-black text-black">
+          <div className="wk-eyebrow mb-2">
+            <span>Sources checked</span>
+          </div>
+          <h2 className="mt-2 text-3xl font-semibold text-[var(--wk-ink)]">
             Public guidance used for this checker page
           </h2>
           <div className="mt-6 space-y-3">
@@ -287,11 +251,11 @@ export default function DutchCvCheckerPage() {
                 href={source.href}
                 target="_blank"
                 rel="noreferrer"
-                className="block border-2 border-black bg-white p-4 text-sm font-medium text-slate-700 transition-colors hover:bg-[#E9FFFC]"
+                className="block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-4 text-sm leading-6 text-[var(--wk-ink-muted)] transition-colors hover:bg-[var(--wk-accent-soft)]"
               >
-                <span className="font-black text-black">{source.title}</span>
+                <span className="font-semibold text-[var(--wk-ink)]">{source.title}</span>
                 <span className="mt-1 block break-all">{source.href}</span>
-                <span className="mt-2 block text-xs leading-relaxed text-slate-600">{source.body}</span>
+                <span className="mt-2 block text-xs leading-5 text-[var(--wk-ink-muted)]">{source.body}</span>
               </a>
             ))}
           </div>
@@ -317,9 +281,9 @@ export default function DutchCvCheckerPage() {
           trackingLocation="dutch-cv-checker:bottom_primary"
           trackingLabel="Open English editor"
         />
-      </main>
+      </div>
 
-      <Footer uiLanguage="en" />
-    </div>
+      <Footer variant="brand" uiLanguage="en" />
+    </main>
   );
 }

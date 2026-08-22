@@ -28,25 +28,24 @@ function TemplatePreviewPlaceholder({ compact = false }: { compact?: boolean }) 
     return (
         <div
             aria-hidden="true"
-            className={`relative h-full overflow-hidden border-2 border-black bg-white ${
+            className={`relative h-full overflow-hidden border border-[var(--wk-border)] bg-[var(--wk-surface)] ${
                 compact ? "min-h-[208px]" : "min-h-[312px]"
             }`}
         >
-            <div className="absolute inset-0 bg-[linear-gradient(135deg,#f8fafc_0%,#fefce8_48%,#dbeafe_100%)]" />
             <div className="relative flex h-full flex-col gap-3 p-4">
-                <div className="h-4 w-28 border-2 border-black bg-yellow-300" />
-                <div className="h-3 w-24 border-2 border-black bg-blue-200" />
+                <div className="h-4 w-28 rounded-[var(--wk-radius-sm)] bg-[var(--wk-accent-soft)]" />
+                <div className="h-3 w-24 rounded-[var(--wk-radius-sm)] bg-[var(--wk-highlight-soft)]" />
                 <div className="mt-4 space-y-2">
-                    <div className="h-3 w-full border border-black/70 bg-white/80" />
-                    <div className="h-3 w-5/6 border border-black/70 bg-white/80" />
-                    <div className="h-3 w-4/6 border border-black/70 bg-white/80" />
+                    <div className="h-3 w-full rounded bg-[var(--wk-surface-subtle)]" />
+                    <div className="h-3 w-5/6 rounded bg-[var(--wk-surface-subtle)]" />
+                    <div className="h-3 w-4/6 rounded bg-[var(--wk-surface-subtle)]" />
                 </div>
                 <div className="mt-auto grid grid-cols-2 gap-2">
-                    <div className="h-10 border-2 border-black bg-pink-100" />
-                    <div className="h-10 border-2 border-black bg-green-100" />
+                    <div className="h-10 rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-accent-soft)]" />
+                    <div className="h-10 rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)]" />
                 </div>
             </div>
-            <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-white via-white/95 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-[var(--wk-surface)] via-[var(--wk-surface)] to-transparent" />
         </div>
     );
 }
@@ -56,27 +55,27 @@ function HeroCarouselPlaceholder() {
         <div className="hidden md:flex flex-col items-center gap-5 flex-shrink-0">
             <div className="relative w-[220px] h-[312px]">
                 <div
-                    className="absolute inset-0 bg-blue-300 border-4 border-black"
+                    className="absolute inset-0 rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-accent-soft)]"
                     style={{ transform: "rotate(6deg) translate(10px, 4px)", zIndex: 0 }}
                 />
                 <div
-                    className="absolute inset-0 bg-yellow-300 border-4 border-black"
+                    className="absolute inset-0 rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)]"
                     style={{ transform: "rotate(-4deg) translate(-8px, -2px)", zIndex: 1 }}
                 />
                 <div
-                    className="absolute inset-0 border-4 border-black overflow-hidden bg-white shadow-[10px_10px_0px_0px_rgba(0,0,0,1)]"
+                    className="absolute inset-0 overflow-hidden rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] shadow-[var(--wk-shadow-md)]"
                     style={{ zIndex: 2 }}
                 >
                     <TemplatePreviewPlaceholder />
                 </div>
             </div>
-            <div className="bg-white border-2 border-black px-3 py-1 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] text-[11px] font-black tracking-widest uppercase text-black">
+            <div className="rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-surface)] px-3 py-1 text-[11px] font-semibold uppercase tracking-widest text-[var(--wk-ink)] shadow-[var(--wk-shadow-sm)]">
                 13+ templates
             </div>
-            <div className="flex gap-1.5 items-center">
-                <span className="h-2 w-5 border-2 border-black bg-black" />
-                <span className="h-2 w-2 border-2 border-black bg-gray-300" />
-                <span className="h-2 w-2 border-2 border-black bg-gray-300" />
+            <div className="flex items-center gap-1.5">
+                <span className="h-2 w-5 rounded-full bg-[var(--wk-accent)]" />
+                <span className="h-2 w-2 rounded-full bg-[var(--wk-border-strong)]" />
+                <span className="h-2 w-2 rounded-full bg-[var(--wk-border-strong)]" />
             </div>
         </div>
     );
@@ -171,24 +170,24 @@ export default function HomePageClient({
     };
 
     const features = [
-        { title: "ATS-Vriendelijk", desc: "Alle templates werken met Applicant Tracking Systems", color: "bg-yellow-400", icon: "✓" },
-        { title: "Direct PDF Download", desc: "Download je CV direct als professionele PDF", color: "bg-blue-400", icon: "↓" },
-        { title: "100% Privacy", desc: "Je gegevens blijven van jou. Wij verkopen niets door", color: "bg-pink-400", icon: "🔒" },
-        { title: "Geen Abonnement", desc: `Eenmalig ${cvDownloadPrice.display} per CV, geen verborgen kosten`, color: "bg-green-400", icon: "€" },
-        { title: "Live Preview", desc: "Bekijk je CV in realtime terwijl je typt", color: "bg-purple-400", icon: "👁" },
-        { title: "Binnen 5 Minuten", desc: "Upload je bestaande CV of begin helemaal opnieuw", color: "bg-[#4ECDC4]", icon: "⚡" },
+        { title: "ATS-Vriendelijk", desc: "Alle templates werken met Applicant Tracking Systems", color: "bg-[var(--wk-accent-soft)]", icon: "✓" },
+        { title: "Direct PDF Download", desc: "Download je CV direct als professionele PDF", color: "bg-[var(--wk-surface-subtle)]", icon: "↓" },
+        { title: "100% Privacy", desc: "Je gegevens blijven van jou. Wij verkopen niets door", color: "bg-[var(--wk-highlight-soft)]", icon: "🔒" },
+        { title: "Geen Abonnement", desc: `Eenmalig ${cvDownloadPrice.display} per CV, geen verborgen kosten`, color: "bg-[var(--wk-accent-soft)]", icon: "€" },
+        { title: "Live Preview", desc: "Bekijk je CV in realtime terwijl je typt", color: "bg-[var(--wk-surface-subtle)]", icon: "👁" },
+        { title: "Binnen 5 Minuten", desc: "Upload je bestaande CV of begin helemaal opnieuw", color: "bg-[var(--wk-highlight-soft)]", icon: "⚡" },
     ];
 
     const steps = [
-        { num: "1", title: "Kies een template", desc: `Selecteer uit ${templateCount}+ professionele, ATS-vriendelijke templates.`, color: "bg-yellow-400" },
-        { num: "2", title: "Vul je gegevens in", desc: "Typ je gegevens in de editor. Je CV wordt live bijgewerkt.", color: "bg-blue-400" },
-        { num: "3", title: "Download als PDF", desc: `Download je afgeronde CV als professionele PDF. Eenmalig ${cvDownloadPrice.display} per CV.`, color: "bg-pink-400" },
+        { num: "1", title: "Kies een template", desc: `Selecteer uit ${templateCount}+ professionele, ATS-vriendelijke templates.`, color: "bg-[var(--wk-highlight-soft)]" },
+        { num: "2", title: "Vul je gegevens in", desc: "Typ je gegevens in de editor. Je CV wordt live bijgewerkt.", color: "bg-[var(--wk-accent-soft)]" },
+        { num: "3", title: "Download als PDF", desc: `Download je afgeronde CV als professionele PDF. Eenmalig ${cvDownloadPrice.display} per CV.`, color: "bg-[var(--wk-surface-subtle)]" },
     ];
 
     return (
         <BrandShell>
         <div
-            className="min-h-screen bg-[#FFFEF0]"
+            className="min-h-screen"
             onDrop={handleDrop}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
@@ -207,28 +206,28 @@ export default function HomePageClient({
 
             {/* Drag overlay */}
             {isDragging && (
-                <div className="fixed inset-0 bg-blue-400/20 z-50 flex items-center justify-center">
-                    <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                        <p className="text-xl font-black text-black">Sleep je CV hier om te uploaden</p>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--wk-primary)]/20">
+                    <div className="rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-8 shadow-[var(--wk-shadow-md)]">
+                        <p className="text-xl font-semibold text-[var(--wk-ink)]">Sleep je CV hier om te uploaden</p>
                     </div>
                 </div>
             )}
 
             {/* Upload status */}
             {isUploading && (
-                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
-                    <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] text-center">
-                        <div className="w-8 h-8 border-4 border-black border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                        <p className="font-black text-black">CV wordt verwerkt...</p>
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-[var(--wk-ink)]/50">
+                    <div className="rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-8 text-center shadow-[var(--wk-shadow-md)]">
+                        <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-[var(--wk-border-strong)] border-t-transparent" />
+                        <p className="font-semibold text-[var(--wk-ink)]">CV wordt verwerkt...</p>
                     </div>
                 </div>
             )}
 
             {/* Error display */}
             {error && (
-                <div className="fixed top-4 right-4 z-50 bg-red-400 border-4 border-black p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] max-w-sm">
-                    <p className="font-bold text-black text-sm">{error}</p>
-                    <button onClick={() => setError(null)} className="mt-2 text-xs font-black underline">Sluiten</button>
+                <div className="wk-card wk-card-danger fixed right-4 top-4 z-50 max-w-sm">
+                    <p className="text-sm font-semibold text-[var(--wk-danger)]">{error}</p>
+                    <button onClick={() => setError(null)} className="mt-2 text-xs font-semibold underline text-[var(--wk-danger)]">Sluiten</button>
                 </div>
             )}
 
@@ -320,22 +319,21 @@ export default function HomePageClient({
             {/* ============================================================ */}
             {/* TRUST BAR - Factual product stats */}
             {/* ============================================================ */}
-            <section className="relative z-10 border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <section className="relative z-10 wk-section bg-[var(--wk-surface)]">
+                <div className="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                     {[
-                        { number: `${templateCount}+`, label: "Templates", color: "bg-yellow-400" },
-                        { number: `${exampleCount}+`, label: "CV Voorbeelden", color: "bg-blue-400" },
-                        { number: `${articleCount}`, label: "Expert Artikelen", color: "bg-pink-400" },
-                        { number: cvDownloadPrice.display, label: "Eenmalig", color: "bg-green-400" },
+                        { number: `${templateCount}+`, label: "Templates", color: "bg-[var(--wk-accent-soft)]" },
+                        { number: `${exampleCount}+`, label: "CV Voorbeelden", color: "bg-[var(--wk-highlight-soft)]" },
+                        { number: `${articleCount}`, label: "Expert Artikelen", color: "bg-[var(--wk-accent-soft)]" },
+                        { number: cvDownloadPrice.display, label: "Eenmalig", color: "bg-[var(--wk-highlight-soft)]" },
                     ].map((stat) => (
                         <div key={stat.label} className="flex flex-col items-center">
                             <div
-                                className={`${stat.color} border-3 border-black px-4 py-2 font-black text-2xl md:text-3xl text-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] mb-2`}
-                                style={{ borderWidth: '3px' }}
+                                className={`${stat.color} rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] px-4 py-2 font-semibold text-2xl md:text-3xl text-[var(--wk-ink)] shadow-[var(--wk-shadow-sm)] mb-2`}
                             >
                                 {stat.number}
                             </div>
-                            <span className="font-bold text-sm text-black">{stat.label}</span>
+                            <span className="text-sm font-semibold text-[var(--wk-ink-muted)]">{stat.label}</span>
                         </div>
                     ))}
                 </div>
@@ -344,19 +342,19 @@ export default function HomePageClient({
             {/* ============================================================ */}
             {/* HOW IT WORKS - 3 steps */}
             {/* ============================================================ */}
-            <section className="relative z-10 border-b-4 border-black bg-[#FFFEF0]">
-                <div className="max-w-6xl mx-auto px-6 py-16">
-                    <h2 className="text-3xl md:text-4xl font-black text-black text-center mb-12">
+            <section className="relative z-10 wk-section">
+                <div className="max-w-6xl mx-auto px-6">
+                    <h2 className="text-3xl md:text-4xl font-semibold text-[var(--wk-ink)] text-center mb-12">
                         Hoe het werkt
                     </h2>
                     <div className="grid md:grid-cols-3 gap-8">
                         {steps.map((step) => (
                             <div key={step.num} className="text-center">
-                                <div className={`${step.color} w-16 h-16 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center font-black text-3xl text-black mx-auto mb-4 -rotate-3`}>
+                                <div className={`${step.color} w-16 h-16 rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] shadow-[var(--wk-shadow-sm)] flex items-center justify-center font-semibold text-3xl text-[var(--wk-ink)] mx-auto mb-4`}>
                                     {step.num}
                                 </div>
-                                <h3 className="text-xl font-black text-black mb-2">{step.title}</h3>
-                                <p className="text-gray-600 font-medium">{step.desc}</p>
+                                <h3 className="text-xl font-semibold text-[var(--wk-ink)] mb-2">{step.title}</h3>
+                                <p className="text-[var(--wk-ink-muted)] font-medium">{step.desc}</p>
                             </div>
                         ))}
                     </div>
@@ -366,15 +364,15 @@ export default function HomePageClient({
             {/* ============================================================ */}
             {/* TEMPLATE SHOWCASE - 4 featured templates */}
             {/* ============================================================ */}
-            <section className="relative z-10 border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-16">
+            <section className="relative z-10 wk-section bg-[var(--wk-surface)]">
+                <div className="max-w-6xl mx-auto px-6">
                     <div className="flex items-center justify-between mb-10">
-                        <h2 className="text-3xl md:text-4xl font-black text-black">
+                        <h2 className="text-3xl md:text-4xl font-semibold text-[var(--wk-ink)]">
                             Onze templates
                         </h2>
                         <Link
                             href="/templates"
-                            className="hidden sm:flex items-center gap-1 font-bold text-sm text-[#FF6B6B] hover:underline"
+                            className="hidden sm:flex items-center gap-1 font-bold text-sm text-[var(--wk-primary)] hover:underline"
                         >
                             Bekijk alle {templateCount}+
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -390,17 +388,17 @@ export default function HomePageClient({
                                 <Link
                                     key={template.id}
                                     href="/templates"
-                                    className="group bg-white border-4 border-black overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                                    className="group rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-surface)] overflow-hidden shadow-[var(--wk-shadow-sm)] hover:shadow-[var(--wk-shadow-md)] hover:-translate-y-0.5 transition-all"
                                 >
                                     <div className="h-4" style={{ backgroundColor: theme.primary }} />
                                     <div className="p-4">
                                         <div className="h-52 md:h-56 mb-3 overflow-hidden">
                                             <HomeTemplatePreview templateId={template.id} colorThemeId={theme.id} />
                                         </div>
-                                        <h3 className="font-black text-sm text-black group-hover:text-[#FF6B6B] transition-colors">
+                                        <h3 className="font-semibold text-sm text-[var(--wk-ink)] group-hover:text-[var(--wk-primary)] transition-colors">
                                             {template.nameDutch}
                                         </h3>
-                                        <p className="text-xs text-gray-500 font-medium mt-0.5">
+                                        <p className="text-xs text-[var(--wk-ink-muted)] font-medium mt-0.5">
                                             {template.category === 'classic' ? 'Klassiek' : template.category === 'modern' ? 'Modern' : template.category === 'creative' ? 'Creatief' : 'Minimaal'}
                                         </p>
                                     </div>
@@ -411,7 +409,7 @@ export default function HomePageClient({
                     <div className="sm:hidden text-center mt-6">
                         <Link
                             href="/templates"
-                            className="inline-flex items-center gap-1 font-bold text-sm text-[#FF6B6B] hover:underline"
+                            className="inline-flex items-center gap-1 font-bold text-sm text-[var(--wk-primary)] hover:underline"
                         >
                             Bekijk alle {templateCount}+ templates
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -425,58 +423,58 @@ export default function HomePageClient({
             {/* ============================================================ */}
             {/* FEATURE GRID - 6 features */}
             {/* ============================================================ */}
-            <section className="relative z-10 border-b-4 border-black bg-[#FFFEF0]">
-                <div className="max-w-6xl mx-auto px-6 py-16">
-                    <h2 className="text-3xl md:text-4xl font-black text-black text-center mb-12">
+            <section className="relative z-10 wk-section">
+                <div className="max-w-6xl mx-auto px-6">
+                    <h2 className="text-3xl md:text-4xl font-semibold text-[var(--wk-ink)] text-center mb-12">
                         Waarom WerkCV.nl?
                     </h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {features.map((feature) => (
                     <div
                         key={feature.title}
-                                className="bg-white border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                                className="rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-6 shadow-[var(--wk-shadow-sm)]"
                             >
-                                <div className={`${feature.color} w-12 h-12 border-3 border-black flex items-center justify-center font-black text-xl text-black mb-4 -rotate-3 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`} style={{ borderWidth: '3px' }}>
+                                <div className={`${feature.color} w-12 h-12 rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] flex items-center justify-center font-semibold text-xl text-[var(--wk-primary)] mb-4`}>
                                     {feature.icon}
                                 </div>
-                                <h3 className="text-lg font-black text-black mb-2">{feature.title}</h3>
-                                <p className="text-gray-600 font-medium text-sm">{feature.desc}</p>
+                                <h3 className="text-lg font-semibold text-[var(--wk-ink)] mb-2">{feature.title}</h3>
+                                <p className="text-[var(--wk-ink-muted)] font-medium text-sm">{feature.desc}</p>
                     </div>
                 ))}
             </div>
         </div>
     </section>
 
-    <section className="relative z-10 border-b-4 border-black bg-[#FFFEF0]">
-        <div className="max-w-6xl mx-auto px-6 py-16">
+    <section className="relative z-10 wk-section">
+        <div className="max-w-6xl mx-auto px-6">
             <div className="mb-8 flex flex-col gap-2 text-center">
-                <p className="text-xs font-black uppercase tracking-[0.3em] text-slate-600">
+                <p className="wk-eyebrow justify-center">
                     Vertrouwen
                 </p>
-                <h2 className="text-3xl font-black text-black">
+                <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
                     Wat je vooraf zeker weet
                 </h2>
             </div>
             <div className="grid gap-5 md:grid-cols-2">
-                <div className="border-4 border-black bg-white p-6 text-slate-700 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-                    <p className="text-base font-bold text-black">
+                <div className="wk-card text-[var(--wk-ink-muted)]">
+                    <p className="text-base font-semibold text-[var(--wk-ink)]">
                         Eerst volledig bekijken, daarna beslissen
                     </p>
                     <p className="mt-3 text-sm">
                         Je bouwt je cv gratis, vergelijkt templates en bekijkt het volledige resultaat vóór je afrekent. Alleen de definitieve PDF-download kost {cvDownloadPrice.display} per cv.
                     </p>
                 </div>
-                <div className="border-4 border-black bg-white p-6 text-slate-700 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-                    <p className="text-base font-bold text-black">
+                <div className="wk-card text-[var(--wk-ink-muted)]">
+                    <p className="text-base font-semibold text-[var(--wk-ink)]">
                         Eén betaling, zonder automatische verlenging
                     </p>
                     <p className="mt-3 text-sm">
                         WerkCV verkoopt geen abonnement en start geen proefperiode. Je rekent eenmalig af via Dodo Payments en kunt die betaalde cv later opnieuw downloaden zonder extra kosten.
                     </p>
-                    <div className="mt-5 flex flex-col gap-2 text-xs font-black uppercase tracking-[0.2em] text-black">
-                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">EU-hosting in Duitsland</span>
-                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">Betaling via Dodo Payments</span>
-                        <span className="px-3 py-1 border-2 border-black bg-[#F8F8F8]">Geen automatische verlenging</span>
+                    <div className="mt-5 flex flex-col items-start gap-2">
+                        <span className="wk-badge w-fit">EU-hosting in Duitsland</span>
+                        <span className="wk-badge w-fit">Betaling via Dodo Payments</span>
+                        <span className="wk-badge w-fit">Geen automatische verlenging</span>
                     </div>
                 </div>
             </div>
@@ -486,17 +484,17 @@ export default function HomePageClient({
             {/* ============================================================ */}
             {/* PRICING CLARITY */}
             {/* ============================================================ */}
-            <section className="relative z-10 border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-16">
+            <section className="relative z-10 wk-section bg-[var(--wk-surface)]">
+                <div className="max-w-6xl mx-auto px-6">
                     <div className="max-w-md mx-auto text-center">
-                        <span className="inline-block bg-green-400 text-black text-sm font-black px-3 py-1 border-3 border-black mb-6" style={{ borderWidth: '3px' }}>
+                        <span className="wk-badge wk-badge-success mb-6">
                             EENMALIGE BETALING
                         </span>
-                        <div className="bg-white border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                            <div className="text-6xl font-black text-black mb-2">
+                        <div className="rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-8 shadow-[var(--wk-shadow-md)]">
+                            <div className="text-6xl font-semibold text-[var(--wk-ink)] mb-2">
                                 {cvDownloadPrice.display}
                             </div>
-                            <p className="text-gray-600 font-medium mb-6">eenmalig per CV</p>
+                            <p className="text-[var(--wk-ink-muted)] font-medium mb-6">eenmalig per CV</p>
                             <div className="space-y-3 text-left mb-8">
                                 {[
                                     "Gratis bewerken en vormgeven",
@@ -508,28 +506,28 @@ export default function HomePageClient({
                                     "Geen abonnement of verborgen kosten",
                                 ].map((item) => (
                                     <div key={item} className="flex items-center gap-3">
-                                        <div className="w-6 h-6 bg-green-400 border-2 border-black flex items-center justify-center flex-shrink-0">
-                                            <span className="text-xs font-black">✓</span>
+                                        <div className="w-6 h-6 rounded-[var(--wk-radius-sm)] bg-[var(--wk-success-soft)] border border-[var(--wk-border)] flex items-center justify-center flex-shrink-0">
+                                            <span className="text-xs font-semibold text-[var(--wk-success)]">✓</span>
                                         </div>
-                                        <span className="text-sm font-medium text-black">{item}</span>
+                                        <span className="text-sm font-medium text-[var(--wk-ink)]">{item}</span>
                                     </div>
                                 ))}
                             </div>
-                            <div className="mb-6 border-2 border-black bg-[#E9FFFC] p-3 text-left">
-                                <p className="text-xs font-black uppercase tracking-wide text-black">Nieuw</p>
-                                <p className="mt-1 text-sm font-bold text-slate-800">
+                            <div className="mb-6 rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-accent-soft)] p-3 text-left">
+                                <p className="text-xs font-semibold uppercase tracking-wide text-[var(--wk-ink)]">Nieuw</p>
+                                <p className="mt-1 text-sm font-medium text-[var(--wk-ink-muted)]">
                                     Maak je CV en AI-profielfoto samen voor {applicationBundlePrice.display}. De profielfoto los kost {profilePhotoPrice.display}.
                                 </p>
                             </div>
                             <Link
                                 href="/templates"
                                 onClick={() => trackHomepageTemplatesClick('pricing', 'Begin nu gratis')}
-                                className="block w-full bg-yellow-400 text-black py-4 font-black text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
+                                className="wk-button wk-button-primary w-full"
                             >
                                 Begin nu gratis
                             </Link>
                         </div>
-                        <p className="text-sm text-gray-500 font-medium mt-4">
+                        <p className="text-sm text-[var(--wk-ink-muted)] font-medium mt-4">
                             Geen creditcard nodig om te beginnen
                         </p>
                     </div>
@@ -539,30 +537,30 @@ export default function HomePageClient({
             {/* ============================================================ */}
             {/* CONTENT AUTHORITY - CV Tips & Examples */}
             {/* ============================================================ */}
-            <section className="relative z-10 border-b-4 border-black bg-[#FFFEF0]">
-                <div className="max-w-6xl mx-auto px-6 py-16">
-                    <h2 className="text-3xl md:text-4xl font-black text-black text-center mb-12">
+            <section className="relative z-10 wk-section">
+                <div className="max-w-6xl mx-auto px-6">
+                    <h2 className="text-3xl md:text-4xl font-semibold text-[var(--wk-ink)] text-center mb-12">
                         Leer meer over CV schrijven
                     </h2>
                     <div className="grid md:grid-cols-2 gap-6">
                         {/* CV Tips card */}
                         <Link
                             href="/cv-tips"
-                            className="group bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            className="group wk-card transition-transform hover:-translate-y-0.5"
                         >
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="bg-[#FF6B6B] w-10 h-10 border-3 border-black flex items-center justify-center font-black text-lg text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] -rotate-3" style={{ borderWidth: '3px' }}>
+                                <div className="w-10 h-10 rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-accent-soft)] flex items-center justify-center text-lg">
                                     📝
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-black text-black group-hover:text-[#FF6B6B] transition-colors">CV Tips & Advies</h3>
-                                    <p className="text-sm text-gray-500 font-medium">{articleCount} expert artikelen</p>
+                                    <h3 className="text-xl font-semibold text-[var(--wk-ink)] group-hover:text-[var(--wk-primary)] transition-colors">CV Tips & Advies</h3>
+                                    <p className="text-sm text-[var(--wk-ink-muted)] font-medium">{articleCount} expert artikelen</p>
                                 </div>
                             </div>
                             <ul className="space-y-2">
                                 {featuredArticles.map(article => (
-                                    <li key={article.slug} className="text-sm font-medium text-gray-700 flex items-start gap-2">
-                                        <span className="text-[#FF6B6B] mt-0.5">→</span>
+                                    <li key={article.slug} className="text-sm font-medium text-[var(--wk-ink-muted)] flex items-start gap-2">
+                                        <span className="text-[var(--wk-primary)] mt-0.5">→</span>
                                         {article.title}
                                     </li>
                                 ))}
@@ -572,24 +570,24 @@ export default function HomePageClient({
                         {/* CV Examples card */}
                         <Link
                             href="/cv-voorbeelden"
-                            className="group bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            className="group wk-card transition-transform hover:-translate-y-0.5"
                         >
                             <div className="flex items-center gap-3 mb-4">
-                                <div className="bg-[#4ECDC4] w-10 h-10 border-3 border-black flex items-center justify-center font-black text-lg text-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rotate-3" style={{ borderWidth: '3px' }}>
+                                <div className="w-10 h-10 rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)] flex items-center justify-center text-lg">
                                     📄
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-black text-black group-hover:text-[#4ECDC4] transition-colors">CV Voorbeelden</h3>
-                                    <p className="text-sm text-gray-500 font-medium">{exampleCount}+ voorbeelden in {categoryCount} categorieën</p>
+                                    <h3 className="text-xl font-semibold text-[var(--wk-ink)] group-hover:text-[var(--wk-primary)] transition-colors">CV Voorbeelden</h3>
+                                    <p className="text-sm text-[var(--wk-ink-muted)] font-medium">{exampleCount}+ voorbeelden in {categoryCount} categorieën</p>
                                 </div>
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 {featuredCategories.map(cat => (
-                                    <span key={cat.slug} className="text-xs font-bold bg-gray-100 border-2 border-black px-2 py-1">
+                                    <span key={cat.slug} className="rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] px-2 py-1 text-xs font-semibold text-[var(--wk-ink-muted)]">
                                         {cat.name}
                                     </span>
                                 ))}
-                                <span className="text-xs font-bold text-gray-400 px-2 py-1">
+                                <span className="px-2 py-1 text-xs font-semibold text-[var(--wk-ink-muted)]">
                                     +{categoryCount - 6} meer
                                 </span>
                             </div>
@@ -598,22 +596,22 @@ export default function HomePageClient({
                 </div>
             </section>
 
-            <section className="relative z-10 border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-16">
+            <section className="relative z-10 wk-section bg-[var(--wk-surface)]">
+                <div className="max-w-6xl mx-auto px-6">
                     <div className="max-w-4xl">
-                        <p className="text-xs font-black uppercase tracking-[0.3em] text-slate-600">
+                        <p className="wk-eyebrow">
                             Populaire CV Zoekopdrachten
                         </p>
-                        <h2 className="mt-3 text-3xl md:text-4xl font-black text-black">
+                        <h2 className="mt-3 text-3xl md:text-4xl font-semibold text-[var(--wk-ink)]">
                             Start direct op de route die bij je zoekintentie past
                         </h2>
-                        <p className="mt-4 text-base md:text-lg font-medium leading-relaxed text-gray-700">
+                        <p className="mt-4 text-base md:text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">
                             Niet iedereen zoekt op dezelfde manier. Sommige bezoekers willen{" "}
-                            <Link href="/gratis-cv-maken" className="font-black underline decoration-2 underline-offset-4">
+                            <Link href="/gratis-cv-maken" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                                 gratis een CV maken
                             </Link>
                             , anderen willen snel een professioneel CV{" "}
-                            <Link href="/cv-maken" className="font-black underline decoration-2 underline-offset-4">
+                            <Link href="/cv-maken" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                                 maken
                             </Link>
                             , op mobiel werken of direct weten hoe een eerste CV voor school, stage of bijbaan eruitziet. Daarom linken we hieronder direct naar de belangrijkste routes.
@@ -655,12 +653,12 @@ export default function HomePageClient({
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className="group block border-4 border-black bg-[#FFFEF9] p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-[7px_7px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                                className="group block wk-card transition-transform hover:-translate-y-0.5"
                             >
-                                <h3 className="text-lg font-black text-black group-hover:text-[#FF6B6B] transition-colors">
+                                <h3 className="text-lg font-semibold text-[var(--wk-ink)] group-hover:text-[var(--wk-primary)] transition-colors">
                                     {item.title}
                                 </h3>
-                                <p className="mt-2 text-sm font-medium leading-relaxed text-gray-700">
+                                <p className="mt-2 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">
                                     {item.body}
                                 </p>
                             </Link>
@@ -669,16 +667,16 @@ export default function HomePageClient({
                 </div>
             </section>
 
-            <section className="relative z-10 border-b-4 border-black bg-[#FFFEF0]">
-                <div className="max-w-4xl mx-auto px-6 py-16">
+            <section className="relative z-10 wk-section">
+                <div className="max-w-4xl mx-auto px-6">
                     <div className="max-w-3xl">
-                        <p className="text-xs font-black uppercase tracking-[0.3em] text-slate-600">
+                        <p className="wk-eyebrow">
                             Veelgestelde vragen
                         </p>
-                        <h2 className="mt-3 text-3xl md:text-4xl font-black text-black">
+                        <h2 className="mt-3 text-3xl md:text-4xl font-semibold text-[var(--wk-ink)]">
                             Eerst de basis helder, daarna pas je CV bouwen
                         </h2>
-                        <p className="mt-4 text-base md:text-lg font-medium leading-relaxed text-gray-700">
+                        <p className="mt-4 text-base md:text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">
                             Deze vragen komen het vaakst terug bij bezoekers die eerst willen begrijpen hoe gratis
                             starten, ATS-vriendelijke templates en later downloaden precies werken.
                         </p>
@@ -688,13 +686,13 @@ export default function HomePageClient({
                         {homepageFaqItems.map((item) => (
                             <details
                                 key={item.question}
-                                className="group border-4 border-black bg-white shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+                                className="group rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] shadow-[var(--wk-shadow-sm)]"
                             >
-                                <summary className="flex cursor-pointer items-center justify-between p-5 text-left text-base font-black text-black">
+                                <summary className="flex cursor-pointer items-center justify-between p-5 text-left text-base font-semibold text-[var(--wk-ink)]">
                                     <span className="pr-4">{item.question}</span>
                                     <span className="text-xl transition-transform group-open:rotate-45">+</span>
                                 </summary>
-                                <div className="border-t-2 border-black px-5 pb-5 pt-4 text-sm font-medium leading-relaxed text-slate-700">
+                                <div className="border-t border-[var(--wk-border)] px-5 pb-5 pt-4 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">
                                     {item.answer}
                                 </div>
                             </details>
@@ -704,7 +702,7 @@ export default function HomePageClient({
                     <div className="mt-6">
                         <Link
                             href="/faq"
-                            className="inline-flex border-4 border-black bg-white px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                            className="wk-button wk-button-secondary"
                         >
                             Bekijk alle veelgestelde vragen
                         </Link>
@@ -715,18 +713,18 @@ export default function HomePageClient({
             {/* ============================================================ */}
             {/* TOOLS PROMO - 4 highlighted tools */}
             {/* ============================================================ */}
-            <section className="relative z-10 border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-16">
+            <section className="relative z-10 wk-section bg-[var(--wk-surface)]">
+                <div className="max-w-6xl mx-auto px-6">
                     <div className="flex items-center justify-between mb-10">
                         <div>
-                            <h2 className="text-3xl md:text-4xl font-black text-black">
+                            <h2 className="text-3xl md:text-4xl font-semibold text-[var(--wk-ink)]">
                                 Gratis carrière tools
                             </h2>
-                            <p className="text-gray-600 font-medium mt-1">Geen registratie vereist</p>
+                            <p className="text-[var(--wk-ink-muted)] font-medium mt-1">Geen registratie vereist</p>
                         </div>
                         <Link
                             href="/tools"
-                            className="hidden sm:flex items-center gap-1 font-bold text-sm text-[#4ECDC4] hover:underline"
+                            className="hidden sm:flex items-center gap-1 font-bold text-sm text-[var(--wk-primary)] hover:underline"
                         >
                             Bekijk alle 30 tools
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -744,22 +742,22 @@ export default function HomePageClient({
                             <Link
                                 key={tool.href}
                                 href={tool.href}
-                                className="group bg-[#FFFEF9] border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all p-4 block"
+                                className="group block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-4 shadow-[var(--wk-shadow-sm)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--wk-shadow-md)]"
                             >
                                 <div className="flex items-start justify-between gap-2 mb-2">
-                                    <h3 className="font-black text-slate-900 text-sm leading-tight group-hover:text-teal-700 transition-colors">
+                                    <h3 className="font-semibold text-[var(--wk-ink)] text-sm leading-tight group-hover:text-[var(--wk-primary)] transition-colors">
                                         {tool.title}
                                     </h3>
-                                    <span className="flex-shrink-0 text-[10px] font-black uppercase tracking-wide bg-[#4ECDC4]/20 text-teal-700 px-2 py-0.5 rounded-full">
+                                    <span className="flex-shrink-0 rounded-full border border-[var(--wk-border)] bg-[var(--wk-accent-soft)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[var(--wk-primary)]">
                                         {tool.badge}
                                     </span>
                                 </div>
-                                <p className="text-xs text-slate-500 leading-relaxed">{tool.desc}</p>
+                                <p className="text-xs text-[var(--wk-ink-muted)] leading-relaxed">{tool.desc}</p>
                             </Link>
                         ))}
                     </div>
                     <div className="sm:hidden text-center mt-6">
-                        <Link href="/tools" className="inline-flex items-center gap-1 font-bold text-sm text-[#4ECDC4] hover:underline">
+                        <Link href="/tools" className="inline-flex items-center gap-1 font-bold text-sm text-[var(--wk-primary)] hover:underline">
                             Bekijk alle 30 gratis tools
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
@@ -769,16 +767,16 @@ export default function HomePageClient({
                 </div>
             </section>
 
-            <section className="relative z-10 border-b-4 border-black bg-[#FFFEF0]">
-                <div className="max-w-6xl mx-auto px-6 py-16">
+            <section className="relative z-10 wk-section">
+                <div className="max-w-6xl mx-auto px-6">
                     <div className="max-w-3xl">
-                        <span className="inline-block border-2 border-black bg-yellow-300 px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-black">
+                        <span className="wk-eyebrow">
                             B2B routes
                         </span>
-                        <h2 className="mt-4 text-3xl md:text-4xl font-black text-black">
+                        <h2 className="mt-4 text-3xl md:text-4xl font-semibold text-[var(--wk-ink)]">
                             Werk je met kandidaten, cliënten of deelnemers?
                         </h2>
-                        <p className="mt-4 text-base md:text-lg font-medium leading-relaxed text-gray-700">
+                        <p className="mt-4 text-base md:text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">
                             WerkCV heeft ook routes voor coaches, recruitmentbureaus en partners die hun doelgroep sneller
                             van advies naar een concrete sollicitatieversie willen brengen.
                         </p>
@@ -805,12 +803,12 @@ export default function HomePageClient({
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className="group block border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-[7px_7px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                                className="group block wk-card transition-transform hover:-translate-y-0.5"
                             >
-                                <h3 className="text-lg font-black text-black group-hover:text-[#FF6B6B] transition-colors">
+                                <h3 className="text-lg font-semibold text-[var(--wk-ink)] group-hover:text-[var(--wk-primary)] transition-colors">
                                     {item.title}
                                 </h3>
-                                <p className="mt-2 text-sm font-medium leading-relaxed text-gray-700">
+                                <p className="mt-2 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">
                                     {item.body}
                                 </p>
                             </Link>
@@ -822,22 +820,24 @@ export default function HomePageClient({
             {/* ============================================================ */}
             {/* FINAL CTA */}
             {/* ============================================================ */}
-            <section className="relative z-10 border-b-4 border-black bg-[#4ECDC4]">
-                <div className="max-w-6xl mx-auto px-6 py-16 text-center">
-                    <h2 className="text-4xl font-black mb-6 text-black">
-                        Klaar om je CV te maken?
-                    </h2>
-                    <p className="text-xl mb-8 max-w-2xl mx-auto text-black/80">
-                        Maak binnen 5 minuten een professioneel CV dat opvalt bij recruiters.
-                        Eenmalig {cvDownloadPrice.display} per CV, later opnieuw bewerken en downloaden.
-                    </p>
-                    <Link
-                        href="/templates"
-                        onClick={() => trackHomepageTemplatesClick('footer_cta', 'Begin nu')}
-                        className="inline-block bg-black text-white font-bold px-10 py-5 text-xl border-4 border-black shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
-                    >
-                        Begin nu
-                    </Link>
+            <section className="relative z-10 wk-section">
+                <div className="max-w-6xl mx-auto px-6">
+                    <div className="rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-8 text-center md:p-12">
+                        <h2 className="text-4xl font-semibold mb-6 text-[var(--wk-primary-contrast)]">
+                            Klaar om je CV te maken?
+                        </h2>
+                        <p className="text-xl mb-8 max-w-2xl mx-auto text-[var(--wk-primary-contrast)]/80">
+                            Maak binnen 5 minuten een professioneel CV dat opvalt bij recruiters.
+                            Eenmalig {cvDownloadPrice.display} per CV, later opnieuw bewerken en downloaden.
+                        </p>
+                        <Link
+                            href="/templates"
+                            onClick={() => trackHomepageTemplatesClick('footer_cta', 'Begin nu')}
+                            className="wk-button wk-button-accent"
+                        >
+                            Begin nu
+                        </Link>
+                    </div>
                 </div>
             </section>
 

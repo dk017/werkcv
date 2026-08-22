@@ -54,7 +54,7 @@ const quickAnswerCards = [
   },
   {
     title: "Use it as an online CV builder",
-    body: "This route is strongest if you want to make and edit your CV online instead of working in Word.",
+    body: "This route is strongest if you want to make and edit the CV online instead of working in Word.",
   },
 ];
 
@@ -206,130 +206,118 @@ export default function GratisCvMakenPage() {
     ],
   };
   return (
-    <div className="min-h-screen bg-[#FFFEF0]">
-      <header className="relative z-10 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-black tracking-tight text-black">
-              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-            </span>
-          </Link>
-          <Link
-            href="/editor"
-            className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
-          >
-            Maak gratis je cv
-          </Link>
-        </div>
-      </header>
-
-      <main className="relative z-10 mx-auto max-w-5xl px-6 py-14">
-        <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <div>
-            <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Hoge intentie: gratis cv maken
-            </p>
-            <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              Gratis CV maken en pas betalen als je PDF echt klaar is
-            </h1>
-            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Wie zoekt op gratis cv maken wil vooral laagdrempelig starten,
-              meerdere templates vergelijken, versies bewaren en pas beslissen
-              over betaling wanneer de inhoud echt klaar is. WerkCV laat je precies
-              dat doen: gratis bouwen, verbeteren en vergelijken, daarna eenmalig
-              afrekenen als je PDF klaar is.
-            </p>
-            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
-              Deze pagina focust bewust op gratis starten, prijslogica en het moment
-              van betalen. Zoek je vooral een eerste basisversie vanaf nul? Gebruik
-              dan{" "}
-              <Link
-                href="/cv-maken"
-                className="font-black text-black underline decoration-2 underline-offset-4"
-              >
-                CV maken
-              </Link>
-              . Voor de brede workflow rond inhoud, structuur en ATS gebruik je de{" "}
-              <Link
-                href="/cv-maken"
-                className="font-black text-black underline decoration-2 underline-offset-4"
-              >
-                algemene CV maken gids
-              </Link>
-              .
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                href="/editor"
-                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              >
-                Maak gratis je cv, betaal pas bij downloaden
-              </Link>
-              <Link
-                href="/prijzen"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Bekijk prijsmodel
-              </Link>
-            </div>
-            <div className="mt-8 grid gap-3 sm:grid-cols-3">
-              {[
-                "Gratis starten en bewerken",
-                `${templateList.length} templates vergelijken`,
-                "Eenmalig betalen bij PDF-download",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="border-3 border-black bg-white px-4 py-3 text-sm font-black text-black"
-                  style={{ borderWidth: "3px" }}
+    <main>
+      <section className="wk-section">
+        <div className="wk-container">
+          <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+            <div>
+              <div className="wk-eyebrow mb-3">
+                <span>Hoge intentie: gratis cv maken</span>
+              </div>
+              <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+                <span className="wk-hero-highlight">Gratis CV maken</span> en pas betalen als je PDF
+                echt klaar is
+              </h1>
+              <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
+                Wie zoekt op gratis cv maken wil vooral laagdrempelig starten, meerdere templates
+                vergelijken, versies bewaren en pas beslissen over betaling wanneer de inhoud echt
+                klaar is. WerkCV laat je precies dat doen: gratis bouwen, verbeteren en
+                vergelijken, daarna eenmalig afrekenen als je PDF klaar is.
+              </p>
+              <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--wk-ink-muted)]">
+                Deze pagina focust bewust op gratis starten, prijslogica en het moment van betalen.
+                Zoek je vooral een eerste basisversie vanaf nul? Gebruik dan{" "}
+                <Link
+                  href="/cv-maken"
+                  className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
                 >
-                  {item}
-                </div>
-              ))}
+                  CV maken
+                </Link>
+                . Voor de brede workflow rond inhoud, structuur en ATS gebruik je de{" "}
+                <Link
+                  href="/cv-maken"
+                  className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
+                >
+                  algemene CV maken gids
+                </Link>
+                .
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/editor" className="wk-button wk-button-primary">
+                  Maak gratis je cv, betaal pas bij downloaden
+                </Link>
+                <Link href="/prijzen" className="wk-button wk-button-secondary">
+                  Bekijk prijsmodel
+                </Link>
+              </div>
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                {[
+                  "Gratis starten en bewerken",
+                  `${templateList.length} templates vergelijken`,
+                  "Eenmalig betalen bij PDF-download",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] px-4 py-3 text-sm font-semibold text-[var(--wk-ink)]"
+                  >
+                    {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="wk-card h-fit p-6">
+              <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
+                Wat krijg je als je gratis start?
+              </h2>
+              <ul className="mt-5 space-y-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                {freeChecklist.map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--wk-success-soft)] text-[var(--wk-success)]">
+                      <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 border-t border-[var(--wk-border)] pt-5">
+                <Link
+                  href="/templates"
+                  className="text-sm font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
+                >
+                  Vergelijk eerst alle CV templates
+                </Link>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">
-              Wat krijg je als je gratis start?
-            </h2>
-            <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-              {freeChecklist.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <div className="mt-6 border-t-4 border-black pt-5">
-              <Link
-                href="/templates"
-                className="text-sm font-black text-black underline decoration-2 underline-offset-4"
-              >
-                Vergelijk eerst alle CV templates
-              </Link>
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-card p-6 md:p-8">
+            <div className="wk-eyebrow mb-3">
+              <span>Kort antwoord</span>
             </div>
-          </div>
-        </section>
-
-        <section className="mb-14">
-          <div className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Kort antwoord
-            </p>
-            <h2 className="mt-2 text-3xl font-black text-black">
+            <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
               Kun je echt gratis online een CV maken?
             </h2>
-            <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
-              Ja. Op WerkCV kun je online gratis je CV maken, bewerken en templates vergelijken. De betaalde stap zit pas op de uiteindelijke PDF-download. Daarmee past deze route beter bij mensen die eerst willen testen en schrijven dan bij mensen die per se direct een gratis PDF verwachten.
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-[var(--wk-ink-muted)] md:text-base">
+              Ja. Op WerkCV kun je online gratis je CV maken, bewerken en templates vergelijken. De
+              betaalde stap zit pas op de uiteindelijke PDF-download. Daarmee past deze route beter
+              bij mensen die eerst willen testen en schrijven dan bij mensen die per se direct een
+              gratis PDF verwachten.
             </p>
             <div className="mt-6 grid gap-5 md:grid-cols-3">
               {quickAnswerCards.map((card) => (
                 <article
                   key={card.title}
-                  className="border-2 border-black bg-[#FFFEF0] p-4"
+                  className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4"
                 >
-                  <h3 className="text-base font-black text-black">{card.title}</h3>
-                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
-                    {card.body}
-                  </p>
+                  <h3 className="text-base font-semibold text-[var(--wk-ink)]">{card.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{card.body}</p>
                 </article>
               ))}
             </div>
@@ -338,39 +326,39 @@ export default function GratisCvMakenPage() {
                 <Link
                   key={choice.href}
                   href={choice.href}
-                  className="block border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
+                  className="wk-card block p-4 transition-colors hover:border-[var(--wk-primary)]"
                 >
-                  <p className="text-sm font-black text-black">{choice.title}</p>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
-                    {choice.body}
-                  </p>
+                  <p className="text-sm font-semibold text-[var(--wk-ink)]">{choice.title}</p>
+                  <p className="mt-1 text-sm leading-6 text-[var(--wk-ink-muted)]">{choice.body}</p>
                 </Link>
               ))}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14">
-          <div className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Gratis vs betaald
-            </p>
-            <h2 className="mt-2 text-3xl font-black text-black">
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-card p-6 md:p-8">
+            <div className="wk-eyebrow mb-3">
+              <span>Gratis vs betaald</span>
+            </div>
+            <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
               Wat is gratis en wanneer betaal je?
             </h2>
             <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <div className="border-2 border-black bg-[#E9FFFC] p-5">
-                <h3 className="text-xl font-black text-black">Gratis</h3>
-                <ul className="mt-3 space-y-2 text-sm font-medium leading-relaxed text-slate-700">
+              <div className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-accent-soft)] p-5">
+                <h3 className="text-xl font-semibold text-[var(--wk-ink)]">Gratis</h3>
+                <ul className="mt-3 space-y-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
                   <li>Je cv aanmaken en invullen.</li>
                   <li>Templates en kleuren vergelijken.</li>
                   <li>Teksten verbeteren en later terugkomen.</li>
                   <li>Voorbeeld bekijken voordat je beslist.</li>
                 </ul>
               </div>
-              <div className="border-2 border-black bg-[#FFF7D6] p-5">
-                <h3 className="text-xl font-black text-black">Betaald</h3>
-                <ul className="mt-3 space-y-2 text-sm font-medium leading-relaxed text-slate-700">
+              <div className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)] p-5">
+                <h3 className="text-xl font-semibold text-[var(--wk-ink)]">Betaald</h3>
+                <ul className="mt-3 space-y-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
                   <li>Alleen de definitieve PDF-download.</li>
                   <li>Eenmalig {cvDownloadPrice.display} per cv-document.</li>
                   <li>Geen abonnement, proefperiode of automatische verlenging.</li>
@@ -379,254 +367,231 @@ export default function GratisCvMakenPage() {
               </div>
             </div>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link
-                href="/editor"
-                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
+              <Link href="/editor" className="wk-button wk-button-primary">
                 Start gratis met mijn cv
               </Link>
-              <Link
-                href="/prijzen"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
+              <Link href="/prijzen" className="wk-button wk-button-secondary">
                 Bekijk prijsmodel
               </Link>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <MoneyPageTrustBlock
-          title="Waarom gratis starten bij WerkCV logisch is"
-          intro="Je ziet eerst of je cv-inhoud, template en PDF-route goed voelen. Pas als je tevreden bent met de definitieve versie betaal je voor de download."
-        />
+      <MoneyPageTrustBlock
+        title="Waarom gratis starten bij WerkCV logisch is"
+        intro="Je ziet eerst of je cv-inhoud, template en PDF-route goed voelen. Pas als je tevreden bent met de definitieve versie betaal je voor de download."
+      />
 
-        <section className="mb-14">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Workflow
-          </p>
-          <h2 className="mt-2 text-3xl font-black text-black">
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-eyebrow mb-3">
+            <span>Workflow</span>
+          </div>
+          <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
             Gratis CV maken in 5 praktische stappen
           </h2>
-          <div className="mt-6 grid gap-5 md:grid-cols-2">
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
             {freeSteps.map((step) => (
-              <article
-                key={step.title}
-                className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <h3 className="text-xl font-black text-black">{step.title}</h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                  {step.body}
-                </p>
+              <article key={step.title} className="wk-card p-5 md:p-6">
+                <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{step.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">{step.body}</p>
               </article>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14 grid gap-5 md:grid-cols-3">
-          {pricingCards.map((card, index) => (
-            <div
-              key={card.title}
-              className={`border-4 border-black p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] ${
-                index === 0 ? "bg-yellow-400" : "bg-white"
-              }`}
-            >
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-700">
-                {card.title}
-              </p>
-              <p className="mt-3 text-sm font-medium leading-relaxed text-slate-800">
-                {card.body}
-              </p>
-            </div>
-          ))}
-        </section>
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-5 md:grid-cols-3">
+            {pricingCards.map((card, index) => (
+              <div
+                key={card.title}
+                className={index === 0 ? "wk-card wk-card-accent p-6" : "wk-card p-6"}
+              >
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
+                  {card.title}
+                </p>
+                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">{card.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-        <section className="mb-14 border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-sm font-medium leading-relaxed text-slate-700">
-            Gratis starten is stap 1. Wil je daarna expliciet weten hoe{" "}
-            <Link
-              href="/cv-maken-zonder-abonnement"
-              className="font-black text-black underline decoration-2 underline-offset-4"
-            >
-              cv maken zonder abonnement
-            </Link>{" "}
-            werkt en waarom WerkCV met eenmalig betalen rekent, dan is dat de beste vervolgpagina.
-          </p>
-        </section>
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-card p-5">
+            <p className="text-sm leading-7 text-[var(--wk-ink-muted)]">
+              Gratis starten is stap 1. Wil je daarna expliciet weten hoe{" "}
+              <Link
+                href="/cv-maken-zonder-abonnement"
+                className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
+              >
+                cv maken zonder abonnement
+              </Link>{" "}
+              werkt en waarom WerkCV met eenmalig betalen rekent, dan is dat de beste vervolgpagina.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <section className="mb-14">
-          <div className="mb-6 flex items-end justify-between gap-4">
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-                Template startpunten
-              </p>
-              <h2 className="text-3xl font-black text-black">
+              <div className="wk-eyebrow mb-3">
+                <span>Template startpunten</span>
+              </div>
+              <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
                 Gratis starten met een template die recruiter-proof blijft
               </h2>
             </div>
             <Link
               href="/templates"
-              className="text-sm font-black text-black underline decoration-2 underline-offset-4"
+              className="text-sm font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
             >
               Bekijk alle templates
             </Link>
           </div>
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {featuredTemplates.map((template) => (
-              <div
-                key={template.id}
-                className="flex h-full flex-col border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+              <div key={template.id} className="wk-card flex h-full flex-col p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
                   {template.nameDutch}
                 </p>
-                <h3 className="mt-2 text-xl font-black text-black">
-                  {template.name}
-                </h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+                <h3 className="mt-2 text-xl font-semibold text-[var(--wk-ink)]">{template.name}</h3>
+                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
                   {template.description}
                 </p>
-                <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
+                <p className="mt-4 text-sm leading-6 text-[var(--wk-ink-muted)]">
                   {templateUseCases[template.id]}
                 </p>
                 <div className="mt-auto pt-5">
-                  <Link
-                    href="/editor"
-                    className="inline-block border-2 border-black bg-yellow-400 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-black"
-                  >
+                  <Link href="/editor" className="wk-button wk-button-primary wk-button-small w-full">
                     Maak gratis je cv
                   </Link>
                 </div>
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14 grid gap-6 lg:grid-cols-[1fr_0.9fr]">
-          <div className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
-              Veelgemaakte fouten
-            </p>
-            <h2 className="mt-2 text-2xl font-black">
-              Waar gratis CV-pagina&apos;s vaak misgaan
-            </h2>
-            <div className="mt-4 space-y-3">
-              {mistakes.map((item) => (
-                <div key={item.title}>
-                  <p className="text-sm font-bold leading-relaxed text-slate-100">
-                    {item.title}
-                  </p>
-                  <p className="text-sm font-medium leading-relaxed text-slate-300">
-                    {item.fix}
-                  </p>
-                </div>
-              ))}
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
+            <div className="wk-card wk-card-warning p-6">
+              <div className="wk-eyebrow mb-3">
+                <span>Veelgemaakte fouten</span>
+              </div>
+              <h2 className="text-2xl font-semibold text-[var(--wk-ink)]">
+                Waar gratis CV-pagina&apos;s vaak misgaan
+              </h2>
+              <div className="mt-4 space-y-3">
+                {mistakes.map((item) => (
+                  <div key={item.title}>
+                    <p className="text-sm font-semibold leading-6 text-[var(--wk-ink)]">
+                      {item.title}
+                    </p>
+                    <p className="text-sm leading-6 text-[var(--wk-ink-muted)]">{item.fix}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="wk-card p-6">
+              <div className="wk-eyebrow mb-3">
+                <span>Slimme vervolgstappen</span>
+              </div>
+              <h2 className="text-2xl font-semibold text-[var(--wk-ink)]">
+                Verdiep de gratis-intentie zonder duplicate pagina&apos;s
+              </h2>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                {[
+                  {
+                    href: "/cv-maken",
+                    title: "CV maken",
+                    body: "Gebruik het hoofd-stappenplan als je behalve prijs ook inhoud en schrijfkwaliteit wilt verbeteren.",
+                  },
+                  {
+                    href: "/cv-opstellen",
+                    title: "CV opstellen",
+                    body: "Sterke vervolgroute voor mensen die eerst structuur, volgorde en inhoud per sectie willen aanscherpen.",
+                  },
+                  {
+                    href: "/templates",
+                    title: "CV templates",
+                    body: "Sterke vervolgroute voor mensen die nu vooral willen vergelijken welke layout het beste past voordat ze later downloaden.",
+                  },
+                  {
+                    href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+                    title: "Zonder abonnement vergelijken",
+                    body: "Vergelijk WerkCV met andere routes als je expliciet zoekt naar een no-subscription model.",
+                  },
+                  {
+                    href: "/prijzen",
+                    title: "Prijzen",
+                    body: "Leg helder uit dat gratis starten losstaat van de eenmalige betaling op de uiteindelijke PDF-download.",
+                  },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 transition-colors hover:border-[var(--wk-primary)]"
+                  >
+                    <p className="text-sm font-semibold text-[var(--wk-ink)]">{item.title}</p>
+                    <p className="mt-1 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.body}</p>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
-          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Slimme vervolgstappen
-            </p>
-            <h2 className="mt-2 text-2xl font-black text-black">
-              Verdiep de gratis-intentie zonder duplicate pagina&apos;s
-            </h2>
-            <div className="mt-4 space-y-4">
-              {[
-                {
-                  href: "/cv-maken",
-                  title: "CV maken",
-                  body: "Gebruik het hoofd-stappenplan als je behalve prijs ook inhoud en schrijfkwaliteit wilt verbeteren.",
-                },
-                {
-                  href: "/cv-opstellen",
-                  title: "CV opstellen",
-                  body: "Sterke vervolgroute voor mensen die eerst structuur, volgorde en inhoud per sectie willen aanscherpen.",
-                },
-                {
-                  href: "/templates",
-                  title: "CV templates",
-                  body: "Sterke vervolgroute voor mensen die nu vooral willen vergelijken welke layout het beste past voordat ze later downloaden.",
-                },
-                {
-                  href: "/cv-gids/beste-cv-builder-zonder-abonnement",
-                  title: "Zonder abonnement vergelijken",
-                  body: "Vergelijk WerkCV met andere routes als je expliciet zoekt naar een no-subscription model.",
-                },
-                {
-                  href: "/prijzen",
-                  title: "Prijzen",
-                  body: "Leg helder uit dat gratis starten losstaat van de eenmalige betaling op de uiteindelijke PDF-download.",
-                },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block border-2 border-black bg-[#FFFEF0] p-4 transition-colors hover:bg-yellow-100"
-                >
-                  <p className="text-sm font-black text-black">{item.title}</p>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
-                    {item.body}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14">
-          <h2 className="text-center text-3xl font-black text-black">
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <h2 className="text-center text-3xl font-semibold text-[var(--wk-ink)]">
             Veelgestelde vragen over gratis CV maken
           </h2>
           <div className="mx-auto mt-8 max-w-3xl space-y-4">
             {faqs.map((faq) => (
-              <details
-                key={faq.question}
-                className="group border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <summary className="flex cursor-pointer items-center justify-between p-4 text-left text-base font-black text-black">
+              <details key={faq.question} className="wk-card p-5">
+                <summary className="cursor-pointer font-semibold text-[var(--wk-ink)]">
                   {faq.question}
-                  <span className="ml-3 text-xl transition-transform group-open:rotate-45">
-                    +
-                  </span>
                 </summary>
-                <div className="border-t-2 border-black px-4 pb-4 pt-3 text-sm font-medium leading-relaxed text-slate-700">
-                  {faq.answer}
-                </div>
+                <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">{faq.answer}</p>
               </details>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
-                Klaar om gratis te starten?
-              </p>
-              <h2 className="mt-2 text-3xl font-black text-black">
-                Bouw eerst je CV af en beslis pas daarna over de download
-              </h2>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
-                Gebruik de editor, vergelijk layouts en hou de drempel laag tot je
-                definitieve versie echt sollicitatieklaar is.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/editor"
-                className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-8 text-center md:p-12">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-primary-contrast)]/80">
+              Klaar om gratis te starten?
+            </p>
+            <h2 className="mt-2 text-3xl font-semibold text-[var(--wk-primary-contrast)]">
+              Bouw eerst je CV af en beslis pas daarna over de download
+            </h2>
+            <p className="mx-auto mt-2 max-w-2xl text-sm leading-7 text-[var(--wk-primary-contrast)]/80 sm:text-base">
+              Gebruik de editor, vergelijk layouts en hou de drempel laag tot je definitieve versie
+              echt sollicitatieklaar is.
+            </p>
+            <div className="mt-7 flex flex-wrap justify-center gap-3">
+              <Link href="/editor" className="wk-button wk-button-accent">
                 Maak gratis je cv
               </Link>
-              <Link
-                href="/templates"
-                className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
-              >
+              <Link href="/templates" className="wk-button wk-button-secondary">
                 Bekijk templates
               </Link>
             </div>
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
       <script
         type="application/ld+json"
@@ -637,7 +602,7 @@ export default function GratisCvMakenPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <Footer />
-    </div>
+      <Footer variant="brand" />
+    </main>
   );
 }

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
 import { cvDownloadPrice } from "@/lib/site-content";
@@ -36,11 +35,10 @@ export const metadata: Metadata = {
     },
 };
 
-const priceBadges = [
-    `Eenmalig ${cvDownloadPrice.display}`,
+const pricingTrustPoints = [
     "Geen abonnement",
     "Later opnieuw downloaden",
-    "Betaal pas bij PDF-download",
+    "Inclusief btw",
 ] as const;
 
 const pricingIntentCards = [
@@ -89,6 +87,18 @@ const pricingFaqs = [
     },
 ] as const;
 
+const pricingCardFeatures = [
+    "Onbeperkt je CV bewerken",
+    "13+ professionele templates",
+    "12 kleurthema's per template",
+    "ATS-vriendelijk PDF formaat",
+    "Direct downloaden na betaling",
+    "Later opnieuw downloaden zonder extra betaling",
+    "Template en kleur later nog aanpassen",
+    "Geen abonnement of verborgen kosten",
+    "CV blijft opgeslagen voor later",
+] as const;
+
 // Keep this date in sync with the currently advertised price period.
 const productJsonLd = {
     "@context": "https://schema.org",
@@ -129,125 +139,107 @@ const productJsonLd = {
 const pricingBreadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: [
+    "itemListElement": [
         {
             "@type": "ListItem",
-            position: 1,
-            name: "WerkCV",
-            item: "https://werkcv.nl/",
+            "position": 1,
+            "name": "WerkCV",
+            "item": "https://werkcv.nl/",
         },
         {
             "@type": "ListItem",
-            position: 2,
-            name: "Prijzen",
-            item: "https://werkcv.nl/prijzen",
+            "position": 2,
+            "name": "Prijzen",
+            "item": "https://werkcv.nl/prijzen",
         },
     ],
 };
 
+const comparisonLinks = [
+    { href: "/cv-maken-zonder-abonnement", label: "CV zonder abonnement" },
+    { href: "/beste-cv-maker-nederland", label: "Beste CV maker NL" },
+    { href: "/cv-gids/welke-cv-builder-past-bij-jou-in-nederland", label: "Welke CV builder past bij jou?" },
+    { href: "/cv-gids/beste-cv-builder-zonder-abonnement", label: "Beste zonder abonnement" },
+    { href: "/cv-gids/werkcv-vs-cvmaker", label: "CVMaker alternatief" },
+    { href: "/alternatief-voor-cv-nl", label: "CV.nl alternatief" },
+    { href: "/cv-gids/werkcv-vs-cvwizard", label: "WerkCV vs CVwizard" },
+    { href: "/cv-nl-opzeggen", label: "CV.nl opzeggen" },
+    { href: "/cvmaker-opzeggen", label: "CVMaker opzeggen" },
+    { href: "/alternatief-voor-cvster", label: "CVster alternatief" },
+    { href: "/cv-gids/werkcv-vs-livecareer", label: "LiveCareer alternatief" },
+    { href: "/cvster-opzeggen", label: "CVster opzeggen" },
+    { href: "/livecareer-opzeggen", label: "LiveCareer opzeggen" },
+    { href: "/cv-gids/werkcv-vs-europass", label: "WerkCV vs Europass" },
+    { href: "/cv-gids/werkcv-vs-resumaker", label: "WerkCV vs Resumaker" },
+    { href: "/cv-gids/werkcv-vs-maakeencv", label: "WerkCV vs maakeencv.nl" },
+    { href: "/cv-gids/canva-vs-cv-builder-voor-sollicitaties", label: "Canva vs CV builder" },
+] as const;
+
 export default function PrijzenPage() {
     return (
-        <div className="min-h-screen bg-[#FFFEF0]">
+        <main>
             <FAQJsonLd questions={[...pricingFaqs]} />
             <JsonLd data={pricingBreadcrumbJsonLd} />
-            {/* Header */}
-            <header className="relative z-10 border-b-4 border-black bg-white">
-                <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2">
-                        <span className="font-black text-2xl tracking-tight text-black">
-                            Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-                        </span>
-                    </Link>
-                    <div className="flex items-center gap-3">
-                        <LanguageSwitcher tone="solid" />
+
+            <section className="wk-section wk-pricing-hero">
+                <div className="wk-container max-w-4xl text-center">
+                    <p className="wk-eyebrow justify-center">Eén duidelijke prijs</p>
+                    <h1 className="mx-auto mt-4 max-w-3xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-6xl">
+                        Maak je CV gratis. Download je PDF voor{" "}
+                        <span className="wk-hero-highlight">{cvDownloadPrice.display}</span>.
+                    </h1>
+                    <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[var(--wk-ink-muted)] md:text-lg md:leading-8">
+                        Bouw en controleer eerst je volledige CV. Betaal pas wanneer je de definitieve PDF wilt downloaden—zonder proefperiode of automatische verlenging.
+                    </p>
+                    <div className="mt-7 flex flex-wrap justify-center gap-3">
                         <TrackedLandingLink
                             href="/editor?template=professional&startSource=pricing_header"
                             trackingLocation="prijzen:header_primary"
                             trackingLabel="Maak gratis je cv"
-                            className="text-sm font-bold text-black bg-yellow-400 px-3 py-1 border-2 border-black hover:bg-yellow-300 transition-colors"
+                            className="wk-button wk-button-primary"
                         >
-                            Maak gratis je cv
+                            Maak gratis je CV
                         </TrackedLandingLink>
+                        <Link href="#prijs" className="wk-button wk-button-secondary">
+                            Bekijk wat je krijgt
+                        </Link>
                     </div>
-                </div>
-            </header>
-
-            <main className="relative z-10 max-w-4xl mx-auto px-6 py-16">
-                {/* Hero */}
-                <div className="text-center mb-12">
-                    <div className="flex flex-wrap justify-center gap-2 mb-4">
-                        {priceBadges.map((badge) => (
-                            <span
-                                key={badge}
-                                className="border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-black"
-                            >
-                                {badge}
-                            </span>
+                    <div className="mt-6 flex flex-wrap justify-center gap-2">
+                        {pricingTrustPoints.map((point) => (
+                            <span key={point} className="wk-trust-pill">{point}</span>
                         ))}
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-black text-black mb-4">
-                        Wat kost een CV maken? Eenmalig {cvDownloadPrice.display} per PDF
-                    </h1>
-                    <p className="text-lg font-medium text-black max-w-2xl mx-auto">
-                        WerkCV kost {cvDownloadPrice.display} per CV-download. De kernbelofte is simpel: eerst gratis bouwen, pas betalen wanneer je jouw definitieve PDF echt wilt downloaden.
-                    </p>
-                    <p className="text-sm font-black text-black max-w-2xl mx-auto mt-3">
-                        Je betaalt alleen voor je definitieve PDF-download. Geen proefperiode, geen automatische verlenging en niets om later op te zeggen.
-                    </p>
-                    <p className="text-sm font-medium text-gray-700 max-w-2xl mx-auto mt-3">
-                        Wil je eerst precies zien hoe{" "}
-                        <Link
-                            href="/cv-maken-zonder-abonnement"
-                            className="font-black text-black underline decoration-2 underline-offset-4"
-                        >
-                            de vergelijking met abonnementen
-                        </Link>{" "}
-                        zich verhoudt tot abonnementen? Bekijk dan eerst de vergelijking.
-                    </p>
-                    <p className="text-sm font-medium text-gray-700 max-w-2xl mx-auto mt-2">
-                        Zoek je vooral op <span className="font-black text-black">cv maken betaald</span> of <span className="font-black text-black">cv betalen per download</span>? Dan is dit precies de pagina waar het prijsmodel wordt uitgelegd.
-                    </p>
-                    <p className="text-sm font-medium text-gray-700 max-w-2xl mx-auto mt-2">
-                        Wil je eerst je inhoud en template kiezen? Ga naar <Link href="/cv-maken" className="font-black text-black underline decoration-2 underline-offset-4">CV maken voor Nederlandse vacatures</Link>.
-                    </p>
                 </div>
+            </section>
 
-                {/* Pricing Card */}
-                <div className="mx-auto mb-16 max-w-2xl">
-                    <div className="bg-yellow-300 border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] relative">
-                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 px-4 py-1 border-3 border-black font-black text-sm" style={{ borderWidth: '3px' }}>
-                            MEEST GEKOZEN
+            <section id="prijs" className="wk-section scroll-mt-24 pt-0">
+                <div className="wk-container max-w-2xl">
+                    <div className="wk-card relative p-8">
+                        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                            <span className="wk-badge wk-badge-warning">MEEST GEKOZEN</span>
                         </div>
 
-                        <div className="text-center pt-4">
-                            <div className="text-5xl font-black text-black mb-2">{cvDownloadPrice.display}</div>
-                            <p className="mb-2 text-xs font-black uppercase tracking-[0.16em] text-gray-700">
+                        <div className="pt-2 text-center">
+                            <div className="text-5xl font-semibold text-[var(--wk-ink)]">
+                                {cvDownloadPrice.display}
+                            </div>
+                            <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--wk-ink-muted)]">
                                 Inclusief btw
                             </p>
-                            <p className="text-lg font-bold text-gray-700 mb-2">Alleen je CV als PDF</p>
-                            <p className="mb-6 text-sm font-bold text-gray-700">
+                            <p className="mt-2 text-lg font-semibold text-[var(--wk-ink)]">Alleen je CV als PDF</p>
+                            <p className="mx-auto mt-2 mb-6 max-w-md text-sm leading-6 text-[var(--wk-ink-muted)]">
                                 Dit is de standaardroute: gratis bouwen, pas betalen wanneer je jouw definitieve CV wilt downloaden.
                             </p>
 
-                            <ul className="text-left space-y-3 mb-8">
-                                {[
-                                    'Onbeperkt je CV bewerken',
-                                    '13+ professionele templates',
-                                    '12 kleurthema\'s per template',
-                                    'ATS-vriendelijk PDF formaat',
-                                    'Direct downloaden na betaling',
-                                    'Later opnieuw downloaden zonder extra betaling',
-                                    'Template en kleur later nog aanpassen',
-                                    'Geen abonnement of verborgen kosten',
-                                    'CV blijft opgeslagen voor later',
-                                ].map((feature, i) => (
-                                    <li key={i} className="flex items-start gap-3">
-                                        <span className="bg-green-400 border-2 border-black w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                            <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                            <ul className="mb-8 space-y-3 text-left">
+                                {pricingCardFeatures.map((feature) => (
+                                    <li key={feature} className="flex items-start gap-3">
+                                        <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--wk-success-soft)] text-[var(--wk-success)]">
+                                            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                                             </svg>
                                         </span>
-                                        <span className="font-medium text-black">{feature}</span>
+                                        <span className="text-sm font-medium leading-6 text-[var(--wk-ink)]">{feature}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -256,125 +248,157 @@ export default function PrijzenPage() {
                                 href="/editor?template=professional&startSource=pricing_card_primary"
                                 trackingLocation="prijzen:pricing_card_primary"
                                 trackingLabel="Maak gratis je CV"
-                                className="block w-full bg-yellow-400 text-black py-4 font-black text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all text-center"
+                                className="wk-button wk-button-primary w-full text-lg"
                             >
                                 Maak gratis je CV
                             </TrackedLandingLink>
-                            <p className="mt-3 text-xs font-bold text-gray-700">
+                            <p className="mt-3 text-xs leading-5 text-[var(--wk-ink-muted)]">
                                 Afrekenen gebeurt pas wanneer je jouw PDF wilt downloaden.
                             </p>
                         </div>
                     </div>
-
                 </div>
+            </section>
 
-                <section className="mb-16 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-                    <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-600">
-                        Publieke prijscheck
-                    </p>
-                    <h2 className="mt-2 text-3xl font-black text-black">
-                        Zoek je op &quot;cv.nl kosten&quot;?
-                    </h2>
-                    <p className="mt-3 text-sm md:text-base font-medium leading-relaxed text-gray-700">
-                        Volgens de publieke prijzenpagina van CV.nl kost de instaproute 14 dagen €0,99 en daarna €19,99 per maand met automatische verlenging. Gecheckt op 17 april 2026. WerkCV gebruikt een ander model: gratis starten en {cvDownloadPrice.display} eenmalig per CV-download.
-                    </p>
-                    <div className="mt-6 grid gap-4 md:grid-cols-2">
-                        <div className="border-4 border-black bg-[#FFF4D6] p-5">
-                            <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-600">
-                                CV.nl
+            <section className="wk-section pt-0">
+                <div className="wk-container max-w-3xl">
+                    <div className="wk-card p-6 md:p-8">
+                        <p className="wk-eyebrow">Hoe de prijs werkt</p>
+                        <h2 className="mt-3 text-2xl font-semibold text-[var(--wk-ink)] md:text-3xl">
+                            Eerst bouwen, alleen betalen voor je definitieve download.
+                        </h2>
+                        <div className="mt-4 space-y-3 text-sm leading-7 text-[var(--wk-ink-muted)] md:text-base">
+                            <p>
+                                WerkCV kost {cvDownloadPrice.display} per afzonderlijke CV-download. Je betaalt niet voor het kiezen van je template, het schrijven van je inhoud of het controleren van de volledige preview.
                             </p>
-                            <ul className="mt-3 space-y-2 text-sm font-medium text-gray-700">
-                                <li>&bull; 14 dagen voor €0,99</li>
-                                <li>&bull; Daarna €19,99 per maand</li>
-                                <li>&bull; Automatische verlenging volgens pricingpagina</li>
-                            </ul>
-                        </div>
-                        <div className="border-4 border-black bg-yellow-300 p-5">
-                            <p className="text-xs font-black uppercase tracking-[0.18em] text-black">
-                                WerkCV
+                            <p>
+                                Er is geen proefabonnement, maandbedrag of automatische verlenging. Latere wijzigingen en downloads van hetzelfde betaalde CV kosten niets extra.
                             </p>
-                            <ul className="mt-3 space-y-2 text-sm font-black text-black">
-                                <li>&bull; Gratis starten</li>
-                                <li>&bull; {cvDownloadPrice.display} per CV-download</li>
-                                <li>&bull; Geen abonnement of automatische verlenging</li>
-                            </ul>
+                            <p>
+                                Vergelijk je verschillende prijsmodellen? Lees dan hoe{" "}
+                                <Link href="/cv-maken-zonder-abonnement" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
+                                    eenmalig betalen zich verhoudt tot een abonnement
+                                </Link>
+                                , of begin direct met{" "}
+                                <Link href="/cv-maken" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
+                                    je CV voor Nederlandse vacatures
+                                </Link>
+                                .
+                            </p>
                         </div>
                     </div>
-                    <div className="mt-5 flex flex-wrap gap-3">
-                        <Link
-                            href="/alternatief-voor-cv-nl"
-                            className="border-2 border-black bg-yellow-200 px-3 py-2 text-sm font-black text-black hover:bg-yellow-300 transition-colors"
-                        >
-                            Vergelijk WerkCV met CV.nl
-                        </Link>
-                        <a
-                            href="https://www.cv.nl/pricing"
-                            target="_blank"
-                            rel="noreferrer"
-                            className="border-2 border-black bg-white px-3 py-2 text-sm font-black text-black hover:bg-gray-100 transition-colors"
-                        >
-                            Open officiële CV.nl prijzen
-                        </a>
-                    </div>
-                    <p className="mt-4 text-xs font-medium leading-relaxed text-gray-600">
-                        Controleer actuele voorwaarden en prijzen altijd zelf op de officiële pricingpagina van CV.nl.
-                    </p>
-                </section>
-
-                <div className="mb-16 grid gap-6 md:grid-cols-2">
-                    {pricingIntentCards.map((card) => (
-                        <article key={card.title} className="bg-white border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                            <h2 className="text-2xl font-black text-black">{card.title}</h2>
-                            <p className="mt-3 text-sm font-medium leading-relaxed text-gray-700">
-                                {card.body}
-                            </p>
-                            <Link
-                                href={card.href}
-                                className="mt-5 inline-block border-2 border-black bg-yellow-200 px-3 py-2 text-sm font-black text-black hover:bg-yellow-300 transition-colors"
-                            >
-                                {card.label}
-                            </Link>
-                        </article>
-                    ))}
                 </div>
+            </section>
 
-                {/* Comparison */}
-                <div className="mb-16">
-                    <h2 className="text-2xl font-black text-black text-center mb-8">Waarom WerkCV.nl?</h2>
-                    <div className="grid md:grid-cols-3 gap-6">
-                        <div className="bg-white border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                            <div className="w-12 h-12 bg-red-400 border-3 border-black flex items-center justify-center mb-4 rotate-2" style={{ borderWidth: '3px' }}>
-                                <span className="text-xl font-black">X</span>
+            <section className="wk-section pt-0">
+                <div className="wk-container max-w-4xl">
+                    <div className="wk-card p-6 md:p-8">
+                        <div className="wk-eyebrow mb-3">
+                            <span>Publieke prijscheck</span>
+                        </div>
+                        <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+                            Zoek je op &quot;cv.nl kosten&quot;?
+                        </h2>
+                        <p className="mt-3 text-sm leading-7 text-[var(--wk-ink-muted)] md:text-base">
+                            Volgens de publieke prijzenpagina van CV.nl kost de instaproute 14 dagen €0,99 en daarna €19,99 per maand met automatische verlenging. Gecheckt op 17 april 2026. WerkCV gebruikt een ander model: gratis starten en {cvDownloadPrice.display} eenmalig per CV-download.
+                        </p>
+                        <div className="mt-6 grid gap-4 md:grid-cols-2">
+                            <div className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-5">
+                                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
+                                    CV.nl
+                                </p>
+                                <ul className="mt-3 space-y-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                                    <li>&bull; 14 dagen voor €0,99</li>
+                                    <li>&bull; Daarna €19,99 per maand</li>
+                                    <li>&bull; Automatische verlenging volgens pricingpagina</li>
+                                </ul>
                             </div>
-                            <h3 className="font-black text-black mb-2">Abonnementsbuilders</h3>
-                            <ul className="space-y-2 text-sm font-medium text-gray-700">
+                            <div className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-accent-soft)] p-5">
+                                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-primary)]">
+                                    WerkCV
+                                </p>
+                                <ul className="mt-3 space-y-2 text-sm font-medium leading-6 text-[var(--wk-ink)]">
+                                    <li>&bull; Gratis starten</li>
+                                    <li>&bull; {cvDownloadPrice.display} per CV-download</li>
+                                    <li>&bull; Geen abonnement of automatische verlenging</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="mt-5 flex flex-wrap gap-3">
+                            <Link href="/alternatief-voor-cv-nl" className="wk-button wk-button-secondary wk-button-small">
+                                Vergelijk WerkCV met CV.nl
+                            </Link>
+                            <a
+                                href="https://www.cv.nl/pricing"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="wk-button wk-button-quiet wk-button-small"
+                            >
+                                Open officiële CV.nl prijzen
+                            </a>
+                        </div>
+                        <p className="mt-4 text-xs leading-5 text-[var(--wk-ink-muted)]">
+                            Controleer actuele voorwaarden en prijzen altijd zelf op de officiële pricingpagina van CV.nl.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section className="wk-section pt-0">
+                <div className="wk-container max-w-4xl">
+                    <div className="grid gap-6 md:grid-cols-2">
+                        {pricingIntentCards.map((card) => (
+                            <article key={card.title} className="wk-card p-6">
+                                <h2 className="text-2xl font-semibold text-[var(--wk-ink)]">{card.title}</h2>
+                                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                                    {card.body}
+                                </p>
+                                <Link href={card.href} className="wk-button wk-button-secondary wk-button-small mt-5">
+                                    {card.label}
+                                </Link>
+                            </article>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            <section className="wk-section pt-0">
+                <div className="wk-container">
+                    <h2 className="mb-8 text-center text-3xl font-semibold text-[var(--wk-ink)]">Waarom WerkCV.nl?</h2>
+                    <div className="grid gap-6 md:grid-cols-3">
+                        <div className="wk-card p-6">
+                            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-[var(--wk-radius-sm)] bg-[var(--wk-surface-subtle)] text-xl font-semibold text-[var(--wk-ink-muted)]">
+                                X
+                            </div>
+                            <h3 className="mb-2 font-semibold text-[var(--wk-ink)]">Abonnementsbuilders</h3>
+                            <ul className="space-y-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
                                 <li>&bull; Vaak een lage proefprijs</li>
                                 <li>&bull; Daarna mogelijk een maandbedrag</li>
                                 <li>&bull; Verlengingsvoorwaarden controleren</li>
                                 <li>&bull; Opzeggen kan nodig zijn</li>
                             </ul>
                         </div>
-                        <div className="bg-yellow-400 border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] relative">
-                            <div className="absolute -top-3 -right-3 bg-green-400 border-3 border-black px-2 py-0.5 text-xs font-black rotate-3" style={{ borderWidth: '3px' }}>
-                                WerkCV.nl
+                        <div className="wk-card wk-card-accent relative p-6">
+                            <div className="absolute -top-3 right-4">
+                                <span className="wk-badge wk-badge-accent">WerkCV.nl</span>
                             </div>
-                            <div className="w-12 h-12 bg-white border-3 border-black flex items-center justify-center mb-4 -rotate-2" style={{ borderWidth: '3px' }}>
-                                <span className="text-xl font-black">&hearts;</span>
+                            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-[var(--wk-radius-sm)] bg-[var(--wk-surface)] text-xl font-semibold text-[var(--wk-primary)]">
+                                &hearts;
                             </div>
-                            <h3 className="font-black text-black mb-2">WerkCV.nl</h3>
-                            <ul className="space-y-2 text-sm font-black text-black">
+                            <h3 className="mb-2 font-semibold text-[var(--wk-ink)]">WerkCV.nl</h3>
+                            <ul className="space-y-2 text-sm font-medium leading-6 text-[var(--wk-ink)]">
                                 <li>&bull; Eenmalig {cvDownloadPrice.display} per CV</li>
                                 <li>&bull; Geen abonnement</li>
                                 <li>&bull; Later opnieuw bewerken en downloaden</li>
                                 <li>&bull; Eerlijk en transparant</li>
                             </ul>
                         </div>
-                        <div className="bg-white border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                            <div className="w-12 h-12 bg-gray-300 border-3 border-black flex items-center justify-center mb-4 -rotate-1" style={{ borderWidth: '3px' }}>
-                                <span className="text-xl font-black">?</span>
+                        <div className="wk-card p-6">
+                            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-[var(--wk-radius-sm)] bg-[var(--wk-surface-subtle)] text-xl font-semibold text-[var(--wk-ink-muted)]">
+                                ?
                             </div>
-                            <h3 className="font-black text-black mb-2">Zelf doen in Word</h3>
-                            <ul className="space-y-2 text-sm font-medium text-gray-700">
+                            <h3 className="mb-2 font-semibold text-[var(--wk-ink)]">Zelf doen in Word</h3>
+                            <ul className="space-y-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
                                 <li>&bull; Uren bezig met opmaak</li>
                                 <li>&bull; Zelf opmaak en paginering bewaken</li>
                                 <li>&bull; Volledige ontwerpcontrole</li>
@@ -382,87 +406,46 @@ export default function PrijzenPage() {
                             </ul>
                         </div>
                     </div>
-                    <div className="mt-6 bg-white border-4 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-                        <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-600 mb-2">
-                            Vergelijking
+                    <div className="wk-card mt-6 p-5">
+                        <p className="wk-eyebrow mb-2">
+                            <span>Vergelijking</span>
                         </p>
-                        <p className="text-sm md:text-base font-medium text-gray-700">
+                        <p className="text-sm leading-7 text-[var(--wk-ink-muted)] md:text-base">
                             Twijfel je tussen een eenmalige CV-builder en een abonnementsplatform? Bekijk dan onze eerlijke vergelijkingen:
                         </p>
-                        <div className="mt-3 flex flex-wrap gap-2">
-                            <Link href="/cv-maken-zonder-abonnement" className="border-2 border-black bg-yellow-200 px-3 py-2 text-sm font-black text-black hover:bg-yellow-300 transition-colors">
-                                CV zonder abonnement
-                            </Link>
-                            <Link href="/beste-cv-maker-nederland" className="border-2 border-black bg-blue-200 px-3 py-2 text-sm font-black text-black hover:bg-blue-300 transition-colors">
-                                Beste CV maker NL
-                            </Link>
-                            <Link href="/cv-gids/welke-cv-builder-past-bij-jou-in-nederland" className="border-2 border-black bg-blue-200 px-3 py-2 text-sm font-black text-black hover:bg-blue-300 transition-colors">
-                                Welke CV builder past bij jou?
-                            </Link>
-                            <Link href="/cv-gids/beste-cv-builder-zonder-abonnement" className="border-2 border-black bg-yellow-200 px-3 py-2 text-sm font-black text-black hover:bg-yellow-300 transition-colors">
-                                Beste zonder abonnement
-                            </Link>
-                            <Link href="/cv-gids/werkcv-vs-cvmaker" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                CVMaker alternatief
-                            </Link>
-                            <Link href="/alternatief-voor-cv-nl" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                CV.nl alternatief
-                            </Link>
-                            <Link href="/cv-gids/werkcv-vs-cvwizard" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                WerkCV vs CVwizard
-                            </Link>
-                            <Link href="/cv-nl-opzeggen" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                CV.nl opzeggen
-                            </Link>
-                            <Link href="/cvmaker-opzeggen" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                CVMaker opzeggen
-                            </Link>
-                            <Link href="/alternatief-voor-cvster" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                CVster alternatief
-                            </Link>
-                            <Link href="/cv-gids/werkcv-vs-livecareer" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                LiveCareer alternatief
-                            </Link>
-                            <Link href="/cvster-opzeggen" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                CVster opzeggen
-                            </Link>
-                            <Link href="/livecareer-opzeggen" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                LiveCareer opzeggen
-                            </Link>
-                            <Link href="/cv-gids/werkcv-vs-europass" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                WerkCV vs Europass
-                            </Link>
-                            <Link href="/cv-gids/werkcv-vs-resumaker" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                WerkCV vs Resumaker
-                            </Link>
-                            <Link href="/cv-gids/werkcv-vs-maakeencv" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                WerkCV vs maakeencv.nl
-                            </Link>
-                            <Link href="/cv-gids/canva-vs-cv-builder-voor-sollicitaties" className="border-2 border-black bg-[#FFFEF9] px-3 py-2 text-sm font-black text-black hover:bg-yellow-100 transition-colors">
-                                Canva vs CV builder
-                            </Link>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                            {comparisonLinks.map((link) => (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className="wk-button wk-button-secondary wk-button-small"
+                                >
+                                    {link.label}
+                                </Link>
+                            ))}
                         </div>
                     </div>
                 </div>
+            </section>
 
-                {/* FAQ */}
-                <div>
-                    <h2 className="text-2xl font-black text-black text-center mb-8">Veelgestelde vragen over prijzen</h2>
-                    <div className="space-y-4 max-w-2xl mx-auto">
+            <section className="wk-section pt-0">
+                <div className="wk-container">
+                    <h2 className="mb-8 text-center text-3xl font-semibold text-[var(--wk-ink)]">Veelgestelde vragen over prijzen</h2>
+                    <div className="mx-auto max-w-2xl space-y-4">
                         {pricingFaqs.map((faq) => (
-                            <details key={faq.question} className="bg-white border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group">
-                                <summary className="p-4 font-black text-black cursor-pointer flex items-center justify-between">
+                            <details key={faq.question} className="wk-card group">
+                                <summary className="flex cursor-pointer items-center justify-between p-4 font-semibold text-[var(--wk-ink)]">
                                     {faq.question}
-                                    <span className="text-xl ml-2 group-open:rotate-45 transition-transform">+</span>
+                                    <span className="ml-2 text-xl text-[var(--wk-ink-muted)] transition-transform group-open:rotate-45">+</span>
                                 </summary>
-                                <div className="px-4 pb-4 font-medium text-gray-700 border-t-2 border-black pt-3">
+                                <div className="border-t border-[var(--wk-border)] px-4 pb-4 pt-3 text-sm leading-7 text-[var(--wk-ink-muted)]">
                                     {faq.answer}
                                 </div>
                             </details>
                         ))}
                     </div>
                 </div>
-            </main>
+            </section>
 
             {/* JSON-LD Product Schema */}
             <script
@@ -472,8 +455,7 @@ export default function PrijzenPage() {
                 }}
             />
 
-            <Footer />
-        </div>
+            <Footer variant="brand" />
+        </main>
     );
 }
-

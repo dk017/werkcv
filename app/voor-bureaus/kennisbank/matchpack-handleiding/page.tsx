@@ -51,6 +51,7 @@ export default function MatchPackGuidePage() {
   };
 
   return (
+    <div className="wk-agency-marketing">
     <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
       <AgencyContentView kind="guide" path={path} slug="matchpack-handleiding" />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Voor bureaus", href: "/voor-bureaus" }, { label: "Kennisbank", href: "/voor-bureaus/kennisbank" }, { label: "MatchPack handleiding", href: path }]} />
@@ -58,7 +59,7 @@ export default function MatchPackGuidePage() {
       <FAQJsonLd questions={faqs} />
 
       <article>
-        <header className="max-w-4xl py-12 sm:py-16">
+        <header className="wk-agency-marketing-hero max-w-4xl py-12 sm:py-16">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">MatchPack · recruiterhandleiding</p>
           <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">Van CV en vacature naar een controleerbaar kandidaatvoorstel.</h1>
           <p className="mt-5 text-lg leading-relaxed text-slate-700">MatchPack verbindt functie-eisen met concreet bewijs uit één kandidaat-CV. Het maakt ook zichtbaar wat niet bewezen is. De recruiter controleert, corrigeert en keurt goed voordat een PDF of DOCX naar een opdrachtgever gaat.</p>
@@ -87,5 +88,6 @@ export default function MatchPackGuidePage() {
         </div>
       </article>
     </main>
+    </div>
   );
 }

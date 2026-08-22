@@ -54,13 +54,13 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
                                     </svg>
                                 )}
                                 {isLast ? (
-                                    <span className="font-bold text-black">
+                                    <span className="font-semibold text-[var(--wk-ink,#18211f)]">
                                         {item.label}
                                     </span>
                                 ) : (
                                     <Link
                                         href={item.href}
-                                        className="text-gray-600 hover:text-black hover:underline transition-colors"
+                                        className="text-[var(--wk-ink-muted,#606a67)] hover:text-[var(--wk-primary,#173f38)] hover:underline transition-colors"
                                     >
                                         {item.label}
                                     </Link>

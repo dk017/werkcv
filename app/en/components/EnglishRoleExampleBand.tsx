@@ -65,13 +65,13 @@ export default function EnglishRoleExampleBand({
   description = "A role example is faster than a blank template. Open the closest CV, review the structure, then use it in the editor with your own details.",
 }: EnglishRoleExampleBandProps) {
   return (
-    <section className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+    <section className="rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] p-6 shadow-[var(--wk-shadow-md,0_14px_34px_rgb(24_33_31/0.08))]">
       <div className="max-w-3xl">
-        <p className="text-xs font-black uppercase tracking-[0.2em] text-teal-700">
+        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted,#606a67)]">
           Role examples
         </p>
-        <h2 className="mt-2 text-2xl font-black text-slate-950 md:text-3xl">{title}</h2>
-        <p className="mt-2 text-base leading-relaxed text-slate-700">{description}</p>
+        <h2 className="mt-2 text-2xl font-semibold text-[var(--wk-ink,#18211f)] md:text-3xl">{title}</h2>
+        <p className="mt-2 text-base leading-7 text-[var(--wk-ink-muted,#606a67)]">{description}</p>
       </div>
       <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {roleExamples.map((example) => (
@@ -80,11 +80,11 @@ export default function EnglishRoleExampleBand({
             href={example.href}
             trackingLocation={trackingLocation}
             trackingLabel={`role_example_${example.label.toLowerCase().replace(/[^a-z0-9]+/g, "_")}`}
-            className="block border-2 border-black bg-[#FFFEF9] p-4 transition-colors hover:bg-[#E9FFFC]"
+            className="block rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface-subtle,#f0f3ef)] p-4 transition-colors hover:bg-[var(--wk-accent-soft,#dff7f3)] hover:border-[var(--wk-primary,#173f38)]"
           >
-            <h3 className="text-lg font-black text-slate-950">{example.label}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-700">{example.body}</p>
-            <span className="mt-4 inline-block text-sm font-black text-teal-700 underline decoration-2 underline-offset-4">
+            <h3 className="text-lg font-semibold text-[var(--wk-ink,#18211f)]">{example.label}</h3>
+            <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted,#606a67)]">{example.body}</p>
+            <span className="mt-4 inline-block text-sm font-semibold text-[var(--wk-primary,#173f38)] underline underline-offset-4">
               Open example
             </span>
           </TrackedLandingLink>

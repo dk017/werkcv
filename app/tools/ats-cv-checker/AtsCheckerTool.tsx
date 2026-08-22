@@ -187,15 +187,17 @@ export default function AtsCheckerTool({
   const totalCount = result?.checks.length ?? 0;
 
   return (
-    <div className="bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:p-8">
+    <div className="rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] p-6 shadow-[var(--wk-shadow-md,0_14px_34px_rgb(24_33_31/0.08))] md:p-8">
       {!result ? (
         <div className="space-y-5">
-          <div className="flex overflow-hidden rounded-lg border-2 border-slate-200">
+          <div className="flex overflow-hidden rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border,#d7ded9)]">
             <button
               type="button"
               onClick={() => setMode("upload")}
-              className={`flex-1 py-2.5 text-xs font-black uppercase tracking-wide transition-colors ${
-                mode === "upload" ? "bg-black text-white" : "bg-white text-slate-500 hover:bg-slate-50"
+              className={`flex-1 py-2.5 text-xs font-semibold uppercase tracking-wide transition-colors ${
+                mode === "upload"
+                  ? "bg-[var(--wk-primary,#173f38)] text-[var(--wk-primary-contrast,#ffffff)]"
+                  : "bg-[var(--wk-surface,#ffffff)] text-[var(--wk-ink-muted,#606a67)] hover:bg-[var(--wk-surface-subtle,#f0f3ef)]"
               }`}
             >
               {strings.uploadTab}
@@ -203,8 +205,10 @@ export default function AtsCheckerTool({
             <button
               type="button"
               onClick={() => setMode("tekst")}
-              className={`flex-1 py-2.5 text-xs font-black uppercase tracking-wide transition-colors ${
-                mode === "tekst" ? "bg-black text-white" : "bg-white text-slate-500 hover:bg-slate-50"
+              className={`flex-1 py-2.5 text-xs font-semibold uppercase tracking-wide transition-colors ${
+                mode === "tekst"
+                  ? "bg-[var(--wk-primary,#173f38)] text-[var(--wk-primary-contrast,#ffffff)]"
+                  : "bg-[var(--wk-surface,#ffffff)] text-[var(--wk-ink-muted,#606a67)] hover:bg-[var(--wk-surface-subtle,#f0f3ef)]"
               }`}
             >
               {strings.textTab}
@@ -282,8 +286,7 @@ export default function AtsCheckerTool({
           <button
             onClick={handleAnalyze}
             disabled={isLoading}
-            className="flex w-full items-center justify-center gap-2 border-3 border-black bg-[#4ECDC4] px-6 py-3 text-sm font-black text-slate-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:bg-teal-500 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] disabled:cursor-not-allowed disabled:opacity-50"
-            style={{ borderWidth: "3px" }}
+            className="flex w-full items-center justify-center gap-2 rounded-[var(--wk-radius-md,14px)] bg-[var(--wk-primary,#173f38)] px-6 py-3 text-sm font-semibold text-[var(--wk-primary-contrast,#ffffff)] transition-colors hover:bg-[var(--wk-primary-hover,#0f332d)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isLoading ? (
               <>
@@ -377,12 +380,12 @@ export default function AtsCheckerTool({
             </p>
           )}
 
-          <div className="border-4 border-black bg-[#FFF7D6] p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] sm:p-5">
-            <p className="mb-2 text-xs font-black uppercase tracking-wide text-slate-600">
+          <div className="rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-highlight-soft,#fff5ce)] p-4 sm:p-5">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-[var(--wk-ink-muted,#606a67)]">
               {strings.resolveEyebrow}
             </p>
-            <h3 className="mb-2 text-lg font-black text-slate-900">{strings.resolveTitle}</h3>
-            <p className="mb-4 text-sm leading-relaxed text-slate-700">{strings.resolveBody}</p>
+            <h3 className="mb-2 text-lg font-semibold text-[var(--wk-ink,#18211f)]">{strings.resolveTitle}</h3>
+            <p className="mb-4 text-sm leading-6 text-[var(--wk-ink-muted,#606a67)]">{strings.resolveBody}</p>
             <div className="flex flex-col gap-3 sm:flex-row">
               <TrackedToolLink
                 href={resolvedEditorHref}
@@ -393,7 +396,7 @@ export default function AtsCheckerTool({
                 resultState={`ats_checker_score_${result.score}`}
                 trackingLocation={`${resolvedTrackingPrefix}:result_primary`}
                 trackingLabel={strings.primaryCta}
-                className="flex flex-1 items-center justify-center gap-2 border-[3px] border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-slate-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                className="flex flex-1 items-center justify-center gap-2 rounded-[var(--wk-radius-md,14px)] bg-[var(--wk-primary,#173f38)] px-4 py-3 text-sm font-semibold text-[var(--wk-primary-contrast,#ffffff)] transition-colors hover:bg-[var(--wk-primary-hover,#0f332d)]"
               >
                 {strings.primaryCta}
               </TrackedToolLink>
@@ -406,12 +409,12 @@ export default function AtsCheckerTool({
                 resultState={`ats_checker_score_${result.score}`}
                 trackingLocation={`${resolvedTrackingPrefix}:result_secondary`}
                 trackingLabel={strings.secondaryCta}
-                className="flex flex-1 items-center justify-center gap-2 border-2 border-black bg-white px-4 py-3 text-sm font-black text-slate-900 transition-colors hover:bg-slate-50"
+                className="flex flex-1 items-center justify-center gap-2 rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border-strong,#aebbb5)] bg-[var(--wk-surface,#ffffff)] px-4 py-3 text-sm font-semibold text-[var(--wk-primary,#173f38)] transition-colors hover:bg-[var(--wk-accent-soft,#dff7f3)]"
               >
                 {strings.secondaryCta}
               </TrackedToolLink>
             </div>
-            <p className="mt-3 text-xs font-bold text-slate-600">{strings.priceLine}</p>
+            <p className="mt-3 text-xs font-semibold text-[var(--wk-ink-muted,#606a67)]">{strings.priceLine}</p>
           </div>
 
           <button
@@ -421,7 +424,7 @@ export default function AtsCheckerTool({
               setCvText("");
               setError("");
             }}
-            className="w-full rounded-lg border-2 border-slate-300 px-4 py-3 text-sm font-bold text-slate-600 transition-colors hover:bg-slate-50"
+            className="w-full rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border-strong,#aebbb5)] px-4 py-3 text-sm font-semibold text-[var(--wk-ink-muted,#606a67)] transition-colors hover:bg-[var(--wk-surface-subtle,#f0f3ef)]"
           >
             {strings.analyzeAnother}
           </button>

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { buildEnglishMetadata } from '../metadata';
 import { getEnglishWavePages } from '@/lib/seo-wave/data';
 import TrackedLandingLink from '@/components/analytics/TrackedLandingLink';
+import Footer from '@/components/Footer';
 
 export const metadata = buildEnglishMetadata({
     title: 'Netherlands CV Guides for Expats',
@@ -114,131 +115,126 @@ export default function EnglishGuidesHubPage() {
     ];
 
     return (
-        <main className="min-h-screen bg-[#FFFEF9]">
-            <section className="border-b-4 border-black bg-gradient-to-br from-sky-50 via-blue-50 to-cyan-50">
-                <div className="max-w-6xl mx-auto px-6 py-14">
-                    <span className="inline-block bg-[#4ECDC4] text-black text-sm font-bold px-3 py-1 mb-4 border-2 border-black">
-                        EXPAT SEO WAVE
-                    </span>
-                    <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-                        English CV Guides for the Netherlands
+        <main>
+            <section className="wk-section">
+                <div className="wk-container">
+                    <span className="wk-badge wk-badge-accent mb-4">Expat guides</span>
+                    <h1 className="max-w-4xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+                        <span className="wk-hero-highlight">English CV Guides</span> for the Netherlands
                     </h1>
-                    <p className="text-lg text-gray-700 max-w-3xl">
+                    <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
                         Use these pages to match Dutch hiring expectations while applying in English.
                         Built for expats, internationals, and global professionals.
                     </p>
                 </div>
             </section>
 
-            <section className="max-w-6xl mx-auto px-6 py-10">
-                <div className="mb-10 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-                    <div className="max-w-3xl">
-                        <h2 className="text-3xl font-black text-gray-900 mb-3">
-                            Choose the guide that matches your real blocker
-                        </h2>
-                        <p className="text-lg text-gray-700">
-                            These pages work best when you enter by problem, not by random topic order.
-                            Pick the guide that matches what is actually slowing down your next application.
-                        </p>
-                        <div className="mt-6 flex flex-wrap gap-3">
-                            <TrackedLandingLink
-                                href="/en/editor?template=professional&startSource=en_guides_hub_hero"
-                                trackingLocation="en_guides_hub:hero_primary"
-                                trackingLabel="Build my English CV"
-                                className="inline-block border-4 border-black bg-[#4ECDC4] px-5 py-3 font-black text-black"
-                            >
-                                Build my English CV
-                            </TrackedLandingLink>
-                            <Link
-                                href="/en/templates?startSource=en_guides_hub_templates"
-                                className="inline-block border-4 border-black bg-white px-5 py-3 font-bold text-black"
-                            >
-                                Compare English templates
-                            </Link>
+            <section className="wk-section pt-0">
+                <div className="wk-container">
+                    <div className="wk-card mb-10 p-6 md:p-8">
+                        <div className="max-w-3xl">
+                            <h2 className="mb-3 text-3xl font-semibold text-[var(--wk-ink)]">
+                                Choose the guide that matches your real blocker
+                            </h2>
+                            <p className="text-base leading-7 text-[var(--wk-ink-muted)] md:text-lg md:leading-8">
+                                These pages work best when you enter by problem, not by random topic order.
+                                Pick the guide that matches what is actually slowing down your next application.
+                            </p>
+                            <div className="mt-6 flex flex-wrap gap-3">
+                                <TrackedLandingLink
+                                    href="/en/editor?template=professional&startSource=en_guides_hub_hero"
+                                    trackingLocation="en_guides_hub:hero_primary"
+                                    trackingLabel="Build my English CV"
+                                    className="wk-button wk-button-primary"
+                                >
+                                    Build my English CV
+                                </TrackedLandingLink>
+                                <Link
+                                    href="/en/templates?startSource=en_guides_hub_templates"
+                                    className="wk-button wk-button-secondary"
+                                >
+                                    Compare English templates
+                                </Link>
+                            </div>
+                        </div>
+
+                        <div className="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+                            {startPaths.map((path) => (
+                                <Link
+                                    key={path.href}
+                                    href={path.href}
+                                    className="group block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-5 transition-colors hover:border-[var(--wk-primary)] hover:bg-[var(--wk-accent-soft)]"
+                                >
+                                    <h3 className="mb-2 text-lg font-semibold text-[var(--wk-ink)] transition-colors group-hover:text-[var(--wk-primary)]">
+                                        {path.title}
+                                    </h3>
+                                    <p className="text-sm leading-6 text-[var(--wk-ink-muted)]">{path.description}</p>
+                                </Link>
+                            ))}
                         </div>
                     </div>
 
-                    <div className="mt-6 grid md:grid-cols-2 xl:grid-cols-4 gap-5">
-                        {startPaths.map((path) => (
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {pages.map((page) => (
                             <Link
-                                key={path.href}
-                                href={path.href}
-                                className="group block bg-[#FFF7E8] border-3 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                                key={page.slug}
+                                href={`/en/guides/${page.slug}`}
+                                className="group block rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-5 shadow-[var(--wk-shadow-sm)] transition-colors hover:border-[var(--wk-primary)]"
                             >
-                                <h3 className="font-black text-lg mb-2 group-hover:text-[#0ea5e9] transition-colors">
-                                    {path.title}
-                                </h3>
-                                <p className="text-sm text-gray-600">{path.description}</p>
+                                <h2 className="mb-2 text-xl font-semibold text-[var(--wk-ink)] transition-colors group-hover:text-[var(--wk-primary)]">
+                                    {page.title}
+                                </h2>
+                                <p className="text-sm leading-6 text-[var(--wk-ink-muted)] line-clamp-3">{page.description}</p>
                             </Link>
                         ))}
                     </div>
-                </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {pages.map((page) => (
-                        <Link
-                            key={page.slug}
-                            href={`/en/guides/${page.slug}`}
-                            className="group block bg-white border-3 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
-                        >
-                            <h2 className="font-black text-xl mb-2 group-hover:text-[#0ea5e9] transition-colors">
-                                {page.title}
+                    <div className="mt-12 border-t border-[var(--wk-border)] pt-10">
+                        <div className="mb-6 max-w-3xl">
+                            <h2 className="mb-3 text-3xl font-semibold text-[var(--wk-ink)]">
+                                Practical visa and localization tools
                             </h2>
-                            <p className="text-sm text-gray-600 line-clamp-3">{page.description}</p>
+                            <p className="text-base leading-7 text-[var(--wk-ink-muted)] md:text-lg">
+                                Many expat readers need more than CV advice. These routes help with salary
+                                thresholds, visa-path comparison, and Dutch-market job-title wording.
+                            </p>
+                        </div>
+
+                        <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-5">
+                            {expatTools.map((tool) => (
+                                <Link
+                                    key={tool.href}
+                                    href={tool.href}
+                                    className="group block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-5 transition-colors hover:border-[var(--wk-primary)] hover:bg-[var(--wk-accent-soft)]"
+                                >
+                                    <h3 className="mb-2 text-lg font-semibold text-[var(--wk-ink)] transition-colors group-hover:text-[var(--wk-primary)]">
+                                        {tool.title}
+                                    </h3>
+                                    <p className="text-sm leading-6 text-[var(--wk-ink-muted)]">{tool.description}</p>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="mt-10 flex flex-wrap gap-3">
+                        <Link href="/en/templates" className="wk-button wk-button-secondary">
+                            Open English templates
                         </Link>
-                    ))}
-                </div>
-
-                <div className="mt-12 border-t-4 border-black pt-10">
-                    <div className="max-w-3xl mb-6">
-                        <h2 className="text-3xl font-black text-gray-900 mb-3">
-                            Practical visa and localization tools
-                        </h2>
-                        <p className="text-lg text-gray-700">
-                            Many expat readers need more than CV advice. These routes help with salary
-                            thresholds, visa-path comparison, and Dutch-market job-title wording.
-                        </p>
+                        <TrackedLandingLink
+                            href="/en/editor?template=professional&startSource=en_guides_hub_bottom"
+                            trackingLocation="en_guides_hub:bottom_primary"
+                            trackingLabel="Open English editor"
+                            className="wk-button wk-button-primary"
+                        >
+                            Open English editor
+                        </TrackedLandingLink>
+                        <Link href="/en" className="wk-button wk-button-secondary">
+                            Back to English hub
+                        </Link>
                     </div>
-
-                    <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-5">
-                        {expatTools.map((tool) => (
-                            <Link
-                                key={tool.href}
-                                href={tool.href}
-                                className="group block bg-white border-3 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
-                            >
-                                <h3 className="font-black text-lg mb-2 group-hover:text-[#0ea5e9] transition-colors">
-                                    {tool.title}
-                                </h3>
-                                <p className="text-sm text-gray-600">{tool.description}</p>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="mt-10 flex flex-wrap gap-3">
-                    <Link
-                        href="/en/templates"
-                        className="inline-block bg-black text-white font-bold px-5 py-3 border-4 border-black"
-                    >
-                        Open English templates
-                    </Link>
-                    <TrackedLandingLink
-                        href="/en/editor?template=professional&startSource=en_guides_hub_bottom"
-                        trackingLocation="en_guides_hub:bottom_primary"
-                        trackingLabel="Open English editor"
-                        className="inline-block border-4 border-black bg-[#4ECDC4] px-5 py-3 font-bold text-black"
-                    >
-                        Open English editor
-                    </TrackedLandingLink>
-                    <Link
-                        href="/en"
-                        className="inline-block bg-white text-black font-bold px-5 py-3 border-4 border-black"
-                    >
-                        Back to English hub
-                    </Link>
                 </div>
             </section>
+            <Footer variant="brand" uiLanguage="en" />
         </main>
     );
 }

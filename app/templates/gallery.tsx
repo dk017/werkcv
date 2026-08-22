@@ -3,13 +3,10 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { TemplateConfig, ColorTheme } from "@/lib/templates";
 import { CVData, defaultCV, sampleCV } from "@/lib/cv";
 import { getTemplateComponent, getTheme } from "@/app/editor/templates";
 import Footer from "@/components/Footer";
-import NavUserMenu from "@/components/NavUserMenu";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { getStoredAttribution, track } from "@/lib/analytics";
 import { UiLanguage } from "@/lib/ui-language";
 import { normalizeStartSource } from "@/lib/start-source";
@@ -187,7 +184,7 @@ function RichTemplatePreview({
   const theme = getTheme(templateId, colorThemeId);
 
   return (
-    <div className="relative h-full w-full overflow-hidden border-2 border-black bg-white">
+    <div className="relative h-full w-full overflow-hidden rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-white">
       <div
         className="origin-top-left pointer-events-none"
         style={{
@@ -409,324 +406,282 @@ export default function TemplateGallery({
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFEF0]">
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-32 left-20 h-40 w-40 rounded-full bg-purple-300 opacity-30" />
-        <div className="absolute top-60 right-32 h-32 w-32 rounded-full bg-yellow-300 opacity-30" />
-        <div className="absolute bottom-60 left-1/3 h-28 w-28 rounded-full bg-blue-300 opacity-30" />
-        <div className="absolute bottom-32 right-1/4 h-36 w-36 rounded-full bg-green-300 opacity-30" />
-      </div>
-
-      <header className="sticky top-0 z-10 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href={isEnglish ? "/en" : "/"} className="flex items-center gap-2">
-            <span className="text-3xl font-black tracking-tight text-black">
-              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-            </span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <LanguageSwitcher tone="solid" className="hidden sm:inline-flex" />
-            <NavUserMenu uiLanguage={uiLanguage} />
-            <div className="border-2 border-black bg-blue-400 px-3 py-1 text-sm font-bold text-black">
-              {isEnglish ? "Choose your template" : "Kies je template"}
-            </div>
+    <main id="quick-start">
+      <section className="wk-section">
+        <div className="wk-container text-center">
+          <div className="wk-eyebrow mb-4">
+            <span>{isEnglish ? "Jobs in the Netherlands" : "Nederlandse sollicitaties"}</span>
           </div>
-        </div>
-      </header>
-
-      <main className="relative z-10 mx-auto max-w-6xl px-6 py-12">
-        <div className="mb-10 text-center">
-          <p className="mb-3 text-xs font-black uppercase tracking-[0.28em] text-slate-600">
-            {isEnglish ? "Jobs in the Netherlands" : "Nederlandse sollicitaties"}
-          </p>
-          <h1 className="mb-4 text-4xl font-black text-black md:text-5xl">
+          <h1 className="mx-auto max-w-4xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
             {isEnglish ? "Choose your " : "Kies je "}
-            <span className="inline-block -rotate-1 border-4 border-black bg-purple-400 px-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <span className="wk-hero-highlight">
               {isEnglish ? "ATS-friendly" : "ATS-vriendelijke"}
             </span>
             {isEnglish ? " CV template" : " CV template"}
           </h1>
-          <p className="mx-auto max-w-3xl text-xl font-medium text-black">
+          <p className="mx-auto mt-6 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
             {isEnglish
               ? "Compare ATS-friendly layouts for jobs in the Netherlands, choose the style that fits your target role, and switch template or color later if your content changes."
-              : "Vergelijk ATS-vriendelijke layouts voor Nederlandse vacatures, kies de stijl die bij je rol past en wissel later nog van template of kleur als je inhoud verandert."}
-            <br />
-            <span className="bg-green-200 px-1">
+              : "Vergelijk ATS-vriendelijke layouts voor Nederlandse vacatures, kies de stijl die bij je rol past en wissel later nog van template of kleur als je inhoud verandert."}{" "}
+            <span className="wk-inline-highlight">
               {isEnglish
                 ? "Start free and pay once per CV when you want to download the PDF."
                 : "Start gratis, betaal eenmalig per CV wanneer je wilt downloaden."}
             </span>
           </p>
-          <div className="mt-5 flex flex-wrap justify-center gap-3 text-xs font-black uppercase tracking-[0.18em] text-black">
-            <span className="border-2 border-black bg-white px-3 py-1">
+          <div className="mt-6 flex flex-wrap justify-center gap-2">
+            <span className="wk-trust-pill">
               {isEnglish ? "ATS-friendly" : "ATS-vriendelijk"}
             </span>
-            <span className="border-2 border-black bg-white px-3 py-1">
+            <span className="wk-trust-pill">
               {isEnglish ? "For Dutch-market jobs" : "Voor NL vacatures"}
             </span>
-            <span className="border-2 border-black bg-white px-3 py-1">
+            <span className="wk-trust-pill">
               {isEnglish ? "Download again later" : "Later opnieuw downloaden"}
             </span>
-            <span className="border-2 border-black bg-white px-3 py-1">
+            <span className="wk-trust-pill">
               {isEnglish ? "No subscription" : "Geen abonnement"}
             </span>
           </div>
         </div>
+      </section>
 
-        <div className="mb-5 text-center">
-          <p className="text-sm font-black uppercase tracking-[0.24em] text-slate-600">
-            {isEnglish ? "Which one should I pick?" : "Welke moet ik kiezen?"}
-          </p>
-          <p className="mt-2 text-sm font-medium text-slate-700">
-            {isEnglish ? (
-              <>
-                If you are unsure, start with{" "}
-                <span className="bg-yellow-200 px-1 font-black text-black">
-                  Classical
-                </span>
-                . We highlight it first because it feels safest for broad
-                applications in the Netherlands.
-              </>
-            ) : (
-              <>
-                Als je twijfelt, begin met{" "}
-                <span className="bg-yellow-200 px-1 font-black text-black">
-                  Klassiek
-                </span>
-                . Die route geven we nu bewust voorrang omdat hij het veiligst
-                voelt voor brede Nederlandse sollicitaties.
-              </>
-            )}
-          </p>
-        </div>
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="mb-6 text-center">
+            <p className="wk-eyebrow">
+              <span>{isEnglish ? "Which one should I pick?" : "Welke moet ik kiezen?"}</span>
+            </p>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-[var(--wk-ink-muted)]">
+              {isEnglish
+                ? "If you are unsure, start with Classical. We highlight it first because it feels safest for broad applications in the Netherlands."
+                : "Als je twijfelt, begin met Klassiek. Die route geven we nu bewust voorrang omdat hij het veiligst voelt voor brede Nederlandse sollicitaties."}
+            </p>
+          </div>
 
-        <div className="mb-10 grid gap-4 md:grid-cols-3">
-          {quickStartTemplates.map((item) => {
-            const template = templates.find((entry) => entry.id === item.templateId);
-            if (!template) return null;
-
-            const quickStart = getQuickStartCopy(item.templateId, uiLanguage);
-
-            return (
-              <div
-                key={item.templateId}
-                className="border-4 border-black bg-white p-5 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <p className="text-[11px] font-black uppercase tracking-[0.24em] text-slate-600">
-                  {quickStart.eyebrow}
-                </p>
-                <h2 className="mt-2 text-2xl font-black text-black">
-                  {getTemplateName(template)}
-                </h2>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                  {quickStart.body}
-                </p>
-                <button
-                  onClick={() =>
-                    handleSelectTemplate(
-                      item.templateId,
-                      item.themeId,
-                      "template_quick_pick",
-                    )
-                  }
-                  disabled={isCreating !== null}
-                  className="mt-5 w-full border-3 border-black bg-yellow-400 px-4 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:cursor-wait disabled:bg-gray-300 disabled:text-gray-600 disabled:shadow-none"
-                  style={{ borderWidth: "3px" }}
-                >
-                  {isCreating === item.templateId
-                    ? isEnglish
-                      ? "Creating..."
-                      : "Bezig..."
-                    : isEnglish
-                      ? `Start with ${getTemplateName(template)}`
-                      : `Start met ${getTemplateName(template)}`}
-                </button>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="mx-auto mb-6 max-w-md">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder={isEnglish ? "Search by name or style..." : "Zoek op naam of stijl..."}
-            className="w-full border-4 border-black bg-white px-4 py-3 text-sm font-medium text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] outline-none placeholder:text-gray-400 focus:ring-0"
-          />
-        </div>
-
-        <div className="mb-10 -mx-6 flex justify-center gap-3 overflow-x-auto px-6 pb-2 md:mx-0 md:flex-wrap md:px-0">
-          {Object.entries(categoryLabels[uiLanguage]).map(([key, label]) => (
-            <button
-              key={key}
-              onClick={() => setSelectedCategory(key)}
-              className={`flex items-center gap-2 whitespace-nowrap border-3 border-black px-5 py-2 text-sm font-bold transition-all ${
-                selectedCategory === key
-                  ? "translate-x-[2px] translate-y-[2px] bg-black text-white shadow-none"
-                  : "bg-white text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              }`}
-              style={{ borderWidth: "3px" }}
-            >
-              {label}
-              <span
-                className={`border-2 border-current px-1.5 py-0.5 text-xs font-black ${
-                  selectedCategory === key ? "bg-white/20" : "bg-gray-100"
-                }`}
-              >
-                {categoryCounts[key]}
-              </span>
-            </button>
-          ))}
-        </div>
-
-        <div className="mb-8 border-4 border-black bg-white p-5 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
           <div className="grid gap-4 md:grid-cols-3">
-            <div>
-              <p className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-600">
-                {isEnglish ? "Classical" : "Klassiek"}
-              </p>
-              <p className="mt-2 text-sm font-medium text-slate-700">
-                {isEnglish
-                  ? "Best choice if you want clarity, calm structure, and broad usability."
-                  : "Beste keuze als je vooral rust, duidelijkheid en brede inzetbaarheid zoekt."}
-              </p>
-            </div>
-            <div>
-              <p className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-600">
-                ATS
-              </p>
-              <p className="mt-2 text-sm font-medium text-slate-700">
-                {isEnglish
-                  ? "Use this when the vacancy feels corporate, strict, or heavily keyword-driven."
-                  : "Gebruik dit als de vacature corporate, streng of sterk keyword-gedreven aanvoelt."}
-              </p>
-            </div>
-            <div>
-              <p className="text-[11px] font-black uppercase tracking-[0.22em] text-slate-600">
-                Modern
-              </p>
-              <p className="mt-2 text-sm font-medium text-slate-700">
-                {isEnglish
-                  ? "Choose this if you want more visual personality without losing recruiter safety."
-                  : "Kies deze als je iets meer uitstraling wilt zonder recruiter-veiligheid op te geven."}
-              </p>
-            </div>
+            {quickStartTemplates.map((item) => {
+              const template = templates.find((entry) => entry.id === item.templateId);
+              if (!template) return null;
+
+              const quickStart = getQuickStartCopy(item.templateId, uiLanguage);
+
+              return (
+                <div key={item.templateId} className="wk-card">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
+                    {quickStart.eyebrow}
+                  </p>
+                  <h2 className="mt-2 text-2xl font-semibold text-[var(--wk-ink)]">
+                    {getTemplateName(template)}
+                  </h2>
+                  <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                    {quickStart.body}
+                  </p>
+                  <button
+                    onClick={() =>
+                      handleSelectTemplate(
+                        item.templateId,
+                        item.themeId,
+                        "template_quick_pick",
+                      )
+                    }
+                    disabled={isCreating !== null}
+                    className="wk-button wk-button-primary mt-5 w-full"
+                  >
+                    {isCreating === item.templateId
+                      ? isEnglish
+                        ? "Creating..."
+                        : "Bezig..."
+                      : isEnglish
+                        ? `Start with ${getTemplateName(template)}`
+                        : `Start met ${getTemplateName(template)}`}
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
+      </section>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredTemplates.map((template) => {
-            const activeTheme = getActiveTheme(template);
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="mx-auto mb-8 max-w-md">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
+              placeholder={isEnglish ? "Search by name or style..." : "Zoek op naam of stijl..."}
+              className="wk-input w-full"
+            />
+          </div>
 
-            return (
-              <div
-                key={template.id}
-                className="group relative overflow-hidden border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all duration-200 hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+          <div className="mb-10 flex flex-wrap justify-center gap-2">
+            {Object.entries(categoryLabels[uiLanguage]).map(([key, label]) => (
+              <button
+                key={key}
+                onClick={() => setSelectedCategory(key)}
+                className={`wk-button wk-button-small ${
+                  selectedCategory === key
+                    ? "wk-button-primary"
+                    : "wk-button-secondary"
+                }`}
               >
-                {recommendedTemplateIds.has(template.id) && (
-                  <div
-                    className="absolute right-2 top-2 z-20 rotate-3 border-3 border-black bg-yellow-400 px-2 py-0.5 text-xs font-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                    style={{ borderWidth: "3px" }}
-                  >
-                    {isEnglish ? "Recommended" : "Aanbevolen"}
-                  </div>
-                )}
-
-                <div
-                  className="relative h-56 overflow-hidden p-4 md:h-72"
-                  style={{ backgroundColor: "#f5f5f5" }}
+                {label}
+                <span
+                  className={`ml-2 rounded-full px-1.5 py-0.5 text-xs font-semibold ${
+                    selectedCategory === key
+                      ? "bg-white/20"
+                      : "bg-[var(--wk-surface-subtle)] text-[var(--wk-ink-muted)]"
+                  }`}
                 >
-                  <div className="relative z-10 h-full transition-transform duration-200 group-hover:scale-[1.01]">
-                    <RichTemplatePreview
-                      templateId={template.id}
-                      colorThemeId={activeTheme.id}
-                      data={previewData}
-                    />
-                  </div>
-                </div>
+                  {categoryCounts[key]}
+                </span>
+              </button>
+            ))}
+          </div>
 
-                <div className="border-t-4 border-black bg-white p-5">
-                  <h3 className="mb-1 text-xl font-black text-black">
-                    {getTemplateName(template)}
-                  </h3>
-                  <p className="mb-4 text-sm font-medium text-black">
-                    {getTemplateDescription(template)}
-                  </p>
+          <div className="wk-card mb-10">
+            <div className="grid gap-6 md:grid-cols-3">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
+                  {isEnglish ? "Classical" : "Klassiek"}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                  {isEnglish
+                    ? "Best choice if you want clarity, calm structure, and broad usability."
+                    : "Beste keuze als je vooral rust, duidelijkheid en brede inzetbaarheid zoekt."}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
+                  ATS
+                </p>
+                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                  {isEnglish
+                    ? "Use this when the vacancy feels corporate, strict, or heavily keyword-driven."
+                    : "Gebruik dit als de vacature corporate, streng of sterk keyword-gedreven aanvoelt."}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
+                  Modern
+                </p>
+                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                  {isEnglish
+                    ? "Choose this if you want more visual personality without losing recruiter safety."
+                    : "Kies deze als je iets meer uitstraling wilt zonder recruiter-veiligheid op te geven."}
+                </p>
+              </div>
+            </div>
+          </div>
 
-                  <div className="mb-4 flex items-center gap-2">
-                    <span className="text-xs font-bold text-black">
-                      {isEnglish ? "Colors:" : "Kleuren:"}
-                    </span>
-                    <div className="flex gap-1">
-                      {template.colorThemes.slice(0, 6).map((theme) => (
-                        <button
-                          key={theme.id}
-                          className={`h-7 w-7 border-2 border-black transition-all ${
-                            activeTheme.id === theme.id
-                              ? "scale-110 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-                              : "hover:scale-105"
-                          }`}
-                          style={{ backgroundColor: theme.primary }}
-                          title={theme.name}
-                          onMouseEnter={() =>
-                            setHoveredColors((prev) => ({ ...prev, [template.id]: theme.id }))
-                          }
-                          onMouseLeave={() =>
-                            setHoveredColors((prev) => ({ ...prev, [template.id]: "" }))
-                          }
-                        />
-                      ))}
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {filteredTemplates.map((template) => {
+              const activeTheme = getActiveTheme(template);
+
+              return (
+                <div
+                  key={template.id}
+                  className="wk-card group relative overflow-hidden p-0 transition-transform duration-200 hover:-translate-y-0.5"
+                >
+                  {recommendedTemplateIds.has(template.id) && (
+                    <div className="absolute right-3 top-3 z-20">
+                      <span className="wk-badge wk-badge-warning">
+                        {isEnglish ? "Recommended" : "Aanbevolen"}
+                      </span>
+                    </div>
+                  )}
+
+                  <div
+                    className="relative h-56 overflow-hidden p-4 md:h-72"
+                    style={{ backgroundColor: "var(--wk-surface-subtle)" }}
+                  >
+                    <div className="relative z-10 h-full transition-transform duration-200 group-hover:scale-[1.01]">
+                      <RichTemplatePreview
+                        templateId={template.id}
+                        colorThemeId={activeTheme.id}
+                        data={previewData}
+                      />
                     </div>
                   </div>
 
-                  <button
-                    onClick={() =>
-                      handleSelectTemplate(template.id, template.defaultThemeId)
-                    }
-                    disabled={isCreating !== null}
-                    className={`w-full border-3 border-black py-3 text-sm font-black transition-all ${
-                      isCreating === template.id
-                        ? "cursor-wait bg-gray-300 text-gray-600 shadow-none"
-                        : "bg-yellow-400 text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none"
-                    }`}
-                    style={{ borderWidth: "3px" }}
-                  >
-                    {isCreating === template.id ? (
-                      <span className="flex items-center justify-center gap-2">
-                        <div className="h-4 w-4 animate-spin rounded-full border-3 border-black border-t-transparent" />
-                        {isEnglish ? "Creating..." : "Bezig..."}
+                  <div className="border-t border-[var(--wk-border)] p-5">
+                    <h3 className="mb-1 text-xl font-semibold text-[var(--wk-ink)]">
+                      {getTemplateName(template)}
+                    </h3>
+                    <p className="mb-4 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                      {getTemplateDescription(template)}
+                    </p>
+
+                    <div className="mb-4 flex items-center gap-2">
+                      <span className="text-xs font-semibold text-[var(--wk-ink-muted)]">
+                        {isEnglish ? "Colors:" : "Kleuren:"}
                       </span>
-                    ) : isEnglish ? (
-                      `Start with ${getTemplateName(template)}`
-                    ) : (
-                      `Start met ${getTemplateName(template)}`
-                    )}
-                  </button>
+                      <div className="flex gap-1.5">
+                        {template.colorThemes.slice(0, 6).map((theme) => (
+                          <button
+                            key={theme.id}
+                            className={`h-6 w-6 rounded-full border transition-all ${
+                              activeTheme.id === theme.id
+                                ? "scale-110 border-[var(--wk-ink)] ring-2 ring-[var(--wk-accent-soft)]"
+                                : "border-[var(--wk-border)] hover:scale-105"
+                            }`}
+                            style={{ backgroundColor: theme.primary }}
+                            title={theme.name}
+                            onMouseEnter={() =>
+                              setHoveredColors((prev) => ({ ...prev, [template.id]: theme.id }))
+                            }
+                            onMouseLeave={() =>
+                              setHoveredColors((prev) => ({ ...prev, [template.id]: "" }))
+                            }
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() =>
+                        handleSelectTemplate(template.id, template.defaultThemeId)
+                      }
+                      disabled={isCreating !== null}
+                      className="wk-button wk-button-secondary w-full"
+                    >
+                      {isCreating === template.id ? (
+                        <span className="flex items-center justify-center gap-2">
+                          <span className="h-4 w-4 animate-spin rounded-full border-2 border-[var(--wk-ink)] border-t-transparent" />
+                          {isEnglish ? "Creating..." : "Bezig..."}
+                        </span>
+                      ) : isEnglish ? (
+                        `Start with ${getTemplateName(template)}`
+                      ) : (
+                        `Start met ${getTemplateName(template)}`
+                      )}
+                    </button>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {filteredTemplates.length === 0 && (
-          <div className="py-16 text-center">
-            <div className="inline-block border-4 border-black bg-yellow-400 px-8 py-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-              <p className="font-bold text-black">
-                {searchQuery
-                  ? isEnglish
-                    ? `No templates found for "${searchQuery}". Try a different search.`
-                    : `Geen templates gevonden voor "${searchQuery}". Probeer een andere zoekterm.`
-                  : isEnglish
-                    ? "No templates found in this category."
-                    : "Geen templates gevonden in deze categorie."}
-              </p>
-            </div>
+              );
+            })}
           </div>
-        )}
-      </main>
 
-      <Footer uiLanguage={uiLanguage} />
-    </div>
+          {filteredTemplates.length === 0 && (
+            <div className="py-16 text-center">
+              <div className="wk-card inline-block px-8 py-4">
+                <p className="font-medium text-[var(--wk-ink)]">
+                  {searchQuery
+                    ? isEnglish
+                      ? `No templates found for "${searchQuery}". Try a different search.`
+                      : `Geen templates gevonden voor "${searchQuery}". Probeer een andere zoekterm.`
+                    : isEnglish
+                      ? "No templates found in this category."
+                      : "Geen templates gevonden in deze categorie."}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <Footer variant="brand" uiLanguage={uiLanguage} />
+    </main>
   );
 }

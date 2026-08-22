@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import { buildEnglishMetadata } from "../metadata";
@@ -335,14 +336,14 @@ function SectionHeading({
 }) {
   return (
     <div className="max-w-3xl">
-      <p className="mb-2 text-xs font-black uppercase tracking-[0.22em] text-slate-500">
-        {eyebrow}
-      </p>
-      <h2 className="text-3xl font-black leading-tight text-slate-950 md:text-4xl">
+      <div className="wk-eyebrow mb-2">
+        <span>{eyebrow}</span>
+      </div>
+      <h2 className="mt-2 text-3xl font-semibold text-[var(--wk-ink)]">
         {title}
       </h2>
       {children && (
-        <div className="mt-4 text-lg leading-relaxed text-slate-700">
+        <div className="mt-4 text-lg leading-8 text-[var(--wk-ink-muted)]">
           {children}
         </div>
       )}
@@ -352,7 +353,7 @@ function SectionHeading({
 
 export default function ExpatCvNetherlandsPage() {
   return (
-    <main className="min-h-screen bg-[#FFFEF9]">
+    <main>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
@@ -362,8 +363,8 @@ export default function ExpatCvNetherlandsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      <div className="border-b-4 border-black bg-white">
-        <div className="mx-auto max-w-6xl px-6 py-3">
+      <div className="wk-container py-10 pb-28 md:pb-10">
+        <div className="mb-8">
           <Breadcrumbs
             items={[
               { label: "Home", href: "/" },
@@ -372,32 +373,30 @@ export default function ExpatCvNetherlandsPage() {
             ]}
           />
         </div>
-      </div>
 
-      <section className="border-b-4 border-black bg-white">
-        <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+        <section className="mb-12 grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
           <div>
-            <p className="mb-4 inline-block border-2 border-black bg-[#4ECDC4] px-3 py-1 text-xs font-black uppercase tracking-[0.22em] text-black">
-              Expat decision guide
-            </p>
-            <p className="mb-4 text-sm font-bold text-slate-600">
+            <div className="wk-eyebrow mb-4">
+              <span>Expat decision guide</span>
+            </div>
+            <p className="mb-4 text-sm font-medium leading-6 text-[var(--wk-ink-muted)]">
               Last reviewed May 14, 2026
             </p>
-            <h1 className="max-w-4xl text-4xl font-black leading-tight text-slate-950 md:text-6xl">
-              Expat CV Netherlands: build a CV Dutch recruiters can trust
+            <h1 className="max-w-4xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+              Expat CV Netherlands: build a CV <span className="wk-hero-highlight">Dutch recruiters can trust</span>
             </h1>
-            <p className="mt-5 max-w-3xl text-xl leading-relaxed text-slate-700">
+            <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
               A strong expat CV for the Netherlands does not need to hide your
               international background. It needs to make your role fit, language
               level, availability, and hiring route easy to understand in the
               first scan.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
+            <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink
                 href="/en/templates?startSource=en_expat_templates"
                 trackingLocation="expat_cv_hero"
                 trackingLabel="templates"
-                className="border-4 border-black bg-black px-6 py-3 text-sm font-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+                className="wk-button wk-button-primary"
               >
                 Choose an English CV template
               </TrackedLandingLink>
@@ -405,420 +404,430 @@ export default function ExpatCvNetherlandsPage() {
                 href="/en/editor?template=professional&startSource=en_expat_editor"
                 trackingLocation="expat_cv_hero"
                 trackingLabel="editor"
-                className="border-4 border-black bg-[#4ECDC4] px-6 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+                className="wk-button wk-button-secondary"
               >
                 Open English editor
               </TrackedLandingLink>
             </div>
           </div>
 
-          <aside className="border-4 border-black bg-[#FFF7E8] p-6 shadow-[7px_7px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-slate-500">
-              Use this page if
-            </p>
-            <ul className="mt-4 space-y-3 text-sm font-semibold leading-relaxed text-slate-800">
+          <aside className="h-fit rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)] p-6 shadow-[var(--wk-shadow-sm)]">
+            <div className="wk-eyebrow mb-2">
+              <span>Use this page if</span>
+            </div>
+            <ul className="mt-4 space-y-3 text-sm font-medium leading-6 text-[var(--wk-ink)]">
               <li>You are applying in the Netherlands with an international CV.</li>
               <li>You are unsure whether to use English or Dutch.</li>
               <li>You do not know how much visa or work route context to show.</li>
               <li>You want Dutch-market structure without generic resume advice.</li>
             </ul>
           </aside>
-        </div>
-      </section>
-
-      <article className="mx-auto max-w-6xl px-6 py-12">
-        <section className="mb-14">
-          <SectionHeading
-            eyebrow="Quick answer"
-            title="Your expat CV has one job: reduce uncertainty fast"
-          >
-            <p>
-              Dutch employers and recruiters use the CV to decide who is worth
-              inviting. For expats, that decision has extra friction: does the
-              experience map to the local role, can communication work, is the
-              person available in the Netherlands, and is the hiring route
-              realistic?
-            </p>
-            <p className="mt-3">
-              The safest answer is not a longer CV. It is a clearer first page:
-              local role wording, recent experience first, language levels, and
-              only the work authorization detail that helps the recruiter move
-              forward.
-            </p>
-          </SectionHeading>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-            {firstPageSignals.map((signal) => (
-              <div
-                key={signal}
-                className="border-3 border-black bg-white p-4 text-sm font-bold leading-relaxed text-slate-900 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-              >
-                {signal}
-              </div>
-            ))}
-          </div>
         </section>
 
-        <section className="mb-14 border-y-4 border-black py-12">
-          <SectionHeading
-            eyebrow="Language decision"
-            title="Should your CV be in English or Dutch?"
-          >
-            <p>
-              Use the language of the vacancy as your default rule. English is
-              normal in many international roles, but the structure still needs
-              to feel familiar to Dutch recruiters: direct summary, recent
-              experience first, clear tools and outcomes, and no decorative
-              layout that makes the document hard to scan.
-            </p>
-          </SectionHeading>
-
-          <div className="mt-8 grid gap-5 lg:grid-cols-3">
-            {decisionCards.map((card) => (
-              <div
-                key={card.label}
-                className="border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">
-                  {card.label}
-                </p>
-                <h3 className="mt-2 text-xl font-black text-slate-950">
-                  {card.answer}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                  {card.detail}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14">
-          <SectionHeading
-            eyebrow="Structure"
-            title="Use Dutch-market structure, even when the text is English"
-          >
-            <p>
-              A Dutch-market CV should feel calm, practical, and easy to verify.
-              Expats often lose interviews because the CV assumes the recruiter
-              understands foreign job titles, company context, education systems,
-              or visa details. Spell out the things that affect hiring, but keep
-              the document focused on work.
-            </p>
-          </SectionHeading>
-
-          <div className="mt-8 divide-y-2 divide-black border-4 border-black bg-white">
-            {cvStructure.map((item) => (
-              <div
-                key={item.title}
-                className="grid gap-3 p-5 md:grid-cols-[220px_1fr]"
-              >
-                <h3 className="text-lg font-black text-slate-950">
-                  {item.title}
-                </h3>
-                <p className="leading-relaxed text-slate-700">{item.detail}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14 border-4 border-black bg-[#FFF7E8] p-6 shadow-[7px_7px_0px_0px_rgba(0,0,0,1)]">
-          <SectionHeading
-            eyebrow="Profile examples"
-            title="What a strong expat profile summary sounds like"
-          >
-            <p>
-              The profile summary is where many expat CVs become too broad. Do
-              not write a personal story. Use it as a bridge between your
-              international experience and the Dutch vacancy.
-            </p>
-          </SectionHeading>
-
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {profileExamples.map((example) => (
-              <div key={example.label} className="border-3 border-black bg-white p-5">
-                <h3 className="font-black text-slate-950">{example.label}</h3>
-                <p className="mt-3 border-2 border-black bg-[#FFFEF9] p-4 text-sm font-semibold leading-relaxed text-slate-900">
-                  {example.summary}
-                </p>
-                <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                  {example.why}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14 bg-[#E9FFFC] px-5 py-10 md:px-8">
-          <SectionHeading
-            eyebrow="Work authorization"
-            title="What should you put for visa or work authorization?"
-          >
-            <p>
-              Do not make the CV about immigration. Do add one clear line when
-              it helps the employer understand whether the application is
-              realistic. The line belongs near the header or profile, not buried
-              at the end.
-            </p>
-          </SectionHeading>
-
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {authorizationExamples.map((example) => (
-              <div
-                key={example.situation}
-                className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <h3 className="font-black text-slate-950">
-                  {example.situation}
-                </h3>
-                <p className="mt-3 border-2 border-black bg-[#FFFEF9] p-3 text-sm font-bold leading-relaxed text-slate-900">
-                  {example.wording}
-                </p>
-                <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                  {example.why}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14">
-          <SectionHeading
-            eyebrow="Language levels"
-            title="How to show Dutch level without hurting yourself"
-          >
-            <p>
-              Vague language wording creates doubt. Be specific, especially if
-              your Dutch is not yet strong. A recruiter can work with a clear A2
-              or B1 statement when the role is English-speaking. They cannot work
-              with a CV that pretends language is irrelevant.
-            </p>
-          </SectionHeading>
-
-          <div className="mt-8 overflow-hidden border-4 border-black bg-white">
-            <div className="grid grid-cols-1 border-b-4 border-black bg-black text-sm font-black text-white md:grid-cols-2">
-              <div className="p-4">Weak wording</div>
-              <div className="p-4">Stronger wording</div>
-            </div>
-            {languageExamples.map((item) => (
-              <div
-                key={item.weak}
-                className="grid grid-cols-1 border-b-2 border-black last:border-b-0 md:grid-cols-2"
-              >
-                <div className="bg-red-50 p-4 text-sm font-semibold text-slate-800">
-                  {item.weak}
-                </div>
-                <div className="bg-green-50 p-4 text-sm font-semibold text-slate-900">
-                  {item.stronger}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[7px_7px_0px_0px_rgba(0,0,0,1)]">
-          <SectionHeading
-            eyebrow="Personal details"
-            title="Photo, date of birth, nationality: include or skip?"
-          >
-            <p>
-              A strong expat CV keeps personal details practical. The recruiter
-              needs to know how to contact you, where you are based or when you
-              can relocate, what language you can work in, and whether the
-              hiring route is realistic. Most identity details do not help that
-              decision.
-            </p>
-          </SectionHeading>
-
-          <div className="mt-8 divide-y-2 divide-black border-2 border-black">
-            {personalDetails.map((detail) => (
-              <div
-                key={detail.item}
-                className="grid gap-4 bg-[#FFFEF9] p-4 md:grid-cols-[160px_240px_1fr]"
-              >
-                <h3 className="font-black text-slate-950">{detail.item}</h3>
-                <p className="text-sm font-black text-slate-800">
-                  {detail.recommendation}
-                </p>
-                <p className="text-sm leading-relaxed text-slate-700">
-                  {detail.note}
-                </p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14">
-          <SectionHeading
-            eyebrow="Route next step"
-            title="Highly skilled migrant, Blue Card, zoekjaar, or 30% ruling?"
-          >
-            <p>
-              Your CV does not need to explain the full immigration route. It
-              should show the hiring facts that matter, then let a focused tool
-              handle the route check. Use the route only to remove uncertainty,
-              not as the main argument for hiring you.
-            </p>
-          </SectionHeading>
-
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {routeSteps.map((route) => (
-              <TrackedLandingLink
-                key={route.href}
-                href={route.href}
-                trackingLocation="expat_cv_route_tools"
-                trackingLabel={route.title}
-                className="block border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-              >
-                <h3 className="text-xl font-black text-slate-950">
-                  {route.title}
-                </h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-700">
-                  {route.body}
-                </p>
-                <span className="mt-4 inline-block border-2 border-black bg-[#4ECDC4] px-3 py-2 text-sm font-black text-black">
-                  {route.cta}
-                </span>
-              </TrackedLandingLink>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14 border-4 border-black bg-black p-7 text-white">
-          <div className="grid gap-7 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#4ECDC4]">
-                Build the actual CV
+        <article>
+          <section className="mb-12">
+            <SectionHeading
+              eyebrow="Quick answer"
+              title="Your expat CV has one job: reduce uncertainty fast"
+            >
+              <p>
+                Dutch employers and recruiters use the CV to decide who is worth
+                inviting. For expats, that decision has extra friction: does the
+                experience map to the local role, can communication work, is the
+                person available in the Netherlands, and is the hiring route
+                realistic?
               </p>
-              <h2 className="mt-2 text-3xl font-black leading-tight md:text-4xl">
-                Turn the decisions into a clean English CV for the Netherlands
-              </h2>
-              <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-200">
-                Start with a Dutch-style template, keep the wording in English
-                when the vacancy is English, and export only when the document is
-                ready. No subscription is needed for individual job seekers.
+              <p className="mt-3">
+                The safest answer is not a longer CV. It is a clearer first page:
+                local role wording, recent experience first, language levels, and
+                only the work authorization detail that helps the recruiter move
+                forward.
               </p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-              <TrackedLandingLink
-                href="/en/templates?startSource=en_expat_bottom_templates"
-                trackingLocation="expat_cv_bottom"
-                trackingLabel="templates"
-                className="border-4 border-white bg-[#4ECDC4] px-6 py-3 text-center text-sm font-black text-black"
-              >
-                Choose English template
-              </TrackedLandingLink>
-              <TrackedLandingLink
-                href="/en/editor?template=professional&startSource=en_expat_bottom_editor"
-                trackingLocation="expat_cv_bottom"
-                trackingLabel="editor"
-                className="border-4 border-white bg-white px-6 py-3 text-center text-sm font-black text-black"
-              >
-                Open English editor
-              </TrackedLandingLink>
-            </div>
-          </div>
-        </section>
+            </SectionHeading>
 
-        <section className="mb-14">
-          <SectionHeading
-            eyebrow="FAQ"
-            title="Common expat CV questions"
-          />
-          <div className="mt-8 space-y-4">
-            {faqs.map((item) => (
-              <details
-                key={item.question}
-                className="group border-4 border-black bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <summary className="flex cursor-pointer items-center justify-between gap-4 p-4 font-black text-slate-950">
-                  {item.question}
-                  <span className="text-xl transition-transform group-open:rotate-45">
-                    +
+            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+              {firstPageSignals.map((signal) => (
+                <div
+                  key={signal}
+                  className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 text-sm font-medium leading-6 text-[var(--wk-ink)]"
+                >
+                  {signal}
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <SectionHeading
+              eyebrow="Language decision"
+              title="Should your CV be in English or Dutch?"
+            >
+              <p>
+                Use the language of the vacancy as your default rule. English is
+                normal in many international roles, but the structure still needs
+                to feel familiar to Dutch recruiters: direct summary, recent
+                experience first, clear tools and outcomes, and no decorative
+                layout that makes the document hard to scan.
+              </p>
+            </SectionHeading>
+
+            <div className="mt-8 grid gap-5 lg:grid-cols-3">
+              {decisionCards.map((card) => (
+                <div key={card.label} className="wk-card p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
+                    {card.label}
+                  </p>
+                  <h3 className="mt-2 text-xl font-semibold text-[var(--wk-ink)]">
+                    {card.answer}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                    {card.detail}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <SectionHeading
+              eyebrow="Structure"
+              title="Use Dutch-market structure, even when the text is English"
+            >
+              <p>
+                A Dutch-market CV should feel calm, practical, and easy to verify.
+                Expats often lose interviews because the CV assumes the recruiter
+                understands foreign job titles, company context, education systems,
+                or visa details. Spell out the things that affect hiring, but keep
+                the document focused on work.
+              </p>
+            </SectionHeading>
+
+            <div className="mt-8 divide-y divide-[var(--wk-border)] overflow-hidden rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] shadow-[var(--wk-shadow-sm)]">
+              {cvStructure.map((item) => (
+                <div
+                  key={item.title}
+                  className="grid gap-3 p-5 md:grid-cols-[220px_1fr]"
+                >
+                  <h3 className="text-lg font-semibold text-[var(--wk-ink)]">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-6 text-[var(--wk-ink-muted)]">
+                    {item.detail}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="mb-12 rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)] p-6 shadow-[var(--wk-shadow-sm)]">
+            <SectionHeading
+              eyebrow="Profile examples"
+              title="What a strong expat profile summary sounds like"
+            >
+              <p>
+                The profile summary is where many expat CVs become too broad. Do
+                not write a personal story. Use it as a bridge between your
+                international experience and the Dutch vacancy.
+              </p>
+            </SectionHeading>
+
+            <div className="mt-8 grid gap-5 md:grid-cols-2">
+              {profileExamples.map((example) => (
+                <div
+                  key={example.label}
+                  className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-5"
+                >
+                  <h3 className="font-semibold text-[var(--wk-ink)]">
+                    {example.label}
+                  </h3>
+                  <p className="mt-3 rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 text-sm font-medium leading-6 text-[var(--wk-ink)]">
+                    {example.summary}
+                  </p>
+                  <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                    {example.why}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="wk-card wk-card-accent mb-12">
+            <SectionHeading
+              eyebrow="Work authorization"
+              title="What should you put for visa or work authorization?"
+            >
+              <p>
+                Do not make the CV about immigration. Do add one clear line when
+                it helps the employer understand whether the application is
+                realistic. The line belongs near the header or profile, not buried
+                at the end.
+              </p>
+            </SectionHeading>
+
+            <div className="mt-8 grid gap-5 md:grid-cols-2">
+              {authorizationExamples.map((example) => (
+                <div
+                  key={example.situation}
+                  className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-5"
+                >
+                  <h3 className="font-semibold text-[var(--wk-ink)]">
+                    {example.situation}
+                  </h3>
+                  <p className="mt-3 rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-3 text-sm font-medium leading-6 text-[var(--wk-ink)]">
+                    {example.wording}
+                  </p>
+                  <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                    {example.why}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <SectionHeading
+              eyebrow="Language levels"
+              title="How to show Dutch level without hurting yourself"
+            >
+              <p>
+                Vague language wording creates doubt. Be specific, especially if
+                your Dutch is not yet strong. A recruiter can work with a clear A2
+                or B1 statement when the role is English-speaking. They cannot work
+                with a CV that pretends language is irrelevant.
+              </p>
+            </SectionHeading>
+
+            <div className="mt-8 overflow-hidden rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] shadow-[var(--wk-shadow-sm)]">
+              <div className="grid grid-cols-1 border-b border-[var(--wk-border)] bg-[var(--wk-warning-soft)] text-sm font-semibold text-[var(--wk-ink)] md:grid-cols-2">
+                <div className="p-4">Weak wording</div>
+                <div className="p-4">Stronger wording</div>
+              </div>
+              {languageExamples.map((item) => (
+                <div
+                  key={item.weak}
+                  className="grid grid-cols-1 border-b border-[var(--wk-border)] last:border-b-0 md:grid-cols-2"
+                >
+                  <div className="bg-[var(--wk-danger-soft)] p-4 text-sm font-medium leading-6 text-[var(--wk-ink)]">
+                    {item.weak}
+                  </div>
+                  <div className="bg-[var(--wk-success-soft)] p-4 text-sm font-medium leading-6 text-[var(--wk-ink)]">
+                    {item.stronger}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="wk-card mb-12">
+            <SectionHeading
+              eyebrow="Personal details"
+              title="Photo, date of birth, nationality: include or skip?"
+            >
+              <p>
+                A strong expat CV keeps personal details practical. The recruiter
+                needs to know how to contact you, where you are based or when you
+                can relocate, what language you can work in, and whether the
+                hiring route is realistic. Most identity details do not help that
+                decision.
+              </p>
+            </SectionHeading>
+
+            <div className="mt-8 divide-y divide-[var(--wk-border)] overflow-hidden rounded-[var(--wk-radius-md)] border border-[var(--wk-border)]">
+              {personalDetails.map((detail) => (
+                <div
+                  key={detail.item}
+                  className="grid gap-4 bg-[var(--wk-surface-subtle)] p-4 md:grid-cols-[160px_240px_1fr]"
+                >
+                  <h3 className="font-semibold text-[var(--wk-ink)]">
+                    {detail.item}
+                  </h3>
+                  <p className="text-sm font-semibold text-[var(--wk-ink)]">
+                    {detail.recommendation}
+                  </p>
+                  <p className="text-sm leading-6 text-[var(--wk-ink-muted)]">
+                    {detail.note}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <SectionHeading
+              eyebrow="Route next step"
+              title="Highly skilled migrant, Blue Card, zoekjaar, or 30% ruling?"
+            >
+              <p>
+                Your CV does not need to explain the full immigration route. It
+                should show the hiring facts that matter, then let a focused tool
+                handle the route check. Use the route only to remove uncertainty,
+                not as the main argument for hiring you.
+              </p>
+            </SectionHeading>
+
+            <div className="mt-8 grid gap-5 md:grid-cols-2">
+              {routeSteps.map((route) => (
+                <TrackedLandingLink
+                  key={route.href}
+                  href={route.href}
+                  trackingLocation="expat_cv_route_tools"
+                  trackingLabel={route.title}
+                  className="block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-5 shadow-[var(--wk-shadow-sm)] transition-colors hover:border-[var(--wk-primary)]"
+                >
+                  <h3 className="text-xl font-semibold text-[var(--wk-ink)]">
+                    {route.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                    {route.body}
+                  </p>
+                  <span className="mt-4 wk-badge wk-badge-accent">
+                    {route.cta}
                   </span>
-                </summary>
-                <p className="px-4 pb-4 leading-relaxed text-slate-700">
-                  {item.answer}
-                </p>
-              </details>
-            ))}
-          </div>
-        </section>
+                </TrackedLandingLink>
+              ))}
+            </div>
+          </section>
 
-        <section className="mb-14">
-          <SectionHeading
-            eyebrow="Sources"
-            title="Sources behind this guide"
-          >
-            <p>
-              This page combines WerkCV&apos;s Dutch-market CV workflow with official
-              public sources for CV use, migration routes, tax context, and equal
-              treatment. It is practical guidance, not legal advice.
-            </p>
-          </SectionHeading>
-
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            {sourceLinks.map((source) => (
-              <a
-                key={source.href}
-                href={source.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block border-3 border-black bg-white p-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-              >
-                <h3 className="text-sm font-black text-slate-950">
-                  {source.label}
-                </h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                  {source.note}
+          <section className="mb-12 rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-8 text-[var(--wk-primary-contrast)] md:p-12">
+            <div className="grid gap-7 lg:grid-cols-[1fr_auto] lg:items-center">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[var(--wk-accent)]">
+                  Build the actual CV
                 </p>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        <section className="border-t-4 border-black pt-10">
-          <SectionHeading
-            eyebrow="Related routes"
-            title="Best next pages for expats"
-          />
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {[
-              {
-                href: "/en/dutch-cv-template",
-                title: "Dutch CV template in English",
-                body: "Start with the template route if you already know what your CV should say.",
-              },
-              {
-                href: "/en/cv-netherlands-without-dutch-language",
-                title: "CV without Dutch language",
-                body: "Useful if you are targeting English-speaking roles while still learning Dutch.",
-              },
-              {
-                href: "/en/english-speaking-companies-netherlands",
-                title: "English-speaking companies",
-                body: "Move from employer search to CV localization and route checks.",
-              },
-              {
-                href: "/en/guides/recent-graduate-cv-netherlands",
-                title: "Recent graduate CV guide",
-                body: "Turn projects, internships and study evidence into a focused starter CV.",
-              },
-            ].map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="block border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-              >
-                <h3 className="font-black text-slate-950">{link.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-700">
-                  {link.body}
+                <h2 className="mt-2 text-3xl font-semibold leading-tight md:text-4xl">
+                  Turn the decisions into a clean English CV for the Netherlands
+                </h2>
+                <p className="mt-4 max-w-3xl text-lg leading-8 text-[var(--wk-primary-contrast)]/85">
+                  Start with a Dutch-style template, keep the wording in English
+                  when the vacancy is English, and export only when the document is
+                  ready. No subscription is needed for individual job seekers.
                 </p>
-              </Link>
-            ))}
-          </div>
-        </section>
-      </article>
+              </div>
+              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
+                <TrackedLandingLink
+                  href="/en/templates?startSource=en_expat_bottom_templates"
+                  trackingLocation="expat_cv_bottom"
+                  trackingLabel="templates"
+                  className="wk-button wk-button-accent"
+                >
+                  Choose English template
+                </TrackedLandingLink>
+                <TrackedLandingLink
+                  href="/en/editor?template=professional&startSource=en_expat_bottom_editor"
+                  trackingLocation="expat_cv_bottom"
+                  trackingLabel="editor"
+                  className="wk-button wk-button-secondary"
+                >
+                  Open English editor
+                </TrackedLandingLink>
+              </div>
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <SectionHeading
+              eyebrow="FAQ"
+              title="Common expat CV questions"
+            />
+            <div className="mt-8 space-y-4">
+              {faqs.map((item) => (
+                <details
+                  key={item.question}
+                  className="group wk-card p-5"
+                >
+                  <summary className="flex cursor-pointer items-center justify-between gap-4 font-semibold text-[var(--wk-ink)]">
+                    {item.question}
+                    <span className="text-xl text-[var(--wk-ink-muted)] transition-transform group-open:rotate-45">
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-3 text-sm leading-7 text-[var(--wk-ink-muted)]">
+                    {item.answer}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <SectionHeading
+              eyebrow="Sources"
+              title="Sources behind this guide"
+            >
+              <p>
+                This page combines WerkCV&apos;s Dutch-market CV workflow with official
+                public sources for CV use, migration routes, tax context, and equal
+                treatment. It is practical guidance, not legal advice.
+              </p>
+            </SectionHeading>
+
+            <div className="mt-8 grid gap-4 md:grid-cols-2">
+              {sourceLinks.map((source) => (
+                <a
+                  key={source.href}
+                  href={source.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-4 shadow-[var(--wk-shadow-sm)] transition-colors hover:border-[var(--wk-primary)]"
+                >
+                  <h3 className="text-sm font-semibold text-[var(--wk-ink)]">
+                    {source.label}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                    {source.note}
+                  </p>
+                </a>
+              ))}
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <SectionHeading
+              eyebrow="Related routes"
+              title="Best next pages for expats"
+            />
+            <div className="mt-8 grid gap-4 md:grid-cols-3">
+              {[
+                {
+                  href: "/en/dutch-cv-template",
+                  title: "Dutch CV template in English",
+                  body: "Start with the template route if you already know what your CV should say.",
+                },
+                {
+                  href: "/en/cv-netherlands-without-dutch-language",
+                  title: "CV without Dutch language",
+                  body: "Useful if you are targeting English-speaking roles while still learning Dutch.",
+                },
+                {
+                  href: "/en/english-speaking-companies-netherlands",
+                  title: "English-speaking companies",
+                  body: "Move from employer search to CV localization and route checks.",
+                },
+                {
+                  href: "/en/guides/recent-graduate-cv-netherlands",
+                  title: "Recent graduate CV guide",
+                  body: "Turn projects, internships and study evidence into a focused starter CV.",
+                },
+              ].map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-5 shadow-[var(--wk-shadow-sm)] transition-colors hover:border-[var(--wk-primary)]"
+                >
+                  <h3 className="font-semibold text-[var(--wk-ink)]">
+                    {link.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                    {link.body}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        </article>
+      </div>
+
+      <Footer variant="brand" uiLanguage="en" />
     </main>
   );
 }

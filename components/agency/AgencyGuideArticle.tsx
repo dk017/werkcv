@@ -71,11 +71,12 @@ export default function AgencyGuideArticle({
     inLanguage: "nl-NL",
   };
   return (
+    <div className="wk-agency-marketing">
     <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
       <AgencyContentView kind="guide" path={path} slug={slug} />
       <Breadcrumbs items={breadcrumbItems} />
       <article>
-        <header className="grid gap-8 py-12 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+        <header className="wk-agency-marketing-hero grid gap-8 py-12 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Kennisbank voor bureaus · praktische gids</p>
             <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">{title}</h1>
@@ -151,5 +152,6 @@ export default function AgencyGuideArticle({
       <FAQJsonLd questions={faqs} />
       <JsonLd data={articleSchema} />
     </main>
+    </div>
   );
 }

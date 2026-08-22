@@ -109,11 +109,12 @@ export default function VoorBureausPage() {
   };
 
   return (
+    <div className="wk-agency-marketing">
     <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
       <AgencyContentView kind="hub" path={path} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Voor bureaus", href: path }]} />
 
-      <section className="grid gap-10 py-12 sm:py-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+      <section className="wk-agency-marketing-hero grid gap-10 py-12 sm:py-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">WerkCV voor bureaus</p>
           <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">
@@ -275,5 +276,6 @@ export default function VoorBureausPage() {
       <FAQJsonLd questions={faqs} />
       <JsonLd data={webpageSchema} />
     </main>
+    </div>
   );
 }

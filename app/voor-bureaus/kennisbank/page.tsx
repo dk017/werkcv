@@ -65,11 +65,12 @@ export default function AgencyKnowledgeIndexPage() {
   };
 
   return (
+    <div className="wk-agency-marketing">
     <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
       <AgencyContentView kind="index" path={path} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Voor bureaus", href: "/voor-bureaus" }, { label: "Kennisbank", href: path }]} />
 
-      <section className="grid gap-8 py-12 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
+      <section className="wk-agency-marketing-hero grid gap-8 py-12 sm:py-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
         <div className="min-w-0">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Kennisbank voor bureaus</p>
           <h1 className="mt-4 break-words text-4xl font-black tracking-tight sm:text-6xl">Praktische uitleg voor kandidaatvoorstellen die klantvragen aankunnen.</h1>
@@ -144,5 +145,6 @@ export default function AgencyKnowledgeIndexPage() {
 
       <JsonLd data={collectionSchema} />
     </main>
+    </div>
   );
 }

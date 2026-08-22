@@ -33,15 +33,15 @@ export function ToolToCvCTA({
   const locationPrefix = `${toolName}:tool_to_cv`;
 
   return (
-    <section className="mt-10 rounded-3xl border-4 border-black bg-[#FFF7E8] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+    <section className="mt-10 rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] p-6 shadow-[var(--wk-shadow-md,0_14px_34px_rgb(24_33_31/0.08))]">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted,#606a67)]">
         {eyebrow}
       </p>
-      <h2 className="mt-2 text-2xl font-black text-black">{title}</h2>
-      <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+      <h2 className="mt-2 text-2xl font-semibold text-[var(--wk-ink,#18211f)]">{title}</h2>
+      <p className="mt-3 max-w-3xl text-sm leading-6 text-[var(--wk-ink-muted,#606a67)]">
         {description}
       </p>
-      <div className="mt-4 border-2 border-black bg-white px-4 py-3 text-sm font-bold leading-relaxed text-slate-900">
+      <div className="mt-4 rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface-subtle,#f0f3ef)] px-4 py-3 text-sm leading-6 text-[var(--wk-ink,#18211f)]">
         {insightText}
       </div>
       <div className="mt-5 flex flex-wrap gap-3">
@@ -54,7 +54,7 @@ export function ToolToCvCTA({
           resultState={resultState}
           trackingLocation={`${locationPrefix}:primary`}
           trackingLabel={primaryLabel}
-          className="border-4 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+          className="rounded-[var(--wk-radius-md,14px)] bg-[var(--wk-primary,#173f38)] px-5 py-3 text-sm font-semibold text-[var(--wk-primary-contrast,#ffffff)] transition-colors hover:bg-[var(--wk-primary-hover,#0f332d)]"
         >
           {primaryLabel}
         </TrackedToolLink>
@@ -67,17 +67,17 @@ export function ToolToCvCTA({
           resultState={resultState}
           trackingLocation={`${locationPrefix}:secondary`}
           trackingLabel={secondaryLabel}
-          className="border-4 border-black bg-white px-5 py-3 text-sm font-black text-black"
+          className="rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border-strong,#aebbb5)] bg-[var(--wk-surface,#ffffff)] px-5 py-3 text-sm font-semibold text-[var(--wk-primary,#173f38)] transition-colors hover:bg-[var(--wk-accent-soft,#dff7f3)]"
         >
           {secondaryLabel}
         </TrackedToolLink>
       </div>
-      <p className="mt-3 text-sm font-medium text-slate-700">
+      <p className="mt-3 text-sm text-[var(--wk-ink-muted,#606a67)]">
         {proofItems.join(" · ")}.
       </p>
-      <div className="mt-4 text-sm font-medium text-slate-700">
+      <div className="mt-4 text-sm text-[var(--wk-ink-muted,#606a67)]">
         Liever eerst weten hoe downloaden werkt?{" "}
-        <Link href="/cv-maken-zonder-abonnement" className="font-black underline decoration-2 underline-offset-4">
+        <Link href="/cv-maken-zonder-abonnement" className="font-semibold text-[var(--wk-primary,#173f38)] underline underline-offset-4">
           Bekijk de route zonder abonnement
         </Link>
         .

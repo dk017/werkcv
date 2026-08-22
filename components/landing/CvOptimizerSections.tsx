@@ -23,11 +23,11 @@ export function CvCheckStartBlock({
   ctaEventName?: "cta_cv_optimaliseren_hero" | "cta_cv_verbeteren_hero" | "cta_cv_checken_hero" | "cta_cv_nakijken_hero";
 }) {
   return (
-    <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+    <section className="mb-12 rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] p-6 shadow-[var(--wk-shadow-md,0_14px_34px_rgb(24_33_31/0.08))]">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted,#606a67)]">
         Gratis cv-check starten
       </p>
-      <h2 className="mt-2 text-3xl font-black text-black">Gratis cv-check starten</h2>
+      <h2 className="mt-2 text-3xl font-semibold text-[var(--wk-ink,#18211f)]">Gratis cv-check starten</h2>
       <ol className="mt-5 grid gap-3 md:grid-cols-2">
         {[
           "Plak je cv-tekst",
@@ -37,9 +37,9 @@ export function CvCheckStartBlock({
         ].map((step, index) => (
           <li
             key={step}
-            className="flex items-start gap-3 border-2 border-black bg-[#E9FFFC] p-4 text-sm font-medium leading-relaxed text-slate-700"
+            className="flex items-start gap-3 rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-accent-soft,#dff7f3)] p-4 text-sm leading-6 text-[var(--wk-ink-muted,#606a67)]"
           >
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center border-2 border-black bg-white text-xs font-black text-black">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] text-xs font-semibold text-[var(--wk-ink,#18211f)]">
               {index + 1}
             </span>
             <span>{step}</span>
@@ -52,11 +52,11 @@ export function CvCheckStartBlock({
           trackingLocation={trackingLocation}
           trackingLabel="Start gratis cv-check"
           ctaEventName={ctaEventName}
-          className="inline-block border-4 border-black bg-[#4ECDC4] px-5 py-3 text-base font-black text-black"
+          className="inline-block rounded-[var(--wk-radius-md,14px)] bg-[var(--wk-primary,#173f38)] px-5 py-3 text-base font-semibold text-[var(--wk-primary-contrast,#ffffff)] transition-colors hover:bg-[var(--wk-primary-hover,#0f332d)]"
         >
           Start gratis cv-check
         </TrackedLandingLink>
-        <p className="text-sm font-medium leading-relaxed text-slate-700">
+        <p className="text-sm leading-6 text-[var(--wk-ink-muted,#606a67)]">
           Geen abonnement. Betaal alleen als je later een PDF downloadt.
         </p>
       </div>
@@ -86,11 +86,11 @@ export function WhyWerkCvSection({ locale = "nl" }: { locale?: "nl" | "en" }) {
   const bullets = whyWerkCvBullets[locale];
 
   return (
-    <section className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
+    <section className="mb-12 rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] p-6 shadow-[var(--wk-shadow-md,0_14px_34px_rgb(24_33_31/0.08))]">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-ink-muted,#606a67)]">
         {title}
       </p>
-      <ul className="mt-4 list-disc space-y-3 pl-5 text-sm font-medium leading-relaxed text-slate-700 marker:text-black">
+      <ul className="mt-4 list-disc space-y-3 pl-5 text-sm leading-6 text-[var(--wk-ink-muted,#606a67)] marker:text-[var(--wk-ink,#18211f)]">
         {bullets.map((bullet) => (
           <li key={bullet}>{bullet}</li>
         ))}
@@ -109,20 +109,20 @@ export function LinkCardSection({
   links: OptimizerLinkCard[];
 }) {
   return (
-    <section className="mb-12 border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
-      <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
+    <section className="mb-12 rounded-[var(--wk-radius-lg,22px)] bg-[var(--wk-primary,#173f38)] p-6">
+      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[var(--wk-primary-contrast,#ffffff)]/70">
         {eyebrow}
       </p>
-      <h2 className="mt-2 text-3xl font-black text-white">{title}</h2>
+      <h2 className="mt-2 text-3xl font-semibold text-[var(--wk-primary-contrast,#ffffff)]">{title}</h2>
       <div className="mt-5 grid gap-4 md:grid-cols-2">
         {links.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className="block border-2 border-white bg-white/10 p-4 transition-colors hover:bg-white hover:text-black"
+            className="block rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-primary-contrast,#ffffff)]/25 bg-[var(--wk-primary-contrast,#ffffff)]/10 p-4 transition-colors hover:bg-[var(--wk-primary-contrast,#ffffff)] hover:text-[var(--wk-ink,#18211f)]"
           >
-            <p className="text-sm font-black">{item.title}</p>
-            <p className="mt-2 text-sm font-medium leading-relaxed text-slate-200 hover:text-slate-700">
+            <p className="text-sm font-semibold">{item.title}</p>
+            <p className="mt-2 text-sm leading-6 text-[var(--wk-primary-contrast,#ffffff)]/80">
               {item.body}
             </p>
           </Link>
@@ -141,20 +141,19 @@ export function FaqCardSection({
 }) {
   return (
     <section className="mb-12">
-      <h2 className="text-center text-3xl font-black text-black">{title}</h2>
+      <h2 className="text-center text-3xl font-semibold text-[var(--wk-ink,#18211f)]">{title}</h2>
       <div className="mx-auto mt-8 max-w-4xl space-y-4">
         {items.map((item) => (
           <details
             key={item.question}
-            className="group border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            className="rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] p-5 shadow-[var(--wk-shadow-sm,0_1px_2px_rgb(24_33_31/0.06))]"
           >
-            <summary className="flex cursor-pointer items-center justify-between p-4 text-left text-base font-black text-black">
+            <summary className="cursor-pointer text-left text-base font-semibold text-[var(--wk-ink,#18211f)]">
               {item.question}
-              <span className="ml-3 text-xl transition-transform group-open:rotate-45">+</span>
             </summary>
-            <div className="border-t-2 border-black px-4 pb-4 pt-3 text-sm font-medium leading-relaxed text-slate-700">
+            <p className="mt-3 text-sm leading-7 text-[var(--wk-ink-muted,#606a67)]">
               {item.answer}
-            </div>
+            </p>
           </details>
         ))}
       </div>
@@ -180,14 +179,14 @@ export function FinalCtaSection({
   trackingLabel: string;
 }) {
   return (
-    <section className="border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+    <section className="rounded-[var(--wk-radius-lg,22px)] bg-[var(--wk-primary,#173f38)] px-6 py-8">
       <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
         <div className="max-w-3xl">
-          <h2 className="text-3xl font-black text-black">{title}</h2>
-          <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
+          <h2 className="text-3xl font-semibold text-[var(--wk-primary-contrast,#ffffff)]">{title}</h2>
+          <p className="mt-2 text-sm leading-7 text-[var(--wk-primary-contrast,#ffffff)]/80 sm:text-base">
             {description}
           </p>
-          <p className="mt-2 text-sm font-medium leading-relaxed text-black">
+          <p className="mt-2 text-sm leading-6 text-[var(--wk-primary-contrast,#ffffff)]/80">
             {supportLine}
           </p>
         </div>
@@ -195,7 +194,7 @@ export function FinalCtaSection({
           href={buttonHref}
           trackingLocation={trackingLocation}
           trackingLabel={trackingLabel}
-          className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+          className="inline-block rounded-[var(--wk-radius-md,14px)] bg-[var(--wk-accent,#4ecdc4)] px-5 py-3 text-base font-semibold text-[var(--wk-ink,#18211f)] transition-colors hover:bg-[var(--wk-highlight,#f3ca52)]"
         >
           {buttonLabel}
         </TrackedLandingLink>

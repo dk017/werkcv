@@ -62,42 +62,27 @@ export const metadata: Metadata = {
 
 export default function CvScorePage() {
   return (
-    <div className="min-h-screen bg-[#FFFEF9]">
+    <main>
       <FAQJsonLd questions={faqItems} />
 
-      <header className="border-b-4 border-black bg-white">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="font-black text-2xl tracking-tight text-black">
-              Werk<span className="bg-[#4ECDC4] px-1">CV</span>.nl
-            </span>
-          </Link>
-          <Link href="/tools" className="text-sm font-bold text-slate-600 hover:text-slate-900 transition-colors">
-            ← Alle tools
-          </Link>
-        </div>
-      </header>
-
-      <div className="max-w-4xl mx-auto px-6 py-12">
+      <div className="wk-container max-w-3xl py-12">
         <div className="mb-8">
-          <span className="inline-block text-xs font-black uppercase tracking-widest text-teal-700 bg-teal-50 border border-teal-200 px-3 py-1 rounded-full mb-4">
-            AI tool — Gratis
-          </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 leading-tight">
-            Gratis CV check: krijg je CV score in 30 seconden.
+          <span className="wk-badge wk-badge-accent mb-4">AI tool — Gratis</span>
+          <h1 className="mb-3 text-3xl font-semibold leading-tight text-[var(--wk-ink)] sm:text-4xl">
+            Gratis CV check: krijg je <span className="wk-hero-highlight">CV score</span> in 30 seconden.
           </h1>
-          <p className="mt-4 text-lg text-slate-600 font-medium max-w-3xl">
+          <p className="text-lg font-medium leading-8 text-[var(--wk-ink-muted)]">
             Upload je CV en laat het direct beoordelen op Nederlandse recruiter- en sollicitatienormen. Gratis, zonder account.
           </p>
-          <p className="mt-3 text-sm text-slate-600 max-w-3xl leading-relaxed">
-            Zoek je op <strong>cv check</strong>, <strong>cv beoordeling</strong> of <strong>cv score berekenen</strong>?
+          <p className="mt-3 text-sm leading-7 text-[var(--wk-ink-muted)]">
+            Zoek je op <strong className="text-[var(--wk-ink)]">cv check</strong>, <strong className="text-[var(--wk-ink)]">cv beoordeling</strong> of <strong className="text-[var(--wk-ink)]">cv score berekenen</strong>?
             Dan zit je hier goed: deze tool geeft je een snelle, praktische beoordeling van wat al sterk is en wat eerst beter moet.
           </p>
-          <p className="mt-3 text-sm text-slate-500">
+          <p className="mt-3 text-sm text-[var(--wk-ink-muted)]">
             Wil je precies weten hoe de score werkt?{" "}
             <Link
               href="/tools/cv-score/methodologie"
-              className="font-black underline decoration-2 underline-offset-4"
+              className="font-semibold text-[var(--wk-primary)] underline underline-offset-4"
             >
               Bekijk de publieke methodologie
             </Link>
@@ -107,15 +92,15 @@ export default function CvScorePage() {
 
         <CvScoreTool />
 
-        <div className="mt-10 space-y-8">
-          <section className="rounded-3xl border-2 border-slate-200 bg-white p-6">
-            <h2 className="text-xl font-black text-slate-900">
+        <div className="mt-10 space-y-6">
+          <section className="wk-card p-6">
+            <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
               Wat krijg je met deze gratis CV check?
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
+            <p className="mt-3 text-sm leading-7 text-[var(--wk-ink-muted)]">
               Dit is geen vage AI-samenvatting. Je krijgt een concrete CV beoordeling op zes vaste onderdelen, zodat je snel ziet waar je document recruiters vertrouwen geeft en waar het nog afhaakt.
             </p>
-            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {[
                 {
                   title: "Directe CV score",
@@ -134,43 +119,43 @@ export default function CvScorePage() {
                   copy: "Met de uitkomst kun je gericht door naar een simpeler template, een ATS-check of een herschreven profieltekst.",
                 },
               ].map((item) => (
-                <div key={item.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-black text-slate-900">{item.title}</p>
-                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">{item.copy}</p>
+                <div key={item.title} className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4">
+                  <p className="text-sm font-semibold text-[var(--wk-ink)]">{item.title}</p>
+                  <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.copy}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <section className="rounded-3xl border-2 border-slate-200 bg-white p-6">
-            <h2 className="text-xl font-black text-slate-900">
+          <section className="wk-card p-6">
+            <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
               CV check, CV beoordeling of CV score berekenen: wat is het verschil?
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
-              Voor de meeste zoekers is het verschil klein. Een <strong>cv check</strong> is de brede term, <strong>cv beoordeling</strong> klinkt iets menselijker, en <strong>cv score berekenen</strong> legt de nadruk op de uitkomst. Deze pagina combineert die drie intenties: snel beoordelen, een score geven en meteen vertellen wat je moet aanpassen.
+            <p className="mt-3 text-sm leading-7 text-[var(--wk-ink-muted)]">
+              Voor de meeste zoekers is het verschil klein. Een <strong className="text-[var(--wk-ink)]">cv check</strong> is de brede term, <strong className="text-[var(--wk-ink)]">cv beoordeling</strong> klinkt iets menselijker, en <strong className="text-[var(--wk-ink)]">cv score berekenen</strong> legt de nadruk op de uitkomst. Deze pagina combineert die drie intenties: snel beoordelen, een score geven en meteen vertellen wat je moet aanpassen.
             </p>
-            <div className="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
               {[
                 ["CV check", "Snel zien of je CV in grote lijnen goed staat."],
                 ["CV beoordeling", "Snappen waar recruiters twijfel krijgen."],
                 ["CV score berekenen", "Eerst een cijfer, daarna de concrete uitleg."],
               ].map(([title, copy]) => (
-                <div key={title} className="rounded-2xl border border-slate-200 p-4">
-                  <p className="text-sm font-black text-slate-900">{title}</p>
-                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">{copy}</p>
+                <div key={title} className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] p-4">
+                  <p className="text-sm font-semibold text-[var(--wk-ink)]">{title}</p>
+                  <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{copy}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <section className="rounded-3xl border-2 border-slate-200 bg-white p-6">
-            <h2 className="text-xl font-black text-slate-900">
+          <section className="wk-card p-6">
+            <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
               Waar deze gratis CV check anders naar kijkt dan een gewone ATS-check
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
+            <p className="mt-3 text-sm leading-7 text-[var(--wk-ink-muted)]">
               Een ATS-check kijkt vooral of software je CV kan lezen. Deze kwaliteitsscore gaat een stap verder: is je profieltekst sterk, klinkt je werkervaring actief, staan je contactgegevens op de manier die Nederlandse recruiters verwachten, en ontbreekt er niets essentieels?
             </p>
-            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {[
                 {
                   title: "Voor recruiters",
@@ -181,19 +166,19 @@ export default function CvScorePage() {
                   copy: "De feedback is afgestemd op Nederlandse CV-conventies zoals profieltekst, woonplaats, LinkedIn en duidelijke werkervaring.",
                 },
               ].map((item) => (
-                <div key={item.title} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-                  <p className="text-sm font-black text-slate-900">{item.title}</p>
-                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">{item.copy}</p>
+                <div key={item.title} className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4">
+                  <p className="text-sm font-semibold text-[var(--wk-ink)]">{item.title}</p>
+                  <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.copy}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <section className="rounded-3xl border-2 border-slate-200 bg-white p-6">
-            <h2 className="text-xl font-black text-slate-900">
+          <section className="wk-card p-6">
+            <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
               De 6 dimensies van een sterk Nederlands CV
             </h2>
-            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
               {[
                 ["Structuur & Opmaak", "Is je CV scanbaar, consistent en ATS-vriendelijk opgebouwd?"],
                 ["Persoonlijke Gegevens", "Staan e-mail, telefoon, LinkedIn en woonplaats duidelijk vermeld?"],
@@ -202,92 +187,92 @@ export default function CvScorePage() {
                 ["Taalgebruik & Stijl", "Blijf je consistent in taal en voorkom je zwakke formuleringen?"],
                 ["Volledigheid", "Ontbreken er standaardsecties die recruiters in Nederland verwachten?"],
               ].map(([title, copy]) => (
-                <div key={title} className="rounded-2xl border border-slate-200 p-4">
-                  <p className="text-sm font-black text-slate-900">{title}</p>
-                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">{copy}</p>
+                <div key={title} className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] p-4">
+                  <p className="text-sm font-semibold text-[var(--wk-ink)]">{title}</p>
+                  <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{copy}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <section className="rounded-3xl border-2 border-slate-200 bg-white p-6">
-            <h2 className="text-xl font-black text-slate-900">
+          <section className="wk-card p-6">
+            <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
               Wat doe je na je CV beoordeling?
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-slate-600 leading-relaxed">
+            <p className="mt-3 text-sm leading-7 text-[var(--wk-ink-muted)]">
               Gebruik je score als prioriteitenlijst. Verbeter eerst de onderdelen die het zwaarst wegen: profieltekst, werkervaring en overzicht. Daarna kun je de technische kant controleren met een ATS-scan of direct overstappen naar een duidelijker template.
             </p>
-            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Link
                 href="/templates"
-                className="rounded-2xl border-2 border-black bg-[#4ECDC4] p-4 text-slate-900 transition-transform hover:-translate-y-0.5"
+                className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-accent-soft)] p-4 transition-colors hover:bg-[var(--wk-highlight-soft)]"
               >
-                <p className="text-sm font-black">Kies een sterker CV template</p>
-                <p className="mt-2 text-sm leading-relaxed">
+                <p className="text-sm font-semibold text-[var(--wk-ink)]">Kies een sterker CV template</p>
+                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
                   Gebruik je feedback meteen in een duidelijk, ATS-vriendelijk WerkCV template.
                 </p>
               </Link>
               <Link
                 href="/tools/ats-cv-checker"
-                className="rounded-2xl border border-slate-300 bg-slate-50 p-4 text-slate-900 transition-colors hover:bg-slate-100"
+                className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 transition-colors hover:bg-[var(--wk-accent-soft)]"
               >
-                <p className="text-sm font-black">Doe daarna ook een ATS-check</p>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                <p className="text-sm font-semibold text-[var(--wk-ink)]">Doe daarna ook een ATS-check</p>
+                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
                   Handig als je wilt weten of software je CV technisch goed uitleest.
                 </p>
               </Link>
             </div>
           </section>
 
-          <section className="rounded-3xl border-2 border-slate-200 bg-white p-6">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-              FAQ
-            </p>
-            <h2 className="mt-2 text-xl font-black text-slate-900">
+          <section className="wk-card p-6">
+            <div className="wk-eyebrow mb-2">
+              <span>FAQ</span>
+            </div>
+            <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
               Veelgestelde vragen over gratis CV check en CV beoordeling
             </h2>
             <div className="mt-5 space-y-4">
               {faqItems.map((item) => (
-                <div key={item.question} className="rounded-2xl border border-slate-200 p-4">
-                  <h3 className="text-sm font-black text-slate-900">{item.question}</h3>
-                  <p className="mt-2 text-sm text-slate-600 leading-relaxed">{item.answer}</p>
+                <div key={item.question} className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] p-4">
+                  <h3 className="text-sm font-semibold text-[var(--wk-ink)]">{item.question}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.answer}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <section className="rounded-3xl border-2 border-slate-200 bg-white p-6">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-              Vervolgroute
-            </p>
-            <h2 className="mt-2 text-xl font-black text-slate-900">
+          <section className="wk-card p-6">
+            <div className="wk-eyebrow mb-2">
+              <span>Vervolgroute</span>
+            </div>
+            <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
               Klaar met je cv-score?
             </h2>
-            <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
               <Link
                 href="/cv-checken"
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:bg-slate-100"
+                className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 transition-colors hover:bg-[var(--wk-accent-soft)]"
               >
-                <p className="text-sm font-black text-slate-900">CV checken</p>
-                <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                <p className="text-sm font-semibold text-[var(--wk-ink)]">CV checken</p>
+                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
                   Gebruik deze pagina als je dezelfde score wilt vertalen naar een bredere cv-check route met uitleg en vervolgstappen.
                 </p>
               </Link>
               <Link
                 href="/tools/linkedin-naar-cv"
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:bg-slate-100"
+                className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 transition-colors hover:bg-[var(--wk-accent-soft)]"
               >
-                <p className="text-sm font-black text-slate-900">LinkedIn-profiel omzetten naar cv</p>
-                <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                <p className="text-sm font-semibold text-[var(--wk-ink)]">LinkedIn-profiel omzetten naar cv</p>
+                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
                   Handig als je al veel profielinformatie op LinkedIn hebt staan en die sneller wilt omzetten naar een Nederlandse cv-structuur.
                 </p>
               </Link>
               <Link
                 href="/cv-optimaliseren"
-                className="rounded-2xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:bg-slate-100"
+                className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 transition-colors hover:bg-[var(--wk-accent-soft)]"
               >
-                <p className="text-sm font-black text-slate-900">CV optimaliseren</p>
-                <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+                <p className="text-sm font-semibold text-[var(--wk-ink)]">CV optimaliseren</p>
+                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
                   Handig als je daarna verder wilt met ATS, vacaturematch en ontbrekende keywords.
                 </p>
               </Link>
@@ -308,7 +293,7 @@ export default function CvScorePage() {
         </div>
       </div>
 
-      <Footer />
-    </div>
+      <Footer variant="brand" />
+    </main>
   );
 }

@@ -25,7 +25,7 @@ export default function AgencyDraftResume({ canCreate }: AgencyDraftResumeProps)
     if (!draftId) return null;
 
     return (
-        <section className="mt-8 border-2 border-emerald-700 bg-emerald-50 p-6 shadow-[4px_4px_0px_0px_rgba(5,150,105,0.25)]">
+        <section className="wk-agency-panel wk-agency-panel-success">
             <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-800">Je browserconcept is bewaard</p>
             <h2 className="mt-2 text-2xl font-black">Ga verder met je klant-CV</h2>
             <p className="mt-2 text-sm font-semibold leading-relaxed text-slate-600">

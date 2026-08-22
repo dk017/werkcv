@@ -268,6 +268,49 @@ const faqs = [
     },
 ];
 
+const contentRouteCards = [
+    {
+        href: "/cv-voorbeeld-student",
+        title: "CV voorbeeld student",
+        body: "Gebruik deze route als je zoekt naar een duidelijke student-opbouw voor stage, bijbaan of eerste stap.",
+    },
+    {
+        href: "/cv-middelbare-school-student",
+        title: "CV middelbare school student",
+        body: "Speciaal voor scholieren die een eerste CV nodig hebben voor stage, bijbaan of vakantiewerk.",
+    },
+    {
+        href: "/cv-voorbeeld-starter",
+        title: "CV voorbeeld starter",
+        body: "Sterk voor junior rollen, traineeships en eerste banen waar potentie duidelijk moet landen.",
+    },
+    {
+        href: "/professioneel-cv-voorbeeld",
+        title: "Professioneel CV voorbeeld",
+        body: "Voor rustige, zakelijke sollicitaties waar betrouwbaarheid en scanbaarheid prioriteit hebben.",
+    },
+    {
+        href: "/modern-cv-voorbeeld",
+        title: "Modern CV voorbeeld",
+        body: "Voor marketing, sales en andere rollen waar een frissere uitstraling logisch is.",
+    },
+    {
+        href: "/cv-opmaken",
+        title: "CV opmaken",
+        body: "Ga van inhoudelijke inspiratie naar betere layout, hiërarchie en leesbaarheid.",
+    },
+    {
+        href: "/cv-maken-student",
+        title: "CV maken student",
+        body: "Speciaal voor studenten, starters en profielen met weinig formele werkervaring.",
+    },
+    {
+        href: "/cv-maken-in-engels",
+        title: "CV maken in Engels",
+        body: "Handig als je internationaal solliciteert maar wel de Nederlandse structuur wilt aanhouden.",
+    },
+];
+
 export default function CVVoorbeeldenOverview() {
     const categories = getAllCategories();
     const totalExamples = getAllExamples().length;
@@ -312,7 +355,7 @@ export default function CVVoorbeeldenOverview() {
     };
 
     return (
-        <main className="min-h-screen bg-[#FFFEF9]">
+        <main>
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -326,8 +369,8 @@ export default function CVVoorbeeldenOverview() {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(priorityExamplesSchema) }}
             />
 
-            <div className="border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-3">
+            <div className="border-b border-[var(--wk-border)] bg-[var(--wk-surface)]">
+                <div className="wk-container py-3">
                     <Breadcrumbs
                         items={[
                             { label: 'Home', href: '/' },
@@ -337,49 +380,38 @@ export default function CVVoorbeeldenOverview() {
                 </div>
             </div>
 
-            <section className="border-b-4 border-black bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-                <div className="max-w-6xl mx-auto px-6 py-16">
+            <section className="wk-section">
+                <div className="wk-container">
                     <div className="mb-6 flex justify-end">
-                        <LanguageSwitcher tone="solid" />
+                        <LanguageSwitcher tone="brand" />
                     </div>
-                    <span className="inline-block bg-[#4ECDC4] text-black text-sm font-bold px-3 py-1 mb-4 border-2 border-black">
-                        {totalExamples}+ CV VOORBEELDEN
-                    </span>
-                    <h1 className="text-5xl md:text-6xl font-black mb-6 text-gray-900">
-                        80+ CV voorbeelden per beroep
+                    <span className="wk-badge wk-badge-accent mb-4">{totalExamples}+ CV VOORBEELDEN</span>
+                    <h1 className="mb-6 text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+                        <span className="wk-hero-highlight">80+ CV voorbeelden</span> per beroep
                     </h1>
-                    <p className="text-xl md:text-2xl max-w-4xl text-gray-700 leading-relaxed">
+                    <p className="max-w-4xl text-xl leading-9 text-[var(--wk-ink-muted)]">
                         Op deze pagina vind je uitgebreide CV voorbeelden voor starters, medior en senior kandidaten in verschillende sectoren. Je krijgt niet alleen inspiratie voor opmaak, maar vooral voor inhoud die recruiters vertrouwen geeft:
                         een scherpe profieltekst, resultaatgerichte werkervaring en een duidelijke structuur die in seconden scanbaar is.
                     </p>
-                    <p className="mt-5 max-w-4xl text-base text-gray-700 leading-relaxed">
+                    <p className="mt-5 max-w-4xl leading-7 text-[var(--wk-ink-muted)]">
                         Gebruik elk voorbeeld als startpunt, niet als kopie. Koppel de structuur aan jouw prestaties en vacaturetaal, zodat je CV zowel menselijk overtuigt als ATS-systemen goed kunnen lezen.
                     </p>
                     <div className="mt-8 flex flex-wrap gap-3">
-                        <Link
-                            href="/editor"
-                            className="inline-block border-4 border-black bg-yellow-300 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
-                        >
+                        <Link href="/editor" className="wk-button wk-button-primary">
                             Start direct in editor
                         </Link>
-                        <Link
-                            href="/templates"
-                            className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-                        >
+                        <Link href="/templates" className="wk-button wk-button-secondary">
                             Vergelijk templates
                         </Link>
-                        <Link
-                            href="/prijzen"
-                            className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
-                        >
+                        <Link href="/prijzen" className="wk-button wk-button-quiet">
                             Bekijk prijzen
                         </Link>
                     </div>
                     <div className="mt-10">
-                        <h2 className="text-xl font-black text-gray-900">
+                        <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
                             Bekijk echte CV voorbeelden
                         </h2>
-                        <p className="mt-2 text-sm font-semibold text-gray-600">
+                        <p className="mt-2 text-sm font-medium text-[var(--wk-ink-muted)]">
                             Elke preview is gerenderd met echte voorbeeldinhoud uit de WerkCV-editor.
                         </p>
                         <div className="mt-5 grid auto-cols-[44%] grid-flow-col gap-4 overflow-x-auto pb-4 sm:auto-cols-[30%] lg:grid-flow-row lg:grid-cols-8 lg:overflow-visible">
@@ -387,10 +419,9 @@ export default function CVVoorbeeldenOverview() {
                                 <Link
                                     key={example.href}
                                     href={example.href}
-                                    className="group block min-w-0 border-3 border-black bg-white p-2 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-transform hover:-translate-y-1"
-                                    style={{ borderWidth: '3px' }}
+                                    className="wk-card group block min-w-0 p-2 transition-transform hover:-translate-y-1"
                                 >
-                                    <div className="aspect-[210/297] overflow-hidden border-2 border-slate-300 bg-slate-100">
+                                    <div className="aspect-[210/297] overflow-hidden rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)]">
                                         <Image
                                             src={example.src}
                                             alt={example.alt}
@@ -401,94 +432,78 @@ export default function CVVoorbeeldenOverview() {
                                             className="h-full w-full object-cover object-top"
                                         />
                                     </div>
-                                    <p className="mt-2 truncate text-xs font-black text-gray-900 group-hover:text-[#FF6B6B]">
+                                    <p className="mt-2 truncate text-xs font-semibold text-[var(--wk-ink)] group-hover:text-[var(--wk-primary)]">
                                         {example.name}
                                     </p>
                                 </Link>
                             ))}
                         </div>
                     </div>
-                    <p className="mt-5 text-sm font-semibold text-gray-600">
+                    <p className="mt-5 text-sm font-medium text-[var(--wk-ink-muted)]">
                         Laatste inhoudelijke update: maart 2026
                     </p>
                 </div>
             </section>
 
-            <section className="border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-14">
-                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-                        Kort antwoord
-                    </p>
-                    <h2 className="mt-2 text-3xl font-black text-black">Wat is een goed CV voorbeeld?</h2>
-                    <p className="mt-3 max-w-5xl text-sm font-medium leading-relaxed text-slate-700">
+            <section className="wk-section pt-0">
+                <div className="wk-container">
+                    <div className="wk-eyebrow mb-3">
+                        <span>Kort antwoord</span>
+                    </div>
+                    <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">Wat is een goed CV voorbeeld?</h2>
+                    <p className="mt-3 max-w-5xl leading-7 text-[var(--wk-ink-muted)]">
                         Een goed CV voorbeeld laat niet alleen zien hoe een CV eruitziet, maar vooral hoe het leest: duidelijke functietitel, relevante profieltekst, werkervaring met bewijs en een structuur die je snel kunt aanpassen op jouw vacature. Veel mensen zoeken op &ldquo;voorbeeld cv&rdquo;, maar bedoelen eigenlijk: welke opbouw en toon geven mij de snelste route naar een geloofwaardige sollicitatieversie?
                     </p>
                     <div className="mt-6 grid gap-5 md:grid-cols-3">
                         {quickUseCards.map((card) => (
-                            <article
-                                key={card.title}
-                                className="border-2 border-black bg-[#FFFEF0] p-5"
-                            >
-                                <h3 className="text-lg font-black text-gray-900">{card.title}</h3>
-                                <p className="mt-2 text-sm leading-relaxed text-gray-700">{card.text}</p>
+                            <article key={card.title} className="wk-card p-5">
+                                <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{card.title}</h3>
+                                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{card.text}</p>
                             </article>
                         ))}
                     </div>
                     <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
                         {routeChoiceCards.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className="border-2 border-black bg-white p-4 transition-colors hover:bg-yellow-100"
-                            >
-                                <p className="text-sm font-black text-gray-900">{item.title}</p>
-                                <p className="mt-2 text-sm leading-relaxed text-gray-700">{item.body}</p>
+                            <Link key={item.href} href={item.href} className="wk-card p-4 transition-colors hover:bg-[var(--wk-surface-subtle)]">
+                                <p className="text-sm font-semibold text-[var(--wk-ink)]">{item.title}</p>
+                                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.body}</p>
                             </Link>
                         ))}
                     </div>
                 </div>
             </section>
 
-            <section className="border-b-4 border-black bg-[#FFFEF9]">
-                <div className="max-w-6xl mx-auto px-6 py-14">
+            <section className="wk-section pt-0">
+                <div className="wk-container">
                     <div className="max-w-4xl">
-                        <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-                            Meest gekozen startpunten
-                        </p>
-                        <h2 className="mt-2 text-3xl font-black text-black">
+                        <div className="wk-eyebrow mb-3">
+                            <span>Meest gekozen startpunten</span>
+                        </div>
+                        <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
                             Begin bij het voorbeeld dat het dichtst bij je sollicitatie ligt
                         </h2>
-                        <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
+                        <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">
                             De snelste route is niet alle voorbeelden bekijken, maar één sterk uitgangspunt kiezen en dat meteen aanpassen op je vacature. Deze routes krijgen daarom meer gewicht in de interne structuur van de hub.
                         </p>
                     </div>
 
                     <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
                         {priorityRoleCards.map((role) => (
-                            <article
-                                key={role.href}
-                                className="flex h-full flex-col border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-                            >
-                                <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">
+                            <article key={role.href} className="wk-card flex h-full flex-col p-5">
+                                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--wk-ink-muted)]">
                                     {role.intent}
                                 </p>
-                                <h3 className="mt-2 text-xl font-black text-gray-900">
+                                <h3 className="mt-2 text-xl font-semibold text-[var(--wk-ink)]">
                                     {role.title}
                                 </h3>
-                                <p className="mt-3 flex-1 text-sm leading-relaxed text-gray-700">
+                                <p className="mt-3 flex-1 text-sm leading-6 text-[var(--wk-ink-muted)]">
                                     {role.body}
                                 </p>
                                 <div className="mt-5 flex flex-wrap gap-2">
-                                    <Link
-                                        href={role.href}
-                                        className="border-2 border-black bg-yellow-300 px-3 py-2 text-sm font-black text-black hover:bg-yellow-200 transition-colors"
-                                    >
+                                    <Link href={role.href} className="wk-button wk-button-secondary wk-button-small">
                                         Bekijk voorbeeld
                                     </Link>
-                                    <Link
-                                        href="/editor"
-                                        className="border-2 border-black bg-white px-3 py-2 text-sm font-black text-black hover:bg-slate-100 transition-colors"
-                                    >
+                                    <Link href="/editor" className="wk-button wk-button-quiet wk-button-small">
                                         Maak eigen CV
                                     </Link>
                                 </div>
@@ -496,24 +511,18 @@ export default function CVVoorbeeldenOverview() {
                         ))}
                     </div>
 
-                    <div className="mt-8 border-4 border-black bg-black p-5 text-white">
-                        <h3 className="text-2xl font-black">
+                    <div className="mt-8 rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-6 md:p-8">
+                        <h3 className="text-2xl font-semibold text-[var(--wk-primary-contrast)]">
                             Van voorbeeld naar sollicitatieklare PDF
                         </h3>
-                        <p className="mt-2 max-w-4xl text-sm font-medium leading-relaxed text-slate-200">
+                        <p className="mt-2 max-w-4xl text-sm leading-7 text-[var(--wk-primary-contrast)]/80">
                             Gebruik een voorbeeld voor inhoud en volgorde, kies daarna een rustige template en bouw de definitieve versie in de editor. Zo voorkom je dat inspiratie verandert in knip-en-plakwerk.
                         </p>
                         <div className="mt-4 flex flex-wrap gap-3">
-                            <Link
-                                href="/templates"
-                                className="border-2 border-white bg-white px-4 py-2 text-sm font-black text-black"
-                            >
+                            <Link href="/templates" className="wk-button wk-button-secondary wk-button-small">
                                 Bekijk templates
                             </Link>
-                            <Link
-                                href="/editor"
-                                className="border-2 border-white bg-[#4ECDC4] px-4 py-2 text-sm font-black text-black"
-                            >
+                            <Link href="/editor" className="wk-button wk-button-accent wk-button-small">
                                 Start in editor
                             </Link>
                         </div>
@@ -521,122 +530,120 @@ export default function CVVoorbeeldenOverview() {
                 </div>
             </section>
 
-            <section className="border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-14">
-                    <h2 className="text-3xl font-black mb-6">Hoe gebruik je deze CV voorbeelden slim?</h2>
-                    <p className="text-gray-700 leading-relaxed max-w-5xl">
+            <section className="wk-section pt-0">
+                <div className="wk-container">
+                    <h2 className="mb-6 text-3xl font-semibold text-[var(--wk-ink)]">Hoe gebruik je deze CV voorbeelden slim?</h2>
+                    <p className="max-w-5xl leading-7 text-[var(--wk-ink-muted)]">
                         Deze hub is opgebouwd als complete workflow: eerst een passend voorbeeld kiezen, daarna profieltekst en werkervaring aanscherpen, en vervolgens direct finaliseren in de editor.
                     </p>
-                    <div className="mt-8 grid md:grid-cols-2 gap-6">
+                    <div className="mt-8 grid gap-6 md:grid-cols-2">
                         {workflowSteps.map((step) => (
-                            <article
-                                key={step.title}
-                                className="border-3 border-black bg-[#F8F8F8] p-5"
-                                style={{ borderWidth: '3px' }}
-                            >
-                                <h3 className="text-xl font-black text-gray-900">{step.title}</h3>
-                                <p className="mt-3 text-sm leading-relaxed text-gray-700">{step.text}</p>
+                            <article key={step.title} className="wk-card p-5">
+                                <h3 className="text-xl font-semibold text-[var(--wk-ink)]">{step.title}</h3>
+                                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">{step.text}</p>
                             </article>
                         ))}
                     </div>
-                    <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <Link href="/cv-samenvatting-voorbeelden" className="border-2 border-black bg-yellow-50 p-4 hover:bg-yellow-100 transition-colors">
-                            <p className="font-black text-sm">CV samenvatting voorbeelden</p>
-                            <p className="text-xs mt-1 text-gray-700">Schrijf een openingsalinea met echte impact.</p>
+                    <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                        <Link href="/cv-samenvatting-voorbeelden" className="wk-card p-4 transition-colors hover:bg-[var(--wk-surface-subtle)]">
+                            <p className="text-sm font-semibold text-[var(--wk-ink)]">CV samenvatting voorbeelden</p>
+                            <p className="mt-1 text-xs leading-5 text-[var(--wk-ink-muted)]">Schrijf een openingsalinea met echte impact.</p>
                         </Link>
-                        <Link href="/profieltekst-cv-voorbeelden" className="border-2 border-black bg-amber-50 p-4 hover:bg-amber-100 transition-colors">
-                            <p className="font-black text-sm">Voorbeeld profiel CV</p>
-                            <p className="text-xs mt-1 text-gray-700">Gebruik profieltekst voorbeelden die direct onder je naam en functietitel passen.</p>
+                        <Link href="/profieltekst-cv-voorbeelden" className="wk-card p-4 transition-colors hover:bg-[var(--wk-surface-subtle)]">
+                            <p className="text-sm font-semibold text-[var(--wk-ink)]">Voorbeeld profiel CV</p>
+                            <p className="mt-1 text-xs leading-5 text-[var(--wk-ink-muted)]">Gebruik profieltekst voorbeelden die direct onder je naam en functietitel passen.</p>
                         </Link>
-                        <Link href="/cv-maken" className="border-2 border-black bg-orange-50 p-4 hover:bg-orange-100 transition-colors">
-                            <p className="font-black text-sm">CV maken stappenplan</p>
-                            <p className="text-xs mt-1 text-gray-700">Volg een complete workflow van voorbeeld naar eindversie.</p>
+                        <Link href="/cv-maken" className="wk-card p-4 transition-colors hover:bg-[var(--wk-surface-subtle)]">
+                            <p className="text-sm font-semibold text-[var(--wk-ink)]">CV maken stappenplan</p>
+                            <p className="mt-1 text-xs leading-5 text-[var(--wk-ink-muted)]">Volg een complete workflow van voorbeeld naar eindversie.</p>
                         </Link>
-                        <Link href="/werkervaring-cv-voorbeelden" className="border-2 border-black bg-green-50 p-4 hover:bg-green-100 transition-colors">
-                            <p className="font-black text-sm">Werkervaring voorbeelden</p>
-                            <p className="text-xs mt-1 text-gray-700">Zet taken om in resultaatgerichte bullets.</p>
+                        <Link href="/werkervaring-cv-voorbeelden" className="wk-card p-4 transition-colors hover:bg-[var(--wk-surface-subtle)]">
+                            <p className="text-sm font-semibold text-[var(--wk-ink)]">Werkervaring voorbeelden</p>
+                            <p className="mt-1 text-xs leading-5 text-[var(--wk-ink-muted)]">Zet taken om in resultaatgerichte bullets.</p>
                         </Link>
-                        <Link href="/tools/profieltekst-generator" className="border-2 border-black bg-blue-50 p-4 hover:bg-blue-100 transition-colors">
-                            <p className="font-black text-sm">Profieltekst generator</p>
-                            <p className="text-xs mt-1 text-gray-700">Maak in minuten een vacaturegerichte intro.</p>
+                        <Link href="/tools/profieltekst-generator" className="wk-card p-4 transition-colors hover:bg-[var(--wk-surface-subtle)]">
+                            <p className="text-sm font-semibold text-[var(--wk-ink)]">Profieltekst generator</p>
+                            <p className="mt-1 text-xs leading-5 text-[var(--wk-ink-muted)]">Maak in minuten een vacaturegerichte intro.</p>
                         </Link>
-                        <Link href="/tools/werkervaring-bullets" className="border-2 border-black bg-purple-50 p-4 hover:bg-purple-100 transition-colors">
-                            <p className="font-black text-sm">Werkervaring bullets tool</p>
-                            <p className="text-xs mt-1 text-gray-700">Genereer sterke bullets per functie.</p>
+                        <Link href="/tools/werkervaring-bullets" className="wk-card p-4 transition-colors hover:bg-[var(--wk-surface-subtle)]">
+                            <p className="text-sm font-semibold text-[var(--wk-ink)]">Werkervaring bullets tool</p>
+                            <p className="mt-1 text-xs leading-5 text-[var(--wk-ink-muted)]">Genereer sterke bullets per functie.</p>
                         </Link>
-                        <Link href="/vaardigheden-cv-voorbeelden" className="border-2 border-black bg-emerald-50 p-4 hover:bg-emerald-100 transition-colors">
-                            <p className="font-black text-sm">Vaardigheden CV voorbeelden</p>
-                            <p className="text-xs mt-1 text-gray-700">Bouw een sterke skillssectie met vacaturematch.</p>
+                        <Link href="/vaardigheden-cv-voorbeelden" className="wk-card p-4 transition-colors hover:bg-[var(--wk-surface-subtle)]">
+                            <p className="text-sm font-semibold text-[var(--wk-ink)]">Vaardigheden CV voorbeelden</p>
+                            <p className="mt-1 text-xs leading-5 text-[var(--wk-ink-muted)]">Bouw een sterke skillssectie met vacaturematch.</p>
                         </Link>
                     </div>
                 </div>
             </section>
 
-            <section className="max-w-6xl mx-auto px-6 py-16">
-                <h2 className="text-3xl font-black mb-3">Kies je vakgebied</h2>
-                <p className="text-gray-700 mb-8 max-w-4xl leading-relaxed">
-                    Elke sector heeft eigen verwachtingen in toon, vaardigheden en bewijsvoering. In zorg en onderwijs draait het bijvoorbeeld vaak om samenwerking en kwaliteit van uitvoering, terwijl in ICT en marketing resultaatmetrics en projecten zwaarder wegen. Kies daarom de categorie die het dichtst bij je doelrol ligt.
-                </p>
+            <section className="wk-section pt-0">
+                <div className="wk-container">
+                    <h2 className="mb-3 text-3xl font-semibold text-[var(--wk-ink)]">Kies je vakgebied</h2>
+                    <p className="mb-8 max-w-4xl leading-7 text-[var(--wk-ink-muted)]">
+                        Elke sector heeft eigen verwachtingen in toon, vaardigheden en bewijsvoering. In zorg en onderwijs draait het bijvoorbeeld vaak om samenwerking en kwaliteit van uitvoering, terwijl in ICT en marketing resultaatmetrics en projecten zwaarder wegen. Kies daarom de categorie die het dichtst bij je doelrol ligt.
+                    </p>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {categories.map((category) => {
-                        const examples = getExamplesByCategory(category.slug);
-                        const accent = categoryAccents[category.slug] || '#FFD700';
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {categories.map((category) => {
+                            const examples = getExamplesByCategory(category.slug);
+                            const accent = categoryAccents[category.slug] || '#FFD700';
 
-                        return (
-                            <Link
-                                key={category.slug}
-                                href={`/cv-voorbeelden/${category.slug}`}
-                                className="group block bg-white border-4 border-black p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-1 hover:-translate-y-1 transition-all"
-                            >
-                                <div
-                                    className="w-12 h-1.5 mb-4"
-                                    style={{ backgroundColor: accent }}
-                                />
-                                <h3 className="text-2xl font-black mb-3 group-hover:text-[#FF6B6B] transition-colors">
-                                    {category.name}
-                                </h3>
-                                <p className="text-gray-700 mb-4 line-clamp-4">
-                                    {category.description}
-                                </p>
-                                <div className="flex items-center justify-between">
-                                    <span className="text-sm font-bold text-gray-500">
-                                        {examples.length} voorbeelden
-                                    </span>
-                                    <span className="inline-flex items-center font-bold text-[#FF6B6B]">
-                                        Bekijk
-                                        <svg className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
-                                        </svg>
-                                    </span>
-                                </div>
-                            </Link>
-                        );
-                    })}
+                            return (
+                                <Link
+                                    key={category.slug}
+                                    href={`/cv-voorbeelden/${category.slug}`}
+                                    className="wk-card group block p-6 transition-transform hover:-translate-y-0.5"
+                                >
+                                    <div
+                                        className="mb-4 h-1.5 w-12 rounded-full"
+                                        style={{ backgroundColor: accent }}
+                                    />
+                                    <h3 className="mb-3 text-2xl font-semibold text-[var(--wk-ink)] transition-colors group-hover:text-[var(--wk-primary)]">
+                                        {category.name}
+                                    </h3>
+                                    <p className="mb-4 leading-7 text-[var(--wk-ink-muted)] line-clamp-4">
+                                        {category.description}
+                                    </p>
+                                    <div className="flex items-center justify-between">
+                                        <span className="text-sm font-semibold text-[var(--wk-ink-muted)]">
+                                            {examples.length} voorbeelden
+                                        </span>
+                                        <span className="inline-flex items-center font-semibold text-[var(--wk-primary)]">
+                                            Bekijk
+                                            <svg className="ml-1 h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </Link>
+                            );
+                        })}
+                    </div>
                 </div>
             </section>
 
-            <section className="border-t-4 border-black border-b-4 bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-16">
-                    <h2 className="text-3xl font-black mb-4">Rolclusters met hoge sollicitatie-intentie</h2>
-                    <p className="text-gray-700 max-w-5xl leading-relaxed">
+            <section className="wk-section pt-0">
+                <div className="wk-container">
+                    <h2 className="mb-4 text-3xl font-semibold text-[var(--wk-ink)]">Rolclusters met hoge sollicitatie-intentie</h2>
+                    <p className="max-w-5xl leading-7 text-[var(--wk-ink-muted)]">
                         Veel bezoekers zoeken niet op algemene termen, maar op concrete functies zoals &ldquo;CV voorbeeld verpleegkundige&rdquo; of &ldquo;CV voorbeeld software ontwikkelaar&rdquo;. Daarom vind je hieronder per cluster directe links naar relevante beroepen, zodat je snel de juiste voorbeeldtekst en opbouw kunt kiezen.
                     </p>
-                    <div className="mt-8 grid lg:grid-cols-2 gap-6">
+                    <div className="mt-8 grid gap-6 lg:grid-cols-2">
                         {categories.map((category) => {
                             const examples = getExamplesByCategory(category.slug).slice(0, 4);
                             const summary = clusterSummaries[category.slug] || category.description;
 
                             return (
-                                <article key={category.slug} className="border-4 border-black bg-[#FFFEF9] p-6">
-                                    <h3 className="text-2xl font-black text-gray-900">{category.name}</h3>
-                                    <p className="mt-2 text-sm leading-relaxed text-gray-700">{summary}</p>
+                                <article key={category.slug} className="wk-card p-6">
+                                    <h3 className="text-2xl font-semibold text-[var(--wk-ink)]">{category.name}</h3>
+                                    <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{summary}</p>
                                     <div className="mt-4 flex flex-wrap gap-2">
                                         {examples.map((example) => (
                                             <Link
                                                 key={example.slug}
                                                 href={`/cv-voorbeelden/${category.slug}/${example.slug}`}
-                                                className="border-2 border-black bg-white px-3 py-1.5 text-sm font-bold hover:bg-yellow-100 transition-colors"
+                                                className="wk-button wk-button-secondary wk-button-small"
                                             >
                                                 {example.name}
                                             </Link>
@@ -644,7 +651,7 @@ export default function CVVoorbeeldenOverview() {
                                     </div>
                                     <Link
                                         href={`/cv-voorbeelden/${category.slug}`}
-                                        className="mt-4 inline-block text-sm font-black underline decoration-2 underline-offset-4"
+                                        className="mt-4 inline-block text-sm font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
                                     >
                                         Bekijk alle {category.name.toLowerCase()} voorbeelden
                                     </Link>
@@ -655,18 +662,18 @@ export default function CVVoorbeeldenOverview() {
                 </div>
             </section>
 
-            <section className="border-b-4 border-black bg-[#FDFDFD]">
-                <div className="max-w-6xl mx-auto px-6 py-14">
-                    <h2 className="text-3xl font-black mb-6">Meer populaire CV voorbeeld-routes</h2>
-                    <p className="text-gray-700 mb-6 max-w-5xl leading-relaxed">
+            <section className="wk-section pt-0">
+                <div className="wk-container">
+                    <h2 className="mb-6 text-3xl font-semibold text-[var(--wk-ink)]">Meer populaire CV voorbeeld-routes</h2>
+                    <p className="mb-6 max-w-5xl leading-7 text-[var(--wk-ink-muted)]">
                         Staat je exacte rol hierboven niet tussen de startpunten? Gebruik dan deze extra routes. Open maximaal twee of drie voorbeelden, vergelijk profieltekst en werkervaring, en bouw daarna je eigen versie in de editor.
                     </p>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap gap-2">
                         {popularRoleLinks.map((role) => (
                             <Link
                                 key={role.href}
                                 href={role.href}
-                                className="bg-[#E8E8E8] px-4 py-2 border-2 border-black font-semibold hover:bg-yellow-100 transition-colors"
+                                className="wk-button wk-button-secondary wk-button-small"
                             >
                                 {role.label}
                             </Link>
@@ -675,116 +682,75 @@ export default function CVVoorbeeldenOverview() {
                 </div>
             </section>
 
-            <section className="border-b-4 border-black bg-[#FFFEF9]">
-                <div className="max-w-6xl mx-auto px-6 py-14">
-                    <h2 className="text-3xl font-black mb-4">Van voorbeelden naar de juiste CV-route</h2>
-                    <p className="text-gray-700 max-w-5xl leading-relaxed">
+            <section className="wk-section pt-0">
+                <div className="wk-container">
+                    <h2 className="mb-4 text-3xl font-semibold text-[var(--wk-ink)]">Van voorbeelden naar de juiste CV-route</h2>
+                    <p className="max-w-5xl leading-7 text-[var(--wk-ink-muted)]">
                         Niet iedere bezoeker heeft alleen een voorbeeld nodig. Soms zoek je eigenlijk naar een{" "}
-                        <Link href="/professioneel-cv-voorbeeld" className="font-bold underline decoration-2 underline-offset-2">
+                        <Link href="/professioneel-cv-voorbeeld" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                             professioneel CV voorbeeld
                         </Link>
                         , een{" "}
-                        <Link href="/cv-voorbeeld-student" className="font-bold underline decoration-2 underline-offset-2">
+                        <Link href="/cv-voorbeeld-student" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                             student CV voorbeeld
                         </Link>
                         , een{" "}
-                        <Link href="/cv-voorbeeld-starter" className="font-bold underline decoration-2 underline-offset-2">
+                        <Link href="/cv-voorbeeld-starter" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                             starter CV voorbeeld
                         </Link>
                         , een{" "}
-                        <Link href="/modern-cv-voorbeeld" className="font-bold underline decoration-2 underline-offset-2">
+                        <Link href="/modern-cv-voorbeeld" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                             modern CV voorbeeld
                         </Link>
                         , een aparte pagina voor{" "}
-                        <Link href="/cv-maken-student" className="font-bold underline decoration-2 underline-offset-2">
+                        <Link href="/cv-maken-student" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                             CV maken als student
                         </Link>
                         {" "}of juist hulp bij{" "}
-                        <Link href="/cv-opmaken" className="font-bold underline decoration-2 underline-offset-2">
+                        <Link href="/cv-opmaken" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                             CV opmaken
                         </Link>
                         . Gebruik deze routes als je intentie specifieker is dan alleen inspiratie opdoen.
                     </p>
                     <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        {[
-                            {
-                                href: "/cv-voorbeeld-student",
-                                title: "CV voorbeeld student",
-                                body: "Gebruik deze route als je zoekt naar een duidelijke student-opbouw voor stage, bijbaan of eerste stap.",
-                            },
-                            {
-                                href: "/cv-middelbare-school-student",
-                                title: "CV middelbare school student",
-                                body: "Speciaal voor scholieren die een eerste CV nodig hebben voor stage, bijbaan of vakantiewerk.",
-                            },
-                            {
-                                href: "/cv-voorbeeld-starter",
-                                title: "CV voorbeeld starter",
-                                body: "Sterk voor junior rollen, traineeships en eerste banen waar potentie duidelijk moet landen.",
-                            },
-                            {
-                                href: "/professioneel-cv-voorbeeld",
-                                title: "Professioneel CV voorbeeld",
-                                body: "Voor rustige, zakelijke sollicitaties waar betrouwbaarheid en scanbaarheid prioriteit hebben.",
-                            },
-                            {
-                                href: "/modern-cv-voorbeeld",
-                                title: "Modern CV voorbeeld",
-                                body: "Voor marketing, sales en andere rollen waar een frissere uitstraling logisch is.",
-                            },
-                            {
-                                href: "/cv-opmaken",
-                                title: "CV opmaken",
-                                body: "Ga van inhoudelijke inspiratie naar betere layout, hiërarchie en leesbaarheid.",
-                            },
-                            {
-                                href: "/cv-maken-student",
-                                title: "CV maken student",
-                                body: "Speciaal voor studenten, starters en profielen met weinig formele werkervaring.",
-                            },
-                            {
-                                href: "/cv-maken-in-engels",
-                                title: "CV maken in Engels",
-                                body: "Handig als je internationaal solliciteert maar wel de Nederlandse structuur wilt aanhouden.",
-                            },
-                        ].map((item) => (
+                        {contentRouteCards.map((item) => (
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5"
+                                className="wk-card p-5 transition-transform hover:-translate-y-0.5"
                             >
-                                <p className="text-sm font-black text-gray-900">{item.title}</p>
-                                <p className="mt-2 text-sm leading-relaxed text-gray-700">{item.body}</p>
+                                <p className="text-sm font-semibold text-[var(--wk-ink)]">{item.title}</p>
+                                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.body}</p>
                             </Link>
                         ))}
                     </div>
                 </div>
             </section>
 
-            <section className="border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-16">
-                    <h2 className="text-3xl font-black mb-6">Wat recruiters in 2026 in een CV scannen</h2>
-                    <p className="text-gray-700 max-w-5xl leading-relaxed">
+            <section className="wk-section pt-0">
+                <div className="wk-container">
+                    <h2 className="mb-6 text-3xl font-semibold text-[var(--wk-ink)]">Wat recruiters in 2026 in een CV scannen</h2>
+                    <p className="max-w-5xl leading-7 text-[var(--wk-ink-muted)]">
                         Op basis van huidige Nederlandse vacaturepatronen zie je steeds dezelfde beoordelingspunten terug. Een CV dat goed converteert naar gesprekken is meestal helder, bewijsbaar en direct gekoppeld aan de rol. Gebruik deze checklist wanneer je je voorbeeld-CV omzet naar je eigen versie.
                     </p>
-                    <ul className="mt-6 grid md:grid-cols-2 gap-4">
+                    <ul className="mt-6 grid gap-4 md:grid-cols-2">
                         {recruiterSignals.map((signal) => (
-                            <li key={signal} className="border-2 border-black bg-[#FFFEF0] p-4 text-sm font-medium text-gray-700 leading-relaxed">
+                            <li key={signal} className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 text-sm font-medium leading-6 text-[var(--wk-ink-muted)]">
                                 {signal}
                             </li>
                         ))}
                     </ul>
-                    <p className="mt-8 text-sm leading-relaxed text-gray-700">
+                    <p className="mt-8 text-sm leading-7 text-[var(--wk-ink-muted)]">
                         Wil je deze checklist direct toepassen? Bekijk onze gidsen over{' '}
-                        <Link href="/cv-tips/cv-schrijven-tips" className="font-bold underline decoration-2 underline-offset-2">
+                        <Link href="/cv-tips/cv-schrijven-tips" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                             CV schrijven
                         </Link>
                         ,{' '}
-                        <Link href="/cv-tips/profieltekst-schrijven" className="font-bold underline decoration-2 underline-offset-2">
+                        <Link href="/cv-tips/profieltekst-schrijven" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                             profieltekst verbeteren
                         </Link>
                         {' '}en kies daarna een template via{' '}
-                        <Link href="/templates" className="font-bold underline decoration-2 underline-offset-2">
+                        <Link href="/templates" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                             templates
                         </Link>
                         .
@@ -792,17 +758,17 @@ export default function CVVoorbeeldenOverview() {
                 </div>
             </section>
 
-            <section className="border-b-4 border-black bg-[#FFFEF9]">
-                <div className="max-w-5xl mx-auto px-6 py-16">
-                    <h2 className="text-3xl font-black mb-8 text-center">Veelgestelde vragen over CV voorbeelden</h2>
+            <section className="wk-section pt-0">
+                <div className="wk-container max-w-5xl">
+                    <h2 className="mb-8 text-center text-3xl font-semibold text-[var(--wk-ink)]">Veelgestelde vragen over CV voorbeelden</h2>
                     <div className="space-y-4">
                         {faqs.map((faq) => (
-                            <details key={faq.question} className="group border-4 border-black bg-white">
-                                <summary className="cursor-pointer p-5 text-left flex items-center justify-between">
-                                    <span className="font-black text-base text-gray-900">{faq.question}</span>
-                                    <span className="text-xl font-black transition-transform group-open:rotate-45">+</span>
+                            <details key={faq.question} className="wk-card group">
+                                <summary className="flex cursor-pointer items-center justify-between p-5 text-left">
+                                    <span className="text-base font-semibold text-[var(--wk-ink)]">{faq.question}</span>
+                                    <span className="text-xl font-semibold text-[var(--wk-ink-muted)] transition-transform group-open:rotate-45">+</span>
                                 </summary>
-                                <div className="border-t-2 border-black px-5 py-4 text-sm leading-relaxed text-gray-700">
+                                <div className="border-t border-[var(--wk-border)] px-5 py-4 text-sm leading-7 text-[var(--wk-ink-muted)]">
                                     {faq.answer}
                                 </div>
                             </details>
@@ -811,27 +777,23 @@ export default function CVVoorbeeldenOverview() {
                 </div>
             </section>
 
-            <section className="border-t-4 border-black bg-[#4ECDC4]">
-                <div className="max-w-6xl mx-auto px-6 py-16 text-center">
-                    <h2 className="text-4xl font-black mb-4 text-gray-900">
-                        Klaar om je eigen CV te bouwen?
-                    </h2>
-                    <p className="text-xl mb-8 max-w-3xl mx-auto text-gray-900">
-                        Start met een voorbeeld dat bij je functie past, maak je inhoud vacaturegericht en finaliseer in de editor. Je begint gratis en betaalt alleen bij download.
-                    </p>
-                    <div className="flex flex-wrap justify-center gap-3">
-                        <Link
-                            href="/editor"
-                            className="inline-block bg-black text-white font-bold px-10 py-5 text-xl border-4 border-black shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
-                        >
-                            Start je CV in editor
-                        </Link>
-                        <Link
-                            href="/templates"
-                            className="inline-block bg-white text-black font-bold px-10 py-5 text-xl border-4 border-black"
-                        >
-                            Bekijk templates
-                        </Link>
+            <section className="wk-section pt-0">
+                <div className="wk-container text-center">
+                    <div className="rounded-[var(--wk-radius-lg)] bg-[var(--wk-accent-soft)] p-8 md:p-14">
+                        <h2 className="mb-4 text-3xl font-semibold text-[var(--wk-ink)] md:text-4xl">
+                            Klaar om je eigen CV te bouwen?
+                        </h2>
+                        <p className="mx-auto mb-8 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
+                            Start met een voorbeeld dat bij je functie past, maak je inhoud vacaturegericht en finaliseer in de editor. Je begint gratis en betaalt alleen bij download.
+                        </p>
+                        <div className="flex flex-wrap justify-center gap-3">
+                            <Link href="/editor" className="wk-button wk-button-primary px-10 py-5 text-xl">
+                                Start je CV in editor
+                            </Link>
+                            <Link href="/templates" className="wk-button wk-button-secondary px-10 py-5 text-xl">
+                                Bekijk templates
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </section>

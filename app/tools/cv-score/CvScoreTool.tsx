@@ -416,7 +416,7 @@ export default function CvScoreTool() {
   }
 
   return (
-    <div className="bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-6 md:p-8">
+    <div className="rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] shadow-[var(--wk-shadow-md,0_14px_34px_rgb(24_33_31/0.08))] p-6 md:p-8">
       {!result ? (
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -425,22 +425,24 @@ export default function CvScoreTool() {
               ["ATS + recruiter", "Check techniek én inhoud voordat je solliciteert"],
               ["6 dimensies", "Zo wordt jouw CV beoordeeld"],
             ].map(([value, copy]) => (
-              <div key={value} className="rounded-2xl border-2 border-slate-200 bg-slate-50 p-4">
-                <p className="text-lg font-black text-slate-900">{value}</p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-500">{copy}</p>
+              <div key={value} className="rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface-subtle,#f0f3ef)] p-4">
+                <p className="text-lg font-semibold text-[var(--wk-ink,#18211f)]">{value}</p>
+                <p className="mt-1 text-xs leading-relaxed text-[var(--wk-ink-muted,#606a67)]">{copy}</p>
               </div>
             ))}
           </div>
 
-          <div className="flex border-2 border-slate-200 rounded-xl overflow-hidden">
+          <div className="flex border border-[var(--wk-border,#d7ded9)] rounded-[var(--wk-radius-md,14px)] overflow-hidden">
             <button
               type="button"
               onClick={() => {
                 setMode("upload");
                 setError("");
               }}
-              className={`flex-1 py-3 text-xs font-black uppercase tracking-wide transition-colors ${
-                mode === "upload" ? "bg-black text-white" : "bg-white text-slate-500 hover:bg-slate-50"
+              className={`flex-1 py-3 text-xs font-semibold uppercase tracking-wide transition-colors ${
+                mode === "upload"
+                  ? "bg-[var(--wk-primary,#173f38)] text-[var(--wk-primary-contrast,#ffffff)]"
+                  : "bg-[var(--wk-surface,#ffffff)] text-[var(--wk-ink-muted,#606a67)] hover:bg-[var(--wk-surface-subtle,#f0f3ef)]"
               }`}
             >
               PDF / Word uploaden
@@ -451,8 +453,10 @@ export default function CvScoreTool() {
                 setMode("text");
                 setError("");
               }}
-              className={`flex-1 py-3 text-xs font-black uppercase tracking-wide transition-colors ${
-                mode === "text" ? "bg-black text-white" : "bg-white text-slate-500 hover:bg-slate-50"
+              className={`flex-1 py-3 text-xs font-semibold uppercase tracking-wide transition-colors ${
+                mode === "text"
+                  ? "bg-[var(--wk-primary,#173f38)] text-[var(--wk-primary-contrast,#ffffff)]"
+                  : "bg-[var(--wk-surface,#ffffff)] text-[var(--wk-ink-muted,#606a67)] hover:bg-[var(--wk-surface-subtle,#f0f3ef)]"
               }`}
             >
               Tekst plakken
@@ -536,8 +540,7 @@ export default function CvScoreTool() {
               type="button"
               onClick={handleAnalyze}
               disabled={!hasInput || isLoading}
-              className="w-full flex items-center justify-center gap-3 py-3 px-6 bg-[#4ECDC4] hover:bg-teal-500 disabled:opacity-50 disabled:cursor-not-allowed text-slate-900 font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
-              style={{ borderWidth: "3px" }}
+              className="w-full flex items-center justify-center gap-3 py-3 px-6 rounded-[var(--wk-radius-md,14px)] bg-[var(--wk-primary,#173f38)] hover:bg-[var(--wk-primary-hover,#0f332d)] disabled:opacity-50 disabled:cursor-not-allowed text-[var(--wk-primary-contrast,#ffffff)] font-semibold text-sm transition-colors"
             >
               {isLoading ? (
                 <>
@@ -724,41 +727,40 @@ export default function CvScoreTool() {
             ) : null}
           </section>
 
-          <section className="rounded-3xl border-4 border-black bg-[#FFF7D6] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600 mb-3">
+          <section className="rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-highlight-soft,#fff5ce)] p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--wk-ink-muted,#606a67)] mb-3">
               Direct verbeteren
             </p>
-            <h3 className="text-2xl font-black text-slate-900">{result.cta.headline}</h3>
-            <p className="mt-3 text-sm sm:text-base text-slate-700 leading-relaxed">
+            <h3 className="text-2xl font-semibold text-[var(--wk-ink,#18211f)]">{result.cta.headline}</h3>
+            <p className="mt-3 text-sm sm:text-base text-[var(--wk-ink-muted,#606a67)] leading-relaxed">
               {result.cta.subtext}{" "}
-              <Link href="/prijzen" className="font-black underline decoration-2 underline-offset-4">
+              <Link href="/prijzen" className="font-semibold text-[var(--wk-primary,#173f38)] underline underline-offset-4">
                 Bekijk prijs
               </Link>
               .
             </p>
-            <div className="mt-4 grid gap-3 text-sm font-medium text-slate-700 sm:grid-cols-3">
-              <div className="border-2 border-black bg-white p-3">Gebruik je score als checklist.</div>
-              <div className="border-2 border-black bg-white p-3">Maak direct een sterkere templateversie.</div>
-              <div className="border-2 border-black bg-white p-3">Betaal pas bij PDF-download.</div>
+            <div className="mt-4 grid gap-3 text-sm font-medium text-[var(--wk-ink-muted,#606a67)] sm:grid-cols-3">
+              <div className="rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] p-3">Gebruik je score als checklist.</div>
+              <div className="rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] p-3">Maak direct een sterkere templateversie.</div>
+              <div className="rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] p-3">Betaal pas bij PDF-download.</div>
             </div>
             <div className="mt-5 flex flex-col sm:flex-row gap-3">
               <Link
                 href={result.cta.primary_button_url}
                 onClick={() => handleCtaClick("editor")}
-                className="flex-1 inline-flex items-center justify-center gap-2 py-3 px-4 bg-[#4ECDC4] text-slate-900 font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
-                style={{ borderWidth: "3px" }}
+                className="flex-1 inline-flex items-center justify-center gap-2 py-3 px-4 rounded-[var(--wk-radius-md,14px)] bg-[var(--wk-primary,#173f38)] text-[var(--wk-primary-contrast,#ffffff)] font-semibold text-sm transition-colors hover:bg-[var(--wk-primary-hover,#0f332d)]"
               >
                 {result.cta.primary_button_text}
               </Link>
               <Link
                 href={result.cta.secondary_button_url}
                 onClick={() => handleCtaClick("templates")}
-                className="flex-1 inline-flex items-center justify-center gap-2 py-3 px-4 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-50 transition-colors"
+                className="flex-1 inline-flex items-center justify-center gap-2 py-3 px-4 rounded-[var(--wk-radius-md,14px)] bg-[var(--wk-surface,#ffffff)] text-[var(--wk-primary,#173f38)] font-semibold text-sm border border-[var(--wk-border-strong,#aebbb5)] hover:bg-[var(--wk-accent-soft,#dff7f3)] transition-colors"
               >
                 {result.cta.secondary_button_text}
               </Link>
             </div>
-            <p className="mt-3 text-xs font-bold text-slate-600">
+            <p className="mt-3 text-xs font-semibold text-[var(--wk-ink-muted,#606a67)]">
               Gratis bouwen. Eénmalig €4,99 bij PDF-download. Geen abonnement.
             </p>
           </section>
@@ -772,7 +774,7 @@ export default function CvScoreTool() {
               setCvText("");
               setAnimatedScore(0);
             }}
-            className="w-full rounded-xl border-2 border-slate-300 py-3 px-4 text-sm font-bold text-slate-600 hover:bg-slate-50 transition-colors"
+            className="w-full rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border-strong,#aebbb5)] py-3 px-4 text-sm font-semibold text-[var(--wk-ink-muted,#606a67)] hover:bg-[var(--wk-surface-subtle,#f0f3ef)] transition-colors"
           >
             Ander CV analyseren
           </button>

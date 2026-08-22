@@ -163,26 +163,30 @@ export default async function TemplatesPage({
     <main id="quick-start">
       <JsonLd data={templateCollectionJsonLd} />
       <TemplateGallery templates={templateList} initialStartSource={resolvedStartSource} />
-      <section className="border-t border-slate-200 bg-white px-5 py-16 sm:px-8">
-        <div className="mx-auto max-w-5xl">
-          <p className="text-sm font-bold uppercase text-emerald-700">Templatekeuze</p>
-          <h2 className="mt-2 text-3xl font-bold text-slate-950">Veelgestelde vragen over CV-templates</h2>
-          <p className="mt-3 max-w-3xl text-slate-600">
+      <section className="wk-section pt-0">
+        <div className="wk-container max-w-5xl">
+          <div className="wk-eyebrow mb-3">
+            <span>Templatekeuze</span>
+          </div>
+          <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+            Veelgestelde vragen over CV-templates
+          </h2>
+          <p className="mt-3 max-w-3xl leading-7 text-[var(--wk-ink-muted)]">
             Kies op leesbaarheid, functie en sollicitatieroute. Bekijk voor een strikte uploadprocedure ook de{" "}
-            <Link className="font-semibold text-emerald-700 underline" href="/cv-tips/ats-vriendelijk-cv">
+            <Link className="font-semibold text-[var(--wk-primary)] underline" href="/cv-tips/ats-vriendelijk-cv">
               ATS-richtlijnen
             </Link>
             , en bepaal apart of een{" "}
-            <Link className="font-semibold text-emerald-700 underline" href="/cv-tips/foto-op-je-cv">
+            <Link className="font-semibold text-[var(--wk-primary)] underline" href="/cv-tips/foto-op-je-cv">
               foto op je CV
             </Link>{" "}
             past.
           </p>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             {templateFaqs.map((faq) => (
-              <details key={faq.question} className="border border-slate-200 bg-slate-50 p-5">
-                <summary className="cursor-pointer font-semibold text-slate-950">{faq.question}</summary>
-                <p className="mt-3 leading-7 text-slate-700">{faq.answer}</p>
+              <details key={faq.question} className="wk-card p-5">
+                <summary className="cursor-pointer font-semibold text-[var(--wk-ink)]">{faq.question}</summary>
+                <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">{faq.answer}</p>
               </details>
             ))}
           </div>

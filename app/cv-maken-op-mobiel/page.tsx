@@ -105,152 +105,143 @@ export default function CvMakenOpMobielPage() {
     ],
   };
   return (
-    <div className="min-h-screen bg-[#FFFEF0]">
-      <header className="relative z-10 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-black tracking-tight text-black">
-              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-            </span>
-          </Link>
-          <Link
-            href="/editor"
-            className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
-          >
-            Start in editor
-          </Link>
-        </div>
-      </header>
+    <main>
+      <section className="wk-section">
+        <div className="wk-container">
+          <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+            <div>
+              <div className="wk-eyebrow mb-3">
+                <span>Mobiele intentie</span>
+              </div>
+              <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+                <span className="wk-hero-highlight">CV maken op mobiel</span> zodat je direct kunt
+                starten, ook zonder laptop
+              </h1>
+              <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
+                Zoekers op <strong>cv maken op mobiel</strong> of{" "}
+                <strong>cv maken op telefoon</strong> willen vooral snelheid. Geen uitstel tot ze
+                achter een laptop zitten, maar meteen een serieuze sollicitatieversie starten. Deze
+                pagina laat zien hoe je dat praktisch en zonder rommelige flow doet.
+              </p>
+              <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--wk-ink-muted)]">
+                Deze pagina gaat dus over apparaatkeuze en snelheid, niet over de hele
+                CV-strategie. Voor de brede workflow rond inhoud, structuur en ATS gebruik je beter
+                de{" "}
+                <Link
+                  href="/cv-maken"
+                  className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
+                >
+                  algemene CV maken gids
+                </Link>
+                .
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/editor" className="wk-button wk-button-primary">
+                  Start mobiel je CV
+                </Link>
+                <Link href="/gratis-cv-maken" className="wk-button wk-button-secondary">
+                  Start gratis
+                </Link>
+              </div>
+            </div>
 
-      <main className="relative z-10 mx-auto max-w-5xl px-6 py-14">
-        <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <div>
-            <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Mobiele intentie
-            </p>
-            <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV maken op mobiel zodat je direct kunt starten, ook zonder laptop
-            </h1>
-            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Zoekers op <strong>cv maken op mobiel</strong> of{" "}
-              <strong>cv maken op telefoon</strong> willen vooral snelheid. Geen
-              uitstel tot ze achter een laptop zitten, maar meteen een serieuze
-              sollicitatieversie starten. Deze pagina laat zien hoe je dat praktisch
-              en zonder rommelige flow doet.
-            </p>
-            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
-              Deze pagina gaat dus over apparaatkeuze en snelheid, niet over de hele
-              CV-strategie. Voor de brede workflow rond inhoud, structuur en ATS gebruik
-              je beter de{" "}
-              <Link
-                href="/cv-maken"
-                className="font-black text-black underline decoration-2 underline-offset-4"
-              >
-                algemene CV maken gids
-              </Link>
-              .
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                href="/editor"
-                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              >
-                Start mobiel je CV
-              </Link>
-              <Link
-                href="/gratis-cv-maken"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Start gratis
-              </Link>
+            <div className="wk-card h-fit p-6">
+              <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
+                Waarom mobiel interessant is
+              </h2>
+              <ul className="mt-5 space-y-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                {mobileAdvantages.map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--wk-success-soft)] text-[var(--wk-success)]">
+                      <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">Waarom mobiel interessant is</h2>
-            <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-              {mobileAdvantages.map((item) => (
-                <li key={item}>{item}</li>
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-card p-6 md:p-8">
+            <div className="wk-eyebrow mb-3">
+              <span>Mobiele workflow</span>
+            </div>
+            <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+              Zo gebruik je mobiel slim voor je CV
+            </h2>
+            <div className="mt-6 space-y-4">
+              {mobileFlow.map((step, index) => (
+                <div key={step.title} className="flex gap-4">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--wk-accent-soft)] text-sm font-semibold text-[var(--wk-primary)]">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{step.title}</h3>
+                    <p className="mt-1 text-sm leading-6 text-[var(--wk-ink-muted)]">{step.body}</p>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14 border-4 border-black bg-white p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Mobiele workflow
-          </p>
-          <h2 className="mt-2 text-3xl font-black text-black">
-            Zo gebruik je mobiel slim voor je CV
-          </h2>
-          <div className="mt-6 space-y-4">
-            {mobileFlow.map((step, index) => (
-              <div key={step.title} className="flex gap-4">
-                <div
-                  className="flex h-9 w-9 flex-shrink-0 items-center justify-center border-3 border-black bg-[#FFFEF0] text-sm font-black text-black"
-                  style={{ borderWidth: "3px" }}
-                >
-                  {index + 1}
-                </div>
-                <div>
-                  <h3 className="text-lg font-black text-black">{step.title}</h3>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{step.body}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14 grid gap-4 md:grid-cols-3">
-          {[
-            {
-              href: "/online-cv-maken",
-              title: "Online CV maken",
-              body: "Brede online flow als je buiten mobiel ook laptopgebruik meeneemt.",
-            },
-            {
-              href: "/cv-maken-pdf",
-              title: "CV maken PDF",
-              body: "Zet je mobiele versie daarna stabiel om naar de eind-PDF.",
-            },
-            {
-              href: "/cv-maken",
-              title: "Algemene CV-workflow",
-              body: "Gebruik de hoofdgids als je naast mobiel gemak ook inhoud, structuur en ATS-stappen wilt aanscherpen.",
-            },
-          ].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-colors hover:bg-yellow-100"
-            >
-              <p className="text-sm font-black text-black">{item.title}</p>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
-                {item.body}
-              </p>
-            </Link>
-          ))}
-        </section>
-
-        <section className="mb-14">
-          <h2 className="text-3xl font-black text-black">Veelgestelde vragen over CV maken op mobiel</h2>
-          <div className="mt-6 space-y-4">
-            {faqs.map((faq) => (
-              <article
-                key={faq.question}
-                className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-4 md:grid-cols-3">
+            {[
+              {
+                href: "/online-cv-maken",
+                title: "Online CV maken",
+                body: "Brede online flow als je buiten mobiel ook laptopgebruik meeneemt.",
+              },
+              {
+                href: "/cv-maken-pdf",
+                title: "CV maken PDF",
+                body: "Zet je mobiele versie daarna stabiel om naar de eind-PDF.",
+              },
+              {
+                href: "/cv-maken",
+                title: "Algemene CV-workflow",
+                body: "Gebruik de hoofdgids als je naast mobiel gemak ook inhoud, structuur en ATS-stappen wilt aanscherpen.",
+              },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 transition-colors hover:border-[var(--wk-primary)]"
               >
-                <h3 className="text-lg font-black text-black">{faq.question}</h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                  {faq.answer}
-                </p>
-              </article>
+                <p className="text-sm font-semibold text-[var(--wk-ink)]">{item.title}</p>
+                <p className="mt-1 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.body}</p>
+              </Link>
             ))}
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
-      <Footer />
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+            Veelgestelde vragen over CV maken op mobiel
+          </h2>
+          <div className="mt-8 space-y-4">
+            {faqs.map((faq) => (
+              <details key={faq.question} className="wk-card p-5">
+                <summary className="cursor-pointer font-semibold text-[var(--wk-ink)]">
+                  {faq.question}
+                </summary>
+                <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">{faq.answer}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <script
         type="application/ld+json"
@@ -260,6 +251,8 @@ export default function CvMakenOpMobielPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-          </div>
+
+      <Footer variant="brand" />
+    </main>
   );
 }

@@ -11,7 +11,7 @@ import {
 import { track } from "@/lib/analytics";
 import ScaledCvPreview from "@/app/editor/ScaledCvPreview";
 
-type PackSummary = {
+export type AgencyMatchPackSummary = {
   id: string;
   title: string;
   vacancyTitle: string | null;
@@ -26,7 +26,7 @@ type PackSummary = {
   outcomeStatus?: MatchPackOutcome["status"];
 };
 
-type PackDetail = PackSummary & {
+export type AgencyMatchPackDetail = AgencyMatchPackSummary & {
   vacancyText: string;
   candidateData: CVData;
   originalCandidateData: CVData;
@@ -48,7 +48,8 @@ type PackDetail = PackSummary & {
 };
 
 type AgencyMatchPackWorkspaceProps = {
-  initialPacks: PackSummary[];
+  initialPacks: AgencyMatchPackSummary[];
+  initialActivePack?: AgencyMatchPackDetail | null;
   initialUsed: number;
   allowance: number;
   canCreate: boolean;
@@ -98,7 +99,7 @@ function statusClass(status: string): string {
     : "border-amber-300 bg-amber-50 text-amber-900";
 }
 
-function toSummary(pack: PackDetail | PackSummary): PackSummary {
+function toSummary(pack: AgencyMatchPackDetail | AgencyMatchPackSummary): AgencyMatchPackSummary {
   return {
     id: pack.id,
     title: pack.title,
@@ -165,6 +166,7 @@ function getCandidateChanges(original: CVData, current: CVData): Array<{ label: 
 
 export default function AgencyMatchPackWorkspace({
   initialPacks,
+  initialActivePack = null,
   initialUsed,
   allowance,
   canCreate,
@@ -178,8 +180,8 @@ export default function AgencyMatchPackWorkspace({
     track("agency_workspace_started", { location: "agency_matchpack_workspace" });
   }, []);
 
-  const [packs, setPacks] = useState<PackSummary[]>(initialPacks);
-  const [activePack, setActivePack] = useState<PackDetail | null>(null);
+  const [packs, setPacks] = useState<AgencyMatchPackSummary[]>(initialPacks);
+  const [activePack, setActivePack] = useState<AgencyMatchPackDetail | null>(initialActivePack);
   const [vacancyTitle, setVacancyTitle] = useState("");
   const [vacancyText, setVacancyText] = useState("");
   const [locale, setLocale] = useState<"nl" | "en">("nl");
@@ -418,7 +420,7 @@ export default function AgencyMatchPackWorkspace({
         body: formData,
         cache: "no-store",
       });
-      const body = await response.json().catch(() => null) as { pack?: PackDetail; error?: string; code?: string } | null;
+      const body = await response.json().catch(() => null) as { pack?: AgencyMatchPackDetail; error?: string; code?: string } | null;
       if (!response.ok || !body?.pack) {
         track("matchpack_analysis_failed", { locale, reason: body?.code || `http_${response.status}` });
         throw new Error(body?.error || "De MatchPack kon niet worden gemaakt.");
@@ -430,7 +432,7 @@ export default function AgencyMatchPackWorkspace({
       setOutcomeNote(body.pack.outcomeData?.note || "");
       setOutcomeIssueCategory(body.pack.outcomeData?.issueCategory || "other");
       setFeedbackSendability(body.pack.outcomeData?.sendability || "sent");
-      setPacks((current) => [toSummary(body.pack as PackDetail), ...current.filter((pack) => pack.id !== body.pack?.id)]);
+      setPacks((current) => [toSummary(body.pack as AgencyMatchPackDetail), ...current.filter((pack) => pack.id !== body.pack?.id)]);
       setCheckedItems([false, false, false, false]);
       setIsDirty(false);
       setReviewStep("fit");
@@ -456,7 +458,7 @@ export default function AgencyMatchPackWorkspace({
     setNotice(null);
     try {
       const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(id)}`, { cache: "no-store" });
-      const body = await response.json().catch(() => null) as { pack?: PackDetail; error?: string } | null;
+      const body = await response.json().catch(() => null) as { pack?: AgencyMatchPackDetail; error?: string } | null;
       if (!response.ok || !body?.pack) throw new Error(body?.error || "De MatchPack kon niet worden geopend.");
       setActivePack(body.pack);
       reviewStartedAtRef.current = Date.now();
@@ -503,7 +505,7 @@ export default function AgencyMatchPackWorkspace({
         }),
       });
       const body = await response.json().catch(() => null) as {
-        pack?: Pick<PackDetail, "candidateData" | "anonymizedData" | "analysis" | "submissionData" | "updatedAt" | "revisions">;
+        pack?: Pick<AgencyMatchPackDetail, "candidateData" | "anonymizedData" | "analysis" | "submissionData" | "updatedAt" | "revisions">;
         error?: string;
       } | null;
       if (!response.ok || !body?.pack) throw new Error(body?.error || "Het concept kon niet worden opgeslagen.");
@@ -673,8 +675,8 @@ export default function AgencyMatchPackWorkspace({
     : [];
 
   return (
-    <div className="mt-8 grid gap-8 xl:grid-cols-[280px_minmax(0,1fr)]">
-      <aside className="h-fit border-2 border-slate-900 bg-white p-4 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+    <div className="wk-matchpack-workspace">
+      <aside className="wk-matchpack-sidebar">
         <div className="flex items-center justify-between gap-3">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Agency workflow</p>
@@ -731,7 +733,7 @@ export default function AgencyMatchPackWorkspace({
         {!canApprove ? <div className="mb-5 border-2 border-slate-300 bg-slate-50 p-4 text-sm font-semibold text-slate-700">Je rol is alleen-lezen. Je kunt MatchPacks openen, maar niet wijzigen of goedkeuren.</div> : null}
 
         {!activePack ? (
-          <form onSubmit={handleAnalyze} className="border-2 border-slate-900 bg-white p-5 shadow-[5px_5px_0px_0px_rgba(78,205,196,1)] sm:p-7">
+          <form onSubmit={handleAnalyze} className="wk-matchpack-new-proposal">
             <div className="flex flex-wrap items-start justify-between gap-4 border-b-2 border-slate-100 pb-5">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Nieuw kandidaatvoorstel · MatchPack</p>
@@ -783,7 +785,7 @@ export default function AgencyMatchPackWorkspace({
           </form>
         ) : (
           <div className="space-y-6">
-            <div className="flex flex-wrap items-start justify-between gap-4 border-b-2 border-slate-900 pb-5">
+            <div className="wk-matchpack-active-header">
               <div>
                 <button type="button" onClick={resetWorkspace} className="text-xs font-black uppercase tracking-[0.14em] text-emerald-700 underline underline-offset-4">← Nieuwe MatchPack</button>
                 <h2 className="mt-3 text-3xl font-black tracking-tight">{activePackTitle}</h2>
@@ -792,7 +794,7 @@ export default function AgencyMatchPackWorkspace({
               <span className={`border-2 px-3 py-2 text-xs font-black ${statusClass(activePack.status)}`}>{statusLabel(activePack.status)}</span>
             </div>
 
-            <nav aria-label="MatchPack-stappen" className="border-b-2 border-slate-100 py-5">
+            <nav aria-label="MatchPack-stappen" className="wk-matchpack-stepper">
               <ol className="grid gap-2 sm:grid-cols-5">
                 {reviewSteps.map((step, index) => {
                   const isCurrent = reviewStep === step.id;

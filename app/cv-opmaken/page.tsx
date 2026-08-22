@@ -121,206 +121,184 @@ export default function CvOpmakenPage() {
     ],
   };
   return (
-    <div className="min-h-screen bg-[#FFFEF0]">
-      <header className="relative z-10 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-black tracking-tight text-black">
-              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-            </span>
-          </Link>
-          <Link
-            href="/editor"
-            className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
-          >
-            Start in editor
-          </Link>
-        </div>
-      </header>
-
-      <main className="relative z-10 mx-auto max-w-5xl px-6 py-14">
-        <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <div>
-            <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Layout-intentie
-            </p>
-            <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV opmaken zodat recruiters direct zien wat telt
-            </h1>
-            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Goede CV-opmaak maakt je ervaring sneller leesbaar, professioneler en
-              betrouwbaarder. De meeste kandidaten verliezen niet op inhoud, maar op
-              onrustige opmaak. Hier zie je hoe je die fout voorkomt en hoe je die
-              verbeteringen direct toepast in WerkCV.
-            </p>
-            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
-              Deze route gaat bewust over layout en visuele rust, niet over de hele
-              schrijfstrategie. Voor de algemene workflow rond inhoud, structuur en
-              sub-intents gebruik je{" "}
-              <Link
-                href="/cv-maken"
-                className="font-black text-black underline decoration-2 underline-offset-4"
-              >
-                de CV maken gids
-              </Link>
-              .
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                href="/editor"
-                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              >
-                Pas je opmaak direct toe
-              </Link>
-              <Link
-                href="/cv-opmaak-voorbeeld"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Bekijk opmaakvoorbeelden
-              </Link>
-            </div>
-          </div>
-
-          <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">Snelle opmaakregels</h2>
-            <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-              <li>Gebruik vaste secties en logische volgorde.</li>
-              <li>Laat witruimte werken in plaats van extra design.</li>
-              <li>Beperk accentkleuren en decoratie.</li>
-              <li>Controleer altijd de PDF-eindversie voor je solliciteert.</li>
-            </ul>
-            <div className="mt-6 border-t-4 border-black pt-5">
-              <Link
-                href="/cv-maken-template"
-                className="text-sm font-black text-black underline decoration-2 underline-offset-4"
-              >
-                Begin eerst met de juiste template
-              </Link>
-            </div>
-          </div>
-        </section>
-
-        <section className="mb-14 border-4 border-black bg-white p-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-            Stappenplan
-          </p>
-          <h2 className="mt-2 text-3xl font-black text-black">
-            Zo maak je je CV-opmaak sterker in plaats van drukker
-          </h2>
-          <div className="mt-6 space-y-4">
-            {formattingSteps.map((step, index) => (
-              <div key={step.title} className="flex gap-4">
-                <div
-                  className="flex h-9 w-9 flex-shrink-0 items-center justify-center border-3 border-black bg-[#FFFEF0] text-sm font-black text-black"
-                  style={{ borderWidth: "3px" }}
-                >
-                  {index + 1}
-                </div>
-                <div>
-                  <h3 className="text-lg font-black text-black">{step.title}</h3>
-                  <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">
-                    {step.body}
-                  </p>
-                </div>
+    <main>
+      <section className="wk-section">
+        <div className="wk-container">
+          <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+            <div>
+              <div className="wk-eyebrow mb-3">
+                <span>Layout-intentie</span>
               </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="mb-14 grid gap-6 md:grid-cols-2">
-          {commonMistakes.map((item) => (
-            <article
-              key={item.title}
-              className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
-            >
-              <h2 className="text-xl font-black text-black">{item.title}</h2>
-              <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                {item.body}
+              <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+                <span className="wk-hero-highlight">CV opmaken</span> zodat recruiters direct zien
+                wat telt
+              </h1>
+              <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
+                Goede CV-opmaak maakt je ervaring sneller leesbaar, professioneler en
+                betrouwbaarder. De meeste kandidaten verliezen niet op inhoud, maar op onrustige
+                opmaak. Hier zie je hoe je die fout voorkomt en hoe je die verbeteringen direct
+                toepast in WerkCV.
               </p>
-            </article>
-          ))}
-        </section>
-
-        <section className="mb-14 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {[
-            {
-              href: "/cv-opmaak-voorbeeld",
-              title: "CV opmaak voorbeeld",
-              body: "Zie goede en slechte layoutkeuzes naast elkaar.",
-            },
-            {
-              href: "/cv-maken-template",
-              title: "CV maken template",
-              body: "Kies eerst een rustige basislayout voor je sollicitatie.",
-            },
-            {
-              href: "/modern-cv-voorbeeld",
-              title: "Modern CV voorbeeld",
-              body: "Voor functies waar een frissere uitstraling logisch is.",
-            },
-            {
-              href: "/professioneel-cv-voorbeeld",
-              title: "Professioneel CV voorbeeld",
-              body: "Voor zakelijke functies waar rust en structuur zwaarder wegen.",
-            },
-          ].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="border-4 border-black bg-white p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-colors hover:bg-yellow-100"
-            >
-              <p className="text-sm font-black text-black">{item.title}</p>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
-                {item.body}
+              <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--wk-ink-muted)]">
+                Deze route gaat bewust over layout en visuele rust, niet over de hele
+                schrijfstrategie. Voor de algemene workflow rond inhoud, structuur en sub-intents
+                gebruik je{" "}
+                <Link
+                  href="/cv-maken"
+                  className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
+                >
+                  de CV maken gids
+                </Link>
+                .
               </p>
-            </Link>
-          ))}
-        </section>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/editor" className="wk-button wk-button-primary">
+                  Pas je opmaak direct toe
+                </Link>
+                <Link href="/cv-opmaak-voorbeeld" className="wk-button wk-button-secondary">
+                  Bekijk opmaakvoorbeelden
+                </Link>
+              </div>
+            </div>
 
-        <section className="mb-14 border-4 border-black bg-black p-8 text-white shadow-[8px_8px_0px_0px_rgba(250,204,21,1)]">
-          <h2 className="text-3xl font-black">
-            Rustige CV-opmaak wint vaker dan opvallende CV-opmaak
-          </h2>
-          <p className="mt-4 max-w-3xl text-base font-medium leading-relaxed text-slate-200">
-            Voor de meeste Nederlandse vacatures is een professionele, scanbare
-            layout de beste keuze. WerkCV helpt je die versie snel te bouwen zonder
-            dat je zelf in Word of Canva hoeft te worstelen met marges en stijl.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              href="/editor"
-              className="border-4 border-white bg-yellow-400 px-5 py-3 text-base font-black text-black"
-            >
-              Start met opmaken
-            </Link>
-            <Link
-              href="/prijzen"
-              className="border-4 border-white bg-transparent px-5 py-3 text-base font-black text-white"
-            >
-              Bekijk prijzen
-            </Link>
+            <div className="wk-card h-fit p-6">
+              <h2 className="text-xl font-semibold text-[var(--wk-ink)]">Snelle opmaakregels</h2>
+              <ul className="mt-5 space-y-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                <li>Gebruik vaste secties en logische volgorde.</li>
+                <li>Laat witruimte werken in plaats van extra design.</li>
+                <li>Beperk accentkleuren en decoratie.</li>
+                <li>Controleer altijd de PDF-eindversie voor je solliciteert.</li>
+              </ul>
+              <div className="mt-6 border-t border-[var(--wk-border)] pt-5">
+                <Link
+                  href="/cv-maken-template"
+                  className="text-sm font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
+                >
+                  Begin eerst met de juiste template
+                </Link>
+              </div>
+            </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14">
-          <h2 className="text-3xl font-black text-black">Veelgestelde vragen over CV opmaken</h2>
-          <div className="mt-6 space-y-4">
-            {faqs.map((faq) => (
-              <article
-                key={faq.question}
-                className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <h3 className="text-lg font-black text-black">{faq.question}</h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                  {faq.answer}
-                </p>
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-card p-6 md:p-8">
+            <div className="wk-eyebrow mb-3">
+              <span>Stappenplan</span>
+            </div>
+            <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+              Zo maak je je CV-opmaak sterker in plaats van drukker
+            </h2>
+            <div className="mt-8 space-y-5">
+              {formattingSteps.map((step, index) => (
+                <div key={step.title} className="flex gap-4">
+                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[var(--wk-accent-soft)] text-sm font-semibold text-[var(--wk-primary)]">
+                    {index + 1}
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{step.title}</h3>
+                    <p className="mt-1 text-sm leading-6 text-[var(--wk-ink-muted)]">{step.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-6 md:grid-cols-2">
+            {commonMistakes.map((item) => (
+              <article key={item.title} className="wk-card p-6">
+                <h2 className="text-xl font-semibold text-[var(--wk-ink)]">{item.title}</h2>
+                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.body}</p>
               </article>
             ))}
           </div>
-        </section>
-      </main>
+        </div>
+      </section>
 
-      <Footer />
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+            {[
+              {
+                href: "/cv-opmaak-voorbeeld",
+                title: "CV opmaak voorbeeld",
+                body: "Zie goede en slechte layoutkeuzes naast elkaar.",
+              },
+              {
+                href: "/cv-maken-template",
+                title: "CV maken template",
+                body: "Kies eerst een rustige basislayout voor je sollicitatie.",
+              },
+              {
+                href: "/modern-cv-voorbeeld",
+                title: "Modern CV voorbeeld",
+                body: "Voor functies waar een frissere uitstraling logisch is.",
+              },
+              {
+                href: "/professioneel-cv-voorbeeld",
+                title: "Professioneel CV voorbeeld",
+                body: "Voor zakelijke functies waar rust en structuur zwaarder wegen.",
+              },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-5 transition-colors hover:border-[var(--wk-primary)] hover:bg-[var(--wk-accent-soft)]"
+              >
+                <p className="text-sm font-semibold text-[var(--wk-ink)]">{item.title}</p>
+                <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.body}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-8 md:p-12">
+            <h2 className="text-3xl font-semibold text-[var(--wk-primary-contrast)]">
+              Rustige CV-opmaak wint vaker dan opvallende CV-opmaak
+            </h2>
+            <p className="mt-4 max-w-3xl text-base leading-7 text-[var(--wk-primary-contrast)]/80">
+              Voor de meeste Nederlandse vacatures is een professionele, scanbare layout de beste
+              keuze. WerkCV helpt je die versie snel te bouwen zonder dat je zelf in Word of Canva
+              hoeft te worstelen met marges en stijl.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/editor" className="wk-button wk-button-accent">
+                Start met opmaken
+              </Link>
+              <Link href="/prijzen" className="wk-button wk-button-secondary">
+                Bekijk prijzen
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+            Veelgestelde vragen over CV opmaken
+          </h2>
+          <div className="mt-8 grid gap-4 md:grid-cols-2">
+            {faqs.map((faq) => (
+              <article key={faq.question} className="wk-card p-6">
+                <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{faq.question}</h3>
+                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">{faq.answer}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <Footer variant="brand" />
 
       <script
         type="application/ld+json"
@@ -330,6 +308,6 @@ export default function CvOpmakenPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-          </div>
+    </main>
   );
 }

@@ -2,7 +2,7 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-type Template = {
+export type AgencyTemplateFixture = {
   id: string;
   name: string;
   templateId: string;
@@ -14,7 +14,7 @@ type Template = {
   isDefault: boolean;
 };
 
-type TeamMember = {
+export type AgencyTeamMemberFixture = {
   id: string;
   email: string;
   role: string;
@@ -27,14 +27,21 @@ type AgencySettingsPanelProps = {
   owner: boolean;
   canImport: boolean;
   role: string;
+  visualFixture?: AgencySettingsVisualFixture;
 };
 
-type RetentionState = {
+export type AgencyRetentionFixture = {
   options: number[];
   retentionDays: number;
   policySetAt: string | null;
   needsAcknowledgement: boolean;
   preview?: { packsAffected?: number; packsShortened?: number; earliestExpiry?: string | null };
+};
+
+export type AgencySettingsVisualFixture = {
+  templates: AgencyTemplateFixture[];
+  members: AgencyTeamMemberFixture[];
+  retention: AgencyRetentionFixture;
 };
 
 type RetentionPreview = {
@@ -55,11 +62,11 @@ async function readResponse(response: Response): Promise<{ data?: Record<string,
   return { data };
 }
 
-export default function AgencySettingsPanel({ owner, canImport, role }: AgencySettingsPanelProps) {
-  const [templates, setTemplates] = useState<Template[]>([]);
-  const [members, setMembers] = useState<TeamMember[]>([]);
-  const [retention, setRetention] = useState<RetentionState | null>(null);
-  const [retentionChoice, setRetentionChoice] = useState("90");
+export default function AgencySettingsPanel({ owner, canImport, role, visualFixture }: AgencySettingsPanelProps) {
+  const [templates, setTemplates] = useState<AgencyTemplateFixture[]>(visualFixture?.templates || []);
+  const [members, setMembers] = useState<AgencyTeamMemberFixture[]>(visualFixture?.members || []);
+  const [retention, setRetention] = useState<AgencyRetentionFixture | null>(visualFixture?.retention || null);
+  const [retentionChoice, setRetentionChoice] = useState(String(visualFixture?.retention.retentionDays || 90));
   const [pendingRetention, setPendingRetention] = useState<RetentionPreview | null>(null);
   const [retentionConfirmation, setRetentionConfirmation] = useState("");
   const [pendingMemberRemoval, setPendingMemberRemoval] = useState<string | null>(null);
@@ -89,11 +96,11 @@ export default function AgencySettingsPanel({ owner, canImport, role }: AgencySe
     ]);
     const templateResult = await readResponse(templateResponse);
     const teamResult = await readResponse(teamResponse);
-    if (templateResult.data && Array.isArray(templateResult.data.templates)) setTemplates(templateResult.data.templates as Template[]);
-    if (teamResult.data && Array.isArray(teamResult.data.members)) setMembers(teamResult.data.members as TeamMember[]);
+    if (templateResult.data && Array.isArray(templateResult.data.templates)) setTemplates(templateResult.data.templates as AgencyTemplateFixture[]);
+    if (teamResult.data && Array.isArray(teamResult.data.members)) setMembers(teamResult.data.members as AgencyTeamMemberFixture[]);
     const retentionResult = await readResponse(retentionResponse);
     if (retentionResult.data && typeof retentionResult.data.retentionDays === "number") {
-      const loaded = retentionResult.data as unknown as RetentionState;
+      const loaded = retentionResult.data as unknown as AgencyRetentionFixture;
       setRetention(loaded);
       setRetentionChoice(String(loaded.retentionDays));
     }
@@ -101,9 +108,10 @@ export default function AgencySettingsPanel({ owner, canImport, role }: AgencySe
   };
 
   useEffect(() => {
+    if (visualFixture) return;
     const timer = window.setTimeout(() => { void load(); }, 0);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [visualFixture]);
 
   const saveTemplate = async (event: FormEvent) => {
     event.preventDefault();
@@ -217,7 +225,7 @@ export default function AgencySettingsPanel({ owner, canImport, role }: AgencySe
   };
 
   return (
-    <div className="mt-8 space-y-8">
+    <div className="wk-agency-settings-panel">
       {notice ? <div className="border-2 border-emerald-600 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">{notice}</div> : null}
       {error ? <div className="border-2 border-rose-600 bg-rose-50 p-4 text-sm font-semibold text-rose-900">{error}</div> : null}
 

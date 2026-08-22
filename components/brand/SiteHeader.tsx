@@ -17,6 +17,7 @@ type SiteHeaderProps = {
   backHref?: string;
   backLabel?: string;
   context?: string;
+  currentPath?: string;
   rightContent?: ReactNode;
 };
 
@@ -38,6 +39,7 @@ export function SiteHeader({
   backHref,
   backLabel,
   context,
+  currentPath,
   rightContent,
 }: SiteHeaderProps) {
   const hasNavigation = navItems.length > 0;
@@ -52,7 +54,12 @@ export function SiteHeader({
         {hasNavigation ? (
           <nav className="wk-site-nav" aria-label={navAriaLabel}>
             {navItems.map((item) => (
-              <Link key={item.href} href={item.href} className="wk-site-nav-link">
+              <Link
+                key={item.href}
+                href={item.href}
+                className="wk-site-nav-link"
+                aria-current={currentPath === item.href ? "page" : undefined}
+              >
                 {item.label}
               </Link>
             ))}
@@ -89,7 +96,12 @@ export function SiteHeader({
             </summary>
             <nav aria-label="Mobiele navigatie" className="wk-mobile-nav-panel">
               {navItems.map((item) => (
-                <Link key={item.href} href={item.href} className="wk-mobile-nav-link">
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="wk-mobile-nav-link"
+                  aria-current={currentPath === item.href ? "page" : undefined}
+                >
                   {item.label}
                 </Link>
               ))}

@@ -379,7 +379,7 @@ export default function CvVacatureMatchTool({
           <button
             type="submit"
             disabled={!canSubmit}
-            className="w-full border-2 border-black bg-[#4ECDC4] px-5 py-3.5 text-sm font-black text-slate-950 shadow-[3px_3px_0_0_#000] transition-transform hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none"
+            className="w-full rounded-[var(--wk-radius-md,14px)] bg-[var(--wk-primary,#173f38)] px-5 py-3.5 text-sm font-semibold text-[var(--wk-primary-contrast,#ffffff)] transition-colors hover:bg-[var(--wk-primary-hover,#0f332d)] disabled:cursor-not-allowed disabled:opacity-50"
           >
             {loading ? copy.loading : copy.submit}
           </button>
@@ -511,12 +511,12 @@ export default function CvVacatureMatchTool({
             </div>
           </section>
 
-          <section className="border-2 border-black bg-[#FFF7D6] p-5 shadow-[4px_4px_0_0_#000]">
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-600">
+          <section className="rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-highlight-soft,#fff5ce)] p-5">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[var(--wk-ink-muted,#606a67)]">
               {copy.nextStep}
             </p>
-            <h3 className="mt-2 text-xl font-black text-slate-950">{copy.nextTitle}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-700">{copy.nextBody}</p>
+            <h3 className="mt-2 text-xl font-semibold text-[var(--wk-ink,#18211f)]">{copy.nextTitle}</h3>
+            <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted,#606a67)]">{copy.nextBody}</p>
             {error ? (
               <p role="alert" className="mt-3 text-sm font-semibold text-red-700">{error}</p>
             ) : null}
@@ -524,14 +524,14 @@ export default function CvVacatureMatchTool({
               <button
                 type="button"
                 onClick={continueToEditor}
-                className="flex-1 border-2 border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-slate-950"
+                className="flex-1 rounded-[var(--wk-radius-md,14px)] bg-[var(--wk-primary,#173f38)] px-4 py-3 text-sm font-semibold text-[var(--wk-primary-contrast,#ffffff)] transition-colors hover:bg-[var(--wk-primary-hover,#0f332d)]"
               >
                 {copy.primaryCta}
               </button>
               <button
                 type="button"
                 onClick={resetAssessment}
-                className="border-2 border-black bg-white px-4 py-3 text-sm font-black text-slate-950"
+                className="rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border-strong,#aebbb5)] bg-[var(--wk-surface,#ffffff)] px-4 py-3 text-sm font-semibold text-[var(--wk-primary,#173f38)] transition-colors hover:bg-[var(--wk-accent-soft,#dff7f3)]"
               >
                 {copy.secondaryCta}
               </button>

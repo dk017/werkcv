@@ -7,7 +7,7 @@ import { SiteHeader, type BrandNavItem } from "@/components/brand/SiteHeader";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import NavUserMenu from "@/components/NavUserMenu";
 
-const rolloutRoutes = new Set([
+const nativeBrandRoutes = new Set([
   "/templates",
   "/cv-maken",
   "/gratis-cv-maken",
@@ -46,10 +46,41 @@ const rolloutRoutes = new Set([
   "/en/templates",
 ]);
 
+const selfBrandedRoutes = new Set([
+  "/",
+]);
+
+const unwrappedApplicationFamilies = [
+  "/admin",
+  "/agency/account",
+  "/agency/visual-test",
+  "/api",
+  "/chrome",
+  "/editor",
+  "/embed",
+  "/en/editor",
+  "/icon",
+  "/login",
+  "/mijn-cvs",
+  "/opengraph-image",
+  "/success",
+] as const;
+
 function normalizePathname(pathname: string | null): string {
   if (!pathname) return "/";
   const normalized = pathname.replace(/\/+$/, "");
   return normalized || "/";
+}
+
+function isRouteFamily(pathname: string, route: string): boolean {
+  return pathname === route || pathname.startsWith(`${route}/`);
+}
+
+function getBrandRouteMode(pathname: string): "native" | "legacy-content" | null {
+  if (nativeBrandRoutes.has(pathname)) return "native";
+  if (selfBrandedRoutes.has(pathname)) return null;
+  if (unwrappedApplicationFamilies.some((route) => isRouteFamily(pathname, route))) return null;
+  return "legacy-content";
 }
 
 function getHeaderConfig(pathname: string): {
@@ -62,7 +93,7 @@ function getHeaderConfig(pathname: string): {
   context?: string;
   rightContent: ReactNode;
 } {
-  const isAgency = pathname === "/agency" || pathname.startsWith("/voor-bureaus");
+  const isAgency = pathname.startsWith("/agency") || pathname.startsWith("/voor-bureaus");
   const isEnglish = pathname === "/en" || pathname.startsWith("/en/");
 
   if (isAgency) {
@@ -83,8 +114,8 @@ function getHeaderConfig(pathname: string): {
             { href: "/agency#plan", label: "Prijs" },
           ],
       navAriaLabel: "Navigatie voor bureaus",
-      primaryHref: isPublicAgencyLanding ? "/login?next=%2Fagency%2Faccount" : "/agency",
-      primaryLabel: isPublicAgencyLanding ? "Inloggen" : "Bekijk MatchPack",
+      primaryHref: isPublicAgencyLanding ? "/agency/account/matchpack" : "/agency",
+      primaryLabel: isPublicAgencyLanding ? "Start MatchPack" : "Bekijk MatchPack",
       context: pathname.startsWith("/voor-bureaus") ? "voor bureaus" : undefined,
       rightContent: <NavUserMenu uiLanguage="nl" tone="brand" />,
     };
@@ -137,15 +168,16 @@ function getHeaderConfig(pathname: string): {
 
 export default function BrandRouteBoundary({ children }: { children: ReactNode }) {
   const pathname = normalizePathname(usePathname());
+  const routeMode = getBrandRouteMode(pathname);
 
-  if (!rolloutRoutes.has(pathname)) {
+  if (!routeMode) {
     return <>{children}</>;
   }
 
   const config = getHeaderConfig(pathname);
 
   return (
-    <BrandShell className="wk-route-brand">
+    <BrandShell className={`wk-route-brand wk-route-brand--${routeMode}`}>
       <SiteHeader
         logoHref={config.logoHref}
         context={config.context}

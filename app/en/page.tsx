@@ -3,8 +3,6 @@ import { buildEnglishMetadata } from "./metadata";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import EnglishRoleExampleBand from "./components/EnglishRoleExampleBand";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
-import NavUserMenu from "@/components/NavUserMenu";
 import Footer from "@/components/Footer";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
@@ -300,14 +298,12 @@ const sourceLinks = [
   {
     href: "https://europass.europa.eu/en/create-europass-cv",
     title: "Europass: Create your CV",
-    description:
-      "European CV guidance on readable language, tailoring and reverse-chronological experience.",
+    description: "European CV guidance on readable language, tailoring and reverse-chronological experience.",
   },
   {
     href: "https://www.rijksoverheid.nl/onderwerpen/onderwijs-en-internationalisering/vraag-en-antwoord/wat-is-europass-en-wat-kan-ik-er-mee",
     title: "Dutch government: Europass",
-    description:
-      "Official Dutch government explanation of Europass as a European Commission initiative and EU-recognized standard.",
+    description: "Official Dutch government explanation of Europass as a European Commission initiative and EU-recognized standard.",
   },
 ];
 
@@ -354,62 +350,31 @@ const jsonLd = {
 
 export default function EnglishHubPage() {
   return (
-    <main className="min-h-screen bg-[#FFFEF9] pb-20 md:pb-0">
+    <main>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <header className="sticky top-0 z-20 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
-          <Link href="/en" className="font-black text-2xl tracking-tight text-black sm:text-3xl">
-            Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-          </Link>
-          <nav className="hidden items-center gap-6 text-sm font-bold text-black md:flex">
-             <Link href="/en/templates" className="hover:text-yellow-600 transition-colors">Templates</Link>
-             <Link href="/en/pricing" className="hover:text-yellow-600 transition-colors">Pricing</Link>
-             <Link href="/en/guides" className="hover:text-yellow-600 transition-colors">Guides</Link>
-            <Link href="/en/dutch-cv-examples" className="hover:text-yellow-600 transition-colors">Examples</Link>
-            <Link href="/tools" className="hover:text-yellow-600 transition-colors">Tools</Link>
-          </nav>
-          <div className="flex items-center gap-2 sm:gap-4">
-            <LanguageSwitcher tone="solid" />
-            <NavUserMenu uiLanguage="en" />
-            <Link
-              href="/en/editor?template=professional&startSource=en_header"
-              className="bg-[#4ECDC4] text-black px-4 py-2 font-black text-sm border-3 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all"
-              style={{ borderWidth: "3px" }}
-            >
-              Start free
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <section className="border-b-4 border-black bg-white">
-        <div className="max-w-5xl mx-auto px-6 py-14">
-          <span className="inline-block bg-[#4ECDC4] text-black text-sm font-bold px-3 py-1 mb-4 border-2 border-black">
-            ENGLISH CV FOR THE NETHERLANDS
-          </span>
+      <section className="wk-section">
+        <div className="wk-container">
+          <span className="wk-badge wk-badge-accent mb-4">English CV for the Netherlands</span>
           <div className="mb-4 flex flex-wrap gap-2">
             {["Start free", "One-time €4.99 PDF download", "No subscription"].map((badge) => (
-              <span
-                key={badge}
-                className="inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-black"
-              >
+              <span key={badge} className="wk-trust-pill">
                 {badge}
               </span>
             ))}
           </div>
-          <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            Build an English CV for jobs in the Netherlands
+          <h1 className="max-w-4xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+            Build an <span className="wk-hero-highlight">English CV</span> for jobs in the Netherlands
           </h1>
-          <p className="text-lg md:text-xl text-gray-700 max-w-4xl leading-relaxed">
+          <p className="mt-5 max-w-4xl text-lg leading-8 text-[var(--wk-ink-muted)]">
             Use WerkCV when you want English CV content with Dutch-market structure:
             clear section order, practical proof, language levels, ATS-safe layout and
             examples for jobs in the Netherlands.
           </p>
-          <p className="mt-4 max-w-3xl text-base font-semibold text-slate-700">
+          <p className="mt-4 max-w-3xl text-base font-medium leading-7 text-[var(--wk-ink)]">
             Start for free, finish your CV first, and only pay a one-time €4.99 when you want the PDF.
             No subscription, no trial trap, and no auto-renewal.
           </p>
@@ -418,7 +383,7 @@ export default function EnglishHubPage() {
               href="/en/editor?template=professional&startSource=en_home_hero"
               trackingLocation="english_hub_hero"
               trackingLabel="build_netherlands_cv"
-              className="inline-block bg-[#4ECDC4] text-black font-black px-5 py-3 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="wk-button wk-button-primary"
             >
               Build my Netherlands CV
             </TrackedLandingLink>
@@ -426,7 +391,7 @@ export default function EnglishHubPage() {
               href="/en/editor?upload=1&startSource=en_home_upload"
               trackingLocation="english_hub_hero"
               trackingLabel="upload_current_cv"
-              className="inline-block border-2 border-black bg-white px-5 py-3 font-black text-black hover:bg-slate-50"
+              className="wk-button wk-button-secondary"
             >
               Upload my current CV
             </TrackedLandingLink>
@@ -434,12 +399,12 @@ export default function EnglishHubPage() {
           <div className="mt-4">
             <Link
               href="/en/guides/cv-format-netherlands-english"
-              className="text-sm font-semibold text-slate-600 underline decoration-slate-400 underline-offset-4 hover:text-slate-950"
+              className="text-sm font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
             >
               Read the Netherlands CV format guidance
             </Link>
           </div>
-          <p className="mt-4 text-sm font-medium text-gray-600">
+          <p className="mt-4 text-sm leading-6 text-[var(--wk-ink-muted)]">
             Best for expats, international students, English-speaking professionals and candidates applying to Dutch companies in English.
           </p>
         </div>
@@ -450,203 +415,216 @@ export default function EnglishHubPage() {
         source="public_editor_home_en"
       />
 
-      <section className="max-w-5xl mx-auto px-6 py-12">
-        <div className="mb-12 border-4 border-black bg-[#FFF7E8] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-          <div className="max-w-3xl">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-600">How WerkCV works</p>
-            <h2 className="mt-2 text-3xl font-black text-gray-900">
-              Create your English CV before you pay
-            </h2>
-            <p className="mt-3 text-lg leading-relaxed text-gray-700">
-              Build and review the complete CV first. Payment is only required when you choose to download the finished PDF.
-            </p>
-          </div>
-          <ol className="mt-6 grid gap-5 md:grid-cols-3">
-            {howItWorks.map((item) => (
-              <li key={item.step} className="border-3 border-black bg-white p-5">
-                <span className="inline-flex h-9 w-9 items-center justify-center border-2 border-black bg-[#4ECDC4] font-black text-black">
-                  {item.step}
-                </span>
-                <h3 className="mt-4 text-xl font-black text-gray-900">{item.title}</h3>
-                <p className="mt-2 leading-relaxed text-gray-700">{item.description}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-
-        <div className="mb-12">
-          <EnglishRoleExampleBand trackingLocation="english_hub_role_examples" />
-        </div>
-
-        <div className="mb-12 grid gap-5 md:grid-cols-3">
-          {proofPoints.map((point) => (
-            <div key={point.title} className="border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-              <h2 className="text-xl font-black text-gray-900">{point.title}</h2>
-              <p className="mt-2 text-gray-700 leading-relaxed">{point.description}</p>
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-card wk-card-accent p-6 md:p-8">
+            <div className="max-w-3xl">
+              <div className="wk-eyebrow mb-3">
+                <span>How WerkCV works</span>
+              </div>
+              <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+                Create your English CV before you pay
+              </h2>
+              <p className="mt-3 text-base leading-7 text-[var(--wk-ink-muted)] md:text-lg md:leading-8">
+                Build and review the complete CV first. Payment is only required when you choose to download the finished PDF.
+              </p>
             </div>
-          ))}
-        </div>
-
-        <div className="mb-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-          <div className="max-w-3xl">
-            <h2 className="text-3xl font-black text-gray-900 mb-3">
-              Choose the fastest route for your situation
-            </h2>
-            <p className="text-gray-700 text-lg">
-              Do not start by reading every guide. Pick the path that matches the job you need done:
-              build now, fix format, adapt a student profile, improve ATS match or convert LinkedIn.
-            </p>
+            <ol className="mt-6 grid gap-5 md:grid-cols-3">
+              {howItWorks.map((item) => (
+                <li
+                  key={item.step}
+                  className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-5"
+                >
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[var(--wk-accent-soft)] font-semibold text-[var(--wk-primary)]">
+                    {item.step}
+                  </span>
+                  <h3 className="mt-4 text-xl font-semibold text-[var(--wk-ink)]">{item.title}</h3>
+                  <p className="mt-2 leading-7 text-[var(--wk-ink-muted)]">{item.description}</p>
+                </li>
+              ))}
+            </ol>
           </div>
 
-          <div className="mt-6 grid gap-5 md:grid-cols-2">
-            {startPaths.map((path) => (
+          <div className="mb-12 mt-12">
+            <EnglishRoleExampleBand trackingLocation="english_hub_role_examples" />
+          </div>
+
+          <div className="mb-12 grid gap-5 md:grid-cols-3">
+            {proofPoints.map((point) => (
+              <div key={point.title} className="wk-card p-5">
+                <h2 className="text-xl font-semibold text-[var(--wk-ink)]">{point.title}</h2>
+                <p className="mt-2 leading-7 text-[var(--wk-ink-muted)]">{point.description}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="wk-card mb-12 p-6 md:p-8">
+            <div className="max-w-3xl">
+              <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+                Choose the fastest route for your situation
+              </h2>
+              <p className="mt-3 text-base leading-7 text-[var(--wk-ink-muted)] md:text-lg">
+                Do not start by reading every guide. Pick the path that matches the job you need done:
+                build now, fix format, adapt a student profile, improve ATS match or convert LinkedIn.
+              </p>
+            </div>
+
+            <div className="mt-6 grid gap-5 md:grid-cols-2">
+              {startPaths.map((path) => (
+                <Link
+                  key={path.href}
+                  href={path.href}
+                  className="block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-5 transition-colors hover:border-[var(--wk-primary)] hover:bg-[var(--wk-accent-soft)]"
+                >
+                  <h3 className="mb-2 text-xl font-semibold text-[var(--wk-ink)]">{path.title}</h3>
+                  <p className="text-[var(--wk-ink-muted)]">{path.description}</p>
+                  <span className="wk-button wk-button-secondary wk-button-small mt-4">
+                    {path.cta}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="wk-card wk-card-accent mb-12 p-6 md:p-8">
+            <h2 className="mb-3 text-3xl font-semibold text-[var(--wk-ink)]">
+              What belongs on a Dutch CV in English?
+            </h2>
+            <p className="max-w-3xl text-base leading-8 text-[var(--wk-ink-muted)] md:text-lg">
+              A strong Netherlands CV in English usually includes contact details, city or relocation context,
+              one target role, a short profile, recent work experience first, education, skills, languages,
+              certifications and optional links. Keep the writing practical: tools, scope, outcomes and
+              vacancy language matter more than long career storytelling.
+            </p>
+            <div className="mt-5 flex flex-wrap gap-3">
+              <Link href="/en/guides/cv-format-netherlands-english" className="wk-button wk-button-secondary">
+                Read the full format guide
+              </Link>
+              <Link href="/en/dutch-cv-template" className="wk-button wk-button-primary">
+                Open Dutch CV template guide
+              </Link>
+            </div>
+          </div>
+
+          <div className="mb-6 max-w-3xl">
+            <h2 className="mb-3 text-3xl font-semibold text-[var(--wk-ink)]">
+              English CV resources
+            </h2>
+            <p className="text-base leading-7 text-[var(--wk-ink-muted)] md:text-lg">
+              These pages are split by intent so the hub does not compete with the detailed guides.
+            </p>
+          </div>
+          <div className="grid gap-5 md:grid-cols-2">
+            {pages.map((page) => (
               <Link
-                key={path.href}
-                href={path.href}
-                className="block border-4 border-black bg-[#FFF7E8] p-5 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all"
+                key={page.href}
+                href={page.href}
+                className="wk-card block p-6 transition-colors hover:border-[var(--wk-primary)]"
               >
-                <h3 className="text-xl font-black mb-2 text-gray-900">{path.title}</h3>
-                <p className="text-gray-700">{path.description}</p>
-                <span className="mt-4 inline-block border-2 border-black bg-white px-3 py-2 text-sm font-black text-black">
-                  {path.cta}
-                </span>
+                <h2 className="mb-2 text-2xl font-semibold text-[var(--wk-ink)]">{page.title}</h2>
+                <p className="text-[var(--wk-ink-muted)]">{page.description}</p>
               </Link>
             ))}
           </div>
-        </div>
 
-        <div className="mb-12 border-4 border-black bg-[#E7F8F6] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-3xl font-black text-gray-900 mb-3">
-            What belongs on a Dutch CV in English?
-          </h2>
-          <p className="max-w-3xl text-gray-700 text-lg leading-relaxed">
-            A strong Netherlands CV in English usually includes contact details, city or relocation context,
-            one target role, a short profile, recent work experience first, education, skills, languages,
-            certifications and optional links. Keep the writing practical: tools, scope, outcomes and
-            vacancy language matter more than long career storytelling.
-          </p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <Link href="/en/guides/cv-format-netherlands-english" className="border-4 border-black bg-white px-5 py-3 font-black text-black">
-              Read the full format guide
-            </Link>
-            <Link href="/en/dutch-cv-template" className="border-4 border-black bg-black px-5 py-3 font-black text-white">
-              Open Dutch CV template guide
-            </Link>
+          <div className="mt-12 border-t border-[var(--wk-border)] pt-12">
+            <div className="max-w-3xl">
+              <h2 className="mb-3 text-3xl font-semibold text-[var(--wk-ink)]">
+                Practical Tools for Expats Applying in the Netherlands
+              </h2>
+              <p className="text-base leading-7 text-[var(--wk-ink-muted)] md:text-lg">
+                CV format is only one part of the move. These tools help you compare routes,
+                salary thresholds, and job-title wording before you localize your applications.
+              </p>
+            </div>
+
+            <div className="mt-6 grid gap-5 md:grid-cols-2">
+              {expatTools.map((tool) => (
+                <Link
+                  key={tool.href}
+                  href={tool.href}
+                  className="wk-card block p-6 transition-colors hover:border-[var(--wk-primary)]"
+                >
+                  <h3 className="mb-2 text-xl font-semibold text-[var(--wk-ink)]">{tool.title}</h3>
+                  <p className="text-[var(--wk-ink-muted)]">{tool.description}</p>
+                </Link>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div className="mb-6 max-w-3xl">
-          <h2 className="text-3xl font-black text-gray-900 mb-3">
-            English CV resources
-          </h2>
-          <p className="text-gray-700 text-lg">
-            These pages are split by intent so the hub does not compete with the detailed guides.
-          </p>
-        </div>
-        <div className="grid md:grid-cols-2 gap-5">
-          {pages.map((page) => (
+          <div className="wk-card mt-12 p-6 md:p-8">
+            <h2 className="mb-3 text-3xl font-semibold text-[var(--wk-ink)]">
+              Sources behind this hub
+            </h2>
+            <p className="max-w-3xl text-base leading-7 text-[var(--wk-ink-muted)] md:text-lg">
+              The detailed guides link to more specific sources. This hub uses the following public references
+              for the broad Netherlands CV context.
+            </p>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {sourceLinks.map((source) => (
+                <a
+                  key={source.href}
+                  href={source.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4 transition-colors hover:border-[var(--wk-primary)] hover:bg-[var(--wk-accent-soft)]"
+                >
+                  <h3 className="text-sm font-semibold text-[var(--wk-ink)]">{source.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[var(--wk-ink-muted)]">{source.description}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-10 flex flex-wrap gap-3">
             <Link
-              key={page.href}
-              href={page.href}
-              className="block bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all"
+              href="/en/editor?template=professional&startSource=en_home_bottom"
+              className="wk-button wk-button-primary"
             >
-              <h2 className="text-2xl font-black mb-2 text-gray-900">{page.title}</h2>
-              <p className="text-gray-700">{page.description}</p>
+              Open English editor
             </Link>
-          ))}
-        </div>
-
-        <div className="mt-12 border-t-4 border-black pt-12">
-          <div className="max-w-3xl">
-            <h2 className="text-3xl font-black text-gray-900 mb-3">
-              Practical Tools for Expats Applying in the Netherlands
-            </h2>
-            <p className="text-gray-700 text-lg">
-              CV format is only one part of the move. These tools help you compare routes,
-              salary thresholds, and job-title wording before you localize your applications.
-            </p>
+            <Link
+              href="/en/templates?startSource=en_home_template_compare"
+              className="wk-button wk-button-secondary"
+            >
+              Open CV Templates
+            </Link>
+            <Link
+              href="/en/dutch-cv-examples"
+              className="wk-button wk-button-secondary"
+            >
+              English CV examples
+            </Link>
+            <Link
+              href="/en/english-cv-example-netherlands"
+              className="wk-button wk-button-secondary"
+            >
+              Netherlands example
+            </Link>
           </div>
 
-          <div className="mt-6 grid md:grid-cols-2 gap-5">
-            {expatTools.map((tool) => (
-              <Link
-                key={tool.href}
-                href={tool.href}
-                className="block bg-white border-4 border-black p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all"
-              >
-                <h3 className="text-xl font-black mb-2 text-gray-900">{tool.title}</h3>
-                <p className="text-gray-700">{tool.description}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-12 border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-          <h2 className="text-3xl font-black text-gray-900 mb-3">
-            Sources behind this hub
-          </h2>
-          <p className="max-w-3xl text-gray-700 text-lg">
-            The detailed guides link to more specific sources. This hub uses the following public references
-            for the broad Netherlands CV context.
-          </p>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {sourceLinks.map((source) => (
-              <a
-                key={source.href}
-                href={source.href}
-                target="_blank"
-                rel="noreferrer"
-                className="block border-2 border-black bg-[#FFFEF9] p-4 hover:bg-yellow-100 transition-colors"
-              >
-                <h3 className="text-sm font-black text-gray-900">{source.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-gray-700">{source.description}</p>
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-10 flex flex-wrap gap-3">
-          <Link
-            href="/en/editor?template=professional&startSource=en_home_bottom"
-            className="inline-block bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black"
-          >
-            Open English editor
-          </Link>
-          <Link
-            href="/en/templates?startSource=en_home_template_compare"
-            className="inline-block bg-black text-white font-bold px-5 py-3 border-4 border-black"
-          >
-            Open CV Templates
-          </Link>
-          <Link
-            href="/en/dutch-cv-examples"
-            className="inline-block bg-white text-black font-bold px-5 py-3 border-4 border-black"
-          >
-            English CV examples
-          </Link>
-          <Link
-            href="/en/english-cv-example-netherlands"
-            className="inline-block bg-white text-black font-bold px-5 py-3 border-4 border-black"
-          >
-            Netherlands example
-          </Link>
-        </div>
-
-        <div className="mt-12 border-4 border-black bg-[#FFF7E8] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-600">Before you start</p>
-          <h2 className="mt-2 text-3xl font-black text-gray-900">English CV builder questions</h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
-            {englishHomeFaqs.map((item) => (
-              <details key={item.question} className="border-2 border-black bg-white p-4">
-                <summary className="cursor-pointer font-black text-gray-900">{item.question}</summary>
-                <p className="mt-3 leading-relaxed text-gray-700">{item.answer}</p>
-              </details>
-            ))}
+          <div className="wk-card mt-12 p-6 md:p-8">
+            <div className="wk-eyebrow mb-3">
+              <span>Before you start</span>
+            </div>
+            <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">English CV builder questions</h2>
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              {englishHomeFaqs.map((item) => (
+                <details
+                  key={item.question}
+                  className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] p-4"
+                >
+                  <summary className="cursor-pointer font-semibold text-[var(--wk-ink)]">{item.question}</summary>
+                  <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">{item.answer}</p>
+                </details>
+              ))}
+            </div>
           </div>
         </div>
       </section>
-      <Footer uiLanguage="en" />
+      <Footer variant="brand" uiLanguage="en" />
       <MobileStickyCta
+        variant="brand"
         text="Start free. Final PDF €4.99 including VAT. No subscription."
         buttonLabel="Build my CV"
         href="/en/editor?template=professional&startSource=en_home_sticky"

@@ -113,185 +113,168 @@ export default function CvMakenInWordPage() {
     ],
   };
   return (
-    <div className="min-h-screen bg-[#FFFEF0]">
-      <header className="relative z-10 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-black tracking-tight text-black">
-              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-            </span>
-          </Link>
-          <Link
-            href="/editor"
-            className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
-          >
-            Start in editor
-          </Link>
-        </div>
-      </header>
-
-      <main className="relative z-10 mx-auto max-w-5xl px-6 py-14">
-        <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-          <div>
-            <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
-              Word-intentie
-            </p>
-            <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              CV maken in Word? Kies liever een template en download daarna als PDF
-            </h1>
-            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Mensen zoeken nog vaak op <strong>cv maken in Word</strong> omdat dat
-              vertrouwd voelt. In de praktijk ontstaat daar vaak opmaakfrictie.
-              WerkCV is geen Word-export tool, maar een sneller alternatief: je kiest
-              een template, werkt online in de editor en downloadt daarna een stabiele
-              PDF zonder te worstelen met tabellen, marges en schuivende koppen.
-            </p>
-            <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
-              Zie deze route als een Word-specifieke beslispagina. Zoek je niet per se
-              naar Word, maar gewoon naar de beste algemene aanpak? Dan is{" "}
-              <Link
-                href="/cv-maken"
-                className="font-black text-black underline decoration-2 underline-offset-4"
-              >
-                CV maken
-              </Link>{" "}
-              de bredere hoofdroute.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                href="/templates"
-                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
-              >
-                Bekijk CV templates
-              </Link>
-              <Link
-                href="/editor"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Of start direct in editor
-              </Link>
-            </div>
-          </div>
-
-          <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">Waarom Word vaak vertraagt</h2>
-            <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-              {wordProblems.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <p className="mt-5 border-t-4 border-black pt-5 text-sm font-black text-black">
-              WerkCV eindigt in PDF, niet in Word.
-            </p>
-          </div>
-        </section>
-
-        <section className="mb-14 grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Praktische start
-            </p>
-            <h2 className="mt-2 text-3xl font-black text-black">
-              Beste start als je normaal in Word begint
-            </h2>
-            <div className="mt-5 border-4 border-black bg-[#FFFEF0] p-5">
-              <h3 className="text-2xl font-black text-black">{simpleTemplate.nameDutch}</h3>
-              <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                {simpleTemplate.description}
+    <main>
+      <section className="wk-section">
+        <div className="wk-container">
+          <div className="grid items-start gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+            <div>
+              <div className="wk-eyebrow mb-3">
+                <span>Word-intentie</span>
+              </div>
+              <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
+                <span className="wk-hero-highlight">CV maken in Word?</span> Kies liever een template
+                en download daarna als PDF
+              </h1>
+              <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
+                Mensen zoeken nog vaak op <strong>cv maken in Word</strong> omdat dat vertrouwd
+                voelt. In de praktijk ontstaat daar vaak opmaakfrictie. WerkCV is geen Word-export
+                tool, maar een sneller alternatief: je kiest een template, werkt online in de editor
+                en downloadt daarna een stabiele PDF zonder te worstelen met tabellen, marges en
+                schuivende koppen.
               </p>
-              <ul className="mt-4 space-y-2 text-sm font-medium leading-relaxed text-slate-700">
-                <li>Rustige, vertrouwde basis.</li>
-                <li>Makkelijk te vullen zonder layoutgedoe.</li>
-                <li>Goede stap van Word-denken naar sneller solliciteren.</li>
-              </ul>
-              <div className="mt-5 flex flex-wrap gap-3">
+              <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--wk-ink-muted)]">
+                Zie deze route als een Word-specifieke beslispagina. Zoek je niet per se naar Word,
+                maar gewoon naar de beste algemene aanpak? Dan is{" "}
                 <Link
-                  href="/editor"
-                  className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
+                  href="/cv-maken"
+                  className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
                 >
-                  Gebruik deze template
+                  CV maken
+                </Link>{" "}
+                de bredere hoofdroute.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/templates" className="wk-button wk-button-primary">
+                  Bekijk CV templates
                 </Link>
-                <Link
-                  href="/templates"
-                  className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
-                >
-                  Bekijk alle templates
+                <Link href="/editor" className="wk-button wk-button-secondary">
+                  Of start direct in editor
                 </Link>
               </div>
             </div>
-          </div>
 
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              Betere flow
-            </p>
-            <h2 className="mt-2 text-3xl font-black text-black">
-              Van Word-intentie naar een sterkere sollicitatieversie
-            </h2>
-            <div className="mt-6 space-y-4">
-              {wordFlow.map((item, index) => (
-                <div key={item.title} className="flex gap-4">
-                  <div
-                    className="flex h-9 w-9 flex-shrink-0 items-center justify-center border-3 border-black bg-white text-sm font-black text-black"
-                    style={{ borderWidth: "3px" }}
-                  >
-                    {index + 1}
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-black text-black">{item.title}</h3>
-                    <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
-                  </div>
-                </div>
-              ))}
+            <div className="wk-card h-fit p-6">
+              <h2 className="text-xl font-semibold text-[var(--wk-ink)]">
+                Waarom Word vaak vertraagt
+              </h2>
+              <ul className="mt-5 space-y-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                {wordProblems.map((item) => (
+                  <li key={item} className="flex items-start gap-2">
+                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--wk-success-soft)] text-[var(--wk-success)]">
+                      <svg className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                      </svg>
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-6 border-t border-[var(--wk-border)] pt-5 text-sm font-semibold text-[var(--wk-ink)]">
+                WerkCV eindigt in PDF, niet in Word.
+              </p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mb-14 border-4 border-black bg-black p-8 text-white shadow-[8px_8px_0px_0px_rgba(250,204,21,1)]">
-          <h2 className="text-3xl font-black">
-            Gebruik Word niet als einddoel, maar als zoeksignaal
-          </h2>
-          <p className="mt-4 max-w-3xl text-base font-medium leading-relaxed text-slate-200">
-            De meeste gebruikers willen uiteindelijk geen Word-bestand bewaren, maar
-            gewoon een nette sollicitatieversie versturen. WerkCV verkort die route:
-            template kiezen, inhoud invullen, per vacature aanscherpen en daarna als
-            PDF downloaden.
-          </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              href="/templates"
-              className="border-4 border-white bg-yellow-400 px-5 py-3 text-base font-black text-black"
-            >
-              Bekijk templates
-            </Link>
-            <Link
-              href="/cv-maken-pdf"
-              className="border-4 border-white bg-transparent px-5 py-3 text-base font-black text-white"
-            >
-              Waarom PDF beter werkt
-            </Link>
-          </div>
-        </section>
-
-        <section className="mb-14">
-          <h2 className="text-3xl font-black text-black">Veelgestelde vragen over CV maken in Word</h2>
-          <div className="mt-6 space-y-4">
-            {faqs.map((faq) => (
-              <article
-                key={faq.question}
-                className="border-4 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-              >
-                <h3 className="text-lg font-black text-black">{faq.question}</h3>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                  {faq.answer}
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
+            <div className="wk-card p-6">
+              <div className="wk-eyebrow mb-3">
+                <span>Praktische start</span>
+              </div>
+              <h2 className="text-2xl font-semibold text-[var(--wk-ink)]">
+                Beste start als je normaal in Word begint
+              </h2>
+              <div className="mt-5 rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-5">
+                <h3 className="text-2xl font-semibold text-[var(--wk-ink)]">
+                  {simpleTemplate.nameDutch}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                  {simpleTemplate.description}
                 </p>
-              </article>
+                <ul className="mt-4 space-y-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
+                  <li>Rustige, vertrouwde basis.</li>
+                  <li>Makkelijk te vullen zonder layoutgedoe.</li>
+                  <li>Goede stap van Word-denken naar sneller solliciteren.</li>
+                </ul>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <Link href="/editor" className="wk-button wk-button-primary wk-button-small">
+                    Gebruik deze template
+                  </Link>
+                  <Link href="/templates" className="wk-button wk-button-secondary wk-button-small">
+                    Bekijk alle templates
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div className="wk-eyebrow mb-3">
+                <span>Betere flow</span>
+              </div>
+              <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+                Van Word-intentie naar een sterkere sollicitatieversie
+              </h2>
+              <div className="mt-6 space-y-4">
+                {wordFlow.map((item, index) => (
+                  <div key={item.title} className="flex gap-4">
+                    <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full bg-[var(--wk-accent-soft)] text-sm font-semibold text-[var(--wk-primary)]">
+                      {index + 1}
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{item.title}</h3>
+                      <p className="mt-1 text-sm leading-6 text-[var(--wk-ink-muted)]">{item.body}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-8 md:p-12">
+            <h2 className="max-w-3xl text-3xl font-semibold text-[var(--wk-primary-contrast)]">
+              Gebruik Word niet als einddoel, maar als zoeksignaal
+            </h2>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-[var(--wk-primary-contrast)]/80 sm:text-base">
+              De meeste gebruikers willen uiteindelijk geen Word-bestand bewaren, maar gewoon een
+              nette sollicitatieversie versturen. WerkCV verkort die route: template kiezen, inhoud
+              invullen, per vacature aanscherpen en daarna als PDF downloaden.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link href="/templates" className="wk-button wk-button-accent">
+                Bekijk templates
+              </Link>
+              <Link href="/cv-maken-pdf" className="wk-button wk-button-secondary">
+                Waarom PDF beter werkt
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <h2 className="text-center text-3xl font-semibold text-[var(--wk-ink)]">
+            Veelgestelde vragen over CV maken in Word
+          </h2>
+          <div className="mx-auto mt-8 max-w-3xl space-y-4">
+            {faqs.map((faq) => (
+              <details key={faq.question} className="wk-card p-5">
+                <summary className="cursor-pointer font-semibold text-[var(--wk-ink)]">
+                  {faq.question}
+                </summary>
+                <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">{faq.answer}</p>
+              </details>
             ))}
           </div>
-        </section>
-      </main>
-
-      <Footer />
+        </div>
+      </section>
 
       <script
         type="application/ld+json"
@@ -301,6 +284,8 @@ export default function CvMakenInWordPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-          </div>
+
+      <Footer variant="brand" />
+    </main>
   );
 }

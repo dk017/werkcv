@@ -101,17 +101,12 @@ export default function AgencyPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFEF9] text-slate-900">
+    <div className="wk-agency-marketing">
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-        <header className="flex items-center justify-between gap-4 border-b-2 border-slate-900 pb-5">
-          <Link href="/" className="text-xl font-black tracking-tight">Werk<span className="bg-[#4ECDC4] px-1">CV</span>.nl</Link>
-          <div className="flex items-center gap-4 text-sm font-bold"><Link href="/voor-bureaus" className="hidden hover:text-emerald-700 sm:inline">Voor bureaus</Link><a href="#hoe-het-werkt" className="hidden hover:text-emerald-700 sm:inline">Werking</a><a href="#plan" className="hidden hover:text-emerald-700 sm:inline">Prijs</a><Link href="/login?next=%2Fagency%2Faccount" className="hover:text-emerald-700">Inloggen</Link></div>
-        </header>
-
-        <section className="grid gap-10 py-14 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+        <section className="wk-agency-marketing-hero grid gap-10 py-14 sm:py-20 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">Voor recruitmentbureaus en detacheerders</p>
-            <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">Maak ieder kandidaatvoorstel verdedigbaar vóór het naar de klant gaat.</h1>
+            <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">Maak ieder kandidaat<wbr />voorstel verdedigbaar vóór het naar de klant gaat.</h1>
             <p className="mt-5 max-w-2xl text-lg leading-relaxed text-slate-600">WerkCV legt functie-eisen naast concreet CV-bewijs, houdt ontbrekende informatie zichtbaar en brengt bevestigde voorstelgegevens samen in één review. U keurt de snapshot goed en kiest daarna een volledig voorstel of een optionele versie zonder directe contactgegevens als PDF of DOCX.</p>
             <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
               <CheckoutAction location="agency_hero_checkout" />
@@ -162,7 +157,7 @@ export default function AgencyPage() {
       <FAQJsonLd questions={faqs} />
       <JsonLd data={softwareJsonLd} />
       <OrganizationJsonLd />
-      <Footer />
+      <Footer variant="brand" />
     </div>
   );
 }

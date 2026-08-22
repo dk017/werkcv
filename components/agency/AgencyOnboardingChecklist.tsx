@@ -56,7 +56,7 @@ export default function AgencyOnboardingChecklist({
   }
 
   return (
-    <section className="mt-8 border-2 border-slate-900 bg-white p-5 shadow-[4px_4px_0px_0px_rgba(78,205,196,1)] sm:p-6" aria-labelledby="agency-onboarding-title">
+    <section className="wk-agency-panel wk-agency-onboarding" aria-labelledby="agency-onboarding-title">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Zelf starten</p>

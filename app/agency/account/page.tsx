@@ -6,6 +6,7 @@ import { getAgencyStatusLabel } from "@/lib/agency-plan";
 import { prisma } from "@/lib/prisma";
 import AgencyDraftResume from "@/components/agency/AgencyDraftResume";
 import AgencyOnboardingChecklist, { type AgencyOnboardingItem } from "@/components/agency/AgencyOnboardingChecklist";
+import AgencyAccountShell from "@/components/agency/AgencyAccountShell";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -66,25 +67,19 @@ export default async function AgencyAccountPage({
   }
 
   return (
-    <main className="min-h-screen bg-[#FFFEF9] px-4 py-8 text-slate-900 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl">
-        <header className="flex flex-wrap items-center justify-between gap-4 border-b-2 border-slate-900 pb-5">
-          <Link href="/agency" className="text-xl font-black tracking-tight">
-            Werk<span className="bg-[#4ECDC4] px-1">CV</span>.nl
-          </Link>
-          <div className="flex flex-wrap items-center gap-4 text-sm font-semibold"><Link href="/agency/account/settings" className="text-emerald-700 underline underline-offset-4">Instellingen & team</Link><Link href="/agency/account/insights" className="text-emerald-700 underline underline-offset-4">Inzichten</Link><span className="text-slate-600">{user.email} · {access.role}</span></div>
-        </header>
-
-        <section className="mt-8 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+    <AgencyAccountShell currentPath="/agency/account" email={user.email} role={access.role}>
+    <main className="wk-agency-main">
+      <div className="wk-container wk-agency-container-narrow">
+        <section className="wk-agency-page-hero grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">Agency account</p>
+            <p className="wk-eyebrow">Agency account</p>
             <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Jouw WerkCV MatchPack-workspace</h1>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
               Maak complete kandidaatvoorstellen en losse kandidaat-CV&apos;s via jouw vaste WerkCV-route. Een nieuw document of definitief goedgekeurd voorstel telt als één van de 50 slots.
             </p>
           </div>
 
-          <div className="border-4 border-slate-900 bg-yellow-300 p-5 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)]">
+          <div className="wk-agency-plan-summary">
             <p className="text-xs font-black uppercase tracking-[0.16em]">Agency billing tier</p>
             <p className="mt-2 text-4xl font-black">€149 <span className="text-base">/ maand</span></p>
             <p className="mt-2 text-sm font-bold">{statusLabel}</p>
@@ -97,22 +92,22 @@ export default async function AgencyAccountPage({
         </section>
 
         {activationPending ? (
-          <div className="mt-8 border-2 border-amber-500 bg-amber-50 p-4 text-sm font-semibold text-amber-950">
+          <div className="wk-agency-alert wk-agency-alert-warning" role="status">
             We verwerken je betaling. Vernieuw deze pagina over een moment; je krijgt toegang zodra de abonnementsbevestiging binnen is.
           </div>
         ) : null}
 
         {quotaError ? (
-          <div className="mt-8 border-2 border-rose-500 bg-rose-50 p-4 text-sm font-semibold text-rose-950">
+          <div className="wk-agency-alert wk-agency-alert-danger" role="alert">
             De maandlimiet van 50 kandidaatdocumenten en goedgekeurde voorstellen is bereikt. Bestaande documenten en voorstellen blijven beschikbaar.
           </div>
         ) : null}
 
         {needsAgencyRetentionAcknowledgement(access) ? (
-          <div className="mt-8 border-2 border-amber-600 bg-amber-50 p-4 text-sm font-semibold text-amber-950">
+          <div className="wk-agency-alert wk-agency-alert-warning">
             <p className="font-black">Kies eerst je bewaartermijn</p>
             <p className="mt-1">Je bestaande MatchPack-inhoud wordt niet stilzwijgend verwijderd. Kies in Instellingen een retentiebeleid voordat automatische verwijdering actief wordt.</p>
-            <Link href="/agency/account/settings" className="mt-3 inline-flex border-2 border-slate-900 bg-yellow-300 px-3 py-2 text-xs font-black">Retentiebeleid instellen</Link>
+            <Link href="/agency/account/settings" className="wk-button wk-button-secondary mt-3">Retentiebeleid instellen</Link>
           </div>
         ) : null}
 
@@ -123,7 +118,7 @@ export default async function AgencyAccountPage({
         <AgencyDraftResume canCreate={access.state === "active" && access.canCreate && access.isOwner && canCreateAgencyWork(access)} />
 
         {access.state === "active" && access.period ? (
-          <section className="mt-8 border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+          <section className="wk-agency-panel wk-agency-usage-card">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Gebruik deze periode</p>
@@ -143,32 +138,32 @@ export default async function AgencyAccountPage({
               {access.canCreate && access.isOwner && canCreateAgencyWork(access) ? (
                 <Link
                   href="/editor?template=professional&startSource=agency_plan"
-                  className="inline-flex border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-transform hover:translate-x-0.5 hover:translate-y-0.5"
+                  className="wk-button wk-button-secondary"
                 >
                   Nieuw CV maken
                 </Link>
               ) : null}
               <Link
                 href="/agency/account/matchpack"
-                className="inline-flex border-2 border-slate-900 bg-yellow-300 px-4 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] transition-transform hover:translate-x-0.5 hover:translate-y-0.5"
+                className="wk-button wk-button-primary"
               >
                 MatchPack maken
               </Link>
-              <Link href="/templates" className="inline-flex border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700">
+              <Link href="/templates" className="wk-button wk-button-quiet">
                 Templates bekijken
               </Link>
             </div>
           </section>
         ) : access.state === "none" ? (
-          <section className="mt-8 border-2 border-slate-900 bg-white p-6">
+          <section className="wk-agency-panel">
             <h2 className="text-2xl font-black">Nog geen Agency billing tier gekoppeld</h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">Start via de agency-pagina of gebruik hetzelfde e-mailadres als tijdens checkout.</p>
-            <Link href="/agency" className="mt-5 inline-flex border-2 border-slate-900 bg-yellow-300 px-4 py-3 text-sm font-black">
+            <Link href="/agency" className="wk-button wk-button-primary mt-5">
               Bekijk MatchPack voor bureaus
             </Link>
           </section>
         ) : (
-          <section className="mt-8 border-2 border-slate-900 bg-white p-6">
+          <section className="wk-agency-panel">
             <h2 className="text-2xl font-black">Toegang wordt gecontroleerd</h2>
             <p className="mt-2 text-sm leading-relaxed text-slate-600">
               De agency-account is nog niet actief. Gebruik hetzelfde e-mailadres als bij checkout en vernieuw deze pagina zodra de betaling is verwerkt.
@@ -176,7 +171,7 @@ export default async function AgencyAccountPage({
           </section>
         )}
 
-        <section className="mt-8">
+        <section className="wk-agency-documents">
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Laatste documenten</p>
@@ -184,7 +179,7 @@ export default async function AgencyAccountPage({
             </div>
             <div className="flex flex-wrap gap-3 text-sm font-bold"><Link href="/agency/account/matchpack" className="text-emerald-700 underline underline-offset-4">MatchPacks bekijken</Link><Link href="/agency" className="text-emerald-700 underline underline-offset-4">Productinformatie</Link></div>
           </div>
-          <div className="mt-4 divide-y-2 divide-slate-100 border-2 border-slate-200 bg-white">
+          <div className="wk-agency-list mt-4 divide-y divide-slate-100">
             {documents.length ? documents.map((document) => access.isOwner ? (
               <Link key={document.id} href={`/editor?id=${encodeURIComponent(document.id)}`} className="flex items-center justify-between gap-4 px-4 py-4 hover:bg-slate-50">
                 <span className="min-w-0 truncate text-sm font-bold">{document.title || "Mijn CV"}</span>
@@ -203,5 +198,6 @@ export default async function AgencyAccountPage({
         </p>
       </div>
     </main>
+    </AgencyAccountShell>
   );
 }

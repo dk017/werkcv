@@ -63,26 +63,30 @@ export default async function EnglishTemplatesPage({
   return (
     <main id="quick-start">
       <TemplateGallery templates={templateList} uiLanguage="en" initialStartSource={resolvedStartSource} />
-      <section className="border-t border-slate-200 bg-white px-5 py-16 sm:px-8">
-        <div className="mx-auto max-w-5xl">
-          <p className="text-sm font-bold uppercase text-emerald-700">Choosing a design</p>
-          <h2 className="mt-2 text-3xl font-bold text-slate-950">English CV template questions</h2>
-          <p className="mt-3 max-w-3xl text-slate-600">
+      <section className="wk-section pt-0">
+        <div className="wk-container max-w-5xl">
+          <div className="wk-eyebrow mb-3">
+            <span>Choosing a design</span>
+          </div>
+          <h2 className="text-3xl font-semibold text-[var(--wk-ink)]">
+            English CV template questions
+          </h2>
+          <p className="mt-3 max-w-3xl leading-7 text-[var(--wk-ink-muted)]">
             Choose for the vacancy and submission route. Read the{" "}
-            <Link className="font-semibold text-emerald-700 underline" href="/en/ats-resume-netherlands">
+            <Link className="font-semibold text-[var(--wk-primary)] underline" href="/en/ats-resume-netherlands">
               Netherlands ATS guidance
             </Link>{" "}
             when you are applying through a portal, or the{" "}
-            <Link className="font-semibold text-emerald-700 underline" href="/en/expat-cv-netherlands">
+            <Link className="font-semibold text-[var(--wk-primary)] underline" href="/en/expat-cv-netherlands">
               expat CV guide
             </Link>{" "}
             for language, photo, and work-authorisation decisions.
           </p>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             {englishTemplateFaqs.map((faq) => (
-              <details key={faq.question} className="border border-slate-200 bg-slate-50 p-5">
-                <summary className="cursor-pointer font-semibold text-slate-950">{faq.question}</summary>
-                <p className="mt-3 leading-7 text-slate-700">{faq.answer}</p>
+              <details key={faq.question} className="wk-card p-5">
+                <summary className="cursor-pointer font-semibold text-[var(--wk-ink)]">{faq.question}</summary>
+                <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">{faq.answer}</p>
               </details>
             ))}
           </div>
