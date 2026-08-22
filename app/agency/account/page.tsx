@@ -137,7 +137,7 @@ export default async function AgencyAccountPage({
             <div className="mt-5 flex flex-wrap gap-3">
               {access.canCreate && access.isOwner && canCreateAgencyWork(access) ? (
                 <Link
-                  href="/editor?template=professional&startSource=agency_plan"
+                  href="/editor?template=professional&startSource=agency_plan&workspace=agency"
                   className="wk-button wk-button-secondary"
                 >
                   Nieuw CV maken

@@ -305,6 +305,19 @@ export function needsAgencyRetentionAcknowledgement(
 }
 
 /**
+ * Agency-owned CVs are created only from an explicit Agency workflow. A paid
+ * Agency subscription by itself must not change the normal CV builder.
+ */
+export function isAgencyCvStartSource(startSource: string | null | undefined, sourceCluster?: string | null): boolean {
+  return (
+    startSource === "agency_plan" ||
+    startSource === "agency_matchpack" ||
+    sourceCluster === "agency-matchpack" ||
+    sourceCluster === "agency-csv-import"
+  );
+}
+
+/**
  * Creates a CV and reserves one agency slot in the same serializable
  * transaction. Consumer accounts continue through the original path.
  */

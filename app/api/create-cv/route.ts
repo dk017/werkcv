@@ -32,12 +32,14 @@ export async function POST(request: NextRequest) {
     let cvData = defaultCV;
     let attribution: ReturnType<typeof sanitizeAttribution> = null;
     let startSource = '';
+    let workspace: 'consumer' | 'agency' = 'consumer';
 
     try {
         const body = await request.json();
         if (body.templateId) templateId = getTemplateConfig(body.templateId).id;
         if (body.colorThemeId) colorThemeId = body.colorThemeId;
         startSource = normalizeStartSource(body.startSource) || '';
+        workspace = body.workspace === 'agency' ? 'agency' : 'consumer';
         attribution = sanitizeAttribution(body.attribution);
 
         // Support pre-populating with example CV data
@@ -58,25 +60,37 @@ export async function POST(request: NextRequest) {
         colorThemeId: colorThemeId || getDefaultThemeId(templateId),
     };
 
-    const agencyAccess = await getAgencyAccessForUser(user.id);
-    const agencyOwnerId = agencyAccess.state === 'active' ? agencyAccess.ownerUserId : null;
-    if (agencyOwnerId && !canCreateAgencyWork(agencyAccess)) {
-        return NextResponse.json(
-            { error: 'Your agency role can review existing work but cannot create new CVs.', code: 'ROLE_READ_ONLY' },
-            { status: 403 },
-        );
+    let effectiveUserId = user.id;
+    if (workspace === 'agency') {
+        const agencyAccess = await getAgencyAccessForUser(user.id);
+        const agencyOwnerId = agencyAccess.state === 'active' ? agencyAccess.ownerUserId : null;
+        if (agencyOwnerId && !canCreateAgencyWork(agencyAccess)) {
+            return NextResponse.json(
+                { error: 'Your agency role can review existing work but cannot create new CVs.', code: 'ROLE_READ_ONLY' },
+                { status: 403 },
+            );
+        }
+        if (!agencyOwnerId) {
+            return NextResponse.json(
+                { error: 'An active Agency subscription is required.', code: 'AGENCY_PLAN_REQUIRED' },
+                { status: 409 },
+            );
+        }
+        effectiveUserId = agencyOwnerId;
     }
-    const effectiveUserId = agencyOwnerId || user.id;
 
     try {
-        const cv = await createCvDocumentForUser({
+        const data = {
             ...baseData,
             attribution: attribution as unknown as Prisma.InputJsonValue | undefined,
             sourceCluster: attribution?.firstTouchCluster || null,
             sourceLocale: attribution?.locale || null,
             startSource: startSource || null,
             userId: effectiveUserId,
-        } as Prisma.CVDocumentUncheckedCreateInput);
+        } as Prisma.CVDocumentUncheckedCreateInput;
+        const cv = workspace === 'agency'
+            ? await createCvDocumentForUser(data)
+            : await prisma.cVDocument.create({ data });
         return NextResponse.json({ cvId: cv.id });
     } catch (error) {
         if (isAgencyAccessError(error)) {

@@ -23,9 +23,9 @@ function isUploadRequested(value: string | string[] | undefined): boolean {
 export default async function EnglishEditorPage({
   searchParams,
 }: {
-  searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string }>;
+  searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string }>;
 }) {
-  const { id, template, startSource, upload } = await searchParams;
+  const { id, template, startSource, upload, workspace } = await searchParams;
   const user = await getCurrentUser();
   const templateId = normalizeTemplateId(template);
   const uploadRequested = isUploadRequested(upload);
@@ -36,19 +36,17 @@ export default async function EnglishEditorPage({
     "editor_direct";
 
   if (!user) {
+    const workspaceParam = workspace === "agency" ? "&workspace=agency" : "";
     const next = id
       ? `/en/editor?id=${encodeURIComponent(id)}${uploadRequested ? "&upload=1" : ""}`
       : templateId
-        ? `/en/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}`
-        : `/en/editor?template=professional&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}`;
+        ? `/en/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}${workspaceParam}`
+        : `/en/editor?template=professional&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}${workspaceParam}`;
     redirect(`/login?next=${encodeURIComponent(next)}`);
   }
 
   if (!id) {
-    const draftTemplateId = templateId || (uploadRequested ? "professional" : null);
-    if (!draftTemplateId) {
-      redirect(`/en/templates?startSource=${encodeURIComponent(resolvedStartSource)}`);
-    }
+    const draftTemplateId = templateId || "professional";
 
     let cvId: string;
     try {
@@ -56,6 +54,7 @@ export default async function EnglishEditorPage({
         templateId: draftTemplateId,
         uiLanguage: "en",
         startSource: resolvedStartSource,
+        workspace: workspace === "agency" ? "agency" : "consumer",
       });
     } catch (error) {
       if (isAgencyAccessError(error)) {

@@ -8,8 +8,7 @@ import { getCurrentUser } from '@/lib/auth'
 import { reportOpsIncident } from '@/lib/ops-alerts'
 import { getResumeLanguage } from '@/lib/resume-language'
 import { getDefaultThemeId } from '@/lib/templates/registry'
-import { createCvDocumentForUser } from '@/lib/agency-access'
-import { isAgencySubscriptionInPaidPeriod } from '@/lib/agency-plan'
+import { isAgencyCvStartSource } from '@/lib/agency-access'
 
 const userCVListSelect = {
     id: true,
@@ -61,7 +60,7 @@ export async function createCV(templateId: string = 'professional', colorThemeId
         }
     }
 
-    const cv = await createCvDocumentForUser({
+    const cv = await prisma.cVDocument.create({
         title: 'Mijn CV',
         data: cvData,
         templateId,
@@ -86,17 +85,11 @@ export async function getCVWithSettings(id: string) {
 
     const cv = await prisma.cVDocument.findFirst({ where: { id, userId: user.id } })
     if (!cv) return null
-    const agencySubscription = await prisma.agencySubscription.findUnique({
-        where: { userId: user.id },
-        select: { status: true, currentPeriodEnd: true },
-    })
     return {
         data: cv.data as unknown as CVData,
         templateId: cv.templateId,
         colorThemeId: cv.colorThemeId ?? getDefaultThemeId(cv.templateId),
-        agencyRouteLocked: agencySubscription
-            ? isAgencySubscriptionInPaidPeriod(agencySubscription)
-            : false,
+        agencyRouteLocked: isAgencyCvStartSource(cv.startSource, cv.sourceCluster),
     }
 }
 
@@ -131,11 +124,12 @@ export async function updateCVTemplate(id: string, templateId: string) {
     });
     if (locked) return { success: false, error: 'MATCHPACK_SNAPSHOT_LOCKED' };
 
-    const agencySubscription = await prisma.agencySubscription.findUnique({
-        where: { userId: user.id },
-        select: { status: true, currentPeriodEnd: true },
+    const existing = await prisma.cVDocument.findFirst({
+        where: { id, userId: user.id },
+        select: { startSource: true, sourceCluster: true },
     });
-    if (agencySubscription && isAgencySubscriptionInPaidPeriod(agencySubscription)) {
+    if (!existing) return { success: false, error: 'NOT_FOUND' };
+    if (isAgencyCvStartSource(existing.startSource, existing.sourceCluster)) {
         return { success: false, error: 'AGENCY_BRANDED_ROUTE_LOCKED' };
     }
 
@@ -157,11 +151,12 @@ export async function updateCVColorTheme(id: string, colorThemeId: string) {
     });
     if (locked) return { success: false, error: 'MATCHPACK_SNAPSHOT_LOCKED' };
 
-    const agencySubscription = await prisma.agencySubscription.findUnique({
-        where: { userId: user.id },
-        select: { status: true, currentPeriodEnd: true },
+    const existing = await prisma.cVDocument.findFirst({
+        where: { id, userId: user.id },
+        select: { startSource: true, sourceCluster: true },
     });
-    if (agencySubscription && isAgencySubscriptionInPaidPeriod(agencySubscription)) {
+    if (!existing) return { success: false, error: 'NOT_FOUND' };
+    if (isAgencyCvStartSource(existing.startSource, existing.sourceCluster)) {
         return { success: false, error: 'AGENCY_BRANDED_ROUTE_LOCKED' };
     }
 
