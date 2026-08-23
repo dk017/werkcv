@@ -8,6 +8,11 @@ import WorkspaceSwitcher from "@/components/workspace/WorkspaceSwitcher";
 import type { WorkspaceEntitlements } from "@/lib/workspace/types";
 import { getRouteWorkspaceContext } from "@/lib/workspace/route-context";
 
+function getCompactAccountLabel(email: string) {
+  const [localPart] = email.split("@", 1);
+  return localPart?.trim() || email;
+}
+
 export default function NavUserMenu({
   uiLanguage = "nl",
   tone = "default",
@@ -108,6 +113,7 @@ export default function NavUserMenu({
   const canShowWorkspaceSwitcher = Boolean(workspaces && workspaceSwitcherEnabled && workspaces.switcherEligible && isApplication);
   const currentWorkspace = isMatchPackPath && workspaces?.matchpack ? "matchpack" : "personal";
   const profileHref = isEnglish ? "/en/profile-photo" : "/profielfoto-cv-maken";
+  const accountLabel = getCompactAccountLabel(email);
 
   return (
     <div className="wk-nav-user-menu" ref={menuRef}>
@@ -124,9 +130,11 @@ export default function NavUserMenu({
         className={`${tone === "brand" ? "wk-account-menu-trigger" : "wk-account-menu-trigger wk-account-menu-trigger-default"}`}
         aria-expanded={menuOpen}
         aria-haspopup="true"
+        aria-label={isEnglish ? `Account for ${email}` : `Account van ${email}`}
+        title={email}
         onClick={() => setMenuOpen((open) => !open)}
       >
-        <span className="wk-account-menu-trigger-label">{email}</span>
+        <span className="wk-account-menu-trigger-label" aria-hidden="true">{accountLabel}</span>
         <span className="wk-account-menu-trigger-mobile">{isEnglish ? "Account" : "Account"}</span>
         <span aria-hidden="true" className="wk-account-menu-chevron">⌄</span>
       </button>

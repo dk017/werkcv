@@ -31,8 +31,7 @@ export default function AgencyAccountShell({
         currentPath={currentPath}
         rightContent={(
           <div className="wk-agency-header-account-actions flex items-center gap-3">
-            <span className="wk-agency-account-context">
-              <span className="wk-account-email">{email}</span>
+            <span className="wk-agency-account-context" title={email}>
               {role ? <span className="wk-agency-role">{role}</span> : null}
             </span>
             <NavUserMenu uiLanguage="nl" tone="brand" showAccountLinks={false} />
