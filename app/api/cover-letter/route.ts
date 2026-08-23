@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     }
 
     const cv = await prisma.cVDocument.findFirst({
-        where: { id: cvId, userId: user.id },
+        where: { id: cvId, userId: user.id, agencySubscriptionId: null },
         select: {
             id: true,
             coverLetter: true,
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
         }
 
         const cv = await prisma.cVDocument.findFirst({
-            where: { id: cvId, userId: user.id },
+            where: { id: cvId, userId: user.id, agencySubscriptionId: null },
         });
 
         if (!cv) {
@@ -87,22 +87,22 @@ export async function POST(request: NextRequest) {
             tone,
         });
 
-        const updated = await prisma.cVDocument.update({
-            where: { id: cvId },
-            data: {
-                coverLetter,
-                coverLetterUpdatedAt: new Date(),
-            },
-            select: {
-                coverLetter: true,
-                coverLetterUpdatedAt: true,
-            },
+        const updated = await prisma.cVDocument.updateMany({
+            where: { id: cvId, userId: user.id, agencySubscriptionId: null },
+            data: { coverLetter, coverLetterUpdatedAt: new Date() },
+        });
+        if (updated.count === 0) {
+            return NextResponse.json({ error: 'CV not found' }, { status: 404 });
+        }
+        const saved = await prisma.cVDocument.findFirst({
+            where: { id: cvId, userId: user.id, agencySubscriptionId: null },
+            select: { coverLetter: true, coverLetterUpdatedAt: true },
         });
 
         return NextResponse.json({
             success: true,
-            coverLetter: updated.coverLetter || '',
-            updatedAt: updated.coverLetterUpdatedAt,
+            coverLetter: saved?.coverLetter || '',
+            updatedAt: saved?.coverLetterUpdatedAt || null,
         });
     } catch (error) {
         console.error('Cover letter generation failed', error);
@@ -135,7 +135,7 @@ export async function PUT(request: NextRequest) {
         }
 
         const cv = await prisma.cVDocument.findFirst({
-            where: { id: cvId, userId: user.id },
+            where: { id: cvId, userId: user.id, agencySubscriptionId: null },
             select: { id: true },
         });
 
@@ -143,22 +143,22 @@ export async function PUT(request: NextRequest) {
             return NextResponse.json({ error: 'CV not found' }, { status: 404 });
         }
 
-        const updated = await prisma.cVDocument.update({
-            where: { id: cvId },
-            data: {
-                coverLetter,
-                coverLetterUpdatedAt: new Date(),
-            },
-            select: {
-                coverLetter: true,
-                coverLetterUpdatedAt: true,
-            },
+        const updated = await prisma.cVDocument.updateMany({
+            where: { id: cvId, userId: user.id, agencySubscriptionId: null },
+            data: { coverLetter, coverLetterUpdatedAt: new Date() },
+        });
+        if (updated.count === 0) {
+            return NextResponse.json({ error: 'CV not found' }, { status: 404 });
+        }
+        const saved = await prisma.cVDocument.findFirst({
+            where: { id: cvId, userId: user.id, agencySubscriptionId: null },
+            select: { coverLetter: true, coverLetterUpdatedAt: true },
         });
 
         return NextResponse.json({
             success: true,
-            coverLetter: updated.coverLetter || '',
-            updatedAt: updated.coverLetterUpdatedAt,
+            coverLetter: saved?.coverLetter || '',
+            updatedAt: saved?.coverLetterUpdatedAt || null,
         });
     } catch (error) {
         console.error('Cover letter save failed', error);

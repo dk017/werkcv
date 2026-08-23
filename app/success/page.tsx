@@ -21,7 +21,7 @@ export default async function SuccessPage({
     let uiLanguage: ResumeLanguage | null = lang === "en" || lang === "nl" ? lang : null;
 
     if (!uiLanguage && cvId) {
-        const cv = await getCV(cvId);
+        const cv = await getCV(cvId, "personal");
         uiLanguage = getResumeLanguage(cv);
     }
 

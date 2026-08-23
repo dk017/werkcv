@@ -74,9 +74,14 @@ model CVDocument {
   startSource          String?
   userId               String?
   user                 User?            @relation(fields: [userId], references: [id])
+  agencySubscriptionId String?
+  agencySubscription   AgencySubscription? @relation("AgencyCvDocuments", fields: [agencySubscriptionId], references: [id], onDelete: Restrict)
   matchPack            AgencyMatchPack?
   createdAt            DateTime         @default(now())
   updatedAt            DateTime         @updatedAt
+
+  @@index([agencySubscriptionId, updatedAt])
+  @@index([userId, agencySubscriptionId, updatedAt])
 }
 
 model AgencyMatchPack {
@@ -242,6 +247,7 @@ model AgencySubscription {
   legalName              String?
   privacyPolicyUrl       String?
   privacyContactEmail    String?
+  cvDocuments            CVDocument[]          @relation("AgencyCvDocuments")
 
   @@index([status, currentPeriodEnd])
   @@index([externalCustomerId])

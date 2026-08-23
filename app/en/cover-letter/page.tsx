@@ -10,7 +10,7 @@ export default async function EnglishCoverLetterPage({ searchParams }: { searchP
   if (!user) redirect(`/login?next=${encodeURIComponent(next)}`);
   if (!id) redirect("/en/templates");
 
-  const cv = await getCVWithSettings(id);
+  const cv = await getCVWithSettings(id, "personal");
   if (!cv) redirect("/en/templates");
 
   return <CoverLetterEditor cvId={id} initialTargetRole={cv.data.personal.title} uiLanguage="en" />;

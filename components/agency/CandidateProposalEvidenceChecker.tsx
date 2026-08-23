@@ -10,7 +10,6 @@ import {
   type EvidenceMatch,
 } from "@/lib/tools/candidate-proposal-evidence";
 import type { CvMatchLocale, CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match";
-import { SiteHeader } from "@/components/brand/SiteHeader";
 
 type InputMode = "text" | "file";
 
@@ -450,13 +449,6 @@ export default function CandidateProposalEvidenceChecker({ locale = "nl", claimV
 
   return (
     <div className="min-h-screen bg-[#FFFEF9] text-slate-950">
-      <SiteHeader
-        navItems={[]}
-        backHref="/voor-bureaus"
-        backLabel={copy.home}
-        context={locale === "en" ? "Evidence checker" : "Evidence checker"}
-        rightContent={<Link href={copy.switchHref} className="wk-language-switcher">{copy.switchLabel}</Link>}
-      />
 
       <main>
         <section className="border-b-2 border-slate-950 bg-[#E9FFFC]">

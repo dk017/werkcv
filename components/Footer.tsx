@@ -1,170 +1,149 @@
 import Link from "next/link";
 import type { UiLanguage } from "@/lib/ui-language";
 
-const mainLinks = [
-    { href: "/cv-maken", label: "CV maken" },
+type FooterLink = { href: string; label: string };
+type FooterGroup = { label: string; links: FooterLink[] };
+
+const personalGroupsNl: FooterGroup[] = [
+  { label: "Product", links: [
+    { href: "/editor", label: "CV maken" },
     { href: "/templates", label: "Templates" },
-    { href: "/cv-voorbeelden", label: "CV Voorbeelden" },
-    { href: "/cv-tips", label: "CV Tips" },
-    { href: "/tools", label: "Gratis Tools" },
-    { href: "/cv-gids", label: "CV Gidsen" },
-    { href: "/voor-bureaus", label: "Voor bureaus" },
-    { href: "/partners", label: "Partners" },
-    { href: "/for-coaches", label: "Voor Coaches" },
-    { href: "/en", label: "English Guides" },
-    { href: "/en/guides", label: "Expat Guides" },
     { href: "/prijzen", label: "Prijzen" },
-    { href: "/faq", label: "FAQ" },
-    { href: "/over-ons", label: "Over Ons" },
-    { href: "/about", label: "About" },
+  ] },
+  { label: "Inspiratie", links: [
+    { href: "/cv-voorbeelden", label: "CV-voorbeelden" },
+    { href: "/cv-tips", label: "CV-tips" },
+    { href: "/tools", label: "Gratis tools" },
+  ] },
+  { label: "Hulp", links: [
+    { href: "/faq", label: "Veelgestelde vragen" },
     { href: "/contact", label: "Contact" },
+    { href: "/over-ons", label: "Over WerkCV" },
+  ] },
+  { label: "Juridisch", links: [
+    { href: "/privacy", label: "Privacy" },
+    { href: "/voorwaarden", label: "Voorwaarden" },
+  ] },
+  { label: "Taal", links: [{ href: "/en", label: "English" }] },
 ];
 
-const toolLinks = [
-    { href: "/tools/netto-bruto-calculator", label: "Netto-bruto" },
-    { href: "/tools/salaris-calculator", label: "Salaris check" },
-    { href: "/salaris", label: "Salaris per beroep" },
-    { href: "/tools/transitievergoeding-berekenen", label: "Transitievergoeding" },
-    { href: "/tools/vakantiegeld-berekenen", label: "Vakantiegeld" },
-    { href: "/tools/uurloon-calculator", label: "Uurloon" },
-    { href: "/tools/minimumloon-checker", label: "Minimumloon" },
-    { href: "/tools/ww-recht-checker", label: "WW-recht" },
-    { href: "/tools/cv-samenvatting-generator", label: "CV samenvatting" },
-];
-
-const cvIntentLinks = [
-    { href: "/cv-maken-zonder-abonnement", label: "CV maken zonder abonnement" },
-    { href: "/gratis-cv-maken", label: "Gratis CV maken" },
-    { href: "/cv-opstellen", label: "CV opstellen" },
-    { href: "/cv-maken-template", label: "CV maken template" },
-    { href: "/cv-maken-student", label: "CV maken student" },
-    { href: "/stage-cv-maken", label: "Stage CV maken" },
-    { href: "/cv-maken-16-jarige", label: "CV maken 16-jarige" },
-    { href: "/cv-maken-pdf", label: "CV maken PDF" },
-    { href: "/cv-maken-in-word", label: "CV maken in Word" },
-];
-
-const legalLinks = [
-    { href: "/privacy", label: "Privacybeleid" },
-    { href: "/voorwaarden", label: "Algemene Voorwaarden" },
-];
-
-const englishMainLinks = [
-    { href: "/en/templates", label: "CV Templates" },
-    { href: "/en/dutch-cv-examples", label: "CV Examples" },
-    { href: "/en/guides", label: "Netherlands CV Guides" },
+const personalGroupsEn: FooterGroup[] = [
+  { label: "Product", links: [
+    { href: "/en/editor", label: "Build your CV" },
+    { href: "/en/templates", label: "Templates" },
     { href: "/en/pricing", label: "Pricing" },
-    { href: "/en/resume-optimizer-netherlands", label: "Resume Optimizer" },
-    { href: "/en/profile-photo", label: "Profile Photo" },
-    { href: "/en/motivation-letter-netherlands", label: "Motivation Letter" },
-    { href: "/about", label: "About" },
+  ] },
+  { label: "Resources", links: [
+    { href: "/en/dutch-cv-examples", label: "CV examples" },
+    { href: "/en/guides", label: "Guides" },
+    { href: "/tools", label: "Tools" },
+  ] },
+  { label: "Help", links: [
+    { href: "/faq", label: "FAQ" },
     { href: "/contact", label: "Contact" },
-];
-
-const englishToolLinks = [
-    { href: "/tools/kennismigrant-salary-checker", label: "Highly Skilled Migrant Salary" },
-    { href: "/tools/zoekjaar-checker", label: "Orientation Year Checker" },
-    { href: "/tools/eu-blue-card-checker", label: "EU Blue Card Checker" },
-    { href: "/tools/netto-bruto-calculator", label: "Net to Gross Calculator" },
-];
-
-const englishCvLinks = [
-    { href: "/en", label: "Build a Netherlands CV" },
-    { href: "/en/dutch-cv-template", label: "Dutch CV Template in English" },
-    { href: "/en/guides/cv-format-netherlands-english", label: "Netherlands CV Format" },
-    { href: "/en/cv-netherlands-without-dutch-language", label: "CV Without Dutch" },
-    { href: "/en/expat-cv-netherlands", label: "Expat CV Guide" },
-];
-
-const englishLegalLinks = [
+    { href: "/about", label: "About" },
+  ] },
+  { label: "Legal", links: [
     { href: "/en/privacy", label: "Privacy" },
     { href: "/en/terms", label: "Terms" },
+  ] },
+  { label: "Language", links: [{ href: "/", label: "Nederlands" }] },
+];
+
+const matchpackGroupsNl: FooterGroup[] = [
+  { label: "MatchPack", links: [
+    { href: "/agency", label: "Overzicht" },
+    { href: "/agency#hoe-het-werkt", label: "Hoe het werkt" },
+    { href: "/agency#plan", label: "Prijs" },
+  ] },
+  { label: "Bewijs en kwaliteit", links: [
+    { href: "/voor-bureaus/methodologie/claim-evidence-benchmark", label: "Methodologie" },
+    { href: "/tools/kandidaatvoorstel-checker", label: "Kandidaatvoorstel-checker" },
+    { href: "/voor-bureaus/kennisbank/matchpack-handleiding", label: "Handleiding" },
+  ] },
+  { label: "Voor bureaus", links: [
+    { href: "/voor-bureaus/kennisbank", label: "Kennisbank" },
+    { href: "/voor-bureaus/kennisbank/matchpack-handleiding#kandidaatbevestiging", label: "Kandidaatbevestiging" },
+    { href: "/agency/account", label: "Agency-account" },
+  ] },
+  { label: "Vertrouwen", links: [
+    { href: "/agency/privacy", label: "Privacy, retentie en DPA" },
+    { href: "/agency/privacy#subverwerkers", label: "Subverwerkers" },
+    { href: "/contact", label: "Contact" },
+  ] },
+  { label: "Producten", links: [
+    { href: "/", label: "Persoonlijke CV's" },
+    { href: "/en/candidate-proposal-checker", label: "English" },
+  ] },
+];
+
+const matchpackGroupsEn: FooterGroup[] = [
+  { label: "MatchPack", links: [
+    { href: "/en/candidate-proposal-checker", label: "Proposal checker" },
+    { href: "/agency/account", label: "Open MatchPack" },
+    { href: "/en/pricing", label: "Pricing" },
+  ] },
+  { label: "Evidence", links: [{ href: "/en/agency/methodology/claim-evidence-benchmark", label: "Methodology" }] },
+  { label: "Trust", links: [
+    { href: "/agency/privacy", label: "Privacy and data processing" },
+    { href: "/contact", label: "Contact" },
+  ] },
+  { label: "Products", links: [{ href: "/en", label: "Personal CVs" }] },
 ];
 
 export default function Footer({
-    uiLanguage = "nl",
-    variant = "default",
+  uiLanguage = "nl",
+  variant = "brand",
+  product = "personal",
 }: {
-    uiLanguage?: UiLanguage;
-    variant?: "default" | "brand";
+  uiLanguage?: UiLanguage;
+  variant?: "default" | "brand";
+  product?: "personal" | "matchpack";
 }) {
-    const isEnglish = uiLanguage === "en";
-    const isBrand = variant === "brand";
-    const navigationLinks = isEnglish ? englishMainLinks : mainLinks;
-    const popularToolLinks = isEnglish ? englishToolLinks : toolLinks;
-    const popularCvLinks = isEnglish ? englishCvLinks : cvIntentLinks;
-    const footerLegalLinks = isEnglish ? englishLegalLinks : legalLinks;
+  const isEnglish = uiLanguage === "en";
+  const groups = product === "matchpack"
+    ? isEnglish ? matchpackGroupsEn : matchpackGroupsNl
+    : isEnglish ? personalGroupsEn : personalGroupsNl;
 
-    return (
-        <footer className={isBrand ? "wk-footer" : "relative z-10 border-t-4 border-black bg-white mt-20"}>
-            <div className={isBrand ? "wk-container wk-footer-inner" : "max-w-6xl mx-auto px-6 py-8"}>
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-[1fr_1.1fr_1fr_1fr] gap-8">
-                    <div>
-                        <Link href={isEnglish ? "/en" : "/"} className={isBrand ? "wk-footer-logo" : "inline-block font-black text-xl tracking-tight text-black mb-3"}>
-                            Werk<span className={isBrand ? "wk-footer-logo-mark" : "bg-yellow-400 px-1"}>CV</span>.nl
-                        </Link>
-                        <p className={isBrand ? "wk-footer-description" : "text-sm text-gray-600 leading-relaxed"}>
-                            {isEnglish
-                                ? "English CV guidance, templates, and practical tools for working in the Netherlands."
-                                : "CV-builder, sollicitatiehulp en praktische tools voor werken in Nederland."}
-                        </p>
-                    </div>
-
-                    <div>
-                        <p className={isBrand ? "wk-footer-heading" : "text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3"}>
-                            {isEnglish ? "Navigation" : "Navigatie"}
-                        </p>
-                        <nav className={isBrand ? "wk-footer-links" : "flex flex-wrap gap-x-6 gap-y-2 text-sm font-bold text-black"}>
-                            {navigationLinks.map((link) => (
-                                <Link key={link.href} href={link.href} className={isBrand ? "wk-footer-link" : "hover:text-yellow-600 transition-colors"}>
-                                    {link.label}
-                                </Link>
-                            ))}
-                        </nav>
-                    </div>
-
-                    <div>
-                        <p className={isBrand ? "wk-footer-heading" : "text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3"}>
-                            {isEnglish ? "Popular tools" : "Populaire tools"}
-                        </p>
-                        <div className={isBrand ? "wk-footer-links" : "flex flex-wrap gap-x-4 gap-y-2 text-sm font-bold text-black"}>
-                            {popularToolLinks.map((link) => (
-                                <Link key={link.href} href={link.href} className={isBrand ? "wk-footer-link" : "hover:text-teal-700 transition-colors"}>
-                                    {link.label}
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-
-                    <div>
-                        <p className={isBrand ? "wk-footer-heading" : "text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3"}>
-                            {isEnglish ? "Popular CV pages" : "Populaire CV Pagina's"}
-                        </p>
-                        <div className={isBrand ? "wk-footer-links" : "flex flex-wrap gap-x-4 gap-y-2 text-sm font-bold text-black"}>
-                            {popularCvLinks.map((link) => (
-                                <Link key={link.href} href={link.href} className={isBrand ? "wk-footer-link" : "hover:text-yellow-600 transition-colors"}>
-                                    {link.label}
-                                </Link>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-
-                <div className={isBrand ? "wk-footer-bottom" : "mt-6 pt-4 border-t-2 border-gray-200 flex flex-col md:flex-row items-center justify-between gap-3"}>
-                    <p className={isBrand ? "wk-footer-copyright" : "text-sm font-medium text-gray-600 text-center md:text-left"}>
-                        &copy; {new Date().getFullYear()} WerkCV.nl | {isEnglish
-                            ? "Build a professional CV for jobs in the Netherlands"
-                            : "Maak een professioneel CV dat opvalt"}
-                    </p>
-                    <div className={isBrand ? "wk-footer-legal" : "flex flex-wrap items-center justify-center gap-4 text-sm font-bold text-black"}>
-                        {footerLegalLinks.map((link) => (
-                            <Link key={link.href} href={link.href} className={isBrand ? "wk-footer-link" : "hover:text-yellow-600 transition-colors"}>
-                                {link.label}
-                            </Link>
-                        ))}
-                    </div>
-                </div>
+  return (
+    <footer className="wk-footer" data-footer-product={product} data-footer-variant={variant}>
+      <div className="wk-container wk-footer-inner">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-[1.1fr_repeat(5,minmax(0,1fr))]">
+          <div>
+            <Link href={isEnglish ? "/en" : "/"} className="wk-footer-logo">
+              Werk<span className="wk-footer-logo-mark">CV</span>.nl
+            </Link>
+            <p className="wk-footer-description">
+              {product === "matchpack"
+                ? isEnglish
+                  ? "Evidence-linked candidate proposals for recruitment teams."
+                  : "Onderbouwde kandidaatvoorstellen voor recruitmentteams."
+                : isEnglish
+                  ? "English CV guidance and practical tools for working in the Netherlands."
+                  : "CV maken en praktische sollicitatietools voor werken in Nederland."}
+            </p>
+          </div>
+          {groups.map((group) => (
+            <div key={group.label}>
+              <p className="wk-footer-heading">{group.label}</p>
+              <nav aria-label={group.label} className="wk-footer-links">
+                {group.links.map((link) => (
+                  <Link key={link.href} href={link.href} className="wk-footer-link">
+                    {link.label}
+                  </Link>
+                ))}
+              </nav>
             </div>
-        </footer>
-    );
+          ))}
+        </div>
+        <div className="wk-footer-bottom">
+          <p className="wk-footer-copyright">
+            &copy; {new Date().getFullYear()} WerkCV.nl | {product === "matchpack"
+              ? isEnglish ? "Evidence-linked candidate proposals" : "Onderbouwde kandidaatvoorstellen"
+              : isEnglish ? "Build a professional CV for jobs in the Netherlands" : "Maak een professioneel CV voor Nederlandse vacatures"}
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
 }

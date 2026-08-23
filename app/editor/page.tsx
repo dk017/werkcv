@@ -6,6 +6,7 @@ import { createEditorDraft } from "@/lib/editor-drafts";
 import { cookies } from "next/headers";
 import { normalizeStartSource, PENDING_START_SOURCE_COOKIE, readEncodedStartSource } from "@/lib/start-source";
 import { isAgencyAccessError } from "@/lib/agency-access";
+import { getWorkspaceEntitlementsForUser, isWorkspaceSwitcherEnabled } from "@/lib/workspace/entitlements";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -72,6 +73,7 @@ export default async function EditorPage({
         redirect(`/templates`);
     }
 
+    const workspaceEntitlements = await getWorkspaceEntitlementsForUser(user.id);
     return (
         <Editor
             initialData={cv.data}
@@ -81,6 +83,9 @@ export default async function EditorPage({
       accountEmail={user.email}
       uiLanguage="nl"
       agencyRouteLocked={cv.agencyRouteLocked}
+      workspaceContext={cv.workspaceContext}
+      workspaceEntitlements={workspaceEntitlements}
+      workspaceSwitcherEnabled={isWorkspaceSwitcherEnabled(workspaceEntitlements)}
     />
     );
 }

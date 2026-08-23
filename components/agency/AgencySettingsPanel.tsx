@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 export type AgencyTemplateFixture = {
   id: string;
@@ -28,7 +29,10 @@ type AgencySettingsPanelProps = {
   canImport: boolean;
   role: string;
   visualFixture?: AgencySettingsVisualFixture;
+  section?: AgencySettingsSection;
 };
+
+export type AgencySettingsSection = "all" | "organisation" | "templates" | "team" | "privacy" | "data";
 
 export type AgencyRetentionFixture = {
   options: number[];
@@ -63,7 +67,7 @@ async function readResponse(response: Response): Promise<{ data?: Record<string,
   return { data };
 }
 
-export default function AgencySettingsPanel({ owner, canImport, role, visualFixture }: AgencySettingsPanelProps) {
+export default function AgencySettingsPanel({ owner, canImport, role, visualFixture, section = "all" }: AgencySettingsPanelProps) {
   const [templates, setTemplates] = useState<AgencyTemplateFixture[]>(visualFixture?.templates || []);
   const [members, setMembers] = useState<AgencyTeamMemberFixture[]>(visualFixture?.members || []);
   const [retention, setRetention] = useState<AgencyRetentionFixture | null>(visualFixture?.retention || null);
@@ -76,6 +80,7 @@ export default function AgencySettingsPanel({ owner, canImport, role, visualFixt
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [loading, setLoading] = useState(!visualFixture && section !== "data");
   const [privacyForm, setPrivacyForm] = useState(visualFixture?.privacy || { legalName: "", privacyPolicyUrl: "", privacyContactEmail: "" });
   const [templateForm, setTemplateForm] = useState({
     name: "Mijn bureaustijl",
@@ -89,34 +94,50 @@ export default function AgencySettingsPanel({ owner, canImport, role, visualFixt
   });
   const [memberForm, setMemberForm] = useState({ email: "", role: "editor" });
   const importRef = useRef<HTMLInputElement | null>(null);
+  const includes = (target: Exclude<AgencySettingsSection, "all">) => section === "all" || section === target;
 
-  const load = async () => {
-    const [templateResponse, teamResponse, retentionResponse, privacyResponse] = await Promise.all([
-      fetch("/api/agency/templates", { cache: "no-store" }),
-      fetch("/api/agency/team", { cache: "no-store" }),
-      fetch("/api/agency/retention", { cache: "no-store" }),
-      fetch("/api/agency/privacy-settings", { cache: "no-store" }),
-    ]);
-    const templateResult = await readResponse(templateResponse);
-    const teamResult = await readResponse(teamResponse);
-    if (templateResult.data && Array.isArray(templateResult.data.templates)) setTemplates(templateResult.data.templates as AgencyTemplateFixture[]);
-    if (teamResult.data && Array.isArray(teamResult.data.members)) setMembers(teamResult.data.members as AgencyTeamMemberFixture[]);
-    const retentionResult = await readResponse(retentionResponse);
-    if (retentionResult.data && typeof retentionResult.data.retentionDays === "number") {
-      const loaded = retentionResult.data as unknown as AgencyRetentionFixture;
-      setRetention(loaded);
-      setRetentionChoice(String(loaded.retentionDays));
+  const load = useCallback(async () => {
+    if (section !== "data") setLoading(true);
+    const requests: Promise<void>[] = [];
+    if (section === "all" || section === "templates") {
+      requests.push(fetch("/api/agency/templates", { cache: "no-store" }).then(readResponse).then((result) => {
+        if (result.error) throw new Error(result.error);
+        if (Array.isArray(result.data?.templates)) setTemplates(result.data.templates as AgencyTemplateFixture[]);
+      }));
     }
-    if (templateResult.error && teamResult.error) setError(templateResult.error);
-    const privacyResult = await readResponse(privacyResponse);
-    if (privacyResult.data?.settings) setPrivacyForm(privacyResult.data.settings as typeof privacyForm);
-  };
+    if (section === "all" || section === "team") {
+      requests.push(fetch("/api/agency/team", { cache: "no-store" }).then(readResponse).then((result) => {
+        if (result.error) throw new Error(result.error);
+        if (Array.isArray(result.data?.members)) setMembers(result.data.members as AgencyTeamMemberFixture[]);
+      }));
+    }
+    if (section === "all" || section === "privacy") {
+      requests.push(fetch("/api/agency/retention", { cache: "no-store" }).then(readResponse).then((result) => {
+        if (result.error) throw new Error(result.error);
+        if (result.data && typeof result.data.retentionDays === "number") {
+          const loaded = result.data as unknown as AgencyRetentionFixture;
+          setRetention(loaded);
+          setRetentionChoice(String(loaded.retentionDays));
+        }
+      }));
+    }
+    if (section === "all" || section === "organisation") {
+      requests.push(fetch("/api/agency/privacy-settings", { cache: "no-store" }).then(readResponse).then((result) => {
+        if (result.error) throw new Error(result.error);
+        if (result.data?.settings) setPrivacyForm(result.data.settings as typeof privacyForm);
+      }));
+    }
+    const results = await Promise.allSettled(requests);
+    const failure = results.find((result): result is PromiseRejectedResult => result.status === "rejected");
+    if (failure) setError(failure.reason instanceof Error ? failure.reason.message : "Instellingen konden niet worden geladen.");
+    setLoading(false);
+  }, [section]);
 
   useEffect(() => {
     if (visualFixture) return;
     const timer = window.setTimeout(() => { void load(); }, 0);
     return () => window.clearTimeout(timer);
-  }, [visualFixture]);
+  }, [visualFixture, load]);
 
   const saveTemplate = async (event: FormEvent) => {
     event.preventDefault();
@@ -239,12 +260,16 @@ export default function AgencySettingsPanel({ owner, canImport, role, visualFixt
     setNotice("Agency-data verwijderd. Je abonnement en factuurhistorie zijn behouden.");
   };
 
+  if (loading) {
+    return <div className="wk-agency-settings-panel" role="status"><section><p className="text-sm font-bold text-slate-600">Instellingen laden…</p></section></div>;
+  }
+
   return (
     <div className="wk-agency-settings-panel">
-      {notice ? <div className="border-2 border-emerald-600 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">{notice}</div> : null}
-      {error ? <div className="border-2 border-rose-600 bg-rose-50 p-4 text-sm font-semibold text-rose-900">{error}</div> : null}
+      {notice ? <div role="status" className="border-2 border-emerald-600 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">{notice}</div> : null}
+      {error ? <div role="alert" className="border-2 border-rose-600 bg-rose-50 p-4 text-sm font-semibold text-rose-900">{error}</div> : null}
 
-      <section id="retention" className="border-2 border-slate-900 bg-emerald-50 p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+      {includes("privacy") ? <section id="retention" className="border-2 border-slate-900 bg-emerald-50 p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
         <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Bewaren en verwijderen</p>
         <h2 className="mt-1 text-2xl font-black">Automatische MatchPack-retentie</h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-700">Kies hoe lang kandidaat-CV&apos;s, vacaturetekst, bewijsregels, revisies en afgeleide CV&apos;s in MatchPack blijven staan. Facturen, abonnement en verbruikte slots blijven behouden.</p>
@@ -262,10 +287,15 @@ export default function AgencySettingsPanel({ owner, canImport, role, visualFixt
           <div className="mt-4 flex flex-wrap gap-2"><button type="button" disabled={busy || (pendingRetention.requiresConfirmation && retentionConfirmation !== "APPLY RETENTION POLICY")} onClick={() => void applyRetention()} className="border-2 border-slate-900 bg-emerald-400 px-4 py-2 text-sm font-black disabled:opacity-50">Beleid definitief toepassen</button><button type="button" disabled={busy} onClick={() => { setPendingRetention(null); setRetentionConfirmation(""); }} className="border-2 border-slate-300 bg-white px-4 py-2 text-sm font-black">Annuleren</button></div>
         </div> : null}
         <p className="mt-3 text-xs font-semibold text-slate-600">{retention?.needsAcknowledgement ? "Kies en bevestig een beleid om bestaande inhoud te activeren." : "Beleid actief; de exacte vervaldatum staat op elk MatchPack."}</p>
-      </section>
+        <div className="mt-5 flex flex-wrap gap-2" aria-label="Privacydocumentatie">
+          <Link href="/agency/privacy" className="wk-button wk-button-secondary">Privacy en verwerking</Link>
+          <Link href="/agency/privacy#subprocessors" className="wk-button wk-button-secondary">Subverwerkers</Link>
+          <Link href="/agency/privacy#dpa" className="wk-button wk-button-secondary">DPA-informatie</Link>
+        </div>
+      </section> : null}
 
-      <section id="candidate-privacy" className="border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
-        <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Kandidaatbevestiging</p>
+      {includes("organisation") ? <section id="organisation" className="border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+        <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Organisatieprofiel</p>
         <h2 className="mt-1 text-2xl font-black">Juridische naam en privacycontact</h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">Deze gegevens staan in iedere kandidaatuitnodiging. WerkCV bepaalt niet welke AVG-grondslag jouw bureau gebruikt; zorg dat je eigen privacyverklaring het doel, de ontvangers en de bewaartermijn duidelijk uitlegt.</p>
         <form onSubmit={savePrivacy} className="mt-5 grid gap-3 md:grid-cols-2">
@@ -274,9 +304,9 @@ export default function AgencySettingsPanel({ owner, canImport, role, visualFixt
           <label className="text-xs font-black uppercase tracking-wide text-slate-600 md:col-span-2">URL privacyverklaring<input required type="url" placeholder="https://bureau.nl/privacy" className={inputClass} value={privacyForm.privacyPolicyUrl} onChange={(event) => setPrivacyForm({ ...privacyForm, privacyPolicyUrl: event.target.value })} /></label>
           <button disabled={!owner || busy} className="border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black disabled:opacity-50 md:w-fit">Gegevens opslaan</button>
         </form>
-      </section>
+      </section> : null}
 
-      <section id="templates" className="border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+      {includes("templates") ? <section id="templates" className="border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div><p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Bureaustijl</p><h2 className="mt-1 text-2xl font-black">Herbruikbare MatchPack-templates</h2><p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">Kies de CV-opmaak, kleur en vaste koptekst voor nieuwe klantvoorstellen. Je kunt meerdere stijlen bewaren; de standaard wordt automatisch toegepast.</p></div>
           <span className="border border-slate-300 px-3 py-2 text-xs font-black uppercase tracking-wide text-slate-600">Rol: {role}</span>
@@ -293,21 +323,22 @@ export default function AgencySettingsPanel({ owner, canImport, role, visualFixt
           <button disabled={!owner || busy} className="border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] disabled:cursor-not-allowed disabled:opacity-50 md:w-fit">Template opslaan</button>
         </form>
         {templates.length ? <div className="mt-6 divide-y border-2 border-slate-200">{templates.map((template) => <div key={template.id} className="flex flex-wrap items-center justify-between gap-3 px-3 py-3 text-sm"><span className="font-black">{template.name}{template.isDefault ? <span className="ml-2 text-xs font-bold text-emerald-700">Standaard</span> : null}</span><span className="text-xs font-semibold text-slate-500">{template.templateId} · {template.colorThemeId}</span></div>)}</div> : <p className="mt-5 text-sm font-semibold text-slate-500">Nog geen eigen template opgeslagen.</p>}
-      </section>
+      </section> : null}
 
-      <section className="border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+      {includes("team") ? <section id="team" className="border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
         <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Toegang</p><h2 className="mt-1 text-2xl font-black">Teamrollen</h2><p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">Nodig collega&apos;s uit via hun login-e-mailadres. Er wordt geen wachtwoord gedeeld. Rollen bepalen wie kan bewerken, beoordelen of alleen lezen.</p>
         <form onSubmit={addMember} className="mt-5 flex flex-col gap-3 sm:flex-row"><input className={`${inputClass} sm:max-w-sm`} type="email" placeholder="collega@bureau.nl" value={memberForm.email} onChange={(event) => setMemberForm({ ...memberForm, email: event.target.value })} /><select className={`${inputClass} sm:max-w-xs`} value={memberForm.role} onChange={(event) => setMemberForm({ ...memberForm, role: event.target.value })}><option value="editor">Editor · maken en wijzigen</option><option value="reviewer">Reviewer · controleren en goedkeuren</option><option value="viewer">Viewer · alleen lezen</option></select><button disabled={!owner || busy} className="border-2 border-slate-900 bg-yellow-300 px-4 py-3 text-sm font-black disabled:opacity-50">Teamlid toevoegen</button></form>
         {members.length ? <div className="mt-5 divide-y border-2 border-slate-200">{members.map((member) => <div key={member.id} className="px-3 py-3 text-sm"><div className="flex flex-wrap items-center justify-between gap-3"><div><p className="font-black">{member.email}</p><p className="text-xs font-semibold text-slate-500">{member.role} · {member.status === "active" ? "actief" : "uitgenodigd"}</p></div><button type="button" disabled={!owner || busy} onClick={() => setPendingMemberRemoval(member.id)} className="border border-rose-300 px-3 py-2 text-xs font-black text-rose-700 disabled:opacity-50">Verwijderen</button></div>{pendingMemberRemoval === member.id ? <div className="mt-3 border-2 border-rose-200 bg-rose-50 p-3"><p className="text-xs font-bold text-rose-900">Bevestig dat je {member.email} uit deze workspace wilt verwijderen.</p><div className="mt-2 flex gap-2"><button type="button" disabled={busy} onClick={() => void removeMember(member.id)} className="border-2 border-rose-700 bg-white px-3 py-2 text-xs font-black text-rose-800">Ja, verwijder toegang</button><button type="button" disabled={busy} onClick={() => setPendingMemberRemoval(null)} className="border-2 border-slate-300 bg-white px-3 py-2 text-xs font-black">Annuleren</button></div></div> : null}</div>)}</div> : <p className="mt-5 text-sm font-semibold text-slate-500">Nog geen extra teamleden.</p>}
-      </section>
+      </section> : null}
 
-      <section className="border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
+      {includes("data") ? <section id="data" className="border-2 border-slate-900 bg-white p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
         <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Gegevens uitwisselen</p><h2 className="mt-1 text-2xl font-black">CSV import en export</h2><p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">Importeer een CV-register met de kolommen <code>title,name,professionalTitle,email,phone,location,summary,skills</code>. De import maakt losse CV-documenten en gebruikt je maandlimiet. Export bevat je MatchPack-overzicht.</p>
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center"><input ref={importRef} type="file" accept=".csv,text/csv" disabled={!canImport || busy} className="block w-full border-2 border-slate-300 bg-white px-3 py-2 text-sm font-semibold sm:max-w-md" /><button type="button" disabled={!canImport || busy} onClick={() => void importCsv()} className="border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black disabled:opacity-50">CV-register importeren</button><a href="/api/agency/csv/export" className="border-2 border-slate-900 bg-white px-4 py-3 text-center text-sm font-black">MatchPacks exporteren</a></div>
-      </section>
+      </section> : null}
 
-      <section className="border-2 border-rose-400 bg-rose-50 p-6">
-        <p className="text-xs font-black uppercase tracking-[0.16em] text-rose-700">Verwijderen</p><h2 className="mt-1 text-2xl font-black text-rose-950">Agency-data verwijderen</h2><p className="mt-2 max-w-2xl text-sm leading-relaxed text-rose-950">Verwijdert MatchPacks, CV&apos;s die via de agency-route zijn gemaakt, revisies, templates en teamtoegang. Abonnement en factuurhistorie blijven behouden. Deze actie is niet terug te draaien.</p>{!showDeleteAgency ? <button type="button" disabled={!owner || busy} onClick={() => setShowDeleteAgency(true)} className="mt-5 border-2 border-rose-700 bg-white px-4 py-3 text-sm font-black text-rose-800 disabled:opacity-50">Agency-data verwijderen</button> : <div className="mt-5 border-2 border-rose-700 bg-white p-4"><label className="block text-xs font-black uppercase tracking-wide text-rose-800">Typ DELETE AGENCY DATA<input className={`${inputClass} mt-2`} value={deleteAgencyConfirmation} onChange={(event) => setDeleteAgencyConfirmation(event.target.value)} autoComplete="off" /></label><div className="mt-3 flex flex-wrap gap-2"><button type="button" disabled={busy || deleteAgencyConfirmation !== "DELETE AGENCY DATA"} onClick={() => void deleteAgencyData()} className="border-2 border-rose-700 bg-rose-100 px-4 py-3 text-sm font-black text-rose-900 disabled:opacity-50">Definitief verwijderen</button><button type="button" disabled={busy} onClick={() => { setShowDeleteAgency(false); setDeleteAgencyConfirmation(""); }} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black">Annuleren</button></div></div>}</section>
+      {includes("data") ? <section data-settings-danger="true" className="border-2 border-rose-400 bg-rose-50 p-6">
+        <p className="text-xs font-black uppercase tracking-[0.16em] text-rose-700">Verwijderen</p><h2 className="mt-1 text-2xl font-black text-rose-950">Agency-data verwijderen</h2><p className="mt-2 max-w-2xl text-sm leading-relaxed text-rose-950">Verwijdert MatchPacks, CV&apos;s die via de agency-route zijn gemaakt, revisies, templates en teamtoegang. Abonnement en factuurhistorie blijven behouden. Deze actie is niet terug te draaien.</p>{!showDeleteAgency ? <button type="button" disabled={!owner || busy} onClick={() => setShowDeleteAgency(true)} className="mt-5 border-2 border-rose-700 bg-white px-4 py-3 text-sm font-black text-rose-800 disabled:opacity-50">Agency-data verwijderen</button> : <div className="mt-5 border-2 border-rose-700 bg-white p-4"><label className="block text-xs font-black uppercase tracking-wide text-rose-800">Typ DELETE AGENCY DATA<input className={`${inputClass} mt-2`} value={deleteAgencyConfirmation} onChange={(event) => setDeleteAgencyConfirmation(event.target.value)} autoComplete="off" /></label><div className="mt-3 flex flex-wrap gap-2"><button type="button" disabled={busy || deleteAgencyConfirmation !== "DELETE AGENCY DATA"} onClick={() => void deleteAgencyData()} className="border-2 border-rose-700 bg-rose-100 px-4 py-3 text-sm font-black text-rose-900 disabled:opacity-50">Definitief verwijderen</button><button type="button" disabled={busy} onClick={() => { setShowDeleteAgency(false); setDeleteAgencyConfirmation(""); }} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black">Annuleren</button></div></div>}
+      </section> : null}
     </div>
   );
 }

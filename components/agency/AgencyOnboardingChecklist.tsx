@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -15,9 +16,11 @@ export type AgencyOnboardingItem = {
 export default function AgencyOnboardingChecklist({
   items,
   initiallyDismissed = false,
+  compact = false,
 }: {
   items: AgencyOnboardingItem[];
   initiallyDismissed?: boolean;
+  compact?: boolean;
 }) {
   const [dismissed, setDismissed] = useState(initiallyDismissed);
   const [busy, setBusy] = useState(false);
@@ -25,6 +28,7 @@ export default function AgencyOnboardingChecklist({
   if (dismissed || !items.length) return null;
 
   const completed = items.filter((item) => item.done).length;
+  const nextItem = items.find((item) => !item.done);
 
   async function dismiss() {
     setBusy(true);
@@ -59,33 +63,59 @@ export default function AgencyOnboardingChecklist({
     <section className="wk-agency-panel wk-agency-onboarding" aria-labelledby="agency-onboarding-title">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Zelf starten</p>
-          <h2 id="agency-onboarding-title" className="mt-1 text-2xl font-black">Werk je eerste MatchPack af</h2>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">Volg deze korte route. Analyse en conceptreview gebruiken geen slot; alleen een nieuw CV of definitieve goedkeuring gebruikt één gedeeld slot uit de limiet van 50.</p>
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Volgende stap</p>
+          <h2 id="agency-onboarding-title" className="mt-1 text-2xl font-black">{nextItem ? nextItem.label : "Je eerste route is klaar"}</h2>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
+            {nextItem ? nextItem.detail : "Je hebt de belangrijkste MatchPack-stappen doorlopen. Je kunt nu een nieuw voorstel maken."}
+          </p>
         </div>
-        <button type="button" onClick={() => void dismiss()} disabled={busy} className="text-xs font-black text-slate-500 underline underline-offset-4 disabled:opacity-50">{busy ? "Opslaan…" : "Checklist verbergen"}</button>
+        <button type="button" onClick={() => void dismiss()} disabled={busy} className="text-xs font-black text-slate-500 underline underline-offset-4 disabled:opacity-50">
+          {busy ? "Opslaan…" : "Verbergen"}
+        </button>
       </div>
 
-      <div className="mt-5 h-2 bg-slate-100" aria-label={`${completed} van ${items.length} stappen voltooid`}>
-        <div className="h-full bg-emerald-500 transition-all" style={{ width: `${Math.round((completed / items.length) * 100)}%` }} />
+      <div className="mt-5 h-2 bg-slate-100" aria-label={completed + " van " + items.length + " stappen voltooid"}>
+        <div className="h-full bg-emerald-500 transition-all" style={{ width: Math.round((completed / items.length) * 100) + "%" }} />
       </div>
 
-      <ol className="mt-5 grid gap-3 md:grid-cols-2">
-        {items.map((item, index) => (
-          <li key={item.id} className={`border-2 p-4 ${item.done ? "border-emerald-300 bg-emerald-50" : "border-slate-200 bg-slate-50"}`}>
-            <div className="flex gap-3">
-              <span className={`flex h-7 w-7 shrink-0 items-center justify-center text-xs font-black ${item.done ? "bg-emerald-400 text-slate-950" : "bg-slate-200 text-slate-600"}`} aria-hidden="true">{item.done ? "✓" : index + 1}</span>
-              <div className="min-w-0">
-                <p className="text-sm font-black">{item.label}</p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-600">{item.detail}</p>
-                {!item.done ? <Link href={item.href} onClick={() => recordStep(item)} className="mt-3 inline-flex text-xs font-black text-emerald-800 underline decoration-2 underline-offset-4">Volgende stap →</Link> : null}
+      {compact ? (
+        <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+          {nextItem ? (
+            <Link href={nextItem.href} onClick={() => recordStep(nextItem)} className="wk-button wk-button-secondary">
+              Ga naar deze stap →
+            </Link>
+          ) : <span className="text-sm font-bold text-emerald-700">Alle stappen voltooid</span>}
+          <details className="text-sm">
+            <summary className="cursor-pointer font-bold text-slate-600">Toon route ({completed}/{items.length})</summary>
+            <ol className="mt-3 grid gap-2 border-l-2 border-slate-200 pl-4">
+              {items.map((item, index) => (
+                <li key={item.id} className="text-xs leading-relaxed">
+                  <span className={item.done ? "font-black text-emerald-700" : "font-bold text-slate-700"}>{item.done ? "✓" : index + 1} {item.label}</span>
+                </li>
+              ))}
+            </ol>
+          </details>
+        </div>
+      ) : (
+        <ol className="mt-5 grid gap-3 md:grid-cols-2">
+          {items.map((item, index) => (
+            <li key={item.id} className={"border-2 p-4 " + (item.done ? "border-emerald-300 bg-emerald-50" : "border-slate-200 bg-slate-50")}>
+              <div className="flex gap-3">
+                <span className={"flex h-7 w-7 shrink-0 items-center justify-center text-xs font-black " + (item.done ? "bg-emerald-400 text-slate-950" : "bg-slate-200 text-slate-600")} aria-hidden="true">{item.done ? "✓" : index + 1}</span>
+                <div className="min-w-0">
+                  <p className="text-sm font-black">{item.label}</p>
+                  <p className="mt-1 text-xs leading-relaxed text-slate-600">{item.detail}</p>
+                  {!item.done ? <Link href={item.href} onClick={() => recordStep(item)} className="mt-3 inline-flex text-xs font-black text-emerald-800 underline decoration-2 underline-offset-4">Volgende stap →</Link> : null}
+                </div>
               </div>
-            </div>
-          </li>
-        ))}
-      </ol>
+            </li>
+          ))}
+        </ol>
+      )}
 
-      <p className="mt-5 border-l-4 border-yellow-400 pl-3 text-xs font-semibold leading-relaxed text-slate-600">Contactvrije output verwijdert directe contactvelden, maar is geen juridische anonimiteitsgarantie. Gebruik alleen data waarvoor je bevoegd bent en controleer elke bron vóór verzending.</p>
+      <p className="mt-5 border-l-4 border-yellow-400 pl-3 text-xs font-semibold leading-relaxed text-slate-600">
+        Contactvrije output verwijdert directe contactvelden, maar is geen juridische anonimiteitsgarantie. Gebruik alleen data waarvoor je bevoegd bent en controleer elke bron vóór verzending.
+      </p>
     </section>
   );
 }

@@ -1,5 +1,9 @@
+"use client";
+
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { useEffect, useId, useState } from "react";
+import { usePathname } from "next/navigation";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 
 export type BrandNavItem = {
@@ -29,6 +33,19 @@ const defaultNavItems: BrandNavItem[] = [
   { href: "/prijzen", label: "Prijzen" },
 ];
 
+function normalise(pathname: string): string {
+  const path = pathname.split(/[?#]/, 1)[0].replace(/\/+$/, "");
+  return path || "/";
+}
+
+function isActiveNavItem(href: string, pathname: string): boolean {
+  if (href.includes("#")) return false;
+  const target = normalise(href);
+  const current = normalise(pathname);
+  if (target === "/") return current === "/";
+  return current === target || current.startsWith(`${target}/`);
+}
+
 export function SiteHeader({
   navItems = defaultNavItems,
   navAriaLabel = "Hoofdnavigatie",
@@ -42,7 +59,23 @@ export function SiteHeader({
   currentPath,
   rightContent,
 }: SiteHeaderProps) {
+  const routePathname = usePathname() || currentPath || "/";
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const panelId = useId();
   const hasNavigation = navItems.length > 0;
+
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMobileOpen(false);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [mobileOpen]);
+
+  const closeMobile = () => setMobileOpen(false);
+  const resolvedPath = currentPath || routePathname;
 
   return (
     <header className="wk-site-header">
@@ -58,7 +91,7 @@ export function SiteHeader({
                 key={item.href}
                 href={item.href}
                 className="wk-site-nav-link"
-                aria-current={currentPath === item.href ? "page" : undefined}
+                aria-current={isActiveNavItem(item.href, resolvedPath) ? "page" : undefined}
               >
                 {item.label}
               </Link>
@@ -85,33 +118,52 @@ export function SiteHeader({
         </div>
 
         {hasNavigation ? (
-          <details className="wk-mobile-nav">
-            <summary aria-label={`${navAriaLabel} openen`}>
+          <div className="wk-mobile-nav">
+            <button
+              type="button"
+              className="wk-mobile-nav-trigger"
+              aria-expanded={mobileOpen}
+              aria-controls={panelId}
+              aria-label={mobileOpen ? `${navAriaLabel} sluiten` : `${navAriaLabel} openen`}
+              onClick={() => setMobileOpen((open) => !open)}
+            >
               <span className="wk-mobile-nav-icon" aria-hidden="true">
                 <span />
                 <span />
                 <span />
               </span>
               <span className="sr-only">Menu</span>
-            </summary>
-            <nav aria-label="Mobiele navigatie" className="wk-mobile-nav-panel">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="wk-mobile-nav-link"
-                  aria-current={currentPath === item.href ? "page" : undefined}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              {primaryHref && primaryLabel ? (
-                <Link href={primaryHref} onClick={primaryOnClick} className="wk-button wk-button-primary">
-                  {primaryLabel}
-                </Link>
-              ) : null}
-            </nav>
-          </details>
+            </button>
+            {mobileOpen ? (
+              <div id={panelId} className="wk-mobile-nav-panel">
+                <nav aria-label={`${navAriaLabel} mobiel`}>
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="wk-mobile-nav-link"
+                      aria-current={isActiveNavItem(item.href, resolvedPath) ? "page" : undefined}
+                      onClick={closeMobile}
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                  {primaryHref && primaryLabel ? (
+                    <Link
+                      href={primaryHref}
+                      onClick={() => {
+                        primaryOnClick?.();
+                        closeMobile();
+                      }}
+                      className="wk-button wk-button-primary"
+                    >
+                      {primaryLabel}
+                    </Link>
+                  ) : null}
+                </nav>
+              </div>
+            ) : null}
+          </div>
         ) : null}
       </div>
     </header>

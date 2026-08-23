@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { cvSchema, type CVData } from "@/lib/cv";
 import { getCurrentUserFromRequest } from "@/lib/auth";
-import { canCreateAgencyWork, createCvDocumentForUser, getAgencyAccessForUser, isAgencyAccessError } from "@/lib/agency-access";
+import { canCreateAgencyWork, getAgencyAccessForUser, isAgencyAccessError } from "@/lib/agency-access";
 import { getDefaultThemeId, getTemplateConfig } from "@/lib/templates/registry";
 import { normalizeStartSource } from "@/lib/start-source";
 import { getClientIp, checkRateLimit } from "@/lib/tools/rate-limit";
@@ -10,6 +10,7 @@ import { prisma } from "@/lib/prisma";
 import { isPublicDraftId } from "@/lib/public-cv-draft";
 import { isAllowedSameOriginRequest } from "@/lib/request-origin";
 import { getCompletionState } from "@/lib/cv-completion";
+import { createMatchPackCvDocument, createPersonalCvDocument } from "@/lib/workspace/cv-document-service";
 
 export const runtime = "nodejs";
 
@@ -93,25 +94,8 @@ export async function POST(request: NextRequest) {
 
     const source = typeof body.source === "string" ? body.source.slice(0, 160) : "public_editor";
     const startSource = normalizeStartSource(`public:${flow}:${draftId}`);
-    const existing = await prisma.cVDocument.findFirst({
-      where: {
-        userId: user.id,
-        startSource,
-      },
-      select: { id: true },
-    });
-
-    if (existing) {
-      return responseBody({
-        success: true,
-        cvId: existing.id,
-        reused: true,
-        completionScore: completion.score,
-        isReady: completion.isReady,
-      });
-    }
-
-    let effectiveUserId = user.id;
+    let agencySubscriptionId: string | null = null;
+    let agencyOwnerUserId: string | null = null;
     if (flow === "agency") {
       const access = await getAgencyAccessForUser(user.id);
       if (access.state !== "active") {
@@ -129,7 +113,27 @@ export async function POST(request: NextRequest) {
       if (!canCreateAgencyWork(access)) {
         return responseBody({ error: "Your agency role cannot create new CVs.", code: "ROLE_READ_ONLY" }, 403);
       }
-      effectiveUserId = access.ownerUserId || user.id;
+      agencySubscriptionId = access.subscription?.id || null;
+      agencyOwnerUserId = access.ownerUserId || user.id;
+    }
+
+    const existing = await prisma.cVDocument.findFirst({
+      where: {
+        userId: flow === "agency" ? agencyOwnerUserId || user.id : user.id,
+        startSource,
+        agencySubscriptionId: flow === "agency" ? agencySubscriptionId : null,
+      },
+      select: { id: true },
+    });
+
+    if (existing) {
+      return responseBody({
+        success: true,
+        cvId: existing.id,
+        reused: true,
+        completionScore: completion.score,
+        isReady: completion.isReady,
+      });
     }
 
     const { templateId, colorThemeId } = getSafeTemplateAndTheme(body.templateId, body.colorThemeId);
@@ -138,17 +142,19 @@ export async function POST(request: NextRequest) {
       ? `${data.personal.name.trim()} CV`
       : uiLanguage === "en" ? "My CV" : "Mijn CV";
 
-    const cv = await createCvDocumentForUser({
+    const documentInput = {
       title,
       data,
       templateId,
       colorThemeId,
-      userId: effectiveUserId,
       attribution: (user.attribution || undefined) as Prisma.InputJsonValue | undefined,
       sourceCluster: "public-editor",
       sourceLocale: uiLanguage,
       startSource,
-    });
+    } as Omit<Prisma.CVDocumentUncheckedCreateInput, "userId" | "agencySubscriptionId">;
+    const cv = flow === "agency"
+      ? await createMatchPackCvDocument(user.id, documentInput)
+      : await createPersonalCvDocument(user.id, documentInput);
 
     return responseBody({
       success: true,

@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
   }
 
   const ownsCv = await prisma.cVDocument.findFirst({
-    where: { id: cvId, userId: user.id },
+    where: { id: cvId, userId: user.id, agencySubscriptionId: null },
     select: { id: true },
   });
   if (!ownsCv) {

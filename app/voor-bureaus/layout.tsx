@@ -6,7 +6,7 @@ export default function AgencyContentLayout({ children }: { children: React.Reac
     <div className="wk-agency-marketing">
       {children}
       <OrganizationJsonLd />
-      <Footer variant="brand" />
+      <Footer variant="brand" product="matchpack" />
     </div>
   );
 }

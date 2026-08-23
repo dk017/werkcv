@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
-import { prisma } from '@/lib/prisma';
 import { extractTextFromPDF } from '@/lib/cv-parser';
 import { formatCvForDutch } from '@/lib/format-resume-dutch';
 import { CVData } from '@/lib/cv';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 import { parseLinkedInProfileText, repairLinkedInSummary } from '@/lib/linkedin-import';
+import { createPersonalCvDocument } from '@/lib/workspace/cv-document-service';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const MAX_TEXT_LENGTH = 50000;
@@ -100,34 +100,16 @@ export async function POST(request: NextRequest) {
       ? `LinkedIn import - ${finalizedCv.personal.name}`
       : 'LinkedIn import';
 
-    let cv;
-    try {
-      cv = await prisma.cVDocument.create({
-        data: {
-          title: baseTitle,
-          data: finalizedCv as CVData,
-          templateId,
-          colorThemeId,
-          attribution: attribution as unknown as Prisma.InputJsonValue | undefined,
-          sourceCluster: attribution?.firstTouchCluster || null,
-          sourceLocale: attribution?.locale || null,
-          startSource: inputType,
-          userId: user.id,
-        } as unknown as Prisma.CVDocumentCreateInput,
-      });
-    } catch (error) {
-      console.error('LinkedIn import create failed, retrying simplified:', error);
-      cv = await prisma.cVDocument.create({
-        data: {
-          title: baseTitle,
-          data: finalizedCv as CVData,
-          templateId,
-          colorThemeId,
-          userId: user.id,
-        },
-      });
-    }
-
+    const cv = await createPersonalCvDocument(user.id, {
+      title: baseTitle,
+      data: finalizedCv as CVData,
+      templateId,
+      colorThemeId,
+      attribution: attribution as unknown as Prisma.InputJsonValue | undefined,
+      sourceCluster: attribution?.firstTouchCluster || null,
+      sourceLocale: attribution?.locale || null,
+      startSource: inputType,
+    } as Omit<Prisma.CVDocumentUncheckedCreateInput, 'userId' | 'agencySubscriptionId'>);
     const editorPath = `${documentLanguage === 'en' ? '/en/editor' : '/editor'}?id=${cv.id}`;
 
     return NextResponse.json({

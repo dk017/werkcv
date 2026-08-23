@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
 import { defaultCV, cvSchema } from '@/lib/cv';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { Prisma } from '@prisma/client';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 import { normalizeStartSource } from '@/lib/start-source';
 import { getDefaultThemeId, getTemplateConfig } from '@/lib/templates/registry';
-import { canCreateAgencyWork, createCvDocumentForUser, getAgencyAccessForUser, isAgencyAccessError } from '@/lib/agency-access';
+import { isAgencyAccessError } from '@/lib/agency-access';
+import { createMatchPackCvDocument, createPersonalCvDocument } from '@/lib/workspace/cv-document-service';
 
 function getCreateCvErrorMessage(error: unknown): string {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'ECONNREFUSED') {
@@ -60,25 +60,6 @@ export async function POST(request: NextRequest) {
         colorThemeId: colorThemeId || getDefaultThemeId(templateId),
     };
 
-    let effectiveUserId = user.id;
-    if (workspace === 'agency') {
-        const agencyAccess = await getAgencyAccessForUser(user.id);
-        const agencyOwnerId = agencyAccess.state === 'active' ? agencyAccess.ownerUserId : null;
-        if (agencyOwnerId && !canCreateAgencyWork(agencyAccess)) {
-            return NextResponse.json(
-                { error: 'Your agency role can review existing work but cannot create new CVs.', code: 'ROLE_READ_ONLY' },
-                { status: 403 },
-            );
-        }
-        if (!agencyOwnerId) {
-            return NextResponse.json(
-                { error: 'An active Agency subscription is required.', code: 'AGENCY_PLAN_REQUIRED' },
-                { status: 409 },
-            );
-        }
-        effectiveUserId = agencyOwnerId;
-    }
-
     try {
         const data = {
             ...baseData,
@@ -86,36 +67,25 @@ export async function POST(request: NextRequest) {
             sourceCluster: attribution?.firstTouchCluster || null,
             sourceLocale: attribution?.locale || null,
             startSource: startSource || null,
-            userId: effectiveUserId,
-        } as Prisma.CVDocumentUncheckedCreateInput;
+        } as Omit<Prisma.CVDocumentUncheckedCreateInput, 'userId' | 'agencySubscriptionId'>;
         const cv = workspace === 'agency'
-            ? await createCvDocumentForUser(data)
-            : await prisma.cVDocument.create({ data });
+            ? await createMatchPackCvDocument(user.id, data)
+            : await createPersonalCvDocument(user.id, data);
         return NextResponse.json({ cvId: cv.id });
     } catch (error) {
         if (isAgencyAccessError(error)) {
-            const status = error.code === 'AGENCY_QUOTA_REACHED' ? 409 : 503;
+            const status = error.code === 'AGENCY_QUOTA_REACHED' || error.code === 'RETENTION_POLICY_REQUIRED'
+                ? 409
+                : error.code === 'AGENCY_SUBSCRIPTION_INACTIVE'
+                    ? 403
+                    : 503;
             return NextResponse.json(
                 { error: error.message, code: error.code },
                 { status },
             );
         }
-        try {
-            // Backward-compatible fallback if DB migration has not been applied yet
-            const cv = await prisma.cVDocument.create({
-                data: {
-                    ...baseData,
-                    userId: effectiveUserId,
-                },
-            });
-            return NextResponse.json({ cvId: cv.id });
-        } catch (error) {
-            console.error('Failed to create CV document:', error);
-            const message = getCreateCvErrorMessage(error);
-            return NextResponse.json(
-                { error: message },
-                { status: 500 }
-            );
-        }
+        console.error('Failed to create CV document:', error);
+        const message = getCreateCvErrorMessage(error);
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }

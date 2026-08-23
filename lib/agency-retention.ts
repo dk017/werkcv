@@ -176,10 +176,7 @@ async function deletePackContent(
       where: {
         id: pack.cvDocumentId,
         userId: input.ownerUserId,
-        OR: [
-          { startSource: { in: ["agency_matchpack", "agency_plan"] } },
-          { sourceCluster: "agency-matchpack" },
-        ],
+        agencySubscriptionId: input.subscriptionId,
       },
       select: { id: true },
     });
@@ -273,16 +270,17 @@ export async function deleteAllAgencyContent(input: {
     const standaloneAgencyCvs = await tx.cVDocument.findMany({
       where: {
         userId: input.ownerUserId,
-        OR: [
-          { startSource: "agency_plan" },
-          { sourceCluster: "agency-csv-import" },
-        ],
+        agencySubscriptionId: input.subscriptionId,
       },
       select: { id: true },
     });
     if (standaloneAgencyCvs.length) {
       const deletedStandalone = await tx.cVDocument.deleteMany({
-        where: { id: { in: standaloneAgencyCvs.map((cv) => cv.id) }, userId: input.ownerUserId },
+        where: {
+          id: { in: standaloneAgencyCvs.map((cv) => cv.id) },
+          userId: input.ownerUserId,
+          agencySubscriptionId: input.subscriptionId,
+        },
       });
       totals.cvDocumentsDeleted += deletedStandalone.count;
     }

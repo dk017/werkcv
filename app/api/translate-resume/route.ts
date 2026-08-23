@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
 import { parseCV } from '@/lib/cv-parser';
 import { formatCvForDutch } from '@/lib/format-resume-dutch';
 import { CVData } from '@/lib/cv';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { Prisma } from '@prisma/client';
 import { getCurrentUserFromRequest } from '@/lib/auth';
+import { createPersonalCvDocument } from '@/lib/workspace/cv-document-service';
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
@@ -69,32 +69,16 @@ export async function POST(request: NextRequest) {
       ? `Translated CV - ${translatedCv.personal.name}`
       : 'Translated CV';
 
-    let cv;
-    try {
-      cv = await prisma.cVDocument.create({
-        data: {
-          title: baseTitle,
-          data: translatedCv as CVData,
-          templateId,
-          colorThemeId,
-          attribution: attribution as unknown as Prisma.InputJsonValue | undefined,
-          sourceCluster: attribution?.firstTouchCluster || null,
-          sourceLocale: attribution?.locale || null,
-          startSource: 'resume_translate',
-          userId: user.id,
-        } as unknown as Prisma.CVDocumentCreateInput,
-      });
-    } catch (error) {
-      console.error('Translate resume create failed, retrying simplified:', error);
-      cv = await prisma.cVDocument.create({
-        data: {
-          title: baseTitle,
-          data: translatedCv as CVData,
-          templateId,
-          userId: user.id,
-        },
-      });
-    }
+    const cv = await createPersonalCvDocument(user.id, {
+      title: baseTitle,
+      data: translatedCv as CVData,
+      templateId,
+      colorThemeId,
+      attribution: attribution as unknown as Prisma.InputJsonValue | undefined,
+      sourceCluster: attribution?.firstTouchCluster || null,
+      sourceLocale: attribution?.locale || null,
+      startSource: 'resume_translate',
+    } as Omit<Prisma.CVDocumentUncheckedCreateInput, 'userId' | 'agencySubscriptionId'>);
 
     return NextResponse.json({
       success: true,

@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
-import { canCreateAgencyWork, canManageAgency, getAgencyAccessForUser, needsAgencyRetentionAcknowledgement } from "@/lib/agency-access";
+import { canCreateAgencyWork, canManageAgency, canViewAgencyWork, getAgencyAccessForUser, needsAgencyRetentionAcknowledgement } from "@/lib/agency-access";
 import { getAgencyStatusLabel } from "@/lib/agency-plan";
 import { prisma } from "@/lib/prisma";
 import AgencyDraftResume from "@/components/agency/AgencyDraftResume";
+import AgencyPrimaryActions from "@/components/agency/AgencyPrimaryActions";
 import AgencyOnboardingChecklist, { type AgencyOnboardingItem } from "@/components/agency/AgencyOnboardingChecklist";
 import AgencyAccountShell from "@/components/agency/AgencyAccountShell";
 
@@ -32,7 +33,7 @@ export default async function AgencyAccountPage({
 
   const access = await getAgencyAccessForUser(user.id);
   const documents = await prisma.cVDocument.findMany({
-    where: { userId: access.ownerUserId || user.id },
+    where: access.subscription ? { agencySubscriptionId: access.subscription.id } : { id: "__no_agency_subscription__" },
     orderBy: { updatedAt: "desc" },
     take: 5,
     select: { id: true, title: true, updatedAt: true },
@@ -57,8 +58,8 @@ export default async function AgencyAccountPage({
     const outcomeRecorded = packs.some((pack) => ["pending", "accepted", "rejected", "withdrawn"].includes(pack.clientOutcome));
     onboardingItems = [
       { id: "example", label: "Bekijk het fictieve MatchPack-voorbeeld", href: "/agency#voorbeeld", done: Boolean(access.subscription.onboardingExampleViewedAt), detail: "Zie welke bewijsregels intern blijven en wat een klant ontvangt." },
-      { id: "retention", label: "Kies je bewaartermijn", href: "/agency/account/settings#retention", done: Boolean(access.subscription.retentionPolicySetAt), detail: "Nieuwe accounts starten met 90 dagen; je kunt 30, 90, 180 of 365 dagen kiezen." },
-      { id: "template", label: "Stel je bureautemplate in", href: "/agency/account/settings#templates", done: Boolean(defaultTemplate), detail: "Gebruik je logo-/huisstijlgegevens en herbruikbare exportinstellingen." },
+      { id: "retention", label: "Kies je bewaartermijn", href: "/agency/account/settings/privacy", done: Boolean(access.subscription.retentionPolicySetAt), detail: "Nieuwe accounts starten met 90 dagen; je kunt 30, 90, 180 of 365 dagen kiezen." },
+      { id: "template", label: "Stel je bureautemplate in", href: "/agency/account/settings/templates", done: Boolean(defaultTemplate), detail: "Gebruik je logo-/huisstijlgegevens en herbruikbare exportinstellingen." },
       { id: "matchpack", label: "Maak je eerste MatchPack", href: "/agency/account/matchpack", done: packs.length > 0, detail: "Analyse en conceptreview gebruiken nog geen slot." },
       { id: "approval", label: "Controleer en keur het voorstel goed", href: "/agency/account/matchpack", done: approved, detail: "Bevestig bronbewijs, kandidaatdata, commerciële feiten en e-mail vóór goedkeuring." },
       { id: "export", label: "Download PDF of DOCX", href: "/agency/account/matchpack", done: exported, detail: "Full en contactvrije output komen uit dezelfde goedgekeurde snapshot." },
@@ -107,12 +108,19 @@ export default async function AgencyAccountPage({
           <div className="wk-agency-alert wk-agency-alert-warning">
             <p className="font-black">Kies eerst je bewaartermijn</p>
             <p className="mt-1">Je bestaande MatchPack-inhoud wordt niet stilzwijgend verwijderd. Kies in Instellingen een retentiebeleid voordat automatische verwijdering actief wordt.</p>
-            <Link href="/agency/account/settings" className="wk-button wk-button-secondary mt-3">Retentiebeleid instellen</Link>
+            <Link href="/agency/account/settings/privacy" className="wk-button wk-button-secondary mt-3">Retentiebeleid instellen</Link>
           </div>
         ) : null}
 
+        {access.state === "active" ? (
+          <AgencyPrimaryActions
+            canCreate={access.canCreate && access.isOwner && canCreateAgencyWork(access)}
+            hasSavedDocuments={documents.length > 0}
+          />
+        ) : null}
+
         {onboardingItems.length && !access.subscription?.onboardingDismissedAt ? (
-          <AgencyOnboardingChecklist items={onboardingItems} />
+          <AgencyOnboardingChecklist items={onboardingItems} compact />
         ) : null}
 
         <AgencyDraftResume canCreate={access.state === "active" && access.canCreate && access.isOwner && canCreateAgencyWork(access)} />
@@ -133,25 +141,6 @@ export default async function AgencyAccountPage({
                 className="h-full bg-emerald-500 transition-all"
                 style={{ width: `${Math.min(100, (access.used / Math.max(1, access.period.allowance)) * 100)}%` }}
               />
-            </div>
-            <div className="mt-5 flex flex-wrap gap-3">
-              {access.canCreate && access.isOwner && canCreateAgencyWork(access) ? (
-                <Link
-                  href="/editor?template=professional&startSource=agency_plan&workspace=agency"
-                  className="wk-button wk-button-secondary"
-                >
-                  Nieuw CV maken
-                </Link>
-              ) : null}
-              <Link
-                href="/agency/account/matchpack"
-                className="wk-button wk-button-primary"
-              >
-                MatchPack maken
-              </Link>
-              <Link href="/templates" className="wk-button wk-button-quiet">
-                Templates bekijken
-              </Link>
             </div>
           </section>
         ) : access.state === "none" ? (
@@ -175,12 +164,12 @@ export default async function AgencyAccountPage({
           <div className="flex items-end justify-between gap-4">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Laatste documenten</p>
-              <h2 className="mt-1 text-2xl font-black">Goedgekeurde en losse CV-documenten</h2>
+              <h2 className="mt-1 text-2xl font-black">Recente bureau-CV-documenten</h2>
             </div>
             <div className="flex flex-wrap gap-3 text-sm font-bold"><Link href="/agency/account/matchpack" className="text-emerald-700 underline underline-offset-4">MatchPacks bekijken</Link><Link href="/agency" className="text-emerald-700 underline underline-offset-4">Productinformatie</Link></div>
           </div>
           <div className="wk-agency-list mt-4 divide-y divide-slate-100">
-            {documents.length ? documents.map((document) => access.isOwner ? (
+            {documents.length ? documents.map((document) => canViewAgencyWork(access) ? (
               <Link key={document.id} href={`/editor?id=${encodeURIComponent(document.id)}`} className="flex items-center justify-between gap-4 px-4 py-4 hover:bg-slate-50">
                 <span className="min-w-0 truncate text-sm font-bold">{document.title || "Mijn CV"}</span>
                 <span className="shrink-0 text-xs font-semibold text-slate-500">{formatDate(document.updatedAt)}</span>

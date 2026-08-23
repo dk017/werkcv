@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { BrandShell } from "@/components/brand/BrandShell";
 import { SiteHeader } from "@/components/brand/SiteHeader";
+import NavUserMenu from "@/components/NavUserMenu";
 
 const agencyNavigation = [
   { href: "/agency/account", label: "Overzicht" },
@@ -29,10 +30,13 @@ export default function AgencyAccountShell({
         navAriaLabel="MatchPack-workspace"
         currentPath={currentPath}
         rightContent={(
-          <span className="wk-agency-account-context">
-            <span className="wk-account-email">{email}</span>
-            {role ? <span className="wk-agency-role">{role}</span> : null}
-          </span>
+          <div className="wk-agency-header-account-actions flex items-center gap-3">
+            <span className="wk-agency-account-context">
+              <span className="wk-account-email">{email}</span>
+              {role ? <span className="wk-agency-role">{role}</span> : null}
+            </span>
+            <NavUserMenu uiLanguage="nl" tone="brand" showAccountLinks={false} />
+          </div>
         )}
       />
       {children}

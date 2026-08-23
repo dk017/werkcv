@@ -3,9 +3,7 @@ import { buildEnglishMetadata } from "./metadata";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import EnglishRoleExampleBand from "./components/EnglishRoleExampleBand";
-import Footer from "@/components/Footer";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
-import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
 
 export const metadata = buildEnglishMetadata({
   title: "English CV Builder for Jobs in the Netherlands",
@@ -410,11 +408,6 @@ export default function EnglishHubPage() {
         </div>
       </section>
 
-      <PublicEditorSection
-        locale="en"
-        source="public_editor_home_en"
-      />
-
       <section className="wk-section pt-0">
         <div className="wk-container">
           <div className="wk-card wk-card-accent p-6 md:p-8">
@@ -622,7 +615,6 @@ export default function EnglishHubPage() {
           </div>
         </div>
       </section>
-      <Footer variant="brand" uiLanguage="en" />
       <MobileStickyCta
         variant="brand"
         text="Start free. Final PDF €4.99 including VAT. No subscription."

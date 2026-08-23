@@ -3,11 +3,10 @@ import { getCurrentUser } from "@/lib/auth";
 import { getDefaultThemeId, getTemplateConfig } from "@/lib/templates/registry";
 import { Prisma } from "@prisma/client";
 import { normalizeStartSource } from "@/lib/start-source";
-import { prisma } from "@/lib/prisma";
+import { createMatchPackCvDocument, createPersonalCvDocument } from "@/lib/workspace/cv-document-service";
 import {
   AgencyAccessError,
   canCreateAgencyWork,
-  createCvDocumentForUser,
   getAgencyAccessForUser,
 } from "@/lib/agency-access";
 
@@ -37,7 +36,6 @@ export async function createEditorDraft(input: CreateEditorDraftInput): Promise<
   };
 
   const workspace = input.workspace || "consumer";
-  let ownerUserId = user.id;
   if (workspace === "agency") {
     const access = await getAgencyAccessForUser(user.id);
     if (access.state !== "active" || !access.ownerUserId) {
@@ -46,7 +44,6 @@ export async function createEditorDraft(input: CreateEditorDraftInput): Promise<
     if (!canCreateAgencyWork(access)) {
       throw new AgencyAccessError("AGENCY_SUBSCRIPTION_INACTIVE", "Your Agency role cannot create new CVs.");
     }
-    ownerUserId = access.ownerUserId;
   }
 
   const data = {
@@ -54,16 +51,15 @@ export async function createEditorDraft(input: CreateEditorDraftInput): Promise<
     data: cvData,
     templateId,
     colorThemeId,
-    userId: ownerUserId,
     attribution: (user.attribution || undefined) as Prisma.InputJsonValue | undefined,
     sourceCluster: user.sourceCluster || null,
     sourceLocale: user.sourceLocale || input.uiLanguage,
     startSource: normalizeStartSource(input.startSource),
-  } as Prisma.CVDocumentUncheckedCreateInput;
+  } as Omit<Prisma.CVDocumentUncheckedCreateInput, "userId" | "agencySubscriptionId">;
 
   const cv = workspace === "agency"
-    ? await createCvDocumentForUser(data)
-    : await prisma.cVDocument.create({ data });
+    ? await createMatchPackCvDocument(user.id, data)
+    : await createPersonalCvDocument(user.id, data);
 
   return cv.id;
 }

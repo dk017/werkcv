@@ -31,6 +31,11 @@ const loginCopy = {
     resumeTitle: "Log in en ga verder met je PDF",
     resumeIntro: "Na het inloggen ga je terug naar de vertaler. Selecteer daar je PDF om direct verder te gaan.",
     resumeVerify: "Ga verder met PDF uploaden",
+    agencyEyebrow: "MatchPack-werkruimte staat klaar",
+    agencyTitle: "Ga verder naar je Agency-werkruimte",
+    agencyIntro: "Gebruik hetzelfde e-mailadres als bij je Agency-plan. Je persoonlijke CV's en MatchPack-documenten blijven gescheiden.",
+    agencyVerify: "Open mijn MatchPack-werkruimte",
+    agencyReassurance: "Je komt alleen in de gedeelde Agency-werkruimte waarvoor je toegang hebt.",
   },
   en: {
     eyebrow: "Your CV editor is ready",
@@ -56,6 +61,11 @@ const loginCopy = {
     resumeTitle: "Sign in and continue with your PDF",
     resumeIntro: "After sign-in, you’ll return to the translator. Select your PDF there to continue immediately.",
     resumeVerify: "Continue PDF upload",
+    agencyEyebrow: "Your MatchPack workspace is ready",
+    agencyTitle: "Continue to your Agency workspace",
+    agencyIntro: "Use the same email address as your Agency plan. Your personal CVs and MatchPack documents stay separate.",
+    agencyVerify: "Open my MatchPack workspace",
+    agencyReassurance: "You will only enter the shared Agency workspace you are entitled to use.",
   },
 };
 
@@ -85,21 +95,29 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
     next.includes("startSource=linkedin_to_cv_tool") ||
     next.includes("startSource=salary_role_page");
   const isResumeUpload = next.includes("resumeUpload=continue");
+  const isMatchPackStart = nextPath === "/agency/account" || nextPath.startsWith("/agency/account/");
   const eyebrow = isExampleStart
     ? copy.exampleEyebrow
     : isResumeUpload
       ? copy.resumeEyebrow
-      : copy.eyebrow;
+      : isMatchPackStart
+        ? copy.agencyEyebrow
+        : copy.eyebrow;
   const title = isExampleStart
     ? copy.exampleTitle
     : isResumeUpload
       ? copy.resumeTitle
-      : copy.title;
+      : isMatchPackStart
+        ? copy.agencyTitle
+        : copy.title;
   const intro = isExampleStart
     ? copy.exampleIntro
     : isResumeUpload
       ? copy.resumeIntro
-      : copy.intro;
+      : isMatchPackStart
+        ? copy.agencyIntro
+        : copy.intro;
+  const reassurance = isMatchPackStart ? copy.agencyReassurance : copy.reassurance;
 
   useEffect(() => {
     if (loginViewTrackedRef.current) return;
@@ -173,7 +191,7 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
         nextPath,
         isNewUser: data?.isNewUser === true,
       });
-      router.replace(typeof data?.redirectTo === "string" ? data.redirectTo : next);
+      router.replace(typeof data?.redirectTo === "string" ? data.redirectTo : nextPath);
     } catch {
       track("login_failed", { locale, nextPath, stage: "verify_code", reason: "network_error" });
       setError(copy.verifyError);
@@ -205,7 +223,7 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
               </div>
             ))}
           </div>
-          <p className="mt-3 text-xs font-medium text-slate-500">{copy.reassurance}</p>
+          <p className="mt-3 text-xs font-medium text-slate-500">{reassurance}</p>
         </div>
 
         {step === "email" ? (
@@ -258,7 +276,7 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
               disabled={loading}
               className="w-full bg-emerald-600 text-white py-2.5 rounded-md font-semibold border border-emerald-700 hover:bg-emerald-700 transition-colors disabled:opacity-60"
             >
-              {loading ? copy.sending : isResumeUpload ? copy.resumeVerify : copy.verify}
+              {loading ? copy.sending : isMatchPackStart ? copy.agencyVerify : isResumeUpload ? copy.resumeVerify : copy.verify}
             </button>
             <button
               type="button"

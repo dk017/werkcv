@@ -4,12 +4,6 @@ import dynamic from "next/dynamic";
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Footer from "@/components/Footer";
-import NavUserMenu from "@/components/NavUserMenu";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
-import { BrandShell } from "@/components/brand/BrandShell";
-import { SiteHeader } from "@/components/brand/SiteHeader";
-import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
 import type { TemplateConfig } from "@/lib/templates";
 import { getStoredAttribution, track } from "@/lib/analytics";
 import { applicationBundlePrice, cvDownloadPrice, homepageFaqItems, profilePhotoPrice } from "@/lib/site-content";
@@ -185,7 +179,6 @@ export default function HomePageClient({
     ];
 
     return (
-        <BrandShell>
         <div
             className="min-h-screen"
             onDrop={handleDrop}
@@ -230,14 +223,6 @@ export default function HomePageClient({
                     <button onClick={() => setError(null)} className="mt-2 text-xs font-semibold underline text-[var(--wk-danger)]">Sluiten</button>
                 </div>
             )}
-
-            <SiteHeader
-                rightContent={<><LanguageSwitcher tone="brand" /><NavUserMenu tone="brand" /></>}
-                primaryHref="/editor?template=professional&startSource=home_header"
-                primaryLabel="Begin gratis"
-                primaryOnClick={() => track('cta_clicked', { location: 'header', label: 'Begin gratis' })}
-            />
-
             {/* ============================================================ */}
             {/* HERO - Two column with template mockup */}
             {/* ============================================================ */}
@@ -310,11 +295,6 @@ export default function HomePageClient({
                     </div>
                 </div>
             </section>
-
-            <PublicEditorSection
-                locale="nl"
-                source="public_editor_home_nl"
-            />
 
             {/* ============================================================ */}
             {/* TRUST BAR - Factual product stats */}
@@ -841,12 +821,6 @@ export default function HomePageClient({
                 </div>
             </section>
 
-            {/* ============================================================ */}
-            {/* FOOTER */}
-            {/* ============================================================ */}
-            <Footer variant="brand" />
-        </div>
-        </BrandShell>
+            </div>
     );
 }
-

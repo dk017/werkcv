@@ -103,9 +103,9 @@ main().catch((error) => {
   const user = await prisma.user.findUnique({ where: { email }, select: { id: true } });
   if (user) {
     const subscription = await prisma.agencySubscription.findUnique({ where: { userId: user.id }, select: { id: true } });
-    if (subscription) await prisma.agencySubscription.delete({ where: { id: subscription.id } });
     await prisma.agencyMatchPack.deleteMany({ where: { userId: user.id } });
     await prisma.cVDocument.deleteMany({ where: { userId: user.id } });
+    if (subscription) await prisma.agencySubscription.delete({ where: { id: subscription.id } });
     await prisma.user.delete({ where: { id: user.id } });
   }
   await prisma.$disconnect();

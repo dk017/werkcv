@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
 import { parseCV } from '@/lib/cv-parser';
 import { getCvParsePublicMessage, recordCvParseFailure } from '@/lib/cv-upload-observability';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { Prisma } from '@prisma/client';
 import { getCurrentUserFromRequest } from '@/lib/auth';
+import { createPersonalCvDocument } from '@/lib/workspace/cv-document-service';
 
 export async function POST(request: NextRequest) {
     let file: File | null = null;
@@ -80,27 +80,13 @@ export async function POST(request: NextRequest) {
             templateId: 'professional',
         };
 
-        let cv;
-        try {
-            cv = await prisma.cVDocument.create({
-                data: {
-                    ...baseData,
-                    attribution: attribution as unknown as Prisma.InputJsonValue | undefined,
-                    sourceCluster: attribution?.firstTouchCluster || null,
-                    sourceLocale: attribution?.locale || null,
-                    startSource: 'home_upload',
-                    userId: user.id,
-                } as unknown as Prisma.CVDocumentCreateInput,
-            });
-        } catch {
-            // Backward-compatible fallback if DB migration has not been applied yet
-            cv = await prisma.cVDocument.create({
-                data: {
-                    ...baseData,
-                    userId: user.id,
-                },
-            });
-        }
+        const cv = await createPersonalCvDocument(user.id, {
+            ...baseData,
+            attribution: attribution as unknown as Prisma.InputJsonValue | undefined,
+            sourceCluster: attribution?.firstTouchCluster || null,
+            sourceLocale: attribution?.locale || null,
+            startSource: 'home_upload',
+        } as Omit<Prisma.CVDocumentUncheckedCreateInput, 'userId' | 'agencySubscriptionId'>);
 
         return NextResponse.json({
             success: true,

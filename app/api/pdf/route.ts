@@ -5,7 +5,7 @@ import { CVData } from '@/lib/cv';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 import { reportOpsIncident } from '@/lib/ops-alerts';
 import { getDefaultThemeId } from '@/lib/templates/registry';
-import { getAgencyAccessForUser } from '@/lib/agency-access';
+import { authorizeCvDocument, CvAuthorizationError } from '@/lib/workspace/cv-authorization';
 
 export async function GET(request: NextRequest) {
     const user = await getCurrentUserFromRequest(request);
@@ -25,15 +25,17 @@ export async function GET(request: NextRequest) {
         );
     }
 
-    // Fetch CV document
-    const cv = await prisma.cVDocument.findFirst({
-        where: { id: cvId, userId: user.id },
-    });
-
-    if (!cv) {
+    let cv;
+    try {
+        const readable = await authorizeCvDocument(user.id, cvId, 'read');
+        cv = readable.workspace.kind === 'matchpack'
+            ? await authorizeCvDocument(user.id, cvId, 'agency_export')
+            : await authorizeCvDocument(user.id, cvId, 'personal_download');
+    } catch (error) {
+        const code = error instanceof CvAuthorizationError ? error.code : 'CV_NOT_FOUND';
         return NextResponse.json(
-            { error: 'CV not found' },
-            { status: 404 }
+            { error: code === 'ROLE_FORBIDDEN' ? 'You cannot export this document.' : 'CV not found', code },
+            { status: code === 'ROLE_FORBIDDEN' ? 403 : 404 }
         );
     }
 
@@ -46,7 +48,7 @@ export async function GET(request: NextRequest) {
         },
         orderBy: { expiresAt: 'desc' },
     });
-    if (paymentEnabled && !pilotAccess) {
+    if (paymentEnabled && !pilotAccess && cv.workspace.kind === 'personal') {
         const order = await prisma.order.findFirst({
             where: {
                 cvId: cvId,
@@ -54,16 +56,7 @@ export async function GET(request: NextRequest) {
             },
         });
 
-        let agencyPlanActive = false;
-        try {
-            agencyPlanActive = (await getAgencyAccessForUser(user.id)).state === 'active';
-        } catch (error) {
-            // A subscription lookup must never make the existing consumer
-            // download path fail closed because of an agency-only data issue.
-            console.error('agency_pdf_entitlement_lookup_failed', error);
-        }
-
-        if (!order && !agencyPlanActive) {
+        if (!order) {
             return NextResponse.json(
                 { error: 'Payment required', code: 'PAYMENT_REQUIRED' },
                 { status: 402 }

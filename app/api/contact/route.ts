@@ -114,6 +114,7 @@ export async function POST(request: NextRequest) {
       where: {
         id: parsed.data.editorContext.cvId,
         userId: user.id,
+        agencySubscriptionId: null,
       },
       select: { id: true },
     });

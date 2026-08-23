@@ -3,6 +3,7 @@ import { Prisma } from '@prisma/client';
 import { applySessionCookie, verifyEmailLoginCode } from '@/lib/auth';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { prisma } from '@/lib/prisma';
+import { sanitizeInternalReturnPath } from '@/lib/auth/safe-return-path';
 
 function resolvePostLoginPath(nextPath: string | null, attribution: ReturnType<typeof sanitizeAttribution>) {
     const sourcePath = attribution?.firstTouchPath || '';
@@ -18,7 +19,9 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
         const email = typeof body.email === 'string' ? body.email : '';
         const code = typeof body.code === 'string' ? body.code : '';
-        const nextPath = typeof body.next === 'string' && body.next.startsWith('/') ? body.next : null;
+        const nextPath = typeof body.next === 'string'
+            ? sanitizeInternalReturnPath(body.next, '/templates')
+            : null;
         const attribution = sanitizeAttribution(body.attribution);
         const redirectTo = resolvePostLoginPath(nextPath, attribution);
 

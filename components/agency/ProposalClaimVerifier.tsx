@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { SiteHeader } from "@/components/brand/SiteHeader";
 import { track } from "@/lib/analytics";
 import type { ProposalClaimVerificationV1 } from "@/lib/tools/proposal-claim-verifier-schema";
 
@@ -171,7 +170,6 @@ export default function ProposalClaimVerifier({ locale = "nl" }: { locale?: Loca
   const inputClass = "w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm leading-relaxed outline-none focus:border-teal-700 focus:ring-4 focus:ring-teal-100";
 
   return <div className="min-h-screen text-slate-950">
-    <SiteHeader navItems={[]} backHref={locale === "en" ? "/agency" : "/voor-bureaus"} backLabel={t.back} context={t.context} rightContent={<Link className="wk-language-switcher" href={locale === "en" ? "/tools/kandidaatvoorstel-checker" : "/en/candidate-proposal-checker"}>{locale === "en" ? "Nederlands" : "English"}</Link>} />
     <main>
       <section className="border-b border-slate-200 bg-[var(--wk-accent-soft)]">
         <div className="wk-container py-12 sm:py-16">

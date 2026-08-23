@@ -8,8 +8,16 @@ import { getCurrentUser } from '@/lib/auth'
 import { reportOpsIncident } from '@/lib/ops-alerts'
 import { getResumeLanguage } from '@/lib/resume-language'
 import { getDefaultThemeId } from '@/lib/templates/registry'
-import { isAgencyCvStartSource } from '@/lib/agency-access'
 import { Prisma } from '@prisma/client'
+import { createPersonalCvDocument } from '@/lib/workspace/cv-document-service'
+import { authorizeCvDocument, CvAuthorizationError } from '@/lib/workspace/cv-authorization'
+import { revalidatePath } from 'next/cache'
+import {
+    buildPersonalCvPreview,
+    personalCvLibraryQuerySchema,
+    type PersonalCvLibraryResult,
+    type PersonalCvLibrarySort,
+} from '@/lib/cv-library'
 
 const userCVListSelect = {
     id: true,
@@ -17,6 +25,7 @@ const userCVListSelect = {
     templateId: true,
     colorThemeId: true,
     data: true,
+    createdAt: true,
     updatedAt: true,
 };
 
@@ -30,6 +39,7 @@ type UserCVListItem = {
     templateId: string;
     colorThemeId: string | null;
     data: unknown;
+    createdAt: Date;
     updatedAt: Date;
 };
 
@@ -41,7 +51,7 @@ export type CheckoutUrlResult =
     | { ok: true; url: string }
     | {
         ok: false;
-        code: 'AUTH_REQUIRED' | 'NOT_FOUND' | 'CHECKOUT_FAILED';
+        code: 'AUTH_REQUIRED' | 'NOT_FOUND' | 'CV_WORKSPACE_FORBIDDEN' | 'CHECKOUT_FAILED';
         reason?: string;
         supportNotified?: boolean;
     };
@@ -61,42 +71,68 @@ export async function createCV(templateId: string = 'professional', colorThemeId
         }
     }
 
-    const cv = await prisma.cVDocument.create({
-        data: {
-            title: 'Mijn CV',
-            // Prisma's JSON input type intentionally excludes `undefined`, while
-            // CVData has a few optional sections. The schema has already validated
-            // the value; this cast keeps the consumer path JSON-compatible without
-            // reintroducing Agency quota/retention handling.
-            data: cvData as unknown as Prisma.InputJsonValue,
-            templateId,
-            colorThemeId: colorThemeId || getDefaultThemeId(templateId),
-            userId: user.id,
-        },
+    const cv = await createPersonalCvDocument(user.id, {
+        title: 'Mijn CV',
+        // Prisma's JSON input type intentionally excludes `undefined`, while
+        // CVData has a few optional sections. The schema has already validated
+        // the value; this cast keeps the consumer path JSON-compatible.
+        data: cvData as unknown as Prisma.InputJsonValue,
+        templateId,
+        colorThemeId: colorThemeId || getDefaultThemeId(templateId),
     })
     return cv.id
 }
 
-export async function getCV(id: string) {
+export async function getCV(id: string, expectedWorkspace?: 'personal' | 'matchpack') {
     const user = await getCurrentUser();
     if (!user) return null;
 
-    const cv = await prisma.cVDocument.findFirst({ where: { id, userId: user.id } })
-    if (!cv) return null
-    return cv.data as unknown as CVData
+    try {
+        const cv = await authorizeCvDocument(user.id, id, 'read');
+        if (expectedWorkspace && cv.workspace.kind !== expectedWorkspace) return null;
+        return cv.data as unknown as CVData;
+    } catch {
+        return null;
+    }
 }
 
-export async function getCVWithSettings(id: string) {
+export async function getCVWithSettings(id: string, expectedWorkspace?: 'personal' | 'matchpack') {
     const user = await getCurrentUser();
     if (!user) return null;
 
-    const cv = await prisma.cVDocument.findFirst({ where: { id, userId: user.id } })
-    if (!cv) return null
+    let cv;
+    try {
+        cv = await authorizeCvDocument(user.id, id, 'read');
+    } catch {
+        return null;
+    }
+    if (expectedWorkspace && cv.workspace.kind !== expectedWorkspace) return null;
+    const isMatchPack = cv.workspace.kind === 'matchpack';
+    const matchPackLocked = Boolean(cv.matchPack && (cv.matchPack.approvedAt || cv.matchPack.status === 'approved'));
+    let canExport = !isMatchPack;
+    if (isMatchPack) {
+        try {
+            await authorizeCvDocument(user.id, id, 'agency_export');
+            canExport = true;
+        } catch {
+            canExport = false;
+        }
+    }
     return {
         data: cv.data as unknown as CVData,
         templateId: cv.templateId,
         colorThemeId: cv.colorThemeId ?? getDefaultThemeId(cv.templateId),
-        agencyRouteLocked: isAgencyCvStartSource(cv.startSource, cv.sourceCluster),
+        agencyRouteLocked: isMatchPack,
+        workspace: cv.workspace,
+        workspaceContext: {
+            kind: isMatchPack ? 'matchpack' as const : 'personal' as const,
+            label: isMatchPack ? 'MatchPack' : 'Persoonlijke CV',
+            backHref: isMatchPack ? '/agency/account' : '/mijn-cvs',
+            canEdit: isMatchPack ? cv.role !== 'viewer' && !matchPackLocked : true,
+            canEditDesign: isMatchPack ? cv.role !== 'viewer' && !matchPackLocked : true,
+            canExport,
+            downloadMode: isMatchPack ? 'matchpack_export' as const : 'personal_checkout' as const,
+        },
     }
 }
 
@@ -107,83 +143,62 @@ export async function updateCV(id: string, data: CVData) {
     const parsed = cvSchema.safeParse(data)
     if (!parsed.success) return { success: false, error: parsed.error }
 
-    const locked = await prisma.agencyMatchPack.findFirst({
-        where: { cvDocumentId: id, status: "approved", userId: user.id },
-        select: { id: true },
-    });
-    if (locked) return { success: false, error: 'MATCHPACK_SNAPSHOT_LOCKED' };
-
-    const updated = await prisma.cVDocument.updateMany({
-        where: { id, userId: user.id },
-        data: { data: parsed.data }
-    })
-    if (updated.count === 0) return { success: false, error: 'NOT_FOUND' };
-    return { success: true }
+    try {
+        const authorised = await authorizeCvDocument(user.id, id, 'edit_content');
+        const where = authorised.workspace.kind === 'personal'
+            ? { id, userId: user.id, agencySubscriptionId: null }
+            : { id, agencySubscriptionId: authorised.workspace.agencySubscriptionId };
+        const updated = await prisma.cVDocument.updateMany({ where, data: { data: parsed.data } });
+        if (updated.count === 0) return { success: false, error: 'NOT_FOUND' };
+        return { success: true }
+    } catch (error) {
+        return { success: false, error: error instanceof CvAuthorizationError ? error.code : 'NOT_FOUND' };
+    }
 }
 
 export async function updateCVTemplate(id: string, templateId: string) {
     const user = await getCurrentUser();
     if (!user) return { success: false, error: 'AUTH_REQUIRED' };
 
-    const locked = await prisma.agencyMatchPack.findFirst({
-        where: { cvDocumentId: id, status: "approved", userId: user.id },
-        select: { id: true },
-    });
-    if (locked) return { success: false, error: 'MATCHPACK_SNAPSHOT_LOCKED' };
-
-    const existing = await prisma.cVDocument.findFirst({
-        where: { id, userId: user.id },
-        select: { startSource: true, sourceCluster: true },
-    });
-    if (!existing) return { success: false, error: 'NOT_FOUND' };
-    if (isAgencyCvStartSource(existing.startSource, existing.sourceCluster)) {
-        return { success: false, error: 'AGENCY_BRANDED_ROUTE_LOCKED' };
+    try {
+        const authorised = await authorizeCvDocument(user.id, id, 'edit_design');
+        const where = authorised.workspace.kind === 'personal'
+            ? { id, userId: user.id, agencySubscriptionId: null }
+            : { id, agencySubscriptionId: authorised.workspace.agencySubscriptionId };
+        const updated = await prisma.cVDocument.updateMany({ where, data: { templateId } });
+        if (updated.count === 0) return { success: false, error: 'NOT_FOUND' };
+        return { success: true }
+    } catch (error) {
+        return { success: false, error: error instanceof CvAuthorizationError ? error.code : 'NOT_FOUND' };
     }
-
-    const updated = await prisma.cVDocument.updateMany({
-        where: { id, userId: user.id },
-        data: { templateId }
-    })
-    if (updated.count === 0) return { success: false, error: 'NOT_FOUND' };
-    return { success: true }
 }
 
 export async function updateCVColorTheme(id: string, colorThemeId: string) {
     const user = await getCurrentUser();
     if (!user) return { success: false, error: 'AUTH_REQUIRED' };
 
-    const locked = await prisma.agencyMatchPack.findFirst({
-        where: { cvDocumentId: id, status: "approved", userId: user.id },
-        select: { id: true },
-    });
-    if (locked) return { success: false, error: 'MATCHPACK_SNAPSHOT_LOCKED' };
-
-    const existing = await prisma.cVDocument.findFirst({
-        where: { id, userId: user.id },
-        select: { startSource: true, sourceCluster: true },
-    });
-    if (!existing) return { success: false, error: 'NOT_FOUND' };
-    if (isAgencyCvStartSource(existing.startSource, existing.sourceCluster)) {
-        return { success: false, error: 'AGENCY_BRANDED_ROUTE_LOCKED' };
+    try {
+        const authorised = await authorizeCvDocument(user.id, id, 'edit_design');
+        const where = authorised.workspace.kind === 'personal'
+            ? { id, userId: user.id, agencySubscriptionId: null }
+            : { id, agencySubscriptionId: authorised.workspace.agencySubscriptionId };
+        const updated = await prisma.cVDocument.updateMany({ where, data: { colorThemeId } });
+        if (updated.count === 0) return { success: false, error: 'NOT_FOUND' };
+        return { success: true }
+    } catch (error) {
+        return { success: false, error: error instanceof CvAuthorizationError ? error.code : 'NOT_FOUND' };
     }
-
-    const updated = await prisma.cVDocument.updateMany({
-        where: { id, userId: user.id },
-        data: { colorThemeId }
-    })
-    if (updated.count === 0) return { success: false, error: 'NOT_FOUND' };
-    return { success: true }
 }
 
 export async function checkPaymentStatus(cvId: string): Promise<boolean> {
     const user = await getCurrentUser();
     if (!user) return false;
 
-    const owned = await prisma.cVDocument.findFirst({
-        where: { id: cvId, userId: user.id },
-        select: { id: true },
-    });
-    if (!owned) return false;
+    try {
+        await authorizeCvDocument(user.id, cvId, 'personal_download');
+    } catch {
+        return false;
+    }
 
     const order = await prisma.order.findFirst({
         where: {
@@ -194,37 +209,197 @@ export async function checkPaymentStatus(cvId: string): Promise<boolean> {
     return !!order
 }
 
-export async function getUserCVs() {
+type PersonalCvCursor = {
+    version: 1;
+    sort: PersonalCvLibrarySort;
+    id: string;
+    value: string;
+};
+
+function encodePersonalCvCursor(item: UserCVListItem, sort: PersonalCvLibrarySort): string {
+    const value = sort === 'updated_desc'
+        ? item.updatedAt.toISOString()
+        : sort === 'title_asc'
+            ? item.title
+            : item.createdAt.toISOString();
+    const payload: PersonalCvCursor = { version: 1, sort, id: item.id, value };
+    return Buffer.from(JSON.stringify(payload), 'utf8').toString('base64url');
+}
+
+function decodePersonalCvCursor(value: string | undefined, sort: PersonalCvLibrarySort): PersonalCvCursor | null {
+    if (!value) return null;
+    try {
+        const parsed = JSON.parse(Buffer.from(value, 'base64url').toString('utf8')) as Partial<PersonalCvCursor>;
+        if (parsed.version !== 1 || parsed.sort !== sort || typeof parsed.id !== 'string' || typeof parsed.value !== 'string') return null;
+        if (!/^[a-zA-Z0-9_-]{1,120}$/.test(parsed.id) || parsed.value.length > 500) return null;
+        if (sort !== 'title_asc' && Number.isNaN(new Date(parsed.value).getTime())) return null;
+        return parsed as PersonalCvCursor;
+    } catch {
+        return null;
+    }
+}
+
+function personalCvOrderBy(sort: PersonalCvLibrarySort): Prisma.CVDocumentOrderByWithRelationInput[] {
+    if (sort === 'created_desc') return [{ createdAt: 'desc' }, { id: 'desc' }];
+    if (sort === 'created_asc') return [{ createdAt: 'asc' }, { id: 'asc' }];
+    if (sort === 'title_asc') return [{ title: 'asc' }, { id: 'asc' }];
+    return [{ updatedAt: 'desc' }, { id: 'desc' }];
+}
+
+function personalCvCursorWhere(cursor: PersonalCvCursor): Prisma.CVDocumentWhereInput {
+    if (cursor.sort === 'title_asc') {
+        return { OR: [{ title: { gt: cursor.value } }, { title: cursor.value, id: { gt: cursor.id } }] };
+    }
+    const date = new Date(cursor.value);
+    const field = cursor.sort === 'updated_desc' ? 'updatedAt' : 'createdAt';
+    const direction = cursor.sort === 'created_asc' ? 'gt' : 'lt';
+    return {
+        OR: [
+            { [field]: { [direction]: date } },
+            { [field]: date, id: { [direction]: cursor.id } },
+        ],
+    };
+}
+
+export async function getUserCVs(input: unknown = {}): Promise<PersonalCvLibraryResult> {
     const user = await getCurrentUser();
-    if (!user) return [];
+    if (!user) return { ok: false, code: 'AUTH_REQUIRED', message: 'Log opnieuw in om je CV\'s te bekijken.' };
 
-    const cvs = await prisma.cVDocument.findMany({
-        where: { userId: user.id },
-        orderBy: { updatedAt: 'desc' },
-        select: userCVListSelect,
-    });
+    const parsedQuery = personalCvLibraryQuerySchema.safeParse(input);
+    if (!parsedQuery.success) {
+        return { ok: false, code: 'VALIDATION_ERROR', message: 'Controleer de zoekterm en sortering.' };
+    }
+    const query = { ...parsedQuery.data, limit: 12 as const };
+    const cursor = decodePersonalCvCursor(query.cursor, query.sort);
+    if (query.cursor && !cursor) {
+        return { ok: false, code: 'INVALID_CURSOR', message: 'Deze lijstpositie is niet meer geldig. Laad de lijst opnieuw.' };
+    }
 
-    const cvIds = cvs.map((cv: UserCVListItem) => cv.id);
-    const paidOrders = await prisma.order.findMany({
-        where: { cvId: { in: cvIds }, paidAt: { not: null } },
-        select: paidOrderSelect,
-    });
-    const paidCvIds = new Set(
-        paidOrders.flatMap((order: PaidOrderItem) => (order.cvId ? [order.cvId] : []))
-    );
+    const baseWhere: Prisma.CVDocumentWhereInput = {
+        userId: user.id,
+        agencySubscriptionId: null,
+        ...(query.query ? { title: { contains: query.query, mode: 'insensitive' as const } } : {}),
+    };
+    const where: Prisma.CVDocumentWhereInput = cursor
+        ? { AND: [baseWhere, personalCvCursorWhere(cursor)] }
+        : baseWhere;
 
-    return cvs.map((cv: UserCVListItem) => ({
-        ...cv,
-        isPaid: paidCvIds.has(cv.id),
-    }));
+    try {
+        const [records, totalCount] = await Promise.all([
+            prisma.cVDocument.findMany({
+                where,
+                orderBy: personalCvOrderBy(query.sort),
+                take: query.limit + 1,
+                select: userCVListSelect,
+            }),
+            prisma.cVDocument.count({ where: baseWhere }),
+        ]);
+        const hasMore = records.length > query.limit;
+        const cvs = records.slice(0, query.limit);
+
+        const cvIds = cvs.map((cv: UserCVListItem) => cv.id);
+        const paidOrders = cvIds.length ? await prisma.order.findMany({
+            where: { cvId: { in: cvIds }, paidAt: { not: null } },
+            select: paidOrderSelect,
+        }) : [];
+        const paidCvIds = new Set(
+            paidOrders.flatMap((order: PaidOrderItem) => (order.cvId ? [order.cvId] : []))
+        );
+
+        return {
+            ok: true,
+            items: cvs.map((cv: UserCVListItem) => ({
+                id: cv.id,
+                title: cv.title,
+                templateId: cv.templateId,
+                colorThemeId: cv.colorThemeId ?? getDefaultThemeId(cv.templateId),
+                previewData: buildPersonalCvPreview(cv.data),
+                createdAt: cv.createdAt.toISOString(),
+                updatedAt: cv.updatedAt.toISOString(),
+                isPaid: paidCvIds.has(cv.id),
+            })),
+            nextCursor: hasMore && cvs.length ? encodePersonalCvCursor(cvs[cvs.length - 1], query.sort) : null,
+            totalCount,
+            query: query.query,
+            sort: query.sort,
+        };
+    } catch {
+        return { ok: false, code: 'LOAD_FAILED', message: 'Je CV\'s konden niet worden geladen. Probeer het opnieuw.' };
+    }
 }
 
 export async function deleteCV(id: string) {
     const user = await getCurrentUser();
     if (!user) return { success: false };
 
-    await prisma.cVDocument.deleteMany({ where: { id, userId: user.id } });
-    return { success: true };
+    try {
+        const authorised = await authorizeCvDocument(user.id, id, 'delete');
+        if (authorised.workspace.kind !== 'personal') {
+            return { success: false, error: 'CV_WORKSPACE_FORBIDDEN' };
+        }
+        const deleted = await prisma.cVDocument.deleteMany({
+            where: { id, userId: user.id, agencySubscriptionId: null },
+        });
+        if (deleted.count > 0) {
+            revalidatePath('/mijn-cvs');
+            return { success: true };
+        }
+        return { success: false, error: 'NOT_FOUND' };
+    } catch (error) {
+        return { success: false, error: error instanceof CvAuthorizationError ? error.code : 'NOT_FOUND' };
+    }
+}
+
+
+export async function renameCV(id: string, title: string) {
+    const user = await getCurrentUser();
+    if (!user) return { success: false, error: 'AUTH_REQUIRED' };
+
+    const safeTitle = title.trim();
+    if (!safeTitle) return { success: false, error: 'TITLE_REQUIRED' };
+    if (safeTitle.length > 80) return { success: false, error: 'TITLE_TOO_LONG' };
+
+    try {
+        const authorised = await authorizeCvDocument(user.id, id, 'edit_content');
+        if (authorised.workspace.kind !== 'personal') {
+            return { success: false, error: 'CV_WORKSPACE_FORBIDDEN' };
+        }
+        const updated = await prisma.cVDocument.updateMany({
+            where: { id, userId: user.id, agencySubscriptionId: null },
+            data: { title: safeTitle },
+        });
+        if (updated.count > 0) {
+            revalidatePath('/mijn-cvs');
+            return { success: true };
+        }
+        return { success: false, error: 'NOT_FOUND' };
+    } catch (error) {
+        return { success: false, error: error instanceof CvAuthorizationError ? error.code : 'NOT_FOUND' };
+    }
+}
+
+export async function duplicateCV(id: string) {
+    const user = await getCurrentUser();
+    if (!user) return { success: false, error: 'AUTH_REQUIRED' };
+
+    try {
+        const authorised = await authorizeCvDocument(user.id, id, 'read');
+        if (authorised.workspace.kind !== 'personal') {
+            return { success: false, error: 'CV_WORKSPACE_FORBIDDEN' };
+        }
+        const sourceTitle = authorised.title?.trim() || 'Naamloos CV';
+        const suffix = ' – kopie';
+        const copy = await createPersonalCvDocument(user.id, {
+            title: sourceTitle.slice(0, 80 - suffix.length) + suffix,
+            data: authorised.data as unknown as Prisma.InputJsonValue,
+            templateId: authorised.templateId,
+            colorThemeId: authorised.colorThemeId ?? getDefaultThemeId(authorised.templateId),
+        });
+        revalidatePath('/mijn-cvs');
+        return { success: true, id: copy.id };
+    } catch (error) {
+        return { success: false, error: error instanceof CvAuthorizationError ? error.code : 'NOT_FOUND' };
+    }
 }
 
 export async function getCheckoutURL(
@@ -237,17 +412,13 @@ export async function getCheckoutURL(
     if (!user) {
         return { ok: false, code: 'AUTH_REQUIRED' };
     }
-    const owned = await prisma.cVDocument.findFirst({
-        where: { id: cvId, userId: user.id },
-        select: {
-            id: true,
-            data: true,
-            sourceCluster: true,
-            sourceLocale: true,
-            startSource: true,
-        },
-    });
-    if (!owned) {
+    let owned;
+    try {
+        owned = await authorizeCvDocument(user.id, cvId, 'personal_checkout');
+    } catch (error) {
+        if (error instanceof CvAuthorizationError && error.code === 'CV_WORKSPACE_FORBIDDEN') {
+            return { ok: false, code: 'CV_WORKSPACE_FORBIDDEN' };
+        }
         return { ok: false, code: 'NOT_FOUND' };
     }
 

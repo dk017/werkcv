@@ -157,7 +157,7 @@ export default function AgencyPage() {
       <FAQJsonLd questions={faqs} />
       <JsonLd data={softwareJsonLd} />
       <OrganizationJsonLd />
-      <Footer variant="brand" />
+      <Footer variant="brand" product="matchpack" />
     </div>
   );
 }

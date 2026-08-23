@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
         }
 
         const cv = await prisma.cVDocument.findFirst({
-            where: { id: cvId, userId: user.id },
+            where: { id: cvId, userId: user.id, agencySubscriptionId: null },
         });
 
         if (!cv) {
@@ -41,11 +41,9 @@ export async function POST(request: NextRequest) {
             preferredLanguage,
         });
 
-        await prisma.cVDocument.update({
-            where: { id: cv.id },
-            data: {
-                data: rewritten,
-            },
+        await prisma.cVDocument.updateMany({
+            where: { id: cv.id, userId: user.id, agencySubscriptionId: null },
+            data: { data: rewritten },
         });
 
         return NextResponse.json({

@@ -60,6 +60,8 @@ import type { CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match";
 import { suggestTargetRoleFromExperience } from "@/lib/cv-normalize";
 import ScaledCvPreview, { A4_WIDTH_PX } from "./ScaledCvPreview";
 import EditorFeedbackWidget from "./EditorFeedbackWidget";
+import WorkspaceSwitcher from "@/components/workspace/WorkspaceSwitcher";
+import type { WorkspaceEntitlements } from "@/lib/workspace/types";
 
 interface EditorProps {
     initialData: CVData;
@@ -69,6 +71,17 @@ interface EditorProps {
     accountEmail: string;
     uiLanguage?: UiLanguage;
     agencyRouteLocked?: boolean;
+    workspaceContext?: {
+        kind: "personal" | "matchpack";
+        label: string;
+        backHref: string;
+        canEdit: boolean;
+        canEditDesign: boolean;
+        canExport: boolean;
+        downloadMode: "personal_checkout" | "matchpack_export";
+    };
+    workspaceEntitlements?: WorkspaceEntitlements;
+    workspaceSwitcherEnabled?: boolean;
     mode?: "account" | "public";
     publicDraftId?: string;
     publicFlow?: PublicEditorFlow;
@@ -296,6 +309,9 @@ export default function Editor({
     accountEmail,
     uiLanguage = "nl",
     agencyRouteLocked = false,
+    workspaceContext,
+    workspaceEntitlements,
+    workspaceSwitcherEnabled = false,
     mode = "account",
     publicDraftId,
     publicFlow = "consumer",
@@ -304,6 +320,10 @@ export default function Editor({
 }: EditorProps) {
     const isEnglish = uiLanguage === "en";
     const isPublicMode = mode === "public";
+    const isMatchPackWorkspace = workspaceContext?.kind === "matchpack" || agencyRouteLocked;
+    const isReadOnlyWorkspace = Boolean(isMatchPackWorkspace && workspaceContext && !workspaceContext.canEdit);
+    const canChangeWorkspaceDesign = !isMatchPackWorkspace || !workspaceContext || workspaceContext.canEditDesign;
+    const canDownloadWorkspace = !isMatchPackWorkspace || Boolean(workspaceContext?.canExport);
     const tr = (dutch: string, english: string) => (isEnglish ? english : dutch);
     const normalizedInitialData = ensureEditorData(initialData, uiLanguage);
     const optionalSectionOptions = getOptionalSectionOptions(uiLanguage);
@@ -946,6 +966,7 @@ export default function Editor({
     };
 
     const onSubmit = async (formData: CVData) => {
+        if (!isPublicMode && isReadOnlyWorkspace) return;
         setIsSaved(false);
         if (isPublicMode) {
             const saved = persistPublicDraft(formData);
@@ -967,6 +988,7 @@ export default function Editor({
     const isSavingRef = useRef(false);
 
     useEffect(() => {
+        if (!isPublicMode && isReadOnlyWorkspace) return;
         const subscription = watch(() => {
             setIsSaved(false);
 
@@ -997,7 +1019,7 @@ export default function Editor({
                 clearTimeout(autoSaveTimerRef.current);
             }
         };
-    }, [isPublicMode, maybeTrackCompletion, persistPublicDraft, watch, id]);
+    }, [isPublicMode, isReadOnlyWorkspace, maybeTrackCompletion, persistPublicDraft, watch, id]);
 
     // Warn user before closing tab with unsaved changes
     useEffect(() => {
@@ -1011,6 +1033,7 @@ export default function Editor({
     }, [isSaved]);
 
     const handleTemplateChange = async (newTemplateId: string, defaultThemeId: string) => {
+        if (!canChangeWorkspaceDesign) return;
         track('template_selected', {
             cvId: id,
             templateId: newTemplateId,
@@ -1056,6 +1079,7 @@ export default function Editor({
     };
 
     const handleColorThemeChange = async (newThemeId: string) => {
+        if (!canChangeWorkspaceDesign) return;
         track('color_theme_changed', { themeId: newThemeId, templateId });
         setColorThemeId(newThemeId);
         if (isPublicMode) {
@@ -1230,15 +1254,18 @@ export default function Editor({
                 return;
             }
 
-            // Always save latest data before generating PDF to prevent stale content
+            // Editable documents are saved first. Approved MatchPack snapshots are
+            // immutable but remain exportable through the Agency entitlement gate.
             const formData = watch();
-            const res = await updateCV(id, formData);
-            if (!res.success) {
-                alert(tr("Er ging iets mis bij het opslaan.", "Something went wrong while saving."));
-                return;
+            if (!isReadOnlyWorkspace) {
+                const res = await updateCV(id, formData);
+                if (!res.success) {
+                    alert(tr("Er ging iets mis bij het opslaan.", "Something went wrong while saving."));
+                    return;
+                }
+                setIsSaved(true);
+                maybeTrackCompletion(formData);
             }
-            setIsSaved(true);
-            maybeTrackCompletion(formData);
 
             // Fetch PDF as blob so we can track completion and handle errors
             const response = await fetch(`/api/pdf?cvId=${id}`);
@@ -1331,13 +1358,30 @@ export default function Editor({
                                 Werk<span className="bg-[#4ECDC4] px-1 rounded-sm">CV</span>.nl
                             </span>
                         </Link>
+                        {workspaceContext && !isPublicMode ? (
+                            <Link
+                                href={workspaceContext.backHref}
+                                className="hidden min-w-0 max-w-[10rem] truncate rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-bold text-slate-600 transition-colors hover:border-emerald-300 hover:text-emerald-800 sm:inline-flex"
+                                title={tr("Terug naar werkruimte", "Back to workspace")}
+                            >
+                                ← {workspaceContext.label}
+                            </Link>
+                        ) : null}
+                        {workspaceEntitlements && workspaceSwitcherEnabled && !isPublicMode ? (
+                            <WorkspaceSwitcher
+                                workspaces={workspaceEntitlements}
+                                currentWorkspace={isMatchPackWorkspace ? "matchpack" : "personal"}
+                                locale={isEnglish ? "en" : "nl"}
+                                compact
+                            />
+                        ) : null}
                         {isGuidedBuild ? (
                             <span className={isCompactToolbar
                                 ? "hidden"
                                 : "hidden rounded-full border border-teal-200 bg-teal-50 px-2.5 py-1 text-[11px] font-bold text-teal-800 sm:inline-flex"}>
                                 {tr("Stap voor stap", "Guided build")}
                             </span>
-                        ) : agencyRouteLocked ? (
+                        ) : isMatchPackWorkspace && canChangeWorkspaceDesign ? (
                             <div className="relative flex shrink-0 items-center gap-1 sm:gap-2">
                                 <TemplateSelector
                                     currentTemplateId={templateId}
@@ -1358,6 +1402,10 @@ export default function Editor({
                                     uiLanguage={uiLanguage}
                                 />
                             </div>
+                        ) : isMatchPackWorkspace ? (
+                            <span className="inline-flex shrink-0 items-center rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-bold text-slate-600">
+                                {tr("Ontwerp vergrendeld", "Design locked")}
+                            </span>
                         ) : (
                             <div className="relative flex shrink-0 items-center gap-1 sm:gap-2">
                                 <TemplateSelector
@@ -1383,8 +1431,13 @@ export default function Editor({
 
                     {/* Right side - Save and Download */}
                     <div className="flex shrink-0 items-center">
+                        {isReadOnlyWorkspace ? (
+                            <span className="mr-2 hidden max-w-[12rem] truncate text-[11px] font-semibold text-slate-500 lg:inline" role="status">
+                                {tr("Alleen bekijken", "View only")}
+                            </span>
+                        ) : null}
                         <div className="flex items-center gap-1 sm:gap-2">
-                            {!isCurrentCvEmpty ? (
+                            {!isCurrentCvEmpty && !isReadOnlyWorkspace ? (
                                 <button
                                     type="button"
                                     onClick={() => openUploader("toolbar")}
@@ -1427,7 +1480,7 @@ export default function Editor({
                             ) : null}
                             <button
                                 onClick={handleSubmit(onSubmit)}
-                                disabled={isSubmitting || isSaved}
+                                disabled={isSubmitting || isSaved || isReadOnlyWorkspace}
                                 title={tr("CV opslaan", "Save CV")}
                                 aria-label={tr("CV opslaan", "Save CV")}
                                 className={`${isCompactToolbar ? "h-9 min-w-9 px-2" : "px-3 sm:px-4"} py-2 font-semibold text-xs sm:text-sm rounded-md border transition-colors ${isSaved
@@ -1453,7 +1506,7 @@ export default function Editor({
                                     }
                                     handleDownload("toolbar");
                                 }}
-                                disabled={isDownloading}
+                                disabled={isDownloading || !canDownloadWorkspace}
                                 aria-label={isDownloading ? tr("PDF wordt gemaakt", "Generating PDF") : toolbarCtaLabel}
                                 title={toolbarCtaLabel}
                                 className={`${isCompactToolbar ? "px-2" : "px-3 sm:px-4"} py-2 font-semibold text-xs sm:text-sm rounded-md border transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${isReadyToDownload
@@ -1536,7 +1589,7 @@ export default function Editor({
                                     ) : null}
                                 </div>
                                 <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-slate-100 pt-3 text-xs font-semibold">
-                                    <button type="button" onClick={() => openUploader("empty_state")} className="text-teal-800 underline underline-offset-2 hover:text-teal-950">
+                                    <button type="button" onClick={() => openUploader("empty_state")} disabled={isReadOnlyWorkspace} className="text-teal-800 underline underline-offset-2 hover:text-teal-950 disabled:cursor-not-allowed disabled:opacity-50">
                                         {tr("Heb je al een CV? Upload het", "Already have a CV? Upload it")}
                                     </button>
                                     <button type="button" onClick={revealDesignWorkspace} className="text-slate-500 underline underline-offset-2 hover:text-slate-800">
@@ -1632,7 +1685,7 @@ export default function Editor({
                                                 location: "editor_empty_cv_upload_nudge",
                                                 label: "upload_existing_cv",
                                             });
-                                            openUploader("empty_state");
+                                            if (!isReadOnlyWorkspace) openUploader("empty_state");
                                         }}
                                         className="inline-flex shrink-0 items-center justify-center rounded-md border border-teal-700 bg-teal-600 px-4 py-3 text-sm font-black text-white transition-colors hover:bg-teal-700"
                                     >
@@ -1704,7 +1757,7 @@ export default function Editor({
                                     <button
                                         type="button"
                                         onClick={() => handleDownload("ready_panel")}
-                                        disabled={isDownloading}
+                                        disabled={isDownloading || !canDownloadWorkspace}
                                         className="inline-flex shrink-0 items-center justify-center rounded-md border border-emerald-700 bg-emerald-600 px-5 py-3 text-sm font-black text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
                                     >
                                         {isDownloading
@@ -1949,7 +2002,7 @@ export default function Editor({
                                     <button
                                         type="button"
                                         onClick={() => handleDownload("post_completion_tools")}
-                                        disabled={isDownloading}
+                                        disabled={isDownloading || !canDownloadWorkspace}
                                         className="inline-flex shrink-0 items-center justify-center rounded-md border border-emerald-700 bg-emerald-600 px-4 py-2 text-xs font-black text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
                                     >
                                         {isDownloading
@@ -2164,4 +2217,3 @@ export default function Editor({
         ? createPortal(editorMarkup, document.body)
         : editorMarkup;
 }
-

@@ -1,10 +1,10 @@
+
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getCurrentUser } from '@/lib/auth';
 import { getUserCVs } from '@/app/actions';
-import { CVData } from '@/lib/cv';
 import CvGrid from './CvGrid';
-import LogoutButton from './LogoutButton';
+import PersonalAppShell from '@/components/workspace/PersonalAppShell';
 
 export const metadata = {
     title: 'Mijn CV\'s | WerkCV',
@@ -16,68 +16,35 @@ export default async function MijnCvsPage() {
         redirect('/login?next=/mijn-cvs');
     }
 
-    const cvs = await getUserCVs();
+    const library = await getUserCVs();
 
     return (
-        <main className="min-h-screen bg-[#f1f5f4]">
-            {/* Header */}
-            <div className="bg-white border-b border-slate-200">
-                <div className="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
-                    <Link href="/" className="font-semibold text-xl tracking-tight text-slate-900">
-                        Werk<span className="bg-emerald-200 px-1 rounded-sm">CV</span>.nl
-                    </Link>
-                    <div className="flex items-center gap-4">
-                        <span className="text-sm text-slate-500 hidden sm:block">{user.email}</span>
-                        <LogoutButton />
-                    </div>
-                </div>
-            </div>
+        <PersonalAppShell>
+            <main className="min-h-[calc(100vh-86px)] px-4 pb-16 pt-4 sm:px-6">
+                <div className="mx-auto max-w-6xl">
+                    <section className="mb-8 rounded-3xl border border-slate-200 bg-white px-5 py-7 shadow-sm sm:px-8">
+                        <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.18em] text-emerald-700">Persoonlijke CV-ruimte</p>
+                        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+                            <div>
+                                <h1 className="text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">Mijn CV&apos;s</h1>
+                                <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+                                    Werk aan je eigen CV&apos;s en bewaar elke versie op één plek. Voor vacaturegerichte kandidaatvoorstellen ga je naar MatchPack.
+                                </p>
+                            </div>
+                            <div className="flex flex-wrap gap-2">
+                                <Link href="/templates?startSource=personal_library" className="inline-flex min-h-11 items-center justify-center rounded-md bg-emerald-600 px-4 py-2 text-sm font-bold text-white shadow-sm hover:bg-emerald-700">
+                                    Nieuw persoonlijk CV
+                                </Link>
+                                <Link href="/voor-bureaus" className="inline-flex min-h-11 items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-700 hover:border-emerald-500 hover:text-emerald-700">
+                                    Bekijk MatchPack
+                                </Link>
+                            </div>
+                        </div>
+                    </section>
 
-            <div className="max-w-5xl mx-auto px-5 py-8">
-                {/* Page title + new CV button */}
-                <div className="flex items-center justify-between mb-6">
-                    <div>
-                        <h1 className="text-2xl font-bold text-slate-900">Mijn CV&apos;s</h1>
-                        <p className="text-sm text-slate-500 mt-0.5">
-                            {cvs.length === 0
-                                ? 'Je hebt nog geen CV\'s aangemaakt.'
-                                : `${cvs.length} CV${cvs.length > 1 ? '\'s' : ''} opgeslagen`}
-                        </p>
-                    </div>
-                    <Link
-                        href="/templates"
-                        className="bg-emerald-600 text-white px-4 py-2 rounded-md font-semibold text-sm border border-emerald-700 hover:bg-emerald-700 transition-colors"
-                    >
-                        + Nieuw CV
-                    </Link>
+                    <CvGrid initialResult={library} />
                 </div>
-
-                {cvs.length === 0 ? (
-                    <div className="text-center py-20 bg-white rounded-2xl border border-slate-200">
-                        <p className="text-slate-400 text-4xl mb-4">📄</p>
-                        <p className="text-slate-600 font-semibold mb-1">Nog geen CV&apos;s</p>
-                        <p className="text-slate-400 text-sm mb-6">Start met een template om je eerste CV te maken.</p>
-                        <Link
-                            href="/templates"
-                            className="bg-emerald-600 text-white px-5 py-2.5 rounded-md font-semibold text-sm border border-emerald-700 hover:bg-emerald-700 transition-colors"
-                        >
-                            Kies een template
-                        </Link>
-                    </div>
-                ) : (
-                    <CvGrid
-                        cvs={cvs.map((cv) => ({
-                            id: cv.id,
-                            title: cv.title,
-                            templateId: cv.templateId,
-                            colorThemeId: cv.colorThemeId ?? 'classic-blue',
-                            data: cv.data as unknown as CVData,
-                            updatedAt: cv.updatedAt.toISOString(),
-                            isPaid: cv.isPaid,
-                        }))}
-                    />
-                )}
-            </div>
-        </main>
+            </main>
+        </PersonalAppShell>
     );
 }

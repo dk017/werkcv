@@ -305,6 +305,90 @@ export function needsAgencyRetentionAcknowledgement(
 }
 
 /**
+ * Resolve access to one persisted MatchPack workspace without creating a
+ * usage period or accepting an invitation. This is the read/authorisation
+ * path for document actions; the operational helper above remains the path
+ * for creating work and quota accounting.
+ */
+export async function getAgencyDocumentAccessForUser(
+  userId: string,
+  subscriptionId: string,
+): Promise<AgencyAccessSnapshot> {
+  const subscription = await prisma.agencySubscription.findUnique({
+    where: { id: subscriptionId },
+  });
+  if (!subscription) {
+    return {
+      subscription: null,
+      ownerUserId: null,
+      role: "viewer",
+      isOwner: false,
+      period: null,
+      used: 0,
+      remaining: 0,
+      canCreate: false,
+      state: "none",
+    };
+  }
+
+  let role: AgencyAccessSnapshot["role"] | null = null;
+  if (subscription.userId === userId) {
+    role = "owner";
+  } else {
+    const memberUser = await prisma.user.findUnique({ where: { id: userId }, select: { email: true } });
+    const membership = await prisma.agencyTeamMember.findFirst({
+      where: {
+        subscriptionId,
+        status: "active",
+        OR: [{ userId }, ...(memberUser?.email ? [{ email: memberUser.email }] : [])],
+      },
+      orderBy: { createdAt: "desc" },
+      select: { role: true },
+    });
+    if (membership) {
+      role = membership.role === "owner" || membership.role === "editor" || membership.role === "reviewer" || membership.role === "viewer"
+        ? membership.role
+        : "viewer";
+    }
+  }
+
+  if (!role) {
+    return {
+      subscription: null,
+      ownerUserId: null,
+      role: "viewer",
+      isOwner: false,
+      period: null,
+      used: 0,
+      remaining: 0,
+      canCreate: false,
+      state: "none",
+    };
+  }
+
+  const status = subscription.status.trim().toLowerCase();
+  const state: AgencyAccessSnapshot["state"] = status === "pending"
+    ? "pending"
+    : isAgencySubscriptionInPaidPeriod(subscription, new Date())
+      ? "active"
+      : status === "expired" || status === "cancelled" || status === "canceled"
+        ? "expired"
+        : "paused";
+
+  return {
+    subscription,
+    ownerUserId: subscription.userId,
+    role,
+    isOwner: role === "owner",
+    period: null,
+    used: 0,
+    remaining: 0,
+    canCreate: state === "active" && canCreateAgencyWork({ role }),
+    state,
+  };
+}
+
+/**
  * Agency-owned CVs are created only from an explicit Agency workflow. A paid
  * Agency subscription by itself must not change the normal CV builder.
  */
@@ -318,20 +402,26 @@ export function isAgencyCvStartSource(startSource: string | null | undefined, so
 }
 
 /**
- * Creates a CV and reserves one agency slot in the same serializable
- * transaction. Consumer accounts continue through the original path.
+ * Creates a MatchPack CV only after the caller explicitly selects MatchPack
+ * and the server resolves the actor's Agency access.
  */
-export async function createCvDocumentForUser(data: CvCreateData) {
-  if (!data.userId) return prisma.cVDocument.create({ data });
-
-  const subscription = await findAgencySubscription(data.userId);
-  if (!subscription || !isAgencySubscriptionInPaidPeriod(subscription)) {
-    return prisma.cVDocument.create({ data });
+export async function createAgencyCvDocumentForUser(
+  actorUserId: string,
+  data: Omit<CvCreateData, "userId" | "agencySubscriptionId">,
+) {
+  const access = await getAgencyAccessForUser(actorUserId);
+  if (access.state !== "active" || !access.subscription || !access.ownerUserId) {
+    throw new AgencyAccessError("AGENCY_SUBSCRIPTION_INACTIVE", "An active Agency subscription is required.");
+  }
+  if (!canCreateAgencyWork(access)) {
+    throw new AgencyAccessError("AGENCY_SUBSCRIPTION_INACTIVE", "Your Agency role cannot create new CVs.");
   }
 
+  const agencySubscriptionId = access.subscription.id;
+  const userId = access.ownerUserId;
   return withSerializableRetry(async (tx) => {
     const currentSubscription = await tx.agencySubscription.findUnique({
-      where: { userId: data.userId as string },
+      where: { id: agencySubscriptionId },
     });
     if (!currentSubscription || !isAgencySubscriptionInPaidPeriod(currentSubscription)) {
       throw new AgencyAccessError(
@@ -362,6 +452,8 @@ export async function createCvDocumentForUser(data: CvCreateData) {
     const cv = await tx.cVDocument.create({
       data: {
         ...data,
+        userId,
+        agencySubscriptionId,
         templateId: currentSubscription.templateId || data.templateId,
         colorThemeId: currentSubscription.colorThemeId || data.colorThemeId,
       },
@@ -399,6 +491,7 @@ export async function createAgencyCvDocumentsAtomically(userId: string, rows: Cv
         data: {
           ...row,
           userId,
+          agencySubscriptionId: currentSubscription.id,
           templateId: currentSubscription.templateId || row.templateId,
           colorThemeId: currentSubscription.colorThemeId || row.colorThemeId,
         },
@@ -473,17 +566,6 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
       throw new Error("MATCH_PACK_NOT_FOUND");
     }
 
-    if (pack.cvDocumentId) {
-      const cv = await tx.cVDocument.findFirst({
-        where: { id: pack.cvDocumentId, userId: data.userId },
-      });
-      if (cv) return { cv, reused: true, retentionExpiresAt: pack.retentionExpiresAt };
-    }
-
-    if (pack.status === "approved") {
-      throw new Error("MATCH_PACK_ALREADY_APPROVED");
-    }
-
     const currentSubscription = await tx.agencySubscription.findUnique({
       where: { userId: data.userId },
     });
@@ -493,6 +575,18 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
         "The agency subscription is no longer active.",
       );
     }
+
+    if (pack.cvDocumentId) {
+      const cv = await tx.cVDocument.findFirst({
+        where: { id: pack.cvDocumentId, userId: data.userId, agencySubscriptionId: currentSubscription.id },
+      });
+      if (cv) return { cv, reused: true, retentionExpiresAt: pack.retentionExpiresAt };
+    }
+
+    if (pack.status === "approved") {
+      throw new Error("MATCH_PACK_ALREADY_APPROVED");
+    }
+
     if (!currentSubscription.retentionPolicySetAt) {
       throw new AgencyAccessError(
         "RETENTION_POLICY_REQUIRED",
@@ -609,6 +703,7 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
         sourceCluster: "agency-matchpack",
         sourceLocale: approvedData.personal.resumeLanguage || "nl",
         userId: data.userId,
+        agencySubscriptionId: currentSubscription.id,
       },
     });
 
