@@ -97,6 +97,104 @@ function nl2brLinkified(value: string): string {
     return linkifyText(value).replace(/\n/g, '<br>');
 }
 
+type ResumeTextKey = Parameters<typeof resumeText>[1];
+
+/**
+ * Render CV fields that are optional in the editor but must never disappear
+ * from an exported resume.  Keeping this in one helper makes the contract
+ * consistent across every visual template (including ATS) and ensures that
+ * user-authored text is escaped before it is placed in the HTML document.
+ */
+function buildAdditionalSectionsHtml(
+    data: CVData,
+    theme: ColorTheme,
+    heading: (title: string) => string,
+    rt: (key: ResumeTextKey) => string,
+): string {
+    const e = escapeHtml;
+    const sideActivities = (data.sideActivities ?? []).filter((activity) =>
+        [activity.title, activity.organization, activity.start, activity.end, activity.description]
+            .some((value) => Boolean(value?.trim()))
+    );
+    const properties = (data.properties ?? []).filter((property) => Boolean(property?.trim()));
+    const references = (data.references ?? []).filter((reference) =>
+        [reference.name, reference.role, reference.company, reference.email, reference.phone]
+            .some((value) => Boolean(value?.trim()))
+    );
+    const customSections = (data.customSections ?? [])
+        .map((section) => ({
+            ...section,
+            title: section.title.trim(),
+            items: section.items.filter((item) => Boolean(item?.trim())),
+        }))
+        .filter((section) => section.title || section.items.length > 0);
+
+    const sideActivitiesHtml = sideActivities.length > 0 ? `
+        <div class="cv-section-small" style="margin-bottom: 24px; page-break-inside: avoid;">
+            ${heading(rt('sideActivities'))}
+            ${sideActivities.map((activity) => {
+                const dateRange = formatResumeDateRange(activity.start, activity.end, data);
+                return `
+                    <div class="cv-item" style="margin-bottom: 14px; page-break-inside: avoid;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;">
+                            <div style="min-width: 0;">
+                                ${activity.title.trim() ? `<h3 style="font-weight: bold; font-size: 13px; margin: 0; color: ${theme.text};">${e(activity.title)}</h3>` : ''}
+                                ${activity.organization.trim() ? `<div style="font-size: 12px; color: ${theme.secondary}; margin-top: 2px;">${e(activity.organization)}</div>` : ''}
+                            </div>
+                            ${dateRange ? `<span style="font-size: 11px; color: ${theme.textMuted}; white-space: nowrap;">${e(dateRange)}</span>` : ''}
+                        </div>
+                        ${activity.description.trim() ? `<p style="font-size: 12px; margin-top: 6px; line-height: 1.5; color: ${theme.textMuted};">${nl2brLinkified(activity.description)}</p>` : ''}
+                    </div>
+                `;
+            }).join('')}
+        </div>
+    ` : '';
+
+    const propertiesHtml = properties.length > 0 ? `
+        <div class="cv-section-small" style="margin-bottom: 24px; page-break-inside: avoid;">
+            ${heading(rt('properties'))}
+            <ul style="margin: 0; padding: 0; list-style: none;">
+                ${properties.map((property) => `
+                    <li style="font-size: 12px; color: ${theme.text}; margin-bottom: 4px; display: flex; gap: 8px;">
+                        <span style="color: ${theme.primary};">&bull;</span><span>${e(property)}</span>
+                    </li>
+                `).join('')}
+            </ul>
+        </div>
+    ` : '';
+
+    const referencesHtml = references.length > 0 ? `
+        <div class="cv-section-small" style="margin-bottom: 24px; page-break-inside: avoid;">
+            ${heading(rt('references'))}
+            ${references.map((reference) => `
+                <div class="cv-item" style="margin-bottom: 12px; page-break-inside: avoid; font-size: 12px; color: ${theme.text};">
+                    ${reference.name.trim() ? `<div style="font-weight: bold;">${e(reference.name)}</div>` : ''}
+                    ${reference.role.trim() || reference.company.trim() ? `<div style="color: ${theme.textMuted};">${e([reference.role, reference.company].filter(Boolean).join(' · '))}</div>` : ''}
+                    ${reference.email.trim() ? `<div style="margin-top: 3px; word-break: break-all;">${linkifyText(reference.email)}</div>` : ''}
+                    ${reference.phone.trim() ? `<div>${e(reference.phone)}</div>` : ''}
+                </div>
+            `).join('')}
+        </div>
+    ` : '';
+
+    const customSectionsHtml = customSections.map((section) => `
+        <div class="cv-section-small" style="margin-bottom: 24px; page-break-inside: avoid;">
+            ${heading(e(section.title || rt('customSection')))}
+            ${section.items.length > 0 ? `
+                <ul style="margin: 0; padding: 0; list-style: none;">
+                    ${section.items.map((item) => `
+                        <li style="font-size: 12px; color: ${theme.text}; margin-bottom: 4px; display: flex; gap: 8px;">
+                            <span style="color: ${theme.primary};">&bull;</span><span>${nl2brLinkified(item)}</span>
+                        </li>
+                    `).join('')}
+                </ul>
+            ` : ''}
+        </div>
+    `).join('');
+
+    return `${sideActivitiesHtml}${propertiesHtml}${referencesHtml}${customSectionsHtml}`;
+}
+
 // ============================================================
 // MAIN DISPATCH
 // ============================================================
@@ -647,6 +745,8 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
         </div>
     ` : '';
 
+    const additionalSectionsHtml = buildAdditionalSectionsHtml(data, theme, mainHeading, rt);
+
     // ---- REMARKABLE ACCENT BAR ----
     const accentBar = isRemarkable ? `<div style="width: 2px; min-height: 297mm; background-color: ${theme.primary};"></div>` : '';
 
@@ -675,6 +775,7 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
                     ${educationHtml}
                     ${coursesHtml}
                     ${awardsHtml}
+                    ${additionalSectionsHtml}
                 </div>
             </div>
         </div>
@@ -931,6 +1032,8 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
         </div>
     ` : '';
 
+    const additionalSectionsHtml = buildAdditionalSectionsHtml(data, theme, mainHeading, rt);
+
     // ---- ASSEMBLE ----
     const content = `
         <div style="background-color: white; min-height: 297mm; width: 210mm; margin: 0 auto; display: flex;">
@@ -943,6 +1046,7 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
                 ${educationHtml}
                 ${coursesHtml}
                 ${awardsHtml}
+                ${additionalSectionsHtml}
             </div>
             <!-- Right Sidebar -->
             <div style="width: ${sidebarWidth}; padding: ${isElegant ? '24px' : '32px'}; ${sidebarStyle}">
@@ -967,6 +1071,11 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, _templateId: str
     void _templateId;
     const e = escapeHtml;
     const rt = (key: Parameters<typeof resumeText>[1]) => resumeText(data, key);
+    const sectionHeading = (title: string): string => `
+        <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 12px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">
+            ${title}
+        </h2>
+    `;
     const contactItems = [
         data.personal.email,
         data.personal.phone,
@@ -1181,6 +1290,8 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, _templateId: str
         </div>
     ` : '';
 
+    const additionalSectionsHtml = buildAdditionalSectionsHtml(data, theme, sectionHeading, rt);
+
     const content = `
         <div style="background-color: white; min-height: 297mm; width: 210mm; margin: 0 auto; padding: 40px; color: ${theme.text};">
             ${headerHtml}
@@ -1192,6 +1303,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, _templateId: str
             ${awardsHtml}
             ${skillsLanguagesHtml}
             ${interestsHtml}
+            ${additionalSectionsHtml}
         </div>
     `;
 
@@ -1205,6 +1317,9 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, _templateId: str
 function buildATSHTML(data: CVData, theme: ColorTheme): string {
     const e = escapeHtml;
     const rt = (key: Parameters<typeof resumeText>[1]) => resumeText(data, key);
+    const sectionHeading = (title: string): string => `
+        <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 6px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">${title}</h2>
+    `;
 
     const headerHtml = `
         <div style="text-align: center; border-bottom: 2px solid ${theme.primary}; padding-bottom: 16px; margin-bottom: 20px;">
@@ -1308,6 +1423,8 @@ function buildATSHTML(data: CVData, theme: ColorTheme): string {
         </div>
     ` : '';
 
+    const additionalSectionsHtml = buildAdditionalSectionsHtml(data, theme, sectionHeading, rt);
+
     const content = `
         <div style="background-color: white; min-height: 297mm; width: 210mm; margin: 0 auto; padding: 32px; color: ${theme.text}; font-family: Arial, sans-serif;">
             ${headerHtml}
@@ -1319,6 +1436,7 @@ function buildATSHTML(data: CVData, theme: ColorTheme): string {
             ${coursesHtml}
             ${awardsHtml}
             ${languagesHtml}
+            ${additionalSectionsHtml}
         </div>
     `;
 

@@ -17,6 +17,7 @@
     "test:agency:migrations": "npx tsx scripts/agency-tests-migrations.ts",
     "test:agency:e2e": "npx tsx scripts/agency-tests-e2e.ts",
     "test:agency:outputs": "npx tsx scripts/agency-submission-pdf-smoke.ts",
+    "test:pdf:optional-sections": "npx tsx --test pdf-optional-sections.test.ts",
     "test:agency:live-ai": "npx tsx scripts/agency-tests-live-ai.ts",
     "test:agency:release": "npm run test:agency:unit && npm run build && npm run test:agency:integration && npm run test:agency:migrations && npm run test:agency:e2e && npm run test:matchpack && npm run test:agency:outputs",
     "test:voice-cv": "npx tsx --test scripts/voice-cv.test.ts",

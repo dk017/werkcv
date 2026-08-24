@@ -14,6 +14,10 @@ type ResumeTextKey =
   | "skills"
   | "languages"
   | "interests"
+  | "properties"
+  | "references"
+  | "sideActivities"
+  | "customSection"
   | "courses"
   | "coursesShort"
   | "awards"
@@ -40,6 +44,10 @@ const resumeCopy: Record<ResumeLanguage, Record<ResumeTextKey, string>> = {
     skills: "Vaardigheden",
     languages: "Talen",
     interests: "Interesses",
+    properties: "Eigenschappen",
+    references: "Referenties",
+    sideActivities: "Nevenactiviteiten",
+    customSection: "Eigen onderdeel",
     courses: "Cursussen & Certificaten",
     coursesShort: "Cursussen",
     awards: "Prijzen & Prestaties",
@@ -65,6 +73,10 @@ const resumeCopy: Record<ResumeLanguage, Record<ResumeTextKey, string>> = {
     skills: "Skills",
     languages: "Languages",
     interests: "Interests",
+    properties: "Strengths",
+    references: "References",
+    sideActivities: "Side activities",
+    customSection: "Custom section",
     courses: "Courses & Certifications",
     coursesShort: "Courses",
     awards: "Awards & Achievements",
