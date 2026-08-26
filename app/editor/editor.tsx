@@ -642,13 +642,16 @@ export default function Editor({
         `PDF downloaden · eenmalig ${downloadPriceLabel}`,
         `Download PDF · one-time ${downloadPriceLabel}`
     );
-    const toolbarCtaLabel = isReadyToDownload
-        ? paidDownloadCtaLabel
-        : isGuidedBuild && completionState.nextStep
-            ? tr(`Volgende: ${completionState.nextStep.label}`, `Next: ${completionState.nextStep.label}`)
-            : uiLanguage === "en"
-                ? `Finish CV · ${remainingCoreSteps} ${remainingCoreSteps === 1 ? "step" : "steps"} left`
-                : `CV afronden · nog ${remainingCoreSteps} ${remainingCoreSteps === 1 ? "stap" : "stappen"}`;
+    // Completion is guidance, not an export gate. A user may intentionally
+    // download a partly completed CV and finish it later. Keep the empty-CV
+    // guard so we never send someone to payment for a blank document.
+    const hasExportableContent = !isCurrentCvEmpty;
+    const downloadActionLabel = isMatchPackWorkspace
+        ? tr("PDF exporteren", "Export PDF")
+        : readyPanelDownloadCtaLabel;
+    const toolbarCtaLabel = hasExportableContent
+        ? downloadActionLabel
+        : tr("Voeg inhoud toe om te downloaden", "Add content to download");
 
     const openUploader = useCallback((source: CvUploadSource) => {
         track("cv_upload_modal_opened", {
@@ -1640,16 +1643,16 @@ export default function Editor({
                             </button>
                             <button
                                 onClick={() => {
-                                    if (!completionState.isReady && completionState.nextStep) {
-                                        scrollToCompletionStep(completionState.nextStep);
+                                    if (!hasExportableContent) {
+                                        if (completionState.nextStep) scrollToCompletionStep(completionState.nextStep);
                                         return;
                                     }
-                                    handleDownload("toolbar");
+                                    void handleDownload("toolbar");
                                 }}
                                 disabled={isDownloading || !canDownloadWorkspace}
                                 aria-label={isDownloading ? tr("PDF wordt gemaakt", "Generating PDF") : toolbarCtaLabel}
                                 title={toolbarCtaLabel}
-                                className={`${isCompactToolbar ? "px-2" : "px-3 sm:px-4"} py-2 font-semibold text-xs sm:text-sm rounded-md border transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${isReadyToDownload
+                                className={`${isCompactToolbar ? "px-2" : "px-3 sm:px-4"} py-2 font-semibold text-xs sm:text-sm rounded-md border transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${hasExportableContent
                                     ? "border-emerald-700 bg-emerald-600 text-white hover:bg-emerald-700"
                                     : "border-slate-800 bg-slate-900 text-white hover:bg-slate-800"
                                 }`}
@@ -1658,19 +1661,11 @@ export default function Editor({
                                     isCompactToolbar ? "…" : tr("Bezig...", "Working...")
                                 ) : (
                                     isCompactToolbar ? (
-                                        isReadyToDownload
-                                            ? "PDF"
-                                            : isGuidedBuild
-                                                ? tr("Volgende", "Next")
-                                                : tr("Afronden", "Finish")
+                                        hasExportableContent ? "PDF" : tr("Start", "Start")
                                     ) : (
                                         <>
                                             <span className="sm:hidden">
-                                                {isReadyToDownload
-                                                    ? "PDF"
-                                                    : isGuidedBuild
-                                                        ? tr("Volgende", "Next")
-                                                        : tr("Afronden", "Finish")}
+                                                {hasExportableContent ? "PDF" : tr("Start", "Start")}
                                             </span>
                                             <span className="hidden sm:inline">{toolbarCtaLabel}</span>
                                         </>
@@ -2162,7 +2157,7 @@ export default function Editor({
                                     <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
                                         {isReadyToDownload
                                             ? tr("Je basis-CV is klaar. Gebruik deze checks om je PDF sterker te maken voor een specifieke vacature.", "Your core CV is ready. Use these checks to make your PDF stronger for a specific vacancy.")
-                                            : tr("Maak eerst de belangrijkste onderdelen af. Daarna tonen we de optimalisatie voor ATS, keywords en sollicitatiebrief.", "Finish the key sections first. Then we show ATS, keyword, and cover-letter optimization.")}
+                                            : tr("Je kunt je CV nu al downloaden. Vul deze onderdelen aan als je de inhoud verder wilt versterken.", "You can download your CV now. Complete these sections if you want to strengthen the content further.")}
                                     </p>
                                 </div>
                                 {isReadyToDownload ? (

@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import type { CVData } from "@/lib/cv";
+import { hasAnyCvUserContent } from "@/lib/cv-empty";
 import { track, type FullPreviewSource } from "@/lib/analytics";
 import type { UiLanguage } from "@/lib/ui-language";
 import PdfPagedPreview from "./PdfPagedPreview";
@@ -83,6 +84,7 @@ export default function FullCvPreviewDialog({
   const [scale, setScale] = useState(0.68);
   const [hasMounted, setHasMounted] = useState(false);
   const [pdfPreviewStatus, setPdfPreviewStatus] = useState<PdfPreviewStatus>("loading");
+  const hasExportableContent = hasAnyCvUserContent(data);
 
   const eventContext = useMemo(() => ({
     cvId,
@@ -303,7 +305,7 @@ export default function FullCvPreviewDialog({
   };
 
   const handlePrimaryAction = async () => {
-    if (!isReady) {
+    if (!hasExportableContent) {
       closePreview("back_to_editor");
       requestAnimationFrame(onContinueEditing);
       return;
@@ -331,13 +333,11 @@ export default function FullCvPreviewDialog({
   const paidDownloadLabel = isEnglish
     ? "Download PDF"
     : "PDF downloaden";
-  const primaryLabel = isReady
-    ? pdfPreviewStatus === "ready"
+  const primaryLabel = !hasExportableContent
+    ? isEnglish ? "Add content to download" : "Voeg inhoud toe om te downloaden"
+    : pdfPreviewStatus === "ready"
       ? paidDownloadLabel
-      : isEnglish ? "Preparing exact preview..." : "Exact voorbeeld voorbereiden..."
-    : isEnglish
-      ? `Finish CV · ${remainingSteps} ${remainingSteps === 1 ? "step" : "steps"} left`
-      : `CV afronden · nog ${remainingSteps} ${remainingSteps === 1 ? "stap" : "stappen"}`;
+      : isEnglish ? "Preparing exact preview..." : "Exact voorbeeld voorbereiden...";
   const pageLabel = isEnglish
     ? `${activePage} of ${pageCount}`
     : `${activePage} van ${pageCount}`;
@@ -347,6 +347,11 @@ export default function FullCvPreviewDialog({
   const priceCopy = isEnglish
     ? "Secure checkout · No subscription · Immediate PDF"
     : "Veilig betalen · Geen abonnement · Direct je PDF";
+  const completionNote = !isReady && hasExportableContent
+    ? isEnglish
+      ? `${completionScore}% complete · ${remainingSteps} recommended ${remainingSteps === 1 ? "section" : "sections"} left. You can download this version now.`
+      : `${completionScore}% compleet · nog ${remainingSteps} aanbevolen ${remainingSteps === 1 ? "onderdeel" : "onderdelen"}. Je kunt deze versie nu al downloaden.`
+    : null;
 
   if (!hasMounted || typeof document === "undefined") return null;
 
@@ -443,17 +448,18 @@ export default function FullCvPreviewDialog({
               <button
                 type="button"
                 onClick={handlePrimaryAction}
-                disabled={isDownloading || isSaving || (isReady && pdfPreviewStatus !== "ready")}
+                disabled={isDownloading || isSaving || (hasExportableContent && pdfPreviewStatus !== "ready")}
                 className={`inline-flex h-11 w-full items-center justify-center gap-2 rounded-md border px-4 text-sm font-bold text-white transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
-                  isReady
+                  hasExportableContent
                     ? "border-emerald-700 bg-emerald-600 hover:bg-emerald-700"
                     : "border-slate-900 bg-slate-900 hover:bg-slate-800"
                 }`}
               >
-                {isReady ? <DownloadIcon /> : null}
+                {hasExportableContent ? <DownloadIcon /> : null}
                 {isDownloading ? isEnglish ? "Working..." : "Bezig..." : primaryLabel}
               </button>
-              {isReady ? <p className="mt-1 whitespace-nowrap text-[9px] font-medium text-slate-500">{priceCopy}</p> : null}
+              {hasExportableContent ? <p className="mt-1 whitespace-nowrap text-[9px] font-medium text-slate-500">{priceCopy}</p> : null}
+              {completionNote ? <p className="mt-1 max-w-[240px] text-[9px] font-semibold leading-relaxed text-amber-700">{completionNote}</p> : null}
             </div>
           </div>
         </header>
@@ -596,17 +602,18 @@ export default function FullCvPreviewDialog({
           <button
             type="button"
             onClick={handlePrimaryAction}
-            disabled={isDownloading || isSaving || (isReady && pdfPreviewStatus !== "ready")}
+            disabled={isDownloading || isSaving || (hasExportableContent && pdfPreviewStatus !== "ready")}
             className={`inline-flex h-12 w-full items-center justify-center gap-2 rounded-md border text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60 ${
-              isReady
+              hasExportableContent
                 ? "border-emerald-700 bg-emerald-600"
                 : "border-slate-900 bg-slate-900"
             }`}
           >
-            {isReady ? <DownloadIcon /> : null}
+            {hasExportableContent ? <DownloadIcon /> : null}
             {isDownloading ? isEnglish ? "Working..." : "Bezig..." : primaryLabel}
           </button>
-          {isReady ? <p className="mt-1.5 text-center text-[10px] font-medium text-slate-500">{priceCopy}</p> : null}
+          {hasExportableContent ? <p className="mt-1.5 text-center text-[10px] font-medium text-slate-500">{priceCopy}</p> : null}
+          {completionNote ? <p className="mt-1 text-center text-[10px] font-semibold leading-relaxed text-amber-700">{completionNote}</p> : null}
         </footer>
 
         {isDesignOpen ? (

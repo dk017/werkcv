@@ -183,7 +183,7 @@ export type AnalyticsEvent =
     | { event: 'public_editor_claim_started'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency' } }
     | { event: 'public_editor_claim_completed'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency'; cvId: string } }
     | { event: 'public_editor_claim_failed'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency'; reason: string } }
-    | { event: 'public_editor_post_login_routed'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; destination: 'checkout' | 'editor'; completionScore: number; reason: 'ready_download_intent' | 'incomplete' | 'resume_without_download_intent' | 'checkout_failed' } }
+    | { event: 'public_editor_post_login_routed'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; destination: 'checkout' | 'editor'; completionScore: number; reason: 'ready_download_intent' | 'download_intent' | 'incomplete' | 'empty_draft' | 'resume_without_download_intent' | 'checkout_failed' } }
     // Authentication
     | { event: 'login_view'; properties: { locale: 'nl' | 'en'; nextPath: string } }
     | { event: 'login_code_requested'; properties: { locale: 'nl' | 'en'; nextPath: string } }

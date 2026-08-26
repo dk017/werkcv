@@ -7,6 +7,7 @@ import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
 import { clearPublicDraft, readPublicDraft, type PublicEditorFlow } from "@/lib/public-cv-draft";
 import { getEditorPathForCv } from "@/lib/editor-path";
 import { track } from "@/lib/analytics";
+import { isCvEmpty } from "@/lib/cv-empty";
 
 type PublicDraftClaimClientProps = {
     draftId: string;
@@ -126,7 +127,12 @@ export default function PublicDraftClaimClient({ draftId, flow, intent }: Public
                 const completionScore = typeof result.completionScore === "number"
                     ? Math.max(0, Math.min(100, Math.round(result.completionScore)))
                     : 0;
-                const shouldStartCheckout = flow === "consumer" && intent === "download" && result.isReady === true;
+                // Completion remains a quality signal, not a payment/export
+                // gate. Once the draft contains any user-authored content,
+                // honour an explicit download intent and open the normal
+                // checkout even when recommended sections remain incomplete.
+                const hasExportableContent = !isCvEmpty(snapshot.data);
+                const shouldStartCheckout = flow === "consumer" && intent === "download" && hasExportableContent;
 
                 if (shouldStartCheckout) {
                     if (!cancelled) {
@@ -137,7 +143,7 @@ export default function PublicDraftClaimClient({ draftId, flow, intent }: Public
                         uiLanguage: snapshot.uiLanguage,
                         destination: "checkout",
                         completionScore,
-                        reason: "ready_download_intent",
+                        reason: "download_intent",
                     });
                     track("checkout_start", {
                         cvId: result.cvId,
@@ -191,7 +197,7 @@ export default function PublicDraftClaimClient({ draftId, flow, intent }: Public
                         uiLanguage: snapshot.uiLanguage,
                         destination: "editor",
                         completionScore,
-                        reason: intent === "download" ? "incomplete" : "resume_without_download_intent",
+                        reason: intent === "download" ? "empty_draft" : "resume_without_download_intent",
                     });
                 }
                 clearPublicDraft(draftId);
