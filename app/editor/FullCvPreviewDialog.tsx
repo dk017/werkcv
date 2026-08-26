@@ -8,6 +8,7 @@ import { track, type FullPreviewSource } from "@/lib/analytics";
 import type { UiLanguage } from "@/lib/ui-language";
 import PdfPagedPreview from "./PdfPagedPreview";
 import PreviewDesignPanel from "./PreviewDesignPanel";
+import { getTemplatePreviewData } from "./TemplateSelector";
 import { A4_HEIGHT_PX, A4_WIDTH_PX } from "./ScaledCvPreview";
 
 type FullPreviewCloseMethod = "x" | "back_to_editor" | "escape" | "browser_back";
@@ -85,6 +86,11 @@ export default function FullCvPreviewDialog({
   const [hasMounted, setHasMounted] = useState(false);
   const [pdfPreviewStatus, setPdfPreviewStatus] = useState<PdfPreviewStatus>("loading");
   const hasExportableContent = hasAnyCvUserContent(data);
+  // A fresh CV still needs a useful visual decision surface. Keep the
+  // fictional sample in the preview request only; never persist it to the
+  // user's document or use it for download/payment decisions.
+  const isExamplePreview = !hasExportableContent;
+  const previewData = isExamplePreview ? getTemplatePreviewData(uiLanguage) : data;
 
   const eventContext = useMemo(() => ({
     cvId,
@@ -390,6 +396,11 @@ export default function FullCvPreviewDialog({
             <h1 className="text-base font-bold text-slate-950">
               {isEnglish ? "Review your CV" : "Controleer je CV"}
             </h1>
+            {isExamplePreview ? (
+              <p className="mt-1 text-[10px] font-bold uppercase tracking-[0.12em] text-amber-700">
+                {isEnglish ? "Example layout" : "Voorbeeldopmaak"}
+              </p>
+            ) : null}
             <p className={`mt-1 inline-flex items-center gap-1 text-[11px] font-bold ${
               isSaved && !isSaving ? "text-emerald-700" : "text-slate-500"
             }`}>
@@ -480,6 +491,11 @@ export default function FullCvPreviewDialog({
               <h1 className="truncate text-sm font-bold text-slate-950">
                 {isEnglish ? "Review CV" : "CV controleren"}
               </h1>
+              {isExamplePreview ? (
+                <p className="mt-0.5 truncate text-[9px] font-bold uppercase tracking-[0.1em] text-amber-700">
+                  {isEnglish ? "Example layout" : "Voorbeeldopmaak"}
+                </p>
+              ) : null}
               <p className={`mt-0.5 inline-flex items-center gap-1 text-[10px] font-bold ${
                 isSaved && !isSaving ? "text-emerald-700" : "text-slate-500"
               }`}>
@@ -540,7 +556,7 @@ export default function FullCvPreviewDialog({
             <div className="mx-auto flex w-max min-w-full justify-center">
               <PdfPagedPreview
                 cvId={cvId}
-                data={data}
+                data={previewData}
                 templateId={templateId}
                 colorThemeId={colorThemeId}
                 scale={scale}

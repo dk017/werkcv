@@ -1727,6 +1727,13 @@ export default function Editor({
                                     <button type="button" onClick={() => openUploader("empty_state")} disabled={isReadOnlyWorkspace} className="text-teal-800 underline underline-offset-2 hover:text-teal-950 disabled:cursor-not-allowed disabled:opacity-50">
                                         {tr("Heb je al een CV? Upload het", "Already have a CV? Upload it")}
                                     </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => openTemplateSelector("toolbar")}
+                                        className="text-teal-800 underline underline-offset-2 hover:text-teal-950"
+                                    >
+                                        {tr("Bekijk voorbeeldtemplates", "Preview template examples")}
+                                    </button>
                                     <button type="button" onClick={revealDesignWorkspace} className="text-slate-500 underline underline-offset-2 hover:text-slate-800">
                                         {tr("Alle CV-onderdelen tonen", "Show all CV sections")}
                                     </button>

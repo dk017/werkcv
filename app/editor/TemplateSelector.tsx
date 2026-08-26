@@ -276,10 +276,23 @@ export function TemplateGallery({
   idPrefix = "template-gallery",
 }: TemplateGalleryProps) {
   const isEnglish = uiLanguage === "en";
-  const previewData = isCvEmpty(data) ? getTemplatePreviewData(uiLanguage) : data;
+  const isExamplePreview = isCvEmpty(data);
+  const previewData = isExamplePreview ? getTemplatePreviewData(uiLanguage) : data;
 
   return (
     <div className={compact ? "space-y-6" : "space-y-8"}>
+      {isExamplePreview ? (
+        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-950">
+          <p className="font-bold">
+            {isEnglish ? "You are viewing a fictional example" : "Je bekijkt een fictief voorbeeld"}
+          </p>
+          <p className="mt-1 leading-relaxed text-amber-900/80">
+            {isEnglish
+              ? "Use this filled preview to compare layouts. Your own details will replace the example as you add them; the example is never saved to your CV."
+              : "Gebruik dit ingevulde voorbeeld om layouts te vergelijken. Je eigen gegevens vervangen het voorbeeld zodra je ze toevoegt; het voorbeeld wordt nooit in je CV opgeslagen."}
+          </p>
+        </div>
+      ) : null}
       {templateGroups.map((group) => {
         const templates = group.templateIds
           .map((templateId) => templateList.find((template) => template.id === templateId))
