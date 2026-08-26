@@ -4,6 +4,7 @@ import { formatGender, formatLanguageLevel, formatMaritalStatus, formatResumeDat
 import { ColorTheme, getThemeForTemplate } from './templates';
 import { templateRegistry, getTemplateConfig, getDefaultThemeId } from './templates/registry';
 import { escapeHtml, wrapPage } from './templates/html/utils';
+import { cvSectionHasSubstantiveContent, resolveCvSectionLayout, type CvBodySectionId } from './cv-sections';
 
 // ============================================================
 // SKILL DISPLAY HELPERS - Match React template components
@@ -105,12 +106,12 @@ type ResumeTextKey = Parameters<typeof resumeText>[1];
  * consistent across every visual template (including ATS) and ensures that
  * user-authored text is escaped before it is placed in the HTML document.
  */
-function buildAdditionalSectionsHtml(
+function buildAdditionalSectionHtml(
     data: CVData,
     theme: ColorTheme,
     heading: (title: string) => string,
     rt: (key: ResumeTextKey) => string,
-): string {
+): Partial<Record<CvBodySectionId, string>> {
     const e = escapeHtml;
     const sideActivities = (data.sideActivities ?? []).filter((activity) =>
         [activity.title, activity.organization, activity.start, activity.end, activity.description]
@@ -192,7 +193,34 @@ function buildAdditionalSectionsHtml(
         </div>
     `).join('');
 
-    return `${sideActivitiesHtml}${propertiesHtml}${referencesHtml}${customSectionsHtml}`;
+    return {
+        sideActivities: sideActivitiesHtml,
+        properties: propertiesHtml,
+        references: referencesHtml,
+        customSections: customSectionsHtml,
+    };
+}
+
+/**
+ * Assemble the content blocks in the same persisted order used by the editor.
+ * A missing/legacy sectionOrder is normalized, and blocks that are not
+ * present in a particular template are simply skipped.
+ */
+function orderCvSections(
+    data: CVData,
+    templateId: string,
+    sections: Partial<Record<CvBodySectionId, string>>,
+    lane: "main" | "sidebar" = "main",
+): string {
+    const available = new Set(Object.keys(sections));
+    const resolved = resolveCvSectionLayout(data, templateId);
+    const order = lane === "sidebar" ? resolved.sidebar : resolved.main;
+    return order
+        .filter((sectionId) => available.has(sectionId) && cvSectionHasSubstantiveContent(data, sectionId))
+        .map((sectionId) => sections[sectionId]
+            ? `<div data-cv-section="${sectionId}">${sections[sectionId]}</div>`
+            : '')
+        .join('');
 }
 
 // ============================================================
@@ -204,7 +232,7 @@ export function buildHTML(data: CVData, templateId: string, colorThemeId: string
     const theme = getThemeForTemplate(templateRegistry, templateId, colorThemeId);
 
     if (templateId === 'ats') {
-        return buildATSHTML(data, theme);
+        return buildATSHTML(data, theme, templateId);
     }
 
     switch (template.layout) {
@@ -745,7 +773,21 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
         </div>
     ` : '';
 
-    const additionalSectionsHtml = buildAdditionalSectionsHtml(data, theme, mainHeading, rt);
+    const additionalSections = buildAdditionalSectionHtml(data, theme, mainHeading, rt);
+
+    const orderedSidebarHtml = orderCvSections(data, templateId, {
+        skills: skillsHtml,
+        languages: languagesHtml,
+        interests: interestsHtml,
+    }, "sidebar");
+    const orderedMainHtml = orderCvSections(data, templateId, {
+        experience: experienceHtml,
+        internships: internshipsHtml,
+        education: educationHtml,
+        courses: coursesHtml,
+        awards: awardsHtml,
+        ...additionalSections,
+    });
 
     // ---- REMARKABLE ACCENT BAR ----
     const accentBar = isRemarkable ? `<div style="width: 2px; min-height: 297mm; background-color: ${theme.primary};"></div>` : '';
@@ -757,25 +799,18 @@ function buildTwoColumnLeftHTML(data: CVData, theme: ColorTheme, templateId: str
             <div style="display: flex; min-height: ${hasHeaderBanner ? (isRobust ? 'calc(297mm - 88px)' : 'calc(297mm - 120px)') : '297mm'};">
                 ${accentBar}
                 <!-- Left Sidebar -->
-                <div style="width: ${sidebarWidth}; padding: 24px; ${sidebarStyle}">
+                <div data-cv-lane="sidebar" style="width: ${sidebarWidth}; padding: 24px; ${sidebarStyle}">
                     ${!hasHeaderBanner ? photoHtml : ''}
                     ${sidebarNameHtml}
                     ${personaliaHtml}
-                    ${skillsHtml}
-                    ${languagesHtml}
-                    ${interestsHtml}
+                    ${orderedSidebarHtml}
                 </div>
                 <!-- Main Content -->
-                <div style="flex: 1; padding: ${isRobust ? '20px' : '24px 32px'}; color: ${theme.text};">
+                <div data-cv-lane="main" style="flex: 1; padding: ${isRobust ? '20px' : '24px 32px'}; color: ${theme.text};">
                     ${headerHtml}
                     ${sepiaDecorativeHtml}
                     ${summaryHtml}
-                    ${experienceHtml}
-                    ${internshipsHtml}
-                    ${educationHtml}
-                    ${coursesHtml}
-                    ${awardsHtml}
-                    ${additionalSectionsHtml}
+                    ${orderedMainHtml}
                 </div>
             </div>
         </div>
@@ -1032,29 +1067,35 @@ function buildTwoColumnRightHTML(data: CVData, theme: ColorTheme, templateId: st
         </div>
     ` : '';
 
-    const additionalSectionsHtml = buildAdditionalSectionsHtml(data, theme, mainHeading, rt);
+    const additionalSections = buildAdditionalSectionHtml(data, theme, mainHeading, rt);
+    const orderedSidebarHtml = orderCvSections(data, templateId, {
+        skills: skillsHtml,
+        languages: languagesHtml,
+        interests: interestsHtml,
+    }, "sidebar");
+    const orderedMainHtml = orderCvSections(data, templateId, {
+        experience: experienceHtml,
+        internships: internshipsHtml,
+        education: educationHtml,
+        courses: coursesHtml,
+        awards: awardsHtml,
+        ...additionalSections,
+    });
 
     // ---- ASSEMBLE ----
     const content = `
         <div style="background-color: white; min-height: 297mm; width: 210mm; margin: 0 auto; display: flex;">
             <!-- Main Content -->
-            <div style="width: ${mainWidth}; padding: ${isElegant || isFormal ? '40px' : '40px 32px'}; color: ${theme.text};">
+            <div data-cv-lane="main" style="width: ${mainWidth}; padding: ${isElegant || isFormal ? '40px' : '40px 32px'}; color: ${theme.text};">
                 ${headerHtml}
                 ${summaryHtml}
-                ${experienceHtml}
-                ${internshipsHtml}
-                ${educationHtml}
-                ${coursesHtml}
-                ${awardsHtml}
-                ${additionalSectionsHtml}
+                ${orderedMainHtml}
             </div>
             <!-- Right Sidebar -->
-            <div style="width: ${sidebarWidth}; padding: ${isElegant ? '24px' : '32px'}; ${sidebarStyle}">
+            <div data-cv-lane="sidebar" style="width: ${sidebarWidth}; padding: ${isElegant ? '24px' : '32px'}; ${sidebarStyle}">
                 ${photoHtml}
                 ${contactHtml}
-                ${skillsHtml}
-                ${languagesHtml}
-                ${interestsHtml}
+                ${orderedSidebarHtml}
             </div>
         </div>
     `;
@@ -1241,37 +1282,22 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, _templateId: str
         </div>
     ` : '';
 
-    // Skills as pill tags (matching React template)
-    const skillsLanguagesHtml = (data.skills.length > 0 || data.languages.length > 0) ? `
-        <div class="cv-section-small" style="display: flex; gap: 32px;">
-            ${data.skills.length > 0 ? `
-                <div style="flex: 1;">
-                    <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 12px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">
-                        ${rt('skills')}
-                    </h2>
-                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                        ${data.skills.map(skill => `
-                            <span style="font-size: 12px; padding: 4px 12px; border-radius: 9999px; background-color: ${theme.primary}10; color: ${theme.primary};">
-                                ${e(skill.name)}
-                            </span>
-                        `).join('')}
-                    </div>
-                </div>
-            ` : ''}
-            ${data.languages.length > 0 ? `
-                <div style="flex: 1;">
-                    <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 12px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">
-                        ${rt('languages')}
-                    </h2>
-                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                        ${data.languages.map(lang => `
-                            <span style="font-size: 12px; padding: 4px 12px; border-radius: 9999px; background-color: ${theme.secondary}10; color: ${theme.secondary};">
-                                ${e(lang.name)} (${e(formatLanguageLevel(lang.level, data))})
-                            </span>
-                        `).join('')}
-                    </div>
-                </div>
-            ` : ''}
+    // Skills and Languages are independent positionable blocks. They share
+    // the same visual language but never share one ordering slot.
+    const skillsHtml = data.skills.length > 0 ? `
+        <div class="cv-section-small" style="margin-bottom: 24px;">
+            <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 12px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">${rt('skills')}</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                ${data.skills.map(skill => `<span style="font-size: 12px; padding: 4px 12px; border-radius: 9999px; background-color: ${theme.primary}10; color: ${theme.primary};">${e(skill.name)}</span>`).join('')}
+            </div>
+        </div>
+    ` : '';
+    const languagesHtml = data.languages.length > 0 ? `
+        <div class="cv-section-small" style="margin-bottom: 24px;">
+            <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; color: ${theme.primary}; margin-bottom: 12px; border-bottom: 1px solid ${theme.border}; padding-bottom: 8px;">${rt('languages')}</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                ${data.languages.map(lang => `<span style="font-size: 12px; padding: 4px 12px; border-radius: 9999px; background-color: ${theme.secondary}10; color: ${theme.secondary};">${e(lang.name)} (${e(formatLanguageLevel(lang.level, data))})</span>`).join('')}
+            </div>
         </div>
     ` : '';
 
@@ -1290,20 +1316,24 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, _templateId: str
         </div>
     ` : '';
 
-    const additionalSectionsHtml = buildAdditionalSectionsHtml(data, theme, sectionHeading, rt);
+    const additionalSections = buildAdditionalSectionHtml(data, theme, sectionHeading, rt);
+    const orderedMainHtml = orderCvSections(data, _templateId, {
+        experience: experienceHtml,
+        internships: internshipsHtml,
+        education: educationHtml,
+        courses: coursesHtml,
+        awards: awardsHtml,
+        skills: skillsHtml,
+        languages: languagesHtml,
+        interests: interestsHtml,
+        ...additionalSections,
+    });
 
     const content = `
-        <div style="background-color: white; min-height: 297mm; width: 210mm; margin: 0 auto; padding: 40px; color: ${theme.text};">
+        <div data-cv-lane="main" style="background-color: white; min-height: 297mm; width: 210mm; margin: 0 auto; padding: 40px; color: ${theme.text};">
             ${headerHtml}
             ${summaryHtml}
-            ${experienceHtml}
-            ${internshipsHtml}
-            ${educationHtml}
-            ${coursesHtml}
-            ${awardsHtml}
-            ${skillsLanguagesHtml}
-            ${interestsHtml}
-            ${additionalSectionsHtml}
+            ${orderedMainHtml}
         </div>
     `;
 
@@ -1314,7 +1344,7 @@ function buildSingleColumnHTML(data: CVData, theme: ColorTheme, _templateId: str
 // ATS BUILDER (kept as-is - designed to be plain text for ATS)
 // ============================================================
 
-function buildATSHTML(data: CVData, theme: ColorTheme): string {
+function buildATSHTML(data: CVData, theme: ColorTheme, templateId: string = 'ats'): string {
     const e = escapeHtml;
     const rt = (key: Parameters<typeof resumeText>[1]) => resumeText(data, key);
     const sectionHeading = (title: string): string => `
@@ -1423,20 +1453,31 @@ function buildATSHTML(data: CVData, theme: ColorTheme): string {
         </div>
     ` : '';
 
-    const additionalSectionsHtml = buildAdditionalSectionsHtml(data, theme, sectionHeading, rt);
+    const interestsHtml = data.interests && data.interests.length > 0 ? `
+        <div style="margin-bottom: 16px;">
+            <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; color: ${theme.primary}; margin-bottom: 6px; border-bottom: 1px solid ${theme.border}; padding-bottom: 4px;">${rt('interests')}</h2>
+            <p style="font-size: 11px; color: ${theme.text};">${data.interests.map(interest => e(interest)).join(' &#8226; ')}</p>
+        </div>
+    ` : '';
+
+    const additionalSections = buildAdditionalSectionHtml(data, theme, sectionHeading, rt);
+    const orderedMainHtml = orderCvSections(data, templateId, {
+        skills: skillsHtml,
+        experience: experienceHtml,
+        internships: internshipsHtml,
+        education: educationHtml,
+        courses: coursesHtml,
+        awards: awardsHtml,
+        languages: languagesHtml,
+        interests: interestsHtml,
+        ...additionalSections,
+    });
 
     const content = `
-        <div style="background-color: white; min-height: 297mm; width: 210mm; margin: 0 auto; padding: 32px; color: ${theme.text}; font-family: Arial, sans-serif;">
+        <div data-cv-lane="main" style="background-color: white; min-height: 297mm; width: 210mm; margin: 0 auto; padding: 32px; color: ${theme.text}; font-family: Arial, sans-serif;">
             ${headerHtml}
             ${summaryHtml}
-            ${skillsHtml}
-            ${experienceHtml}
-            ${internshipsHtml}
-            ${educationHtml}
-            ${coursesHtml}
-            ${awardsHtml}
-            ${languagesHtml}
-            ${additionalSectionsHtml}
+            ${orderedMainHtml}
         </div>
     `;
 

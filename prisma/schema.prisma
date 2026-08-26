@@ -72,16 +72,21 @@ model CVDocument {
   sourceCluster        String?
   sourceLocale         String?
   startSource          String?
+  publicClaimKey       String?          @unique
   userId               String?
   user                 User?            @relation(fields: [userId], references: [id])
   agencySubscriptionId String?
   agencySubscription   AgencySubscription? @relation("AgencyCvDocuments", fields: [agencySubscriptionId], references: [id], onDelete: Restrict)
+  hasMeaningfulContent Boolean @default(false)
+  meaningfulContentAt  DateTime?
+  meaningfulContentSignals Json?
   matchPack            AgencyMatchPack?
   createdAt            DateTime         @default(now())
   updatedAt            DateTime         @updatedAt
 
   @@index([agencySubscriptionId, updatedAt])
   @@index([userId, agencySubscriptionId, updatedAt])
+  @@index([userId, agencySubscriptionId, hasMeaningfulContent])
 }
 
 model AgencyMatchPack {
@@ -462,6 +467,7 @@ model ProfilePhotoProject {
 model AnalyticsEvent {
   id          String   @id @default(cuid())
   event       String
+  dedupeKey   String?  @unique
   cvId        String?
   orderId     String?
   path        String?

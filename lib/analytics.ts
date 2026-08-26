@@ -248,6 +248,25 @@ export type AnalyticsEvent =
           };
       }
     | { event: 'cv_saved'; properties: { cvId: string } }
+    | {
+          event: 'cv_meaningful_content_saved';
+          properties: {
+              cvId: string;
+              schemaVersion: 2;
+              completionScore: number;
+               source: 'manual_save' | 'auto_save' | 'upload' | 'download' | 'public_claim' | 'import' | 'initial_create';
+              locale: 'nl' | 'en';
+              signalCount: number;
+              contentSignals: {
+                   profileSummary: boolean;
+                  experience: boolean;
+                  education: boolean;
+                  skills: boolean;
+                  languages: boolean;
+                  otherSections: boolean;
+              };
+          };
+      }
     | { event: 'start_cv'; properties: { entryPoint: string; templateId?: string; cvId?: string; roleSlug?: string } }
     | { event: 'editor_started'; properties: { cvId: string; fromPath?: string } & EditorSourceContext }
     | { event: 'example_cv_applied_after_login'; properties: { cvId: string; templateId: string; startSource: string; hasSampleCV: boolean } }

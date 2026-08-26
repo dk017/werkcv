@@ -121,15 +121,11 @@ function signupNoCvFeedbackDraft(email: string, english: boolean): Pick<Candidat
       draftSubject: "Quick feedback on WerkCV?",
       draftBody: `Hi ${name},
 
-I saw you signed up for WerkCV, but it looks like you did not get to the CV builder yet.
+You recently created a WerkCV account. I am trying to understand the first few minutes of the experience, whether you tried the editor or stopped before that.
 
-I am trying to improve the product and would genuinely value honest feedback, even if it is blunt:
+What were you expecting, and what felt unclear or missing?
 
-- What were you expecting when you signed up?
-- What felt unclear or missing?
-- What nearly made you leave?
-
-A reply with just 1 or 2 lines is already helpful. No sales pitch.
+A reply with one or two lines is already helpful. No sales pitch.
 
 Thanks,
 Dinesh`,
@@ -140,15 +136,11 @@ Dinesh`,
     draftSubject: "Korte feedback over WerkCV?",
     draftBody: `Hoi ${name},
 
-Ik zag dat je je hebt aangemeld voor WerkCV, maar nog niet bij de cv-builder bent gekomen.
+Je hebt onlangs een WerkCV-account aangemaakt. Ik probeer te begrijpen hoe de eerste paar minuten voelen, of je de editor hebt geprobeerd of daarvoor bent gestopt.
 
-Ik ben het product aan het verbeteren en hoor graag eerlijke feedback, ook als die scherp is:
+Wat verwachtte je, en wat voelde onduidelijk of ontbrak?
 
-- Wat verwachtte je toen je je aanmeldde?
-- Wat voelde onduidelijk of miste je?
-- Wat maakte bijna dat je afhaakte?
-
-Een reply van 1 of 2 zinnen helpt al enorm. Geen verkooppraatje.
+Een reply van één of twee zinnen helpt al enorm. Geen verkooppraatje.
 
 Groet,
 Dinesh`,
@@ -398,10 +390,13 @@ async function findSignupNoCvFeedbackCandidates(days: number): Promise<Candidate
       sourceLocale: true,
       attribution: true,
       documents: {
+        where: {
+          agencySubscriptionId: null,
+        },
         select: {
           id: true,
+          hasMeaningfulContent: true,
         },
-        take: 1,
       },
     },
     orderBy: { createdAt: "desc" },
@@ -412,7 +407,7 @@ async function findSignupNoCvFeedbackCandidates(days: number): Promise<Candidate
   for (const user of users) {
     const email = normalizeEmail(user.email);
     if (isInternalOrTestEmail(email)) continue;
-    if (user.documents.length > 0) continue;
+    if (user.documents.some((document) => document.hasMeaningfulContent)) continue;
 
     const attribution = user.attribution && typeof user.attribution === "object" && !Array.isArray(user.attribution)
       ? (user.attribution as Record<string, unknown>)
@@ -425,7 +420,7 @@ async function findSignupNoCvFeedbackCandidates(days: number): Promise<Candidate
     candidates.push({
       email,
       type: "signup_no_cv_feedback",
-      reason: `User signed up ${user.createdAt.toISOString()} and did not create a CV or start the editor within ${SIGNUP_FEEDBACK_DELAY_HOURS} hours.`,
+      reason: `User signed up ${user.createdAt.toISOString()} but no meaningful CV content was saved within ${SIGNUP_FEEDBACK_DELAY_HOURS} hours.`,
       dueAt: new Date(user.createdAt.getTime() + SIGNUP_FEEDBACK_DELAY_HOURS * 60 * 60 * 1000),
       relatedUserId: user.id,
       source: user.sourceCluster || "signup_only",

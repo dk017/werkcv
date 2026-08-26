@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { CVData } from "@/lib/cv";
 import type { UiLanguage } from "@/lib/ui-language";
-import ScaledCvPreview, { A4_HEIGHT_PX, A4_WIDTH_PX } from "./ScaledCvPreview";
+import { A4_HEIGHT_PX, A4_WIDTH_PX } from "./ScaledCvPreview";
 
 interface PdfPagedPreviewProps {
   cvId: string;
@@ -11,9 +11,9 @@ interface PdfPagedPreviewProps {
   templateId: string;
   colorThemeId: string;
   scale: number;
-  pageCount: number;
   uiLanguage: UiLanguage;
   onPageCountChange: (pageCount: number) => void;
+  onStatusChange?: (status: PreviewStatus) => void;
 }
 
 type PreviewStatus = "loading" | "ready" | "error";
@@ -26,12 +26,13 @@ export default function PdfPagedPreview({
   templateId,
   colorThemeId,
   scale,
-  pageCount,
   uiLanguage,
   onPageCountChange,
+  onStatusChange,
 }: PdfPagedPreviewProps) {
   const [status, setStatus] = useState<PreviewStatus>("loading");
   const [pageImages, setPageImages] = useState<string[]>([]);
+  const [retryToken, setRetryToken] = useState(0);
   const payloadJson = useMemo(
     () => JSON.stringify({ cvId, data, templateId, colorThemeId }),
     [colorThemeId, cvId, data, templateId],
@@ -39,6 +40,8 @@ export default function PdfPagedPreview({
 
   useEffect(() => {
     const controller = new AbortController();
+    setStatus("loading");
+    onStatusChange?.("loading");
     const timer = window.setTimeout(async () => {
       setStatus("loading");
       try {
@@ -62,10 +65,13 @@ export default function PdfPagedPreview({
         setPageImages(result.pages);
         onPageCountChange(result.pages.length);
         setStatus("ready");
+        onStatusChange?.("ready");
       } catch (error) {
         if (controller.signal.aborted) return;
-        console.error("PDF-accurate preview failed", error);
+        const category = error instanceof Error && error.message.includes("status") ? "http_error" : "render_error";
+        console.error("PDF-accurate preview failed", { category });
         setStatus("error");
+        onStatusChange?.("error");
       }
     }, 120);
 
@@ -73,19 +79,30 @@ export default function PdfPagedPreview({
       window.clearTimeout(timer);
       controller.abort();
     };
-  }, [onPageCountChange, payloadJson]);
+  }, [onPageCountChange, onStatusChange, payloadJson, retryToken]);
 
   if (status === "error") {
     return (
-      <ScaledCvPreview
-        data={data}
-        templateId={templateId}
-        colorThemeId={colorThemeId}
-        scale={scale}
-        pageCount={pageCount}
-        paginated
-        onPageCountChange={onPageCountChange}
-      />
+      <div
+        role="alert"
+        className="flex items-center justify-center border border-rose-200 bg-rose-50 text-center"
+        style={{ width: A4_WIDTH_PX * scale, height: A4_HEIGHT_PX * scale }}
+      >
+        <div className="max-w-[min(90%,360px)] space-y-3 px-4 text-xs text-rose-900">
+          <p className="font-bold">{uiLanguage === "en" ? "The exact PDF preview could not be prepared." : "Het exacte PDF-voorbeeld kon niet worden voorbereid."}</p>
+          <p>{uiLanguage === "en" ? "Your saved CV was not changed. Retry, or return to the live preview." : "Je opgeslagen CV is niet gewijzigd. Probeer opnieuw of ga terug naar live preview."}</p>
+          <button
+            type="button"
+            onClick={() => {
+              setPageImages([]);
+              setRetryToken((value) => value + 1);
+            }}
+            className="rounded-md border border-rose-300 bg-white px-3 py-2 font-bold text-rose-800 hover:bg-rose-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
+          >
+            {uiLanguage === "en" ? "Retry exact preview" : "Exact voorbeeld opnieuw proberen"}
+          </button>
+        </div>
+      </div>
     );
   }
 

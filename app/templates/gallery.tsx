@@ -383,12 +383,24 @@ export default function TemplateGallery({
         throw new Error("Missing cvId in create-cv response");
       }
 
-      router.push(`${isEnglish ? "/en/editor" : "/editor"}?id=${data.cvId}`);
+      router.push(
+        `${isEnglish ? "/en/editor" : "/editor"}?id=${encodeURIComponent(data.cvId)}&template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(startSource)}`,
+      );
     } catch (error) {
       console.error("Error creating CV:", error);
     } finally {
       setIsCreating(null);
     }
+  };
+
+  const handleUploadExisting = () => {
+    const startSource = normalizeStartSource(initialStartSource) || "template_upload";
+    track("cta_clicked", { location: "template_gallery_entry", label: "upload_existing_cv" });
+    track("start_cv", { entryPoint: "template_upload" });
+    setIsCreating("upload");
+    router.push(
+      `${isEnglish ? "/en" : ""}/editor?upload=1&startSource=${encodeURIComponent(startSource)}`,
+    );
   };
 
   const getActiveTheme = (template: TemplateConfig): ColorTheme => {
@@ -442,6 +454,40 @@ export default function TemplateGallery({
             <span className="wk-trust-pill">
               {isEnglish ? "No subscription" : "Geen abonnement"}
             </span>
+          </div>
+        </div>
+      </section>
+
+      <section className="wk-section pt-0">
+        <div className="wk-container">
+          <div className="wk-card grid gap-5 border-[var(--wk-primary)]/20 bg-[var(--wk-surface-subtle)] md:grid-cols-[1fr_auto] md:items-center">
+            <div>
+              <p className="wk-eyebrow">
+                <span>{isEnglish ? "Already have a CV?" : "Heb je al een CV?"}</span>
+              </p>
+              <h2 className="mt-2 text-2xl font-semibold text-[var(--wk-ink)]">
+                {isEnglish ? "Start from your existing CV" : "Begin met je bestaande CV"}
+              </h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-[var(--wk-ink-muted)]">
+                {isEnglish
+                  ? "Upload a PDF or DOCX, review the extracted content, and keep editing in the same template workspace."
+                  : "Upload een PDF of DOCX, controleer de overgenomen inhoud en bewerk alles verder in dezelfde template-werkruimte."}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handleUploadExisting}
+              disabled={isCreating !== null}
+              className="wk-button wk-button-primary whitespace-nowrap"
+            >
+              {isCreating === "upload"
+                ? isEnglish
+                  ? "Opening upload..."
+                  : "Upload openen..."
+                : isEnglish
+                  ? "Upload existing CV"
+                  : "Bestaand CV uploaden"}
+            </button>
           </div>
         </div>
       </section>

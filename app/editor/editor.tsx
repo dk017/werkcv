@@ -27,7 +27,7 @@ import {
     SideActivitiesSection,
     CustomSectionsSection
 } from "./sections";
-import TemplateSelector from "./TemplateSelector";
+import TemplateSelector, { getTemplatePreviewData } from "./TemplateSelector";
 import ColorThemePicker from "./ColorThemePicker";
 import CVUploader from "./CVUploader";
 import CvScoreWidget from "./CvScoreWidget";
@@ -58,7 +58,18 @@ import {
 } from "@/lib/pending-cv-match";
 import type { CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match";
 import { suggestTargetRoleFromExperience } from "@/lib/cv-normalize";
+import {
+    cvSectionHasSubstantiveContent,
+    getOrderedSectionIds,
+    moveSectionWithinLane,
+    normalizeCvSectionOrder,
+    resolveCvSectionLayout,
+    type CvBodySectionId,
+} from "@/lib/cv-sections";
+import { isCvEmpty } from "@/lib/cv-empty";
 import ScaledCvPreview, { A4_WIDTH_PX } from "./ScaledCvPreview";
+import FullCvPreviewDialog from "./FullCvPreviewDialog";
+import SectionOrderPanel from "./SectionOrderPanel";
 import EditorFeedbackWidget from "./EditorFeedbackWidget";
 import WorkspaceSwitcher from "@/components/workspace/WorkspaceSwitcher";
 import type { WorkspaceEntitlements } from "@/lib/workspace/types";
@@ -165,10 +176,6 @@ function getOptionalSectionOptions(uiLanguage: UiLanguage): Array<{ id: Optional
     ];
 }
 
-function hasItems(value: unknown): boolean {
-    return Array.isArray(value) && value.length > 0;
-}
-
 function ensureEditorData(data: CVData, fallbackLanguage: UiLanguage = "nl"): CVData {
     return {
         ...data,
@@ -180,19 +187,20 @@ function ensureEditorData(data: CVData, fallbackLanguage: UiLanguage = "nl"): CV
         sideActivities: data.sideActivities ?? [],
         customSections: data.customSections ?? [],
         properties: data.properties ?? [],
+        sectionOrder: normalizeCvSectionOrder(data.sectionOrder),
     };
 }
 
 function deriveVisibleOptionalSections(data: CVData): Record<OptionalSectionId, boolean> {
     return {
-        internships: hasItems(data.internships),
-        courses: hasItems(data.courses),
-        awards: hasItems(data.awards),
-        interests: hasItems(data.interests),
-        properties: hasItems(data.properties),
-        references: hasItems(data.references),
-        sideActivities: hasItems(data.sideActivities),
-        customSections: hasItems(data.customSections),
+        internships: cvSectionHasSubstantiveContent(data, "internships"),
+        courses: cvSectionHasSubstantiveContent(data, "courses"),
+        awards: cvSectionHasSubstantiveContent(data, "awards"),
+        interests: cvSectionHasSubstantiveContent(data, "interests"),
+        properties: cvSectionHasSubstantiveContent(data, "properties"),
+        references: cvSectionHasSubstantiveContent(data, "references"),
+        sideActivities: cvSectionHasSubstantiveContent(data, "sideActivities"),
+        customSections: cvSectionHasSubstantiveContent(data, "customSections"),
     };
 }
 
@@ -212,16 +220,6 @@ function hasAdditionalPersonalDetails(data: CVData): boolean {
         personal.github,
         personal.website,
     ].some((value) => typeof value === "string" && value.trim().length > 0);
-}
-
-function isCoreCvEmpty(data: CVData): boolean {
-    return !data.personal.name?.trim()
-        && !data.personal.email?.trim()
-        && !data.personal.phone?.trim()
-        && !data.personal.summary?.trim()
-        && data.experience.length === 0
-        && data.education.length === 0
-        && data.skills.length === 0;
 }
 
 function CompletionPanel({
@@ -357,7 +355,7 @@ export default function Editor({
     });
 
     const data = watch();
-    const isCurrentCvEmpty = isCoreCvEmpty(data);
+    const isCurrentCvEmpty = isCvEmpty(data);
     const completionState = getCompletionState(data, uiLanguage);
     const completionScore = completionState.score;
     const isReadyToDownload = completionState.isReady;
@@ -371,6 +369,9 @@ export default function Editor({
     const [uploaderSource, setUploaderSource] = useState<CvUploadSource>("toolbar");
     const [pageCount, setPageCount] = useState(1);
     const [desktopPreviewScale, setDesktopPreviewScale] = useState(DESKTOP_PREVIEW_SCALE);
+    const [mobilePreviewScale, setMobilePreviewScale] = useState(0.42);
+    const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
+    const [isFinalPdfPreviewOpen, setIsFinalPdfPreviewOpen] = useState(false);
     const [editorPaneWidth, setEditorPaneWidth] = useState(DEFAULT_EDITOR_PANE_WIDTH);
     const [panePreferenceLoaded, setPanePreferenceLoaded] = useState(false);
     const [isDesktopSplit, setIsDesktopSplit] = useState(false);
@@ -379,7 +380,7 @@ export default function Editor({
     const [isTemplateSelectorOpen, setIsTemplateSelectorOpen] = useState(false);
     const [templateSelectorSource, setTemplateSelectorSource] = useState<TemplateSelectorSource>("toolbar");
     const [showPostUploadReview, setShowPostUploadReview] = useState(false);
-    const [showDesignWorkspace, setShowDesignWorkspace] = useState(() => isPublicMode || !isCoreCvEmpty(normalizedInitialData));
+    const [showDesignWorkspace, setShowDesignWorkspace] = useState(() => isPublicMode || !isCvEmpty(normalizedInitialData));
     const [showMobilePhoto, setShowMobilePhoto] = useState(() => Boolean(normalizedInitialData.personal.photo));
     const [suggestedTargetRole, setSuggestedTargetRole] = useState<string | null>(null);
     const [visibleOptionalSections, setVisibleOptionalSections] = useState<Record<OptionalSectionId, boolean>>(
@@ -397,6 +398,9 @@ export default function Editor({
     const editorSplitRef = useRef<HTMLDivElement>(null);
     const editorPaneRef = useRef<HTMLDivElement>(null);
     const desktopPreviewViewportRef = useRef<HTMLDivElement>(null);
+    const mobilePreviewDialogRef = useRef<HTMLDialogElement>(null);
+    const mobilePreviewTriggerRef = useRef<HTMLButtonElement>(null);
+    const mobilePreviewPreviousFocusRef = useRef<HTMLElement | null>(null);
     const publicEditorScrollPositionRef = useRef<{ x: number; y: number } | null>(null);
     const paneResizeRef = useRef<{
         startX: number;
@@ -412,6 +416,11 @@ export default function Editor({
     const quickBuildViewedRef = useRef(false);
     const quickBuildStartedRef = useRef(false);
     const isGuidedBuild = !showDesignWorkspace && !isReadyToDownload;
+    // Keep the guided checklist while showing the visual result immediately.
+    // Editable workspaces should never make users earn access to the preview.
+    const showLivePreview = isPublicMode || !isReadOnlyWorkspace || showDesignWorkspace || isReadyToDownload;
+    const shouldRenderDesktopPreview = showLivePreview && (isDesktopSplit || isPublicMode);
+    const previewData = isCurrentCvEmpty ? getTemplatePreviewData(uiLanguage) : data;
 
     useEffect(() => {
         let storedWidth: number | null = null;
@@ -659,6 +668,16 @@ export default function Editor({
         const params = new URLSearchParams(window.location.search);
         if (params.get('upload') === '1' && !uploadIntentHandledRef.current) {
             uploadIntentHandledRef.current = true;
+            // Consume the one-shot route intent so a refresh does not open a
+            // second uploader for the same draft. The draft itself remains in
+            // the URL and is therefore safe across login handoff and reload.
+            params.delete('upload');
+            const nextQuery = params.toString();
+            window.history.replaceState(
+                window.history.state,
+                '',
+                `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ''}${window.location.hash}`,
+            );
             openUploader("route_intent");
         }
     }, [isPublicMode, openUploader]);
@@ -692,7 +711,7 @@ export default function Editor({
                     setVisibleOptionalSections(deriveVisibleOptionalSections(normalizedData));
                     setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
                     setIsSaved(false);
-                    await updateCV(id, normalizedData);
+                    await updateCV(id, normalizedData, { source: "upload", uiLanguage });
                 }
 
                 if (pendingExample.colorThemeId && pendingExample.colorThemeId !== initialColorThemeId) {
@@ -776,7 +795,7 @@ export default function Editor({
                 setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
                 setIsSaved(false);
 
-                const updateResult = await updateCV(id, normalizedData);
+                const updateResult = await updateCV(id, normalizedData, { source: "upload", uiLanguage });
                 if (!updateResult.success) {
                     throw new Error('CV save failed');
                 }
@@ -859,7 +878,79 @@ export default function Editor({
         if (desktopPreviewViewportRef.current) observer.observe(desktopPreviewViewportRef.current);
 
         return () => observer.disconnect();
-    }, [isGuidedBuild]);
+    }, [shouldRenderDesktopPreview]);
+
+    useEffect(() => {
+        if (!isMobilePreviewOpen) return;
+
+        const updateMobilePreviewScale = () => {
+            const availableWidth = Math.max(0, window.innerWidth - 24);
+            const nextScale = availableWidth / A4_WIDTH_PX;
+            setMobilePreviewScale(Math.max(0.32, Math.min(0.9, nextScale)));
+        };
+
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                event.preventDefault();
+                setIsMobilePreviewOpen(false);
+                return;
+            }
+            if (event.key !== "Tab") return;
+            const dialog = mobilePreviewDialogRef.current;
+            if (!dialog) return;
+            const focusable = Array.from(dialog.querySelectorAll<HTMLElement>(
+                "button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])",
+            ));
+            if (focusable.length === 0) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        };
+
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        const nativeDialog = mobilePreviewDialogRef.current;
+        if (nativeDialog && typeof nativeDialog.showModal === "function" && !nativeDialog.open) {
+            nativeDialog.showModal();
+        }
+        const restoreFocusTarget = mobilePreviewPreviousFocusRef.current || mobilePreviewTriggerRef.current;
+        const backgroundNodes = editorSplitRef.current
+            ? Array.from(editorSplitRef.current.children).filter((node) => (
+                !(node instanceof HTMLElement) || !node.hasAttribute("data-mobile-preview-dialog")
+            ))
+            : [];
+        backgroundNodes.forEach((node) => {
+            if (node instanceof HTMLElement) node.setAttribute("inert", "");
+        });
+        updateMobilePreviewScale();
+        requestAnimationFrame(() => {
+            const dialog = mobilePreviewDialogRef.current;
+            const firstFocusable = dialog?.querySelector<HTMLElement>(
+                "button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex='-1'])",
+            );
+            firstFocusable?.focus();
+        });
+        window.addEventListener("resize", updateMobilePreviewScale);
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            backgroundNodes.forEach((node) => {
+                if (node instanceof HTMLElement) node.removeAttribute("inert");
+            });
+            window.removeEventListener("resize", updateMobilePreviewScale);
+            document.removeEventListener("keydown", handleKeyDown);
+            if (nativeDialog?.open && typeof nativeDialog.close === "function") nativeDialog.close();
+            if (restoreFocusTarget && document.contains(restoreFocusTarget)) restoreFocusTarget.focus();
+            mobilePreviewPreviousFocusRef.current = null;
+        };
+    }, [isMobilePreviewOpen]);
 
     useEffect(() => {
         if (hasEditorStartedTracked(id)) return;
@@ -965,16 +1056,28 @@ export default function Editor({
         }));
     };
 
+    const moveReorderableSection = (sectionId: CvBodySectionId, direction: -1 | 1) => {
+        const nextOrder = moveSectionWithinLane(data, templateId, sectionId, direction, visibleOptionalSections);
+        if (nextOrder.join("|") === normalizeCvSectionOrder(data.sectionOrder).join("|")) return;
+        setValue("sectionOrder", nextOrder, { shouldDirty: true });
+        track("cta_clicked", {
+            location: "editor_section_reorder",
+            label: `${sectionId}_${direction < 0 ? "up" : "down"}`,
+        });
+    };
+
     const onSubmit = async (formData: CVData) => {
         if (!isPublicMode && isReadOnlyWorkspace) return;
         setIsSaved(false);
         if (isPublicMode) {
             const saved = persistPublicDraft(formData);
             setIsSaved(saved);
-            if (saved) maybeTrackCompletion(formData);
+            if (saved) {
+                maybeTrackCompletion(formData);
+            }
             return;
         }
-        const res = await updateCV(id, formData);
+        const res = await updateCV(id, formData, { source: "manual_save", uiLanguage });
         if (res.success) {
             setIsSaved(true);
             maybeTrackCompletion(formData);
@@ -1003,7 +1106,7 @@ export default function Editor({
                     const currentData = watch() as CVData;
                     const saved = isPublicMode
                         ? persistPublicDraft(currentData)
-                        : (await updateCV(id, currentData)).success;
+                        : (await updateCV(id, currentData, { source: "auto_save", uiLanguage })).success;
                     if (saved) {
                         setIsSaved(true);
                         maybeTrackCompletion(currentData);
@@ -1019,7 +1122,7 @@ export default function Editor({
                 clearTimeout(autoSaveTimerRef.current);
             }
         };
-    }, [isPublicMode, isReadOnlyWorkspace, maybeTrackCompletion, persistPublicDraft, watch, id]);
+    }, [isPublicMode, isReadOnlyWorkspace, maybeTrackCompletion, persistPublicDraft, watch, id, uiLanguage]);
 
     // Warn user before closing tab with unsaved changes
     useEffect(() => {
@@ -1208,14 +1311,14 @@ export default function Editor({
                 reset(normalizedData);
                 setVisibleOptionalSections((prev) => ({
                     ...prev,
-                    internships: prev.internships || hasItems(normalizedData.internships),
-                    courses: prev.courses || hasItems(normalizedData.courses),
-                    awards: prev.awards || hasItems(normalizedData.awards),
-                    interests: prev.interests || hasItems(normalizedData.interests),
-                    properties: prev.properties || hasItems(normalizedData.properties),
-                    references: prev.references || hasItems(normalizedData.references),
-                    sideActivities: prev.sideActivities || hasItems(normalizedData.sideActivities),
-                    customSections: prev.customSections || hasItems(normalizedData.customSections),
+                    internships: prev.internships || cvSectionHasSubstantiveContent(normalizedData, "internships"),
+                    courses: prev.courses || cvSectionHasSubstantiveContent(normalizedData, "courses"),
+                    awards: prev.awards || cvSectionHasSubstantiveContent(normalizedData, "awards"),
+                    interests: prev.interests || cvSectionHasSubstantiveContent(normalizedData, "interests"),
+                    properties: prev.properties || cvSectionHasSubstantiveContent(normalizedData, "properties"),
+                    references: prev.references || cvSectionHasSubstantiveContent(normalizedData, "references"),
+                    sideActivities: prev.sideActivities || cvSectionHasSubstantiveContent(normalizedData, "sideActivities"),
+                    customSections: prev.customSections || cvSectionHasSubstantiveContent(normalizedData, "customSections"),
                 }));
                 setIsSaved(false);
             }
@@ -1258,7 +1361,7 @@ export default function Editor({
             // immutable but remain exportable through the Agency entitlement gate.
             const formData = watch();
             if (!isReadOnlyWorkspace) {
-                const res = await updateCV(id, formData);
+                const res = await updateCV(id, formData, { source: "download", uiLanguage });
                 if (!res.success) {
                     alert(tr("Er ging iets mis bij het opslaan.", "Something went wrong while saving."));
                     return;
@@ -1318,10 +1421,10 @@ export default function Editor({
         }
     };
 
-    const desktopEditorPaneStyle = isDesktopSplit && !isGuidedBuild
+    const desktopEditorPaneStyle = isDesktopSplit && showLivePreview
         ? { flex: `0 0 ${editorPaneWidth}%`, minWidth: 0 }
         : undefined;
-    const desktopPreviewPaneStyle = isDesktopSplit && !isGuidedBuild
+    const desktopPreviewPaneStyle = isDesktopSplit && showLivePreview
         ? { flex: `0 0 ${100 - editorPaneWidth}%`, minWidth: 0 }
         : undefined;
 
@@ -1342,7 +1445,7 @@ export default function Editor({
                 ? isPublicEditorFullscreen
                     ? "h-[55%] min-h-0 shrink-0 lg:h-auto lg:w-1/2 lg:flex-none lg:border-r"
                     : "h-[540px] shrink-0 lg:h-auto lg:w-1/2 lg:flex-none lg:border-r"
-                : `h-screen ${isGuidedBuild ? "lg:w-full" : "lg:w-1/2 lg:flex-none lg:border-r"}`
+                : `h-screen ${showLivePreview ? "lg:w-1/2 lg:flex-none lg:border-r" : "lg:w-full"}`
             }`}
                 style={desktopEditorPaneStyle}
             >
@@ -1376,11 +1479,31 @@ export default function Editor({
                             />
                         ) : null}
                         {isGuidedBuild ? (
-                            <span className={isCompactToolbar
-                                ? "hidden"
-                                : "hidden rounded-full border border-teal-200 bg-teal-50 px-2.5 py-1 text-[11px] font-bold text-teal-800 sm:inline-flex"}>
-                                {tr("Stap voor stap", "Guided build")}
-                            </span>
+                            <div className="relative flex shrink-0 items-center gap-1 sm:gap-2">
+                                <span className={isCompactToolbar
+                                    ? "hidden"
+                                    : "hidden rounded-full border border-teal-200 bg-teal-50 px-2.5 py-1 text-[11px] font-bold text-teal-800 sm:inline-flex"}>
+                                    {tr("Stap voor stap", "Guided build")}
+                                </span>
+                                <TemplateSelector
+                                    currentTemplateId={templateId}
+                                    data={data}
+                                    isOpen={isTemplateSelectorOpen}
+                                    reviewMode={false}
+                                    compactToolbar={isCompactToolbar}
+                                    triggerLabel={tr("Template", "Template")}
+                                    onOpen={() => openTemplateSelector("toolbar")}
+                                    onClose={closeTemplateSelector}
+                                    onSelectTemplate={handleTemplateChange}
+                                    uiLanguage={uiLanguage}
+                                />
+                                <ColorThemePicker
+                                    templateId={templateId}
+                                    currentThemeId={colorThemeId}
+                                    onSelectTheme={handleColorThemeChange}
+                                    uiLanguage={uiLanguage}
+                                />
+                            </div>
                         ) : isMatchPackWorkspace && canChangeWorkspaceDesign ? (
                             <div className="relative flex shrink-0 items-center gap-1 sm:gap-2">
                                 <TemplateSelector
@@ -1451,6 +1574,23 @@ export default function Editor({
                                     <span className={isCompactToolbar ? "hidden" : "hidden sm:inline"}>{tr("CV uploaden", "Upload CV")}</span>
                                 </button>
                             ) : null}
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    track("cta_clicked", { location: "editor_mobile_preview", label: "open_preview" });
+                                    mobilePreviewPreviousFocusRef.current = document.activeElement as HTMLElement | null;
+                                    setIsMobilePreviewOpen(true);
+                                }}
+                                ref={mobilePreviewTriggerRef}
+                                className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-md border border-sky-300 bg-sky-50 px-2.5 text-xs font-semibold text-sky-800 transition-colors hover:bg-sky-100 lg:hidden"
+                                aria-label={tr("Voorbeeld bekijken", "View preview")}
+                            >
+                                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.25 12s3.5-6 9.75-6 9.75 6 9.75 6-3.5 6-9.75 6-9.75-6-9.75-6Z" />
+                                    <circle cx="12" cy="12" r="2.5" strokeWidth={2} />
+                                </svg>
+                                <span className="hidden min-[380px]:inline">{tr("Voorbeeld", "Preview")}</span>
+                            </button>
                             {isPublicMode ? (
                                 <button
                                     type="button"
@@ -1593,7 +1733,7 @@ export default function Editor({
                                         {tr("Heb je al een CV? Upload het", "Already have a CV? Upload it")}
                                     </button>
                                     <button type="button" onClick={revealDesignWorkspace} className="text-slate-500 underline underline-offset-2 hover:text-slate-800">
-                                        {tr("Toch template en voorbeeld bekijken", "Show template and preview anyway")}
+                                        {tr("Alle CV-onderdelen tonen", "Show all CV sections")}
                                     </button>
                                 </div>
                             </section>
@@ -1932,18 +2072,54 @@ export default function Editor({
                             ) : null}
                         </section>
 
-                        <div id="section-experience" className="scroll-mt-28">
-                            <ExperienceSection control={control} register={register} uiLanguage={uiLanguage} />
-                        </div>
-                        <div id="section-education" className="scroll-mt-28">
-                            <EducationSection control={control} register={register} uiLanguage={uiLanguage} />
-                        </div>
-                        <div id="section-skills" className="scroll-mt-28">
-                            <SkillsSection control={control} register={register} uiLanguage={uiLanguage} />
-                        </div>
-                        <div className={isGuidedBuild ? "hidden" : "contents"} aria-hidden={isGuidedBuild}>
-                        <LanguagesSection control={control} register={register} uiLanguage={uiLanguage} />
+                        {!isGuidedBuild ? (
+                            <SectionOrderPanel
+                                layout={resolveCvSectionLayout(data, templateId, visibleOptionalSections)}
+                                uiLanguage={uiLanguage}
+                                onMove={moveReorderableSection}
+                            />
+                        ) : null}
 
+                        {getOrderedSectionIds(data, visibleOptionalSections).map((sectionId) => {
+                            if (
+                                isGuidedBuild
+                                && !["experience", "education", "skills"].includes(sectionId)
+                            ) return null;
+
+                            const section = sectionId === "experience"
+                                ? <ExperienceSection control={control} register={register} uiLanguage={uiLanguage} />
+                                : sectionId === "education"
+                                    ? <EducationSection control={control} register={register} uiLanguage={uiLanguage} />
+                                    : sectionId === "skills"
+                                        ? <SkillsSection control={control} register={register} uiLanguage={uiLanguage} />
+                                        : sectionId === "languages"
+                                            ? <LanguagesSection control={control} register={register} uiLanguage={uiLanguage} />
+                                            : sectionId === "internships"
+                                                ? <InternshipsSection control={control} register={register} uiLanguage={uiLanguage} />
+                                                : sectionId === "courses"
+                                                    ? <CoursesSection control={control} register={register} uiLanguage={uiLanguage} />
+                                                    : sectionId === "awards"
+                                                        ? <AwardsSection control={control} register={register} uiLanguage={uiLanguage} />
+                                                        : sectionId === "interests"
+                                                            ? <InterestsSection control={control} register={register} uiLanguage={uiLanguage} />
+                                                            : sectionId === "properties"
+                                                                ? <PropertiesSection control={control} register={register} uiLanguage={uiLanguage} />
+                                                                : sectionId === "references"
+                                                                    ? <ReferencesSection control={control} register={register} uiLanguage={uiLanguage} />
+                                                                    : sectionId === "sideActivities"
+                                                                        ? <SideActivitiesSection control={control} register={register} uiLanguage={uiLanguage} />
+                                                                        : sectionId === "customSections"
+                                                                            ? <CustomSectionsSection control={control} register={register} uiLanguage={uiLanguage} />
+                                                            : null;
+
+                            return section ? (
+                                <div key={sectionId} id={`section-${sectionId}`} className="scroll-mt-28">
+                                    {section}
+                                </div>
+                            ) : null;
+                        })}
+
+                        <div className={isGuidedBuild ? "hidden" : "contents"} aria-hidden={isGuidedBuild}>
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                             <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
                                 <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
@@ -1974,15 +2150,6 @@ export default function Editor({
                                 })}
                             </div>
                         </section>
-
-                        {visibleOptionalSections.internships && <InternshipsSection control={control} register={register} uiLanguage={uiLanguage} />}
-                        {visibleOptionalSections.courses && <CoursesSection control={control} register={register} uiLanguage={uiLanguage} />}
-                        {visibleOptionalSections.awards && <AwardsSection control={control} register={register} uiLanguage={uiLanguage} />}
-                        {visibleOptionalSections.interests && <InterestsSection control={control} register={register} uiLanguage={uiLanguage} />}
-                        {visibleOptionalSections.properties && <PropertiesSection control={control} register={register} uiLanguage={uiLanguage} />}
-                        {visibleOptionalSections.references && <ReferencesSection control={control} register={register} uiLanguage={uiLanguage} />}
-                        {visibleOptionalSections.sideActivities && <SideActivitiesSection control={control} register={register} uiLanguage={uiLanguage} />}
-                        {visibleOptionalSections.customSections && <CustomSectionsSection control={control} register={register} uiLanguage={uiLanguage} />}
 
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -2112,7 +2279,7 @@ export default function Editor({
                 </div>
             </div>
 
-            {!isGuidedBuild ? (
+            {showLivePreview ? (
                 <div
                     role="separator"
                     aria-orientation="vertical"
@@ -2135,7 +2302,7 @@ export default function Editor({
             ) : null}
 
             {/* Right: Live Preview */}
-            {!isGuidedBuild ? <div
+            {shouldRenderDesktopPreview ? <div
                 className={`flex flex-col bg-[#f0faf9] overflow-hidden ${isPublicMode
                 ? isPublicEditorFullscreen
                     ? "h-[45%] min-h-0 shrink-0 lg:h-auto lg:w-1/2 lg:flex-none"
@@ -2146,8 +2313,24 @@ export default function Editor({
             >
                 {/* Fixed header */}
                 <div className="shrink-0 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200">
-                    <span className="text-xs font-semibold text-slate-600">{tr("Live preview", "Live preview")}</span>
+                    <div className="flex min-w-0 items-center gap-2">
+                        <span className="text-xs font-semibold text-slate-600">{tr("Live preview", "Live preview")}</span>
+                        {isCurrentCvEmpty ? (
+                            <span className="truncate rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-800">
+                                {tr("Voorbeeldtemplate", "Example template")}
+                            </span>
+                        ) : null}
+                    </div>
                     <div className="flex items-center gap-2">
+                        {!isPublicMode && !isMatchPackWorkspace ? (
+                            <button
+                                type="button"
+                                onClick={() => setIsFinalPdfPreviewOpen(true)}
+                                className="rounded-md border border-emerald-300 bg-emerald-50 px-2 py-1 text-[11px] font-bold text-emerald-800 transition-colors hover:bg-emerald-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                            >
+                                {tr("Definitieve PDF", "Final PDF")}
+                            </button>
+                        ) : null}
                         {pageCount > 1 && (
                             <div className={`px-2 py-1 text-xs font-semibold rounded-md border ${
                                 pageCount > 2
@@ -2169,7 +2352,7 @@ export default function Editor({
                     className="min-h-0 flex-1 overflow-y-auto p-2 flex justify-center items-start"
                 >
                     <ScaledCvPreview
-                        data={data}
+                        data={previewData}
                         templateId={templateId}
                         colorThemeId={colorThemeId}
                         scale={desktopPreviewScale}
@@ -2179,6 +2362,108 @@ export default function Editor({
                     />
                 </div>
             </div> : null}
+
+            {isMobilePreviewOpen ? (
+                <dialog
+                    ref={mobilePreviewDialogRef}
+                    data-mobile-preview-dialog
+                    className="fixed inset-0 z-[80] m-0 flex h-[100dvh] max-h-none w-full max-w-none flex-col border-0 bg-[#edf7f6] p-0 backdrop:bg-slate-950/35 lg:hidden"
+                    aria-labelledby="mobile-preview-title"
+                    onCancel={(event) => {
+                        event.preventDefault();
+                        setIsMobilePreviewOpen(false);
+                    }}
+                >
+                    <header className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-3 py-3 shadow-sm">
+                        <div className="flex min-w-0 items-center gap-2">
+                            <button
+                                type="button"
+                                onClick={() => setIsMobilePreviewOpen(false)}
+                                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-md border border-slate-300 bg-white text-lg font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                                aria-label={tr("Sluit voorbeeld", "Close preview")}
+                            >
+                                <span aria-hidden="true">×</span>
+                            </button>
+                            <div className="min-w-0">
+                                <h2 id="mobile-preview-title" className="truncate text-sm font-bold text-slate-900">
+                                    {tr("Live voorbeeld", "Live preview")}
+                                </h2>
+                                <p className="truncate text-[11px] font-medium text-slate-500">
+                                    {isCurrentCvEmpty
+                                        ? tr("Voorbeeldtemplate — jouw gegevens verschijnen hier", "Example template — your details will appear here")
+                                        : tr("Dit is hoe je CV er nu uitziet", "This is how your CV looks now")}
+                                </p>
+                            </div>
+                        </div>
+                        <span className="shrink-0 rounded-full border border-slate-200 bg-slate-50 px-2 py-1 text-[11px] font-bold text-slate-600">
+                            {pageCount} {tr("pagina's", "pages")}
+                        </span>
+                    </header>
+
+                    <div className="min-h-0 flex-1 overflow-auto p-3">
+                        <div className="mx-auto w-max rounded-md border border-slate-200 bg-white p-2 shadow-lg">
+                            <ScaledCvPreview
+                                data={previewData}
+                                templateId={templateId}
+                                colorThemeId={colorThemeId}
+                                scale={mobilePreviewScale}
+                                pageCount={pageCount}
+                                paginated
+                                onPageCountChange={handlePageCountChange}
+                            />
+                        </div>
+                    </div>
+
+                    <footer className="flex shrink-0 items-center justify-between gap-3 border-t border-slate-200 bg-white px-3 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+                        <button
+                            type="button"
+                            onClick={() => setIsMobilePreviewOpen(false)}
+                            className="inline-flex min-h-11 items-center justify-center rounded-md border border-slate-300 bg-white px-3 text-xs font-semibold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                        >
+                            {tr("Terug naar editor", "Back to editor")}
+                        </button>
+                        {!isPublicMode && !isMatchPackWorkspace ? (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setIsMobilePreviewOpen(false);
+                                    setIsFinalPdfPreviewOpen(true);
+                                }}
+                                className="inline-flex min-h-11 items-center justify-center rounded-md border border-emerald-300 bg-emerald-50 px-3 text-xs font-semibold text-emerald-800 hover:bg-emerald-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                            >
+                                {tr("Bekijk definitieve PDF", "View final PDF")}
+                            </button>
+                        ) : null}
+                        <span className="text-right text-[11px] font-medium leading-relaxed text-slate-500">
+                            {tr("Wijzigingen worden automatisch opgeslagen.", "Changes save automatically.")}
+                        </span>
+                    </footer>
+                </dialog>
+            ) : null}
+
+            {isFinalPdfPreviewOpen && !isPublicMode && !isMatchPackWorkspace ? (
+                <FullCvPreviewDialog
+                    cvId={id}
+                    data={data}
+                    templateId={templateId}
+                    colorThemeId={colorThemeId}
+                    completionScore={completionScore}
+                    isReady={isReadyToDownload}
+                    remainingSteps={remainingCoreSteps}
+                    isSaved={isSaved}
+                    isSaving={!isSaved}
+                    isDownloading={isDownloading}
+                    pageCount={pageCount}
+                    source="desktop_preview_header"
+                    uiLanguage={uiLanguage}
+                    onClose={() => setIsFinalPdfPreviewOpen(false)}
+                    onContinueEditing={() => setIsFinalPdfPreviewOpen(false)}
+                    onDownload={() => handleDownload("toolbar")}
+                    onPageCountChange={setPageCount}
+                    onSelectTemplate={handleTemplateChange}
+                    onSelectTheme={handleColorThemeChange}
+                />
+            ) : null}
 
             {!isPublicMode ? (
                 <EditorFeedbackWidget

@@ -30,6 +30,8 @@
     "agency:matchpack:backfill": "npx tsx scripts/agency-matchpack-backfill.ts",
     "workspace:backfill:dry-run": "npx tsx scripts/cv-workspace-backfill.ts",
     "workspace:backfill:execute": "npx tsx scripts/cv-workspace-backfill.ts --execute",
+    "cv:meaningful:backfill": "npx tsx scripts/cv-meaningful-backfill.ts",
+    "cv:meaningful:backfill:execute": "npx tsx scripts/cv-meaningful-backfill.ts --execute",
     "db:local:start": "docker compose up -d db",
     "db:studio": "npx prisma studio",
     "db:seed": "npx tsx prisma/seed-categories.ts",

@@ -11,6 +11,9 @@ import { isPublicDraftId } from "@/lib/public-cv-draft";
 import { isAllowedSameOriginRequest } from "@/lib/request-origin";
 import { getCompletionState } from "@/lib/cv-completion";
 import { createMatchPackCvDocument, createPersonalCvDocument } from "@/lib/workspace/cv-document-service";
+import { saveCvDocumentWithMeaningfulState } from "@/lib/cv-meaningful-persistence";
+import { getMeaningfulCvState } from "@/lib/cv-meaningful";
+import { getPublicCvClaimKey } from "@/lib/public-cv-claim";
 
 export const runtime = "nodejs";
 
@@ -117,16 +120,26 @@ export async function POST(request: NextRequest) {
       agencyOwnerUserId = access.ownerUserId || user.id;
     }
 
-    const existing = await prisma.cVDocument.findFirst({
-      where: {
-        userId: flow === "agency" ? agencyOwnerUserId || user.id : user.id,
-        startSource,
-        agencySubscriptionId: flow === "agency" ? agencySubscriptionId : null,
-      },
+    const ownerUserId = flow === "agency" ? agencyOwnerUserId || user.id : user.id;
+    const claimKey = getPublicCvClaimKey(ownerUserId, flow === "agency" ? agencySubscriptionId : null, draftId);
+    const existing = await prisma.cVDocument.findUnique({
+      where: { publicClaimKey: claimKey },
       select: { id: true },
     });
 
     if (existing) {
+      const repaired = await saveCvDocumentWithMeaningfulState({
+        id: existing.id,
+        where: flow === "agency"
+          ? { id: existing.id, userId: ownerUserId, agencySubscriptionId }
+          : { id: existing.id, userId: ownerUserId, agencySubscriptionId: null },
+        data: parsedData.data as CVData,
+        source: "public_claim",
+        uiLanguage,
+      });
+      if (!repaired.success) {
+        return responseBody({ error: "We could not save this draft. Please try again.", code: "CLAIM_FAILED" }, 500);
+      }
       return responseBody({
         success: true,
         cvId: existing.id,
@@ -138,6 +151,7 @@ export async function POST(request: NextRequest) {
 
     const { templateId, colorThemeId } = getSafeTemplateAndTheme(body.templateId, body.colorThemeId);
     const data = parsedData.data as CVData;
+    const meaningfulState = getMeaningfulCvState(data);
     const title = data.personal.name.trim()
       ? `${data.personal.name.trim()} CV`
       : uiLanguage === "en" ? "My CV" : "Mijn CV";
@@ -151,15 +165,52 @@ export async function POST(request: NextRequest) {
       sourceCluster: "public-editor",
       sourceLocale: uiLanguage,
       startSource,
+      publicClaimKey: claimKey,
+      hasMeaningfulContent: meaningfulState.isMeaningful,
+      meaningfulContentAt: meaningfulState.isMeaningful ? new Date() : null,
+      meaningfulContentSignals: meaningfulState.isMeaningful
+        ? meaningfulState.signals as Prisma.InputJsonValue
+        : undefined,
     } as Omit<Prisma.CVDocumentUncheckedCreateInput, "userId" | "agencySubscriptionId">;
-    const cv = flow === "agency"
-      ? await createMatchPackCvDocument(user.id, documentInput)
-      : await createPersonalCvDocument(user.id, documentInput);
+    let cv: { id: string };
+    let reused = false;
+    try {
+      cv = flow === "agency"
+        ? await createMatchPackCvDocument(user.id, documentInput)
+        : await createPersonalCvDocument(user.id, documentInput);
+    } catch (error) {
+      if (!(error instanceof Prisma.PrismaClientKnownRequestError) || error.code !== "P2002") throw error;
+      const concurrent = await prisma.cVDocument.findUnique({
+        where: { publicClaimKey: claimKey },
+        select: { id: true },
+      });
+      if (!concurrent) throw error;
+      cv = concurrent;
+      reused = true;
+    }
+
+    // A claimed public draft is the one anonymous/public entry path that can
+    // arrive with substantive data before the editor performs its first save.
+    // Route it through the same durable first-transition service so the
+    // server, rather than browser storage, owns meaningful-completion state.
+    await saveCvDocumentWithMeaningfulState({
+      id: cv.id,
+      where: flow === "agency"
+        ? {
+          id: cv.id,
+          userId: agencyOwnerUserId || user.id,
+          agencySubscriptionId,
+        }
+        : { id: cv.id, userId: user.id, agencySubscriptionId: null },
+      data,
+      source: "public_claim",
+      uiLanguage,
+    });
 
     return responseBody({
       success: true,
       cvId: cv.id,
-      reused: false,
+      reused,
       source,
       completionScore: completion.score,
       isReady: completion.isReady,

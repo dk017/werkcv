@@ -55,15 +55,11 @@ function buildDraft(email, english) {
       subject: "Quick feedback on WerkCV?",
       body: `Hi ${name},
 
-I saw you signed up for WerkCV, but it looks like you did not get to the CV builder yet.
+You recently created a WerkCV account. I am trying to understand the first few minutes of the experience, whether you tried the editor or stopped before that.
 
-I am improving the product and would genuinely value honest feedback, even if it is blunt:
+What were you expecting, and what felt unclear or missing?
 
-- What were you expecting when you signed up?
-- What felt unclear or missing?
-- What nearly made you leave?
-
-A reply with just 1 or 2 lines is already helpful. No sales pitch.
+A reply with one or two lines is already helpful. No sales pitch.
 
 Thanks,
 Dinesh`,
@@ -71,18 +67,14 @@ Dinesh`,
   }
 
   return {
-    subject: "Korte feedback over WerkCV?",
-    body: `Hoi ${name},
+      subject: "Korte feedback over WerkCV?",
+      body: `Hoi ${name},
 
-Ik zag dat je je hebt aangemeld voor WerkCV, maar nog niet bij de cv-builder bent gekomen.
+Je hebt onlangs een WerkCV-account aangemaakt. Ik probeer te begrijpen hoe de eerste paar minuten voelen, of je de editor hebt geprobeerd of daarvoor bent gestopt.
 
-Ik ben het product aan het verbeteren en hoor graag eerlijke feedback, ook als die scherp is:
+Wat verwachtte je, en wat voelde onduidelijk of ontbrak?
 
-- Wat verwachtte je toen je je aanmeldde?
-- Wat voelde onduidelijk of miste je?
-- Wat maakte bijna dat je afhaakte?
-
-Een reply van 1 of 2 zinnen helpt al enorm. Geen verkooppraatje.
+Een reply van één of twee zinnen helpt al enorm. Geen verkooppraatje.
 
 Groet,
 Dinesh`,
@@ -232,9 +224,7 @@ function getPool() {
   return new Pool({ connectionString });
 }
 
-async function queryEligibleUsers(pool, lowerBound, cutoff, limit) {
-  const result = await pool.query(
-    `
+export const ELIGIBLE_USERS_SQL = `
       SELECT
         u.id,
         u.email,
@@ -243,51 +233,46 @@ async function queryEligibleUsers(pool, lowerBound, cutoff, limit) {
         u."sourceCluster" AS "sourceCluster",
         u."sourceLocale" AS "sourceLocale",
         u.attribution AS attribution,
-        COUNT(cv.id)::int AS "documentCount"
+        COUNT(cv.id)::int AS "documentCount",
+        COUNT(cv.id) FILTER (WHERE cv."hasMeaningfulContent" = true)::int AS "meaningfulDocumentCount"
       FROM "User" u
-      LEFT JOIN "CVDocument" cv ON cv."userId" = u.id
+      LEFT JOIN "CVDocument" cv
+        ON cv."userId" = u.id
+       AND cv."agencySubscriptionId" IS NULL
       WHERE u."createdAt" >= $1
         AND u."createdAt" <= $2
+        AND NULLIF(BTRIM(u.email), '') IS NOT NULL
+        AND LOWER(u.email) NOT LIKE '%@werkcv.nl'
+        AND LOWER(u.email) NOT LIKE '%+test%'
+        AND LOWER(u.email) NOT LIKE '%test@%'
+        AND LOWER(u.email) <> 'dhineshkumar.stoic@gmail.com'
+        AND NOT EXISTS (
+          SELECT 1
+          FROM "FollowupTask" ft
+          WHERE LOWER(ft.email) = LOWER(u.email)
+            AND ft.type = 'signup_no_cv_feedback'
+            AND ft."sentAt" IS NOT NULL
+        )
+        AND NOT EXISTS (
+          SELECT 1
+          FROM "EmailMessage" em
+          WHERE LOWER(em.email) = LOWER(u.email)
+            AND em.direction = 'inbound'
+            AND COALESCE(em."receivedAt", em."createdAt") >= $3
+        )
       GROUP BY u.id, u.email, u."createdAt", u."sourcePath", u."sourceCluster", u."sourceLocale", u.attribution
+      HAVING COUNT(cv.id) FILTER (WHERE cv."hasMeaningfulContent" = true) = 0
       ORDER BY u."createdAt" DESC
-      LIMIT $3
-    `,
-    [lowerBound, cutoff, limit]
+      LIMIT $4
+    `;
+
+export async function queryEligibleUsers(pool, lowerBound, cutoff, recentReplyCutoff, limit) {
+  const result = await pool.query(
+    ELIGIBLE_USERS_SQL,
+    [lowerBound, cutoff, recentReplyCutoff, limit]
   );
 
   return result.rows;
-}
-
-async function hasInboundReplyAfter(pool, email, after) {
-  const result = await pool.query(
-    `
-      SELECT 1
-      FROM "EmailMessage"
-      WHERE email = $1
-        AND direction = 'inbound'
-        AND COALESCE("receivedAt", "createdAt") >= $2
-      LIMIT 1
-    `,
-    [email, after]
-  );
-
-  return result.rowCount > 0;
-}
-
-async function alreadySent(pool, email) {
-  const result = await pool.query(
-    `
-      SELECT 1
-      FROM "FollowupTask"
-      WHERE email = $1
-        AND type = 'signup_no_cv_feedback'
-        AND "sentAt" IS NOT NULL
-      LIMIT 1
-    `,
-    [email]
-  );
-
-  return result.rowCount > 0;
 }
 
 async function upsertFollowupRecords(pool, email, userId, sourceCluster, createdAt, draft, messageId) {
@@ -355,15 +340,13 @@ async function main() {
   const recentReplyCutoff = new Date(Date.now() - RECENT_REPLY_WINDOW_DAYS * DAY_MS);
 
   try {
-    const users = await queryEligibleUsers(pool, lowerBound, cutoff, limit);
+    const users = await queryEligibleUsers(pool, lowerBound, cutoff, recentReplyCutoff, limit);
     const summary = [];
 
     for (const user of users) {
       const email = normalizeEmail(user.email);
       if (isInternalOrTestEmail(email)) continue;
-      if (Number(user.documentCount || 0) > 0) continue;
-      if (await alreadySent(pool, email)) continue;
-      if (await hasInboundReplyAfter(pool, email, recentReplyCutoff)) continue;
+      if (Number(user.meaningfulDocumentCount || 0) > 0) continue;
 
       const attribution = user.attribution && typeof user.attribution === "object" && !Array.isArray(user.attribution)
         ? user.attribution

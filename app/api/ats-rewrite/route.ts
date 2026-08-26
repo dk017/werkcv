@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { CVData } from '@/lib/cv';
 import { rewriteCVForATS } from '@/lib/ats-rewrite';
 import { getCurrentUserFromRequest } from '@/lib/auth';
+import { saveCvDocumentWithMeaningfulState } from '@/lib/cv-meaningful-persistence';
 
 export async function POST(request: NextRequest) {
     try {
@@ -41,10 +42,14 @@ export async function POST(request: NextRequest) {
             preferredLanguage,
         });
 
-        await prisma.cVDocument.updateMany({
+        const saved = await saveCvDocumentWithMeaningfulState({
+            id: cv.id,
             where: { id: cv.id, userId: user.id, agencySubscriptionId: null },
-            data: { data: rewritten },
+            data: rewritten,
+            source: 'manual_save',
+            uiLanguage: preferredLanguage || (rewritten.personal.resumeLanguage === 'en' ? 'en' : 'nl'),
         });
+        if (!saved.success) return NextResponse.json({ error: 'CV not found' }, { status: 404 });
 
         return NextResponse.json({
             success: true,

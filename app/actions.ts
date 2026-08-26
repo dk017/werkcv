@@ -11,6 +11,7 @@ import { getDefaultThemeId } from '@/lib/templates/registry'
 import { Prisma } from '@prisma/client'
 import { createPersonalCvDocument } from '@/lib/workspace/cv-document-service'
 import { authorizeCvDocument, CvAuthorizationError } from '@/lib/workspace/cv-authorization'
+import { saveCvDocumentWithMeaningfulState, type MeaningfulSaveSource } from '@/lib/cv-meaningful-persistence'
 import { revalidatePath } from 'next/cache'
 import {
     buildPersonalCvPreview,
@@ -80,6 +81,18 @@ export async function createCV(templateId: string = 'professional', colorThemeId
         templateId,
         colorThemeId: colorThemeId || getDefaultThemeId(templateId),
     })
+    // Legacy callers can create a document with imported initial data. Route
+    // that write through the same first-transition service as editor saves so
+    // meaningful-content state and its idempotent event are not skipped.
+    if (initialData) {
+        await saveCvDocumentWithMeaningfulState({
+            id: cv.id,
+            where: { id: cv.id, userId: user.id, agencySubscriptionId: null },
+            data: cvData,
+            source: "initial_create",
+            uiLanguage: cvData.personal.resumeLanguage === "en" ? "en" : "nl",
+        });
+    }
     return cv.id
 }
 
@@ -136,7 +149,11 @@ export async function getCVWithSettings(id: string, expectedWorkspace?: 'persona
     }
 }
 
-export async function updateCV(id: string, data: CVData) {
+export async function updateCV(
+    id: string,
+    data: CVData,
+    options: { source?: MeaningfulSaveSource; uiLanguage?: 'nl' | 'en' } = {},
+) {
     const user = await getCurrentUser();
     if (!user) return { success: false, error: 'AUTH_REQUIRED' };
 
@@ -148,9 +165,13 @@ export async function updateCV(id: string, data: CVData) {
         const where = authorised.workspace.kind === 'personal'
             ? { id, userId: user.id, agencySubscriptionId: null }
             : { id, agencySubscriptionId: authorised.workspace.agencySubscriptionId };
-        const updated = await prisma.cVDocument.updateMany({ where, data: { data: parsed.data } });
-        if (updated.count === 0) return { success: false, error: 'NOT_FOUND' };
-        return { success: true }
+        return await saveCvDocumentWithMeaningfulState({
+            id,
+            where,
+            data: parsed.data,
+            source: options.source ?? 'manual_save',
+            uiLanguage: options.uiLanguage ?? parsed.data.personal.resumeLanguage ?? 'nl',
+        });
     } catch (error) {
         return { success: false, error: error instanceof CvAuthorizationError ? error.code : 'NOT_FOUND' };
     }

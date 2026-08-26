@@ -10,10 +10,20 @@ export const runtime = "nodejs";
 
 const MAX_PREVIEW_PAYLOAD_CHARS = 1_000_000;
 
+function previewJson(payload: unknown, init?: ResponseInit) {
+  return NextResponse.json(payload, {
+    ...init,
+    headers: {
+      "Cache-Control": "private, no-store",
+      ...(init?.headers || {}),
+    },
+  });
+}
+
 export async function POST(request: NextRequest) {
   const user = await getCurrentUserFromRequest(request);
   if (!user) {
-    return NextResponse.json(
+    return previewJson(
       { error: "Authentication required", code: "AUTH_REQUIRED" },
       { status: 401 },
     );
@@ -25,11 +35,11 @@ export async function POST(request: NextRequest) {
   const colorThemeId = typeof body?.colorThemeId === "string" ? body.colorThemeId : "";
 
   if (!cvId || !templateId || !body?.data) {
-    return NextResponse.json({ error: "Invalid preview request" }, { status: 400 });
+    return previewJson({ error: "Invalid preview request" }, { status: 400 });
   }
 
   if (JSON.stringify(body.data).length > MAX_PREVIEW_PAYLOAD_CHARS) {
-    return NextResponse.json({ error: "Preview data is too large" }, { status: 413 });
+    return previewJson({ error: "Preview data is too large" }, { status: 413 });
   }
 
   const ownsCv = await prisma.cVDocument.findFirst({
@@ -37,12 +47,12 @@ export async function POST(request: NextRequest) {
     select: { id: true },
   });
   if (!ownsCv) {
-    return NextResponse.json({ error: "CV not found" }, { status: 404 });
+    return previewJson({ error: "CV not found" }, { status: 404 });
   }
 
   const parsed = cvSchema.safeParse(body.data);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Invalid CV data" }, { status: 400 });
+    return previewJson({ error: "Invalid CV data" }, { status: 400 });
   }
 
   const safeTemplateId = Object.hasOwn(templateRegistry, templateId)
@@ -52,12 +62,9 @@ export async function POST(request: NextRequest) {
   const pdf = await generatePDF(parsed.data, safeTemplateId, safeThemeId);
   const pages = await renderPdfPreviewImages(pdf);
 
-  return NextResponse.json(
+  return previewJson(
     { pages },
     {
-      headers: {
-        "Cache-Control": "private, no-store",
-      },
     },
   );
 }

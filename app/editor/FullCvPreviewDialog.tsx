@@ -11,6 +11,7 @@ import { A4_HEIGHT_PX, A4_WIDTH_PX } from "./ScaledCvPreview";
 
 type FullPreviewCloseMethod = "x" | "back_to_editor" | "escape" | "browser_back";
 type ZoomMode = "fit" | "custom";
+type PdfPreviewStatus = "loading" | "ready" | "error";
 
 interface FullCvPreviewDialogProps {
   cvId: string;
@@ -81,6 +82,7 @@ export default function FullCvPreviewDialog({
   const [zoomMode, setZoomMode] = useState<ZoomMode>("fit");
   const [scale, setScale] = useState(0.68);
   const [hasMounted, setHasMounted] = useState(false);
+  const [pdfPreviewStatus, setPdfPreviewStatus] = useState<PdfPreviewStatus>("loading");
 
   const eventContext = useMemo(() => ({
     cvId,
@@ -91,6 +93,10 @@ export default function FullCvPreviewDialog({
     isReady,
     pageCount,
   }), [completionScore, cvId, isReady, pageCount, source, templateId, uiLanguage]);
+
+  const handlePdfPreviewStatus = useCallback((status: PdfPreviewStatus) => {
+    setPdfPreviewStatus(status);
+  }, []);
 
   const trackClose = useCallback((closeMethod: FullPreviewCloseMethod) => {
     if (closedRef.current) return;
@@ -303,6 +309,11 @@ export default function FullCvPreviewDialog({
       return;
     }
 
+    // A completed CV is not downloadable from this workspace until the exact
+    // generator has verified the current data. The live preview is never a
+    // substitute for this check.
+    if (pdfPreviewStatus !== "ready") return;
+
     downloadClickedRef.current = true;
     track("full_preview_download_clicked", {
       ...eventContext,
@@ -321,7 +332,9 @@ export default function FullCvPreviewDialog({
     ? "Download PDF"
     : "PDF downloaden";
   const primaryLabel = isReady
-    ? paidDownloadLabel
+    ? pdfPreviewStatus === "ready"
+      ? paidDownloadLabel
+      : isEnglish ? "Preparing exact preview..." : "Exact voorbeeld voorbereiden..."
     : isEnglish
       ? `Finish CV · ${remainingSteps} ${remainingSteps === 1 ? "step" : "steps"} left`
       : `CV afronden · nog ${remainingSteps} ${remainingSteps === 1 ? "stap" : "stappen"}`;
@@ -430,7 +443,7 @@ export default function FullCvPreviewDialog({
               <button
                 type="button"
                 onClick={handlePrimaryAction}
-                disabled={isDownloading || isSaving}
+                disabled={isDownloading || isSaving || (isReady && pdfPreviewStatus !== "ready")}
                 className={`inline-flex h-11 w-full items-center justify-center gap-2 rounded-md border px-4 text-sm font-bold text-white transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
                   isReady
                     ? "border-emerald-700 bg-emerald-600 hover:bg-emerald-700"
@@ -525,9 +538,9 @@ export default function FullCvPreviewDialog({
                 templateId={templateId}
                 colorThemeId={colorThemeId}
                 scale={scale}
-                pageCount={pageCount}
                 uiLanguage={uiLanguage}
                 onPageCountChange={onPageCountChange}
+                onStatusChange={handlePdfPreviewStatus}
               />
             </div>
           </div>
@@ -583,7 +596,7 @@ export default function FullCvPreviewDialog({
           <button
             type="button"
             onClick={handlePrimaryAction}
-            disabled={isDownloading || isSaving}
+            disabled={isDownloading || isSaving || (isReady && pdfPreviewStatus !== "ready")}
             className={`inline-flex h-12 w-full items-center justify-center gap-2 rounded-md border text-sm font-bold text-white disabled:cursor-not-allowed disabled:opacity-60 ${
               isReady
                 ? "border-emerald-700 bg-emerald-600"

@@ -8,6 +8,7 @@ import { getTemplateComponent } from "@/app/editor/templates";
 import type { CVData } from "@/lib/cv";
 import { LinkTextProvider } from "@/app/editor/templates/link-utils";
 import { UiLanguage } from "@/lib/ui-language";
+import { isCvEmpty } from "@/lib/cv-empty";
 
 const templateComponents = new Map(
   templateList.map((template) => [template.id, getTemplateComponent(template.id)]),
@@ -248,19 +249,13 @@ const englishPreviewData: CVData = {
   customSections: [],
 };
 
-function isEmptyCv(data: CVData) {
-  return (
-    !data.personal.name?.trim() &&
-    !data.personal.title?.trim() &&
-    !data.personal.email?.trim() &&
-    !data.personal.phone?.trim() &&
-    !data.personal.location?.trim() &&
-    !data.personal.summary?.trim() &&
-    data.experience.length === 0 &&
-    data.education.length === 0 &&
-    data.skills.length === 0 &&
-    data.languages.length === 0
-  );
+/**
+ * Returns fictional, non-persistent content for showing a template before a
+ * user has entered their own CV data. This is intentionally exported so the
+ * editor's live preview and the template gallery use the same safe examples.
+ */
+export function getTemplatePreviewData(uiLanguage: UiLanguage): CVData {
+  return uiLanguage === "en" ? englishPreviewData : dutchPreviewData;
 }
 
 interface TemplateGalleryProps {
@@ -281,11 +276,7 @@ export function TemplateGallery({
   idPrefix = "template-gallery",
 }: TemplateGalleryProps) {
   const isEnglish = uiLanguage === "en";
-  const previewData = isEmptyCv(data)
-    ? isEnglish
-      ? englishPreviewData
-      : dutchPreviewData
-    : data;
+  const previewData = isCvEmpty(data) ? getTemplatePreviewData(uiLanguage) : data;
 
   return (
     <div className={compact ? "space-y-6" : "space-y-8"}>

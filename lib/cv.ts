@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { CV_BODY_SECTION_IDS, DEFAULT_CV_SECTION_ORDER } from "./cv-sections";
 
 export const cvSchema = z.object({
     personal: z.object({
@@ -110,9 +111,18 @@ export const cvSchema = z.object({
             items: z.array(z.string()).default([]),
         })
     ).optional(),
+    // Persisted ordering for the core content sections. Older CV records do
+    // not contain this field; Zod supplies the stable default during parsing.
+    sectionOrder: z.array(z.enum(CV_BODY_SECTION_IDS)).default([...DEFAULT_CV_SECTION_ORDER]),
 });
 
-export type CVData = z.infer<typeof cvSchema>;
+type ParsedCVData = z.infer<typeof cvSchema>;
+// Keep the field optional at the application boundary so legacy fixture data
+// and imported CVs remain valid; normalization fills it before persistence or
+// rendering.
+export type CVData = Omit<ParsedCVData, "sectionOrder"> & {
+    sectionOrder?: Array<typeof CV_BODY_SECTION_IDS[number]>;
+};
 
 export const defaultCV: CVData = {
     personal: {
@@ -148,6 +158,7 @@ export const defaultCV: CVData = {
     references: [],
     sideActivities: [],
     customSections: [],
+    sectionOrder: [...DEFAULT_CV_SECTION_ORDER],
 };
 
 // Sample CV data for previews (Dutch professional)
@@ -248,4 +259,5 @@ export const sampleCV: CVData = {
     references: [],
     sideActivities: [],
     customSections: [],
+    sectionOrder: [...DEFAULT_CV_SECTION_ORDER],
 };
