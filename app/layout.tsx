@@ -87,6 +87,11 @@ export default function RootLayout({
   return (
     <html lang="nl" suppressHydrationWarning translate="no">
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.lang=location.pathname==='/en'||location.pathname.startsWith('/en/')?'en':'nl';",
+          }}
+        />
         <meta name="google" content="notranslate" />
         <link
           rel="alternate"

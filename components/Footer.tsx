@@ -36,12 +36,12 @@ const personalGroupsEn: FooterGroup[] = [
   { label: "Resources", links: [
     { href: "/en/dutch-cv-examples", label: "CV examples" },
     { href: "/en/guides", label: "Guides" },
-    { href: "/tools", label: "Tools" },
+    { href: "/en/dutch-cv-checker", label: "CV checker" },
   ] },
   { label: "Help", links: [
-    { href: "/faq", label: "FAQ" },
-    { href: "/contact", label: "Contact" },
-    { href: "/about", label: "About" },
+    { href: "/en/pricing", label: "Payment questions" },
+    { href: "mailto:contact@werkcv.nl", label: "Email support" },
+    { href: "/en/guides", label: "CV help" },
   ] },
   { label: "Legal", links: [
     { href: "/en/privacy", label: "Privacy" },
@@ -86,7 +86,7 @@ const matchpackGroupsEn: FooterGroup[] = [
   { label: "Evidence", links: [{ href: "/en/agency/methodology/claim-evidence-benchmark", label: "Methodology" }] },
   { label: "Trust", links: [
     { href: "/agency/privacy", label: "Privacy and data processing" },
-    { href: "/contact", label: "Contact" },
+    { href: "mailto:contact@werkcv.nl", label: "Contact" },
   ] },
   { label: "Products", links: [{ href: "/en", label: "Personal CVs" }] },
 ];

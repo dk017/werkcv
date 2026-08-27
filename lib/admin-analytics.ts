@@ -1,6 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { ANALYTICS_PRODUCT_PROGRESS_PATHS } from "@/lib/analytics-paths";
+import { CONVERSION_CTA_CLICK_EVENTS } from "@/lib/conversion-funnel";
 
 export type AnalyticsRange = "24h" | "7d" | "30d";
 
@@ -375,8 +376,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
         COUNT(*) FILTER (WHERE event = 'page_view')::int AS "pageViews",
         COUNT(*)::int AS events,
         COUNT(*) FILTER (
-          WHERE event IN ('landing_cta_click', 'tool_to_cv_cta_click', 'cta_clicked')
-            OR event LIKE 'cta_%'
+          WHERE event IN (${Prisma.join(CONVERSION_CTA_CLICK_EVENTS)})
         )::int AS "ctaClicks",
         COUNT(*) FILTER (WHERE event IN ('start_cv', 'editor_started', 'landing_to_editor'))::int AS "editorStarts",
         COUNT(*) FILTER (WHERE event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
@@ -543,8 +543,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
         COUNT(DISTINCT NULLIF(properties->>'sessionId', ''))::int AS sessions,
         COUNT(*) FILTER (WHERE event = 'page_view')::int AS "pageViews",
         COUNT(*) FILTER (
-          WHERE event IN ('landing_cta_click', 'tool_to_cv_cta_click', 'cta_clicked')
-            OR event LIKE 'cta_%'
+          WHERE event IN (${Prisma.join(CONVERSION_CTA_CLICK_EVENTS)})
         )::int AS "ctaClicks",
         COUNT(*) FILTER (WHERE event IN ('start_cv', 'editor_started', 'landing_to_editor'))::int AS "editorStarts",
         COUNT(*) FILTER (WHERE event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
@@ -912,10 +911,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
         COUNT(*)::int AS clicks
       FROM "AnalyticsEvent"
       WHERE "createdAt" >= ${since}
-        AND (
-          event IN ('landing_cta_click', 'tool_to_cv_cta_click', 'cta_clicked')
-          OR event LIKE 'cta_%'
-        )
+        AND event IN (${Prisma.join(CONVERSION_CTA_CLICK_EVENTS)})
       GROUP BY page, label, destination
       ORDER BY clicks DESC
       LIMIT 20
@@ -937,8 +933,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
           COUNT(*) FILTER (WHERE event = 'page_view')::int AS "pageViews",
           COUNT(DISTINCT session_id)::int AS sessions,
           COUNT(*) FILTER (
-            WHERE event IN ('landing_cta_click', 'tool_to_cv_cta_click', 'cta_clicked')
-              OR event LIKE 'cta_%'
+            WHERE event IN (${Prisma.join(CONVERSION_CTA_CLICK_EVENTS)})
           )::int AS "ctaClicks",
           COUNT(*) FILTER (WHERE event IN ('start_cv', 'editor_started', 'landing_to_editor'))::int AS "editorStarts",
           COUNT(*) FILTER (WHERE event = 'checkout_modal_viewed')::int AS "checkoutModalViews",
@@ -951,10 +946,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
         SELECT page, session_id, "createdAt", to_path
         FROM events
         WHERE session_id IS NOT NULL
-          AND (
-            event IN ('landing_cta_click', 'tool_to_cv_cta_click', 'cta_clicked')
-            OR event LIKE 'cta_%'
-          )
+          AND event IN (${Prisma.join(CONVERSION_CTA_CLICK_EVENTS)})
       ),
       downstream_progress AS (
         SELECT
@@ -1022,10 +1014,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
           (ARRAY_AGG(landing_page ORDER BY "createdAt"))[1] AS landing_page,
           (ARRAY_AGG(source_cluster ORDER BY "createdAt"))[1] AS source_cluster,
           (ARRAY_AGG(device ORDER BY "createdAt"))[1] AS device,
-          BOOL_OR(
-            event IN ('landing_cta_click', 'tool_to_cv_cta_click', 'cta_clicked')
-            OR event LIKE 'cta_%'
-          ) AS cta,
+          BOOL_OR(event IN (${Prisma.join(CONVERSION_CTA_CLICK_EVENTS)})) AS cta,
           BOOL_OR(event = 'login_view') AS login_view,
           BOOL_OR(event = 'login_code_requested') AS code_requested,
           BOOL_OR(event = 'login_verified') AS login_verified,

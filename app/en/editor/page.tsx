@@ -7,6 +7,13 @@ import { cookies } from "next/headers";
 import { normalizeStartSource, PENDING_START_SOURCE_COOKIE, readEncodedStartSource } from "@/lib/start-source";
 import { isAgencyAccessError } from "@/lib/agency-access";
 import { getWorkspaceEntitlementsForUser, isWorkspaceSwitcherEnabled } from "@/lib/workspace/entitlements";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "English CV Editor for the Netherlands | WerkCV",
+  description: "Build, edit and preview your English CV for jobs in the Netherlands.",
+  robots: { index: false, follow: false },
+};
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;

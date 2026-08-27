@@ -1466,11 +1466,11 @@ export default function Editor({
                         </Link>
                         {workspaceContext && !isPublicMode ? (
                             <Link
-                                href={workspaceContext.backHref}
+                                href={isEnglish && workspaceContext.kind === "personal" ? "/en" : workspaceContext.backHref}
                                 className="hidden min-w-0 max-w-[10rem] truncate rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-bold text-slate-600 transition-colors hover:border-emerald-300 hover:text-emerald-800 sm:inline-flex"
                                 title={tr("Terug naar werkruimte", "Back to workspace")}
                             >
-                                ← {workspaceContext.label}
+                                ← {isEnglish && workspaceContext.kind === "personal" ? "English CV" : workspaceContext.label}
                             </Link>
                         ) : null}
                         {workspaceEntitlements && workspaceSwitcherEnabled && !isPublicMode ? (

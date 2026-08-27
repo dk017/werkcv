@@ -58,7 +58,7 @@ export default function WorkspaceSwitcher({
       {open ? (
         <div id="workspace-switcher-panel" className="wk-workspace-switcher-panel" role="group" aria-label={isEnglish ? "Workspaces" : "Werkruimtes"}>
           <Link
-            href={workspaces.personal.href}
+            href={isEnglish ? "/en" : workspaces.personal.href}
             className="wk-workspace-switcher-option"
             aria-current={currentWorkspace === "personal" ? "page" : undefined}
             onClick={() => setOpen(false)}

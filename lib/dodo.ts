@@ -51,14 +51,11 @@ export function isDodoEnabledForCheckout(
   );
 }
 
-export async function buildDodoCheckoutURL(
+export function buildDodoCheckoutBody(
   cvId: string,
   email: string | undefined,
   resumeLanguage: ResumeLanguage = "nl"
-): Promise<DodoCheckoutResult> {
-  if (!DODO_API_KEY) {
-    throw new Error("DODO_API_KEY is not configured");
-  }
+): Record<string, unknown> {
   if (!DODO_PRODUCT_ID) {
     throw new Error("DODO_PRODUCT_ID is not configured");
   }
@@ -70,15 +67,10 @@ export async function buildDodoCheckoutURL(
     "debit",
     "apple_pay",
     "google_pay",
-    // Dodo filters this out unless the billing country is India and the
-    // adaptive billing currency is INR. Keeping cards in the list provides a
-    // global fallback when UPI is not eligible.
     ...(isDutchCheckout ? [] : ["upi_collect"]),
   ];
   const body: Record<string, unknown> = {
     product_cart: [{ product_id: DODO_PRODUCT_ID, quantity: 1 }],
-    // English-speaking job seekers in the Netherlands can still use iDEAL;
-    // Dodo hides payment methods that are not eligible for the billing country.
     allowed_payment_method_types: allowedPaymentMethodTypes,
     return_url: `${APP_URL}${getSuccessPathForLanguage(resumeLanguage, cvId)}`,
     cancel_url: `${APP_URL}${getEditorPathForLanguage(resumeLanguage, cvId)}`,
@@ -91,10 +83,9 @@ export async function buildDodoCheckoutURL(
     customization: {
       show_order_details: true,
       theme: "light",
+      force_language: resumeLanguage,
     },
     feature_flags: {
-      // International sessions use Dodo Adaptive Currency. Dutch sessions
-      // intentionally preserve the existing fixed-EUR checkout.
       allow_currency_selection: !isDutchCheckout,
       allow_discount_code: false,
       allow_phone_number_collection: false,
@@ -113,6 +104,19 @@ export async function buildDodoCheckoutURL(
   if (email) {
     body.customer = { email };
   }
+
+  return body;
+}
+
+export async function buildDodoCheckoutURL(
+  cvId: string,
+  email: string | undefined,
+  resumeLanguage: ResumeLanguage = "nl"
+): Promise<DodoCheckoutResult> {
+  if (!DODO_API_KEY) {
+    throw new Error("DODO_API_KEY is not configured");
+  }
+  const body = buildDodoCheckoutBody(cvId, email, resumeLanguage);
 
   const res = await fetch(`${DODO_API_BASE}/checkouts`, {
     method: "POST",
@@ -168,6 +172,7 @@ export async function buildAgencyDodoCheckoutURL(email?: string): Promise<DodoCh
     customization: {
       show_order_details: true,
       theme: "light",
+      force_language: "nl",
     },
     feature_flags: {
       allow_currency_selection: false,
@@ -177,7 +182,6 @@ export async function buildAgencyDodoCheckoutURL(email?: string): Promise<DodoCh
       allow_customer_editing_business_name: true,
     },
     minimal_address: false,
-    force_language: "nl",
   };
 
   if (email) {

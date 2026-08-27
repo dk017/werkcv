@@ -77,6 +77,8 @@ export async function saveCvDocumentWithMeaningfulStateUsingClient(
                 hasMeaningfulContent: true,
                 meaningfulContentAt: new Date(),
                 meaningfulContentSignals: {
+                    schemaVersion: 2,
+                    source,
                     profileSummary: meaningfulState.signals.profileSummary,
                     experience: meaningfulState.signals.experience,
                     education: meaningfulState.signals.education,
