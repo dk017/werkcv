@@ -5,6 +5,7 @@ import Editor from "@/app/editor/editor";
 import { createEditorDraft } from "@/lib/editor-drafts";
 import { cookies } from "next/headers";
 import { normalizeStartSource, PENDING_START_SOURCE_COOKIE, readEncodedStartSource } from "@/lib/start-source";
+import { normalizeEnglishRoleExampleStartSource } from "@/lib/english-role-examples";
 import { isAgencyAccessError } from "@/lib/agency-access";
 import { getWorkspaceEntitlementsForUser, isWorkspaceSwitcherEnabled } from "@/lib/workspace/entitlements";
 import type { Metadata } from "next";
@@ -38,8 +39,11 @@ export default async function EnglishEditorPage({
   const templateId = normalizeTemplateId(template);
   const uploadRequested = isUploadRequested(upload);
   const cookieStore = await cookies();
+  const rawStartSource = typeof startSource === "string" ? startSource : "";
+  const roleStartSource = normalizeEnglishRoleExampleStartSource(rawStartSource);
   const resolvedStartSource =
-    normalizeStartSource(startSource) ||
+    roleStartSource ||
+    (rawStartSource.toLowerCase().startsWith("en_role_example_") ? null : normalizeStartSource(startSource)) ||
     readEncodedStartSource(cookieStore.get(PENDING_START_SOURCE_COOKIE)?.value) ||
     "editor_direct";
 
@@ -70,7 +74,7 @@ export default async function EnglishEditorPage({
       }
       throw error;
     }
-    redirect(`/en/editor?id=${encodeURIComponent(cvId)}${uploadRequested ? "&upload=1" : ""}`);
+    redirect(`/en/editor?id=${encodeURIComponent(cvId)}&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}`);
   }
 
   const cv = await getCVWithSettings(id);

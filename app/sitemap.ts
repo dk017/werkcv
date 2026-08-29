@@ -663,6 +663,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.77,
         },
         {
+            url: `${baseUrl}/en/english-cv-example-forklift-reach-truck-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.76,
+        },
+        {
+            url: `${baseUrl}/en/english-cv-example-order-picker-fulfilment-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.76,
+        },
+        {
+            url: `${baseUrl}/en/english-cv-example-logistics-coordinator-netherlands`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.76,
+        },
+        {
             url: `${baseUrl}/en/english-cv-example-nurse-netherlands`,
             lastModified: new Date(),
             changeFrequency: 'monthly',

@@ -118,3 +118,154 @@ export const englishRoleExamples: Record<"dataAnalyst" | "projectManager" | "bus
     ],
   },
 };
+/**
+ * Canonical role and attribution contract for the public English CV example
+ * cluster. Keeping this in one place prevents a page slug, an attribution
+ * value, and a post-login source from drifting apart.
+ */
+
+export const ENGLISH_ROLE_EXAMPLE_CLUSTER_SLUGS = [
+  "logistics_warehouse",
+  "forklift_reach_truck",
+  "order_picker_fulfilment",
+  "logistics_coordinator",
+] as const;
+
+export const ENGLISH_ROLE_EXAMPLE_SLUGS = [
+  ...ENGLISH_ROLE_EXAMPLE_CLUSTER_SLUGS,
+  "business_analyst",
+  "customer_support",
+  "data_analyst",
+  "data_engineer",
+  "finance_accounting",
+  "nurse",
+  "product_manager",
+  "project_manager",
+  "software_engineer",
+] as const;
+
+export type EnglishRoleExampleSlug = (typeof ENGLISH_ROLE_EXAMPLE_SLUGS)[number];
+export type EnglishRoleExampleEntryMethod = "example" | "upload";
+
+const ROLE_PAGE_PATHS: Partial<Record<EnglishRoleExampleSlug, string>> = {
+  logistics_warehouse: "/en/english-cv-example-logistics-warehouse-netherlands",
+  forklift_reach_truck: "/en/english-cv-example-forklift-reach-truck-netherlands",
+  order_picker_fulfilment: "/en/english-cv-example-order-picker-fulfilment-netherlands",
+  logistics_coordinator: "/en/english-cv-example-logistics-coordinator-netherlands",
+  business_analyst: "/en/english-cv-example-business-analyst-netherlands",
+  customer_support: "/en/english-cv-example-customer-support-netherlands",
+  data_analyst: "/en/english-cv-example-data-analyst-netherlands",
+  data_engineer: "/en/english-cv-example-data-engineer-netherlands",
+  finance_accounting: "/en/english-cv-example-finance-accounting-netherlands",
+  nurse: "/en/english-cv-example-nurse-netherlands",
+  product_manager: "/en/english-cv-example-product-manager-netherlands",
+  project_manager: "/en/english-cv-example-project-manager-netherlands",
+  software_engineer: "/en/english-cv-example-software-engineer-netherlands",
+};
+
+const ROLE_SLUGS = new Set<string>(ENGLISH_ROLE_EXAMPLE_SLUGS);
+const ROLE_SOURCE_PATTERN = /^en_role_example_([a-z0-9_]+)$/;
+
+/** Convert route-style input (for example, `forklift-reach-truck`) to the
+ * canonical analytics/storage value, while rejecting unknown roles. */
+export function normalizeEnglishRoleExampleSlug(value: unknown): EnglishRoleExampleSlug | null {
+  if (typeof value !== "string") return null;
+
+  const normalized = value
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, "_");
+
+  if (!/^[a-z0-9_]+$/.test(normalized) || !ROLE_SLUGS.has(normalized)) {
+    return null;
+  }
+
+  return normalized as EnglishRoleExampleSlug;
+}
+
+export function englishRoleExamplePath(roleSlug: unknown): string | null {
+  const canonicalRoleSlug = normalizeEnglishRoleExampleSlug(roleSlug);
+  return canonicalRoleSlug ? ROLE_PAGE_PATHS[canonicalRoleSlug] || null : null;
+}
+
+export function roleSlugFromEnglishRoleExamplePath(value: unknown): EnglishRoleExampleSlug | null {
+  if (typeof value !== "string") return null;
+  const path = value.split(/[?#]/, 1)[0];
+  for (const [roleSlug, rolePath] of Object.entries(ROLE_PAGE_PATHS)) {
+    if (rolePath === path) return roleSlug as EnglishRoleExampleSlug;
+  }
+  return null;
+}
+
+export function buildEnglishRoleExampleStartSource(
+  roleSlug: unknown,
+  entryMethod: EnglishRoleExampleEntryMethod = "example",
+): string | null {
+  const canonicalRoleSlug = normalizeEnglishRoleExampleSlug(roleSlug);
+  if (!canonicalRoleSlug) return null;
+
+  return `en_role_example_${canonicalRoleSlug}${entryMethod === "upload" ? "_upload" : ""}`;
+}
+
+export function parseEnglishRoleExampleStartSource(value: unknown): {
+  roleSlug: EnglishRoleExampleSlug;
+  entryMethod: EnglishRoleExampleEntryMethod;
+} | null {
+  if (typeof value !== "string") return null;
+
+  const match = ROLE_SOURCE_PATTERN.exec(value.trim().toLowerCase());
+  if (!match) return null;
+
+  const rawRoleSlug = match[1];
+  const entryMethod: EnglishRoleExampleEntryMethod = rawRoleSlug.endsWith("_upload")
+    ? "upload"
+    : "example";
+  const rolePart = entryMethod === "upload"
+    ? rawRoleSlug.slice(0, -"_upload".length)
+    : rawRoleSlug;
+  const roleSlug = normalizeEnglishRoleExampleSlug(rolePart);
+  if (!roleSlug) return null;
+
+  return {
+    roleSlug,
+    entryMethod,
+  };
+}
+
+export function isEnglishRoleExampleStartSource(value: unknown): boolean {
+  return parseEnglishRoleExampleStartSource(value) !== null;
+}
+
+/** Return a canonical role source, or null for a malformed role-prefixed
+ * value. Generic non-role sources are intentionally handled by start-source
+ * utilities elsewhere. */
+export function normalizeEnglishRoleExampleStartSource(value: unknown): string | null {
+  const parsed = parseEnglishRoleExampleStartSource(value);
+  if (!parsed) return null;
+  return buildEnglishRoleExampleStartSource(parsed.roleSlug, parsed.entryMethod);
+}
+
+/**
+ * Extract and validate a role-example source from a safe internal path. This
+ * is used by login UI code; it deliberately returns null for malformed or
+ * external URLs rather than trusting arbitrary query-string values.
+ */
+export function readEnglishRoleExampleSourceFromPath(value: unknown): {
+  roleSlug: EnglishRoleExampleSlug;
+  entryMethod: EnglishRoleExampleEntryMethod;
+  startSource: string;
+} | null {
+  if (typeof value !== "string" || !value.startsWith("/") || value.startsWith("//")) return null;
+
+  try {
+    const parsed = new URL(value, "https://werkcv.nl");
+    if (parsed.origin !== "https://werkcv.nl") return null;
+    const source = parsed.searchParams.get("startSource");
+    const parsedSource = parseEnglishRoleExampleStartSource(source);
+    if (!parsedSource) return null;
+
+    return { ...parsedSource, startSource: source as string };
+  } catch {
+    return null;
+  }
+}

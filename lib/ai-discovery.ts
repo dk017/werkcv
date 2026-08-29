@@ -178,6 +178,24 @@ export const primaryAiPages = [
       "Role-specific English CV example for warehouse, order picking and logistics roles in the Netherlands.",
   },
   {
+    title: "English CV example for forklift and reach-truck operators",
+    url: `${siteBaseUrl}/en/english-cv-example-forklift-reach-truck-netherlands`,
+    description:
+      "Fictional, role-specific English CV example covering equipment, certificates and safe warehouse work in the Netherlands.",
+  },
+  {
+    title: "English CV example for order pickers and fulfilment",
+    url: `${siteBaseUrl}/en/english-cv-example-order-picker-fulfilment-netherlands`,
+    description:
+      "Fictional English order-picker CV example covering picking, packing, returns, WMS and shift evidence.",
+  },
+  {
+    title: "English CV example for logistics coordinators",
+    url: `${siteBaseUrl}/en/english-cv-example-logistics-coordinator-netherlands`,
+    description:
+      "Fictional English logistics coordinator CV example covering transport planning, carriers, systems and exceptions.",
+  },
+  {
     title: "English CV example for nurses in the Netherlands",
     url: `${siteBaseUrl}/en/english-cv-example-nurse-netherlands`,
     description:

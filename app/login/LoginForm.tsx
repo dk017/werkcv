@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getStoredAttribution, track } from "@/lib/analytics";
 import { normalizeAnalyticsPath } from "@/lib/analytics-paths";
+import { readEnglishRoleExampleSourceFromPath } from "@/lib/english-role-examples";
 
 const loginCopy = {
   nl: {
@@ -88,13 +89,24 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
   const nextPath = normalizeAnalyticsPath(next);
   const locale = initialLocale || (nextPath.startsWith("/en") ? "en" : "nl");
   const copy = loginCopy[locale];
+  const englishRoleExampleSource = readEnglishRoleExampleSourceFromPath(next);
+  const roleExampleAnalytics = englishRoleExampleSource
+    ? {
+        roleSlug: englishRoleExampleSource.roleSlug,
+        entryMethod: englishRoleExampleSource.entryMethod,
+      }
+    : {};
   const isExampleStart =
+    englishRoleExampleSource?.entryMethod === "example" ||
     next.includes("startSource=example_page") ||
     next.includes("startSource=example_blank_template") ||
     next.includes("startSource=english_example_page") ||
     next.includes("startSource=linkedin_to_cv_tool") ||
     next.includes("startSource=salary_role_page");
-  const isResumeUpload = next.includes("resumeUpload=continue");
+  const isResumeUpload =
+    next.includes("resumeUpload=continue") ||
+    next.includes("upload=1") ||
+    englishRoleExampleSource?.entryMethod === "upload";
   const isMatchPackStart = nextPath === "/agency/account" || nextPath.startsWith("/agency/account/");
   const eyebrow = isExampleStart
     ? copy.exampleEyebrow
@@ -121,7 +133,7 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
 
   useEffect(() => {
     if (loginViewTrackedRef.current) return;
-    track("login_view", { locale, nextPath });
+    track("login_view", { locale, nextPath, ...roleExampleAnalytics });
     loginViewTrackedRef.current = true;
   }, [locale, nextPath]);
 
@@ -150,7 +162,7 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
       if (data?.devCode) {
         setDevCode(data.devCode);
       }
-      track("login_code_requested", { locale, nextPath });
+      track("login_code_requested", { locale, nextPath, ...roleExampleAnalytics });
       setStep("code");
     } catch {
       track("login_failed", { locale, nextPath, stage: "request_code", reason: "network_error" });
@@ -190,6 +202,7 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
         locale,
         nextPath,
         isNewUser: data?.isNewUser === true,
+        ...roleExampleAnalytics,
       });
       router.replace(typeof data?.redirectTo === "string" ? data.redirectTo : nextPath);
     } catch {

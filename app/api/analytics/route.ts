@@ -4,6 +4,12 @@ import { prisma } from '@/lib/prisma';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { classifyTrafficSource, parseUserAgent } from '@/lib/analytics-source';
 import { geolocateIp, getClientIp } from '@/lib/geoip';
+import {
+    isEnglishRoleAnalyticsContext,
+    sanitizeEnglishRoleAnalyticsAttribution,
+    sanitizeEnglishRoleAnalyticsProperties,
+    sanitizeEnglishRoleAnalyticsUrl,
+} from '@/lib/english-role-analytics-safety';
 import { z } from 'zod';
 
 const shortText = z.string().trim().max(120);
@@ -268,21 +274,35 @@ export async function POST(request: NextRequest) {
         if ((event.startsWith('agency_') || event.startsWith('matchpack_')) && !agencySchema) {
             return NextResponse.json({ error: 'Unsupported event' }, { status: 400 });
         }
+        const roleAnalyticsContext = isEnglishRoleAnalyticsContext(rawProperties, url);
+        const eventAttribution = roleAnalyticsContext
+            ? sanitizeEnglishRoleAnalyticsAttribution(safeAttribution)
+            : safeAttribution;
+        const parsedRoleProperties = roleAnalyticsContext
+            ? sanitizeEnglishRoleAnalyticsProperties(rawProperties)
+            : null;
+        if (roleAnalyticsContext && !parsedRoleProperties) {
+            return NextResponse.json({ error: 'Invalid event properties' }, { status: 400 });
+        }
         const parsedAgencyProperties = agencySchema?.safeParse(rawProperties);
         if (parsedAgencyProperties && !parsedAgencyProperties.success) {
             return NextResponse.json({ error: 'Invalid event properties' }, { status: 400 });
         }
-        const safeProperties = (parsedAgencyProperties?.data || rawProperties) as Record<string, unknown>;
+        const safeProperties = (
+            parsedAgencyProperties?.data
+            || parsedRoleProperties
+            || rawProperties
+        ) as Record<string, unknown>;
         const cvId = typeof safeProperties.cvId === 'string' ? safeProperties.cvId : null;
         const orderId = typeof safeProperties.orderId === 'string' ? safeProperties.orderId : null;
-        const cluster = safeAttribution?.firstTouchCluster || null;
+        const cluster = eventAttribution?.firstTouchCluster || null;
         const requestUserAgent = typeof userAgent === 'string' ? userAgent : request.headers.get('user-agent') || '';
         const parsedUserAgent = parseUserAgent(requestUserAgent);
         const referrer =
             typeof safeProperties.referrer === 'string'
                 ? safeProperties.referrer
-                : request.headers.get('referer') || safeAttribution?.firstTouchReferrer || '';
-        const source = classifyTrafficSource(referrer, safeAttribution);
+                : request.headers.get('referer') || eventAttribution?.firstTouchReferrer || '';
+        const source = classifyTrafficSource(referrer, eventAttribution);
         const geo = event === 'page_view' ? await geolocateIp(getClientIp(request)) : null;
         const enrichedProperties = {
             ...safeProperties,
@@ -312,6 +332,8 @@ export async function POST(request: NextRequest) {
                 : {}),
         };
 
+        const safeEventUrl = roleAnalyticsContext ? sanitizeEnglishRoleAnalyticsUrl(url) : url;
+
         if (PERSISTED_FUNNEL_EVENTS.has(event)) {
             try {
                 await prismaWithOptionalAnalytics.analyticsEvent?.create({
@@ -319,10 +341,10 @@ export async function POST(request: NextRequest) {
                         event,
                         cvId,
                         orderId,
-                        path: typeof url === 'string' ? url : null,
+                        path: typeof safeEventUrl === 'string' ? safeEventUrl : null,
                         cluster,
                         properties: enrichedProperties as unknown as Prisma.InputJsonValue,
-                        attribution: (safeAttribution || undefined) as unknown as Prisma.InputJsonValue | undefined,
+                        attribution: (eventAttribution || undefined) as unknown as Prisma.InputJsonValue | undefined,
                     },
                 });
             } catch (error) {
@@ -344,10 +366,13 @@ export async function POST(request: NextRequest) {
             type: 'analytics',
             event,
             properties: enrichedProperties,
-            attribution: safeAttribution,
+            attribution: eventAttribution,
             timestamp: timestamp || new Date().toISOString(),
-            url: url || '',
-            ua: requestUserAgent,
+            url: safeEventUrl || '',
+            // Keep logs content-free: the raw user-agent is never emitted.
+            deviceType: parsedUserAgent.deviceType,
+            browserName: parsedUserAgent.browserName,
+            osName: parsedUserAgent.osName,
         }));
 
         return NextResponse.json({ ok: true }, { status: 200 });

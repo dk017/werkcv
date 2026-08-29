@@ -4,9 +4,15 @@ import { sanitizeAttribution } from '@/lib/attribution';
 import { Prisma } from '@prisma/client';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 import { normalizeStartSource } from '@/lib/start-source';
+import {
+    buildEnglishRoleExampleStartSource,
+    normalizeEnglishRoleExampleSlug,
+    normalizeEnglishRoleExampleStartSource,
+} from '@/lib/english-role-examples';
 import { getDefaultThemeId, getTemplateConfig } from '@/lib/templates/registry';
 import { isAgencyAccessError } from '@/lib/agency-access';
 import { createMatchPackCvDocument, createPersonalCvDocument } from '@/lib/workspace/cv-document-service';
+import { recordEnglishRoleExampleCvCreated } from '@/lib/english-role-example-events';
 
 function getCreateCvErrorMessage(error: unknown): string {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'ECONNREFUSED') {
@@ -33,12 +39,24 @@ export async function POST(request: NextRequest) {
     let attribution: ReturnType<typeof sanitizeAttribution> = null;
     let startSource = '';
     let workspace: 'consumer' | 'agency' = 'consumer';
+    let uiLanguage: 'nl' | 'en' = 'nl';
 
     try {
         const body = await request.json();
+        uiLanguage = body.uiLanguage === 'en' ? 'en' : 'nl';
         if (body.templateId) templateId = getTemplateConfig(body.templateId).id;
         if (body.colorThemeId) colorThemeId = body.colorThemeId;
-        startSource = normalizeStartSource(body.startSource) || '';
+        const roleSlug = normalizeEnglishRoleExampleSlug(body.roleSlug);
+        const entryMethod = body.entryMethod === 'upload' ? 'upload' : 'example';
+        const rawStartSource = typeof body.startSource === 'string' ? body.startSource : '';
+        const hasRoleSourcePrefix = rawStartSource.toLowerCase().startsWith('en_role_example_');
+        const validatedRoleSource = hasRoleSourcePrefix
+            ? normalizeEnglishRoleExampleStartSource(rawStartSource)
+            : null;
+        startSource = buildEnglishRoleExampleStartSource(roleSlug, entryMethod)
+            || validatedRoleSource
+            || (hasRoleSourcePrefix ? '' : normalizeStartSource(rawStartSource))
+            || '';
         workspace = body.workspace === 'agency' ? 'agency' : 'consumer';
         attribution = sanitizeAttribution(body.attribution);
 
@@ -71,6 +89,12 @@ export async function POST(request: NextRequest) {
         const cv = workspace === 'agency'
             ? await createMatchPackCvDocument(user.id, data)
             : await createPersonalCvDocument(user.id, data);
+        await recordEnglishRoleExampleCvCreated({
+            cvId: cv.id,
+            templateId,
+            startSource,
+            uiLanguage,
+        });
         return NextResponse.json({ cvId: cv.id });
     } catch (error) {
         if (isAgencyAccessError(error)) {

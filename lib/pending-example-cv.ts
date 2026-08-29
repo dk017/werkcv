@@ -6,11 +6,9 @@ export type PendingExampleCV = {
   templateId: string;
   colorThemeId: string;
   sampleCV?: CVData;
-  startSource:
-    | "example_page"
-    | "example_blank_template"
-    | "english_example_page"
-    | "linkedin_to_cv_tool"
-    | "salary_role_page"
-    | "role_example_page";
+  /**
+   * Kept as a string because new public entry points are allowlisted at the
+   * server boundary. Older pending records remain readable after releases.
+   */
+  startSource: string;
 };

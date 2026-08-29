@@ -3,7 +3,11 @@ import { getCurrentUser } from "@/lib/auth";
 import { getDefaultThemeId, getTemplateConfig } from "@/lib/templates/registry";
 import { Prisma } from "@prisma/client";
 import { normalizeStartSource } from "@/lib/start-source";
+import {
+  normalizeEnglishRoleExampleStartSource,
+} from "@/lib/english-role-examples";
 import { createMatchPackCvDocument, createPersonalCvDocument } from "@/lib/workspace/cv-document-service";
+import { recordEnglishRoleExampleCvCreated } from "@/lib/english-role-example-events";
 import {
   AgencyAccessError,
   canCreateAgencyWork,
@@ -46,6 +50,11 @@ export async function createEditorDraft(input: CreateEditorDraftInput): Promise<
     }
   }
 
+  const rawStartSource = typeof input.startSource === "string" ? input.startSource : "";
+  const roleExampleStartSource = normalizeEnglishRoleExampleStartSource(rawStartSource);
+  const safeStartSource = roleExampleStartSource
+    || (rawStartSource.toLowerCase().startsWith("en_role_example_") ? null : normalizeStartSource(rawStartSource));
+
   const data = {
     title: input.uiLanguage === "en" ? "My CV" : "Mijn CV",
     data: cvData,
@@ -54,12 +63,19 @@ export async function createEditorDraft(input: CreateEditorDraftInput): Promise<
     attribution: (user.attribution || undefined) as Prisma.InputJsonValue | undefined,
     sourceCluster: user.sourceCluster || null,
     sourceLocale: user.sourceLocale || input.uiLanguage,
-    startSource: normalizeStartSource(input.startSource),
+    startSource: safeStartSource,
   } as Omit<Prisma.CVDocumentUncheckedCreateInput, "userId" | "agencySubscriptionId">;
 
   const cv = workspace === "agency"
     ? await createMatchPackCvDocument(user.id, data)
     : await createPersonalCvDocument(user.id, data);
+
+  await recordEnglishRoleExampleCvCreated({
+    cvId: cv.id,
+    templateId,
+    startSource: safeStartSource,
+    uiLanguage: input.uiLanguage,
+  });
 
   return cv.id;
 }

@@ -1,13 +1,13 @@
 import type { CVData } from "@/lib/cv";
-import { EnglishRoleCvExamplePage } from "../components/EnglishRoleCvExamplePage";
+import EnglishRoleExampleRoute from "../components/EnglishRoleExampleRoute";
 import { buildEnglishMetadata } from "../metadata";
 
 const pagePath = "/en/english-cv-example-logistics-warehouse-netherlands";
 
 export const metadata = buildEnglishMetadata({
-  title: "Logistics and Warehouse CV Example Netherlands 2026",
+  title: "English Warehouse CV Example for Jobs in the Netherlands",
   description:
-    "Use a realistic English logistics and warehouse CV example for the Netherlands. Includes WMS, order picking, forklift, safety, shifts, and a one-click editor start.",
+    "Use a realistic English warehouse CV example for jobs in the Netherlands. See WMS, order picking, reach-truck safety, shift availability, and evidence-backed bullet structure. Edit and preview for free; the finished PDF has one one-time price and no subscription.",
   path: pagePath,
   keywords: [
     "logistics warehouse cv example netherlands",
@@ -44,7 +44,7 @@ const sampleCV: CVData = {
   experience: [
     {
       role: "Warehouse Employee / Order Picker",
-      company: "SouthLine Fulfilment",
+      company: "SouthLine Fulfilment (fictional)",
       location: "Waalwijk",
       start: "Aug 2022",
       end: "Present",
@@ -58,7 +58,7 @@ const sampleCV: CVData = {
     },
     {
       role: "Logistics Employee",
-      company: "FreshMarket Distribution",
+      company: "FreshMarket Distribution (fictional)",
       location: "Breda",
       start: "Jan 2019",
       end: "Jul 2022",
@@ -73,7 +73,7 @@ const sampleCV: CVData = {
   education: [
     {
       degree: "MBO 2 Logistics Employee",
-      school: "ROC Tilburg",
+      school: "Canalbridge Logistics College (fictional)",
       location: "Tilburg",
       start: "2016",
       end: "2018",
@@ -98,9 +98,9 @@ const sampleCV: CVData = {
   interests: [],
   properties: ["Reliable", "Safety-minded", "Physically fit"],
   courses: [
-    { name: "Reach Truck Certificate", institution: "Logistics Training Centre", year: "2024" },
-    { name: "Forklift Certificate", institution: "Logistics Training Centre", year: "2023" },
-    { name: "VCA Basic Safety", institution: "VCA Infra", year: "2022" },
+    { name: "Reach Truck Certificate", institution: "Fictional Logistics Training Centre", year: "2024" },
+    { name: "Forklift Certificate", institution: "Fictional Logistics Training Centre", year: "2023" },
+    { name: "VCA Basic Safety", institution: "Fictional Safety Institute", year: "2022" },
   ],
   awards: [],
   references: [],
@@ -131,54 +131,35 @@ const sources = [
     label: "Work in NL - CV guidance",
     href: "https://www.workinnl.nl/en/employment/cv-en/default.aspx",
     note: "Official guidance that a CV should be clear, well laid out, and quick to understand.",
+    reviewedOn: "29 August 2026",
   },
   {
-    label: "IND - 2026 income requirements",
-    href: "https://ind.nl/en/required-amounts-income-requirements",
-    note: "Useful when sponsorship or work-route details affect the application.",
+    label: "Government.nl - working in the Netherlands",
+    href: "https://www.government.nl/faq/foreign-citizens-working-in-the-netherlands/what-permits-do-foreign-workers-need",
+    note: "Check work-permit questions with the official government guidance and the employer; this page does not assess eligibility.",
+    reviewedOn: "29 August 2026",
   },
   {
     label: "WerkCV English templates",
     href: "https://werkcv.nl/en/templates",
     note: "English CV templates that keep the user in the Netherlands-focused editor flow.",
+    reviewedOn: "29 August 2026",
   },
 ];
 
-const articleJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  headline: "Logistics and Warehouse CV Example Netherlands",
-  description: "A practical English CV example for logistics and warehouse roles in the Netherlands.",
-  inLanguage: "en-NL",
-  mainEntityOfPage: `https://werkcv.nl${pagePath}`,
-  datePublished: "2026-06-23",
-  dateModified: "2026-06-23",
-  author: { "@id": "https://werkcv.nl/#organization" },
-  publisher: { "@id": "https://werkcv.nl/#organization" },
-};
-
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  inLanguage: "en-NL",
-  mainEntity: faqs.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: { "@type": "Answer", text: item.answer },
-  })),
-};
-
 export default function LogisticsWarehouseCvExamplePage() {
   return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
-      <EnglishRoleCvExamplePage
+      <EnglishRoleExampleRoute
+        articleDescription="A realistic fictional English warehouse CV example for jobs in the Netherlands, with WMS, equipment, shift, and evidence guidance."
+        datePublished="2026-06-23"
+        lastReviewed="29 August 2026"
         roleSlug="logistics-warehouse"
         pagePath={pagePath}
-        eyebrow="English CV example for logistics roles"
-        h1="Logistics and warehouse CV example that opens directly in the editor"
-        intro="Start from a realistic warehouse CV written for applications in the Netherlands. The example shows WMS experience, scanner work, certificates, shift availability, safety, and measurable productivity."
+        eyebrow="English warehouse CV example"
+        h1="English warehouse CV example for jobs in the Netherlands"
+        intro="See how to show warehouse systems, safe equipment use, shift availability, and defensible outcomes. Open the filled example or start with your own CV."
+        audience="warehouse employees, order pickers, and logistics workers applying to Dutch distribution and fulfilment operations"
+        previewAlt="Fictional warehouse CV preview showing summary, WMS experience, certificates, and shift evidence"
         themeColor="amber"
         templateId="simple"
         colorThemeId="charcoal"
@@ -192,7 +173,27 @@ export default function LogisticsWarehouseCvExamplePage() {
           "Availability: 2-shift, 3-shift, evening, night, weekend, cold storage, or physical work.",
           "Language fit: Dutch and English level for instructions, safety briefings, and team communication.",
         ]}
-        summaryLabel="Target: logistics and warehouse, Netherlands"
+        summaryLabel="Target: warehouse and logistics roles, Netherlands"
+        fictionalLabel="Fictional candidate — Ricardo Bakker is not a real person; replace every detail before sending"
+        evidenceExamples={[
+          { claim: "Pick-rate claim", evidence: "145 order lines per hour is stated in the fictional SouthLine Fulfilment bullet.", source: "Experience · SouthLine Fulfilment", status: "supported" },
+          { claim: "Equipment claim", evidence: "Reach truck and EPT use is named in the current-role bullet.", source: "Experience · SouthLine Fulfilment", status: "supported" },
+          { claim: "Certificate claim", evidence: "The fictional courses section names reach-truck, forklift, and VCA certificates with years.", source: "Courses / certificates", status: "supported" },
+          { claim: "Shift claim", evidence: "The summary and previous role mention 2- and 3-shift work; confirm current availability separately.", source: "Summary + experience", status: "partial" },
+        ]}
+        noNumbersExample="If you cannot verify a pick rate or accuracy figure, write the process and result without inventing a number: for example, “Maintained accurate order picking through scanner checks and location verification.”"
+        vocabulary={[
+          { term: "Order picker", meaning: "Orderpicker", note: "Use the English title for an English vacancy and keep the Dutch term when it helps local search." },
+          { term: "Reach truck", meaning: "Reachtruck", note: "Name the exact equipment and certificate only when you have used or earned it." },
+          { term: "Warehouse management system (WMS)", meaning: "Warehousemanagementsysteem", note: "Add the actual system, such as SAP EWM, only when it appears in your experience." },
+          { term: "Shift availability", meaning: "Beschikbaarheid voor ploegendienst", note: "State day, evening, night, or weekend availability as a current fact to confirm." },
+        ]}
+        localContext="For a Netherlands application, make location, Dutch/English level, certificates, shift availability, and work-authorisation questions easy to find. The example gives structure; an employer must confirm the role and any permit requirements."
+        relatedLinks={[
+          { href: "/en/english-cv-example-forklift-reach-truck-netherlands", label: "Forklift and reach-truck CV example" },
+          { href: "/en/english-cv-example-order-picker-fulfilment-netherlands", label: "Order picker CV example" },
+          { href: "/en/english-cv-example-logistics-coordinator-netherlands", label: "Logistics coordinator CV example" },
+        ]}
         experienceTitle="Experience bullets that show warehouse reliability"
         mistakesTitle="Mistakes that weaken a warehouse CV"
         mistakes={[
@@ -205,8 +206,13 @@ export default function LogisticsWarehouseCvExamplePage() {
         bottomTitle="Build from this logistics example"
         bottomBody="The button creates a CV with this example already filled in. Replace the fictional details with your own warehouse systems, certificates, shifts, and productivity proof."
         sources={sources}
-        faqs={faqs}
+        faqs={[
+          ...faqs,
+          {
+            question: "What if I am new to warehouse work?",
+            answer: "Lead with transferable evidence such as safe manual handling, stock work, retail or production routines, reliability, and any relevant training. Never add equipment or productivity claims you cannot support.",
+          },
+        ]}
       />
-    </>
   );
 }

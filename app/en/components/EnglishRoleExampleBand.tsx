@@ -47,6 +47,21 @@ const roleExamples = [
     body: "WMS, order picking, safety, shift availability, and productivity.",
   },
   {
+    href: "/en/english-cv-example-forklift-reach-truck-netherlands",
+    label: "Forklift / Reach Truck",
+    body: "Equipment, certificates, safe loading, WMS, and shift evidence.",
+  },
+  {
+    href: "/en/english-cv-example-order-picker-fulfilment-netherlands",
+    label: "Order Picker / Fulfilment",
+    body: "Picking, packing, returns, scanners, quality checks, and shifts.",
+  },
+  {
+    href: "/en/english-cv-example-logistics-coordinator-netherlands",
+    label: "Logistics Coordinator",
+    body: "Transport planning, carriers, shipment records, and exceptions.",
+  },
+  {
     href: "/en/english-cv-example-nurse-netherlands",
     label: "Nurse",
     body: "BIG registration, clinical skills, EHR, departments, and patient care.",

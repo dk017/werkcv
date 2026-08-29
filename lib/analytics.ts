@@ -93,6 +93,9 @@ type EditorSourceContext = {
     startSource?: string;
     requestedTemplate?: string;
     uiLanguage?: 'nl' | 'en';
+    roleSlug?: string;
+    entryMethod?: 'example' | 'upload';
+    pagePath?: string;
 };
 
 type CheckoutExperimentContext = EditorSourceContext & {
@@ -115,7 +118,16 @@ export type AnalyticsEvent =
               locale: 'nl' | 'en';
           };
       }
-    | { event: 'landing_cta_click'; properties: { fromPath: string; toPath: string; label: string } }
+    | {
+          event: 'landing_cta_click';
+          properties: {
+              fromPath: string;
+              toPath: string;
+              label: string;
+              roleSlug?: string;
+              entryMethod?: 'example' | 'upload';
+          };
+      }
     | { event: 'landing_to_editor'; properties: { fromPath: string; toPath: string } }
     | { event: 'agency_checkout_started'; properties: { location: string; product: 'agency' } }
     | { event: 'agency_checkout_failed'; properties: { location: string; product: 'agency'; reason: string } }
@@ -185,9 +197,24 @@ export type AnalyticsEvent =
     | { event: 'public_editor_claim_failed'; properties: { location: string; uiLanguage: 'nl' | 'en'; flow: 'consumer' | 'agency'; reason: string } }
     | { event: 'public_editor_post_login_routed'; properties: { cvId: string; uiLanguage: 'nl' | 'en'; destination: 'checkout' | 'editor'; completionScore: number; reason: 'ready_download_intent' | 'download_intent' | 'incomplete' | 'empty_draft' | 'resume_without_download_intent' | 'checkout_failed' } }
     // Authentication
-    | { event: 'login_view'; properties: { locale: 'nl' | 'en'; nextPath: string } }
-    | { event: 'login_code_requested'; properties: { locale: 'nl' | 'en'; nextPath: string } }
-    | { event: 'login_verified'; properties: { locale: 'nl' | 'en'; nextPath: string; isNewUser: boolean } }
+    | {
+          event: 'login_view';
+          properties: { locale: 'nl' | 'en'; nextPath: string; roleSlug?: string; entryMethod?: 'example' | 'upload' };
+      }
+    | {
+          event: 'login_code_requested';
+          properties: { locale: 'nl' | 'en'; nextPath: string; roleSlug?: string; entryMethod?: 'example' | 'upload' };
+      }
+    | {
+          event: 'login_verified';
+          properties: {
+              locale: 'nl' | 'en';
+              nextPath: string;
+              isNewUser: boolean;
+              roleSlug?: string;
+              entryMethod?: 'example' | 'upload';
+          };
+      }
     | {
           event: 'login_failed';
           properties: {
@@ -198,8 +225,30 @@ export type AnalyticsEvent =
           };
       }
     // CV lifecycle
-    | { event: 'cv_created'; properties: { templateId: string } }
-    | { event: 'cv_uploaded'; properties: { fileType: string; cvId?: string; templateId?: string; entryMethod?: 'upload' } }
+    | {
+          event: 'cv_created';
+          properties: {
+              templateId: string;
+              cvId?: string;
+              uiLanguage?: 'nl' | 'en';
+              roleSlug?: string;
+              entryMethod?: 'example' | 'upload';
+              pagePath?: string;
+          };
+      }
+    | {
+          event: 'cv_uploaded';
+          properties: {
+              fileType: string;
+              cvId?: string;
+              templateId?: string;
+              entryMethod?: 'upload';
+              uiLanguage?: 'nl' | 'en';
+              roleSlug?: string;
+              pagePath?: string;
+              startSource?: string;
+          };
+      }
     | {
           event: 'cv_upload_modal_opened';
           properties: {
@@ -267,13 +316,39 @@ export type AnalyticsEvent =
               };
           };
       }
-    | { event: 'start_cv'; properties: { entryPoint: string; templateId?: string; cvId?: string; roleSlug?: string } }
+    | {
+          event: 'start_cv';
+          properties: {
+              entryPoint: string;
+              templateId?: string;
+              cvId?: string;
+              roleSlug?: string;
+              pagePath?: string;
+              uiLanguage?: 'nl' | 'en';
+              entryMethod?: 'example' | 'upload';
+          };
+      }
     | { event: 'editor_started'; properties: { cvId: string; fromPath?: string } & EditorSourceContext }
-    | { event: 'example_cv_applied_after_login'; properties: { cvId: string; templateId: string; startSource: string; hasSampleCV: boolean } }
+    | {
+          event: 'example_cv_applied_after_login';
+          properties: {
+              cvId: string;
+              templateId: string;
+              startSource: string;
+              hasSampleCV: boolean;
+              roleSlug?: string;
+              entryMethod?: 'example' | 'upload';
+              pagePath?: string;
+              uiLanguage?: 'nl' | 'en';
+          };
+      }
     | { event: 'complete_cv'; properties: { cvId: string; completionScore: number } }
     | { event: 'cv_progress_milestone'; properties: { cvId: string; milestone: 25 | 50 | 75 | 100; completionScore: number } }
     | { event: 'cv_section_completed'; properties: { cvId: string; section: string; completionScore: number } }
-    | { event: 'ready_to_download_viewed'; properties: { cvId: string; completionScore: number } }
+    | {
+          event: 'ready_to_download_viewed';
+          properties: { cvId: string; completionScore: number } & EditorSourceContext;
+      }
     | {
           event: 'quick_build_viewed';
           properties: {
@@ -330,7 +405,7 @@ export type AnalyticsEvent =
               completionScore: number;
               isReady: boolean;
               pageCount: number;
-          };
+          } & EditorSourceContext;
       }
     | {
           event: 'full_preview_closed';
@@ -349,7 +424,7 @@ export type AnalyticsEvent =
               designOpened: boolean;
               templateChanged: boolean;
               downloadClicked: boolean;
-          };
+          } & EditorSourceContext;
       }
     | {
           event: 'full_preview_design_opened';
@@ -363,7 +438,7 @@ export type AnalyticsEvent =
               pageCount: number;
               activePage: number;
               zoomMode: 'fit' | 'custom';
-          };
+          } & EditorSourceContext;
       }
     | {
           event: 'full_preview_template_selected';
@@ -376,7 +451,7 @@ export type AnalyticsEvent =
               completionScore: number;
               isReady: boolean;
               pageCount: number;
-          };
+          } & EditorSourceContext;
       }
     | {
           event: 'full_preview_color_changed';
@@ -390,7 +465,7 @@ export type AnalyticsEvent =
               completionScore: number;
               isReady: boolean;
               pageCount: number;
-          };
+          } & EditorSourceContext;
       }
     | {
           event: 'full_preview_download_clicked';
@@ -406,7 +481,7 @@ export type AnalyticsEvent =
               maxPageViewed: number;
               designOpened: boolean;
               templateChanged: boolean;
-          };
+          } & EditorSourceContext;
       }
     // Photo
     | { event: 'photo_uploaded'; properties: { method: 'click' | 'drag' } }
@@ -414,8 +489,8 @@ export type AnalyticsEvent =
     | { event: 'photo_edit_opened'; properties: { source: string } }
     | { event: 'photo_repositioned'; properties: { moved: boolean } }
     // Download & payment
-    | { event: 'pdf_download_started'; properties: { cvId: string; source?: string; completionScore?: number; templateId?: string; pageCount?: number } }
-    | { event: 'pdf_download_completed'; properties: { cvId: string } }
+    | { event: 'pdf_download_started'; properties: { cvId: string; source?: string; completionScore?: number; templateId?: string; pageCount?: number } & EditorSourceContext }
+    | { event: 'pdf_download_completed'; properties: { cvId: string } & EditorSourceContext }
     | { event: 'addon_selected'; properties: { cvId: string; addons: string[] } }
     | {
           event: 'checkout_experiment_assigned';
@@ -463,8 +538,8 @@ export type AnalyticsEvent =
     | { event: 'checkout_start'; properties: { cvId: string; product?: string; amountCents?: number; source?: string } & CheckoutExperimentContext }
     | { event: 'checkout_started'; properties: { cvId: string; product?: string; amountCents?: number; source?: string } & CheckoutExperimentContext }
     | { event: 'checkout_failed'; properties: { cvId: string; reason?: string; product?: string; amountCents?: number; source?: string } & CheckoutExperimentContext }
-    | { event: 'checkout_completed'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } }
-    | { event: 'paid'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } }
+    | { event: 'checkout_completed'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } & EditorSourceContext }
+    | { event: 'paid'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } & EditorSourceContext }
     | { event: 'payment_completed'; properties: { cvId: string } }
     // B2B lead capture
     | { event: 'b2b_form_started'; properties: { pageType: 'agency' | 'coach' | 'partner'; path: string } }

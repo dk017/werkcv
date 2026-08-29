@@ -104,6 +104,21 @@ const pages = [
     description: "English CV example for warehouse, order picking and logistics roles in the Netherlands.",
   },
   {
+    href: "/en/english-cv-example-forklift-reach-truck-netherlands",
+    title: "Forklift & Reach Truck CV Example",
+    description: "English CV example for equipment-led warehouse roles with certificate and safety evidence.",
+  },
+  {
+    href: "/en/english-cv-example-order-picker-fulfilment-netherlands",
+    title: "Order Picker & Fulfilment CV Example",
+    description: "English CV example for picking, packing, returns and WMS work in the Netherlands.",
+  },
+  {
+    href: "/en/english-cv-example-logistics-coordinator-netherlands",
+    title: "Logistics Coordinator CV Example",
+    description: "English CV example for transport planning, carrier communication and shipment coordination.",
+  },
+  {
     href: "/en/english-cv-example-nurse-netherlands",
     title: "Nurse CV Example",
     description: "English CV example for nursing and healthcare roles in the Netherlands.",

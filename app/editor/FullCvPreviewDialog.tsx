@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import type { CVData } from "@/lib/cv";
 import { hasAnyCvUserContent } from "@/lib/cv-empty";
 import { track, type FullPreviewSource } from "@/lib/analytics";
+import { readEnglishRoleExampleSourceFromPath } from "@/lib/english-role-examples";
 import type { UiLanguage } from "@/lib/ui-language";
 import PdfPagedPreview from "./PdfPagedPreview";
 import PreviewDesignPanel from "./PreviewDesignPanel";
@@ -42,6 +43,23 @@ const MAX_CUSTOM_ZOOM = 1.25;
 const ZOOM_STEP = 0.1;
 const MIN_DESKTOP_FIT_ZOOM = 0.72;
 const MAX_DESKTOP_FIT_ZOOM = 0.9;
+
+function getPreviewSourceContext() {
+  if (typeof window === "undefined") return {};
+  const roleExampleSource = readEnglishRoleExampleSourceFromPath(
+    `${window.location.pathname}${window.location.search}`,
+  );
+  return {
+    pagePath: window.location.pathname,
+    ...(roleExampleSource
+      ? {
+          startSource: roleExampleSource.startSource,
+          roleSlug: roleExampleSource.roleSlug,
+          entryMethod: roleExampleSource.entryMethod,
+        }
+      : {}),
+  };
+}
 
 export default function FullCvPreviewDialog({
   cvId,
@@ -100,6 +118,7 @@ export default function FullCvPreviewDialog({
     completionScore,
     isReady,
     pageCount,
+    ...getPreviewSourceContext(),
   }), [completionScore, cvId, isReady, pageCount, source, templateId, uiLanguage]);
 
   const handlePdfPreviewStatus = useCallback((status: PdfPreviewStatus) => {

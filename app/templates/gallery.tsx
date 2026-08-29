@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import { getStoredAttribution, track } from "@/lib/analytics";
 import { UiLanguage } from "@/lib/ui-language";
 import { normalizeStartSource } from "@/lib/start-source";
+import { parseEnglishRoleExampleStartSource } from "@/lib/english-role-examples";
 
 interface TemplateGalleryProps {
   templates: TemplateConfig[];
@@ -335,10 +336,19 @@ export default function TemplateGallery({
     entryPoint = "template_gallery",
   ) => {
     const startSource = normalizeStartSource(initialStartSource) || entryPoint;
+    const roleExampleSource = parseEnglishRoleExampleStartSource(startSource);
     setIsCreating(templateId);
     try {
       track("cta_clicked", { location: entryPoint, label: templateId });
-      track("start_cv", { entryPoint, templateId });
+      track("start_cv", {
+        entryPoint: roleExampleSource ? startSource : entryPoint,
+        templateId,
+        uiLanguage,
+        pagePath: window.location.pathname,
+        ...(roleExampleSource
+          ? { roleSlug: roleExampleSource.roleSlug, entryMethod: roleExampleSource.entryMethod }
+          : {}),
+      });
       const attribution = getStoredAttribution();
       const initialData: CVData = {
         ...defaultCV,
@@ -356,6 +366,7 @@ export default function TemplateGallery({
           colorThemeId: defaultThemeId,
           attribution,
           startSource,
+          uiLanguage,
           initialData,
         }),
       });
@@ -395,8 +406,15 @@ export default function TemplateGallery({
 
   const handleUploadExisting = () => {
     const startSource = normalizeStartSource(initialStartSource) || "template_upload";
+    const roleExampleSource = parseEnglishRoleExampleStartSource(startSource);
     track("cta_clicked", { location: "template_gallery_entry", label: "upload_existing_cv" });
-    track("start_cv", { entryPoint: "template_upload" });
+    track("start_cv", {
+      entryPoint: roleExampleSource ? startSource : "template_upload",
+      uiLanguage,
+      pagePath: window.location.pathname,
+      entryMethod: "upload",
+      ...(roleExampleSource ? { roleSlug: roleExampleSource.roleSlug } : {}),
+    });
     setIsCreating("upload");
     router.push(
       `${isEnglish ? "/en" : ""}/editor?upload=1&startSource=${encodeURIComponent(startSource)}`,

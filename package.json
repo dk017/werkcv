@@ -21,6 +21,7 @@
     "test:agency:live-ai": "npx tsx scripts/agency-tests-live-ai.ts",
     "test:agency:release": "npm run test:agency:unit && npm run build && npm run test:agency:integration && npm run test:agency:migrations && npm run test:agency:e2e && npm run test:matchpack && npm run test:agency:outputs",
     "test:voice-cv": "npx tsx --test scripts/voice-cv.test.ts",
+    "test:english-role-examples": "npx tsx --test lib/english-role-examples.test.ts lib/english-role-example-funnel.test.ts lib/english-role-analytics-safety.test.ts",
     "db:push": "npx prisma db push",
     "db:migrate": "npx prisma migrate deploy",
     "db:generate": "npx prisma generate",

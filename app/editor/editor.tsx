@@ -51,6 +51,7 @@ import {
 } from "@/lib/cv-completion";
 import { getTargetVacancySessionKey } from "@/lib/cover-letter-session";
 import { PENDING_EXAMPLE_CV_STORAGE_KEY, type PendingExampleCV } from "@/lib/pending-example-cv";
+import { parseEnglishRoleExampleStartSource } from "@/lib/english-role-examples";
 import {
     isPendingCvMatch,
     PENDING_CV_MATCH_STORAGE_KEY,
@@ -141,12 +142,27 @@ type OptionalSectionId =
     | 'customSections';
 
 function getEditorSearchContext() {
-    if (typeof window === 'undefined') return {};
+    if (typeof window === 'undefined') {
+        return {
+            startSource: undefined,
+            requestedTemplate: undefined,
+            pagePath: undefined,
+        };
+    }
 
     const params = new URLSearchParams(window.location.search);
+    const startSource = params.get('startSource') || undefined;
+    const roleExampleSource = parseEnglishRoleExampleStartSource(startSource);
     return {
-        startSource: params.get('startSource') || undefined,
+        startSource,
         requestedTemplate: params.get('template') || undefined,
+        pagePath: window.location.pathname,
+        ...(roleExampleSource
+            ? {
+                roleSlug: roleExampleSource.roleSlug,
+                entryMethod: roleExampleSource.entryMethod,
+            }
+            : {}),
     };
 }
 
@@ -723,11 +739,20 @@ export default function Editor({
                 }
 
                 setIsSaved(true);
+                const roleExampleSource = parseEnglishRoleExampleStartSource(pendingExample.startSource);
                 track('example_cv_applied_after_login', {
                     cvId: id,
                     templateId: pendingExample.templateId,
                     startSource: pendingExample.startSource,
                     hasSampleCV: Boolean(pendingExample.sampleCV),
+                    ...(roleExampleSource
+                        ? {
+                            roleSlug: roleExampleSource.roleSlug,
+                            entryMethod: roleExampleSource.entryMethod,
+                        }
+                        : {}),
+                    pagePath: typeof window !== 'undefined' ? window.location.pathname : undefined,
+                    uiLanguage,
                 });
             } catch {
                 setIsSaved(false);
@@ -970,12 +995,20 @@ export default function Editor({
             }
         }
 
+        const editorSearchContext = getEditorSearchContext();
+        const roleExampleSource = parseEnglishRoleExampleStartSource(editorSearchContext.startSource);
         track('editor_started', {
             cvId: id,
             fromPath,
             templateId,
             uiLanguage,
-            ...getEditorSearchContext(),
+            ...editorSearchContext,
+            ...(roleExampleSource
+                ? {
+                    roleSlug: roleExampleSource.roleSlug,
+                    entryMethod: roleExampleSource.entryMethod,
+                }
+                : {}),
         });
         markEditorStartedTracked(id);
     }, [id, templateId, uiLanguage]);
@@ -1032,7 +1065,12 @@ export default function Editor({
         if (completionState.isReady && !readyToDownloadTrackedRef.current) {
             const trackedKey = `${READY_TO_DOWNLOAD_TRACKED_PREFIX}${id}`;
             if (!window.sessionStorage.getItem(trackedKey)) {
-                track('ready_to_download_viewed', { cvId: id, completionScore });
+                track('ready_to_download_viewed', {
+                    cvId: id,
+                    completionScore,
+                    uiLanguage,
+                    ...getEditorSearchContext(),
+                });
                 window.sessionStorage.setItem(trackedKey, '1');
             }
             readyToDownloadTrackedRef.current = true;
@@ -1212,7 +1250,13 @@ export default function Editor({
         setIsSaved(false);
         setShowPostUploadReview(getCompletionState(normalizedData, uiLanguage).isReady);
         persistPublicDraft(normalizedData);
-        track('cv_uploaded', { cvId: id, fileType: 'parsed', templateId, entryMethod: 'upload' });
+        track('cv_uploaded', {
+            cvId: id,
+            fileType: 'parsed',
+            templateId,
+            ...getEditorSearchContext(),
+            entryMethod: 'upload',
+        });
     };
 
     const revealDesignWorkspace = () => {
@@ -1341,7 +1385,15 @@ export default function Editor({
                 templateId,
             });
         } else {
-            track('pdf_download_started', { cvId: id, source, completionScore, templateId, pageCount });
+            track('pdf_download_started', {
+                cvId: id,
+                source,
+                completionScore,
+                templateId,
+                pageCount,
+                uiLanguage,
+                ...getEditorSearchContext(),
+            });
         }
         try {
             if (isPublicMode) {
@@ -1418,7 +1470,11 @@ export default function Editor({
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            track('pdf_download_completed', { cvId: id });
+            track('pdf_download_completed', {
+                cvId: id,
+                uiLanguage,
+                ...getEditorSearchContext(),
+            });
         } finally {
             setIsDownloading(false);
         }
