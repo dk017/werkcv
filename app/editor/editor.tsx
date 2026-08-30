@@ -405,6 +405,14 @@ export default function Editor({
     const [showAdditionalPersonalDetails, setShowAdditionalPersonalDetails] = useState(
         () => hasAdditionalPersonalDetails(normalizedInitialData)
     );
+
+    useEffect(() => {
+        const url = new URL(window.location.href);
+        if (url.searchParams.get('downloadIntent') !== '1') return;
+        setIsFinalPdfPreviewOpen(true);
+        url.searchParams.delete('downloadIntent');
+        window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+    }, []);
     const [isAtsRewriting, setIsAtsRewriting] = useState(false);
     const [atsTargetRole, setAtsTargetRole] = useState(initialData.personal.title || '');
     const [targetVacancy, setTargetVacancy] = useState('');

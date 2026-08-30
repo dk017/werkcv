@@ -1,9 +1,11 @@
 export const CONSUMER_FUNNEL_DEFINITION_VERSION = "consumer-user-funnel-v1";
 
-export const DEFAULT_ANALYTICS_EXCLUDED_EMAILS = [
-  "dhinesh217@gmail.com",
-  "dhineshkumar.stoic@gmail.com",
-] as const;
+import {
+  DEFAULT_CONSUMER_EXCLUDED_EMAILS,
+  configuredConsumerExcludedEmails,
+} from "@/lib/consumer-analytics-exclusions";
+
+export const DEFAULT_ANALYTICS_EXCLUDED_EMAILS = DEFAULT_CONSUMER_EXCLUDED_EMAILS;
 
 /**
  * CTA events that represent an action rather than an impression or assignment.
@@ -69,12 +71,7 @@ export function isExcludedAnalyticsSource(sourceLabel: string | null | undefined
 }
 
 export function analyticsExcludedEmails(envValue = process.env.ANALYTICS_EXCLUDED_EMAILS): string[] {
-  const configured = (envValue || "")
-    .split(",")
-    .map((email) => email.trim().toLowerCase())
-    .filter(Boolean);
-
-  return [...new Set([...DEFAULT_ANALYTICS_EXCLUDED_EMAILS, ...configured])];
+  return configuredConsumerExcludedEmails(envValue);
 }
 
 export type CertifiedConsumerFunnel = {

@@ -32,9 +32,9 @@ function isUploadRequested(value: string | string[] | undefined): boolean {
 export default async function EnglishEditorPage({
   searchParams,
 }: {
-  searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string }>;
+  searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string; downloadIntent?: string }>;
 }) {
-  const { id, template, startSource, upload, workspace } = await searchParams;
+  const { id, template, startSource, upload, workspace, downloadIntent } = await searchParams;
   const user = await getCurrentUser();
   const templateId = normalizeTemplateId(template);
   const uploadRequested = isUploadRequested(upload);
@@ -49,8 +49,9 @@ export default async function EnglishEditorPage({
 
   if (!user) {
     const workspaceParam = workspace === "agency" ? "&workspace=agency" : "";
+    const downloadIntentParam = downloadIntent === "1" ? "&downloadIntent=1" : "";
     const next = id
-      ? `/en/editor?id=${encodeURIComponent(id)}${uploadRequested ? "&upload=1" : ""}`
+      ? `/en/editor?id=${encodeURIComponent(id)}${uploadRequested ? "&upload=1" : ""}${downloadIntentParam}`
       : templateId
         ? `/en/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}${workspaceParam}`
         : `/en/editor?template=professional&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}${workspaceParam}`;

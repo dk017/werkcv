@@ -1,4 +1,18 @@
 import { cvDownloadPrice } from "@/lib/site-content";
+import {
+  consumerCvPricingFactsById,
+  formatPricingCheckedAtNl,
+  toConsumerCvPricingView,
+} from "@/lib/commercial/consumer-cv-pricing";
+
+const comparisonNow = new Date();
+const cvmaker = toConsumerCvPricingView(consumerCvPricingFactsById.cvmaker, comparisonNow);
+const cvNl = toConsumerCvPricingView(consumerCvPricingFactsById.cv_nl, comparisonNow);
+const cvster = toConsumerCvPricingView(consumerCvPricingFactsById.cvster, comparisonNow);
+
+function priceOrUnverified(value: string | null): string {
+  return value || "Actuele prijs niet onafhankelijk geverifieerd";
+}
 
 export const faqs = [
   {
@@ -36,26 +50,27 @@ export const faqs = [
 ] as const;
 
 export const comparisonRows = [
-  ["Prijsmodel", `Eenmalig ${cvDownloadPrice.display}`, "14-daagse proef", "14-daagse proef", "7-daagse proef"],
-  ["Eerste betaalde bedrag", cvDownloadPrice.display, "€2,99", "€0,99", "€2,95"],
-  ["Daarna", "Geen maandbedrag", "€21,99 per maand", "€19,99 per maand", "€14,95 per 4 weken"],
-  ["Automatische verlenging", "Nee", "Ja", "Ja", "Ja"],
-  ["Opzeggen nodig", "Nee", "Ja, om verlenging te stoppen", "Ja, om verlenging te stoppen", "Ja, om verlenging te stoppen"],
+  ["Prijsmodel", `Eenmalig ${cvDownloadPrice.display}`, "Proef + abonnement", "Proef + abonnement", "Gratis beperkt + premium"],
+  ["Eerste betaalde bedrag", cvDownloadPrice.display, priceOrUnverified(cvmaker.displayedInitialPriceTextNl), priceOrUnverified(cvNl.displayedInitialPriceTextNl), priceOrUnverified(cvster.displayedInitialPriceTextNl)],
+  ["Daarna", "Geen maandbedrag", priceOrUnverified(cvmaker.displayedRecurringPriceTextNl), priceOrUnverified(cvNl.displayedRecurringPriceTextNl), priceOrUnverified(cvster.displayedRecurringPriceTextNl)],
+  ["Automatische verlenging", "Nee", cvmaker.cancellationRequired ? "Ja" : "Onbekend", cvNl.cancellationRequired ? "Ja" : "Onbekend", cvster.cancellationRequired ? "Ja bij de premiumproef" : "Onbekend"],
+  ["Opzeggen nodig", "Nee", cvmaker.cancellationRequired ? "Ja, om verlenging te stoppen" : "Onbekend", cvNl.cancellationRequired ? "Ja, om verlenging te stoppen" : "Onbekend", cvster.cancellationRequired ? "Ja bij de premiumproef" : "Onbekend"],
+  ["Gecontroleerd", "WerkCV-prijsbron", formatPricingCheckedAtNl(cvmaker.checkedAt), formatPricingCheckedAtNl(cvNl.checkedAt), formatPricingCheckedAtNl(cvster.checkedAt)],
 ] as const;
 
 export const comparisonSources = [
   {
-    name: "CVMaker prijzen en helpcentrum",
-    href: "https://www.cvmaker.nl/help",
+    name: "CVMaker officiële prijsuitleg",
+    href: cvmaker.officialUrl,
   },
   {
-    name: "CV.nl prijzen",
-    href: "https://www.cv.nl/pricing",
+    name: "CV.nl officiële prijzen",
+    href: cvNl.officialUrl,
   },
   {
-    name: "CVster prijzen",
-    href: "https://cvster.nl/pricing",
+    name: "CVster officiële prijzen",
+    href: cvster.officialUrl,
   },
 ] as const;
 
-export const comparisonCheckedAt = "5 juli 2026";
+export const comparisonCheckedAt = formatPricingCheckedAtNl(cvmaker.checkedAt);

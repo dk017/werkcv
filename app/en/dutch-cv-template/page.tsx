@@ -1,6 +1,7 @@
 import Link from "next/link";
 import EnglishRoleExampleBand from "../components/EnglishRoleExampleBand";
 import { buildEnglishMetadata } from "../metadata";
+import { cvDownloadPrice } from "@/lib/site-content";
 
 export const metadata = buildEnglishMetadata({
   title: "Dutch CV Template in English for the Netherlands",
@@ -110,7 +111,7 @@ const routeChoices = [
 
 const trustPoints = [
   "Build and compare templates before paying.",
-  "Final PDF download: €4.99 including VAT.",
+  `Final PDF download: ${cvDownloadPrice.displayEn} including VAT.`,
   "No subscription, no automatic renewal, no cancellation task.",
 ];
 
@@ -143,8 +144,7 @@ const faqs = [
   },
   {
     question: "Can I download a free Netherlands CV template?",
-    answer:
-      "You can compare templates and start building for free in WerkCV. The final PDF download is a one-time €4.99 including VAT, with no subscription or automatic renewal.",
+    answer: `You can compare templates and start building for free in WerkCV. The final PDF download is a one-time ${cvDownloadPrice.displayEn} including VAT, with no subscription or automatic renewal.`,
   },
 ];
 const faqJsonLd = {
@@ -182,12 +182,19 @@ export default function DutchCvTemplatePage() {
             how recruiters in the Netherlands scan structure, language level, role fit,
             and proof.
           </p>
+          <p className="mt-4 text-sm font-bold text-gray-800">
+            Build and preview free · Final PDF {cvDownloadPrice.displayEn} including VAT · No
+            subscription
+          </p>
           <div className="mt-7 flex flex-wrap gap-3">
-            <Link href="/en/templates?startSource=en_dutch_cv_template_compare" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
-              Compare English Templates
+            <Link href="/en/editor?template=professional&startSource=en_dutch_cv_template_hero" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
+              Use this template in the editor
             </Link>
-            <Link href="/en/editor?template=professional&startSource=en_dutch_cv_template_editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
-              Open English editor
+            <Link href="/en/templates?startSource=en_dutch_cv_template_compare" className="bg-black text-white font-bold px-5 py-3 border-4 border-black">
+              Compare English templates
+            </Link>
+            <Link href="/en/pricing#payment-methods" className="self-center font-bold underline">
+              See price and payment methods
             </Link>
           </div>
         </div>
@@ -312,7 +319,7 @@ export default function DutchCvTemplatePage() {
             <Link href="/en/editor?template=professional&startSource=en_dutch_cv_template_mid_editor" className="bg-[#4ECDC4] text-black font-bold px-5 py-3 border-4 border-black">
               Start in English
             </Link>
-            <Link href="/en/pricing" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
+            <Link href="/en/pricing#payment-methods" className="bg-white text-black font-bold px-5 py-3 border-4 border-black">
               View pricing model
             </Link>
           </div>

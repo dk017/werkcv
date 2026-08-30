@@ -11,6 +11,7 @@ import { normalizeBrandCopy } from '@/lib/seo-branding';
 import TrackedLandingLink from '@/components/analytics/TrackedLandingLink';
 import MobileStickyCta from '@/components/landing/MobileStickyCta';
 import { getLanguageAlternates } from '@/lib/i18n/route-pairs';
+import { cvDownloadPrice } from '@/lib/site-content';
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -71,11 +72,14 @@ export default async function EnglishWavePage({ params }: PageProps) {
     const { slug } = await params;
     const page = getEnglishWavePage(slug);
     if (!page) notFound();
+    const isNetherlandsFormatGuide = page.slug === 'cv-format-netherlands-english';
     const metaDesc = normalizeBrandCopy(page.metaDesc);
-    const primaryGuideHref = page.ctaHref || '/en/templates';
+    const primaryGuideHref = isNetherlandsFormatGuide
+        ? '/en/editor?template=professional&startSource=en_cv_format_guide_hero'
+        : page.ctaHref || '/en/templates';
     const primaryGuideIsEditor = primaryGuideHref.startsWith('/en/editor');
     const primaryGuideLabel =
-        page.ctaButtonLabel ||
+        (isNetherlandsFormatGuide ? 'Build my Netherlands CV' : page.ctaButtonLabel) ||
         (primaryGuideIsEditor ? 'Open English editor' : 'Open English templates');
     const dateModifiedLabel = page.dateModified
         ? new Intl.DateTimeFormat('en-GB', {
@@ -148,6 +152,12 @@ export default async function EnglishWavePage({ params }: PageProps) {
                 <div className="max-w-4xl mx-auto px-6 py-12">
                     <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">{page.title}</h1>
                     <p className="text-lg text-gray-700">{page.intro}</p>
+                    {isNetherlandsFormatGuide ? (
+                        <p className="mt-4 text-sm font-bold leading-6 text-gray-800">
+                            Use the guide free, build and preview free, and pay {cvDownloadPrice.displayEn}{' '}
+                            including VAT only if you download the final PDF. No subscription.
+                        </p>
+                    ) : null}
                     <p className="mt-4 text-sm font-semibold text-slate-600">
                         Published by WerkCV
                         {dateModifiedLabel ? ` · Updated ${dateModifiedLabel}` : ''}
@@ -176,6 +186,24 @@ export default async function EnglishWavePage({ params }: PageProps) {
                             >
                                 Open English editor
                             </TrackedLandingLink>
+                        ) : null}
+                        {isNetherlandsFormatGuide ? (
+                            <>
+                                <TrackedLandingLink
+                                    href="/en/templates?startSource=en_cv_format_guide_templates"
+                                    trackingLocation="english_guide_hero:cv-format-netherlands-english"
+                                    trackingLabel="compare_templates"
+                                    className="text-sm font-semibold text-slate-600 underline decoration-slate-400 underline-offset-4 hover:text-slate-950"
+                                >
+                                    Compare English templates
+                                </TrackedLandingLink>
+                                <Link
+                                    href="/en/pricing#payment-methods"
+                                    className="text-sm font-semibold text-slate-600 underline decoration-slate-400 underline-offset-4 hover:text-slate-950"
+                                >
+                                    See price and payment methods
+                                </Link>
+                            </>
                         ) : null}
                         <Link
                             href="/en/guides"
@@ -342,7 +370,7 @@ export default async function EnglishWavePage({ params }: PageProps) {
                 />
             </article>
             <MobileStickyCta
-                text="Start free. Final PDF €4.99 including VAT. No subscription."
+                text={`Start free. Final PDF ${cvDownloadPrice.displayEn} including VAT. No subscription.`}
                 buttonLabel="Start CV"
                 href={primaryGuideHref}
                 trackingLocation={`english_guide_mobile_sticky:${page.slug}`}

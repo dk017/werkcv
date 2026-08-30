@@ -4,11 +4,12 @@ import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import EnglishRoleExampleBand from "./components/EnglishRoleExampleBand";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import { cvDownloadPrice } from "@/lib/site-content";
 
 export const metadata = buildEnglishMetadata({
   title: "English CV Builder for Jobs in the Netherlands",
   description:
-    "Build an English CV for jobs in the Netherlands. Start free, use Dutch-market structure and ATS-safe templates, then pay €4.99 once to download the PDF.",
+    `Build an English CV for jobs in the Netherlands. Start free, use Dutch-market structure and ATS-safe templates, then pay ${cvDownloadPrice.displayEn} once to download the PDF.`,
   path: "/en",
   nlPath: "/",
   keywords: [
@@ -229,7 +230,7 @@ const howItWorks = [
   },
   {
     step: "3",
-    title: "Download for €4.99",
+    title: `Download for ${cvDownloadPrice.displayEn}`,
     description: "Pay once when the PDF is ready. There is no subscription, trial renewal or monthly charge.",
   },
 ];
@@ -237,13 +238,11 @@ const howItWorks = [
 const englishHomeFaqs = [
   {
     question: "Can I build a CV for the Netherlands for free?",
-    answer:
-      "You can create an account, build or upload your CV, compare templates, and review the complete result for free. You pay a one-time €4.99 including VAT only when you choose to download the PDF.",
+    answer: `You can create an account, build or upload your CV, compare templates, and review the complete result for free. You pay a one-time ${cvDownloadPrice.displayEn} including VAT only when you choose to download the PDF.`,
   },
   {
     question: "Is WerkCV a subscription?",
-    answer:
-      "No. There is no trial subscription, automatic renewal, or monthly charge. A PDF download is a one-time €4.99 payment including VAT.",
+    answer: `No. There is no trial subscription, automatic renewal, or monthly charge. A PDF download is a one-time ${cvDownloadPrice.displayEn} payment including VAT.`,
   },
   {
     question: "Can my Netherlands CV be written in English?",
@@ -328,7 +327,7 @@ const jsonLd = {
       "@id": "https://werkcv.nl/en#webpage",
       name: "English CV Builder for Jobs in the Netherlands",
       description:
-        "Build an English CV with Dutch-market structure and download the finished PDF for a one-time €4.99 payment.",
+        `Build an English CV with Dutch-market structure and download the finished PDF for a one-time ${cvDownloadPrice.displayEn} payment.`,
       url: "https://werkcv.nl/en",
       inLanguage: "en-NL",
       isPartOf: { "@id": "https://werkcv.nl/#website" },
@@ -345,7 +344,7 @@ const jsonLd = {
         "An English CV builder for job applications in the Netherlands with Dutch-market structure, ATS-safe templates and PDF export.",
       offers: {
         "@type": "Offer",
-        price: "4.99",
+        price: cvDownloadPrice.value,
         priceCurrency: "EUR",
         description: "One-time payment for the finished CV PDF download; no subscription.",
         availability: "https://schema.org/InStock",
@@ -373,7 +372,7 @@ export default function EnglishHubPage() {
         <div className="wk-container">
           <span className="wk-badge wk-badge-accent mb-4">English CV for the Netherlands</span>
           <div className="mb-4 flex flex-wrap gap-2">
-            {["Start free", "One-time €4.99 PDF download", "No subscription"].map((badge) => (
+            {["Start free", `One-time ${cvDownloadPrice.displayEn} PDF download`, "No subscription"].map((badge) => (
               <span key={badge} className="wk-trust-pill">
                 {badge}
               </span>
@@ -388,8 +387,8 @@ export default function EnglishHubPage() {
             examples for jobs in the Netherlands.
           </p>
           <p className="mt-4 max-w-3xl text-base font-medium leading-7 text-[var(--wk-ink)]">
-            Start for free, finish your CV first, and only pay a one-time €4.99 when you want the PDF.
-            No subscription, no trial trap, and no auto-renewal.
+            Build and preview free. Download the final PDF for {cvDownloadPrice.displayEn} including
+            VAT. No subscription.
           </p>
           <div className="mt-7 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
             <TrackedLandingLink
@@ -409,7 +408,15 @@ export default function EnglishHubPage() {
               Upload my current CV
             </TrackedLandingLink>
           </div>
-          <div className="mt-4">
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
+            <TrackedLandingLink
+              href="/en/pricing#payment-methods"
+              trackingLocation="en_home:price_payment_methods"
+              trackingLabel="see_price_and_payment_methods"
+              className="text-sm font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
+            >
+              See price and payment methods
+            </TrackedLandingLink>
             <Link
               href="/en/guides/cv-format-netherlands-english"
               className="text-sm font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
@@ -632,7 +639,7 @@ export default function EnglishHubPage() {
       </section>
       <MobileStickyCta
         variant="brand"
-        text="Start free. Final PDF €4.99 including VAT. No subscription."
+        text={`Start free. Final PDF ${cvDownloadPrice.displayEn} including VAT. No subscription.`}
         buttonLabel="Build my CV"
         href="/en/editor?template=professional&startSource=en_home_sticky"
         trackingLocation="english_hub_mobile_sticky"

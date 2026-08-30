@@ -1,11 +1,25 @@
 import "dotenv/config";
 import { prisma } from "../lib/prisma";
+import {
+  assignCheckoutRecovery,
+  buildEnglishCheckoutRecoveryEmail,
+  checkoutRecoveryGenerationEnabled,
+  ENGLISH_CHECKOUT_RECOVERY_MAX_AGE_MS,
+  ENGLISH_CHECKOUT_RECOVERY_MIN_AGE_MS,
+  ENGLISH_CHECKOUT_RECOVERY_TYPE,
+  evaluateCheckoutRecoveryEligibility,
+} from "../lib/checkout-recovery";
+import {
+  isConsumerExcludedEmail,
+  normalizeConsumerEmail,
+} from "../lib/consumer-analytics-exclusions";
 
 type FollowupType =
   | "paid_customer_testimonial"
   | "signup_no_cv_feedback"
   | "created_cv_no_purchase"
-  | "checkout_no_purchase";
+  | "checkout_no_purchase"
+  | typeof ENGLISH_CHECKOUT_RECOVERY_TYPE;
 
 type Candidate = {
   email: string;
@@ -18,6 +32,7 @@ type Candidate = {
   relatedCvId?: string | null;
   relatedOrderId?: string | null;
   source?: string | null;
+  initialStatus?: "draft" | "holdout";
 };
 
 type ScanResult = {
@@ -46,18 +61,11 @@ function parseArgs() {
 }
 
 function normalizeEmail(email: string | null | undefined): string {
-  return (email || "").trim().toLowerCase();
+  return normalizeConsumerEmail(email);
 }
 
 function isInternalOrTestEmail(email: string): boolean {
-  const normalized = normalizeEmail(email);
-  return (
-    !normalized ||
-    normalized.endsWith("@werkcv.nl") ||
-    normalized.includes("+test") ||
-    normalized.includes("test@") ||
-    normalized === "dhineshkumar.stoic@gmail.com"
-  );
+  return isConsumerExcludedEmail(email);
 }
 
 function hoursAgo(hours: number): Date {
@@ -308,7 +316,10 @@ async function upsertTask(candidate: Candidate, dryRun: boolean): Promise<ScanRe
   const data = {
     email,
     type: candidate.type,
-    status: existing?.status === "approved" || autoApprove ? "approved" : "draft",
+    status:
+      existing?.status === "approved" || autoApprove
+        ? "approved"
+        : candidate.initialStatus || "draft",
     reason: candidate.reason,
     draftSubject: candidate.draftSubject,
     draftBody: candidate.draftBody,
@@ -471,16 +482,7 @@ async function findCreatedCvNoPurchaseCandidates(days: number): Promise<Candidat
     if (isInternalOrTestEmail(email)) continue;
 
     const paidOrder = await prisma.order.findFirst({
-      where: {
-        OR: [
-          { cvId: document.id, paidAt: { not: null } },
-          {
-            email,
-            paidAt: { not: null },
-            createdAt: { gte: document.createdAt },
-          },
-        ],
-      },
+      where: { cvId: document.id, paidAt: { not: null } },
       select: { id: true },
     });
     if (paidOrder) continue;
@@ -562,17 +564,13 @@ async function findCheckoutNoPurchaseCandidates(days: number): Promise<Candidate
     if (!document || isInternalOrTestEmail(email)) continue;
 
     const paidOrder = await prisma.order.findFirst({
-      where: {
-        OR: [
-          { cvId: event.cvId, paidAt: { not: null } },
-          { email, paidAt: { not: null }, createdAt: { gte: event.createdAt } },
-        ],
-      },
+      where: { cvId: event.cvId, paidAt: { not: null } },
       select: { id: true },
     });
     if (paidOrder) continue;
 
     const english = isEnglishContext(event.path || document.user?.sourcePath, document.sourceLocale || document.user?.sourceLocale);
+    if (english && checkoutRecoveryGenerationEnabled()) continue;
     const draft = checkoutNoPurchaseDraft(email, english);
 
     candidates.push({
@@ -584,6 +582,109 @@ async function findCheckoutNoPurchaseCandidates(days: number): Promise<Candidate
       relatedCvId: event.cvId,
       source: event.cluster || document.user?.sourceCluster || "checkout_event",
       ...draft,
+    });
+  }
+
+  return candidates;
+}
+
+async function findEnglishCheckoutRecoveryCandidates(): Promise<Candidate[]> {
+  if (!checkoutRecoveryGenerationEnabled()) return [];
+
+  const now = new Date();
+  const checkoutEvents = await prisma.analyticsEvent.findMany({
+    where: {
+      event: { in: ["checkout_start", "checkout_started", "checkout_option_clicked"] },
+      cvId: { not: null },
+      createdAt: {
+        gte: new Date(now.getTime() - ENGLISH_CHECKOUT_RECOVERY_MAX_AGE_MS),
+        lte: new Date(now.getTime() - ENGLISH_CHECKOUT_RECOVERY_MIN_AGE_MS),
+      },
+    },
+    select: { cvId: true, createdAt: true, path: true },
+    distinct: ["cvId"],
+    orderBy: { createdAt: "desc" },
+  });
+
+  const candidates: Candidate[] = [];
+  const configuredOrigin = process.env.NEXT_PUBLIC_APP_URL || "https://werkcv.nl";
+
+  for (const event of checkoutEvents) {
+    if (!event.cvId) continue;
+    const document = await prisma.cVDocument.findUnique({
+      where: { id: event.cvId },
+      select: {
+        id: true,
+        userId: true,
+        sourceLocale: true,
+        startSource: true,
+        agencySubscriptionId: true,
+        matchPack: { select: { id: true } },
+        user: {
+          select: {
+            id: true,
+            email: true,
+            sourceLocale: true,
+            sourcePath: true,
+            agencySubscription: { select: { id: true } },
+          },
+        },
+      },
+    });
+    const email = normalizeEmail(document?.user?.email);
+    const [paidOrder, contact, previousRecovery, suppressingReply] = await Promise.all([
+      prisma.order.findFirst({
+        where: { cvId: event.cvId, paidAt: { not: null } },
+        select: { id: true },
+      }),
+      email
+        ? prisma.followupContact.findUnique({ where: { email }, select: { status: true } })
+        : Promise.resolve(null),
+      prisma.followupTask.findFirst({
+        where: {
+          type: { in: [ENGLISH_CHECKOUT_RECOVERY_TYPE, "checkout_no_purchase"] },
+          relatedCvId: event.cvId,
+        },
+        select: { id: true },
+      }),
+      email ? hasInboundReplyAfter(email, event.createdAt) : Promise.resolve(false),
+    ]);
+
+    const eligibility = evaluateCheckoutRecoveryEligibility({
+      now,
+      checkoutAt: event.createdAt,
+      cvId: event.cvId,
+      email,
+      sourceLocale: document?.sourceLocale || document?.user?.sourceLocale,
+      startSource: document?.startSource,
+      landingPath: event.path || document?.user?.sourcePath,
+      hasExactCvPaidOrder: Boolean(paidOrder),
+      isAgencyCv: Boolean(
+        document?.agencySubscriptionId || document?.matchPack || document?.user?.agencySubscription,
+      ),
+      cvBelongsToUser: Boolean(document?.userId && document.user?.id === document.userId),
+      contactStatus: contact?.status || "active",
+      hasSuppressingInboundReply: suppressingReply,
+      hasPreviousRecovery: Boolean(previousRecovery),
+    });
+    if (!eligibility.eligible || !document?.userId) continue;
+
+    const assignment = assignCheckoutRecovery(event.cvId);
+    const draft =
+      assignment === "treatment"
+        ? buildEnglishCheckoutRecoveryEmail({ cvId: event.cvId, configuredOrigin })
+        : { subject: "", body: "" };
+    candidates.push({
+      email,
+      type: ENGLISH_CHECKOUT_RECOVERY_TYPE,
+      reason: `Eligible English checkout recovery; assignment=${assignment}.`,
+      draftSubject: draft.subject,
+      draftBody: draft.body,
+      dueAt: new Date(event.createdAt.getTime() + ENGLISH_CHECKOUT_RECOVERY_MIN_AGE_MS),
+      relatedUserId: document.userId,
+      relatedCvId: event.cvId,
+      source: ENGLISH_CHECKOUT_RECOVERY_TYPE,
+      initialStatus: assignment === "holdout" ? "holdout" : "draft",
     });
   }
 
@@ -637,6 +738,7 @@ async function main() {
     ...(await findSignupNoCvFeedbackCandidates(days)),
     ...(await findCreatedCvNoPurchaseCandidates(days)),
     ...(await findCheckoutNoPurchaseCandidates(days)),
+    ...(await findEnglishCheckoutRecoveryCandidates()),
   ];
 
   const uniqueCandidates = new Map<string, Candidate>();

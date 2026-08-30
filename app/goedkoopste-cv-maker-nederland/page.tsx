@@ -1,85 +1,70 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
+import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import {
+  consumerCvPricingFacts,
+  formatPricingCheckedAtNl,
+  toConsumerCvPricingView,
+  type ConsumerCvPricingModel,
+} from "@/lib/commercial/consumer-cv-pricing";
 import { cvDownloadPrice } from "@/lib/site-content";
 
 const pageUrl = "https://werkcv.nl/goedkoopste-cv-maker-nederland";
-const lastChecked = "10 april 2026";
-const pricingSources = [
-  {
-    label: "YoungCapital CV-maker",
-    href: "https://www.youngcapital.nl/carriere/cv-maker",
-  },
-  {
-    label: "Canva CV-maker",
-    href: "https://www.canva.com/nl_nl/maken/cv/",
-  },
-  {
-    label: "CV.nl pricing",
-    href: "https://www.cv.nl/pricing",
-  },
-  {
-    label: "CVMaker pricing",
-    href: "https://www.cvmaker.nl/pricing",
-  },
-  {
-    label: "CVster pricing",
-    href: "https://cvster.nl/pricing",
-  },
-];
+export const revalidate = 86400;
+
+const comparisonNow = new Date();
+const competitorViews = consumerCvPricingFacts.map((fact) =>
+  toConsumerCvPricingView(fact, comparisonNow),
+);
+const lastChecked = formatPricingCheckedAtNl(consumerCvPricingFacts[0].checkedAt);
+
+const modelLabels: Record<ConsumerCvPricingModel, string> = {
+  free: "Gratis",
+  one_time: "Eenmalig",
+  trial_subscription: "Proef + abonnement",
+  subscription: "Abonnement",
+  mixed: "Gratis en betaalde routes",
+  unverified: "Niet geverifieerd",
+};
 
 const comparisonRows = [
   {
-    tool: "YoungCapital",
-    start: "€0",
-    later: "geen",
-    model: "gratis",
-    bestFor: "eerste of snelle gratis CV-versie",
-    note: "Gratis maken en downloaden volgens de eigen CV-maker pagina.",
-  },
-  {
-    tool: "Canva",
-    start: "€0",
-    later: "optioneel Pro",
-    model: "freemium",
-    bestFor: "creatieve of designgerichte opmaak",
-    note: "Sterk op ontwerpvrijheid, minder duidelijk als je puur op snelle sollicitatieflow en kosten kiest.",
-  },
-  {
     tool: "WerkCV.nl",
+    officialUrl: "https://werkcv.nl/prijzen",
     start: cvDownloadPrice.display,
-    later: "geen",
-    model: "eenmalig per CV",
-    bestFor: "één nette CV-PDF zonder abonnement",
+    later: "Geen maandbedrag",
+    model: "Eenmalig per afzonderlijk CV",
+    cancellation: "Nee",
+    checkedAt: "Actueel via WerkCV-prijsbron",
+    bestFor: "Een begeleide CV-route met preview en zonder abonnement.",
     note: "Je betaalt pas bij je eerste PDF-download van dat CV.",
   },
-  {
-    tool: "CV.nl",
-    start: "14 dagen €0,99",
-    later: "€19,99 p/m",
-    model: "proef + automatisch verlengd abonnement",
-    bestFor: "mensen die CV, brief en vacatures in één account willen",
-    note: "Officiële prijzenpagina noemt €19,99 per maand na de proefperiode.",
-  },
-  {
-    tool: "CVMaker",
-    start: "14 dagen €1,99",
-    later: "€21,99 p/m",
-    model: "proef + automatisch verlengd abonnement",
-    bestFor: "gebruikers die een breder carrièreplatform zoeken",
-    note: "Officiële prijzenpagina noemt €21,99 per maand na de proefperiode.",
-  },
-  {
-    tool: "CVster",
-    start: "gratis of proef €2,95",
-    later: "€14,95 per 4 weken",
-    model: "free tier + proef + premium",
-    bestFor: "wie veel templates en langere toegang wil",
-    note: "Gratis versie is beperkt; premium kent ook 6- en 12-maands termijnen.",
-  },
+  ...competitorViews.map((fact) => ({
+    tool: fact.providerName,
+    officialUrl: fact.officialUrl,
+    start: fact.displayedInitialPriceTextNl || "Actuele prijs niet onafhankelijk geverifieerd",
+    later: fact.displayedRecurringPriceTextNl || "Controleer de officiële bron",
+    model: fact.fresh ? modelLabels[fact.model] : "Prijs tijdelijk niet geverifieerd",
+    cancellation:
+      fact.cancellationRequired === null
+        ? "Afhankelijk van de gekozen betaalde route"
+        : fact.cancellationRequired
+          ? "Ja bij de verlengende route"
+          : "Nee voor deze route",
+    checkedAt: formatPricingCheckedAtNl(fact.checkedAt),
+    bestFor: fact.bestForNl,
+    note: fact.fresh ? fact.factualNoteNl : "Open de officiële bron voor de actuele prijs en voorwaarden.",
+  })),
 ];
+
+const pricingSources = competitorViews.map((fact) => ({
+  label: `${fact.providerName} — officiële bron`,
+  href: fact.officialUrl,
+}));
 
 const scenarioRows = [
   {
@@ -107,8 +92,7 @@ const scenarioRows = [
 const faqs = [
   {
     question: "Wat is de goedkoopste manier om één professioneel CV te maken in Nederland?",
-    answer:
-      "Als je puur naar euro's kijkt, is een volledig gratis optie zoals YoungCapital het goedkoopst. Wil je specifiek een betaalde route zonder abonnement en zonder doorlopende accountkosten, dan is WerkCV met een eenmalige betaling van €4,99 de goedkoopste duidelijke betaalde optie voor één nette CV-download.",
+    answer: `Als je puur naar euro's kijkt, is een volledig gratis optie zoals YoungCapital het goedkoopst. WerkCV is een betaalde route zonder abonnement: je bouwt en bekijkt je CV gratis en betaalt ${cvDownloadPrice.display} voor de eerste PDF-download van dat afzonderlijke CV. Welke optie het voordeligst is, hangt af van de gewenste begeleiding en vormgeving.`,
   },
   {
     question: "Zijn gratis CV-makers echt gratis?",
@@ -139,9 +123,8 @@ const faqs = [
 
 export function generateMetadata(): Metadata {
   return {
-    title: "Goedkoopste CV maker Nederland 2026 | Gratis, goedkoop en eenmalig vergelijken",
-    description:
-      "Wat is de goedkoopste manier om één professioneel CV te maken in Nederland? Vergelijk gratis opties, eenmalige betaling en proefabonnementen op totale kosten per download.",
+    title: "Goedkoopste CV-maker Nederland: kosten vergeleken | WerkCV",
+    description: `Vergelijk gratis CV-tools, eenmalige downloads en abonnementen. Zie actuele prijsmodellen, verlenging en wat WerkCV voor ${cvDownloadPrice.display} inclusief btw biedt.`,
     keywords: [
       "goedkoopste cv maker nederland",
       "goedkope cv maker",
@@ -160,7 +143,7 @@ export function generateMetadata(): Metadata {
       },
     },
     openGraph: {
-      title: "Goedkoopste CV maker Nederland 2026 | Gratis, goedkoop en eenmalig vergelijken",
+      title: "Goedkoopste CV-maker Nederland: kosten vergeleken | WerkCV",
       description:
         "Vergelijk gratis opties, eenmalige betaling en proefabonnementen op basis van wat één professioneel CV je echt kost.",
       url: pageUrl,
@@ -175,19 +158,19 @@ export default function GoedkoopsteCvMakerNederlandPage() {
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: "Goedkoopste CV maker in Nederland 2026: gratis, eenmalig en abonnement vergeleken",
+    headline: "Wat is de goedkoopste CV-maker in Nederland?",
     description:
       "Vergelijk gratis CV-makers, eenmalige betaling en proefabonnementen op basis van totale kosten voor één professioneel CV in Nederland.",
     inLanguage: "nl-NL",
     mainEntityOfPage: pageUrl,
     datePublished: "2026-04-10",
-    dateModified: "2026-05-10",
+    dateModified: "2026-08-30",
     author: { "@id": "https://werkcv.nl/#organization" },
     publisher: { "@id": "https://werkcv.nl/#organization" },
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFEF0]">
+    <div className="min-h-screen overflow-x-hidden bg-[#FFFEF0]">
       <FAQJsonLd questions={faqs} />
       <script
         type="application/ld+json"
@@ -201,12 +184,14 @@ export default function GoedkoopsteCvMakerNederlandPage() {
               Werk<span className="bg-yellow-400 px-1">CV</span>.nl
             </span>
           </Link>
-          <Link
-            href="/editor"
+          <TrackedLandingLink
+            href="/editor?template=professional&startSource=nl_cheapest_cv_hero"
+            trackingLocation="nl_cheapest_cv_hero"
+            trackingLabel="start_editor"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
             Start in editor
-          </Link>
+          </TrackedLandingLink>
         </div>
       </header>
 
@@ -229,13 +214,13 @@ export default function GoedkoopsteCvMakerNederlandPage() {
               Prijsvergelijking voor één CV
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              Goedkoopste CV maker in Nederland 2026: gratis, eenmalig en abonnement vergeleken
+              Wat is de goedkoopste CV-maker in Nederland?
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              De meeste mensen zoeken niet de goedkoopste CV-tool voor een jaar lang gebruik, maar
-              voor één concrete sollicitatieronde. Dan wordt het verschil tussen gratis, eenmalig
-              betalen en een proefabonnement opeens veel groter dan de eerste prijs op de homepage
-              doet vermoeden.
+              Een volledig gratis tool is het goedkoopst in euro&apos;s. Voor een begeleide route
+              zonder abonnement betaal je bij WerkCV {cvDownloadPrice.display} voor de eerste
+              PDF-download van één CV. Proefabonnementen kunnen goedkoper starten, maar daarna
+              automatisch doorlopen. Hieronder vergelijken we het volledige prijsmodel.
             </p>
             <p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-slate-600">
               Daarom vergelijkt deze pagina niet op merkbekendheid of design, maar op een simpelere
@@ -250,7 +235,7 @@ export default function GoedkoopsteCvMakerNederlandPage() {
                 "Eenmalig betalen",
                 "Proefabonnementen",
                 "Totale kosten",
-                "Nederland 2026",
+                 "Officiële bronnen",
               ].map((badge) => (
                 <span key={badge} className="border-2 border-black bg-white px-3 py-1">
                   {badge}
@@ -258,17 +243,22 @@ export default function GoedkoopsteCvMakerNederlandPage() {
               ))}
             </div>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                href="/templates"
+              <TrackedLandingLink
+                href="/editor?template=professional&startSource=nl_cheapest_cv_hero"
+                trackingLocation="nl_cheapest_cv_hero"
+                trackingLabel="start_editor"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Vergelijk WerkCV templates
-              </Link>
+                Maak eerst gratis je CV
+              </TrackedLandingLink>
               <Link
-                href="/cv-maken-zonder-abonnement"
+                href="/templates?startSource=nl_cheapest_cv_templates"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Lees over eenmalig betalen
+                Vergelijk templates
+              </Link>
+              <Link href="#vergelijking" className="self-center text-sm font-black underline">
+                Bekijk de vergelijking
               </Link>
             </div>
           </div>
@@ -285,8 +275,8 @@ export default function GoedkoopsteCvMakerNederlandPage() {
                 <span className="font-black text-black">
                   betaalde maar eenvoudige route zonder abonnement
                 </span>{" "}
-                zoekt, zit met WerkCV op het laagste duidelijke eenmalige prijsniveau:{" "}
-                {cvDownloadPrice.display} per CV.
+                 zoekt, vindt bij WerkCV een begeleide betaalde route van {cvDownloadPrice.display}
+                 voor de eerste PDF-download van één CV.
               </p>
               <p>
                 Wie kiest voor een <span className="font-black text-black">lage proefprijs</span>{" "}
@@ -297,7 +287,10 @@ export default function GoedkoopsteCvMakerNederlandPage() {
           </aside>
         </section>
 
-        <section className="mb-12 overflow-x-auto border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
+        <section
+          id="vergelijking"
+          className="mb-12 scroll-mt-24 overflow-x-auto border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+        >
           <div className="border-b-4 border-black bg-[#FFF4D6] px-5 py-5">
             <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">
               Direct vergelijken
@@ -313,7 +306,16 @@ export default function GoedkoopsteCvMakerNederlandPage() {
           <table className="min-w-full border-collapse text-sm">
             <thead>
               <tr className="bg-black text-white">
-                {["Tool", "Startprijs", "Daarna", "Model", "Beste voor", "Let op"].map(
+                {[
+                  "Tool",
+                  "Startprijs",
+                  "Daarna",
+                  "Model",
+                  "Opzeggen",
+                  "Gecontroleerd",
+                  "Beste voor",
+                  "Let op",
+                ].map(
                   (heading) => (
                     <th
                       key={heading}
@@ -329,7 +331,14 @@ export default function GoedkoopsteCvMakerNederlandPage() {
               {comparisonRows.map((row) => (
                 <tr key={row.tool} className="odd:bg-[#FFF9D9]">
                   <td className="border-t-2 border-black px-4 py-3 align-top font-black text-black">
-                    {row.tool}
+                     <a
+                       href={row.officialUrl}
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className="underline decoration-2 underline-offset-2"
+                     >
+                       {row.tool}
+                     </a>
                   </td>
                   <td className="border-t-2 border-black px-4 py-3 align-top font-medium text-slate-700">
                     {row.start}
@@ -337,9 +346,15 @@ export default function GoedkoopsteCvMakerNederlandPage() {
                   <td className="border-t-2 border-black px-4 py-3 align-top font-medium text-slate-700">
                     {row.later}
                   </td>
-                  <td className="border-t-2 border-black px-4 py-3 align-top font-medium text-slate-700">
-                    {row.model}
-                  </td>
+                   <td className="border-t-2 border-black px-4 py-3 align-top font-medium text-slate-700">
+                     {row.model}
+                   </td>
+                   <td className="border-t-2 border-black px-4 py-3 align-top font-medium text-slate-700">
+                     {row.cancellation}
+                   </td>
+                   <td className="border-t-2 border-black px-4 py-3 align-top font-medium text-slate-700">
+                     {row.checkedAt}
+                   </td>
                   <td className="border-t-2 border-black px-4 py-3 align-top font-medium text-slate-700">
                     {row.bestFor}
                   </td>
@@ -371,6 +386,14 @@ export default function GoedkoopsteCvMakerNederlandPage() {
                 </a>
               ))}
             </div>
+            <TrackedLandingLink
+              href="/editor?template=professional&startSource=nl_cheapest_cv_comparison"
+              trackingLocation="nl_cheapest_cv_comparison"
+              trackingLabel="start_editor"
+              className="mt-4 inline-block border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
+            >
+              Probeer WerkCV gratis
+            </TrackedLandingLink>
           </div>
         </section>
 
@@ -409,8 +432,8 @@ export default function GoedkoopsteCvMakerNederlandPage() {
                 definitieve PDF van dat CV wilt downloaden.
               </p>
               <p>
-                Dat is niet dezelfde prijslogica als een proefabonnement van €0,99 of €1,99 dat
-                daarna overgaat in een maandbedrag. Voor één losse sollicitatieronde voelt een
+                Dat is niet dezelfde prijslogica als een lage proefprijs die daarna overgaat in
+                een maandbedrag. Voor één losse sollicitatieronde voelt een
                 eenmalige betaling meestal eerlijker en voorspelbaarder, juist omdat het eindigt
                 zodra je CV klaar is.
               </p>
@@ -465,8 +488,8 @@ export default function GoedkoopsteCvMakerNederlandPage() {
               body: "Een gratis tool kan perfect zijn voor een snelle basisversie. Maar als je tijd verliest aan ontwerpkeuzes of een minder rustig eindresultaat krijgt, verschuift de echte kostprijs van geld naar tijd en kwaliteit.",
             },
             {
-              title: "Waar WerkCV in dit landschap logisch wordt",
-              body: "Niet als 'goedkoopste van alles', maar als laagste duidelijke betaalde route zonder doorlopende rekening. Voor veel Nederlandse sollicitanten is dat precies de sweet spot.",
+               title: "Waar WerkCV in dit landschap logisch wordt",
+               body: "Niet als 'goedkoopste van alles', maar als duidelijke begeleide betaalde route zonder doorlopende rekening. Voor sollicitanten die structuur en voorspelbare kosten willen, kan dat een passende keuze zijn.",
             },
           ].map((card) => (
             <article
@@ -564,12 +587,14 @@ export default function GoedkoopsteCvMakerNederlandPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Link
-                href="/editor"
+              <TrackedLandingLink
+                href="/editor?template=professional&startSource=nl_cheapest_cv_bottom"
+                trackingLocation="nl_cheapest_cv_bottom"
+                trackingLabel="start_editor"
                 className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
-                Start gratis in de editor
-              </Link>
+                Maak je CV en bekijk het resultaat
+              </TrackedLandingLink>
               <Link
                 href="/prijzen"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
@@ -581,6 +606,13 @@ export default function GoedkoopsteCvMakerNederlandPage() {
         </section>
       </main>
 
+      <MobileStickyCta
+        href="/editor?template=professional&startSource=nl_cheapest_cv_sticky"
+        text="Maak en bekijk je CV gratis"
+        buttonLabel="Start gratis"
+        trackingLocation="nl_cheapest_cv_sticky"
+        trackingLabel="start_editor"
+      />
       <Footer />
     </div>
   );

@@ -10,8 +10,8 @@ const pagePath = "/en/pricing" as const;
 const editorHref = "/en/editor?template=professional&startSource=en_pricing_hero";
 
 export const metadata = buildEnglishMetadata({
-  title: `WerkCV Pricing: ${cvDownloadPrice.displayEn} One-Time CV PDF`,
-  description: `Build and preview your CV for free. Download the finished PDF for a one-time ${cvDownloadPrice.displayEn} including VAT, with no subscription or automatic renewal.`,
+  title: `CV Builder Netherlands Price: ${cvDownloadPrice.displayEn}, No Subscription`,
+  description: `Build and preview your Netherlands-ready CV for free. Pay ${cvDownloadPrice.displayEn} once, including VAT, for the final PDF. No trial, subscription or automatic renewal.`,
   path: pagePath,
   nlPath: "/prijzen",
   keywords: [
@@ -27,8 +27,8 @@ export const metadata = buildEnglishMetadata({
 const priceBadges = [
   `${cvDownloadPrice.displayEn} including VAT`,
   "No subscription",
-  "No automatic renewal",
-  "Preview before payment",
+  "Full preview before payment",
+  "Re-download the same paid CV",
 ] as const;
 
 const includedFeatures = [
@@ -83,7 +83,7 @@ const pricingFaqs = [
   },
   {
     question: "Which payment methods are available?",
-    answer: "Checkout is handled securely by Dodo Payments. Eligible customers may see iDEAL, credit or debit cards, Apple Pay or Google Pay. The methods shown depend on country, device, bank and provider availability.",
+    answer: "Checkout is hosted securely by our configured payment provider. The final methods appear in live checkout and can vary by country, device, bank, currency and provider configuration. iDEAL, cards, Apple Pay or Google Pay may be available only when checkout offers them; WerkCV cannot guarantee a method beforehand.",
   },
   {
     question: "Is VAT included?",
@@ -110,7 +110,6 @@ const productJsonLd = {
     url: "https://werkcv.nl/en/pricing",
     price: cvDownloadPrice.value,
     priceCurrency: cvDownloadPrice.currency,
-    priceValidUntil: "2026-12-31",
     availability: "https://schema.org/InStock",
     itemCondition: "https://schema.org/NewCondition",
     seller: { "@id": "https://werkcv.nl/#organization" },
@@ -163,12 +162,13 @@ export default function EnglishPricingPage() {
             ))}
           </div>
           <h1 className="mx-auto max-w-4xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-5xl">
-            One professional CV PDF for{" "}
-            <span className="wk-hero-highlight">{cvDownloadPrice.displayEn}</span>
+            CV builder for the Netherlands:{" "}
+            <span className="wk-hero-highlight">{cvDownloadPrice.displayEn}</span> once, no
+            subscription
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[var(--wk-ink-muted)]">
-            Build your English CV for the Netherlands, compare templates and review the complete
-            result for free. Pay only when you want the finished PDF.
+            Build, edit, change templates and review every page free. Pay only when you download
+            the final PDF.
           </p>
           <p className="mx-auto mt-3 max-w-2xl text-sm font-semibold text-[var(--wk-ink)]">
             One payment. No trial, subscription, automatic renewal or hidden monthly charge.
@@ -182,7 +182,7 @@ export default function EnglishPricingPage() {
             >
               Build my CV for free
             </TrackedLandingLink>
-            <Link href="#how-payment-works" className="wk-button wk-button-secondary px-7 py-4 text-lg">
+            <Link href="#payment-methods" className="wk-button wk-button-secondary px-7 py-4 text-lg">
               How payment works
             </Link>
           </div>
@@ -254,7 +254,7 @@ export default function EnglishPricingPage() {
       <section className="wk-section pt-0">
         <div className="wk-container">
           <div className="grid gap-6 md:grid-cols-2">
-            <article className="wk-card p-7">
+            <article id="payment-methods" className="wk-card scroll-mt-24 p-7">
               <div className="wk-eyebrow mb-3">
                 <span>What one payment unlocks</span>
               </div>
@@ -275,12 +275,13 @@ export default function EnglishPricingPage() {
               </div>
               <h2 className="text-2xl font-semibold text-[var(--wk-ink)]">Payment methods</h2>
               <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">
-                Payment is handled by Dodo Payments. Eligible customers may see iDEAL, credit or
-                debit cards, Apple Pay or Google Pay.
+                Payment is handled in a secure checkout hosted by our configured payment provider.
+                The final available methods are shown there.
               </p>
               <p className="mt-4 text-sm leading-6 text-[var(--wk-ink-muted)]">
-                The exact methods displayed depend on your country, device, bank and payment-provider
-                availability.
+                Methods vary by country, device, bank, currency and provider configuration. iDEAL,
+                cards, Apple Pay or Google Pay may be available only when live checkout offers them;
+                WerkCV cannot guarantee a method before it appears there.
               </p>
             </article>
           </div>
@@ -338,7 +339,7 @@ export default function EnglishPricingPage() {
         text={`Start free. Final PDF ${cvDownloadPrice.displayEn}.`}
         buttonLabel="Build CV"
         href="/en/editor?template=professional&startSource=en_pricing_sticky"
-        trackingLocation="en_pricing_mobile_sticky"
+        trackingLocation="en_pricing_sticky"
         trackingLabel="build_cv"
         variant="brand"
       />

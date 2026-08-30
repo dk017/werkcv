@@ -17,6 +17,8 @@ const pageUrl = "https://werkcv.nl/cv-maken-zonder-abonnement";
 const supportLine =
   "Geen proefperiode. Geen automatische verlenging. Geen abonnement om op te zeggen.";
 
+export const revalidate = 86400;
+
 const heroBadges = [
   `Eenmalig ${cvDownloadPrice.display}`,
   "Geen abonnement",
@@ -135,10 +137,10 @@ const relatedLinks = [
 
 export const metadata: Metadata = {
   title: {
-    absolute: "CV maken zonder abonnement: €4,99 per PDF | WerkCV",
+    absolute: `CV maken zonder abonnement: ${cvDownloadPrice.display} per PDF | WerkCV`,
   },
   description:
-    "CV maken zonder abonnement? Bouw gratis, bekijk je volledige CV en betaal eenmalig €4,99 bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.",
+    `CV maken zonder abonnement? Bouw gratis, bekijk je volledige CV en betaal eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.`,
   keywords: [
     "cv maken zonder abonnement",
     "cv maken geen abonnement",
@@ -153,9 +155,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "CV maken zonder abonnement: €4,99 per PDF | WerkCV",
+    title: `CV maken zonder abonnement: ${cvDownloadPrice.display} per PDF | WerkCV`,
     description:
-      "CV maken zonder abonnement? Bouw gratis, bekijk je volledige CV en betaal eenmalig €4,99 bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.",
+      `CV maken zonder abonnement? Bouw gratis, bekijk je volledige CV en betaal eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.`,
     url: pageUrl,
     siteName: "WerkCV",
     locale: "nl_NL",
@@ -171,9 +173,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "CV maken zonder abonnement: €4,99 per PDF | WerkCV",
+    title: `CV maken zonder abonnement: ${cvDownloadPrice.display} per PDF | WerkCV`,
     description:
-      "CV maken zonder abonnement? Bouw gratis, bekijk je volledige CV en betaal eenmalig €4,99 bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.",
+      `CV maken zonder abonnement? Bouw gratis, bekijk je volledige CV en betaal eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.`,
     images: ["/opengraph-image"],
   },
 };
@@ -198,7 +200,7 @@ export default function CvMakenZonderAbonnementPage() {
               Bekijk prijsmodel
             </Link>
             <TrackedLandingLink
-              href="/templates"
+              href="/editor?template=professional&startSource=nl_no_subscription_header"
               trackingLocation="cv-maken-zonder-abonnement:header_primary"
               trackingLabel="Maak gratis je cv, betaal pas bij downloaden"
               className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
@@ -319,7 +321,7 @@ export default function CvMakenZonderAbonnementPage() {
           </div>
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <TrackedLandingLink
-              href="/templates"
+              href="/editor?template=professional&startSource=nl_no_subscription_trust"
               trackingLocation="cv-maken-zonder-abonnement:trust_primary"
               trackingLabel="Start zonder abonnement"
               className="inline-block border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
@@ -399,7 +401,7 @@ export default function CvMakenZonderAbonnementPage() {
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-4">
               <TrackedLandingLink
-                href="/templates"
+                href="/editor?template=professional&startSource=nl_no_subscription_comparison"
                 trackingLocation="cv-maken-zonder-abonnement:comparison_primary"
                 trackingLabel="Maak gratis je cv, betaal pas bij downloaden"
                 ctaEventName="cta_no_subscription_comparison"
@@ -438,7 +440,7 @@ export default function CvMakenZonderAbonnementPage() {
               Als je zoekt op cv downloaden zonder abonnement, wil je meestal weten of je na betaling ergens aan vastzit. Bij WerkCV betaal je alleen voor de definitieve PDF-download. Er start geen maandplan en er is niets om later op te zeggen.
             </p>
             <TrackedLandingLink
-              href="/templates"
+              href="/editor?template=professional&startSource=nl_no_subscription_download"
               trackingLocation="cv-maken-zonder-abonnement:download_section_primary"
               trackingLabel="Download je cv zonder maandkosten"
               className="mt-5 inline-block border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
@@ -546,7 +548,7 @@ export default function CvMakenZonderAbonnementPage() {
             </div>
             <div className="flex flex-wrap gap-3">
               <TrackedLandingLink
-                href="/templates"
+                href="/editor?template=professional&startSource=nl_no_subscription_bottom"
                 trackingLocation="cv-maken-zonder-abonnement:bottom_primary"
                 trackingLabel="Maak gratis je cv"
                 ctaEventName="cta_no_subscription_bottom"
@@ -555,7 +557,7 @@ export default function CvMakenZonderAbonnementPage() {
                 Maak gratis je cv
               </TrackedLandingLink>
               <Link
-                href="/templates"
+                href="/templates?startSource=nl_no_subscription_templates"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
               >
                 Bekijk templates
@@ -570,7 +572,7 @@ export default function CvMakenZonderAbonnementPage() {
       <MobileStickyCta
         text="CV maken zonder abonnement"
         buttonLabel="Start gratis"
-        href="/templates"
+        href="/editor?template=professional&startSource=nl_no_subscription_sticky"
         trackingLocation="cv-maken-zonder-abonnement:sticky_primary"
         trackingLabel="Start gratis"
         ctaEventName="cta_no_subscription_sticky"

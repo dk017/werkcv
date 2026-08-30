@@ -2,8 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
+import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
+import {
+    consumerCvPricingFactsById,
+    formatPricingCheckedAtNl,
+    toConsumerCvPricingView,
+} from "@/lib/commercial/consumer-cv-pricing";
 import { cvDownloadPrice } from "@/lib/site-content";
+
+export const revalidate = 86400;
 
 export const metadata: Metadata = {
     title: `CV maken kosten: ${cvDownloadPrice.display} per PDF, eenmalig betalen | WerkCV`,
@@ -36,10 +44,13 @@ export const metadata: Metadata = {
 };
 
 const pricingTrustPoints = [
+    "Volledig voorbeeld vóór betaling",
+    `Eenmalig ${cvDownloadPrice.display} inclusief btw`,
     "Geen abonnement",
-    "Later opnieuw downloaden",
-    "Inclusief btw",
+    "Zelfde betaalde CV later opnieuw downloaden",
 ] as const;
+
+const cvNlPricing = toConsumerCvPricingView(consumerCvPricingFactsById.cv_nl, new Date());
 
 const pricingIntentCards = [
     {
@@ -119,7 +130,6 @@ const productJsonLd = {
         "url": "https://werkcv.nl/prijzen",
         "price": cvDownloadPrice.value,
         "priceCurrency": cvDownloadPrice.currency,
-        "priceValidUntil": "2026-12-31",
         "availability": "https://schema.org/InStock",
         "itemCondition": "https://schema.org/NewCondition",
         "seller": { "@id": "https://werkcv.nl/#organization" },
@@ -185,15 +195,15 @@ export default function PrijzenPage() {
                 <div className="wk-container max-w-4xl text-center">
                     <p className="wk-eyebrow justify-center">Eén duidelijke prijs</p>
                     <h1 className="mx-auto mt-4 max-w-3xl text-4xl font-semibold leading-tight text-[var(--wk-ink)] md:text-6xl">
-                        Maak je CV gratis. Download je PDF voor{" "}
+                        Maak en bekijk je CV gratis. Download voor{" "}
                         <span className="wk-hero-highlight">{cvDownloadPrice.display}</span>.
                     </h1>
                     <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[var(--wk-ink-muted)] md:text-lg md:leading-8">
-                        Bouw en controleer eerst je volledige CV. Betaal pas wanneer je de definitieve PDF wilt downloaden—zonder proefperiode of automatische verlenging.
+                        Betaal één keer voor de PDF van dit CV. Geen proefperiode, maandkosten of automatische verlenging.
                     </p>
                     <div className="mt-7 flex flex-wrap justify-center gap-3">
                         <TrackedLandingLink
-                            href="/editor?template=professional&startSource=pricing_header"
+                            href="/editor?template=professional&startSource=nl_pricing_hero"
                             trackingLocation="prijzen:header_primary"
                             trackingLabel="Maak gratis je cv"
                             className="wk-button wk-button-primary"
@@ -245,12 +255,12 @@ export default function PrijzenPage() {
                             </ul>
 
                             <TrackedLandingLink
-                                href="/editor?template=professional&startSource=pricing_card_primary"
+                                href="/editor?template=professional&startSource=nl_pricing_card"
                                 trackingLocation="prijzen:pricing_card_primary"
                                 trackingLabel="Maak gratis je CV"
                                 className="wk-button wk-button-primary w-full text-lg"
                             >
-                                Maak gratis je CV
+                                Start gratis
                             </TrackedLandingLink>
                             <p className="mt-3 text-xs leading-5 text-[var(--wk-ink-muted)]">
                                 Afrekenen gebeurt pas wanneer je jouw PDF wilt downloaden.
@@ -279,9 +289,13 @@ export default function PrijzenPage() {
                                 <Link href="/cv-maken-zonder-abonnement" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                                     eenmalig betalen zich verhoudt tot een abonnement
                                 </Link>
-                                , of begin direct met{" "}
-                                <Link href="/cv-maken" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
-                                    je CV voor Nederlandse vacatures
+                                . Bekijk ook de{" "}
+                                <Link href="/goedkoopste-cv-maker-nederland" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
+                                    actuele kostenvergelijking van CV-makers
+                                </Link>{" "}
+                                en lees{" "}
+                                <Link href="/cv-downloaden-zonder-abonnement" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
+                                    hoe de PDF-download zonder abonnement werkt
                                 </Link>
                                 .
                             </p>
@@ -300,7 +314,11 @@ export default function PrijzenPage() {
                             Zoek je op &quot;cv.nl kosten&quot;?
                         </h2>
                         <p className="mt-3 text-sm leading-7 text-[var(--wk-ink-muted)] md:text-base">
-                            Volgens de publieke prijzenpagina van CV.nl kost de instaproute 14 dagen €0,99 en daarna €19,99 per maand met automatische verlenging. Gecheckt op 17 april 2026. WerkCV gebruikt een ander model: gratis starten en {cvDownloadPrice.display} eenmalig per CV-download.
+                            {cvNlPricing.fresh ? (
+                                <>Volgens de officiële prijzenpagina van CV.nl geldt {cvNlPricing.displayedInitialPriceTextNl} en {cvNlPricing.displayedRecurringPriceTextNl?.toLowerCase()}, met automatische verlenging. Gecontroleerd op {formatPricingCheckedAtNl(cvNlPricing.checkedAt)}. WerkCV gebruikt een ander model: gratis starten en {cvDownloadPrice.display} eenmalig per CV-download.</>
+                            ) : (
+                                <>De actuele CV.nl-prijs kon niet recent genoeg onafhankelijk worden geverifieerd. Open de officiële bron voordat je vergelijkt. WerkCV gebruikt een ander model: gratis starten en {cvDownloadPrice.display} eenmalig per CV-download.</>
+                            )}
                         </p>
                         <div className="mt-6 grid gap-4 md:grid-cols-2">
                             <div className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-5">
@@ -308,9 +326,9 @@ export default function PrijzenPage() {
                                     CV.nl
                                 </p>
                                 <ul className="mt-3 space-y-2 text-sm leading-6 text-[var(--wk-ink-muted)]">
-                                    <li>&bull; 14 dagen voor €0,99</li>
-                                    <li>&bull; Daarna €19,99 per maand</li>
-                                    <li>&bull; Automatische verlenging volgens pricingpagina</li>
+                                    <li>&bull; {cvNlPricing.displayedInitialPriceTextNl || "Actuele prijs niet onafhankelijk geverifieerd"}</li>
+                                    <li>&bull; {cvNlPricing.displayedRecurringPriceTextNl || "Controleer de officiële bron"}</li>
+                                    <li>&bull; {cvNlPricing.renewalTextNl}</li>
                                 </ul>
                             </div>
                             <div className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-accent-soft)] p-5">
@@ -429,6 +447,27 @@ export default function PrijzenPage() {
             </section>
 
             <section className="wk-section pt-0">
+                <div className="wk-container max-w-3xl">
+                    <div className="rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-8 text-center md:p-10">
+                        <h2 className="text-3xl font-semibold text-[var(--wk-primary-contrast)]">
+                            Maak en bekijk eerst je volledige CV.
+                        </h2>
+                        <p className="mx-auto mt-3 max-w-2xl leading-7 text-[var(--wk-primary-contrast)]/80">
+                            Betaal pas {cvDownloadPrice.display} inclusief btw wanneer je de definitieve PDF wilt downloaden. Geen abonnement.
+                        </p>
+                        <TrackedLandingLink
+                            href="/editor?template=professional&startSource=nl_pricing_bottom"
+                            trackingLocation="prijzen:bottom_primary"
+                            trackingLabel="Maak je CV gratis"
+                            className="wk-button wk-button-accent mt-6"
+                        >
+                            Maak je CV gratis
+                        </TrackedLandingLink>
+                    </div>
+                </div>
+            </section>
+
+            <section className="wk-section pt-0">
                 <div className="wk-container">
                     <h2 className="mb-8 text-center text-3xl font-semibold text-[var(--wk-ink)]">Veelgestelde vragen over prijzen</h2>
                     <div className="mx-auto max-w-2xl space-y-4">
@@ -456,6 +495,14 @@ export default function PrijzenPage() {
             />
 
             <Footer variant="brand" />
+            <MobileStickyCta
+                text={`Volledig voorbeeld gratis · PDF ${cvDownloadPrice.display}`}
+                buttonLabel="Start gratis"
+                href="/editor?template=professional&startSource=nl_pricing_sticky"
+                trackingLocation="prijzen:sticky_primary"
+                trackingLabel="Start gratis"
+                variant="brand"
+            />
         </main>
     );
 }

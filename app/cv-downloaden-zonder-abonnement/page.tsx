@@ -142,7 +142,7 @@ export const metadata: Metadata = {
     absolute: "CV downloaden zonder abonnement | PDF direct downloaden | WerkCV",
   },
   description:
-    "Download je cv zonder abonnement. Maak gratis je cv, betaal pas éénmalig €4,99 bij PDF-download en voorkom proefperiodes, automatische verlenging en maandkosten.",
+    `Download je cv zonder abonnement. Maak gratis je cv, betaal pas éénmalig ${cvDownloadPrice.display} bij PDF-download en voorkom proefperiodes, automatische verlenging en maandkosten.`,
   keywords: [
     "cv downloaden zonder abonnement",
     "cv pdf downloaden zonder abonnement",
@@ -160,8 +160,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "CV downloaden zonder abonnement | WerkCV",
-    description:
-      "Maak gratis je cv en betaal pas éénmalig €4,99 als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en geen maandkosten.",
+    description: `Maak gratis je cv en betaal pas éénmalig ${cvDownloadPrice.display} als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en geen maandkosten.`,
     url: pageUrl,
     siteName: "WerkCV",
     locale: "nl_NL",
@@ -178,8 +177,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "CV downloaden zonder abonnement | WerkCV",
-    description:
-      "Maak gratis je cv en betaal pas éénmalig €4,99 als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en geen maandkosten.",
+    description: `Maak gratis je cv en betaal pas éénmalig ${cvDownloadPrice.display} als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en geen maandkosten.`,
     images: ["/opengraph-image"],
   },
 };
@@ -204,8 +202,8 @@ export default function CvDownloadenZonderAbonnementPage() {
               Bekijk prijsmodel
             </Link>
             <TrackedLandingLink
-              href="/editor"
-              trackingLocation="cv-downloaden-zonder-abonnement:header_primary"
+              href="/editor?template=professional&startSource=nl_no_subscription_download_page"
+              trackingLocation="nl_no_subscription_download_page"
               trackingLabel="Maak gratis je cv"
               className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
             >
@@ -246,8 +244,8 @@ export default function CvDownloadenZonderAbonnementPage() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink
-                href="/editor"
-                trackingLocation="cv-downloaden-zonder-abonnement:hero_primary"
+                href="/editor?template=professional&startSource=nl_no_subscription_download_page"
+                trackingLocation="nl_no_subscription_download_page"
                 trackingLabel="Maak gratis je cv, download later zonder abonnement"
                 ctaEventName="cta_no_subscription_hero"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
@@ -255,7 +253,7 @@ export default function CvDownloadenZonderAbonnementPage() {
                 Maak gratis je cv, download later zonder abonnement
               </TrackedLandingLink>
               <Link
-                href="/templates"
+                href="/templates?startSource=nl_no_subscription_download_templates"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 Bekijk templates
@@ -305,8 +303,8 @@ export default function CvDownloadenZonderAbonnementPage() {
           </div>
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <TrackedLandingLink
-              href="/editor"
-              trackingLocation="cv-downloaden-zonder-abonnement:steps_primary"
+              href="/editor?template=professional&startSource=nl_no_subscription_download_page"
+              trackingLocation="nl_no_subscription_download_page"
               trackingLabel="Start gratis en download later"
               ctaEventName="cta_no_subscription_comparison"
               className="inline-block border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
@@ -450,8 +448,8 @@ export default function CvDownloadenZonderAbonnementPage() {
             </div>
             <div className="flex flex-wrap gap-3">
               <TrackedLandingLink
-                href="/editor"
-                trackingLocation="cv-downloaden-zonder-abonnement:bottom_primary"
+                href="/editor?template=professional&startSource=nl_no_subscription_download_page"
+                trackingLocation="nl_no_subscription_download_page"
                 trackingLabel="Maak gratis je cv"
                 ctaEventName="cta_no_subscription_bottom"
                 className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
@@ -474,8 +472,8 @@ export default function CvDownloadenZonderAbonnementPage() {
       <MobileStickyCta
         text="CV downloaden zonder abonnement"
         buttonLabel="Start gratis"
-        href="/editor"
-        trackingLocation="cv-downloaden-zonder-abonnement:sticky_primary"
+        href="/editor?template=professional&startSource=nl_no_subscription_download_page"
+        trackingLocation="nl_no_subscription_download_page"
         trackingLabel="Start gratis"
         ctaEventName="cta_no_subscription_sticky"
       />

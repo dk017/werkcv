@@ -1,6 +1,11 @@
 import "dotenv/config";
 import nodemailer from "nodemailer";
 import { prisma } from "../lib/prisma";
+import {
+  checkoutRecoverySendingApproved,
+  ENGLISH_CHECKOUT_RECOVERY_TYPE,
+} from "../lib/checkout-recovery";
+import { isConsumerExcludedEmail } from "../lib/consumer-analytics-exclusions";
 
 type FollowupTask = {
   id: string;
@@ -14,6 +19,8 @@ type FollowupTask = {
   sentAt: Date | null;
   relatedCvId: string | null;
   relatedOrderId: string | null;
+  relatedUserId: string | null;
+  createdAt: Date;
 };
 
 type ParseArgsResult = {
@@ -80,6 +87,67 @@ function replyToEmail(): string {
   return process.env.FOLLOWUP_REPLY_TO || fromEmail();
 }
 
+async function claimEnglishRecoveryForSend(task: FollowupTask): Promise<string | null> {
+  return prisma.$transaction(async (tx) => {
+    if (!task.relatedCvId || !task.relatedUserId || isConsumerExcludedEmail(task.email)) {
+      await tx.followupTask.update({
+        where: { id: task.id },
+        data: { status: "skipped", skippedReason: "recovery_identity_ineligible" },
+      });
+      return "recovery_identity_ineligible";
+    }
+
+    const [document, paidOrder, contact, inboundReply] = await Promise.all([
+      tx.cVDocument.findFirst({
+        where: {
+          id: task.relatedCvId,
+          userId: task.relatedUserId,
+          agencySubscriptionId: null,
+          matchPack: null,
+          user: { email: task.email },
+        },
+        select: { id: true },
+      }),
+      tx.order.findFirst({
+        where: { cvId: task.relatedCvId, paidAt: { not: null } },
+        select: { id: true },
+      }),
+      tx.followupContact.findUnique({ where: { email: task.email }, select: { status: true } }),
+      tx.emailMessage.findFirst({
+        where: {
+          email: task.email,
+          direction: "inbound",
+          OR: [{ receivedAt: { gte: task.createdAt } }, { createdAt: { gte: task.createdAt } }],
+        },
+        select: { id: true },
+      }),
+    ]);
+
+    const reason = !document
+      ? "recovery_cv_unavailable"
+      : paidOrder
+        ? "recovery_exact_cv_paid"
+        : contact?.status !== "active"
+          ? "recovery_contact_inactive"
+          : inboundReply
+            ? "recovery_inbound_reply"
+            : null;
+    if (reason) {
+      await tx.followupTask.update({
+        where: { id: task.id },
+        data: { status: "skipped", skippedReason: reason },
+      });
+      return reason;
+    }
+
+    const claimed = await tx.followupTask.updateMany({
+      where: { id: task.id, status: "approved", sentAt: null },
+      data: { status: "sending", skippedReason: null },
+    });
+    return claimed.count === 1 ? null : "recovery_not_claimed";
+  });
+}
+
 async function main() {
   const { dryRun, includeDrafts, limit, types } = parseArgs();
   const now = new Date();
@@ -108,6 +176,24 @@ async function main() {
     const subject = task.draftSubject || "Quick follow-up";
     const body = task.draftBody || "";
 
+    if (task.type === ENGLISH_CHECKOUT_RECOVERY_TYPE) {
+      if (task.status === "holdout" || task.status !== "approved") {
+        console.log(`Skipping ${task.id}: recovery tasks must be treatment and explicitly approved.`);
+        continue;
+      }
+      if (!checkoutRecoverySendingApproved()) {
+        console.log(`Skipping ${task.id}: English checkout recovery sending approvals are disabled.`);
+        continue;
+      }
+      if (!dryRun) {
+        const skipReason = await claimEnglishRecoveryForSend(task);
+        if (skipReason) {
+          console.log(`Skipping ${task.id}: ${skipReason}.`);
+          continue;
+        }
+      }
+    }
+
     if (!body.trim()) {
       console.log(`Skipping ${task.id} (${email}) because it has no draft body.`);
       continue;
@@ -118,13 +204,24 @@ async function main() {
       continue;
     }
 
-    const info = await transporter!.sendMail({
-      from: `${fromName()} <${fromEmail()}>`,
-      to: email,
-      replyTo: replyToEmail(),
-      subject,
-      text: body,
-    });
+    let info;
+    try {
+      info = await transporter!.sendMail({
+        from: `${fromName()} <${fromEmail()}>`,
+        to: email,
+        replyTo: replyToEmail(),
+        subject,
+        text: body,
+      });
+    } catch (error) {
+      if (task.type === ENGLISH_CHECKOUT_RECOVERY_TYPE) {
+        await prisma.followupTask.updateMany({
+          where: { id: task.id, status: "sending", sentAt: null },
+          data: { status: "approved" },
+        });
+      }
+      throw error;
+    }
 
     await prisma.followupTask.update({
       where: { id: task.id },

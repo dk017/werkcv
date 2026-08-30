@@ -82,6 +82,14 @@ export default async function EnglishTemplatesPage({
             </Link>{" "}
             for language, photo, and work-authorisation decisions.
           </p>
+          <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--wk-ink-muted)]">
+            You can compare templates and preview every page before paying. See the exact one-time
+            PDF price and live-checkout explanation on the{" "}
+            <Link className="font-semibold text-[var(--wk-primary)] underline" href="/en/pricing#payment-methods">
+              English pricing page
+            </Link>
+            .
+          </p>
           <div className="mt-8 grid gap-4 md:grid-cols-2">
             {englishTemplateFaqs.map((faq) => (
               <details key={faq.question} className="wk-card p-5">
