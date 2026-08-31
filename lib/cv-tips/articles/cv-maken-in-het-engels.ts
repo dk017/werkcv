@@ -5,10 +5,10 @@ export const cvMakenInHetEngels: BlogArticle = {
     title: 'CV Maken in het Engels: Complete Gids voor een Engels CV (2026)',
     description: 'Hoe vertaal je je Nederlandse CV naar een professioneel Engels CV of resume? Leer de verschillen, de juiste terminologie en hoe je voorkomt dat je letterlijk vertaalt wat averechts werkt.',
     publishedAt: '2026-02-21',
-    updatedAt: '2026-02-21',
+    updatedAt: '2026-08-30',
 
     metaTitle: 'CV Maken in het Engels (2026) – Engels CV of Resume voor NL & Abroad',
-    metaDesc: 'CV in het Engels maken? Leer het verschil tussen CV en resume, hoe je Nederlandse functies vertaalt, wat je niet letterlijk vertaalt en hoe je ATS-scores in het Engels maximaliseert.',
+    metaDesc: 'CV in het Engels maken? Leer het verschil tussen CV en resume, vertaal Nederlandse functies zorgvuldig en maak de inhoud duidelijk leesbaar voor recruiters en ATS.',
     keywords: [
         'cv maken in het engels',
         'engels cv maken',
@@ -28,53 +28,53 @@ export const cvMakenInHetEngels: BlogArticle = {
     order: 26,
 
     keyTakeaways: [
-        'Een CV (Curriculum Vitae) en een resume zijn niet hetzelfde — in de VS gebruik je een resume van 1-2 pagina\'s, in Europa een CV van 2-3 pagina\'s',
+        'De termen CV en resume verschillen per land en sector — volg de vacaturetaal en houd de versie functiegericht',
         'Vertaal nooit letterlijk: "stagiaire" wordt "intern", niet "trainee"',
-        'ATS-systemen voor internationale vacatures matchen op Engelse sleutelwoorden — optimaliseer hierop',
+        'Gebruik relevante Engelse vacaturetermen alleen wanneer ze feitelijk op jouw ervaring en vaardigheden van toepassing zijn',
         'Verwijder BSN, geboortedatum en nationaliteit uit een Engelstalig CV tenzij gevraagd',
         'Brits en Amerikaans Engels verschillen subtiel maar merkbaar — kies één variant en wees consistent',
-        'Een Engelse profieltekst (Professional Summary) is 3-5 zinnen, actief geformuleerd',
+        'Houd een Engelse profieltekst (Professional Summary) kort, actief en relevant voor de vacature',
     ],
 
     sections: [
         {
             id: 'intro',
             title: 'Waarom een Engels CV maken?',
-            answerCapsule: 'Een Engels CV is nodig voor internationale bedrijven in Nederland, expat-functies en buitenlandse sollicitaties. 63% van de Nederlandse multinationals vraagt een Engelstalig CV.',
+            answerCapsule: 'Een Engels CV is relevant wanneer de vacature, werktaal of sollicitatieprocedure Engels is. Controleer altijd welke taal en documentnaam de werkgever vraagt.',
             content: [
-                'Nederland is een van de meest internationale arbeidsmarkten van Europa. Met meer dan 2.400 internationale bedrijven gevestigd in de Randstad, van ASML tot Booking.com en Philips, zijn er talloze functies waarbij een Engels CV vereist is. Volgens LinkedIn Talent Insights (2024) vraagt 63% van de Nederlandse multinationals en internationale MKB\'s een Engelstalig CV of resume.',
-                'Maar ook voor Nederlandse bedrijven die actief zijn op de internationale markt — export, logistiek, technologie — kan een Engelstalig CV je onderscheiden. Zeker als de werktaal binnen het bedrijf geheel of gedeeltelijk Engels is, is een CV in die taal een sterk signaal dat je er klaar voor bent.',
-                'In deze gids leer je de structuur van een Engels CV (of resume), welke Nederlandse termen je hoe vertaalt, wat je wél en níet opneemt en hoe je veelgemaakte fouten vermijdt. We behandelen ook het verschil tussen een CV voor de Europese markt en een resume voor de VS of VK.',
+                'Gebruik een Engels CV wanneer de vacature Engels is, de organisatie Engels als werktaal gebruikt of de sollicitatie-instructies daar expliciet om vragen. Staat er niets bij, controleer dan de taal van de vacature en vraag de recruiter bij twijfel welke versie de voorkeur heeft.',
+                'Ook bij Nederlandse organisaties in bijvoorbeeld export, logistiek of technologie kan een Engelstalige versie passend zijn. De taalkeuze is geen bewijs van geschiktheid; een consistente, relevante en goed gecontroleerde inhoud blijft belangrijker.',
+                'In deze gids leer je een bruikbare structuur voor een Engels CV of resume, hoe je Nederlandse termen zorgvuldig vertaalt, wat je wel en niet opneemt en hoe je veelgemaakte fouten vermijdt. We behandelen ook het verschil tussen een reguliere Europese CV en een Amerikaanse resume.',
             ],
         },
         {
             id: 'cv-vs-resume',
             title: 'CV vs Resume: wat is het verschil?',
-            answerCapsule: 'Een CV is volledig en onbeperkt in lengte; een resume is 1-2 pagina\'s, gericht op één functie. In Europa gebruik je CV, in de VS een resume.',
+            answerCapsule: 'CV en resume worden niet overal hetzelfde gebruikt. In de VS bedoelt resume meestal een korte, functiegerichte versie; volg altijd de term en instructies in de vacature.',
             content: [
-                'In het dagelijks gebruik worden "CV" en "resume" door Nederlanders door elkaar gebruikt, maar ze zijn formeel niet hetzelfde. Een Curriculum Vitae (CV) is een volledig overzicht van je loopbaan, opleiding en prestaties — zonder strikte lengtelimiet. In Europa en bij academische sollicitaties is dit de standaard.',
-                'Een resume is de Amerikaanse en Canadese variant: een beknopt, op maat gemaakt document van 1-2 pagina\'s, gefocust op de specifieke functie waar je op solliciteert. Informatie die niet direct relevant is voor die functie laat je weg. Een resume is dynamischer dan een CV — je past hem bij elke sollicitatie aan.',
-                'In Nederland hanteren de meeste internationale bedrijven de term "CV" maar verwachten ze inhoudelijk iets dat dichter bij een resume ligt: beknopt, resultaatgericht en op de functie afgestemd. Hanteer als vuistregel: 2 pagina\'s voor een Europese internationale sollicitatie, 1-2 pagina\'s voor een Angelsaksische. Meer dan 3 pagina\'s is in alle gevallen te lang.',
+                'In het dagelijks gebruik worden "CV" en "resume" vaak door elkaar gebruikt. De betekenis verschilt per land en context. Bij academische sollicitaties kan een CV een uitgebreid overzicht met publicaties en onderzoek zijn; bij veel reguliere functies bedoelt men een beknopte, relevante sollicitatieversie.',
+                'In de Verenigde Staten en Canada verwijst "resume" meestal naar een korte, op de functie afgestemde versie. In het Verenigd Koninkrijk en een groot deel van Europa is "CV" de gebruikelijke term voor een vergelijkbaar sollicitatiedocument.',
+                'Volg daarom de term, bestandsvorm en eventuele paginalimiet in de vacature. Als er geen limiet staat, verwijder dan informatie die niet helpt om jouw geschiktheid voor deze functie te beoordelen.',
             ],
             bullets: [
-                'CV (Europa, Australië, academisch): volledig loopbaanoverzicht, 2-4 pagina\'s',
-                'Resume (VS, Canada, VK): 1-2 pagina\'s, functiegericht, resultaatgericht',
-                'Nederland internationaal: vereis altijd navraag — meeste multinationals verwachten een 2-paginaversie',
-                'Academische vacatures: gebruik altijd de volledige CV-format, inclusief publicaties',
+                'Reguliere sollicitatie: compact, relevant en afgestemd op de vacature',
+                'VS en Canada: "resume" is meestal de gebruikelijke term',
+                'VK en Europa: "CV" is meestal de gebruikelijke term',
+                'Academische vacature: volg de gevraagde onderdelen, zoals onderzoek of publicaties',
             ],
         },
         {
             id: 'structuur',
             title: 'Structuur van een Engels CV',
-            answerCapsule: 'De Engelse CV-structuur: Contact info → Professional Summary → Work Experience → Education → Skills → Languages. Referenties "available on request".',
+            answerCapsule: 'Een veelgebruikte volgorde is: contactgegevens, profiel, relevante ervaring, opleiding, vaardigheden en talen. Starters kunnen opleiding eerder zetten.',
             content: [
-                'De structuur van een Engels CV lijkt op zijn Nederlandse equivalent maar heeft een aantal specifieke conventies. Begin met je contactgegevens, gevolgd door een "Professional Summary" (profieltekst), dan je werkervaring (meest recent eerst), opleiding, vaardigheden en talen. In een Engelstalig CV zet je je werkervaring vóór je opleiding, ongeacht of je starter bent.',
-                'Vermeld bij contactgegevens je naam, telefoonnummer (inclusief landcode: +31 6), e-mailadres, LinkedIn URL en optioneel je woonplaats (stad, land). Zet geen BSN, geboortedatum, geslacht of nationaliteit in een Engels CV — dit is in veel landen privacygevoelig en kan in de VS/VK zelfs leiden tot diskwalificatie vanwege anti-discriminatiewetgeving.',
+                'De structuur van een Engels CV lijkt op zijn Nederlandse equivalent. Begin met je contactgegevens en een korte "Professional Summary". Daarna volgen meestal relevante werkervaring, opleiding, vaardigheden en talen. Heb je nog weinig werkervaring, dan kan opleiding juist eerder komen. Zet binnen ervaring en opleiding het meest recente onderdeel bovenaan.',
+                'Vermeld bij contactgegevens je naam, telefoonnummer (inclusief landcode: +31 6), e-mailadres, LinkedIn-URL en optioneel je woonplaats (stad, land). Zet geen BSN op je CV. Geboortedatum, geslacht en nationaliteit zijn voor de meeste sollicitaties niet nodig; volg alleen expliciete, legitieme instructies van de werkgever.',
                 'Gebruik consistente datumnotatie: "Jan 2022 – Mar 2024" (Brits) of "January 2022 – March 2024" (formeel). Vermijd de Nederlandse stijl "01-01-2022" want die is internationaal onduidelijk (is dat januari of de eerste dag van de eerste maand?).',
             ],
             bullets: [
                 'Contact Information: naam, telefoon (+31 6...), e-mail, LinkedIn, stad/land',
-                'Professional Summary: 3-5 zinnen, resultaatgericht',
+                'Professional Summary: kort, relevant en resultaatgericht',
                 'Work Experience: bedrijf, functietitel (Engels), locatie, periode, bullets',
                 'Education: opleiding in het Engels, instelling, locatie, periode',
                 'Skills: hard skills, software, tools',
@@ -97,31 +97,31 @@ export const cvMakenInHetEngels: BlogArticle = {
         {
             id: 'functies-vertalen',
             title: 'Nederlandse functies en titels vertalen',
-            answerCapsule: 'Vertaal niet letterlijk: "medewerker" is "Associate" of "Specialist", "stagiaire" is "Intern", "leidinggevende" is "Team Lead" of "Manager".',
+            answerCapsule: 'Vertaal functietitels op basis van de werkelijke rol en vacaturecontext. Controleer officiële termen en vermijd een hoger niveau dan je daadwerkelijk had.',
             content: [
                 'De vertaling van Nederlandse functietitels naar het Engels is een van de meest foutgevoelige onderdelen. Letterlijke vertalingen klinken vaak onprofessioneel of worden door internationale recruiters niet herkend. "Medewerker klantenservice" wordt "Customer Service Representative", niet "Employee customer service".',
-                'Bij academische titels gelden specifieke vertaalregels. Een Nederlandse "Bachelor" heet in het Engels gewoon "Bachelor\'s degree". "Hbo" vertaal je als "University of Applied Sciences" (officieel erkend in het buitenland). "Mbo" is "Senior Secondary Vocational Education (MBO)" — schrijf de afkorting ook uit voor internationale lezers. "Drs." (doctorandus) wordt "M.Sc." of "M.A." afhankelijk van de richting.',
+                'Gebruik voor opleidingen en graden bij voorkeur de officiële Engelse omschrijving van je onderwijsinstelling of diploma supplement. HBO en WO zijn verschillende Nederlandse onderwijstypen; ken jezelf daarom niet zelfstandig een Engelse instellingsnaam, graad of buitenlands equivalent toe. Voor mbo kan een korte Engelse toelichting naast de Nederlandse afkorting helpen. Bij formele waardering in het buitenland kan een diplomabeschrijving van Nuffic of SBB nodig zijn.',
                 'Bedrijfsnamen vertaal je nooit — die blijven altijd in hun originele vorm. Producten, projectnamen en interne termen kun je beter omschrijven dan letterlijk vertalen. Als je werkte aan "de Nationale Bomenbank" als project schrijf je: "Worked on a national tree registry database project (Nationale Bomenbank)".',
             ],
             bullets: [
                 'Stagiaire → Intern (niet "Trainee", dat is iets anders)',
-                'Medewerker → Associate of Specialist (afhankelijk van niveau)',
-                'Leidinggevende → Team Lead, Supervisor of Manager',
-                'Directeur → Director of CEO (afhankelijk van organisatiegrootte)',
+                'Medewerker → kies de gangbare Engelse titel die de echte werkzaamheden en het niveau beschrijft',
+                'Leidinggevende → Team Lead, Supervisor of Manager, alleen wanneer verantwoordelijkheden en mandaat daarbij passen',
+                'Directeur → behoud zo nodig de Nederlandse titel en licht de scope toe; vertaal niet automatisch naar CEO',
                 'Zelfstandige / ZZP\'er → Freelancer of Independent Contractor',
-                'Hbo → University of Applied Sciences (Bachelor of [richting])',
-                'Mbo → Senior Secondary Vocational Education (MBO)',
-                'Propedeuse → Foundation Year Certificate',
+                'Hbo → gebruik de officiële Engelse instellingsnaam en diplomaomschrijving',
+                'Mbo → behoud MBO en voeg een begrijpelijke Engelse toelichting toe',
+                'Propedeuse → gebruik de officiële omschrijving van je instelling of diploma supplement',
             ],
         },
         {
             id: 'professional-summary',
             title: 'Engelse profieltekst: de Professional Summary',
-            answerCapsule: 'Schrijf je summary in de derde persoon of zonder subject: "Results-driven marketer with 5+ years..." — actief, concreet, max 5 zinnen.',
+            answerCapsule: 'Houd je summary compact en functiegericht. Maak je rol, relevante ervaring en controleerbaar bewijs direct duidelijk, zonder algemene claims te stapelen.',
             content: [
-                'De Professional Summary is het Engelse equivalent van je profieltekst. Americanenverachten dit als de eerste sectie na je contactgegevens. Het is 3-5 zinnen lang en vat samen wie je bent, je sterkste competenties en wat je zoekt. Schrijf in de derde persoon of zonder grammaticaal subject: "Results-driven marketing professional with 6+ years of experience in B2B digital campaigns..."',
-                'Vermijd dooddoeners als "hard-working", "team player" en "passionate about". Dit zijn de meest gebruikte en minst overtuigende termen in Engelse CV\'s. Gebruik in plaats daarvan specifieke prestaties: "Increased MQL volume by 35% through data-driven campaign optimization at a Dutch SaaS company." Concreet en meetbaar wint het altijd van generiek.',
-                'Sluit de summary af met wat je zoekt in de volgende stap: "Currently seeking a senior marketing role in a fast-scaling tech environment." Dit helpt recruiters direct te beoordelen of je profiel past bij de functie. Houd de gehele summary onder 80 woorden voor maximale scanbaarheid.',
+                'De Professional Summary is het Engelse equivalent van je profieltekst en staat meestal direct na je contactgegevens. Vat kort samen wat je rol is, welke ervaring relevant is en welke bijdrage je kunt aantonen. Een beknopte cv-stijl zonder "I" komt vaak voor, maar duidelijkheid en natuurlijk Engels zijn belangrijker dan één vaste formulering.',
+                'Vermijd losse labels als "hard-working", "team player" en "passionate about" wanneer je ze niet onderbouwt. Gebruik liever een specifiek, controleerbaar resultaat. Bijvoorbeeld: "Improved qualified lead volume through campaign testing and audience segmentation." Voeg alleen cijfers toe die je kunt verifiëren.',
+                'Een afsluitzin over je volgende stap kan helpen wanneer die specifiek is voor de doelrol. Houd de summary kort genoeg om snel te scannen en verwijder zinnen die geen nieuwe informatie toevoegen.',
             ],
         },
         {
@@ -129,9 +129,9 @@ export const cvMakenInHetEngels: BlogArticle = {
             title: 'Werkervaring in het Engels beschrijven',
             answerCapsule: 'Gebruik actieve werkwoorden in de verleden tijd (Led, Developed, Managed) en kwantificeer resultaten: "Reduced churn by 18%" is sterker dan "Hielp met klantbehoud".',
             content: [
-                'Beschrijf je werkervaring in het Engels altijd met krachtige actiewerkwoorden in de simple past tense (verleden tijd) voor afgeronde functies, en simple present voor je huidige functie. Begin elke bullet met een werkwoord: "Led a cross-functional team of 8 engineers", "Developed a content strategy that increased organic traffic by 42%", "Managed a budget of €500K across three product lines".',
-                'Kwantificering is in Engelstalige CV\'s een absolute must. Recruiters bij internationale bedrijven zijn gewend aan resume-cultuur waar elk resultaat meetbaar is. Gebruik percentages, bedragen, aantallen en tijdsperioden: "Reduced customer onboarding time from 14 days to 5 days", "Managed 200+ client accounts across EMEA".',
-                'Houd elke werkervaring bij 3-5 bullets. Meer is te veel; minder is te weinig. Begin altijd met de meest indrukwekkende prestatie. Als je bij meerdere bedrijven hebt gewerkt, kies dan de meest relevante 3-5 ervaringen voor de functie waarop je solliciteert.',
+                'Gebruik voor afgeronde functies doorgaans de verleden tijd en voor je huidige verantwoordelijkheden de tegenwoordige tijd. Begin bullets waar mogelijk met een helder actiewerkwoord, zoals "Led", "Developed" of "Managed".',
+                'Cijfers kunnen een resultaat concreet maken, maar alleen wanneer ze kloppen en je ze kunt toelichten. Zonder betrouwbaar cijfer kun je scope ook beschrijven met proces, doelgroep, verantwoordelijkheid of aantoonbaar effect.',
+                'Kies per functie een beperkte set relevante bullets. Zet het sterkste, meest vacaturegerichte bewijs bovenaan en laat routinewerk of verouderde details weg wanneer die niets toevoegen.',
             ],
             bullets: [
                 'Achieved / Accomplished – voor resultaten',
@@ -149,8 +149,8 @@ export const cvMakenInHetEngels: BlogArticle = {
             title: 'Opleiding in het Engels vermelden',
             answerCapsule: 'Schrijf de naam van je opleiding in het Engels uit en voeg "(Netherlands)" toe na de naam van de instelling voor internationale herkenbaarheid.',
             content: [
-                'Nederlandse opleidingsnamen zijn buiten Nederland nauwelijks bekend. Schrijf ze altijd in het Engels en voeg de locatie toe: "Bachelor of Science in Business Administration, Amsterdam University of Applied Sciences (Netherlands), 2019–2023." Het woordje "(Netherlands)" na de instelling helpt internationale recruiters te begrijpen in welk land je hebt gestudeerd.',
-                'Voor mbo-opleidingen en andere gevallen waarbij de vertaling minder eenvoudig is, gebruik je een beschrijvende vertaling: "Level 4 Diploma in Logistics (Senior Secondary Vocational Education – MBO), ROC Amsterdam, 2017–2020." Voeg de MBO-afkorting toe zodat Nederlandse recruiters het ook herkennen.',
+                'Gebruik bij voorkeur de officiële Engelse naam van je opleiding en instelling, bijvoorbeeld uit je diploma supplement of de website van de onderwijsinstelling. Behoud de oorspronkelijke Nederlandse naam tussen haakjes wanneer een vertaling anders verwarrend kan zijn, en voeg plaats en land toe.',
+                'Voor mbo-opleidingen en andere termen zonder één-op-éénvertaling behoud je het Nederlandse niveau en voeg je een korte Engelse toelichting toe. Ken jezelf geen internationale graad of niveau toe dat niet officieel bij je diploma hoort.',
                 'Vermeld relevante cursussen, certificeringen en bijscholing in een aparte sectie "Certifications & Courses": "Google Analytics 4 Certification (2023)", "Scrum Master Certification – PSM I (2022)", "HubSpot Content Marketing Certification (2024)". Dit toont ook internationale recruiters dat je continu leert.',
             ],
         },
@@ -159,19 +159,19 @@ export const cvMakenInHetEngels: BlogArticle = {
             title: 'Brits vs Amerikaans Engels: kies één variant',
             answerCapsule: 'Kies één variant en wees consistent. Brits: "colour", "organisation", "analyse". Amerikaans: "color", "organization", "analyze".',
             content: [
-                'Brits en Amerikaans Engels verschillen subtiel in spelling, vocabulaire en tone. Recruiters bij internationale bedrijven merken het als je door elkaar gebruikt. Kies één variant — in Europa is Brits Engels de standaard; voor een sollicitatie bij een Amerikaans bedrijf gebruik je Amerikaans Engels.',
+                'Brits en Amerikaans Engels verschillen in spelling en woordkeuze. Kies de variant die past bij de vacature, werkgever of het land waarin je solliciteert en gebruik die consequent. Bij een Amerikaanse werkgever ligt Amerikaans Engels voor de hand; bij een Britse werkgever Brits Engels.',
                 'De meest voorkomende spellingsverschillen: Brits "colour, organisation, realise, analyse, centre, specialise"; Amerikaans "color, organization, realize, analyze, center, specialize". Ook vocabulaire verschilt: een "CV" is in de VS een resume, "personal statement" noem je "professional summary", "redundant" (Brits voor ontslagen) betekent iets heel anders in Amerikaans gebruik.',
-                'Gebruik spellingcheck met de juiste taalinstelling — zet je Word of Google Docs in op "English (UK)" of "English (US)" afhankelijk van je keuze. De spellingchecker vangt de meeste inconsistenties op. Voor extra zekerheid gebruik je Grammarly (gratis versie) dat ook stijl en tone controleert.',
+                'Gebruik een spellingcontrole met de juiste taalinstelling, bijvoorbeeld "English (UK)" of "English (US)". Controleer suggesties altijd zelf: een taaltool kent jouw functie, sector en feitelijke ervaring niet.',
             ],
         },
         {
             id: 'ats-engels',
             title: 'ATS-optimalisatie voor Engelstalige CV\'s',
-            answerCapsule: 'Gebruik exact de sleutelwoorden uit de vacature-tekst — ATS matcht op woorden, niet op synoniemen. "Project Management" ≠ "project coördinatie".',
+            answerCapsule: 'Gebruik duidelijke Engelse sectiekoppen en relevante vacaturetermen die werkelijk op jou van toepassing zijn. Controleer ook de tekstextractie van je PDF.',
             content: [
-                'Internationale bedrijven gebruiken vaak geavanceerde ATS-systemen (Workday, Greenhouse, Lever, Taleo) die je CV scoren op sleutelwoorden. Een CV dat niet door de ATS-filter heen komt, wordt nooit door een recruiter gezien. Onderzoek van Jobscan (2024) toont dat 70% van de CV\'s bij grote internationale bedrijven automatisch wordt verwijderd vóórdat een mens ernaar kijkt.',
-                'Lees de vacature zorgvuldig en markeer de exact gebruikte termen. Als de vacature "data-driven decision making" noemt, zet dan die exacte frase in je CV — niet "analytisch sterk" of "werkt met data". ATS-systemen matchen op letterlijke tekst, niet op betekenis. Dit geldt ook voor sectorspecifieke acroniemen: SCRUM, KPI, B2B, SaaS, GAAP, PMP.',
-                'Vermijd verborgen tekst, tabellen, tekstvakken en kolommen — de meeste ATS-systemen kunnen deze niet lezen. Gebruik een simpele structuur: één kolom, standaard koppen (Work Experience, Education, Skills) en geen grafieken of pictogrammen. Save as PDF na afronding.',
+                'Veel werkgevers gebruiken een applicant tracking system om sollicitaties te ontvangen, te bewaren en doorzoekbaar te maken. De precieze verwerking verschilt per systeem en configuratie; een ATS-score of automatische afwijzing is daarom nooit algemeen te voorspellen.',
+                'Lees de vacature zorgvuldig en gebruik relevante termen uit de vacature wanneer ze feitelijk op jou van toepassing zijn. Moderne systemen verschillen in hoe zij synoniemen en context verwerken, dus schrijf eerst voor een menselijke lezer en houd functietitels, vaardigheden en sectiekoppen duidelijk.',
+                'Verborgen tekst, tekst in afbeeldingen en complexe opmaak kunnen tekstextractie minder betrouwbaar maken. Gebruik duidelijke koppen en selecteerbare tekst en controleer de uiteindelijke PDF door de tekst eruit te kopiëren en de leesvolgorde te bekijken.',
             ],
             intentLinks: [
                 {
@@ -191,8 +191,8 @@ export const cvMakenInHetEngels: BlogArticle = {
             title: 'Wat laat je weg uit een Engels CV?',
             answerCapsule: 'Laat weg: BSN, geboortedatum, nationaliteit, burgerlijke staat, foto (bij VS/VK), referenties met namen en adres.',
             content: [
-                'In een Engelstalig CV, zeker voor internationale of Angelsaksische werkgevers, laat je bepaalde informatie weg die in Nederland soms wel wordt opgenomen. Geboortedatum, nationaliteit, burgerlijke staat en BSN horen er niet in. In de VS is het zelfs risicovol om dit te vermelden — werkgevers mogen er formeel niets mee doen en het kan de recruiter ongemakkelijk stellen.',
-                'Een foto is in Nederland gebruikelijk maar in het VK en de VS ongebruikelijk en zelfs afgeraden. Bij internationale bedrijven in Nederland is het afhankelijk van de bedrijfscultuur — twijfel je, laat de foto dan weg. Verlies je niets mee.',
+                'Voor Britse sollicitaties adviseert de National Careers Service om leeftijd, geboortedatum, burgerlijke staat en nationaliteit niet op het CV te zetten. Een BSN of identiteitsnummer hoort evenmin op een sollicitatie-CV. Voor andere landen volg je de vacature en lokale richtlijnen, maar deel geen gevoelige gegevens zonder duidelijke noodzaak.',
+                'Een foto is voor veel Britse en Amerikaanse sollicitaties ongebruikelijk. Bij internationale bedrijven in Nederland kan de gewoonte verschillen. Volg de instructies van de werkgever en laat de foto bij twijfel weg.',
                 'Referenties vermeld je niet met namen en contactgegevens op je CV. Schrijf simpelweg "References available upon request" onderaan. Stuur referentielijsten pas mee als de werkgever er expliciet om vraagt, wat doorgaans pas na het eerste gesprek gebeurt.',
             ],
             bullets: [
@@ -209,11 +209,11 @@ export const cvMakenInHetEngels: BlogArticle = {
         {
             id: 'tool-en-vertaling',
             title: 'Tools voor een Engels CV maken',
-            answerCapsule: 'WerkCV.nl genereert je CV in het Engels direct vanuit je ingevoerde data. Controleer altijd met Grammarly op grammatica en DeepL voor subtiele vertalingen.',
+            answerCapsule: 'WerkCV laat je een Engelstalig CV opbouwen en volledig bekijken. Controleer vertalingen, vaktermen, namen en cijfers altijd zelf voordat je de versie verstuurt.',
             content: [
-                'Voor het vertalen van je CV zijn er meerdere tools beschikbaar. DeepL is kwalitatief de beste vertaalmachine voor het Nederlands-naar-Engels en pikt ook nuanceverschillen op. Gebruik het als startpunt maar corrigeer altijd de output — automatische vertalingen missen vakjargon en context.',
-                'Grammarly (gratis versie beschikbaar) controleert je grammatica en stijl in het Engels en geeft suggesties voor professionelere formuleringen. De premium-versie geeft ook stijlanalyse en tone-feedback, wat handig is als je niet zeker weet of je tekst formeel genoeg klinkt.',
-                'WerkCV.nl biedt je de mogelijkheid je CV-data in het Engels in te vullen en direct als PDF te exporteren in een ATS-vriendelijk template. Zo bespaar je de opmaak-stap en houd je je energie voor de inhoud. Alle templates zijn beschikbaar voor internationale sollicitaties.',
+                'Een vertaaltool kan een eerste versie opleveren, maar mist soms vakjargon, context of de juiste betekenis van een functietitel. Vergelijk de uitkomst met de vacature en de officiële Engelse termen van werkgevers en onderwijsinstellingen.',
+                'Een spelling- of grammaticacontrole kan fouten signaleren, maar accepteer suggesties niet automatisch. Controleer of de tekst nog steeds exact beschrijft wat je hebt gedaan en laat belangrijke versies zo mogelijk door een vaardige Engelse lezer nakijken.',
+                'WerkCV.nl laat je CV-gegevens in het Engels invullen, de volledige opmaak bekijken en daarna als PDF exporteren. Kies een rustige template, controleer de leesvolgorde en besteed de meeste aandacht aan relevante, correcte inhoud.',
             ],
             intentLinks: [
                 {
@@ -233,7 +233,7 @@ export const cvMakenInHetEngels: BlogArticle = {
     faq: [
         {
             question: 'Wat is het verschil tussen een CV en een resume?',
-            answer: 'Een CV (Curriculum Vitae) is een uitgebreid loopbaanoverzicht zonder strikte lengtelimiet, standaard in Europa. Een resume is de Amerikaanse variant: 1-2 pagina\'s, beknopt en functiegericht. In Nederland volstaat voor de meeste internationale sollicitaties een CV van max. 2 pagina\'s.',
+            answer: 'De termen verschillen per land en sector. In de VS en Canada bedoelt men met resume meestal een korte, functiegerichte versie; in het VK en Europa gebruikt men vaker CV. Volg de term, onderdelen en eventuele paginalimiet in de vacature.',
         },
         {
             question: 'Moet ik mijn CV volledig in het Engels schrijven of kan ik tweetalig?',
@@ -241,11 +241,11 @@ export const cvMakenInHetEngels: BlogArticle = {
         },
         {
             question: 'Hoe schrijf ik mijn Nederlandse graad in het Engels?',
-            answer: '"Bachelor" blijft "Bachelor\'s Degree". Hbo vertaal je als "University of Applied Sciences". Mbo is "Senior Secondary Vocational Education (MBO)". Voeg altijd de naam van de instelling én "(Netherlands)" toe zodat internationale recruiters de achtergrond begrijpen.',
+            answer: 'Gebruik de officiële Engelse diplomaomschrijving van je onderwijsinstelling of diploma supplement. Behoud bij twijfel de Nederlandse naam of afkorting en voeg een korte Engelse toelichting, instelling, plaats en land toe. Vertaal jezelf niet naar een graad of niveau dat niet officieel is toegekend.',
         },
         {
             question: 'Moet ik een foto zetten op mijn Engels CV?',
-            answer: 'Voor Europese (inclusief Nederlandse) werkgevers is een foto gebruikelijk. Voor Amerikaanse, Canadese of Britse werkgevers laat je de foto weg — dit is de culturele norm en vermijdt mogelijke bias bij het wervingsproces.',
+            answer: 'Volg de vacature en lokale gewoonte. Voor sollicitaties in de VS, Canada en het VK wordt een foto meestal weggelaten. Ook in Nederland is een foto niet verplicht; bij twijfel kun je hem weglaten.',
         },
         {
             question: 'Hoe vertaal ik ZZP of freelancer in het Engels?',
@@ -253,11 +253,38 @@ export const cvMakenInHetEngels: BlogArticle = {
         },
         {
             question: 'Is Brits of Amerikaans Engels beter voor een CV?',
-            answer: 'Brits Engels is de standaard voor Europese en Nederlandse internationale sollicitaties. Amerikaans Engels is beter voor VS- of Canadese werkgevers. Kies één variant en wees consistent — het wisselen van spelling (colour/color) valt meteen op.',
+            answer: 'Volg de taal van de vacature en de voorkeur van de werkgever. Voor een Britse werkgever ligt Brits Engels voor de hand; voor een Amerikaanse werkgever Amerikaans Engels. Kies één variant en gebruik spelling en woordkeuze consequent.',
         },
         {
             question: 'Hoe groot moet mijn Engelstalige CV zijn?',
-            answer: '1-2 pagina\'s voor de meeste functies. Één pagina voor starters en junior-functies; twee pagina\'s voor medior en senior. Academische en wetenschappelijke CV\'s mogen langer zijn. Meer dan 2 pagina\'s is voor commerciële functies altijd te lang.',
+            answer: 'Volg eerst een paginalimiet uit de vacature. Zonder limiet moet de versie vooral relevant en goed scanbaar zijn: laat overbodige details weg en gebruik extra ruimte alleen wanneer die belangrijk bewijs toevoegt. Academische CV\'s kunnen door publicaties en onderzoek langer zijn.',
+        },
+    ],
+
+    sources: [
+        {
+            publisher: 'UK National Careers Service',
+            title: 'How to write a CV',
+            url: 'https://nationalcareers.service.gov.uk/careers-advice/cv-sections',
+            note: 'Officiële Britse richtlijn voor CV-secties, volgorde bij starters, contactgegevens, persoonsgegevens, werkervaring en referenties.',
+        },
+        {
+            publisher: 'Europass — Europese Unie',
+            title: 'Create your Europass CV',
+            url: 'https://europass.europa.eu/en/create-europass-cv',
+            note: 'Europese richtlijn voor vacaturegericht schrijven, duidelijke taal, sterke werkwoorden, omgekeerd chronologische ervaring en controle op spelling en grammatica.',
+        },
+        {
+            publisher: 'Nuffic',
+            title: 'Diploma description: your Dutch diploma abroad',
+            url: 'https://www.nuffic.nl/en/study-and-work-abroad/diploma-description-your-dutch-diploma-abroad',
+            note: 'Officiële uitleg over Engelse diplomabeschrijvingen, waardering van Nederlandse diploma’s en wanneer vertaling of een beschrijving nodig kan zijn.',
+        },
+        {
+            publisher: 'Nuffic',
+            title: 'Level of Dutch diplomas',
+            url: 'https://www.nuffic.nl/en/education-systems/the-netherlands/level-of-dutch-diplomas',
+            note: 'Overzicht van Nederlandse diploma’s en hun NLQF- en EQF-niveaus; ondersteunt het advies om geen buitenlands equivalent of niveau te verzinnen.',
         },
     ],
 

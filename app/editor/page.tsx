@@ -7,6 +7,7 @@ import { cookies } from "next/headers";
 import { normalizeStartSource, PENDING_START_SOURCE_COOKIE, readEncodedStartSource } from "@/lib/start-source";
 import { isAgencyAccessError } from "@/lib/agency-access";
 import { getWorkspaceEntitlementsForUser, isWorkspaceSwitcherEnabled } from "@/lib/workspace/entitlements";
+import { normalizeEditorFocus } from "@/lib/editor-focus";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -24,12 +25,13 @@ function isUploadRequested(value: string | string[] | undefined): boolean {
 export default async function EditorPage({
     searchParams,
 }: {
-    searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string }>;
+    searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string; focus?: string }>;
 }) {
-    const { id, template, startSource, upload, workspace } = await searchParams;
+    const { id, template, startSource, upload, workspace, focus } = await searchParams;
     const user = await getCurrentUser();
     const templateId = normalizeTemplateId(template);
     const uploadRequested = isUploadRequested(upload);
+    const resolvedFocus = normalizeEditorFocus(focus);
     const cookieStore = await cookies();
     const resolvedStartSource =
         normalizeStartSource(startSource) ||
@@ -37,12 +39,14 @@ export default async function EditorPage({
         "editor_direct";
 
     if (!user) {
-        const workspaceParam = workspace === "agency" ? "&workspace=agency" : "";
-        const next = id
-            ? `/editor?id=${encodeURIComponent(id)}${uploadRequested ? "&upload=1" : ""}`
-            : templateId
-                ? `/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}${workspaceParam}`
-                : `/editor?template=professional&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}${workspaceParam}`;
+        const nextParams = new URLSearchParams();
+        if (id) nextParams.set("id", id);
+        nextParams.set("template", templateId || "professional");
+        nextParams.set("startSource", resolvedStartSource);
+        if (resolvedFocus) nextParams.set("focus", resolvedFocus);
+        if (uploadRequested) nextParams.set("upload", "1");
+        if (workspace === "agency") nextParams.set("workspace", "agency");
+        const next = `/editor?${nextParams.toString()}`;
         redirect(`/login?next=${encodeURIComponent(next)}`);
     }
 
@@ -63,7 +67,14 @@ export default async function EditorPage({
             }
             throw error;
         }
-        redirect(`/editor?id=${encodeURIComponent(cvId)}${uploadRequested ? "&upload=1" : ""}`);
+        const editorParams = new URLSearchParams({
+            id: cvId,
+            template: draftTemplateId,
+            startSource: resolvedStartSource,
+        });
+        if (resolvedFocus) editorParams.set("focus", resolvedFocus);
+        if (uploadRequested) editorParams.set("upload", "1");
+        redirect(`/editor?${editorParams.toString()}`);
     }
 
     const cv = await getCVWithSettings(id);

@@ -50,7 +50,7 @@ import {
     type CompletionStepId,
 } from "@/lib/cv-completion";
 import { getTargetVacancySessionKey } from "@/lib/cover-letter-session";
-import { PENDING_EXAMPLE_CV_STORAGE_KEY, type PendingExampleCV } from "@/lib/pending-example-cv";
+import { PENDING_EXAMPLE_CV_STORAGE_KEY, parsePendingExampleCV, type PendingExampleCV } from "@/lib/pending-example-cv";
 import { parseEnglishRoleExampleStartSource } from "@/lib/english-role-examples";
 import {
     isPendingCvMatch,
@@ -74,6 +74,11 @@ import SectionOrderPanel from "./SectionOrderPanel";
 import EditorFeedbackWidget from "./EditorFeedbackWidget";
 import WorkspaceSwitcher from "@/components/workspace/WorkspaceSwitcher";
 import type { WorkspaceEntitlements } from "@/lib/workspace/types";
+import {
+    editorFocusAnchor,
+    normalizeEditorFocus,
+    type EditorFocusTarget,
+} from "@/lib/editor-focus";
 
 interface EditorProps {
     initialData: CVData;
@@ -405,6 +410,9 @@ export default function Editor({
     const [showAdditionalPersonalDetails, setShowAdditionalPersonalDetails] = useState(
         () => hasAdditionalPersonalDetails(normalizedInitialData)
     );
+    const [editorFocusContext, setEditorFocusContext] = useState<EditorFocusTarget | null>(null);
+    const editorFocusAppliedRef = useRef(false);
+    const pendingExampleApplyStartedRef = useRef(false);
 
     useEffect(() => {
         const url = new URL(window.location.href);
@@ -412,6 +420,48 @@ export default function Editor({
         setIsFinalPdfPreviewOpen(true);
         url.searchParams.delete('downloadIntent');
         window.history.replaceState(window.history.state, '', `${url.pathname}${url.search}${url.hash}`);
+    }, []);
+
+    useEffect(() => {
+        if (editorFocusAppliedRef.current) return;
+        const url = new URL(window.location.href);
+        const focus = normalizeEditorFocus(url.searchParams.get("focus"));
+        if (!focus) return;
+
+        let userInteracted = false;
+        const markInteraction = () => {
+            userInteracted = true;
+        };
+        window.addEventListener("pointerdown", markInteraction, { once: true, capture: true });
+        window.addEventListener("keydown", markInteraction, { once: true, capture: true });
+
+        const timeout = window.setTimeout(() => {
+            if (userInteracted || editorFocusAppliedRef.current) return;
+            const anchor = document.getElementById(editorFocusAnchor(focus));
+            if (!anchor) return;
+
+            const focusTarget = focus === "profile"
+                ? anchor.querySelector<HTMLElement>('[name="personal.summary"]')
+                : anchor.querySelector<HTMLElement>('[name^="skills."][name$=".name"]')
+                    ?? anchor.querySelector<HTMLElement>('[data-editor-focus-heading="skills"]');
+            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            anchor.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+            focusTarget?.focus({ preventScroll: true });
+            setEditorFocusContext(focus);
+            editorFocusAppliedRef.current = true;
+            url.searchParams.delete("focus");
+            window.history.replaceState(
+                window.history.state,
+                "",
+                `${url.pathname}${url.search}${url.hash}`,
+            );
+        }, 0);
+
+        return () => {
+            window.clearTimeout(timeout);
+            window.removeEventListener("pointerdown", markInteraction, { capture: true });
+            window.removeEventListener("keydown", markInteraction, { capture: true });
+        };
     }, []);
     const [isAtsRewriting, setIsAtsRewriting] = useState(false);
     const [atsTargetRole, setAtsTargetRole] = useState(initialData.personal.title || '');
@@ -712,22 +762,24 @@ export default function Editor({
     useEffect(() => {
         if (isPublicMode) return;
         if (typeof window === 'undefined') return;
+        if (pendingExampleApplyStartedRef.current) return;
         const rawPendingExample = window.sessionStorage.getItem(PENDING_EXAMPLE_CV_STORAGE_KEY);
         if (!rawPendingExample) return;
 
         let pendingExample: PendingExampleCV | null = null;
         try {
-            pendingExample = JSON.parse(rawPendingExample) as PendingExampleCV;
+            pendingExample = parsePendingExampleCV(JSON.parse(rawPendingExample));
         } catch {
             window.sessionStorage.removeItem(PENDING_EXAMPLE_CV_STORAGE_KEY);
             return;
         }
 
         if (!pendingExample || pendingExample.templateId !== initialTemplateId) {
+            window.sessionStorage.removeItem(PENDING_EXAMPLE_CV_STORAGE_KEY);
             return;
         }
 
-        window.sessionStorage.removeItem(PENDING_EXAMPLE_CV_STORAGE_KEY);
+        pendingExampleApplyStartedRef.current = true;
 
         const applyPendingExample = async () => {
             try {
@@ -747,6 +799,7 @@ export default function Editor({
                 }
 
                 setIsSaved(true);
+                window.sessionStorage.removeItem(PENDING_EXAMPLE_CV_STORAGE_KEY);
                 const roleExampleSource = parseEnglishRoleExampleStartSource(pendingExample.startSource);
                 track('example_cv_applied_after_login', {
                     cvId: id,
@@ -759,11 +812,12 @@ export default function Editor({
                             entryMethod: roleExampleSource.entryMethod,
                         }
                         : {}),
-                    pagePath: typeof window !== 'undefined' ? window.location.pathname : undefined,
-                    uiLanguage,
+                    pagePath: pendingExample.pagePath || window.location.pathname,
+                    uiLanguage: pendingExample.uiLanguage || uiLanguage,
                 });
             } catch {
                 setIsSaved(false);
+                pendingExampleApplyStartedRef.current = false;
             }
         };
 
@@ -1083,7 +1137,7 @@ export default function Editor({
             }
             readyToDownloadTrackedRef.current = true;
         }
-    }, [completionScore, completionState.isReady, completionState.steps, id]);
+    }, [completionScore, completionState.isReady, completionState.steps, id, uiLanguage]);
 
     const handlePhotoChange = useCallback((base64: string) => {
         setValue('personal.photo', base64, { shouldDirty: true });
@@ -1974,6 +2028,20 @@ export default function Editor({
                             </section>
                         ) : null}
 
+                        {editorFocusContext === "profile" ? (
+                            <div className="flex items-start justify-between gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-6 text-emerald-950" role="status">
+                                <p>Gebruik het voorbeeld als inspiratie en vervang algemene claims door je eigen ervaring en resultaten.</p>
+                                <button
+                                    type="button"
+                                    onClick={() => setEditorFocusContext(null)}
+                                    className="shrink-0 rounded px-2 py-1 font-bold text-emerald-900 hover:bg-emerald-100"
+                                    aria-label="Sluit deze tip"
+                                >
+                                    ×
+                                </button>
+                            </div>
+                        ) : null}
+
                         {/* Personal Section */}
                         <section id="section-personal" className="scroll-mt-28 bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                             <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
@@ -2180,6 +2248,19 @@ export default function Editor({
 
                             return section ? (
                                 <div key={sectionId} id={`section-${sectionId}`} className="scroll-mt-28">
+                                    {sectionId === "skills" && editorFocusContext === "skills" ? (
+                                        <div className="mb-3 flex items-start justify-between gap-3 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm leading-6 text-emerald-950" role="status">
+                                            <p>Gebruik alleen vaardigheden die bij de vacature passen en die je kunt onderbouwen.</p>
+                                            <button
+                                                type="button"
+                                                onClick={() => setEditorFocusContext(null)}
+                                                className="shrink-0 rounded px-2 py-1 font-bold text-emerald-900 hover:bg-emerald-100"
+                                                aria-label="Sluit deze tip"
+                                            >
+                                                ×
+                                            </button>
+                                        </div>
+                                    ) : null}
                                     {section}
                                 </div>
                             ) : null;

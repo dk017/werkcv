@@ -432,7 +432,11 @@ export function SkillsSection({ control, register, uiLanguage = "nl" }: SectionP
     return (
         <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
             <div className="flex justify-between items-center mb-4">
-                <h2 className="text-lg font-semibold text-slate-900">
+                <h2
+                    className="text-lg font-semibold text-slate-900"
+                    data-editor-focus-heading="skills"
+                    tabIndex={-1}
+                >
                     <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
                         {t(uiLanguage, "Vaardigheden", "Skills")}
                     </span>

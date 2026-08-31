@@ -40,6 +40,7 @@
     "analytics:certify": "npx tsx lib/maintenance/conversion-funnel-certify.ts",
     "test:conversion-funnel": "npx tsx --test lib/conversion-funnel.test.ts lib/cv-meaningful.test.ts lib/cv-meaningful-persistence.test.ts lib/dodo.test.ts",
     "test:organic-conversion": "npx tsx --test lib/commercial/consumer-cv-pricing.test.ts lib/checkout-recovery.test.ts lib/organic-conversion-contract.test.ts",
+    "test:cited-authority-conversion": "npx tsx --test lib/cited-authority-conversion.test.ts",
     "analytics:revenue": "npx tsx scripts/revenue-audit.ts",
     "analytics:signups": "node ./node_modules/typescript/lib/tsc.js --pretty false --module commonjs --target es2020 --esModuleInterop --skipLibCheck --moduleResolution node --outDir .codex-tmp scripts/signup-attribution-report.ts && node .codex-tmp/scripts/signup-attribution-report.js",
     "analytics:paid": "npx tsx scripts/paid-attribution-report.ts",

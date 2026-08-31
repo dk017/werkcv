@@ -8,6 +8,10 @@ import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import LinkedInToCvImporter from '@/components/translate/LinkedInToCvImporter';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
 import TrackedLandingLink from '@/components/analytics/TrackedLandingLink';
+import { Fragment } from 'react';
+import CitedAuthorityConversionBridge from '@/components/conversion/CitedAuthorityConversionBridge';
+import { getCitedAuthorityRouteConfig } from '@/lib/cited-authority-conversion';
+import { cvDownloadPrice } from '@/lib/site-content';
 import { normalizeBrandCopy } from '@/lib/seo-branding';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { getLanguageAlternates } from '@/lib/i18n/route-pairs';
@@ -90,6 +94,12 @@ export default async function ArticlePage({ params }: PageProps) {
     const articleImageUrl = `${articleUrl}/opengraph-image`;
     const publishedTime = toSchemaDate(article.publishedAt);
     const modifiedTime = article.updatedAt ? toSchemaDate(article.updatedAt) : undefined;
+    const englishCvCitedAuthorityConfig = article.slug === 'cv-maken-in-het-engels'
+        ? getCitedAuthorityRouteConfig('/cv-tips/cv-maken-in-het-engels')
+        : null;
+    if (article.slug === 'cv-maken-in-het-engels' && !englishCvCitedAuthorityConfig) {
+        throw new Error('Missing cited-authority English-CV route config');
+    }
     const metaDesc = normalizeBrandCopy(article.metaDesc);
     const articleEditorCta = article.slug === 'cv-opleiding-vermelden'
         ? {
@@ -323,7 +333,8 @@ export default async function ArticlePage({ params }: PageProps) {
             <article className="max-w-4xl mx-auto px-6 pb-12">
                 <div className="space-y-10">
                     {article.sections.map((section) => (
-                        <section key={section.id} id={section.id} className="scroll-mt-24">
+                        <Fragment key={section.id}>
+                        <section id={section.id} className="scroll-mt-24">
                             <h2 className="text-2xl md:text-3xl font-black mb-4 text-gray-900">
                                 {section.title}
                             </h2>
@@ -370,6 +381,19 @@ export default async function ArticlePage({ params }: PageProps) {
                                 )}
                             </div>
                         </section>
+                        {englishCvCitedAuthorityConfig && section.id === 'structuur' ? (
+                            <CitedAuthorityConversionBridge
+                                config={englishCvCitedAuthorityConfig}
+                                copy={{
+                                    eyebrow: 'Maak de Engelse versie direct',
+                                    heading: 'Open een Engelstalig CV met de juiste sectievolgorde',
+                                    body: 'Je opent een Engelse editor met een Engelstalig CV. Bouw en bekijk de volledige versie gratis; controleer daarna elke vertaling en pas de inhoud aan op de vacature.',
+                                    primaryLabel: 'Open Engelse CV-editor',
+                                    pricingLabel: 'Bekijk prijs en betaalwijze',
+                                }}
+                            />
+                        ) : null}
+                        </Fragment>
                     ))}
                 </div>
 
@@ -377,8 +401,9 @@ export default async function ArticlePage({ params }: PageProps) {
                     <section id="bronnen" className="mt-16 scroll-mt-24 border-t-4 border-black pt-9">
                         <h2 className="text-3xl font-black mb-3 text-gray-900">Bronnen en controle</h2>
                         <p className="max-w-3xl text-gray-700 leading-relaxed">
-                            Productfuncties en privacy-instellingen kunnen veranderen. Voor deze gids zijn de onderstaande
-                            officiële bronnen gecontroleerd; open LinkedIn Help als een knop of instelling anders heet.
+                            Richtlijnen en productfuncties kunnen veranderen. Voor deze gids zijn de onderstaande
+                            bronnen gecontroleerd. Controleer bij een concrete sollicitatie ook altijd de vacature,
+                            de instructies van de werkgever en de officiële informatie van je onderwijsinstelling.
                         </p>
                         <ul className="mt-6 space-y-4">
                             {article.sources.map(source => (
@@ -426,7 +451,7 @@ export default async function ArticlePage({ params }: PageProps) {
                 )}
 
                 {/* Inline CTA */}
-                <div className="mt-12 p-6 bg-gradient-to-r from-[#FF6B6B]/10 to-[#FF8E8E]/10 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                {!englishCvCitedAuthorityConfig ? <div className="mt-12 p-6 bg-gradient-to-r from-[#FF6B6B]/10 to-[#FF8E8E]/10 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                     <h3 className="font-black text-xl mb-2 text-gray-900">
                         Direct aan de slag met je CV?
                     </h3>
@@ -459,7 +484,22 @@ export default async function ArticlePage({ params }: PageProps) {
                             Bekijk CV voorbeelden
                         </Link>
                     </div>
-                </div>
+                </div> : (
+                    <div className="mt-12">
+                        <CitedAuthorityConversionBridge
+                            config={englishCvCitedAuthorityConfig}
+                            copy={{
+                                eyebrow: 'Klaar om je Engelse versie te schrijven?',
+                                heading: 'Werk de Engelse inhoud direct uit in je volledige CV',
+                                body: 'Open de Engelstalige editor bij je profiel en controleer daarna de volledige versie vóór je betaalt.',
+                                primaryLabel: 'Open Engelse CV-editor',
+                                pricingLabel: 'Bekijk prijs en betaalwijze',
+                            }}
+                            compact
+                            instance="repeat"
+                        />
+                    </div>
+                )}
             </article>
 
             {/* Related CV Examples */}
@@ -522,14 +562,14 @@ export default async function ArticlePage({ params }: PageProps) {
             )}
 
             {/* Final CTA */}
-            <section className="border-t-4 border-black bg-[#4ECDC4]">
+            {!englishCvCitedAuthorityConfig ? <section className="border-t-4 border-black bg-[#4ECDC4]">
                 <div className="max-w-6xl mx-auto px-6 py-12 text-center">
                     <h2 className="text-3xl font-black mb-4 text-gray-900">
                         Begin vandaag met je CV
                     </h2>
                     <p className="text-lg mb-6 max-w-2xl mx-auto text-gray-800">
                         Maak binnen 5 minuten een professioneel CV met onze templates en voorbeeldteksten.
-                        Eenmalig €4,99, geen abonnement.
+                        Eenmalig {cvDownloadPrice.display}, geen abonnement.
                     </p>
                     {articleEditorCta ? (
                         <TrackedLandingLink
@@ -549,7 +589,7 @@ export default async function ArticlePage({ params }: PageProps) {
                         </Link>
                     )}
                 </div>
-            </section>
+            </section> : null}
         </main>
     );
 }

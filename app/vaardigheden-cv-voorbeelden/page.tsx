@@ -2,6 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
+import CitedAuthorityConversionBridge from "@/components/conversion/CitedAuthorityConversionBridge";
+import { getCitedAuthorityRouteConfig } from "@/lib/cited-authority-conversion";
+
+const citedAuthorityConfig = getCitedAuthorityRouteConfig("/vaardigheden-cv-voorbeelden");
+
+const citedAuthorityCopy = {
+  eyebrow: "Van voorbeelden naar jouw CV",
+  heading: "Zet je gekozen vaardigheden direct op de juiste plek",
+  body: "De editor opent bij je skillssectie. Kies alleen vaardigheden die bij de vacature passen, echt van jou zijn en die je met werkervaring, projecten of certificaten kunt onderbouwen.",
+  primaryLabel: "Open mijn skillssectie",
+  pricingLabel: "Bekijk prijs en werkwijze",
+};
 
 const frameworkSteps = [
   "Kies 6 tot 10 vaardigheden die echt aansluiten op de functie-eisen.",
@@ -173,6 +185,7 @@ export const metadata: Metadata = {
 };
 
 export default function VaardighedenCvVoorbeeldenPage() {
+  if (!citedAuthorityConfig) throw new Error("Missing cited-authority skills route config");
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -243,10 +256,7 @@ export default function VaardighedenCvVoorbeeldenPage() {
               >
                 Genereer je vaardigheden
               </Link>
-              <Link
-                href="/cv-maken-template"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
+              <Link href="/cv-maken-template" className="wk-button wk-button-quiet">
                 Zet dit in een CV-template
               </Link>
             </div>
@@ -345,6 +355,10 @@ export default function VaardighedenCvVoorbeeldenPage() {
             ))}
           </div>
         </section>
+
+        <div className="mb-14">
+          <CitedAuthorityConversionBridge config={citedAuthorityConfig} copy={citedAuthorityCopy} />
+        </div>
 
         <section className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
@@ -491,35 +505,12 @@ export default function VaardighedenCvVoorbeeldenPage() {
           </div>
         </section>
 
-        <section className="border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
-                Klaar om je skillssectie te verbeteren?
-              </p>
-              <h2 className="mt-2 text-3xl font-black text-black">
-                Genereer vaardigheden en zet ze direct op je CV
-              </h2>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
-                Gebruik de voorbeelden, kies je shortlist en publiceer direct in de editor.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/tools/vaardigheden-generator"
-                className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Bouw mijn skillssectie
-              </Link>
-              <Link
-                href="/templates"
-                className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
-              >
-                Zet mijn skills in een CV-template
-              </Link>
-            </div>
-          </div>
-        </section>
+        <CitedAuthorityConversionBridge
+          config={citedAuthorityConfig}
+          copy={{ ...citedAuthorityCopy, body: "Open je CV opnieuw bij de skillssectie en werk je gekozen shortlist daar direct uit." }}
+          compact
+          instance="repeat"
+        />
       </main>
 
       <script

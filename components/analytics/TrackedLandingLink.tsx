@@ -11,6 +11,12 @@ type TrackedLandingLinkProps = {
   trackingLocation: string;
   trackingLabel: string;
   ctaEventName?: NamedLandingCtaEvent;
+  startCvContext?: {
+    entryPoint: string;
+    templateId: string;
+    pagePath: string;
+    uiLanguage: "nl" | "en";
+  };
   children: ReactNode;
 };
 
@@ -28,6 +34,7 @@ export default function TrackedLandingLink({
   trackingLocation,
   trackingLabel,
   ctaEventName,
+  startCvContext,
   children,
 }: TrackedLandingLinkProps) {
   const pathname = usePathname();
@@ -52,6 +59,9 @@ export default function TrackedLandingLink({
           toPath,
           label: `${trackingLocation}:${trackingLabel}`.slice(0, 120),
         });
+        if (startCvContext) {
+          track("start_cv", startCvContext);
+        }
       }}
     >
       {children}

@@ -4,6 +4,18 @@ import Footer from "@/components/Footer";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import { cvDownloadPrice } from "@/lib/site-content";
+import CitedAuthorityConversionBridge from "@/components/conversion/CitedAuthorityConversionBridge";
+import { getCitedAuthorityRouteConfig } from "@/lib/cited-authority-conversion";
+
+const citedAuthorityConfig = getCitedAuthorityRouteConfig("/profieltekst-cv-voorbeelden");
+
+const citedAuthorityCopy = {
+  eyebrow: "Van voorbeeld naar eigen profiel",
+  heading: "Schrijf je profieltekst terwijl je volledige CV zichtbaar blijft",
+  body: "De editor opent bij je profiel. Gebruik voorbeelden alleen als inspiratie en vervang algemene claims door jouw eigen ervaring, context en aantoonbare resultaten.",
+  primaryLabel: "Open mijn profielsectie",
+  pricingLabel: "Bekijk prijs en werkwijze",
+};
 
 const frameworkSteps = [
   "Open met je rol, ervaringsniveau en domein in 1 zin.",
@@ -220,6 +232,7 @@ export const metadata: Metadata = buildDutchMetadata({
 });
 
 export default function ProfieltekstCvVoorbeeldenPage() {
+  if (!citedAuthorityConfig) throw new Error("Missing cited-authority profile route config");
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -290,10 +303,7 @@ export default function ProfieltekstCvVoorbeeldenPage() {
               >
                 Genereer je profieltekst
               </Link>
-              <Link
-                href="/cv-maken"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
+              <Link href="/cv-maken" className="wk-button wk-button-quiet">
                 CV aanmaken met deze opening
               </Link>
             </div>
@@ -406,6 +416,10 @@ export default function ProfieltekstCvVoorbeeldenPage() {
             ))}
           </div>
         </section>
+
+        <div className="mb-14">
+          <CitedAuthorityConversionBridge config={citedAuthorityConfig} copy={citedAuthorityCopy} />
+        </div>
 
         <section className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
@@ -531,35 +545,12 @@ export default function ProfieltekstCvVoorbeeldenPage() {
           </div>
         </section>
 
-        <section className="border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-          <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-3xl">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
-                Klaar om je profieltekst te finaliseren?
-              </p>
-              <h2 className="mt-2 text-3xl font-black text-black">
-                Genereer je profieltekst en publiceer direct in je CV
-              </h2>
-              <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
-                Gebruik de voorbeelden als basis en zet je definitieve versie direct in de editor.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/tools/profieltekst-generator"
-                className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Schrijf mijn CV-profieltekst
-              </Link>
-              <Link
-                href="/templates"
-                className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
-              >
-                Zet mijn profieltekst in een template
-              </Link>
-            </div>
-          </div>
-        </section>
+        <CitedAuthorityConversionBridge
+          config={citedAuthorityConfig}
+          copy={{ ...citedAuthorityCopy, body: "Open je CV bij de profielsectie en maak van het gekozen patroon een versie die aantoonbaar over jou gaat." }}
+          compact
+          instance="repeat"
+        />
       </main>
 
       <script

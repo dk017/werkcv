@@ -3,10 +3,16 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { getTemplateConfig } from "@/lib/templates/registry";
+import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
+import { RoleCvPrefillPanel } from "@/components/cv-voorbeelden/RoleCvPrefillPanel";
+import { UseExampleButton } from "@/components/cv-voorbeelden/UseExampleButton";
+import { administratiefMedewerker } from "@/lib/cv-voorbeelden/examples/zakelijk-en-financieel/administratief-medewerker";
+import { getCitedAuthorityRouteConfig } from "@/lib/cited-authority-conversion";
 
 const professionalTemplate = getTemplateConfig("professional");
 const atsTemplate = getTemplateConfig("ats");
 const simpleTemplate = getTemplateConfig("simple");
+const citedAuthorityConfig = getCitedAuthorityRouteConfig("/cv-template-administratief-medewerker");
 
 const recruiterSignals = [
   "Foutarme administratie en nauwkeurige verwerking onder tijdsdruk.",
@@ -21,18 +27,21 @@ const templateCards = [
     name: professionalTemplate.nameDutch,
     body: "Rustige, zakelijke layout voor administratieve rollen waar betrouwbaarheid en overzicht centraal staan.",
     fit: "Past goed bij: administratief medewerker, backoffice, office support, secretarieel.",
+    templateId: professionalTemplate.id,
   },
   {
     label: "Voor maximale ATS-veiligheid",
     name: atsTemplate.nameDutch,
     body: "Ultrascanbare structuur voor vacatures met veel sollicitanten en strikte ATS-selectie.",
     fit: "Past goed bij: corporate vacatures, uitzendportals, grote werkgevers.",
+    templateId: atsTemplate.id,
   },
   {
     label: "Voor starters en korte CV's",
     name: simpleTemplate.nameDutch,
     body: "Eenvoudige template die je profiel, vaardigheden en stage-ervaring compact presenteert.",
     fit: "Past goed bij: junior kandidaten, carrièreswitchers, weinig werkervaring.",
+    templateId: simpleTemplate.id,
   },
 ];
 
@@ -193,6 +202,7 @@ export const metadata: Metadata = {
 };
 
 export default function CvTemplateAdministratiefMedewerkerPage() {
+  if (!citedAuthorityConfig) throw new Error("Missing cited-authority admin template route config");
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -235,7 +245,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
             </span>
           </Link>
           <Link
-            href="/editor"
+            href="#prefilled-role-cv"
             className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
           >
             Start in editor
@@ -253,15 +263,15 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
               CV template administratief medewerker dat direct betrouwbaar en professioneel overkomt
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Sollicitaties voor administratieve functies worden vaak beslist op details: nauwkeurigheid, structuur, softwarekennis en opvolging. Op deze pagina combineer je de juiste
-              CV-template met copy-ready profielteksten, werkervaring bullets en ATS-keywords zodat je sneller een uitnodiging krijgt.
+              Sollicitaties voor administratieve functies vragen om duidelijke details: nauwkeurigheid, structuur, softwarekennis en opvolging. Op deze pagina combineer je een rustige
+              CV-template met profielteksten, werkervaringbullets en relevante vacaturetermen die je met je eigen bewijs kunt invullen.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                href="/editor"
+                href="#prefilled-role-cv"
                 className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
               >
-                Start met admin CV template
+                Bekijk ingevuld admin-CV
               </Link>
               <Link
                 href="/cv-gids/cv-voorbeeld-administratief-medewerker"
@@ -325,12 +335,20 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
                 <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{card.body}</p>
                 <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{card.fit}</p>
                 <div className="mt-auto pt-5">
-                  <Link
-                    href="/editor"
+                  <TrackedLandingLink
+                    href={`/editor?template=${encodeURIComponent(card.templateId)}&startSource=${encodeURIComponent(`cited_authority_admin_template_empty_${card.templateId}`)}`}
+                    trackingLocation="cited_authority:admin_cv:empty_template"
+                    trackingLabel={`cited_authority_admin_template:empty_${card.templateId}`}
+                    startCvContext={{
+                      entryPoint: `cited_authority_admin_template_empty_${card.templateId}`,
+                      templateId: card.templateId,
+                      pagePath: "/cv-template-administratief-medewerker",
+                      uiLanguage: "nl",
+                    }}
                     className="inline-block border-2 border-black bg-yellow-400 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-black"
                   >
-                    Gebruik in editor
-                  </Link>
+                    Start leeg met {card.name}
+                  </TrackedLandingLink>
                 </div>
               </article>
             ))}
@@ -380,6 +398,22 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
             <SectionIntentLinks links={adminTemplateIntentLinks} locale="nl" />
           </div>
         </section>
+
+        <div className="mb-14">
+          <RoleCvPrefillPanel
+            roleLabel="administratief medewerker"
+            templateId={citedAuthorityConfig.templateId}
+            colorThemeId={administratiefMedewerker.colorThemeId}
+            sampleCV={administratiefMedewerker.sampleCV}
+            proofItems={["Dossier- en factuurbeheer", "Excel, AFAS en Exact", "Procesresultaten"]}
+            startSource={citedAuthorityConfig.startSource}
+            canonicalPath={citedAuthorityConfig.canonicalPath}
+            heading="Bekijk de administratieve opmaak met volledige fictieve inhoud"
+            primaryLabel="Open ingevuld admin-CV"
+            eyebrow="Voorbeeldinhoud + template"
+            citedAuthorityIntentId="admin_cv"
+          />
+        </div>
 
         <section className="mb-14">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
@@ -499,7 +533,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
               Veelgemaakte fouten
             </p>
             <h2 className="mt-2 text-2xl font-black text-black">
-              Wat je ranking en uitnodigingen tegelijk kan kosten
+              Wat je CV onduidelijk of minder geloofwaardig kan maken
             </h2>
             <ul className="mt-4 space-y-2 text-sm font-medium leading-relaxed text-slate-700">
               {mistakes.map((item) => (
@@ -553,12 +587,17 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
-              <Link
-                href="/editor"
-                className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
-              >
-                Open editor
-              </Link>
+              <UseExampleButton
+                templateId={citedAuthorityConfig.templateId}
+                colorThemeId={administratiefMedewerker.colorThemeId}
+                sampleCV={administratiefMedewerker.sampleCV}
+                label="Open ingevuld admin-CV"
+                startSource={citedAuthorityConfig.startSource}
+                pagePath={citedAuthorityConfig.canonicalPath}
+                uiLanguage="nl"
+                trackingLocation="cited_authority:admin_cv:primary"
+                trackingLabel="cited_authority_admin_template:open_editor"
+              />
               <Link
                 href="/prijzen"
                 className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"

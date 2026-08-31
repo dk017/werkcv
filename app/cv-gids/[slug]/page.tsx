@@ -271,6 +271,8 @@ export default async function DutchWavePage({ params }: PageProps) {
                     sampleCV={roleConversion.sampleCV}
                     proofItems={roleConversion.proofItems}
                     motivationHref={roleConversion.motivationHref}
+                    startSource={roleConversion.startSource}
+                    canonicalPath={roleConversion.canonicalPath}
                 />
             ) : null}
 

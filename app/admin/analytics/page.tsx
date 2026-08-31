@@ -10,6 +10,7 @@ import {
 } from "@/lib/admin-analytics";
 import { isAnalyticsAdminEmail } from "@/lib/admin-auth";
 import { getCurrentUser } from "@/lib/auth";
+import { formatCitedAuthorityRate } from "@/lib/cited-authority-funnel";
 import { AnalyticsGlobe } from "./AnalyticsGlobe";
 
 export const dynamic = "force-dynamic";
@@ -68,6 +69,13 @@ function percentage(numerator: number, denominator: number): string {
   return `${Math.round((numerator / denominator) * 100)}%`;
 }
 
+function durationOrDash(hours: number | null): string {
+  if (hours === null || !Number.isFinite(hours) || hours < 0) return "—";
+  if (hours < 1) return `${Math.max(1, Math.round(hours * 60))} min`;
+  if (hours < 48) return `${hours.toFixed(1)} h`;
+  return `${(hours / 24).toFixed(1)} d`;
+}
+
 function dateTime(value: Date): string {
   return new Intl.DateTimeFormat("nl-NL", {
     dateStyle: "short",
@@ -109,7 +117,9 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
   const resolvedSearchParams = await searchParams;
   const range = parseAnalyticsRange(resolvedSearchParams?.range);
   const view = parseAnalyticsView(resolvedSearchParams?.view);
-  const data = await getAnalyticsDashboardData(range);
+  const data = await getAnalyticsDashboardData(range, {
+    includeCitedAuthority: view === "conversion",
+  });
   const ctaToEditorRate =
     data.summary.ctaClicks > 0 ? Math.round((data.summary.editorStarts / data.summary.ctaClicks) * 100) : 0;
   const checkoutToPaidRate =
@@ -328,6 +338,72 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
 
             {view === "conversion" ? (
               <>
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Cited-authority conversion bridge"
+            subtitle="Unique consumer identities from each of the six cited pages through CV creation and paid PDF. Test, owner, Agency, fixture, and synthetic activity is excluded. Preview is diagnostic because older sessions may not contain the event."
+          />
+          <SimpleTable
+            headers={[
+              "Page",
+              "Intent / source",
+              "Views",
+              "Clicks",
+              "View → click",
+              "CVs",
+              "CV users",
+              "Meaningful",
+              "Preview*",
+              "Checkout",
+              "Paid users",
+              "Orders",
+              "Revenue",
+              "Paid / CV user",
+              "Median create → paid",
+            ]}
+            rows={data.citedAuthorityFunnel.map((row) => [
+              row.canonicalPath,
+              row.sourceId === "__all__" ? "All cited intents" : `${row.intentId} / ${row.sourceId}`,
+              number(row.bridgeViews),
+              number(row.bridgeClicks),
+              formatCitedAuthorityRate(row.bridgeClicks, row.bridgeViews),
+              number(row.cvDocuments),
+              number(row.cvUsers),
+              number(row.meaningfulUsers),
+              number(row.previewUsers),
+              number(row.checkoutUsers),
+              number(row.paidUsers),
+              number(row.paidOrders),
+              money(row.revenueCents),
+              formatCitedAuthorityRate(row.paidUsers, row.cvUsers),
+              durationOrDash(row.medianHoursToPaid),
+            ])}
+            alignRight={[2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]}
+          />
+          <p className="border-t border-slate-100 px-4 py-3 text-xs text-slate-500">
+            Views and clicks are unique visitors. CV and payment stages use saved consumer CVs and paid orders as the source of truth. “Meaningful” uses the certified CV content flag; preview remains a diagnostic signal.
+          </p>
+        </section>
+
+        <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
+          <TableHeader
+            title="Cited-authority diagnostics"
+            subtitle="CV-user to paid-user outcomes by locale and first measured device for each cited source. Unknown remains visible instead of being inferred."
+          />
+          <SimpleTable
+            headers={["Source", "Dimension", "Segment", "CV users", "Paid users", "Paid / CV user"]}
+            rows={data.citedAuthorityDiagnostics.map((row) => [
+              row.sourceId,
+              row.dimension,
+              row.segment,
+              number(row.cvUsers),
+              number(row.paidUsers),
+              formatCitedAuthorityRate(row.paidUsers, row.cvUsers),
+            ])}
+            alignRight={[3, 4, 5]}
+          />
+        </section>
+
         <section className="rounded-lg border border-slate-200 bg-white shadow-sm">
           <TableHeader
             title="Segmented Conversion Funnel"

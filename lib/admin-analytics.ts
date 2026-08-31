@@ -2,6 +2,11 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { ANALYTICS_PRODUCT_PROGRESS_PATHS } from "@/lib/analytics-paths";
 import { CONVERSION_CTA_CLICK_EVENTS } from "@/lib/conversion-funnel";
+import {
+  getCitedAuthorityFunnel,
+  type CitedAuthorityDiagnosticRow,
+  type CitedAuthorityFunnelRow,
+} from "@/lib/cited-authority-funnel";
 
 export type AnalyticsRange = "24h" | "7d" | "30d";
 
@@ -41,6 +46,8 @@ export type AnalyticsDashboardData = {
   moneyFunnels: MoneyFunnelRow[];
   checkoutExperiments: CheckoutExperimentRow[];
   ctaCopyExperiments: CtaCopyExperimentRow[];
+  citedAuthorityFunnel: CitedAuthorityFunnelRow[];
+  citedAuthorityDiagnostics: CitedAuthorityDiagnosticRow[];
 };
 
 type SummaryRow = {
@@ -323,13 +330,19 @@ function eventPageSql() {
   )`;
 }
 
-export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<AnalyticsDashboardData> {
+export async function getAnalyticsDashboardData(
+  range: AnalyticsRange,
+  options: { includeCitedAuthority?: boolean } = {},
+): Promise<AnalyticsDashboardData> {
   const generatedAt = new Date();
   const since = new Date(generatedAt.getTime() - rangeHours[range] * 60 * 60 * 1000);
   const liveSince = new Date(generatedAt.getTime() - 15 * 60 * 1000);
   const journeySince = new Date(generatedAt.getTime() - 2 * 60 * 60 * 1000);
   const bucket = range === "24h" ? "hour" : "day";
   const pageSql = eventPageSql();
+  const citedAuthorityPromise = options.includeCitedAuthority
+    ? getCitedAuthorityFunnel(since)
+    : Promise.resolve({ rows: [], diagnostics: [] });
 
   const [
     summaryRows,
@@ -1464,6 +1477,7 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
   };
   const visitorJourneys = buildVisitorJourneys(journeyEvents);
   const insights = buildInsights(summary, funnelPages, signupCohorts, sourceRevenue, recentSignups);
+  const citedAuthority = await citedAuthorityPromise;
 
   return {
     range,
@@ -1488,6 +1502,8 @@ export async function getAnalyticsDashboardData(range: AnalyticsRange): Promise<
     moneyFunnels,
     checkoutExperiments,
     ctaCopyExperiments,
+    citedAuthorityFunnel: citedAuthority.rows,
+    citedAuthorityDiagnostics: citedAuthority.diagnostics,
   };
 }
 

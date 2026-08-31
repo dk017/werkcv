@@ -9,6 +9,7 @@ import { normalizeEnglishRoleExampleStartSource } from "@/lib/english-role-examp
 import { isAgencyAccessError } from "@/lib/agency-access";
 import { getWorkspaceEntitlementsForUser, isWorkspaceSwitcherEnabled } from "@/lib/workspace/entitlements";
 import type { Metadata } from "next";
+import { normalizeEditorFocus } from "@/lib/editor-focus";
 
 export const metadata: Metadata = {
   title: "English CV Editor for the Netherlands | WerkCV",
@@ -32,12 +33,13 @@ function isUploadRequested(value: string | string[] | undefined): boolean {
 export default async function EnglishEditorPage({
   searchParams,
 }: {
-  searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string; downloadIntent?: string }>;
+  searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string; downloadIntent?: string; focus?: string }>;
 }) {
-  const { id, template, startSource, upload, workspace, downloadIntent } = await searchParams;
+  const { id, template, startSource, upload, workspace, downloadIntent, focus } = await searchParams;
   const user = await getCurrentUser();
   const templateId = normalizeTemplateId(template);
   const uploadRequested = isUploadRequested(upload);
+  const resolvedFocus = normalizeEditorFocus(focus);
   const cookieStore = await cookies();
   const rawStartSource = typeof startSource === "string" ? startSource : "";
   const roleStartSource = normalizeEnglishRoleExampleStartSource(rawStartSource);
@@ -48,13 +50,15 @@ export default async function EnglishEditorPage({
     "editor_direct";
 
   if (!user) {
-    const workspaceParam = workspace === "agency" ? "&workspace=agency" : "";
-    const downloadIntentParam = downloadIntent === "1" ? "&downloadIntent=1" : "";
-    const next = id
-      ? `/en/editor?id=${encodeURIComponent(id)}${uploadRequested ? "&upload=1" : ""}${downloadIntentParam}`
-      : templateId
-        ? `/en/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}${workspaceParam}`
-        : `/en/editor?template=professional&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}${workspaceParam}`;
+    const nextParams = new URLSearchParams();
+    if (id) nextParams.set("id", id);
+    nextParams.set("template", templateId || "professional");
+    nextParams.set("startSource", resolvedStartSource);
+    if (resolvedFocus) nextParams.set("focus", resolvedFocus);
+    if (uploadRequested) nextParams.set("upload", "1");
+    if (workspace === "agency") nextParams.set("workspace", "agency");
+    if (downloadIntent === "1") nextParams.set("downloadIntent", "1");
+    const next = `/en/editor?${nextParams.toString()}`;
     redirect(`/login?next=${encodeURIComponent(next)}`);
   }
 
@@ -75,7 +79,15 @@ export default async function EnglishEditorPage({
       }
       throw error;
     }
-    redirect(`/en/editor?id=${encodeURIComponent(cvId)}&startSource=${encodeURIComponent(resolvedStartSource)}${uploadRequested ? "&upload=1" : ""}`);
+    const editorParams = new URLSearchParams({
+      id: cvId,
+      template: draftTemplateId,
+      startSource: resolvedStartSource,
+    });
+    if (resolvedFocus) editorParams.set("focus", resolvedFocus);
+    if (uploadRequested) editorParams.set("upload", "1");
+    if (downloadIntent === "1") editorParams.set("downloadIntent", "1");
+    redirect(`/en/editor?${editorParams.toString()}`);
   }
 
   const cv = await getCVWithSettings(id);

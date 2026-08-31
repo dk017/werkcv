@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CVData } from '@/lib/cv';
 import { getStoredAttribution, track } from '@/lib/analytics';
@@ -12,6 +12,11 @@ interface UseExampleButtonProps {
     sampleCV: CVData;
     label?: string;
     startSource?: PendingExampleCV["startSource"];
+    pagePath?: string;
+    uiLanguage?: "nl" | "en";
+    variant?: "primary" | "quiet";
+    trackingLocation?: string;
+    trackingLabel?: string;
 }
 
 export function UseExampleButton({
@@ -20,14 +25,27 @@ export function UseExampleButton({
     sampleCV,
     label = 'Gebruik dit voorbeeld',
     startSource = 'example_page',
+    pagePath,
+    uiLanguage = 'nl',
+    variant = 'primary',
+    trackingLocation,
+    trackingLabel,
 }: UseExampleButtonProps) {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const requestInFlightRef = useRef(false);
 
     async function handleClick() {
+        if (requestInFlightRef.current) return;
+        requestInFlightRef.current = true;
         setIsLoading(true);
+        setErrorMessage(null);
         try {
-            track('start_cv', { entryPoint: startSource, templateId });
+            track('start_cv', { entryPoint: startSource, templateId, pagePath, uiLanguage });
+            if (trackingLocation && trackingLabel) {
+                track('cta_clicked', { location: trackingLocation, label: trackingLabel });
+            }
             const attribution = getStoredAttribution();
             const res = await fetch('/api/create-cv', {
                 method: 'POST',
@@ -38,6 +56,8 @@ export function UseExampleButton({
                     initialData: sampleCV,
                     attribution,
                     startSource,
+                    uiLanguage,
+                    workspace: 'consumer',
                 }),
             });
 
@@ -47,9 +67,12 @@ export function UseExampleButton({
                     colorThemeId,
                     sampleCV,
                     startSource,
+                    pagePath,
+                    uiLanguage,
                 };
                 window.sessionStorage.setItem(PENDING_EXAMPLE_CV_STORAGE_KEY, JSON.stringify(pendingExample));
-                const nextPath = `/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(startSource)}`;
+                const editorPath = uiLanguage === 'en' ? '/en/editor' : '/editor';
+                const nextPath = `${editorPath}?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(startSource)}`;
                 router.push(`/login?next=${encodeURIComponent(nextPath)}`);
                 return;
             }
@@ -59,17 +82,29 @@ export function UseExampleButton({
             }
 
             const { cvId } = await res.json();
-            router.push(`/editor?id=${cvId}`);
+            const editorPath = uiLanguage === 'en' ? '/en/editor' : '/editor';
+            const editorParams = new URLSearchParams({
+                id: cvId,
+                template: templateId,
+                startSource,
+            });
+            router.push(`${editorPath}?${editorParams.toString()}`);
         } catch {
+            setErrorMessage('Het ingevulde voorbeeld kon niet worden geopend. Probeer het opnieuw.');
             setIsLoading(false);
+            requestInFlightRef.current = false;
         }
     }
 
     return (
+        <div className="inline-flex flex-col items-start gap-2">
         <button
+            type="button"
             onClick={handleClick}
             disabled={isLoading}
-            className="inline-flex items-center gap-2 bg-[#FF6B6B] text-white font-bold px-6 py-3 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+            className={variant === 'quiet'
+                ? 'wk-button wk-button-secondary'
+                : 'wk-button wk-button-primary'}
         >
             {isLoading ? (
                 <>
@@ -83,5 +118,11 @@ export function UseExampleButton({
                 label
             )}
         </button>
+        {errorMessage ? (
+            <p className="max-w-sm text-sm font-semibold text-[var(--wk-danger)]" role="alert" aria-live="polite">
+                {errorMessage}
+            </p>
+        ) : null}
+        </div>
     );
 }
