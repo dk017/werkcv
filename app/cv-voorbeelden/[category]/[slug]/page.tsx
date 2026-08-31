@@ -137,7 +137,7 @@ export default async function ExamplePage({ params }: PageProps) {
     };
 
     return (
-        <main className="min-h-screen bg-[#FFFEF9]">
+        <main className="wk-role-example-page">
             {/* JSON-LD */}
             <script
                 type="application/ld+json"
@@ -145,18 +145,18 @@ export default async function ExamplePage({ params }: PageProps) {
             />
 
             {/* Breadcrumbs */}
-            <div className="border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-3">
+            <div className="wk-editorial-breadcrumb border-b-4 border-black bg-white">
+                <div className="wk-editorial-container max-w-6xl mx-auto px-6 py-3">
                     <Breadcrumbs items={breadcrumbItems} />
                 </div>
             </div>
 
             {/* Hero Section */}
-            <section className="border-b-4 border-black bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-                <div className="max-w-6xl mx-auto px-6 py-12">
+            <section className="wk-editorial-hero border-b-4 border-black bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+                <div className="wk-editorial-container max-w-6xl mx-auto px-6 py-12">
                     <div className="flex flex-col lg:flex-row gap-8 items-start">
                         <div className="flex-1">
-                            <span className="inline-block bg-[#4ECDC4] text-black text-sm font-bold px-3 py-1 mb-4 border-2 border-black">
+                            <span className="wk-editorial-kicker mb-4">
                                 CV VOORBEELD
                             </span>
                             <h1 className="text-4xl md:text-5xl font-black mb-4 text-gray-900">
@@ -216,14 +216,14 @@ export default async function ExamplePage({ params }: PageProps) {
 
             {/* Table of Contents - Mobile */}
             <section className="border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-6">
+                <div className="wk-editorial-container max-w-6xl mx-auto px-6 py-6">
                     <h2 className="text-lg font-black mb-4 text-gray-900">Op deze pagina</h2>
                     <TableOfContentsMobile items={tocItems} />
                 </div>
             </section>
 
             {/* Rich Content Sections */}
-            <div className="max-w-6xl mx-auto px-6 py-12">
+            <div className="wk-editorial-container max-w-6xl mx-auto px-6 py-12">
                 <div className="grid lg:grid-cols-[1fr_280px] gap-8">
                     {/* Main Content */}
                     <div className="space-y-12">
@@ -371,7 +371,7 @@ export default async function ExamplePage({ params }: PageProps) {
                                         {example.expertContent.recruiterFocus.map((focus, index) => (
                                             <div
                                                 key={focus}
-                                                className="border-3 border-black bg-white p-4"
+                                                className="wk-editorial-card p-4"
                                                 style={{ borderWidth: '3px' }}
                                             >
                                                 <p className="text-xs font-black uppercase tracking-[0.16em] text-gray-500">
@@ -396,7 +396,7 @@ export default async function ExamplePage({ params }: PageProps) {
                                         </ul>
                                     </ExampleBlock>
                                     {example.expertContent.noExperienceAdvice && (
-                                        <div className="mt-5 border-4 border-black bg-[#E9FFFC] p-5">
+                                        <div className="wk-editorial-card-muted mt-5 p-5">
                                             <h3 className="font-black text-gray-900">Als je nog weinig ervaring hebt</h3>
                                             <ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-gray-700">
                                                 {example.expertContent.noExperienceAdvice.map((advice) => (
@@ -416,14 +416,14 @@ export default async function ExamplePage({ params }: PageProps) {
                                         {example.expertContent.rewriteExamples.map((rewrite) => (
                                             <article
                                                 key={rewrite.bad}
-                                                className="border-4 border-black bg-white p-5"
+                                                className="wk-editorial-card p-5"
                                             >
                                                 <div className="grid gap-4 md:grid-cols-2">
-                                                    <div className="border-2 border-red-200 bg-red-50 p-4">
+                                                    <div className="wk-editorial-card-muted border-2 border-red-200 bg-red-50 p-4">
                                                         <p className="text-xs font-black uppercase text-red-700">Te zwak</p>
                                                         <p className="mt-2 text-sm text-gray-800">&ldquo;{rewrite.bad}&rdquo;</p>
                                                     </div>
-                                                    <div className="border-2 border-green-200 bg-green-50 p-4">
+                                                    <div className="wk-editorial-card-muted border-2 border-green-200 bg-green-50 p-4">
                                                         <p className="text-xs font-black uppercase text-green-700">Sterker</p>
                                                         <p className="mt-2 text-sm text-gray-800">&ldquo;{rewrite.good}&rdquo;</p>
                                                     </div>
@@ -443,7 +443,7 @@ export default async function ExamplePage({ params }: PageProps) {
                                         {example.expertContent.trustSignals.map((signal) => (
                                             <div
                                                 key={signal}
-                                                className="border-3 border-black bg-yellow-50 p-4 text-sm text-gray-800"
+                                                className="wk-editorial-card-muted p-4 text-sm text-gray-800"
                                                 style={{ borderWidth: '3px' }}
                                             >
                                                 {signal}
@@ -468,7 +468,7 @@ export default async function ExamplePage({ params }: PageProps) {
                                         {primaryKeywords.map((keyword) => (
                                             <span
                                                 key={keyword}
-                                                className="border-2 border-black bg-yellow-100 px-3 py-1 text-sm font-bold text-black"
+                                                className="wk-trust-pill px-3 py-1 text-sm normal-case tracking-normal"
                                             >
                                                 {keyword}
                                             </span>
@@ -504,7 +504,7 @@ export default async function ExamplePage({ params }: PageProps) {
                                 ].map((item) => (
                                     <article
                                         key={item.title}
-                                        className="border-3 border-black bg-white p-4"
+                                        className="wk-editorial-card p-4"
                                         style={{ borderWidth: '3px' }}
                                     >
                                         <h3 className="font-black text-gray-900">{item.title}</h3>
@@ -524,9 +524,9 @@ export default async function ExamplePage({ params }: PageProps) {
                                     {example.tips.map((tip, index) => (
                                         <div
                                             key={index}
-                                            className="flex gap-4 p-4 bg-green-50 border-2 border-green-200 rounded-lg"
+                                            className="wk-editorial-card-muted flex gap-4 p-4"
                                         >
-                                            <span className="flex-shrink-0 w-8 h-8 bg-[#4ECDC4] border-2 border-black flex items-center justify-center font-black text-sm">
+                                                <span className="wk-editorial-section-icon flex-shrink-0 w-8 h-8 flex items-center justify-center font-black text-sm">
                                                 {index + 1}
                                             </span>
                                             <p className="text-gray-700">{tip}</p>
@@ -567,7 +567,7 @@ export default async function ExamplePage({ params }: PageProps) {
                                 />
                                 <Link
                                     href="/prijzen"
-                                    className="inline-flex items-center justify-center border-4 border-black bg-white px-5 py-3 text-sm font-black text-black"
+                                    className="wk-button wk-button-secondary"
                                 >
                                     Bekijk downloadprijs
                                 </Link>
@@ -575,7 +575,7 @@ export default async function ExamplePage({ params }: PageProps) {
                         </ContentSection>
 
                         {!roleConversion && example.categorySlug === 'studenten-en-starters' && example.slug === 'student-cv' && (
-                            <div className="p-6 bg-[#E9FFFC] border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                            <div className="wk-editorial-card-muted p-6">
                                 <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-600 mb-2">
                                     Student cv direct maken
                                 </p>
@@ -594,7 +594,7 @@ export default async function ExamplePage({ params }: PageProps) {
                                     />
                                     <Link
                                         href="/cv-maken-student"
-                                        className="inline-flex items-center justify-center border-4 border-black bg-white px-5 py-3 text-sm font-black text-black"
+                                        className="wk-button wk-button-secondary"
                                     >
                                         Lees student cv gids
                                     </Link>
@@ -603,7 +603,7 @@ export default async function ExamplePage({ params }: PageProps) {
                         )}
 
                         {/* Inline CTA */}
-                        {!roleConversion ? <div className="p-6 bg-gradient-to-r from-[#FF6B6B]/10 to-[#FF8E8E]/10 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        {!roleConversion ? <div className="wk-editorial-card-muted p-6">
                             <h3 className="font-black text-xl mb-2 text-gray-900">
                                 Maak nu je eigen {example.name} CV
                             </h3>
@@ -631,14 +631,14 @@ export default async function ExamplePage({ params }: PageProps) {
                             <TableOfContents items={tocItems} />
 
                             {/* Sidebar CTA */}
-                            <div className="mt-6 p-5 bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E] border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                            <div className="wk-editorial-card-dark mt-6 p-5">
                                 <h3 className="font-black text-white mb-2">Klaar om te beginnen?</h3>
                                 <p className="text-white/90 text-sm mb-4">
                                     Gebruik dit voorbeeld in de editor
                                 </p>
                                 <Link
                                     href="/templates"
-                                    className="block w-full text-center bg-black text-white font-bold py-2.5 border-2 border-black hover:bg-gray-900 transition-colors"
+                                    className="wk-button wk-button-primary w-full"
                                 >
                                     Start je CV
                                 </Link>
@@ -651,14 +651,14 @@ export default async function ExamplePage({ params }: PageProps) {
             {/* Related Examples */}
             {relatedExamples.length > 0 && (
                 <section className="border-t-4 border-black bg-white">
-                    <div className="max-w-6xl mx-auto px-6 py-12">
+                    <div className="wk-editorial-container max-w-6xl mx-auto px-6 py-12">
                         <h2 className="text-3xl font-black mb-6">Vergelijkbare CV voorbeelden</h2>
                         <div className="grid md:grid-cols-3 gap-6">
                             {relatedExamples.map((related) => (
                                 <Link
                                     key={related.slug}
                                     href={`/cv-voorbeelden/${related.categorySlug}/${related.slug}`}
-                                    className="group block bg-white border-3 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                                    className="wk-editorial-card-link group p-5"
                                 >
                                     <span className="text-xs font-bold text-gray-400 uppercase">
                                         {related.category.name}
@@ -676,8 +676,8 @@ export default async function ExamplePage({ params }: PageProps) {
                 </section>
             )}
 
-            <section className="border-t-4 border-black bg-[#FFFEF9]">
-                <div className="max-w-6xl mx-auto px-6 py-12">
+            <section className="border-t-4 border-black bg-[var(--wk-canvas)]">
+                <div className="wk-editorial-container max-w-6xl mx-auto px-6 py-12">
                     <h2 className="text-3xl font-black mb-4 text-gray-900">Volgende slimme stap</h2>
                     <p className="text-gray-700 max-w-4xl leading-relaxed">
                         Gebruik niet alleen het voorbeeld. Open ook een relevante gids voor betere formuleringen en ga daarna direct door naar een template waarmee je je eigen versie snel kunt afmaken.
@@ -685,7 +685,7 @@ export default async function ExamplePage({ params }: PageProps) {
                     <div className="mt-8 grid gap-6 md:grid-cols-2">
                         <Link
                             href={relatedGuide.href}
-                            className="block bg-white border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            className="wk-editorial-card-link p-6"
                         >
                             <span className="text-xs font-black uppercase tracking-[0.18em] text-gray-500">
                                 Relevante gids
@@ -696,7 +696,7 @@ export default async function ExamplePage({ params }: PageProps) {
 
                         <Link
                             href="/templates"
-                            className="block bg-white border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            className="wk-editorial-card-link p-6"
                         >
                             <span className="text-xs font-black uppercase tracking-[0.18em] text-gray-500">
                                 Start direct
@@ -711,8 +711,8 @@ export default async function ExamplePage({ params }: PageProps) {
             </section>
 
             {/* Final CTA */}
-            <section className="border-t-4 border-black bg-[#4ECDC4]">
-                <div className="max-w-6xl mx-auto px-6 py-12 text-center">
+            <section className="border-t-4 border-black bg-[var(--wk-accent-soft)]">
+                <div className="wk-editorial-container max-w-6xl mx-auto px-6 py-12 text-center">
                     <h2 className="text-3xl font-black mb-4 text-gray-900">
                         Start nu met je CV
                     </h2>
@@ -722,7 +722,7 @@ export default async function ExamplePage({ params }: PageProps) {
                     </p>
                     <Link
                         href="/templates"
-                        className="inline-block bg-black text-white font-bold px-8 py-4 text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                        className="wk-button wk-button-primary text-lg"
                     >
                         Maak je CV nu
                     </Link>

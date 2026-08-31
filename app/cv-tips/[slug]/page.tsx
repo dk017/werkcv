@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { getAllArticleSlugs, getArticleBySlug, getRelatedArticles } from '@/lib/cv-tips/registry';
 import { getExampleBySlug } from '@/lib/cv-voorbeelden/registry';
-import { articleCategoryLabels, articleCategoryColors } from '@/lib/cv-tips/types';
+import { articleCategoryLabels } from '@/lib/cv-tips/types';
 import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
 import LinkedInToCvImporter from '@/components/translate/LinkedInToCvImporter';
 import SectionIntentLinks from '@/components/seo/SectionIntentLinks';
@@ -164,7 +164,7 @@ export default async function ArticlePage({ params }: PageProps) {
     ];
 
     return (
-        <main className="min-h-screen bg-[#FFFEF9]">
+        <main className="wk-editorial-article">
             {/* JSON-LD */}
             <script
                 type="application/ld+json"
@@ -177,20 +177,19 @@ export default async function ArticlePage({ params }: PageProps) {
                 />
             )}
             {/* Breadcrumbs */}
-            <div className="border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-3">
+            <div className="wk-editorial-breadcrumb border-b-4 border-black bg-white">
+                <div className="wk-editorial-container max-w-6xl mx-auto px-6 py-3">
                     <Breadcrumbs items={breadcrumbItems} />
                 </div>
             </div>
 
             {/* Hero Section */}
-            <section className="border-b-4 border-black bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50">
-                <div className="max-w-4xl mx-auto px-6 py-12">
+            <section className="wk-editorial-article-hero border-b-4 border-black bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50">
+                <div className="wk-editorial-container max-w-4xl mx-auto px-6 py-12">
                     <div className="flex items-center gap-3 mb-4 flex-wrap">
                         <LanguageSwitcher tone="solid" />
                         <span
-                            className="text-xs font-bold px-2 py-0.5 border-2 border-black"
-                            style={{ backgroundColor: articleCategoryColors[article.category] }}
+                            className="wk-editorial-kicker text-xs font-bold px-2 py-0.5"
                         >
                             {articleCategoryLabels[article.category]}
                         </span>
@@ -214,7 +213,7 @@ export default async function ArticlePage({ params }: PageProps) {
                             href={articleEditorCta.href}
                             trackingLocation={`cv-tip:${article.slug}:hero_primary`}
                             trackingLabel={articleEditorCta.label}
-                            className="mt-6 inline-block border-4 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                            className="wk-button wk-button-primary mt-6"
                         >
                             {articleEditorCta.label}
                         </TrackedLandingLink>
@@ -225,12 +224,12 @@ export default async function ArticlePage({ params }: PageProps) {
             {/* Key Takeaways */}
             {article.keyTakeaways.length > 0 && (
                 <section className="border-b-4 border-black bg-white">
-                    <div className="max-w-4xl mx-auto px-6 py-8">
-                        <div className="bg-[#4ECDC4]/10 border-4 border-black p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                    <div className="wk-editorial-container max-w-4xl mx-auto px-6 py-8">
+                        <div className="wk-editorial-card wk-editorial-card-muted p-6">
                             <h2 className="text-lg font-black mb-4 flex items-center gap-2">
                                 <span
                                     aria-hidden="true"
-                                    className="w-8 h-8 bg-[#4ECDC4] border-2 border-black flex items-center justify-center"
+                                    className="wk-editorial-section-icon w-8 h-8 flex items-center justify-center"
                                 >
                                     <span className="h-3 w-3 rounded-full bg-black" />
                                 </span>
@@ -251,8 +250,8 @@ export default async function ArticlePage({ params }: PageProps) {
 
             {(article.slug === 'freelance-cv-maken' || article.slug === 'linkedin-samenvatting-schrijven') && (
                 <section className="border-b-4 border-black bg-[#FFF7E8]">
-                    <div className="max-w-4xl mx-auto px-6 py-8">
-                        <div className="flex flex-col gap-5 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] md:flex-row md:items-center md:justify-between">
+                    <div className="wk-editorial-container max-w-4xl mx-auto px-6 py-8">
+                        <div className="wk-editorial-card flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between">
                             <div className="max-w-2xl">
                                 <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-500">
                                     Direct toepassen
@@ -272,7 +271,7 @@ export default async function ArticlePage({ params }: PageProps) {
                                 href={article.slug === 'freelance-cv-maken'
                                     ? '/cv-gids/cv-voorbeeld-zzper'
                                     : '/tools/linkedin-naar-cv#linkedin-tool'}
-                                className="inline-block flex-shrink-0 border-4 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                                className="wk-button wk-button-primary flex-shrink-0"
                             >
                                 {article.slug === 'freelance-cv-maken'
                                     ? 'Open het ZZP-voorbeeld'
@@ -285,7 +284,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
             {article.slug === 'linkedin-naar-cv' && (
                 <section className="border-b-4 border-black bg-white">
-                    <div className="max-w-4xl mx-auto px-6 py-10">
+                    <div className="wk-editorial-container max-w-4xl mx-auto px-6 py-10">
                         <LinkedInToCvImporter
                             uiLanguage="nl"
                             sourcePath="/cv-tips/linkedin-naar-cv"
@@ -295,8 +294,8 @@ export default async function ArticlePage({ params }: PageProps) {
             )}
 
             {/* Table of Contents */}
-            <div className="max-w-4xl mx-auto px-6 pt-8">
-                <div className="bg-gray-50 border-3 border-black p-5 mb-8">
+            <div className="wk-editorial-container max-w-4xl mx-auto px-6 pt-8">
+                <div className="wk-editorial-card wk-editorial-card-muted p-5 mb-8">
                     <h2 className="text-sm font-black uppercase tracking-wider text-gray-500 mb-3">
                         Inhoudsopgave
                     </h2>
@@ -330,7 +329,7 @@ export default async function ArticlePage({ params }: PageProps) {
             </div>
 
             {/* Article Content */}
-            <article className="max-w-4xl mx-auto px-6 pb-12">
+            <article className="wk-editorial-container max-w-4xl mx-auto px-6 pb-12">
                 <div className="space-y-10">
                     {article.sections.map((section) => (
                         <Fragment key={section.id}>
@@ -363,7 +362,7 @@ export default async function ArticlePage({ params }: PageProps) {
                                 )}
                                 <SectionIntentLinks links={section.intentLinks} locale="nl" />
                                 {article.slug === 'foto-op-je-cv' && section.id === 'juiste-foto-kiezen' && (
-                                    <div className="mt-6 border-4 border-black bg-[#FFD166] p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                                    <div className="wk-editorial-card-muted mt-6 p-5">
                                         <h3 className="text-xl font-black text-gray-900">
                                             Geen professionele foto?
                                         </h3>
@@ -373,7 +372,7 @@ export default async function ArticlePage({ params }: PageProps) {
                                         </p>
                                         <Link
                                             href="/profielfoto-cv-maken"
-                                            className="mt-4 inline-block bg-black text-white font-bold px-5 py-3 border-3 border-black shadow-[3px_3px_0px_0px_rgba(255,255,255,1)] hover:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                                            className="wk-button wk-button-primary mt-4"
                                         >
                                             Maak profielfoto voor €9,99
                                         </Link>
@@ -398,7 +397,7 @@ export default async function ArticlePage({ params }: PageProps) {
                 </div>
 
                 {article.sources?.length ? (
-                    <section id="bronnen" className="mt-16 scroll-mt-24 border-t-4 border-black pt-9">
+                    <section id="bronnen" className="wk-editorial-section mt-16 scroll-mt-24 border-t-4 border-black pt-9">
                         <h2 className="text-3xl font-black mb-3 text-gray-900">Bronnen en controle</h2>
                         <p className="max-w-3xl text-gray-700 leading-relaxed">
                             Richtlijnen en productfuncties kunnen veranderen. Voor deze gids zijn de onderstaande
@@ -407,12 +406,12 @@ export default async function ArticlePage({ params }: PageProps) {
                         </p>
                         <ul className="mt-6 space-y-4">
                             {article.sources.map(source => (
-                                <li key={source.url} className="border-2 border-black bg-white p-4">
+                                <li key={source.url} className="wk-editorial-card p-4">
                                     <a
                                         href={source.url}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="font-black text-black underline decoration-2 underline-offset-4"
+                                    className="font-extrabold text-[var(--wk-primary)] underline decoration-2 underline-offset-4"
                                     >
                                         {source.publisher}: {source.title}
                                     </a>
@@ -433,7 +432,7 @@ export default async function ArticlePage({ params }: PageProps) {
                             {article.faq.map((item, i) => (
                                 <details
                                     key={i}
-                                    className="group bg-white border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+                                    className="wk-editorial-card group"
                                 >
                                     <summary className="cursor-pointer p-5 font-bold text-lg flex items-center justify-between hover:bg-gray-50 transition-colors">
                                         {item.question}
@@ -451,7 +450,7 @@ export default async function ArticlePage({ params }: PageProps) {
                 )}
 
                 {/* Inline CTA */}
-                {!englishCvCitedAuthorityConfig ? <div className="mt-12 p-6 bg-gradient-to-r from-[#FF6B6B]/10 to-[#FF8E8E]/10 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                {!englishCvCitedAuthorityConfig ? <div className="wk-editorial-card-muted mt-12 p-6">
                     <h3 className="font-black text-xl mb-2 text-gray-900">
                         Direct aan de slag met je CV?
                     </h3>
@@ -465,21 +464,21 @@ export default async function ArticlePage({ params }: PageProps) {
                                 href={articleEditorCta.href}
                                 trackingLocation={`cv-tip:${article.slug}:inline_primary`}
                                 trackingLabel={articleEditorCta.label}
-                                className="inline-block bg-black text-white font-bold px-6 py-3 border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                                className="wk-button wk-button-primary"
                             >
                                 {articleEditorCta.label}
                             </TrackedLandingLink>
                         ) : (
                             <Link
                                 href="/templates"
-                                className="inline-block bg-black text-white font-bold px-6 py-3 border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                                className="wk-button wk-button-primary"
                             >
                                 Maak je CV
                             </Link>
                         )}
                         <Link
                             href="/cv-voorbeelden"
-                            className="inline-block bg-white text-black font-bold px-6 py-3 border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            className="wk-button wk-button-secondary"
                         >
                             Bekijk CV voorbeelden
                         </Link>
@@ -505,14 +504,14 @@ export default async function ArticlePage({ params }: PageProps) {
             {/* Related CV Examples */}
             {relatedExamples.length > 0 && (
                 <section className="border-t-4 border-black bg-white">
-                    <div className="max-w-6xl mx-auto px-6 py-12">
+                    <div className="wk-editorial-container max-w-6xl mx-auto px-6 py-12">
                         <h2 className="text-3xl font-black mb-6">Gerelateerde CV voorbeelden</h2>
                         <div className="grid md:grid-cols-3 gap-6">
                             {relatedExamples.map((example) => example && (
                                 <Link
                                     key={example.slug}
                                     href={`/cv-voorbeelden/${example.categorySlug}/${example.slug}`}
-                                    className="group block bg-white border-3 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                                    className="wk-editorial-card-link group p-5"
                                 >
                                     <span className="text-xs font-bold text-gray-400 uppercase">
                                         CV Voorbeeld
@@ -533,18 +532,17 @@ export default async function ArticlePage({ params }: PageProps) {
             {/* Related Articles */}
             {relatedArticles.length > 0 && (
                 <section className="border-t-4 border-black bg-gray-50">
-                    <div className="max-w-6xl mx-auto px-6 py-12">
+                    <div className="wk-editorial-container max-w-6xl mx-auto px-6 py-12">
                         <h2 className="text-3xl font-black mb-6">Meer artikelen</h2>
                         <div className="grid md:grid-cols-3 gap-6">
                             {relatedArticles.map((related) => (
                                 <Link
                                     key={related.slug}
                                     href={`/cv-tips/${related.slug}`}
-                                    className="group block bg-white border-3 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                                    className="wk-editorial-card-link group p-5"
                                 >
                                     <span
-                                        className="text-xs font-bold px-2 py-0.5 border-2 border-black inline-block mb-2"
-                                        style={{ backgroundColor: articleCategoryColors[related.category] }}
+                                        className="wk-editorial-kicker mb-2 text-xs font-bold"
                                     >
                                         {articleCategoryLabels[related.category]}
                                     </span>
@@ -562,8 +560,8 @@ export default async function ArticlePage({ params }: PageProps) {
             )}
 
             {/* Final CTA */}
-            {!englishCvCitedAuthorityConfig ? <section className="border-t-4 border-black bg-[#4ECDC4]">
-                <div className="max-w-6xl mx-auto px-6 py-12 text-center">
+            {!englishCvCitedAuthorityConfig ? <section className="border-t-4 border-black bg-[var(--wk-accent-soft)]">
+                <div className="wk-editorial-container max-w-6xl mx-auto px-6 py-12 text-center">
                     <h2 className="text-3xl font-black mb-4 text-gray-900">
                         Begin vandaag met je CV
                     </h2>
@@ -576,14 +574,14 @@ export default async function ArticlePage({ params }: PageProps) {
                             href={articleEditorCta.href}
                             trackingLocation={`cv-tip:${article.slug}:bottom_primary`}
                             trackingLabel={articleEditorCta.label}
-                            className="inline-block bg-black text-white font-bold px-8 py-4 text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            className="wk-button wk-button-primary text-lg"
                         >
                             {articleEditorCta.label}
                         </TrackedLandingLink>
                     ) : (
                         <Link
                             href="/templates"
-                            className="inline-block bg-black text-white font-bold px-8 py-4 text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                            className="wk-button wk-button-primary text-lg"
                         >
                             Maak je CV nu
                         </Link>

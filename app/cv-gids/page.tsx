@@ -216,17 +216,17 @@ export default function CvgidsHubPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#FFFEF9]">
+    <main className="wk-editorial-page">
       <JsonLd data={collectionJsonLd} />
-      <section className="border-b-4 border-black bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50">
-        <div className="max-w-6xl mx-auto px-6 py-14">
-          <span className="inline-block bg-[#FF6B6B] text-white text-sm font-bold px-3 py-1 mb-4 border-2 border-black">
+      <section className="wk-editorial-hero mx-auto max-w-[1200px] p-6 sm:p-8 lg:p-10">
+        <div>
+          <span className="wk-editorial-kicker mb-4">
             NEDERLANDSE CV GIDS
           </span>
-          <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+          <h1 className="max-w-4xl text-balance text-4xl font-extrabold leading-tight tracking-[-0.045em] text-[var(--wk-ink)] md:text-5xl">
             Nederlandse CV gids voor veelgezochte termen
           </h1>
-          <p className="text-lg text-gray-700 max-w-4xl leading-relaxed">
+          <p className="mt-5 max-w-4xl text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">
             Gebruik deze pagina als centrale hub voor cv maken in Nederland. Je vindt hier niet alleen losse gidsen, maar ook de beste routes voor profieltekst, werkervaring, vaardigheden, templates, voorbeelden en speciale situaties zoals een student-CV of een Engels CV voor Nederlandse vacatures.
           </p>
           <div className="mt-8 grid gap-4 md:grid-cols-3">
@@ -235,7 +235,7 @@ export default function CvgidsHubPage() {
               "Long-tail pagina's voor student, stage, mobiel, PDF en Engels",
               "Gidsen die je direct doorsturen naar editor, tools en rolgerichte voorbeelden",
             ].map((item) => (
-              <div key={item} className="border-3 border-black bg-white p-4 text-sm font-black text-gray-900" style={{ borderWidth: "3px" }}>
+              <div key={item} className="wk-trust-pill justify-center px-4 py-4 text-center normal-case tracking-normal">
                 {item}
               </div>
             ))}
@@ -243,40 +243,40 @@ export default function CvgidsHubPage() {
         </div>
       </section>
 
-      <section className="border-b-4 border-black bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <h2 className="text-3xl font-black text-gray-900 mb-4">Hoe gebruik je deze gids slim?</h2>
-          <p className="text-gray-700 max-w-4xl leading-relaxed">
+      <section className="wk-editorial-section bg-[var(--wk-surface)] py-14">
+        <div className="wk-editorial-container">
+          <h2 className="mb-4 text-3xl font-extrabold tracking-[-0.035em] text-[var(--wk-ink)]">Hoe gebruik je deze gids slim?</h2>
+          <p className="max-w-4xl leading-relaxed text-[var(--wk-ink-muted)]">
             De snelste route is meestal: begin met de intentiepagina die past bij je situatie, open daarna een inhoudelijke gids voor profieltekst of werkervaring, vergelijk eventueel een voorbeeld, en finaliseer pas dan in de editor. Zo voelt deze hub minder als een losse verzameling artikelen en meer als een complete Nederlandse CV-workflow.
           </p>
           <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {workflowSteps.map((step) => (
-              <article key={step.title} className="border-3 border-black bg-[#FFFEF9] p-5" style={{ borderWidth: "3px" }}>
-                <h3 className="text-lg font-black text-gray-900">{step.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-gray-700">{step.body}</p>
+              <article key={step.title} className="wk-editorial-card-muted p-5">
+                <h3 className="text-lg font-extrabold tracking-[-0.02em] text-[var(--wk-ink)]">{step.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--wk-ink-muted)]">{step.body}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="border-b-4 border-black bg-[#FFF7E8]">
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <h2 className="text-3xl font-black text-gray-900 mb-4">Belangrijkste CV-routes</h2>
-          <p className="text-gray-700 max-w-4xl leading-relaxed">
+      <section className="wk-editorial-section bg-[var(--wk-highlight-soft)] py-14">
+        <div className="wk-editorial-container">
+          <h2 className="mb-4 text-3xl font-extrabold tracking-[-0.035em] text-[var(--wk-ink)]">Belangrijkste CV-routes</h2>
+          <p className="max-w-4xl leading-relaxed text-[var(--wk-ink-muted)]">
             Dit zijn de pagina&apos;s waar de meeste Nederlandse zoekintenties samenkomen. Als deze hub links moet doorgeven aan routes met de meeste commerciële en inhoudelijke waarde, dan zijn dit de logische kandidaten.
           </p>
           <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {guideGroups.map((group) => (
-              <article key={group.title} className="border-4 border-black bg-white p-6">
-                <h3 className="text-2xl font-black text-gray-900">{group.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-700">{group.description}</p>
+              <article key={group.title} className="wk-editorial-card p-6">
+                <h3 className="text-2xl font-extrabold tracking-[-0.03em] text-[var(--wk-ink)]">{group.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--wk-ink-muted)]">{group.description}</p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {group.links.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="border-2 border-black bg-[#FFFEF9] px-3 py-1.5 text-sm font-bold hover:bg-yellow-100 transition-colors"
+                      className="wk-editorial-card-link px-3 py-2 text-sm font-extrabold"
                     >
                       {link.label}
                     </Link>
@@ -288,10 +288,10 @@ export default function CvgidsHubPage() {
         </div>
       </section>
 
-      <section className="border-b-4 border-black bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <h2 className="text-3xl font-black text-gray-900 mb-4">Diepe gidsen voor profiel, werkervaring en vaardigheden</h2>
-          <p className="text-gray-700 max-w-4xl leading-relaxed">
+      <section className="wk-editorial-section bg-[var(--wk-surface)] py-14">
+        <div className="wk-editorial-container">
+          <h2 className="mb-4 text-3xl font-extrabold tracking-[-0.035em] text-[var(--wk-ink)]">Diepe gidsen voor profiel, werkervaring en vaardigheden</h2>
+          <p className="max-w-4xl leading-relaxed text-[var(--wk-ink-muted)]">
             Een goede Nederlandse CV-pagina is niet alleen een overzicht, maar ook een bron waar andere sites natuurlijk naar zouden kunnen linken. Daarom wijzen we hier niet alleen naar losse rolpagina&apos;s, maar ook naar de belangrijkste inhoudsthema&apos;s: hoe je een sterke profieltekst schrijft, werkervaring overtuigend formuleert en vaardigheden ATS-proof inzet.
           </p>
           <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -299,33 +299,33 @@ export default function CvgidsHubPage() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="block border-4 border-black bg-[#FFFEF9] p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5"
+                className="wk-editorial-card-link p-5"
               >
-                <p className="text-sm font-black text-gray-900">{item.title}</p>
-                <p className="mt-2 text-sm leading-relaxed text-gray-700">{item.body}</p>
+                <p className="text-sm font-extrabold text-[var(--wk-ink)]">{item.title}</p>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--wk-ink-muted)]">{item.body}</p>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="border-b-4 border-black bg-[#FFF7E8]">
-        <div className="max-w-6xl mx-auto px-6 py-12">
-          <h2 className="text-3xl font-black text-gray-900 mb-4">Vergelijk CV builders slim voordat je kiest</h2>
-          <p className="text-gray-700 max-w-4xl leading-relaxed">
+      <section className="wk-editorial-section bg-[var(--wk-highlight-soft)] py-14">
+        <div className="wk-editorial-container">
+          <h2 className="mb-4 text-3xl font-extrabold tracking-[-0.035em] text-[var(--wk-ink)]">Vergelijk CV builders slim voordat je kiest</h2>
+          <p className="max-w-4xl leading-relaxed text-[var(--wk-ink-muted)]">
             Steeds meer bezoekers komen niet binnen op “hoe maak ik een CV?”, maar op “welke tool moet ik gebruiken?”. Daarom hebben we de belangrijkste vergelijking- en keuzehulppagina&apos;s hier als eigen cluster bij elkaar gezet.
           </p>
           <div className="mt-8 grid gap-6 lg:grid-cols-2">
             {comparisonGuideGroups.map((group) => (
-              <article key={group.title} className="border-4 border-black bg-white p-6">
-                <h3 className="text-2xl font-black text-gray-900">{group.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-gray-700">{group.description}</p>
+              <article key={group.title} className="wk-editorial-card p-6">
+                <h3 className="text-2xl font-extrabold tracking-[-0.03em] text-[var(--wk-ink)]">{group.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-[var(--wk-ink-muted)]">{group.description}</p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {group.links.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="border-2 border-black bg-[#FFFEF9] px-3 py-1.5 text-sm font-bold hover:bg-yellow-100 transition-colors"
+                      className="wk-editorial-card-link px-3 py-2 text-sm font-extrabold"
                     >
                       {link.label}
                     </Link>
@@ -337,24 +337,24 @@ export default function CvgidsHubPage() {
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 py-10">
+      <section className="wk-editorial-container pb-14 pt-10">
         <div className="mb-6">
-          <h2 className="text-3xl font-black text-gray-900 mb-3">Alle CV gidsen</h2>
-          <p className="text-gray-700 max-w-4xl leading-relaxed">
+          <h2 className="mb-3 text-3xl font-extrabold tracking-[-0.035em] text-[var(--wk-ink)]">Alle CV gidsen</h2>
+          <p className="max-w-4xl leading-relaxed text-[var(--wk-ink-muted)]">
             Hieronder staan alle inhoudelijke gidsen uit deze cluster. Gebruik ze als verdieping nadat je de juiste intentieroute hierboven hebt gekozen.
           </p>
         </div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {pages.map((page) => (
             <Link
               key={page.slug}
               href={`/cv-gids/${page.slug}`}
-              className="group block bg-white border-3 border-black p-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+              className="wk-editorial-card-link group p-5"
             >
-              <h2 className="font-black text-xl mb-2 group-hover:text-[#FF6B6B] transition-colors">
+              <h2 className="mb-2 text-xl font-extrabold tracking-[-0.025em] text-[var(--wk-ink)] transition-colors group-hover:text-[var(--wk-primary)]">
                 {page.title}
               </h2>
-              <p className="text-sm text-gray-600 line-clamp-3">{page.description}</p>
+              <p className="line-clamp-3 text-sm text-[var(--wk-ink-muted)]">{page.description}</p>
             </Link>
           ))}
         </div>

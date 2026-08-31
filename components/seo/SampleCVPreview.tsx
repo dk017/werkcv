@@ -25,7 +25,7 @@ export function SampleCVPreview({
 
     return (
         <div
-            className="relative overflow-hidden border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white"
+            className="wk-editorial-cv-preview relative overflow-hidden border-4 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-white"
             style={{ maxHeight: `${maxHeight}px` }}
         >
             {/* Scale container */}

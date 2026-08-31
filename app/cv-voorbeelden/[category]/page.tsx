@@ -67,7 +67,7 @@ export default async function CategoryPage({ params }: PageProps) {
     };
 
     return (
-        <main className="min-h-screen bg-[#FFFEF9]">
+        <main className="wk-editorial-page">
             {/* JSON-LD */}
             <script
                 type="application/ld+json"
@@ -75,54 +75,54 @@ export default async function CategoryPage({ params }: PageProps) {
             />
 
             {/* Breadcrumbs */}
-            <div className="border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-3">
+            <div className="wk-editorial-breadcrumbs">
+                <div className="wk-editorial-container py-3">
                     <Breadcrumbs items={breadcrumbItems} />
                 </div>
             </div>
 
             {/* Hero Section */}
-            <section className="border-b-4 border-black bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-                <div className="max-w-6xl mx-auto px-6 py-12">
-                    <span className="inline-block bg-[#4ECDC4] text-black text-sm font-bold px-3 py-1 mb-4 border-2 border-black">
+            <section className="wk-editorial-hero mx-auto mb-14 max-w-[1200px] p-6 sm:p-8 lg:p-10">
+                <div>
+                    <span className="wk-editorial-kicker mb-4">
                         {examples.length} VOORBEELDEN
                     </span>
-                    <h1 className="text-4xl md:text-5xl font-black mb-4 text-gray-900">
+                    <h1 className="max-w-4xl text-balance text-4xl font-extrabold leading-tight tracking-[-0.045em] text-[var(--wk-ink)] md:text-5xl">
                         {category.heroTitle}
                     </h1>
-                    <p className="text-lg md:text-xl text-gray-700 max-w-3xl">
+                    <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)] md:text-xl">
                         {category.heroText}
                     </p>
                 </div>
             </section>
 
             {/* Examples Grid */}
-            <section className="max-w-6xl mx-auto px-6 py-12">
+            <section className="wk-editorial-container pb-14">
                 <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
                     <div>
-                        <h2 className="text-3xl font-black">Kies je CV voorbeeld</h2>
-                        <p className="mt-2 max-w-3xl text-sm font-medium leading-relaxed text-gray-700">
+                        <h2 className="text-3xl font-extrabold tracking-[-0.035em] text-[var(--wk-ink)]">Kies je CV voorbeeld</h2>
+                        <p className="mt-2 max-w-3xl text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">
                             Gebruik een voorbeeld niet als tekst om letterlijk te kopieren. Gebruik het als structuur:
                             profieltekst, werkervaring, vaardigheden en trefwoorden die passen bij jouw vacature.
                         </p>
                     </div>
                     <Link
                         href="/prijzen"
-                        className="inline-flex w-fit items-center justify-center border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+                        className="wk-button wk-button-secondary"
                     >
                         Hoe werkt downloaden?
                     </Link>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {examples.map((example) => (
                         <Link
                             key={example.slug}
                             href={`/cv-voorbeelden/${categorySlug}/${example.slug}`}
-                            className="group block bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all overflow-hidden"
+                            className="wk-editorial-card-link group overflow-hidden"
                         >
                             {/* CV Preview */}
-                            <div className="h-[280px] overflow-hidden border-b-4 border-black">
+                            <div className="h-[280px] overflow-hidden border-b border-[var(--wk-border)] bg-[var(--wk-surface-subtle)]">
                                 <SampleCVPreview
                                     data={example.sampleCV}
                                     templateId={example.templateId}
@@ -134,13 +134,13 @@ export default async function CategoryPage({ params }: PageProps) {
 
                             {/* Card Content */}
                             <div className="p-5">
-                                <h3 className="text-xl font-black mb-2 group-hover:text-[#FF6B6B] transition-colors">
+                                <h3 className="mb-2 text-xl font-extrabold tracking-[-0.025em] text-[var(--wk-ink)] transition-colors group-hover:text-[var(--wk-primary)]">
                                     {example.name}
                                 </h3>
-                                <p className="text-gray-600 text-sm line-clamp-2 mb-3">
+                                <p className="mb-3 line-clamp-2 text-sm text-[var(--wk-ink-muted)]">
                                     {example.description}
                                 </p>
-                                <span className="inline-flex items-center font-bold text-sm text-[#FF6B6B]">
+                                <span className="inline-flex items-center text-sm font-extrabold text-[var(--wk-primary)]">
                                     Bekijk voorbeeld
                                     <svg className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
@@ -154,21 +154,21 @@ export default async function CategoryPage({ params }: PageProps) {
 
             {/* Tips Section */}
             {category.tips.length > 0 && (
-                <section className="border-t-4 border-black bg-white">
-                    <div className="max-w-6xl mx-auto px-6 py-12">
-                        <h2 className="text-3xl font-black mb-6">
+                <section className="wk-editorial-section bg-[var(--wk-surface)] py-14">
+                    <div className="wk-editorial-container">
+                        <h2 className="mb-6 text-3xl font-extrabold tracking-[-0.035em] text-[var(--wk-ink)]">
                             Tips voor je {category.name} CV
                         </h2>
-                        <div className="grid md:grid-cols-2 gap-4">
+                        <div className="grid gap-4 md:grid-cols-2">
                             {category.tips.map((tip, index) => (
                                 <div
                                     key={index}
-                                    className="flex gap-4 p-4 bg-[#F8F8F8] border-2 border-black"
+                                    className="wk-editorial-card-muted flex gap-4 p-4"
                                 >
-                                    <span className="flex-shrink-0 w-8 h-8 bg-[#4ECDC4] border-2 border-black flex items-center justify-center font-black">
+                                    <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-[var(--wk-border)] bg-[var(--wk-accent-soft)] font-extrabold text-[var(--wk-primary)]">
                                         {index + 1}
                                     </span>
-                                    <p className="text-gray-700">{tip}</p>
+                                    <p className="text-[var(--wk-ink-muted)]">{tip}</p>
                                 </div>
                             ))}
                         </div>
@@ -176,17 +176,17 @@ export default async function CategoryPage({ params }: PageProps) {
                 </section>
             )}
 
-            <section className="border-t-4 border-black bg-[#FFF7E8]">
-                <div className="max-w-6xl mx-auto px-6 py-12">
+            <section className="wk-editorial-section bg-[var(--wk-highlight-soft)] py-14">
+                <div className="wk-editorial-container">
                     <div className="grid gap-6 md:grid-cols-[1fr_1fr]">
                         <div>
-                            <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-600">
+                            <p className="text-xs font-extrabold uppercase tracking-[0.2em] text-[var(--wk-ink-muted)]">
                                 Van voorbeeld naar sollicitatieversie
                             </p>
-                            <h2 className="mt-2 text-3xl font-black text-gray-900">
+                            <h2 className="mt-2 text-3xl font-extrabold tracking-[-0.035em] text-[var(--wk-ink)]">
                                 Maak eerst de inhoud sterk, kies daarna pas je downloadmoment
                             </h2>
-                            <p className="mt-3 text-sm font-medium leading-relaxed text-gray-700">
+                            <p className="mt-3 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">
                                 WerkCV laat je gratis starten met een voorbeeld of leeg template. Je betaalt pas wanneer je
                                 tevreden bent en de definitieve PDF wilt downloaden.
                             </p>
@@ -194,17 +194,17 @@ export default async function CategoryPage({ params }: PageProps) {
                         <div className="grid gap-3 sm:grid-cols-2">
                             <Link
                                 href="/templates"
-                                className="border-2 border-black bg-white p-4 hover:bg-yellow-100"
+                                className="wk-editorial-card-link p-4"
                             >
-                                <p className="text-sm font-black text-black">Templates vergelijken</p>
-                                <p className="mt-1 text-sm font-medium text-gray-700">Kies de layout die past bij jouw rol.</p>
+                                <p className="text-sm font-extrabold text-[var(--wk-ink)]">Templates vergelijken</p>
+                                <p className="mt-1 text-sm font-medium text-[var(--wk-ink-muted)]">Kies de layout die past bij jouw rol.</p>
                             </Link>
                             <Link
                                 href="/cv-maken-zonder-abonnement"
-                                className="border-2 border-black bg-white p-4 hover:bg-yellow-100"
+                                className="wk-editorial-card-link p-4"
                             >
-                                <p className="text-sm font-black text-black">Zonder abonnement</p>
-                                <p className="mt-1 text-sm font-medium text-gray-700">Lees hoe eenmalig downloaden werkt.</p>
+                                <p className="text-sm font-extrabold text-[var(--wk-ink)]">Zonder abonnement</p>
+                                <p className="mt-1 text-sm font-medium text-[var(--wk-ink-muted)]">Lees hoe eenmalig downloaden werkt.</p>
                             </Link>
                         </div>
                     </div>
@@ -212,18 +212,18 @@ export default async function CategoryPage({ params }: PageProps) {
             </section>
 
             {/* CTA Section */}
-            <section className="border-t-4 border-black bg-[#4ECDC4]">
-                <div className="max-w-6xl mx-auto px-6 py-12 text-center">
-                    <h2 className="text-3xl font-black mb-4 text-gray-900">
+            <section className="wk-editorial-card-dark mx-auto mb-14 max-w-[1200px] px-6 py-12 text-center sm:px-8">
+                <div>
+                    <h2 className="mb-4 text-3xl font-extrabold tracking-[-0.035em] text-white">
                         Klaar om je {category.name} CV te maken?
                     </h2>
-                    <p className="text-lg mb-6 max-w-2xl mx-auto text-gray-800">
+                    <p className="mx-auto mb-6 max-w-2xl text-lg text-white/85">
                         Kies een voorbeeld hierboven of start direct met een leeg template.
                         Eenmalig €4,99, geen abonnement.
                     </p>
                     <Link
                         href="/templates"
-                        className="inline-block bg-black text-white font-bold px-8 py-4 text-lg border-4 border-black shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
+                        className="wk-button wk-button-primary"
                     >
                         Start je CV nu
                     </Link>

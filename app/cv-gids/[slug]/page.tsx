@@ -133,7 +133,7 @@ export default async function DutchWavePage({ params }: PageProps) {
     ];
 
     return (
-        <main className="min-h-screen bg-[#FFFEF9]">
+        <main className="wk-editorial-article">
             <script
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -146,21 +146,21 @@ export default async function DutchWavePage({ params }: PageProps) {
             )}
 
             {/* Breadcrumbs */}
-            <div className="border-b-4 border-black bg-white">
-                <div className="max-w-6xl mx-auto px-6 py-3">
+            <div className="wk-editorial-breadcrumbs">
+                <div className="wk-editorial-container py-3">
                     <Breadcrumbs items={breadcrumbItems} />
                 </div>
             </div>
 
-            <section className="border-b-4 border-black bg-gradient-to-br from-blue-50 via-cyan-50 to-teal-50">
-                <div className="max-w-6xl mx-auto px-6 py-12">
+            <section className="wk-editorial-hero mx-auto max-w-[1200px] p-6 sm:p-8 lg:p-10">
+                <div>
                     <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
                         <div>
-                            <span className="inline-block bg-white text-sm font-black uppercase tracking-[0.18em] text-gray-700 px-3 py-1 mb-4 border-2 border-black">
+                            <span className="wk-editorial-kicker mb-4">
                                 CV Gids
                             </span>
-                            <h1 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">{page.title}</h1>
-                            <p className="text-lg text-gray-700 max-w-3xl">{page.intro}</p>
+                            <h1 className="max-w-4xl text-balance text-4xl font-extrabold leading-tight tracking-[-0.045em] text-[var(--wk-ink)] md:text-5xl">{page.title}</h1>
+                            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">{page.intro}</p>
 
                             <div className="mt-7 flex flex-wrap gap-3">
                                 {isZzpExample ? (
@@ -181,14 +181,14 @@ export default async function DutchWavePage({ params }: PageProps) {
                                 ) : (
                                     <Link
                                         href={`${page.ctaHref}#quick-start`}
-                                        className="inline-block border-4 border-black bg-yellow-300 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] transition-all"
+                                        className="wk-button wk-button-primary"
                                     >
                                         Maak dit CV in 5 minuten
                                     </Link>
                                 )}
                                 <Link
                                     href="/cv-tips/cv-template-kiezen"
-                                    className="inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+                                    className="wk-button wk-button-secondary"
                                 >
                                     Kies de juiste template
                                 </Link>
@@ -198,8 +198,7 @@ export default async function DutchWavePage({ params }: PageProps) {
                                 {heroProofPoints.map((item) => (
                                     <div
                                         key={item}
-                                        className="border-3 border-black bg-white px-4 py-3 text-sm font-black text-gray-900"
-                                        style={{ borderWidth: '3px' }}
+                                        className="wk-trust-pill justify-center px-4 py-3 text-center normal-case tracking-normal"
                                     >
                                         {item}
                                     </div>
@@ -207,20 +206,20 @@ export default async function DutchWavePage({ params }: PageProps) {
                             </div>
                         </div>
 
-                        <aside className="border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-                            <p className="text-xs font-black uppercase tracking-[0.18em] text-gray-500">
+                        <aside className="wk-editorial-card h-fit p-6">
+                            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">
                                 Direct toepassen
                             </p>
-                            <h2 className="mt-2 text-2xl font-black text-gray-900">{page.ctaTitle}</h2>
-                            <p className="mt-3 text-sm leading-relaxed text-gray-700">{page.ctaText}</p>
+                            <h2 className="mt-2 text-2xl font-extrabold tracking-[-0.03em] text-[var(--wk-ink)]">{page.ctaTitle}</h2>
+                            <p className="mt-3 text-sm leading-relaxed text-[var(--wk-ink-muted)]">{page.ctaText}</p>
 
                             <div className="mt-5 space-y-3">
                                 {heroWorkflow.map((item, index) => (
                                     <div key={item} className="flex gap-3">
-                                        <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center border-2 border-black bg-[#FFFEF9] text-sm font-black text-gray-900">
+                                        <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)] text-sm font-extrabold text-[var(--wk-primary)]">
                                             {index + 1}
                                         </span>
-                                        <p className="text-sm leading-relaxed text-gray-700">{item}</p>
+                                        <p className="text-sm leading-relaxed text-[var(--wk-ink-muted)]">{item}</p>
                                     </div>
                                 ))}
                             </div>
@@ -236,24 +235,21 @@ export default async function DutchWavePage({ params }: PageProps) {
                                 ) : roleConversion ? (
                                     <Link
                                         href="#prefilled-role-cv"
-                                        className="inline-block border-3 border-black bg-black px-5 py-3 text-sm font-black text-white"
-                                        style={{ borderWidth: '3px' }}
+                                        className="wk-button wk-button-primary"
                                     >
                                         Bekijk wat al is ingevuld
                                     </Link>
                                 ) : (
                                     <Link
                                         href={`${page.ctaHref}#quick-start`}
-                                        className="inline-block border-3 border-black bg-black px-5 py-3 text-sm font-black text-white"
-                                        style={{ borderWidth: '3px' }}
+                                        className="wk-button wk-button-primary"
                                     >
                                         Start met je CV
                                     </Link>
                                 )}
                                 <Link
                                     href="/cv-maken"
-                                    className="inline-block border-3 border-black bg-white px-5 py-3 text-sm font-black text-black"
-                                    style={{ borderWidth: '3px' }}
+                                    className="wk-button wk-button-secondary"
                                 >
                                     Hoe maak je een CV?
                                 </Link>

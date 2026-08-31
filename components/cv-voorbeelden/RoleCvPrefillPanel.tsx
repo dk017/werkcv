@@ -48,8 +48,8 @@ export function RoleCvPrefillPanel({
           targetId="prefilled-role-cv"
         />
       ) : null}
-      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <div className="wk-card grid min-w-0 overflow-hidden bg-[var(--wk-surface)] lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
+      <div className="wk-editorial-container mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <div className="wk-editorial-prefill wk-card grid min-w-0 overflow-hidden bg-[var(--wk-surface)] lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           <div className="min-w-0 border-b border-[var(--wk-border)] p-6 sm:p-8 lg:border-b-0 lg:border-r">
             <p className="wk-eyebrow">
               {eyebrow}
@@ -69,7 +69,7 @@ export function RoleCvPrefillPanel({
 
             <div className="mt-5 grid gap-3 sm:grid-cols-3">
               {proofItems.map((item) => (
-                <div key={item} className="rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-surface-muted)] p-3 text-sm font-bold text-[var(--wk-ink)]">
+                <div key={item} className="rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-3 text-sm font-bold text-[var(--wk-ink)]">
                   ✓ {item}
                 </div>
               ))}
@@ -93,7 +93,7 @@ export function RoleCvPrefillPanel({
             </div>
           </div>
 
-          <aside className="min-w-0 bg-[var(--wk-surface-muted)] p-6 sm:p-8">
+          <aside className="min-w-0 bg-[var(--wk-surface-subtle)] p-6 sm:p-8">
             <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[var(--wk-ink-muted)]">Dit staat al klaar</p>
             <div className="mt-4 rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-4">
               <p className="text-xs font-extrabold uppercase tracking-wide text-[var(--wk-ink-muted)]">Voorbeeldprofiel</p>

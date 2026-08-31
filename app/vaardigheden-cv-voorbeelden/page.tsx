@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Footer from "@/components/Footer";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import CitedAuthorityConversionBridge from "@/components/conversion/CitedAuthorityConversionBridge";
 import { getCitedAuthorityRouteConfig } from "@/lib/cited-authority-conversion";
@@ -219,40 +218,24 @@ export default function VaardighedenCvVoorbeeldenPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFEF0]">
-      <header className="relative z-10 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-black tracking-tight text-black">
-              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-            </span>
-          </Link>
-          <Link
-            href="/tools/vaardigheden-generator"
-            className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
-          >
-            Open vaardigheden tool
-          </Link>
-        </div>
-      </header>
-
-      <main className="relative z-10 mx-auto max-w-5xl px-6 py-14">
-        <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+    <div className="wk-editorial-page">
+      <main className="wk-editorial-main">
+        <section className="wk-editorial-hero mb-14 grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:p-10">
           <div>
-            <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
+            <p className="wk-editorial-kicker mb-3">
               Intent: vaardigheden voor cv
             </p>
-            <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
+            <h1 className="max-w-3xl text-balance text-4xl font-extrabold leading-tight tracking-[-0.045em] text-[var(--wk-ink)] md:text-5xl">
               Vaardigheden voor CV die direct aansluiten op vacature-eisen
             </h1>
-            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
+            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">
               Zoek je welke vaardigheden je op je cv zet? In Nederland werkt dezelfde regel als op sterke resume-sites: combineer relevante hard skills met bewezen soft skills en koppel ze aan echte
               werkresultaten. Gebruik deze voorbeelden als basis voor je eigen skillssectie.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/tools/vaardigheden-generator"
-                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                className="wk-button wk-button-primary"
               >
                 Genereer je vaardigheden
               </Link>
@@ -268,8 +251,7 @@ export default function VaardighedenCvVoorbeeldenPage() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="border-3 border-black bg-white px-4 py-3 text-sm font-black text-black"
-                  style={{ borderWidth: "3px" }}
+                  className="wk-trust-pill justify-center px-4 py-3 text-center normal-case tracking-normal"
                 >
                   {item}
                 </div>
@@ -277,22 +259,22 @@ export default function VaardighedenCvVoorbeeldenPage() {
             </div>
           </div>
 
-          <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">De 4-delige formule voor een sterke skillssectie</h2>
+          <div className="wk-editorial-card h-fit p-6">
+            <h2 className="text-xl font-extrabold tracking-[-0.03em] text-[var(--wk-ink)]">De 4-delige formule voor een sterke skillssectie</h2>
             <div className="mt-5 space-y-4">
               {frameworkSteps.map((step, index) => (
                 <div key={step} className="flex gap-3">
-                  <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center border-2 border-black bg-yellow-300 text-xs font-black">
+                  <span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)] text-xs font-extrabold text-[var(--wk-primary)]">
                     {index + 1}
                   </span>
-                  <p className="text-sm font-medium leading-relaxed text-slate-700">{step}</p>
+                  <p className="text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">{step}</p>
                 </div>
               ))}
             </div>
-            <div className="mt-6 border-t-4 border-black pt-5">
+            <div className="mt-6 border-t border-[var(--wk-border)] pt-5">
               <Link
                 href="/cv-tips/cv-vaardigheden-kiezen"
-                className="text-sm font-black text-black underline decoration-2 underline-offset-4"
+                className="text-sm font-extrabold text-[var(--wk-primary)] underline decoration-2 underline-offset-4"
               >
                 Lees ook: vaardigheden op je CV
               </Link>
@@ -304,10 +286,10 @@ export default function VaardighedenCvVoorbeeldenPage() {
           {intentMatches.map((item) => (
             <article
               key={item.title}
-              className="border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+              className="wk-editorial-card p-5"
             >
-              <h2 className="text-lg font-black text-black">{item.title}</h2>
-              <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
+              <h2 className="text-lg font-extrabold tracking-[-0.02em] text-[var(--wk-ink)]">{item.title}</h2>
+              <p className="mt-3 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">{item.body}</p>
             </article>
           ))}
         </section>
@@ -323,11 +305,11 @@ export default function VaardighedenCvVoorbeeldenPage() {
             {roleExamples.map((example) => (
               <article
                 key={example.title}
-                className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+                className="wk-editorial-card p-6"
               >
                 <h3 className="text-lg font-black text-black">{example.title}</h3>
                 <div className="mt-4 grid gap-4 md:grid-cols-2">
-                  <div className="border-2 border-black bg-[#FFFEF0] p-4">
+                  <div className="wk-editorial-card-muted p-4">
                     <p className="text-xs font-black uppercase tracking-[0.15em] text-slate-700">
                       Hard skills
                     </p>
@@ -337,7 +319,7 @@ export default function VaardighedenCvVoorbeeldenPage() {
                       ))}
                     </ul>
                   </div>
-                  <div className="border-2 border-black bg-[#FFFEF0] p-4">
+                  <div className="wk-editorial-card-muted p-4">
                     <p className="text-xs font-black uppercase tracking-[0.15em] text-slate-700">
                       Soft skills
                     </p>
@@ -360,7 +342,7 @@ export default function VaardighedenCvVoorbeeldenPage() {
           <CitedAuthorityConversionBridge config={citedAuthorityConfig} copy={citedAuthorityCopy} />
         </div>
 
-        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+        <section className="wk-editorial-card mb-14 p-6">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
             Skill-bibliotheek
           </p>
@@ -372,7 +354,7 @@ export default function VaardighedenCvVoorbeeldenPage() {
           </p>
           <div className="mt-6 grid gap-4 md:grid-cols-2">
             {Object.entries(skillLibrary).map(([group, items]) => (
-              <div key={group} className="border-2 border-black bg-[#FFFEF0] p-4">
+              <div key={group} className="wk-editorial-card-muted p-4">
                 <p className="text-sm font-black text-black">{group}</p>
                 <ul className="mt-3 grid gap-2 text-sm font-medium leading-relaxed text-slate-700 sm:grid-cols-2">
                   {items.map((item) => (
@@ -384,7 +366,7 @@ export default function VaardighedenCvVoorbeeldenPage() {
           </div>
         </section>
 
-        <section className="mb-14 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+        <section className="wk-editorial-card mb-14 p-6">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
             Van skillslijst naar recruiter-match
           </p>
@@ -400,7 +382,7 @@ export default function VaardighedenCvVoorbeeldenPage() {
         </section>
 
         <section className="mb-14 grid gap-6 md:grid-cols-2">
-          <div className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
+          <div className="wk-editorial-card-dark p-6">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
               Veelgemaakte fouten
             </p>
@@ -413,7 +395,7 @@ export default function VaardighedenCvVoorbeeldenPage() {
               ))}
             </ul>
           </div>
-          <div className="border-4 border-black bg-white p-6">
+          <div className="wk-editorial-card p-6">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
               Relevante vervolgstappen
             </p>
@@ -473,7 +455,7 @@ export default function VaardighedenCvVoorbeeldenPage() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="block border-2 border-black bg-[#FFFEF0] p-4 transition-colors hover:bg-yellow-100"
+                  className="wk-editorial-card-link p-4"
                 >
                   <p className="text-sm font-black text-black">{item.title}</p>
                   <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.body}</p>
@@ -491,13 +473,13 @@ export default function VaardighedenCvVoorbeeldenPage() {
             {faqs.map((faq) => (
               <details
                 key={faq.question}
-                className="group border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                className="wk-editorial-card group"
               >
                 <summary className="flex cursor-pointer items-center justify-between p-4 text-left text-base font-black text-black">
                   {faq.question}
                   <span className="ml-3 text-xl transition-transform group-open:rotate-45">+</span>
                 </summary>
-                <div className="border-t-2 border-black px-4 pb-4 pt-3 text-sm font-medium leading-relaxed text-slate-700">
+                <div className="border-t border-[var(--wk-border)] px-4 pb-4 pt-3 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">
                   {faq.answer}
                 </div>
               </details>
@@ -522,7 +504,6 @@ export default function VaardighedenCvVoorbeeldenPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <Footer />
     </div>
   );
 }

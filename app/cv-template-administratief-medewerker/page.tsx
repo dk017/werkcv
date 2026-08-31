@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Footer from "@/components/Footer";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { getTemplateConfig } from "@/lib/templates/registry";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
@@ -236,46 +235,30 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFEF0]">
-      <header className="relative z-10 border-b-4 border-black bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl font-black tracking-tight text-black">
-              Werk<span className="bg-yellow-400 px-1">CV</span>.nl
-            </span>
-          </Link>
-          <Link
-            href="#prefilled-role-cv"
-            className="border-2 border-black bg-yellow-400 px-3 py-1 text-sm font-black text-black transition-colors hover:bg-yellow-300"
-          >
-            Start in editor
-          </Link>
-        </div>
-      </header>
-
-      <main className="relative z-10 mx-auto max-w-5xl px-6 py-14">
-        <section className="mb-14 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
+    <div className="wk-editorial-page">
+      <main className="wk-editorial-main">
+        <section className="wk-editorial-hero mb-14 grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.15fr_0.85fr] lg:p-10">
           <div>
-            <p className="mb-3 inline-block border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.25em] text-slate-700">
+            <p className="wk-editorial-kicker mb-3">
               Rol-intent: administratie
             </p>
-            <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
+            <h1 className="max-w-3xl text-balance text-4xl font-extrabold leading-tight tracking-[-0.045em] text-[var(--wk-ink)] md:text-5xl">
               CV template administratief medewerker dat direct betrouwbaar en professioneel overkomt
             </h1>
-            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
+            <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">
               Sollicitaties voor administratieve functies vragen om duidelijke details: nauwkeurigheid, structuur, softwarekennis en opvolging. Op deze pagina combineer je een rustige
               CV-template met profielteksten, werkervaringbullets en relevante vacaturetermen die je met je eigen bewijs kunt invullen.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="#prefilled-role-cv"
-                className="border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                className="wk-button wk-button-primary"
               >
                 Bekijk ingevuld admin-CV
               </Link>
               <Link
                 href="/cv-gids/cv-voorbeeld-administratief-medewerker"
-                className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
+                className="wk-button wk-button-secondary"
               >
                 Bekijk volledig CV voorbeeld
               </Link>
@@ -288,8 +271,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="border-3 border-black bg-white px-4 py-3 text-sm font-black text-black"
-                  style={{ borderWidth: "3px" }}
+                  className="wk-trust-pill justify-center px-4 py-3 text-center normal-case tracking-normal"
                 >
                   {item}
                 </div>
@@ -297,17 +279,17 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
             </div>
           </div>
 
-          <div className="h-fit border-4 border-black bg-white p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-xl font-black text-black">Wat recruiters voor administratie direct willen zien</h2>
+          <div className="wk-editorial-card h-fit p-6">
+            <h2 className="text-xl font-extrabold tracking-[-0.03em] text-[var(--wk-ink)]">Wat recruiters voor administratie direct willen zien</h2>
             <ul className="mt-5 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
               {recruiterSignals.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
-            <div className="mt-6 border-t-4 border-black pt-5">
+            <div className="mt-6 border-t border-[var(--wk-border)] pt-5">
               <Link
                 href="/tools/cv-keywords"
-                className="text-sm font-black text-black underline decoration-2 underline-offset-4"
+                className="text-sm font-extrabold text-[var(--wk-primary)] underline decoration-2 underline-offset-4"
               >
                 Controleer je vacaturematch met de CV keywords tool
               </Link>
@@ -326,7 +308,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
             {templateCards.map((card) => (
               <article
                 key={card.name}
-                className="flex h-full flex-col border-4 border-black bg-white p-5 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+                className="wk-editorial-card flex h-full flex-col p-5"
               >
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-600">
                   {card.label}
@@ -345,7 +327,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
                       pagePath: "/cv-template-administratief-medewerker",
                       uiLanguage: "nl",
                     }}
-                    className="inline-block border-2 border-black bg-yellow-400 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-black"
+                    className="wk-button wk-button-primary"
                   >
                     Start leeg met {card.name}
                   </TrackedLandingLink>
@@ -356,36 +338,36 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
           <div className="mt-6 grid gap-4 md:grid-cols-5">
             <Link
               href="/professioneel-cv-template"
-              className="border-2 border-black bg-white p-4 text-sm font-black text-black transition-colors hover:bg-yellow-100"
+              className="wk-editorial-card-link p-4 text-sm font-extrabold"
             >
               Vergelijk met professioneel CV template
             </Link>
             <Link
               href="/ats-cv-template"
-              className="border-2 border-black bg-white p-4 text-sm font-black text-black transition-colors hover:bg-yellow-100"
+              className="wk-editorial-card-link p-4 text-sm font-extrabold"
             >
               Vergelijk met ATS CV template
             </Link>
             <Link
               href="/templates"
-              className="border-2 border-black bg-white p-4 text-sm font-black text-black transition-colors hover:bg-yellow-100"
+              className="wk-editorial-card-link p-4 text-sm font-extrabold"
             >
               Bekijk alle templates
             </Link>
             <Link
               href="/cv-template-klantenservice-medewerker"
-              className="border-2 border-black bg-white p-4 text-sm font-black text-black transition-colors hover:bg-yellow-100"
+              className="wk-editorial-card-link p-4 text-sm font-extrabold"
             >
               Bekijk klantenservice variant
             </Link>
             <Link
               href="/cv-template-office-manager"
-              className="border-2 border-black bg-white p-4 text-sm font-black text-black transition-colors hover:bg-yellow-100"
+              className="wk-editorial-card-link p-4 text-sm font-extrabold"
             >
               Bekijk office manager variant
             </Link>
           </div>
-          <div className="mt-8 border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+          <div className="wk-editorial-card mt-8 p-6">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
               Template-intentie
             </p>
@@ -426,7 +408,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
             {profileExamples.map((example) => (
               <article
                 key={example.title}
-                className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+                className="wk-editorial-card p-6"
               >
                 <h3 className="text-lg font-black text-black">{example.title}</h3>
                 <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{example.text}</p>
@@ -436,19 +418,19 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
           <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/tools/profieltekst-generator"
-              className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
+              className="wk-button wk-button-primary"
             >
               Genereer profieltekst
             </Link>
             <Link
               href="/profieltekst-cv-voorbeelden"
-              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+              className="wk-button wk-button-secondary"
             >
               Meer profieltekst voorbeelden
             </Link>
             <Link
               href="/sollicitatiebrief-voorbeeld-administratief-medewerker"
-              className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+              className="wk-button wk-button-secondary"
             >
               Voorbeeld sollicitatiebrief admin
             </Link>
@@ -456,7 +438,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
         </section>
 
         <section className="mb-14 grid gap-6 lg:grid-cols-[1fr_0.9fr]">
-          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+          <div className="wk-editorial-card p-6">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
               Werkervaring bullets
             </p>
@@ -478,7 +460,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
             </div>
           </div>
 
-          <div className="border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]">
+          <div className="wk-editorial-card p-6">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
               Skills + ATS termen
             </p>
@@ -486,7 +468,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
               Vaardigheden en keywords die vaak terugkomen in vacatures
             </h2>
             <div className="mt-5 grid gap-4">
-              <div className="border-2 border-black bg-[#FFFEF0] p-4">
+              <div className="wk-editorial-card-muted p-4">
                 <p className="text-sm font-black text-black">Hard skills</p>
                 <ul className="mt-2 space-y-1 text-sm font-medium text-slate-700">
                   {hardSkills.map((item) => (
@@ -494,7 +476,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
                   ))}
                 </ul>
               </div>
-              <div className="border-2 border-black bg-[#FFFEF0] p-4">
+              <div className="wk-editorial-card-muted p-4">
                 <p className="text-sm font-black text-black">Soft skills</p>
                 <ul className="mt-2 space-y-1 text-sm font-medium text-slate-700">
                   {softSkills.map((item) => (
@@ -515,7 +497,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
         </section>
 
         <section className="mb-14 grid gap-6 md:grid-cols-2">
-          <div className="border-4 border-black bg-black p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)]">
+          <div className="wk-editorial-card-dark p-6">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-yellow-300">
               Zonder ervaring
             </p>
@@ -528,7 +510,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
               ))}
             </ul>
           </div>
-          <div className="border-4 border-black bg-white p-6">
+          <div className="wk-editorial-card p-6">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
               Veelgemaakte fouten
             </p>
@@ -543,7 +525,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
             <div className="mt-6 border-t-2 border-black pt-4">
               <Link
                 href="/cv-gids/cv-voorbeeld-administratief-medewerker"
-                className="text-sm font-black text-black underline decoration-2 underline-offset-4"
+                className="text-sm font-extrabold text-[var(--wk-primary)] underline decoration-2 underline-offset-4"
               >
                 Bekijk ook: volledig CV voorbeeld administratief medewerker
               </Link>
@@ -559,13 +541,13 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
             {faqs.map((faq) => (
               <details
                 key={faq.question}
-                className="group border-4 border-black bg-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+                className="wk-editorial-card group"
               >
                 <summary className="flex cursor-pointer items-center justify-between p-4 text-left text-base font-black text-black">
                   {faq.question}
                   <span className="ml-3 text-xl transition-transform group-open:rotate-45">+</span>
                 </summary>
-                <div className="border-t-2 border-black px-4 pb-4 pt-3 text-sm font-medium leading-relaxed text-slate-700">
+                <div className="border-t border-[var(--wk-border)] px-4 pb-4 pt-3 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">
                   {faq.answer}
                 </div>
               </details>
@@ -573,7 +555,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
           </div>
         </section>
 
-        <section className="border-4 border-black bg-yellow-400 px-6 py-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <section className="wk-editorial-card-dark px-6 py-8">
           <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div className="max-w-3xl">
               <p className="text-xs font-black uppercase tracking-[0.2em] text-black">
@@ -600,7 +582,7 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
               />
               <Link
                 href="/prijzen"
-                className="inline-block border-4 border-black bg-black px-5 py-3 text-base font-black text-white"
+                className="wk-button wk-button-primary"
               >
                 Bekijk prijzen
               </Link>
@@ -618,7 +600,6 @@ export default function CvTemplateAdministratiefMedewerkerPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <Footer />
     </div>
   );
 }

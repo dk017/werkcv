@@ -57,7 +57,7 @@ export function BlankTemplateButton({ templateId, colorThemeId }: BlankTemplateB
         <button
             onClick={handleClick}
             disabled={isLoading}
-            className="inline-flex items-center gap-2 bg-white text-black font-bold px-6 py-3 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+            className="wk-button wk-button-secondary disabled:opacity-60 disabled:cursor-not-allowed"
         >
             {isLoading ? (
                 <>

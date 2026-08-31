@@ -1849,6 +1849,390 @@ body {
   min-width: 0;
 }
 
+/* --------------------------------------------------------------------------
+   Editorial content rollout
+
+   The role, guide and cited-authority pages were originally authored with a
+   heavier, black-border treatment. These scoped primitives let those routes
+   share the homepage's quieter surfaces while the content is migrated to
+   semantic components. The selectors are intentionally bounded to the three
+   editorial route roots; they do not change the editor or Agency product UI.
+   -------------------------------------------------------------------------- */
+
+.wk-editorial-page,
+.wk-editorial-article,
+.wk-role-example-page {
+  min-height: 100%;
+  background: var(--wk-canvas);
+  color: var(--wk-ink);
+  font-family: inherit;
+}
+
+.wk-editorial-main {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: clamp(44px, 6vw, 88px) 24px;
+}
+
+.wk-editorial-container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+.wk-editorial-hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--wk-border);
+  border-radius: var(--wk-radius-lg);
+  background:
+    radial-gradient(circle at 92% 4%, rgb(78 205 196 / 0.18), transparent 30%),
+    linear-gradient(135deg, var(--wk-highlight-soft), var(--wk-canvas) 48%, var(--wk-info-soft));
+  box-shadow: var(--wk-shadow-md);
+}
+
+.wk-editorial-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--wk-accent-soft);
+  color: var(--wk-primary);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1.2;
+  padding: 8px 12px;
+  text-transform: uppercase;
+}
+
+.wk-editorial-kicker::before {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--wk-accent);
+  content: "";
+}
+
+.wk-editorial-card {
+  border: 1px solid var(--wk-border);
+  border-radius: var(--wk-radius-md);
+  background: var(--wk-surface);
+  box-shadow: var(--wk-shadow-sm);
+}
+
+.wk-editorial-card-muted {
+  border: 1px solid var(--wk-border);
+  border-radius: var(--wk-radius-md);
+  background: var(--wk-surface-subtle);
+}
+
+.wk-editorial-card-dark {
+  border: 1px solid var(--wk-primary);
+  border-radius: var(--wk-radius-md);
+  background: var(--wk-primary);
+  color: var(--wk-primary-contrast);
+  box-shadow: var(--wk-shadow-md);
+}
+
+.wk-editorial-card-link {
+  display: block;
+  border: 1px solid var(--wk-border);
+  border-radius: var(--wk-radius-md);
+  background: var(--wk-surface);
+  color: var(--wk-ink);
+  box-shadow: var(--wk-shadow-sm);
+  text-decoration: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.wk-editorial-card-link:hover {
+  border-color: var(--wk-primary);
+  box-shadow: var(--wk-shadow-md);
+  transform: translateY(-2px);
+}
+
+.wk-editorial-section {
+  scroll-margin-top: 96px;
+}
+
+.wk-editorial-section-heading {
+  color: var(--wk-ink) !important;
+  letter-spacing: -0.035em;
+}
+
+.wk-editorial-section-icon {
+  flex: 0 0 auto;
+  border: 1px solid var(--wk-border) !important;
+  border-radius: 9px;
+  background: var(--wk-accent-soft) !important;
+  color: var(--wk-primary) !important;
+}
+
+.wk-editorial-section-body,
+.wk-editorial-section-body > p,
+.wk-editorial-section-body li {
+  color: var(--wk-ink-muted) !important;
+}
+
+.wk-editorial-example,
+.wk-editorial-highlight {
+  border: 1px solid var(--wk-border) !important;
+  border-left: 3px solid var(--wk-accent) !important;
+  border-radius: var(--wk-radius-sm);
+  background: var(--wk-accent-soft) !important;
+}
+
+.wk-editorial-example-block {
+  border: 1px solid var(--wk-border) !important;
+  border-radius: var(--wk-radius-sm);
+  background: var(--wk-surface) !important;
+  box-shadow: var(--wk-shadow-sm) !important;
+}
+
+.wk-editorial-label {
+  border-radius: 999px;
+  background: var(--wk-primary) !important;
+  color: var(--wk-primary-contrast) !important;
+  padding: 4px 9px;
+}
+
+.wk-editorial-toc,
+.wk-editorial-toc-mobile-link {
+  border: 1px solid var(--wk-border) !important;
+  border-radius: var(--wk-radius-md);
+  background: var(--wk-surface) !important;
+  box-shadow: var(--wk-shadow-sm) !important;
+}
+
+.wk-editorial-toc-link-active {
+  border-radius: 8px;
+  background: var(--wk-accent-soft) !important;
+  color: var(--wk-primary) !important;
+}
+
+.wk-editorial-toc-link:hover,
+.wk-editorial-toc-mobile-link:hover {
+  background: var(--wk-surface-subtle) !important;
+  color: var(--wk-primary) !important;
+}
+
+.wk-editorial-toc-number {
+  border-color: var(--wk-border) !important;
+  border-radius: 999px !important;
+  background: var(--wk-accent-soft) !important;
+  color: var(--wk-primary) !important;
+}
+
+.wk-editorial-cv-preview {
+  border: 1px solid var(--wk-border) !important;
+  border-radius: var(--wk-radius-md) !important;
+  box-shadow: var(--wk-shadow-md) !important;
+}
+
+.wk-editorial-prefill {
+  box-shadow: var(--wk-shadow-md);
+}
+
+/* Scoped fallback for untouched legacy utility combinations in these pages. */
+.wk-editorial-page .border-black,
+.wk-editorial-article .border-black,
+.wk-role-example-page .border-black,
+.wk-editorial-page .border-4,
+.wk-editorial-page .border-3,
+.wk-editorial-page .border-2,
+.wk-editorial-article .border-4,
+.wk-editorial-article .border-3,
+.wk-editorial-article .border-2,
+.wk-role-example-page .border-4,
+.wk-role-example-page .border-3,
+.wk-role-example-page .border-2 {
+  border-color: var(--wk-border) !important;
+  border-width: 1px !important;
+}
+
+.wk-editorial-page .border-t-4,
+.wk-editorial-page .border-b-4,
+.wk-editorial-page .border-t-2,
+.wk-editorial-article .border-t-4,
+.wk-editorial-article .border-b-4,
+.wk-editorial-article .border-t-2,
+.wk-role-example-page .border-t-4,
+.wk-role-example-page .border-b-4,
+.wk-role-example-page .border-t-2 {
+  border-width: 1px !important;
+  border-color: var(--wk-border) !important;
+}
+
+.wk-editorial-page [class*="shadow-["],
+.wk-editorial-article [class*="shadow-["],
+.wk-role-example-page [class*="shadow-["] {
+  border-radius: var(--wk-radius-md);
+  box-shadow: var(--wk-shadow-md) !important;
+}
+
+.wk-editorial-page .text-black,
+.wk-editorial-page .text-gray-900,
+.wk-editorial-page .text-slate-950,
+.wk-editorial-page .text-slate-900,
+.wk-editorial-article .text-black,
+.wk-editorial-article .text-gray-900,
+.wk-editorial-article .text-slate-950,
+.wk-editorial-article .text-slate-900,
+.wk-role-example-page .text-black,
+.wk-role-example-page .text-gray-900,
+.wk-role-example-page .text-slate-950,
+.wk-role-example-page .text-slate-900 {
+  color: var(--wk-ink) !important;
+}
+
+.wk-editorial-page .text-gray-700,
+.wk-editorial-page .text-gray-600,
+.wk-editorial-page .text-slate-700,
+.wk-editorial-page .text-slate-600,
+.wk-editorial-article .text-gray-700,
+.wk-editorial-article .text-gray-600,
+.wk-editorial-article .text-slate-700,
+.wk-editorial-article .text-slate-600,
+.wk-role-example-page .text-gray-700,
+.wk-role-example-page .text-gray-600,
+.wk-role-example-page .text-slate-700,
+.wk-role-example-page .text-slate-600 {
+  color: var(--wk-ink-muted) !important;
+}
+
+.wk-editorial-page .bg-black,
+.wk-editorial-article .bg-black,
+.wk-role-example-page .bg-black {
+  background: var(--wk-primary) !important;
+}
+
+.wk-editorial-page .bg-yellow-400,
+.wk-editorial-page .bg-yellow-300,
+.wk-editorial-article .bg-yellow-400,
+.wk-editorial-article .bg-yellow-300,
+.wk-role-example-page .bg-yellow-400,
+.wk-role-example-page .bg-yellow-300 {
+  background: var(--wk-highlight) !important;
+}
+
+.wk-editorial-page .bg-yellow-50,
+.wk-editorial-page .bg-yellow-100,
+.wk-editorial-article .bg-yellow-50,
+.wk-editorial-article .bg-yellow-100,
+.wk-role-example-page .bg-yellow-50,
+.wk-role-example-page .bg-yellow-100 {
+  background: var(--wk-highlight-soft) !important;
+}
+
+.wk-editorial-page [class*="bg-[#4ECDC4"],
+.wk-editorial-article [class*="bg-[#4ECDC4"],
+.wk-role-example-page [class*="bg-[#4ECDC4"] {
+  background: var(--wk-accent) !important;
+}
+
+.wk-editorial-page [class*="bg-[#E9FFFC"],
+.wk-editorial-article [class*="bg-[#E9FFFC"],
+.wk-role-example-page [class*="bg-[#E9FFFC"] {
+  background: var(--wk-accent-soft) !important;
+}
+
+.wk-editorial-page [class*="bg-[#FFFEF"],
+.wk-editorial-article [class*="bg-[#FFFEF"],
+.wk-role-example-page [class*="bg-[#FFFEF"] {
+  background: var(--wk-canvas) !important;
+}
+
+.wk-editorial-page [class*="bg-[#FFF7E8"],
+.wk-editorial-article [class*="bg-[#FFF7E8"],
+.wk-role-example-page [class*="bg-[#FFF7E8"] {
+  background: var(--wk-highlight-soft) !important;
+}
+
+.wk-editorial-page .bg-gray-50,
+.wk-editorial-article .bg-gray-50,
+.wk-role-example-page .bg-gray-50 {
+  background: var(--wk-surface-subtle) !important;
+}
+
+.wk-editorial-page .border-l-4,
+.wk-editorial-article .border-l-4,
+.wk-role-example-page .border-l-4 {
+  border-left-width: 3px !important;
+  border-left-color: var(--wk-accent) !important;
+}
+
+.wk-editorial-page .bg-gradient-to-br,
+.wk-editorial-article .bg-gradient-to-br,
+.wk-role-example-page .bg-gradient-to-br {
+  background:
+    radial-gradient(circle at 92% 4%, rgb(78 205 196 / 0.18), transparent 30%),
+    linear-gradient(135deg, var(--wk-highlight-soft), var(--wk-canvas) 48%, var(--wk-info-soft)) !important;
+}
+
+.wk-editorial-page a[class*="bg-yellow-400"],
+.wk-editorial-page a[class*="bg-[#4ECDC4"],
+.wk-role-example-page a[class*="bg-yellow-400"],
+.wk-role-example-page a[class*="bg-[#4ECDC4"],
+.wk-editorial-article a[class*="bg-[#4ECDC4"] {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--wk-primary) !important;
+  border-radius: 999px;
+  background: var(--wk-primary) !important;
+  color: var(--wk-primary-contrast) !important;
+  box-shadow: 0 5px 14px rgb(23 63 56 / 0.16) !important;
+  padding: 12px 17px;
+  text-decoration: none;
+}
+
+.wk-editorial-page a[class*="bg-white"],
+.wk-editorial-article a[class*="bg-white"],
+.wk-role-example-page a[class*="bg-white"] {
+  border-radius: 999px;
+}
+
+/* Dark editorial cards intentionally invert legacy utility text colours. */
+.wk-editorial-card-dark .text-black,
+.wk-editorial-card-dark .text-gray-900,
+.wk-editorial-card-dark .text-gray-800,
+.wk-editorial-card-dark .text-slate-950,
+.wk-editorial-card-dark .text-slate-900,
+.wk-editorial-card-dark .text-slate-800 {
+  color: var(--wk-primary-contrast) !important;
+}
+
+.wk-editorial-card-dark .text-slate-200,
+.wk-editorial-card-dark .text-slate-300,
+.wk-editorial-card-dark .text-gray-700,
+.wk-editorial-card-dark .text-gray-600 {
+  color: rgb(255 255 255 / 0.82) !important;
+}
+
+.wk-editorial-card-dark .wk-button-primary {
+  background: var(--wk-highlight);
+  color: var(--wk-ink);
+  box-shadow: 0 5px 14px rgb(24 33 31 / 0.16);
+}
+
+.wk-editorial-card-dark .wk-button-primary:hover {
+  background: #e6b93f;
+}
+
+@media (max-width: 640px) {
+  .wk-editorial-main {
+    padding-inline: 18px;
+  }
+
+  .wk-editorial-hero {
+    border-radius: var(--wk-radius-md);
+  }
+}
+
 
 .wk-agency-primary-actions {
   margin-top: 28px;
