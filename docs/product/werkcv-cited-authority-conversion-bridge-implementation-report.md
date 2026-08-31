@@ -81,7 +81,7 @@ The first build attempt could not fetch configured Google fonts in the restricte
 
 ## Baseline and schedule
 
-A production baseline was not recorded because deployment was not authorised and the local database was offline. The new start sources have no historical cohort before activation.
+A production baseline was not recorded before deployment because the local database was offline. The new start sources have no historical cohort before activation.
 
 At deployment:
 
@@ -90,7 +90,16 @@ At deployment:
 3. schedule a functional review at deployment + 7 complete days;
 4. schedule commercial evaluation at deployment + 28 complete days.
 
-If activation occurs on 2026-09-01, review dates are 2026-09-08 and 2026-09-29.
+Deployment occurred on 2026-08-31. The functional review date is 2026-09-07 and the commercial evaluation date is 2026-09-28.
+
+## Deployment and live smoke checks
+
+- GitHub Actions run `33350464996` built and deployed commit `0ad740027976264113e0898b73cebc33a08702fd`.
+- The live `/api/build-version` response reports the same build ID.
+- Current app and healthy Postgres containers are running; the previous WerkCV image remains available as the rollback target.
+- The confirmed-unreferenced `bengaluruevents-ingestor:latest` image was removed, reclaiming approximately 1.61 GB. No containers or volumes were removed.
+- Local and public requests returned HTTP 200 for `/`, all six cited-authority routes, and `/en/cv-format-netherlands-english`.
+- `bengaluruevents.com` returned HTTP 200 after cleanup.
 
 ## Remaining certification gates
 
@@ -101,6 +110,6 @@ If activation occurs on 2026-09-01, review dates are 2026-09-08 and 2026-09-29.
 - authorised checkout return and paid-PDF smoke test;
 - production baseline and route/error monitoring.
 
-Deployment status: not deployed.
+Deployment status: deployed on 2026-08-31 as `0ad740027976264113e0898b73cebc33a08702fd`.
 
 Do not label this release production-ready until those database-backed, authenticated, and paid-flow checks pass. No code-level P1 finding remains from the source, automated, responsive, canonical, and build review.
