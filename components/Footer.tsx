@@ -79,9 +79,10 @@ const matchpackGroupsNl: FooterGroup[] = [
 
 const matchpackGroupsEn: FooterGroup[] = [
   { label: "MatchPack", links: [
+    { href: "/en/agency", label: "Overview" },
     { href: "/en/candidate-proposal-checker", label: "Proposal checker" },
     { href: "/agency/account", label: "Open MatchPack" },
-    { href: "/en/pricing", label: "Pricing" },
+    { href: "/en/agency#pricing", label: "Pricing" },
   ] },
   { label: "Evidence", links: [{ href: "/en/agency/methodology/claim-evidence-benchmark", label: "Methodology" }] },
   { label: "Trust", links: [

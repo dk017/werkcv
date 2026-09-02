@@ -28,6 +28,9 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
   if (review.candidateResponse === "declined") return json({ error: "A candidate decline cannot be overridden.", code: "CANDIDATE_DECLINED" }, 409);
   if (review.suggestions.length || review.candidateResponse === "corrections_requested") return json({ error: "Resolve candidate corrections before approval.", code: "CANDIDATE_CORRECTIONS_PENDING" }, 409);
   if (review.candidateResponse === "confirmed") return json({ error: "The candidate already confirmed this version.", code: "ALREADY_CONFIRMED" }, 409);
+  if (!["invited", "sent", "opened", "delivery_failed"].includes(review.status)) {
+    return json({ error: "An override is only available when an invitation is unavailable or unanswered.", code: "OVERRIDE_NOT_AVAILABLE" }, 409);
+  }
   try { assertClaimsReadyForApproval(pack.claimVerificationData, false); } catch (error) {
     if (error instanceof AgencyClaimGateError) return json({ error: error.message, code: error.code }, 409);
     throw error;

@@ -10,6 +10,6 @@ export function candidateAcknowledgementEnabled(): boolean {
   return enabled(process.env.CANDIDATE_ACKNOWLEDGEMENT_ENABLED);
 }
 
-export function claimBenchmarkPublicationEnabled(): boolean {
-  return enabled(process.env.CLAIM_BENCHMARK_PUBLICATION_ENABLED);
+export function claimBenchmarkPublicationEnabled(environment: NodeJS.ProcessEnv = process.env): boolean {
+  return enabled(environment.CLAIM_BENCHMARK_PUBLICATION_ENABLED);
 }

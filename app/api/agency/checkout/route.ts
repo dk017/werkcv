@@ -21,15 +21,17 @@ export async function POST(request: NextRequest) {
   }
 
   let email: string | undefined;
+  let locale: "nl" | "en" = "nl";
   try {
     const body = await request.json();
     email = normalizeOptionalEmail(body?.email);
+    locale = body?.locale === "en" ? "en" : "nl";
   } catch {
     // Dodo can collect the email address on its hosted checkout page.
   }
 
   try {
-    const checkout = await buildAgencyDodoCheckoutURL(email);
+    const checkout = await buildAgencyDodoCheckoutURL(email, locale);
     if (checkout.sessionId) {
       await prisma.paymentCheckout.create({
         data: {

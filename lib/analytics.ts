@@ -16,6 +16,7 @@ import {
     sanitizeReferrer,
 } from '@/lib/attribution';
 import { isEditorPath } from '@/lib/analytics-paths';
+import type { AgencyRoiCompletedProperties } from '@/lib/agency-analytics-contract';
 
 const ATTRIBUTION_STORAGE_KEY = 'werkcv_attribution_v1';
 const LANDING_TRACKED_SESSION_KEY = 'werkcv_landing_tracked_v1';
@@ -155,7 +156,10 @@ export type AnalyticsEvent =
     | { event: 'proposal_claim_verifier_completed'; properties: { locale: 'nl' | 'en'; claimCount: number; unsupportedCount: number; confirmationCount: number } }
     | { event: 'proposal_claim_verifier_failed'; properties: { locale: 'nl' | 'en'; reason: string } }
     | { event: 'proposal_claim_methodology_clicked'; properties: { locale: 'nl' | 'en' } }
+    | { event: 'proposal_claim_verifier_result_copied'; properties: { locale: 'nl' | 'en'; claimCount: number } }
     | { event: 'proposal_claim_verifier_cta_clicked'; properties: { locale: 'nl' | 'en'; destination: 'agency' } }
+    | { event: 'agency_pricing_viewed'; properties: { locale: 'nl' | 'en'; path: string } }
+    | { event: 'agency_checkout_cta_clicked'; properties: { locale: 'nl' | 'en'; location: string } }
     | { event: 'agency_onboarding_step_clicked'; properties: { step: string } }
     | { event: 'agency_onboarding_dismissed'; properties: { completed: number; total: number } }
     | {
@@ -167,18 +171,7 @@ export type AnalyticsEvent =
               intent: 'learn' | 'product' | 'login' | 'sample' | 'knowledge';
           };
       }
-    | {
-          event: 'agency_roi_completed';
-          properties: {
-              path: string;
-              submissions: number;
-              minutes: number;
-              hourlyCost: number;
-              reductionPercent: number;
-              potentialHoursSaved: number;
-              potentialCostSaved: number;
-          };
-      }
+    | { event: 'agency_roi_completed'; properties: AgencyRoiCompletedProperties }
     | { event: 'matchpack_analysis_started'; properties: { locale: 'nl' | 'en'; fileType: 'pdf' | 'docx' | 'unknown' } }
     | { event: 'matchpack_analysis_completed'; properties: { locale: 'nl' | 'en'; requirementCount: number; scoreBand: string } }
     | { event: 'matchpack_analysis_failed'; properties: { locale: 'nl' | 'en'; reason: string } }

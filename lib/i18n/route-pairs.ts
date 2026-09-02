@@ -77,6 +77,22 @@ export const routePairs = [
     preserveSearch: false,
   },
   {
+    id: "matchpack-commercial",
+    nl: "/agency",
+    en: "/en/agency",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
+    id: "matchpack-privacy",
+    nl: "/agency/privacy",
+    en: "/en/agency/privacy",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
     id: "resume-optimizer",
     nl: "/cv-optimaliseren",
     en: "/en/resume-optimizer-netherlands",

@@ -3,6 +3,7 @@ import { proposalClaimVerifierEnabled } from "@/lib/agency-feature-flags";
 import { createMatchPackSource } from "@/lib/agency-matchpack-source";
 import { extractTextFromFileWithPages } from "@/lib/cv-parser";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
+import { tryAcquireConcurrencyLease } from "@/lib/tools/concurrency-limit";
 import {
   verifyProposalClaims,
   type ProposalClaimLocale,
@@ -54,6 +55,14 @@ export async function POST(request: NextRequest) {
     return json({
       error: message(locale, "Je hebt het maximum aantal gratis controles bereikt. Probeer het over een uur opnieuw.", "You have reached the free checker limit. Try again in about an hour."),
       code: "RATE_LIMITED",
+    }, 429);
+  }
+
+  const concurrencyLease = tryAcquireConcurrencyLease(ip, { maxGlobal: 4, maxPerKey: 1 });
+  if (!concurrencyLease) {
+    return json({
+      error: message(locale, "Er worden nu andere controles uitgevoerd. Probeer het over enkele ogenblikken opnieuw.", "Other checks are currently running. Try again in a moment."),
+      code: "TOO_MANY_CONCURRENT_REQUESTS",
     }, 429);
   }
 
@@ -109,5 +118,7 @@ export async function POST(request: NextRequest) {
       error: message(locale, "De voorstelcontrole kon niet worden voltooid. Probeer het opnieuw.", "The proposal check could not be completed. Please try again."),
       code: "ANALYSIS_FAILED",
     }, 500);
+  } finally {
+    concurrencyLease.release();
   }
 }

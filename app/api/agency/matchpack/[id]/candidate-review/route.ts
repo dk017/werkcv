@@ -136,7 +136,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
     return saved;
   });
 
-  const invitationUrl = `${candidateReviewCanonicalOrigin()}/kandidaat/bevestigen#token=${encodeURIComponent(token)}`;
+  const invitationUrl = `${candidateReviewCanonicalOrigin()}/kandidaat/bevestigen?lang=${review.locale === "en" ? "en" : "nl"}#token=${encodeURIComponent(token)}`;
   const dedupeKey = `candidate-review:${review.id}:${tokenHash.slice(0, 24)}`;
   try {
     await sendAgencyTransactionalEmail({

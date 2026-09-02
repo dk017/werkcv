@@ -3,7 +3,7 @@ import { cvDownloadPrice, profilePhotoPrice } from "@/lib/site-content";
 
 export const siteBaseUrl = "https://werkcv.nl";
 
-export const aiDiscoveryUpdatedAt = "2026-08-30";
+export const aiDiscoveryUpdatedAt = "2026-09-01";
 
 export const primaryAiPages = [
   {
@@ -102,6 +102,12 @@ export const primaryAiPages = [
     url: `${siteBaseUrl}/en/candidate-proposal-checker`,
     description:
       "Free English checker for recruitment agencies to inspect whether candidate-proposal claims are supported by source CV evidence, with unresolved points kept visible.",
+  },
+  {
+    title: "MatchPack candidate submission evidence software",
+    url: `${siteBaseUrl}/en/agency`,
+    description:
+      "English MatchPack overview for recruitment agencies: exact CV evidence, visible gaps, recruiter review, named-recipient candidate acknowledgement and controlled PDF/DOCX export. Agency billing is €149 per month in EUR for up to 50 shared slots.",
   },
   {
     title: "MatchPack voor bureaus",

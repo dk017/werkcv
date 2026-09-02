@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 process.env.DODO_PRODUCT_ID = "product_test";
+process.env.DODO_AGENCY_PRODUCT_ID = "agency_product_test";
 process.env.NEXT_PUBLIC_APP_URL = "https://werkcv.nl";
 
 const dodoModule = import("./dodo");
@@ -33,4 +34,26 @@ test("Dutch checkout preserves EUR, iDEAL and Dutch checkout language", async ()
   assert.equal(featureFlags.allow_currency_selection, false);
   assert.equal(body.billing_currency, "EUR");
   assert.ok((body.allowed_payment_method_types as string[]).includes("ideal"));
+});
+
+test("English Agency checkout keeps EUR billing and returns to the shared account", async () => {
+  const { buildAgencyDodoCheckoutBody } = await dodoModule;
+  const body = buildAgencyDodoCheckoutBody("recruiter@example.com", "en");
+  const customization = body.customization as Record<string, unknown>;
+
+  assert.equal(body.return_url, "https://werkcv.nl/agency/account?status=success&locale=en");
+  assert.equal(body.cancel_url, "https://werkcv.nl/en/agency?checkout=cancelled");
+  assert.equal(body.billing_currency, "EUR");
+  assert.equal(customization.force_language, "en");
+  assert.deepEqual(body.customer, { email: "recruiter@example.com" });
+});
+
+test("Dutch Agency checkout preserves the Dutch commercial return path", async () => {
+  const { buildAgencyDodoCheckoutBody } = await dodoModule;
+  const body = buildAgencyDodoCheckoutBody(undefined, "nl");
+  const customization = body.customization as Record<string, unknown>;
+
+  assert.equal(body.return_url, "https://werkcv.nl/agency/account?status=success&locale=nl");
+  assert.equal(body.cancel_url, "https://werkcv.nl/agency?checkout=cancelled");
+  assert.equal(customization.force_language, "nl");
 });

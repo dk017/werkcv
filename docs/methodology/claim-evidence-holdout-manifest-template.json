@@ -1,0 +1,10 @@
+{
+  "benchmarkVersion": "1.0.0",
+  "status": "template-not-reviewed",
+  "caseCount": 40,
+  "localeCounts": { "nl": 20, "en": 20 },
+  "sha256": "REPLACE_WITH_APPROVED_64_CHARACTER_SHA256",
+  "storage": "outside-repository-and-public-assets",
+  "reviewRecord": "claim-evidence-review-record-template.md",
+  "notes": "Do not enable benchmark publication until the independently reviewed private file matches this manifest."
+}

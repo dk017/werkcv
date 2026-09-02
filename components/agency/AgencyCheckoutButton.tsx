@@ -7,12 +7,14 @@ type AgencyCheckoutButtonProps = {
   label?: string;
   location: string;
   className?: string;
+  locale?: "nl" | "en";
 };
 
 export default function AgencyCheckoutButton({
   label = "Start MatchPack · Agency",
   location,
   className = "",
+  locale = "nl",
 }: AgencyCheckoutButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -22,13 +24,14 @@ export default function AgencyCheckoutButton({
     setIsLoading(true);
     setError(null);
     track("cta_clicked", { location, label });
+    track("agency_checkout_cta_clicked", { locale, location });
     track("agency_checkout_started", { location, product: "agency" });
 
     try {
       const response = await fetch("/api/agency/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
+        body: JSON.stringify({ locale }),
       });
       const data = await response.json().catch(() => null);
       if (!response.ok || typeof data?.checkoutUrl !== "string") {
@@ -37,13 +40,17 @@ export default function AgencyCheckoutButton({
           product: "agency",
           reason: data?.code || "invalid_response",
         });
-        setError("Agency checkout is being prepared. Please try again shortly.");
+        setError(locale === "en"
+          ? "MatchPack checkout is being prepared. Please try again shortly."
+          : "De MatchPack-checkout wordt voorbereid. Probeer het binnenkort opnieuw.");
         return;
       }
       window.location.assign(data.checkoutUrl);
     } catch {
       track("agency_checkout_failed", { location, product: "agency", reason: "network_error" });
-      setError("Could not start checkout. Please try again.");
+      setError(locale === "en"
+        ? "Could not start checkout. Please try again."
+        : "De checkout kon niet worden gestart. Probeer het opnieuw.");
     } finally {
       setIsLoading(false);
     }
@@ -57,7 +64,7 @@ export default function AgencyCheckoutButton({
         disabled={isLoading}
         className={className}
       >
-        {isLoading ? "Checkout openen…" : label}
+        {isLoading ? (locale === "en" ? "Opening checkout…" : "Checkout openen…") : label}
       </button>
       {error ? <p className="mt-2 text-xs font-semibold text-rose-700" role="alert">{error}</p> : null}
     </div>

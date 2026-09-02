@@ -50,7 +50,12 @@ export default async function CandidateProposalCheckerEnglishPage({ searchParams
     inLanguage: "en",
     isAccessibleForFree: true,
     description,
-    featureList: [
+    featureList: enabled && mode !== "requirements" ? [
+      "Atomic proposal claim extraction",
+      "Exact CV source-span resolution",
+      "Unsupported and contradictory claim review",
+      "Candidate-confirmation prompts for changing facts",
+    ] : [
       "Vacancy requirement extraction",
       "CV source-line matching",
       "Visible missing evidence",
@@ -67,7 +72,7 @@ export default async function CandidateProposalCheckerEnglishPage({ searchParams
     url: pageUrl,
     inLanguage: "en",
     datePublished: "2026-08-20",
-    dateModified: "2026-08-20",
+    dateModified: "2026-09-01",
     isPartOf: { "@id": "https://werkcv.nl/#website" },
     about: ["candidate proposal", "recruitment", "resume evidence", "vacancy requirements"],
   };
@@ -79,7 +84,7 @@ export default async function CandidateProposalCheckerEnglishPage({ searchParams
         <Breadcrumbs items={[{ label: "Home", href: "/en" }, { label: "Candidate proposal checker", href: "/en/candidate-proposal-checker" }]} />
       </section>
       <CandidateProposalEvidenceGuide locale="en" />
-      <section className="mx-auto max-w-6xl px-5 pb-12 sm:px-6 sm:pb-16"><div className="border-2 border-slate-950 bg-yellow-300 p-6 shadow-[6px_6px_0px_0px_rgba(15,23,42,1)] sm:p-8"><p className="text-xs font-black uppercase tracking-[0.18em] text-slate-700">From free check to agency workflow</p><h2 className="mt-3 max-w-3xl text-3xl font-black tracking-tight">Want one controlled source for the introduction, CV and email?</h2><p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-800">Review the complete fictional MatchPack example to see what stays internal, what the client receives and what the recruiter must correct before approval.</p><div className="mt-5 flex flex-wrap gap-3"><Link href="/agency#voorbeeld" className="border-2 border-slate-950 bg-slate-950 px-4 py-3 text-sm font-black text-white">View the example</Link><Link href="/agency" className="border-2 border-slate-950 bg-white px-4 py-3 text-sm font-black">See MatchPack</Link></div></div></section>
+      <section className="wk-section bg-[var(--wk-surface)]"><div className="wk-container"><div className="rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)] p-6 shadow-[var(--wk-shadow-md)] sm:p-8"><p className="wk-eyebrow">From free check to controlled workflow</p><h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-[-0.035em]">Want one controlled source for the introduction, CV and email?</h2><p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">Review the fictional MatchPack example to see what stays internal, what the client receives and what the recruiter must resolve before approval.</p><div className="mt-6 flex flex-wrap gap-3"><Link href="/en/agency#sample" className="wk-button wk-button-primary">View the example</Link><Link href="/en/agency" className="wk-button wk-button-secondary">See MatchPack</Link></div></div></div></section>
       <JsonLd data={webApplicationSchema} />
       <JsonLd data={webPageSchema} />
     </>

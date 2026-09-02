@@ -13,19 +13,15 @@ import {
   type ProposalClaimVerificationV1,
   type ProposalClaimVerdict,
 } from "@/lib/tools/proposal-claim-verifier-schema";
+import { applyDeterministicProposalClaimVerdict } from "@/lib/tools/proposal-claim-deterministic";
+
+export { applyDeterministicProposalClaimVerdict } from "@/lib/tools/proposal-claim-deterministic";
 
 export type ProposalClaimLocale = "nl" | "en";
 
 export const PROPOSAL_CLAIM_VERIFIER_VERSION = "1.0.0";
 export const PROPOSAL_CLAIM_PROMPT_VERSION = "2026-08-22.1";
 export const PROPOSAL_CLAIM_MODEL = process.env.OPENAI_PROPOSAL_CLAIM_MODEL || "gpt-4o-mini";
-
-const CURRENT_FACT_PATTERNS = [
-  /\b(?:beschikbaar|beschikbaarheid|startdatum|opzegtermijn|notice period|available|availability|start date)\b/i,
-  /\b(?:salaris|salary|tarief|rate|compensation|vergoeding)\b/i,
-  /\b(?:uren per week|hours per week|hybride|hybrid|remote|thuiswerk|work location|werklocatie)\b/i,
-  /\b(?:voorkeur|preference|werkvergunning|work authori[sz]ation)\b/i,
-] as const;
 
 function digest(value: string): string {
   return createHash("sha256").update(value).digest("hex");
@@ -53,37 +49,12 @@ function locateClaim(proposal: string, claim: string): { start: number; end: num
   return null;
 }
 
-function sourceOffsets(sourceText: string, snippet: string): { start: number; end: number } {
+function sourceOffsets(sourceText: string, snippet: string): { start: number; end: number } | null {
   const exact = sourceText.indexOf(snippet);
   if (exact >= 0) return { start: exact, end: exact + snippet.length };
   const insensitive = sourceText.toLocaleLowerCase().indexOf(snippet.toLocaleLowerCase());
   if (insensitive >= 0) return { start: insensitive, end: insensitive + snippet.length };
-  return { start: 0, end: snippet.length };
-}
-
-function numberTokens(value: string): string[] {
-  return [...value.matchAll(/\b\d+(?:[.,]\d+)?(?:\s?(?:%|jaar|jaren|year|years|uur|hours?))?\b/giu)]
-    .map((match) => match[0].toLocaleLowerCase().replace(/\s+/g, " "));
-}
-
-function applyDeterministicVerdict(
-  claim: string,
-  evidence: string,
-  verdict: ProposalClaimVerdict,
-): ProposalClaimVerdict {
-  if (CURRENT_FACT_PATTERNS.some((pattern) => pattern.test(claim))) return "confirmation_required";
-  if (!evidence && (verdict === "supported" || verdict === "partially_supported" || verdict === "contradicted")) {
-    return "unsupported";
-  }
-
-  const claimNumbers = numberTokens(claim);
-  const evidenceNumbers = new Set(numberTokens(evidence));
-  if (claimNumbers.length && evidence) {
-    const missingNumber = claimNumbers.some((token) => !evidenceNumbers.has(token));
-    if (missingNumber && verdict === "supported") return "partially_supported";
-    if (missingNumber && verdict === "partially_supported" && evidenceNumbers.size) return "contradicted";
-  }
-  return verdict;
+  return null;
 }
 
 function summaryFor(claims: ProposalClaim[]): ProposalClaimVerificationV1["summary"] {
@@ -171,9 +142,10 @@ Write explanation and action in ${locale === "en" ? "English" : "Dutch"}. Return
     const resolved = candidate.evidenceSnippet
       ? resolveMatchPackSourceReference(cvText, candidate.evidenceSnippet, input.sourceMap)
       : null;
-    const evidenceUsable = Boolean(resolved && resolved.match !== "not_found" && resolved.snippet.trim());
+    const offsets = resolved?.snippet ? sourceOffsets(cvText, resolved.snippet) : null;
+    const evidenceUsable = Boolean(resolved && resolved.match !== "not_found" && resolved.snippet.trim() && offsets);
     const evidenceText = evidenceUsable ? resolved!.snippet : "";
-    const verdict = applyDeterministicVerdict(located.text, evidenceText, candidate.verdict);
+    const verdict = applyDeterministicProposalClaimVerdict(located.text, evidenceText, candidate.verdict);
     const evidence = evidenceUsable && verdict !== "confirmation_required" && verdict !== "not_checkable"
       ? [{
           sourceKind: "cv" as const,
@@ -181,7 +153,7 @@ Write explanation and action in ${locale === "en" ? "English" : "Dutch"}. Return
           sourcePage: resolved!.sourcePage,
           sourceLine: resolved!.sourceLine,
           sourceSection: resolved!.sourceSection,
-          ...sourceOffsets(cvText, resolved!.snippet),
+          ...offsets!,
           snippet: resolved!.snippet,
           match: resolved!.match as "exact" | "approximate",
         }]

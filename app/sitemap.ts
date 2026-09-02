@@ -826,15 +826,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/agency`,
-            lastModified: new Date(),
+            lastModified: new Date('2026-09-01'),
             changeFrequency: 'monthly',
             priority: 0.66,
+        },
+        {
+            url: `${baseUrl}/en/agency`,
+            lastModified: new Date('2026-09-01'),
+            changeFrequency: 'monthly',
+            priority: 0.72,
         },
         {
             url: `${baseUrl}/agency/privacy`,
             lastModified: new Date('2026-08-16'),
             changeFrequency: 'monthly',
             priority: 0.48,
+        },
+        {
+            url: `${baseUrl}/en/agency/privacy`,
+            lastModified: new Date('2026-09-01'),
+            changeFrequency: 'monthly',
+            priority: 0.5,
         },
         {
             url: `${baseUrl}/voor-bureaus`,

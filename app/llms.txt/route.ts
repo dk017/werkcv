@@ -16,6 +16,7 @@ export function GET() {
     "",
     ...primaryAiPages.map((page) => `- [${page.title}](${page.url}): ${page.description}`),
     "- [Candidate proposal claim verifier](https://werkcv.nl/tools/kandidaatvoorstel-checker): Checks atomic client-facing proposal claims against exact CV source spans without a match score.",
+    "- [MatchPack for recruitment agencies](https://werkcv.nl/en/agency): English product overview for evidence-linked candidate submissions, recruiter review, candidate acknowledgement and controlled PDF/DOCX exports. Billing is €149 per month in EUR for up to 50 shared slots.",
     "- [Claim–Evidence Benchmark methodology](https://werkcv.nl/voor-bureaus/methodologie/claim-evidence-benchmark): Versioned evaluation design, publication thresholds, review status and limitations.",
     "",
     "## Useful machine-readable endpoints",

@@ -144,7 +144,10 @@ export async function buildDodoCheckoutURL(
   };
 }
 
-export async function buildAgencyDodoCheckoutURL(email?: string): Promise<DodoCheckoutResult> {
+export async function buildAgencyDodoCheckoutURL(
+  email?: string,
+  locale: "nl" | "en" = "nl",
+): Promise<DodoCheckoutResult> {
   if (!DODO_API_KEY) {
     throw new Error("DODO_API_KEY is not configured");
   }
@@ -152,41 +155,7 @@ export async function buildAgencyDodoCheckoutURL(email?: string): Promise<DodoCh
     throw new Error("DODO_AGENCY_PRODUCT_ID is not configured");
   }
 
-  const body: Record<string, unknown> = {
-    product_cart: [{ product_id: DODO_AGENCY_PRODUCT_ID, quantity: 1 }],
-    allowed_payment_method_types: [
-      "ideal",
-      "credit",
-      "debit",
-      "apple_pay",
-      "google_pay",
-    ],
-    billing_currency: "EUR",
-    return_url: `${APP_URL}/agency/account?status=success`,
-    cancel_url: `${APP_URL}/agency?checkout=cancelled`,
-    metadata: {
-      product: AGENCY_PLAN_CODE,
-      plan_code: AGENCY_PLAN_CODE,
-      site_host: getDodoSiteHost(),
-    },
-    customization: {
-      show_order_details: true,
-      theme: "light",
-      force_language: "nl",
-    },
-    feature_flags: {
-      allow_currency_selection: false,
-      allow_discount_code: false,
-      allow_phone_number_collection: true,
-      allow_tax_id: true,
-      allow_customer_editing_business_name: true,
-    },
-    minimal_address: false,
-  };
-
-  if (email) {
-    body.customer = { email };
-  }
+  const body = buildAgencyDodoCheckoutBody(email, locale);
 
   const res = await fetch(`${DODO_API_BASE}/checkouts`, {
     method: "POST",
@@ -212,6 +181,52 @@ export async function buildAgencyDodoCheckoutURL(email?: string): Promise<DodoCh
     sessionId: checkout.session_id || null,
     siteHost: getDodoSiteHost(),
   };
+}
+
+export function buildAgencyDodoCheckoutBody(
+  email?: string,
+  locale: "nl" | "en" = "nl",
+): Record<string, unknown> {
+  if (!DODO_AGENCY_PRODUCT_ID) {
+    throw new Error("DODO_AGENCY_PRODUCT_ID is not configured");
+  }
+
+  const body: Record<string, unknown> = {
+    product_cart: [{ product_id: DODO_AGENCY_PRODUCT_ID, quantity: 1 }],
+    allowed_payment_method_types: [
+      "ideal",
+      "credit",
+      "debit",
+      "apple_pay",
+      "google_pay",
+    ],
+    billing_currency: "EUR",
+    return_url: `${APP_URL}/agency/account?status=success&locale=${locale}`,
+    cancel_url: `${APP_URL}${locale === "en" ? "/en/agency" : "/agency"}?checkout=cancelled`,
+    metadata: {
+      product: AGENCY_PLAN_CODE,
+      plan_code: AGENCY_PLAN_CODE,
+      site_host: getDodoSiteHost(),
+    },
+    customization: {
+      show_order_details: true,
+      theme: "light",
+      force_language: locale,
+    },
+    feature_flags: {
+      allow_currency_selection: false,
+      allow_discount_code: false,
+      allow_phone_number_collection: true,
+      allow_tax_id: true,
+      allow_customer_editing_business_name: true,
+    },
+    minimal_address: false,
+  };
+
+  if (email) {
+    body.customer = { email };
+  }
+  return body;
 }
 
 function decodeWebhookSecret(secret: string): Buffer {

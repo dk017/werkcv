@@ -33,9 +33,10 @@ function getPublicConfig(pathname: string): {
       logoHref: "/en",
       context: "MatchPack",
       navItems: [
+        { href: "/en/agency", label: "Overview" },
         { href: "/en/candidate-proposal-checker", label: "Checker" },
         { href: "/en/agency/methodology/claim-evidence-benchmark", label: "Methodology" },
-        { href: "/en/pricing", label: "Pricing" },
+        { href: "/en/agency#pricing", label: "Pricing" },
         { href: "mailto:contact@werkcv.nl", label: "Contact" },
       ],
       navAriaLabel: "MatchPack navigation",
