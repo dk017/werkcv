@@ -24,7 +24,7 @@ export async function GET(
 
   const access = await getAgencyAccessForUser(user.id);
   if (access.state !== "active") {
-    return json({ error: "An active Agency Plan is required for MatchPack exports.", code: "AGENCY_PLAN_REQUIRED" }, 409);
+    return json({ error: "An active Agency billing tier is required for MatchPack exports.", code: "AGENCY_PLAN_REQUIRED" }, 409);
   }
   if (!canExportAgencyWork(access)) return json({ error: "Your agency role cannot export documents.", code: "ROLE_FORBIDDEN" }, 403);
 

@@ -38,7 +38,7 @@ async function getAgencyUser(request: NextRequest) {
   if (access.state !== "active") {
     return {
       response: json({
-        error: "An active Agency Plan is required for MatchPack.",
+        error: "An active Agency billing tier is required for MatchPack.",
         code: access.state === "pending" || access.state === "needs_sync"
           ? "AGENCY_PLAN_PENDING"
           : "AGENCY_PLAN_REQUIRED",
@@ -120,6 +120,10 @@ export async function GET(
       success: true,
       pack: {
         ...pack,
+        // Return the validated agency projection rather than the raw JSON.
+        // This also strips legacy consumer-match score fields from the
+        // MatchPack experience without rewriting historical snapshots.
+        analysis,
         originalCandidateData: pack.originalCandidateData || pack.candidateData,
         submissionData,
         outcomeData: {
@@ -328,7 +332,7 @@ export async function DELETE(
   const user = await getCurrentUserFromRequest(request);
   if (!user) return json({ error: "Authentication required.", code: "AUTH_REQUIRED" }, 401);
   const access = await getAgencyAccessForUser(user.id);
-  if (access.state !== "active") return json({ error: "An active Agency Plan is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
+  if (access.state !== "active") return json({ error: "An active Agency billing tier is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
   if (!access.subscription || !access.ownerUserId) return json({ error: "An active Agency subscription is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
 
   const rateLimit = checkRateLimit(`${user.id}:${getClientIp(request).slice(0, 120)}`, {

@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import AgencyGuideArticle, { type AgencyGuideArticleProps } from "@/components/agency/AgencyGuideArticle";
+import { getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
 
 const slug = "cv-anonimiseren-recruitment";
+const route = getAgencyAcquisitionRoute(`/voor-bureaus/kennisbank/${slug}`)!;
 
 export const metadata: Metadata = {
-  title: "CV anonimiseren voor een opdrachtgever: wat moet een recruiter controleren? | WerkCV",
-  description: "Leg uit waarom naam en contactgegevens verwijderen vaak pseudonimisering is. Controleer indirecte herkenbaarheid, toestemming, bewaartermijnen en beide PDF-versies.",
+  title: route.title,
+  description: route.description,
   alternates: { canonical: `https://werkcv.nl/voor-bureaus/kennisbank/${slug}` },
   openGraph: {
-    title: "CV anonimiseren voor een opdrachtgever: wat moet een recruiter controleren?",
+    title: route.title,
     description: "Operationele checklist voor directe en indirecte identificatie in kandidaat-CV's, zonder garantie op AVG-compliance.",
     url: `https://werkcv.nl/voor-bureaus/kennisbank/${slug}`,
     type: "article",
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
 
 const guide: AgencyGuideArticleProps = {
   slug,
-  title: "CV anonimiseren voor een opdrachtgever: wat moet een recruiter controleren?",
+  title: route.h1,
   description: metadata.description as string,
   intro: "Een naam, e-mailadres en telefoonnummer uit een CV halen kan directe herkenning verminderen, maar maakt het document niet automatisch anoniem. Werkgevers, opleidingen, projecten, locaties, datums en tekstfragmenten kunnen samen nog naar één kandidaat wijzen. Gebruik daarom een tweede controle, leg het deeldoel vast en behandel een contactvrije versie als persoonsgegevens zolang herleiding mogelijk blijft.",
   readingTime: "12 minuten",
@@ -36,13 +38,13 @@ const guide: AgencyGuideArticleProps = {
           ["Directe persoonsgegevens", "Naam, e-mail, telefoonnummer, adres, LinkedIn-profiel of foto kunnen rechtstreeks naar de kandidaat wijzen.", "Verwijder of controleer alleen wat het afgesproken doel vereist; check ook headers, footers en bestandsmetadata."],
           ["Indirecte identificatoren", "Werkgever, opleiding, zeldzame functietitel, project, datumcombinatie, locatie of unieke loopbaan kunnen samen herkenbaar zijn.", "Lees de uiteindelijke PDF als opdrachtgever en bepaal of de combinatie de kandidaat alsnog herkenbaar maakt."],
           ["Pseudonimiseren", "Identiteit is afgeschermd maar kan met aanvullende informatie worden teruggekoppeld.", "Blijf het document als persoonsgegevens behandelen en beperk toegang en deeldoel."],
-          ["Anonimiseren", "Herleiding naar een geïdentificeerde of identificeerbare persoon is niet meer redelijk mogelijk.", "Maak geen juridische claim op basis van een automatische redactiestap; leg uw eigen beoordeling vast."],
+          ["Anonimiseren", "Herleiding naar een geïdentificeerde of identificeerbare persoon is niet meer redelijk mogelijk.", "Maak geen juridische claim op basis van een automatische redactiestap; leg je eigen beoordeling vast."],
         ],
       },
     },
     {
       eyebrow: "Checklist voor directe gegevens",
-      title: "Welke gegevens kunt u mogelijk verwijderen?",
+      title: "Welke gegevens kun je mogelijk verwijderen?",
       paragraphs: [
         "Begin met de directe velden die het doel van delen niet nodig heeft. Werk daarna door de vrije tekst en PDF-opmaak; een naam kan bijvoorbeeld in een introductie, bestandsnaam, hyperlink of voettekst zijn blijven staan.",
       ],
@@ -92,13 +94,13 @@ const guide: AgencyGuideArticleProps = {
       eyebrow: "Toestemming en doel",
       title: "Mag een recruiter een CV aanpassen of delen?",
       paragraphs: [
-        "Een bureau moet kunnen uitleggen waarom het kandidaatdata verwerkt en met wie een versie wordt gedeeld. De precieze rechtsgrond en informatieplicht hangen af van uw situatie; deze gids kiest daarom geen juridische grondslag voor u. Leg minimaal vast welke toestemming of andere grondslag u gebruikt, voor welke vacature of klant, welke versie is gedeeld en hoe lang u de gegevens bewaart.",
+        "Een bureau moet kunnen uitleggen waarom het kandidaatdata verwerkt en met wie een versie wordt gedeeld. De precieze rechtsgrond en informatieplicht hangen af van je situatie; deze gids kiest daarom geen juridische grondslag voor je. Leg minimaal vast welke toestemming of andere grondslag je gebruikt, voor welke vacature of klant, welke versie is gedeeld en hoe lang je de gegevens bewaart.",
         "Vraag de kandidaat niet om een algemene toestemming die niet uitlegt wat er gebeurt. Geef een begrijpelijke beschrijving van de volledige en contactvrije versie, de opdrachtgever, het doel en een contactpunt voor vragen of intrekking waar dat van toepassing is.",
       ],
       table: {
         columns: ["Procesmoment", "Vastleggen", "Niet doen"],
         rows: [
-          ["Intake", "De doelrol, klantcontext, relevante voorwaarden en deelafspraak.", "Een algemene ‘mag ik uw CV gebruiken?’ zonder doel of ontvanger."],
+          ["Intake", "De doelrol, klantcontext, relevante voorwaarden en deelafspraak.", "Een algemene ‘mag ik je CV gebruiken?’ zonder doel of ontvanger."],
           ["Redactie", "Welke directe velden zijn verwijderd en welke indirecte signalen zijn beoordeeld.", "Stellen dat het resultaat AVG-proof of volledig anoniem is zonder beoordeling."],
           ["Goedkeuring", "Wie de PDF en e-mail heeft gecontroleerd en wanneer.", "Een AI-concept rechtstreeks naar de klant sturen."],
           ["Bewaren", "Bewaartermijn, toegangsrollen en verwijdermoment voor bron en klantversies.", "Alle versies onbeperkt bewaren omdat ze misschien later nuttig zijn."],
@@ -107,10 +109,10 @@ const guide: AgencyGuideArticleProps = {
     },
     {
       eyebrow: "Twee uitkomsten",
-      title: "Hoe maakt u een volledige en een contactvrije versie?",
+      title: "Hoe maak je een volledige en een contactvrije versie?",
       paragraphs: [
         "Werk vanuit één gecontroleerde snapshot. De volledige versie bevat de gegevens die de opdrachtgever voor het afgesproken doel nodig heeft. De optionele versie zonder directe contactgegevens laat dezelfde bevestigde ervaring en introductie staan, maar verwijdert directe velden en toont een waarschuwing voor resterende herkenbaarheid.",
-        "WerkCV maakt analyse, correctie, introductie en outputkeuze in dezelfde review beschikbaar. Analyse en conceptreview gebruiken geen Agency-slot; de definitieve goedkeuring van het voorstel gebruikt één gedeeld slot en maakt het gekoppelde CV aan.",
+        "WerkCV maakt analyse, correctie, introductie en outputkeuze in dezelfde review beschikbaar. Analyse en conceptreview gebruiken geen Agency-credit; de definitieve goedkeuring van het voorstel gebruikt één gedeelde credit en maakt het gekoppelde CV aan.",
       ],
       examples: [
         { label: "Volledig voorstel", body: "Gebruik wanneer identiteit en contactgegevens onderdeel zijn van de afgesproken klantrelatie. Controleer dat de kandidaatgegevens actueel en bevoegd gedeeld zijn." },
@@ -130,17 +132,17 @@ const guide: AgencyGuideArticleProps = {
     { question: "Wat is het verschil tussen anonimiseren en pseudonimiseren?", answer: "Bij pseudonimiseren blijft herleiding met aanvullende informatie mogelijk; bij echte anonimisering is herleiding niet meer redelijk mogelijk. Een CV zonder naam is daarom niet automatisch anoniem." },
     { question: "Is naam en contactgegevens verwijderen voldoende?", answer: "Nee. Werkgevers, opleidingen, projecten, locaties, datums en unieke tekst kunnen samen een kandidaat herkenbaar maken. Lees de uiteindelijke PDF in context." },
     { question: "Mag een recruitmentbureau een CV aanpassen?", answer: "Een bureau kan een presentatie of redactie aanpassen wanneer het doel, de afspraken en de relevante regels dit toelaten. Bewaar de bron, wijzig geen feiten zonder controle en leg de gekozen versie vast." },
-    { question: "Mag een recruiter een kandidaat zonder toestemming voorstellen?", answer: "Dat hangt af van de toepasselijke afspraken en rechtsgrond. Leg vast waarom en aan wie u gegevens deelt en win bij twijfel privacy- of juridisch advies in." },
-    { question: "Hoe leg ik toestemming vast?", answer: "Leg doel, opdrachtgever, vacature, gedeelde versie, datum, informatie aan de kandidaat en het bureaucontact vast. Gebruik begrijpelijke taal en volg uw eigen privacyproces." },
-    { question: "Hoe lang mag een bureau een CV bewaren?", answer: "Bewaar niet langer dan nodig voor het doel en uw wettelijke of contractuele verplichtingen. Definieer bewaartermijnen en verwijdermomenten in uw eigen proces; deze pagina kiest geen termijn voor u." },
+    { question: "Mag een recruiter een kandidaat zonder toestemming voorstellen?", answer: "Dat hangt af van de toepasselijke afspraken en rechtsgrond. Leg vast waarom en aan wie je gegevens deelt en win bij twijfel privacy- of juridisch advies in." },
+    { question: "Hoe leg ik toestemming vast?", answer: "Leg doel, opdrachtgever, vacature, gedeelde versie, datum, informatie aan de kandidaat en het bureaucontact vast. Gebruik begrijpelijke taal en volg je eigen privacyproces." },
+    { question: "Hoe lang mag een bureau een CV bewaren?", answer: "Bewaar niet langer dan nodig voor het doel en je wettelijke of contractuele verplichtingen. Definieer bewaartermijnen en verwijdermomenten in je eigen proces; deze pagina kiest geen termijn voor je." },
     { question: "Welke indirecte gegevens kunnen een kandidaat identificeren?", answer: "Denk aan unieke werkgevers, opleidingen, projecten, functietitels, locaties, datums, publicaties en zinnen die online terug te vinden zijn. De combinatie is vaak belangrijker dan één veld." },
     { question: "Hoe controleer ik of persoonlijke gegevens zijn verwijderd?", answer: "Doorzoek en selecteer de PDF-tekst, inspecteer headers, footers, links en metadata en lees de versie als opdrachtgever. Controleer ook de vrije introductie en e-mail." },
-    { question: "Moet het originele CV apart worden bewaard?", answer: "Houd een ongewijzigde bron en klantversies logisch gescheiden wanneer uw proces dat vereist. Beperk toegang en verwijder volgens uw eigen bewaarbeleid." },
+    { question: "Moet het originele CV apart worden bewaard?", answer: "Houd een ongewijzigde bron en klantversies logisch gescheiden wanneer je proces dat vereist. Beperk toegang en verwijder volgens je eigen bewaarbeleid." },
   ],
   sources: [
     { label: "Autoriteit Persoonsgegevens: Handleiding AVG", href: "https://autoriteitpersoonsgegevens.nl/uploads/imported/handleidingalgemeneverordeninggegevensbescherming.pdf", note: "Legt uit dat gepseudonimiseerde gegevens persoonsgegevens blijven en dat echte anonimisering herleiding moet voorkomen." },
     { label: "EDPB: Anonymisation and pseudonymisation", href: "https://www.edpb.europa.eu/topics/ai-and-technology/anonymisationpseudonymisation_en", note: "Ondersteunt het onderscheid tussen pseudonimisering als safeguard en anonimisering waarbij data niet meer aan een persoon kan worden gekoppeld." },
-    { label: "Rijksoverheid: persoonsgegevens aan anderen doorgeven", href: "https://www.rijksoverheid.nl/vraag-en-antwoord/privacy-en-persoonsgegevens/mogen-organisaties-mijn-persoonsgegevens-aan-anderen-doorgeven", note: "Geeft algemene overheidsinformatie over het delen van persoonsgegevens; uw eigen doel, grondslag en proces moeten afzonderlijk worden beoordeeld." },
+    { label: "Rijksoverheid: persoonsgegevens aan anderen doorgeven", href: "https://www.rijksoverheid.nl/vraag-en-antwoord/privacy-en-persoonsgegevens/mogen-organisaties-mijn-persoonsgegevens-aan-anderen-doorgeven", note: "Geeft algemene overheidsinformatie over het delen van persoonsgegevens; je eigen doel, grondslag en proces moeten afzonderlijk worden beoordeeld." },
   ],
   ctaTitle: "Bekijk hoe de contactvrije versie in de workflow past",
   ctaText: "Gebruik het fictieve MatchPack-voorbeeld om directe velden, resterende herkenbaarheid en de menselijke goedkeuringsstap te bekijken.",

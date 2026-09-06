@@ -1,18 +1,28 @@
 import type { Metadata } from "next";
+import AgencyEvidencePreview from "@/components/agency/AgencyEvidencePreview";
+import AgencyPurchaseNotes from "@/components/agency/AgencyPurchaseNotes";
+import { getAgencyReviewScopeNotice, AGENCY_WORKSPACE_LANGUAGE_NOTICE } from "@/lib/agency-review-scope";
+import { getAgencyStorageDescription } from "@/lib/agency-privacy-content";
+import { getAgencyEvidenceSample } from "@/lib/agency-evidence-sample";
 import Link from "next/link";
 import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
 import AgencyCommercialAnalytics from "@/components/agency/AgencyCommercialAnalytics";
 import { FAQJsonLd, JsonLd, OrganizationJsonLd } from "@/components/seo/JsonLd";
 import { isAgencyDodoConfigured } from "@/lib/dodo";
-import { candidateAcknowledgementEnabled, proposalClaimVerifierEnabled } from "@/lib/agency-feature-flags";
+import { getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
+import { getAgencyPublicCapabilities } from "@/lib/agency-public-capabilities";
+import { getAgencyPublicMessaging } from "@/lib/agency-public-messaging";
+import { AGENCY_CURRENCY, AGENCY_MONTHLY_CREDIT_LIMIT, AGENCY_MONTHLY_PRICE_CENTS, getAgencyFullUseUnitPriceDisplay, getAgencyMonthlyPriceDisplay } from "@/lib/agency-plan";
 
-const pageUrl = "https://werkcv.nl/en/agency";
-const title = "Candidate submission evidence software for recruitment agencies | MatchPack";
-const description = "Connect client-facing candidate information to exact CV evidence, resolve visible gaps and export one controlled PDF or DOCX proposal for recruiter review.";
+const route = getAgencyAcquisitionRoute("/en/agency")!;
+const pageUrl = `https://werkcv.nl${route.path}`;
+const capabilities = getAgencyPublicCapabilities();
+const messaging = getAgencyPublicMessaging({ locale: "en", capabilities });
+const monthlyPrice = getAgencyMonthlyPriceDisplay("en");
 
 export const metadata: Metadata = {
-  title,
-  description,
+  title: messaging.title,
+  description: messaging.description,
   keywords: [
     "candidate submission software",
     "candidate presentation software",
@@ -32,8 +42,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "MatchPack: evidence-linked candidate submissions",
-    description,
+    title: messaging.title,
+    description: messaging.description,
     url: pageUrl,
     siteName: "WerkCV",
     locale: "en_GB",
@@ -44,57 +54,31 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-const workflow = [
-  {
-    number: "01",
-    title: "Upload the source",
-    body: "Add an authorised candidate CV and the real vacancy. MatchPack maps the source before drafting anything client-facing.",
-    tone: "bg-[var(--wk-highlight-soft)]",
-  },
-  {
-    number: "02",
-    title: "Review every claim",
-    body: "See the exact CV passage behind each claim. Unsupported, contradictory and changing information stays visible.",
-    tone: "bg-[var(--wk-accent-soft)]",
-  },
-  {
-    number: "03",
-    title: "Confirm the version",
-    body: "Resolve recruiter decisions for the current version. Candidate acknowledgement appears only when its production-certification gate is enabled.",
-    tone: "bg-[var(--wk-info-soft)]",
-  },
-  {
-    number: "04",
-    title: "Export one snapshot",
-    body: "The introduction, selected CV and PDF/DOCX outputs are generated from the same controlled approved snapshot.",
-    tone: "bg-[var(--wk-success-soft)]",
-  },
-];
-
 const faqItems = [
+  { question: "Is the workspace in English?", answer: AGENCY_WORKSPACE_LANGUAGE_NOTICE },
   {
     question: "Does MatchPack replace our ATS?",
     answer: "No. MatchPack is a pre-send quality-control layer for candidate submissions. Use your ATS for sourcing and pipeline management; use MatchPack to review the evidence and control the version sent to a client. CSV remains the current import and export route.",
   },
   {
     question: "Does WerkCV verify that a candidate is telling the truth?",
-    answer: "No. MatchPack assesses whether a client-facing claim is supported by the submitted CV. Candidate-confirmed information and recruiter assessment are labelled separately. Recruiters remain responsible for checks and decisions.",
+    answer: messaging.faqAnswer,
   },
   {
     question: "What will candidate acknowledgement establish when enabled?",
     answer: "The activation-gated workflow records whether the candidate confirmed, corrected or declined the exact displayed version for a named receiving organisation. It is not identity proof, consent, a legal signature or right-to-represent. WerkCV does not present this feature as live until its production gates pass.",
   },
   {
-    question: "What is included in the €149 monthly tier?",
-    answer: "The Agency billing tier includes up to 50 standalone Agency CVs or definitively approved MatchPacks per billing period. Analysis and draft review do not consume a slot. Billing is in EUR.",
+    question: `What is included in the ${monthlyPrice} tier?`,
+    answer: `The MatchPack subscription includes ${AGENCY_MONTHLY_CREDIT_LIMIT} shared CV credits per billing period. One credit covers a new standalone Agency CV or the first definitive approval of a MatchPack. Editing and repeat downloads do not use another credit. Billing is in ${AGENCY_CURRENCY}.`,
   },
   {
     question: "Can we export Word documents?",
-    answer: "Yes. Approved MatchPacks can produce PDF and DOCX outputs from the same approved snapshot, including a full or contact-reduced CV version.",
+    answer: "Yes. Approved MatchPacks can produce PDF and DOCX outputs from the same approved version, including a full or contact-reduced CV version.",
   },
   {
     question: "How is candidate data handled?",
-    answer: "The uploaded source file is used for text extraction and is not retained as a downloadable original. Structured candidate data, evidence, revisions and approval records follow the Agency retention setting. Review the privacy page and request current DPA/subprocessor information before live use.",
+    answer: getAgencyStorageDescription("en"),
   },
   {
     question: "Can we cancel the subscription?",
@@ -102,12 +86,11 @@ const faqItems = [
   },
 ];
 
-function CheckoutAction({ location }: { location: string }) {
+function CheckoutAction({ location, variant = "primary" }: { location: string; variant?: "primary" | "secondary" }) {
+  const className = variant === "primary" ? "wk-button wk-button-primary min-h-12 px-6 text-base" : "wk-button wk-button-secondary min-h-12 px-6 text-base";
   if (!isAgencyDodoConfigured()) {
     return (
-      <Link href="/agency/account" className="wk-button wk-button-primary min-h-12 px-6 text-base">
-        Open MatchPack
-      </Link>
+      <div><Link href="/agency/account?locale=en" className={className}>Open MatchPack (Dutch workspace)</Link><AgencyPurchaseNotes locale="en" /></div>
     );
   }
 
@@ -115,21 +98,32 @@ function CheckoutAction({ location }: { location: string }) {
     <AgencyCheckoutButton
       locale="en"
       location={location}
-      label="Start MatchPack · €149/month"
-      className="wk-button wk-button-primary min-h-12 px-6 text-base"
+      label={`Start MatchPack · ${monthlyPrice}`}
+      className={className}
     />
   );
 }
 
 export default function EnglishAgencyPage() {
-  const acknowledgementEnabled = candidateAcknowledgementEnabled();
-  const verifierEnabled = proposalClaimVerifierEnabled();
-  const effectiveFaqItems = faqItems.map((item) => item.question.startsWith("What will candidate acknowledgement") && acknowledgementEnabled
-    ? {
-        question: "What does candidate acknowledgement establish?",
-        answer: "It records whether the candidate confirmed, corrected or declined the exact displayed version for a named receiving organisation. It is not identity proof, consent, a legal signature or right-to-represent.",
-      }
-    : item);
+  const acknowledgementEnabled = capabilities.candidateAcknowledgement;
+  const verifierEnabled = messaging.mode === "proposal_claim_verification";
+  const workflow = messaging.workflow.map((step) => ({
+    ...step,
+    tone: {
+      highlight: "bg-[var(--wk-highlight-soft)]",
+      accent: "bg-[var(--wk-accent-soft)]",
+      info: "bg-[var(--wk-info-soft)]",
+      success: "bg-[var(--wk-success-soft)]",
+    }[step.tone],
+  }));
+  const effectiveFaqItems = faqItems
+    .filter((item) => acknowledgementEnabled || !item.question.startsWith("What will candidate acknowledgement"))
+    .map((item) => item.question.startsWith("What will candidate acknowledgement") && acknowledgementEnabled
+      ? {
+          question: "What does candidate acknowledgement establish?",
+          answer: "It records whether the candidate confirmed, corrected or declined the exact displayed version for a named receiving organisation. It is not identity proof, consent, a legal signature or right-to-represent.",
+        }
+      : item);
   const softwareJsonLd = {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
@@ -138,21 +132,17 @@ export default function EnglishAgencyPage() {
     operatingSystem: "Web",
     url: pageUrl,
     inLanguage: "en-GB",
-    description,
+    description: messaging.description,
     featureList: [
-      "Exact CV source references for client-facing claims",
-      "Recruiter review and version history",
-      "Controlled PDF and DOCX export",
-      "Full and contact-reduced output",
-      "CSV import and export",
+      ...messaging.featureList,
       ...(acknowledgementEnabled ? ["Candidate acknowledgement for a named recipient"] : []),
     ],
     offers: {
       "@type": "Offer",
-      price: "149.00",
-      priceCurrency: "EUR",
+      price: (AGENCY_MONTHLY_PRICE_CENTS / 100).toFixed(2),
+      priceCurrency: AGENCY_CURRENCY,
       category: "monthly subscription",
-      description: "Up to 50 standalone Agency CVs or approved MatchPacks per billing period",
+      description: `${AGENCY_MONTHLY_CREDIT_LIMIT} shared CV credits per billing period`,
       url: `${pageUrl}#pricing`,
     },
     publisher: { "@id": "https://werkcv.nl/#organization" },
@@ -174,76 +164,42 @@ export default function EnglishAgencyPage() {
         <section className="relative overflow-hidden border-b border-[var(--wk-border)] bg-gradient-to-br from-[#fffef0] via-[#f8fbf7] to-[#eaf7f5]">
           <div className="absolute left-8 top-16 h-24 w-24 rounded-full bg-[var(--wk-highlight)] opacity-25" aria-hidden="true" />
           <div className="absolute bottom-12 right-10 h-36 w-36 rounded-full bg-[var(--wk-accent)] opacity-15" aria-hidden="true" />
-          <div className="wk-container grid gap-12 py-16 sm:py-20 lg:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.75fr)] lg:items-center lg:py-24">
+          <div className="wk-container grid min-w-0 gap-8 py-8 sm:py-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.75fr)] lg:items-center lg:py-16">
             <div className="min-w-0 text-center lg:text-left">
-              <p className="wk-eyebrow">Candidate submission evidence</p>
-              <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-[-0.045em] text-black sm:text-5xl lg:text-6xl">
-                Send candidate proposals with every important claim <span className="wk-hero-highlight">connected to evidence.</span>
-              </h1>
-              <p className="mx-auto mt-6 max-w-2xl text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)] lg:mx-0">
-                MatchPack turns an authorised CV, a genuine vacancy and recruiter notes into one controlled client proposal. Exact CV evidence stays visible, missing or changing information is not hidden, and the recruiter approves the final PDF or DOCX.
-              </p>
-              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row lg:justify-start">
+              <p className="wk-eyebrow">{messaging.eyebrow}</p>
+              <h1 className="mt-4 break-words text-3xl font-black leading-[1.08] tracking-[-0.045em] text-black sm:text-5xl lg:text-6xl">{messaging.h1}</h1>
+              <p className="mt-4 text-base font-extrabold tracking-[-0.01em] text-[var(--wk-ink)] sm:text-lg">{monthlyPrice} · {AGENCY_MONTHLY_CREDIT_LIMIT} shared CV credits</p>
+              <p className="mx-auto mt-4 max-w-2xl text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)] lg:mx-0">{messaging.hero}</p>
+              <div className="mt-7 flex min-w-0 flex-col items-start justify-center gap-3 sm:flex-row sm:flex-wrap lg:justify-start">
                 <Link href="/en/candidate-proposal-checker" className="wk-button wk-button-primary min-h-12 px-7 text-base">
-                  {verifierEnabled ? "Check a proposal free" : "Check CV evidence free"}
+                  {messaging.freeToolCta}
                 </Link>
-                <Link href="#sample" className="wk-button wk-button-secondary min-h-12 px-7 text-base">
-                  View fictional example
-                </Link>
+                <CheckoutAction location="en_agency_hero_checkout" variant="secondary" />
+                <Link href="#sample" className="wk-button wk-button-quiet min-h-12 px-4 text-base">View fictional example</Link>
               </div>
-              <div className="mt-6 flex flex-wrap justify-center gap-3 lg:justify-start">
+              <div className="mt-5 flex flex-wrap justify-center gap-3 lg:justify-start">
                 <span className="wk-trust-pill">No sales call required</span>
                 <span className="wk-trust-pill">No candidate ranking</span>
                 <span className="wk-trust-pill">PDF + DOCX</span>
-                <span className="wk-trust-pill">Human approval</span>
               </div>
             </div>
 
-            <div className="relative mx-auto w-full max-w-lg min-w-0">
-              <div className="absolute -left-5 -top-5 h-full w-full rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)]" aria-hidden="true" />
-              <div className="absolute -bottom-5 -right-5 h-full w-full rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-accent-soft)]" aria-hidden="true" />
-              <div className="relative rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-white p-5 shadow-[var(--wk-shadow-md)] sm:p-6">
-                <div className="flex items-center justify-between gap-4 border-b border-[var(--wk-border)] pb-4">
-                  <div>
-                    <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[var(--wk-primary)]">Claim review</p>
-                    <p className="mt-1 text-xl font-black">Senior HR adviser</p>
-                  </div>
-                  <span className="rounded-full bg-[var(--wk-warning-soft)] px-3 py-2 text-xs font-extrabold text-[var(--wk-warning)]">2 need review</span>
-                </div>
-                <div className="mt-5 space-y-3">
-                  <div className="rounded-[var(--wk-radius-sm)] border border-[#b9dfc9] bg-[var(--wk-success-soft)] p-4">
-                    <div className="flex items-center justify-between gap-3"><p className="text-sm font-extrabold">Advised 24 team leaders</p><span className="text-xs font-black text-[var(--wk-success)]">SUPPORTED</span></div>
-                    <p className="mt-2 text-xs leading-relaxed text-[var(--wk-ink-muted)]">CV · Experience · “Advised 24 team leaders on absence and organisational change.”</p>
-                  </div>
-                  <div className="rounded-[var(--wk-radius-sm)] border border-[#ead49a] bg-[var(--wk-warning-soft)] p-4">
-                    <div className="flex items-center justify-between gap-3"><p className="text-sm font-extrabold">Available from 1 October</p><span className="text-xs font-black text-[var(--wk-warning)]">CONFIRM</span></div>
-                    <p className="mt-2 text-xs leading-relaxed text-[var(--wk-ink-muted)]">Changing information is not present in the CV. Ask the candidate before sharing.</p>
-                  </div>
-                  <div className="rounded-[var(--wk-radius-sm)] border border-[#edc3c7] bg-[var(--wk-danger-soft)] p-4">
-                    <div className="flex items-center justify-between gap-3"><p className="text-sm font-extrabold">Configured AFAS workflows</p><span className="text-xs font-black text-[var(--wk-danger)]">UNSUPPORTED</span></div>
-                    <p className="mt-2 text-xs leading-relaxed text-[var(--wk-ink-muted)]">The source names HR systems but does not support this specific responsibility.</p>
-                  </div>
-                </div>
-                <div className="mt-5 flex items-center justify-between rounded-[var(--wk-radius-sm)] bg-[var(--wk-primary)] px-4 py-3 text-white">
-                  <span className="text-xs font-bold">Recruiter remains in control</span>
-                  <span aria-hidden="true">→</span>
-                </div>
-              </div>
-            </div>
+            <AgencyEvidencePreview locale="en" />
           </div>
         </section>
 
+        <div className="wk-container py-5"><p className="text-sm leading-relaxed" data-review-scope>{getAgencyReviewScopeNotice("en")}</p></div>
         <section className="wk-section bg-[var(--wk-surface)]" aria-labelledby="why-matchpack">
           <div className="wk-container">
             <div className="mx-auto max-w-3xl text-center">
               <p className="wk-eyebrow">Before a submission leaves the agency</p>
               <h2 id="why-matchpack" className="mt-4 text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">Formatting is useful. A controlled evidence trail is safer.</h2>
-              <p className="mt-4 text-base font-medium leading-relaxed text-[var(--wk-ink-muted)]">MatchPack does not decide whether a candidate fits. It helps the recruiter see what the proposal says, where that statement came from and what still needs a human decision.</p>
+              <p className="mt-4 text-base font-medium leading-relaxed text-[var(--wk-ink-muted)]">MatchPack does not decide whether a candidate fits. It helps the recruiter see what the workflow contains, where the supporting source came from and what still needs a human decision.</p>
             </div>
             <div className="mt-10 grid gap-5 md:grid-cols-3">
               {[
-                ["Exact source evidence", "Every supported claim points back to the submitted CV passage and source location."],
-                ["Gaps remain visible", "Unsupported, contradictory, subjective and changing information cannot quietly become candidate fact."],
+                [messaging.evidenceBenefit, verifierEnabled ? "Every supported proposal claim points back to the submitted CV passage and source location." : "Selected requirements show the CV passages found and their source locations; missing support stays visible."],
+                ["Gaps remain visible", "Missing, contradictory, subjective and changing information cannot quietly become candidate fact."],
                 ["One controlled version", acknowledgementEnabled ? "Recruiter review, candidate acknowledgement and exports stay tied to the same version." : "Recruiter review, version history and exports stay tied to the same controlled version."],
               ].map(([heading, body], index) => (
                 <article key={heading} className="wk-card transition-transform hover:-translate-y-0.5">
@@ -282,10 +238,10 @@ export default function EnglishAgencyPage() {
               <p className="mt-4 text-base font-medium leading-relaxed text-[var(--wk-ink-muted)]">Nina de Vries and Stadshaven Care Group are fictional. The example shows the review logic without exposing real candidate information.</p>
               <Link href="/en/candidate-proposal-checker" className="wk-button wk-button-secondary mt-6">Try the free checker</Link>
             </div>
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div className="wk-card wk-card-success"><p className="text-xs font-black uppercase tracking-[0.12em] text-[var(--wk-success)]">CV evidence</p><p className="mt-3 text-sm font-semibold">“Advised 24 team leaders on absence and organisational change.”</p><p className="mt-3 text-xs leading-relaxed text-[var(--wk-ink-muted)]">Exact source passage. Can support the client-facing claim.</p></div>
-              <div className="wk-card wk-card-accent"><p className="text-xs font-black uppercase tracking-[0.12em] text-[var(--wk-primary)]">Recruiter assessment</p><p className="mt-3 text-sm font-semibold">“Her experience appears relevant to this HR advisory assignment.”</p><p className="mt-3 text-xs leading-relaxed text-[var(--wk-ink-muted)]">Professional judgement. Labelled separately from source evidence.</p></div>
-              <div className="wk-card wk-card-warning"><p className="text-xs font-black uppercase tracking-[0.12em] text-[var(--wk-warning)]">Candidate confirmation</p><p className="mt-3 text-sm font-semibold">“Available for 32–36 hours from 1 October.”</p><p className="mt-3 text-xs leading-relaxed text-[var(--wk-ink-muted)]">Changing information. Confirmed for the displayed named-client version, not proven by the CV.</p></div>
+              <div className="grid gap-4 sm:grid-cols-3">
+               <div className="wk-card wk-card-success"><p className="text-xs font-black uppercase tracking-[0.12em] text-[var(--wk-success)]">CV evidence</p><p className="mt-3 text-sm font-semibold">“{getAgencyEvidenceSample("en").result.requirements[2].cvEvidence}”</p><p className="mt-3 text-xs leading-relaxed text-[var(--wk-ink-muted)]">Exact source passage. {verifierEnabled ? "Can support the client-facing claim." : "Can support the corresponding vacancy requirement."}</p></div>
+               <div className="wk-card wk-card-accent"><p className="text-xs font-black uppercase tracking-[0.12em] text-[var(--wk-primary)]">Recruiter assessment</p><p className="mt-3 text-sm font-semibold">“Her experience appears relevant to this HR advisory assignment.”</p><p className="mt-3 text-xs leading-relaxed text-[var(--wk-ink-muted)]">Professional judgement. Labelled separately from source evidence.</p></div>
+               <div className="wk-card wk-card-warning"><p className="text-xs font-black uppercase tracking-[0.12em] text-[var(--wk-warning)]">{acknowledgementEnabled ? "Candidate confirmation" : "Changing information"}</p><p className="mt-3 text-sm font-semibold">“Available for 32–36 hours from 1 October.”</p><p className="mt-3 text-xs leading-relaxed text-[var(--wk-ink-muted)]">{acknowledgementEnabled ? "Changing information. Confirmed for the displayed named-client version, not proven by the CV." : "Changing information is not proven by the CV; the recruiter must confirm it before sharing."}</p></div>
             </div>
           </div>
         </section>
@@ -296,10 +252,10 @@ export default function EnglishAgencyPage() {
               <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[var(--wk-accent)]">What MatchPack controls</p>
               <h2 id="boundaries-title" className="mt-4 text-3xl font-semibold tracking-[-0.035em]">A traceable pre-send review.</h2>
               <ul className="mt-6 space-y-3 text-sm font-medium leading-relaxed text-white/80">{[
-                "Exact source snippets and locations for supported claims.",
+                verifierEnabled ? "Exact source snippets and locations for supported proposal claims." : "Exact source snippets and locations for vacancy requirements.",
                 "Reviewer status, notes, version history and visible changes.",
-                "Resolution of unsupported and contradictory client-facing claims.",
-                acknowledgementEnabled ? "Candidate acknowledgement tied to a named organisation and snapshot." : "Candidate acknowledgement remains unavailable until its certification gate passes.",
+                verifierEnabled ? "Resolution of unsupported and contradictory client-facing claims." : "Open points remain visible for recruiter resolution.",
+                ...(acknowledgementEnabled ? ["Candidate acknowledgement tied to a named organisation and version."] : []),
                 "PDF and DOCX generated from the approved version.",
               ].map((item) => <li key={item} className="flex gap-3"><span className="text-[var(--wk-accent)]">✓</span><span>{item}</span></li>)}</ul>
             </div>
@@ -319,9 +275,9 @@ export default function EnglishAgencyPage() {
         <section id="pricing" className="wk-section bg-[var(--wk-canvas)]" aria-labelledby="pricing-title">
           <div className="wk-container grid gap-8 lg:grid-cols-[1fr_0.8fr] lg:items-center">
             <div>
-              <p className="wk-eyebrow">Agency billing tier</p>
-              <h2 id="pricing-title" className="mt-4 text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">One clear monthly allowance.</h2>
-              <p className="mt-4 max-w-2xl text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">Analysis and draft review do not consume a slot. A new standalone Agency CV or a definitively approved MatchPack uses one of the shared 50 slots.</p>
+              <p className="wk-eyebrow">MatchPack subscription</p>
+              <h2 id="pricing-title" className="mt-4 text-3xl font-semibold tracking-[-0.035em] sm:text-4xl">One clear monthly credit pool.</h2>
+              <p className="mt-4 max-w-2xl text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">Analysis and draft review do not consume a credit. A new standalone Agency CV or a definitively approved MatchPack uses one of the shared {AGENCY_MONTHLY_CREDIT_LIMIT} CV credits.</p>
               <ul className="mt-7 grid gap-3 text-sm font-semibold sm:grid-cols-2">{[
                 "Exact evidence and visible open points",
                 "Recruiter review and version history",
@@ -335,10 +291,10 @@ export default function EnglishAgencyPage() {
             </div>
             <div className="rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)] p-7 shadow-[var(--wk-shadow-md)] sm:p-9">
               <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[var(--wk-primary)]">MatchPack · Agency</p>
-              <div className="mt-4 flex items-end gap-2"><span className="text-5xl font-black tracking-[-0.05em]">€149</span><span className="pb-2 text-sm font-bold text-[var(--wk-ink-muted)]">/ month</span></div>
-              <p className="mt-2 text-sm font-semibold">Billed in EUR · up to 50 shared slots per billing period</p>
+              <div className="mt-4 flex items-end gap-2"><span className="text-5xl font-black tracking-[-0.05em]">{monthlyPrice.split("/")[0]}</span><span className="pb-2 text-sm font-bold text-[var(--wk-ink-muted)]">/ month</span></div>
+              <p className="mt-2 text-sm font-semibold">Billed in {AGENCY_CURRENCY} · {AGENCY_MONTHLY_CREDIT_LIMIT} shared CV credits per billing period</p>
               <div className="mt-7"><CheckoutAction location="en_agency_pricing" /></div>
-              <p className="mt-5 text-xs font-medium leading-relaxed text-[var(--wk-ink-muted)]">At full use, the allowance is €2.98 per new Agency CV or approved MatchPack. Editing and repeat downloads do not consume another slot.</p>
+               <p className="mt-5 text-xs font-medium leading-relaxed text-[var(--wk-ink-muted)]">{getAgencyFullUseUnitPriceDisplay("en")} Editing and repeat downloads do not consume another credit.</p>
             </div>
           </div>
         </section>

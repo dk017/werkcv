@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { buildAgencyDodoCheckoutURL, isAgencyDodoConfigured } from "@/lib/dodo";
+import { sanitizeAttribution } from "@/lib/attribution";
 
 export const runtime = "nodejs";
 
@@ -22,16 +23,18 @@ export async function POST(request: NextRequest) {
 
   let email: string | undefined;
   let locale: "nl" | "en" = "nl";
+  let attribution: ReturnType<typeof sanitizeAttribution> = null;
   try {
     const body = await request.json();
     email = normalizeOptionalEmail(body?.email);
     locale = body?.locale === "en" ? "en" : "nl";
+    attribution = sanitizeAttribution(body?.attribution);
   } catch {
     // Dodo can collect the email address on its hosted checkout page.
   }
 
   try {
-    const checkout = await buildAgencyDodoCheckoutURL(email, locale);
+    const checkout = await buildAgencyDodoCheckoutURL(email, locale, attribution);
     if (checkout.sessionId) {
       await prisma.paymentCheckout.create({
         data: {

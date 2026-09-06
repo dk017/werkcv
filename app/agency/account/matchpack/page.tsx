@@ -6,6 +6,7 @@ import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
 import AgencyAccountShell from "@/components/agency/AgencyAccountShell";
 import AgencyMatchPackWorkspace from "@/components/agency/AgencyMatchPackWorkspace";
 import { candidateAcknowledgementEnabled, proposalClaimVerifierEnabled } from "@/lib/agency-feature-flags";
+import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib/agency-plan";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -15,7 +16,8 @@ export default async function AgencyMatchPackPage() {
   if (!user) redirect(`/login?next=${encodeURIComponent("/agency/account/matchpack")}`);
 
   const access = await getAgencyAccessForUser(user.id);
-  const allowance = access.period?.allowance || access.subscription?.monthlyLimit || 50;
+  const allowance = access.period?.allowance ?? access.subscription?.monthlyLimit ?? AGENCY_MONTHLY_CREDIT_LIMIT;
+  const monthlyPrice = getAgencyMonthlyPriceDisplay("nl");
 
   const packs = access.state === "active"
     ? await prisma.agencyMatchPack.findMany({
@@ -46,7 +48,7 @@ export default async function AgencyMatchPackPage() {
         <section className="wk-agency-page-hero max-w-4xl">
           <p className="wk-eyebrow">WerkCV MatchPack</p>
           <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Van CV en vacature naar een compleet kandidaatvoorstel.</h1>
-          <p className="mt-4 text-base leading-relaxed text-slate-600">Controleer bewijs per functie-eis, corrigeer de brondata en maak één consistente klantintroductie. Kies daarna bewust tussen een volledig voorstel of een versie zonder directe contactgegevens. Pas bij jouw definitieve goedkeuring wordt een voorstel-slot gebruikt.</p>
+          <p className="mt-4 text-base leading-relaxed text-slate-600">Controleer bewijs per functie-eis, corrigeer de brondata en maak één consistente klantintroductie. Kies daarna bewust tussen een volledig voorstel of een versie zonder directe contactgegevens. Pas bij jouw definitieve goedkeuring wordt één CV-credit gebruikt.</p>
         </section>
 
         {access.state === "active" ? (
@@ -78,7 +80,7 @@ export default async function AgencyMatchPackPage() {
             </p>
             {access.state === "none" ? (
               <AgencyCheckoutButton
-                label="Start MatchPack · Agency €149/maand"
+                label={`Start MatchPack · Agency ${monthlyPrice}`}
                 location="agency_matchpack_locked"
                 className="wk-button wk-button-primary mt-5"
               />
@@ -91,7 +93,7 @@ export default async function AgencyMatchPackPage() {
         <section className="wk-agency-workflow-summary">
           <div><p className="font-black text-slate-900">1. Onderbouw</p><p className="mt-1 leading-relaxed">Vacature-eisen worden gekoppeld aan concreet CV-bewijs en openstaande punten.</p></div>
           <div><p className="font-black text-slate-900">2. Corrigeer</p><p className="mt-1 leading-relaxed">Eén gecontroleerde bron voedt het voorblad, volledige CV en optionele versie zonder directe contactgegevens.</p></div>
-          <div><p className="font-black text-slate-900">3. Keur goed</p><p className="mt-1 leading-relaxed">Na jouw checklist wordt één voorstel-slot gebruikt en kun je de gekozen klantversie downloaden.</p></div>
+          <div><p className="font-black text-slate-900">3. Keur goed</p><p className="mt-1 leading-relaxed">Na jouw checklist wordt één CV-credit gebruikt en kun je de gekozen klantversie downloaden.</p></div>
         </section>
       </div>
     </main>

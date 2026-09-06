@@ -1,9 +1,17 @@
 import { aiProductFaqItems } from "@/lib/product-faq";
 import { cvDownloadPrice, profilePhotoPrice } from "@/lib/site-content";
+import { getAgencyPublicCapabilities } from "@/lib/agency-public-capabilities";
+import { getAgencyPublicMessaging } from "@/lib/agency-public-messaging";
+import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib/agency-plan";
 
 export const siteBaseUrl = "https://werkcv.nl";
 
-export const aiDiscoveryUpdatedAt = "2026-09-01";
+export const aiDiscoveryUpdatedAt = "2026-09-02";
+const agencyCapabilities = getAgencyPublicCapabilities();
+const agencyMessagingNl = getAgencyPublicMessaging({ locale: "nl", capabilities: agencyCapabilities });
+const agencyMessagingEn = getAgencyPublicMessaging({ locale: "en", capabilities: agencyCapabilities });
+const agencyPriceNl = getAgencyMonthlyPriceDisplay("nl");
+const agencyPriceEn = getAgencyMonthlyPriceDisplay("en");
 
 export const primaryAiPages = [
   {
@@ -92,22 +100,40 @@ export const primaryAiPages = [
     description: "Free CV, career and salary tools.",
   },
   {
+    title: "Kandidaatvoorstel-software voor recruitmentbureaus",
+    url: `${siteBaseUrl}/agency`,
+    description:
+      `${agencyMessagingNl.description} Agency billing is ${agencyPriceNl} for ${AGENCY_MONTHLY_CREDIT_LIMIT} shared CV credits.`,
+  },
+  {
     title: "Gratis kandidaatvoorstel evidence checker",
     url: `${siteBaseUrl}/tools/kandidaatvoorstel-checker`,
     description:
       "Free Dutch checker for recruiters: compare vacancy requirements with CV evidence, source snippets and visible open points before sending a candidate proposal. The result is a quality check, not an automated hiring decision.",
   },
   {
+    title: "Kandidaatvoorstel voorbeeld",
+    url: `${siteBaseUrl}/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld`,
+    description:
+      "Fictional Dutch worked example showing vacancy requirements, exact CV source snippets, supported and unsupported claims, changing facts, recruiter actions, client introduction, email and controlled PDF/DOCX outputs.",
+  },
+  {
+    title: "Kandidaat aanbieden bij de overheid",
+    url: `${siteBaseUrl}/voor-bureaus/kennisbank/kandidaat-aanbieden-overheid`,
+    description:
+      "Dutch guide for public-sector and secondment submissions: classify knock-out requirements, connect each requirement to exact CV evidence, keep missing/current facts visible and review a fictional requirements matrix.",
+  },
+  {
     title: "Free candidate proposal evidence checker",
     url: `${siteBaseUrl}/en/candidate-proposal-checker`,
     description:
-      "Free English checker for recruitment agencies to inspect whether candidate-proposal claims are supported by source CV evidence, with unresolved points kept visible.",
+      "Free English checker for recruitment agencies to inspect whether vacancy requirements are supported by source CV evidence, with unresolved points kept visible.",
   },
   {
     title: "MatchPack candidate submission evidence software",
     url: `${siteBaseUrl}/en/agency`,
     description:
-      "English MatchPack overview for recruitment agencies: exact CV evidence, visible gaps, recruiter review, named-recipient candidate acknowledgement and controlled PDF/DOCX export. Agency billing is €149 per month in EUR for up to 50 shared slots.",
+      `${agencyMessagingEn.description}${agencyCapabilities.candidateAcknowledgement ? " Candidate acknowledgement is available for a named recipient." : ""} Agency billing is ${agencyPriceEn} for ${AGENCY_MONTHLY_CREDIT_LIMIT} shared CV credits.`,
   },
   {
     title: "MatchPack voor bureaus",
@@ -119,7 +145,25 @@ export const primaryAiPages = [
     title: "MatchPack handleiding",
     url: `${siteBaseUrl}/voor-bureaus/kennisbank/matchpack-handleiding`,
     description:
-      "Step-by-step guide to MatchPack inputs, evidence statuses, recruiter corrections, versions, approval, PDF/DOCX exports, contact-free review, retention, roles and the shared Agency allowance.",
+      "Step-by-step guide to MatchPack inputs, evidence statuses, recruiter corrections, versions, approval, PDF/DOCX exports, contact-free review, retention, roles and the shared Agency CV-credit contract.",
+  },
+  {
+    title: "Kandidaatvoorstel maken: voorbeeld en checklist",
+    url: `${siteBaseUrl}/voor-bureaus/kennisbank/kandidaat-voorstellen-opdrachtgever`,
+    description:
+      "Dutch practical guide to making a candidate proposal for a client, with source-backed evidence, confirmed practical facts, open points, internal notes, output choices and a pre-send checklist.",
+  },
+  {
+    title: "Kandidaat-CV in huisstijl van een recruitmentbureau",
+    url: `${siteBaseUrl}/voor-bureaus/kennisbank/cv-in-huisstijl-recruitmentbureau`,
+    description:
+      "Dutch guide to placing a candidate CV in agency house style without changing source meaning, with controlled PDF/DOCX output, versions, CSV exchange and contact-reduced review.",
+  },
+  {
+    title: "CV delen zonder directe contactgegevens",
+    url: `${siteBaseUrl}/voor-bureaus/kennisbank/cv-anonimiseren-recruitment`,
+    description:
+      "Dutch recruitment guide to contact-reduced CV sharing: review direct fields and indirect identifiers, preserve the source, and avoid claims of legal anonymity.",
   },
   {
     title: "AI-profielfoto voor CV en LinkedIn",
@@ -376,14 +420,16 @@ const agencyAiFaqItems = [
   {
     question: "What is the free candidate proposal evidence checker?",
     answer:
-      "It is a public, no-login quality-check tool. Paste a fictional or authorised candidate profile and a real vacancy to see whether common proposal claims have concrete evidence, which points are unresolved, and what a recruiter should verify before sending.",
+      agencyMessagingEn.mode === "proposal_claim_verification"
+        ? "It is a public, no-login quality-check tool. Paste a fictional or authorised candidate profile and a real vacancy to see whether proposal claims have concrete evidence, which points are unresolved, and what a recruiter should verify before sending."
+        : "It is a public, no-login quality-check tool. Paste a fictional or authorised candidate profile and a real vacancy to see whether vacancy requirements have concrete evidence, which points are unresolved, and what a recruiter should verify before sending.",
     canonicalUrl: `${siteBaseUrl}/tools/kandidaatvoorstel-checker`,
     language: "nl-NL",
   },
   {
-    question: "How many Agency slots does MatchPack use?",
+    question: "How many Agency CV credits does MatchPack use?",
     answer:
-      "The Agency billing tier currently provides one shared allowance of up to 50 new CV documents or definitively approved MatchPacks per billing period. Analysis, draft review, editing and repeat downloads do not consume a slot; approval or a new standalone CV does.",
+      `The Agency billing tier currently provides ${AGENCY_MONTHLY_CREDIT_LIMIT} shared CV credits per billing period. One credit covers a new standalone CV or the first definitive approval of a MatchPack; analysis, draft review, editing and repeat downloads do not consume another credit.`,
     canonicalUrl: `${siteBaseUrl}/agency`,
     language: "nl-NL",
   },

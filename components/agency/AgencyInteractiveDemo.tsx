@@ -3,93 +3,18 @@
 import { useRef, useState } from "react";
 import type { CVData } from "@/lib/cv";
 import { track } from "@/lib/analytics";
+import { agencyFictionalCandidateData } from "@/lib/agency-fictional-example";
+import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib/agency-plan";
 import ScaledCvPreview from "@/app/editor/ScaledCvPreview";
 import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
 
-const initialDemoData: CVData = {
-  personal: {
-    name: "Sanne Vermeer",
-    title: "HR-adviseur",
-    resumeLanguage: "nl",
-    email: "sanne.vermeer@example.com",
-    phone: "06 1234 5678",
-    location: "Utrecht",
-    address: "",
-    postalCode: "",
-    summary:
-      "Ervaren HR-adviseur met een rustige, praktische aanpak voor verzuimbegeleiding, onboarding en teamontwikkeling. Verbindt beleid met de dagelijkse praktijk en helpt organisaties om medewerkers duurzaam inzetbaar te houden.",
-    birthDate: "",
-    birthPlace: "",
-    nationality: "",
-    driversLicense: "B",
-    gender: "",
-    maritalStatus: "",
-    linkedIn: "linkedin.com/in/sanne-vermeer",
-    github: "",
-    website: "",
-    photo: "",
-  },
-  experience: [
-    {
-      role: "HR-adviseur",
-      company: "MiddenNederland Zorggroep",
-      location: "Utrecht",
-      start: "maart 2021",
-      end: "heden",
-      description: "",
-      highlights: [
-        "Begeleiden van leidinggevenden bij verzuim, ontwikkeling en complexe personeelsvraagstukken.",
-        "Verbeteren van onboarding en interne communicatie voor nieuwe medewerkers.",
-        "Adviseren over HR-beleid en vertalen van organisatiedoelen naar werkbare processen.",
-      ],
-    },
-    {
-      role: "HR-medewerker",
-      company: "PeopleWorks",
-      location: "Amersfoort",
-      start: "januari 2018",
-      end: "februari 2021",
-      description: "",
-      highlights: [
-        "Ondersteunen van HR-processen voor meerdere teams en locaties.",
-        "Opstellen van rapportages en voorbereiden van personeelsgesprekken.",
-      ],
-    },
-  ],
-  education: [
-    {
-      degree: "HBO Personeel en Arbeid",
-      school: "Hogeschool Utrecht",
-      location: "Utrecht",
-      start: "2014",
-      end: "2018",
-      description: "",
-    },
-  ],
-  skills: [
-    { name: "Verzuimbegeleiding", level: 5 },
-    { name: "Onboarding", level: 5 },
-    { name: "HR-beleid", level: 4 },
-    { name: "Gespreksvoering", level: 4 },
-  ],
-  languages: [
-    { name: "Nederlands", level: "Moedertaal" },
-    { name: "Engels", level: "Goed" },
-  ],
-  internships: [],
-  interests: [],
-  properties: [],
-  courses: [],
-  awards: [],
-  references: [],
-  sideActivities: [],
-  customSections: [],
-};
+const initialDemoData: CVData = structuredClone(agencyFictionalCandidateData);
+const monthlyPrice = getAgencyMonthlyPriceDisplay("nl");
 
 type DemoField = "name" | "title" | "summary" | "experience" | "skills";
 
 const inputClassName =
-  "w-full border-2 border-slate-300 bg-white px-3 py-2 text-sm font-semibold text-slate-900 outline-none transition-colors focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100";
+  "wk-input w-full px-3 py-2 text-sm outline-none transition-colors focus:border-[var(--wk-focus)] focus:ring-2 focus:ring-[var(--wk-accent-soft)]";
 
 function getSkillsValue(data: CVData): string {
   return data.skills.map((skill) => skill.name).join(", ");
@@ -139,8 +64,8 @@ export default function AgencyInteractiveDemo() {
   };
 
   return (
-    <section id="agency-demo" className="border-y-2 border-slate-900 py-14">
-      <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
+    <section id="agency-demo" className="wk-section border-y border-[var(--wk-border)]">
+      <div className="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:items-start">
         <div>
           <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">
             Probeer de WerkCV-route
@@ -153,14 +78,14 @@ export default function AgencyInteractiveDemo() {
           </p>
           <div className="mt-6 space-y-3 text-sm font-bold text-slate-700">
             <p className="flex gap-2"><span className="text-emerald-700">✓</span> Geen login voor deze demo</p>
-            <p className="flex gap-2"><span className="text-emerald-700">✓</span> Geen CV-slot of account wordt aangemaakt</p>
+            <p className="flex gap-2"><span className="text-emerald-700">✓</span> Geen CV-credit of account wordt aangemaakt</p>
             <p className="flex gap-2"><span className="text-emerald-700">✓</span> Fictieve kandidaatdata, live preview</p>
           </div>
           {!isOpen ? (
             <button
               type="button"
               onClick={openDemo}
-              className="mt-7 inline-flex min-h-12 items-center justify-center border-2 border-slate-900 bg-yellow-300 px-5 py-3 text-center text-sm font-black text-slate-950 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] transition-transform hover:translate-x-0.5 hover:translate-y-0.5"
+              className="wk-button wk-button-primary mt-7 min-h-12 px-5 text-sm"
             >
               Start met een voorbeeld-CV
             </button>
@@ -172,8 +97,8 @@ export default function AgencyInteractiveDemo() {
         </div>
 
         {!isOpen ? (
-          <div className="border-2 border-slate-900 bg-white p-5 shadow-[6px_6px_0px_0px_rgba(78,205,196,1)] sm:p-7">
-            <div className="border-2 border-slate-200 bg-slate-50 p-5">
+          <div className="wk-card p-5 sm:p-7">
+            <div className="wk-card p-5">
               <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Agency demo</p>
               <p className="mt-3 text-2xl font-black">Eén kandidaat. Eén vaste route.</p>
               <p className="mt-3 text-sm leading-relaxed text-slate-600">
@@ -181,7 +106,7 @@ export default function AgencyInteractiveDemo() {
               </p>
               <div className="mt-6 grid gap-2 sm:grid-cols-3">
                 {["Inhoud", "Opmaak", "PDF-ready"].map((item) => (
-                  <span key={item} className="border-2 border-slate-900 bg-white px-3 py-2 text-center text-xs font-black">
+                  <span key={item} className="wk-trust-pill justify-center rounded-[var(--wk-radius-sm)] bg-white px-3 py-2 text-center text-xs">
                     {item}
                   </span>
                 ))}
@@ -189,8 +114,8 @@ export default function AgencyInteractiveDemo() {
             </div>
           </div>
         ) : (
-          <div className="grid gap-6 border-2 border-slate-900 bg-slate-950 p-4 shadow-[6px_6px_0px_0px_rgba(78,205,196,1)] sm:p-6 xl:grid-cols-[0.8fr_1.2fr]">
-            <div className="border-2 border-slate-900 bg-white p-4 sm:p-5">
+          <div className="grid min-w-0 gap-6 rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-4 sm:p-6 xl:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
+            <div className="wk-card p-4 sm:p-5">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Fictief kandidaatprofiel</p>
@@ -253,14 +178,15 @@ export default function AgencyInteractiveDemo() {
                 </label>
               </div>
 
-              <div className="mt-5 border-t-2 border-slate-200 pt-4">
+              <div className="mt-5 border-t border-[var(--wk-border)] pt-4">
                 <p className="text-xs leading-relaxed text-slate-500">
                   Dit is een preview van de vaste voorstelroute. Met de Agency-toegang maakt jouw bureau voorstellen in een consistente opmaak.
                 </p>
                 <AgencyCheckoutButton
+                  locale="nl"
                   location="agency_demo"
-                  label="Start met 50 CV's — €149/maand"
-                  className="mt-4 inline-flex min-h-12 w-full items-center justify-center border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-center text-sm font-black text-slate-950 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] transition-transform hover:translate-x-0.5 hover:translate-y-0.5 disabled:cursor-wait disabled:opacity-60"
+                  label={`Start met ${AGENCY_MONTHLY_CREDIT_LIMIT} CV-credits — ${monthlyPrice}`}
+                  className="wk-button wk-button-accent mt-4 min-h-12 w-full disabled:cursor-wait disabled:opacity-60"
                 />
               </div>
             </div>

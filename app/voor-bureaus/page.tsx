@@ -9,16 +9,21 @@ import {
   AGENCY_CONTENT_PUBLISHED,
   agencyKnowledgeGuides,
 } from "@/lib/agency-content";
+import { getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
+import { getAgencyPublicCapabilities } from "@/lib/agency-public-capabilities";
+import { getAgencyMonthlyPriceDisplay, AGENCY_MONTHLY_CREDIT_LIMIT } from "@/lib/agency-plan";
 
 const path = "/voor-bureaus";
+const route = getAgencyAcquisitionRoute(path)!;
+const capabilities = getAgencyPublicCapabilities();
+const monthlyPrice = getAgencyMonthlyPriceDisplay("nl");
 
 export const metadata: Metadata = {
-  title: "WerkCV voor recruitmentbureaus en detacheerders",
-  description:
-    "Maak controleerbare kandidaatvoorstellen met CV-bewijs per functie-eis, zichtbare open punten, recruiter-review en consistente PDF- en DOCX-output.",
+  title: route.title,
+  description: route.description,
   alternates: { canonical: `https://werkcv.nl${path}` },
   openGraph: {
-    title: "Van kandidaat-CV naar een voorstel dat uw opdrachtgever kan beoordelen",
+    title: route.title,
     description:
       "WerkCV brengt vacature-eisen, CV-bewijs en bevestigde voorstelgegevens samen zonder ontbrekende informatie te verbergen.",
     url: `https://werkcv.nl${path}`,
@@ -27,10 +32,8 @@ export const metadata: Metadata = {
   },
 };
 
-const primaryButtonClass =
-  "inline-flex min-h-12 items-center justify-center border-2 border-slate-950 bg-emerald-400 px-5 py-3 text-center text-sm font-black text-slate-950 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)] transition-transform hover:translate-x-0.5 hover:translate-y-0.5";
-const secondaryButtonClass =
-  "inline-flex min-h-12 items-center justify-center border-2 border-slate-950 bg-white px-5 py-3 text-center text-sm font-black text-slate-950 transition-colors hover:bg-yellow-100";
+const primaryButtonClass = "wk-button wk-button-primary";
+const secondaryButtonClass = "wk-button wk-button-secondary";
 
 const frictionPoints = [
   {
@@ -55,10 +58,10 @@ const workflow = [
 ] as const;
 
 const decisionRows = [
-  ["U wilt alleen een kandidaat-CV opmaken", "Agency CV-route", "Een consistente CV-PDF vanuit de bestaande editor."],
-  ["U stelt een kandidaat voor op een concrete vacature", "MatchPack", "Functie-eisen, CV-bewijs, open punten, voorstelgegevens en PDF + DOCX."],
-  ["U verwerkt veel kandidaten tegelijk", "Nog niet ondersteund", "De huidige workflow behandelt één kandidaat en één vacature per voorstel."],
-  ["U wilt rechtstreeks synchroniseren met een ATS", "Nog niet ondersteund", "WerkCV levert PDF-output en een kopieerbare e-mail, geen ATS-koppeling."],
+  ["Je wilt alleen een kandidaat-CV opmaken", "CV-editor", "Een consistente CV-PDF vanuit de bestaande editor."],
+  ["Je stelt een kandidaat voor op een concrete vacature", "MatchPack", "Functie-eisen, CV-bewijs, open punten, voorstelgegevens en PDF + DOCX."],
+  ["Je verwerkt veel kandidaten tegelijk", "Nog niet ondersteund", "De huidige workflow behandelt één kandidaat en één vacature per voorstel."],
+    ["Je wilt rechtstreeks synchroniseren met een ATS", "Nog niet ondersteund", "WerkCV levert PDF- en DOCX-output plus een kopieerbare e-mail; directe ATS-koppelingen zijn niet inbegrepen."],
 ] as const;
 
 const faqs = [
@@ -90,7 +93,7 @@ const faqs = [
   {
     question: "Wat kost de Agency-billing tier voor MatchPack?",
     answer:
-      "De Agency-billing tier kost €149 per betaalde maand en omvat maximaal 50 nieuwe kandidaatdocumenten of definitief goedgekeurde voorstellen. Analyse, conceptreview en opnieuw downloaden van hetzelfde goedgekeurde voorstel gebruiken niet opnieuw een slot.",
+      `De Agency-billing tier kost ${monthlyPrice} en omvat ${AGENCY_MONTHLY_CREDIT_LIMIT} gedeelde CV-credits per betaalde periode. Eén credit geldt voor een nieuw zelfstandig kandidaat-CV of de eerste definitieve goedkeuring van een MatchPack. Bewerken en opnieuw downloaden gebruiken geen extra credit.`,
   },
 ];
 
@@ -110,97 +113,97 @@ export default function VoorBureausPage() {
 
   return (
     <div className="wk-agency-marketing">
-    <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+    <main className="wk-container py-8">
       <AgencyContentView kind="hub" path={path} />
       <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Voor bureaus", href: path }]} />
 
-      <section className="wk-agency-marketing-hero grid gap-10 py-12 sm:py-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
-        <div>
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-700">WerkCV voor bureaus</p>
-          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">
-            Laat uw opdrachtgever niet zelf uitzoeken waarom een kandidaat past.
+      <section className="grid min-w-0 gap-10 py-12 sm:py-16 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:items-center">
+        <div className="min-w-0">
+          <p className="wk-eyebrow">WerkCV voor bureaus</p>
+          <h1 className="mt-5 break-words text-4xl font-black leading-[1.06] tracking-[-0.05em] sm:text-6xl">
+            {route.h1}
           </h1>
           <p className="mt-5 max-w-3xl text-lg leading-relaxed text-slate-700">
-            Een professioneel kandidaatvoorstel maakt functie-eisen, concreet CV-bewijs en bevestigde praktische gegevens in één pakket zichtbaar. WerkCV zet één CV en vacature om in een controleerbaar concept, houdt onbekende informatie open en laat de recruiter vóór PDF-export goedkeuren. Zo ontvangt de klant een onderbouwd voorstel, niet alleen een opnieuw opgemaakt CV.
+            WerkCV maakt van één CV en vacature een voorstel voor recruiterreview. Je controleert intern de gevonden bronfragmenten en open punten. De klant ontvangt de goedgekeurde introductie en het gekozen CV; de begeleidende e-mail kopieer je apart.
           </p>
           <div className="mt-8 flex flex-col items-start gap-4 sm:flex-row">
             <AgencyContentLink href="#werkwijze" path={path} location="hub_hero" intent="learn" className={primaryButtonClass}>
               Bekijk de werkwijze
             </AgencyContentLink>
             <AgencyContentLink href="/agency#plan" path={path} location="hub_hero" intent="product" className={secondaryButtonClass}>
-              Start MatchPack · Agency
+              Bekijk MatchPack
             </AgencyContentLink>
           </div>
           <Link href="/tools/kandidaatvoorstel-checker" className="mt-5 inline-flex text-sm font-black text-emerald-800 underline decoration-2 underline-offset-4">
-            Probeer eerst gratis de Candidate Proposal Evidence Checker →
+            {capabilities.proposalClaimVerifier ? "Probeer gratis de Candidate Proposal Evidence Checker →" : "Bekijk eerst het gratis CV-bewijs voor een vacature →"}
           </Link>
           <p className="mt-5 text-sm font-semibold text-slate-500">
-            Voor recruitmentbureaus, werving-en-selectiebureaus, detacheerders, outplacement- en re-integratiebureaus en loopbaancoaches die kandidaten op concrete vacatures of trajecten begeleiden.
+            Voor recruitment- en detacheringsbureaus die kandidaten voorstellen op concrete vacatures.
           </p>
         </div>
 
-        <aside className="border-2 border-slate-950 bg-slate-950 p-6 text-white shadow-[8px_8px_0px_0px_rgba(78,205,196,1)] sm:p-8">
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-300">De opdrachtgever moet direct kunnen zien</p>
+          <aside className="wk-card wk-card-dark min-w-0 p-6 sm:p-8">
+            <p className="wk-eyebrow text-[var(--wk-highlight)]">Wat je als recruiter controleert</p>
           <ol className="mt-6 space-y-5">
             {[
               ["01", "Welke eisen zijn belangrijk?"],
-              ["02", "Welk CV-bewijs ondersteunt iedere eis?"],
+              ["02", "Welk CV-bewijs ondersteunt de geselecteerde eisen?"],
               ["03", "Wat is nog niet bevestigd?"],
               ["04", "Welke versie heeft de recruiter goedgekeurd?"],
             ].map(([number, question]) => (
               <li key={number} className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-slate-700 pb-4 last:border-0 last:pb-0">
-                <span className="font-mono text-sm font-black text-yellow-300">{number}</span>
-                <span className="font-black leading-snug">{question}</span>
+                <span className="font-mono text-sm font-black text-[var(--wk-highlight)]">{number}</span>
+                <span className="font-extrabold leading-snug">{question}</span>
               </li>
             ))}
           </ol>
         </aside>
       </section>
 
-      <section className="border-y-2 border-slate-950 py-12 sm:py-16">
-        <p className="text-xs font-black uppercase tracking-[0.18em] text-rose-700">Waar het voorstelproces breekt</p>
-        <h2 className="mt-3 max-w-4xl text-3xl font-black tracking-tight sm:text-4xl">
+      <section className="wk-section border-y border-[var(--wk-border)]">
+        <p className="wk-eyebrow">Waar het voorstelproces breekt</p>
+        <h2 className="mt-4 max-w-4xl text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">
           Een mooier document helpt niet wanneer de onderbouwing ontbreekt.
         </h2>
         <div className="mt-8 grid gap-4 md:grid-cols-3">
           {frictionPoints.map((item, index) => (
-            <article key={item.title} className="border-2 border-slate-950 bg-white p-5">
-              <span className="font-mono text-sm font-black text-rose-600">0{index + 1}</span>
-              <h3 className="mt-4 text-lg font-black">{item.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-600">{item.body}</p>
+            <article key={item.title} className="wk-card min-w-0 p-5">
+              <span className="font-mono text-sm font-black text-[var(--wk-danger)]">0{index + 1}</span>
+              <h3 className="mt-4 text-lg font-semibold">{item.title}</h3>
+              <p className="mt-3 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">{item.body}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section id="werkwijze" className="scroll-mt-6 py-12 sm:py-16">
+      <section id="werkwijze" className="wk-section scroll-mt-6">
         <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">WerkCV MatchPack</p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">Van bronbestand naar gecontroleerde snapshot.</h2>
-            <p className="mt-4 text-sm leading-relaxed text-slate-600">
+            <p className="wk-eyebrow">WerkCV MatchPack</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">Van bronbestand naar gecontroleerde snapshot.</h2>
+            <p className="mt-4 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">
               WerkCV bereidt het voorstel voor. De recruiter blijft verantwoordelijk voor bewijs, correcties, praktische gegevens en de beslissing om het document te delen.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {workflow.map(([number, title, body]) => (
-              <article key={number} className="border-2 border-slate-950 bg-white p-5 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
-                <span className="flex h-9 w-9 items-center justify-center bg-emerald-400 text-sm font-black">{number}</span>
-                <h3 className="mt-4 font-black">{title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">{body}</p>
+              <article key={number} className="wk-card min-w-0 p-5">
+                <span className="flex h-9 w-9 items-center justify-center rounded-[var(--wk-radius-sm)] bg-[var(--wk-accent)] text-sm font-black">{number}</span>
+                <h3 className="mt-4 font-semibold">{title}</h3>
+                <p className="mt-2 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">{body}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="border-y-2 border-slate-950 py-12 sm:py-16">
-        <p className="text-xs font-black uppercase tracking-[0.18em] text-sky-700">Kies de juiste route</p>
-        <h2 className="mt-3 text-3xl font-black tracking-tight">Niet ieder bureauprobleem vraagt om MatchPack.</h2>
-        <div className="mt-7 overflow-x-auto border-2 border-slate-950 bg-white">
+      <section className="wk-section border-y border-[var(--wk-border)]">
+        <p className="wk-eyebrow">Kies de juiste route</p>
+        <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em]">Niet ieder bureauprobleem vraagt om MatchPack.</h2>
+        <div className="mt-8 overflow-x-auto rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)]">
           <table className="w-full min-w-[760px] border-collapse text-left text-sm">
-            <thead className="bg-slate-950 text-white">
-              <tr><th className="p-4">Uw situatie</th><th className="p-4">Passende route</th><th className="p-4">Wat u krijgt</th></tr>
+            <thead className="bg-[var(--wk-primary)] text-white">
+              <tr><th className="p-4">Jouw situatie</th><th className="p-4">Passende route</th><th className="p-4">Wat je krijgt</th></tr>
             </thead>
             <tbody>
               {decisionRows.map(([situation, route, outcome]) => (
@@ -215,11 +218,11 @@ export default function VoorBureausPage() {
 
       <AgencyRoiCalculator path={path} />
 
-      <section className="py-12 sm:py-16">
+      <section className="wk-section">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-emerald-700">Kennisbank voor bureaus</p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight">Gebruik de aanpak ook zonder software.</h2>
+            <p className="wk-eyebrow">Kennisbank voor bureaus</p>
+            <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em]">Gebruik de aanpak ook zonder software.</h2>
           </div>
           <Link href="/voor-bureaus/kennisbank" className="text-sm font-black text-emerald-800 underline decoration-2 underline-offset-4">
             Bekijk de hele kennisbank →
@@ -229,7 +232,7 @@ export default function VoorBureausPage() {
           {agencyKnowledgeGuides.map((guide) => {
             const published = guide.status === "published";
             const content = (
-              <article className={`h-full border-2 border-slate-950 p-5 ${guide.theme === "emerald" ? "bg-emerald-100" : guide.theme === "yellow" ? "bg-yellow-100" : "bg-sky-100"}`}>
+              <article className={`wk-card h-full min-w-0 p-5 ${guide.theme === "emerald" ? "bg-[var(--wk-accent-soft)]" : guide.theme === "yellow" ? "bg-[var(--wk-highlight-soft)]" : "bg-[var(--wk-surface-subtle)]"}`}>
                 <p className="text-xs font-black uppercase tracking-[0.14em] text-slate-600">{published ? guide.readingTime : "In voorbereiding"}</p>
                 <h3 className="mt-3 text-xl font-black leading-snug">{guide.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-slate-700">{guide.description}</p>
@@ -241,11 +244,11 @@ export default function VoorBureausPage() {
         </div>
       </section>
 
-      <section className="border-y-2 border-slate-950 py-12 sm:py-16">
-        <h2 className="text-3xl font-black tracking-tight">Veelgestelde vragen</h2>
+      <section className="wk-section border-y border-[var(--wk-border)]">
+        <h2 className="text-3xl font-semibold tracking-[-0.04em]">Veelgestelde vragen</h2>
         <div className="mt-6 space-y-3">
-          {faqs.map((faq) => (
-            <details key={faq.question} className="border-2 border-slate-200 bg-white p-4 open:border-slate-950">
+            {faqs.map((faq) => (
+              <details key={faq.question} className="wk-card p-5">
               <summary className="cursor-pointer font-black">{faq.question}</summary>
               <p className="mt-3 max-w-4xl text-sm leading-relaxed text-slate-600">{faq.answer}</p>
             </details>
@@ -253,25 +256,25 @@ export default function VoorBureausPage() {
         </div>
       </section>
 
-      <section className="mt-12 border-2 border-slate-950 bg-slate-950 p-6 text-white shadow-[6px_6px_0px_0px_rgba(250,204,21,1)] sm:p-8">
+      <section className="wk-card wk-card-dark mt-12 min-w-0 p-6 sm:p-8">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-yellow-300">Maak de onderbouwing zichtbaar</p>
-            <h2 className="mt-2 max-w-2xl text-3xl font-black">Geef uw opdrachtgever minder zoekwerk en uw recruiter meer controle.</h2>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300">Bekijk eerst het fictieve voorstel. Start daarna MatchPack met de Agency-billing tier wanneer de werkwijze past.</p>
+            <p className="wk-eyebrow text-[var(--wk-highlight)]">Maak de onderbouwing zichtbaar</p>
+            <h2 className="mt-4 max-w-2xl text-3xl font-semibold tracking-[-0.04em] text-white">Geef je opdrachtgever minder zoekwerk en je recruiter meer controle.</h2>
+            <p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-white/75">Bekijk eerst het fictieve voorstel. Start daarna MatchPack met de Agency-billing tier wanneer de werkwijze past.</p>
           </div>
           <div className="flex shrink-0 flex-col gap-3">
-            <AgencyContentLink href="/agency#voorbeeld" path={path} location="hub_bottom" intent="sample" className="border-2 border-white bg-white px-5 py-3 text-center text-sm font-black text-slate-950">
-              Bekijk het voorbeeld
+            <AgencyContentLink href="/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld" path={path} location="hub_bottom" intent="sample" className="wk-button wk-button-secondary">
+              Bekijk het volledige voorbeeld
             </AgencyContentLink>
-            <AgencyContentLink href="/agency#plan" path={path} location="hub_bottom" intent="product" className="border-2 border-white bg-yellow-300 px-5 py-3 text-center text-sm font-black text-slate-950">
-              Start MatchPack · Agency €149/maand
+            <AgencyContentLink href="/agency#plan" path={path} location="hub_bottom" intent="product" className="wk-button wk-button-primary">
+              Bekijk MatchPack {monthlyPrice}
             </AgencyContentLink>
           </div>
         </div>
       </section>
 
-      <p className="mt-5 text-center text-xs font-semibold text-slate-500"><Link href="/agency/privacy" className="text-emerald-700 underline underline-offset-4">Privacy, retentie en DPA-informatie</Link></p>
+      <p className="mt-5 text-center text-xs font-semibold text-[var(--wk-ink-muted)]"><Link href="/agency/privacy" className="text-[var(--wk-primary)] underline underline-offset-4">Privacy, retentie en DPA-informatie</Link></p>
 
       <FAQJsonLd questions={faqs} />
       <JsonLd data={webpageSchema} />

@@ -57,3 +57,57 @@ test("Dutch Agency checkout preserves the Dutch commercial return path", async (
   assert.equal(body.cancel_url, "https://werkcv.nl/agency?checkout=cancelled");
   assert.equal(customization.force_language, "nl");
 });
+
+test("Agency checkout carries only the registered route attribution into provider metadata", async () => {
+  const { buildAgencyDodoCheckoutBody } = await dodoModule;
+  const body = buildAgencyDodoCheckoutBody(undefined, "en", {
+    version: 1,
+    firstTouchAt: "2026-09-02T10:00:00.000Z",
+    firstTouchPath: "/en/agency",
+    firstTouchCluster: "en-agency",
+    firstTouchReferrer: "https://www.google.com/search",
+    lastTouchAt: "2026-09-02T10:00:00.000Z",
+    lastTouchPath: "/en/agency",
+    lastTouchCluster: "en-agency",
+    locale: "en",
+    utmSource: "google",
+    utmMedium: "organic",
+    utmCampaign: "",
+    utmTerm: "",
+    utmContent: "",
+    gclid: "",
+    fbclid: "",
+    msclkid: "",
+  });
+  const metadata = body.metadata as Record<string, unknown>;
+  assert.equal(metadata.agency_route_id, "en_product");
+  assert.equal(metadata.agency_locale, "en");
+  assert.equal(metadata.agency_utm_source, "google");
+  assert.equal(metadata.firstTouchPath, undefined);
+});
+
+test("Agency checkout metadata carries the 99/300 contract without personal or document identifiers", async () => {
+  const { buildAgencyDodoCheckoutBody } = await dodoModule;
+  const body = buildAgencyDodoCheckoutBody("recruiter@example.com", "en");
+  const metadata = body.metadata as Record<string, unknown>;
+  assert.deepEqual(
+    {
+      product: metadata.product,
+      plan_code: metadata.plan_code,
+      plan_version: metadata.plan_version,
+      credit_limit: metadata.credit_limit,
+      display_price_cents: metadata.display_price_cents,
+      currency: metadata.currency,
+    },
+    {
+      product: "agency",
+      plan_code: "agency",
+      plan_version: "agency_99_300_2026_09",
+      credit_limit: "300",
+      display_price_cents: "9900",
+      currency: "EUR",
+    },
+  );
+  const metadataText = JSON.stringify(metadata).toLowerCase();
+  assert.doesNotMatch(metadataText, /email|cv[_-]?id|candidate|vacancy|proposal/u);
+});

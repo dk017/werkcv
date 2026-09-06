@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyCreditExplanation } from "@/lib/agency-plan";
 
 export type AgencyTransactionalEmailKind = "agency_welcome_v1" | "candidate_acknowledgement_invite_v1";
 
@@ -59,7 +60,8 @@ export function agencyTransactionalEmailTemplate(kind: AgencyTransactionalEmailK
         "Your MatchPack workspace is ready.",
         "",
         "MatchPack turns one vacancy and one candidate CV into a recruiter-reviewed candidate proposal with source evidence and visible gaps.",
-        "Analysis and draft review do not use a slot. A new standalone CV or final MatchPack approval uses one shared slot from the monthly allowance of 50.",
+        getAgencyCreditExplanation("en"),
+        `The Agency workspace includes ${AGENCY_MONTHLY_CREDIT_LIMIT} shared CV credits per paid billing period.`,
         "Your default retention period is 90 days and can be changed to 30, 90, 180 or 365 days in Agency settings.",
         "",
         "View the fictional example: https://werkcv.nl/agency#voorbeeld",
@@ -75,7 +77,8 @@ export function agencyTransactionalEmailTemplate(kind: AgencyTransactionalEmailK
       "Je MatchPack-workspace staat klaar.",
       "",
       "MatchPack maakt van één vacature en één kandidaat-CV een door de recruiter gecontroleerd kandidaatvoorstel met bronbewijs en zichtbare ontbrekende informatie.",
-      "Analyse en conceptreview gebruiken geen slot. Een nieuw los CV of definitieve MatchPack-goedkeuring gebruikt één gedeeld slot uit de maandlimiet van 50.",
+      getAgencyCreditExplanation("nl"),
+      `De Agency-workspace bevat ${AGENCY_MONTHLY_CREDIT_LIMIT} gedeelde CV-credits per betaalde periode.`,
       "Je standaard bewaartermijn is 90 dagen en kan in Agency-instellingen worden gewijzigd naar 30, 90, 180 of 365 dagen.",
       "",
       "Bekijk het fictieve voorbeeld: https://werkcv.nl/agency#voorbeeld",

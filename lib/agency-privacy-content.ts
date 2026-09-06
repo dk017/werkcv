@@ -2,6 +2,7 @@ export const agencyPrivacyFacts = {
   content: {
     originalUploadStored: false,
     storedAfterAnalysis: [
+      "complete extracted CV text, source map and source digest",
       "extracted vacancy text",
       "structured candidate data",
       "contact-free derived candidate data",
@@ -46,3 +47,9 @@ export const agencyPrivacyFacts = {
     publicWording: "Current DPA and subprocessor details are available on request after factual and legal verification.",
   },
 } as const;
+
+export function getAgencyStorageDescription(locale: "nl" | "en"): string {
+  return locale === "en"
+    ? "The uploaded PDF or DOCX is used to extract text; WerkCV does not retain the original file. MatchPack does store the complete extracted CV text, source map and checksum, vacancy text, original and edited structured candidate data, contact-reduced versions, analysis, evidence references, revisions and approval information. These records remain until deletion under the agency retention policy. The free checker does not save these inputs or results in the MatchPack database."
+    : "Het PDF- of DOCX-bestand wordt gebruikt om tekst uit te lezen; WerkCV bewaart het originele bestand niet. MatchPack bewaart wel de volledige uitgelezen CV-tekst, bronindeling en controlesom, vacaturetekst, oorspronkelijke en bewerkte gestructureerde kandidaatdata, versies zonder directe contactgegevens, analyse, bewijsverwijzingen, revisies en goedkeuringsinformatie. Deze gegevens blijven bewaard tot verwijdering volgens het bewaarbeleid van het bureau. De gratis checker slaat deze invoer en uitslagen niet op in de MatchPack-database.";
+}

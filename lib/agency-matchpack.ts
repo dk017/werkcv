@@ -2,6 +2,7 @@ import { z } from "zod";
 import { cvSchema, type CVData } from "@/lib/cv";
 import {
   cvVacatureMatchResultSchema,
+  cvVacatureEvidenceResultSchema,
   evidenceReferenceSchema,
   sourceReferenceSchema,
   type EvidenceReference,
@@ -66,9 +67,20 @@ export const matchPackDraftUpdateSchema = z.object({
 export type MatchPackSubmission = z.infer<typeof matchPackSubmissionSchema>;
 export type MatchPackEvidenceReview = z.infer<typeof matchPackDraftUpdateSchema>["evidenceReviews"][number];
 
+/**
+ * MatchPack deliberately reports source-backed evidence and open questions,
+ * never a proposal-wide suitability score. The consumer vacancy/CV checker
+ * keeps its own scored result contract; this agency-specific projection
+ * prevents those decisioning fields from being persisted or returned as part
+ * of a MatchPack.
+ */
+export const matchPackResultSchema = cvVacatureEvidenceResultSchema;
+
+export type MatchPackResult = z.infer<typeof matchPackResultSchema>;
+
 export const matchPackAnalysisSchema = z.object({
   version: z.literal(1),
-  result: cvVacatureMatchResultSchema,
+  result: matchPackResultSchema,
   source: z.object({
     fileType: z.enum(["pdf", "docx", "unknown"]),
     digest: z.string().max(128),
@@ -104,7 +116,7 @@ function getCandidateReference(candidateData: CVData, locale: MatchPackLocale): 
 
 export function createDefaultMatchPackSubmission(
   candidateData: CVData,
-  result: CvVacatureMatchResult,
+  result: Pick<CvVacatureMatchResult, "summary" | "perceivedRole">,
   vacancyTitle: string,
   locale: MatchPackLocale,
 ): MatchPackSubmission {
@@ -370,14 +382,44 @@ export function attachEvidenceReferences(
   });
 }
 
+/**
+ * The visual/certification fixtures use the score-free Agency projection. A
+ * second overload keeps that fixture contract honest while preserving the
+ * existing consumer checker contract above.
+ */
+export function attachMatchPackEvidenceReferences(
+  result: MatchPackResult,
+  cvText: string,
+  sourceFileType: "pdf" | "docx" | "unknown",
+  vacancyText = "",
+  sourceMap?: MatchPackSourceMapV1 | null,
+): MatchPackResult {
+  const enriched = attachEvidenceReferences(
+    {
+      score: 0,
+      scoreBand: "weak",
+      scoreLabel: "",
+      dimensions: [],
+      ...result,
+    },
+    cvText,
+    sourceFileType,
+    vacancyText,
+    sourceMap,
+  );
+  return matchPackResultSchema.parse(enriched);
+}
+
 export function createMatchPackAnalysis(
-  result: CvVacatureMatchResult,
+  result: CvVacatureMatchResult | MatchPackResult,
   anonymization: AnonymizedCvData,
   source?: { fileType: "pdf" | "docx" | "unknown"; digest: string },
 ): MatchPackAnalysis {
   return matchPackAnalysisSchema.parse({
     version: 1,
-    result,
+    // Parse through the agency projection so legacy/generic match fields
+    // (score, band, label and dimensions) cannot enter MatchPack storage.
+    result: matchPackResultSchema.parse(result),
     source,
     anonymization: {
       mode: "direct-identifiers",

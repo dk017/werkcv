@@ -7,6 +7,23 @@ import {
 
 const INTERACTION_EVENTS = [
   "page_view",
+  "agency_hub_viewed",
+  "agency_guide_index_viewed",
+  "agency_guide_viewed",
+  "agency_public_sector_guide_viewed",
+  "agency_example_viewed",
+  "agency_content_cta_clicked",
+  "agency_pricing_viewed",
+  "agency_checkout_cta_clicked",
+  "agency_checkout_started",
+  "agency_checkout_failed",
+  "agency_workspace_started",
+  "agency_sample_pack_downloaded",
+  "agency_evidence_matrix_downloaded",
+  "agency_evidence_checker_viewed",
+  "agency_evidence_checker_started",
+  "agency_evidence_checker_completed",
+  "agency_evidence_checker_cta_clicked",
   "proposal_claim_verifier_viewed",
   "proposal_claim_verifier_started",
   "proposal_claim_verifier_completed",
@@ -43,7 +60,7 @@ export async function getAgencyValidationReport({
         createdAt: { gte: since, lt: until },
         event: { in: INTERACTION_EVENTS },
       },
-      select: { id: true, event: true, path: true, properties: true, createdAt: true },
+      select: { id: true, event: true, path: true, properties: true, attribution: true, createdAt: true },
       orderBy: { createdAt: "asc" },
     }),
     prisma.agencySubscription.findMany({
@@ -74,6 +91,7 @@ export async function getAgencyValidationReport({
         checkoutSessionId: true,
         excludeFromProductMetrics: true,
         createdAt: true,
+        metadata: true,
         payments: {
           where: { status: "paid", paidAt: { gte: since, lt: until } },
           select: { paidAt: true },
@@ -82,6 +100,9 @@ export async function getAgencyValidationReport({
         user: {
           select: {
             email: true,
+            sourcePath: true,
+            sourceLocale: true,
+            attribution: true,
             agencyMatchPacks: {
               where: {
                 OR: [
@@ -127,6 +148,10 @@ export async function getAgencyValidationReport({
     subscriptionCreatedAt: subscription.createdAt,
     checkoutSessionId: subscription.checkoutSessionId,
     status: subscription.status,
+    sourcePath: subscription.user.sourcePath,
+    sourceLocale: subscription.user.sourceLocale,
+    attribution: subscription.user.attribution,
+    subscriptionMetadata: subscription.metadata,
     paidAt: subscription.payments[0]?.paidAt || null,
     matchPacks: subscription.user.agencyMatchPacks,
   }));

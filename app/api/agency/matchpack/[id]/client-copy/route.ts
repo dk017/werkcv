@@ -14,7 +14,7 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
   const user = await getCurrentUserFromRequest(request);
   if (!user) return json({ error: "Authentication required.", code: "AUTH_REQUIRED" }, 401);
   const access = await getAgencyAccessForUser(user.id);
-  if (access.state !== "active") return json({ error: "An active Agency Plan is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
+  if (access.state !== "active") return json({ error: "An active Agency billing tier is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
   if (!canExportAgencyWork(access)) return json({ error: "Your agency role cannot prepare client copy.", code: "ROLE_FORBIDDEN" }, 403);
   const { id: rawId } = await context.params;
   const pack = await prisma.agencyMatchPack.findFirst({

@@ -1,6 +1,11 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { AGENCY_MONTHLY_CV_LIMIT, AGENCY_PLAN_CODE, AGENCY_CURRENCY } from "@/lib/agency-plan";
+import {
+  AGENCY_MONTHLY_CREDIT_LIMIT,
+  AGENCY_PLAN_CODE,
+  AGENCY_PLAN_VERSION,
+  AGENCY_CURRENCY,
+} from "@/lib/agency-plan";
 import { enqueueAgencyWelcomeEmail } from "@/lib/agency-email-outbox";
 
 export type AgencyBillingSyncInput = {
@@ -51,6 +56,24 @@ function jsonValue(value: Record<string, unknown> | null | undefined): Prisma.In
   return JSON.parse(JSON.stringify(value)) as Prisma.InputJsonValue;
 }
 
+function objectMetadata(value: Prisma.JsonValue | null | undefined): Record<string, unknown> {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  return value as Record<string, unknown>;
+}
+
+/**
+ * Resolve the allowance used while synchronising a provider event.
+ *
+ * The database migration is responsible for upgrading legacy Agency
+ * subscriptions to the new 300-credit contract. Once a value is stored, it
+ * is authoritative: in particular, zero must remain zero rather than being
+ * treated as a missing value. A custom allowance above the public contract is
+ * also preserved.
+ */
+export function resolveAgencyMonthlyLimit(stored: number | null | undefined): number {
+  return stored == null ? AGENCY_MONTHLY_CREDIT_LIMIT : Math.max(0, stored);
+}
+
 export async function syncAgencyBilling(input: AgencyBillingSyncInput) {
   const email = normalizedEmail(input.email);
   if (!email) throw new Error("Agency billing event is missing a customer email");
@@ -83,8 +106,19 @@ export async function syncAgencyBilling(input: AgencyBillingSyncInput) {
   const startsAt = input.currentPeriodStart || subscription?.currentPeriodStart || now;
   const endsAt = input.currentPeriodEnd || subscription?.currentPeriodEnd || addOneMonth(startsAt);
   const status = normalizeStatus(input.status, input.eventType);
-  const metadata = jsonValue(input.metadata);
+  const metadata = jsonValue({
+    ...objectMetadata(subscription?.metadata),
+    ...(input.metadata ?? {}),
+    // Keep the commercial contract authoritative even when an old provider
+    // webhook sends stale or incomplete metadata.
+    plan_version: AGENCY_PLAN_VERSION,
+    credit_limit: AGENCY_MONTHLY_CREDIT_LIMIT,
+  });
 
+  // The additive migration upgrades legacy values below 300 before this
+  // synchronisation path is enabled. Provider webhooks must not reduce an
+  // existing allowance, and a stored zero is intentional rather than absent.
+  const monthlyLimit = resolveAgencyMonthlyLimit(subscription?.monthlyLimit);
   const subscriptionData = {
     userId: user.id,
     planCode: AGENCY_PLAN_CODE,
@@ -96,7 +130,7 @@ export async function syncAgencyBilling(input: AgencyBillingSyncInput) {
     checkoutSessionId: input.checkoutSessionId || subscription?.checkoutSessionId || null,
     companyName: input.companyName || subscription?.companyName || null,
     website: input.website || subscription?.website || null,
-    monthlyLimit: AGENCY_MONTHLY_CV_LIMIT,
+    monthlyLimit,
     retentionPolicySetAt: subscription
       ? subscription.retentionPolicySetAt
       : (status === "active" && endsAt > now ? now : null),
@@ -107,7 +141,7 @@ export async function syncAgencyBilling(input: AgencyBillingSyncInput) {
     currentPeriodEnd: endsAt,
     cancelAtPeriodEnd: input.cancelAtPeriodEnd ?? subscription?.cancelAtPeriodEnd ?? false,
     canceledAt: input.canceledAt || subscription?.canceledAt || null,
-    metadata: metadata || subscription?.metadata || undefined,
+    metadata,
   };
 
   const saved = subscription
@@ -125,16 +159,23 @@ export async function syncAgencyBilling(input: AgencyBillingSyncInput) {
           startsAt,
         },
       },
-      update: {
-        endsAt,
-        allowance: AGENCY_MONTHLY_CV_LIMIT,
-      },
+      update: { endsAt },
       create: {
         subscriptionId: saved.id,
         startsAt,
         endsAt,
-        allowance: AGENCY_MONTHLY_CV_LIMIT,
+        allowance: monthlyLimit,
       },
+    });
+    // An upsert update must be non-decreasing for custom allowances. Raise
+    // only periods below the current contract; never lower a larger value.
+    await prisma.agencyUsagePeriod.updateMany({
+      where: {
+        subscriptionId: saved.id,
+        startsAt,
+        allowance: { lt: monthlyLimit },
+      },
+      data: { allowance: monthlyLimit },
     });
   }
 

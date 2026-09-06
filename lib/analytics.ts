@@ -136,14 +136,25 @@ export type AnalyticsEvent =
     | { event: 'agency_demo_field_changed'; properties: { field: 'name' | 'title' | 'summary' | 'experience' | 'skills'; mode: 'sample' } }
     | { event: 'agency_submission_demo_viewed'; properties: { location: string } }
     | { event: 'agency_submission_demo_tab_changed'; properties: { tab: 'intro' | 'evidence' | 'gaps' | 'email' | 'outputs' } }
-    | { event: 'agency_sample_pack_downloaded'; properties: { variant: 'full' | 'anonymized' } }
-    | { event: 'agency_sample_output_viewed'; properties: { variant: 'full' | 'anonymized'; location: string } }
+    | { event: 'agency_sample_pack_downloaded'; properties: { variant: 'full' | 'anonymized' | 'contact_reduced' } }
+    | { event: 'agency_sample_output_viewed'; properties: { variant: 'full' | 'anonymized' | 'contact_reduced'; location: string } }
     | { event: 'agency_workspace_started'; properties: { location: string } }
     | { event: 'agency_docx_cta_clicked'; properties: { path: string; location: string } }
     | { event: 'agency_redaction_cta_clicked'; properties: { path: string; location: string } }
+    | { event: 'agency_evidence_matrix_downloaded'; properties: { format: 'docx' | 'csv'; route_id: 'nl_public_sector_submission'; source_category: 'search' | 'ai' | 'social' | 'email' | 'referral' | 'direct' | 'internal' | 'unknown' } }
     | { event: 'agency_hub_viewed'; properties: { path: string } }
     | { event: 'agency_guide_index_viewed'; properties: { path: string } }
     | { event: 'agency_guide_viewed'; properties: { path: string; slug: string } }
+    | {
+          event: 'agency_public_sector_guide_viewed';
+          properties: {
+              route_id: 'nl_public_sector_submission';
+              locale: 'nl';
+              device_category: 'mobile' | 'tablet' | 'desktop' | 'unknown';
+              source_category: 'search' | 'ai' | 'social' | 'email' | 'referral' | 'direct' | 'internal' | 'unknown';
+          };
+      }
+    | { event: 'agency_example_viewed'; properties: { path: string; slug: string } }
     | { event: 'agency_evidence_checker_viewed'; properties: { locale: 'nl' | 'en' } }
     | { event: 'agency_evidence_checker_sample_loaded'; properties: { locale: 'nl' | 'en' } }
     | { event: 'agency_evidence_checker_started'; properties: { locale: 'nl' | 'en'; inputType: 'file' | 'text'; sample: boolean } }
@@ -173,7 +184,7 @@ export type AnalyticsEvent =
       }
     | { event: 'agency_roi_completed'; properties: AgencyRoiCompletedProperties }
     | { event: 'matchpack_analysis_started'; properties: { locale: 'nl' | 'en'; fileType: 'pdf' | 'docx' | 'unknown' } }
-    | { event: 'matchpack_analysis_completed'; properties: { locale: 'nl' | 'en'; requirementCount: number; scoreBand: string } }
+    | { event: 'matchpack_analysis_completed'; properties: { locale: 'nl' | 'en'; requirementCount: number } }
     | { event: 'matchpack_analysis_failed'; properties: { locale: 'nl' | 'en'; reason: string } }
     | { event: 'matchpack_review_opened'; properties: { locale: 'nl' | 'en'; status: 'analyzed' | 'approved' } }
     | { event: 'matchpack_draft_saved'; properties: { locale: 'nl' | 'en'; selectedVariant: 'full' | 'anonymized' } }

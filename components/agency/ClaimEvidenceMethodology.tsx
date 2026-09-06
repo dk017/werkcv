@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { claimEvidenceBenchmarkReleaseReady } from "@/lib/benchmark/claim-evidence-release-gate";
 import { publicClaimEvidenceBenchmarkV1Checksum } from "@/lib/benchmark/claim-evidence-public-v1";
+import { AGENCY_CONTENT_MODIFIED } from "@/lib/agency-content";
+import { getAgencyPublicCapabilities } from "@/lib/agency-public-capabilities";
 
 const thresholds = [
   ["Citation resolution validity", "100%"],
@@ -20,7 +22,14 @@ const sources = [
 
 export default function ClaimEvidenceMethodology({ locale }: { locale: "nl" | "en" }) {
   const published = claimEvidenceBenchmarkReleaseReady();
+  const verifierEnabled = getAgencyPublicCapabilities().proposalClaimVerifier;
   const nl = locale === "nl";
+  const modifiedDate = new Intl.DateTimeFormat(nl ? "nl-NL" : "en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(AGENCY_CONTENT_MODIFIED));
   const toolUrl = nl ? "/tools/kandidaatvoorstel-checker" : "/en/candidate-proposal-checker";
   const datasetJsonLd = published ? {
     "@context": "https://schema.org",
@@ -49,7 +58,7 @@ export default function ClaimEvidenceMethodology({ locale }: { locale: "nl" | "e
             <p className="mt-6 max-w-3xl text-lg font-medium leading-8 text-[var(--wk-ink-muted)]">{nl ? "Deze methode meet bronondersteuning. Zij bewijst niet dat een kandidaat objectief de waarheid spreekt, geschikt is voor een functie of juridisch geïdentificeerd is." : "This methodology measures source support. It does not establish candidate truthfulness, job suitability or legal identity."}</p>
             <div className="mt-8 flex flex-wrap gap-3 text-sm font-semibold text-[var(--wk-ink-muted)]">
               <span className="rounded-full border border-[var(--wk-border)] bg-white/80 px-4 py-2">{nl ? "Auteur: WerkCV productteam" : "Author: WerkCV product team"}</span>
-              <span className="rounded-full border border-[var(--wk-border)] bg-white/80 px-4 py-2">{nl ? "Laatst bijgewerkt: 1 september 2026" : "Last updated: 1 September 2026"}</span>
+              <span className="rounded-full border border-[var(--wk-border)] bg-white/80 px-4 py-2">{nl ? `Laatst bijgewerkt: ${modifiedDate}` : `Last updated: ${modifiedDate}`}</span>
               <span className="rounded-full border border-amber-300 bg-amber-50 px-4 py-2 text-amber-900">{published ? (nl ? "Onafhankelijk beoordeeld" : "Independently reviewed") : (nl ? "Onafhankelijke review open" : "Independent review pending")}</span>
             </div>
           </div>
@@ -119,7 +128,7 @@ export default function ClaimEvidenceMethodology({ locale }: { locale: "nl" | "e
           </article>
 
           <div className="flex flex-wrap gap-3 pt-2">
-            <Link className="wk-button wk-button-primary" href={toolUrl}>{nl ? "Open de gratis claimchecker" : "Open the free claim verifier"}</Link>
+            <Link className="wk-button wk-button-primary" href={toolUrl}>{verifierEnabled ? (nl ? "Open de gratis claimchecker" : "Open the free claim verifier") : (nl ? "Open de gratis bewijscontrole" : "Open the free CV evidence check")}</Link>
             <Link className="wk-button wk-button-secondary" href={nl ? "/agency" : "/en/agency"}>{nl ? "Bekijk MatchPack" : "See MatchPack"}</Link>
           </div>
         </div>

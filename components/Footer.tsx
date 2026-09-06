@@ -63,12 +63,12 @@ const matchpackGroupsNl: FooterGroup[] = [
   ] },
   { label: "Voor bureaus", links: [
     { href: "/voor-bureaus/kennisbank", label: "Kennisbank" },
-    { href: "/voor-bureaus/kennisbank/matchpack-handleiding#kandidaatbevestiging", label: "Kandidaatbevestiging" },
+    { href: "/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld", label: "Fictief voorbeeld" },
     { href: "/agency/account", label: "Agency-account" },
   ] },
   { label: "Vertrouwen", links: [
     { href: "/agency/privacy", label: "Privacy, retentie en DPA" },
-    { href: "/agency/privacy#subverwerkers", label: "Subverwerkers" },
+    { href: "/agency/privacy#subprocessors", label: "Subverwerkers" },
     { href: "/contact", label: "Contact" },
   ] },
   { label: "Producten", links: [
@@ -81,12 +81,12 @@ const matchpackGroupsEn: FooterGroup[] = [
   { label: "MatchPack", links: [
     { href: "/en/agency", label: "Overview" },
     { href: "/en/candidate-proposal-checker", label: "Proposal checker" },
-    { href: "/agency/account", label: "Open MatchPack" },
+    { href: "/agency/account?locale=en", label: "Open MatchPack (Dutch workspace)" },
     { href: "/en/agency#pricing", label: "Pricing" },
   ] },
   { label: "Evidence", links: [{ href: "/en/agency/methodology/claim-evidence-benchmark", label: "Methodology" }] },
   { label: "Trust", links: [
-    { href: "/agency/privacy", label: "Privacy and data processing" },
+    { href: "/en/agency/privacy", label: "Privacy and data processing" },
     { href: "mailto:contact@werkcv.nl", label: "Contact" },
   ] },
   { label: "Products", links: [{ href: "/en", label: "Personal CVs" }] },

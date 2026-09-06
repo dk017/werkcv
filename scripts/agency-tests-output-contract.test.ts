@@ -37,8 +37,8 @@ test("contact-free structured output scrubs a repeated candidate name in narrati
 
 test("welcome email is factual and contains no candidate content", () => {
   const message = agencyTransactionalEmailTemplate("agency_welcome_v1", "nl");
-  assert.match(message.text, /50/u);
-  assert.match(message.text, /Analyse en conceptreview gebruiken geen slot/u);
+  assert.match(message.text, /300/u);
+  assert.match(message.text, /Eén credit geldt voor één nieuw zelfstandig kandidaat-CV/u);
   assert.match(message.text, /90 dagen/u);
   for (const link of ["/agency#voorbeeld", "/agency/account", "/agency/privacy", "/voor-bureaus/kennisbank/matchpack-handleiding"]) assert.match(message.text, new RegExp(link.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "u"));
   assert.doesNotMatch(`${message.subject}\n${message.text}`, /Mila Vermeer|mila\.vermeer@example\.test/u);

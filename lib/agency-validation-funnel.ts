@@ -1,8 +1,11 @@
+import { agencyAcquisitionRoutes, getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
+
 export type AgencyAnalyticsEventInput = {
   id: string;
   event: string;
   path?: string | null;
   properties?: unknown;
+  attribution?: unknown;
   createdAt: Date;
 };
 
@@ -34,12 +37,18 @@ export type AgencyProductActorInput = {
   subscriptionCreatedAt: Date;
   checkoutSessionId?: string | null;
   status: string;
+  sourcePath?: string | null;
+  sourceLocale?: string | null;
+  attribution?: unknown;
+  subscriptionMetadata?: unknown;
   paidAt?: Date | null;
   matchPacks: AgencyMatchPackMetricInput[];
 };
 
 export type AgencyValidationStageKey =
   | "qualified_organic_session"
+  | "guide_viewed"
+  | "example_viewed"
   | "verifier_viewed"
   | "verifier_started"
   | "verifier_completed"
@@ -72,6 +81,32 @@ export type AgencyValidationBreakdown = {
   verifierCompletions: number;
 };
 
+export type AgencyRouteAcquisitionBreakdown = {
+  routeId: string;
+  path: string;
+  intent: string;
+  locale: "nl" | "en" | "mixed";
+  qualifiedSessions: number;
+  engagedSessions: number;
+  guideViews: number;
+  exampleViews: number;
+  exampleDownloads: number;
+  matrixDocxDownloads: number;
+  matrixCsvDownloads: number;
+  checkerViews: number;
+  checkerStarts: number;
+  checkerCompletions: number;
+  matchpackCtaUsers: number;
+  agencyLoginUsers: number;
+  checkoutUsers: number;
+  paidUsers: number;
+  firstAnalysisUsers: number;
+  firstExportUsers: number;
+  repeatUseUsers: number;
+  sourceBreakdown: Record<string, number>;
+  productAttributionCoverage: "attributed" | "not_attributed" | "aggregate";
+};
+
 export type AgencyValidationReport = {
   generatedAt: Date;
   since: Date;
@@ -79,8 +114,10 @@ export type AgencyValidationReport = {
   timezone: "UTC";
   stages: AgencyValidationStage[];
   breakdowns: AgencyValidationBreakdown[];
+  routeBreakdowns: AgencyRouteAcquisitionBreakdown[];
   outcomes: {
     externalPaidSubscriptions: number;
+    matrixDownloads: { docx: number; csv: number };
     approvedOrExportedMatchPacks: number;
     repeatUsersWithin30Days: number;
     unsupportedClaimsCaught: number;
@@ -101,6 +138,8 @@ export type AgencyValidationReport = {
 
 const STAGE_LABELS: Record<AgencyValidationStageKey, string> = {
   qualified_organic_session: "Qualified organic sessions",
+  guide_viewed: "Agency guide viewed",
+  example_viewed: "Fictional example viewed",
   verifier_viewed: "Verifier viewed",
   verifier_started: "Verifier started",
   verifier_completed: "Verifier completed",
@@ -147,6 +186,29 @@ function pathname(value: string | null | undefined): string {
   } catch {
     return value.split(/[?#]/, 1)[0].replace(/\/+$/, "") || "/";
   }
+}
+
+function routeIdForPath(value: string | null | undefined): string | null {
+  const route = getAgencyAcquisitionRoute(pathname(value));
+  return route?.id || null;
+}
+
+function routeIdForEvent(event: AgencyAnalyticsEventInput): string | null {
+  const direct = routeIdForPath(event.path);
+  if (direct) return direct;
+  const registeredRouteId = text(record(event.properties).route_id);
+  if (agencyAcquisitionRoutes.some((route) => route.id === registeredRouteId)) return registeredRouteId;
+  const attributedPath = text(record(event.attribution).firstTouchPath);
+  return routeIdForPath(attributedPath);
+}
+
+function routeIdForActor(actor: AgencyProductActorInput): string | null {
+  const metadata = record(actor.subscriptionMetadata);
+  const metadataRouteId = text(metadata.agency_route_id);
+  if (agencyAcquisitionRoutes.some((route) => route.id === metadataRouteId)) return metadataRouteId;
+
+  const attributedPath = text(record(actor.attribution).firstTouchPath);
+  return routeIdForPath(attributedPath) || routeIdForPath(actor.sourcePath);
 }
 
 export function isMatchPackAcquisitionPath(value: string | null | undefined): boolean {
@@ -224,6 +286,14 @@ function isQualifiedOrganicEvent(event: AgencyAnalyticsEventInput): boolean {
   return sourceType === "search" || sourceType === "ai";
 }
 
+function isVerifierEvent(event: AgencyAnalyticsEventInput, suffix: "viewed" | "started" | "completed"): boolean {
+  return event.event === `proposal_claim_verifier_${suffix}` || event.event === `agency_evidence_checker_${suffix}`;
+}
+
+function isVerifierCompletion(event: AgencyAnalyticsEventInput): boolean {
+  return isVerifierEvent(event, "completed");
+}
+
 function hasAgencyNextPath(event: AgencyAnalyticsEventInput): boolean {
   const nextPath = text(record(event.properties).nextPath);
   return nextPath === "/agency/account" || nextPath.startsWith("/agency/account/");
@@ -258,6 +328,145 @@ function addBreakdown(
   map.set(key, row);
 }
 
+type AgencyRouteMetricKey =
+  | "qualifiedSessions"
+  | "engagedSessions"
+  | "guideViews"
+  | "exampleViews"
+  | "exampleDownloads"
+  | "matrixDocxDownloads"
+  | "matrixCsvDownloads"
+  | "checkerViews"
+  | "checkerStarts"
+  | "checkerCompletions"
+  | "matchpackCtaUsers"
+  | "agencyLoginUsers"
+  | "checkoutUsers"
+  | "paidUsers"
+  | "firstAnalysisUsers"
+  | "firstExportUsers"
+  | "repeatUseUsers";
+
+type AgencyRouteMetricAccumulator = {
+  sets: Record<AgencyRouteMetricKey, Set<string>>;
+  sourceSets: Map<string, Set<string>>;
+  productAttribution: boolean;
+};
+
+const ROUTE_METRIC_KEYS: readonly AgencyRouteMetricKey[] = [
+  "qualifiedSessions",
+  "engagedSessions",
+  "guideViews",
+  "exampleViews",
+  "exampleDownloads",
+  "matrixDocxDownloads",
+  "matrixCsvDownloads",
+  "checkerViews",
+  "checkerStarts",
+  "checkerCompletions",
+  "matchpackCtaUsers",
+  "agencyLoginUsers",
+  "checkoutUsers",
+  "paidUsers",
+  "firstAnalysisUsers",
+  "firstExportUsers",
+  "repeatUseUsers",
+];
+
+function createRouteMetricAccumulator(): AgencyRouteMetricAccumulator {
+  return {
+    sets: Object.fromEntries(ROUTE_METRIC_KEYS.map((key) => [key, new Set<string>()])) as Record<AgencyRouteMetricKey, Set<string>>,
+    sourceSets: new Map<string, Set<string>>(),
+    productAttribution: false,
+  };
+}
+
+function addRouteMetricEvent(accumulator: AgencyRouteMetricAccumulator, event: AgencyAnalyticsEventInput, identity: string): void {
+  const set = (key: AgencyRouteMetricKey) => accumulator.sets[key].add(identity);
+  const eventName = event.event;
+  const isCheckerViewed = isVerifierEvent(event, "viewed");
+  const isCheckerStarted = isVerifierEvent(event, "started");
+  const isCheckerCompleted = isVerifierEvent(event, "completed");
+  const isContentEngagement = eventName === "agency_content_cta_clicked"
+    || eventName === "agency_hub_viewed"
+    || eventName === "agency_guide_index_viewed"
+    || eventName === "agency_guide_viewed"
+    || eventName === "agency_public_sector_guide_viewed"
+    || eventName === "agency_example_viewed"
+    || eventName === "agency_evidence_matrix_downloaded"
+    || isCheckerViewed
+    || eventName === "proposal_claim_methodology_clicked";
+
+  if (isQualifiedOrganicEvent(event)) {
+    set("qualifiedSessions");
+    const source = eventSource(event);
+    const sourceSet = accumulator.sourceSets.get(source) || new Set<string>();
+    sourceSet.add(identity);
+    accumulator.sourceSets.set(source, sourceSet);
+  }
+  if (isContentEngagement) set("engagedSessions");
+  if (eventName === "agency_guide_viewed" || eventName === "agency_public_sector_guide_viewed") set("guideViews");
+  if (eventName === "agency_example_viewed") set("exampleViews");
+  if (eventName === "agency_sample_pack_downloaded") set("exampleDownloads");
+  if (eventName === "agency_evidence_matrix_downloaded") {
+    const format = text(record(event.properties).format);
+    if (format === "docx") set("matrixDocxDownloads");
+    if (format === "csv") set("matrixCsvDownloads");
+  }
+  if (isCheckerViewed) set("checkerViews");
+  if (isCheckerStarted) set("checkerStarts");
+  if (isCheckerCompleted) set("checkerCompletions");
+  if (eventName === "agency_content_cta_clicked"
+    || eventName === "agency_evidence_checker_cta_clicked"
+    || eventName === "proposal_claim_verifier_cta_clicked"
+    || eventName === "agency_checkout_cta_clicked") set("matchpackCtaUsers");
+  if (eventName === "login_verified" && hasAgencyNextPath(event)) set("agencyLoginUsers");
+  if (eventName === "agency_checkout_started") set("checkoutUsers");
+}
+
+function addRouteProductMetric(
+  accumulator: AgencyRouteMetricAccumulator,
+  key: AgencyRouteMetricKey,
+  identity: string,
+): void {
+  accumulator.sets[key].add(identity);
+  accumulator.productAttribution = true;
+}
+
+function routeMetricRow(
+  route: { id: string; path: string; primaryIntent: string; locale: "nl" | "en" },
+  accumulator: AgencyRouteMetricAccumulator,
+  productAttribution: AgencyRouteAcquisitionBreakdown["productAttributionCoverage"],
+): AgencyRouteAcquisitionBreakdown {
+  const sourceBreakdown: Record<string, number> = {};
+  for (const [source, identities] of accumulator.sourceSets) sourceBreakdown[source] = identities.size;
+  return {
+    routeId: route.id,
+    path: route.path,
+    intent: route.primaryIntent,
+    locale: route.locale,
+    qualifiedSessions: accumulator.sets.qualifiedSessions.size,
+    engagedSessions: accumulator.sets.engagedSessions.size,
+    guideViews: accumulator.sets.guideViews.size,
+    exampleViews: accumulator.sets.exampleViews.size,
+    exampleDownloads: accumulator.sets.exampleDownloads.size,
+    matrixDocxDownloads: accumulator.sets.matrixDocxDownloads.size,
+    matrixCsvDownloads: accumulator.sets.matrixCsvDownloads.size,
+    checkerViews: accumulator.sets.checkerViews.size,
+    checkerStarts: accumulator.sets.checkerStarts.size,
+    checkerCompletions: accumulator.sets.checkerCompletions.size,
+    matchpackCtaUsers: accumulator.sets.matchpackCtaUsers.size,
+    agencyLoginUsers: accumulator.sets.agencyLoginUsers.size,
+    checkoutUsers: accumulator.sets.checkoutUsers.size,
+    paidUsers: accumulator.sets.paidUsers.size,
+    firstAnalysisUsers: accumulator.sets.firstAnalysisUsers.size,
+    firstExportUsers: accumulator.sets.firstExportUsers.size,
+    repeatUseUsers: accumulator.sets.repeatUseUsers.size,
+    sourceBreakdown,
+    productAttributionCoverage: productAttribution,
+  };
+}
+
 export function buildAgencyValidationReport({
   events,
   actors,
@@ -279,13 +488,30 @@ export function buildAgencyValidationReport({
     configuredEmails: configuredExcludedEmails,
   }));
 
+  const aggregateRouteMetrics = createRouteMetricAccumulator();
+  const routeMetricMap = new Map<string, AgencyRouteMetricAccumulator>(
+    agencyAcquisitionRoutes.map((route) => [route.id, createRouteMetricAccumulator()]),
+  );
+
+  for (const event of cleanEvents) {
+    const identity = eventIdentity(event);
+    addRouteMetricEvent(aggregateRouteMetrics, event, identity);
+    const routeId = routeIdForEvent(event);
+    if (routeId) addRouteMetricEvent(routeMetricMap.get(routeId)!, event, identity);
+  }
+
   const eventStages = new Map<AgencyValidationStageKey, Set<string>>([
     ["qualified_organic_session", uniqueEventIdentities(cleanEvents, isQualifiedOrganicEvent)],
-    ["verifier_viewed", uniqueEventIdentities(cleanEvents, (event) => event.event === "proposal_claim_verifier_viewed")],
-    ["verifier_started", uniqueEventIdentities(cleanEvents, (event) => event.event === "proposal_claim_verifier_started")],
-    ["verifier_completed", uniqueEventIdentities(cleanEvents, (event) => event.event === "proposal_claim_verifier_completed")],
+    ["guide_viewed", uniqueEventIdentities(cleanEvents, (event) => event.event === "agency_guide_viewed" || event.event === "agency_public_sector_guide_viewed")],
+    ["example_viewed", uniqueEventIdentities(cleanEvents, (event) => event.event === "agency_example_viewed")],
+    ["verifier_viewed", uniqueEventIdentities(cleanEvents, (event) => isVerifierEvent(event, "viewed"))],
+    ["verifier_started", uniqueEventIdentities(cleanEvents, (event) => isVerifierEvent(event, "started"))],
+    ["verifier_completed", uniqueEventIdentities(cleanEvents, isVerifierCompletion)],
     ["methodology_viewed", uniqueEventIdentities(cleanEvents, (event) => event.event === "page_view" && pathname(event.path).includes("/methodology/claim-evidence-benchmark") || event.event === "proposal_claim_methodology_clicked")],
-    ["matchpack_cta_selected", uniqueEventIdentities(cleanEvents, (event) => event.event === "proposal_claim_verifier_cta_clicked")],
+    ["matchpack_cta_selected", uniqueEventIdentities(cleanEvents, (event) => event.event === "agency_content_cta_clicked"
+      || event.event === "agency_checkout_cta_clicked"
+      || event.event === "proposal_claim_verifier_cta_clicked"
+      || event.event === "agency_evidence_checker_cta_clicked")],
     ["agency_login_completed", uniqueEventIdentities(cleanEvents, (event) => event.event === "login_verified" && hasAgencyNextPath(event))],
   ]);
 
@@ -300,23 +526,38 @@ export function buildAgencyValidationReport({
   let candidateOverrides = 0;
   let approvedOrExportedMatchPacks = 0;
   let clientOutcomesRecorded = 0;
+  const matrixDownloadSets = { docx: new Set<string>(), csv: new Set<string>() };
+
+  for (const event of cleanEvents) {
+    if (event.event !== "agency_evidence_matrix_downloaded") continue;
+    const format = text(record(event.properties).format);
+    if (format === "docx") matrixDownloadSets.docx.add(eventIdentity(event));
+    if (format === "csv") matrixDownloadSets.csv.add(eventIdentity(event));
+  }
 
   for (const actor of cleanActors) {
     const withinRange = (value?: Date | null) => Boolean(value && value >= since && value < until);
-    if (actor.checkoutSessionId && withinRange(actor.subscriptionCreatedAt)) productStages.get("agency_checkout_created")?.add(actor.userId);
-    if (withinRange(actor.paidAt)) productStages.get("agency_paid")?.add(actor.userId);
+    const actorRouteId = routeIdForActor(actor);
+    const actorRouteMetrics = actorRouteId ? routeMetricMap.get(actorRouteId) : null;
+    const addProduct = (key: AgencyValidationStageKey, routeKey: AgencyRouteMetricKey) => {
+      productStages.get(key)?.add(actor.userId);
+      addRouteProductMetric(aggregateRouteMetrics, routeKey, actor.userId);
+      if (actorRouteMetrics) addRouteProductMetric(actorRouteMetrics, routeKey, actor.userId);
+    };
+    if (actor.checkoutSessionId && withinRange(actor.subscriptionCreatedAt)) addProduct("agency_checkout_created", "checkoutUsers");
+    if (withinRange(actor.paidAt)) addProduct("agency_paid", "paidUsers");
 
     const sortedPacks = [...actor.matchPacks].sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
-    if (sortedPacks.some((pack) => withinRange(pack.createdAt))) productStages.get("first_analysis")?.add(actor.userId);
+    if (sortedPacks.some((pack) => withinRange(pack.createdAt))) addProduct("first_analysis", "firstAnalysisUsers");
     if (sortedPacks.some((pack) => pack.claimVerificationData != null && withinRange(pack.updatedAt))) productStages.get("claim_review_completed")?.add(actor.userId);
     if (sortedPacks.some((pack) => pack.candidateReviews.some((review) =>
       (review.status === "confirmed" && withinRange(review.respondedAt)) || withinRange(review.overriddenAt)))) {
       productStages.get("candidate_acknowledged_or_overridden")?.add(actor.userId);
     }
     if (sortedPacks.some((pack) => withinRange(pack.approvedAt))) productStages.get("matchpack_approved")?.add(actor.userId);
-    if (sortedPacks.some((pack) => withinRange(pack.firstExportedAt))) productStages.get("first_export")?.add(actor.userId);
+    if (sortedPacks.some((pack) => withinRange(pack.firstExportedAt))) addProduct("first_export", "firstExportUsers");
     if (sortedPacks.some((pack, index) => index > 0 && withinRange(pack.createdAt) && pack.createdAt.getTime() - sortedPacks[index - 1].createdAt.getTime() <= 30 * 86_400_000)) {
-      productStages.get("repeat_matchpack")?.add(actor.userId);
+      addProduct("repeat_matchpack", "repeatUseUsers");
     }
     if (sortedPacks.some((pack) => pack.clientOutcome !== "unknown" && withinRange(pack.clientOutcomeRecordedAt || pack.updatedAt))) productStages.get("client_outcome_recorded")?.add(actor.userId);
 
@@ -337,7 +578,7 @@ export function buildAgencyValidationReport({
   }
 
   const orderedKeys: AgencyValidationStageKey[] = [
-    "qualified_organic_session", "verifier_viewed", "verifier_started", "verifier_completed",
+    "qualified_organic_session", "guide_viewed", "example_viewed", "verifier_viewed", "verifier_started", "verifier_completed",
     "methodology_viewed", "matchpack_cta_selected", "agency_login_completed", "agency_checkout_created",
     "agency_paid", "first_analysis", "claim_review_completed", "candidate_acknowledged_or_overridden",
     "matchpack_approved", "first_export", "repeat_matchpack", "client_outcome_recorded",
@@ -364,7 +605,7 @@ export function buildAgencyValidationReport({
   const breakdownMap = new Map<string, { dimension: AgencyValidationBreakdown["dimension"]; segment: string; qualified: Set<string>; completed: Set<string> }>();
   for (const event of cleanEvents) {
     const identity = eventIdentity(event);
-    const kind = isQualifiedOrganicEvent(event) ? "qualified" : event.event === "proposal_claim_verifier_completed" ? "completed" : null;
+    const kind = isQualifiedOrganicEvent(event) ? "qualified" : isVerifierCompletion(event) ? "completed" : null;
     if (!kind) continue;
     addBreakdown(breakdownMap, "locale", eventLocale(event), kind, identity);
     addBreakdown(breakdownMap, "source", eventSource(event), kind, identity);
@@ -382,6 +623,19 @@ export function buildAgencyValidationReport({
     }))
     .sort((a, b) => a.dimension.localeCompare(b.dimension) || b.qualifiedSessions - a.qualifiedSessions || a.segment.localeCompare(b.segment));
 
+  const routeBreakdowns: AgencyRouteAcquisitionBreakdown[] = [
+    ...agencyAcquisitionRoutes.map((route) => routeMetricRow(
+      route,
+      routeMetricMap.get(route.id) || createRouteMetricAccumulator(),
+      routeMetricMap.get(route.id)?.productAttribution ? "attributed" : "not_attributed",
+    )),
+    routeMetricRow(
+      { id: "aggregate", path: "*", primaryIntent: "All registered Agency acquisition routes", locale: "nl" },
+      aggregateRouteMetrics,
+      "aggregate",
+    ),
+  ].map((row) => row.routeId === "aggregate" ? { ...row, locale: "mixed" as const } : row);
+
   return {
     generatedAt: new Date(),
     since,
@@ -389,8 +643,10 @@ export function buildAgencyValidationReport({
     timezone: "UTC",
     stages,
     breakdowns,
+    routeBreakdowns,
     outcomes: {
       externalPaidSubscriptions: productStages.get("agency_paid")?.size || 0,
+      matrixDownloads: { docx: matrixDownloadSets.docx.size, csv: matrixDownloadSets.csv.size },
       approvedOrExportedMatchPacks,
       repeatUsersWithin30Days: productStages.get("repeat_matchpack")?.size || 0,
       unsupportedClaimsCaught,

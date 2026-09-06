@@ -87,10 +87,10 @@ export default function NavUserMenu({
 
   if (!email) {
     const loginNext = isMatchPackPath
-      ? "/agency/account"
+      ? isEnglish ? "/agency/account?locale=en" : "/agency/account"
       : pathname.startsWith("/en") ? "/en/editor" : "/editor";
     return (
-      <Link href={`/login?next=${encodeURIComponent(loginNext)}`} className={linkClass}>
+      <Link href={`/login?next=${encodeURIComponent(loginNext)}${isEnglish ? "&locale=en" : ""}`} className={linkClass}>
         {isEnglish ? "Log in" : "Inloggen"}
       </Link>
     );

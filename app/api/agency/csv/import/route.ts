@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { getCurrentUserFromRequest } from "@/lib/auth";
-import { canCreateAgencyWork, createAgencyCvDocumentsAtomically, getAgencyAccessForUser, isAgencyAccessError } from "@/lib/agency-access";
+import { canCreateAgencyWork, createAgencyCvDocumentsAtomically, getAgencyAccessForUser, isAgencyAccessError, serializeAgencyAccessError } from "@/lib/agency-access";
 import { cvSchema } from "@/lib/cv";
 import { AgencyCsvError, cvDataFromCsvRow, parseCsv } from "@/lib/agency-csv";
 import { isAllowedSameOriginRequest } from "@/lib/request-origin";
@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
   if (!access.subscription?.retentionPolicySetAt) return json({ error: "Choose and confirm the Agency retention period before importing.", code: "RETENTION_POLICY_REQUIRED" }, 409);
 
   const formData = await request.formData().catch(() => null);
+  const locale = formData?.get("locale") === "en" ? "en" : "nl";
   const file = formData?.get("file");
   if (!(file instanceof File)) return json({ error: "Choose a CSV file.", code: "FILE_REQUIRED" }, 400);
   if (file.size > 2 * 1024 * 1024) return json({ error: "The CSV must be smaller than 2 MB.", code: "FILE_TOO_LARGE" }, 400);
@@ -64,7 +65,7 @@ export async function POST(request: NextRequest) {
     const created = await createAgencyCvDocumentsAtomically(access.ownerUserId, documents);
     return json({ success: true, createdCount: created.length, createdIds: created.map((document) => document.id), errors: [] });
   } catch (error) {
-    if (isAgencyAccessError(error)) return json({ error: error.message, code: error.code, createdCount: 0 }, 409);
+    if (isAgencyAccessError(error)) return json({ ...serializeAgencyAccessError(error, locale), createdCount: 0 }, 409);
     return json({ error: "The import was not saved. No CVs were created.", code: "CSV_IMPORT_FAILED", createdCount: 0 }, 500);
   }
 }

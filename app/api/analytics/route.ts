@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { sanitizeAttribution } from '@/lib/attribution';
+import { normalizeAnalyticsPath } from '@/lib/analytics-paths';
 import { classifyTrafficSource, parseUserAgent } from '@/lib/analytics-source';
 import { geolocateIp, getClientIp } from '@/lib/geoip';
 import {
@@ -148,6 +149,8 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'agency_hub_viewed',
     'agency_guide_index_viewed',
     'agency_guide_viewed',
+    'agency_public_sector_guide_viewed',
+    'agency_example_viewed',
     'agency_content_cta_clicked',
     'agency_roi_completed',
     'agency_pricing_viewed',
@@ -163,6 +166,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'agency_workspace_started',
     'agency_docx_cta_clicked',
     'agency_redaction_cta_clicked',
+    'agency_evidence_matrix_downloaded',
     'matchpack_analysis_started',
     'matchpack_analysis_completed',
     'matchpack_analysis_failed',
@@ -198,6 +202,18 @@ type PrismaWithOptionalAnalytics = typeof prisma & {
 };
 
 let hasLoggedAnalyticsDbWarning = false;
+
+/**
+ * Analytics URLs are navigation context only. Keep the pathname and discard
+ * query strings/fragments so identifiers or free-form values can never be
+ * persisted or emitted in logs through this boundary.
+ */
+function sanitizeEventPath(value: unknown): string | null {
+    if (typeof value !== 'string') return null;
+    const candidate = value.trim();
+    if (!candidate.startsWith('/')) return null;
+    return normalizeAnalyticsPath(candidate);
+}
 
 function isDatabaseUnavailable(error: unknown) {
     return (
@@ -289,7 +305,9 @@ export async function POST(request: NextRequest) {
                 : {}),
         };
 
-        const safeEventUrl = roleAnalyticsContext ? sanitizeEnglishRoleAnalyticsUrl(url) : url;
+        const safeEventUrl = roleAnalyticsContext
+            ? sanitizeEventPath(sanitizeEnglishRoleAnalyticsUrl(url))
+            : sanitizeEventPath(url);
 
         if (PERSISTED_FUNNEL_EVENTS.has(event)) {
             try {

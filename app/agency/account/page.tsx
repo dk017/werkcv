@@ -2,12 +2,14 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { canCreateAgencyWork, canManageAgency, canViewAgencyWork, getAgencyAccessForUser, needsAgencyRetentionAcknowledgement } from "@/lib/agency-access";
-import { getAgencyStatusLabel } from "@/lib/agency-plan";
+import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay, getAgencyStatusLabel } from "@/lib/agency-plan";
 import { prisma } from "@/lib/prisma";
 import AgencyDraftResume from "@/components/agency/AgencyDraftResume";
 import AgencyPrimaryActions from "@/components/agency/AgencyPrimaryActions";
 import AgencyOnboardingChecklist, { type AgencyOnboardingItem } from "@/components/agency/AgencyOnboardingChecklist";
 import AgencyAccountShell from "@/components/agency/AgencyAccountShell";
+import { getAgencyAccountLoginHref } from "@/lib/agency-account-entry";
+import { AGENCY_WORKSPACE_LANGUAGE_NOTICE } from "@/lib/agency-review-scope";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -23,15 +25,17 @@ function formatDate(value: Date | null | undefined): string {
 export default async function AgencyAccountPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; error?: string }>;
+  searchParams: Promise<{ status?: string; error?: string; locale?: string }>;
 }) {
-  const { status: checkoutStatus, error: errorCode } = await searchParams;
+  const entry = await searchParams;
+  const { status: checkoutStatus, error: errorCode, locale: entryLocale } = entry;
   const user = await getCurrentUser();
   if (!user) {
-    redirect(`/login?next=${encodeURIComponent("/agency/account")}`);
+    redirect(getAgencyAccountLoginHref(entry));
   }
 
   const access = await getAgencyAccessForUser(user.id);
+  const monthlyPrice = getAgencyMonthlyPriceDisplay("nl");
   const documents = await prisma.cVDocument.findMany({
     where: access.subscription ? { agencySubscriptionId: access.subscription.id } : { id: "__no_agency_subscription__" },
     orderBy: { updatedAt: "desc" },
@@ -60,7 +64,7 @@ export default async function AgencyAccountPage({
       { id: "example", label: "Bekijk het fictieve MatchPack-voorbeeld", href: "/agency#voorbeeld", done: Boolean(access.subscription.onboardingExampleViewedAt), detail: "Zie welke bewijsregels intern blijven en wat een klant ontvangt." },
       { id: "retention", label: "Kies je bewaartermijn", href: "/agency/account/settings/privacy", done: Boolean(access.subscription.retentionPolicySetAt), detail: "Nieuwe accounts starten met 90 dagen; je kunt 30, 90, 180 of 365 dagen kiezen." },
       { id: "template", label: "Stel je bureautemplate in", href: "/agency/account/settings/templates", done: Boolean(defaultTemplate), detail: "Gebruik je logo-/huisstijlgegevens en herbruikbare exportinstellingen." },
-      { id: "matchpack", label: "Maak je eerste MatchPack", href: "/agency/account/matchpack", done: packs.length > 0, detail: "Analyse en conceptreview gebruiken nog geen slot." },
+      { id: "matchpack", label: "Maak je eerste MatchPack", href: "/agency/account/matchpack", done: packs.length > 0, detail: "Analyse en conceptreview gebruiken nog geen credit." },
       { id: "approval", label: "Controleer en keur het voorstel goed", href: "/agency/account/matchpack", done: approved, detail: "Bevestig bronbewijs, kandidaatdata, commerciële feiten en e-mail vóór goedkeuring." },
       { id: "export", label: "Download PDF of DOCX", href: "/agency/account/matchpack", done: exported, detail: "Full en contactvrije output komen uit dezelfde goedgekeurde snapshot." },
       { id: "outcome", label: "Leg de klantuitkomst vast", href: "/agency/account/matchpack", done: outcomeRecorded, detail: "Sla alleen een status en korte productfeedback op; geen kandidaattekst." },
@@ -71,18 +75,23 @@ export default async function AgencyAccountPage({
     <AgencyAccountShell currentPath="/agency/account" email={user.email} role={access.role}>
     <main className="wk-agency-main">
       <div className="wk-container wk-agency-container-narrow">
+        {entryLocale === "en" ? <section className="wk-agency-alert wk-agency-alert-warning" lang="en" aria-label="Workspace language">
+          <p className="font-bold">{AGENCY_WORKSPACE_LANGUAGE_NOTICE}</p>
+          <p className="mt-2 text-sm">Choose “MatchPacks” to create a proposal, then select “English” under “Outputtaal” for English documents. Need help? Email <a href="mailto:contact@werkcv.nl" className="underline">contact@werkcv.nl</a>.</p>
+          {activationPending ? <p className="mt-2 text-sm" role="status">Your payment confirmation is being processed. Refresh shortly; access will activate after confirmation.</p> : null}
+        </section> : null}
         <section className="wk-agency-page-hero grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
             <p className="wk-eyebrow">Agency account</p>
             <h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Jouw WerkCV MatchPack-workspace</h1>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-600">
-              Maak complete kandidaatvoorstellen en losse kandidaat-CV&apos;s via jouw vaste WerkCV-route. Een nieuw document of definitief goedgekeurd voorstel telt als één van de 50 slots.
+              Maak complete kandidaatvoorstellen en losse kandidaat-CV&apos;s via jouw vaste WerkCV-route. Een nieuw document of definitief goedgekeurd voorstel gebruikt één van de {AGENCY_MONTHLY_CREDIT_LIMIT} gedeelde CV-credits.
             </p>
           </div>
 
           <div className="wk-agency-plan-summary">
             <p className="text-xs font-black uppercase tracking-[0.16em]">Agency billing tier</p>
-            <p className="mt-2 text-4xl font-black">€149 <span className="text-base">/ maand</span></p>
+            <p className="mt-2 text-4xl font-black">{monthlyPrice}</p>
             <p className="mt-2 text-sm font-bold">{statusLabel}</p>
             {access.subscription?.currentPeriodEnd ? (
               <p className="mt-1 text-xs font-semibold text-slate-700">
@@ -100,7 +109,7 @@ export default async function AgencyAccountPage({
 
         {quotaError ? (
           <div className="wk-agency-alert wk-agency-alert-danger" role="alert">
-            De maandlimiet van 50 kandidaatdocumenten en goedgekeurde voorstellen is bereikt. Bestaande documenten en voorstellen blijven beschikbaar.
+            De maandlimiet van {AGENCY_MONTHLY_CREDIT_LIMIT} gedeelde CV-credits is bereikt. Bestaande documenten en voorstellen blijven beschikbaar.
           </div>
         ) : null}
 
@@ -130,7 +139,7 @@ export default async function AgencyAccountPage({
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-500">Gebruik deze periode</p>
-                <p className="mt-1 text-3xl font-black">{access.used} / {access.period.allowance} voorstel-slots</p>
+                <p className="mt-1 text-3xl font-black">{access.used} / {access.period.allowance} CV-credits</p>
               </div>
               <p className="text-sm font-semibold text-slate-600">
                 Nieuwe periode vanaf {formatDate(access.period.endsAt)}

@@ -61,11 +61,18 @@ test("the certified fixture deduplicates interactions and derives product milest
   const events: AgencyAnalyticsEventInput[] = [
     event("1", "page_view", "visitor-a", "/en/agency"),
     event("2", "page_view", "visitor-a", "/en/agency"),
+    event("2a", "agency_public_sector_guide_viewed", "visitor-a", "/voor-bureaus/kennisbank/kandidaat-aanbieden-overheid", {
+      route_id: "nl_public_sector_submission",
+      device_category: "mobile",
+      source_category: "search",
+    }),
+    event("2b", "agency_evidence_matrix_downloaded", "visitor-a", "/voor-bureaus/kennisbank/kandidaat-aanbieden-overheid", { format: "docx", route_id: "nl_public_sector_submission", source_category: "search" }),
     event("3", "proposal_claim_verifier_viewed", "visitor-a", "/en/candidate-proposal-checker"),
     event("4", "proposal_claim_verifier_started", "visitor-a", "/en/candidate-proposal-checker"),
     event("5", "proposal_claim_verifier_completed", "visitor-a", "/en/candidate-proposal-checker"),
     event("6", "proposal_claim_methodology_clicked", "visitor-a", "/en/candidate-proposal-checker"),
     event("7", "proposal_claim_verifier_cta_clicked", "visitor-a", "/en/candidate-proposal-checker"),
+    event("7b", "agency_content_cta_clicked", "visitor-a", "/en/agency", { destination: "/en/agency#pricing", location: "hero", intent: "product" }),
     event("8", "login_verified", "visitor-a", "/login", { nextPath: "/agency/account", isNewUser: true }),
     event("9", "page_view", "bot-crawler", "/en/agency", { deviceType: "bot" }),
     event("10", "page_view", "visitor-direct", "/en/agency", { sourceType: "direct", sourceLabel: "Direct" }),
@@ -143,8 +150,10 @@ test("the certified fixture deduplicates interactions and derives product milest
   });
 
   assert.equal(stage(report, "qualified_organic_session").count, 1);
+  assert.equal(stage(report, "guide_viewed").count, 1);
   assert.equal(stage(report, "verifier_completed").count, 1);
   assert.equal(stage(report, "agency_login_completed").count, 1);
+  assert.equal(stage(report, "matchpack_cta_selected").count, 1);
   assert.equal(stage(report, "agency_checkout_created").count, 1);
   assert.equal(stage(report, "agency_paid").count, 1);
   assert.equal(stage(report, "first_export").count, 1);
@@ -154,6 +163,7 @@ test("the certified fixture deduplicates interactions and derives product milest
   assert.equal(stage(report, "agency_paid").conversionRate, 1);
 
   assert.equal(report.outcomes.externalPaidSubscriptions, 1);
+  assert.deepEqual(report.outcomes.matrixDownloads, { docx: 1, csv: 0 });
   assert.equal(report.outcomes.approvedOrExportedMatchPacks, 1);
   assert.equal(report.outcomes.unsupportedClaimsCaught, 3);
   assert.equal(report.outcomes.recruiterCorrections, 3);
@@ -165,4 +175,22 @@ test("the certified fixture deduplicates interactions and derives product milest
   assert.ok(report.breakdowns.some((row) => row.dimension === "locale" && row.segment === "en" && row.qualifiedSessions === 1));
   assert.ok(report.breakdowns.some((row) => row.dimension === "visitor_status" && row.segment === "new" && row.qualifiedSessions === 1));
   assert.equal(report.breakdowns.some((row) => row.segment === "visitor-outside"), false);
+
+  const englishRoute = report.routeBreakdowns.find((row) => row.routeId === "en_product");
+  assert.ok(englishRoute);
+  assert.equal(englishRoute.qualifiedSessions, 1);
+  assert.equal(englishRoute.checkerViews, 0, "checker events belong to the checker route, not the product route");
+  assert.equal(englishRoute.paidUsers, 0, "product records without a matching user attribution stay out of a route row");
+
+  const publicSectorRoute = report.routeBreakdowns.find((row) => row.routeId === "nl_public_sector_submission");
+  assert.ok(publicSectorRoute);
+  assert.equal(publicSectorRoute.guideViews, 1);
+  assert.equal(publicSectorRoute.matrixDocxDownloads, 1);
+
+  const aggregate = report.routeBreakdowns.find((row) => row.routeId === "aggregate");
+  assert.ok(aggregate);
+  assert.equal(aggregate.locale, "mixed");
+  assert.equal(aggregate.checkerCompletions, 1);
+  assert.equal(aggregate.paidUsers, 1);
+  assert.equal(aggregate.sourceBreakdown.Google, 1);
 });

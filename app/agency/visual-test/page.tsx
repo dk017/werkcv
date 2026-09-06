@@ -11,12 +11,13 @@ import AgencySettingsPanel, {
 } from "@/components/agency/AgencySettingsPanel";
 import {
   anonymizeCvData,
-  attachEvidenceReferences,
+  attachMatchPackEvidenceReferences,
   createDefaultMatchPackSubmission,
   createMatchPackAnalysis,
+  type MatchPackResult,
 } from "@/lib/agency-matchpack";
 import { sampleCV } from "@/lib/cv";
-import type { CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match-schema";
+import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib/agency-plan";
 
 export const dynamic = "force-dynamic";
 
@@ -89,17 +90,10 @@ function createMatchPackFixture(): AgencyMatchPackDetail {
     "Begeleidde complexe verzuimdossiers volgens de Wet verbetering poortwachter.",
     "Bouwde HR-rapportages in Power BI voor directie en teamleiders.",
   ].join("\n");
-  const rawResult: CvVacatureMatchResult = {
-    score: 78,
-    scoreBand: "good",
-    scoreLabel: "Goede match",
+  const rawResult: MatchPackResult = {
     summary: "Het profiel sluit goed aan op HR-advies, verzuim en stakeholdermanagement. AFAS-workflowbeheer blijft een zichtbaar open punt.",
     perceivedRole: "Senior HR-adviseur",
     perceivedSeniority: "senior",
-    dimensions: [
-      { id: "relevance", label: "Aansluiting", score: 29, maxScore: 35, explanation: "Sterke aansluiting op de kernwerkzaamheden." },
-      { id: "evidence", label: "Bewijs", score: 24, maxScore: 30, explanation: "Meerdere eisen zijn terug te vinden in concrete bronzinnen." },
-    ],
     strengths: [
       { title: "Leidinggevenden adviseren", evidence: "Het CV noemt 24 teamleiders." },
       { title: "Complex verzuim", evidence: "Wet verbetering poortwachter staat expliciet in de werkervaring." },
@@ -115,8 +109,8 @@ function createMatchPackFixture(): AgencyMatchPackDetail {
     topFixes: [{ category: "evidence", title: "AFAS blijft onbewezen", evidence: "De vacature maakt AFAS essentieel.", action: "Laat de recruiter dit expliciet verifiëren." }],
     limitations: ["Fictionele, uitsluitend lokaal gebruikte visuele testdata."],
   };
-  const tracedResult = attachEvidenceReferences(rawResult, cvText, "docx", vacancyText);
-  const reviewedResult: CvVacatureMatchResult = {
+  const tracedResult = attachMatchPackEvidenceReferences(rawResult, cvText, "docx", vacancyText);
+  const reviewedResult: MatchPackResult = {
     ...tracedResult,
     requirements: tracedResult.requirements.map((requirement, index) => ({
       ...requirement,
@@ -230,12 +224,12 @@ function OverviewFixture() {
           </div>
           <div className="wk-agency-plan-summary">
             <p className="text-xs font-black uppercase tracking-[0.16em]">Agency billing tier</p>
-            <p className="mt-2 text-4xl font-black">€149 <span className="text-base">/ maand</span></p>
+            <p className="mt-2 text-4xl font-black">{getAgencyMonthlyPriceDisplay("nl")} </p>
             <p className="mt-2 text-sm font-bold">Actief</p>
           </div>
         </section>
         <section className="wk-agency-panel wk-agency-usage-card">
-          <div className="flex flex-wrap items-end justify-between gap-4"><div><p className="wk-eyebrow">Gebruik deze periode</p><p className="mt-2 text-3xl font-black">7 / 50 voorstel-slots</p></div><p className="text-sm font-semibold text-slate-600">Nieuwe periode vanaf 1 september 2026</p></div>
+          <div className="flex flex-wrap items-end justify-between gap-4"><div><p className="wk-eyebrow">Gebruik deze periode</p><p className="mt-2 text-3xl font-black">7 / {AGENCY_MONTHLY_CREDIT_LIMIT} CV-credits</p></div><p className="text-sm font-semibold text-slate-600">Nieuwe periode vanaf 1 september 2026</p></div>
           <div className="mt-4 h-3 overflow-hidden rounded-full bg-slate-100"><div className="h-full w-[14%] bg-emerald-500" /></div>
           <div className="mt-5 flex flex-wrap gap-3"><span className="wk-button wk-button-primary">MatchPack maken</span><span className="wk-button wk-button-secondary">Nieuw CV maken</span></div>
         </section>
@@ -275,7 +269,7 @@ export default async function AgencyVisualTestPage({ searchParams }: { searchPar
       {screen === "overview" ? <OverviewFixture /> : null}
       {screen === "insights" ? <InsightsFixture /> : null}
       {screen === "settings" ? <main className="wk-agency-main"><div className="wk-container wk-agency-container-narrow"><section className="wk-agency-page-hero"><p className="wk-eyebrow">Workspace-instellingen</p><h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Team, templates en gegevensbeheer.</h1></section><AgencySettingsPanel owner canImport role="owner" visualFixture={settingsFixture} /></div></main> : null}
-      {screen === "matchpack" ? <main className="wk-agency-main"><div className="wk-container wk-agency-container-wide"><section className="wk-agency-page-hero max-w-4xl"><p className="wk-eyebrow">WerkCV MatchPack</p><h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Van CV en vacature naar een compleet kandidaatvoorstel.</h1></section><AgencyMatchPackWorkspace initialPacks={[summary]} initialActivePack={pack} initialUsed={7} allowance={50} canCreate canCreateWork canApprove canDeleteDraft canDeleteApproved canOpenCv /></div></main> : null}
+      {screen === "matchpack" ? <main className="wk-agency-main"><div className="wk-container wk-agency-container-wide"><section className="wk-agency-page-hero max-w-4xl"><p className="wk-eyebrow">WerkCV MatchPack</p><h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Van CV en vacature naar een compleet kandidaatvoorstel.</h1></section><AgencyMatchPackWorkspace initialPacks={[summary]} initialActivePack={pack} initialUsed={7} allowance={AGENCY_MONTHLY_CREDIT_LIMIT} canCreate canCreateWork canApprove canDeleteDraft canDeleteApproved canOpenCv /></div></main> : null}
     </AgencyAccountShell>
   );
 }

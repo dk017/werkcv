@@ -6,12 +6,14 @@ import {
   canApproveAgencyWork,
   getAgencyAccessForUser,
   isAgencyAccessError,
+  serializeAgencyAccessError,
 } from "@/lib/agency-access";
 import { matchPackApprovalRequestSchema, MatchPackReviewError } from "@/lib/agency-matchpack-review";
 import { MatchPackOutputError } from "@/lib/agency-output-projection";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
 import { isAllowedSameOriginRequest } from "@/lib/request-origin";
 import { AgencyClaimGateError } from "@/lib/agency-claim-review";
+import { AGENCY_MONTHLY_CREDIT_LIMIT } from "@/lib/agency-plan";
 
 export const runtime = "nodejs";
 
@@ -22,20 +24,25 @@ function json(body: Record<string, unknown>, status = 200) {
   });
 }
 
-function accessErrorResponse(error: AgencyAccessError) {
+function accessErrorResponse(error: AgencyAccessError, locale: "nl" | "en") {
   const messages: Record<string, string> = {
-    AGENCY_QUOTA_REACHED: "The shared 50-slot allowance has been reached.",
+    AGENCY_QUOTA_REACHED: "The shared Agency CV-credit allowance has been reached.",
     AGENCY_PERIOD_UNAVAILABLE: "The current billing period is not ready yet.",
-    AGENCY_SUBSCRIPTION_INACTIVE: "An active Agency Plan is required to approve this MatchPack.",
+    AGENCY_SUBSCRIPTION_INACTIVE: "An active Agency billing tier is required to approve this MatchPack.",
     RETENTION_POLICY_REQUIRED: "Choose and confirm the Agency retention period before approving this MatchPack.",
   };
-  return json({ error: messages[error.code] || "The agency plan could not approve this MatchPack.", code: error.code }, 409);
+  const credit = serializeAgencyAccessError(error, locale);
+  return json({
+    ...(error.creditContext ? credit : { error: messages[error.code] || "The Agency billing tier could not approve this MatchPack." }),
+    code: error.code,
+  }, 409);
 }
 
 export async function POST(
   request: NextRequest,
   context: { params: Promise<{ id: string }> },
 ) {
+  const locale = request.nextUrl.searchParams.get("locale") === "nl" ? "nl" : "en";
   if (!isAllowedSameOriginRequest(request, { checkReferer: true })) {
     return json({ error: "Invalid request origin.", code: "INVALID_ORIGIN" }, 403);
   }
@@ -44,7 +51,7 @@ export async function POST(
   if (!user) return json({ error: "Authentication required.", code: "AUTH_REQUIRED" }, 401);
 
   const access = await getAgencyAccessForUser(user.id);
-  if (access.state !== "active") return json({ error: "An active Agency Plan is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
+  if (access.state !== "active") return json({ error: "An active Agency billing tier is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
   if (!canApproveAgencyWork(access)) return json({ error: "Your agency role cannot approve proposals.", code: "ROLE_FORBIDDEN" }, 403);
 
   const rateLimit = checkRateLimit(`${user.id}:${getClientIp(request).slice(0, 120)}`, {
@@ -83,12 +90,12 @@ export async function POST(
       retentionExpiresAt: result.retentionExpiresAt,
       quota: {
         used: updatedAccess.used,
-        allowance: updatedAccess.period?.allowance || 50,
+        allowance: updatedAccess.period?.allowance ?? AGENCY_MONTHLY_CREDIT_LIMIT,
         remaining: updatedAccess.remaining,
       },
     });
   } catch (error) {
-    if (isAgencyAccessError(error)) return accessErrorResponse(error);
+    if (isAgencyAccessError(error)) return accessErrorResponse(error, locale);
     if (error instanceof MatchPackReviewError) return json({ error: error.message, code: error.code }, 409);
     if (error instanceof MatchPackOutputError) return json({ error: error.message, code: error.code }, 409);
     if (error instanceof AgencyClaimGateError) return json({ error: error.message, code: error.code }, 409);

@@ -1,7 +1,8 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import {
-  AGENCY_MONTHLY_CV_LIMIT,
+  AGENCY_MONTHLY_CREDIT_LIMIT,
+  getAgencyRemainingCredits,
   isAgencySubscriptionInPaidPeriod,
 } from "@/lib/agency-plan";
 import { calculateRetentionExpiry } from "@/lib/agency-retention";
@@ -16,6 +17,7 @@ import { candidateAcknowledgementEnabled, proposalClaimVerifierEnabled } from "@
 import { buildApprovedMatchPackOutput } from "@/lib/agency-output-projection";
 import { validateMatchPackReviewForApproval } from "@/lib/agency-matchpack-review";
 import { matchPackSourceMapSchema } from "@/lib/agency-matchpack-source";
+import { getAgencyCreditErrorPayload, getAgencyCreditLimitDetails, type AgencyCreditLocale, type AgencyCreditLimitContext } from "@/lib/agency-credit-errors";
 
 export type AgencyAccessErrorCode =
   | "AGENCY_QUOTA_REACHED"
@@ -25,11 +27,13 @@ export type AgencyAccessErrorCode =
 
 export class AgencyAccessError extends Error {
   readonly code: AgencyAccessErrorCode;
+  readonly creditContext?: AgencyCreditLimitContext;
 
-  constructor(code: AgencyAccessErrorCode, message: string) {
+  constructor(code: AgencyAccessErrorCode, message: string, creditContext?: AgencyCreditLimitContext) {
     super(message);
     this.name = "AgencyAccessError";
     this.code = code;
+    this.creditContext = creditContext;
   }
 }
 
@@ -106,6 +110,7 @@ async function ensureCurrentUsagePeriod(
 ) {
   const bounds = periodBoundsForSubscription(subscription, now);
   if (!bounds) return null;
+  const periodData = getAgencyUsagePeriodUpsertData(subscription, bounds);
 
   return tx.agencyUsagePeriod.upsert({
     where: {
@@ -114,17 +119,28 @@ async function ensureCurrentUsagePeriod(
         startsAt: bounds.startsAt,
       },
     },
-    update: {
-      endsAt: bounds.endsAt,
-      allowance: Math.max(0, subscription.monthlyLimit || AGENCY_MONTHLY_CV_LIMIT),
-    },
+    update: periodData.update,
+    create: periodData.create,
+  });
+}
+
+/**
+ * Existing period allowances are accounting records and remain authoritative.
+ * Only a newly created period inherits the subscription's current allowance.
+ */
+export function getAgencyUsagePeriodUpsertData(
+  subscription: Pick<AgencySubscriptionLike, "id" | "monthlyLimit">,
+  bounds: { startsAt: Date; endsAt: Date },
+) {
+  return {
+    update: { endsAt: bounds.endsAt },
     create: {
       subscriptionId: subscription.id,
       startsAt: bounds.startsAt,
       endsAt: bounds.endsAt,
-      allowance: Math.max(0, subscription.monthlyLimit || AGENCY_MONTHLY_CV_LIMIT),
+      allowance: Math.max(0, subscription.monthlyLimit ?? AGENCY_MONTHLY_CREDIT_LIMIT),
     },
-  });
+  };
 }
 
 function isSerializationConflict(error: unknown): boolean {
@@ -244,7 +260,7 @@ export async function getAgencyAccessForUser(userId: string): Promise<AgencyAcce
   }
 
   const used = await prisma.agencyCvUsage.count({ where: { periodId: period.id } });
-  const remaining = Math.max(0, period.allowance - used);
+  const remaining = getAgencyRemainingCredits(period.allowance, used);
   return {
     subscription,
     ownerUserId,
@@ -445,7 +461,8 @@ export async function createAgencyCvDocumentForUser(
     if (used >= period.allowance) {
       throw new AgencyAccessError(
         "AGENCY_QUOTA_REACHED",
-        "The shared 50-slot allowance has been reached.",
+        getAgencyCreditLimitDetails({ used, limit: period.allowance, requested: 1 }).error,
+        { used, limit: period.allowance, requested: 1 },
       );
     }
 
@@ -482,7 +499,11 @@ export async function createAgencyCvDocumentsAtomically(userId: string, rows: Cv
     if (!period) throw new AgencyAccessError("AGENCY_PERIOD_UNAVAILABLE", "The agency billing period is not available yet.");
     const used = await tx.agencyCvUsage.count({ where: { periodId: period.id } });
     if (used + rows.length > period.allowance) {
-      throw new AgencyAccessError("AGENCY_QUOTA_REACHED", "The shared 50-slot allowance has insufficient remaining slots.");
+      throw new AgencyAccessError(
+        "AGENCY_QUOTA_REACHED",
+        getAgencyCreditLimitDetails({ used, limit: period.allowance, requested: rows.length }).error,
+        { used, limit: period.allowance, requested: rows.length },
+      );
     }
 
     const created = [];
@@ -689,7 +710,8 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
     if (used >= period.allowance) {
       throw new AgencyAccessError(
         "AGENCY_QUOTA_REACHED",
-        "The shared 50-slot allowance has been reached.",
+        getAgencyCreditLimitDetails({ used, limit: period.allowance, requested: 1 }).error,
+        { used, limit: period.allowance, requested: 1 },
       );
     }
 
@@ -783,4 +805,13 @@ export async function approveAgencyMatchPackForUser(data: MatchPackApprovalData)
 
 export function isAgencyAccessError(error: unknown): error is AgencyAccessError {
   return error instanceof AgencyAccessError;
+}
+
+/** Serialize only bounded, authenticated credit diagnostics at API boundaries. */
+export function serializeAgencyAccessError(error: AgencyAccessError, locale: AgencyCreditLocale = "en") {
+  const credit = getAgencyCreditErrorPayload(error.creditContext, locale);
+  return {
+    ...(credit || { error: error.message }),
+    code: error.code,
+  };
 }

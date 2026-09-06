@@ -16,7 +16,7 @@ export type ClaimEvidenceReleaseGate = {
 
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
 
-export function evaluateClaimEvidenceReleaseGate(environment: NodeJS.ProcessEnv = process.env): ClaimEvidenceReleaseGate {
+export function evaluateClaimEvidenceReleaseGate(environment: Record<string, string | undefined> = process.env): ClaimEvidenceReleaseGate {
   const approvedPublicChecksum = environment.CLAIM_BENCHMARK_PUBLIC_SHA256?.trim().toLowerCase() || "";
   const holdoutChecksum = environment.CLAIM_BENCHMARK_HOLDOUT_SHA256?.trim().toLowerCase() || "";
   const checks = {

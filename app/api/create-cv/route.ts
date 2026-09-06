@@ -10,7 +10,7 @@ import {
     normalizeEnglishRoleExampleStartSource,
 } from '@/lib/english-role-examples';
 import { getDefaultThemeId, getTemplateConfig } from '@/lib/templates/registry';
-import { isAgencyAccessError } from '@/lib/agency-access';
+import { isAgencyAccessError, serializeAgencyAccessError } from '@/lib/agency-access';
 import { createMatchPackCvDocument, createPersonalCvDocument } from '@/lib/workspace/cv-document-service';
 import { recordEnglishRoleExampleCvCreated } from '@/lib/english-role-example-events';
 
@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
                     ? 403
                     : 503;
             return NextResponse.json(
-                { error: error.message, code: error.code },
+                serializeAgencyAccessError(error, uiLanguage),
                 { status },
             );
         }

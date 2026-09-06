@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { track } from "@/lib/analytics";
 
 type AgencyCtaLinkProps = {
@@ -16,11 +17,12 @@ export default function AgencyCtaLink({
   location,
   className,
 }: AgencyCtaLinkProps) {
+  const pathname = usePathname();
   const handleClick = () => {
     track("cta_clicked", { location, label });
 
     if (href.startsWith("/")) {
-      track("landing_cta_click", { fromPath: "/agency", toPath: href, label });
+      track("landing_cta_click", { fromPath: pathname || "/", toPath: href, label });
     }
   };
 

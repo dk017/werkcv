@@ -4,7 +4,7 @@ import { z } from "zod";
 import { getCurrentUserFromRequest } from "@/lib/auth";
 import { canReviewAgencyEvidence, getAgencyAccessForUser } from "@/lib/agency-access";
 import { proposalClaimVerifierEnabled } from "@/lib/agency-feature-flags";
-import { parseStoredMatchPackSubmission } from "@/lib/agency-matchpack";
+import { parseStoredMatchPackAnalysis, parseStoredMatchPackSubmission } from "@/lib/agency-matchpack";
 import { matchPackSourceMapSchema } from "@/lib/agency-matchpack-source";
 import { prisma } from "@/lib/prisma";
 import { isAllowedSameOriginRequest } from "@/lib/request-origin";
@@ -83,7 +83,9 @@ async function saveVerification(input: {
       reason: "claim_review_saved",
       candidateData: input.pack.candidateData as Prisma.InputJsonValue,
       submissionData: input.pack.submissionData as Prisma.InputJsonValue,
-      analysis: input.pack.analysis as Prisma.InputJsonValue,
+      // Re-serialize through the agency schema so a legacy scored result
+      // cannot be copied into a new MatchPack revision.
+      analysis: parseStoredMatchPackAnalysis(input.pack.analysis) as unknown as Prisma.InputJsonValue,
       claimVerificationData: input.verification as unknown as Prisma.InputJsonValue,
       changedFields: ["claimVerificationData"],
       createdById: input.userId,

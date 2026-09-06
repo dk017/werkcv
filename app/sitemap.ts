@@ -5,6 +5,7 @@ import { getAllApplicationHelpArticles } from '@/lib/sollicitatiehulp/registry';
 import { getAllSkillGuideArticles } from '@/lib/vaardigheden-gids/registry';
 import { getDutchWavePages, getEnglishWavePages } from '@/lib/seo-wave/data';
 import { salaryRolePages } from '@/lib/tools/salary-role-pages';
+import { AGENCY_CONTENT_MODIFIED } from '@/lib/agency-content';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
@@ -568,13 +569,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/tools/kandidaatvoorstel-checker`,
-            lastModified: new Date('2026-08-20'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'weekly',
             priority: 0.78,
         },
         {
             url: `${baseUrl}/voor-bureaus/methodologie/claim-evidence-benchmark`,
-            lastModified: new Date('2026-08-22'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'monthly',
             priority: 0.68,
         },
@@ -586,13 +587,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/en/candidate-proposal-checker`,
-            lastModified: new Date('2026-08-20'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'weekly',
             priority: 0.75,
         },
         {
             url: `${baseUrl}/en/agency/methodology/claim-evidence-benchmark`,
-            lastModified: new Date('2026-08-22'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'monthly',
             priority: 0.65,
         },
@@ -826,61 +827,73 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/agency`,
-            lastModified: new Date('2026-09-01'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'monthly',
             priority: 0.66,
         },
         {
             url: `${baseUrl}/en/agency`,
-            lastModified: new Date('2026-09-01'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'monthly',
             priority: 0.72,
         },
         {
             url: `${baseUrl}/agency/privacy`,
-            lastModified: new Date('2026-08-16'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'monthly',
             priority: 0.48,
         },
         {
             url: `${baseUrl}/en/agency/privacy`,
-            lastModified: new Date('2026-09-01'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'monthly',
             priority: 0.5,
         },
         {
             url: `${baseUrl}/voor-bureaus`,
-            lastModified: new Date('2026-08-16'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'monthly',
             priority: 0.72,
         },
         {
             url: `${baseUrl}/voor-bureaus/kennisbank`,
-            lastModified: new Date('2026-08-16'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'monthly',
             priority: 0.66,
         },
         {
             url: `${baseUrl}/voor-bureaus/kennisbank/kandidaat-voorstellen-opdrachtgever`,
-            lastModified: new Date('2026-08-16'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'monthly',
             priority: 0.7,
         },
         {
+            url: `${baseUrl}/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld`,
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
+            changeFrequency: 'monthly',
+            priority: 0.74,
+        },
+        {
+            url: `${baseUrl}/voor-bureaus/kennisbank/kandidaat-aanbieden-overheid`,
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
+            changeFrequency: 'monthly',
+            priority: 0.77,
+        },
+        {
             url: `${baseUrl}/voor-bureaus/kennisbank/matchpack-handleiding`,
-            lastModified: new Date('2026-08-20'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'weekly',
             priority: 0.78,
         },
         {
             url: `${baseUrl}/voor-bureaus/kennisbank/cv-in-huisstijl-recruitmentbureau`,
-            lastModified: new Date('2026-08-16'),
+            lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'monthly',
             priority: 0.7,
         },
         {
             url: `${baseUrl}/voor-bureaus/kennisbank/cv-anonimiseren-recruitment`,
-            lastModified: new Date('2026-08-16'),
+            lastModified: new Date('2026-09-02'),
             changeFrequency: 'monthly',
             priority: 0.7,
         },

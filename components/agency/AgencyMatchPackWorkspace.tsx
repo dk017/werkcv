@@ -10,6 +10,7 @@ import {
 } from "@/lib/agency-matchpack";
 import { track } from "@/lib/analytics";
 import ScaledCvPreview from "@/app/editor/ScaledCvPreview";
+import { getAgencyReviewScopeNotice } from "@/lib/agency-review-scope";
 import type { ProposalClaimVerificationV1 } from "@/lib/tools/proposal-claim-verifier-schema";
 import {
   deriveMatchPackStagePresentation,
@@ -130,7 +131,7 @@ function stageBlockingReasonLabel(code: string): string {
     PREREQUISITES_UNRESOLVED: "Rond eerst de eerdere controlefases af.",
     APPROVAL_CHECKLIST_INCOMPLETE: "Rond de eindcontrole af.",
     ROLE_FORBIDDEN: "Je rol kan deze MatchPack niet goedkeuren.",
-    AGENCY_QUOTA_REACHED: "Er is geen voorstel-slot beschikbaar.",
+    AGENCY_QUOTA_REACHED: "Er is geen CV-credit meer beschikbaar.",
     FINAL_APPROVAL_REQUIRED: "Alle controles zijn gereed. Leg nu de definitieve goedkeuring vast.",
     MATCHPACK_SNAPSHOT_LOCKED: "Deze goedgekeurde versie is alleen-lezen.",
   };
@@ -551,7 +552,6 @@ export default function AgencyMatchPackWorkspace({
       track("matchpack_analysis_completed", {
         locale,
         requirementCount: body.pack.analysis.result.requirements.length,
-        scoreBand: body.pack.analysis.result.scoreBand,
       });
     } catch (caught) {
       if (!(caught instanceof Error)) track("matchpack_analysis_failed", { locale, reason: "unknown" });
@@ -727,7 +727,7 @@ export default function AgencyMatchPackWorkspace({
     setError(null);
     setNotice(null);
     try {
-      const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/approve`, {
+      const response = await fetch(`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/approve?locale=${activePack.locale === "en" ? "en" : "nl"}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -765,7 +765,7 @@ export default function AgencyMatchPackWorkspace({
          ? { ...pack, status: "approved", cvDocumentId: body.cvId || pack.cvDocumentId, approvedAt: new Date().toISOString(), retentionExpiresAt: body.retentionExpiresAt || pack.retentionExpiresAt }
         : pack));
       if (typeof body.quota?.used === "number") setUsed(body.quota.used);
-      setNotice(body.reused ? "Dit kandidaatvoorstel was al goedgekeurd." : "Goedgekeurd. Eén voorstel-slot is nu gebruikt en de gekozen klantversie staat klaar.");
+      setNotice(body.reused ? "Dit kandidaatvoorstel was al goedgekeurd." : "Goedgekeurd. Eén CV-credit is nu gebruikt en de gekozen klantversie staat klaar.");
       track("matchpack_approved", {
         locale: activePack.locale === "en" ? "en" : "nl",
         selectedVariant: activePack.submissionData.selectedVariant,
@@ -907,14 +907,14 @@ export default function AgencyMatchPackWorkspace({
 
         <div className="mt-5 border-t-2 border-slate-100 pt-4">
           <div className="flex items-end justify-between gap-3">
-            <span className="text-xs font-black uppercase tracking-[0.12em] text-slate-500">Voorstel-slots</span>
+            <span className="text-xs font-black uppercase tracking-[0.12em] text-slate-500">CV-credits</span>
             <span className="text-sm font-black">{used} / {allowance}</span>
           </div>
           <div className="mt-2 h-2 overflow-hidden bg-slate-100">
             <div className="h-full bg-emerald-500" style={{ width: `${usagePercent}%` }} />
           </div>
           <p className="mt-2 text-xs font-semibold leading-relaxed text-slate-500">
-            Analyse en conceptreview gebruiken geen slot. Een slot wordt pas gebruikt bij definitieve goedkeuring.
+            Analyse en conceptreview gebruiken geen credit. Een credit wordt pas gebruikt bij definitieve goedkeuring.
           </p>
         </div>
 
@@ -930,6 +930,7 @@ export default function AgencyMatchPackWorkspace({
       </aside>
 
       <section className="min-w-0">
+        <p className="wk-card wk-card-warning mb-5 text-sm leading-relaxed" data-review-scope>{getAgencyReviewScopeNotice("nl")}</p>
         {error ? <div className="mb-5 border-2 border-rose-500 bg-rose-50 p-4 text-sm font-semibold text-rose-900" role="alert">{error}</div> : null}
         {notice ? <div className="mb-5 border-2 border-emerald-500 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900" role="status">{notice}</div> : null}
         {!canApprove ? <div className="mb-5 border-2 border-slate-300 bg-slate-50 p-4 text-sm font-semibold text-slate-700">Je rol is alleen-lezen. Je kunt MatchPacks openen, maar niet wijzigen of goedkeuren.</div> : null}
@@ -944,7 +945,7 @@ export default function AgencyMatchPackWorkspace({
                   Upload het CV, plak de vacature en laat WerkCV de eisen koppelen aan concreet bewijs. Je houdt de laatste goedkeuring zelf.
                 </p>
               </div>
-              <span className="border-2 border-emerald-300 bg-emerald-50 px-3 py-2 text-xs font-black text-emerald-800">Geen slot bij analyse</span>
+              <span className="border-2 border-emerald-300 bg-emerald-50 px-3 py-2 text-xs font-black text-emerald-800">Geen credit bij analyse</span>
             </div>
 
             <div className="mt-6 grid gap-5 lg:grid-cols-2">
@@ -1074,8 +1075,8 @@ export default function AgencyMatchPackWorkspace({
                 {reviewStep === "claims" || (reviewStep === "source" && !claimVerifierEnabled) ? <>
                 <section className="grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
                   <div className="border-2 border-slate-900 bg-white p-5 shadow-[4px_4px_0px_0px_rgba(78,205,196,1)] sm:p-6">
-                    <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Onderbouwde match</p>
-                    <h3 className="mt-2 text-2xl font-black">Waarom dit profiel wel of niet past</h3>
+                    <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Bronoverzicht</p>
+                    <h3 className="mt-2 text-2xl font-black">Wat de bron onderbouwt en wat open blijft</h3>
                     <p className="mt-4 text-sm leading-relaxed text-slate-700">{activeResult.summary}</p>
                     <div className="mt-5 grid gap-3 sm:grid-cols-2">
                       <div className="border-2 border-slate-200 bg-slate-50 p-3"><p className="text-[11px] font-black uppercase tracking-[0.12em] text-slate-500">Rol</p><p className="mt-1 text-sm font-black">{activeResult.perceivedRole}</p></div>
@@ -1264,12 +1265,12 @@ export default function AgencyMatchPackWorkspace({
                   </div>
                   {!evidenceReviewReady && !activeIsApproved ? <p className="mt-4 border-2 border-amber-300 bg-white p-3 text-xs font-bold text-amber-900">Beoordeel eerst elke vacature-eis als bevestigd, gecorrigeerd of afgewezen. Niet-beoordeelde regels kunnen niet worden goedgekeurd.</p> : null}
                   <div className="mt-6 flex flex-wrap items-center gap-3 border-t-2 border-yellow-200 pt-5">
-                    {!activeIsApproved ? <button type="button" onClick={() => void approvePack()} disabled={!reviewReady || isBusy || !hasQuota || isDirty} className="border-2 border-slate-900 bg-emerald-400 px-5 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] disabled:cursor-not-allowed disabled:opacity-50">{isBusy ? "Goedkeuren…" : isDirty ? "Sla wijzigingen eerst op" : hasQuota ? "Goedkeuren en 1 voorstel-slot gebruiken" : "Maandlimiet bereikt"}</button> : <><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/pdf?variant=${activePack.submissionData.selectedVariant === "full" ? "full" : "anonymized"}`} onClick={() => track("matchpack_pdf_downloaded", { variant: activePack.submissionData.selectedVariant })} className="border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black">Gekozen PDF downloaden</a><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/docx?variant=${activePack.submissionData.selectedVariant === "full" ? "full" : "anonymized"}`} onClick={() => track("matchpack_docx_downloaded", { variant: activePack.submissionData.selectedVariant })} className="border-2 border-slate-900 bg-yellow-300 px-4 py-3 text-sm font-black">Gekozen DOCX downloaden</a><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/pdf?variant=${activePack.submissionData.selectedVariant === "full" ? "anonymized" : "full"}`} onClick={() => track("matchpack_pdf_downloaded", { variant: activePack.submissionData.selectedVariant === "full" ? "anonymized" : "full" })} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black">Andere PDF downloaden</a>{activePack.cvDocumentId && canOpenCv ? <Link href={`/editor?id=${encodeURIComponent(activePack.cvDocumentId)}`} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700">Goedgekeurd CV openen</Link> : null}</>}
+                    {!activeIsApproved ? <button type="button" onClick={() => void approvePack()} disabled={!reviewReady || isBusy || !hasQuota || isDirty} className="border-2 border-slate-900 bg-emerald-400 px-5 py-3 text-sm font-black shadow-[3px_3px_0px_0px_rgba(15,23,42,1)] disabled:cursor-not-allowed disabled:opacity-50">{isBusy ? "Goedkeuren…" : isDirty ? "Sla wijzigingen eerst op" : hasQuota ? "Goedkeuren en 1 CV-credit gebruiken" : "Maandlimiet bereikt"}</button> : <><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/pdf?variant=${activePack.submissionData.selectedVariant === "full" ? "full" : "anonymized"}`} onClick={() => track("matchpack_pdf_downloaded", { variant: activePack.submissionData.selectedVariant })} className="border-2 border-slate-900 bg-emerald-400 px-4 py-3 text-sm font-black">Gekozen PDF downloaden</a><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/docx?variant=${activePack.submissionData.selectedVariant === "full" ? "full" : "anonymized"}`} onClick={() => track("matchpack_docx_downloaded", { variant: activePack.submissionData.selectedVariant })} className="border-2 border-slate-900 bg-yellow-300 px-4 py-3 text-sm font-black">Gekozen DOCX downloaden</a><a href={`/api/agency/matchpack/${encodeURIComponent(activePack.id)}/pdf?variant=${activePack.submissionData.selectedVariant === "full" ? "anonymized" : "full"}`} onClick={() => track("matchpack_pdf_downloaded", { variant: activePack.submissionData.selectedVariant === "full" ? "anonymized" : "full" })} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black">Andere PDF downloaden</a>{activePack.cvDocumentId && canOpenCv ? <Link href={`/editor?id=${encodeURIComponent(activePack.cvDocumentId)}`} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700">Goedgekeurd CV openen</Link> : null}</>}
                     {!activeIsApproved && canDeleteDraft ? <button type="button" onClick={() => setShowDeleteConfirmation(true)} disabled={isBusy} className="border-2 border-rose-200 bg-white px-4 py-3 text-sm font-black text-rose-700 disabled:opacity-50">Verwijder concept</button> : null}
                     {activeIsApproved && canDeleteApproved ? <button type="button" onClick={() => setShowDeleteConfirmation(true)} disabled={isBusy} className="border-2 border-rose-200 bg-white px-4 py-3 text-sm font-black text-rose-700 disabled:opacity-50">Voorstel en gekoppeld CV verwijderen</button> : null}
                     <span className={`text-xs font-bold ${isExpiringSoon(activePack.retentionExpiresAt) ? "text-amber-800" : "text-emerald-800"}`}>{activeIsApproved ? `Goedgekeurd op ${formatDate(activePack.approvedAt)}` : "Concept"}{activePack.retentionExpiresAt ? ` · vervalt ${formatDate(activePack.retentionExpiresAt)}` : " · retentie nog niet geactiveerd"}{isExpiringSoon(activePack.retentionExpiresAt) ? " · verloopt binnen 14 dagen" : ""}</span>
                   </div>
-                  {showDeleteConfirmation && ((activeIsApproved && canDeleteApproved) || (!activeIsApproved && canDeleteDraft)) ? <div className="mt-4 border-2 border-rose-500 bg-white p-4" role="region" aria-label="MatchPack verwijderen bevestigen"><p className="text-sm font-black text-rose-900">{activeIsApproved ? "Dit verwijdert het goedgekeurde voorstel en het gekoppelde CV. Het gebruikte slot blijft geteld." : "Dit verwijdert dit ongekeurde MatchPack-concept."}</p>{activeIsApproved ? <label className="mt-3 block text-xs font-black uppercase tracking-wide text-rose-800">Typ DELETE MATCHPACK<input className={`${inputClassName} mt-2`} value={deleteConfirmation} onChange={(event) => setDeleteConfirmation(event.target.value)} autoComplete="off" /></label> : null}<div className="mt-3 flex flex-wrap gap-2"><button type="button" disabled={isBusy || (activeIsApproved && deleteConfirmation !== "DELETE MATCHPACK")} onClick={() => void deletePack()} className="border-2 border-rose-700 bg-rose-100 px-4 py-2 text-sm font-black text-rose-900 disabled:opacity-50">Definitief verwijderen</button><button type="button" disabled={isBusy} onClick={() => { setShowDeleteConfirmation(false); setDeleteConfirmation(""); }} className="border-2 border-slate-300 bg-white px-4 py-2 text-sm font-black">Annuleren</button></div></div> : null}
+                  {showDeleteConfirmation && ((activeIsApproved && canDeleteApproved) || (!activeIsApproved && canDeleteDraft)) ? <div className="mt-4 border-2 border-rose-500 bg-white p-4" role="region" aria-label="MatchPack verwijderen bevestigen"><p className="text-sm font-black text-rose-900">{activeIsApproved ? "Dit verwijdert het goedgekeurde voorstel en het gekoppelde CV. De gebruikte credit blijft geteld." : "Dit verwijdert dit ongekeurde MatchPack-concept."}</p>{activeIsApproved ? <label className="mt-3 block text-xs font-black uppercase tracking-wide text-rose-800">Typ DELETE MATCHPACK<input className={`${inputClassName} mt-2`} value={deleteConfirmation} onChange={(event) => setDeleteConfirmation(event.target.value)} autoComplete="off" /></label> : null}<div className="mt-3 flex flex-wrap gap-2"><button type="button" disabled={isBusy || (activeIsApproved && deleteConfirmation !== "DELETE MATCHPACK")} onClick={() => void deletePack()} className="border-2 border-rose-700 bg-rose-100 px-4 py-2 text-sm font-black text-rose-900 disabled:opacity-50">Definitief verwijderen</button><button type="button" disabled={isBusy} onClick={() => { setShowDeleteConfirmation(false); setDeleteConfirmation(""); }} className="border-2 border-slate-300 bg-white px-4 py-2 text-sm font-black">Annuleren</button></div></div> : null}
                 </section> : null}
 
                 {activeIsApproved ? <section className="border-2 border-slate-900 bg-emerald-50 p-5 sm:p-6">

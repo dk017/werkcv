@@ -272,7 +272,7 @@ export default function AgencySettingsPanel({ owner, canImport, role, visualFixt
       {includes("privacy") ? <section id="retention" className="border-2 border-slate-900 bg-emerald-50 p-6 shadow-[4px_4px_0px_0px_rgba(15,23,42,1)]">
         <p className="text-xs font-black uppercase tracking-[0.16em] text-emerald-700">Bewaren en verwijderen</p>
         <h2 className="mt-1 text-2xl font-black">Automatische MatchPack-retentie</h2>
-        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-700">Kies hoe lang kandidaat-CV&apos;s, vacaturetekst, bewijsregels, revisies en afgeleide CV&apos;s in MatchPack blijven staan. Facturen, abonnement en verbruikte slots blijven behouden.</p>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-slate-700">Kies hoe lang kandidaat-CV&apos;s, vacaturetekst, bewijsregels, revisies en afgeleide CV&apos;s in MatchPack blijven staan. Facturen, abonnement en verbruikte CV-credits blijven behouden.</p>
         <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-end">
           <label className="text-xs font-black uppercase tracking-wide text-slate-600">Bewaartermijn<select className={inputClass} value={retentionChoice} onChange={(event) => setRetentionChoice(event.target.value)} disabled={!owner || busy}>
             {(retention?.options || [30, 90, 180, 365]).map((days) => <option key={days} value={days}>{days} dagen</option>)}

@@ -7,10 +7,14 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getLanguageAlternates } from "@/lib/i18n/route-pairs";
 import { proposalClaimVerifierEnabled } from "@/lib/agency-feature-flags";
+import { getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
+import { getAgencyPublicCapabilities } from "@/lib/agency-public-capabilities";
+import { AGENCY_CONTENT_MODIFIED, AGENCY_CONTENT_PUBLISHED } from "@/lib/agency-content";
 
 const pageUrl = "https://werkcv.nl/en/candidate-proposal-checker";
-const title = "Free candidate proposal evidence checker for recruitment agencies | WerkCV";
-const description = "Check which vacancy requirements are supported by concrete CV evidence. See source lines, open points and recruiter actions before sending a candidate proposal to a client.";
+const route = getAgencyAcquisitionRoute("/en/candidate-proposal-checker")!;
+const title = route.title;
+const description = route.description;
 
 export const metadata: Metadata = {
   title,
@@ -39,6 +43,7 @@ export const metadata: Metadata = {
 
 export default async function CandidateProposalCheckerEnglishPage({ searchParams }: { searchParams: Promise<{ mode?: string }> }) {
   const enabled = proposalClaimVerifierEnabled();
+  const candidateAcknowledgementEnabled = getAgencyPublicCapabilities().candidateAcknowledgement;
   const mode = (await searchParams).mode;
   const webApplicationSchema = {
     "@context": "https://schema.org",
@@ -71,15 +76,15 @@ export default async function CandidateProposalCheckerEnglishPage({ searchParams
     description,
     url: pageUrl,
     inLanguage: "en",
-    datePublished: "2026-08-20",
-    dateModified: "2026-09-01",
+    datePublished: AGENCY_CONTENT_PUBLISHED,
+    dateModified: AGENCY_CONTENT_MODIFIED,
     isPartOf: { "@id": "https://werkcv.nl/#website" },
     about: ["candidate proposal", "recruitment", "resume evidence", "vacancy requirements"],
   };
 
   return (
     <>
-      {enabled && mode !== "requirements" ? <ProposalClaimVerifier locale="en" /> : <CandidateProposalEvidenceChecker locale="en" claimVerifierEnabled={enabled} />}
+      {enabled && mode !== "requirements" ? <ProposalClaimVerifier locale="en" candidateAcknowledgementEnabled={candidateAcknowledgementEnabled} /> : <CandidateProposalEvidenceChecker locale="en" claimVerifierEnabled={enabled && mode !== "requirements"} />}
       <section className="mx-auto max-w-6xl px-5 pt-8 sm:px-6">
         <Breadcrumbs items={[{ label: "Home", href: "/en" }, { label: "Candidate proposal checker", href: "/en/candidate-proposal-checker" }]} />
       </section>

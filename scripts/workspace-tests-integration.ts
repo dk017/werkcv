@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { sampleCV } from "@/lib/cv";
 import { createMatchPackCvDocument, createPersonalCvDocument } from "@/lib/workspace/cv-document-service";
 import { authorizeCvDocument, CvAuthorizationError } from "@/lib/workspace/cv-authorization";
+import { AGENCY_MONTHLY_CREDIT_LIMIT } from "@/lib/agency-plan";
 import { requireAgencyTestDatabase } from "./agency-tests-db-guard";
 
 const { runId } = requireAgencyTestDatabase();
@@ -17,7 +18,7 @@ async function main() {
   const subscription = await prisma.agencySubscription.create({ data: {
     userId: owner.id, status: "active", currentPeriodStart: new Date(now.getTime() - 60_000),
     currentPeriodEnd: new Date(now.getTime() + 30 * 86400000), retentionPolicySetAt: now,
-    retentionUpdatedAt: now, monthlyLimit: 50, excludeFromProductMetrics: true,
+    retentionUpdatedAt: now, monthlyLimit: AGENCY_MONTHLY_CREDIT_LIMIT, excludeFromProductMetrics: true,
   } });
   const membership = await prisma.agencyTeamMember.create({
     data: { subscriptionId: subscription.id, userId: member.id, email: memberEmail, role: "editor", status: "invited" },

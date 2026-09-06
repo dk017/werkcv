@@ -14,6 +14,8 @@ import { createMatchPackCvDocument, createPersonalCvDocument } from "@/lib/works
 import { saveCvDocumentWithMeaningfulState } from "@/lib/cv-meaningful-persistence";
 import { getMeaningfulCvState } from "@/lib/cv-meaningful";
 import { getPublicCvClaimKey } from "@/lib/public-cv-claim";
+import { AGENCY_MONTHLY_CREDIT_LIMIT } from "@/lib/agency-plan";
+import { getAgencyCreditErrorPayload } from "@/lib/agency-credit-errors";
 
 export const runtime = "nodejs";
 
@@ -99,18 +101,14 @@ export async function POST(request: NextRequest) {
     const startSource = normalizeStartSource(`public:${flow}:${draftId}`);
     let agencySubscriptionId: string | null = null;
     let agencyOwnerUserId: string | null = null;
+    let agencyAccess: Awaited<ReturnType<typeof getAgencyAccessForUser>> | null = null;
     if (flow === "agency") {
       const access = await getAgencyAccessForUser(user.id);
+      agencyAccess = access;
       if (access.state !== "active") {
         return responseBody({
-          error: "An active Agency Plan is required before creating a client CV.",
+          error: "An active Agency billing tier is required before creating a client CV.",
           code: access.state === "pending" || access.state === "needs_sync" ? "AGENCY_PLAN_PENDING" : "AGENCY_PLAN_REQUIRED",
-        }, 409);
-      }
-      if (!access.canCreate) {
-        return responseBody({
-          error: "The shared Agency 50-slot allowance has been reached.",
-          code: "AGENCY_QUOTA_REACHED",
         }, 409);
       }
       if (!canCreateAgencyWork(access)) {
@@ -147,6 +145,18 @@ export async function POST(request: NextRequest) {
         completionScore: completion.score,
         isReady: completion.isReady,
       });
+    }
+
+    if (flow === "agency" && agencyAccess && !agencyAccess.canCreate) {
+      const credit = getAgencyCreditErrorPayload({
+        used: agencyAccess.used,
+        limit: agencyAccess.period?.allowance ?? AGENCY_MONTHLY_CREDIT_LIMIT,
+        requested: 1,
+      }, uiLanguage);
+      return responseBody({
+        ...(credit || { error: "The Agency credit allowance has been reached." }),
+        code: "AGENCY_QUOTA_REACHED",
+      }, 409);
     }
 
     const { templateId, colorThemeId } = getSafeTemplateAndTheme(body.templateId, body.colorThemeId);
@@ -217,7 +227,7 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     if (isAgencyAccessError(error)) {
-      return responseBody({ error: "The Agency Plan could not create this CV.", code: error.code }, 409);
+      return responseBody({ error: "The Agency billing tier could not create this CV.", code: error.code }, 409);
     }
 
     console.error("public_cv_claim_failed", {

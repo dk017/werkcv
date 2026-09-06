@@ -16,7 +16,7 @@ export async function POST(request: NextRequest, context: { params: Promise<{ id
   const user = await getCurrentUserFromRequest(request);
   if (!user) return json({ error: "Authentication required.", code: "AUTH_REQUIRED" }, 401);
   const access = await getAgencyAccessForUser(user.id);
-  if (access.state !== "active") return json({ error: "An active Agency Plan is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
+  if (access.state !== "active") return json({ error: "An active Agency billing tier is required.", code: "AGENCY_PLAN_REQUIRED" }, 409);
   if (!canEditAgency(access)) return json({ error: "Your agency role is read-only.", code: "ROLE_READ_ONLY" }, 403);
 
   const payload = clientOutcomeSchema.safeParse(await request.json().catch(() => null));

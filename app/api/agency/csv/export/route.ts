@@ -18,20 +18,16 @@ export async function GET(request: NextRequest) {
   const packs = await prisma.agencyMatchPack.findMany({
     where: { userId: access.ownerUserId },
     orderBy: { createdAt: "desc" },
-    select: { id: true, title: true, vacancyTitle: true, status: true, analysis: true, clientOutcome: true, approvedAt: true, createdAt: true, updatedAt: true },
+    select: { id: true, title: true, vacancyTitle: true, status: true, clientOutcome: true, approvedAt: true, createdAt: true, updatedAt: true },
   });
   const csv = stringifyCsv(
-    ["id", "title", "vacancyTitle", "status", "score", "clientOutcome", "approvedAt", "createdAt", "updatedAt"],
+    ["id", "title", "vacancyTitle", "status", "clientOutcome", "approvedAt", "createdAt", "updatedAt"],
     packs.map((pack) => {
-      const analysis = pack.analysis && typeof pack.analysis === "object" && !Array.isArray(pack.analysis)
-        ? pack.analysis as { result?: { score?: number } }
-        : {};
       return {
         id: pack.id,
         title: pack.title,
         vacancyTitle: pack.vacancyTitle || "",
         status: pack.status,
-        score: analysis.result?.score ?? "",
         clientOutcome: pack.clientOutcome,
         approvedAt: pack.approvedAt?.toISOString() || "",
         createdAt: pack.createdAt.toISOString(),

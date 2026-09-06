@@ -18,7 +18,18 @@ function number(value: number): string {
 }
 
 function rate(value: number | null): string {
-  return value === null ? "Not comparable" : `${(value * 100).toFixed(value < 0.1 ? 1 : 0)}%`;
+  return value === null ? "—" : `${(value * 100).toFixed(value < 0.1 ? 1 : 0)}%`;
+}
+
+function ratio(numerator: number, denominator: number): string {
+  if (denominator <= 0) return "—";
+  const value = numerator / denominator;
+  return `${number(numerator)} / ${number(denominator)} · ${(value * 100).toFixed(value < 0.1 ? 1 : 0)}%`;
+}
+
+function sourceSummary(sources: Record<string, number>): string {
+  const entries = Object.entries(sources).sort((a, b) => b[1] - a[1]);
+  return entries.length ? entries.map(([source, count]) => `${source}: ${number(count)}`).join(", ") : "—";
 }
 
 function duration(minutes: number | null): string {
@@ -44,6 +55,7 @@ export default async function MatchPackAnalyticsPage({
 
   const outcomeCards: Array<[string, string, string]> = [
     ["External paid subscriptions", number(report.outcomes.externalPaidSubscriptions), "Target: 5 distinct agencies"],
+    ["Evidence matrix downloads", `${number(report.outcomes.matrixDownloads.docx)} DOCX · ${number(report.outcomes.matrixDownloads.csv)} CSV`, "Distinct eligible visitors"],
     ["Approved/exported packs", number(report.outcomes.approvedOrExportedMatchPacks), "Timing target: 20 packs"],
     ["Repeat users ≤30 days", number(report.outcomes.repeatUsersWithin30Days), "Target: 3 of first 5"],
     ["Client outcomes", number(report.outcomes.clientOutcomesRecorded), "Recorded, not inferred"],
@@ -78,6 +90,59 @@ export default async function MatchPackAnalyticsPage({
         <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
           <div className="border-b border-slate-200 px-5 py-4"><h2 className="text-lg font-semibold">Stage counts</h2><p className="mt-1 text-sm text-slate-500">UTC: {report.since.toISOString()} to {report.until.toISOString()}</p></div>
           <div className="overflow-x-auto"><table className="min-w-full text-left text-sm"><thead className="bg-slate-50"><tr><th className="px-5 py-3">Stage</th><th className="px-5 py-3">Identity</th><th className="px-5 py-3 text-right">Count</th><th className="px-5 py-3 text-right">Comparable previous</th><th className="px-5 py-3 text-right">Rate</th></tr></thead><tbody>{report.stages.map((row) => <tr key={row.key} className="border-t border-slate-100"><td className="px-5 py-3 font-medium">{row.label}</td><td className="px-5 py-3 text-slate-500">Distinct {row.namespace}</td><td className="px-5 py-3 text-right font-semibold">{number(row.count)}</td><td className="px-5 py-3 text-right text-slate-500">{row.previousComparableCount === null ? "—" : number(row.previousComparableCount)}</td><td className="px-5 py-3 text-right font-semibold">{rate(row.conversionRate)}</td></tr>)}</tbody></table></div>
+        </section>
+
+        <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="border-b border-slate-200 px-5 py-4">
+            <h2 className="text-lg font-semibold">Acquisition by route and intent</h2>
+            <p className="mt-1 max-w-4xl text-sm text-slate-500">Distinct eligible interaction identities are attributed to the registered route when the event path or first-touch path is known. Product records use the stored Agency attribution; rows marked not attributed cannot support a route-level paid claim. Counts are shown as raw numerator/denominator pairs wherever a rate is useful.</p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="min-w-[1380px] text-left text-xs">
+              <thead className="bg-slate-50">
+                <tr>
+                  <th className="px-4 py-3">Route / intent</th>
+                  <th className="px-4 py-3 text-right">Qualified</th>
+                  <th className="px-4 py-3">Known source</th>
+                  <th className="px-4 py-3 text-right">Engaged</th>
+                  <th className="px-4 py-3 text-right">Guide views</th>
+                  <th className="px-4 py-3 text-right">Example view / download</th>
+                  <th className="px-4 py-3 text-right">Matrix DOCX / CSV</th>
+                  <th className="px-4 py-3 text-right">Checker view / start / complete</th>
+                  <th className="px-4 py-3 text-right">CTA / qualified</th>
+                  <th className="px-4 py-3 text-right">Login / CTA</th>
+                  <th className="px-4 py-3 text-right">Checkout / CTA</th>
+                  <th className="px-4 py-3 text-right">Paid / checkout</th>
+                  <th className="px-4 py-3 text-right">Analysis / paid</th>
+                  <th className="px-4 py-3 text-right">Export / analysis</th>
+                  <th className="px-4 py-3 text-right">Repeat / export</th>
+                  <th className="px-4 py-3">Product attribution</th>
+                </tr>
+              </thead>
+              <tbody>
+                {report.routeBreakdowns.map((row) => (
+                  <tr key={row.routeId} className="border-t border-slate-100 align-top">
+                    <td className="px-4 py-3"><p className="font-semibold">{row.routeId === "aggregate" ? "All routes" : row.path}</p><p className="mt-1 max-w-[240px] text-slate-500">{row.intent}</p></td>
+                    <td className="px-4 py-3 text-right font-semibold">{number(row.qualifiedSessions)}</td>
+                    <td className="max-w-[190px] px-4 py-3 text-slate-500">{sourceSummary(row.sourceBreakdown)}</td>
+                    <td className="px-4 py-3 text-right">{number(row.engagedSessions)}</td>
+                    <td className="px-4 py-3 text-right">{number(row.guideViews)}</td>
+                    <td className="px-4 py-3 text-right">{number(row.exampleViews)} / {number(row.exampleDownloads)}</td>
+                    <td className="px-4 py-3 text-right">{number(row.matrixDocxDownloads)} / {number(row.matrixCsvDownloads)}</td>
+                    <td className="px-4 py-3 text-right">{number(row.checkerViews)} / {number(row.checkerStarts)} / {number(row.checkerCompletions)}</td>
+                    <td className="px-4 py-3 text-right">{ratio(row.matchpackCtaUsers, row.qualifiedSessions)}</td>
+                    <td className="px-4 py-3 text-right">{ratio(row.agencyLoginUsers, row.matchpackCtaUsers)}</td>
+                    <td className="px-4 py-3 text-right">{ratio(row.checkoutUsers, row.matchpackCtaUsers)}</td>
+                    <td className="px-4 py-3 text-right">{ratio(row.paidUsers, row.checkoutUsers)}</td>
+                    <td className="px-4 py-3 text-right">{ratio(row.firstAnalysisUsers, row.paidUsers)}</td>
+                    <td className="px-4 py-3 text-right">{ratio(row.firstExportUsers, row.firstAnalysisUsers)}</td>
+                    <td className="px-4 py-3 text-right">{ratio(row.repeatUseUsers, row.firstExportUsers)}</td>
+                    <td className="px-4 py-3 text-slate-500">{row.productAttributionCoverage === "not_attributed" ? "not attributed" : row.productAttributionCoverage}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
 
         <section className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">

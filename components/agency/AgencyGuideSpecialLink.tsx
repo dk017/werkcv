@@ -16,7 +16,7 @@ export default function AgencyGuideSpecialLink({ href, path, location, event, ch
     <Link
       href={href}
       onClick={() => track(event, { path, location })}
-      className="border-2 border-white px-5 py-3 text-center text-sm font-black text-white"
+      className="wk-button min-h-11 border-white bg-transparent px-5 py-3 text-center text-sm font-extrabold text-white hover:bg-white hover:text-[var(--wk-ink)]"
     >
       {children}
     </Link>

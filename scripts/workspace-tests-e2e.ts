@@ -6,6 +6,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { sampleCV } from "@/lib/cv";
 import { requireAgencyTestDatabase } from "./agency-tests-db-guard";
+import { AGENCY_MONTHLY_CREDIT_LIMIT } from "@/lib/agency-plan";
 
 const { runId } = requireAgencyTestDatabase();
 const email = `workspace-browser-${runId}@example.test`;
@@ -21,7 +22,7 @@ async function main() {
   const subscription = await prisma.agencySubscription.create({ data: {
     userId: user.id, status: "active", companyName: "Workspace Test Agency",
     currentPeriodStart: new Date(now.getTime() - 60_000), currentPeriodEnd: new Date(now.getTime() + 30 * 86400000),
-    retentionPolicySetAt: now, retentionUpdatedAt: now, monthlyLimit: 50, excludeFromProductMetrics: true,
+    retentionPolicySetAt: now, retentionUpdatedAt: now, monthlyLimit: AGENCY_MONTHLY_CREDIT_LIMIT, excludeFromProductMetrics: true,
   } });
   await prisma.session.create({ data: { tokenHash, userId: user.id, expiresAt: new Date(now.getTime() + 86400000) } });
   const personal = await prisma.cVDocument.create({ data: {

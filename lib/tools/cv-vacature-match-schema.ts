@@ -91,3 +91,17 @@ export const cvVacatureMatchResultSchema = z.object({
 });
 
 export type CvVacatureMatchResult = z.infer<typeof cvVacatureMatchResultSchema>;
+
+/**
+ * Evidence-only projection for recruiter-facing workflows. It deliberately
+ * excludes the consumer checker's aggregate score and scoring dimensions so
+ * Agency surfaces cannot accidentally present a candidate ranking signal.
+ */
+export const cvVacatureEvidenceResultSchema = cvVacatureMatchResultSchema.omit({
+  score: true,
+  scoreBand: true,
+  scoreLabel: true,
+  dimensions: true,
+});
+
+export type CvVacatureEvidenceResult = z.infer<typeof cvVacatureEvidenceResultSchema>;

@@ -7,10 +7,14 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { getLanguageAlternates } from "@/lib/i18n/route-pairs";
 import { proposalClaimVerifierEnabled } from "@/lib/agency-feature-flags";
+import { getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
+import { getAgencyPublicCapabilities } from "@/lib/agency-public-capabilities";
+import { AGENCY_CONTENT_MODIFIED, AGENCY_CONTENT_PUBLISHED } from "@/lib/agency-content";
 
 const pageUrl = "https://werkcv.nl/tools/kandidaatvoorstel-checker";
-const title = "Gratis kandidaatvoorstel checker voor recruitmentbureaus | WerkCV";
-const description = "Controleer gratis welke vacature-eisen door concreet CV-bewijs worden ondersteund. Zie bronregels, open punten en recruiter-acties vóór u een kandidaatvoorstel naar de klant stuurt.";
+const route = getAgencyAcquisitionRoute("/tools/kandidaatvoorstel-checker")!;
+const title = route.title;
+const description = route.description;
 
 export const metadata: Metadata = {
   title,
@@ -39,6 +43,7 @@ export const metadata: Metadata = {
 
 export default async function CandidateProposalCheckerPage({ searchParams }: { searchParams: Promise<{ mode?: string }> }) {
   const enabled = proposalClaimVerifierEnabled();
+  const candidateAcknowledgementEnabled = getAgencyPublicCapabilities().candidateAcknowledgement;
   const mode = (await searchParams).mode;
   const webApplicationSchema = {
     "@context": "https://schema.org",
@@ -72,20 +77,20 @@ export default async function CandidateProposalCheckerPage({ searchParams }: { s
     description,
     url: pageUrl,
     inLanguage: "nl-NL",
-    datePublished: "2026-08-20",
-    dateModified: "2026-09-01",
+    datePublished: AGENCY_CONTENT_PUBLISHED,
+    dateModified: AGENCY_CONTENT_MODIFIED,
     isPartOf: { "@id": "https://werkcv.nl/#website" },
     about: ["kandidaatvoorstel", "recruitment", "CV-bewijs", "vacature-eisen"],
   };
 
   return (
     <>
-      {enabled && mode !== "requirements" ? <ProposalClaimVerifier locale="nl" /> : <CandidateProposalEvidenceChecker locale="nl" claimVerifierEnabled={enabled} />}
+      {enabled && mode !== "requirements" ? <ProposalClaimVerifier locale="nl" candidateAcknowledgementEnabled={candidateAcknowledgementEnabled} /> : <CandidateProposalEvidenceChecker locale="nl" claimVerifierEnabled={enabled && mode !== "requirements"} />}
       <section className="mx-auto max-w-6xl px-5 pt-8 sm:px-6">
         <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Voor bureaus", href: "/voor-bureaus" }, { label: "Kandidaatvoorstel checker", href: "/tools/kandidaatvoorstel-checker" }]} />
       </section>
       <CandidateProposalEvidenceGuide locale="nl" />
-      <section className="wk-section bg-[var(--wk-surface)]"><div className="wk-container"><div className="rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-highlight-soft)] p-6 shadow-[var(--wk-shadow-md)] sm:p-8"><p className="wk-eyebrow">Van gratis check naar bureauworkflow</p><h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-[-0.035em]">Wilt u één gecontroleerde bron gebruiken voor introductie, CV en e-mail?</h2><p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">Bekijk het complete fictieve MatchPack-voorbeeld. Daar ziet u wat intern blijft, wat de klant ontvangt en waar de recruiter vóór goedkeuring moet corrigeren.</p><div className="mt-6 flex flex-wrap gap-3"><Link href="/agency#voorbeeld" className="wk-button wk-button-primary">Bekijk het voorbeeld</Link><Link href="/voor-bureaus" className="wk-button wk-button-secondary">Lees voor bureaus</Link></div></div></div></section>
+      <section className="wk-section bg-[var(--wk-surface)]"><div className="wk-container"><div className="wk-card wk-card-accent p-6 sm:p-8"><p className="wk-eyebrow">Van gratis check naar bureauworkflow</p><h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-[-0.035em]">Wil je één gecontroleerde bron gebruiken voor introductie, CV en e-mail?</h2><p className="mt-4 max-w-3xl text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">Bekijk het complete fictieve MatchPack-voorbeeld. Daar zie je wat intern blijft, wat de klant ontvangt en waar de recruiter vóór goedkeuring moet corrigeren.</p><div className="mt-6 flex flex-wrap gap-3"><Link href="/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld" className="wk-button wk-button-primary">Bekijk het volledige voorbeeld</Link><Link href="/voor-bureaus" className="wk-button wk-button-secondary">Lees voor bureaus</Link></div></div></div></section>
       <JsonLd data={webApplicationSchema} />
       <JsonLd data={webPageSchema} />
     </>

@@ -8,6 +8,7 @@ import { sampleCV } from "@/lib/cv";
 import { anonymizeCvData, attachEvidenceReferences, createDefaultMatchPackSubmission, createMatchPackAnalysis } from "@/lib/agency-matchpack";
 import { createMatchPackSource } from "@/lib/agency-matchpack-source";
 import { requireAgencyTestDatabase } from "./agency-tests-db-guard";
+import { AGENCY_MONTHLY_CREDIT_LIMIT } from "@/lib/agency-plan";
 
 const { runId } = requireAgencyTestDatabase();
 const email = `browser-${runId}@example.test`;
@@ -21,7 +22,7 @@ let stage = "seed";
 async function seed() {
   const now = new Date();
   const user = await prisma.user.create({ data: { email } });
-  const subscription = await prisma.agencySubscription.create({ data: { userId: user.id, status: "active", currentPeriodStart: new Date(now.getTime() - 60_000), currentPeriodEnd: new Date(now.getTime() + 30 * 86400000), retentionPolicySetAt: now, retentionUpdatedAt: now, retentionDays: 90, monthlyLimit: 50, excludeFromProductMetrics: true } });
+  const subscription = await prisma.agencySubscription.create({ data: { userId: user.id, status: "active", currentPeriodStart: new Date(now.getTime() - 60_000), currentPeriodEnd: new Date(now.getTime() + 30 * 86400000), retentionPolicySetAt: now, retentionUpdatedAt: now, retentionDays: 90, monthlyLimit: AGENCY_MONTHLY_CREDIT_LIMIT, excludeFromProductMetrics: true } });
   await prisma.session.create({ data: { tokenHash, userId: user.id, expiresAt: new Date(now.getTime() + 86400000) } });
   const candidate = structuredClone(sampleCV);
   candidate.personal.name = "Mila Vermeer";
@@ -145,7 +146,7 @@ async function main() {
     await waitForText(page, "Kandidaatvoorstellen");
     stage = "open_pack";
     await openHrPack(page);
-    assert.equal(await prisma.agencyCvUsage.count({ where: { period: { subscriptionId: seeded.subscription.id } } }), 0, "analysis must not use a slot");
+    assert.equal(await prisma.agencyCvUsage.count({ where: { period: { subscriptionId: seeded.subscription.id } } }), 0, "analysis must not use a credit");
     const reviewCount = await page.evaluate(() => {
       const selects = [...document.querySelectorAll("select")].filter((select) => select.offsetParent !== null && [...select.options].some((option) => option.value === "confirmed")) as HTMLSelectElement[];
       selects.forEach((select, index) => {
@@ -183,7 +184,7 @@ async function main() {
       return boxes.length;
     });
     assert.equal(checked, 4);
-    await clickButton(page, "Goedkeuren en 1 voorstel-slot gebruiken");
+    await clickButton(page, "Goedkeuren en 1 CV-credit gebruiken");
     await waitForTextOrError(page, "Gekozen PDF downloaden");
     stage = "export";
     const exportResults = await page.evaluate(async (id) => {

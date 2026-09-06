@@ -44,7 +44,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const modifiedTime = article.updatedAt ? toSchemaDate(article.updatedAt) : undefined;
     const metaTitle = normalizeBrandCopy(article.metaTitle);
     const metaDesc = normalizeBrandCopy(article.metaDesc);
-
     return {
         title: metaTitle,
         description: metaDesc,
@@ -101,6 +100,7 @@ export default async function ArticlePage({ params }: PageProps) {
         throw new Error('Missing cited-authority English-CV route config');
     }
     const metaDesc = normalizeBrandCopy(article.metaDesc);
+    const agencyAuthorityBridge = article.slug === 'cv-voor-detachering' || article.slug === 'cv-voor-uitzendbureau';
     const articleEditorCta = article.slug === 'cv-opleiding-vermelden'
         ? {
             href: '/editor?template=professional&startSource=nl_guide_cv_opleiding_vermelden',
@@ -220,6 +220,21 @@ export default async function ArticlePage({ params }: PageProps) {
                     ) : null}
                 </div>
             </section>
+
+            {agencyAuthorityBridge && (
+                <section className="wk-section border-b border-[var(--wk-border)] bg-[var(--wk-surface-subtle)]">
+                    <div className="wk-container">
+                        <div className="wk-card wk-card-accent flex min-w-0 flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between sm:p-8">
+                            <div className="min-w-0">
+                                <p className="wk-eyebrow">Voor recruitmentbureaus en detacheerders</p>
+                                <h2 className="mt-4 text-2xl font-semibold tracking-[-0.04em] sm:text-3xl">Van een bureau-CV naar een onderbouwd kandidaatvoorstel.</h2>
+                                <p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">Wanneer je een kandidaat aan een opdrachtgever voorstelt, wil je per belangrijke claim kunnen teruggaan naar het CV en open punten zichtbaar houden.</p>
+                            </div>
+                            <Link href="/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld" className="wk-button wk-button-primary shrink-0">Bekijk het fictieve MatchPack-voorbeeld</Link>
+                        </div>
+                    </div>
+                </section>
+            )}
 
             {/* Key Takeaways */}
             {article.keyTakeaways.length > 0 && (

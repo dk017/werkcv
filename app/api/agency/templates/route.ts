@@ -27,7 +27,7 @@ async function getContext(request: NextRequest) {
   const user = await getCurrentUserFromRequest(request);
   if (!user) return { response: json({ error: "Authentication required.", code: "AUTH_REQUIRED" }, 401) };
   const access = await getAgencyAccessForUser(user.id);
-  if (access.state !== "active") return { response: json({ error: "An active Agency Plan is required.", code: "AGENCY_PLAN_REQUIRED" }, 409) };
+  if (access.state !== "active") return { response: json({ error: "An active Agency billing tier is required.", code: "AGENCY_PLAN_REQUIRED" }, 409) };
   return { user, access, ownerUserId: access.ownerUserId || user.id };
 }
 

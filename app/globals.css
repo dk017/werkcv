@@ -474,6 +474,12 @@ body {
   background: var(--wk-warning-soft);
 }
 
+.wk-card-dark {
+  border-color: var(--wk-primary);
+  background: var(--wk-primary);
+  color: white;
+}
+
 .wk-card-danger {
   border-color: #e8b9c0;
   background: var(--wk-danger-soft);
@@ -1249,72 +1255,11 @@ body {
   border-radius: var(--wk-radius-sm);
 }
 
-/* Public Agency pages share the same restrained system without changing copy. */
+/* Public Agency pages share the same canvas; route components own their layout. */
 .wk-agency-marketing {
   background:
     radial-gradient(circle at 88% 4%, rgb(78 205 196 / 0.14), transparent 30rem),
     var(--wk-canvas) !important;
-}
-
-.wk-agency-marketing main > section {
-  border-color: var(--wk-border) !important;
-}
-
-.wk-agency-marketing main > section:not(.wk-agency-marketing-hero) {
-  padding-block: clamp(52px, 7vw, 88px);
-}
-
-.wk-agency-marketing-hero > * {
-  min-width: 0;
-}
-
-.wk-agency-marketing-hero h1 {
-  width: 100%;
-  max-width: 760px;
-  color: var(--wk-ink);
-  font-size: clamp(2.55rem, 5vw, 4.2rem);
-  letter-spacing: -0.065em;
-  line-height: 0.98;
-}
-
-.wk-agency-marketing article,
-.wk-agency-marketing section div[class*="border-"],
-.wk-agency-marketing section a[class*="border-"] {
-  border-radius: var(--wk-radius-md);
-}
-
-.wk-agency-marketing section a[class*="shadow-"],
-.wk-agency-marketing section button[class*="shadow-"] {
-  box-shadow: none !important;
-}
-
-.wk-agency-marketing section[class*="bg-slate-950"] {
-  border-radius: var(--wk-radius-lg);
-  box-shadow: var(--wk-shadow-md);
-}
-
-.wk-agency-privacy article > div.space-y-8 > section:not([class*="bg-"]) {
-  padding-bottom: 28px;
-  border-bottom: 1px solid var(--wk-border);
-}
-
-.wk-agency-privacy article > div.space-y-8 > section h2 {
-  letter-spacing: -0.035em;
-}
-
-.wk-agency-privacy table {
-  min-width: 680px;
-  background: var(--wk-surface);
-}
-
-.wk-agency-privacy div[class*="overflow-x-auto"] {
-  overflow-x: auto;
-  border-radius: var(--wk-radius-md);
-}
-
-.wk-agency-privacy section[class*="bg-amber"] {
-  overflow: hidden;
-  border-radius: var(--wk-radius-md);
 }
 
 .wk-table-scroll-hint {
@@ -1378,14 +1323,6 @@ body {
   .wk-matchpack-sidebar,
   .wk-matchpack-new-proposal {
     border-radius: var(--wk-radius-md);
-  }
-
-  .wk-agency-marketing main > section:not(.wk-agency-marketing-hero) {
-    padding-block: 46px;
-  }
-
-  .wk-agency-marketing-hero h1 {
-    font-size: clamp(2.3rem, 10.5vw, 3.2rem);
   }
 
   .wk-table-scroll-hint {

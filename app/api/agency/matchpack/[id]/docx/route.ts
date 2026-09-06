@@ -22,7 +22,7 @@ export async function GET(
   if (!user) return json({ error: "Authentication required.", code: "AUTH_REQUIRED" }, 401);
 
   const access = await getAgencyAccessForUser(user.id);
-  if (access.state !== "active") return json({ error: "An active Agency Plan is required for MatchPack exports.", code: "AGENCY_PLAN_REQUIRED" }, 409);
+  if (access.state !== "active") return json({ error: "An active Agency billing tier is required for MatchPack exports.", code: "AGENCY_PLAN_REQUIRED" }, 409);
   if (!canExportAgencyWork(access)) return json({ error: "Your agency role cannot export documents.", code: "ROLE_FORBIDDEN" }, 403);
 
   const variant = request.nextUrl.searchParams.get("variant") || "full";

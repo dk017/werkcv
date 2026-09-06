@@ -227,7 +227,7 @@ model AgencySubscription {
   checkoutSessionId      String?                 @unique
   companyName            String?
   website                String?
-  monthlyLimit           Int                     @default(50)
+  monthlyLimit           Int                     @default(300)
   templateId             String                  @default("professional")
   colorThemeId           String                  @default("classic-blue")
   retentionDays          Int                     @default(90)
@@ -408,7 +408,7 @@ model AgencyUsagePeriod {
   subscription   AgencySubscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
   startsAt       DateTime
   endsAt         DateTime
-  allowance      Int                @default(50)
+  allowance      Int                @default(300)
   createdAt      DateTime           @default(now())
   cvUsages       AgencyCvUsage[]
 

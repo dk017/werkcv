@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { track } from "@/lib/analytics";
+import AgencyPurchaseNotes from "@/components/agency/AgencyPurchaseNotes";
+import { getStoredAttribution, track } from "@/lib/analytics";
 
 type AgencyCheckoutButtonProps = {
   label?: string;
@@ -11,7 +12,7 @@ type AgencyCheckoutButtonProps = {
 };
 
 export default function AgencyCheckoutButton({
-  label = "Start MatchPack · Agency",
+  label = "Start MatchPack",
   location,
   className = "",
   locale = "nl",
@@ -31,7 +32,7 @@ export default function AgencyCheckoutButton({
       const response = await fetch("/api/agency/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ locale }),
+        body: JSON.stringify({ locale, attribution: getStoredAttribution() }),
       });
       const data = await response.json().catch(() => null);
       if (!response.ok || typeof data?.checkoutUrl !== "string") {
@@ -66,6 +67,7 @@ export default function AgencyCheckoutButton({
       >
         {isLoading ? (locale === "en" ? "Opening checkout…" : "Checkout openen…") : label}
       </button>
+      <AgencyPurchaseNotes locale={locale} />
       {error ? <p className="mt-2 text-xs font-semibold text-rose-700" role="alert">{error}</p> : null}
     </div>
   );

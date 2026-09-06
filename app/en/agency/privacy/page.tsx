@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { agencyPrivacyFacts } from "@/lib/agency-privacy-content";
+import { agencyPrivacyFacts, getAgencyStorageDescription } from "@/lib/agency-privacy-content";
 import { JsonLd } from "@/components/seo/JsonLd";
 
 const pageUrl = "https://werkcv.nl/en/agency/privacy";
@@ -45,8 +45,8 @@ export default function EnglishAgencyPrivacyPage() {
 
         <article className="wk-container wk-section max-w-5xl">
           <div className="grid gap-5 md:grid-cols-2">
-            <section className="wk-card"><h2 className="text-2xl font-semibold">Source file handling</h2><p className="mt-4 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">An uploaded PDF or DOCX is used to extract text. The original file is not retained as a downloadable source. MatchPack stores the vacancy text, structured candidate data, contact-reduced version, analysis, evidence references, revisions and approval information needed for review.</p></section>
-            <section className="wk-card"><h2 className="text-2xl font-semibold">Retention and deletion</h2><p className="mt-4 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">New Agency subscriptions use a {agencyPrivacyFacts.retention.defaultDays}-day content retention setting by default. The owner may select {agencyPrivacyFacts.retention.options.join(", ")} days in settings. Content expiry covers candidate data, vacancy text, evidence references, revisions and derived CV content. {agencyPrivacyFacts.retention.excludes} remain where required for administration and allowance auditing.</p></section>
+            <section className="wk-card"><h2 className="text-2xl font-semibold">Source file handling</h2><p className="mt-4 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">{getAgencyStorageDescription("en")}</p></section>
+            <section className="wk-card"><h2 className="text-2xl font-semibold">Retention and deletion</h2><p className="mt-4 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">New Agency subscriptions use a {agencyPrivacyFacts.retention.defaultDays}-day content retention setting by default. The owner may select {agencyPrivacyFacts.retention.options.join(", ")} days in settings. Content expiry covers candidate data, vacancy text, evidence references, revisions and derived CV content. {agencyPrivacyFacts.retention.excludes} remain where required for account administration and billing records.</p></section>
             <section className="wk-card"><h2 className="text-2xl font-semibold">Contact-reduced is not anonymous</h2><p className="mt-4 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">The contact-reduced output clears known name and contact fields and removes recognisable contact-like text. Employers, schools, projects and rare combinations may still identify a person. Review both full and contact-reduced PDF/DOCX files before client sharing.</p></section>
             <section className="wk-card"><h2 className="text-2xl font-semibold">Roles and access</h2><p className="mt-4 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">Owners manage settings, templates, team members and deletion. Editors create and change work. Reviewers inspect evidence and approve. Viewers have read access. Remove access promptly when a team relationship ends.</p></section>
           </div>
@@ -67,7 +67,7 @@ export default function EnglishAgencyPrivacyPage() {
           <section id="dpa" className="mt-8 wk-card wk-card-warning">
             <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[var(--wk-warning)]">DPA request</p>
             <h2 className="mt-3 text-2xl font-semibold">Review the current documents before live use.</h2>
-            <p className="mt-4 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">Current status: {agencyPrivacyFacts.dpa.status}. Request the current processor details and DPA through <a className="font-bold text-[var(--wk-primary)] underline" href="mailto:contact@werkcv.nl">contact@werkcv.nl</a>. Until the required information and contracts have been checked for your use case, use fictional or properly authorised CVs for testing.</p>
+            <p className="mt-4 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">Current status: {agencyPrivacyFacts.dpa.status}. Request the current processor details and DPA through <a className="font-bold text-[var(--wk-primary)] underline" href="mailto:contact@werkcv.nl">contact@werkcv.nl</a>. Until the required information and contracts have been checked for your use case, use fictional CVs only. Candidate permission alone does not replace the outstanding processing agreements.</p>
           </section>
 
           <div className="mt-10 flex flex-wrap gap-3 border-t border-[var(--wk-border)] pt-6"><Link href="/en/agency" className="wk-button wk-button-secondary">← Back to MatchPack</Link><Link href="/en/agency/methodology/claim-evidence-benchmark" className="wk-button wk-button-quiet">Accuracy methodology →</Link></div>

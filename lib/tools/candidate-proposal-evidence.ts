@@ -1,4 +1,5 @@
-import type { CvMatchLocale, CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match";
+import type { CvMatchLocale } from "@/lib/tools/cv-vacature-match";
+import type { CvVacatureEvidenceResult } from "@/lib/tools/cv-vacature-match-schema";
 
 export type EvidenceMatch = "exact" | "approximate" | "not_found";
 
@@ -149,7 +150,7 @@ function getAction(status: ProposalEvidenceStatus, locale: CvMatchLocale): strin
 }
 
 function getStatus(
-  requirement: CvVacatureMatchResult["requirements"][number],
+  requirement: CvVacatureEvidenceResult["requirements"][number],
   vacancyReference: SourceReference,
   cvReference: SourceReference,
 ): ProposalEvidenceStatus {
@@ -160,7 +161,7 @@ function getStatus(
 }
 
 export function buildCandidateProposalEvidenceReport(
-  result: CvVacatureMatchResult,
+  result: CvVacatureEvidenceResult,
   cvText: string,
   vacancyText: string,
   locale: CvMatchLocale,

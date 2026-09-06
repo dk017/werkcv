@@ -40,8 +40,8 @@ function getPublicConfig(pathname: string): {
         { href: "mailto:contact@werkcv.nl", label: "Contact" },
       ],
       navAriaLabel: "MatchPack navigation",
-      primaryHref: "/agency/account",
-      primaryLabel: "Open MatchPack",
+      primaryHref: "/agency/account?locale=en",
+      primaryLabel: "Open MatchPack (Dutch)",
       rightContent: (
         <>
           <LanguageSwitcher tone="brand" />
@@ -126,6 +126,15 @@ function getPublicConfig(pathname: string): {
 
 export default function BrandRouteBoundary({ children }: { children: ReactNode }) {
   const pathname = normaliseWorkspacePathname(usePathname() || "/");
+
+  // The visual certification route owns its authenticated shell. Keeping it
+  // outside the public boundary prevents a second marketing header from being
+  // mounted around the fixture without changing the shell for other Agency
+  // routes.
+  if (pathname === "/agency/visual-test") {
+    return <>{children}</>;
+  }
+
   const context = getRouteWorkspaceContext(pathname);
 
   if (context !== "personal_public" && context !== "matchpack_marketing") {

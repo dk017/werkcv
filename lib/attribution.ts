@@ -1,4 +1,4 @@
-import { isEditorPath, isTemplatePath } from '@/lib/analytics-paths';
+import { isEditorPath, isTemplatePath, normalizeAnalyticsPath } from '@/lib/analytics-paths';
 
 export type LocaleCode = 'nl' | 'en';
 
@@ -35,7 +35,8 @@ const emptyAttributionFields = {
 
 function cleanPath(path: string): string {
     if (!path) return '/';
-    return path.startsWith('/') ? path : `/${path}`;
+    const withLeadingSlash = path.startsWith('/') ? path : `/${path}`;
+    return normalizeAnalyticsPath(withLeadingSlash);
 }
 
 export function sanitizeReferrer(referrer: string): string {
@@ -83,9 +84,11 @@ export function getLocaleFromPath(pathname: string): LocaleCode {
 export function sanitizeAttribution(input: unknown): AttributionSnapshot | null {
     if (!input || typeof input !== 'object') return null;
     const value = input as Partial<AttributionSnapshot>;
-    const firstTouchPath = cleanPath(value.firstTouchPath || '');
+    const rawFirstTouchPath = typeof value.firstTouchPath === 'string' ? value.firstTouchPath.trim() : '';
+    if (!rawFirstTouchPath) return null;
+    const firstTouchPath = cleanPath(rawFirstTouchPath);
     const firstTouchAt = value.firstTouchAt || '';
-    if (!firstTouchPath || !firstTouchAt) return null;
+    if (!firstTouchAt) return null;
 
     const fallbackCluster = getPathCluster(firstTouchPath);
     const locale = getLocaleFromPath(firstTouchPath) === 'en' || value.locale === 'en' ? 'en' : 'nl';

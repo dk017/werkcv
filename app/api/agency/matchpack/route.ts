@@ -19,6 +19,7 @@ import { matchCvVacature } from "@/lib/tools/cv-vacature-match";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
 import { isAllowedSameOriginRequest } from "@/lib/request-origin";
 import { calculateNewPackRetentionExpiry } from "@/lib/agency-retention";
+import { AGENCY_MONTHLY_CREDIT_LIMIT } from "@/lib/agency-plan";
 
 export const runtime = "nodejs";
 
@@ -88,7 +89,7 @@ export async function POST(request: NextRequest) {
   const access = await getAgencyAccessForUser(user.id);
   if (access.state !== "active") {
     return json({
-      error: "An active Agency Plan is required for MatchPack.",
+      error: "An active Agency billing tier is required for MatchPack.",
       code: access.state === "pending" || access.state === "needs_sync"
         ? "AGENCY_PLAN_PENDING"
         : "AGENCY_PLAN_REQUIRED",
@@ -259,7 +260,7 @@ export async function POST(request: NextRequest) {
       pack,
       quota: {
         used: access.used,
-        allowance: access.period?.allowance || 50,
+        allowance: access.period?.allowance ?? AGENCY_MONTHLY_CREDIT_LIMIT,
         consumesOnApproval: true,
       },
     });

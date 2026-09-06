@@ -3,7 +3,9 @@ import { getEditorPathForLanguage, getSuccessPathForLanguage } from "@/lib/edito
 import type { ResumeLanguage } from "@/lib/resume-language";
 import { CV_DOWNLOAD_PRODUCT } from "@/lib/polar";
 import type { CheckoutAddon, CheckoutProduct } from "@/lib/polar";
-import { AGENCY_PLAN_CODE } from "@/lib/agency-plan";
+import { AGENCY_PLAN_CODE, getAgencyPlanMetadata } from "@/lib/agency-plan";
+import type { AttributionSnapshot } from "@/lib/attribution";
+import { getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 const DODO_API_KEY = process.env.DODO_API_KEY || process.env.DODO_PAYMENTS_API_KEY;
@@ -147,6 +149,7 @@ export async function buildDodoCheckoutURL(
 export async function buildAgencyDodoCheckoutURL(
   email?: string,
   locale: "nl" | "en" = "nl",
+  attribution: AttributionSnapshot | null = null,
 ): Promise<DodoCheckoutResult> {
   if (!DODO_API_KEY) {
     throw new Error("DODO_API_KEY is not configured");
@@ -155,7 +158,7 @@ export async function buildAgencyDodoCheckoutURL(
     throw new Error("DODO_AGENCY_PRODUCT_ID is not configured");
   }
 
-  const body = buildAgencyDodoCheckoutBody(email, locale);
+  const body = buildAgencyDodoCheckoutBody(email, locale, attribution);
 
   const res = await fetch(`${DODO_API_BASE}/checkouts`, {
     method: "POST",
@@ -186,10 +189,13 @@ export async function buildAgencyDodoCheckoutURL(
 export function buildAgencyDodoCheckoutBody(
   email?: string,
   locale: "nl" | "en" = "nl",
+  attribution: AttributionSnapshot | null = null,
 ): Record<string, unknown> {
   if (!DODO_AGENCY_PRODUCT_ID) {
     throw new Error("DODO_AGENCY_PRODUCT_ID is not configured");
   }
+
+  const plan = getAgencyPlanMetadata();
 
   const body: Record<string, unknown> = {
     product_cart: [{ product_id: DODO_AGENCY_PRODUCT_ID, quantity: 1 }],
@@ -200,13 +206,18 @@ export function buildAgencyDodoCheckoutBody(
       "apple_pay",
       "google_pay",
     ],
-    billing_currency: "EUR",
+    billing_currency: plan.currency,
     return_url: `${APP_URL}/agency/account?status=success&locale=${locale}`,
     cancel_url: `${APP_URL}${locale === "en" ? "/en/agency" : "/agency"}?checkout=cancelled`,
     metadata: {
       product: AGENCY_PLAN_CODE,
       plan_code: AGENCY_PLAN_CODE,
+      plan_version: plan.planVersion,
+      credit_limit: String(plan.creditLimit),
+      display_price_cents: String(plan.priceCents),
+      currency: plan.currency,
       site_host: getDodoSiteHost(),
+      ...buildAgencyAcquisitionMetadata(attribution, locale),
     },
     customization: {
       show_order_details: true,
@@ -227,6 +238,22 @@ export function buildAgencyDodoCheckoutBody(
     body.customer = { email };
   }
   return body;
+}
+
+function buildAgencyAcquisitionMetadata(
+  attribution: AttributionSnapshot | null,
+  locale: "nl" | "en",
+): Record<string, string> {
+  const route = attribution ? getAgencyAcquisitionRoute(attribution.firstTouchPath) : undefined;
+  const compact = (value: string | undefined): string => (value || "").slice(0, 120);
+  return {
+    agency_route_id: route?.id || "unknown",
+    agency_locale: route?.locale || attribution?.locale || locale,
+    agency_source_cluster: compact(attribution?.firstTouchCluster),
+    agency_utm_source: compact(attribution?.utmSource),
+    agency_utm_medium: compact(attribution?.utmMedium),
+    agency_utm_campaign: compact(attribution?.utmCampaign),
+  };
 }
 
 function decodeWebhookSecret(secret: string): Buffer {
