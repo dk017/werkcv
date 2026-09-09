@@ -109,32 +109,31 @@ submission.commercial.workLocation = "Regio Utrecht / hybride";
 submission.clientIntroduction = result.summary;
 
 async function extractGeneratedPdfText(buffer: Buffer): Promise<string> {
-  const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.js");
-  pdfjsLib.GlobalWorkerOptions.workerSrc = "";
+  const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.mjs");
   const pdf = await pdfjsLib.getDocument({
     data: new Uint8Array(buffer),
     useWorkerFetch: false,
-    isEvalSupported: false,
     useSystemFonts: true,
   }).promise;
   let text = "";
   for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
     const page = await pdf.getPage(pageNumber);
     const content = await page.getTextContent();
-    text += content.items.map((item) => ("str" in item ? item.str : "")).join(" ") + "\n";
+    // PDF.js already emits actual spaces as text items; inserting a space
+    // between every glyph fragment corrupts hyphenated words and addresses.
+    text += content.items.map((item) => ("str" in item ? item.str + (item.hasEOL ? " " : "") : "")).join("") + "\n";
   }
   return text;
 }
 
 async function renderGeneratedPdf(buffer: Buffer, outputDirectory: string, name: string) {
-  const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.js");
-  pdfjsLib.GlobalWorkerOptions.workerSrc = "";
-  const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(buffer), useWorkerFetch: false, isEvalSupported: false, useSystemFonts: true }).promise;
+  const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.mjs");
+  const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(buffer), useWorkerFetch: false, useSystemFonts: true }).promise;
   for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
     const page = await pdf.getPage(pageNumber);
     const viewport = page.getViewport({ scale: 1.35 });
     const canvas = createCanvas(Math.ceil(viewport.width), Math.ceil(viewport.height));
-    await page.render({ canvasContext: canvas.getContext("2d") as never, viewport }).promise;
+    await page.render({ canvas: canvas as never, canvasContext: canvas.getContext("2d") as never, viewport }).promise;
     await writeFile(path.join(outputDirectory, `${name}-page-${pageNumber}.png`), canvas.toBuffer("image/png"));
   }
 }

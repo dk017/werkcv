@@ -17,6 +17,7 @@ import {
 } from '@/lib/attribution';
 import { isEditorPath } from '@/lib/analytics-paths';
 import type { AgencyRoiCompletedProperties } from '@/lib/agency-analytics-contract';
+import { clientAgencyAnalyticsAllowed, requiresAgencyAnalyticsConsent } from '@/lib/agency-analytics-consent';
 
 const ATTRIBUTION_STORAGE_KEY = 'werkcv_attribution_v1';
 const LANDING_TRACKED_SESSION_KEY = 'werkcv_landing_tracked_v1';
@@ -748,6 +749,7 @@ export function track<E extends AnalyticsEvent['event']>(
 ): void {
     // Never track during SSR
     if (typeof window === 'undefined') return;
+    if (!clientAgencyAnalyticsAllowed(event)) return;
     const attribution = getStoredAttribution();
     const identity = getAnalyticsIdentity();
 
@@ -770,7 +772,7 @@ export function track<E extends AnalyticsEvent['event']>(
     sendToInternal(payload);
 
     // 2) Forward to GA4 if configured
-    sendToGA4(event, properties);
+    if (!requiresAgencyAnalyticsConsent(event, window.location.pathname)) sendToGA4(event, properties);
 
 }
 // ============================================================
@@ -819,6 +821,7 @@ function sendToGA4(event: string, properties: Record<string, unknown>): void {
 // Page view tracker — call from AnalyticsProvider
 // ============================================================
 export function trackPageView(path: string): void {
+    if (!clientAgencyAnalyticsAllowed('page_view', path)) return;
     ensureAttribution(path, window.location.search);
     maybeTrackLandingToEditor(path);
     track('page_view', {
@@ -847,6 +850,7 @@ export function trackLanding(path: string, search: string): void {
 
 export function ensureAttribution(path: string, search: string): AttributionSnapshot | null {
     if (typeof window === 'undefined') return null;
+    if (!clientAgencyAnalyticsAllowed('page_view', path)) return null;
 
     const nowIso = new Date().toISOString();
     const params = new URLSearchParams(search || '');
@@ -861,6 +865,7 @@ export function ensureAttribution(path: string, search: string): AttributionSnap
 
 export function getStoredAttribution(): AttributionSnapshot | null {
     if (typeof window === 'undefined') return null;
+    if (!clientAgencyAnalyticsAllowed()) return null;
 
     try {
         const raw = window.localStorage.getItem(ATTRIBUTION_STORAGE_KEY);

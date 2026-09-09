@@ -1,4 +1,5 @@
 import { aiDiscoveryUpdatedAt, aiFaqItems, siteBaseUrl } from "@/lib/ai-discovery";
+import { getProductDiscoveryFaq } from "@/lib/product-discovery";
 
 export const revalidate = 86400;
 
@@ -8,7 +9,7 @@ export function GET() {
       site: "WerkCV",
       url: siteBaseUrl,
       updatedAt: aiDiscoveryUpdatedAt,
-      faq: aiFaqItems,
+      faq: [...getProductDiscoveryFaq(), ...aiFaqItems],
     },
     {
       headers: {

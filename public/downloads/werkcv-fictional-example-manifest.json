@@ -1,0 +1,51 @@
+{
+  "fixtureVersion": "nina-hr-v2",
+  "sourcePassagesDigest": "sha256:ad9fbc196a0c5b8fb43dd5db63b33ebdf67366e7872f952d124ae720cacd3f86",
+  "fullSourceDigest": "81923d8a9a472a9a79c997506ff730153928a90e52ca96fb05fa829bb3d6b788",
+  "status": "VISUALLY_REVIEWED",
+  "artifacts": [
+    {
+      "name": "agency-sample-vacature-hr-adviseur.txt",
+      "purpose": "fictional vacancy, not candidate facts",
+      "sha256": "8050c5943a2e5a514da88aa467cb287d446509024a3b0dbecf2270a6386e2589"
+    },
+    {
+      "name": "agency-sample-bron-cv-hr-adviseur.pdf",
+      "purpose": "complete original fictional CV",
+      "sha256": "92ae309ee95306c4646e0f02ac8fa891b610c20e9c081b02c7f51ff2b47ed2c0"
+    },
+    {
+      "name": "werkcv-voorbeeld-kandidaatvoorstel-hr-adviseur.pdf",
+      "purpose": "full fictional client proposal",
+      "sha256": "1771e3f8f3aa816c8865d89a22675417cfc4c1250fcd06cbf18f1bcf1b8a2fcd"
+    },
+    {
+      "name": "werkcv-voorbeeld-kandidaatvoorstel-hr-adviseur.docx",
+      "purpose": "full fictional client proposal",
+      "sha256": "ea7d8bd3ad4ddeee420600d0617a9e8d757f6642003e50ced243c6688270639c"
+    },
+    {
+      "name": "werkcv-voorbeeld-kandidaatvoorstel-hr-adviseur-geanonimiseerd.pdf",
+      "purpose": "contact_free fictional client proposal",
+      "sha256": "3e40130c3db537861886ca0bfe5d82a08808555c678ca469b7b55b8cf72815cf"
+    },
+    {
+      "name": "werkcv-voorbeeld-kandidaatvoorstel-hr-adviseur-geanonimiseerd.docx",
+      "purpose": "contact_free fictional client proposal",
+      "sha256": "d868d4728ea507647cc2d239698103493eb62f642bc29ebb23b2e3b9599ad46f"
+    }
+  ],
+  "review": {
+    "date": "2026-09-08",
+    "reviewer": "Codex visual inspection",
+    "renderer": "LibreOffice 26.2.6 + Poppler",
+    "pages": {
+      "sourcePdf": 1,
+      "fullPdf": 2,
+      "reducedPdf": 2,
+      "fullDocx": 1,
+      "reducedDocx": 1
+    },
+    "independentReview": false
+  }
+}

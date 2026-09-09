@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AgencyGuideArticle, { type AgencyGuideArticleProps } from "@/components/agency/AgencyGuideArticle";
 import { getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
+import { agencyBuyingFaqs, agencyBuyingGuideModified, agencyBuyingSections } from "@/lib/agency-buying-guide";
 
 const slug = "cv-in-huisstijl-recruitmentbureau";
 const route = getAgencyAcquisitionRoute(`/voor-bureaus/kennisbank/${slug}`)!;
@@ -20,11 +21,13 @@ export const metadata: Metadata = {
 
 const guide: AgencyGuideArticleProps = {
   slug,
+  modified: agencyBuyingGuideModified,
   title: route.h1,
   description: metadata.description as string,
-  intro: "Een bureau kan een kandidaat-CV handmatig of met software in eigen huisstijl zetten. Bewaar de bron ongewijzigd, voeg alleen controleerbare branding toe en leg vast welke versie is goedgekeurd. WerkCV accepteert tekstgebaseerde PDF- of DOCX-bestanden als bron en maakt na review een gecontroleerde PDF- of DOCX-klantversie.",
+  intro: "Wil je alleen een CV in bureauhuisstijl zetten, of ook een vacaturegericht voorstel met broncontrole maken? Kies op basis van dat werk, je bestaande ATS en je werkelijke volume. Bij incidentele opmaak kan Word voldoende zijn. Voor terugkerende voorstellen vergelijk je ook review, versies en Word- en PDF-uitvoer.",
   readingTime: "10 minuten",
   sections: [
+    ...agencyBuyingSections,
     {
       eyebrow: "Eerst de bron, dan de presentatie",
       title: "Wat moet hetzelfde blijven?",
@@ -45,7 +48,7 @@ const guide: AgencyGuideArticleProps = {
     },
     {
       eyebrow: "Handmatig of met software",
-      title: "Welke workflow past bij je bureau?",
+      title: "Welke controle blijft nodig na je keuze?",
       paragraphs: [
         "Handmatig opmaken in Word geeft controle maar vraagt discipline bij versies, tabellen en exports. Een vaste toolroute kan herhaalbare structuur en controlepunten bieden, zolang de recruiter de bron en output blijft vergelijken.",
       ],
@@ -55,7 +58,7 @@ const guide: AgencyGuideArticleProps = {
           ["Bron bewaren", "Sla het originele bestand apart op met datum en kandidaat-ID.", "Upload een tekstgebaseerd PDF- of DOCX-CV; het originele uploadbestand wordt niet als bronbestand bewaard."],
           ["Structuur", "Kopieer naar een bureau-template en controleer iedere sectie.", "Analyseer het CV en vacature in MatchPack; eisen worden naast CV-bewijs gezet."],
           ["Commerciële gegevens", "Vul beschikbaarheid, tarief en locatie in vanuit de intake.", "Voeg alleen bevestigde gegevens toe in de reviewvelden."],
-          ["Review", "Gebruik een tweede lezer of eigen checklist.", "WerkCV dwingt evidence-review, correcties, outputkeuze en vier goedkeuringsbevestigingen af."],
+          ["Review", "Gebruik een tweede lezer of eigen checklist.", "Controleer bronpassages, correcties en gekozen uitvoer voordat je het voorstel definitief goedkeurt."],
           ["Uitvoer", "Controleer Word- en PDF-versie na export.", "Een volledige en optionele versie zonder directe contactgegevens komen als PDF en DOCX uit dezelfde goedgekeurde snapshot."],
         ],
       },
@@ -82,7 +85,7 @@ const guide: AgencyGuideArticleProps = {
         "Word-opmaak kan verspringen door ontbrekende fonts, tabelbreedtes, handmatige pagina-einden en verschillen tussen Word-versies. Als je toch Word gebruikt, houd stijlen, tabellen en kopteksten eenvoudig en exporteer daarna een PDF die je visueel én als tekst controleert.",
       ],
       examples: [
-        { label: "Voorblad", body: "Kandidaatprofiel · Senior HR-adviseur · Utrecht / hybride · 32–36 uur · beschikbaarheid: nog te bevestigen." },
+        { label: "Voorblad", body: "Kandidaatprofiel · Senior HR-adviseur · locatievoorkeur, uren en beschikbaarheid: nog te bevestigen." },
         { label: "Bestandsnaam", body: "Bureau-kandidaatvoorstel-HR-adviseur-v03.pdf — gebruik een interne kandidaat-ID wanneer de bestandsnaam extern geen naam hoeft te bevatten." },
       ],
     },
@@ -113,6 +116,7 @@ const guide: AgencyGuideArticleProps = {
     },
   ],
   faqs: [
+    ...agencyBuyingFaqs,
     { question: "Moet een recruitmentbureau het originele CV sturen?", answer: "Niet altijd. Volg de afspraak met de opdrachtgever en de grondslag voor delen. Bewaar intern een ongewijzigde bron en stuur alleen een gecontroleerde versie die past bij het doel." },
     { question: "Mag een recruiter het CV opnieuw opmaken?", answer: "Een recruiter kan de presentatie aanpassen zolang de inhoud niet stilzwijgend verandert en de kandidaat- en bureauafspraken dit toelaten. Controleer wijzigingen terug tegen de bron." },
     { question: "Welke onderdelen van de huisstijl horen op het CV?", answer: "Gebruik bij voorkeur logo, kleur, typografie, footer, bestandsnaam en een duidelijk voorblad. Houd branding ondergeschikt aan rol, ervaring en leesbaarheid." },
@@ -124,6 +128,7 @@ const guide: AgencyGuideArticleProps = {
     { question: "Hoe controleer je of inhoud niet onbedoeld is gewijzigd?", answer: "Vergelijk de uiteindelijke PDF met de bron en de bevestigde intake. Controleer vooral functietitels, data, werkgevers, opleidingen, resultaten, beschikbaarheid, tarieven en contactgegevens." },
   ],
   sources: [
+    { label: "WerkCV Agency: privacy en gegevensverwerking", href: "/agency/privacy", note: "Lees de eigen productvoorwaarden en gekoppelde verwerkingsdocumenten; geen algemene compliancegarantie." },
     { label: "Europass: Create your CV", href: "https://europass.europa.eu/en/create-europass-cv", note: "Ondersteunt duidelijke taal, relevante feiten, reverse-chronologische ervaring en leesbare presentatie." },
     { label: "NVP Sollicitatiecode", href: "https://www.nvp-hrnetwerk.nl/sollicitatiecode", note: "Geeft context voor zorgvuldigheid, transparantie en vertrouwelijkheid in Nederlandse werving en selectie." },
     { label: "Greenhouse Support: Unsuccessful resume parse", href: "https://support.greenhouse.io/hc/en-us/articles/200989175-Unsuccessful-resume-parse", note: "Laat zien waarom complexe tabellen, afbeeldingen, kolommen en tekstvakken in een ATS-route extra controle nodig hebben; dit is geen universele parserregel." },

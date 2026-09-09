@@ -122,11 +122,11 @@ export async function requestEmailLoginCode(
         }
     }
 
-    console.log(`auth_dev_code ${email} ${code}`);
-    if (process.env.NODE_ENV !== 'production') {
-        return { devCode: code };
+    if (process.env.NODE_ENV === 'production') {
+        throw new Error('SMTP_NOT_CONFIGURED');
     }
-    return {};
+    console.log(`auth_dev_code ${email} ${code}`);
+    return { devCode: code };
 }
 
 export async function verifyEmailLoginCode(

@@ -87,6 +87,7 @@ model CVDocument {
   @@index([agencySubscriptionId, updatedAt])
   @@index([userId, agencySubscriptionId, updatedAt])
   @@index([userId, agencySubscriptionId, hasMeaningfulContent])
+  @@index([meaningfulContentAt])
 }
 
 model AgencyMatchPack {

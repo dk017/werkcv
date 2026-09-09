@@ -67,6 +67,7 @@ type AgencyContentLinkProps = {
   location: string;
   intent: "learn" | "product" | "login" | "sample" | "knowledge";
   className?: string;
+  download?: boolean;
   children: React.ReactNode;
 };
 
@@ -76,6 +77,7 @@ export function AgencyContentLink({
   location,
   intent,
   className,
+  download,
   children,
 }: AgencyContentLinkProps) {
   const handleClick = () => {
@@ -87,16 +89,16 @@ export function AgencyContentLink({
     });
   };
 
-  if (href.startsWith("/")) {
+  if (href.startsWith("/") && !download) {
     return (
-      <Link href={href} className={className} onClick={handleClick}>
+      <Link href={href} className={className} onClick={handleClick} data-track-cta="manual">
         {children}
       </Link>
     );
   }
 
   return (
-    <a href={href} className={className} onClick={handleClick}>
+    <a href={href} className={className} onClick={handleClick} download={download} data-track-cta="manual">
       {children}
     </a>
   );

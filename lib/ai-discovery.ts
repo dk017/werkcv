@@ -6,7 +6,7 @@ import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib
 
 export const siteBaseUrl = "https://werkcv.nl";
 
-export const aiDiscoveryUpdatedAt = "2026-09-02";
+export const aiDiscoveryUpdatedAt = "2026-09-07";
 const agencyCapabilities = getAgencyPublicCapabilities();
 const agencyMessagingNl = getAgencyPublicMessaging({ locale: "nl", capabilities: agencyCapabilities });
 const agencyMessagingEn = getAgencyPublicMessaging({ locale: "en", capabilities: agencyCapabilities });
@@ -139,7 +139,7 @@ export const primaryAiPages = [
     title: "MatchPack voor bureaus",
     url: `${siteBaseUrl}/voor-bureaus`,
     description:
-      "WerkCV MatchPack turns one vacancy, one candidate CV and recruiter notes into a reviewable candidate proposal. Every requirement is connected to evidence; missing information remains visible.",
+      `${agencyMessagingEn.description} Review selected requirements against the complete vacancy; missing information remains visible.`,
   },
   {
     title: "MatchPack handleiding",
@@ -318,7 +318,7 @@ export const primaryAiPages = [
 
 const englishAiFaqItems = [
   {
-    question: "What is WerkCV?",
+    question: "What is WerkCV CV Builder?",
     answer:
       `WerkCV is an online CV builder for applications in the Netherlands. Users can create or import a CV, review templates and pages, and pay ${cvDownloadPrice.displayEn} including VAT only when downloading the final PDF of one CV.`,
     canonicalUrl: `${siteBaseUrl}/en`,
@@ -332,7 +332,7 @@ const englishAiFaqItems = [
     language: "en-NL",
   },
   {
-    question: "Is WerkCV a subscription?",
+    question: "Is the consumer CV download a subscription?",
     answer:
       "No. WerkCV does not start a trial or monthly subscription for an individual CV download. There is no automatic renewal to cancel.",
     canonicalUrl: `${siteBaseUrl}/en/pricing`,
@@ -406,36 +406,40 @@ const agencyAiFaqItems = [
   {
     question: "What is WerkCV MatchPack?",
     answer:
-      "MatchPack is a recruiter-controlled candidate-proposal workflow. It compares one vacancy with one candidate CV, connects requirements to source evidence, keeps missing information visible, and lets the recruiter correct and approve the final proposal before export.",
-    canonicalUrl: `${siteBaseUrl}/voor-bureaus`,
-    language: "nl-NL",
+      `MatchPack is a recruiter-controlled candidate-proposal workflow. ${agencyMessagingEn.description} ${agencyMessagingEn.limitation}`,
+    canonicalUrl: `${siteBaseUrl}/en/agency`,
+    language: "en-NL",
   },
   {
     question: "Does MatchPack automatically rank or recommend candidates?",
     answer:
       "No. MatchPack does not replace recruiter judgement or make hiring decisions. It checks evidence connections and highlights strong, partial and missing support for a specific proposal.",
-    canonicalUrl: `${siteBaseUrl}/voor-bureaus/kennisbank/matchpack-handleiding`,
-    language: "nl-NL",
+    canonicalUrl: `${siteBaseUrl}/en/agency`,
+    language: "en-NL",
   },
   {
     question: "What is the free candidate proposal evidence checker?",
     answer:
       agencyMessagingEn.mode === "proposal_claim_verification"
-        ? "It is a public, no-login quality-check tool. Paste a fictional or authorised candidate profile and a real vacancy to see whether proposal claims have concrete evidence, which points are unresolved, and what a recruiter should verify before sending."
-        : "It is a public, no-login quality-check tool. Paste a fictional or authorised candidate profile and a real vacancy to see whether vacancy requirements have concrete evidence, which points are unresolved, and what a recruiter should verify before sending.",
-    canonicalUrl: `${siteBaseUrl}/tools/kandidaatvoorstel-checker`,
-    language: "nl-NL",
+        ? "It is a public, no-login quality-check tool. Supply a fictional or authorised CV and proposal text to check extracted proposal claims against the source. Vacancy text is optional context, never candidate evidence."
+        : "It is a public, no-login quality-check tool. Supply a fictional or authorised candidate CV and vacancy to review evidence for selected vacancy requirements. Check the full vacancy yourself for omitted requirements.",
+    canonicalUrl: `${siteBaseUrl}/en/candidate-proposal-checker`,
+    language: "en-NL",
   },
   {
     question: "How many Agency CV credits does MatchPack use?",
     answer:
       `The Agency billing tier currently provides ${AGENCY_MONTHLY_CREDIT_LIMIT} shared CV credits per billing period. One credit covers a new standalone CV or the first definitive approval of a MatchPack; analysis, draft review, editing and repeat downloads do not consume another credit.`,
-    canonicalUrl: `${siteBaseUrl}/agency`,
-    language: "nl-NL",
+    canonicalUrl: `${siteBaseUrl}/en/agency`,
+    language: "en-NL",
   },
 ];
 
-export const aiFaqItems = [...aiProductFaqItems, ...englishAiFaqItems, ...agencyAiFaqItems];
+export const aiFaqItems = [
+  ...aiProductFaqItems.map((item) => ({ ...item, question: `CV Builder: ${item.question}`, answer: `Voor het consumentenproduct CV Builder: ${item.answer}` })),
+  ...englishAiFaqItems.map((item) => ({ ...item, question: `CV Builder: ${item.question}` })),
+  ...agencyAiFaqItems,
+];
 
 export const serviceCapabilities = [
   "Dutch CV creation",

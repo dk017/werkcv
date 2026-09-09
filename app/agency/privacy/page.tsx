@@ -66,6 +66,11 @@ export default function AgencyPrivacyPage() {
           </section>
         </div>
 
+        <section id="gebruiksmeting" className="mt-8 wk-card">
+          <h2 className="text-2xl font-semibold">Optionele gebruiksmeting</h2>
+          <p className="mt-4 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">Op MatchPack-pagina’s staat optionele gebruiksmeting standaard uit. Je kunt onderaan de pagina toestemming geven of intrekken via ‘Voorkeur voor gebruiksmeting’. Met toestemming ontvangt WerkCV bezoeken en klikken met een browseridentificatie en technische bezoekinformatie. Deze gebeurtenissen bevatten geen CV-tekst of voorstelinhoud. We laden hier geen Google Analytics of sessieopnamen. De browser bewaart je keuze maximaal 180 dagen. Zonder toestemming blijven de voorbeelden, downloads en functies beschikbaar. Noodzakelijke verwerking voor je account, betalingen en aangevraagde documenten staat los van deze keuze.</p>
+        </section>
+
         <section id="subprocessors" className="mt-8 wk-card">
           <p className="wk-eyebrow">Huidige verificatiestatus</p>
           <h2 className="mt-4 text-2xl font-semibold">Verwerkers en subverwerkers</h2>

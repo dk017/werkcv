@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getAgencySoftwareJsonLd } from "@/lib/product-discovery";
 import AgencyEvidencePreview from "@/components/agency/AgencyEvidencePreview";
 import AgencyPurchaseNotes from "@/components/agency/AgencyPurchaseNotes";
 import { getAgencyReviewScopeNotice, AGENCY_WORKSPACE_LANGUAGE_NOTICE } from "@/lib/agency-review-scope";
@@ -12,7 +13,7 @@ import { isAgencyDodoConfigured } from "@/lib/dodo";
 import { getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
 import { getAgencyPublicCapabilities } from "@/lib/agency-public-capabilities";
 import { getAgencyPublicMessaging } from "@/lib/agency-public-messaging";
-import { AGENCY_CURRENCY, AGENCY_MONTHLY_CREDIT_LIMIT, AGENCY_MONTHLY_PRICE_CENTS, getAgencyFullUseUnitPriceDisplay, getAgencyMonthlyPriceDisplay } from "@/lib/agency-plan";
+import { AGENCY_CURRENCY, AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyFullUseUnitPriceDisplay, getAgencyMonthlyPriceDisplay } from "@/lib/agency-plan";
 
 const route = getAgencyAcquisitionRoute("/en/agency")!;
 const pageUrl = `https://werkcv.nl${route.path}`;
@@ -124,29 +125,7 @@ export default function EnglishAgencyPage() {
           answer: "It records whether the candidate confirmed, corrected or declined the exact displayed version for a named receiving organisation. It is not identity proof, consent, a legal signature or right-to-represent.",
         }
       : item);
-  const softwareJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "WerkCV MatchPack",
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "Web",
-    url: pageUrl,
-    inLanguage: "en-GB",
-    description: messaging.description,
-    featureList: [
-      ...messaging.featureList,
-      ...(acknowledgementEnabled ? ["Candidate acknowledgement for a named recipient"] : []),
-    ],
-    offers: {
-      "@type": "Offer",
-      price: (AGENCY_MONTHLY_PRICE_CENTS / 100).toFixed(2),
-      priceCurrency: AGENCY_CURRENCY,
-      category: "monthly subscription",
-      description: `${AGENCY_MONTHLY_CREDIT_LIMIT} shared CV credits per billing period`,
-      url: `${pageUrl}#pricing`,
-    },
-    publisher: { "@id": "https://werkcv.nl/#organization" },
-  };
+  const softwareJsonLd = getAgencySoftwareJsonLd("en", capabilities);
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",

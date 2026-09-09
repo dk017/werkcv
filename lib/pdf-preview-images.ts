@@ -4,10 +4,9 @@ const PREVIEW_SCALE = 4 / 3;
 const MAX_PREVIEW_PAGES = 12;
 
 export async function renderPdfPreviewImages(pdfBuffer: Buffer): Promise<string[]> {
-  const pdfjs = await import("pdfjs-dist/legacy/build/pdf.js");
+  const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
   const loadingTask = pdfjs.getDocument({
     data: new Uint8Array(pdfBuffer),
-    isEvalSupported: false,
     useSystemFonts: true,
   });
   const document = await loadingTask.promise;
@@ -25,6 +24,7 @@ export async function renderPdfPreviewImages(pdfBuffer: Buffer): Promise<string[
       const context = canvas.getContext("2d");
 
       await page.render({
+        canvas: canvas as never,
         canvasContext: context as never,
         viewport,
       }).promise;
@@ -35,6 +35,6 @@ export async function renderPdfPreviewImages(pdfBuffer: Buffer): Promise<string[
     }
     return pages;
   } finally {
-    await document.destroy();
+    await loadingTask.destroy();
   }
 }

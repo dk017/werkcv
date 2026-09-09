@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import crypto from "node:crypto";
 import { spawn } from "node:child_process";
+import { mkdir, writeFile } from "node:fs/promises";
 import puppeteer from "puppeteer";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
@@ -12,11 +13,14 @@ import { AGENCY_MONTHLY_CREDIT_LIMIT } from "@/lib/agency-plan";
 
 const { runId } = requireAgencyTestDatabase();
 const email = `browser-${runId}@example.test`;
-const secret = `agency-e2e-${runId}`;
+const secret = process.env.AGENCY_E2E_SESSION_SECRET || `agency-e2e-${runId}`;
 const token = crypto.randomBytes(32).toString("hex");
 const tokenHash = crypto.createHash("sha256").update(`${secret}:${token}`).digest("hex");
 const port = 3127;
-const baseUrl = `http://127.0.0.1:${port}`;
+const externalOrigin = process.env.AGENCY_E2E_ORIGIN;
+if (externalOrigin && !/^http:\/\/(localhost|127\.0\.0\.1):\d+$/u.test(externalOrigin)) throw new Error("LOCAL_E2E_ORIGIN_REQUIRED");
+if (externalOrigin && !process.env.AGENCY_E2E_SESSION_SECRET) throw new Error("E2E_SESSION_SECRET_REQUIRED");
+const baseUrl = externalOrigin || `http://127.0.0.1:${port}`;
 let stage = "seed";
 
 async function seed() {
@@ -75,6 +79,7 @@ async function waitForTextOrError(page: import("puppeteer").Page, text: string) 
 }
 
 async function setLabeledControl(page: import("puppeteer").Page, labelText: string, value: string) {
+  await page.waitForFunction((text) => [...document.querySelectorAll("label")].some((label) => label.textContent?.includes(text) && label.querySelector("input,textarea,select")), { timeout: 10000 }, labelText);
   const changed = await page.evaluate(({ labelText, value }) => {
     const label = [...document.querySelectorAll("label")].find((item) => item.textContent?.includes(labelText));
     const control = label?.querySelector("input,textarea,select") as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | null;
@@ -105,13 +110,19 @@ async function openHrPack(page: import("puppeteer").Page) {
 }
 
 async function moveToApprovalStep(page: import("puppeteer").Page) {
-  for (let step = 0; step < 4; step += 1) await clickButton(page, "Volgende stap");
+  await openStage(page, "approval");
+}
+
+async function openStage(page: import("puppeteer").Page, id: string) {
+  const selector = `nav[aria-label="MatchPack-stappen"] button[aria-describedby="matchpack-stage-${id}-status"]`;
+  await page.click(selector);
+  await page.waitForSelector(`${selector}[aria-current="step"]`);
 }
 
 async function main() {
   const seeded = await seed();
   stage = "start_server";
-  const server = spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "-p", String(port), "-H", "127.0.0.1"], {
+  const server = externalOrigin ? null : spawn(process.execPath, ["node_modules/next/dist/bin/next", "start", "-p", String(port), "-H", "127.0.0.1"], {
     cwd: process.cwd(),
     env: {
       ...process.env,
@@ -123,12 +134,12 @@ async function main() {
     stdio: ["ignore", "pipe", "pipe"],
   });
   let serverDiagnostic = "";
-  server.stdout?.on("data", (chunk) => { serverDiagnostic = `${serverDiagnostic}${String(chunk)}`.slice(-1000); });
-  server.stderr?.on("data", (chunk) => { serverDiagnostic = `${serverDiagnostic}${String(chunk)}`.slice(-1000); });
+  server?.stdout?.on("data", (chunk) => { serverDiagnostic = `${serverDiagnostic}${String(chunk)}`.slice(-1000); });
+  server?.stderr?.on("data", (chunk) => { serverDiagnostic = `${serverDiagnostic}${String(chunk)}`.slice(-1000); });
   let browser: Awaited<ReturnType<typeof puppeteer.launch>> | null = null;
   try {
     for (let attempt = 0; attempt < 60; attempt += 1) {
-      if (server.exitCode !== null) throw new Error(`E2E_SERVER_EXITED_${server.exitCode}:${serverDiagnostic.replace(/\s+/gu, " ").slice(-300)}`);
+      if (server && server.exitCode !== null) throw new Error(`E2E_SERVER_EXITED_${server.exitCode}:${serverDiagnostic.replace(/\s+/gu, " ").slice(-300)}`);
       try {
         await fetch(`${baseUrl}/api/build-version`, { signal: AbortSignal.timeout(2000) });
         break;
@@ -141,7 +152,7 @@ async function main() {
     await browser.defaultBrowserContext().overridePermissions(baseUrl, ["clipboard-read", "clipboard-write"]);
     const page = await browser.newPage();
     await page.setViewport({ width: 1440, height: 1000 });
-    await page.setCookie({ name: "werkcv_session", value: token, url: baseUrl, httpOnly: true, sameSite: "Lax" });
+    await browser.defaultBrowserContext().setCookie({ name: "werkcv_session", value: token, url: baseUrl, httpOnly: true, sameSite: "Lax" });
     await page.goto(`${baseUrl}/agency/account/matchpack`, { waitUntil: "domcontentloaded", timeout: 30000 });
     await waitForText(page, "Kandidaatvoorstellen");
     stage = "open_pack";
@@ -157,10 +168,10 @@ async function main() {
     });
     assert.equal(reviewCount, 2);
     stage = "open_source_step";
-    await clickButton(page, "Volgende stap");
+    await openStage(page, "source");
     await setLabeledControl(page, "Professionele titel", "Senior HR-adviseur");
     stage = "open_message_step";
-    await clickButton(page, "Volgende stap");
+    await openStage(page, "client_copy");
     await setLabeledControl(page, "Introductie op het voorblad", "Deze kandidaat adviseerde aantoonbaar 24 teamleiders. AFAS blijft een open punt.");
     await setLabeledControl(page, "Begeleidende e-mail", "Bijgaand ontvangt u het gecontroleerde kandidaatvoorstel. AFAS-ervaring moet nog worden bevestigd.");
     stage = "save_review";
@@ -170,13 +181,13 @@ async function main() {
     assert.ok(savedDraft.revisions.length >= 2, "saving reviewed changes must create a revision");
     assert.ok(savedDraft.retentionExpiresAt && seeded.pack.retentionExpiresAt && savedDraft.retentionExpiresAt.getTime() >= seeded.pack.retentionExpiresAt.getTime(), "meaningful save must refresh retention from the exact saved state");
     stage = "open_output_step";
-    await clickButton(page, "Volgende stap");
+    await openStage(page, "output");
     stage = "choose_output";
     await clickButton(page, "Zonder directe contactgegevens");
     await clickButton(page, "Sla gekozen uitvoer op");
     await waitForTextOrError(page, "Concept opgeslagen");
     stage = "open_approval_step";
-    await clickButton(page, "Volgende stap");
+    await openStage(page, "approval");
     stage = "approve";
     const checked = await page.evaluate(() => {
       const boxes = [...document.querySelectorAll('input[type="checkbox"]')].filter((box) => (box as HTMLElement).offsetParent !== null) as HTMLInputElement[];
@@ -196,12 +207,21 @@ async function main() {
       ];
       return Promise.all(paths.map(async (path) => {
         const response = await fetch(path);
-        return { path, ok: response.ok, type: response.headers.get("content-type"), size: (await response.arrayBuffer()).byteLength };
+        const bytes = new Uint8Array(await response.arrayBuffer());
+        let binary = "";
+        for (const byte of bytes) binary += String.fromCharCode(byte);
+        return { path, ok: response.ok, type: response.headers.get("content-type"), size: bytes.byteLength, base64: btoa(binary) };
       }));
     }, seeded.pack.id);
     assert.equal(exportResults.every((result) => result.ok && result.size > 1000), true);
     assert.equal(exportResults.filter((result) => result.type?.includes("application/pdf")).length, 2);
     assert.equal(exportResults.filter((result) => result.type?.includes("wordprocessingml")).length, 2);
+    await mkdir(".codex-tmp/container-security", { recursive: true });
+    for (const result of exportResults) {
+      const extension = result.path.includes("/docx?") ? "docx" : "pdf";
+      const variant = result.path.endsWith("=full") ? "full" : "reduced";
+      await writeFile(`.codex-tmp/container-security/agency-${variant}.${extension}`, Buffer.from(result.base64, "base64"));
+    }
     stage = "open_client_message";
     await clickButton(page, "Vorige stap");
     await clickButton(page, "Vorige stap");
@@ -253,10 +273,20 @@ async function main() {
     }, seeded.pack.id);
     assert.equal(response.ok, true);
     assert.equal(await prisma.agencyCvUsage.count({ where: { period: { subscriptionId: seeded.subscription.id } } }), usageBefore);
+    stage = "done";
+    await writeFile(".codex-tmp/container-security/agency-flow.json", JSON.stringify({ at: new Date().toISOString(), origin: baseUrl, desktop: true, mobile: true, approval: true, pdfVariants: 2, docxVariants: 2, retentionDeletion: true }, null, 2));
     console.log(JSON.stringify({ e2e: "passed", desktop: true, mobile: true, approval: true, outputs: true }));
   } finally {
+    if (browser && stage !== "done") {
+      await mkdir(".codex-tmp/container-security", { recursive: true });
+      const page = (await browser.pages()).at(-1);
+      if (page) {
+        await page.screenshot({ path: ".codex-tmp/container-security/agency-last-state.png", fullPage: true }).catch(() => {});
+        await writeFile(".codex-tmp/container-security/agency-last-state.txt", await page.evaluate(() => document.body.innerText).catch(() => "unavailable"));
+      }
+    }
     if (browser) await browser.close();
-    server.kill();
+    server?.kill();
   }
 }
 

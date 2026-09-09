@@ -12,6 +12,7 @@ import {
     sanitizeEnglishRoleAnalyticsUrl,
 } from '@/lib/english-role-analytics-safety';
 import { agencyAnalyticsEventSchemas } from '@/lib/agency-analytics-contract';
+import { agencyAnalyticsAllowed } from '@/lib/agency-analytics-consent';
 
 const PERSISTED_FUNNEL_EVENTS = new Set([
     'page_view',
@@ -236,6 +237,17 @@ export async function POST(request: NextRequest) {
         const body = await request.json();
 
         const { event, properties, timestamp, url, attribution, visitorId, sessionId, visitNumber, screen, language, timezone, userAgent } = body;
+
+        if (typeof event === 'string') {
+            const cookies = request.headers.get('cookie') || '';
+            let referrerPath = '';
+            try { referrerPath = new URL(request.headers.get('referer') || '').pathname; } catch { /* No referrer is normal. */ }
+            if (!agencyAnalyticsAllowed(event, typeof url === 'string' ? url : '', cookies)
+                || !agencyAnalyticsAllowed(event, referrerPath, cookies)) {
+                // Drop optional telemetry before enrichment, logging, geolocation or database access.
+                return new NextResponse(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
+            }
+        }
 
         if (!event || typeof event !== 'string') {
             return NextResponse.json({ error: 'Missing event name' }, { status: 400 });

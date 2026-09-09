@@ -4,11 +4,12 @@ import { AgencyContentLink, AgencyContentView } from "@/components/agency/Agency
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
 import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
-import { agencyFictionalExample, fictionalExampleSourceDigest } from "@/lib/agency-fictional-example";
+import { agencyFictionalExample, fictionalExampleSourceDigest, fictionalExampleModified, fictionalExampleVersion, fictionalDraftReview, fictionalFullCvText, fictionalVacancyText } from "@/lib/agency-fictional-example";
 import { getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
 import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib/agency-plan";
-import { AGENCY_CONTENT_MODIFIED, AGENCY_CONTENT_PUBLISHED } from "@/lib/agency-content";
+import { AGENCY_CONTENT_PUBLISHED } from "@/lib/agency-content";
 import { isAgencyDodoConfigured } from "@/lib/dodo";
+import { agencyExampleDownloads } from "@/lib/agency-example-downloads";
 
 const route = getAgencyAcquisitionRoute("/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld")!;
 const pageUrl = `https://werkcv.nl${route.path}`;
@@ -79,7 +80,7 @@ export default function CandidateProposalExamplePage() {
     author: { "@id": "https://werkcv.nl/#organization" },
     publisher: { "@id": "https://werkcv.nl/#organization" },
     datePublished: AGENCY_CONTENT_PUBLISHED,
-    dateModified: AGENCY_CONTENT_MODIFIED,
+    dateModified: fictionalExampleModified,
     inLanguage: "nl-NL",
     isAccessibleForFree: true,
   };
@@ -97,7 +98,8 @@ export default function CandidateProposalExamplePage() {
             <p className="mt-6 max-w-3xl text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">Bekijk hoe je een klantintroductie opbouwt wanneer iedere belangrijke bewering aan CV-bewijs, recruiterbeoordeling of kandidaatbevestiging moet kunnen worden gekoppeld.</p>
             <div className="mt-6 flex flex-wrap gap-3 text-xs font-bold text-slate-600">
               <span className="rounded-full border border-[var(--wk-warning)] bg-[var(--wk-warning-soft)] px-3 py-2">{agencyFictionalExample.notice}</span>
-              <span className="rounded-full border border-[var(--wk-border)] bg-[var(--wk-surface)] px-3 py-2">Bronfixture: {fictionalExampleSourceDigest}</span>
+              <span className="max-w-full break-all rounded-full border border-[var(--wk-border)] bg-[var(--wk-surface)] px-3 py-2">Bronpassages: {fictionalExampleSourceDigest}</span>
+              <span>Bijgewerkt {fictionalExampleModified} · {fictionalExampleVersion}</span>
             </div>
           </div>
           <aside className="wk-card wk-card-dark min-w-0 p-6 sm:p-8">
@@ -139,6 +141,22 @@ export default function CandidateProposalExamplePage() {
         </section>
 
         <section className="wk-section border-y border-[var(--wk-border)]" aria-labelledby="claims-title">
+          <div className="mb-10">
+            <h2 className="text-3xl font-semibold tracking-[-0.04em]">Van bewust fout concept naar gecontroleerde formulering</h2>
+            <p className="mt-4 text-sm leading-relaxed">Dit is een door WerkCV geschreven uitlegvoorbeeld, geen gemeten AI-run, benchmark of echte recruiterbeoordeling. Het eerste concept is bewust fout en niet geschikt om te versturen. De gratis checker controleert alleen wat zijn huidige modus beschrijft.</p>
+            <div className="mt-6 grid min-w-0 gap-4 md:grid-cols-2">{fictionalDraftReview.map((item) => {
+              const source = agencyFictionalExample.sourceSections.find((entry) => entry.id === item.sourceId);
+              return <article key={item.id} className="wk-card min-w-0 p-5">
+                <h3 className="font-bold">Concept: {item.draft}</h3>
+                <p className="mt-3 text-sm">{source ? `${source.location}: “${source.snippet}”` : "Geen bronpassage: niet opgegeven in het CV."}</p>
+                <p className="mt-3 text-sm">{item.explanation}</p>
+                <p className="mt-3 text-sm font-bold">Recruiteractie: {item.action}</p>
+                <p className="mt-3 text-sm">Na review: {item.final}</p>
+              </article>;
+            })}</div>
+            <details className="wk-card mt-6 p-5"><summary className="cursor-pointer font-bold">Volledig fictief bron-CV lezen</summary><p className="mt-4 whitespace-pre-line text-sm leading-relaxed">{fictionalFullCvText}</p></details>
+            <details className="wk-card mt-4 p-5"><summary className="cursor-pointer font-bold">Volledige fictieve vacature lezen</summary><p className="mt-4 whitespace-pre-line text-sm leading-relaxed">{fictionalVacancyText}</p></details>
+          </div>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="wk-eyebrow">3. Claim review</p>
@@ -188,9 +206,13 @@ export default function CandidateProposalExamplePage() {
         <section className="wk-section" aria-labelledby="outputs-title">
           <p className="wk-eyebrow">6. Outputcontrole</p>
           <h2 id="outputs-title" className="mt-4 text-3xl font-semibold tracking-[-0.04em]">Eén goedgekeurde snapshot, twee mogelijke klantvarianten.</h2>
-          <div className="mt-7 grid gap-4 md:grid-cols-2">
-            <article className="wk-card wk-card-success p-5"><h3 className="text-xl font-black">Volledig voorstel</h3><p className="mt-3 text-sm leading-relaxed text-slate-700">De volledige gekozen CV-inhoud, introductie en bevestigde voorstelgegevens uit dezelfde goedgekeurde snapshot.</p><p className="mt-4 text-xs font-bold text-slate-500">PDF en DOCX wanneer de Agency-output beschikbaar is.</p></article>
-            <article className="wk-card wk-card-warning p-5"><h3 className="text-xl font-black">Zonder directe contactgegevens</h3><p className="mt-3 text-sm leading-relaxed text-slate-700">Bekende directe velden kunnen worden verwijderd. Werkgevers, scholen, projecten en tekstfragmenten kunnen nog herkenbaar zijn.</p><p className="mt-4 text-xs font-bold text-slate-500">Controleer het echte bestand; dit is geen juridische anonimiteitsgarantie.</p></article>
+          <p className="mt-4 max-w-3xl text-sm leading-relaxed text-slate-700">Bekijk de bron en vergelijk het resultaat zelf. Alle bestanden zijn volledig fictief en gratis te openen, zonder account of e-mailadres. De Word-versies zijn bewerkbaar; de PDF toont de vaste opmaak. Onbevestigde gegevens blijven zichtbaar als open punt.</p>
+          <div className="mt-7 grid gap-4 lg:grid-cols-3" id="voorbeeld-downloads">
+            {([
+              { group: "source", title: "1. Controleer de bron", description: "Het volledige fictieve CV en de vacature waarop dit voorbeeld is gebaseerd." },
+              { group: "full", title: "2. Bekijk het voorstel", description: "De gecontroleerde introductie en het volledige fictieve kandidaat-CV. De bewust onjuiste eerste claims zijn niet opgenomen." },
+              { group: "reduced", title: "3. Vergelijk zonder contactgegevens", description: "Directe contactgegevens zijn verwijderd. Werkgevers, scholen en projectdetails kunnen nog herkenbaar zijn. Dit is geen garantie op anonimiteit." },
+            ] as const).map((card) => <article key={card.group} className="wk-card min-w-0 p-5"><h3 className="text-xl font-semibold">{card.title}</h3><p className="mt-3 text-sm leading-relaxed text-slate-700">{card.description}</p><div className="mt-5 flex flex-col items-start gap-3">{agencyExampleDownloads.filter((file) => file.group === card.group).map((file) => <AgencyContentLink key={file.file} href={`/downloads/${file.file}`} path={route.path} location={`example_download_${file.group}_${file.format.toLowerCase()}`} intent="sample" download className="wk-button wk-button-secondary text-left">{file.label} ({file.format})</AgencyContentLink>)}</div></article>)}
           </div>
           <p className="mt-5 text-sm leading-relaxed text-slate-600">{agencyFictionalExample.outputNote}</p>
         </section>
@@ -203,6 +225,7 @@ export default function CandidateProposalExamplePage() {
 
         <nav aria-label="Verder lezen" className="mt-10 flex flex-wrap gap-4 text-sm font-extrabold"><Link href="/voor-bureaus/kennisbank" className="text-[var(--wk-primary)] underline decoration-2 underline-offset-4">← Terug naar de kennisbank</Link><Link href="/voor-bureaus/kennisbank/kandidaat-voorstellen-opdrachtgever" className="text-[var(--wk-primary)] underline decoration-2 underline-offset-4">Lees de checklist</Link></nav>
         <p className="mt-6 text-xs font-medium leading-relaxed text-[var(--wk-ink-muted)]">Prijscontext: de Agency-billing tier is momenteel {monthlyPrice} voor {AGENCY_MONTHLY_CREDIT_LIMIT} gedeelde CV-credits. Dit voorbeeld is volledig gratis en gebruikt geen echte kandidaatdata.</p>
+        <p className="mt-4 text-sm leading-relaxed"><Link href="/voor-bureaus/kennisbank/cv-in-huisstijl-recruitmentbureau" className="font-semibold underline underline-offset-4">Vergelijk de workflows voor CV’s in bureauhuisstijl</Link>. Lees ook de <Link href="/voor-bureaus/methodologie/claim-evidence-benchmark" className="font-semibold underline underline-offset-4">methodologie en actuele publicatiestatus</Link>. Dit geschreven voorbeeld is geen onafhankelijk beoordeelde nauwkeurigheidsmeting.</p>
         <FAQJsonLd questions={faqs} />
         <JsonLd data={articleSchema} />
       </main>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getAgencySoftwareJsonLd } from "@/lib/product-discovery";
 import AgencyEvidencePreview from "@/components/agency/AgencyEvidencePreview";
 import AgencyPurchaseNotes from "@/components/agency/AgencyPurchaseNotes";
 import { getAgencyReviewScopeNotice } from "@/lib/agency-review-scope";
@@ -12,7 +13,6 @@ import { getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
 import { getAgencyPublicCapabilities } from "@/lib/agency-public-capabilities";
 import { getAgencyPublicMessaging } from "@/lib/agency-public-messaging";
 import {
-  AGENCY_CURRENCY,
   AGENCY_MONTHLY_CREDIT_LIMIT,
   AGENCY_MONTHLY_PRICE_CENTS,
   getAgencyFullUseUnitPriceDisplay,
@@ -62,31 +62,7 @@ export default function AgencyPage() {
       success: "bg-[var(--wk-success-soft)]",
     }[step.tone],
   }));
-  const softwareJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "WerkCV MatchPack",
-    applicationCategory: "BusinessApplication",
-    operatingSystem: "Web",
-    url: pageUrl,
-    inLanguage: "nl-NL",
-    description: messaging.description,
-    featureList: [
-      ...messaging.featureList,
-      ...(capabilities.reusableAgencyTemplates ? ["Herbruikbare bureau-templates"] : []),
-      ...(capabilities.teamRoles ? ["Rollen voor owner, editor, reviewer en viewer"] : []),
-      ...(capabilities.candidateAcknowledgement ? ["Kandidaatbevestiging voor een benoemde ontvanger"] : []),
-    ],
-    offers: {
-      "@type": "Offer",
-      price: (AGENCY_MONTHLY_PRICE_CENTS / 100).toFixed(2),
-      priceCurrency: AGENCY_CURRENCY,
-      category: "monthly subscription",
-      description: `${AGENCY_MONTHLY_CREDIT_LIMIT} gedeelde CV-credits per betaalde periode`,
-      url: `${pageUrl}#plan`,
-    },
-    publisher: { "@id": "https://werkcv.nl/#organization" },
-  };
+  const softwareJsonLd = getAgencySoftwareJsonLd("nl", capabilities);
 
   return (
     <div className="wk-agency-marketing">

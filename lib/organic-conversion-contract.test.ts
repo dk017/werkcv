@@ -27,10 +27,10 @@ test("AI discovery keeps the intentional first-twelve order without duplicate UR
 
 test("English AI FAQ uses canonical English pricing and template routes", () => {
   const expected = new Map([
-    ["What does WerkCV cost?", `${siteBaseUrl}/en/pricing`],
-    ["Is WerkCV a subscription?", `${siteBaseUrl}/en/pricing`],
-    ["Can I preview before paying?", `${siteBaseUrl}/en/pricing`],
-    ["Where can I find a Dutch CV template in English?", `${siteBaseUrl}/en/dutch-cv-template`],
+    ["CV Builder: What does WerkCV cost?", `${siteBaseUrl}/en/pricing`],
+    ["CV Builder: Is the consumer CV download a subscription?", `${siteBaseUrl}/en/pricing`],
+    ["CV Builder: Can I preview before paying?", `${siteBaseUrl}/en/pricing`],
+    ["CV Builder: Where can I find a Dutch CV template in English?", `${siteBaseUrl}/en/dutch-cv-template`],
   ]);
   for (const [question, canonicalUrl] of expected) {
     const item = aiFaqItems.find((candidate) => candidate.question === question);

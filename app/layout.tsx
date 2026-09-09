@@ -7,6 +7,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { SharedSiteJsonLd } from "@/components/seo/JsonLd";
 import BrandRouteBoundary from "@/components/brand/BrandRouteBoundary";
 import ConditionalClarity from "@/components/ConditionalClarity";
+import AgencyAnalyticsPreferences from "@/components/agency/AgencyAnalyticsPreferences";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -109,6 +110,7 @@ export default function RootLayout({
         <AnalyticsProvider />
         <BuildVersionGuard />
         <BrandRouteBoundary>{children}</BrandRouteBoundary>
+        <AgencyAnalyticsPreferences />
       </body>
     </html>
   );

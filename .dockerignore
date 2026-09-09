@@ -5,7 +5,23 @@ node_modules
 npm-debug.log
 README.md
 .env
+.env*
 .env.local
 .env*.local
 docker-compose.yml
 Dockerfile
+
+# Local verification artifacts and runtime customer uploads are never build inputs.
+.codex-tmp/
+.codex-chrome-profile/
+.codex-remote-attachments/
+.codex-screen.sql
+.codex-*.log
+tmp/
+output/
+tmp-*.log
+local/profile-photos/
+local/
+.codex/
+.agents/
+storage/profile-photos/

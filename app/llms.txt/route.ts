@@ -2,6 +2,7 @@ import { aiDiscoveryUpdatedAt, primaryAiPages, siteBaseUrl } from "@/lib/ai-disc
 import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib/agency-plan";
 import { getAgencyPublicCapabilities } from "@/lib/agency-public-capabilities";
 import { getAgencyPublicMessaging } from "@/lib/agency-public-messaging";
+import { COMPANY_PRODUCT_DESCRIPTION, getProductDescriptions } from "@/lib/product-discovery";
 
 const agencyCapabilities = getAgencyPublicCapabilities();
 const agencyMessagingEn = getAgencyPublicMessaging({ locale: "en", capabilities: agencyCapabilities });
@@ -19,7 +20,14 @@ export function GET() {
   const lines = [
     "# WerkCV",
     "",
-    `> WerkCV provides an online CV builder for the Dutch job market and MatchPack, a pre-send evidence-review workflow for recruitment agencies. ${agencyMessagingEn.hero} MatchPack does not rank candidates, verify identity or replace an ATS.${acknowledgementNote} Consumer CV export costs a one-time €4.99 including VAT with no subscription or automatic renewal.`,
+    `> ${COMPANY_PRODUCT_DESCRIPTION} MatchPack does not rank candidates, verify identity or replace an ATS.${acknowledgementNote}`,
+    "",
+    "## Separate products and billing",
+    ...getProductDescriptions().flatMap((product) => [
+      `- [${product.name}](${product.url}): ${product.description} ${product.pricing.description}`,
+      `  Audience: ${product.audience}. Workspace languages: ${product.languages.workspace.join(", ")}; document languages: ${product.languages.documents.join(", ")}.`,
+      `  Limitations: ${product.limitations.join(" ")}`,
+    ]),
     "",
     `Website: ${siteBaseUrl}`,
     `Language: Dutch (primary), English guides for international applicants`,

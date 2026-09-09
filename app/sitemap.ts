@@ -6,6 +6,9 @@ import { getAllSkillGuideArticles } from '@/lib/vaardigheden-gids/registry';
 import { getDutchWavePages, getEnglishWavePages } from '@/lib/seo-wave/data';
 import { salaryRolePages } from '@/lib/tools/salary-role-pages';
 import { AGENCY_CONTENT_MODIFIED } from '@/lib/agency-content';
+import { agencyBuyingGuideModified } from '@/lib/agency-buying-guide';
+import { fictionalExampleModified } from '@/lib/agency-fictional-example';
+import { PRODUCT_DISCOVERY_MODIFIED } from '@/lib/product-discovery';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
@@ -1269,6 +1272,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         if (!editoriallyDatedUrls.has(entry.url)) {
             delete entry.lastModified;
         }
+        const reviewedDates: Record<string, string> = {
+            [`${baseUrl}/agency`]: PRODUCT_DISCOVERY_MODIFIED,
+            [`${baseUrl}/en/agency`]: PRODUCT_DISCOVERY_MODIFIED,
+            [`${baseUrl}/voor-bureaus/kennisbank/cv-in-huisstijl-recruitmentbureau`]: agencyBuyingGuideModified,
+            [`${baseUrl}/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld`]: fictionalExampleModified,
+        };
+        if (reviewedDates[entry.url]) entry.lastModified = new Date(reviewedDates[entry.url]);
         return entry;
     });
 }

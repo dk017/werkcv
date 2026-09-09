@@ -24,7 +24,8 @@ function text(value: unknown): string {
 
 function paragraph(value: string, style?: string): string {
   if (!value.trim()) return "";
-  const styleXml = style ? `<w:pPr><w:pStyle w:val="${escapeXml(style)}"/></w:pPr>` : "";
+  const keepWithNext = style === "Heading1" || style === "Heading2" ? "<w:keepNext/>" : "";
+  const styleXml = style ? `<w:pPr><w:pStyle w:val="${escapeXml(style)}"/>${keepWithNext}</w:pPr>` : "";
   return `<w:p>${styleXml}<w:r><w:t xml:space="preserve">${escapeXml(value)}</w:t></w:r></w:p>`;
 }
 
@@ -44,8 +45,18 @@ function documentXml(input: AgencyDocxInput): string {
   const fullName = text(candidateData.personal.name) || (locale === "en" ? "Candidate profile" : "Kandidaatprofiel");
   const role = text(vacancyTitle) || text(candidateData.personal.title) || (locale === "en" ? "Candidate proposal" : "Kandidaatvoorstel");
   const labels = locale === "en"
-    ? { profile: "Candidate profile", experience: "Experience", education: "Education", skills: "Skills", contact: "Contact", review: "Review note" }
-    : { profile: "Kandidaatprofiel", experience: "Werkervaring", education: "Opleiding", skills: "Vaardigheden", contact: "Contact", review: "Controlewaarschuwing" };
+    ? {
+      profile: "Candidate profile", experience: "Experience", education: "Education", internships: "Internships",
+      skills: "Skills", languages: "Languages", interests: "Interests", courses: "Courses",
+      awards: "Awards and achievements", properties: "Personal qualities", references: "References",
+      sideActivities: "Side activities", customSections: "Additional information", contact: "Contact", review: "Review note",
+    }
+    : {
+      profile: "Kandidaatprofiel", experience: "Werkervaring", education: "Opleiding", internships: "Stages",
+      skills: "Vaardigheden", languages: "Talen", interests: "Interesses", courses: "Cursussen",
+      awards: "Prestaties", properties: "Eigenschappen", references: "Referenties",
+      sideActivities: "Nevenactiviteiten", customSections: "Extra informatie", contact: "Contact", review: "Controlewaarschuwing",
+    };
   const paragraphs: string[] = [];
 
   if (companyName || headerText) paragraphs.push(paragraph(headerText || companyName || "", "Subtitle"));
@@ -90,7 +101,19 @@ function documentXml(input: AgencyDocxInput): string {
     paragraphs.push(paragraph(labels.experience, "Heading1"));
     candidateData.experience.forEach((item) => {
       const dates = [text(item.start), text(item.end)].filter(Boolean).join(" – ");
-      paragraphs.push(paragraph([text(item.role), text(item.company), dates].filter(Boolean).join(" · "), "Heading2"));
+      const place = text(item.location);
+      paragraphs.push(paragraph([text(item.role), text(item.company), place, dates].filter(Boolean).join(" · "), "Heading2"));
+      if (text(item.description)) paragraphs.push(paragraph(item.description));
+      item.highlights.forEach((highlight) => paragraphs.push(bullet(highlight)));
+    });
+  }
+
+  if (candidateData.internships.length) {
+    paragraphs.push(paragraph(labels.internships, "Heading1"));
+    candidateData.internships.forEach((item) => {
+      const dates = [text(item.start), text(item.end)].filter(Boolean).join(" – ");
+      const place = text(item.location);
+      paragraphs.push(paragraph([text(item.role), text(item.company), place, dates].filter(Boolean).join(" · "), "Heading2"));
       if (text(item.description)) paragraphs.push(paragraph(item.description));
       item.highlights.forEach((highlight) => paragraphs.push(bullet(highlight)));
     });
@@ -98,7 +121,20 @@ function documentXml(input: AgencyDocxInput): string {
 
   if (candidateData.education.length) {
     paragraphs.push(paragraph(labels.education, "Heading1"));
-    candidateData.education.forEach((item) => paragraphs.push(paragraph([text(item.degree), text(item.school), [text(item.start), text(item.end)].filter(Boolean).join(" – ")].filter(Boolean).join(" · "), "Heading2")));
+    candidateData.education.forEach((item) => {
+      paragraphs.push(paragraph([text(item.degree), text(item.school), text(item.location), [text(item.start), text(item.end)].filter(Boolean).join(" – ")].filter(Boolean).join(" · "), "Heading2"));
+      if (text(item.description)) paragraphs.push(paragraph(item.description));
+    });
+  }
+
+  if (candidateData.courses.length) {
+    paragraphs.push(paragraph(labels.courses, "Heading1"));
+    candidateData.courses.forEach((item) => paragraphs.push(bullet([text(item.name), text(item.institution), text(item.year)].filter(Boolean).join(" · "))));
+  }
+
+  if (candidateData.awards.length) {
+    paragraphs.push(paragraph(labels.awards, "Heading1"));
+    candidateData.awards.forEach((item) => paragraphs.push(bullet(item)));
   }
 
   if (candidateData.skills.length) {
@@ -111,6 +147,47 @@ function documentXml(input: AgencyDocxInput): string {
     paragraphs.push(paragraph(labels.review, "Heading1"));
     paragraphs.push(paragraph(warning));
   }
+
+  if (candidateData.languages.length) {
+    paragraphs.push(paragraph(labels.languages, "Heading1"));
+    candidateData.languages.forEach((item) => paragraphs.push(bullet(`${item.name} · ${item.level}`)));
+  }
+  if (candidateData.interests.length) {
+    paragraphs.push(paragraph(labels.interests, "Heading1"));
+    candidateData.interests.forEach((item) => paragraphs.push(bullet(item)));
+  }
+  if (candidateData.properties?.length) {
+    paragraphs.push(paragraph(labels.properties, "Heading1"));
+    paragraphs.push(paragraph(candidateData.properties.join(" · ")));
+  }
+
+  const references = candidateData.references ?? [];
+  if (references.length) {
+    paragraphs.push(paragraph(labels.references, "Heading1"));
+    references.forEach((item) => {
+      paragraphs.push(paragraph([text(item.name), text(item.role), text(item.company)].filter(Boolean).join(" · "), "Heading2"));
+      const contact = [text(item.email), text(item.phone)].filter(Boolean).join(" · ");
+      if (contact) paragraphs.push(paragraph(contact));
+    });
+  }
+
+  const sideActivities = candidateData.sideActivities ?? [];
+  if (sideActivities.length) {
+    paragraphs.push(paragraph(labels.sideActivities, "Heading1"));
+    sideActivities.forEach((item) => {
+      paragraphs.push(paragraph([text(item.title), text(item.organization), [text(item.start), text(item.end)].filter(Boolean).join(" – ")].filter(Boolean).join(" · "), "Heading2"));
+      if (text(item.description)) paragraphs.push(paragraph(item.description));
+    });
+  }
+
+  const customSections = candidateData.customSections ?? [];
+  customSections.forEach((section) => {
+    if (!text(section.title) && !section.items.some((item) => text(item))) return;
+    paragraphs.push(paragraph(text(section.title) || labels.customSections, "Heading1"));
+    section.items.filter((item) => text(item)).forEach((item) => paragraphs.push(bullet(item)));
+  });
+
+  if (text(candidateData.personal.driversLicense)) paragraphs.push(paragraph(`${locale === "en" ? "Driving licence" : "Rijbewijs"}: ${candidateData.personal.driversLicense}`));
 
   const contact = [text(candidateData.personal.email), text(candidateData.personal.phone), text(candidateData.personal.location)].filter(Boolean).join(" · ");
   if (contact && input.output.variant === "full") paragraphs.push(paragraph(`${labels.contact}: ${contact}`, "Caption"));

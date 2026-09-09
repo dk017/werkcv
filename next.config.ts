@@ -2,6 +2,10 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: 'standalone',
+  // Local QA material and mounted uploads must never enter the application image.
+  outputFileTracingExcludes: {
+    '/*': ['./.codex-tmp/**/*', './tmp/**/*', './output/**/*', './local/profile-photos/**/*', './storage/profile-photos/**/*'],
+  },
   serverExternalPackages: ['@napi-rs/canvas', 'pdfjs-dist'],
   turbopack: {
     root: process.cwd(),

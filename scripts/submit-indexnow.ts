@@ -1,5 +1,6 @@
 import { readdir, readFile } from "fs/promises";
 import path from "path";
+import { parseIndexNowUrlList } from "../lib/indexnow-url-list";
 
 type CliOptions = {
   host: string;
@@ -10,6 +11,7 @@ type CliOptions = {
   batchSize: number;
   limit?: number;
   dryRun: boolean;
+  urlFile?: string;
 };
 
 type PublicKeyDiscovery = {
@@ -38,6 +40,9 @@ function parseArgs(argv: string[]): Partial<CliOptions> {
     if (!rawKey || !rawValue) continue;
 
     switch (rawKey) {
+      case "url-file":
+        options.urlFile = rawValue;
+        break;
       case "host":
         options.host = rawValue;
         break;
@@ -203,6 +208,7 @@ async function buildOptions(): Promise<CliOptions> {
     batchSize,
     limit,
     dryRun: Boolean(cli.dryRun),
+    urlFile: cli.urlFile,
   };
 }
 
@@ -213,7 +219,9 @@ async function main(): Promise<void> {
   console.log(`Key location: ${options.keyLocation}`);
   console.log(`Sitemap: ${options.sitemapUrl}`);
 
-  const urls = await loadUrlsFromSitemap(options.sitemapUrl, options.host);
+  const urls = options.urlFile
+    ? parseIndexNowUrlList(await readFile(options.urlFile, "utf8"), options.host)
+    : await loadUrlsFromSitemap(options.sitemapUrl, options.host);
   const limitedUrls = typeof options.limit === "number" ? urls.slice(0, options.limit) : urls;
 
   if (limitedUrls.length === 0) {
@@ -228,7 +236,7 @@ async function main(): Promise<void> {
     await submitBatch(options, batch, index + 1, batches.length);
   }
 
-  console.log("IndexNow submission complete.");
+  console.log(options.dryRun ? "IndexNow dry-run complete. No notification sent." : "IndexNow submission complete.");
 }
 
 main().catch((error) => {

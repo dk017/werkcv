@@ -23,12 +23,13 @@ export const agencyFictionalExample = {
   candidate: {
     name: "Nina de Vries",
     role: "Senior HR-adviseur",
-    location: "Utrecht / hybride",
-    hours: "32–36 uur",
+    location: "Utrecht; werkvoorkeur nog te bevestigen",
+    hours: "Nog te bevestigen",
   },
   vacancy: {
     title: "Senior HR-adviseur",
     organisation: "Stadshaven Zorggroep",
+    hours: "32–36 uur",
     context: "Fictieve zorgorganisatie met circa 1.200 medewerkers in de regio Utrecht.",
     requirementSummary: "Zelfstandig leidinggevenden adviseren, complexe verzuimdossiers begeleiden en HR-rapportages verbeteren.",
   },
@@ -72,12 +73,12 @@ export const agencyFictionalExample = {
     {
       id: "seniority",
       requirement: "Minimaal vijf jaar als zelfstandig HR-adviseur",
-      status: "supported" as const,
+      status: "partially_supported" as const,
       sourceSection: "Profiel",
       sourceLocation: "CV · sectie Profiel",
       sourceSnippet: "Senior HR-adviseur met zeven jaar ervaring in verzuimbegeleiding, organisatieverandering en HR-advies.",
-      explanation: "De bron noemt zeven jaar ervaring en de relevante adviescontext.",
-      nextAction: "Behouden; recruiter controleert de werkperiodes",
+      explanation: "Zeven jaar brede HR-ervaring bewijst niet hoeveel jaar de kandidaat zelfstandig als HR-adviseur werkte.",
+      nextAction: "Beperk tot zeven jaar HR-ervaring; vraag de duur en scope van zelfstandige verantwoordelijkheid na",
     },
     {
       id: "team-leaders",
@@ -125,7 +126,7 @@ export const agencyFictionalExample = {
       sourceSection: "Systemen",
       sourceLocation: "CV · sectie Vaardigheden",
       sourceSnippet: "HR-systemen: personeelsadministratie, verzuimregistratie en rapportage.",
-      explanation: "Rapportage is present, but Power BI is not named and a dashboard-building responsibility is not supported.",
+      explanation: "Rapportage staat in de bron, maar Power BI en het bouwen van dashboards worden niet genoemd.",
       nextAction: "Specifieke claim verwijderen of handmatig beoordelen",
     },
   ] satisfies FictionalEvidence[],
@@ -149,10 +150,10 @@ export const agencyFictionalCandidateData: CVData = {
     title: agencyFictionalExample.candidate.role,
     resumeLanguage: "nl",
     email: "nina.devries@example.com",
-    phone: "06 1234 5678",
+    phone: "",
     location: "Utrecht",
-    address: "Voorbeeldstraat 12",
-    postalCode: "3511 AA",
+    address: "",
+    postalCode: "",
     summary: agencyFictionalExample.sourceSections.find((source) => source.id === "profile")?.snippet ?? "",
     birthDate: "",
     birthPlace: "",
@@ -170,8 +171,8 @@ export const agencyFictionalCandidateData: CVData = {
       role: "Senior HR-adviseur",
       company: "Fictieve Zorgdiensten",
       location: "Utrecht",
-      start: "januari 2021",
-      end: "heden",
+      start: "januari 2023",
+      end: "augustus 2026",
       description: "Adviseert leidinggevenden over verzuim, ontwikkeling en arbeidsvoorwaarden.",
       highlights: [agencyFictionalExample.sourceSections.find((source) => source.id === "experience")?.snippet ?? ""],
     },
@@ -179,8 +180,8 @@ export const agencyFictionalCandidateData: CVData = {
       role: "HR-adviseur",
       company: "Middenland Services",
       location: "Nieuwegein",
-      start: "september 2017",
-      end: "december 2020",
+      start: "september 2019",
+      end: "december 2022",
       description: "Ondersteunde medewerkers en managers bij instroom, ontwikkeling en HR-administratie.",
       highlights: ["Verbeterde de verzuimregistratie en maakte rapportageafspraken inzichtelijk."],
     },
@@ -227,3 +228,48 @@ export const fictionalExampleSourceCanonical = agencyFictionalExample.sourceSect
 }));
 
 export const fictionalExampleSourceDigest = "sha256:ad9fbc196a0c5b8fb43dd5db63b33ebdf67366e7872f952d124ae720cacd3f86" as const;
+
+export const fictionalExampleVersion = "nina-hr-v2";
+export const fictionalExampleModified = "2026-09-07";
+export const fictionalExampleAsOf = "2026-08-31";
+
+/** Authored teaching examples, not output from a live verifier or a benchmark. */
+export const fictionalDraftReview = [
+  { id: "supported", draft: "Nina heeft een bachelor Human Resource Management.", sourceId: "education", explanation: "De opleiding staat expliciet in het CV.", action: "Behouden", final: "Bachelor Human Resource Management." },
+  { id: "partial", draft: "Nina werkte zeven jaar zelfstandig als HR-adviseur.", sourceId: "profile", explanation: "Brede HR-ervaring bewijst niet de duur van zelfstandige adviesverantwoordelijkheid.", action: "Beperken tot wat de bron zegt", final: "Zeven jaar HR-ervaring; duur van zelfstandige adviesverantwoordelijkheid nog te bevestigen." },
+  { id: "unsupported", draft: "Nina configureert zelfstandig AFAS-workflows.", sourceId: "systems", explanation: "Algemene HR-systemen zijn geen bewijs voor AFAS of configuratie. Ontbrekend bewijs is niet automatisch een tegenspraak.", action: "Verwijderen als kandidaatfeit", final: "AFAS-workflowconfiguratie: niet aangetoond in het CV." },
+  { id: "numerical", draft: "Nina adviseerde 40 teamleiders.", sourceId: "experience", explanation: "De bron noemt 24, niet 40. Het concept vergroot hetzelfde aantal zonder bron.", action: "Aantal corrigeren", final: "Adviseerde 24 teamleiders over verzuim, ontwikkeling en arbeidsvoorwaarden." },
+  { id: "current", draft: "Nina is vanaf 1 oktober 2026 beschikbaar voor 32–36 uur.", sourceId: null, explanation: "Dit zijn wensen uit de vacature, geen bevestigde kandidaatfeiten.", action: "Kandidaat navragen; onbekend laten", final: "Startdatum en uren: nog te bevestigen." },
+] as const;
+
+export const fictionalVacancyText = [
+  agencyFictionalExample.notice,
+  `VACATURE — ${agencyFictionalExample.vacancy.title}`,
+  agencyFictionalExample.vacancy.organisation,
+  agencyFictionalExample.vacancy.context,
+  "Locatie: Utrecht, gedeeltelijk thuiswerken mogelijk.",
+  `Omvang: ${agencyFictionalExample.vacancy.hours} per week. Gewenste start: 1 oktober 2026.`,
+  "Opdracht: negen maanden; dit zijn vacaturevoorwaarden, geen kandidaatbevestiging.",
+  "Werkzaamheden: leidinggevenden adviseren, verzuimdossiers begeleiden en HR-rapportages verbeteren.",
+  "Functie-eisen:",
+  ...agencyFictionalExample.evidence.map((item, index) => `${index + 1}. ${item.requirement}`),
+  "Reageer niet op deze vacature: uitsluitend een fictief uitlegbaar voorbeeld.",
+].join("\n");
+
+export const fictionalFullCvText = [
+  agencyFictionalExample.notice,
+  `Bronversie ${fictionalExampleVersion}; peildatum ${fictionalExampleAsOf}`,
+  agencyFictionalExample.candidate.name,
+  agencyFictionalExample.candidate.role,
+  "nina.devries@example.com · Utrecht",
+  ...agencyFictionalExample.sourceSections.flatMap((source) => [source.label, source.snippet]),
+  "Volledige werkperioden",
+  ...agencyFictionalCandidateData.experience.flatMap((item) => [`${item.role} · ${item.company} · ${item.start} - ${item.end}`, item.description, ...item.highlights]),
+  "Opleidingsperiode: september 2013 - juni 2017.",
+  "Vaardigheden: Verzuimbegeleiding; Organisatieverandering.",
+  "Talen: Nederlands — moedertaal; Engels — goed.",
+  "Eigenschappen: Analytisch; Zorgvuldig; Praktisch.",
+  "Cursus: Regie op verzuim · Voorbeeld Academie · 2024.",
+  "Rijbewijs: B.",
+  "Beschikbaarheid, uren, salaris, opzegtermijn en werkvoorkeur: niet opgegeven.",
+].join("\n");

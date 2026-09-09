@@ -136,9 +136,8 @@ const CV_PARSER_MODELS = ['gpt-4o', 'gpt-4o-mini'] as const;
 
 async function getPdfjs() {
     if (!pdfjs) {
-        pdfjs = await import('pdfjs-dist/legacy/build/pdf.js');
-        // Disable worker for server-side usage
-        pdfjs.GlobalWorkerOptions.workerSrc = '';
+        // PDF.js resolves its matching worker module for Node internally.
+        pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
     }
     return pdfjs;
 }

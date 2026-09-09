@@ -9,7 +9,7 @@ const sourceSnippet = (id: (typeof agencyFictionalExample.sourceSections)[number
 
 const SAMPLE_VACANCY = [
   `VACATURE — ${agencyFictionalExample.vacancy.title}`,
-  `${agencyFictionalExample.vacancy.organisation} zoekt een ${agencyFictionalExample.vacancy.title} voor ${agencyFictionalExample.candidate.hours} in Utrecht.`,
+  `${agencyFictionalExample.vacancy.organisation} zoekt een ${agencyFictionalExample.vacancy.title} voor ${agencyFictionalExample.vacancy.hours} in Utrecht.`,
   "",
   "Functie-eisen",
   ...agencyFictionalExample.evidence.map((claim, index) => `${index + 1}. ${claim.requirement}.`),

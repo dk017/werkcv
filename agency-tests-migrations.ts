@@ -76,7 +76,27 @@ function postgresEnv(connectionString: string) {
 
 function runPg(name: "pg_dump" | "psql", args: string[], input?: string) {
   const configured = name === "pg_dump" ? process.env.AGENCY_TEST_PG_DUMP_BIN : process.env.AGENCY_TEST_PSQL_BIN;
-  const result = spawnSync(configured || name, args, { cwd: process.cwd(), env: postgresEnv(url), input, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+  const container = process.env.AGENCY_TEST_PG_CONTAINER;
+  let executable = configured || name;
+  let commandArgs = args;
+  if (container) {
+    if (!/^werkcv-release-qa-[0-9]{8}-db$/u.test(container) || !["localhost", "127.0.0.1"].includes(baseUrl.hostname)) {
+      throw new Error("UNSAFE_TEST_BACKUP_CONTAINER");
+    }
+    const isolatedArgs = args.map((arg, index) => {
+      if (args[index - 1] !== "--dbname") return arg;
+      const target = new URL(arg);
+      if (target.hostname !== baseUrl.hostname || (!target.pathname.endsWith("_ci") && !target.pathname.endsWith("_test"))) {
+        throw new Error("UNSAFE_TEST_BACKUP_DATABASE");
+      }
+      target.hostname = "127.0.0.1";
+      target.port = "5432";
+      return target.toString();
+    });
+    executable = "docker";
+    commandArgs = ["exec", "-i", container, name, ...isolatedArgs];
+  }
+  const result = spawnSync(executable, commandArgs, { cwd: process.cwd(), env: postgresEnv(url), input, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
   if (result.status !== 0) throw new Error(`${name.toUpperCase()}_FAILED`);
   return result.stdout || "";
 }
@@ -150,7 +170,7 @@ async function seedLegacyFixture(database: string) {
     for (const [id, status, limit, cancelAtPeriodEnd, userId] of subscriptions) {
       await connection.query(`INSERT INTO "AgencySubscription" ("id", "userId", "planCode", "provider", "status", "monthlyLimit", "retentionDays", "currentPeriodStart", "currentPeriodEnd", "cancelAtPeriodEnd", "createdAt", "updatedAt") VALUES ($1, $2, 'agency', 'fixture', $3, $4, 90, $5, $6, $7, $8, $8)`, [id, userId, status, limit, startsAt, endsAt, cancelAtPeriodEnd, now]);
     }
-    await connection.query(`INSERT INTO "AgencyUsagePeriod" ("id", "subscriptionId", "startsAt", "endsAt", "allowance", "createdAt") VALUES ($1, $2, $3, $4, 50, $8), ($5, $2, $9, $10, 50, $8), ($6, $2, $11, $12, 50, $8), ($7, $3, $3, $4, 750, $8)`, [fixtureIds.currentPeriod, subscriptions[0][0], startsAt, endsAt, fixtureIds.futurePeriod, fixtureIds.expiredPeriod, fixtureIds.customPeriod, now, futureStart, futureEnd, expiredStart, expiredEnd]);
+    await connection.query(`INSERT INTO "AgencyUsagePeriod" ("id", "subscriptionId", "startsAt", "endsAt", "allowance", "createdAt") VALUES ($1, $2, $3, $4, 50, $8), ($5, $2, $9, $10, 50, $8), ($6, $2, $11, $12, 50, $8), ($7, $13, $3, $4, 750, $8)`, [fixtureIds.currentPeriod, subscriptions[0][0], startsAt, endsAt, fixtureIds.futurePeriod, fixtureIds.expiredPeriod, fixtureIds.customPeriod, now, futureStart, futureEnd, expiredStart, expiredEnd, subscriptions[1][0]]);
     for (let index = 1; index <= 37; index += 1) {
       await connection.query(`INSERT INTO "AgencyCvUsage" ("id", "periodId", "cvId", "countedAt") VALUES ($1, $2, $3, $4)`, [`clusageentry${String(index).padStart(20, "0")}`, fixtureIds.currentPeriod, `cv-fixture-${index}`, now]);
     }

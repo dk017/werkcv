@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Script from "next/script";
 import { usePathname } from "next/navigation";
+import { isAgencyAnalyticsPath } from "@/lib/agency-analytics-consent";
 
 declare global {
   interface Window {
@@ -17,7 +18,7 @@ const PRIVATE_OR_SOURCE_CONTENT_PATHS = new Set([
 ]);
 
 export function clarityAllowedOnPath(pathname: string): boolean {
-  return !PRIVATE_OR_SOURCE_CONTENT_PATHS.has(pathname);
+  return !isAgencyAnalyticsPath(pathname) && !PRIVATE_OR_SOURCE_CONTENT_PATHS.has(pathname);
 }
 
 export default function ConditionalClarity() {
@@ -27,6 +28,7 @@ export default function ConditionalClarity() {
   useEffect(() => {
     if (!allowed && typeof window.clarity === "function") {
       window.clarity("consentv2", { ad_Storage: "denied", analytics_Storage: "denied" });
+      window.clarity("stop");
     }
   }, [allowed]);
 

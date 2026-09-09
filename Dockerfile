@@ -1,12 +1,17 @@
 # ─────────────────────────────────────────────────────────
 # Stage 1: Install dependencies
 # ─────────────────────────────────────────────────────────
-FROM node:20-bookworm-slim AS deps
+FROM node:24.20.0-trixie-slim@sha256:50c3b2f6988dfc307b86e5301d69611af31f4789bdf232863b07d3b02fe55ae0 AS base
+RUN npm install --global npm@12.0.2 --ignore-scripts && npm cache clean --force
+
+FROM base AS deps
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
 COPY prisma ./prisma/
+COPY prisma.config.ts ./prisma.config.ts
+ENV DATABASE_URL=postgresql://dummy:dummy@localhost:5432/dummy
 
 # Skip postinstall scripts (Puppeteer tries to download Chrome here — we don't want that)
 RUN npm ci --ignore-scripts
@@ -17,7 +22,10 @@ RUN npx prisma generate
 # ─────────────────────────────────────────────────────────
 # Stage 2: Build the Next.js app
 # ─────────────────────────────────────────────────────────
-FROM node:20-bookworm-slim AS builder
+FROM deps AS production-deps
+RUN npm prune --omit=dev --ignore-scripts
+
+FROM base AS builder
 
 WORKDIR /app
 ARG APP_BUILD_ID=local
@@ -41,7 +49,7 @@ RUN npm run build
 # ─────────────────────────────────────────────────────────
 # Stage 3: Production runtime
 # ─────────────────────────────────────────────────────────
-FROM node:20-bookworm-slim AS runner
+FROM base AS runner
 
 WORKDIR /app
 ARG APP_BUILD_ID=local
@@ -59,8 +67,8 @@ RUN apt-get update && apt-get install -y \
     libdbus-1-3 \
     libdrm2 \
     libgbm1 \
-    libglib2.0-0 \
-    libgtk-3-0 \
+    libglib2.0-0t64 \
+    libgtk-3-0t64 \
     libnspr4 \
     libnss3 \
     libpango-1.0-0 \
@@ -82,8 +90,7 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Prisma CLI so we can run migrations at startup, and nodemailer locally for outbound mail tasks
-RUN npm install -g prisma
+# Prisma and Nodemailer come from the same audited application lockfile below.
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
@@ -94,7 +101,6 @@ ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 # Chromium needs a writable HOME for its crashpad database
 ENV HOME=/tmp
-ENV NODE_PATH=/usr/local/lib/node_modules
 ENV PROFILE_PHOTO_STORAGE_DIR=/app/storage/profile-photos
 
 # Non-root user for security
@@ -107,15 +113,19 @@ RUN mkdir -p /app/storage/profile-photos \
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+COPY --from=production-deps --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=production-deps --chown=nextjs:nodejs /app/package.json /app/package-lock.json ./
 
 # Copy Prisma schema so the CLI can run migrations at startup
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder --chown=nextjs:nodejs /app/scripts/followups-signup-feedback.mjs ./scripts/followups-signup-feedback.mjs
 
-RUN npm install nodemailer --omit=dev
-
 COPY --chown=nextjs:nodejs entrypoint.sh ./entrypoint.sh
-RUN chmod +x entrypoint.sh
+# npm, npx and the base-image Yarn installation are build-time tools only. The
+# runtime starts Node directly and must not carry their bundled advisories.
+RUN rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx /opt/yarn-v1.22.22
+RUN sed -i 's/\r$//' entrypoint.sh && chmod +x entrypoint.sh
 
 USER nextjs
 

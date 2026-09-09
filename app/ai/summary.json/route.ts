@@ -1,5 +1,6 @@
 import { aiDiscoveryUpdatedAt, primaryAiPages, serviceCapabilities, siteBaseUrl } from "@/lib/ai-discovery";
 import { cvDownloadPrice } from "@/lib/site-content";
+import { COMPANY_PRODUCT_DESCRIPTION, getCompanyPricingSummary, getProductDescriptions, PRODUCT_DISCOVERY_VERSION } from "@/lib/product-discovery";
 
 export const revalidate = 86400;
 
@@ -9,8 +10,9 @@ export function GET() {
       name: "WerkCV",
       alternateName: "WerkCV.nl",
       url: siteBaseUrl,
-      description:
-        "WerkCV is an online CV builder for the Dutch job market with a Dutch and English editor, CV import, paginated review, restrained templates, CV checking tools and one-time PDF payment.",
+      description: COMPANY_PRODUCT_DESCRIPTION,
+      schemaVersion: PRODUCT_DISCOVERY_VERSION,
+      products: getProductDescriptions(),
       primaryLanguage: "nl-NL",
       secondaryLanguages: ["en"],
       market: "Netherlands",
@@ -19,10 +21,11 @@ export function GET() {
         "International applicants applying in the Netherlands",
         "Students and starters",
         "Career switchers",
-        "Coaches and agencies supporting CV creation",
+        "Recruitment agencies and staffing firms preparing candidate proposals with MatchPack",
       ],
-      pricingSummary:
-        `Free to build, edit and review. The final PDF of one separate CV costs ${cvDownloadPrice.display} including VAT. No trial subscription, monthly fee or automatic renewal.`,
+      pricingSummary: getCompanyPricingSummary(),
+      consumerPricingSummary: `Consumer CV Builder: free to build, edit and review; ${cvDownloadPrice.display} including VAT once for the final PDF of one CV. No consumer subscription.`,
+      productFactsScope: "WerkCV CV Builder only; see products for MatchPack facts",
       productFacts: {
         account:
           "Access uses a six-digit email code. A first successful verification creates the account; later codes provide access to existing CVs.",

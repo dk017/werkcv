@@ -6,6 +6,8 @@ import { AGENCY_CONTENT_MODIFIED, AGENCY_CONTENT_PUBLISHED } from "@/lib/agency-
 import { getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
 import { getAgencyMonthlyPriceDisplay } from "@/lib/agency-plan";
 import AgencyGuideSpecialLink from "@/components/agency/AgencyGuideSpecialLink";
+import { getAgencyPublicCapabilities } from "@/lib/agency-public-capabilities";
+import { getAgencyPublicMessaging } from "@/lib/agency-public-messaging";
 
 export type AgencyGuideTable = {
   columns: [string, string, string];
@@ -16,6 +18,7 @@ export type AgencyGuideSection = {
   eyebrow?: string;
   title: string;
   paragraphs?: string[];
+  links?: Array<{ label: string; href: string }>;
   bullets?: string[];
   table?: AgencyGuideTable;
   examples?: Array<{ label: string; before?: string; after?: string; body?: string }>;
@@ -33,6 +36,7 @@ export type AgencyGuideArticleProps = {
   description: string;
   intro: string;
   readingTime: string;
+  modified?: string;
   sections: AgencyGuideSection[];
   faqs: Array<{ question: string; answer: string }>;
   sources: AgencyGuideSource[];
@@ -46,6 +50,7 @@ export default function AgencyGuideArticle({
   description,
   intro,
   readingTime,
+  modified = AGENCY_CONTENT_MODIFIED,
   sections,
   faqs,
   sources,
@@ -71,10 +76,11 @@ export default function AgencyGuideArticle({
     author: { "@id": "https://werkcv.nl/#organization" },
     publisher: { "@id": "https://werkcv.nl/#organization" },
     datePublished: AGENCY_CONTENT_PUBLISHED,
-    dateModified: AGENCY_CONTENT_MODIFIED,
+    dateModified: modified,
     inLanguage: "nl-NL",
   };
   const monthlyPrice = getAgencyMonthlyPriceDisplay("nl");
+  const messaging = getAgencyPublicMessaging({ locale: "nl", capabilities: getAgencyPublicCapabilities() });
   const publishedDate = new Intl.DateTimeFormat("nl-NL", {
     day: "numeric",
     month: "long",
@@ -86,7 +92,7 @@ export default function AgencyGuideArticle({
     month: "long",
     year: "numeric",
     timeZone: "UTC",
-  }).format(new Date(`${AGENCY_CONTENT_MODIFIED}T00:00:00.000Z`));
+  }).format(new Date(`${modified}T00:00:00.000Z`));
 
   return (
     <div className="wk-agency-marketing">
@@ -118,9 +124,10 @@ export default function AgencyGuideArticle({
               {section.eyebrow ? <p className="wk-eyebrow">{section.eyebrow}</p> : null}
               <h2 className="mt-4 text-3xl font-semibold tracking-[-0.04em] sm:text-4xl">{section.title}</h2>
               {section.paragraphs?.map((paragraph) => <p key={paragraph} className="mt-4 max-w-4xl text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">{paragraph}</p>)}
+              {section.links?.map((link) => <p key={link.href} className="mt-3 text-sm"><Link href={link.href} className="font-semibold underline underline-offset-4">{link.label}</Link></p>)}
               {section.bullets?.length ? <ul className="mt-7 grid min-w-0 gap-3 md:grid-cols-2">{section.bullets.map((bullet) => <li key={bullet} className="wk-card min-w-0 p-4 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]"><span className="mr-2 font-black text-[var(--wk-success)]">✓</span>{bullet}</li>)}</ul> : null}
               {section.table ? (
-                <div className="mt-8 overflow-x-auto rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)]">
+                <div role="region" aria-label={`${section.title}: horizontaal schuifbare tabel`} tabIndex={0} className="mt-8 overflow-x-auto rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--wk-primary)]">
                   <table className="w-full min-w-[760px] border-collapse text-left text-sm">
                     <thead className="bg-[var(--wk-surface-subtle)]"><tr>{section.table.columns.map((column) => <th key={column} className="p-4 text-xs font-extrabold uppercase tracking-[0.08em] text-[var(--wk-ink-muted)]">{column}</th>)}</tr></thead>
                     <tbody>{section.table.rows.map((row) => <tr key={row[0]} className="border-t border-[var(--wk-border)] align-top"><th className="p-4 font-extrabold">{row[0]}</th><td className="p-4 font-medium leading-relaxed text-[var(--wk-ink-muted)]">{row[1]}</td><td className="p-4 font-medium leading-relaxed text-[var(--wk-ink-muted)]">{row[2]}</td></tr>)}</tbody>
@@ -159,6 +166,7 @@ export default function AgencyGuideArticle({
             <div className="min-w-0"><p className="wk-eyebrow text-[var(--wk-highlight)]">Van checklist naar workflow</p><h2 className="mt-4 max-w-2xl text-3xl font-semibold tracking-[-0.04em] text-white">{ctaTitle}</h2><p className="mt-3 max-w-2xl text-sm font-medium leading-relaxed text-white/75">{ctaText}</p></div>
             <div className="flex shrink-0 flex-col gap-3">
               <AgencyContentLink href="/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld" path={path} location="guide_bottom_sample" intent="sample" className="wk-button wk-button-secondary">Bekijk het fictieve voorbeeld</AgencyContentLink>
+              {slug === "cv-in-huisstijl-recruitmentbureau" ? <AgencyContentLink href="/tools/kandidaatvoorstel-checker" path={path} location="guide_bottom_checker" intent="learn" className="wk-button wk-button-secondary">{messaging.freeToolCta}</AgencyContentLink> : null}
               {slug === "cv-in-huisstijl-recruitmentbureau" ? <AgencyGuideSpecialLink href="/cv-maken-in-word" path={path} location="agency_guide_word_context" event="agency_docx_cta_clicked">Lees over Word-bestanden</AgencyGuideSpecialLink> : null}
               {slug === "cv-anonimiseren-recruitment" ? <AgencyGuideSpecialLink href="/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld" path={path} location="agency_guide_redaction_context" event="agency_redaction_cta_clicked">Bekijk de contact-reduced versie</AgencyGuideSpecialLink> : null}
               <AgencyContentLink href="/agency#plan" path={path} location="guide_bottom_product" intent="product" className="wk-button wk-button-primary">Start MatchPack · {monthlyPrice}</AgencyContentLink>

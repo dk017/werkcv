@@ -40,7 +40,8 @@ function safeFilename(value: string): string {
 }
 
 export function getProfilePhotoStoragePath(userId: string, projectId: string, filename: string): string {
-  return path.join(getPrimaryStorageRoot(), safeSegment(userId), safeSegment(projectId), safeFilename(filename));
+  // Photos are runtime data in a mounted directory, not application build assets.
+  return path.join(/* turbopackIgnore: true */ getPrimaryStorageRoot(), safeSegment(userId), safeSegment(projectId), safeFilename(filename));
 }
 
 export async function saveProfilePhotoImage(params: {
@@ -49,7 +50,7 @@ export async function saveProfilePhotoImage(params: {
   imageId: string;
   base64: string;
 }): Promise<string> {
-  const directory = path.join(getPrimaryStorageRoot(), safeSegment(params.userId), safeSegment(params.projectId));
+  const directory = path.join(/* turbopackIgnore: true */ getPrimaryStorageRoot(), safeSegment(params.userId), safeSegment(params.projectId));
   await fs.mkdir(directory, { recursive: true });
 
   const filename = `${safeSegment(params.imageId)}.jpg`;
@@ -68,7 +69,7 @@ export async function readProfilePhotoImage(params: {
     safeFilename(params.filename),
   ];
 
-  const attemptedPaths = getReadStorageRoots().map((root) => path.join(root, ...relativeSegments));
+  const attemptedPaths = getReadStorageRoots().map((root) => path.join(/* turbopackIgnore: true */ root, ...relativeSegments));
 
   for (const fullPath of attemptedPaths) {
     try {
