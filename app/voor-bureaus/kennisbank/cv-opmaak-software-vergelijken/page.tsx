@@ -56,7 +56,7 @@ const guide: AgencyGuideArticleProps = {
       table: {
         columns: ["Product / route", "Gedocumenteerde werkwijze", "Prijs, limieten en controle"],
         rows: [
-          ["WerkCV MatchPack", "Aanvullende reviewroute met geselecteerde vacature-eisen, CV-bewijs, open punten, recruiterreview en PDF/DOCX-uitvoer uit de goedgekeurde versie.", `${monthlyPrice} per maand; ${AGENCY_MONTHLY_CREDIT_LIMIT} gedeelde credits. CSV-overdracht; geen native ATS-koppeling.`],
+          ["WerkCV MatchPack", "Aanvullende reviewroute met geselecteerde vacature-eisen, CV-bewijs, open punten, recruiterreview en PDF/DOCX-uitvoer uit de goedgekeurde versie.", `${monthlyPrice}; ${AGENCY_MONTHLY_CREDIT_LIMIT} gedeelde credits. CSV-overdracht; geen native ATS-koppeling.`],
           ...agencyComparisonProfiles.map((profile): [string, string, string] => [profile.product, profile.workflow, `${profile.price} ${profile.check}`]),
         ],
       },
