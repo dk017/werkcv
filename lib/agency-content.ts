@@ -1,5 +1,5 @@
 export const AGENCY_CONTENT_PUBLISHED = "2026-08-16";
-export const AGENCY_CONTENT_MODIFIED = "2026-09-02";
+export const AGENCY_CONTENT_MODIFIED = "2026-09-10";
 
 export type AgencyKnowledgeGuide = {
   slug: string;
@@ -51,6 +51,16 @@ export const agencyKnowledgeGuides: AgencyKnowledgeGuide[] = [
     readingTime: "12 minuten",
     status: "published",
     theme: "sky",
+  },
+  {
+    slug: "cv-opmaak-software-vergelijken",
+    href: "/voor-bureaus/kennisbank/cv-opmaak-software-vergelijken",
+    title: "CV-opmaaksoftware voor recruitmentbureaus vergelijken",
+    description:
+      "Een taakgerichte vergelijking van CV-opmaak en kandidaatvoorstel-workflows, met bronstatus, beperkingen en vragen voor je eigen proces.",
+    readingTime: "11 minuten",
+    status: "published",
+    theme: "emerald",
   },
   {
     slug: "kandidaat-aanbieden-overheid",

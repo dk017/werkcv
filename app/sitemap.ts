@@ -7,7 +7,6 @@ import { getDutchWavePages, getEnglishWavePages } from '@/lib/seo-wave/data';
 import { salaryRolePages } from '@/lib/tools/salary-role-pages';
 import { AGENCY_CONTENT_MODIFIED } from '@/lib/agency-content';
 import { agencyBuyingGuideModified } from '@/lib/agency-buying-guide';
-import { fictionalExampleModified } from '@/lib/agency-fictional-example';
 import { PRODUCT_DISCOVERY_MODIFIED } from '@/lib/product-discovery';
 
 export const dynamic = 'force-dynamic';
@@ -589,6 +588,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.8,
         },
         {
+            url: `${baseUrl}/en/guides/cv-builders-netherlands-compared`,
+            lastModified: new Date('2026-09-10'),
+            changeFrequency: 'monthly',
+            priority: 0.78,
+        },
+        {
             url: `${baseUrl}/en/candidate-proposal-checker`,
             lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'weekly',
@@ -897,6 +902,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         {
             url: `${baseUrl}/voor-bureaus/kennisbank/cv-anonimiseren-recruitment`,
             lastModified: new Date('2026-09-02'),
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/voor-bureaus/kennisbank/cv-opmaak-software-vergelijken`,
+            lastModified: new Date(agencyBuyingGuideModified),
             changeFrequency: 'monthly',
             priority: 0.7,
         },
@@ -1276,7 +1287,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             [`${baseUrl}/agency`]: PRODUCT_DISCOVERY_MODIFIED,
             [`${baseUrl}/en/agency`]: PRODUCT_DISCOVERY_MODIFIED,
             [`${baseUrl}/voor-bureaus/kennisbank/cv-in-huisstijl-recruitmentbureau`]: agencyBuyingGuideModified,
-            [`${baseUrl}/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld`]: fictionalExampleModified,
+            [`${baseUrl}/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld`]: '2026-09-10',
+            [`${baseUrl}/voor-bureaus/kennisbank/cv-opmaak-software-vergelijken`]: agencyBuyingGuideModified,
+            [`${baseUrl}/en/guides/cv-builders-netherlands-compared`]: '2026-09-10',
         };
         if (reviewedDates[entry.url]) entry.lastModified = new Date(reviewedDates[entry.url]);
         return entry;

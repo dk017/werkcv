@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { proposalMistakes } from "./agency-proposal-mistakes";
 import test from "node:test";
 import { createHash } from "node:crypto";
 import JSZip from "jszip";
@@ -27,6 +28,21 @@ test("authored sequence corrects five distinct mistakes without inventing eviden
   assert.match(numerical.draft, /40/); assert.match(numerical.final, /24/);
   assert.doesNotMatch(fixture.recruiterIntroduction + fixture.clientEmail.body, /40 teamleiders|zeven jaar zelfstandig|configureert zelfstandig AFAS/);
   assert.equal(fictionalDraftReview.find((row) => row.id === "current")?.sourceId, null);
+});
+
+test("all seven public examples use the same source; employer correction follows the full CV", () => {
+  assert.equal(proposalMistakes.length, 7);
+  const employer = proposalMistakes[1];
+  const achievement = fixture.sourceSections.find((source) => source.id === "experience")!.snippet;
+  const actualEmployer = cv.experience.find((entry) => entry.highlights.includes(achievement))!;
+  assert.equal(actualEmployer.company, "Fictieve Zorgdiensten");
+  assert.ok(employer.correction.includes(actualEmployer.company));
+  assert.ok(!employer.claim.includes(actualEmployer.company));
+  for (const example of proposalMistakes) {
+    for (const match of example.source.matchAll(/‘([^’]+)’/g)) {
+      assert.ok(fictionalFullCvText.includes(match[1].replace(/\s*…$/, "")), match[1]);
+    }
+  }
 });
 
 test("both DOCX variants retain source sections and unknown facts without internal notes", async () => {

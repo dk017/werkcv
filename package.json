@@ -13,7 +13,7 @@
     "test:agency:activation": "npx tsx --test lib/agency-analytics-contract.test.ts lib/agency-matchpack.test.ts lib/agency-validation-funnel.test.ts lib/agency-candidate-review.test.ts lib/benchmark/claim-evidence-benchmark.test.ts lib/benchmark/claim-evidence-release-gate.test.ts lib/tools/concurrency-limit.test.ts lib/tools/proposal-claim-verifier.test.ts lib/dodo.test.ts components/ConditionalClarity.test.ts",
     "test:agency:acquisition": "npx tsx --test lib/agency-acquisition.test.ts lib/agency-public-messaging.test.ts lib/agency-positioning.test.ts",
     "test:agency:discovery": "tsx --test lib/product-discovery.test.ts lib/agency-discovery-audit.test.ts lib/indexnow-url-list.test.ts",
-    "test:agency:content-evidence": "tsx --test lib/agency-buying-guide.test.ts lib/agency-fictional-example.test.ts",
+    "test:agency:content-evidence": "tsx --test lib/agency-buying-guide.test.ts lib/agency-fictional-example.test.ts lib/comparisons/evidence.test.ts",
     "audit:agency:discovery": "tsx scripts/agency-discovery-audit.ts",
     "test:agency:consent": "tsx --test lib/agency-analytics-consent.test.ts components/ConditionalClarity.test.ts lib/agency-analytics-contract.test.ts",
     "test:agency:discovery-release": "tsx scripts/agency-discovery-release-check.ts",

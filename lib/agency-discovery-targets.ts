@@ -2,6 +2,7 @@ export const agencyDiscoveryPaths = [
   "/agency", "/en/agency", "/voor-bureaus", "/voor-bureaus/kennisbank",
   "/voor-bureaus/kennisbank/cv-in-huisstijl-recruitmentbureau",
   "/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld",
+  "/voor-bureaus/kennisbank/cv-opmaak-software-vergelijken",
   "/voor-bureaus/kennisbank/kandidaat-aanbieden-overheid",
   "/tools/kandidaatvoorstel-checker", "/en/candidate-proposal-checker",
 ] as const;

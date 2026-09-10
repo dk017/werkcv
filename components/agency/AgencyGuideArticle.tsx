@@ -1,4 +1,6 @@
 import Link from "next/link";
+import AgencyCostWorksheet from "./AgencyCostWorksheet";
+import { AGENCY_MONTHLY_PRICE_CENTS } from "@/lib/agency-plan";
 import { AgencyContentLink, AgencyContentView } from "@/components/agency/AgencyContentAnalytics";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
@@ -21,6 +23,7 @@ export type AgencyGuideSection = {
   links?: Array<{ label: string; href: string }>;
   bullets?: string[];
   table?: AgencyGuideTable;
+  costWorksheet?: boolean;
   examples?: Array<{ label: string; before?: string; after?: string; body?: string }>;
 };
 
@@ -134,6 +137,7 @@ export default function AgencyGuideArticle({
                   </table>
                 </div>
               ) : null}
+              {section.costWorksheet ? <AgencyCostWorksheet monthlyPrice={AGENCY_MONTHLY_PRICE_CENTS / 100} /> : null}
               {section.examples?.length ? (
                 <div className="mt-8 grid min-w-0 gap-4 md:grid-cols-2">
                   {section.examples.map((example) => (

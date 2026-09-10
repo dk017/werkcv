@@ -21,6 +21,11 @@ export default function EnglishGuidesHubPage() {
     const pages = getEnglishWavePages();
     const startPaths = [
         {
+            href: '/en/guides/cv-builders-netherlands-compared',
+            title: 'Comparing CV builders?',
+            description: 'Compare free routes, one-time downloads, subscriptions, imports, previews, and PDF output for jobs in the Netherlands.',
+        },
+        {
             href: '/en/expat-cv-netherlands',
             title: 'Expat and unsure where to start?',
             description: 'Use the main decision page for CV language, work route wording, Dutch level, and personal details.',

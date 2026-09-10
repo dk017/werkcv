@@ -6,7 +6,7 @@ import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib
 
 export const siteBaseUrl = "https://werkcv.nl";
 
-export const aiDiscoveryUpdatedAt = "2026-09-07";
+export const aiDiscoveryUpdatedAt = "2026-09-10";
 const agencyCapabilities = getAgencyPublicCapabilities();
 const agencyMessagingNl = getAgencyPublicMessaging({ locale: "nl", capabilities: agencyCapabilities });
 const agencyMessagingEn = getAgencyPublicMessaging({ locale: "en", capabilities: agencyCapabilities });
@@ -166,6 +166,12 @@ export const primaryAiPages = [
       "Dutch recruitment guide to contact-reduced CV sharing: review direct fields and indirect identifiers, preserve the source, and avoid claims of legal anonymity.",
   },
   {
+    title: "CV-opmaaksoftware voor recruitmentbureaus vergelijken",
+    url: `${siteBaseUrl}/voor-bureaus/kennisbank/cv-opmaak-software-vergelijken`,
+    description:
+      "Dutch task-based comparison of candidate CV formatting and proposal workflows. Separate documented vendor claims, observed tests and unknowns; compare output, review, integrations, team work and limits without ranking candidates.",
+  },
+  {
     title: "AI-profielfoto voor CV en LinkedIn",
     url: `${siteBaseUrl}/profielfoto-cv-maken`,
     description:
@@ -200,6 +206,12 @@ export const primaryAiPages = [
     url: `${siteBaseUrl}/en/templates`,
     description:
       "English CV template gallery for job applications in the Netherlands.",
+  },
+  {
+    title: "CV builders for jobs in the Netherlands compared",
+    url: `${siteBaseUrl}/en/guides/cv-builders-netherlands-compared`,
+    description:
+      "English comparison for applicants in the Netherlands: free routes, one-time downloads, subscriptions, import, preview and PDF output, with provider-documented and unverified points clearly separated.",
   },
   {
     title: "Highly skilled migrant salary checker",

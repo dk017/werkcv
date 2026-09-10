@@ -124,7 +124,27 @@ const guide: AgencyGuideArticleProps = {
       title: "Waarom documenten niet alleen visueel mogen worden afgedekt",
       paragraphs: [
         "Een zwart blok over tekst kan de onderliggende tekst toegankelijk laten via kopiëren, zoekfuncties, documentlagen of metadata. Gebruik echte redactie of verwijder de gegevens uit de bron van het exportbestand en controleer daarna de tekstlaag. Een PDF die er afgedekt uitziet is niet automatisch veilig gedeeld.",
+        "Voer de controle uit op de exacte bestanden die je wilt delen. PDF en DOCX hebben verschillende lagen en eigenschappen; een schone PDF bewijst niet dat de bewerkbare Word-versie dezelfde gegevens niet meer bevat.",
       ],
+      bullets: [
+        "PDF: selecteer en zoek op naam, e-mail, telefoon, profiel-links en unieke zinsdelen; controleer links, headers, footers, documenteigenschappen en eventuele bijlagen.",
+        "DOCX: controleer documenteigenschappen, opmerkingen, revisies, verborgen tekst, headers, footers, hyperlinks en bestandsnaam; open het bestand opnieuw als ontvanger.",
+        "Controleer directe én indirecte herkenning in de uiteindelijke volledige tekst, niet alleen in het zichtbare voorblad.",
+        "Vergelijk de volledige en contactvrije export met het bron-CV en de gekozen deelafspraak voordat je verzendt.",
+      ],
+      examples: [
+        { label: "PDF-controle", body: "Een naam kan visueel verdwijnen maar in de tekstlaag of metadata blijven staan. Zoek, selecteer, open links en lees elke pagina opnieuw." },
+        { label: "DOCX-controle", body: "Een aangepaste zichtbare tekst kan nog in revisies, opmerkingen of documenteigenschappen staan. Accepteer/verwijder alleen wat bevoegd is en controleer het gedeelde bestand opnieuw." },
+      ],
+      table: {
+        columns: ["Controle", "PDF", "DOCX"],
+        rows: [
+          ["Zoeken en selecteren", "Zoek en selecteer verwijderde namen, contactvelden en unieke zinnen.", "Zoek in hoofdtekst, headers, footers, velden en verborgen tekst."],
+          ["Bestandsinformatie", "Controleer metadata, documenteigenschappen, links en bijlagen.", "Controleer auteur, revisies, opmerkingen, hyperlinks en documenteigenschappen."],
+          ["Visuele review", "Lees elke pagina als de opdrachtgever en controleer pagina-einden.", "Open in een tweede viewer en controleer of de weergave en bewerkbaarheid zijn zoals bedoeld."],
+          ["Conclusie", "Contactvrij is geen garantie op anonimiteit of veilige deling.", "Een bewerkbare versie kan aanvullende sporen bevatten; deel alleen wanneer het doel dit rechtvaardigt."],
+        ],
+      },
     },
   ],
   faqs: [

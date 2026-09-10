@@ -1,10 +1,11 @@
+import { proposalMistakes } from "@/lib/agency-proposal-mistakes";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AgencyContentLink, AgencyContentView } from "@/components/agency/AgencyContentAnalytics";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
 import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
-import { agencyFictionalExample, fictionalExampleSourceDigest, fictionalExampleModified, fictionalExampleVersion, fictionalDraftReview, fictionalFullCvText, fictionalVacancyText } from "@/lib/agency-fictional-example";
+import { agencyFictionalExample, fictionalExampleSourceDigest, fictionalExampleVersion, fictionalDraftReview, fictionalFullCvText, fictionalVacancyText } from "@/lib/agency-fictional-example";
 import { getAgencyAcquisitionRoute } from "@/lib/agency-acquisition";
 import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib/agency-plan";
 import { AGENCY_CONTENT_PUBLISHED } from "@/lib/agency-content";
@@ -14,6 +15,7 @@ import { agencyExampleDownloads } from "@/lib/agency-example-downloads";
 const route = getAgencyAcquisitionRoute("/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld")!;
 const pageUrl = `https://werkcv.nl${route.path}`;
 const monthlyPrice = getAgencyMonthlyPriceDisplay("nl");
+const pageModified = "2026-09-10";
 
 export const metadata: Metadata = {
   title: route.title,
@@ -61,6 +63,8 @@ const faqs = [
   },
 ];
 
+
+
 function CheckoutCta() {
   if (!isAgencyDodoConfigured()) {
     return <Link href="/agency#plan" className="wk-button wk-button-primary">Bekijk MatchPack · Agency</Link>;
@@ -80,7 +84,7 @@ export default function CandidateProposalExamplePage() {
     author: { "@id": "https://werkcv.nl/#organization" },
     publisher: { "@id": "https://werkcv.nl/#organization" },
     datePublished: AGENCY_CONTENT_PUBLISHED,
-    dateModified: fictionalExampleModified,
+    dateModified: pageModified,
     inLanguage: "nl-NL",
     isAccessibleForFree: true,
   };
@@ -99,7 +103,7 @@ export default function CandidateProposalExamplePage() {
             <div className="mt-6 flex flex-wrap gap-3 text-xs font-bold text-slate-600">
               <span className="rounded-full border border-[var(--wk-warning)] bg-[var(--wk-warning-soft)] px-3 py-2">{agencyFictionalExample.notice}</span>
               <span className="max-w-full break-all rounded-full border border-[var(--wk-border)] bg-[var(--wk-surface)] px-3 py-2">Bronpassages: {fictionalExampleSourceDigest}</span>
-              <span>Bijgewerkt {fictionalExampleModified} · {fictionalExampleVersion}</span>
+              <span>Pagina bijgewerkt {pageModified} · bronversie {fictionalExampleVersion}</span>
             </div>
           </div>
           <aside className="wk-card wk-card-dark min-w-0 p-6 sm:p-8">
@@ -175,6 +179,24 @@ export default function CandidateProposalExamplePage() {
                   <div className="min-w-0"><p className="text-xs font-black uppercase tracking-[0.14em] text-slate-500">Bron</p><p className="mt-2 text-xs font-bold text-slate-600">{claim.sourceLocation}</p>{claim.sourceSnippet ? <blockquote className="mt-3 border-l-4 border-slate-300 pl-4 text-sm leading-relaxed text-slate-800">“{claim.sourceSnippet}”</blockquote> : <p className="mt-3 border-l-4 border-amber-300 pl-4 text-sm font-semibold leading-relaxed text-amber-950">Geen passende bronpassage in het fictieve CV.</p>}</div>
                   <div className="min-w-0"><p className="text-xs font-black uppercase tracking-[0.14em] text-slate-500">Uitleg en actie</p><p className="mt-3 text-sm leading-relaxed text-slate-700">{claim.explanation}</p><p className="mt-3 rounded-[var(--wk-radius-sm,10px)] bg-[var(--wk-surface-subtle,#f4f7f5)] p-3 text-sm font-bold text-slate-800">Volgende stap: {claim.nextAction}</p></div>
                 </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="wk-section border-y border-[var(--wk-border)]" aria-labelledby="mistakes-title">
+          <p className="wk-eyebrow">Praktische foutencatalogus · fictief</p>
+          <h2 id="mistakes-title" className="mt-4 text-3xl font-semibold tracking-[-0.04em]">Zeven manieren waarop een kandidaatvoorstel te veel kan claimen.</h2>
+          <p className="mt-4 max-w-4xl text-sm leading-relaxed text-[var(--wk-ink-muted)]">Deze voorbeelden zijn bewust geschreven op basis van dezelfde fictieve bron. Ze zijn geen meting van hoe vaak recruiters deze fouten maken en geen automatische checker-resultaat. Gebruik voor iedere echte claim de bron, de status en een menselijke vervolgstap.</p>
+          <div className="mt-8 grid min-w-0 gap-4 md:grid-cols-2">
+            {proposalMistakes.map((mistake) => (
+              <article key={mistake.title} className="wk-card min-w-0 p-5">
+                <h3 className="break-words text-lg font-black">{mistake.title}</h3>
+                <p className="mt-4 text-sm font-semibold leading-relaxed text-rose-900"><span className="font-black">Claim:</span> {mistake.claim}</p>
+                <p className="mt-3 text-sm leading-relaxed text-slate-700"><span className="font-black">Bron:</span> {mistake.source}</p>
+                <p className="mt-3 text-sm leading-relaxed text-slate-700"><span className="font-black">Waarom:</span> {mistake.why}</p>
+                <p className="mt-3 text-sm leading-relaxed text-emerald-900"><span className="font-black">Veiliger:</span> {mistake.correction}</p>
+                <p className="mt-3 rounded-[var(--wk-radius-sm,10px)] bg-[var(--wk-surface-subtle,#f4f7f5)] p-3 text-sm font-bold leading-relaxed text-slate-800"><span className="font-black">Actie:</span> {mistake.action}</p>
               </article>
             ))}
           </div>

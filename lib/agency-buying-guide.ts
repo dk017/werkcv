@@ -1,9 +1,13 @@
 import type { AgencyGuideSection } from "@/components/agency/AgencyGuideArticle";
 import { AGENCY_CURRENCY, AGENCY_MONTHLY_PRICE_CENTS, AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyCreditExplanation, getAgencyMonthlyPriceDisplay } from "@/lib/agency-plan";
 
-export const agencyBuyingGuideModified = "2026-09-07";
+export const agencyBuyingGuideModified = "2026-09-10";
 export function getAgencyUsageExamples() {
   return [10, 30, 100].map((items) => ({ items, allocatedCents: AGENCY_MONTHLY_PRICE_CENTS / items, display: new Intl.NumberFormat("nl-NL", { style: "currency", currency: AGENCY_CURRENCY }).format(AGENCY_MONTHLY_PRICE_CENTS / 100 / items) }));
+}
+
+export function getAgencyComparisonUsageExamples() {
+  return [10, 30, 100, 300].map((items) => ({ items, allocatedCents: AGENCY_MONTHLY_PRICE_CENTS / items, display: new Intl.NumberFormat("nl-NL", { style: "currency", currency: AGENCY_CURRENCY }).format(AGENCY_MONTHLY_PRICE_CENTS / 100 / items) }));
 }
 
 export const agencyBuyingSections: AgencyGuideSection[] = [
@@ -28,6 +32,24 @@ export const agencyBuyingSections: AgencyGuideSection[] = [
     links: [{ label: "Bekijk het huidige Agency-aanbod en de prijsvoorwaarden", href: "/agency#plan" }],
     paragraphs: [`MatchPack kost ${getAgencyMonthlyPriceDisplay("nl")} met ${AGENCY_MONTHLY_CREDIT_LIMIT} gedeelde credits voor CV’s en MatchPacks samen, niet voor elk afzonderlijk. ${getAgencyCreditExplanation("nl")}`, "Dit zijn de abonnementskosten gedeeld door het aantal creditverbruikende items: geen losse verkooptarieven, aangetoonde besparingen of gemeten rendementen. Niet-gebruikte ruimte in het abonnement is geen besparing."],
     table: { columns: ["Werkelijk gebruik per maand", "Toegerekende abonnementskosten", "Betekenis"], rows: getAgencyUsageExamples().map(({ items, display }) => [`${items} items`, `${display} per item`, "De volledige maandprijs blijft verschuldigd; vergelijk met je bestaande werkwijze."]) },
+  },
+  {
+    eyebrow: "Bereken je eigen scenario",
+    costWorksheet: true,
+    title: "Vergelijk niet alleen softwarekosten, maar ook reviewtijd",
+    paragraphs: [
+      "Vul voor je eigen bureau het maandvolume, de minuten per document en de interne uurkosten in. Neem ook overdracht naar het ATS, tweede lezers en controle van PDF en DOCX mee. Onderstaande berekening gebruikt uitsluitend hypothetische waarden; het is geen gemeten besparing.",
+    ],
+    table: {
+      columns: ["Variabele", "Hypothetisch voorbeeld", "Wat je zelf moet meten"],
+      rows: [
+        ["Documenten per maand", "30", "Aantal CV's of MatchPacks dat werkelijk een definitieve review krijgt."],
+        ["Reviewtijd per document", "20 minuten", "Start bij broncontrole en stop na goedgekeurde export; noteer uitzonderingen."],
+        ["Interne uurkosten", "€45 per uur", "Gebruik je eigen kostprijs, niet een algemene marktclaim."],
+        ["Overdracht en herstel", "10 minuten", "Meet CSV-overdracht, correcties, tweede controle en exportverschillen apart."],
+        ["Softwarekosten", `${getAgencyMonthlyPriceDisplay("nl")} per betaalde periode`, "Gebruik de actuele factuur en leg credits, btw en ongebruikte ruimte vast."],
+      ],
+    },
   },
   {
     eyebrow: "Wel of niet passend",
