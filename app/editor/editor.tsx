@@ -11,6 +11,9 @@ import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { CVData } from "@/lib/cv";
+import AiWritingAssistant from "./AiWritingAssistant";
+import type { WritingSelection, WritingChange } from "@/lib/ai-writing-changes";
+import { createCvSaveQueue } from "@/lib/cv-save-queue";
 import { updateCV, updateCVTemplate, updateCVColorTheme, getCheckoutURL } from "../actions";
 import { savePublicDraft, type PublicEditorFlow } from "@/lib/public-cv-draft";
 import {
@@ -99,6 +102,8 @@ interface EditorProps {
     };
     workspaceEntitlements?: WorkspaceEntitlements;
     workspaceSwitcherEnabled?: boolean;
+    aiReviewEnabled?: boolean;
+    initialContentVersion?: string;
     mode?: "account" | "public";
     publicDraftId?: string;
     publicFlow?: PublicEditorFlow;
@@ -128,7 +133,6 @@ const COMPACT_EDITOR_TOOLBAR_WIDTH_PX = 980;
 const READY_TO_DOWNLOAD_TRACKED_PREFIX = 'werkcv_ready_to_download_tracked_';
 const CHECKOUT_FLOW_VARIANT = 'direct' as const;
 
-type AtsLanguageLock = 'auto' | 'nl' | 'en';
 type DownloadSource = 'toolbar' | 'ready_panel' | 'post_completion_tools';
 type TemplateSelectorSource = 'toolbar' | 'ready_state';
 type MatchImportFeedback =
@@ -200,6 +204,7 @@ function getOptionalSectionOptions(uiLanguage: UiLanguage): Array<{ id: Optional
 function ensureEditorData(data: CVData, fallbackLanguage: UiLanguage = "nl"): CVData {
     return {
         ...data,
+        experience: data.experience.map((entry, index) => ({ ...entry, entryId: entry.entryId || `legacy-${index}` })),
         personal: {
             ...data.personal,
             resumeLanguage: data.personal.resumeLanguage ?? fallbackLanguage,
@@ -331,6 +336,8 @@ export default function Editor({
     workspaceContext,
     workspaceEntitlements,
     workspaceSwitcherEnabled = false,
+    aiReviewEnabled = false,
+    initialContentVersion,
     mode = "account",
     publicDraftId,
     publicFlow = "consumer",
@@ -382,6 +389,23 @@ export default function Editor({
     const isReadyToDownload = completionState.isReady;
     const remainingCoreSteps = completionState.steps.filter((step) => !step.complete).length;
     const [isSaved, setIsSaved] = useState(true);
+    const [saveProblem, setSaveProblem] = useState(false);
+    const [saveQueue] = useState(() => createCvSaveQueue(
+        initialContentVersion,
+        (snapshot: { data: CVData; source: "upload" | "manual_save" | "auto_save" | "download" }, version) =>
+            updateCV(id, snapshot.data, { source: snapshot.source, uiLanguage, expectedContentVersion: version }),
+    ));
+    const saveEditorData = useCallback(async (snapshot: CVData, source: "upload" | "manual_save" | "auto_save" | "download") => {
+        const result = await saveQueue.save({ data: snapshot, source });
+        if (!result.success) {
+            setSaveProblem(true);
+            setIsSaved(false);
+        } else {
+            setSaveProblem(false);
+            setIsSaved(JSON.stringify(watch()) === JSON.stringify(snapshot));
+        }
+        return result;
+    }, [saveQueue, watch]);
     const [isDownloading, setIsDownloading] = useState(false);
     const [isPublicEditorFullscreen, setIsPublicEditorFullscreen] = useState(false);
     const [templateId, setTemplateId] = useState(initialTemplateId);
@@ -463,10 +487,10 @@ export default function Editor({
             window.removeEventListener("keydown", markInteraction, { capture: true });
         };
     }, []);
-    const [isAtsRewriting, setIsAtsRewriting] = useState(false);
     const [atsTargetRole, setAtsTargetRole] = useState(initialData.personal.title || '');
     const [targetVacancy, setTargetVacancy] = useState('');
-    const [atsLanguageLock, setAtsLanguageLock] = useState<AtsLanguageLock>('auto');
+    const [writingSelection, setWritingSelection] = useState<WritingSelection | null>(null);
+    const [writingHistory, setWritingHistory] = useState<Array<WritingChange & { historyId: string }>>([]);
     const [matchImportFeedback, setMatchImportFeedback] = useState<MatchImportFeedback>({ status: 'idle' });
     const publicStorageWarningRef = useRef(false);
     const editorSplitRef = useRef<HTMLDivElement>(null);
@@ -790,7 +814,8 @@ export default function Editor({
                     setVisibleOptionalSections(deriveVisibleOptionalSections(normalizedData));
                     setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
                     setIsSaved(false);
-                    await updateCV(id, normalizedData, { source: "upload", uiLanguage });
+                    const saved = await saveEditorData(normalizedData, "upload");
+                    if (!saved.success) return;
                 }
 
                 if (pendingExample.colorThemeId && pendingExample.colorThemeId !== initialColorThemeId) {
@@ -798,7 +823,6 @@ export default function Editor({
                     await updateCVColorTheme(id, pendingExample.colorThemeId);
                 }
 
-                setIsSaved(true);
                 window.sessionStorage.removeItem(PENDING_EXAMPLE_CV_STORAGE_KEY);
                 const roleExampleSource = parseEnglishRoleExampleStartSource(pendingExample.startSource);
                 track('example_cv_applied_after_login', {
@@ -822,7 +846,7 @@ export default function Editor({
         };
 
         void applyPendingExample();
-    }, [id, initialColorThemeId, initialTemplateId, isPublicMode, reset, uiLanguage]);
+    }, [id, initialColorThemeId, initialTemplateId, isPublicMode, reset, uiLanguage, saveEditorData]);
 
     useEffect(() => {
         if (isPublicMode) return;
@@ -885,13 +909,12 @@ export default function Editor({
                 setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
                 setIsSaved(false);
 
-                const updateResult = await updateCV(id, normalizedData, { source: "upload", uiLanguage });
+                const updateResult = await saveEditorData(normalizedData, "upload");
                 if (!updateResult.success) {
                     throw new Error('CV save failed');
                 }
 
                 window.sessionStorage.removeItem(PENDING_CV_MATCH_STORAGE_KEY);
-                setIsSaved(true);
                 setMatchImportFeedback({
                     status: 'success',
                     result: parsedPendingMatch.result,
@@ -920,7 +943,7 @@ export default function Editor({
         };
 
         void applyPendingMatch();
-    }, [id, isPublicMode, reset, uiLanguage]);
+    }, [id, isPublicMode, reset, uiLanguage, saveEditorData]);
 
     useEffect(() => {
         const storedVacancy = window.sessionStorage.getItem(getTargetVacancySessionKey(id));
@@ -1180,9 +1203,8 @@ export default function Editor({
             }
             return;
         }
-        const res = await updateCV(id, formData, { source: "manual_save", uiLanguage });
+        const res = await saveEditorData(formData, "manual_save");
         if (res.success) {
-            setIsSaved(true);
             maybeTrackCompletion(formData);
         } else {
             alert(tr("Er ging iets mis bij het opslaan.", "Something went wrong while saving."));
@@ -1191,7 +1213,6 @@ export default function Editor({
 
     // Dirty detection logic + auto-save
     const autoSaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const isSavingRef = useRef(false);
 
     useEffect(() => {
         if (!isPublicMode && isReadOnlyWorkspace) return;
@@ -1203,19 +1224,18 @@ export default function Editor({
                 clearTimeout(autoSaveTimerRef.current);
             }
             autoSaveTimerRef.current = setTimeout(async () => {
-                if (isSavingRef.current) return;
-                isSavingRef.current = true;
                 try {
                     const currentData = watch() as CVData;
                     const saved = isPublicMode
                         ? persistPublicDraft(currentData)
-                        : (await updateCV(id, currentData, { source: "auto_save", uiLanguage })).success;
+                        : (await saveEditorData(currentData, "auto_save")).success;
                     if (saved) {
-                        setIsSaved(true);
+                        if (isPublicMode) setIsSaved(JSON.stringify(watch()) === JSON.stringify(currentData));
                         maybeTrackCompletion(currentData);
                     }
-                } finally {
-                    isSavingRef.current = false;
+                } catch {
+                    setSaveProblem(true);
+                    setIsSaved(false);
                 }
             }, 3000);
         });
@@ -1225,7 +1245,7 @@ export default function Editor({
                 clearTimeout(autoSaveTimerRef.current);
             }
         };
-    }, [isPublicMode, isReadOnlyWorkspace, maybeTrackCompletion, persistPublicDraft, watch, id, uiLanguage]);
+    }, [isPublicMode, isReadOnlyWorkspace, maybeTrackCompletion, persistPublicDraft, watch, id, uiLanguage, saveEditorData]);
 
     // Warn user before closing tab with unsaved changes
     useEffect(() => {
@@ -1347,8 +1367,8 @@ export default function Editor({
                     reason: checkoutResult.reason || checkoutResult.code,
                 });
                 alert(checkoutResult.supportNotified ? supportNotifiedMessage : tr(
-                    "Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.",
-                    "Payment could not be started. Check the payment configuration and try again."
+                    "Betalen kon niet worden gestart. Probeer opnieuw of neem contact op met contact@werkcv.nl.",
+                    "Checkout could not be opened. Try again or contact contact@werkcv.nl."
                 ));
                 return;
             }
@@ -1359,7 +1379,7 @@ export default function Editor({
                 ...checkoutEventContext,
                 reason: getCheckoutFailureReason(error),
             });
-            alert(tr("Betaling kon niet gestart worden. Controleer de betaalconfiguratie en probeer opnieuw.", "Payment could not be started. Check the payment configuration and try again."));
+            alert(tr("Betalen kon niet worden gestart. Probeer opnieuw of neem contact op met contact@werkcv.nl.", "Checkout could not be opened. Try again or contact contact@werkcv.nl."));
         }
     };
 
@@ -1375,66 +1395,6 @@ export default function Editor({
         track('cta_clicked', { location: 'editor_final_review', label: 'open_cover_letter' });
     };
 
-    const handleAtsRewrite = async () => {
-        if (isPublicMode) return;
-        setIsAtsRewriting(true);
-        try {
-            const targetRole = atsTargetRole.trim() || data.personal.title || '';
-            const response = await fetch('/api/ats-rewrite', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    cvId: id,
-                    targetRole,
-                    jobDescription: targetVacancy,
-                    preferredLanguage: atsLanguageLock === 'auto' ? undefined : atsLanguageLock,
-                }),
-            });
-
-            const result = await response.json().catch(() => null);
-
-            if (!response.ok) {
-                if (result?.code === 'ATS_LANGUAGE_MISMATCH') {
-                    alert(tr("ATS kon de gewenste taal niet betrouwbaar aanhouden. Kies een vaste taal (NL/EN) en probeer opnieuw.", "ATS could not reliably keep the requested language. Choose a fixed language (NL/EN) and try again."));
-                    return;
-                }
-                alert(result?.error || tr("ATS Rewrite mislukt. Probeer het opnieuw.", "ATS rewrite failed. Please try again."));
-                return;
-            }
-
-            if (result?.data) {
-                const rewrittenData = result.data as CVData;
-                const currentData = watch() as CVData;
-                const normalizedData = ensureEditorData({
-                    ...currentData,
-                    ...rewrittenData,
-                    personal: {
-                        ...currentData.personal,
-                        ...rewrittenData.personal,
-                    },
-                    references: rewrittenData.references ?? currentData.references,
-                    sideActivities: rewrittenData.sideActivities ?? currentData.sideActivities,
-                    customSections: rewrittenData.customSections ?? currentData.customSections,
-                    properties: rewrittenData.properties ?? currentData.properties,
-                }, uiLanguage);
-                reset(normalizedData);
-                setVisibleOptionalSections((prev) => ({
-                    ...prev,
-                    internships: prev.internships || cvSectionHasSubstantiveContent(normalizedData, "internships"),
-                    courses: prev.courses || cvSectionHasSubstantiveContent(normalizedData, "courses"),
-                    awards: prev.awards || cvSectionHasSubstantiveContent(normalizedData, "awards"),
-                    interests: prev.interests || cvSectionHasSubstantiveContent(normalizedData, "interests"),
-                    properties: prev.properties || cvSectionHasSubstantiveContent(normalizedData, "properties"),
-                    references: prev.references || cvSectionHasSubstantiveContent(normalizedData, "references"),
-                    sideActivities: prev.sideActivities || cvSectionHasSubstantiveContent(normalizedData, "sideActivities"),
-                    customSections: prev.customSections || cvSectionHasSubstantiveContent(normalizedData, "customSections"),
-                }));
-                setIsSaved(false);
-            }
-        } finally {
-            setIsAtsRewriting(false);
-        }
-    };
 
     const handleDownload = async (source: DownloadSource = "toolbar") => {
         setIsDownloading(true);
@@ -1478,12 +1438,11 @@ export default function Editor({
             // immutable but remain exportable through the Agency entitlement gate.
             const formData = watch();
             if (!isReadOnlyWorkspace) {
-                const res = await updateCV(id, formData, { source: "download", uiLanguage });
+                const res = await saveEditorData(formData, "download");
                 if (!res.success) {
                     alert(tr("Er ging iets mis bij het opslaan.", "Something went wrong while saving."));
                     return;
                 }
-                setIsSaved(true);
                 maybeTrackCompletion(formData);
             }
 
@@ -1570,6 +1529,10 @@ export default function Editor({
             }`}
                 style={desktopEditorPaneStyle}
             >
+                {saveProblem && <div role="alert" className="border-b border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
+                    {tr("Opslaan is gestopt om je tekst te beschermen. Een andere tab kan dit CV hebben gewijzigd, of de verbinding is onderbroken. Bewaar eerst een kopie van je tekst voordat je opnieuw laadt. Je lokale wijzigingen blijven hier zichtbaar.",
+                        "Saving has stopped to protect your text. Another tab may have changed this CV, or the connection was interrupted. Copy your text before reloading. Your local changes remain visible here.")}
+                </div>}
                 {/* Toolbar */}
                 <div className="sticky top-0 z-20 flex min-h-14 w-full min-w-0 items-center justify-between gap-2 border-b border-slate-200 bg-white/95 px-2 py-2 backdrop-blur sm:px-3">
                     {/* Left side - Logo and tools */}
@@ -2092,6 +2055,11 @@ export default function Editor({
                             <div className="mt-4">
                                 <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Persoonlijk Profiel", "Personal Profile")}</label>
                                 <textarea {...register("personal.summary")} placeholder={tr("Korte introductie over jezelf, je ervaring en wat je zoekt...", "Short introduction about yourself, your experience, and what you are looking for...")} className={`${inputClass} h-28`} style={inputStyle} />
+                                {aiReviewEnabled && !isPublicMode && !isMatchPackWorkspace && <div className="mt-2 flex flex-wrap gap-2">
+                                    <button type="button" data-writing-trigger="profile:draft_profile" className="rounded-lg border px-3 py-2 text-sm" disabled={saveProblem} onClick={() => setWritingSelection({ target: { kind: "profile" }, action: "draft_profile" })}>{tr("Help mijn profiel schrijven", "Help write my profile")}</button>
+                                    <button type="button" data-writing-trigger="profile:improve" className="rounded-lg border px-3 py-2 text-sm" disabled={saveProblem || !data.personal.summary.trim()} onClick={() => setWritingSelection({ target: { kind: "profile" }, action: "improve" })}>{tr("Verbeter de formulering", "Improve wording")}</button>
+                                    <button type="button" data-writing-trigger="profile:shorten" className="rounded-lg border px-3 py-2 text-sm" disabled={saveProblem || !data.personal.summary.trim()} onClick={() => setWritingSelection({ target: { kind: "profile" }, action: "shorten" })}>{tr("Maak korter", "Make shorter")}</button>
+                                </div>}
                             </div>
 
                             {!isGuidedBuild ? <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4">
@@ -2221,7 +2189,9 @@ export default function Editor({
                             ) return null;
 
                             const section = sectionId === "experience"
-                                ? <ExperienceSection control={control} register={register} uiLanguage={uiLanguage} />
+                                ? <ExperienceSection control={control} register={register} uiLanguage={uiLanguage}
+                                    onWritingAssist={aiReviewEnabled && !isPublicMode && !isMatchPackWorkspace ? (entryId, action) => setWritingSelection({ target: { kind: "experience", entryId }, action }) : undefined}
+                                    writingBlocked={saveProblem} />
                                 : sectionId === "education"
                                     ? <EducationSection control={control} register={register} uiLanguage={uiLanguage} />
                                     : sectionId === "skills"
@@ -2343,12 +2313,12 @@ export default function Editor({
                             </div>
                         </section>
 
-                        {isReadyToDownload && !isPublicMode ? (
+                        {!isPublicMode ? (
                             <>
-                                <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+                                {aiReviewEnabled && <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                                     <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
                                         <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                                            {tr("ATS Optimalisatie", "ATS Optimization")}
+                                            {tr("Afstemmen op een vacature", "Tailor to a job")}
                                         </span>
                                     </h2>
 
@@ -2363,19 +2333,7 @@ export default function Editor({
                                                 style={inputStyle}
                                             />
                                         </div>
-                                        <div>
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Taal lock", "Language lock")}</label>
-                                            <select
-                                                value={atsLanguageLock}
-                                                onChange={(e) => setAtsLanguageLock(e.target.value as AtsLanguageLock)}
-                                                className={inputClass}
-                                                style={inputStyle}
-                                            >
-                                                <option value="auto">{tr("Auto (detecteer)", "Auto (detect)")}</option>
-                                                <option value="nl">{tr("Nederlands", "Dutch")}</option>
-                                                <option value="en">English</option>
-                                            </select>
-                                        </div>
+                                        <p className="text-sm text-slate-600">{tr("Suggestietaal volgt de CV-taal.", "Suggestions use your CV language.")}</p>
                                     </div>
 
                                     <div className="mb-4">
@@ -2391,18 +2349,20 @@ export default function Editor({
 
                                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                                         <button
-                                            onClick={handleAtsRewrite}
-                                            disabled={isAtsRewriting}
+                                            type="button"
+                                            onClick={() => setWritingSelection({ target: { kind: "all" }, action: "tailor" })}
+                                            disabled={saveProblem}
                                             className="px-4 py-2 rounded-md border border-sky-300 bg-sky-50 text-sky-900 font-semibold text-xs hover:bg-sky-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                                         >
-                                            {isAtsRewriting ? tr('Bezig...', 'Working...') : tr('ATS herschrijven', 'Rewrite for ATS')}
+                                            {tr('Bekijk een suggestie', 'Review a suggestion')}
                                         </button>
                                         <p className="text-xs font-bold text-gray-600">
-                                            {tr("Herschrijft profiel + werkervaring met taalbehoud.", "Rewrites your profile and experience while keeping the selected language.")}
+                                            {tr("Controleer de suggestie voordat je tekst vervangt. Controleer alle feiten zelf.", "Review the suggestion before replacing text. Check every fact yourself.")}
                                         </p>
                                     </div>
                                 </section>
 
+                                }
                                 <section className="flex flex-col gap-4 rounded-lg border border-slate-200 bg-white p-5 shadow-sm sm:flex-row sm:items-center sm:justify-between">
                                     <div>
                                         <h2 className="text-base font-semibold text-slate-950">{tr("Ook een sollicitatiebrief nodig?", "Need a cover letter too?")}</h2>
@@ -2588,6 +2548,14 @@ export default function Editor({
                 </dialog>
             ) : null}
 
+            {writingSelection && aiReviewEnabled && !isPublicMode && !isMatchPackWorkspace && <AiWritingAssistant
+                selection={writingSelection} locale={uiLanguage} cvId={id} vacancy={targetVacancy}
+                role={atsTargetRole.trim() || data.personal.title} getData={() => watch() as CVData}
+                prepare={async source => (await saveEditorData(source, "manual_save")).success}
+                getVersion={saveQueue.getVersion} apply={next => { reset(next); setIsSaved(false); }}
+                history={writingHistory} onHistory={setWritingHistory} blocked={saveProblem}
+                onClose={() => setWritingSelection(null)}
+            />}
             {isFinalPdfPreviewOpen && !isPublicMode && !isMatchPackWorkspace ? (
                 <FullCvPreviewDialog
                     cvId={id}

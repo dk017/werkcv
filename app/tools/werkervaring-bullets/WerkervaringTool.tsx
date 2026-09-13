@@ -9,6 +9,7 @@ export default function WerkervaringTool() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [copied, setCopied] = useState(false);
+    const [handoffBusy, setHandoffBusy] = useState(false);
 
     async function handleGenerate() {
         if (!functietitel.trim() || werkzaamheden.trim().length < 20) {
@@ -40,6 +41,14 @@ export default function WerkervaringTool() {
         await navigator.clipboard.writeText(text);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
+    }
+    async function addToCv() {
+        setHandoffBusy(true); setError('');
+        try {
+            const response = await fetch('/api/tools/cv-handoff', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind: 'experience', locale: 'nl', payload: { role: functietitel, company: bedrijf, bullets } }) });
+            const body = await response.json(); if (!response.ok || !body.token) throw new Error();
+            location.assign(`/cv-handoff#token=${encodeURIComponent(body.token)}`);
+        } catch { setError('De tekst kon niet veilig worden overgezet. Kopieer hem of probeer opnieuw.'); setHandoffBusy(false); }
     }
 
     const inputClass = "w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 font-medium bg-white";
@@ -125,6 +134,7 @@ export default function WerkervaringTool() {
                     </ul>
 
                     <div className="flex flex-col sm:flex-row gap-3">
+                        <button onClick={addToCv} disabled={handoffBusy} className="flex-1 py-3 px-4 bg-[#4ECDC4] text-slate-900 font-black text-sm border-2 border-black disabled:opacity-50">{handoffBusy ? 'Voorbereiden…' : 'Voeg veilig toe aan mijn CV'}</button>
                         <button
                             onClick={handleCopyAll}
                             className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-black text-white font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] transition-all"

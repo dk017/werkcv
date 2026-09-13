@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Script from "next/script";
 import { usePathname } from "next/navigation";
 import { isAgencyAnalyticsPath } from "@/lib/agency-analytics-consent";
+import { isPrivateContentPath } from "@/lib/privacy-content-paths";
 
 declare global {
   interface Window {
@@ -11,14 +12,8 @@ declare global {
   }
 }
 
-const PRIVATE_OR_SOURCE_CONTENT_PATHS = new Set([
-  "/tools/kandidaatvoorstel-checker",
-  "/en/candidate-proposal-checker",
-  "/kandidaat/bevestigen",
-]);
-
 export function clarityAllowedOnPath(pathname: string): boolean {
-  return !isAgencyAnalyticsPath(pathname) && !PRIVATE_OR_SOURCE_CONTENT_PATHS.has(pathname);
+  return !isAgencyAnalyticsPath(pathname) && !isPrivateContentPath(pathname);
 }
 
 export default function ConditionalClarity() {

@@ -1,74 +1,23 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { CVData } from '@/lib/cv';
-import { rewriteCVForATS } from '@/lib/ats-rewrite';
-import { getCurrentUserFromRequest } from '@/lib/auth';
-import { saveCvDocumentWithMeaningfulState } from '@/lib/cv-meaningful-persistence';
+import { NextRequest } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { rewriteCVForATS } from "@/lib/ats-rewrite";
+import { getCurrentUserFromRequest } from "@/lib/auth";
+import { authorizeCvDocument } from "@/lib/workspace/cv-authorization";
+import { acquireConsumerAiLease } from "@/lib/consumer-ai-limits";
+import { handleConsumerAiRequest } from "@/lib/consumer-ai-request";
 
+export const maxDuration = 60;
 export async function POST(request: NextRequest) {
-    try {
-        const user = await getCurrentUserFromRequest(request);
-        if (!user) {
-            return NextResponse.json(
-                { error: 'Authentication required', code: 'AUTH_REQUIRED' },
-                { status: 401 }
-            );
-        }
-
-        const body = await request.json();
-        const cvId = typeof body.cvId === 'string' ? body.cvId : '';
-        const targetRole = typeof body.targetRole === 'string' ? body.targetRole : '';
-        const jobDescription = typeof body.jobDescription === 'string' ? body.jobDescription : '';
-        const preferredLanguage =
-            body.preferredLanguage === 'nl' || body.preferredLanguage === 'en'
-                ? body.preferredLanguage
-                : undefined;
-
-        if (!cvId) {
-            return NextResponse.json({ error: 'cvId is required' }, { status: 400 });
-        }
-
-        const cv = await prisma.cVDocument.findFirst({
-            where: { id: cvId, userId: user.id, agencySubscriptionId: null },
-        });
-
-        if (!cv) {
-            return NextResponse.json({ error: 'CV not found' }, { status: 404 });
-        }
-
-        const rewritten = await rewriteCVForATS(cv.data as CVData, {
-            targetRole,
-            jobDescription,
-            preferredLanguage,
-        });
-
-        const saved = await saveCvDocumentWithMeaningfulState({
-            id: cv.id,
-            where: { id: cv.id, userId: user.id, agencySubscriptionId: null },
-            data: rewritten,
-            source: 'manual_save',
-            uiLanguage: preferredLanguage || (rewritten.personal.resumeLanguage === 'en' ? 'en' : 'nl'),
-        });
-        if (!saved.success) return NextResponse.json({ error: 'CV not found' }, { status: 404 });
-
-        return NextResponse.json({
-            success: true,
-            data: rewritten,
-        });
-    } catch (error) {
-        console.error('ATS rewrite failed', error);
-        if (error instanceof Error && error.message === 'ATS_REWRITE_LANGUAGE_MISMATCH') {
-            return NextResponse.json(
-                {
-                    error: 'ATS rewrite output did not match the requested language',
-                    code: 'ATS_LANGUAGE_MISMATCH',
-                },
-                { status: 422 }
-            );
-        }
-        return NextResponse.json(
-            { error: 'Failed to rewrite CV for ATS', code: 'ATS_REWRITE_ERROR' },
-            { status: 500 }
-        );
-    }
+  return handleConsumerAiRequest(request, {
+    enabled: process.env.CONSUMER_AI_REVIEW_ENABLED === "true",
+    user: getCurrentUserFromRequest,
+    document: async (userId, cvId) => {
+      try {
+        const cv = await authorizeCvDocument(userId, cvId, "edit_content");
+        return cv.workspace.kind === "personal" ? cv : null;
+      } catch { return null; }
+    },
+    acquire: (userId, cvId, requestId) => acquireConsumerAiLease(prisma, userId, cvId, requestId),
+    generate: rewriteCVForATS,
+  });
 }

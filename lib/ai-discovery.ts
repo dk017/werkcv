@@ -6,7 +6,7 @@ import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib
 
 export const siteBaseUrl = "https://werkcv.nl";
 
-export const aiDiscoveryUpdatedAt = "2026-09-10";
+export const aiDiscoveryUpdatedAt = "2026-09-13";
 const agencyCapabilities = getAgencyPublicCapabilities();
 const agencyMessagingNl = getAgencyPublicMessaging({ locale: "nl", capabilities: agencyCapabilities });
 const agencyMessagingEn = getAgencyPublicMessaging({ locale: "en", capabilities: agencyCapabilities });
@@ -14,6 +14,31 @@ const agencyPriceNl = getAgencyMonthlyPriceDisplay("nl");
 const agencyPriceEn = getAgencyMonthlyPriceDisplay("en");
 
 export const primaryAiPages = [
+  {
+    title: "CV maken met AI en menselijke controle",
+    url: `${siteBaseUrl}/cv-maken-met-ai`,
+    description: "Dutch evidence-first AI CV guide and editor route: compare original and suggested text, accept each change separately, and check every factual claim.",
+  },
+  {
+    title: "AI CV builder with human review",
+    url: `${siteBaseUrl}/en/ai-cv-builder`,
+    description: "English AI CV builder guidance for Netherlands applicants, with individual change review, factual safeguards and explicit limitations.",
+  },
+  {
+    title: "Free English CV profile summary generator",
+    url: `${siteBaseUrl}/en/profile-summary-generator`,
+    description: "English wording tool for a Netherlands CV: provide only your real role and strengths, review the draft, then optionally move it to the English WerkCV editor through a secure handoff.",
+  },
+  {
+    title: "CV maken met ChatGPT zonder verzonnen feiten",
+    url: `${siteBaseUrl}/cv-gids/cv-maken-met-chatgpt`,
+    description: "Dutch five-step ChatGPT CV workflow with a worked source-to-suggestion example and factual review checklist.",
+  },
+  {
+    title: "Create a CV with ChatGPT without invented facts",
+    url: `${siteBaseUrl}/en/guides/create-cv-with-chatgpt`,
+    description: "English worked guide to using ChatGPT for CV wording while preserving evidence, qualifiers, numbers and employer attribution.",
+  },
   {
     title: "WerkCV homepage",
     url: `${siteBaseUrl}/`,
@@ -454,6 +479,7 @@ export const aiFaqItems = [
 ];
 
 export const serviceCapabilities = [
+  "Activation-gated AI writing assistance with before-and-after review and individual accept, reject, regenerate and in-session undo controls",
   "Dutch CV creation",
   "CV templates including a conservative ATS-oriented layout",
   "PDF CV download",
@@ -464,6 +490,7 @@ export const serviceCapabilities = [
   "Repeat downloads of the same paid CV",
   "CV examples by role and situation",
   "CV checking and optimization tools",
+  "Free Dutch and English profile-summary wording tools with optional secure handoff to the matching editor",
   "LinkedIn profile text to CV structure",
   "Cover letter and application letter tools",
   "Career transition guides",

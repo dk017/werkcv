@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import CvUnavailable from "@/components/CvUnavailable";
 import { getCurrentUser } from "@/lib/auth";
 import { getCVWithSettings } from "@/app/actions";
 import Editor from "@/app/editor/editor";
@@ -93,12 +94,15 @@ export default async function EnglishEditorPage({
   const cv = await getCVWithSettings(id);
 
   if (!cv) {
-    redirect("/en/templates");
+    return <CvUnavailable locale="en" />;
   }
 
   const workspaceEntitlements = await getWorkspaceEntitlementsForUser(user.id);
   return (
     <Editor
+      key={id}
+      initialContentVersion={cv.contentVersion}
+      aiReviewEnabled={process.env.CONSUMER_AI_REVIEW_ENABLED === "true" && !cv.agencyRouteLocked}
       initialData={cv.data}
       id={id}
       initialTemplateId={cv.templateId}

@@ -8,6 +8,11 @@ const read = (path: string) => readFileSync(`${root}/${path}`, "utf8");
 
 test("AI discovery keeps the intentional first-twelve order without duplicate URLs", () => {
   const expected = [
+    "/cv-maken-met-ai",
+    "/en/ai-cv-builder",
+    "/en/profile-summary-generator",
+    "/cv-gids/cv-maken-met-chatgpt",
+    "/en/guides/create-cv-with-chatgpt",
     "/",
     "/cv-maken",
     "/prijzen",
@@ -15,11 +20,6 @@ test("AI discovery keeps the intentional first-twelve order without duplicate UR
     "/en",
     "/en/pricing",
     "/en/dutch-cv-template",
-    "/en/guides/cv-format-netherlands-english",
-    "/templates",
-    "/cv-voorbeelden",
-    "/cv-tips",
-    "/faq",
   ].map((path) => `${siteBaseUrl}${path}`);
   assert.deepEqual(primaryAiPages.slice(0, 12).map((page) => page.url), expected);
   assert.equal(new Set(primaryAiPages.map((page) => page.url)).size, primaryAiPages.length);

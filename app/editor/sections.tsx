@@ -4,6 +4,7 @@
 import { useFieldArray, Control, UseFormRegister, Controller } from "react-hook-form";
 import { CVData } from "@/lib/cv";
 import { UiLanguage } from "@/lib/ui-language";
+import type { WritingAction } from "@/lib/ai-writing-changes";
 
 interface SectionProps {
     control: Control<CVData>;
@@ -19,7 +20,10 @@ function t(uiLanguage: UiLanguage, dutch: string, english: string) {
     return uiLanguage === "en" ? english : dutch;
 }
 
-export function ExperienceSection({ control, register, uiLanguage = "nl" }: SectionProps) {
+export function ExperienceSection({ control, register, uiLanguage = "nl", onWritingAssist, writingBlocked }: SectionProps & {
+    onWritingAssist?: (entryId: string, action: WritingAction) => void;
+    writingBlocked?: boolean;
+}) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "experience",
@@ -35,7 +39,7 @@ export function ExperienceSection({ control, register, uiLanguage = "nl" }: Sect
                 </h2>
                 <button
                     type="button"
-                    onClick={() => append({ role: "", company: "", description: "", start: "", end: "", location: "", highlights: [] })}
+                    onClick={() => append({ entryId: crypto.randomUUID(), role: "", company: "", description: "", start: "", end: "", location: "", highlights: [] })}
                     className="text-sm bg-emerald-600 text-white font-semibold px-3 py-1.5 rounded-md border border-emerald-700 hover:bg-emerald-700 transition-colors"
                 >
                     {t(uiLanguage, "+ Toevoegen", "+ Add")}
@@ -44,6 +48,7 @@ export function ExperienceSection({ control, register, uiLanguage = "nl" }: Sect
 
             <div className="space-y-4">
                 {fields.map((item, index) => (
+                    <div key={item.id}>
                     <ExperienceItem
                         key={item.id}
                         index={index}
@@ -53,6 +58,12 @@ export function ExperienceSection({ control, register, uiLanguage = "nl" }: Sect
                         fieldName="experience"
                         uiLanguage={uiLanguage}
                     />
+                    {onWritingAssist && item.entryId && <div className="mt-2 flex flex-wrap gap-2">
+                        <button type="button" data-writing-trigger={`experience:${item.entryId}:draft_experience`} disabled={writingBlocked} className="rounded-lg border px-3 py-2 text-sm" onClick={() => onWritingAssist(item.entryId!, "draft_experience")}>{t(uiLanguage, "Help mijn taken beschrijven", "Help describe my responsibilities")}</button>
+                        <button type="button" data-writing-trigger={`experience:${item.entryId}:improve`} disabled={writingBlocked} className="rounded-lg border px-3 py-2 text-sm" onClick={() => onWritingAssist(item.entryId!, "improve")}>{t(uiLanguage, "Verbeter de formulering", "Improve wording")}</button>
+                        <button type="button" data-writing-trigger={`experience:${item.entryId}:shorten`} disabled={writingBlocked} className="rounded-lg border px-3 py-2 text-sm" onClick={() => onWritingAssist(item.entryId!, "shorten")}>{t(uiLanguage, "Maak korter", "Make shorter")}</button>
+                    </div>}
+                    </div>
                 ))}
                 {fields.length === 0 && (
                     <div className="text-center py-8 bg-slate-50 border border-dashed border-slate-300 text-slate-600 font-medium text-sm rounded-xl">

@@ -12,6 +12,7 @@ function hasControlCharacter(value: string): boolean {
 }
 
 function matchesAllowedPrefix(pathname: string): boolean {
+  if (pathname === "/cv-handoff" || pathname === "/en/cv-handoff") return true;
   return SAFE_APPLICATION_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
 }
 
@@ -41,5 +42,6 @@ export function isMatchPackReturnPath(value: string): boolean {
 export function isEnglishReturnPath(value: string): boolean {
   const pathname = value.split(/[?#]/, 1)[0];
   return pathname === "/en/editor" || pathname.startsWith("/en/editor/")
+    || pathname === "/en/cv-handoff"
     || pathname === "/en/templates" || pathname.startsWith("/en/templates/");
 }

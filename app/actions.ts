@@ -13,22 +13,13 @@ import { createPersonalCvDocument } from '@/lib/workspace/cv-document-service'
 import { authorizeCvDocument, CvAuthorizationError } from '@/lib/workspace/cv-authorization'
 import { saveCvDocumentWithMeaningfulState, type MeaningfulSaveSource } from '@/lib/cv-meaningful-persistence'
 import { revalidatePath } from 'next/cache'
+import { cvContentVersion } from '@/lib/cv-content-version'
 import {
     buildPersonalCvPreview,
     personalCvLibraryQuerySchema,
     type PersonalCvLibraryResult,
     type PersonalCvLibrarySort,
 } from '@/lib/cv-library'
-
-const userCVListSelect = {
-    id: true,
-    title: true,
-    templateId: true,
-    colorThemeId: true,
-    data: true,
-    createdAt: true,
-    updatedAt: true,
-};
 
 const paidOrderSelect = {
     cvId: true,
@@ -39,7 +30,7 @@ type UserCVListItem = {
     title: string;
     templateId: string;
     colorThemeId: string | null;
-    data: unknown;
+    previewData: unknown;
     createdAt: Date;
     updatedAt: Date;
 };
@@ -87,7 +78,7 @@ export async function createCV(templateId: string = 'professional', colorThemeId
     if (initialData) {
         await saveCvDocumentWithMeaningfulState({
             id: cv.id,
-            where: { id: cv.id, userId: user.id, agencySubscriptionId: null },
+            where: { id: cv.id, userId: user.id, agencySubscriptionId: null, data: { equals: cvData as unknown as Prisma.InputJsonValue } },
             data: cvData,
             source: "initial_create",
             uiLanguage: cvData.personal.resumeLanguage === "en" ? "en" : "nl",
@@ -133,6 +124,7 @@ export async function getCVWithSettings(id: string, expectedWorkspace?: 'persona
     }
     return {
         data: cv.data as unknown as CVData,
+        contentVersion: cvContentVersion(cv.data),
         templateId: cv.templateId,
         colorThemeId: cv.colorThemeId ?? getDefaultThemeId(cv.templateId),
         agencyRouteLocked: isMatchPack,
@@ -152,7 +144,7 @@ export async function getCVWithSettings(id: string, expectedWorkspace?: 'persona
 export async function updateCV(
     id: string,
     data: CVData,
-    options: { source?: MeaningfulSaveSource; uiLanguage?: 'nl' | 'en' } = {},
+    options: { source?: MeaningfulSaveSource; uiLanguage?: 'nl' | 'en'; expectedContentVersion?: string } = {},
 ) {
     const user = await getCurrentUser();
     if (!user) return { success: false, error: 'AUTH_REQUIRED' };
@@ -162,16 +154,23 @@ export async function updateCV(
 
     try {
         const authorised = await authorizeCvDocument(user.id, id, 'edit_content');
+        const personal = authorised.workspace.kind === 'personal';
+        if (personal && options.expectedContentVersion !== cvContentVersion(authorised.data)) {
+            return { success: false, error: 'SAVE_CONFLICT' };
+        }
         const where = authorised.workspace.kind === 'personal'
-            ? { id, userId: user.id, agencySubscriptionId: null }
+            ? { id, userId: user.id, agencySubscriptionId: null, data: { equals: authorised.data as Prisma.InputJsonValue } }
             : { id, agencySubscriptionId: authorised.workspace.agencySubscriptionId };
-        return await saveCvDocumentWithMeaningfulState({
+        const saved = await saveCvDocumentWithMeaningfulState({
             id,
             where,
             data: parsed.data,
             source: options.source ?? 'manual_save',
             uiLanguage: options.uiLanguage ?? parsed.data.personal.resumeLanguage ?? 'nl',
         });
+        return saved.success
+            ? { ...saved, contentVersion: cvContentVersion(parsed.data) }
+            : { success: false, error: personal ? 'SAVE_CONFLICT' : saved.error };
     } catch (error) {
         return { success: false, error: error instanceof CvAuthorizationError ? error.code : 'NOT_FOUND' };
     }
@@ -252,7 +251,7 @@ function decodePersonalCvCursor(value: string | undefined, sort: PersonalCvLibra
     try {
         const parsed = JSON.parse(Buffer.from(value, 'base64url').toString('utf8')) as Partial<PersonalCvCursor>;
         if (parsed.version !== 1 || parsed.sort !== sort || typeof parsed.id !== 'string' || typeof parsed.value !== 'string') return null;
-        if (!/^[a-zA-Z0-9_-]{1,120}$/.test(parsed.id) || parsed.value.length > 500) return null;
+        if (!/^[a-zA-Z0-9_-]{1,120}$/.test(parsed.id) || parsed.value.length > (sort === 'title_asc' ? 80 : 500)) return null;
         if (sort !== 'title_asc' && Number.isNaN(new Date(parsed.value).getTime())) return null;
         return parsed as PersonalCvCursor;
     } catch {
@@ -260,26 +259,124 @@ function decodePersonalCvCursor(value: string | undefined, sort: PersonalCvLibra
     }
 }
 
-function personalCvOrderBy(sort: PersonalCvLibrarySort): Prisma.CVDocumentOrderByWithRelationInput[] {
-    if (sort === 'created_desc') return [{ createdAt: 'desc' }, { id: 'desc' }];
-    if (sort === 'created_asc') return [{ createdAt: 'asc' }, { id: 'asc' }];
-    if (sort === 'title_asc') return [{ title: 'asc' }, { id: 'asc' }];
-    return [{ updatedAt: 'desc' }, { id: 'desc' }];
+function personalCvOrderBySql(sort: PersonalCvLibrarySort) {
+    // This interpolation is deliberately selected from the validated enum;
+    // user input is never interpolated into an identifier or SQL keyword.
+    if (sort === 'created_desc') return Prisma.raw('"createdAt" DESC, "id" DESC');
+    if (sort === 'created_asc') return Prisma.raw('"createdAt" ASC, "id" ASC');
+    if (sort === 'title_asc') return Prisma.raw('LEFT("title", 80) ASC, "id" ASC');
+    return Prisma.raw('"updatedAt" DESC, "id" DESC');
 }
 
-function personalCvCursorWhere(cursor: PersonalCvCursor): Prisma.CVDocumentWhereInput {
+function personalCvCursorSql(cursor: PersonalCvCursor | null) {
+    if (!cursor) return Prisma.sql``;
     if (cursor.sort === 'title_asc') {
-        return { OR: [{ title: { gt: cursor.value } }, { title: cursor.value, id: { gt: cursor.id } }] };
+        return Prisma.sql` AND (LEFT("title", 80) > ${cursor.value} OR (LEFT("title", 80) = ${cursor.value} AND "id" > ${cursor.id}))`;
     }
     const date = new Date(cursor.value);
-    const field = cursor.sort === 'updated_desc' ? 'updatedAt' : 'createdAt';
-    const direction = cursor.sort === 'created_asc' ? 'gt' : 'lt';
-    return {
-        OR: [
-            { [field]: { [direction]: date } },
-            { [field]: date, id: { [direction]: cursor.id } },
-        ],
-    };
+    const field = cursor.sort === 'updated_desc' ? Prisma.raw('"updatedAt"') : Prisma.raw('"createdAt"');
+    const direction = cursor.sort === 'created_asc' ? Prisma.raw('>') : Prisma.raw('<');
+    return Prisma.sql` AND (${field} ${direction} ${date} OR (${field} = ${date} AND "id" ${direction} ${cursor.id}))`;
+}
+
+function escapeLike(value: string): string {
+    return value.replace(/[\\%_]/g, (character) => `\\${character}`);
+}
+
+/**
+ * Return only the bounded fields needed to paint a library card. Selecting
+ * the full JSON `data` column here would expose and transfer contact details,
+ * photos and every optional section for all twelve cards. This projection is
+ * intentionally PostgreSQL-specific because CVDocument.data is JSONB in the
+ * production schema; the editor still fetches the complete CV by id.
+ */
+async function queryPersonalCvCards(
+    userId: string,
+    query: { query: string; sort: PersonalCvLibrarySort; limit: number },
+    cursor: PersonalCvCursor | null,
+): Promise<UserCVListItem[]> {
+    const search = query.query ? Prisma.sql` AND "title" ILIKE ${`%${escapeLike(query.query)}%`}` : Prisma.sql``;
+    const cursorFilter = personalCvCursorSql(cursor);
+    return prisma.$queryRaw<UserCVListItem[]>(Prisma.sql`
+        SELECT
+            "id",
+            LEFT("title", 80) AS "title",
+            "templateId",
+            "colorThemeId",
+            "createdAt",
+            "updatedAt",
+            jsonb_build_object(
+                'personal', jsonb_build_object(
+                    'name', COALESCE("data" #>> '{personal,name}', ''),
+                    'title', COALESCE("data" #>> '{personal,title}', ''),
+                    'resumeLanguage', CASE WHEN "data" #>> '{personal,resumeLanguage}' IN ('nl', 'en') THEN "data" #>> '{personal,resumeLanguage}' ELSE 'nl' END,
+                    'location', COALESCE("data" #>> '{personal,location}', ''),
+                    'summary', COALESCE("data" #>> '{personal,summary}', '')
+                ),
+                'experience', COALESCE((
+                    SELECT jsonb_agg(jsonb_build_object(
+                        'role', COALESCE(item.value ->> 'role', ''),
+                        'company', COALESCE(item.value ->> 'company', ''),
+                        'location', COALESCE(item.value ->> 'location', ''),
+                        'start', COALESCE(item.value ->> 'start', ''),
+                        'end', COALESCE(item.value ->> 'end', ''),
+                        'description', COALESCE(item.value ->> 'description', ''),
+                        'highlights', COALESCE((
+                            SELECT jsonb_agg(highlight.value ORDER BY highlight.ord)
+                            FROM jsonb_array_elements_text(
+                                CASE WHEN jsonb_typeof(item.value -> 'highlights') = 'array' THEN item.value -> 'highlights' ELSE '[]'::jsonb END
+                            ) WITH ORDINALITY AS highlight(value, ord)
+                            WHERE highlight.ord <= 3
+                        ), '[]'::jsonb)
+                    ) ORDER BY item.ord)
+                    FROM jsonb_array_elements(
+                        CASE WHEN jsonb_typeof("data" -> 'experience') = 'array' THEN "data" -> 'experience' ELSE '[]'::jsonb END
+                    ) WITH ORDINALITY AS item(value, ord)
+                    WHERE item.ord <= 2
+                ), '[]'::jsonb),
+                'education', COALESCE((
+                    SELECT jsonb_agg(jsonb_build_object(
+                        'degree', COALESCE(item.value ->> 'degree', ''),
+                        'school', COALESCE(item.value ->> 'school', ''),
+                        'location', COALESCE(item.value ->> 'location', ''),
+                        'start', COALESCE(item.value ->> 'start', ''),
+                        'end', COALESCE(item.value ->> 'end', ''),
+                        'description', COALESCE(item.value ->> 'description', '')
+                    ) ORDER BY item.ord)
+                    FROM jsonb_array_elements(
+                        CASE WHEN jsonb_typeof("data" -> 'education') = 'array' THEN "data" -> 'education' ELSE '[]'::jsonb END
+                    ) WITH ORDINALITY AS item(value, ord)
+                    WHERE item.ord <= 1
+                ), '[]'::jsonb),
+                'skills', COALESCE((
+                    SELECT jsonb_agg(jsonb_build_object(
+                        'name', COALESCE(item.value ->> 'name', ''),
+                        'level', CASE WHEN (item.value ->> 'level') ~ '^[1-5]$' THEN (item.value ->> 'level')::int ELSE 3 END
+                    ) ORDER BY item.ord)
+                    FROM jsonb_array_elements(
+                        CASE WHEN jsonb_typeof("data" -> 'skills') = 'array' THEN "data" -> 'skills' ELSE '[]'::jsonb END
+                    ) WITH ORDINALITY AS item(value, ord)
+                    WHERE item.ord <= 8
+                ), '[]'::jsonb),
+                'languages', COALESCE((
+                    SELECT jsonb_agg(jsonb_build_object(
+                        'name', COALESCE(item.value ->> 'name', ''),
+                        'level', COALESCE(item.value ->> 'level', 'Goed')
+                    ) ORDER BY item.ord)
+                    FROM jsonb_array_elements(
+                        CASE WHEN jsonb_typeof("data" -> 'languages') = 'array' THEN "data" -> 'languages' ELSE '[]'::jsonb END
+                    ) WITH ORDINALITY AS item(value, ord)
+                    WHERE item.ord <= 4
+                ), '[]'::jsonb)
+            ) AS "previewData"
+        FROM "CVDocument"
+        WHERE "userId" = ${userId}
+          AND "agencySubscriptionId" IS NULL
+          ${search}
+          ${cursorFilter}
+        ORDER BY ${personalCvOrderBySql(query.sort)}
+        LIMIT ${query.limit + 1}
+    `);
 }
 
 export async function getUserCVs(input: unknown = {}): Promise<PersonalCvLibraryResult> {
@@ -301,18 +398,9 @@ export async function getUserCVs(input: unknown = {}): Promise<PersonalCvLibrary
         agencySubscriptionId: null,
         ...(query.query ? { title: { contains: query.query, mode: 'insensitive' as const } } : {}),
     };
-    const where: Prisma.CVDocumentWhereInput = cursor
-        ? { AND: [baseWhere, personalCvCursorWhere(cursor)] }
-        : baseWhere;
-
     try {
         const [records, totalCount] = await Promise.all([
-            prisma.cVDocument.findMany({
-                where,
-                orderBy: personalCvOrderBy(query.sort),
-                take: query.limit + 1,
-                select: userCVListSelect,
-            }),
+            queryPersonalCvCards(user.id, query, cursor),
             prisma.cVDocument.count({ where: baseWhere }),
         ]);
         const hasMore = records.length > query.limit;
@@ -334,7 +422,7 @@ export async function getUserCVs(input: unknown = {}): Promise<PersonalCvLibrary
                 title: cv.title,
                 templateId: cv.templateId,
                 colorThemeId: cv.colorThemeId ?? getDefaultThemeId(cv.templateId),
-                previewData: buildPersonalCvPreview(cv.data),
+                previewData: buildPersonalCvPreview(cv.previewData),
                 createdAt: cv.createdAt.toISOString(),
                 updatedAt: cv.updatedAt.toISOString(),
                 isPaid: paidCvIds.has(cv.id),

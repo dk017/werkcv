@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import CvUnavailable from "@/components/CvUnavailable";
 import { getCVWithSettings } from "../actions";
 import { getCurrentUser } from "@/lib/auth";
 import Editor from "./editor";
@@ -25,9 +26,9 @@ function isUploadRequested(value: string | string[] | undefined): boolean {
 export default async function EditorPage({
     searchParams,
 }: {
-    searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string; focus?: string }>;
+    searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string; focus?: string; downloadIntent?: string }>;
 }) {
-    const { id, template, startSource, upload, workspace, focus } = await searchParams;
+    const { id, template, startSource, upload, workspace, focus, downloadIntent } = await searchParams;
     const user = await getCurrentUser();
     const templateId = normalizeTemplateId(template);
     const uploadRequested = isUploadRequested(upload);
@@ -45,6 +46,7 @@ export default async function EditorPage({
         nextParams.set("startSource", resolvedStartSource);
         if (resolvedFocus) nextParams.set("focus", resolvedFocus);
         if (uploadRequested) nextParams.set("upload", "1");
+        if (downloadIntent === "1") nextParams.set("downloadIntent", "1");
         if (workspace === "agency") nextParams.set("workspace", "agency");
         const next = `/editor?${nextParams.toString()}`;
         redirect(`/login?next=${encodeURIComponent(next)}`);
@@ -74,19 +76,22 @@ export default async function EditorPage({
         });
         if (resolvedFocus) editorParams.set("focus", resolvedFocus);
         if (uploadRequested) editorParams.set("upload", "1");
+        if (downloadIntent === "1") editorParams.set("downloadIntent", "1");
         redirect(`/editor?${editorParams.toString()}`);
     }
 
     const cv = await getCVWithSettings(id);
 
     if (!cv) {
-        // CV not found, redirect to template selection
-        redirect(`/templates`);
+        return <CvUnavailable locale="nl" />;
     }
 
     const workspaceEntitlements = await getWorkspaceEntitlementsForUser(user.id);
     return (
         <Editor
+            key={id}
+            initialContentVersion={cv.contentVersion}
+            aiReviewEnabled={process.env.CONSUMER_AI_REVIEW_ENABLED === "true" && !cv.agencyRouteLocked}
             initialData={cv.data}
             id={id}
             initialTemplateId={cv.templateId}

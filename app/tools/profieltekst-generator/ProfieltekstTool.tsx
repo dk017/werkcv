@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ProfieltekstTool() {
+    const router = useRouter();
     const [huidigeFunctie, setHuidigeFunctie] = useState('');
     const [doelrol, setDoelrol] = useState('');
     const [competenties, setCompetenties] = useState('');
@@ -11,6 +13,7 @@ export default function ProfieltekstTool() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
     const [copied, setCopied] = useState(false);
+    const [handoffBusy, setHandoffBusy] = useState(false);
 
     async function handleGenerate() {
         if (!huidigeFunctie.trim() || !doelrol.trim()) {
@@ -42,17 +45,25 @@ export default function ProfieltekstTool() {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     }
+    async function addToCv() {
+        setHandoffBusy(true); setError('');
+        try {
+            const response = await fetch('/api/tools/cv-handoff', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ kind: 'profile', locale: 'nl', payload: { text: result } }) });
+            const body = await response.json(); if (!response.ok || !body.token) throw new Error();
+            router.replace(`/cv-handoff#token=${encodeURIComponent(body.token)}`);
+        } catch { setError('De tekst kon niet veilig worden overgezet. Kopieer hem of probeer opnieuw.'); setHandoffBusy(false); }
+    }
 
-    const inputClass = "w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm text-slate-800 placeholder:text-slate-400 outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-100 font-medium bg-white";
+    const inputClass = "mt-2 w-full rounded-xl border border-[var(--wk-line)] bg-white px-4 py-3 text-[var(--wk-ink)] placeholder:text-[var(--wk-ink-muted)] outline-none focus:border-[var(--wk-accent)] focus:ring-2 focus:ring-[var(--wk-accent-soft)]";
 
     return (
-        <div className="bg-white border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-6 md:p-8">
+        <div className="wk-card p-5 sm:p-8">
             {!result ? (
                 <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
-                                Huidige / laatste functie <span className="text-red-500">*</span>
+                            <label className="block text-sm font-semibold text-[var(--wk-ink)]">
+                                Huidige / laatste functie <span className="text-red-600">*</span>
                             </label>
                             <input
                                 value={huidigeFunctie}
@@ -62,8 +73,8 @@ export default function ProfieltekstTool() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
-                                Doelrol (functie waarop je solliciteert) <span className="text-red-500">*</span>
+                            <label className="block text-sm font-semibold text-[var(--wk-ink)]">
+                                Doelrol (functie waarop je solliciteert) <span className="text-red-600">*</span>
                             </label>
                             <input
                                 value={doelrol}
@@ -75,7 +86,7 @@ export default function ProfieltekstTool() {
                     </div>
 
                     <div>
-                        <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
+                        <label className="block text-sm font-semibold text-[var(--wk-ink)]">
                             Kerncompetenties (kommagescheiden)
                         </label>
                         <input
@@ -88,7 +99,7 @@ export default function ProfieltekstTool() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
+                            <label className="block text-sm font-semibold text-[var(--wk-ink)]">
                                 Jaren relevante ervaring
                             </label>
                             <input
@@ -99,7 +110,7 @@ export default function ProfieltekstTool() {
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-black uppercase tracking-wide text-slate-600 mb-1.5">
+                            <label className="block text-sm font-semibold text-[var(--wk-ink)]">
                                 Toon
                             </label>
                             <select
@@ -116,12 +127,7 @@ export default function ProfieltekstTool() {
 
                     {error && <p className="text-sm text-red-600 font-medium">{error}</p>}
 
-                    <button
-                        onClick={handleGenerate}
-                        disabled={isLoading}
-                        className="w-full flex items-center justify-center gap-2 py-3 px-6 bg-[#4ECDC4] hover:bg-teal-500 disabled:opacity-50 disabled:cursor-not-allowed text-slate-900 font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
-                        style={{ borderWidth: '3px' }}
-                    >
+                    <button type="button" onClick={() => void handleGenerate()} disabled={isLoading} className="wk-button wk-button-primary w-full justify-center disabled:opacity-50">
                         {isLoading ? (
                             <>
                                 <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -137,46 +143,42 @@ export default function ProfieltekstTool() {
                 </div>
             ) : (
                 <div className="space-y-4">
-                    <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-black uppercase tracking-wide text-slate-500">Jouw profieltekst</span>
-                        <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 border border-emerald-200 rounded">✓ Gegenereerd</span>
+                    <div className="flex items-center justify-between gap-3">
+                        <span className="wk-eyebrow">Jouw profieltekst</span>
+                        <span className="rounded-full bg-[var(--wk-success-soft)] px-3 py-1 text-xs font-semibold text-[var(--wk-success)]">✓ Gegenereerd</span>
                     </div>
 
-                    <div className="bg-slate-50 border-2 border-slate-200 rounded-lg p-4">
-                        <p className="text-slate-800 leading-relaxed font-medium">{result}</p>
+                    <div className="rounded-xl border border-[var(--wk-line)] bg-[var(--wk-surface-subtle)] p-4">
+                        <p className="break-words leading-7 text-[var(--wk-ink)]">{result}</p>
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-3">
+                        <button type="button" onClick={() => void addToCv()} disabled={handoffBusy} className="wk-button wk-button-primary flex-1 justify-center disabled:opacity-50">{handoffBusy ? 'Voorbereiden…' : 'Voeg veilig toe aan mijn CV'}</button>
                         <button
-                            onClick={handleCopy}
-                            className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-black text-white font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.3)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.3)] transition-all"
-                            style={{ borderWidth: '3px' }}
+                            onClick={() => void handleCopy()}
+                            className="wk-button wk-button-secondary flex-1 justify-center"
                         >
                             {copied ? '✓ Gekopieerd!' : 'Kopieer tekst'}
                         </button>
                     </div>
 
-                    <div className="bg-[#FFF7D6] border-2 border-black p-4 sm:p-5">
-                        <p className="text-xs font-black uppercase tracking-wide text-slate-600 mb-2">
+                    <div className="rounded-xl border border-[var(--wk-line)] bg-[var(--wk-highlight-soft)] p-4 sm:p-5">
+                        <p className="wk-eyebrow">
                             Volgende stap
                         </p>
-                        <h3 className="text-lg font-black text-slate-900 mb-2">
+                        <h3 className="mt-3 text-lg font-semibold text-[var(--wk-ink)]">
                             Zet deze profieltekst direct in je CV
                         </h3>
-                        <p className="text-sm text-slate-700 leading-relaxed mb-4">
+                        <p className="mt-2 text-sm leading-7 text-[var(--wk-ink-muted)]">
                             Open de editor om je profieltekst meteen bovenaan je CV te zetten, of kies eerst een template waarin je hem strak kunt plaatsen.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-3">
-                            <a
-                                href="/editor"
-                                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-[#4ECDC4] text-slate-900 font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
-                                style={{ borderWidth: '3px' }}
-                            >
-                                Open editor met dit profiel →
-                            </a>
+                            <button type="button" onClick={() => void addToCv()} disabled={handoffBusy} className="wk-button wk-button-primary flex-1 justify-center disabled:opacity-50">
+                                Voeg toe aan mijn CV →
+                            </button>
                             <a
                                 href="/templates"
-                                className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-50 transition-colors"
+                                className="wk-button wk-button-secondary flex-1 justify-center"
                             >
                                 Bekijk templates
                             </a>
@@ -185,7 +187,7 @@ export default function ProfieltekstTool() {
 
                     <button
                         onClick={() => { setResult(''); setError(''); }}
-                        className="w-full py-2 text-xs font-bold text-slate-500 hover:text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+                        className="w-full rounded-xl border border-[var(--wk-line)] py-2 text-sm font-semibold text-[var(--wk-ink-muted)] hover:bg-[var(--wk-surface-subtle)]"
                     >
                         Opnieuw genereren
                     </button>

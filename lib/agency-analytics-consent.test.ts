@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { agencyAnalyticsAllowed, readAgencyAnalyticsConsent, isAgencyAnalyticsPath } from "./agency-analytics-consent";
+import { AGENCY_CONSENT_COOKIE, agencyAnalyticsAllowed, readAgencyAnalyticsConsent, isAgencyAnalyticsPath } from "./agency-analytics-consent";
 
 test("Agency measurement fails closed without a valid explicit choice", () => {
   for (const cookie of ["", "werkcv_agency_analytics_v1=denied", "werkcv_agency_analytics_v1=true", "werkcv_agency_analytics_v1=granted-extra"]) {
@@ -9,6 +9,14 @@ test("Agency measurement fails closed without a valid explicit choice", () => {
   }
   assert.equal(readAgencyAnalyticsConsent("x=1; werkcv_agency_analytics_v1=granted; y=2"), "granted");
   assert.equal(agencyAnalyticsAllowed("agency_content_cta_clicked", "/agency", "werkcv_agency_analytics_v1=granted"), true);
+});
+
+test("Consumer AI writing measurement is deny-by-default", () => {
+  assert.equal(agencyAnalyticsAllowed("ai_writing_opened", "/editor", ""), false);
+  assert.equal(agencyAnalyticsAllowed("ai_writing_decision", "/en/editor", `${AGENCY_CONSENT_COOKIE}=denied`), false);
+  assert.equal(agencyAnalyticsAllowed("ai_writing_decision", "/en/editor", `${AGENCY_CONSENT_COOKIE}=granted`), false);
+  assert.equal(agencyAnalyticsAllowed("ai_writing_decision", "/en/editor", "werkcv_ai_analytics_v1=granted"), true);
+  assert.equal(agencyAnalyticsAllowed("agency_content_cta_clicked", "/agency", "werkcv_ai_analytics_v1=granted"), false);
 });
 
 test("All Agency route families are protected without capturing similarly named consumer pages", () => {

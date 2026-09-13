@@ -149,6 +149,14 @@ export const routePairs = [
     preserveSearch: false,
   },
   {
+    id: "profile-summary-generator",
+    nl: "/tools/profieltekst-generator",
+    en: "/en/profile-summary-generator",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
     id: "guide-cv-photo-netherlands",
     nl: "/cv-gids/foto-op-cv-nederland",
     en: "/en/guides/netherlands-cv-photo-rules",

@@ -72,7 +72,9 @@ export async function saveCvDocumentWithMeaningfulStateUsingClient(
         }
 
         const transition = await tx.cVDocument.updateMany({
-            where: { ...where, id, hasMeaningfulContent: false },
+            // The content compare-and-swap predicate matched the OLD data.
+            // Inside this transaction the next update must match the NEW data.
+            where: { ...where, ...(where.data ? { data: { equals: data as unknown as Prisma.InputJsonValue } } : {}), id, hasMeaningfulContent: false },
             data: {
                 hasMeaningfulContent: true,
                 meaningfulContentAt: new Date(),

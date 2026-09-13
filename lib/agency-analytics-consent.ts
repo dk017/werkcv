@@ -1,3 +1,4 @@
+import { readAiAnalyticsConsent } from "./ai-analytics-consent";
 export const AGENCY_CONSENT_COOKIE = "werkcv_agency_analytics_v1";
 export const AGENCY_CONSENT_CHANGED = "werkcv:agency-analytics-consent";
 export type AgencyAnalyticsConsent = "granted" | "denied" | null;
@@ -11,7 +12,7 @@ export function isAgencyAnalyticsPath(path: string): boolean {
 }
 
 export function requiresAgencyAnalyticsConsent(event: string, path: string): boolean {
-  return /^(agency_|matchpack_)/.test(event) || isAgencyAnalyticsPath(path);
+  return /^(agency_|matchpack_|ai_writing_)/.test(event) || isAgencyAnalyticsPath(path);
 }
 
 export function readAgencyAnalyticsConsent(cookies: string): AgencyAnalyticsConsent {
@@ -21,6 +22,7 @@ export function readAgencyAnalyticsConsent(cookies: string): AgencyAnalyticsCons
 }
 
 export function agencyAnalyticsAllowed(event: string, path: string, cookies: string): boolean {
+  if (event.startsWith("ai_writing_")) return !isAgencyAnalyticsPath(path) && readAiAnalyticsConsent(cookies) === "granted";
   if (path.split(/[?#]/, 1)[0].replace(/\/$/, "") === "/kandidaat/bevestigen") return false;
   return !requiresAgencyAnalyticsConsent(event, path) || readAgencyAnalyticsConsent(cookies) === "granted";
 }

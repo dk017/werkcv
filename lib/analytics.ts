@@ -109,6 +109,11 @@ type CheckoutExperimentContext = EditorSourceContext & {
 // Event types — exhaustive list of all tracked interactions
 // ============================================================
 export type AnalyticsEvent =
+    | { event: 'ai_writing_opened'; properties: { locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; action: 'draft_profile' | 'draft_experience' | 'improve' | 'shorten' | 'tailor' } }
+    | { event: 'ai_writing_requested'; properties: { locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; action: 'draft_profile' | 'draft_experience' | 'improve' | 'shorten' | 'tailor'; regeneration: boolean } }
+    | { event: 'ai_writing_result'; properties: { locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; changeCount: number } }
+    | { event: 'ai_writing_failed'; properties: { locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; reason: string } }
+    | { event: 'ai_writing_decision'; properties: { locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; field: 'summary' | 'description' | 'highlights'; decision: 'accepted' | 'rejected' | 'undone' } }
     // Navigation
     | { event: 'page_view'; properties: { path: string; referrer?: string } }
     | {

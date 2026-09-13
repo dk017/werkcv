@@ -66,6 +66,24 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // A fragment-bearing handoff is an ephemeral transfer screen. Never
+        // let a browser or intermediary cache the page that receives it.
+        source: '/cv-handoff',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store, max-age=0' },
+          { key: 'Referrer-Policy', value: 'no-referrer' },
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },
+        ],
+      },
+      {
+        source: '/en/cv-handoff',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store, max-age=0' },
+          { key: 'Referrer-Policy', value: 'no-referrer' },
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },
+        ],
+      },
     ];
   },
 

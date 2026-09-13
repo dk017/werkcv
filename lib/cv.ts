@@ -25,6 +25,7 @@ export const cvSchema = z.object({
     }),
     experience: z.array(
         z.object({
+            entryId: z.string().min(1).max(80).regex(/^[a-zA-Z0-9_-]+$/).optional(),
             role: z.string().default(""),
             company: z.string().default(""),
             location: z.string().default(""),

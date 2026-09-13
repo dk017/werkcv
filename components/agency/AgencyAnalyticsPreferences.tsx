@@ -26,7 +26,7 @@ export default function AgencyAnalyticsPreferences() {
           <button type="button" onClick={() => setAgencyAnalyticsConsent("denied")} aria-pressed={consent === "denied"} className="rounded-xl border border-[#193c36] px-4 py-3 font-semibold focus-visible:outline-2 focus-visible:outline-offset-4">{en ? "No measurement" : "Geen meting"}</button>
         </div>
         <p role="status" className="mt-3">{consent === null ? (en ? "Measurement is off until you allow it." : "De meting staat uit totdat je toestemming geeft.") : (en ? "Your choice is saved for this browser." : "Je keuze is opgeslagen voor deze browser.")}</p>
-        <a href="/agency/privacy" className="mt-3 inline-block underline underline-offset-4">{en ? "MatchPack privacy information (Dutch)" : "Privacyinformatie MatchPack"}</a>
+        <a href={en ? "/en/agency/privacy" : "/agency/privacy"} className="mt-3 inline-block underline underline-offset-4">{en ? "MatchPack privacy information" : "Privacyinformatie MatchPack"}</a>
       </details>
     </aside>
   );

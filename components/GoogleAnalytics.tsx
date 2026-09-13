@@ -3,6 +3,7 @@ import Script from "next/script";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { isAgencyAnalyticsPath } from "@/lib/agency-analytics-consent";
+import { isPrivateContentPath } from "@/lib/privacy-content-paths";
 
 /**
  * Google Analytics 4 loader.
@@ -10,7 +11,8 @@ import { isAgencyAnalyticsPath } from "@/lib/agency-analytics-consent";
  */
 export default function GoogleAnalytics() {
     const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-PCC26F3HBJ";
-    const disabled = isAgencyAnalyticsPath(usePathname());
+    const pathname = usePathname() || "/";
+    const disabled = isAgencyAnalyticsPath(pathname) || isPrivateContentPath(pathname);
     useEffect(() => {
         (window as unknown as Record<string, unknown>)[`ga-disable-${gaId}`] = disabled;
     }, [disabled, gaId]);

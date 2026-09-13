@@ -122,16 +122,17 @@ export async function POST(request: NextRequest) {
     const claimKey = getPublicCvClaimKey(ownerUserId, flow === "agency" ? agencySubscriptionId : null, draftId);
     const existing = await prisma.cVDocument.findUnique({
       where: { publicClaimKey: claimKey },
-      select: { id: true },
+      select: { id: true, data: true },
     });
 
     if (existing) {
       const repaired = await saveCvDocumentWithMeaningfulState({
         id: existing.id,
         where: flow === "agency"
-          ? { id: existing.id, userId: ownerUserId, agencySubscriptionId }
-          : { id: existing.id, userId: ownerUserId, agencySubscriptionId: null },
-        data: parsedData.data as CVData,
+          ? { id: existing.id, userId: ownerUserId, agencySubscriptionId, data: { equals: existing.data as Prisma.InputJsonValue } }
+          : { id: existing.id, userId: ownerUserId, agencySubscriptionId: null, data: { equals: existing.data as Prisma.InputJsonValue } },
+        // A replay can repair telemetry but must never replace newer editor content.
+        data: existing.data as CVData,
         source: "public_claim",
         uiLanguage,
       });
@@ -203,15 +204,16 @@ export async function POST(request: NextRequest) {
     // arrive with substantive data before the editor performs its first save.
     // Route it through the same durable first-transition service so the
     // server, rather than browser storage, owns meaningful-completion state.
-    await saveCvDocumentWithMeaningfulState({
+    if (!reused) await saveCvDocumentWithMeaningfulState({
       id: cv.id,
       where: flow === "agency"
         ? {
           id: cv.id,
           userId: agencyOwnerUserId || user.id,
           agencySubscriptionId,
+          data: { equals: data as unknown as Prisma.InputJsonValue },
         }
-        : { id: cv.id, userId: user.id, agencySubscriptionId: null },
+        : { id: cv.id, userId: user.id, agencySubscriptionId: null, data: { equals: data as unknown as Prisma.InputJsonValue } },
       data,
       source: "public_claim",
       uiLanguage,

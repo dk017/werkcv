@@ -22,6 +22,27 @@ model User {
   agencyTeamMemberships AgencyTeamMember[]
   agencyTemplates       AgencyTemplate[]
   profilePhotoProjects  ProfilePhotoProject[]
+  consumedToolHandoffs  ToolCvHandoff[]
+}
+
+// Short-lived bridge from a public writing tool to an authenticated personal CV.
+// The URL contains only a random bearer token; payloads are deleted after consumption/expiry cleanup.
+model ToolCvHandoff {
+  id               String   @id @default(uuid())
+  tokenHash        String   @unique
+  kind             String
+  locale           String
+  payload          Json
+  expiresAt        DateTime
+  consumedAt       DateTime?
+  appliedAt        DateTime?
+  destinationCvId  String?
+  consumedByUserId String?
+  consumedByUser   User?    @relation(fields: [consumedByUserId], references: [id], onDelete: Cascade)
+  createdAt        DateTime @default(now())
+
+  @@index([expiresAt])
+  @@index([consumedByUserId, consumedAt])
 }
 
 model PilotAccess {
@@ -88,6 +109,19 @@ model CVDocument {
   @@index([userId, agencySubscriptionId, updatedAt])
   @@index([userId, agencySubscriptionId, hasMeaningfulContent])
   @@index([meaningfulContentAt])
+}
+
+// No CV text, email or raw network identifiers. Rows expire after 24 hours.
+model ConsumerAiAttempt {
+  id         String   @id
+  accountKey String
+  documentKey String
+  requestId  String
+  startedAt  DateTime @default(now())
+  leaseUntil DateTime
+  @@unique([accountKey, requestId])
+  @@index([accountKey, startedAt])
+  @@index([leaseUntil])
 }
 
 model AgencyMatchPack {
