@@ -135,20 +135,22 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homepageSoftwareApplicationJsonLd) }}
       />
       <FAQJsonLd questions={homepageFaqItems} />
-      <HomePageClient
-        templateCount={templateList.length}
-        articleCount={articles.length}
-        exampleCount={getAllExamples().length}
-        categoryCount={categories.length}
-        showcaseTemplates={showcaseTemplates}
-        featuredArticles={articles
-          .filter((article) => article.featured)
-          .slice(0, 3)
-          .map(({ slug, title }) => ({ slug, title }))}
-        featuredCategories={categories
-          .slice(0, 6)
-          .map(({ slug, name }) => ({ slug, name }))}
-      />
+      <main>
+        <HomePageClient
+          templateCount={templateList.length}
+          articleCount={articles.length}
+          exampleCount={getAllExamples().length}
+          categoryCount={categories.length}
+          showcaseTemplates={showcaseTemplates}
+          featuredArticles={articles
+            .filter((article) => article.featured)
+            .slice(0, 3)
+            .map(({ slug, title }) => ({ slug, title }))}
+          featuredCategories={categories
+            .slice(0, 6)
+            .map(({ slug, name }) => ({ slug, name }))}
+        />
+      </main>
     </>
   );
 }
