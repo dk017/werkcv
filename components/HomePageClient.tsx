@@ -471,6 +471,12 @@ export default function HomePageClient({
                     </div>
                 </div>
             </div>
+            <p className="mt-6 text-center text-sm leading-6 text-[var(--wk-ink-muted)]">
+                Meer weten over de maker en de Nederlandse focus?{" "}
+                <Link href="/about" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
+                    Lees over WerkCV
+                </Link>.
+            </p>
         </div>
     </section>
 

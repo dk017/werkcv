@@ -258,6 +258,13 @@ export default function ProfielfotoCvMakenPage() {
               <p className="mt-4 text-sm font-bold text-slate-700">
                 Eénmalig {profilePhotoPrice.display}. Of samen met je CV voor {applicationBundlePrice.display}. Geen abonnement.
               </p>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                Weet je niet welke bronfoto geschikt is?{" "}
+                <Link href="/ai-headshot-foto-tips" className="font-bold underline decoration-2 underline-offset-2">
+                  Bekijk eerst de fotochecklist
+                </Link>
+                .
+              </p>
             </div>
 
             <ProfilePhotoSamples samples={profilePhotoSamples.slice(0, 1)} mode="hero" />

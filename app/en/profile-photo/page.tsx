@@ -266,6 +266,13 @@ export default function EnglishProfilePhotoPage() {
               <p className="mt-4 text-sm font-bold text-slate-700">
                 One-time {profilePhotoPrice.display}. Or together with your CV for {applicationBundlePrice.display}. No subscription.
               </p>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                Not sure which source photo to use?{" "}
+                <Link href="/en/ai-headshot-photo-requirements" className="font-bold underline decoration-2 underline-offset-2">
+                  Check the photo requirements first
+                </Link>
+                .
+              </p>
             </div>
 
             <ProfilePhotoSamples samples={profilePhotoSamples.slice(0, 1)} mode="hero" uiLanguage="en" />
