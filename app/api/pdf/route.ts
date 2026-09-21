@@ -111,6 +111,7 @@ export async function GET(request: NextRequest) {
         status: 200,
         headers: {
             'Content-Type': 'application/pdf',
+            'Cache-Control': 'private, no-store',
             'Content-Disposition': `attachment; filename="${filename}"`,
         },
     });

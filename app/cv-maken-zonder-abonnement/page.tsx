@@ -94,6 +94,11 @@ const intentCards = [
 
 const relatedLinks = [
   {
+    href: "/cv-maken",
+    title: "Zo maak je stap voor stap een CV",
+    body: "Gebruik de volledige CV-workflow als je nog hulp wilt bij opbouw, tekst en controle voordat je een PDF downloadt.",
+  },
+  {
     href: "/prijzen",
     title: "Bekijk precies hoe het prijsmodel werkt",
     body: `Ga naar prijzen als je wilt zien wat je krijgt voor ${cvDownloadPrice.display} en wanneer je precies betaalt.`,

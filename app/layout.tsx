@@ -71,9 +71,6 @@ export const metadata: Metadata = {
     description: "Maak binnen 5 minuten een professioneel CV. 13+ templates, eenmalig €4,99, geen abonnement.",
     images: ["/opengraph-image"],
   },
-  alternates: {
-    canonical: "https://werkcv.nl",
-  },
 };
 
 export const viewport: Viewport = {

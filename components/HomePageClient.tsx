@@ -164,12 +164,12 @@ export default function HomePageClient({
     };
 
     const features = [
-        { title: "ATS-Vriendelijk", desc: "Alle templates werken met Applicant Tracking Systems", color: "bg-[var(--wk-accent-soft)]", icon: "✓" },
+        { title: "Duidelijke opbouw", desc: "Herkenbare koppen voor je ervaring, opleiding en vaardigheden", color: "bg-[var(--wk-accent-soft)]", icon: "✓" },
         { title: "Direct PDF Download", desc: "Download je CV direct als professionele PDF", color: "bg-[var(--wk-surface-subtle)]", icon: "↓" },
-        { title: "100% Privacy", desc: "Je gegevens blijven van jou. Wij verkopen niets door", color: "bg-[var(--wk-highlight-soft)]", icon: "🔒" },
+        { title: "Jij kiest wat je deelt", desc: "Controleer je contactgegevens en inhoud voordat je je PDF verstuurt", color: "bg-[var(--wk-highlight-soft)]", icon: "🔒" },
         { title: "Geen Abonnement", desc: `Eenmalig ${cvDownloadPrice.display} per CV, geen verborgen kosten`, color: "bg-[var(--wk-accent-soft)]", icon: "€" },
         { title: "Live Preview", desc: "Bekijk je CV in realtime terwijl je typt", color: "bg-[var(--wk-surface-subtle)]", icon: "👁" },
-        { title: "Binnen 5 Minuten", desc: "Upload je bestaande CV of begin helemaal opnieuw", color: "bg-[var(--wk-highlight-soft)]", icon: "⚡" },
+        { title: "Begin waar jij bent", desc: "Upload je bestaande CV of begin helemaal opnieuw", color: "bg-[var(--wk-highlight-soft)]", icon: "⚡" },
     ];
 
     const steps = [
@@ -242,12 +242,12 @@ export default function HomePageClient({
                             <h1 className="max-w-3xl text-4xl sm:text-5xl md:text-6xl font-black text-black leading-tight mb-6">
                                 Maak een{" "}
                                 <span className="wk-hero-highlight">
-                                    ATS-vriendelijk
+                                    duidelijk
                                 </span>{" "}
-                                CV voor Nederlandse vacatures
+                                cv dat laat zien wat je kunt
                             </h1>
                             <p className="text-lg md:text-xl font-medium text-gray-700 mb-8 max-w-xl mx-auto lg:mx-0">
-                                WerkCV.nl helpt je snel een professioneel CV op te bouwen met {templateCount}+ templates die rustig, recruiter-proof en ATS-vriendelijk blijven. Maak je CV eerst af, bekijk de volledige preview en betaal pas als je de PDF echt wilt downloaden.{" "}
+                                Upload je bestaande cv of begin met een template. Beschrijf je ervaring, kies een overzichtelijke opmaak en bekijk je volledige cv voordat je betaalt.{" "}
                                 <span className="wk-inline-highlight">
                                     Geen abonnement:{" "}
                                     <Link href="/cv-maken-zonder-abonnement" className="underline decoration-2 underline-offset-2">
@@ -262,7 +262,7 @@ export default function HomePageClient({
                                     onClick={() => track('cta_clicked', { location: 'hero', label: 'Begin nu gratis' })}
                                     className="wk-button wk-button-primary min-h-12 px-7 text-base"
                                 >
-                                    Begin nu gratis
+                                    Begin mijn cv gratis
                                 </Link>
                                 <button
                                     onClick={() => { track('cta_clicked', { location: 'hero', label: 'Upload bestaand CV' }); fileInputRef.current?.click(); }}
@@ -271,6 +271,9 @@ export default function HomePageClient({
                                     Upload bestaand CV
                                 </button>
                             </div>
+                            <p className="mt-4 text-sm leading-6 text-slate-700">
+                                Hetzelfde betaalde cv kun je later gratis aanpassen en opnieuw downloaden. Een nieuw, afzonderlijk cv betaal je apart.
+                            </p>
                             <div className="mt-4 text-sm font-bold text-slate-700">
                                 Liever eerst kijken?{" "}
                                 <Link
@@ -304,7 +307,7 @@ export default function HomePageClient({
                     {[
                         { number: `${templateCount}+`, label: "Templates", color: "bg-[var(--wk-accent-soft)]" },
                         { number: `${exampleCount}+`, label: "CV Voorbeelden", color: "bg-[var(--wk-highlight-soft)]" },
-                        { number: `${articleCount}`, label: "Expert Artikelen", color: "bg-[var(--wk-accent-soft)]" },
+                        { number: `${articleCount}`, label: "CV Artikelen", color: "bg-[var(--wk-accent-soft)]" },
                         { number: cvDownloadPrice.display, label: "Eenmalig", color: "bg-[var(--wk-highlight-soft)]" },
                     ].map((stat) => (
                         <div key={stat.label} className="flex flex-col items-center">
@@ -325,8 +328,18 @@ export default function HomePageClient({
             <section className="relative z-10 wk-section">
                 <div className="max-w-6xl mx-auto px-6">
                     <h2 className="text-3xl md:text-4xl font-semibold text-[var(--wk-ink)] text-center mb-12">
-                        Hoe het werkt
+                        Van jouw ervaring naar een helder cv
                     </h2>
+                    <div className="wk-card mb-8 p-6 text-left">
+                        <h3 className="text-xl font-semibold text-[var(--wk-ink)]">Niet groter maken. Wel concreter.</h3>
+                        <p className="mt-2 text-sm text-[var(--wk-ink-muted)]">Fictief schrijfvoorbeeld, geen klantresultaat of automatisch gegenereerde belofte.</p>
+                        <dl className="mt-5 grid gap-5 md:grid-cols-2">
+                            <div><dt className="font-semibold">Nog te algemeen</dt><dd className="mt-2">Ik hielp mee in de winkel.</dd></div>
+                            <div><dt className="font-semibold">Met concrete taken</dt><dd className="mt-2">Hielp klanten bij het kiezen van maten, vulde schappen aan en rekende aankopen af aan de kassa.</dd></div>
+                        </dl>
+                        <p className="mt-4 text-sm leading-6 text-[var(--wk-ink-muted)]">In dit voorbeeld heeft de fictieve sollicitant alle drie de taken genoemd. Neem alleen over wat je zelf hebt gedaan. Een schoolproject, bijbaan of vrijwilligerstaak kan ook relevant zijn; verzin geen resultaten of verantwoordelijkheden.</p>
+                        <Link href="/cv-voorbeelden" className="mt-4 inline-block font-semibold underline underline-offset-4">Bekijk voorbeelden voor jouw situatie</Link>
+                    </div>
                     <div className="grid md:grid-cols-3 gap-8">
                         {steps.map((step) => (
                             <div key={step.num} className="text-center">

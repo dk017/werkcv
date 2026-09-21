@@ -63,7 +63,7 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-      <Footer />
+      <Footer uiLanguage="en" />
     </main>
   );
 }

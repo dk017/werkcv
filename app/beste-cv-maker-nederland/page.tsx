@@ -26,7 +26,7 @@ const rows = [
     product: "WerkCV",
     bestFor: "Een begeleide CV-route voor Nederlandse sollicitaties.",
     price: `Bouwen en preview gratis; ${cvDownloadPrice.display} eenmalig voor de PDF van dit CV.`,
-    output: "Editor, template-preview en PDF-download; opnieuw bewerken blijft mogelijk.",
+    output: "Nederlandse/Engelse editor, template-preview en consumenten-PDF (geen DOCX). Schrijfhulp is activatiegebonden: controleer de AI-pagina voor de huidige beschikbaarheid. Geen garantie op selectie.",
     evidence: `${comparisonEvidenceLabel(getComparisonEvidence("werkcv-consumer-price-2026-09").status, "nl")}.`,
     href: "/prijzen",
   },
@@ -115,6 +115,7 @@ export default function BesteCvMakerNederlandPage() {
       primaryCta={{ href: "/editor?template=professional&startSource=nl_best_cv_comparison", label: "Start gratis met je CV", trackingLocation: "nl_best_cv_comparison_hero" }}
       secondaryCta={{ href: "/templates?startSource=nl_best_cv_comparison", label: "Bekijk templates" }}
       relatedLinks={[
+        { href: "/cv-maken-met-ai", label: "AI-schrijfhulp en voorbeelden", body: "Bekijk fictieve cv-voorbeelden, beoordeling van suggesties en de huidige beschikbaarheid." },
         { href: "/goedkoopste-cv-maker-nederland", label: "Goedkoopste CV-maker", body: "Vergelijk totale kosten, gratis routes en proefmodellen." },
         { href: "/cv-maken-zonder-abonnement", label: "CV maken zonder abonnement", body: "Lees precies wat eenmalig betalen en opnieuw downloaden betekenen." },
         { href: "/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures", label: "ATS-vriendelijke CV-builder", body: "Gebruik deze route wanneer tekstleesbaarheid de hoofdvraag is." },

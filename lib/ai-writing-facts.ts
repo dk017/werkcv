@@ -1,8 +1,11 @@
 import type { CVData } from "./cv";
 
-export const WRITING_GUARD_VERSION = "2026-09-12.2";
+export const WRITING_GUARD_VERSION = "2026-09-20.1";
 export type WritingIssue = "NEW_NUMBER_OR_UNIT" | "NEW_NAMED_TERM" | "INFLATED_SCOPE" | "LOST_QUALIFIER" | "INVALID_TARGET";
-const normal = (text: string) => text.normalize("NFKC").toLocaleLowerCase("en").replace(/\s+/g, " ").trim();
+const normal = (text: string) => text.normalize("NFKC").toLocaleLowerCase("en")
+  .replace(/\bphone\b/g, "telephone")
+  .replace(/\binquiries\b/g, "enquiries")
+  .replace(/\s+/g, " ").trim();
 const scopeTerms = [
   /\b(manag(?:ed|e|ing)|led|leadership|supervis(?:ed|ing)|leidinggevend|leidde|aangestuurd)\b/g,
   /\b(senior|expert|specialist|certified|gecertificeerd|fluent|vloeiend|native|moedertaal|bachelor|master|phd|hbo|wo|b2|c1|c2)\b/g,
@@ -15,6 +18,8 @@ const protectedNamedTerms = /\b(?:python|javascript|typescript|sql|excel|power b
 // Ordinary sentence openings may change. Unknown capitalised terms still need
 // source support, including products outside our technology list (e.g. Zendesk).
 const ordinaryOpenings = new Set("i ik the a an de het een professional professioneel professionele experienced ervaren careful nauwkeurige customer klantenservice klantgerichte responsible verantwoordelijk answered handled maintained processed worked supported assisted helped developed coordinated organised organized provided delivered checked updated managed led created skilled dedicated motivated gemotiveerde demonstrated beantwoordde verwerkte controleerde werkte hield ondersteunde hielp maakte leverde verzorgde nauwkeurig klantgericht administratief administrative warehouse logistiek strong sterk proven aantoonbare focused gericht results resultaatgerichte reliable betrouwbaar adaptable flexibel collaborative samenwerkende committed betrokken knowledgeable deskundig effective effectief clear duidelijk calm rustig friendly vriendelijk solution oplossingsgericht detail details detail-oriented driven gedreven versatile veelzijdig relevant relevante experience ervaring experienced junior medior senior profile profiel specialist specialism specialistische practical praktisch analytical analytisch accurate accuraat zorgvuldig zelfstandig customer klant clients klanten teams team tasks taken responsibilities verantwoordelijkheden enquiries inquiries vragen reports rapportages overview overzicht handling".split(" "));
+// Observed ordinary sentence openings, not new products or qualifications.
+for (const word of ["responded", "assisteerde", "practised", "practiced"]) ordinaryOpenings.add(word);
 const numberWords: Record<string, string> = {
   one: "1", two: "2", three: "3", four: "4", five: "5", six: "6", seven: "7", eight: "8", nine: "9", ten: "10",
   een: "1", twee: "2", drie: "3", vier: "4", vijf: "5", zes: "6", zeven: "7", acht: "8", negen: "9", tien: "10",
@@ -85,7 +90,7 @@ export function checkWritingFacts(source: string, proposed: string): WritingIssu
   const qualifierFamilies = [
     { source: /\b(no|not|never|without|geen|niet|nooit|zonder)\b/i, output: /\b(no|not|never|without|geen|niet|nooit|zonder)\b/i },
     { source: /\b(under supervision|with supervision|onder begeleiding)\b/i, output: /\b(under supervision|with supervision|onder begeleiding|assisted|supported|helped|begeleid|ondersteunde|hielp)\b/i },
-    { source: /\b(assisted|supported|helped|ondersteunde|hielp)\b/i, output: /\b(assisted|supported|helped|under supervision|onder begeleiding|begeleid|ondersteunde|hielp)\b/i },
+    { source: /\b(assisted|supported|helped|ondersteunde|hielp|assisteerde)\b/i, output: /\b(assisted|supported|helped|under supervision|onder begeleiding|begeleid|ondersteunde|hielp|assisteerde)\b/i },
     { source: /\b(basic|basis|learning|lerend|entry[- ]level|junior)\b/i, output: /\b(basic|basis|learning|lerend|entry[- ]level|junior)\b/i },
   ];
   for (const clause of source.split(/[.!?;,\n]+/).map(normal).filter(Boolean)) {

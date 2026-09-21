@@ -1,3 +1,4 @@
+import { detectWritingLanguage as detectLanguageFromText } from "./ai-writing-language";
 import OpenAI from 'openai';
 import { z } from 'zod';
 import { CVData } from './cv';
@@ -30,22 +31,6 @@ type AtsRewriteOptions = {
     target?: WritingTarget;
     repairInstruction?: string;
 };
-
-const DUTCH_MARKERS = [' de ', ' het ', ' een ', ' en ', ' van ', ' voor ', ' met ', ' op ', ' ik ', ' je '];
-const ENGLISH_MARKERS = [' the ', ' and ', ' a ', ' an ', ' of ', ' for ', ' with ', ' to ', ' in ', ' you '];
-
-function countMarkers(source: string, markers: string[]): number {
-    return markers.reduce((acc, marker) => acc + (source.split(marker).length - 1), 0);
-}
-
-function detectLanguageFromText(text: string): 'nl' | 'en' | 'unknown' {
-    const normalized = ` ${text.toLowerCase()} `;
-    const dutchScore = countMarkers(normalized, DUTCH_MARKERS);
-    const englishScore = countMarkers(normalized, ENGLISH_MARKERS);
-
-    if (dutchScore === 0 && englishScore === 0) return 'unknown';
-    return dutchScore >= englishScore ? 'nl' : 'en';
-}
 
 function detectCVLanguage(cvData: CVData): 'nl' | 'en' {
     const joined = [
@@ -89,6 +74,9 @@ Rules:
 - Preserve qualifiers, negations and scope. Never invent metrics.
 - Rewrite only for clarity, keyword alignment, and impact.
 - Keep writing concise and concrete.
+- Prefer natural, plain language and consistent tense. Avoid generic self-praise.
+- ${action === "shorten" ? "For this shorten request, remove redundant phrasing and unnecessary pronouns/articles while keeping all factual and limiting clauses. Make the selected text strictly shorter in characters. Never drop a negation, rate, number, unfinished qualification or supervision limit merely to shorten it. If no safe reduction exists, keep the original." : "Unchanged text is acceptable when already clear."}
+- Preserve each existing highlight's order and count. Rewrite each highlight independently; never move facts between bullets. Leave missing highlights empty; do not invent tasks.
 - Output strict JSON only.
 - Task: ${action}. For shorten, reduce text length without adding facts. For draft actions, turn the supplied factual notes into concise CV writing.
 - Scope: ${target.kind}. For profile scope, leave ALL experience descriptions and highlights unchanged. For experience scope, leave the empty profile unchanged and rewrite only the supplied job.
@@ -106,6 +94,7 @@ Return this JSON structure exactly:
 }
 
 For "experience", return exactly one entry per original experience, keeping its sourceId.
+The complete allowed sourceId list is ${JSON.stringify(cvData.experience.map(entry => entry.entryId))}. If this list is empty, return "experience": [] and do not copy the illustrative entry above.
 If a field is missing, return an empty string/array.${repairInstruction ? `\n\nCorrection required: ${repairInstruction}` : ""}`;
 
     const userPrompt = `Target role: ${targetRole || 'Not provided'}

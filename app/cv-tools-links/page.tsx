@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Handige tools voor je carrière | WerkCV",
@@ -21,6 +22,9 @@ export default function CvToolsLinksPage() {
             Hier vind je handige tools en websites die je helpen bij het maken
             van een professioneel CV en het verbeteren van je baankansen.
           </p>
+          <p className="mt-4 text-base leading-relaxed text-gray-700">
+            Bekijk ook het <Link href="/tools" className="font-bold underline underline-offset-4">volledige overzicht van WerkCV-tools</Link> als je wilt rekenen, schrijven of je CV controleren.
+          </p>
         </div>
       </section>
 
@@ -31,12 +35,13 @@ export default function CvToolsLinksPage() {
           </h2>
           <ul className="mt-6 space-y-4 text-base font-medium text-black">
             <li>
-              <a
-                href="https://werkcv.nl"
-                className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]"
-              >
-                CV maken (gratis en ATS-proof)
-              </a>
+              <Link href="/cv-maken" className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]">CV maken: de complete stappen</Link>
+            </li>
+            <li>
+              <Link href="/tools/cv-score" className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]">Controleer je CV-score</Link>
+            </li>
+            <li>
+              <Link href="/tools/cv-keywords" className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]">Vind relevante CV-keywords</Link>
             </li>
             <li>
               <a
@@ -47,12 +52,7 @@ export default function CvToolsLinksPage() {
               </a>
             </li>
             <li>
-              <a
-                href="https://example.com"
-                className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]"
-              >
-                Sollicitatie tips
-              </a>
+              <Link href="/cv-tips" className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]">Praktische sollicitatie- en CV-tips</Link>
             </li>
           </ul>
         </article>

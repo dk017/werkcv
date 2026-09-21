@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import PurchaseTracker from "./PurchaseTracker";
+import PdfDownloadButton from "./PdfDownloadButton";
 
 type PaidOrder = {
   id: string;
@@ -159,9 +160,7 @@ export default function PurchaseSuccessActions({
           <div className="rounded-2xl border-2 border-black bg-[#FFFEF9] p-4">
             <p className="text-xs font-black uppercase tracking-wide text-gray-500">{tr("Stap 1", "Step 1")}</p>
             <h2 className="mt-1 text-lg font-black text-gray-900">{tr("Download je CV", "Download your CV")}</h2>
-            <a href={`/api/pdf?cvId=${cvId}`} className="mt-4 block w-full rounded-full bg-gray-900 px-6 py-3 text-center text-sm font-bold text-white shadow-md transition hover:bg-black">
-              {tr("Download PDF", "Download PDF")}
-            </a>
+            <PdfDownloadButton cvId={cvId} language={language} className="mt-4 block w-full rounded-full bg-gray-900 px-6 py-3 text-center text-sm font-bold text-white shadow-md transition hover:bg-black" />
           </div>
           <div className="rounded-2xl border-2 border-black bg-[#E9FFFC] p-4">
             <p className="text-xs font-black uppercase tracking-wide text-gray-500">{tr("Stap 2", "Step 2")}</p>
@@ -176,9 +175,7 @@ export default function PurchaseSuccessActions({
         </div>
       ) : (
         <div className="space-y-4">
-          <a href={`/api/pdf?cvId=${cvId}`} className="block w-full rounded-full bg-gray-900 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-black">
-            {tr("Download PDF", "Download PDF")}
-          </a>
+          <PdfDownloadButton cvId={cvId} language={language} className="block w-full rounded-full bg-gray-900 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-black" />
           <Link href={editorPath} className="block w-full rounded-full bg-gray-100 px-6 py-3 text-sm font-bold text-gray-700 transition hover:bg-gray-200">
             {tr("Terug naar editor", "Back to editor")}
           </Link>

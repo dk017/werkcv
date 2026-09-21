@@ -42,6 +42,11 @@ const controlPoints = [
 
 const routeLinks: OptimizerLinkCard[] = [
   {
+    href: "/cv-maken-met-ai#vacaturevoorbeeld",
+    title: "Je cv aanpassen met AI",
+    body: "Bekijk hoe je vacaturetaken aan echte ervaring koppelt, zonder gevraagde vaardigheden te verzinnen. De AI-pagina vermeldt de huidige beschikbaarheid van schrijfhulp.",
+  },
+  {
     href: "/cv-verbeteren",
     title: "CV verbeteren",
     body: "Gebruik deze route als je vooral inhoud, formulering en impact van je cv sterker wilt maken.",

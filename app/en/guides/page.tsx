@@ -18,7 +18,8 @@ export const metadata = buildEnglishMetadata({
 });
 
 export default function EnglishGuidesHubPage() {
-    const pages = getEnglishWavePages();
+    // The expat seed redirects to the canonical /en/expat-cv-netherlands page.
+    const pages = getEnglishWavePages().filter((page) => page.slug !== 'dutch-cv-for-expats');
     const startPaths = [
         {
             href: '/en/guides/cv-builders-netherlands-compared',

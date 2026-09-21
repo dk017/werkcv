@@ -4,12 +4,13 @@ import { rewriteCVForATS } from "@/lib/ats-rewrite";
 import { getCurrentUserFromRequest } from "@/lib/auth";
 import { authorizeCvDocument } from "@/lib/workspace/cv-authorization";
 import { acquireConsumerAiLease } from "@/lib/consumer-ai-limits";
+import { consumerAiEnabled } from "@/lib/consumer-ai-availability";
 import { handleConsumerAiRequest } from "@/lib/consumer-ai-request";
 
 export const maxDuration = 60;
 export async function POST(request: NextRequest) {
   return handleConsumerAiRequest(request, {
-    enabled: process.env.CONSUMER_AI_REVIEW_ENABLED === "true",
+    enabled: consumerAiEnabled(),
     user: getCurrentUserFromRequest,
     document: async (userId, cvId) => {
       try {

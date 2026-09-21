@@ -820,6 +820,11 @@ export default function CvMakenPage() {
                     title: "Prijzen",
                     body: "Bekijk precies hoe het model werkt: gratis starten, eenmalig betalen bij download.",
                   },
+                  {
+                    href: "/cv-maken-zonder-abonnement",
+                    title: "CV maken zonder abonnement",
+                    body: "Wil je weten hoe je zonder proefperiode of maandelijkse kosten een CV maakt? Bekijk de eenmalige downloadroute.",
+                  },
                 ].map((item) => (
                   <Link
                     key={item.href}

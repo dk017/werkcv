@@ -7,7 +7,7 @@ import { buildDodoCheckoutURL, isDodoEnabledForCheckout } from '@/lib/dodo'
 import { getCurrentUser } from '@/lib/auth'
 import { reportOpsIncident } from '@/lib/ops-alerts'
 import { getResumeLanguage } from '@/lib/resume-language'
-import { getDefaultThemeId } from '@/lib/templates/registry'
+import { getDefaultThemeId, getTemplateConfig } from '@/lib/templates/registry'
 import { Prisma } from '@prisma/client'
 import { createPersonalCvDocument } from '@/lib/workspace/cv-document-service'
 import { authorizeCvDocument, CvAuthorizationError } from '@/lib/workspace/cv-authorization'
@@ -196,9 +196,16 @@ export async function updateCVTemplate(id: string, templateId: string) {
 export async function updateCVColorTheme(id: string, colorThemeId: string) {
     const user = await getCurrentUser();
     if (!user) return { success: false, error: 'AUTH_REQUIRED' };
+    if (typeof colorThemeId !== 'string' || colorThemeId.trim().length === 0 || colorThemeId.length > 80) {
+        return { success: false, error: 'INVALID_COLOR_THEME' };
+    }
 
     try {
         const authorised = await authorizeCvDocument(user.id, id, 'edit_design');
+        const templateConfig = getTemplateConfig(authorised.templateId);
+        if (!templateConfig.colorThemes.some((theme) => theme.id === colorThemeId)) {
+            return { success: false, error: 'INVALID_COLOR_THEME' };
+        }
         const where = authorised.workspace.kind === 'personal'
             ? { id, userId: user.id, agencySubscriptionId: null }
             : { id, agencySubscriptionId: authorised.workspace.agencySubscriptionId };

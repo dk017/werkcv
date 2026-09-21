@@ -6,7 +6,7 @@ import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib
 
 export const siteBaseUrl = "https://werkcv.nl";
 
-export const aiDiscoveryUpdatedAt = "2026-09-13";
+export const aiDiscoveryUpdatedAt = "2026-09-14";
 const agencyCapabilities = getAgencyPublicCapabilities();
 const agencyMessagingNl = getAgencyPublicMessaging({ locale: "nl", capabilities: agencyCapabilities });
 const agencyMessagingEn = getAgencyPublicMessaging({ locale: "en", capabilities: agencyCapabilities });
@@ -15,14 +15,14 @@ const agencyPriceEn = getAgencyMonthlyPriceDisplay("en");
 
 export const primaryAiPages = [
   {
-    title: "CV maken met AI en menselijke controle",
+    title: "CV maken met AI: Nederlands cv zonder abonnement",
     url: `${siteBaseUrl}/cv-maken-met-ai`,
-    description: "Dutch evidence-first AI CV guide and editor route: compare original and suggested text, accept each change separately, and check every factual claim.",
+    description: "Dutch AI CV guide with full fictional examples in two templates, source notes and rejected inflated claims. Reviewed editor writing is activation-gated; the page states current availability and the one-time PDF price.",
   },
   {
-    title: "AI CV builder with human review",
+    title: "AI CV Builder for Jobs in the Netherlands",
     url: `${siteBaseUrl}/en/ai-cv-builder`,
-    description: "English AI CV builder guidance for Netherlands applicants, with individual change review, factual safeguards and explicit limitations.",
+    description: "English AI CV guide with complete fictional retail, logistics and student examples. Reviewed editor writing is activation-gated; consult the live page for availability and payment terms.",
   },
   {
     title: "Free English CV profile summary generator",

@@ -54,13 +54,19 @@ const cvNlPricing = toConsumerCvPricingView(consumerCvPricingFactsById.cv_nl, ne
 
 const pricingIntentCards = [
     {
-        title: "CV maken betaald zonder maandabonnement",
-        body: "Deze zoekterm gaat meestal niet over duur, maar over duidelijk. Mensen willen weten wat een CV kost, wanneer ze betalen en of er daarna nog maandkosten of verlengingen volgen.",
+        href: "/cv-maken-met-ai",
+        title: "CV maken met AI",
+        body: "Bekijk fictieve voorbeelden, beschikbare schrijfhulp en de betaalstap voor je PDF. Geen abonnement.",
+        label: "Bekijk AI-voorbeelden",
+    },
+    {
+        title: "Weet waarvoor je betaalt",
+        body: "Vergelijk niet alleen de startprijs. Kijk ook naar de PDF-download, latere wijzigingen en eventuele automatische verlenging. Zo kies je wat past bij jouw sollicitatie.",
         href: "/goedkoopste-cv-maker-nederland",
         label: "Vergelijk betaalde routes",
     },
     {
-        title: "CV betalen per download in plaats van per maand",
+        title: "Eén keer betalen voor hetzelfde cv",
         body: "Bij WerkCV zit de betaling op de definitieve PDF-download van het CV dat je wilt versturen. Je start gratis, bouwt je inhoud op, vergelijkt templates en betaalt pas wanneer je die versie echt wilt downloaden.",
         href: "/cv-maken-zonder-abonnement",
         label: "Lees hoe eenmalig betalen werkt",
@@ -200,6 +206,7 @@ export default function PrijzenPage() {
                     </h1>
                     <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[var(--wk-ink-muted)] md:text-lg md:leading-8">
                         Betaal één keer voor de PDF van dit CV. Geen proefperiode, maandkosten of automatische verlenging.
+                        {" "}Pas hetzelfde betaalde cv later gratis aan en download het opnieuw. Een nieuw, afzonderlijk cv betaal je apart.
                     </p>
                     <div className="mt-7 flex flex-wrap justify-center gap-3">
                         <TrackedLandingLink

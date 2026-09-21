@@ -38,6 +38,7 @@ export default function ProfieltekstGeneratorPage() {
                     <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--wk-ink-muted)]">Gebruik geen contactgegevens of vertrouwelijke werkgeversinformatie. De tool helpt met formuleren en verifieert geen identiteit, dienstverband of waarheid.</p>
                     <div className="mt-6 flex flex-wrap gap-3 text-sm font-semibold text-[var(--wk-ink-muted)]">
                         <Link href="/profieltekst-cv-voorbeelden" className="underline underline-offset-4">Bekijk voorbeelden</Link>
+                        <Link href="/cv-maken-met-ai" className="underline underline-offset-4">Van profieltekst naar een volledig cv met AI</Link>
                         <Link href="/cv-samenvatting-voorbeelden" className="underline underline-offset-4">CV-samenvattingen</Link>
                         <Link href="/tools/linkedin-naar-cv" className="underline underline-offset-4">LinkedIn naar CV</Link>
                     </div>
@@ -56,7 +57,7 @@ export default function ProfieltekstGeneratorPage() {
                     toolName="profieltekst-generator"
                     title="Gebruik deze profieltekst in je CV"
                     description="Plaats je profieltekst in een nette Nederlandse CV-template en controleer het einddocument."
-                    primaryLabel="Maak CV met deze profieltekst"
+                    primaryLabel="Open de cv-editor"
                     primaryHref="/editor?template=professional&startSource=profile_text_generator"
                     secondaryHref="/templates?startSource=profile_text_template_compare"
                     secondaryLabel="Vergelijk templates"

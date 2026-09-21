@@ -17,14 +17,19 @@ test("writing dialog: individual review, regenerate, undo, stale input, focus an
       let generation = 0;
       window.fetch = async (_url, options) => {
         const request = JSON.parse(options.body);
+        if (_url === "/api/keyword-scan") {
+          window.lastKeywordRequest = request;
+          return new Response(JSON.stringify({keywords: [{keyword: "Excel", found: false}]}), {status: 200});
+        }
         await new Promise(resolve => setTimeout(resolve, 150));
         const data = structuredClone(request.data); generation++;
         if (request.target.kind !== "experience") data.personal.summary = "Suggested profile " + generation;
         if (request.target.kind !== "profile") {
           data.experience[0].description = "Suggested description " + generation;
-          data.experience[0].highlights = ["Suggested bullet " + generation];
+          if (request.bullet) data.experience[0].highlights.splice(request.bullet.index, request.bullet.operation === "insert_bullet" ? 0 : 1, "Suggested bullet " + generation);
+          else data.experience[0].highlights = ["Suggested bullet " + generation];
         }
-        return new Response(JSON.stringify({ schemaVersion: 1, requestId: request.requestId, data }), {status: 200});
+        return new Response(JSON.stringify({ schemaVersion: request.schemaVersion, requestId: request.requestId, data, provenance: {requestId: request.requestId, documentVersion: request.expectedContentVersion, contextDigest: "b".repeat(64), ...(request.bullet ? {sourceArrayDigest: "c".repeat(64)} : {})} }), {status: 200});
       };
       function App() {
         const initial = structuredClone(defaultCV);
@@ -35,14 +40,19 @@ test("writing dialog: individual review, regenerate, undo, stale input, focus an
         const [history, setHistory] = useState([]);
         const [open, setOpen] = useState(false);
         const [locale, setLocale] = useState("en");
+        const [vacancy, setVacancy] = useState("");
+        window.setVacancy = setVacancy;
+        const [selection, setSelection] = useState({target: {kind: "all"}, action: "tailor"});
+        window.setSelection = setSelection;
         window.setLocale = setLocale;
         const update = next => { current.current = next; setData(next); };
         window.manualEdit = (text = "Later manual edit") => update({...current.current, personal: {...current.current.personal, summary: text}});
+        window.manualBullets = highlights => update({...current.current, experience: current.current.experience.map(e => ({...e, highlights}))});
         return <><button id="open" onClick={() => setOpen(true)}>Open</button>
           <pre id="state" hidden>{JSON.stringify(data)}</pre>
-          {open && <Assistant selection={{target: {kind: "all"}, action: "tailor"}} locale={locale} cvId="test"
-            vacancy="" role="" getData={() => current.current} prepare={async () => true}
-            getVersion={() => "v1"} apply={update} history={history} onHistory={setHistory} onClose={() => setOpen(false)} blocked={false} />}
+          {open && <Assistant selection={selection} locale={locale} cvId="test"
+            vacancy={vacancy} role="" getData={() => current.current} prepare={async () => true}
+            getVersion={() => "a".repeat(64)} apply={update} history={history} onHistory={setHistory} onClose={() => setOpen(false)} blocked={false} />}
         </>;
       }
       createRoot(document.getElementById("root")).render(<App />);
@@ -84,7 +94,7 @@ test("writing dialog: individual review, regenerate, undo, stale input, focus an
     assert.equal((await state(page)).personal.summary, "Suggested profile 1");
     assert.equal((await state(page)).experience[0].description, "Original description");
     await click("Keep original", "Job description");
-    await click("Use this text", "Bullet points");
+    await click("Use this text", "Bullet 1");
     assert.deepEqual((await state(page)).experience[0].highlights, ["Suggested bullet 1"]);
     await page.evaluate(() => (window as unknown as { manualEdit: () => void }).manualEdit());
     stage = "guarded undo";
@@ -117,6 +127,42 @@ test("writing dialog: individual review, regenerate, undo, stale input, focus an
     await page.click("#open"); await page.waitForSelector("dialog[open]");
     assert.ok(await page.evaluate(() => document.querySelector("dialog")?.textContent?.includes("Nieuwe suggestie")));
     assert.ok(await page.evaluate(() => document.querySelector("dialog")?.textContent?.includes("Ongedaan maken")));
+    stage = "version 2 duplicate bullet selection";
+    await page.keyboard.press("Escape");
+    await page.evaluate(() => {
+      const fixture = window as unknown as { setLocale: (locale: string) => void; setSelection: (value: unknown) => void; manualBullets: (value: string[]) => void };
+      fixture.setLocale("en"); fixture.manualBullets(["Duplicate task", "Duplicate task"]);
+      fixture.setSelection({target: {kind: "experience", entryId: "job"}, action: "improve", bullet: {operation: "replace_bullet", index: 1}});
+    });
+    await page.click("#open"); await page.waitForSelector("dialog[open]");
+    await click("Generate suggestion");
+    await page.waitForFunction(() => document.querySelector('[role="status"]')?.textContent?.includes("Suggestions are ready"));
+    await click("Use this text", "Bullet 2");
+    assert.equal((await state(page)).experience[0].highlights[0], "Duplicate task");
+    assert.match((await state(page)).experience[0].highlights[1], /Suggested bullet/);
+    stage = "regenerate rejects reordered context";
+    await page.evaluate(() => (window as unknown as { manualBullets: (value: string[]) => void }).manualBullets(["Reordered", "Different task"]));
+    await click("Try another suggestion", "Bullet 2");
+    await page.waitForFunction(() => document.querySelector('[role="alert"]')?.textContent?.includes("context changed"));
+    assert.deepEqual((await state(page)).experience[0].highlights, ["Reordered", "Different task"]);
+    stage = "vacancy evidence beside writing review";
+    await page.keyboard.press("Escape");
+    await page.evaluate(() => {
+      const fixture = window as unknown as { setSelection: (value: unknown) => void; setVacancy: (value: string) => void; manualEdit: (value: string) => void };
+      fixture.setSelection({ target: { kind: "all" }, action: "tailor" });
+      fixture.setVacancy("This fictional vacancy asks for Excel experience.");
+      fixture.manualEdit("Used Excel for school invoices, not advanced modelling.");
+    });
+    await page.click("#open"); await page.waitForSelector("dialog[open]");
+    await page.evaluate(() => [...document.querySelectorAll<HTMLButtonElement>("dialog button")].find(button => button.textContent?.includes("Job Scanner"))!.click());
+    await click("Analyze job description");
+    await page.waitForFunction(() => document.querySelector("dialog")?.textContent?.includes("View literal CV text"));
+    const sent = await page.evaluate(() => (window as unknown as { lastKeywordRequest: Record<string, unknown> }).lastKeywordRequest);
+    assert.deepEqual(Object.keys(sent).sort(), ["cvId", "jobDescription", "requestId"]);
+    for (const width of [320, 375, 768, 1440]) {
+      await page.setViewport({ width, height: 900 });
+      assert.ok(await page.$eval("dialog", el => el.scrollWidth <= el.clientWidth + 1), "vacancy review overflow at " + width);
+    }
   } catch (error) { console.error("Browser test stage:", stage); throw error; }
   finally { await browser.close(); }
 });

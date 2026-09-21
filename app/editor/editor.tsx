@@ -11,6 +11,7 @@ import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { CVData } from "@/lib/cv";
+import { downloadPdfResponse } from "@/lib/pdf-download";
 import AiWritingAssistant from "./AiWritingAssistant";
 import type { WritingSelection, WritingChange } from "@/lib/ai-writing-changes";
 import { createCvSaveQueue } from "@/lib/cv-save-queue";
@@ -61,6 +62,7 @@ import {
     PENDING_CV_MATCH_TTL_MS,
 } from "@/lib/pending-cv-match";
 import type { CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match";
+import { cvVacatureMatchResultSchema } from "@/lib/tools/cv-vacature-match-schema";
 import { suggestTargetRoleFromExperience } from "@/lib/cv-normalize";
 import {
     cvSectionHasSubstantiveContent,
@@ -133,7 +135,7 @@ const COMPACT_EDITOR_TOOLBAR_WIDTH_PX = 980;
 const READY_TO_DOWNLOAD_TRACKED_PREFIX = 'werkcv_ready_to_download_tracked_';
 const CHECKOUT_FLOW_VARIANT = 'direct' as const;
 
-type DownloadSource = 'toolbar' | 'ready_panel' | 'post_completion_tools';
+type DownloadSource = 'toolbar' | 'post_completion_tools';
 type TemplateSelectorSource = 'toolbar' | 'ready_state';
 type MatchImportFeedback =
     | { status: 'idle' }
@@ -410,6 +412,9 @@ export default function Editor({
     const [isPublicEditorFullscreen, setIsPublicEditorFullscreen] = useState(false);
     const [templateId, setTemplateId] = useState(initialTemplateId);
     const [colorThemeId, setColorThemeId] = useState(initialColorThemeId);
+    const [isDesignSaving, setIsDesignSaving] = useState(false);
+    const [designSaveError, setDesignSaveError] = useState<string | null>(null);
+    const designSaveRequestRef = useRef(0);
     const [showUploader, setShowUploader] = useState(false);
     const [uploaderSource, setUploaderSource] = useState<CvUploadSource>("toolbar");
     const [pageCount, setPageCount] = useState(1);
@@ -729,16 +734,9 @@ export default function Editor({
 
         return result.ok;
     }, [colorThemeId, isEnglish, isPublicMode, publicDraftId, publicFlow, publicSource, templateId, uiLanguage]);
-    const downloadPriceLabel = uiLanguage === "en"
-        ? cvDownloadPrice.display.replace(",", ".")
-        : cvDownloadPrice.display;
     const paidDownloadCtaLabel = tr(
         "PDF downloaden",
         "Download PDF"
-    );
-    const readyPanelDownloadCtaLabel = tr(
-        `PDF downloaden · eenmalig ${downloadPriceLabel}`,
-        `Download PDF · one-time ${downloadPriceLabel}`
     );
     // Completion is guidance, not an export gate. A user may intentionally
     // download a partly completed CV and finish it later. Keep the empty-CV
@@ -746,7 +744,7 @@ export default function Editor({
     const hasExportableContent = !isCurrentCvEmpty;
     const downloadActionLabel = isMatchPackWorkspace
         ? tr("PDF exporteren", "Export PDF")
-        : readyPanelDownloadCtaLabel;
+        : paidDownloadCtaLabel;
     const toolbarCtaLabel = hasExportableContent
         ? downloadActionLabel
         : tr("Voeg inhoud toe om te downloaden", "Add content to download");
@@ -851,6 +849,9 @@ export default function Editor({
     useEffect(() => {
         if (isPublicMode) return;
         if (typeof window === 'undefined' || matchImportHandledRef.current) return;
+        // A pending checker result must never be applied to an unrelated CV.
+        if (new URLSearchParams(window.location.search).get("startSource") !== "resume_screener_result") return;
+        if (isMatchPackWorkspace || !isCvEmpty(watch())) return;
         const rawPendingMatch = window.sessionStorage.getItem(PENDING_CV_MATCH_STORAGE_KEY);
         if (!rawPendingMatch) return;
 
@@ -864,6 +865,11 @@ export default function Editor({
 
         if (
             !isPendingCvMatch(parsedPendingMatch) ||
+            !Number.isFinite(parsedPendingMatch.createdAt) ||
+            parsedPendingMatch.createdAt > Date.now() ||
+            parsedPendingMatch.cvText.length > 18_000 ||
+            parsedPendingMatch.vacancyText.length > 18_000 ||
+            !cvVacatureMatchResultSchema.safeParse(parsedPendingMatch.result).success ||
             Date.now() - parsedPendingMatch.createdAt > PENDING_CV_MATCH_TTL_MS
         ) {
             window.sessionStorage.removeItem(PENDING_CV_MATCH_STORAGE_KEY);
@@ -871,6 +877,7 @@ export default function Editor({
         }
 
         matchImportHandledRef.current = true;
+        const importStartingData = JSON.stringify(watch());
         setMatchImportFeedback({ status: 'importing' });
 
         const applyPendingMatch = async () => {
@@ -886,6 +893,10 @@ export default function Editor({
                 const body = await response.json().catch(() => ({}));
                 if (!response.ok || !body.data) {
                     throw new Error(body.error || 'CV import failed');
+                }
+
+                if (JSON.stringify(watch()) !== importStartingData) {
+                    throw new Error('CV changed during import');
                 }
 
                 const normalizedData = ensureEditorData(body.data as CVData, uiLanguage);
@@ -943,7 +954,7 @@ export default function Editor({
         };
 
         void applyPendingMatch();
-    }, [id, isPublicMode, reset, uiLanguage, saveEditorData]);
+    }, [id, isPublicMode, isMatchPackWorkspace, reset, uiLanguage, saveEditorData, watch]);
 
     useEffect(() => {
         const storedVacancy = window.sessionStorage.getItem(getTargetVacancySessionKey(id));
@@ -1260,6 +1271,10 @@ export default function Editor({
 
     const handleTemplateChange = async (newTemplateId: string, defaultThemeId: string) => {
         if (!canChangeWorkspaceDesign) return;
+        const previousTemplateId = templateId;
+        const previousThemeId = colorThemeId;
+        const requestId = ++designSaveRequestRef.current;
+        setDesignSaveError(null);
         track('template_selected', {
             cvId: id,
             templateId: newTemplateId,
@@ -1274,8 +1289,28 @@ export default function Editor({
             setIsSaved(persistPublicDraft(watch() as CVData, newTemplateId, defaultThemeId));
             return;
         }
-        await updateCVTemplate(id, newTemplateId);
-        await updateCVColorTheme(id, defaultThemeId);
+        setIsDesignSaving(true);
+        try {
+            const templateResult = await updateCVTemplate(id, newTemplateId);
+            const themeResult = templateResult.success
+                ? await updateCVColorTheme(id, defaultThemeId)
+                : templateResult;
+            if (!themeResult.success) {
+                if (requestId === designSaveRequestRef.current) {
+                    setTemplateId(previousTemplateId);
+                    setColorThemeId(previousThemeId);
+                    setDesignSaveError(tr("Ontwerp opslaan is niet gelukt. Je vorige ontwerp blijft behouden.", "The design could not be saved. Your previous design is still active."));
+                }
+            }
+        } catch {
+            if (requestId === designSaveRequestRef.current) {
+                setTemplateId(previousTemplateId);
+                setColorThemeId(previousThemeId);
+                setDesignSaveError(tr("Ontwerp opslaan is niet gelukt. Probeer opnieuw.", "The design could not be saved. Please try again."));
+            }
+        } finally {
+            if (requestId === designSaveRequestRef.current) setIsDesignSaving(false);
+        }
     };
 
     const openTemplateSelector = (source: TemplateSelectorSource) => {
@@ -1306,13 +1341,30 @@ export default function Editor({
 
     const handleColorThemeChange = async (newThemeId: string) => {
         if (!canChangeWorkspaceDesign) return;
+        const previousThemeId = colorThemeId;
+        const requestId = ++designSaveRequestRef.current;
+        setDesignSaveError(null);
         track('color_theme_changed', { themeId: newThemeId, templateId });
         setColorThemeId(newThemeId);
         if (isPublicMode) {
             setIsSaved(persistPublicDraft(watch() as CVData, templateId, newThemeId));
             return;
         }
-        await updateCVColorTheme(id, newThemeId);
+        setIsDesignSaving(true);
+        try {
+            const result = await updateCVColorTheme(id, newThemeId);
+            if (!result.success && requestId === designSaveRequestRef.current) {
+                setColorThemeId(previousThemeId);
+                setDesignSaveError(tr("Kleur opslaan is niet gelukt. Je vorige kleur blijft behouden.", "The colour could not be saved. Your previous colour is still active."));
+            }
+        } catch {
+            if (requestId === designSaveRequestRef.current) {
+                setColorThemeId(previousThemeId);
+                setDesignSaveError(tr("Kleur opslaan is niet gelukt. Probeer opnieuw.", "The colour could not be saved. Please try again."));
+            }
+        } finally {
+            if (requestId === designSaveRequestRef.current) setIsDesignSaving(false);
+        }
     };
 
     const handleCVParsed = (data: CVData) => {
@@ -1473,29 +1525,16 @@ export default function Editor({
                 return;
             }
 
-            // Extract filename from Content-Disposition header or use default
-            const disposition = response.headers.get('Content-Disposition');
-            let filename = 'cv.pdf';
-            if (disposition) {
-                const match = disposition.match(/filename="?([^";\n]+)"?/);
-                if (match) filename = match[1];
-            }
-
-            // Trigger download via blob URL
-            const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            await downloadPdfResponse(response);
             track('pdf_download_completed', {
                 cvId: id,
+                source,
                 uiLanguage,
                 ...getEditorSearchContext(),
             });
+        } catch {
+            track('pdf_download_failed', { cvId: id, source, uiLanguage });
+            alert(tr("Downloaden is niet gelukt. Probeer opnieuw; je gekochte CV blijft beschikbaar.", "Download failed. Please try again; your purchased CV remains available."));
         } finally {
             setIsDownloading(false);
         }
@@ -1533,10 +1572,13 @@ export default function Editor({
                     {tr("Opslaan is gestopt om je tekst te beschermen. Een andere tab kan dit CV hebben gewijzigd, of de verbinding is onderbroken. Bewaar eerst een kopie van je tekst voordat je opnieuw laadt. Je lokale wijzigingen blijven hier zichtbaar.",
                         "Saving has stopped to protect your text. Another tab may have changed this CV, or the connection was interrupted. Copy your text before reloading. Your local changes remain visible here.")}
                 </div>}
+                {designSaveError && <div role="alert" className="border-b border-amber-300 bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-950">
+                    {designSaveError}
+                </div>}
                 {/* Toolbar */}
                 <div className="sticky top-0 z-20 flex min-h-14 w-full min-w-0 items-center justify-between gap-2 border-b border-slate-200 bg-white/95 px-2 py-2 backdrop-blur sm:px-3">
                     {/* Left side - Logo and tools */}
-                    <div className="flex min-w-0 flex-1 items-center gap-1 overflow-hidden sm:gap-2">
+                    <div className="flex min-w-0 flex-1 items-center gap-1 overflow-visible sm:gap-2">
                         <Link
                             href={isEnglish ? "/en" : "/"}
                             className={isCompactToolbar ? "hidden" : "hidden shrink-0 items-center gap-1 lg:flex"}
@@ -1586,6 +1628,7 @@ export default function Editor({
                                     currentThemeId={colorThemeId}
                                     onSelectTheme={handleColorThemeChange}
                                     uiLanguage={uiLanguage}
+                                    disabled={isDesignSaving}
                                 />
                             </div>
                         ) : isMatchPackWorkspace && canChangeWorkspaceDesign ? (
@@ -1607,6 +1650,7 @@ export default function Editor({
                                     currentThemeId={colorThemeId}
                                     onSelectTheme={handleColorThemeChange}
                                     uiLanguage={uiLanguage}
+                                    disabled={isDesignSaving}
                                 />
                             </div>
                         ) : isMatchPackWorkspace ? (
@@ -1631,6 +1675,7 @@ export default function Editor({
                                     currentThemeId={colorThemeId}
                                     onSelectTheme={handleColorThemeChange}
                                     uiLanguage={uiLanguage}
+                                    disabled={isDesignSaving}
                                 />
                             </div>
                         )}
@@ -1741,16 +1786,7 @@ export default function Editor({
                                 {isDownloading ? (
                                     isCompactToolbar ? "…" : tr("Bezig...", "Working...")
                                 ) : (
-                                    isCompactToolbar ? (
-                                        hasExportableContent ? "PDF" : tr("Start", "Start")
-                                    ) : (
-                                        <>
-                                            <span className="sm:hidden">
-                                                {hasExportableContent ? "PDF" : tr("Start", "Start")}
-                                            </span>
-                                            <span className="hidden sm:inline">{toolbarCtaLabel}</span>
-                                        </>
-                                    )
+                                    <span>{toolbarCtaLabel}</span>
                                 )}
                             </button>
                         </div>
@@ -1944,48 +1980,6 @@ export default function Editor({
                                         className="inline-flex shrink-0 items-center justify-center rounded-md border border-blue-800 bg-blue-700 px-5 py-3 text-sm font-black text-white transition-colors hover:bg-blue-800"
                                     >
                                         {tr("Verder in editor →", "Continue in editor →")}
-                                    </button>
-                                </div>
-                            </section>
-                        ) : null}
-
-                        {isReadyToDownload && !showPostUploadReview && !isPublicMode ? (
-                            <section className="rounded-2xl border border-emerald-200 bg-emerald-50 p-4 shadow-sm sm:p-5">
-                                <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                                    <div>
-                                        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-700">
-                                            {tr("Klaar voor download", "Ready to download")}
-                                        </p>
-                                        <h2 className="mt-1 text-lg font-semibold text-slate-950">
-                                            {tr("Je CV is klaar om te versturen.", "Your CV is ready to send.")}
-                                        </h2>
-                                        <p className="mt-1 text-sm font-medium text-slate-600">
-                                            {tr(
-                                                `Controleer eerst je volledige CV. De knop opent de betaalstap: daarna download je direct je PDF voor eenmalig ${downloadPriceLabel}. Geen abonnement en geen automatische verlenging.`,
-                                                `Review your complete CV first. The button opens checkout: after payment, download your PDF immediately for a one-time ${downloadPriceLabel}. No subscription and no automatic renewal.`
-                                            )}
-                                        </p>
-                                        <div className="mt-3 flex flex-wrap gap-2 text-xs font-bold text-emerald-800">
-                                            <span className="rounded-full border border-emerald-300 bg-white px-2.5 py-1">
-                                                {tr(`Eenmalig ${downloadPriceLabel}`, `One-time ${downloadPriceLabel}`)}
-                                            </span>
-                                            <span className="rounded-full border border-emerald-300 bg-white px-2.5 py-1">
-                                                {tr("Geen abonnement", "No subscription")}
-                                            </span>
-                                            <span className="rounded-full border border-emerald-300 bg-white px-2.5 py-1">
-                                                {tr("PDF direct na betaling", "PDF immediately after payment")}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <button
-                                        type="button"
-                                        onClick={() => handleDownload("ready_panel")}
-                                        disabled={isDownloading || !canDownloadWorkspace}
-                                        className="inline-flex shrink-0 items-center justify-center rounded-md border border-emerald-700 bg-emerald-600 px-5 py-3 text-sm font-black text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
-                                    >
-                                        {isDownloading
-                                            ? tr("Bezig...", "Working...")
-                                            : readyPanelDownloadCtaLabel}
                                     </button>
                                 </div>
                             </section>
@@ -2190,7 +2184,7 @@ export default function Editor({
 
                             const section = sectionId === "experience"
                                 ? <ExperienceSection control={control} register={register} uiLanguage={uiLanguage}
-                                    onWritingAssist={aiReviewEnabled && !isPublicMode && !isMatchPackWorkspace ? (entryId, action) => setWritingSelection({ target: { kind: "experience", entryId }, action }) : undefined}
+                                    onWritingAssist={aiReviewEnabled && !isPublicMode && !isMatchPackWorkspace ? (entryId, action, bullet) => setWritingSelection({ target: { kind: "experience", entryId }, action, bullet }) : undefined}
                                     writingBlocked={saveProblem} />
                                 : sectionId === "education"
                                     ? <EducationSection control={control} register={register} uiLanguage={uiLanguage} />
@@ -2300,6 +2294,7 @@ export default function Editor({
                                 <CvScoreWidget data={data} uiLanguage={uiLanguage} />
                                 {!isPublicMode ? (
                                     <KeywordScannerWidget
+                                        cvId={id}
                                         data={data}
                                         jobDescription={targetVacancy}
                                         onJobDescriptionChange={setTargetVacancy}
@@ -2318,7 +2313,7 @@ export default function Editor({
                                 {aiReviewEnabled && <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                                     <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
                                         <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
-                                            {tr("Afstemmen op een vacature", "Tailor to a job")}
+                                            {tr("Pas aan op een vacature", "Tailor to a vacancy")}
                                         </span>
                                     </h2>
 
@@ -2327,6 +2322,7 @@ export default function Editor({
                                             <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Doelrol", "Target role")}</label>
                                             <input
                                                 value={atsTargetRole}
+                                                maxLength={200}
                                                 onChange={(e) => setAtsTargetRole(e.target.value)}
                                                 placeholder={data.personal.title || tr("bv. Backend Developer", "e.g. Backend Developer")}
                                                 className={inputClass}
@@ -2340,8 +2336,9 @@ export default function Editor({
                                         <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Vacaturetekst (optioneel)", "Job description (optional)")}</label>
                                         <textarea
                                             value={targetVacancy}
+                                            maxLength={8000}
                                             onChange={(e) => setTargetVacancy(e.target.value)}
-                                            placeholder={tr("Plak de vacaturetekst voor sterkere ATS-keyword match...", "Paste the job description for a stronger ATS keyword match...")}
+                                            placeholder={tr("Plak de vacature. Gevraagde vaardigheden worden niet automatisch aan je cv toegevoegd.", "Paste the vacancy. Requested skills are not automatically added to your CV.")}
                                             className={`${inputClass} h-24`}
                                             style={inputStyle}
                                         />
@@ -2354,7 +2351,7 @@ export default function Editor({
                                             disabled={saveProblem}
                                             className="px-4 py-2 rounded-md border border-sky-300 bg-sky-50 text-sky-900 font-semibold text-xs hover:bg-sky-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                                         >
-                                            {tr('Bekijk een suggestie', 'Review a suggestion')}
+                                            {tr('Bekijk voorgestelde aanpassingen', 'Review proposed changes')}
                                         </button>
                                         <p className="text-xs font-bold text-gray-600">
                                             {tr("Controleer de suggestie voordat je tekst vervangt. Controleer alle feiten zelf.", "Review the suggestion before replacing text. Check every fact yourself.")}

@@ -3267,7 +3267,52 @@ function getDutchPack(seed: DutchSeed): ContentPack {
     return servicePack;
 }
 
+const roleExamplePaths: Record<string, string> = {
+    'cv-voorbeeld-administratief-medewerker': '/cv-voorbeelden/zakelijk-en-financieel/administratief-medewerker',
+    'cv-voorbeeld-administratief-medewerker-parttime': '/cv-voorbeelden/zakelijk-en-financieel/administratief-medewerker',
+    'cv-voorbeeld-klantenservice-medewerker': '/cv-voorbeelden/horeca-en-detailhandel/klantenservice-medewerker',
+    'cv-voorbeeld-verkoopmedewerker': '/cv-voorbeelden/horeca-en-detailhandel/winkelmedewerker',
+    'cv-voorbeeld-horeca-medewerker': '/cv-voorbeelden/horeca-en-detailhandel/ober-serveerster',
+    'cv-voorbeeld-callcenter-medewerker': '/cv-voorbeelden/horeca-en-detailhandel/klantenservice-medewerker',
+    'cv-voorbeeld-receptionist': '/cv-voorbeelden/zakelijk-en-financieel/receptionist',
+    'cv-voorbeeld-office-manager': '/cv-voorbeelden/zakelijk-en-financieel/office-manager',
+    'cv-voorbeeld-projectmanager': '/cv-voorbeelden/zakelijk-en-financieel/projectmanager',
+    'cv-voorbeeld-productiemedewerker': '/cv-voorbeelden/vakmanschap-en-logistiek/productiemedewerker',
+    'cv-voorbeeld-schoonmaakmedewerker': '/cv-voorbeelden/vakmanschap-en-logistiek/schoonmaker',
+    'cv-voorbeeld-bezorger': '/cv-voorbeelden/vakmanschap-en-logistiek/bezorger',
+    'cv-voorbeeld-magazijnmedewerker-zonder-ervaring': '/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker',
+    'cv-voorbeeld-magazijnmedewerker-parttime': '/cv-voorbeelden/vakmanschap-en-logistiek/magazijnmedewerker',
+    'cv-voorbeeld-orderpicker': '/cv-voorbeelden/vakmanschap-en-logistiek/orderpicker',
+    'cv-voorbeeld-student-bijbaan': '/cv-voorbeelden/studenten-en-starters/bijbaan-deeltijd-cv',
+};
+
 function getDutchRelatedLinks(seed: DutchSeed): SeoGuidePage['relatedLinks'] {
+    const examplePath = roleExamplePaths[seed.slug];
+    if (examplePath) {
+        return [
+            {
+                href: examplePath,
+                title: `Uitgewerkt CV voorbeeld voor ${seed.role}`,
+                description: 'Bekijk de concrete opbouw en formuleringen voor deze of een nauw verwante functie.',
+            },
+            {
+                href: examplePath.slice(0, examplePath.lastIndexOf('/')),
+                title: 'Meer CV voorbeelden in deze beroepsgroep',
+                description: 'Vergelijk functies binnen dezelfde beroepsgroep voordat je jouw eigen CV afrondt.',
+            },
+            {
+                href: seed.slug.includes('zonder-ervaring')
+                    ? '/cv-tips/cv-zonder-werkervaring'
+                    : '/cv-tips/cv-werkervaring-beschrijven',
+                title: seed.slug.includes('zonder-ervaring')
+                    ? 'CV schrijven zonder werkervaring'
+                    : 'Werkervaring sterker formuleren',
+                description: seed.slug.includes('zonder-ervaring')
+                    ? 'Laat stage, projecten en leerbaarheid zien als je nog geen werkervaring hebt.'
+                    : 'Maak van taakomschrijvingen sterke bullets met zichtbaar resultaat en impact.',
+            },
+        ];
+    }
     if (seed.slug.includes('zonder-ervaring')) {
         return [
             {

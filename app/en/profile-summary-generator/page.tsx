@@ -21,6 +21,7 @@ export default function Page() {
         <p className="mt-4 text-sm leading-6 text-[var(--wk-ink-muted)]">Do not enter contact details or confidential employer information. The tool is for wording help; it does not verify your identity or employment history.</p>
       </section>
       <div className="mt-8 max-w-3xl"><EnglishProfileSummaryTool /></div>
+      <p className="mt-5"><Link href="/en/ai-cv-builder" className="underline underline-offset-4">See complete CV examples and AI writing guidance</Link></p>
       <section className="mt-12 grid gap-5 md:grid-cols-2">
         <article className="wk-card"><h2 className="text-xl font-semibold">What makes a useful profile?</h2><p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">Name the professional direction, two or three strengths and the contribution you can support. Keep the result specific enough for a recruiter to understand in one scan.</p></article>
         <article className="wk-card"><h2 className="text-xl font-semibold">Check before you use it</h2><p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">Compare every date, number, tool, employer and responsibility with your source CV. If the draft adds a claim, remove it or rewrite it before downloading.</p></article>

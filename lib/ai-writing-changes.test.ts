@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { defaultCV } from "./cv";
-import { writingChanges, applyWritingChange, writingContextKey } from "./ai-writing-changes";
+import { writingChanges, applyWritingChange, writingContextKey, rebaseWritingChanges } from "./ai-writing-changes";
 
 function fixture() {
   const before = structuredClone(defaultCV);
@@ -12,12 +12,43 @@ function fixture() {
   const after = structuredClone(before);
   after.personal.summary = "New profile";
   after.experience[0].description = "New description";
-  after.experience[0].highlights = ["New bullet", "Another bullet"];
+  after.experience[0].highlights = ["New bullet"];
   return { before, after };
 }
-test("review creates individual profile, description and bullet-list changes", () => {
+test("review creates individual profile, description and bullet changes", () => {
   const { before, after } = fixture();
   assert.deepEqual(writingChanges(before, after, { kind: "all" }).map(c => c.field), ["summary", "description", "highlights"]);
+});
+
+test("duplicate bullets are addressed by array context and index; sibling acceptance rebases only known edits", () => {
+  const { before, after } = fixture();
+  before.experience[0].highlights = ["same", "same"];
+  after.experience[0].highlights = ["first", "second"];
+  const changes = writingChanges(before, after, { kind: "experience", entryId: "job" }).filter(c => c.bullet);
+  const once = applyWritingChange(before, changes[0]);
+  assert.deepEqual(once.experience[0].highlights, ["first", "same"]);
+  assert.throws(() => applyWritingChange(once, changes[1]), /STALE_CHANGE/);
+  const rebased = rebaseWritingChanges(changes, changes[0], once);
+  const twice = applyWritingChange(once, rebased[1]);
+  assert.deepEqual(twice.experience[0].highlights, ["first", "second"]);
+  assert.throws(() => applyWritingChange(twice, changes[0], true), /STALE_CHANGE/);
+  const undone = applyWritingChange(twice, rebased[1], true);
+  assert.deepEqual(applyWritingChange(undone, changes[0], true).experience[0].highlights, ["same", "same"]);
+});
+
+test("changed count or known reordered bullets are not paired by guesswork", () => {
+  const { before, after } = fixture();
+  after.experience[0].highlights.push("new");
+  assert.equal(writingChanges(before, after, { kind: "experience", entryId: "job" }).filter(c => c.bullet).length, 0);
+});
+
+test("insert preview accepts once and safely undoes", () => {
+  const { before, after } = fixture();
+  after.experience[0].highlights = [...before.experience[0].highlights, "New task"];
+  const change = writingChanges(before, after, { kind: "experience", entryId: "job" }, { operation: "insert_bullet", index: 1 })[0];
+  const accepted = applyWritingChange(before, change);
+  assert.throws(() => applyWritingChange(accepted, change), /STALE_CHANGE/);
+  assert.deepEqual(applyWritingChange(accepted, change, true), before);
 });
 test("accepting a single change preserves every unrelated field", () => {
   const { before, after } = fixture();

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
+import { sanitizeAiWritingProperties } from '@/lib/ai-writing-analytics';
 import { prisma } from '@/lib/prisma';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { normalizeAnalyticsPath } from '@/lib/analytics-paths';
@@ -119,6 +120,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'voice_proposal_failed',
     'voice_changes_applied',
     'voice_mode_cancelled',
+    'ai_writing_facts',
     'ai_writing_opened',
     'ai_writing_requested',
     'ai_writing_result',
@@ -135,6 +137,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'full_preview_download_clicked',
     'pdf_download_started',
     'pdf_download_completed',
+    'pdf_download_failed',
     'checkout_experiment_assigned',
     'checkout_paywall_reached',
     'checkout_modal_viewed',
@@ -209,15 +212,6 @@ type PrismaWithOptionalAnalytics = typeof prisma & {
 
 let hasLoggedAnalyticsDbWarning = false;
 
-function sanitizeAiWritingProperties(event: string, value: Record<string, unknown>): Record<string, unknown> {
-    const locale = value.locale === 'en' ? 'en' : 'nl';
-    const target = ['profile', 'experience', 'all'].includes(String(value.target)) ? String(value.target) : 'all';
-    if (event === 'ai_writing_result') return { locale, target, changeCount: Math.max(0, Math.min(20, Number(value.changeCount) || 0)) };
-    if (event === 'ai_writing_decision') return { locale, target, field: ['summary', 'description', 'highlights'].includes(String(value.field)) ? String(value.field) : 'summary', decision: ['accepted', 'rejected', 'undone'].includes(String(value.decision)) ? String(value.decision) : 'rejected' };
-    if (event === 'ai_writing_failed') return { locale, target, reason: typeof value.reason === 'string' && /^[A-Z0-9_]{1,48}$/.test(value.reason) ? value.reason : 'unknown' };
-    const action = ['draft_profile', 'draft_experience', 'improve', 'shorten', 'tailor'].includes(String(value.action)) ? String(value.action) : 'improve';
-    return event === 'ai_writing_requested' ? { locale, target, action, regeneration: value.regeneration === true } : { locale, target, action };
-}
 
 /**
  * Analytics URLs are navigation context only. Keep the pathname and discard

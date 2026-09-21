@@ -1,3 +1,4 @@
+import { sanitizeAiWritingProperties } from "./ai-writing-analytics";
 /**
  * WerkCV Analytics — lightweight client-side event tracking.
  *
@@ -109,11 +110,12 @@ type CheckoutExperimentContext = EditorSourceContext & {
 // Event types — exhaustive list of all tracked interactions
 // ============================================================
 export type AnalyticsEvent =
-    | { event: 'ai_writing_opened'; properties: { locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; action: 'draft_profile' | 'draft_experience' | 'improve' | 'shorten' | 'tailor' } }
-    | { event: 'ai_writing_requested'; properties: { locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; action: 'draft_profile' | 'draft_experience' | 'improve' | 'shorten' | 'tailor'; regeneration: boolean } }
-    | { event: 'ai_writing_result'; properties: { locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; changeCount: number } }
-    | { event: 'ai_writing_failed'; properties: { locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; reason: string } }
-    | { event: 'ai_writing_decision'; properties: { locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; field: 'summary' | 'description' | 'highlights'; decision: 'accepted' | 'rejected' | 'undone' } }
+    | { event: 'ai_writing_facts'; properties: { bullet?: boolean; locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; stage: 'started' | 'completed' } }
+    | { event: 'ai_writing_opened'; properties: { bullet?: boolean; locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; action: 'draft_profile' | 'draft_experience' | 'improve' | 'shorten' | 'tailor' } }
+    | { event: 'ai_writing_requested'; properties: { bullet?: boolean; locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; action: 'draft_profile' | 'draft_experience' | 'improve' | 'shorten' | 'tailor'; regeneration: boolean } }
+    | { event: 'ai_writing_result'; properties: { bullet?: boolean; locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; changeCount: number; latency?: string } }
+    | { event: 'ai_writing_failed'; properties: { bullet?: boolean; locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; reason: string } }
+    | { event: 'ai_writing_decision'; properties: { bullet?: boolean; locale: 'nl' | 'en'; target: 'profile' | 'experience' | 'all'; field: 'summary' | 'description' | 'highlights'; decision: 'accepted' | 'rejected' | 'undone' } }
     // Navigation
     | { event: 'page_view'; properties: { path: string; referrer?: string } }
     | {
@@ -500,7 +502,8 @@ export type AnalyticsEvent =
     | { event: 'photo_repositioned'; properties: { moved: boolean } }
     // Download & payment
     | { event: 'pdf_download_started'; properties: { cvId: string; source?: string; completionScore?: number; templateId?: string; pageCount?: number } & EditorSourceContext }
-    | { event: 'pdf_download_completed'; properties: { cvId: string } & EditorSourceContext }
+    | { event: 'pdf_download_completed'; properties: { cvId: string; source?: string } & EditorSourceContext }
+    | { event: 'pdf_download_failed'; properties: { cvId: string; source?: string } & EditorSourceContext }
     | { event: 'addon_selected'; properties: { cvId: string; addons: string[] } }
     | {
           event: 'checkout_experiment_assigned';
@@ -760,7 +763,7 @@ export function track<E extends AnalyticsEvent['event']>(
 
     const payload = {
         event,
-        properties,
+        properties: event.startsWith('ai_writing_') ? sanitizeAiWritingProperties(event, properties as Record<string, unknown>) : properties,
         timestamp: new Date().toISOString(),
         url: window.location.pathname,
         userAgent: navigator.userAgent,

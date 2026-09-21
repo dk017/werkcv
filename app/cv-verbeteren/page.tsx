@@ -44,21 +44,26 @@ const sentencePairs = [
   {
     weak: "Verantwoordelijk voor klantenservice en administratie.",
     strong:
-      "Dagelijks 35+ klantvragen afgehandeld en administratieve opvolging gestroomlijnd, waardoor reactietijd zichtbaar daalde.",
+      "Beantwoordde klantvragen en verzorgde de bijbehorende administratie.",
   },
   {
     weak: "Goede communicatieve vaardigheden en teamplayer.",
     strong:
-      "Werkte dagelijks samen met sales en operations en vertaalde klantvragen naar concrete acties voor meerdere teams.",
+      "Beschrijf hier met wie je echt samenwerkte en welke taak je zelf uitvoerde. Alleen ‘teamplayer’ bevat nog geen concreet voorbeeld.",
   },
   {
     weak: "Ondersteunde projecten en rapportages.",
     strong:
-      "Projectvoortgang bewaakt en wekelijkse rapportages opgesteld, waardoor knelpunten sneller zichtbaar werden voor het team.",
+      "Ondersteunde de uitvoering van projecten en hielp bij het maken van rapportages.",
   },
 ];
 
 const routeLinks: OptimizerLinkCard[] = [
+  {
+    href: "/cv-maken-met-ai#voorbeelden",
+    title: "CV verbeteren met AI: bekijk een voorbeeld",
+    body: "Vergelijk echte bronnotities binnen een fictief voorbeeld met duidelijke formuleringen. Zie ook welke overdreven claims je niet moet overnemen.",
+  },
   {
     href: "/cv-optimaliseren",
     title: "CV optimaliseren",

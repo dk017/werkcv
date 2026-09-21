@@ -124,9 +124,14 @@ export const sollicitatiebriefTips: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: "/geachte-heer-mevrouw",
+                    href: "/sollicitatiehulp/geachte-heer-mevrouw",
                     label: "Kies een moderne aanhef zonder bekende naam",
                     description: "Met voorbeelden voor formele en minder formele situaties.",
+                },
+                {
+                    href: "/sollicitatiehulp",
+                    label: "Meer hulp bij de formulering van je sollicitatie",
+                    description: "Bekijk praktische uitleg bij aanhef, openingszinnen en veelgebruikte CV-termen.",
                 },
             ],
         },

@@ -643,6 +643,13 @@ export default function ToolsPage() {
                     </div>
                 </section>
 
+                <p className="mt-8 text-sm leading-7 text-[var(--wk-ink-muted)]">
+                    Zoek je naast onze tools ook meer bronnen voor je sollicitatie? Bekijk de{' '}
+                    <Link href="/cv-tools-links" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
+                        handige CV-tools en carrièrelinks
+                    </Link>.
+                </p>
+
                 <section className="mt-12 rounded-[var(--wk-radius-lg)] bg-[var(--wk-primary)] p-8">
                     <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-[1.1fr_0.9fr]">
                         <div>

@@ -9,6 +9,7 @@ import { normalizeStartSource, PENDING_START_SOURCE_COOKIE, readEncodedStartSour
 import { isAgencyAccessError } from "@/lib/agency-access";
 import { getWorkspaceEntitlementsForUser, isWorkspaceSwitcherEnabled } from "@/lib/workspace/entitlements";
 import { normalizeEditorFocus } from "@/lib/editor-focus";
+import { consumerAiEnabled } from "@/lib/consumer-ai-availability";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -91,7 +92,7 @@ export default async function EditorPage({
         <Editor
             key={id}
             initialContentVersion={cv.contentVersion}
-            aiReviewEnabled={process.env.CONSUMER_AI_REVIEW_ENABLED === "true" && !cv.agencyRouteLocked}
+            aiReviewEnabled={consumerAiEnabled() && !cv.agencyRouteLocked}
             initialData={cv.data}
             id={id}
             initialTemplateId={cv.templateId}

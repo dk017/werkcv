@@ -4,7 +4,7 @@
 import { useFieldArray, Control, UseFormRegister, Controller } from "react-hook-form";
 import { CVData } from "@/lib/cv";
 import { UiLanguage } from "@/lib/ui-language";
-import type { WritingAction } from "@/lib/ai-writing-changes";
+import type { WritingAction, BulletSelection } from "@/lib/ai-writing-changes";
 
 interface SectionProps {
     control: Control<CVData>;
@@ -21,7 +21,7 @@ function t(uiLanguage: UiLanguage, dutch: string, english: string) {
 }
 
 export function ExperienceSection({ control, register, uiLanguage = "nl", onWritingAssist, writingBlocked }: SectionProps & {
-    onWritingAssist?: (entryId: string, action: WritingAction) => void;
+    onWritingAssist?: (entryId: string, action: WritingAction, bullet?: BulletSelection) => void;
     writingBlocked?: boolean;
 }) {
     const { fields, append, remove } = useFieldArray({
@@ -56,6 +56,8 @@ export function ExperienceSection({ control, register, uiLanguage = "nl", onWrit
                         control={control}
                         onRemove={() => remove(index)}
                         fieldName="experience"
+                        onBulletAssist={onWritingAssist && item.entryId ? (action, bullet) => onWritingAssist(item.entryId!, action, bullet) : undefined}
+                        writingBlocked={writingBlocked}
                         uiLanguage={uiLanguage}
                     />
                     {onWritingAssist && item.entryId && <div className="mt-2 flex flex-wrap gap-2">
@@ -75,13 +77,15 @@ export function ExperienceSection({ control, register, uiLanguage = "nl", onWrit
     );
 }
 
-function ExperienceItem({ index, register, control, onRemove, fieldName, uiLanguage }: {
+function ExperienceItem({ index, register, control, onRemove, fieldName, uiLanguage, onBulletAssist, writingBlocked }: {
     index: number;
     register: UseFormRegister<CVData>;
     control: Control<CVData>;
     onRemove: () => void;
     fieldName: "experience" | "internships";
     uiLanguage: UiLanguage;
+    onBulletAssist?: (action: WritingAction, bullet: BulletSelection) => void;
+    writingBlocked?: boolean;
 }) {
     const {
         fields: highlightFields,
@@ -177,16 +181,22 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
                     </button>
                 </div>
                 <div className="space-y-2">
+                    {onBulletAssist && <button type="button" disabled={writingBlocked} data-writing-trigger={`bullet:${index}:insert`} className="rounded-lg border bg-white px-3 py-2 text-sm" onClick={() => onBulletAssist("draft_experience", { operation: "insert_bullet", index: highlightFields.length })}>{t(uiLanguage, "Voeg een taak toe met schrijfhulp", "Add a responsibility with writing help")}</button>}
                     {highlightFields.map((h, hIndex) => (
-                        <div key={h.id} className="flex gap-2 items-start">
+                        <div key={h.id} className="flex flex-wrap gap-2 items-start">
                             <span className="text-black mt-2">•</span>
                             <textarea
                                 {...register(`${fieldName}.${index}.highlights.${hIndex}` as any)}
                                 placeholder={t(uiLanguage, "Beschrijf een taak of resultaat...", "Describe a task or result...")}
-                                className={`${inputClass} min-h-[50px] flex-1`}
+                                className={`${inputClass} min-h-[50px] min-w-0 flex-1`}
                                 style={inputStyle}
                             />
                             <div className="mt-1 grid shrink-0 grid-cols-2 gap-1">
+                                {onBulletAssist && <div className="col-span-2 flex flex-wrap gap-1">
+                                    {(["improve", "shorten"] as const).map(action => <button key={action} type="button" disabled={writingBlocked}
+                                      data-writing-trigger={`bullet:${index}:${hIndex}:${action}`} aria-label={`${t(uiLanguage, "Punt", "Bullet")} ${hIndex + 1}: ${action === "improve" ? t(uiLanguage, "Verbeter", "Improve") : t(uiLanguage, "Maak korter", "Shorten")}`}
+                                      className="rounded border bg-white p-2 text-xs focus-visible:outline-2" onClick={() => onBulletAssist(action, { operation: "replace_bullet", index: hIndex })}>{action === "improve" ? t(uiLanguage, "Verbeter", "Improve") : t(uiLanguage, "Maak korter", "Shorten")}</button>)}
+                                </div>}
                                 <button
                                     type="button"
                                     onClick={() => insertHighlight(hIndex + 1, "" as any)}

@@ -5,6 +5,7 @@ import { formatGender, formatLanguageLevel, formatMaritalStatus, resumeText } fr
 import { cvSectionHasSubstantiveContent, resolveCvSectionLayout, type CvBodySectionId } from "@/lib/cv-sections";
 import { OrderedSectionContainer } from "./section-layout";
 import { LinkText } from "./link-utils";
+import { CvDocumentHeading } from "./document-heading";
 
 export type TemplateVisualStyle = {
     id: string;
@@ -82,8 +83,9 @@ function SectionBody({ id, data, visualStyle }: { id: CvBodySectionId; data: CVD
     }
 }
 
-function ContactDetails({ data }: { data: CVData }) {
+function ContactDetails({ data, inline = false }: { data: CVData; inline?: boolean }) {
     const values = [data.personal.email, data.personal.phone, data.personal.location, data.personal.address, data.personal.postalCode].filter((value): value is string => Boolean(value?.trim()));
+    const links = [data.personal.linkedIn, data.personal.github, data.personal.website].filter((value): value is string => Boolean(value?.trim()));
     const personalDetails = [
         data.personal.birthDate || data.personal.birthPlace ? `${resumeText(data, "birthDateAndPlace")}: ${data.personal.birthDate || ""}${data.personal.birthPlace ? `, ${data.personal.birthPlace}` : ""}` : null,
         data.personal.nationality ? `${resumeText(data, "nationality")}: ${data.personal.nationality}` : null,
@@ -91,21 +93,29 @@ function ContactDetails({ data }: { data: CVData }) {
         data.personal.gender ? `${resumeText(data, "gender")}: ${formatGender(data.personal.gender, data)}` : null,
         data.personal.maritalStatus ? `${resumeText(data, "maritalStatus")}: ${formatMaritalStatus(data.personal.maritalStatus, data)}` : null,
     ].filter((value): value is string => Boolean(value));
-    return <div className="space-y-1 text-[11px] opacity-75">{values.map((value, index) => <div key={`${value}-${index}`} className="break-words"><LinkText value={value} /></div>)}{data.personal.linkedIn ? <div><LinkText value={data.personal.linkedIn} /></div> : null}{data.personal.github ? <div><LinkText value={data.personal.github} /></div> : null}{data.personal.website ? <div><LinkText value={data.personal.website} /></div> : null}{personalDetails.length > 0 ? <div className="mt-2 space-y-0.5 text-[10px]">{personalDetails.map((value) => <div key={value}>{value}</div>)}</div> : null}</div>;
+    const contactValues = [...values, ...links];
+    return <div className={inline ? "flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] opacity-75" : "space-y-1 text-[11px] opacity-75"}>
+        {contactValues.map((value, index) => <span key={`${value}-${index}`} className={inline ? "inline-flex min-w-0 items-center gap-3 break-words" : "block break-words"}>
+            {inline && index > 0 ? <span aria-hidden="true" className="opacity-50">·</span> : null}
+            <LinkText value={value} />
+        </span>)}
+        {personalDetails.length > 0 ? <div className="mt-2 w-full space-y-0.5 text-[10px]">{personalDetails.map((value) => <div key={value}>{value}</div>)}</div> : null}
+    </div>;
 }
 
-function Photo({ data, theme, visualStyle }: { data: CVData; theme: ColorTheme; visualStyle: TemplateVisualStyle }) {
+function Photo({ data, theme, visualStyle, centered = true }: { data: CVData; theme: ColorTheme; visualStyle: TemplateVisualStyle; centered?: boolean }) {
     if (visualStyle.photo === "hidden") return null;
     const radius = visualStyle.photo === "circle" ? "rounded-full" : visualStyle.photo === "rounded" ? "rounded-lg" : "rounded-none";
-    if (data.personal.photo) return (
+    const alignment = centered ? "mx-auto" : "";
+    if (!data.personal.photo) return null;
+    return (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={data.personal.photo} alt={data.personal.name || resumeText(data, "profilePhotoAlt")} className={`mx-auto mb-3 h-20 w-20 object-cover ${radius}`} style={{ border: `3px solid ${theme.primary}` }} />
+        <img src={data.personal.photo} alt={data.personal.name || resumeText(data, "profilePhotoAlt")} className={`${alignment} mb-3 h-20 w-20 object-cover ${radius}`} style={{ border: `3px solid ${theme.primary}` }} />
     );
-    return <div className={`mx-auto mb-3 flex h-20 w-20 items-center justify-center text-2xl font-bold ${radius}`} style={{ backgroundColor: "var(--cv-soft)", color: "var(--cv-primary)" }}>{data.personal.name ? data.personal.name.split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase() : "CV"}</div>;
 }
 
 function Identity({ data, visualStyle, compact = false }: { data: CVData; visualStyle: TemplateVisualStyle; compact?: boolean }) {
-    return <div className={visualStyle.headerAlign === "center" ? "text-center" : "text-left"}><h1 className={compact ? "text-xl font-bold leading-tight" : "text-[31px] font-extrabold leading-tight"}>{data.personal.name || resumeText(data, "nameFallback")}</h1>{data.personal.title ? <p className={`${compact ? "text-xs" : "text-[15px]"} mt-1 font-medium opacity-65`}>{data.personal.title}</p> : null}</div>;
+    return <div className={visualStyle.headerAlign === "center" ? "text-center" : "text-left"}><CvDocumentHeading className={compact ? "text-xl font-bold leading-tight" : "text-[31px] font-extrabold leading-tight"}>{data.personal.name || resumeText(data, "nameFallback")}</CvDocumentHeading>{data.personal.title ? <p className={`${compact ? "text-xs" : "text-[15px]"} mt-1 font-medium opacity-65`}>{data.personal.title}</p> : null}</div>;
 }
 
 function Profile({ data, visualStyle }: { data: CVData; visualStyle: TemplateVisualStyle }) {
@@ -124,7 +134,7 @@ export default function CanonicalCvTemplate({ data, theme, templateId, visualSty
     const variables = { color: theme.text, "--cv-primary": theme.primary, "--cv-border": theme.border, "--cv-soft": `${theme.primary}18` } as React.CSSProperties;
     const styleSignature = [visualStyle.font, visualStyle.headerAlign, visualStyle.heading, visualStyle.sidebar, visualStyle.identity, visualStyle.photo, visualStyle.skills].join(":");
 
-    if (resolved.layout === "single-column") return <div className={`mx-auto min-h-[297mm] w-[210mm] bg-white px-10 py-11 text-[12px] leading-[1.45] ${fontClass(visualStyle.font)}`} style={variables} data-cv-template={templateId} data-cv-visual-style={visualStyle.id} data-cv-style-signature={styleSignature} data-cv-layout="single-column"><header className={`mb-7 border-b-2 pb-6 ${visualStyle.headerAlign === "center" ? "text-center" : "text-left"}`} style={{ borderColor: theme.primary }}><Photo data={data} theme={theme} visualStyle={visualStyle} /><Identity data={data} visualStyle={visualStyle} /><div className={`mt-3 ${visualStyle.headerAlign === "center" ? "mx-auto max-w-[150mm]" : ""}`}><ContactDetails data={data} /></div></header><Profile data={data} visualStyle={visualStyle} /><main data-cv-lane="main"><BodySections data={data} templateId={templateId} lane="main" visualStyle={visualStyle} renderSection={renderSection} /></main></div>;
+    if (resolved.layout === "single-column") return <div className={`mx-auto min-h-[297mm] w-[210mm] bg-white px-10 py-11 text-[12px] leading-[1.45] ${fontClass(visualStyle.font)}`} style={variables} data-cv-template={templateId} data-cv-visual-style={visualStyle.id} data-cv-style-signature={styleSignature} data-cv-layout="single-column"><header className={`mb-7 border-b-2 pb-6 ${visualStyle.headerAlign === "center" ? "text-center" : "text-left"}`} style={{ borderColor: theme.primary }}><Photo data={data} theme={theme} visualStyle={visualStyle} centered={visualStyle.headerAlign === "center"} /><Identity data={data} visualStyle={visualStyle} /><div className={`mt-3 ${visualStyle.headerAlign === "center" ? "mx-auto max-w-[150mm]" : ""}`}><ContactDetails data={data} inline={visualStyle.headerAlign !== "center"} /></div></header><Profile data={data} visualStyle={visualStyle} /><main data-cv-lane="main"><BodySections data={data} templateId={templateId} lane="main" visualStyle={visualStyle} renderSection={renderSection} /></main></div>;
 
     const inverse = visualStyle.sidebar === "solid";
     const sidebarStyle: React.CSSProperties = visualStyle.sidebar === "solid" ? { backgroundColor: theme.primary, color: "#ffffff", "--cv-soft": "rgba(255,255,255,.16)" } as React.CSSProperties : visualStyle.sidebar === "outline" ? { borderLeft: resolved.layout === "two-column-right" ? `1px solid ${theme.border}` : undefined, borderRight: resolved.layout === "two-column-left" ? `1px solid ${theme.border}` : undefined } : { backgroundColor: `${theme.primary}10` };

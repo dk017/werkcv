@@ -5,6 +5,7 @@ import { getEditorPathForLanguage } from "@/lib/editor-path";
 import { prisma } from "@/lib/prisma";
 import { getResumeLanguage, ResumeLanguage } from "@/lib/resume-language";
 import PurchaseSuccessActions from "./PurchaseSuccessActions";
+import { getCurrentUser } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "Betaling Geslaagd - WerkCV",
@@ -21,6 +22,13 @@ export default async function SuccessPage({
 }) {
   const { cvId, lang, bundle } = await searchParams;
   if (!cvId) redirect("/");
+
+  if (!await getCurrentUser()) {
+    const returnParams = new URLSearchParams({ cvId });
+    if (lang === "en" || lang === "nl") returnParams.set("lang", lang);
+    if (bundle === "profile-photo") returnParams.set("bundle", bundle);
+    redirect(`/login?locale=${lang === "en" ? "en" : "nl"}&next=${encodeURIComponent(`/success?${returnParams}`)}`);
+  }
 
   // Always authorise the requested CV, even when checkout returned a language.
   // This keeps arbitrary CV IDs from exposing payment metadata.

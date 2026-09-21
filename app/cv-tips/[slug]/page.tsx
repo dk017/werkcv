@@ -473,6 +473,14 @@ export default async function ArticlePage({ params }: PageProps) {
                         Pas deze tips toe en maak binnen 5 minuten een professioneel CV.
                         Kies uit 13+ templates, vul je gegevens in en download als PDF.
                     </p>
+                    {(article.category === 'schrijven' || article.category === 'opmaak') && (
+                        <p className="text-gray-700 mb-4">
+                            Eerst de hele aanpak doorlopen? Lees de gids over{' '}
+                            <Link href="/cv-maken" className="font-semibold underline underline-offset-4">
+                                stap voor stap een CV maken
+                            </Link>.
+                        </p>
+                    )}
                     <div className="flex flex-wrap gap-3">
                         {articleEditorCta ? (
                             <TrackedLandingLink

@@ -42,6 +42,7 @@ const personalGroupsEn: FooterGroup[] = [
     { href: "/en/pricing", label: "Payment questions" },
     { href: "mailto:contact@werkcv.nl", label: "Email support" },
     { href: "/en/guides", label: "CV help" },
+    { href: "/about", label: "About WerkCV" },
   ] },
   { label: "Legal", links: [
     { href: "/en/privacy", label: "Privacy" },

@@ -90,6 +90,19 @@ function fixture() {
   });
   return { input, deps, request, stats: () => ({ generated, released }) };
 }
+
+test("profile requests ignore tampered client experience and preserve stored metadata", async () => {
+  const f = fixture();
+  const stored = structuredClone(f.input.data);
+  stored.experience = [experience("job", "Real employer", "Answered customer enquiries.")];
+  f.deps.document = async () => ({ data: stored });
+  const tampered = structuredClone(stored);
+  tampered.experience[0].company = "Injected employer";
+  const result = await handleConsumerAiRequest(f.request({ ...f.input, data: tampered,
+    expectedContentVersion: cvContentVersion(stored), action: "draft_profile", target: { kind: "profile" } }), f.deps);
+  assert.equal(result.status, 200);
+  assert.deepEqual((await result.json()).data.experience, stored.experience);
+});
 test("request success releases lease and sends no-store", async () => {
   const f = fixture(); const result = await handleConsumerAiRequest(f.request(), f.deps);
   assert.equal(result.status, 200); assert.equal(result.headers.get("cache-control"), "no-store");

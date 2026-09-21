@@ -22,7 +22,7 @@ const rows = [
     product: "WerkCV",
     bestFor: "An English CV route with Netherlands-focused structure.",
     price: `Build and preview free; ${cvDownloadPrice.displayEn} one time for this CV's PDF.`,
-    output: "Template preview, editor and PDF download; the same paid CV can be edited again.",
+    output: "Dutch/English editor, template preview and consumer PDF (not DOCX). Writing assistance is activation-gated: check the AI page for current availability. No selection guarantee.",
     evidence: `${comparisonEvidenceLabel(getComparisonEvidence("werkcv-consumer-price-2026-09").status, "en")}.`,
     href: "/en/pricing",
   },
@@ -111,6 +111,7 @@ export default function EnglishCvBuildersNetherlandsComparedPage() {
       primaryCta={{ href: "/en/editor?template=professional&startSource=en_cv_builder_comparison", label: "Start my English CV free", trackingLocation: "en_cv_builder_comparison_hero" }}
       secondaryCta={{ href: "/en/templates?startSource=en_cv_builder_comparison", label: "Browse English templates" }}
       relatedLinks={[
+        { href: "/en/ai-cv-builder", label: "AI writing and examples", body: "See fictional CV examples, suggestion review and current feature availability." },
         { href: "/en/dutch-cv-template", label: "Dutch-style CV template in English", body: "See local structure, sections and language choices." },
         { href: "/en/expat-cv-netherlands", label: "Expat CV Netherlands", body: "Start with the wider decision about language, work route and personal details." },
         { href: "/en/guides/one-page-cv-netherlands", label: "One-page or two-page CV", body: "Choose length based on evidence instead of forcing every profile to one page." },

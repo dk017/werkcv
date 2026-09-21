@@ -9,6 +9,7 @@ interface ColorThemePickerProps {
     currentThemeId: string;
     onSelectTheme: (themeId: string) => void;
     uiLanguage?: UiLanguage;
+    disabled?: boolean;
 }
 
 export default function ColorThemePicker({
@@ -16,6 +17,7 @@ export default function ColorThemePicker({
     currentThemeId,
     onSelectTheme,
     uiLanguage = "nl",
+    disabled = false,
 }: ColorThemePickerProps) {
     const template = getTemplateConfig(templateId);
     const themes = template?.colorThemes || [];
@@ -49,7 +51,8 @@ export default function ColorThemePicker({
             <button
                 type="button"
                 onClick={() => setIsOpen((open) => !open)}
-                className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 bg-white transition-colors hover:bg-slate-50"
+                disabled={disabled}
+                className="flex h-9 w-9 items-center justify-center rounded-md border border-slate-300 bg-white transition-colors hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60"
                 title={label}
                 aria-label={label}
                 aria-expanded={isOpen}
@@ -70,11 +73,12 @@ export default function ColorThemePicker({
                                 onSelectTheme(theme.id);
                                 setIsOpen(false);
                             }}
+                            disabled={disabled}
                             className={`h-7 w-7 rounded-full transition-transform hover:scale-110 ${
                                 currentThemeId === theme.id
                                     ? "ring-2 ring-blue-500 ring-offset-2"
                                     : "ring-1 ring-slate-200"
-                            }`}
+                            } disabled:cursor-wait disabled:opacity-60`}
                             style={{ backgroundColor: theme.primary }}
                             title={theme.name}
                             aria-label={theme.name}

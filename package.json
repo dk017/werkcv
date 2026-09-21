@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "test:ai-rewrite-review": "tsx --test lib/ai-rewrite-review.test.ts",
-    "test:ai-writing-controls": "tsx --test lib/ai-writing-changes.test.ts lib/ai-safeguards.test.ts lib/tool-cv-handoff.test.ts lib/tool-handoff-service.test.ts",
+    "test:ai-writing-controls": "tsx --test lib/ai-writing-changes.test.ts lib/ai-writing-v2.test.ts lib/ai-safeguards.test.ts lib/tool-cv-handoff.test.ts lib/tool-handoff-service.test.ts",
+    "test:ai-quality": "tsx lib/maintenance/consumer-ai-quality-evaluation.ts",
     "test:ai-writing-controls:browser": "tsx --test lib/ai-writing-browser.test.ts",
-    "test:ai-safeguards": "tsx --test lib/ai-safeguards.test.ts lib/ai-rewrite-review.test.ts lib/cv-meaningful-persistence.test.ts",
+    "test:ai-safeguards": "tsx --test lib/ai-safeguards.test.ts lib/ai-writing-paraphrases.test.ts lib/ai-rewrite-review.test.ts lib/cv-meaningful-persistence.test.ts",
     "test:ai-safeguards:db": "tsx lib/ai-db-check.ts",
     "test:ai-live": "tsx lib/maintenance/consumer-ai-live-evaluation.ts",
     "dev": "next dev",

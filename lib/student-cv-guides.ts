@@ -227,6 +227,11 @@ export const mboWithoutExperienceGuide: StudentCvGuideConfig = {
   ],
   relatedLinks: [
     {
+      href: "/cv-maken-met-ai#example-text-student",
+      label: "AI-hulp bij je eerste cv",
+      description: "Bekijk een fictief schoolproject in een volledig cv. Gebruik alleen je eigen ervaring; op de AI-pagina zie je welke schrijfhulp beschikbaar is.",
+    },
+    {
       href: "/stage-cv-maken",
       label: "Een stage-cv maken",
       description: "Zet opleiding, leerdoelen en projecten gericht in voor een stageplek.",
@@ -427,6 +432,11 @@ export const stageCvGuide: StudentCvGuideConfig = {
   ],
   relatedLinks: [
     {
+      href: "/cv-maken-met-ai#example-text-student",
+      label: "AI-hulp bij je eerste cv",
+      description: "Bekijk een fictief schoolproject in een volledig cv. Gebruik alleen je eigen ervaring; op de AI-pagina zie je welke schrijfhulp beschikbaar is.",
+    },
+    {
       href: "/cv-gids/cv-zonder-ervaring-mbo",
       label: "CV zonder ervaring voor mbo",
       description: "Gebruik deze gids als school, praktijk en houding je belangrijkste bewijs zijn.",
@@ -619,6 +629,11 @@ export const bblCvGuide: StudentCvGuideConfig = {
     },
   ],
   relatedLinks: [
+    {
+      href: "/cv-maken-met-ai#example-text-student",
+      label: "AI-hulp bij je eerste cv",
+      description: "Bekijk een fictief schoolproject in een volledig cv. Gebruik alleen je eigen ervaring; op de AI-pagina zie je welke schrijfhulp beschikbaar is.",
+    },
     {
       href: "/cv-gids/cv-zonder-ervaring-mbo",
       label: "CV zonder ervaring voor mbo",

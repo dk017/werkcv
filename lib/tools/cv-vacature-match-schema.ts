@@ -32,6 +32,13 @@ export const requirementSchema = z.object({
   evidenceReference: evidenceReferenceSchema.optional(),
 });
 
+// Source references and reviewer decisions are application-owned, not model
+// output. In particular, optional reference fields break strict API schemas.
+export const aiRequirementSchema = requirementSchema.omit({
+  vacancyReference: true,
+  evidenceReference: true,
+});
+
 export const aiAnalysisSchema = z.object({
   perceivedRole: z.string(),
   perceivedSeniority: z.enum(["entry", "mid", "senior", "lead", "unclear"]),
@@ -44,7 +51,7 @@ export const aiAnalysisSchema = z.object({
       evidence: z.string(),
     }),
   ),
-  requirements: z.array(requirementSchema),
+  requirements: z.array(aiRequirementSchema),
   topFixes: z.array(
     z.object({
       category: z.enum(["relevance", "evidence", "clarity", "structure", "completeness"]),

@@ -1,90 +1,66 @@
 import Link from "next/link";
+import { connection } from "next/server";
 import { JsonLd } from "@/components/seo/JsonLd";
+import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
+import AiCvExamples from "./AiCvExamples";
+import { consumerAiEnabled } from "@/lib/consumer-ai-availability";
+import { cvDownloadPrice } from "@/lib/site-content";
 
 type Props = { locale: "nl" | "en"; kind: "builder" | "chatgpt" };
-
-export default function AiCvGuidePage({ locale, kind }: Props) {
-  const en = locale === "en";
-  const aiEnabled = process.env.CONSUMER_AI_REVIEW_ENABLED === "true";
-  const builder = kind === "builder";
-  const editor = en ? "/en/editor?startSource=ai-guide" : "/editor?startSource=ai-guide";
-  const profileTool = en ? "/en/profile-summary-generator" : "/tools/profieltekst-generator";
-  const title = builder
-    ? en ? "AI CV builder with human review" : "CV maken met AI, met controle over elke wijziging"
-    : en ? "Create a CV with ChatGPT without inventing facts" : "Een CV maken met ChatGPT zonder feiten te verzinnen";
-  const intro = builder
-    ? en ? "Use AI to improve a profile or work-experience section, compare the original with the suggestion, and accept only the changes you trust."
-      : "Gebruik AI om je profiel of werkervaring te verbeteren, vergelijk origineel en suggestie en accepteer alleen wijzigingen die jij vertrouwt."
-    : en ? "ChatGPT can help with wording, but it does not know which claims are true. Start from your own evidence, verify every number and keep the final decision yourself."
-      : "ChatGPT kan helpen met formuleren, maar weet niet welke claims waar zijn. Begin met je eigen bewijs, controleer elk getal en houd zelf de eindbeslissing.";
-  const steps = en ? [
-    ["Start with facts", "Write down the role, responsibilities, tools and results you can substantiate."],
-    ["Request one bounded change", "Improve or shorten one section instead of asking AI to rewrite your entire history."],
-    ["Compare before and after", "Check dates, numbers, employers, skills, language levels and responsibility."],
-    ["Accept selectively", "Keep the original when a suggestion changes meaning or adds unsupported detail."],
-    ["Inspect the final document", "Review the preview and downloaded PDF before sending it."],
-  ] : [
-    ["Begin met feiten", "Noteer de functie, taken, hulpmiddelen en resultaten die je kunt onderbouwen."],
-    ["Vraag één beperkte wijziging", "Verbeter of verkort één onderdeel in plaats van je hele loopbaan te laten herschrijven."],
-    ["Vergelijk voor en na", "Controleer datums, getallen, werkgevers, vaardigheden, taalniveaus en verantwoordelijkheid."],
-    ["Accepteer per wijziging", "Behoud het origineel wanneer een suggestie de betekenis verandert of details toevoegt."],
-    ["Controleer het einddocument", "Bekijk de preview en gedownloade PDF voordat je hem verstuurt."],
-  ];
+export default async function AiCvGuidePage({ locale, kind }: Props) {
+  await connection();
+  const en = locale === "en", builder = kind === "builder", enabled = consumerAiEnabled();
+  const tr = (nl: string, english: string) => en ? english : nl;
   const path = builder ? (en ? "/en/ai-cv-builder" : "/cv-maken-met-ai") : (en ? "/en/guides/create-cv-with-chatgpt" : "/cv-gids/cv-maken-met-chatgpt");
-  const canonical = `https://werkcv.nl${path}`;
-  const jsonLd = builder && aiEnabled
-    ? { "@context": "https://schema.org", "@type": "SoftwareApplication", name: title, description: intro, url: canonical, inLanguage: en ? "en-NL" : "nl-NL", applicationCategory: "ProductivityApplication", operatingSystem: "Web", featureList: ["Before-and-after AI suggestions", "Individual accept or reject", "Factual safeguards", "Dutch and English CV documents"] }
-    : builder
-      ? { "@context": "https://schema.org", "@type": "WebPage", name: title, description: intro, url: canonical, inLanguage: en ? "en-NL" : "nl-NL" }
-      : { "@context": "https://schema.org", "@type": "HowTo", name: title, description: intro, url: canonical, inLanguage: en ? "en-NL" : "nl-NL", step: steps.map(([name, text], index) => ({ "@type": "HowToStep", position: index + 1, name, text })) };
-  // Public routes are wrapped by BrandRouteBoundary, which owns the single
-  // header/footer shell. Keeping this component content-only prevents a
-  // second header/footer from being mounted on the AI guide pages.
+  const editor = (en ? "/en/editor" : "/editor") + "?startSource=ai-guide";
+  const profileTool = en ? "/en/profile-summary-generator" : "/tools/profieltekst-generator";
+  const price = en ? cvDownloadPrice.displayEn : cvDownloadPrice.display;
+  const payment = tr("Gratis maken en bekijken. Eenmalig " + price + " voor de PDF van dit cv, zonder abonnement. Hetzelfde betaalde cv kun je later gratis aanpassen en opnieuw downloaden.", "Create and preview for free. Pay " + price + " once for this CV's PDF, without a subscription. Edit and download the same paid CV again at no extra charge.");
+  const title = builder ? tr("Maak een duidelijk Nederlands cv met AI", "AI CV builder for jobs in the Netherlands") : tr("Een cv maken met ChatGPT: van eigen notities naar een duidelijk cv", "Create a CV with ChatGPT: turn your notes into clear writing");
+  const intro = builder ? tr("Zet je eigen ervaring om in een sterk profiel en duidelijke werkervaring. Pas je tekst aan een vacature aan en kies zelf welke wijzigingen je overneemt.", "Turn your experience into a clear profile and work history. Adapt the wording to a vacancy and choose which changes to keep.") : tr("ChatGPT kan helpen met formuleren. Hieronder zie je hoe je echte taken, schoolprojecten en vaardigheden omzet in een cv, zonder ontbrekende ervaring te verzinnen.", "ChatGPT can help with wording. See how to turn real responsibilities, school projects and skills into a CV without inventing missing experience.");
+  const cta = (location: string) => <TrackedLandingLink href={editor} trackingLocation={"ai-" + kind + "-" + location} trackingLabel={enabled ? "ai_editor" : "regular_editor"} className="wk-button wk-button-primary">{enabled ? tr("Maak mijn cv met schrijfhulp", "Build my CV with writing help") : tr("Start in de gewone cv-editor", "Start in the regular CV editor")}</TrackedLandingLink>;
+  const faq = [
+    [tr("Wat doet de AI-cv-maker?", "What does the AI CV builder do?"), enabled ? tr("De schrijfhulp kan je profiel en werkervaring schrijven, verbeteren, inkorten en afstemmen op een vacature. Je controleert suggesties voordat je ze toepast.", "The writing assistant can draft, improve, shorten and tailor your profile and experience. You review suggestions before applying them.") : tr("De nieuwe schrijfhulp wordt nog getest en is nog niet beschikbaar voor klanten. Je kunt de gewone editor en de gratis profieltool al gebruiken.", "The new writing controls are still being tested and are not yet available to customers. The regular editor and free profile tool are available.")],
+    [tr("Is een cv maken met AI helemaal gratis?", "Is creating an AI CV completely free?"), payment],
+    [tr("Heb ik een account nodig?", "Do I need an account?"), tr("Voor de schrijfhulp bij een opgeslagen cv heb je een account nodig. Je kunt deze voorbeelden en de gratis profieltool zonder account bekijken.", "Writing assistance for a saved CV requires an account. You can explore these examples and the free profile tool without an account.")],
+    [tr("Kan ik mijn oude cv gebruiken?", "Can I use my existing CV?"), tr("Ja. Gebruik de bestaande uploadroute en controleer de geïmporteerde tekst voordat je ermee verdergaat. De bestandskeuze toont welke bestanden en grootte zijn toegestaan.", "Yes. Use the existing upload flow and check the imported text before continuing. The file picker shows the accepted formats and size limit.")],
+    [tr("Schrijft WerkCV Nederlands en Engels?", "Does WerkCV write Dutch and English?"), tr("De gekozen cv-taal bepaalt de taal van suggesties. Een andere taal voor de interface vertaalt je cv niet automatisch.", "Your selected CV language determines the suggestion language. Changing the interface language does not automatically translate your CV.")],
+    [tr("Wat als ik geen werkervaring heb?", "What if I have no work experience?"), tr("Gebruik echte schoolprojecten, praktische opdrachten of vrijwilligerswerk. Benoem duidelijk wat je zelf hebt gedaan. Maak van een schoolproject geen betaalde baan.", "Use real school projects, practical assignments or volunteering. Explain your own contribution and keep school work labelled as school work.")],
+    [tr("Waarom niet alleen ChatGPT gebruiken?", "Why not just use ChatGPT?"), tr("ChatGPT helpt met tekst. Een cv-editor voegt templates, een opgeslagen document en een preview toe. Gebruik wat bij je past; de beschikbaarheid van WerkCV-schrijfhulp staat bovenaan deze pagina.", "ChatGPT helps with wording. A CV editor adds templates, a saved document and a preview. Choose what suits you; the availability of WerkCV writing assistance is stated at the top of this page.")],
+    [tr("Hoe vaak kan ik opnieuw downloaden?", "Can I download again?"), tr("Latere wijzigingen en downloads van hetzelfde betaalde cv kosten niets extra. Een nieuw, afzonderlijk cv heeft een eigen betaling nodig. AI-gebruik kent aparte limieten.", "Later edits and downloads of the same paid CV cost nothing extra. A new, separate CV requires its own payment. AI usage has separate limits.")],
+  ];
   return <>
-    <JsonLd data={jsonLd} />
-    <main className="wk-page-shell py-12 sm:py-16">
-      <section className="rounded-[2rem] border border-[var(--wk-line)] bg-[var(--wk-paper)] p-6 shadow-[var(--wk-shadow-soft)] sm:p-10">
-        <p className="wk-eyebrow">{en ? "Evidence-first AI CV help" : "AI-hulp met feitencontrole"}</p>
+    <JsonLd data={{ "@context": "https://schema.org", "@type": builder && enabled ? "SoftwareApplication" : "WebPage", name: title, description: intro, url: "https://werkcv.nl" + path, inLanguage: en ? "en-NL" : "nl-NL", ...(builder && enabled ? { applicationCategory: "ProductivityApplication", operatingSystem: "Web", featureList: ["Reviewed profile and experience writing", "Individual bullet review", "Dutch and English document language", "CV preview"] } : {}) }} />
+    <main className="wk-page-shell py-10 sm:py-16">
+      <section className="rounded-[2rem] border border-[var(--wk-line)] bg-[var(--wk-paper)] p-6 sm:p-10">
+        <p className="wk-eyebrow">{tr("Jouw ervaring, duidelijk op papier", "Your experience, clearly presented")}</p>
         <h1 className="mt-4 max-w-4xl text-4xl font-semibold leading-tight sm:text-6xl">{title}</h1>
-        <p className="mt-6 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">{intro}</p>
-        {!aiEnabled && <p className="mt-5 max-w-3xl rounded-xl border border-amber-300 bg-amber-50 p-4 font-medium text-amber-950">{en ? "The reviewed AI writing controls are being certified and are not yet enabled for customers. The regular editor and free tools remain available." : "De gecontroleerde AI-schrijfhulp wordt nog gecertificeerd en is nog niet beschikbaar voor klanten. De gewone editor en gratis tools blijven beschikbaar."}</p>}
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Link href={editor} className="wk-button wk-button-primary">{aiEnabled ? (en ? "Open the AI CV editor" : "Open de AI CV-editor") : (en ? "Open the regular CV editor" : "Open de gewone CV-editor")}</Link>
-          <Link href={profileTool} className="wk-button wk-button-secondary">{en ? "Try the free profile tool" : "Probeer de gratis profieltool"}</Link>
-        </div>
+        <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">{intro}</p>
+        {!enabled && <p className="mt-5 max-w-3xl rounded-xl border border-amber-300 bg-amber-50 p-4 text-amber-950">{tr("De nieuwe AI-schrijfhulp wordt nog getest en is nog niet beschikbaar voor klanten. De gewone editor en gratis profieltool zijn wel beschikbaar.", "The new AI writing controls are still being tested and are not yet available to customers. The regular editor and free profile tool are available.")}</p>}
+        <div className="mt-6 flex flex-wrap gap-3">{cta("hero")}<TrackedLandingLink href={profileTool} trackingLocation={"ai-" + kind + "-hero"} trackingLabel="profile_tool" className="wk-button wk-button-secondary">{tr("Probeer de gratis profieltool", "Try the free profile tool")}</TrackedLandingLink></div>
+        <p className="mt-4 max-w-3xl text-sm leading-6">{payment}</p>
+        <Link href="#voorbeelden" className="mt-4 inline-block underline underline-offset-4">{tr("Bekijk eerst het volledige voorbeeld", "See the complete example first")}</Link>
       </section>
-
-      <section className="py-14">
-        <h2 className="text-3xl font-semibold">{en ? "A safe five-step workflow" : "Een veilige aanpak in vijf stappen"}</h2>
-        <div className="mt-7 grid gap-4 lg:grid-cols-2">
-          {steps.map(([heading, body], index) => <article key={heading} className="wk-card min-w-0">
-            <p className="wk-eyebrow">{String(index + 1).padStart(2, "0")}</p><h3 className="mt-3 text-xl font-semibold">{heading}</h3><p className="mt-2 leading-7 text-[var(--wk-ink-muted)]">{body}</p>
-          </article>)}
-        </div>
-      </section>
-
-      <section className="grid gap-5 rounded-[2rem] bg-[#e9f7f3] p-6 sm:p-9 lg:grid-cols-2">
-        <div><p className="wk-eyebrow">{en ? "Worked example" : "Uitgewerkt voorbeeld"}</p><h2 className="mt-3 text-2xl font-semibold">{en ? "Improve wording without inflating the claim" : "Sterkere formulering zonder de claim groter te maken"}</h2></div>
-        <div className="space-y-4">
-          <div className="rounded-xl bg-white p-4"><strong>{en ? "Source fact" : "Bronfeit"}</strong><p className="mt-2">{en ? "Handled customer questions by email and kept the team overview up to date." : "Beantwoordde klantvragen per e-mail en hield het teamoverzicht actueel."}</p></div>
-          <div className="rounded-xl bg-white p-4"><strong>{en ? "Acceptable suggestion" : "Aanvaardbare suggestie"}</strong><p className="mt-2">{en ? "Answered customer questions by email and maintained the team’s current overview." : "Beantwoordde klantvragen per e-mail en hield het actuele teamoverzicht bij."}</p></div>
-          <div className="rounded-xl border border-amber-300 bg-amber-50 p-4"><strong>{en ? "Reject" : "Afwijzen"}</strong><p className="mt-2">{en ? "Resolved 50 customer cases daily and improved satisfaction by 25%. The source contains neither number." : "Handelde dagelijks 50 klantcases af en verhoogde de tevredenheid met 25%. Geen van beide getallen staat in de bron."}</p></div>
-        </div>
-      </section>
-
-      {!builder && <section className="mt-14 grid gap-5 lg:grid-cols-[1.1fr_.9fr]">
-        <article className="wk-card"><p className="wk-eyebrow">{en ? "A prompt you can reuse" : "Een prompt die je kunt hergebruiken"}</p><h2 className="mt-3 text-2xl font-semibold">{en ? "Ask for wording, not invented experience" : "Vraag om formulering, niet om verzonnen ervaring"}</h2><p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">{en ? "Give ChatGPT one section and only facts you are willing to publish. Ask it to mark unknowns instead of filling gaps. Do not paste contact details, identity numbers or confidential employer information." : "Geef ChatGPT één onderdeel en alleen feiten die je wilt publiceren. Vraag het om onbekenden te markeren in plaats van gaten op te vullen. Plak geen contactgegevens, identificatienummers of vertrouwelijke werkgeversinformatie."}</p><pre className="mt-5 overflow-x-auto rounded-xl bg-[var(--wk-ink)] p-4 text-sm leading-6 text-white">{en ? "Rewrite this CV section for [target role]. Use only the facts below. Preserve dates, numbers, employers, tools and qualifiers exactly. If evidence is missing, write [CHECK] instead of guessing. Return the revised section and a short list of changes." : "Herschrijf dit CV-onderdeel voor [doelrol]. Gebruik alleen onderstaande feiten. Behoud datums, getallen, werkgevers, tools en nuanceringen exact. Schrijf [CONTROLEREN] als bewijs ontbreekt; vul niets in. Geef de tekst en een korte lijst wijzigingen."}</pre></article>
-        <article className="wk-card"><p className="wk-eyebrow">{en ? "Before you paste" : "Voor je plakt"}</p><h2 className="mt-3 text-2xl font-semibold">{en ? "A five-point ChatGPT check" : "Een vijfpuntscontrole voor ChatGPT"}</h2><ol className="mt-4 list-decimal space-y-3 pl-5 leading-7 text-[var(--wk-ink-muted)]"><li>{en ? "Remove direct contact details and confidential data." : "Verwijder directe contactgegevens en vertrouwelijke data."}</li><li>{en ? "Supply the source text, not a wish list of skills." : "Geef de brontekst, geen verlanglijst met vaardigheden."}</li><li>{en ? "Compare every number, date, employer and tool." : "Vergelijk elk getal, elke datum, werkgever en tool."}</li><li>{en ? "Keep a qualifier such as ‘under supervision’ when it matters." : "Behoud een nuance zoals ‘onder begeleiding’ als die ertoe doet."}</li><li>{en ? "Preview the final CV and PDF before sending it." : "Bekijk het volledige CV en de PDF voordat je hem verstuurt."}</li></ol></article>
-      </section>}
-
-      <section className="py-14">
-        <h2 className="text-3xl font-semibold">{en ? "What WerkCV checks—and what it cannot prove" : "Wat WerkCV controleert—en niet kan bewijzen"}</h2>
-        <div className="mt-6 grid gap-5 md:grid-cols-2">
-          <article className="wk-card"><h3 className="text-xl font-semibold">{en ? "Built-in controls" : "Ingebouwde controle"}</h3><ul className="mt-4 list-disc space-y-2 pl-5 text-[var(--wk-ink-muted)]"><li>{en ? "Original and suggestion remain visible" : "Origineel en suggestie blijven zichtbaar"}</li><li>{en ? "Accept or reject each change" : "Accepteer of weiger per wijziging"}</li><li>{en ? "Checks for unsupported numbers, terms and responsibility" : "Controle op niet-onderbouwde getallen, termen en verantwoordelijkheid"}</li><li>{en ? "Undo during the editing session" : "Ongedaan maken tijdens de editorsessie"}</li></ul></article>
-          <article className="wk-card"><h3 className="text-xl font-semibold">{en ? "Important limitation" : "Belangrijke beperking"}</h3><p className="mt-4 leading-7 text-[var(--wk-ink-muted)]">{en ? "AI can still misunderstand context. WerkCV does not verify identity, employers or objective truth. You remain responsible for checking every claim against your own records." : "AI kan context nog steeds verkeerd begrijpen. WerkCV verifieert geen identiteit, werkgevers of objectieve waarheid. Jij blijft verantwoordelijk voor controle aan de hand van je eigen gegevens."}</p></article>
-        </div>
-      </section>
-      <section className="rounded-[2rem] bg-[var(--wk-ink)] p-7 text-white sm:p-10"><h2 className="text-3xl font-semibold">{en ? "Ready to improve one section?" : "Klaar om één onderdeel te verbeteren?"}</h2><p className="mt-3 max-w-2xl text-white/75">{en ? "Create and edit for free. You see the one-time PDF price before checkout." : "Maken en bewerken is gratis. Je ziet de eenmalige PDF-prijs vóór het afrekenen."}</p><Link href={editor} className="wk-button mt-6 bg-white text-[var(--wk-ink)]">{en ? "Start my CV" : "Start mijn CV"}</Link></section>
+      <AiCvExamples locale={locale} />
+      <section className="grid gap-5 md:grid-cols-3">{[
+        [tr("1. Voeg je ervaring toe", "1. Add your experience"), tr("Gebruik je bestaande cv of schrijf je echte taken, opleiding en projecten op.", "Use your existing CV or write down real responsibilities, education and projects.")],
+        [tr("2. Kies wat je overneemt", "2. Choose what to keep"), tr("Controleer formuleringen en feiten. Behoud je originele tekst als een suggestie niet klopt.", "Check wording and facts. Keep your original when a suggestion is not right.")],
+        [tr("3. Bekijk en download", "3. Preview and download"), tr("Kies een template en controleer het volledige cv voordat je voor de PDF betaalt.", "Choose a template and inspect the complete CV before paying for the PDF.")],
+      ].map(([heading, body]) => <article className="wk-card" key={heading}><h2 className="text-xl font-semibold">{heading}</h2><p className="mt-3 leading-7">{body}</p></article>)}</section>
+      <section className="py-12"><h2 className="text-3xl font-semibold">{tr("Waar wil je hulp bij?", "What would you like help with?")}</h2><div className="mt-5 grid gap-5 md:grid-cols-3">{[
+        [tr("Een bestaand cv verbeteren", "Improve an existing CV"), tr("Maak lange omschrijvingen korter en zet echte taken in duidelijke punten.", "Shorten long descriptions and turn real responsibilities into clear bullets.")],
+        [tr("Een eerste cv schrijven", "Write your first CV"), tr("Laat zien wat je hebt geleerd in schoolprojecten en praktische opdrachten.", "Show what you learned through school projects and practical assignments.")],
+        [tr("Je cv aanpassen aan een vacature", "Tailor your CV to a vacancy"), tr("Koppel gevraagde taken aan je echte ervaring. Vraag ontbrekende details na voordat je ze toevoegt.", "Connect requested responsibilities to your real experience. Clarify missing details before adding them.")],
+      ].map(([heading, body], i) => <article className="wk-card" key={heading}><h3 className="text-xl font-semibold">{heading}</h3><p className="my-3 leading-7">{body}</p><Link className="underline underline-offset-4" href={i === 2 ? "#vacaturevoorbeeld" : "#voorbeelden"}>{tr("Bekijk het voorbeeld", "See the example")}</Link></article>)}</div></section>
+      {!builder && <section className="space-y-5"><h2 className="text-3xl font-semibold">{tr("Drie prompts voor je eigen tekst", "Three prompts for your own text")}</h2><p>{tr("Verwijder contactgegevens en vertrouwelijke informatie voordat je tekst in een externe chat plakt. Controleer altijd het resultaat.", "Remove contact details and confidential information before pasting text into an external chat. Always check the result.")}</p>{[
+        [tr("Profiel", "Profile"), tr("Schrijf een kort cv-profiel voor [doelrol] met alleen onderstaande feiten uit mijn opleiding, projecten en ervaring. Voeg geen kwalificaties toe. Noteer ontbrekende informatie als vraag. Feiten: [jouw notities].", "Write a short CV profile for [target role] using only the education, projects and experience below. Add no qualifications. Ask about missing information. Facts: [your notes].")],
+        [tr("Werkervaring", "Experience"), tr("Maak van deze echte taken korte cv-punten. Behoud getallen, hulpmiddelen en beperkingen. Verzin geen resultaat. Geef origineel en voorstel naast elkaar. Taken: [jouw notities].", "Turn these real responsibilities into concise CV bullets. Preserve numbers, tools and limitations. Invent no results. Return the original and suggestion together. Responsibilities: [your notes].")],
+        [tr("Vacature", "Vacancy"), tr("Vergelijk mijn cv-tekst met de vacature. Benoem welke eisen al onderbouwd zijn en waar informatie ontbreekt. Stel alleen formuleringen voor die mijn ervaring behouden. Neem geen vaardigheid over uit de vacature zonder bewijs. Cv: [tekst]. Vacature: [tekst].", "Compare my CV text with the vacancy. Identify supported requirements and missing information. Suggest wording that preserves my experience. Do not add skills from the vacancy without evidence. CV: [text]. Vacancy: [text].")],
+      ].map(([heading, prompt]) => <article key={heading} className="wk-card"><h3 className="text-xl font-semibold">{heading}</h3><p className="mt-3 whitespace-pre-wrap break-words rounded-xl bg-[var(--wk-paper)] p-4 leading-7">{prompt}</p></article>)}</section>}
+      <section className="my-12 rounded-[2rem] bg-[#e9f7f3] p-6 sm:p-9"><h2 className="text-2xl font-semibold">{tr("Sterkere tekst, met controle over de feiten", "Clearer writing, with control over facts")}</h2><p className="mt-4 max-w-3xl leading-7">{tr("Je bepaalt zelf welke tekst in je cv komt. Controleer vooral getallen, datums, kwalificaties en wat je zelf hebt gedaan. AI kan context verkeerd begrijpen. WerkCV bewijst niet dat informatie waar is en garandeert geen ATS-selectie of sollicitatiegesprek.", "You decide what goes into your CV. Check numbers, dates, qualifications and your own responsibilities. AI can misunderstand context. WerkCV does not prove information is true or guarantee ATS selection or interviews.")}</p></section>
+      <section className="py-6"><h2 className="text-3xl font-semibold">{tr("Veelgestelde vragen", "Frequently asked questions")}</h2><div className="mt-5 space-y-3">{faq.map(([q, a]) => <details key={q} className="wk-card"><summary className="cursor-pointer font-semibold">{q}</summary><p className="mt-3 leading-7">{a}</p></details>)}</div></section>
+      <nav aria-label={tr("Meer hulp bij je cv", "More CV help")} className="my-8 flex flex-wrap gap-5 underline underline-offset-4"><Link href={builder ? (en ? "/en/guides/create-cv-with-chatgpt" : "/cv-gids/cv-maken-met-chatgpt") : (en ? "/en/ai-cv-builder" : "/cv-maken-met-ai")}>{builder ? tr("Cv maken met ChatGPT", "Create a CV with ChatGPT") : tr("AI-cv-maker", "AI CV builder")}</Link><Link href={en ? "/en/pricing" : "/prijzen"}>{tr("Prijzen en downloads", "Pricing and downloads")}</Link><Link href={profileTool}>{tr("Profieltekst schrijven", "Write your profile")}</Link></nav>
+      <section className="rounded-[2rem] border bg-[var(--wk-paper)] p-7 sm:p-10"><h2 className="text-3xl font-semibold">{tr("Begin met je eigen ervaring", "Start with your own experience")}</h2><p className="my-4 max-w-3xl leading-7">{payment}</p>{cta("footer")}</section>
     </main>
   </>;
 }
