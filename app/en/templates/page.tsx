@@ -72,7 +72,12 @@ export default async function EnglishTemplatesPage({
             English CV template questions
           </h2>
           <p className="mt-3 max-w-3xl leading-7 text-[var(--wk-ink-muted)]">
-            Choose for the vacancy and submission route. Read the{" "}
+            Choose for the vacancy and submission route. If you want a filled example and a
+            focused three-template shortlist, start with the{" "}
+            <Link className="font-semibold text-[var(--wk-primary)] underline" href="/en/dutch-cv-template">
+              Dutch CV template guide
+            </Link>
+            . Read the{" "}
             <Link className="font-semibold text-[var(--wk-primary)] underline" href="/en/ats-resume-netherlands">
               Netherlands ATS guidance
             </Link>{" "}
