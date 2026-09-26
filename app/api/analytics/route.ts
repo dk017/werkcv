@@ -210,6 +210,12 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'ats_checker_started',
     'ats_checker_completed',
     'ats_checker_failed',
+    'cv_check_viewed',
+    'cv_check_started',
+    'cv_check_completed',
+    'cv_check_failed',
+    'cv_check_fix_clicked',
+    'cv_check_rescan_clicked',
 ]);
 
 type PrismaWithOptionalAnalytics = typeof prisma & {

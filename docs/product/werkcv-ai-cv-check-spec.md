@@ -57,7 +57,7 @@ The vacancy asked for "Uitstekende beheersing van de Nederlandse taal in woord e
 - Editor: `KeywordScannerWidget` (vacancy keywords, can take a vacancy) and `AiWritingAssistant` with per-user daily AI limits (`consumer-ai-limits`).
 - `lib/cv-parser.ts`: pdfjs text extraction with page structure; text items carry positions (usable for layout signals, §5.2).
 - `reportOpsIncident` for alerting; the `startSource` convention for attribution.
-- 175 vacancies in the `Job` table (`/vacatures/[slug]`) as a natural entry point for vacancy mode. `/vacatures` itself returns 404.
+- 175 vacancies exist in the `Job` table, but there are **no public vacancy pages** (the `app/vacatures`, `app/jobs` and `app/jobs-preview` route folders are empty; verified 26 Sep 2026). A "check this vacancy" entry point only makes sense if job pages return.
 
 ---
 
@@ -130,7 +130,7 @@ Principles (product and copy):
 1. **Input**
    - CV: upload PDF/DOCX (≤10 MB, like the vacancy match today), or paste text. Show "Je cv wordt niet opgeslagen" and a link to methodology/privacy.
    - Optional **"Plak de vacature (optioneel)"**. With a vacancy, the report adds §5.4 D.
-   - Entry with `?vacature=<job slug>` (from `/vacatures/[slug]`) pre-fills the vacancy.
+   - (Deferred) Entry with `?vacature=<job slug>` pre-filling the vacancy, if public job pages return.
 2. **Progress:** staged steps: "Tekst uitlezen → Structuur controleren → Inhoud beoordelen → (Vacature vergelijken)". Target p50 < 8 s, p95 < 15 s.
 3. **Report** (§5.4) on the same page, with anchor navigation.
 4. **Next step:** "Verbeter dit in de editor" (§5.6); secondary: "Check een andere vacature", "Download of bewaar rapport" (account).
@@ -209,6 +209,18 @@ Every check has an id, category, severity (`critical|important|tip`), pass/fail/
 4. The editor shows a **"CV-check" panel** with the fix checklist. Each item jumps to its section; items can be ticked off. With a vacancy, `KeywordScannerWidget` opens pre-filled with the vacancy.
 5. A "Check opnieuw" (check again) button in the panel re-runs the check on the current CV JSON and shows the grade change (the Rezi live-score idea in v1 form; true live scoring is v2).
 6. Payment is unchanged: €4,99 once at PDF download.
+
+### 5.6b Page and report UI (research 26 Sep 2026)
+
+Patterns observed: Enhancv NL and CVster put a dropzone in the hero with a privacy line under the button and a report mock beside it. Enhancv's report has a score gauge on the left with category badges, some checks **locked** for Pro, and details on the right. AICVchecker shows three trust chips ("1 check gratis · Geen account nodig · Cv wordt niet bewaard"). Jobscan's report opens with Searchability; clicking a keyword shows it in context in both CV and vacancy, and **every rescan costs a scan credit** (a common complaint). Resume Worded labels individual bullets ("no metrics", "weak verb") and lets users mark items fixed. Teal shows matched/missing keywords beside the editor. NN/g: 2–10 s waits need a looping indicator with explanatory text; named steps help users estimate time.
+
+Decisions:
+- **Hero = the tool.** H1 "Gratis CV-check met AI", one-line promise, three trust chips ("Gratis, zonder account" · "Je cv wordt niet opgeslagen" · "Nederlandse regels: taalniveau, mbo/hbo, VOG"), then the input card: Upload | Plak tekst tabs, dropzone (PDF/DOCX, max 10 MB), and a collapsible **"+ Vergelijk met een vacature (optioneel)"** textarea. The button label follows the mode ("Check mijn cv" / "Check cv tegen vacature"). Privacy line under the button.
+- **Loading:** named steps with checkmarks: Tekst uitlezen → Opbouw controleren → Inhoud beoordelen → (Vacature vergelijken).
+- **Report order:** (1) summary card: large grade ("7,4"), band, general grade and match score in vacancy mode, 4 category bars; (2) top 3 fixes as numbered cards with the CV quote, the fix and "Verbeter in de editor"; (3) vacancy requirements (hard requirements first, status chip Aangetoond / Deels / Ontbreekt, CV and vacancy quotes, honest action) plus missing keywords; (4) **"Zo leest een systeem je cv"**: deterministic parse preview (contact found, standard headings found, periods with dates, reading-order warning); (5) category accordions, failed checks first, passed collapsed, optional details shown neutrally; (6) limitations and a methodology link.
+- **Nothing locked or blurred; rescans are free** within the rate limit ("Opnieuw checken"). These are deliberate contrasts with Enhancv (locked Pro checks) and Jobscan (paid rescans).
+- Brand: current `wk-` design system (as `/prijzen`), inside the public site shell; no neo-brutalist tool styling.
+- Delivery split: **3a** NL page, report and parse preview; **3b** EN page with translated labels for reused checks and the methodology page. The vacancy-page entry is deferred: there are no public job pages.
 
 ### 5.7 English version
 

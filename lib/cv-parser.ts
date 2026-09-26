@@ -5,6 +5,7 @@ import { CVData } from './cv';
 import { detectResumeLanguage, ResumeLanguage } from './cv-language';
 import { normalizeParsedCv } from './cv-normalize';
 import openai from './openai-client';
+import { getPdfjs } from './pdfjs';
 
 // pdfjs-dist types
 type PDFDocumentProxy = {
@@ -23,8 +24,6 @@ type GetDocumentParams = {
     useSystemFonts?: boolean;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let pdfjs: any = null;
 
 const aiParsedPersonalDefaults = {
     name: "",
@@ -134,13 +133,7 @@ export const aiParsedCvSchema = z.object({
 
 const CV_PARSER_MODELS = ['gpt-4o', 'gpt-4o-mini'] as const;
 
-async function getPdfjs() {
-    if (!pdfjs) {
-        // PDF.js resolves its matching worker module for Node internally.
-        pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
-    }
-    return pdfjs;
-}
+
 
 export type CvParserOptions = {
     maxPdfPages?: number;

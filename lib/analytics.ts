@@ -751,7 +751,25 @@ export type AnalyticsEvent =
     | { event: 'cv_score_failed'; properties: { input_type: 'file' | 'text'; status: number } }
     | { event: 'ats_checker_started'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text' } }
     | { event: 'ats_checker_completed'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text'; score_band: string; duration_ms: number } }
-    | { event: 'ats_checker_failed'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text'; status: number } };
+    | { event: 'ats_checker_failed'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text'; status: number } }
+    | { event: 'cv_check_viewed'; properties: { locale: 'nl' | 'en'; entry: 'direct' | 'vacancy_page' } }
+    | { event: 'cv_check_started'; properties: { locale: 'nl' | 'en'; mode: 'general' | 'vacancy'; input_type: 'file' | 'text' } }
+    | {
+          event: 'cv_check_completed';
+          properties: {
+              locale: 'nl' | 'en';
+              mode: 'general' | 'vacancy';
+              input_type: 'file' | 'text';
+              grade_bucket: string;
+              critical_count: number;
+              ai_status: 'ok' | 'unavailable';
+              duration_ms: number;
+              score_version: string;
+          };
+      }
+    | { event: 'cv_check_failed'; properties: { locale: 'nl' | 'en'; mode: 'general' | 'vacancy'; input_type: 'file' | 'text'; code: string } }
+    | { event: 'cv_check_fix_clicked'; properties: { locale: 'nl' | 'en'; check_id: string; category: string } }
+    | { event: 'cv_check_rescan_clicked'; properties: { locale: 'nl' | 'en' } };
 
 // ============================================================
 // Core track function
