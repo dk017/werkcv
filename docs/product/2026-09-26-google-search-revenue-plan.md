@@ -109,3 +109,32 @@ Calculators (3,070 landings, 0 sales), interview-question content (position 77),
 - A weekly read-only query: landings → signups → paid by page group, the same as §2, so every action above has a before/after.
 
 Next step after this: repeat §2–§4 with Bing Webmaster data. Bing sent 824 landings but only 3 orders, and it's the source showing the stale €7,99 title.
+
+## 7. Google Trends (NL, Sep 2021–Sep 2026) and content calendar
+
+Source: Google Trends exports, Netherlands, 5 years, all categories. Values are relative (0–100), so only compare within one export; every set included "cv maken" as an anchor.
+
+**Demand is shifting.** "cv maken" fell 21% in four seasons (Sep–Aug averages 72.7 → 72.5 → 69.0 → 65.9 → 57.1; −13% in the last season). "chatgpt cv" grew from 0 to ~10% of "cv maken" volume. Winning AI citations matters more than chasing the shrinking head term.
+
+**Seasonality** ("cv maken", monthly index, average = 100, last four seasons):
+
+| Sep | Oct | Nov | Dec | Jan | Feb | Mar | Apr | May | Jun | Jul | Aug |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| 124 | 111 | 108 | 85 | 121 | 115 | 109 | 92 | 90 | 90 | 76 | 81 |
+
+"vacatures" hit record highs in January 2025 and 2026. Content for January must be indexed by mid-December; run price/bundle tests in January, not December.
+
+**Competitors.** Brand searches are falling (CVster 8.4 → 1.5, CV.nl 5.0 → 2.2 per-season averages), but cancel intent is rising: "cv.nl via mollie" +600%, "cvmaker opzeggen" +400%, LiveCareer cancel/cost/review queries Breakout. Keep the cancellation pages sharp; they are a steady niche, not a growth engine.
+
+**Rising topics to target.** ATS templates ("ats cv" +3,750%, "ats friendly cv template" Breakout, "harvard cv template" +850%); Canva ("canva cv maken" +300%); beginners ("mijn cv" +90%, "een cv maken" +50%, "wat is een cv" +40%); "stagemarkt" Breakout (MBO internships). "gratis cv maken" dominates every related list, while "cv maken zonder abonnement" barely registers, so lead with "gratis beginnen" and keep the price visible.
+
+**Calculators.** "eindejaarsuitkering" and "13e maand" run ~6× baseline from mid-November to mid-December, with sector variants (kinderopvang, onderwijs, zorg/VVT, schoonmaak, GGZ, gehandicaptenzorg). "reiskostenvergoeding"/"kilometervergoeding" searches include the year, so publish the 2027 rates in late December. "vakantiegeld" peaks late April–May, mostly AOW recipients: traffic, not buyers.
+
+**Noise.** "cv ketel" (central-heating boiler) inflates "cv" data. English queries ("dutch cv", "cv in english") are very small in Trends, which fits keeping English as a side channel.
+
+| When | Work |
+|---|---|
+| October | 13e maand section + sector year-end bonus pages; ATS CV template page; fair Canva vs. ATS-safe CV comparison |
+| November | Beginner guide ("een cv maken" / "wat is een cv"); stage/MBO CV page for Stagemarkt; honest "gratis cv maken" page |
+| Mid-December | 2027 travel-allowance rates; all January content indexed |
+| January | Price/bundle test; Bing and Reddit push |
