@@ -375,7 +375,7 @@ export default function HowToWriteDutchCvWithoutSpeakingDutchPage() {
               Open English editor
             </TrackedLandingLink>
             <TrackedLandingLink
-              href="/en/dutch-cv-checker?startSource=en_no_dutch_cv_mid"
+              href="/en/cv-check?startSource=en_no_dutch_cv_mid"
               trackingLocation="en_no_dutch_cv_mid"
               trackingLabel="checker"
               className="border-4 border-white bg-white px-5 py-3 font-black text-black"

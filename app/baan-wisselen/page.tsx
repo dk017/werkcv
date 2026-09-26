@@ -171,7 +171,7 @@ export default function BaanWisselenPage() {
               title: "Stap 6: Check je cv voor elke vacature",
               body:
                 "Controleer bij elke serieuze sollicitatie of je cv nog goed aansluit op de functie, de woorden uit de vacature en de technische ATS-leesbaarheid.",
-              linkHref: "/cv-checken",
+              linkHref: "/cv-check",
               linkLabel: "Cv checken",
             },
           ].map((step) => (
@@ -209,7 +209,7 @@ export default function BaanWisselenPage() {
               body: "Handig als je wilt begrijpen welke vergoeding mogelijk relevant kan zijn bij ontslag of einde contract.",
             },
             {
-              href: "/cv-checken",
+              href: "/cv-check",
               title: "Cv checken",
               body: "Zie snel welke onderdelen van je cv nog te zwak of te algemeen zijn.",
             },
@@ -217,11 +217,6 @@ export default function BaanWisselenPage() {
               href: "/tools/sollicitatiebrief-generator",
               title: "Motivatiebrief maken",
               body: "Gebruik de briefgenerator als snelle eerste versie voor je nieuwe sollicitatieronde.",
-            },
-            {
-              href: "/tools/ats-cv-checker",
-              title: "ATS CV checker",
-              body: "Controleer of je cv technisch goed uitleesbaar blijft voor recruitersoftware.",
             },
           ]}
         />
@@ -255,7 +250,7 @@ export default function BaanWisselenPage() {
               body: "Scherp je cv aan op ATS, recruiterleesbaarheid en vacaturekeywords.",
             },
             {
-              href: "/cv-checken",
+              href: "/cv-check",
               title: "Cv checken",
               body: "Controleer je cv voordat je op meerdere vacatures tegelijk reageert.",
             },

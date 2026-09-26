@@ -161,7 +161,7 @@ export default function CvKeywordsPage() {
                         </p>
                         <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <Link
-                                href="/tools/cv-score"
+                                href="/cv-check"
                                 className="rounded-2xl border border-slate-300 bg-slate-50 p-4 transition-colors hover:bg-slate-100"
                             >
                                 <p className="text-sm font-black text-slate-900">Doe daarna een CV beoordeling</p>

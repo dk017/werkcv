@@ -258,7 +258,7 @@ export default function CityCvLandingPage({
           </h2>
           <div className="mt-5 grid gap-4 md:grid-cols-3">
             {[
-              { href: "/cv-checken", label: "Check je cv" },
+              { href: "/cv-check", label: "Check je cv" },
               { href: "/cv-optimaliseren", label: "Optimaliseer voor vacature" },
               { href: "/templates", label: "Bekijk templates" },
             ].map((item) => (

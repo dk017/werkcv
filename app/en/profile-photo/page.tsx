@@ -209,7 +209,7 @@ export default function EnglishProfilePhotoPage() {
             <Link href="/en/templates" className="hover:text-slate-900">
               Templates
             </Link>
-            <Link href="/en/dutch-cv-checker" className="hover:text-slate-900">
+            <Link href="/en/cv-check" className="hover:text-slate-900">
               CV checker
             </Link>
             <NavUserMenu uiLanguage="en" />

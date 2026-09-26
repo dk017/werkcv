@@ -6925,7 +6925,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         description: 'Start met de veiligste layout als rust en scanbaarheid voorop staan.',
                     },
                     {
-                        href: '/tools/ats-cv-checker',
+                        href: '/cv-check',
                         label: 'Controleer je CV eerst met de ATS-checker',
                         description: 'Gebruik dit als extra controle, niet als vervanging van gezond CV-oordeel.',
                     },
@@ -7058,7 +7058,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 description: 'Gebruik deze route als je direct met een rustige, scanbare template wilt starten.',
             },
             {
-                href: '/tools/ats-cv-checker',
+                href: '/cv-check',
                 title: 'ATS CV checker',
                 description: 'Controleer je CV extra, maar gebruik het als hulpmiddel en niet als eindwaarheid.',
             },

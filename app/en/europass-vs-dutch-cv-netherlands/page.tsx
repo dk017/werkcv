@@ -273,7 +273,7 @@ export default function EuropassVsDutchCvNetherlandsPage() {
               Choose an English template
             </Link>
             <Link
-              href="/en/resume-optimizer-netherlands"
+              href="/en/cv-check"
               className="border-4 border-black bg-white px-5 py-3 font-bold text-black"
             >
               Optimize an existing resume

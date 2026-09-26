@@ -181,7 +181,7 @@ export const atsVriendelijkCv: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/tools/ats-cv-checker',
+                    href: '/cv-check',
                     label: 'ATS CV checker gebruiken voor een snelle eerste test',
                     description: 'Controleer direct of je huidige CV op kernfouten en keyword-match hapert.',
                 },

@@ -287,7 +287,7 @@ export default function OntslagbriefSchrijvenPage() {
               body: "Scherp je cv aan op ATS, vacaturekeywords en Nederlandse sollicitaties.",
             },
             {
-              href: "/tools/ats-cv-checker",
+              href: "/cv-check",
               title: "ATS CV checker",
               body: "Controleer of je bijgewerkte cv technisch goed uitleesbaar blijft.",
             },

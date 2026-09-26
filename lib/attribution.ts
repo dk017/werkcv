@@ -54,6 +54,7 @@ export function getPathCluster(pathname: string): string {
     const path = cleanPath(pathname);
     if (path === '/') return 'home';
     if (path === '/en/resume-optimizer-netherlands') return 'resume-optimizer-en';
+    if (path === '/cv-check' || path.startsWith('/cv-check/') || path === '/en/cv-check' || path.startsWith('/en/cv-check/')) return 'cv-check';
     if (isTemplatePath(path)) return 'templates';
     if (isEditorPath(path)) return 'editor';
     if (path.startsWith('/en')) return 'en-guides';

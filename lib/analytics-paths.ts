@@ -38,6 +38,8 @@ export function isFunnelCtaTargetPath(path: string): boolean {
     path.startsWith("/cv-verbeteren") ||
     path.startsWith("/cv-checken") ||
     path.startsWith("/cv-nakijken") ||
+    path.startsWith("/cv-check") ||
+    path.startsWith("/en/cv-check") ||
     path.startsWith("/en/resume-optimizer-netherlands") ||
     path.startsWith("/tools/sollicitatiebrief-generator")
   );

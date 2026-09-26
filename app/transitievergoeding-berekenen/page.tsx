@@ -193,14 +193,9 @@ export default function TransitievergoedingBerekenenPage() {
               body: "Werk je cv gratis bij en betaal pas wanneer je de PDF nodig hebt.",
             },
             {
-              href: "/cv-checken",
+              href: "/cv-check",
               title: "Cv checken",
               body: "Controleer je cv voordat je opnieuw actief gaat solliciteren.",
-            },
-            {
-              href: "/tools/ats-cv-checker",
-              title: "ATS CV checker",
-              body: "Check of je volgende cv technisch goed leesbaar blijft voor recruitersoftware.",
             },
           ]}
         />

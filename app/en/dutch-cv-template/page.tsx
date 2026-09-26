@@ -185,7 +185,7 @@ const routeChoices = [
     body: "Use this when you want the Dutch section order, length guidance, and first-page logic before you start writing.",
   },
   {
-    href: "/en/dutch-cv-checker",
+    href: "/en/cv-check",
     title: "Check an existing CV",
     body: "Use this when you already have a draft and want to review ATS readability, Dutch-market fit, and LinkedIn alignment.",
   },

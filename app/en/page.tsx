@@ -65,7 +65,7 @@ const pages = [
     description: "Turn projects, thesis work, internships, volunteering and part-time jobs into evidence.",
   },
   {
-    href: "/en/dutch-cv-checker",
+    href: "/en/cv-check",
     title: "Dutch CV Checker",
     description: "Check whether your current English CV fits Dutch recruiter expectations before you rebuild it.",
   },

@@ -571,12 +571,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.77,
         },
         {
-            url: `${baseUrl}/tools/cv-score/methodologie`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.62,
-        },
-        {
             url: `${baseUrl}/tools/kandidaatvoorstel-checker`,
             lastModified: new Date(AGENCY_CONTENT_MODIFIED),
             changeFrequency: 'weekly',
@@ -751,18 +745,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.74,
         },
         {
-            url: `${baseUrl}/en/dutch-cv-checker`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.75,
-        },
-        {
-            url: `${baseUrl}/en/cv-job-match-checker`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.76,
-        },
-        {
             url: `${baseUrl}/en/motivation-letter-netherlands`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
@@ -776,12 +758,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/en/ats-resume-netherlands`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.75,
-        },
-        {
-            url: `${baseUrl}/en/resume-optimizer-netherlands`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.75,
@@ -1003,16 +979,40 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/cv-checken`,
-            lastModified: new Date(),
+            url: `${baseUrl}/cv-check`,
+            lastModified: new Date('2026-09-26'),
+            changeFrequency: 'weekly',
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/cv-check/vacature`,
+            lastModified: new Date('2026-09-26'),
+            changeFrequency: 'weekly',
+            priority: 0.85,
+        },
+        {
+            url: `${baseUrl}/cv-check/methodologie`,
+            lastModified: new Date('2026-09-26'),
+            changeFrequency: 'monthly',
+            priority: 0.6,
+        },
+        {
+            url: `${baseUrl}/en/cv-check`,
+            lastModified: new Date('2026-09-26'),
             changeFrequency: 'weekly',
             priority: 0.8,
         },
         {
-            url: `${baseUrl}/cv-nakijken`,
-            lastModified: new Date(),
+            url: `${baseUrl}/en/cv-check/job-match`,
+            lastModified: new Date('2026-09-26'),
             changeFrequency: 'weekly',
-            priority: 0.79,
+            priority: 0.78,
+        },
+        {
+            url: `${baseUrl}/en/cv-check/methodology`,
+            lastModified: new Date('2026-09-26'),
+            changeFrequency: 'monthly',
+            priority: 0.55,
         },
         {
             url: `${baseUrl}/beste-cv-maker-nederland`,
@@ -1116,12 +1116,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'aanzegvergoeding-checker',
         '30-procent-regeling-checker',
         'aow-leeftijd-checker',
-        'ats-cv-checker',
         'career-change-advisor',
-        'cv-score',
         'cv-keywords',
         'cv-samenvatting-generator',
-        'cv-vacature-match',
         'eindejaarsuitkering-berekenen',
         '13e-maand-berekenen',
         'eu-blue-card-checker',
@@ -1164,8 +1161,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ];
 
     const highIntentToolPriority: Record<string, number> = {
-        'ats-cv-checker': 0.9,
-        'cv-score': 0.82,
     };
 
     const toolPages: MetadataRoute.Sitemap = toolSlugs.map((slug) => ({

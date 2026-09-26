@@ -193,7 +193,7 @@ export default function OpzegtermijnBerekenenPage() {
               body: "Werk je cv alvast bij terwijl je planning en vertrekdatum duidelijker worden.",
             },
             {
-              href: "/tools/ats-cv-checker",
+              href: "/cv-check",
               title: "ATS CV checker",
               body: "Controleer of je bijgewerkte cv technisch goed uitleesbaar blijft.",
             },

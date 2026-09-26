@@ -70,14 +70,9 @@ const routeLinks: OptimizerLinkCard[] = [
     body: "Voor de combinatie van ATS, vacaturekeywords en inhoudelijke verbeterpunten in één route.",
   },
   {
-    href: "/cv-checken",
-    title: "CV checken",
+    href: "/cv-check",
+    title: "Gratis cv-check",
     body: "Gebruik deze route als je eerst snel wilt zien wat er inhoudelijk of technisch ontbreekt.",
-  },
-  {
-    href: "/cv-nakijken",
-    title: "CV laten nakijken",
-    body: "Sterk als je zoekt naar een automatische review van veelvoorkomende fouten.",
   },
   {
     href: "/cv-voorbeelden",
@@ -193,7 +188,7 @@ export default function CvVerbeterenPage() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink
-                href="/tools/cv-score"
+                href="/cv-check"
                 trackingLocation="cv-verbeteren:hero_primary"
                 trackingLabel="Verbeter mijn cv gratis"
                 ctaEventName="cta_cv_verbeteren_hero"
@@ -212,7 +207,7 @@ export default function CvVerbeterenPage() {
               Handig als je je huidige cv eerst wilt aanscherpen voordat je een nieuwe versie downloadt.
             </p>
             <CvCheckStartBlock
-              buttonHref="/tools/cv-score"
+              buttonHref="/cv-check"
               trackingLocation="cv-verbeteren:above_fold_check_block"
             />
           </div>

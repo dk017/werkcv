@@ -280,7 +280,7 @@ export default function MotivatiebriefSchrijvenPage() {
               body: "Bouw direct een cv die dezelfde vacature en functierichting ondersteunt.",
             },
             {
-              href: "/cv-checken",
+              href: "/cv-check",
               title: "Cv checken",
               body: "Controleer of je cv inhoudelijk sterk genoeg is voordat je solliciteert.",
             },
@@ -290,14 +290,9 @@ export default function MotivatiebriefSchrijvenPage() {
               body: "Scherp je cv aan op ATS, vacaturekeywords en recruiterleesbaarheid.",
             },
             {
-              href: "/tools/cv-vacature-match",
-              title: "Cv-vacature-match",
+              href: "/cv-check/vacature",
+              title: "Cv vergelijken met vacature",
               body: "Vergelijk je cv met de vacaturetekst als je brief en cv dezelfde richting moeten volgen.",
-            },
-            {
-              href: "/tools/ats-cv-checker",
-              title: "ATS CV checker",
-              body: "Check of je cv technisch goed uitleesbaar blijft voor recruitersoftware.",
             },
           ]}
         />

@@ -317,14 +317,15 @@ export const primaryAiPages = [
       "Expat tool for comparing Dutch EU Blue Card route basics.",
   },
   {
-    title: "ATS CV checker",
-    url: `${siteBaseUrl}/tools/ats-cv-checker`,
-    description: "Checks CV text for ATS readability risks.",
+    title: "CV-check (free AI CV and ATS check)",
+    url: `${siteBaseUrl}/cv-check`,
+    description:
+      "Free, no account, CV not stored. Shows what application systems read from a CV, a 1–10 grade with a published method, the top fixes and Dutch conventions (language levels, MBO/HBO/WO, BSN, VOG/BIG).",
   },
   {
-    title: "CV score",
-    url: `${siteBaseUrl}/tools/cv-score`,
-    description: "Scores CV structure, readability and completeness.",
+    title: "CV vergelijken met vacature",
+    url: `${siteBaseUrl}/cv-check/vacature`,
+    description: "Compares a CV with a job ad per requirement, with quotes from both; a 'pre' counts as nice-to-have.",
   },
   {
     title: "LinkedIn naar CV",
@@ -332,9 +333,9 @@ export const primaryAiPages = [
     description: "Paste-based tool to convert LinkedIn profile text into a CV structure.",
   },
   {
-    title: "Resume optimizer for the Netherlands",
-    url: `${siteBaseUrl}/en/resume-optimizer-netherlands`,
-    description: "English guide for optimizing a resume for Dutch job applications.",
+    title: "CV checker for the Netherlands (English)",
+    url: `${siteBaseUrl}/en/cv-check`,
+    description: "English version of the free CV check, for international applicants to Dutch jobs.",
   },
   {
     title: "Over ons",

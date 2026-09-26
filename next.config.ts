@@ -96,6 +96,20 @@ const nextConfig: NextConfig = {
         // the brief's required 301 semantics for the consolidated URL.
         statusCode: 301,
       },
+      // CV-check launch (26 Sep 2026): the old checker pages merge into the
+      // flagship. The old page files stay until the cleanup so a rollback is
+      // only a matter of removing these entries.
+      ...[
+        ['/tools/ats-cv-checker', '/cv-check'],
+        ['/tools/cv-score', '/cv-check'],
+        ['/cv-checken', '/cv-check'],
+        ['/cv-nakijken', '/cv-check'],
+        ['/tools/cv-score/methodologie', '/cv-check/methodologie'],
+        ['/tools/cv-vacature-match', '/cv-check/vacature'],
+        ['/en/dutch-cv-checker', '/en/cv-check'],
+        ['/en/resume-optimizer-netherlands', '/en/cv-check'],
+        ['/en/cv-job-match-checker', '/en/cv-check/job-match'],
+      ].map(([source, destination]) => ({ source, destination, statusCode: 301 as const })),
       // Consolidate duplicate Dutch commercial intent onto the stronger owners.
       {
         source: '/cv-maken-eenmalig-betalen',

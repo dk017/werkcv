@@ -124,7 +124,7 @@ const relatedResources = [
     body: "Use this if you already understand the mistakes and want the right structure.",
   },
   {
-    href: "/en/dutch-cv-checker",
+    href: "/en/cv-check",
     title: "Dutch CV checker",
     body: "Upload your current CV and check Dutch-market fit, ATS readability, and missing information.",
   },
@@ -248,7 +248,7 @@ export default function DutchCvMistakesEnglishSpeakingJobSeekersPage() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <TrackedLandingLink
-              href="/en/dutch-cv-checker?startSource=en_cv_mistakes_hero"
+              href="/en/cv-check?startSource=en_cv_mistakes_hero"
               trackingLocation="en_cv_mistakes_hero"
               trackingLabel="check_current_cv"
               className="border-4 border-black bg-black px-6 py-3 text-sm font-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
@@ -339,7 +339,7 @@ export default function DutchCvMistakesEnglishSpeakingJobSeekersPage() {
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <TrackedLandingLink
-              href="/en/dutch-cv-checker?startSource=en_cv_mistakes_mid"
+              href="/en/cv-check?startSource=en_cv_mistakes_mid"
               trackingLocation="en_cv_mistakes_mid"
               trackingLabel="checker"
               className="border-4 border-white bg-[#4ECDC4] px-5 py-3 font-black text-black"

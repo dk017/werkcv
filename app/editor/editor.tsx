@@ -1879,7 +1879,7 @@ export default function Editor({
                             <section className="rounded-lg border border-red-200 bg-red-50 px-4 py-3" role="alert">
                                 <p className="text-sm font-semibold text-red-800">{matchImportFeedback.message}</p>
                                 <Link
-                                    href={isEnglish ? '/en/cv-job-match-checker' : '/tools/cv-vacature-match'}
+                                    href={isEnglish ? '/en/cv-check/job-match' : '/cv-check/vacature'}
                                     className="mt-2 inline-block text-sm font-bold text-red-900 underline"
                                 >
                                     {tr('Terug naar de controle', 'Return to the check')}

@@ -52,18 +52,13 @@ const routeLinks: OptimizerLinkCard[] = [
     body: "Gebruik deze route als je vooral inhoud, formulering en impact van je cv sterker wilt maken.",
   },
   {
-    href: "/cv-checken",
-    title: "CV checken",
+    href: "/cv-check",
+    title: "Gratis cv-check",
     body: "Handig als je eerst snel wilt zien waar je cv inhoudelijk en technisch zwakker is.",
   },
   {
-    href: "/cv-nakijken",
-    title: "CV laten nakijken",
-    body: "Sterk als je zoekt naar een automatische review van veelvoorkomende fouten en ATS-risico's.",
-  },
-  {
-    href: "/en/resume-optimizer-netherlands",
-    title: "English resume optimizer",
+    href: "/en/cv-check",
+    title: "English CV check",
     body: "Voor expats of internationale kandidaten die een English-language route voor Dutch job applications zoeken.",
   },
   {
@@ -112,8 +107,6 @@ export const metadata: Metadata = buildDutchMetadata({
   type: "article",
   languages: {
     "nl-NL": pageUrl,
-    en: "https://werkcv.nl/en/resume-optimizer-netherlands",
-    "en-NL": "https://werkcv.nl/en/resume-optimizer-netherlands",
     "x-default": pageUrl,
   },
 });
@@ -151,7 +144,7 @@ export default function CvOptimaliserenPage() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink
-                href="/tools/cv-vacature-match"
+                href="/cv-check/vacature"
                 trackingLocation="cv-optimaliseren:hero_primary"
                 trackingLabel="Check en optimaliseer mijn cv"
                 ctaEventName="cta_cv_optimaliseren_hero"
@@ -167,7 +160,7 @@ export default function CvOptimaliserenPage() {
               Start met de check en werk daarna direct verder aan een sterkere versie.
             </p>
             <CvCheckStartBlock
-              buttonHref="/tools/cv-score"
+              buttonHref="/cv-check"
               trackingLocation="cv-optimaliseren:above_fold_check_block"
             />
           </div>
@@ -186,12 +179,8 @@ export default function CvOptimaliserenPage() {
             </div>
             <div className="mt-5 border-t border-[var(--wk-border)] pt-4 text-sm leading-6 text-[var(--wk-ink-muted)]">
               Handige tools:{" "}
-              <Link href="/tools/ats-cv-checker" className="font-semibold text-[var(--wk-primary)] underline underline-offset-4">
-                ATS CV checker
-              </Link>
-              ,{" "}
-              <Link href="/tools/cv-score" className="font-semibold text-[var(--wk-primary)] underline underline-offset-4">
-                cv-score
+              <Link href="/cv-check" className="font-semibold text-[var(--wk-primary)] underline underline-offset-4">
+                cv-check en ATS checker
               </Link>
               ,{" "}
               <Link href="/tools/cv-keywords" className="font-semibold text-[var(--wk-primary)] underline underline-offset-4">
@@ -255,15 +244,11 @@ export default function CvOptimaliserenPage() {
               ATS-optimalisatie draait vooral om duidelijke structuur, herkenbare koppen, consistente datums en woorden die softwaresystemen ook echt kunnen herkennen. Een rustig template helpt, maar ook je tekst moet logisch en scanbaar blijven.
             </p>
             <p className="mt-3 text-sm leading-7 text-[var(--wk-ink-muted)]">
-              Gebruik hiervoor eerst de{" "}
-              <Link href="/tools/ats-cv-checker" className="font-semibold text-[var(--wk-primary)] underline underline-offset-4">
-                ATS CV checker
+              Gebruik hiervoor de{" "}
+              <Link href="/cv-check" className="font-semibold text-[var(--wk-primary)] underline underline-offset-4">
+                cv-check
               </Link>
-              {" "}en controleer daarna met de{" "}
-              <Link href="/tools/cv-score" className="font-semibold text-[var(--wk-primary)] underline underline-offset-4">
-                cv-score
-              </Link>
-              {" "}of je document inhoudelijk ook sterk genoeg is.
+              : die kijkt naar leesbaarheid voor systemen én naar de inhoud van je document.
             </p>
           </article>
 
@@ -283,8 +268,8 @@ export default function CvOptimaliserenPage() {
                 cv-keywords tool
               </Link>
               {" "}voor trefwoorden en de{" "}
-              <Link href="/tools/cv-vacature-match" className="font-semibold text-[var(--wk-primary)] underline underline-offset-4">
-                cv-vacature-match
+              <Link href="/cv-check/vacature" className="font-semibold text-[var(--wk-primary)] underline underline-offset-4">
+                cv-vergelijking met de vacature
               </Link>
               {" "}als je je hele cv naast de vacaturetekst wilt leggen. Staat je basis vooral nog op LinkedIn, begin dan met{" "}
               <Link href="/tools/linkedin-naar-cv" className="font-semibold text-[var(--wk-primary)] underline underline-offset-4">

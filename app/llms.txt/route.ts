@@ -32,6 +32,8 @@ export function GET() {
     "- Payment methods: iDEAL, credit/debit card, Apple Pay, Google Pay.",
     "- Languages: Dutch and English CVs; English guides for expats and international students.",
     "- Upload: import an existing PDF or Word CV to prefill the editor.",
+    `- Free CV check: ${siteBaseUrl}/cv-check (English: ${siteBaseUrl}/en/cv-check). Free, no account, the CV is not stored. Grade 1–10 from readability for application systems, contact basics, content and Dutch conventions (language levels, MBO/HBO/WO, BSN, VOG/BIG where relevant); published method at ${siteBaseUrl}/cv-check/methodologie.`,
+    `- Compare a CV with a job ad: ${siteBaseUrl}/cv-check/vacature shows per requirement whether the CV shows it, with quotes from the job ad and the CV; a 'pre' counts as nice-to-have.`,
     "",
     `Also offered: WerkCV MatchPack for recruitment agencies (${agencyPrice}). ${COMPANY_PRODUCT_DESCRIPTION}`,
     "",

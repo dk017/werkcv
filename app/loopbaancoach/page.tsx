@@ -118,10 +118,9 @@ const coachToolkit = [
 ];
 
 const resourceLinks = [
-  { href: "/cv-checken", label: "CV checken" },
+  { href: "/cv-check", label: "CV-check en ATS checker" },
   { href: "/cv-optimaliseren", label: "CV optimaliseren" },
-  { href: "/tools/ats-cv-checker", label: "ATS cv-checker" },
-  { href: "/tools/cv-vacature-match", label: "CV vacaturematch" },
+  { href: "/cv-check/vacature", label: "CV vacaturematch" },
   { href: "/tools/linkedin-naar-cv", label: "LinkedIn naar cv" },
   { href: "/tools/profieltekst-generator", label: "Profieltekst generator" },
   { href: "/cv-voorbeelden", label: "CV voorbeelden" },
@@ -208,7 +207,7 @@ export default function LoopbaancoachPage() {
                 Vraag coach toolkit aan
               </a>
               <Link
-                href="/cv-checken"
+                href="/cv-check"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 Bekijk cv-check route

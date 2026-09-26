@@ -134,7 +134,7 @@ export default function AtsResumeNetherlandsPage() {
               Build my ATS-safe CV
             </TrackedLandingLink>
             <TrackedLandingLink
-              href="/en/dutch-cv-checker"
+              href="/en/cv-check"
               trackingLocation="ats_resume_netherlands_hero"
               trackingLabel="check_existing_cv"
               className="text-sm font-semibold text-slate-600 underline decoration-slate-400 underline-offset-4 hover:text-slate-950"
@@ -231,7 +231,7 @@ export default function AtsResumeNetherlandsPage() {
         <div className="bg-white border-4 border-black p-6">
           <h2 className="text-2xl font-black mb-3">Related English routes</h2>
           <div className="flex flex-wrap gap-3">
-            <Link href="/en/dutch-cv-checker" className="underline font-bold">
+            <Link href="/en/cv-check" className="underline font-bold">
               Dutch CV checker
             </Link>
             <Link href="/en/guides/netherlands-cv-keywords-ats" className="underline font-bold">

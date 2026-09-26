@@ -155,13 +155,16 @@ function statusIcon(check: CvCheckItem): { symbol: string; className: string } {
 export default function CvCheckTool({
   locale,
   initialVacancyText = "",
+  initialShowVacancy = false,
   entry = "direct",
   methodologyHref,
   editorHref,
 }: {
   locale: CvCheckLocale;
   initialVacancyText?: string;
-  entry?: "direct" | "vacancy_page";
+  /** Opens the vacancy field on load (the /cv-check/vacature pages). */
+  initialShowVacancy?: boolean;
+  entry?: "direct" | "vacancy_page" | "vacancy_mode";
   methodologyHref: string;
   editorHref: string;
 }) {
@@ -169,7 +172,7 @@ export default function CvCheckTool({
   const [inputMode, setInputMode] = useState<InputMode>("file");
   const [file, setFile] = useState<File | null>(null);
   const [cvText, setCvText] = useState("");
-  const [showVacancy, setShowVacancy] = useState(Boolean(initialVacancyText));
+  const [showVacancy, setShowVacancy] = useState(initialShowVacancy || Boolean(initialVacancyText));
   const [vacancyText, setVacancyText] = useState(initialVacancyText);
   const [loading, setLoading] = useState(false);
   const [stepIndex, setStepIndex] = useState(0);
@@ -240,6 +243,11 @@ export default function CvCheckTool({
         input_type: inputMode,
         grade_bucket: String(Math.floor(data.result.grade)),
         critical_count: data.result.checks.filter((check) => check.severity === "critical" && check.status === "fail").length,
+        // Check IDs only (never CV text): input for the aggregate "most common mistakes" report.
+        failed_checks: data.result.checks
+          .filter((check) => check.status === "fail")
+          .map((check) => check.id)
+          .join(","),
         ai_status: data.result.aiStatus,
         duration_ms: Date.now() - startedAt,
         score_version: data.result.scoreVersion,

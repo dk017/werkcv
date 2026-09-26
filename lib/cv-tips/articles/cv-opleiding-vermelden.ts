@@ -262,7 +262,7 @@ export const cvOpleidingVermelden: BlogArticle = {
                     description: 'Gebruik een opmaak waarin diploma en schoolnaam als gewone tekst leesbaar blijven.',
                 },
                 {
-                    href: '/tools/ats-cv-checker',
+                    href: '/cv-check',
                     label: 'Controleer je CV op ATS-risico\'s',
                     description: 'Handig als je twijfelt of je layout en sectietitels goed uitleesbaar zijn.',
                 },

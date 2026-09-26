@@ -81,7 +81,7 @@ export const cvSchrijvenMetAi: BlogArticle = {
                     description: 'Zo geef je AI betere input dan alleen een losse functietitel.',
                 },
                 {
-                    href: '/tools/cv-vacature-match',
+                    href: '/cv-check/vacature',
                     label: 'Check daarna of je cv echt op de vacature aansluit',
                     description: 'Gebruik de matchscore als reality check na je AI-herschrijving.',
                 },
@@ -136,7 +136,7 @@ export const cvSchrijvenMetAi: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/tools/ats-cv-checker',
+                    href: '/cv-check',
                     label: 'Controleer je cv daarna op ATS-risico',
                     description: 'Gebruik dit als laatste technische check na je AI-herschrijving.',
                 },

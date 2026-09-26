@@ -752,7 +752,7 @@ export type AnalyticsEvent =
     | { event: 'ats_checker_started'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text' } }
     | { event: 'ats_checker_completed'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text'; score_band: string; duration_ms: number } }
     | { event: 'ats_checker_failed'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text'; status: number } }
-    | { event: 'cv_check_viewed'; properties: { locale: 'nl' | 'en'; entry: 'direct' | 'vacancy_page' } }
+    | { event: 'cv_check_viewed'; properties: { locale: 'nl' | 'en'; entry: 'direct' | 'vacancy_page' | 'vacancy_mode' } }
     | { event: 'cv_check_started'; properties: { locale: 'nl' | 'en'; mode: 'general' | 'vacancy'; input_type: 'file' | 'text' } }
     | {
           event: 'cv_check_completed';
@@ -762,6 +762,7 @@ export type AnalyticsEvent =
               input_type: 'file' | 'text';
               grade_bucket: string;
               critical_count: number;
+              failed_checks: string;
               ai_status: 'ok' | 'unavailable';
               duration_ms: number;
               score_version: string;

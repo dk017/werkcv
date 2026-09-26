@@ -146,31 +146,22 @@ export default function LinkedinNaarCvPage() {
         <section className="mb-10 rounded-3xl border-2 border-slate-200 bg-white p-6">
           <h2 className="text-2xl font-black text-slate-900">Van LinkedIn-profiel naar Nederlandse cv</h2>
           <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
-            WerkCV helpt om LinkedIn-informatie om te zetten naar een Nederlandse cv-opbouw met contactgegevens, profiel, werkervaring, opleiding, vaardigheden, talen en certificaten. Gebruik daarna ook de{" "}
-            <Link href="/tools/ats-cv-checker" className="font-black underline decoration-2 underline-offset-4">
-              ATS CV checker
+            WerkCV helpt om LinkedIn-informatie om te zetten naar een Nederlandse cv-opbouw met contactgegevens, profiel, werkervaring, opleiding, vaardigheden, talen en certificaten. Gebruik daarna de{" "}
+            <Link href="/cv-check" className="font-black underline decoration-2 underline-offset-4">
+              gratis cv-check
             </Link>
-            , de{" "}
-            <Link href="/tools/cv-score" className="font-black underline decoration-2 underline-offset-4">
-              cv-score
-            </Link>
-            {" "}of de{" "}
-            <Link href="/cv-checken" className="font-black underline decoration-2 underline-offset-4">
-              cv-check route
-            </Link>
-            {" "}om je eindversie scherper te maken.
+            {" "}om je eindversie scherper te maken: je ziet wat een ATS eruit leest en wat je als eerste verbetert.
           </p>
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             {[
               { href: "/cv-maken", label: "Maak een nieuw cv" },
               { href: "/cv-maken-zonder-abonnement", label: "CV maken zonder abonnement" },
               { href: "/cv-optimaliseren", label: "CV optimaliseren" },
-              { href: "/cv-checken", label: "CV checken" },
+              { href: "/cv-check", label: "CV-check en ATS checker" },
               { href: "/tools/profieltekst-generator", label: "Profieltekst generator" },
               { href: "/tools/werkervaring-bullets", label: "Werkervaring bullets" },
               { href: "/tools/vaardigheden-generator", label: "Vaardigheden generator" },
               { href: "/profielfoto-cv-maken", label: "Profielfoto voor cv en LinkedIn" },
-              { href: "/tools/ats-cv-checker", label: "ATS CV checker" },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -230,7 +221,7 @@ export default function LinkedinNaarCvPage() {
           title="Maak van je LinkedIn-tekst een cv zonder abonnement"
           description="Gebruik je LinkedIn-profiel als basis, scherp de tekst aan en download pas wanneer je cv klaar is om te versturen."
           primaryLabel="Maak je cv zonder abonnement"
-          secondaryHref="/tools/ats-cv-checker"
+          secondaryHref="/cv-check"
           secondaryLabel="Check daarna je ATS-score"
           intent="cv_content"
           insightText="Je kunt gratis starten en alles aanpassen. Je betaalt alleen eenmalig als je de definitieve cv als PDF wilt downloaden."

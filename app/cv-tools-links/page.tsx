@@ -38,7 +38,7 @@ export default function CvToolsLinksPage() {
               <Link href="/cv-maken" className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]">CV maken: de complete stappen</Link>
             </li>
             <li>
-              <Link href="/tools/cv-score" className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]">Controleer je CV-score</Link>
+              <Link href="/cv-check" className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]">Controleer je CV-score</Link>
             </li>
             <li>
               <Link href="/tools/cv-keywords" className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]">Vind relevante CV-keywords</Link>

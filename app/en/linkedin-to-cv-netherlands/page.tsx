@@ -142,7 +142,7 @@ const internalRoutes = [
       "Best if your source material is LinkedIn and you want WerkCV to turn it into a CV draft before editing.",
   },
   {
-    href: "/en/resume-optimizer-netherlands",
+    href: "/en/cv-check",
     title: "Optimize an existing resume",
     body:
       "Best if you already exported a PDF or have a draft that needs Dutch-market cleanup.",
@@ -199,7 +199,7 @@ const sourceLinks = [
   },
   {
     label: "WerkCV - Dutch CV checker",
-    href: "/en/dutch-cv-checker",
+    href: "/en/cv-check",
     note:
       "Use this route if you want to check a draft CV for ATS readability and Dutch-market fit.",
   },
@@ -248,7 +248,7 @@ export default function LinkedinToCvNetherlandsPage() {
               Build my CV using LinkedIn text
             </Link>
             <Link
-              href="/en/resume-optimizer-netherlands"
+              href="/en/cv-check"
               className="border-4 border-black bg-[#4ECDC4] px-5 py-3 font-bold text-black"
             >
               Optimize existing CV

@@ -215,7 +215,7 @@ export default function AtsCvTemplatePage() {
                 Start met ATS template
               </Link>
               <Link
-                href="/tools/ats-cv-checker"
+                href="/cv-check"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 Test je CV
@@ -297,7 +297,7 @@ export default function AtsCvTemplatePage() {
                   Maak ATS CV
                 </Link>
                 <Link
-                  href="/tools/ats-cv-checker"
+                  href="/cv-check"
                   className="border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
                 >
                   Eerst mijn CV testen
@@ -351,7 +351,7 @@ export default function AtsCvTemplatePage() {
                 Lees de ATS-gids
               </Link>
               <Link
-                href="/tools/ats-cv-checker"
+                href="/cv-check"
                 className="border-2 border-black bg-yellow-400 px-4 py-2 text-sm font-black text-black"
               >
                 Open de ATS checker
@@ -493,7 +493,7 @@ export default function AtsCvTemplatePage() {
                   body: "Vergelijk ook bredere gratis template-opties als je nog tussen meerdere stijlen twijfelt.",
                 },
                 {
-                  href: "/tools/ats-cv-checker",
+                  href: "/cv-check",
                   title: "ATS CV checker",
                   body: "Laat je huidige CV scannen op leesbaarheid, structuur en verbeterpunten.",
                 },

@@ -55,7 +55,7 @@ const routeLinks: OptimizerLinkCard[] = [
     body: "Go here if you prefer the generic tool page and Dutch-language routes around openings, examples and no-experience letters.",
   },
   {
-    href: "/en/dutch-cv-checker",
+    href: "/en/cv-check",
     title: "Dutch CV checker",
     body: "Use this if your CV still needs checking for Dutch recruiter expectations before you send the full application package.",
   },

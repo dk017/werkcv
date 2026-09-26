@@ -248,7 +248,7 @@ export default function LinkedinToCvTool() {
               </p>
             </div>
             <TrackedToolLink
-              href="/cv-checken"
+              href="/cv-check"
               eventName="linkedin_to_cv_cta_editor_click"
               trackingLocation="linkedin_to_cv:output_followup"
               trackingLabel="Check je cv daarna ook"
