@@ -24,8 +24,12 @@ function formatNumber(value: number, maximumFractionDigits = 2): string {
   }).format(value);
 }
 
-export default function EindejaarsuitkeringTool() {
-  const [calculationMethod, setCalculationMethod] = useState<CalculationMethod>("percentage");
+export default function EindejaarsuitkeringTool({
+  initialMethod = "percentage",
+}: {
+  initialMethod?: CalculationMethod;
+}) {
+  const [calculationMethod, setCalculationMethod] = useState<CalculationMethod>(initialMethod);
   const [monthlyGrossSalary, setMonthlyGrossSalary] = useState("3600");
   const [bonusPercentage, setBonusPercentage] = useState("8,33");
   const [monthsWorked, setMonthsWorked] = useState("12");
@@ -178,7 +182,7 @@ export default function EindejaarsuitkeringTool() {
             className="w-full py-3 px-6 bg-[#4ECDC4] hover:bg-teal-500 text-slate-900 font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
             style={{ borderWidth: "3px" }}
           >
-            Bereken eindejaarsuitkering
+            {calculationMethod === "thirteenth-month" ? "Bereken 13e maand" : "Bereken eindejaarsuitkering"}
           </button>
 
           <p className="text-xs text-slate-500 text-center">

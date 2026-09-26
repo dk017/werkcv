@@ -1123,6 +1123,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         'cv-samenvatting-generator',
         'cv-vacature-match',
         'eindejaarsuitkering-berekenen',
+        '13e-maand-berekenen',
         'eu-blue-card-checker',
         'job-title-translator',
         'jubileumtekst-generator',

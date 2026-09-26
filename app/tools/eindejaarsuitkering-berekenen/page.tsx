@@ -233,6 +233,9 @@ export default function EindejaarsuitkeringBerekenenPage() {
             <p className="mt-3 text-sm leading-relaxed text-slate-700">
               Een volledige 13e maand is meestal één extra bruto maandsalaris. Omgerekend is dat ongeveer 8,33% van twaalf bruto maandsalarissen: €3.000 bruto per maand betekent dan ongeveer €3.000 bruto eindejaarsuitkering. Bij een percentage of pro-rata regeling kan je contract een andere grondslag gebruiken.
             </p>
+            <Link href="/tools/13e-maand-berekenen" className="mt-3 inline-block text-sm font-black text-teal-700 underline underline-offset-2">
+              Alles over de 13e maand: netto, belasting en wanneer je hem krijgt
+            </Link>
           </div>
           <div className="border-2 border-black bg-[#E9FFFC] p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">Netto eindejaarsuitkering</p>

@@ -71,6 +71,13 @@ const newLiveTools: ToolCard[] = [
         badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
     },
     {
+        href: "/tools/13e-maand-berekenen",
+        title: "13e maand berekenen",
+        description: "Zie wat je 13e maand bruto en netto oplevert, hoeveel belasting je betaalt en wanneer je hem krijgt.",
+        badge: "Geld",
+        badgeClass: "bg-blue-100 text-blue-800 border-blue-300",
+    },
+    {
         href: "/tools/30-procent-regeling-checker",
         title: "30%-regeling checker",
         description: "Check de 2026-drempels en basisvoorwaarden voor expats die de 30%-regeling willen inschatten.",
