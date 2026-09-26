@@ -163,6 +163,7 @@ export default function CvVacatureMatchTool({
     setResult(null);
     setLoading(true);
     const startedAt = Date.now();
+    let failureCode = "NETWORK_ERROR";
 
     track("resume_screener_started", {
       locale,
@@ -194,6 +195,7 @@ export default function CvVacatureMatchTool({
         code?: string;
       };
       if (!response.ok || !data.result || !data.sourceText) {
+        failureCode = data.code || `HTTP_${response.status}`;
         throw new Error(data.error || copy.errorGeneric);
       }
 
@@ -213,6 +215,7 @@ export default function CvVacatureMatchTool({
         locale,
         input_type: inputMode,
         reason: "analysis_failed",
+        code: failureCode,
       });
     } finally {
       setLoading(false);

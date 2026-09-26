@@ -393,12 +393,14 @@ export default function CvScoreTool() {
 
       const json = await response.json();
       if (!response.ok) {
+        track("cv_score_failed", { input_type: mode === "upload" ? "file" : "text", status: response.status });
         setError(json.error ?? "Analyse mislukt. Probeer het opnieuw.");
         return;
       }
 
       setResult(json as ScoreResult);
     } catch {
+      track("cv_score_failed", { input_type: mode === "upload" ? "file" : "text", status: 0 });
       setError("Verbindingsfout. Probeer het opnieuw.");
     } finally {
       setIsLoading(false);

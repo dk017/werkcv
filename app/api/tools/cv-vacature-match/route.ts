@@ -6,6 +6,8 @@ import {
   type CvMatchLocale,
 } from "@/lib/tools/cv-vacature-match";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
+import { classifyAiToolError, shouldAlertAiToolError, toSafeAiToolError } from "@/lib/tools/ai-tool-errors";
+import { reportOpsIncident } from "@/lib/ops-alerts";
 
 const MAX_TEXT_LENGTH = 18_000;
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -110,10 +112,24 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const bytes = await cvFile.arrayBuffer();
-      cvText = (await extractTextFromFile(Buffer.from(bytes), cvFile.name))
-        .trim()
-        .slice(0, MAX_TEXT_LENGTH);
+      try {
+        const bytes = await cvFile.arrayBuffer();
+        cvText = (await extractTextFromFile(Buffer.from(bytes), cvFile.name))
+          .trim()
+          .slice(0, MAX_TEXT_LENGTH);
+      } catch {
+        return NextResponse.json(
+          {
+            error: errorMessage(
+              locale,
+              "We konden de tekst uit dit bestand niet lezen. Plak de tekst van je CV of probeer een andere PDF.",
+              "We could not read text from this file. Paste your CV text or try another PDF.",
+            ),
+            code: "PARSE_FAILED",
+          },
+          { status: 400 },
+        );
+      }
     } else {
       const body = await request.json();
       locale = parseLocale(body?.locale);
@@ -162,9 +178,21 @@ export async function POST(request: NextRequest) {
       inputMode,
     });
   } catch (error) {
+    const code = classifyAiToolError(error);
     console.error("cv-vacancy-match error", {
-      error: error instanceof Error ? error.message : "unknown",
+      code,
+      error: toSafeAiToolError(error).message,
     });
+    if (shouldAlertAiToolError(code)) {
+      await reportOpsIncident({
+        event: "ops_ai_tool_failed",
+        route: "/api/tools/cv-vacature-match",
+        stage: code,
+        error: toSafeAiToolError(error),
+        locale,
+        context: { tool: "cv-vacature-match" },
+      }).catch(() => undefined);
+    }
     return NextResponse.json(
       {
         error: errorMessage(
@@ -172,9 +200,9 @@ export async function POST(request: NextRequest) {
           "De analyse kon niet worden voltooid. Probeer het opnieuw.",
           "The assessment could not be completed. Please try again.",
         ),
-        code: "ANALYSIS_FAILED",
+        code,
       },
-      { status: 500 },
+      { status: code === "PROVIDER_RATE_LIMITED" ? 503 : 500 },
     );
   }
 }

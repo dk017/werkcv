@@ -7,7 +7,8 @@ type UiLocale = "nl" | "en";
 export type OpsIncidentEvent =
   | "ops_checkout_create_failed"
   | "ops_pdf_generation_failed"
-  | "ops_payment_webhook_failed";
+  | "ops_payment_webhook_failed"
+  | "ops_ai_tool_failed";
 
 type ReportOpsIncidentInput = {
   event: OpsIncidentEvent;

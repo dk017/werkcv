@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState } from "react";
 import TrackedToolLink from "@/components/analytics/TrackedToolLink";
+import { track } from "@/lib/analytics";
 
 interface AtsCheck {
   id: string;
@@ -131,6 +132,9 @@ export default function AtsCheckerTool({
     setError("");
     setIsLoading(true);
     setResult(null);
+    const inputType = mode === "upload" ? "file" : "text";
+    const startedAt = Date.now();
+    let started = false;
 
     try {
       let res: Response;
@@ -144,6 +148,8 @@ export default function AtsCheckerTool({
         const formData = new FormData();
         formData.append("file", file);
         formData.append("locale", locale);
+        track("ats_checker_started", { locale, input_type: inputType });
+        started = true;
         res = await fetch(`/api/tools/ats-checker?locale=${locale}`, { method: "POST", body: formData });
       } else {
         if (cvText.trim().length < 50) {
@@ -151,6 +157,8 @@ export default function AtsCheckerTool({
           setIsLoading(false);
           return;
         }
+        track("ats_checker_started", { locale, input_type: inputType });
+        started = true;
         res = await fetch(`/api/tools/ats-checker?locale=${locale}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -160,11 +168,20 @@ export default function AtsCheckerTool({
 
       const json = await res.json();
       if (!res.ok) {
+        track("ats_checker_failed", { locale, input_type: inputType, status: res.status });
         setError(json.error ?? strings.connectionError);
         return;
       }
-      setResult(json as AtsResult);
+      const atsResult = json as AtsResult;
+      setResult(atsResult);
+      track("ats_checker_completed", {
+        locale,
+        input_type: inputType,
+        score_band: atsResult.label,
+        duration_ms: Date.now() - startedAt,
+      });
     } catch {
+      if (started) track("ats_checker_failed", { locale, input_type: inputType, status: 0 });
       setError(strings.connectionError);
     } finally {
       setIsLoading(false);

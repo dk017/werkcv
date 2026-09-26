@@ -1,6 +1,6 @@
 # WerkCV AI CV-check: flagship spec (October 2026)
 
-Status: draft for decision · Author: research session 26 September 2026 · Scope: the October item of the revenue plan: fix the vacancy-match failures, merge the checker pages into one flagship Dutch "AI CV-check" with two modes (general check and vacancy match), and connect results to a "fix it in the editor" flow.
+Status: decisions made; week 1 implemented locally · Author: research session 26 September 2026 · Scope: the October item of the revenue plan: fix the vacancy-match failures, merge the checker pages into one flagship Dutch "AI CV-check" with two modes (general check and vacancy match), and connect results to a "fix it in the editor" flow.
 
 Evidence used: repository code; read-only aggregate production queries; Search Console exports (24 Jun–23 Sep 2026); Google Trends (NL, 5 years); competitor pages fetched 26 Sep 2026; one live production API call with fictional data. Sources are listed in §12.
 
@@ -328,15 +328,21 @@ Targets (first 8 weeks after launch; revisit after 4 weeks of data):
 
 ---
 
-## 11. Decisions needed
+## 11. Decisions (made 26 September 2026)
 
-1. **Flagship URL:** `/cv-check` (recommended; matches "cv check"/"cv laten checken" and is language-neutral), or keep `/tools/ats-cv-checker` (safer for current rankings, weaker for broader terms).
-2. **Headline score:** Dutch rapportcijfer 1–10 (recommended) or 0–100.
-3. **AI provider and data residency:** stay on OpenAI (current) with an EU data-residency project, or move to an EU-hosted provider.
-4. **Free limits:** keep the vacancy match free for anonymous users (recommended, as a differentiator vs AICVchecker/CVster), or require login after N runs.
-5. **Human review upsell** (later): partner with loopbaancoaches or offer a paid human check; out of scope for October.
+1. **Flagship URL: `/cv-check`** (EN `/en/cv-check`), with the §6.1 redirects.
+2. **Headline score: Dutch rapportcijfer 1,0–10,0**, with 0–100 shown underneath.
+3. **AI provider: stay on OpenAI for now.** Enable an EU data-residency project when eligible (a dashboard/config change, no code change) and state it on the page once active.
+4. **Free limits: everything free without an account**, including the vacancy match, with rate limits of 8 per hour and 20 per day per IP. Only saving the report and "fix in the editor" need login.
+5. **Human review upsell:** later; not in October scope.
 
----
+### Week 1 status (26 September 2026)
+
+- Contract test `lib/ai-structured-output-contract.test.ts`: runs every production structured-output schema through `zodResponseFormat` and fails when a new call site isn't registered. Verified that the pre-21-Sep schema throws the exact outage error.
+- Vacancy-match route: specific error codes (`PARSE_FAILED`, `PROVIDER_TIMEOUT`, `PROVIDER_RATE_LIMITED`, `PROVIDER_ERROR`, `SCHEMA_ERROR`, `UNKNOWN`); `ops_ai_tool_failed` alert for defects/outages with a sanitised error (no CV text); client failure events carry the code.
+- Dutch-convention fixes, as prompt rules plus deterministic post-processing in `lib/tools/cv-vacature-match-rules.ts`: CEFR comparison (moedertaal/native = C2, uitstekend/vloeiend/fluent = C1), "quoted CV evidence is never missing", "named tool present in the CV is at least partial", and availability fixes ranked after substantive gaps. This also applies to the agency evidence workflow, which calls the same function.
+- Golden set `lib/cv-check/golden/vacancy-match-cases.ts` (7 cases) + runner `npm run test:cv-check:golden`. Old prompt: **33/41** checks. Current: **58/58** over 3 runs per case, with scores identical across runs in 6 of 7 cases.
+- Measurement: `cv_score_*` events were logged but never stored (not in `PERSISTED_FUNNEL_EVENTS`); now stored. Added `cv_score_failed` and `ats_checker_started/completed/failed`.
 
 ## 12. Sources
 

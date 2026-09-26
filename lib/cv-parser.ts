@@ -48,7 +48,7 @@ const aiParsedPersonalDefaults = {
     photo: "",
 };
 
-const aiParsedCvSchema = z.object({
+export const aiParsedCvSchema = z.object({
     personal: z.object({
         name: z.string().optional().default(""),
         title: z.string().optional().default(""),

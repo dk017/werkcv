@@ -202,6 +202,14 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'proposal_claim_verifier_cta_clicked',
     'agency_onboarding_step_clicked',
     'agency_onboarding_dismissed',
+    'cv_score_tool_viewed',
+    'cv_score_input_provided',
+    'cv_score_result_shown',
+    'cv_score_failed',
+    'cv_score_cta_clicked',
+    'ats_checker_started',
+    'ats_checker_completed',
+    'ats_checker_failed',
 ]);
 
 type PrismaWithOptionalAnalytics = typeof prisma & {

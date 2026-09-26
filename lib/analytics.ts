@@ -660,6 +660,7 @@ export type AnalyticsEvent =
               locale: 'nl' | 'en';
               input_type: 'file' | 'text';
               reason: 'analysis_failed' | 'import_failed';
+              code?: string;
           };
       }
     | {
@@ -746,7 +747,11 @@ export type AnalyticsEvent =
               top_issue_dimension: string;
           };
       }
-    | { event: 'cv_score_cta_clicked'; properties: { button: 'editor' | 'templates' } };
+    | { event: 'cv_score_cta_clicked'; properties: { button: 'editor' | 'templates' } }
+    | { event: 'cv_score_failed'; properties: { input_type: 'file' | 'text'; status: number } }
+    | { event: 'ats_checker_started'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text' } }
+    | { event: 'ats_checker_completed'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text'; score_band: string; duration_ms: number } }
+    | { event: 'ats_checker_failed'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text'; status: number } };
 
 // ============================================================
 // Core track function

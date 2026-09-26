@@ -7,6 +7,7 @@ import {
   type CvVacatureMatchResult,
 } from "@/lib/tools/cv-vacature-match-schema";
 import { z } from "zod";
+import { pickTopFixes, reconcileRequirementStatus } from "@/lib/tools/cv-vacature-match-rules";
 
 export { cvVacatureMatchResultSchema, type CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match-schema";
 
@@ -218,7 +219,12 @@ Identify 5-8 concrete vacancy requirements. A requirement must be supported by a
 Classify each CV match as strong, partial, or missing and provide a short exact CV quote when evidence exists.
 Distinguish keyword presence from evidence. If a required skill or term appears anywhere in the CV but lacks a concrete example, classify it as partial and advise substantiating it; never say to add a term that is already present.
 Never tell the candidate to claim experience they do not have. honestAction must say how to clarify existing evidence, or advise leaving it out when unsupported.
-Return exactly three topFixes, ordered by likely impact. Each fix must cite a concrete weakness from the supplied documents.
+Dutch vacancy and CV conventions:
+- Importance: requirements marked "is een pre", "pré", "pluspunt", "is een plus", "bij voorkeur", "gewenst" or "nice to have" are preferred. Requirements introduced with "minimaal", "vereist", "je beschikt over", "je hebt" or "must" are essential.
+- Language requirements: a CV that lists the language as "moedertaal", "native", "native speaker" or CEFR C1/C2 is strong evidence for any required level in that language, including "uitstekende beheersing in woord en geschrift". A level one step below the required level is partial.
+- Education level: an equal or higher completed level meets a "werk- en denkniveau" requirement (mbo 4 < hbo < wo; hbo and wo meet "mbo 4 werk- en denkniveau"). Only mark missing when no education at or above the level is shown.
+- Availability, hours, weekend work, travel or start date are rarely stated on a CV. When absent, mark them missing; the honestAction is to mention it in the profile or motivation letter only if it is true.
+Return four or five topFixes, ordered by likely impact. Each fix must cite a concrete weakness from the supplied documents.
 Keep strengths to 2-4 items. Avoid generic encouragement and unsupported statistics.
 ${languageInstruction}`,
       },
@@ -235,7 +241,8 @@ ${languageInstruction}`,
   }
 
   const signals = getDeterministicSignals(cv);
-  const relevanceScore = calculateRequirementScore(analysis.requirements);
+  const requirements = analysis.requirements.map((requirement) => reconcileRequirementStatus(requirement, cv));
+  const relevanceScore = calculateRequirementScore(requirements);
   const evidenceScore =
     Math.min(10, signals.measurableResults * 2) +
     Math.min(8, signals.actionVerbs) +
@@ -302,9 +309,9 @@ ${languageInstruction}`,
     perceivedSeniority: copy.seniority[analysis.perceivedSeniority],
     dimensions,
     strengths: analysis.strengths.slice(0, 4),
-    requirements: analysis.requirements.slice(0, 8),
-    missingKeywords: validatedMissingKeywords(analysis.requirements, vacancy),
-    topFixes: analysis.topFixes.slice(0, 3),
+    requirements: requirements.slice(0, 8),
+    missingKeywords: validatedMissingKeywords(requirements, vacancy),
+    topFixes: pickTopFixes(analysis.topFixes, 3),
     limitations: copy.limitations,
   });
 }
