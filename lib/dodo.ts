@@ -53,16 +53,26 @@ export function isDodoEnabledForCheckout(
   );
 }
 
+function normalizeCountryCode(countryCode: string | null | undefined): string | null {
+  const normalized = countryCode?.trim().toUpperCase() ?? "";
+  return /^[A-Z]{2}$/.test(normalized) ? normalized : null;
+}
+
+// Billing follows where the buyer is, not the CV language: expats in NL writing
+// an English CV still expect EUR + iDEAL. Language is only the fallback when the
+// visitor country is unknown.
 export function buildDodoCheckoutBody(
   cvId: string,
   email: string | undefined,
-  resumeLanguage: ResumeLanguage = "nl"
+  resumeLanguage: ResumeLanguage = "nl",
+  visitorCountryCode?: string | null
 ): Record<string, unknown> {
   if (!DODO_PRODUCT_ID) {
     throw new Error("DODO_PRODUCT_ID is not configured");
   }
 
-  const isDutchCheckout = resumeLanguage === "nl";
+  const visitorCountry = normalizeCountryCode(visitorCountryCode);
+  const isDutchCheckout = visitorCountry ? visitorCountry === "NL" : resumeLanguage === "nl";
   const allowedPaymentMethodTypes = [
     "ideal",
     "credit",
@@ -113,12 +123,13 @@ export function buildDodoCheckoutBody(
 export async function buildDodoCheckoutURL(
   cvId: string,
   email: string | undefined,
-  resumeLanguage: ResumeLanguage = "nl"
+  resumeLanguage: ResumeLanguage = "nl",
+  visitorCountryCode?: string | null
 ): Promise<DodoCheckoutResult> {
   if (!DODO_API_KEY) {
     throw new Error("DODO_API_KEY is not configured");
   }
-  const body = buildDodoCheckoutBody(cvId, email, resumeLanguage);
+  const body = buildDodoCheckoutBody(cvId, email, resumeLanguage, visitorCountryCode);
 
   const res = await fetch(`${DODO_API_BASE}/checkouts`, {
     method: "POST",

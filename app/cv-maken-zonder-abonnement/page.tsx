@@ -5,7 +5,7 @@ import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
-import { cvDownloadPrice } from "@/lib/site-content";
+import { cvDownloadPrice, cvDownloadPriceCheckedAt } from "@/lib/site-content";
 import {
   comparisonCheckedAt,
   comparisonRows,
@@ -243,6 +243,9 @@ export default function CvMakenZonderAbonnementPage() {
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
               Maak gratis je Nederlandse cv, bekijk je voorbeeld en betaal pas éénmalig {cvDownloadPrice.display} inclusief btw als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en niets om later op te zeggen.
+            </p>
+            <p className="mt-2 text-sm text-slate-600">
+              Actuele prijs per <time dateTime={cvDownloadPriceCheckedAt.iso}>{cvDownloadPriceCheckedAt.display}</time>.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink

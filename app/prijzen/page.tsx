@@ -9,7 +9,7 @@ import {
     formatPricingCheckedAtNl,
     toConsumerCvPricingView,
 } from "@/lib/commercial/consumer-cv-pricing";
-import { cvDownloadPrice } from "@/lib/site-content";
+import { cvDownloadPrice, cvDownloadPriceCheckedAt } from "@/lib/site-content";
 
 export const revalidate = 86400;
 
@@ -242,6 +242,9 @@ export default function PrijzenPage() {
                             </div>
                             <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--wk-ink-muted)]">
                                 Inclusief btw
+                            </p>
+                            <p className="mt-1 text-xs text-[var(--wk-ink-muted)]">
+                                Actuele prijs per <time dateTime={cvDownloadPriceCheckedAt.iso}>{cvDownloadPriceCheckedAt.display}</time>
                             </p>
                             <p className="mt-2 text-lg font-semibold text-[var(--wk-ink)]">Alleen je CV als PDF</p>
                             <p className="mx-auto mt-2 mb-6 max-w-md text-sm leading-6 text-[var(--wk-ink-muted)]">

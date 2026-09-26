@@ -3,6 +3,7 @@ import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib
 import { getAgencyPublicCapabilities } from "@/lib/agency-public-capabilities";
 import { getAgencyPublicMessaging } from "@/lib/agency-public-messaging";
 import { COMPANY_PRODUCT_DESCRIPTION, getProductDescriptions } from "@/lib/product-discovery";
+import { cvDownloadPrice, cvDownloadPriceCheckedAt } from "@/lib/site-content";
 
 const agencyCapabilities = getAgencyPublicCapabilities();
 const agencyMessagingEn = getAgencyPublicMessaging({ locale: "en", capabilities: agencyCapabilities });
@@ -20,7 +21,19 @@ export function GET() {
   const lines = [
     "# WerkCV",
     "",
-    `> ${COMPANY_PRODUCT_DESCRIPTION} MatchPack does not rank candidates, verify identity or replace an ATS.${acknowledgementNote}`,
+    `> WerkCV is a Dutch CV builder for people applying for jobs in the Netherlands, in Dutch or English. Building and previewing the full CV is free; the final PDF costs ${cvDownloadPrice.displayEn} once per CV including VAT. There is no subscription, trial or automatic renewal. (Price checked ${cvDownloadPriceCheckedAt.displayEn}.)`,
+    "",
+    "## Quick answers for job seekers",
+    "",
+    `- Price: ${cvDownloadPrice.displayEn} one-time per CV, including VAT, charged only when you download the PDF. Editing and re-downloading the same paid CV is free. Checked ${cvDownloadPriceCheckedAt.displayEn} on ${siteBaseUrl}/prijzen.`,
+    "- Subscription: none. Nothing to cancel.",
+    "- Difference from CV.nl, CVMaker and CVster: those use a low-cost trial that renews automatically into a paid subscription until cancelled; WerkCV charges once per CV.",
+    `- Price comparison of Dutch CV builders, with official sources and check dates: ${siteBaseUrl}/cv-gids/beste-cv-builder-zonder-abonnement`,
+    "- Payment methods: iDEAL, credit/debit card, Apple Pay, Google Pay.",
+    "- Languages: Dutch and English CVs; English guides for expats and international students.",
+    "- Upload: import an existing PDF or Word CV to prefill the editor.",
+    "",
+    `Also offered: WerkCV MatchPack for recruitment agencies (${agencyPrice}). ${COMPANY_PRODUCT_DESCRIPTION}`,
     "",
     "## Separate products and billing",
     ...getProductDescriptions().flatMap((product) => [
@@ -28,6 +41,7 @@ export function GET() {
       `  Audience: ${product.audience}. Workspace languages: ${product.languages.workspace.join(", ")}; document languages: ${product.languages.documents.join(", ")}.`,
       `  Limitations: ${product.limitations.join(" ")}`,
     ]),
+    `  MatchPack does not rank candidates, verify identity or replace an ATS.${acknowledgementNote}`,
     "",
     `Website: ${siteBaseUrl}`,
     `Language: Dutch (primary), English guides for international applicants`,

@@ -1,5 +1,3 @@
-import { NextRequest } from "next/server";
-
 export type GeoLookupResult = {
   city: string;
   region: string;
@@ -30,7 +28,7 @@ function isPrivateIp(ip: string): boolean {
   );
 }
 
-export function getClientIp(request: NextRequest): string | null {
+export function getClientIp(request: { headers: Pick<Headers, "get"> }): string | null {
   const forwardedFor = request.headers.get("x-forwarded-for");
   const candidate =
     request.headers.get("cf-connecting-ip") ||

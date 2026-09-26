@@ -53,6 +53,7 @@ export const consumerCvPricingFactSchema = z
 export type ConsumerCvPricingFact = z.infer<typeof consumerCvPricingFactSchema>;
 
 const verifiedAt = "2026-08-30";
+const subscriptionPricesVerifiedAt = "2026-09-26";
 
 const rawConsumerCvPricingFacts: ConsumerCvPricingFact[] = [
   {
@@ -89,7 +90,7 @@ const rawConsumerCvPricingFacts: ConsumerCvPricingFact[] = [
     id: "cv_nl",
     providerName: "CV.nl",
     officialUrl: "https://www.cv.nl/pricing",
-    checkedAt: verifiedAt,
+    checkedAt: subscriptionPricesVerifiedAt,
     status: "verified",
     model: "trial_subscription",
     initialPriceTextNl: "14 dagen voor €0,99",
@@ -103,13 +104,13 @@ const rawConsumerCvPricingFacts: ConsumerCvPricingFact[] = [
   {
     id: "cvmaker",
     providerName: "CVMaker",
-    officialUrl: "https://www.cvmaker.nl/help/wat-kost-cvmaker-nl",
-    checkedAt: verifiedAt,
+    officialUrl: "https://www.cvmaker.nl/prijzen",
+    checkedAt: subscriptionPricesVerifiedAt,
     status: "verified",
     model: "trial_subscription",
-    initialPriceTextNl: "14 dagen voor €2,99",
+    initialPriceTextNl: "14 dagen voor €2,95",
     recurringPriceTextNl: "Daarna €21,99 per maand",
-    renewalTextNl: "De officiële helppagina vermeldt automatische maandelijkse verlenging na de proefperiode.",
+    renewalTextNl: "De officiële prijzenpagina vermeldt automatische verlenging na de proefperiode; per kwartaal kost het €44,97.",
     cancellationRequired: true,
     factualNoteNl:
       "Maken en live bekijken kan gratis; downloaden en alle platformfuncties vereisen de Pro-route.",
@@ -119,17 +120,33 @@ const rawConsumerCvPricingFacts: ConsumerCvPricingFact[] = [
     id: "cvster",
     providerName: "CVster",
     officialUrl: "https://cvster.nl/pricing",
-    checkedAt: verifiedAt,
+    checkedAt: subscriptionPricesVerifiedAt,
     status: "verified",
     model: "mixed",
     initialPriceTextNl: "Gratis beperkt of 7 dagen premium voor €2,95",
     recurringPriceTextNl: "Daarna €14,95 per 4 weken",
     renewalTextNl:
-      "De premiumproef wordt automatisch per 4 weken verlengd als je niet annuleert; de pagina toont ook vaste-termijnopties.",
+      "De premiumproef wordt automatisch per 4 weken verlengd als je niet annuleert; een pas van 6 maanden voor €44,95 hoef je niet op te zeggen.",
     cancellationRequired: true,
     factualNoteNl:
-      "De gratis route heeft beperkte exports; premium biedt onbeperkte PDF-downloads en meerdere looptijden.",
+      "De gratis route is beperkt tot één CV en brief met TXT-download; premium biedt onbeperkte PDF-downloads.",
     bestForNl: "Wie bewust meerdere premium documenten en langere toegang nodig heeft.",
+  },
+  {
+    id: "maakeencv",
+    providerName: "maakeencv.nl",
+    officialUrl: "https://www.maakeencv.nl/prijzen",
+    checkedAt: subscriptionPricesVerifiedAt,
+    status: "verified",
+    model: "mixed",
+    initialPriceTextNl: "Gratis met 1 PDF per maand; extra PDF €4,95",
+    recurringPriceTextNl: "Pro €9,95 per maand of pas van 3 maanden voor €19,95",
+    renewalTextNl:
+      "Pro loopt maandelijks door tot je opzegt; de pas van 3 maanden is een eenmalige betaling die vanzelf afloopt.",
+    cancellationRequired: null,
+    factualNoteNl:
+      "Het gratis plan geeft één PDF-download per maand; extra downloads kosten los €4,95 zonder abonnement.",
+    bestForNl: "Wie maandelijks hooguit één PDF nodig heeft of een tracker en AI-functies in één platform wil.",
   },
 ];
 

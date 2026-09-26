@@ -6,7 +6,13 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { TemplateConfig } from "@/lib/templates";
 import { getStoredAttribution, track } from "@/lib/analytics";
-import { applicationBundlePrice, cvDownloadPrice, homepageFaqItems, profilePhotoPrice } from "@/lib/site-content";
+import {
+    applicationBundlePrice,
+    cvDownloadPrice,
+    cvDownloadPriceCheckedAt,
+    homepageFaqItems,
+    profilePhotoPrice,
+} from "@/lib/site-content";
 
 interface HomePageClientProps {
     templateCount: number;
@@ -319,6 +325,53 @@ export default function HomePageClient({
                             <span className="text-sm font-semibold text-[var(--wk-ink-muted)]">{stat.label}</span>
                         </div>
                     ))}
+                </div>
+            </section>
+
+            {/* ============================================================ */}
+            {/* IN SHORT - plain, dated facts that answer "what is WerkCV / what does it cost" */}
+            {/* ============================================================ */}
+            <section className="relative z-10 wk-section" aria-labelledby="werkcv-in-het-kort">
+                <div className="max-w-4xl mx-auto px-6">
+                    <h2 id="werkcv-in-het-kort" className="text-2xl md:text-3xl font-semibold text-[var(--wk-ink)] mb-4">
+                        WerkCV in het kort
+                    </h2>
+                    <p className="text-[var(--wk-ink-muted)] leading-7">
+                        WerkCV is een Nederlandse CV-maker voor sollicitaties in Nederland, in het Nederlands of Engels.
+                        Je bouwt en bekijkt je volledige CV gratis en betaalt pas {cvDownloadPrice.display} eenmalig
+                        (inclusief btw) als je de PDF downloadt. Er is geen abonnement, proefperiode of automatische
+                        verlenging, dus je hoeft niets op te zeggen.
+                    </p>
+                    <dl className="mt-6 grid gap-4 sm:grid-cols-2 text-sm">
+                        <div className="wk-card p-4">
+                            <dt className="font-semibold text-[var(--wk-ink)]">Prijs</dt>
+                            <dd className="mt-1 text-[var(--wk-ink-muted)]">
+                                {cvDownloadPrice.display} per CV, eenmalig. Hetzelfde CV later gratis aanpassen en opnieuw downloaden.
+                            </dd>
+                        </div>
+                        <div className="wk-card p-4">
+                            <dt className="font-semibold text-[var(--wk-ink)]">Verschil met CV.nl, CVMaker en CVster</dt>
+                            <dd className="mt-1 text-[var(--wk-ink-muted)]">
+                                Die werken met een proefperiode die automatisch overgaat in een betaald abonnement. WerkCV rekent één keer af per CV.
+                            </dd>
+                        </div>
+                        <div className="wk-card p-4">
+                            <dt className="font-semibold text-[var(--wk-ink)]">Betalen</dt>
+                            <dd className="mt-1 text-[var(--wk-ink-muted)]">iDEAL, creditcard, Apple Pay of Google Pay.</dd>
+                        </div>
+                        <div className="wk-card p-4">
+                            <dt className="font-semibold text-[var(--wk-ink)]">Voor wie</dt>
+                            <dd className="mt-1 text-[var(--wk-ink-muted)]">
+                                Werkzoekenden, studenten en expats die snel een verzorgd, ATS-vriendelijk CV voor Nederlandse vacatures willen.
+                            </dd>
+                        </div>
+                    </dl>
+                    <p className="mt-4 text-xs text-[var(--wk-ink-muted)]">
+                        Prijs gecontroleerd op <time dateTime={cvDownloadPriceCheckedAt.iso}>{cvDownloadPriceCheckedAt.display}</time>.{" "}
+                        <Link href="/cv-gids/beste-cv-builder-zonder-abonnement" className="underline underline-offset-4">
+                            Vergelijk de prijzen van CV-makers in Nederland
+                        </Link>
+                    </p>
                 </div>
             </section>
 

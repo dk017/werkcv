@@ -9,6 +9,14 @@ export const cvDownloadPrice = {
   currency: "EUR",
 };
 
+// Date the CV download price was last confirmed on the live /prijzen page. Shown next to
+// price statements so search engines and AI assistants can tell current facts from old copies.
+export const cvDownloadPriceCheckedAt = {
+  iso: "2026-09-26",
+  display: "26 september 2026",
+  displayEn: "26 September 2026",
+};
+
 export const profilePhotoPrice = {
   display: "€9,99",
   value: "9.99",

@@ -36,6 +36,43 @@ test("Dutch checkout preserves EUR, iDEAL and Dutch checkout language", async ()
   assert.ok((body.allowed_payment_method_types as string[]).includes("ideal"));
 });
 
+test("English CV bought from the Netherlands gets EUR, NL billing and iDEAL", async () => {
+  const { buildDodoCheckoutBody } = await dodoModule;
+  const body = buildDodoCheckoutBody("cv-789", undefined, "en", "nl");
+  const customization = body.customization as Record<string, unknown>;
+  const featureFlags = body.feature_flags as Record<string, unknown>;
+
+  assert.equal(customization.force_language, "en");
+  assert.equal(body.return_url, "https://werkcv.nl/success?lang=en&cvId=cv-789");
+  assert.equal(featureFlags.allow_currency_selection, false);
+  assert.equal(body.billing_currency, "EUR");
+  assert.deepEqual(body.billing_address, { country: "NL", zipcode: "1012JS" });
+  assert.ok((body.allowed_payment_method_types as string[]).includes("ideal"));
+  assert.ok(!(body.allowed_payment_method_types as string[]).includes("upi_collect"));
+});
+
+test("Dutch CV bought from outside the Netherlands is not forced to NL billing", async () => {
+  const { buildDodoCheckoutBody } = await dodoModule;
+  const body = buildDodoCheckoutBody("cv-790", undefined, "nl", "IN");
+  const customization = body.customization as Record<string, unknown>;
+  const featureFlags = body.feature_flags as Record<string, unknown>;
+
+  assert.equal(customization.force_language, "nl");
+  assert.equal(featureFlags.allow_currency_selection, true);
+  assert.equal(body.billing_address, undefined);
+  assert.equal(body.billing_currency, undefined);
+  assert.ok((body.allowed_payment_method_types as string[]).includes("upi_collect"));
+});
+
+test("Invalid visitor country falls back to the CV language", async () => {
+  const { buildDodoCheckoutBody } = await dodoModule;
+  const english = buildDodoCheckoutBody("cv-791", undefined, "en", "");
+  const dutch = buildDodoCheckoutBody("cv-792", undefined, "nl", "Netherlands");
+
+  assert.equal(english.billing_address, undefined);
+  assert.equal(dutch.billing_currency, "EUR");
+});
+
 test("English Agency checkout keeps EUR billing and returns to the shared account", async () => {
   const { buildAgencyDodoCheckoutBody } = await dodoModule;
   const body = buildAgencyDodoCheckoutBody("recruiter@example.com", "en");

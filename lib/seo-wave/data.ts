@@ -2,6 +2,7 @@ import { getPilotRoleGuidePages } from './programmatic-builders';
 import { extraDutchEditorialPages } from './extra-dutch-pages';
 import { SeoGuidePage } from './types';
 import { englishQuestionGuides } from './english-question-guides';
+import { buildConsumerPricingComparisonRows } from '@/lib/commercial/pricing-comparison-rows';
 
 type DutchSeed = {
     slug: string;
@@ -3917,7 +3918,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         {
                             label: 'Prijsmodel',
                             primary: 'Gratis starten, daarna eenmalig EUR4,99 per CV als je downloadt.',
-                            secondary: 'Gratis basisaccount; Pro kost EUR1,99 voor 14 dagen en daarna EUR21,99 per maand met automatische verlenging.',
+                            secondary: 'Gratis basisaccount; Pro kost EUR2,95 voor 14 dagen en daarna EUR21,99 per maand met automatische verlenging.',
                         },
                         {
                             label: 'Waar je voor betaalt',
@@ -4067,7 +4068,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
             },
             {
                 question: 'Is WerkCV goedkoper dan CVMaker?',
-                answer: 'Voor iemand die vooral een CV wil afronden wel meestal. WerkCV werkt met een eenmalige betaling per CV, terwijl CVMaker Pro volgens de officiële prijzenpagina werkt met EUR1,99 voor 14 dagen en daarna EUR21,99 per maand zolang het abonnement doorloopt.',
+                answer: 'Voor iemand die vooral een CV wil afronden wel meestal. WerkCV werkt met een eenmalige betaling per CV, terwijl CVMaker Pro volgens de officiële prijzenpagina werkt met EUR2,95 voor 14 dagen en daarna EUR21,99 per maand zolang het abonnement doorloopt.',
             },
             {
                 question: 'Kan ik bij WerkCV later opnieuw downloaden zonder opnieuw te betalen?',
@@ -4095,7 +4096,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
             {
                 label: 'CVMaker prijzen',
                 href: 'https://www.cvmaker.nl/prijzen',
-                note: 'Officiële prijzenpagina met EUR1,99 voor 14 dagen, daarna EUR21,99 per maand, plus 20+ CV- en 20+ motivatiebriefsjablonen. Gecontroleerd op 30 maart 2026.',
+                note: 'Officiële prijzenpagina met EUR2,95 voor 14 dagen, daarna EUR21,99 per maand of EUR44,97 per kwartaal. Prijzen gecontroleerd op 26 september 2026; sjabloonaantallen op 30 maart 2026.',
             },
             {
                 label: 'CVMaker over ons',
@@ -5370,18 +5371,16 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 title: 'Welke bekende CV-platformen vallen af als je echt “zonder abonnement” bedoelt?',
                 paragraphs: [
                     'Dit is het onderdeel waar veel zoekresultaten onduidelijk over zijn. Veel platforms laten je gratis starten, maar dat is iets anders dan een blijvende no-subscription route. Zodra je premium templates, PDF-export of extra sollicitatietools wilt gebruiken, verschuift het model vaak naar een proefperiode of maandabonnement.',
-                    'Voor iemand die nadrukkelijk zonder abonnement wil werken, zijn dat dus geen echte matches. Ze kunnen prima producten zijn, maar ze beantwoorden niet dezelfde koopvraag.',
+                    'Sommige platforms bieden inmiddels ook vaste passen die vanzelf aflopen, zoals CVster (6 maanden) en maakeencv.nl (3 maanden). Dat is geen abonnement, maar wel een hoger bedrag vooraf dan één CV-download. De tabel hieronder zet de officiële prijzen naast elkaar, met de datum waarop we ze hebben gecontroleerd.',
                 ],
-                bullets: [
-                    'CVMaker werkt volgens de officiële prijzenpagina met EUR1,99 voor 14 dagen en daarna EUR21,99 per maand.',
-                    'CV.nl werkt volgens de officiële pricingpagina met EUR0,99 voor 14 dagen en daarna EUR19,99 per maand.',
-                    'CVster werkt volgens de officiële pricingpagina met een 7-daagse proef voor EUR2,95 en daarna EUR14,95 per 4 weken, naast langere premiumopties.',
-                    'maakeencv.nl toont op de homepage een gratis plan, maar ook een Pro-plan van EUR12 per maand voor onbeperkte PDF-exports en extra AI-functies.',
-                ],
+                comparisonTable: {
+                    columns: ['CV-tool', 'Wat je betaalt', 'Verlenging en controle'],
+                    rows: buildConsumerPricingComparisonRows(),
+                },
                 exampleTitle: 'Praktische conclusie',
                 exampleItems: [
-                    'Zoek je expliciet zonder abonnement, dan vallen veel bekende CV-sites inhoudelijk al af.',
-                    'Zoek je een breder platform en vind je maandtoegang prima, dan zijn die spelers weer wel relevant.',
+                    'Zoek je expliciet zonder abonnement, dan vallen de proefroutes van CV.nl, CVMaker en CVster af, omdat die automatisch doorlopen tot je opzegt.',
+                    'Zoek je een breder platform en vind je maandtoegang of een vaste pas prima, dan zijn die spelers weer wel relevant.',
                     'De vraag is dus niet alleen: welke tool is goed? De vraag is: welk prijsmodel past bij jouw sollicitatiegedrag?',
                 ],
                 intentLinks: [
@@ -5576,12 +5575,12 @@ const dutchEditorialPages: SeoGuidePage[] = [
             {
                 label: 'CVMaker prijzen',
                 href: 'https://www.cvmaker.nl/prijzen',
-                note: 'Officiële prijzenpagina met EUR1,99 voor 14 dagen en daarna EUR21,99 per maand. Gecontroleerd op 30 maart 2026.',
+                note: 'Officiële prijzenpagina met EUR2,95 voor 14 dagen en daarna EUR21,99 per maand. Gecontroleerd op 26 september 2026.',
             },
             {
                 label: 'CV.nl pricing',
                 href: 'https://www.cv.nl/pricing',
-                note: 'Officiële prijzenpagina met EUR0,99 voor 14 dagen en daarna EUR19,99 per maand. Gecontroleerd op 30 maart 2026.',
+                note: 'Officiële prijzenpagina met EUR0,99 voor 14 dagen en daarna EUR19,99 per maand. Gecontroleerd op 26 september 2026.',
             },
             {
                 label: 'CVster pricing',
@@ -5596,7 +5595,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
             {
                 label: 'maakeencv.nl homepage',
                 href: 'https://www.maakeencv.nl/',
-                note: 'Homepage toont gratis plan en Pro-plan van EUR12 per maand. Gecontroleerd op 30 maart 2026.',
+                note: 'Prijzenpagina toont een gratis plan met 1 PDF per maand (extra PDF EUR4,95), Pro voor EUR9,95 per maand en een pas van 3 maanden voor EUR19,95. Gecontroleerd op 26 september 2026.',
             },
             {
                 label: 'Canva Pro / Canva Free',
@@ -6407,7 +6406,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         {
                             label: 'Prijsmodel',
                             primary: 'Gratis starten, daarna eenmalig EUR4,99 per CV als je downloadt.',
-                            secondary: 'Gratis plan met onbeperkt CV\'s bouwen, 1 gratis PDF per maand en extra PDF\'s voor EUR2 per download; Pro kost EUR12 per maand.',
+                            secondary: 'Gratis plan met 1 gratis PDF per maand en extra PDF\'s voor EUR4,95 per download; Pro kost EUR9,95 per maand, of eenmalig EUR19,95 voor 3 maanden.',
                         },
                         {
                             label: 'Wat je krijgt voordat je betaalt',
@@ -6542,14 +6541,14 @@ const dutchEditorialPages: SeoGuidePage[] = [
         checklist: [
             'Je weet nu of je liever per document betaalt of liever met een gratis plan en optioneel Pro werkt.',
             'Je begrijpt dat maakeencv.nl inhoudelijk meer sollicitatiefuncties biedt dan alleen CV-opmaak.',
-            'Je weet dat het gratis plan van maakeencv.nl 1 gratis PDF per maand bevat en extra PDF\'s voor EUR2 per download rekent.',
+            'Je weet dat het gratis plan van maakeencv.nl 1 gratis PDF per maand bevat en extra PDF\'s voor EUR4,95 per download rekent.',
             'Je weet hoe WerkCV werkt als je hetzelfde CV later opnieuw wilt bewerken en downloaden.',
             'Je hebt jouw keuze gekoppeld aan sollicitatie-intensiteit, niet alleen aan marketingclaims.',
         ],
         faq: [
             {
                 question: 'Is maakeencv.nl echt gratis?',
-                answer: 'Gedeeltelijk. Volgens de homepage kun je gratis onbeperkt CV\'s bouwen, alle templates gebruiken, een tracker gebruiken en 1 gratis PDF per maand downloaden. Voor extra PDF-downloads rekent het gratis plan EUR2 per download, en Pro kost EUR12 per maand.',
+                answer: 'Gedeeltelijk. Volgens de homepage kun je gratis onbeperkt CV\'s bouwen, alle templates gebruiken, een tracker gebruiken en 1 gratis PDF per maand downloaden. Voor extra PDF-downloads rekent het gratis plan EUR4,95 per download, en Pro kost EUR9,95 per maand (of eenmalig EUR19,95 voor een pas van 3 maanden).',
             },
             {
                 question: 'Is WerkCV goedkoper dan maakeencv.nl?',
@@ -6585,7 +6584,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
             {
                 label: 'maakeencv.nl homepage',
                 href: 'https://www.maakeencv.nl/',
-                note: 'Officiële homepage met gratis plan, Pro-plan van EUR12 per maand, 1 gratis PDF per maand, extra PDF\'s voor EUR2 per download, tracker en AI-positionering. Gecontroleerd op 30 maart 2026.',
+                note: 'Officiële prijzenpagina met gratis plan (1 PDF per maand, extra PDF EUR4,95), Pro voor EUR9,95 per maand en een pas van 3 maanden voor EUR19,95. Prijzen gecontroleerd op 26 september 2026.',
             },
             {
                 label: 'maakeencv.nl over ons',

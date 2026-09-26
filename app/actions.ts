@@ -13,6 +13,8 @@ import { createPersonalCvDocument } from '@/lib/workspace/cv-document-service'
 import { authorizeCvDocument, CvAuthorizationError } from '@/lib/workspace/cv-authorization'
 import { saveCvDocumentWithMeaningfulState, type MeaningfulSaveSource } from '@/lib/cv-meaningful-persistence'
 import { revalidatePath } from 'next/cache'
+import { headers } from 'next/headers'
+import { geolocateIp, getClientIp } from '@/lib/geoip'
 import { cvContentVersion } from '@/lib/cv-content-version'
 import {
     buildPersonalCvPreview,
@@ -545,7 +547,14 @@ export async function getCheckoutURL(
     try {
         let url: string;
         if (paymentProvider === 'dodo') {
-            const checkout = await buildDodoCheckoutURL(cvId, email || user.email, resumeLanguage);
+            // Lookup is cached per IP and times out after 1.2s; null falls back to the CV language.
+            const visitorGeo = await geolocateIp(getClientIp({ headers: await headers() }));
+            const checkout = await buildDodoCheckoutURL(
+                cvId,
+                email || user.email,
+                resumeLanguage,
+                visitorGeo?.countryCode
+            );
             url = checkout.checkoutUrl;
 
             if (checkout.sessionId) {

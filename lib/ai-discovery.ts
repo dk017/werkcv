@@ -6,7 +6,7 @@ import { AGENCY_MONTHLY_CREDIT_LIMIT, getAgencyMonthlyPriceDisplay } from "@/lib
 
 export const siteBaseUrl = "https://werkcv.nl";
 
-export const aiDiscoveryUpdatedAt = "2026-09-14";
+export const aiDiscoveryUpdatedAt = "2026-09-26";
 const agencyCapabilities = getAgencyPublicCapabilities();
 const agencyMessagingNl = getAgencyPublicMessaging({ locale: "nl", capabilities: agencyCapabilities });
 const agencyMessagingEn = getAgencyPublicMessaging({ locale: "en", capabilities: agencyCapabilities });
