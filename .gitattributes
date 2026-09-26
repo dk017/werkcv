@@ -1,0 +1,5 @@
+# Binary fixtures and documents: never convert line endings.
+*.pdf binary
+*.docx binary
+*.png binary
+*.jpg binary
