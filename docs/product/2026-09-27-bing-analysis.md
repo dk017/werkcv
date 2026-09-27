@@ -35,3 +35,14 @@ The site has an IndexNow key (`public/cc5e780d6ef64af9b8875d65b82fee66.txt`) and
 2. Run IndexNow for changed URLs as a step in the deploy workflow, so Bing (and engines using its index) pick up changes within days.
 3. In Bing Webmaster Tools: URL Inspection for `/prijzen`, `/templates`, `/cv-maken-zonder-abonnement`, `/cv-check`; if not indexed, request indexing.
 4. Export the page-level AI Performance report (which pages Copilot cites), to see whether commercial pages are cited or only informational ones.
+
+## 6. Which pages Bing's AI cites (page and grounding-query exports, 27 Jun–25 Sep)
+
+- Most-cited pages are informational: `/vaardigheden-cv-voorbeelden` 3.741, `/cv-tips/vragen-stellen-sollicitatiegesprek` 3.069, `/cv-voorbeelden` 3.044, `/vaardigheden/karaktereigenschappen-lijst` 2.911, `/profieltekst-cv-voorbeelden` 2.114, letter examples and layouts 1.300–1.700 each.
+- Commercial pages are barely cited: `/` 339, `/cv-maken` 82, `/gratis-cv-maken` 74, `/prijzen` 14, `/cv-maken-zonder-abonnement` 6. Citation share for "cv maken" is 0,25%.
+- Cancellation pages are cited well: `/livecareer-opzeggen` 735, `/cv-nl-opzeggen` 482, `/cvster-opzeggen` 115; citation share 22–34% for "livecareer opzeggen", "cv.nl opzeggen", "cvster opzeggen".
+- New AI-writing queries already appear: "ai sollicitatiebrief schrijven gratis" (49 citations), "ats proof cv" (24), "cv maken met ai" (12).
+
+**Citations do not turn into visits or sales.** Landings in 120 days (all sources) and orders ever: skills examples 64 / 0, interview questions 388 / 0, character traits 17 / 0, the five cancellation pages 133 / 0. Copilot sent 20 landings in 90 days. The AI-assistant orders (3 in 90 days) came via ChatGPT landing on commercial pages (home, templates, `/prijzen`), not via Bing's AI.
+
+**Conclusion:** Bing's AI citations are exposure, not a revenue channel today. Keep IndexNow running and get the commercial pages indexed; don't invest in more informational content for citations. The cancellation pages' 133 visits with 0 orders are too few to judge (at the site's ~0,9% rate that would be about 1 order); revisit when traffic grows.
