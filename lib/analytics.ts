@@ -72,6 +72,7 @@ export type CareerTransitionCtaEvent =
 export type LinkedinToCvEvent =
     | 'linkedin_to_cv_tool_view'
     | 'linkedin_to_cv_submit'
+    | 'linkedin_to_cv_text_pasted'
     | 'linkedin_to_cv_output_generated'
     | 'linkedin_to_cv_copy_section'
     | 'linkedin_to_cv_cta_editor_click'
@@ -682,6 +683,7 @@ export type AnalyticsEvent =
           };
       }
     | { event: 'linkedin_to_cv_tool_view'; properties: { page_path: string } }
+    | { event: 'linkedin_to_cv_text_pasted'; properties: { page_path: string; chars_bucket: 'under_500' | '500_2000' | 'over_2000' } }
     | {
           event: 'linkedin_to_cv_submit';
           properties: { page_path: string; target_role?: string; language: 'nl' | 'en' };
@@ -770,7 +772,11 @@ export type AnalyticsEvent =
       }
     | { event: 'cv_check_failed'; properties: { locale: 'nl' | 'en'; mode: 'general' | 'vacancy'; input_type: 'file' | 'text'; code: string } }
     | { event: 'cv_check_fix_clicked'; properties: { locale: 'nl' | 'en'; check_id: string; category: string } }
-    | { event: 'cv_check_rescan_clicked'; properties: { locale: 'nl' | 'en' } };
+    | { event: 'cv_check_rescan_clicked'; properties: { locale: 'nl' | 'en' } }
+    | {
+          event: 'letter_check_completed';
+          properties: { placeholder: boolean; markdown: boolean; chat: boolean; standard_opening: boolean; trait_count: number; words: number };
+      };
 
 // ============================================================
 // Core track function

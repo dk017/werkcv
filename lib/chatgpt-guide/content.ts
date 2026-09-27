@@ -24,8 +24,8 @@ export type ChatGptGuideContent = {
   sourceLabel: string;
   testTitle: string;
   testMethod: string;
-  testColumns: [string, string, string];
-  testRows: Array<{ finding: string; popular: string; ours: string }>;
+  testColumns: string[];
+  testRows: Array<{ finding: string; values: string[] }>;
   testNotes: Array<{ lead: string; text: string }>;
   testLimits: string;
   stepsTitle: string;
@@ -35,6 +35,8 @@ export type ChatGptGuideContent = {
   promptsIntro: string;
   prompts: Array<{ id: string; title: string; when: string; text: string }>;
   copyLabels: { idle: string; done: string };
+  /** Which check is embedded: the CV-check or the client-side letter check. */
+  checkKind: "cv" | "letter";
   checkTitle: string;
   checkIntro: string;
   checklistTitle: string;
@@ -122,11 +124,11 @@ export const CHATGPT_GUIDE_NL: ChatGptGuideContent = {
     "Op 27 september 2026 lieten we het huidige OpenAI-model (gpt-5.5, via de API, standaardinstellingen) cv's schrijven voor 8 fictieve sollicitanten, van magazijnmedewerker tot verpleegkundige. We gebruikten de drie prompts die populaire gidsen aanraden: 'schrijf een voorbeeld-cv voor een [functie]', 'maak een cv van deze gegevens' en 'pas mijn cv aan op deze vacature'. In elke vacature stonden twee eisen die de sollicitant niet had. Daarna deden we hetzelfde met de prompts van deze pagina.",
   testColumns: ["Wat we zagen", "Populaire prompts", "Prompts van deze pagina"],
   testRows: [
-    { finding: "Opmaaktekens zoals ** en ## die als sterretjes in je cv terechtkomen", popular: "24 van 24", ours: "0 van 16" },
-    { finding: "Advies of alternatieven midden in de cv-tekst (\"Als je wél ervaring hebt, voeg dan toe…\")", popular: "8 van 8 aangepaste cv's", ours: "0 van 8" },
-    { finding: "Invulvelden zoals [jouw telefoonnummer]", popular: "7 van 24", ours: "0 van 16" },
-    { finding: "Eigenschappen die niet in de notities stonden (stressbestendig, resultaatgericht)", popular: "5 van 8", ours: "0 van 8" },
-    { finding: "Een ontbrekende eis uit de vacature geclaimd als ervaring", popular: "0 van 8", ours: "0 van 8" },
+    { finding: "Opmaaktekens zoals ** en ## die als sterretjes in je cv terechtkomen", values: ["24 van 24", "0 van 16"] },
+    { finding: "Advies of alternatieven midden in de cv-tekst (\"Als je wél ervaring hebt, voeg dan toe…\")", values: ["8 van 8 aangepaste cv's", "0 van 8"] },
+    { finding: "Invulvelden zoals [jouw telefoonnummer]", values: ["7 van 24", "0 van 16"] },
+    { finding: "Eigenschappen die niet in de notities stonden (stressbestendig, resultaatgericht)", values: ["5 van 8", "0 van 8"] },
+    { finding: "Een ontbrekende eis uit de vacature geclaimd als ervaring", values: ["0 van 8", "0 van 8"] },
   ],
   testNotes: [
     {
@@ -204,6 +206,7 @@ export const CHATGPT_GUIDE_NL: ChatGptGuideContent = {
     },
   ],
   copyLabels: { idle: "Kopieer prompt", done: "Gekopieerd" },
+  checkKind: "cv",
   checkTitle: "Check wat ChatGPT schreef",
   checkIntro:
     "Plak de cv-tekst of upload je cv. De check vindt restanten zoals invulvelden, opmaaktekens en chatbottekst, en kijkt naar leesbaarheid voor sollicitatiesystemen, inhoud en Nederlandse regels zoals taalniveaus. Met een vacature zie je per eis of je cv die aantoont. Gratis, zonder account, en je cv wordt niet opgeslagen.",
@@ -260,7 +263,7 @@ export const CHATGPT_GUIDE_NL: ChatGptGuideContent = {
     { href: "/cv-check", label: "Gratis cv-check", body: "Check je cv op leesbaarheid, inhoud en Nederlandse regels." },
     { href: "/cv-check/vacature", label: "CV vergelijken met vacature", body: "Zie per eis of je cv die aantoont." },
     { href: "/cv-tips/cv-schrijven-met-ai", label: "Cv schrijven met AI", body: "Wat AI goed kan bij je cv, en waar je zelf moet opletten." },
-    { href: "/tools/profieltekst-generator", label: "Profieltekst generator", body: "Een korte profieltekst op basis van je eigen gegevens." },
+    { href: "/cv-gids/sollicitatiebrief-met-chatgpt", label: "Sollicitatiebrief met ChatGPT", body: "De geteste prompt voor je brief, en wat er misging in 24 brieven." },
   ],
 };
 
@@ -305,13 +308,13 @@ export const CHATGPT_GUIDE_EN: ChatGptGuideContent = {
     "On 27 September 2026 we had OpenAI's current model (gpt-5.5, via the API, default settings) write English CVs for 8 fictional international job seekers in the Netherlands, from a warehouse operative to a nurse whose BIG registration is still in progress. We used the three prompts popular guides recommend: 'write a CV for a [job] in the Netherlands', 'create a CV from these details' and 'tailor my CV to this job'. Every job ad asked for two things the person didn't have, plus good Dutch. We then did the same with the prompts on this page.",
   testColumns: ["What we saw", "Popular prompts", "Prompts on this page"],
   testRows: [
-    { finding: "Formatting symbols such as ** and ## that end up as asterisks in your CV", popular: "24 of 24", ours: "0 of 16" },
-    { finding: "Placeholders such as [phone number]", popular: "17 of 24 (8 of 8 for 'write a CV for a [job]')", ours: "0 of 16" },
-    { finding: "Advice or alternatives inside the CV text (\"If you have…, add this\")", popular: "8 of 8 tailored CVs", ours: "0 of 8" },
-    { finding: "Personality traits that weren't in the notes (reliable, detail-oriented)", popular: "6 of 8", ours: "0 of 8" },
-    { finding: "Date of birth, nationality or marital status added", popular: "3 of 8 for 'write a CV for a [job]'", ours: "0 of 16" },
-    { finding: "Tailored CV switched to Dutch without being asked", popular: "2 of 8", ours: "0 of 8" },
-    { finding: "A missing requirement claimed as experience", popular: "0 of 8", ours: "0 of 8" },
+    { finding: "Formatting symbols such as ** and ## that end up as asterisks in your CV", values: ["24 of 24", "0 of 16"] },
+    { finding: "Placeholders such as [phone number]", values: ["17 of 24 (8 of 8 for 'write a CV for a [job]')", "0 of 16"] },
+    { finding: "Advice or alternatives inside the CV text (\"If you have…, add this\")", values: ["8 of 8 tailored CVs", "0 of 8"] },
+    { finding: "Personality traits that weren't in the notes (reliable, detail-oriented)", values: ["6 of 8", "0 of 8"] },
+    { finding: "Date of birth, nationality or marital status added", values: ["3 of 8 for 'write a CV for a [job]'", "0 of 16"] },
+    { finding: "Tailored CV switched to Dutch without being asked", values: ["2 of 8", "0 of 8"] },
+    { finding: "A missing requirement claimed as experience", values: ["0 of 8", "0 of 8"] },
   ],
   testNotes: [
     {
@@ -389,6 +392,7 @@ export const CHATGPT_GUIDE_EN: ChatGptGuideContent = {
     },
   ],
   copyLabels: { idle: "Copy prompt", done: "Copied" },
+  checkKind: "cv",
   checkTitle: "Check what ChatGPT wrote",
   checkIntro:
     "Paste the CV text or upload your CV. The check finds leftovers such as placeholders, formatting symbols and chatbot text, and looks at readability for application systems, content and Dutch conventions such as language levels. With a job ad you see, per requirement, whether your CV shows it. Free, no account, and your CV is not stored.",

@@ -21,6 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             ["/cv-maken-met-ai", 0.9],
             ["/en/ai-cv-builder", 0.9],
             ["/cv-gids/cv-maken-met-chatgpt", 0.82],
+            ["/cv-gids/sollicitatiebrief-met-chatgpt", 0.8],
             ["/en/guides/create-cv-with-chatgpt", 0.82],
             ["/en/profile-summary-generator", 0.78],
         ].map(([path, priority]) => ({ url: `${baseUrl}${path}`, lastModified: new Date(), changeFrequency: "weekly" as const, priority: priority as number })),

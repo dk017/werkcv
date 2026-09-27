@@ -1,6 +1,7 @@
 import Link from "next/link";
 import CvCheckTool from "@/components/cv-check/CvCheckTool";
 import CopyPromptButton from "@/components/seo/CopyPromptButton";
+import LetterLeftoverCheck from "@/components/seo/LetterLeftoverCheck";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
@@ -106,8 +107,11 @@ export default function ChatGptCvGuide({ content }: { content: ChatGptGuideConte
                 {content.testRows.map((row) => (
                   <tr key={row.finding} className="border-b border-[var(--wk-border)] align-top">
                     <td className="py-2 pr-4">{row.finding}</td>
-                    <td className="py-2 pr-4 font-semibold">{row.popular}</td>
-                    <td className="py-2 font-semibold">{row.ours}</td>
+                    {row.values.map((value, index) => (
+                      <td key={index} className="py-2 pr-4 font-semibold">
+                        {value}
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>
@@ -173,13 +177,17 @@ export default function ChatGptCvGuide({ content }: { content: ChatGptGuideConte
           <h2 className="text-2xl font-semibold text-[var(--wk-ink)]">{content.checkTitle}</h2>
           <p className="mt-3 leading-7 text-[var(--wk-ink-muted)]">{content.checkIntro}</p>
           <div className="mt-6">
-            <CvCheckTool
-              locale={locale}
-              initialInputMode="text"
-              entry="chatgpt_guide"
-              methodologyHref={content.methodologyHref}
-              editorHref={content.editorHref}
-            />
+            {content.checkKind === "letter" ? (
+              <LetterLeftoverCheck />
+            ) : (
+              <CvCheckTool
+                locale={locale}
+                initialInputMode="text"
+                entry="chatgpt_guide"
+                methodologyHref={content.methodologyHref}
+                editorHref={content.editorHref}
+              />
+            )}
           </div>
         </div>
       </section>
@@ -200,7 +208,7 @@ export default function ChatGptCvGuide({ content }: { content: ChatGptGuideConte
           <div className="mt-8 flex flex-wrap gap-3">
             <TrackedLandingLink
               href={content.editorHref}
-              trackingLocation={`chatgpt_guide_${locale}:checklist`}
+              trackingLocation={`chatgpt_guide:${content.path}:checklist`}
               trackingLabel="open_editor"
               className="wk-button wk-button-primary"
             >

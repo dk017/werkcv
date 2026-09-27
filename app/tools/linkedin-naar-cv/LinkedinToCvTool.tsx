@@ -174,6 +174,14 @@ export default function LinkedinToCvTool() {
             <textarea
               value={profileText}
               onChange={(event) => setProfileText(event.target.value)}
+              onPaste={(event) => {
+                // Measures where visitors drop off: before or after pasting their profile (counts only, no text).
+                const chars = event.clipboardData.getData("text").length;
+                track("linkedin_to_cv_text_pasted", {
+                  page_path: "/tools/linkedin-naar-cv",
+                  chars_bucket: chars < 500 ? "under_500" : chars <= 2000 ? "500_2000" : "over_2000",
+                });
+              }}
               placeholder="Plak hier de tekst van je LinkedIn-profiel, bijvoorbeeld je headline, info-sectie, werkervaring, opleiding en vaardigheden."
               className="min-h-[240px] w-full rounded-2xl border-2 border-black p-4 text-sm text-slate-800 outline-none"
             />

@@ -352,6 +352,11 @@ export const primaryAiPages = [
     url: `${siteBaseUrl}/contact`,
     description: "Contact page.",
   },
+  {
+    title: "Sollicitatiebrief met ChatGPT: geteste prompt en valkuilen",
+    url: `${siteBaseUrl}/cv-gids/sollicitatiebrief-met-chatgpt`,
+    description: "Dutch guide based on a test of 24 cover letters written by gpt-5.5 (27 Sep 2026): the same opening sentence in 16/16 letters from popular prompts, placeholders in 13/16, traits nobody gave in 15/16, no invented requirements; the tested prompt removed all of these (0/8). Includes employer attitudes (Tilburg University 2024: 18% say an AI-looking letter lowers the chance of an interview) and a browser-only letter check.",
+  },
 ];
 
 const englishAiFaqItems = [

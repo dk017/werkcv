@@ -160,6 +160,11 @@ export const sollicitatiebriefTips: BlogArticle = {
                     label: "Maak een vacaturegerichte eerste versie",
                     description: "De generator scheidt vacaturetekst, eigen bewijs en motivatie en geeft daarna een controlelijst.",
                 },
+                {
+                    href: "/cv-gids/sollicitatiebrief-met-chatgpt",
+                    label: "Schrijf je brief met ChatGPT? Gebruik de geteste prompt",
+                    description: "Wij lieten ChatGPT 24 brieven schrijven: zo voorkom je invulvelden, een standaardopening en verzonnen eigenschappen.",
+                },
             ],
         },
         {

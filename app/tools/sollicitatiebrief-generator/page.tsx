@@ -180,6 +180,13 @@ export default function SollicitatiebriefGeneratorPage() {
                 </section>
 
                 <section className="mt-8 rounded-xl border border-slate-200 bg-slate-50 p-5">
+                    <p className="mb-4 text-sm leading-relaxed text-slate-700">
+                        Schrijf je liever met ChatGPT? Lees{" "}
+                        <Link href="/cv-gids/sollicitatiebrief-met-chatgpt" className="font-bold text-teal-800 underline decoration-2 underline-offset-2">
+                            wat er misging toen ChatGPT 24 brieven schreef
+                        </Link>
+                        , met een geteste prompt en een gratis check van je brief.
+                    </p>
                     <h2 className="text-base font-black text-slate-900">Bronnen voor de schrijfrichtlijnen</h2>
                     <p className="mt-2 text-sm leading-relaxed text-slate-600">
                         De generator en controlelijst volgen advies van Nederlandse loopbaan- en taalbronnen. AI blijft een hulpmiddel: UWV adviseert om zelf de regie te houden en gegenereerde informatie te controleren.

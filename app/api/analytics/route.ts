@@ -73,6 +73,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'resume_screener_editor_imported',
     'linkedin_to_cv_tool_view',
     'linkedin_to_cv_submit',
+    'linkedin_to_cv_text_pasted',
     'linkedin_to_cv_output_generated',
     'linkedin_to_cv_copy_section',
     'linkedin_to_cv_cta_editor_click',
@@ -216,6 +217,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'cv_check_failed',
     'cv_check_fix_clicked',
     'cv_check_rescan_clicked',
+    'letter_check_completed',
 ]);
 
 type PrismaWithOptionalAnalytics = typeof prisma & {

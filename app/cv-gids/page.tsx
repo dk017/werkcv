@@ -41,6 +41,7 @@ const guideGroups = [
       { href: "/makkelijk-cv-maken", label: "Makkelijk CV maken" },
       { href: "/snel-cv-maken", label: "Snel CV maken" },
       { href: "/cv-gids/cv-maken-met-chatgpt", label: "CV maken met ChatGPT" },
+      { href: "/cv-gids/sollicitatiebrief-met-chatgpt", label: "Sollicitatiebrief met ChatGPT" },
     ],
   },
   {

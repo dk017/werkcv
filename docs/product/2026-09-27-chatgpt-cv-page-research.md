@@ -58,3 +58,18 @@ Same method, 8 expat personas (e.g. a nurse with BIG registration in progress, D
 | Missing requirement claimed | 0/8 (2 borderline "familiar with") | 0/8 |
 
 Detector: English framing patterns added ("Below is…", "I've kept…", "If you have…, add"); raw English outputs flagged 24/24; clean Dutch + English CVs flagged 0/87.
+
+## 7. Cover-letter test (for /cv-gids/sollicitatiebrief-met-chatgpt)
+Same 8 fictional applicants, each with a fictional vacancy (company, city, size, two requirements the applicant lacks). gpt-5.5, 27 Sep 2026. Prompts: (1) "Schrijf een motivatiebrief voor de functie [functie] bij [bedrijf]." (no details), (2) "Schrijf een sollicitatiebrief op basis van mijn cv en deze vacature", (3) WerkCV rules (facts only from CV and vacancy, no company claims beyond the vacancy, missing requirements only as questions, max 250 words, no standard opening, plain text, no placeholders, questions after ---EINDE BRIEF---). Raw: `data/2026-09-27-chatgpt-letter-test-outputs.json`.
+
+| Finding | No details | CV + vacancy | WerkCV rules |
+|---|---|---|---|
+| Placeholders ([datum], [naam], …) | 8/8 | 5/8 | 0/8 |
+| Formatting symbols | 7/8 | 2/8 | 0/8 |
+| Traits not given (gedreven, leergierig, stressbestendig, …) | 8/8 | 7/8 | 0/8 |
+| Standard opening ("Met veel interesse/belangstelling…", "Graag solliciteer ik…") | 8/8 | 8/8 | 0/8 |
+| Claims about the organisation not in the vacancy | n/a | 2/8 ("klantgerichtheid staat centraal", "groeiend bedrijf") | 0/8 |
+| Missing requirement claimed | n/a | 0/8 (named honestly as "nog geen ervaring") | 0/8 (only as questions) |
+| Average words | 246 | 293 | 151 |
+
+Trade-off: the rule-based letters are factual but plain; they restate vacancy facts. Readers should add one concrete example of their own (the questions after the letter ask for it).
