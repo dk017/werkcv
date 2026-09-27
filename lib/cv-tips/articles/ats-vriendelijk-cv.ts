@@ -5,7 +5,7 @@ export const atsVriendelijkCv: BlogArticle = {
     title: 'ATS-vriendelijke CV maken: opmaak, keywords en PDF (2026)',
     description: 'Wil je een ATS-vriendelijke cv maken? Leer hoe je opmaak, secties, keywords en PDF-keuzes goed zet, zodat recruiters en sollicitatiesoftware je cv beter lezen.',
     publishedAt: '2025-06-10',
-    updatedAt: '2026-07-05',
+    updatedAt: '2026-09-27',
 
     metaTitle: 'ATS-vriendelijke CV maken in 2026 | WerkCV.nl',
     metaDesc: 'Wil je een ATS-vriendelijke cv maken? Leer welke opmaak, secties, keywords en PDF-keuzes werken voor Nederlandse ATS-systemen en recruiters.',
@@ -24,6 +24,7 @@ export const atsVriendelijkCv: BlogArticle = {
         'Volg altijd het bestandsformaat dat in de vacature of het sollicitatieformulier wordt gevraagd.',
         'Test de PDF door alle tekst te kopiëren: ontbrekende of verkeerd geordende tekst wijst op een parsingrisico.',
         'Een ATS-vriendelijk CV vergroot de technische leesbaarheid, maar garandeert geen score, selectie of gesprek.',
+        'Van 90 Nederlandse werkgevers gebruikten er 8 Workday en 5 SAP SuccessFactors; geen enkel systeem is dominant, dus stem je cv af op leesbaarheid, niet op één merk.',
     ],
 
     sections: [
@@ -46,6 +47,30 @@ export const atsVriendelijkCv: BlogArticle = {
                     href: '/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures',
                     label: 'Vergelijk ATS-vriendelijke CV builders',
                     description: 'Gebruik deze keuzehulp als je nog twijfelt tussen tools en builders in plaats van alleen de CV-regels.',
+                },
+            ],
+        },
+        {
+            id: 'ats-nederlandse-werkgevers',
+            title: 'Welke sollicitatiesystemen gebruiken Nederlandse werkgevers?',
+            answerCapsule: 'Van 90 Nederlandse werkgevers gebruikten er 8 Workday en 5 SAP SuccessFactors; bij 38 solliciteer je via een eigen formulier.',
+            content: [
+                "Op 27 september 2026 bekeek WerkCV de vacaturepagina's en sollicitatieknoppen van 90 grote Nederlandse werkgevers, uit onder meer de zorg, overheid, retail, financiële dienstverlening, onderwijs en techniek. Bij 37 was te zien welk sollicitatiesysteem erachter zit. Bij 38 solliciteer je via een eigen formulier op de werkenbij-site en is het systeem niet zichtbaar. Bij 15 konden we het niet vaststellen.",
+                'Geen enkel systeem is dominant. Workday (8 werkgevers) en SAP SuccessFactors (5) komen het vaakst voor, vooral bij grote internationale bedrijven. Daarna volgen systemen die we elk bij twee werkgevers zagen, en Nederlandse systemen zoals Ubeeo, Hireserve en Tangram.',
+                'Wat betekent dat voor je cv? Je hoeft je cv niet af te stemmen op één merk systeem; welk systeem een werkgever gebruikt, zie je meestal niet eens. Zorg dat je cv overal goed te lezen is: één kolom, gewone tekst, herkenbare kopjes en je contactgegevens bovenaan. Controleer na het uploaden de velden die het formulier automatisch invult.',
+            ],
+            bullets: [
+                'Workday: ING, Nationale-Nederlanden, Unilever, Wolters Kluwer, Just Eat Takeaway, ASML, Shell en Philips.',
+                'SAP SuccessFactors: Lidl, Heineken, TU Delft, KLM en MediaMarkt.',
+                'Twee werkgevers per systeem: Greenhouse (Adyen, bol), Recruitee (LUMC, Maastricht UMC+), Visma EasyCruit (Zuyderland, Isala), Jobylon (HEMA, Radboudumc), Ubeeo (Universiteit Utrecht, Fontys), Cegid Talentsoft (UMC Utrecht, Jumbo), Bullhorn (Nedap, Gemeente Den Haag) en Cornerstone (Hogeschool Utrecht, Royal HaskoningDHV).',
+                'Eigen formulier, systeem niet zichtbaar: onder meer ABN AMRO, Rabobank, KPN, Randstad, Erasmus MC, Gemeente Amsterdam en Werken voor Nederland (Rijksoverheid).',
+                'Geen cv bij de eerste stap: bij Action en Zeeman vul je eerst alleen je gegevens en een paar vragen in.',
+            ],
+            intentLinks: [
+                {
+                    href: '/cv-check',
+                    label: 'Check wat een systeem uit jouw cv leest',
+                    description: 'Gratis, zonder account: je ziet welke naam, contactgegevens, functies en kopjes een systeem herkent.',
                 },
             ],
         },
@@ -222,6 +247,10 @@ export const atsVriendelijkCv: BlogArticle = {
     ],
 
     faq: [
+        {
+            question: 'Welk ATS gebruiken Nederlandse werkgevers?',
+            answer: 'Dat verschilt sterk. In een steekproef van 90 grote Nederlandse werkgevers (WerkCV, september 2026) was het systeem bij 37 zichtbaar: Workday bij 8, SAP SuccessFactors bij 5 en daarna onder meer Greenhouse, Recruitee, Visma EasyCruit, Jobylon, Ubeeo en Cegid Talentsoft bij elk 2. Bij 38 werkgevers solliciteer je via een eigen formulier en zie je het systeem niet.',
+        },
         {
             question: 'Wat is een ATS-vriendelijk cv?',
             answer: 'Een ATS-vriendelijk CV gebruikt een voorspelbare leesvolgorde, herkenbare sectiekoppen en selecteerbare tekst. Belangrijke gegevens staan niet uitsluitend in afbeeldingen, grafische balkjes, kopteksten of tekstvakken. Dat verkleint parsingrisico, maar garandeert geen selectie.',

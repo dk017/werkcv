@@ -1,426 +1,726 @@
 {
- "ING": [
-  "finance",
-  [
-   "Radancy / TMP",
-   "Workday"
-  ]
- ],
- "ABN AMRO": [
-  "finance",
-  []
- ],
- "Rabobank": [
-  "finance",
-  []
- ],
- "Achmea": [
-  "finance",
-  []
- ],
- "Nationale-Nederlanden": [
-  "finance",
-  [
-   "Workday"
-  ]
- ],
- "a.s.r.": [
-  "finance",
-  []
- ],
- "de Volksbank": [
-  "finance",
-  []
- ],
- "Aegon": [
-  "finance",
-  []
- ],
- "KPN": [
-  "telecom",
-  []
- ],
- "VodafoneZiggo": [
-  "telecom",
-  []
- ],
- "NS": [
-  "transport",
-  []
- ],
- "ProRail": [
-  "transport",
-  []
- ],
- "PostNL": [
-  "logistics",
-  []
- ],
- "KLM": [
-  "transport",
-  []
- ],
- "Schiphol": [
-  "transport",
-  []
- ],
- "DHL": [
-  "logistics",
-  [
-   "Phenom"
-  ]
- ],
- "Albert Heijn": [
-  "retail",
-  []
- ],
- "Jumbo": [
-  "retail",
-  []
- ],
- "Lidl": [
-  "retail",
-  [
-   "SAP SuccessFactors"
-  ]
- ],
- "Action": [
-  "retail",
-  []
- ],
- "HEMA": [
-  "retail",
-  [
-   "Jobylon"
-  ]
- ],
- "Kruidvat": [
-  "retail",
-  []
- ],
- "Zeeman": [
-  "retail",
-  []
- ],
- "MediaMarkt": [
-  "retail",
-  []
- ],
- "Dirk": [
-  "retail",
-  [
-   "Phenom"
-  ]
- ],
- "PLUS": [
-  "retail",
-  []
- ],
- "Coolblue": [
-  "ecommerce",
-  []
- ],
- "bol": [
-  "ecommerce",
-  [
-   "Greenhouse"
-  ]
- ],
- "Picnic": [
-  "ecommerce",
-  []
- ],
- "Booking.com": [
-  "tech",
-  [
-   "iCIMS"
-  ]
- ],
- "Adyen": [
-  "tech",
-  [
-   "Greenhouse"
-  ]
- ],
- "Mollie": [
-  "tech",
-  [
-   "Ashby"
-  ]
- ],
- "Exact": [
-  "tech",
-  []
- ],
- "TomTom": [
-  "tech",
-  []
- ],
- "Just Eat Takeaway": [
-  "tech",
-  [
-   "Phenom",
-   "Workday"
-  ]
- ],
- "Philips": [
-  "industry",
-  [
-   "Phenom"
-  ]
- ],
- "ASML": [
-  "industry",
-  []
- ],
- "Heineken": [
-  "industry",
-  [
-   "SAP SuccessFactors"
-  ]
- ],
- "Shell": [
-  "industry",
-  []
- ],
- "Tata Steel": [
-  "industry",
-  []
- ],
- "Unilever": [
-  "industry",
-  [
-   "Radancy / TMP",
-   "Workday"
-  ]
- ],
- "Randstad": [
-  "staffing",
-  []
- ],
- "Eneco": [
-  "energy",
-  []
- ],
- "Vattenfall": [
-  "energy",
-  []
- ],
- "Essent": [
-  "energy",
-  []
- ],
- "ANWB": [
-  "services",
-  [
-   "Carerix"
-  ]
- ],
- "BAM": [
-  "construction",
-  [
-   "Phenom"
-  ]
- ],
- "Heijmans": [
-  "construction",
-  [
-   "Otys"
-  ]
- ],
- "Arcadis": [
-  "construction",
-  [
-   "Eightfold"
-  ]
- ],
- "Royal HaskoningDHV": [
-  "construction",
-  []
- ],
- "Van Oord": [
-  "construction",
-  []
- ],
- "Rijksoverheid": [
-  "government",
-  []
- ],
- "Belastingdienst": [
-  "government",
-  []
- ],
- "UWV": [
-  "government",
-  []
- ],
- "Politie": [
-  "government",
-  []
- ],
- "Defensie": [
-  "government",
-  []
- ],
- "Gemeente Amsterdam": [
-  "government",
-  []
- ],
- "Gemeente Rotterdam": [
-  "government",
-  [
-   "Radancy / TMP"
-  ]
- ],
- "Gemeente Den Haag": [
-  "government",
-  []
- ],
- "Gemeente Utrecht": [
-  "government",
-  []
- ],
- "Gemeente Eindhoven": [
-  "government",
-  []
- ],
- "Erasmus MC": [
-  "healthcare",
-  []
- ],
- "UMC Utrecht": [
-  "healthcare",
-  [
-   "Cegid / Talentsoft"
-  ]
- ],
- "Amsterdam UMC": [
-  "healthcare",
-  [
-   "Visma|Raet / Youforce / EasyCruit"
-  ]
- ],
- "Radboudumc": [
-  "healthcare",
-  [
-   "Jobylon"
-  ]
- ],
- "LUMC": [
-  "healthcare",
-  [
-   "Recruitee"
-  ]
- ],
- "UMCG": [
-  "healthcare",
-  []
- ],
- "Maastricht UMC+": [
-  "healthcare",
-  [
-   "Recruitee"
-  ]
- ],
- "Buurtzorg": [
-  "healthcare",
-  []
- ],
- "Philadelphia": [
-  "healthcare",
-  []
- ],
- "Sanquin": [
-  "healthcare",
-  []
- ],
- "Zuyderland": [
-  "healthcare",
-  [
-   "Visma|Raet / Youforce / EasyCruit"
-  ]
- ],
- "Isala": [
-  "healthcare",
-  []
- ],
- "TU Delft": [
-  "education",
-  [
-   "SAP SuccessFactors"
-  ]
- ],
- "Universiteit van Amsterdam": [
-  "education",
-  []
- ],
- "Universiteit Utrecht": [
-  "education",
-  [
-   "Talentlyft/other"
-  ]
- ],
- "Hogeschool Utrecht": [
-  "education",
-  [
-   "Cornerstone",
-   "Visma|Raet / Youforce / EasyCruit"
-  ]
- ],
- "Fontys": [
-  "education",
-  []
- ],
- "Partou": [
-  "childcare",
-  []
- ],
- "McDonald's": [
-  "hospitality",
-  []
- ],
- "IKEA": [
-  "retail",
-  []
- ],
- "Wolters Kluwer": [
-  "tech",
-  [
-   "Workday"
-  ]
- ],
- "Ahold Delhaize": [
-  "retail",
-  []
- ],
- "Gamma Karwei": [
-  "retail",
-  []
- ],
- "Rituals": [
-  "retail",
-  []
- ],
- "Thuiszorg Vivium": [
-  "healthcare",
-  []
- ],
- "Rijkswaterstaat": [
-  "government",
-  []
- ],
- "Nedap": [
-  "tech",
-  [
-   "Bullhorn/Connexys"
-  ]
- ],
- "Enexis": [
-  "energy",
-  []
- ],
- "Alliander": [
-  "energy",
-  []
+ "checked": "2026-09-27",
+ "method": "careers page -> vacancy page -> apply link; curl crawl plus in-app browser; dotless signatures verified in context",
+ "rows": [
+  {
+   "employer": "ABN AMRO",
+   "sector": "finance",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "ANWB",
+   "sector": "services",
+   "category": "visible_system",
+   "system": "Carerix",
+   "evidence": "reply address @anwb.mail.carerix.net",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "ASML",
+   "sector": "industry",
+   "category": "visible_system",
+   "system": "Workday",
+   "evidence": "apply link asml.wd3.myworkdayjobs.com",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Achmea",
+   "sector": "finance",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Action",
+   "sector": "retail",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": true
+  },
+  {
+   "employer": "Adyen",
+   "sector": "tech",
+   "category": "visible_system",
+   "system": "Greenhouse",
+   "evidence": "Greenhouse job board API, 60 NL jobs",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Aegon",
+   "sector": "finance",
+   "category": "not_determined",
+   "system": "-",
+   "evidence": "not checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Ahold Delhaize",
+   "sector": "retail",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Albert Heijn",
+   "sector": "retail",
+   "category": "not_determined",
+   "system": "-",
+   "evidence": "blocked (Access Denied)",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Alliander",
+   "sector": "energy",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Amsterdam UMC",
+   "sector": "healthcare",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Arcadis",
+   "sector": "construction",
+   "category": "front_end_only",
+   "system": "Eightfold front-end",
+   "evidence": "system behind it not visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "BAM",
+   "sector": "construction",
+   "category": "front_end_only",
+   "system": "Phenom front-end",
+   "evidence": "system behind it not visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Belastingdienst",
+   "sector": "government",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Booking.com",
+   "sector": "tech",
+   "category": "visible_system",
+   "system": "iCIMS",
+   "evidence": "iCIMS on jobs.booking.com",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Buurtzorg",
+   "sector": "healthcare",
+   "category": "not_determined",
+   "system": "-",
+   "evidence": "vacancies load via JavaScript only",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Coolblue",
+   "sector": "ecommerce",
+   "category": "not_determined",
+   "system": "-",
+   "evidence": "bot verification",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "DHL",
+   "sector": "logistics",
+   "category": "visible_system",
+   "system": "Avature",
+   "evidence": "Avature on vacancy page",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Defensie",
+   "sector": "government",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Dirk",
+   "sector": "retail",
+   "category": "front_end_only",
+   "system": "Phenom front-end",
+   "evidence": "system behind it not visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Eneco",
+   "sector": "energy",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Enexis",
+   "sector": "energy",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Erasmus MC",
+   "sector": "healthcare",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Essent",
+   "sector": "energy",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Exact",
+   "sector": "tech",
+   "category": "not_determined",
+   "system": "-",
+   "evidence": "vacancies load via JavaScript only",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Fontys",
+   "sector": "education",
+   "category": "visible_system",
+   "system": "Ubeeo",
+   "evidence": "ubeeo-ats plugin on vacancy page",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Gamma Karwei",
+   "sector": "retail",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Gemeente Amsterdam",
+   "sector": "government",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Gemeente Den Haag",
+   "sector": "government",
+   "category": "visible_system",
+   "system": "Bullhorn (Connexys on Salesforce)",
+   "evidence": "apply form den-haag.my.salesforce-sites.com, cxsrec__",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Gemeente Eindhoven",
+   "sector": "government",
+   "category": "not_determined",
+   "system": "-",
+   "evidence": "403 Forbidden",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Gemeente Rotterdam",
+   "sector": "government",
+   "category": "front_end_only",
+   "system": "Radancy front-end",
+   "evidence": "system behind it not visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Gemeente Utrecht",
+   "sector": "government",
+   "category": "visible_system",
+   "system": "Hireserve",
+   "evidence": "apply page loads platform.hireserve.nl",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "HEMA",
+   "sector": "retail",
+   "category": "visible_system",
+   "system": "Jobylon",
+   "evidence": "jobylon widget on vacancy list",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Heijmans",
+   "sector": "construction",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Heineken",
+   "sector": "industry",
+   "category": "visible_system",
+   "system": "SAP SuccessFactors",
+   "evidence": "link career5.successfactors.eu",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Hogeschool Utrecht",
+   "sector": "education",
+   "category": "visible_system",
+   "system": "Cornerstone",
+   "evidence": "apply via hogeschoolutrecht.csod.com",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "IKEA",
+   "sector": "retail",
+   "category": "front_end_only",
+   "system": "Radancy front-end",
+   "evidence": "system behind it not visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "ING",
+   "sector": "finance",
+   "category": "visible_system",
+   "system": "Workday",
+   "evidence": "Workday on vacancy page",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Isala",
+   "sector": "healthcare",
+   "category": "visible_system",
+   "system": "Visma EasyCruit",
+   "evidence": "apply via isalawerkt.easycruit.com",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Jumbo",
+   "sector": "retail",
+   "category": "visible_system",
+   "system": "Cegid Talentsoft",
+   "evidence": "vacancy data backoffice=talentsoft",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Just Eat Takeaway",
+   "sector": "tech",
+   "category": "visible_system",
+   "system": "Workday",
+   "evidence": "Workday on vacancy page",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "KLM",
+   "sector": "transport",
+   "category": "visible_system",
+   "system": "SAP SuccessFactors",
+   "evidence": "link career2.successfactors.eu (company AFKL)",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "KPN",
+   "sector": "telecom",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Kruidvat",
+   "sector": "retail",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "LUMC",
+   "sector": "healthcare",
+   "category": "visible_system",
+   "system": "Recruitee",
+   "evidence": "apply via lumc11.recruitee.com",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Lidl",
+   "sector": "retail",
+   "category": "visible_system",
+   "system": "SAP SuccessFactors",
+   "evidence": "link career5.successfactors.eu",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Maastricht UMC+",
+   "sector": "healthcare",
+   "category": "visible_system",
+   "system": "Recruitee",
+   "evidence": "mumc.recruitee.com",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "McDonald's",
+   "sector": "hospitality",
+   "category": "visible_system",
+   "system": "McHire",
+   "evidence": "careers site loads mchire.com",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "MediaMarkt",
+   "sector": "retail",
+   "category": "visible_system",
+   "system": "SAP SuccessFactors",
+   "evidence": "scripts from successfactors.eu",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Mollie",
+   "sector": "tech",
+   "category": "visible_system",
+   "system": "Ashby",
+   "evidence": "apply via jobs.ashbyhq.com",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "NS",
+   "sector": "transport",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Nationale-Nederlanden",
+   "sector": "finance",
+   "category": "visible_system",
+   "system": "Workday",
+   "evidence": "Workday on vacancy page",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Nedap",
+   "sector": "tech",
+   "category": "visible_system",
+   "system": "Bullhorn",
+   "evidence": "BullhornVacancy data model on careers page",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "PLUS",
+   "sector": "retail",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Partou",
+   "sector": "childcare",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Philadelphia",
+   "sector": "healthcare",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Philips",
+   "sector": "industry",
+   "category": "visible_system",
+   "system": "Workday",
+   "evidence": "Workday on vacancy page",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Picnic",
+   "sector": "ecommerce",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Politie",
+   "sector": "government",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "PostNL",
+   "sector": "logistics",
+   "category": "not_determined",
+   "system": "-",
+   "evidence": "unreachable",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "ProRail",
+   "sector": "transport",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Rabobank",
+   "sector": "finance",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Radboudumc",
+   "sector": "healthcare",
+   "category": "visible_system",
+   "system": "Jobylon",
+   "evidence": "jobylon widget on vacancy list",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Randstad",
+   "sector": "staffing",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Rijksoverheid",
+   "sector": "government",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Rijkswaterstaat",
+   "sector": "government",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Rituals",
+   "sector": "retail",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Royal HaskoningDHV",
+   "sector": "construction",
+   "category": "visible_system",
+   "system": "Cornerstone (TalentLink)",
+   "evidence": "apply via emea3.recruitmentplatform.com",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Sanquin",
+   "sector": "healthcare",
+   "category": "not_determined",
+   "system": "-",
+   "evidence": "not checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Schiphol",
+   "sector": "transport",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Shell",
+   "sector": "industry",
+   "category": "visible_system",
+   "system": "Workday",
+   "evidence": "careers link shell.wd3.myworkdayjobs.com",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "TU Delft",
+   "sector": "education",
+   "category": "visible_system",
+   "system": "SAP SuccessFactors",
+   "evidence": "script from successfactors.eu",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Tata Steel",
+   "sector": "industry",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Thuiszorg Vivium",
+   "sector": "healthcare",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "TomTom",
+   "sector": "tech",
+   "category": "visible_system",
+   "system": "Lever",
+   "evidence": "apply via jobs.eu.lever.co",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "UMC Utrecht",
+   "sector": "healthcare",
+   "category": "visible_system",
+   "system": "Cegid Talentsoft",
+   "evidence": "talentsoft widget on vacancy list",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "UMCG",
+   "sector": "healthcare",
+   "category": "visible_system",
+   "system": "Tangram",
+   "evidence": "apply via tangram-tis.nl",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "UWV",
+   "sector": "government",
+   "category": "not_determined",
+   "system": "-",
+   "evidence": "vacancies load via JavaScript only",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Unilever",
+   "sector": "industry",
+   "category": "visible_system",
+   "system": "Workday",
+   "evidence": "Workday on careers site",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Universiteit Utrecht",
+   "sector": "education",
+   "category": "visible_system",
+   "system": "Ubeeo",
+   "evidence": "site names Ubeeo as ATS supplier",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Universiteit van Amsterdam",
+   "sector": "education",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Van Oord",
+   "sector": "construction",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Vattenfall",
+   "sector": "energy",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "VodafoneZiggo",
+   "sector": "telecom",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Wolters Kluwer",
+   "sector": "tech",
+   "category": "visible_system",
+   "system": "Workday",
+   "evidence": "Workday on careers site",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "Zeeman",
+   "sector": "retail",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "checked in browser",
+   "no_cv_upload_on_first_step": true
+  },
+  {
+   "employer": "Zuyderland",
+   "sector": "healthcare",
+   "category": "visible_system",
+   "system": "Visma EasyCruit",
+   "evidence": "apply via zuyderland.easycruit.com",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "a.s.r.",
+   "sector": "finance",
+   "category": "own_site_not_visible",
+   "system": "own careers site or form",
+   "evidence": "vacancy page fetched, no system visible",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "bol",
+   "sector": "ecommerce",
+   "category": "visible_system",
+   "system": "Greenhouse",
+   "evidence": "Greenhouse job board API, 32 NL jobs",
+   "no_cv_upload_on_first_step": false
+  },
+  {
+   "employer": "de Volksbank",
+   "sector": "finance",
+   "category": "not_determined",
+   "system": "-",
+   "evidence": "not checked in browser",
+   "no_cv_upload_on_first_step": false
+  }
  ]
 }

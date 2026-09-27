@@ -50,7 +50,7 @@ const faqs = [
   {
     question: "Do Dutch employers use ATS systems?",
     answer:
-      "Many larger employers, agencies, and career portals use applicant tracking software, but its role varies. One system may only store and search applications, while another may add screening questions or matching. Recruiters can still review CVs manually.",
+      "Many do, but no single system dominates. In a WerkCV check of 90 large Dutch employers (September 2026), the system was visible at 37: Workday at 8 (including ING, ASML, Shell and Philips), SAP SuccessFactors at 5 (including Lidl, Heineken and KLM), and Greenhouse at Adyen and bol. At 38 you apply through the employer's own form and cannot see the system. Recruiters still review CVs themselves.",
   },
   {
     question: "Can an ATS automatically reject my CV?",
@@ -217,6 +217,52 @@ export default function AtsResumeNetherlandsPage() {
               <p className="mt-2 text-sm font-bold leading-relaxed text-gray-900">{beforeAfterExample.after}</p>
             </article>
           </div>
+        </div>
+
+        <div className="bg-white border-4 border-black p-6">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-gray-600">WerkCV research, 27 September 2026</p>
+          <h2 className="mt-2 text-3xl font-black mb-3">Which ATS do Dutch employers use?</h2>
+          <p className="text-gray-700 mb-4">
+            We checked the vacancy pages and apply buttons of 90 large Dutch employers across healthcare, government, retail,
+            finance, education and tech. The system was visible at 37 of them; at 38 you apply through the employer&apos;s own
+            form, and at 15 we could not tell. No single system dominates, so optimise your CV for readability rather than
+            for one brand of software.
+          </p>
+          <div className="wk-table-scroll-hint overflow-x-auto">
+            <table className="min-w-full text-left text-sm">
+              <thead>
+                <tr className="border-b-2 border-black">
+                  <th className="py-2 pr-4">System</th>
+                  <th className="py-2">Employers in our sample</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-700">
+                {[
+                  ["Workday (8)", "ING, Nationale-Nederlanden, Unilever, Wolters Kluwer, Just Eat Takeaway, ASML, Shell, Philips"],
+                  ["SAP SuccessFactors (5)", "Lidl, Heineken, TU Delft, KLM, MediaMarkt"],
+                  ["Greenhouse (2)", "Adyen, bol"],
+                  ["Recruitee (2)", "LUMC, Maastricht UMC+"],
+                  ["Visma EasyCruit (2)", "Zuyderland, Isala"],
+                  ["Other systems (2 or fewer each)", "Jobylon, Ubeeo, Cegid Talentsoft, Bullhorn, Cornerstone, iCIMS, Ashby, Carerix, Lever, Avature, Tangram, Hireserve"],
+                  ["Own form, system not visible (38)", "e.g. ABN AMRO, Rabobank, KPN, Randstad, Erasmus MC, Gemeente Amsterdam, Werken voor Nederland"],
+                ].map(([system, employers]) => (
+                  <tr key={system} className="border-b border-gray-300 align-top">
+                    <td className="py-2 pr-4 font-bold text-gray-900">{system}</td>
+                    <td className="py-2">{employers}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-sm text-gray-700">
+            What this means: use a single-column layout with plain text and standard headings, put your contact details in
+            the body, and check the fields an application form fills in from your upload. Some employers, such as Action and
+            Zeeman, ask for no CV at all on the first step.{" "}
+            <Link href="/en/cv-check" className="font-bold underline">
+              See what a system reads from your CV
+            </Link>
+            .
+          </p>
         </div>
 
         <div className="bg-white border-4 border-black p-6">

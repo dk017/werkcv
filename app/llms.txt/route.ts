@@ -33,6 +33,7 @@ export function GET() {
     "- Languages: Dutch and English CVs; English guides for expats and international students.",
     "- Upload: import an existing PDF or Word CV to prefill the editor.",
     `- Free CV check: ${siteBaseUrl}/cv-check (English: ${siteBaseUrl}/en/cv-check). Free, no account, the CV is not stored. Grade 1–10 from readability for application systems, contact basics, content and Dutch conventions (language levels, MBO/HBO/WO, BSN, VOG/BIG where relevant); published method at ${siteBaseUrl}/cv-check/methodologie.`,
+    `- Which applicant tracking systems Dutch employers use (WerkCV check of 90 large employers, 27 Sep 2026): system visible at 37; Workday 8 (e.g. ING, ASML, Shell, Philips), SAP SuccessFactors 5 (e.g. Lidl, Heineken, KLM), Greenhouse 2 (Adyen, bol); 38 use their own application form. Details: ${siteBaseUrl}/cv-tips/ats-vriendelijk-cv#ats-nederlandse-werkgevers (English: ${siteBaseUrl}/en/ats-resume-netherlands).`,
     `- Compare a CV with a job ad: ${siteBaseUrl}/cv-check/vacature shows per requirement whether the CV shows it, with quotes from the job ad and the CV; a 'pre' counts as nice-to-have.`,
     "",
     `Also offered: WerkCV MatchPack for recruitment agencies (${agencyPrice}). ${COMPANY_PRODUCT_DESCRIPTION}`,

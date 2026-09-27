@@ -6,26 +6,35 @@ Research date: 27 September 2026. Sources: Search Console export (24 Jun–23 Se
 
 The query behind "we rank #10 for Greenhouse" is `site:support.greenhouse.io "unsuccessful resume parse"` (197 impressions, plus 68 and 65 for variants starting with `+` and `%`). It uses a search operator aimed at Greenhouse's own help site. People don't type that; tools and AI assistants that look up Greenhouse's documentation do. It is not a reason to build a Greenhouse page.
 
-## 2. Which systems 90 Dutch employers use (measured)
+## 2. Which systems 90 Dutch employers use (measured, 27 Sep 2026)
 
-Sample: 90 employers across finance, retail, transport/logistics, government, healthcare, education, energy, construction, industry and tech. Method: careers page → vacancy page (via sitemap or vacancy feed) → apply link, looking for the system's domains and scripts.
+Sample: 90 employers across finance, retail, transport/logistics, government, healthcare, education, energy, construction, industry and tech. Method: careers page → vacancy page (via sitemap, vacancy feed or the in-app browser) → apply link, looking for the system's domains and scripts. Matches on patterns without a domain were checked in context; two were false (Heijmans "Otys" was a filename, Amsterdam UMC "Visma" was a salary-calculator link). Raw result with evidence per employer: `2026-09-27-dutch-employer-ats-sample.json`.
 
-- **About 25 of 90:** a known system is visible (table below).
-- **About 23 of 90:** confirmed own branded careers site with a built-in application form; the system behind it is not visible to applicants. Many of these sites come from recruitment agencies: Floyd Hamilton (NS, Achmea, Eneco, UvA, Van Oord), Getnoticed (Randstad, Ahold Delhaize, Intergamma) and Dropr/Cdlvr (Belastingdienst, Kruidvat).
-- **About 37 of 90:** not determined yet. The site blocked the crawler, or its vacancy pages load only via JavaScript (e.g. ABN AMRO, Rabobank, Albert Heijn, KPN, PostNL, KLM, Rijksoverheid, several municipalities and hospitals). This needs a browser pass before anything is published.
-- Where the system is visible (about 25 of 90), no single system dominates. Two tools that sat on top of another system were excluded from this count (Phenom and Eightfold, 5 employers).
+| Result | Employers |
+|---|---:|
+| System visible to applicants | 37 |
+| Own careers site or form, system not visible | 38 |
+| Only a recruitment-marketing layer visible (Phenom, Eightfold, Radancy) | 5 |
+| Not determined (blocked, unreachable, JavaScript-only or not checked) | 10 |
 
-| System | Employers in the sample |
+| System | Employers |
 |---|---|
-| Workday | ING, Nationale-Nederlanden, Unilever, Wolters Kluwer, Just Eat Takeaway |
-| SAP SuccessFactors | Lidl, Heineken, TU Delft |
-| Visma EasyCruit / Youforce | Zuyderland, Amsterdam UMC, Hogeschool Utrecht |
-| Greenhouse | Adyen, bol |
-| Recruitee | LUMC, Maastricht UMC+ |
-| Jobylon | HEMA, Radboudumc |
-| Others, 1 each | iCIMS (Booking.com), Ashby (Mollie), Carerix (ANWB), Otys (Heijmans), Connexys/Bullhorn (Nedap), Cegid/Talentsoft (UMC Utrecht), Cornerstone (HU) |
+| Workday (8) | ING, Nationale-Nederlanden, Unilever, Wolters Kluwer, Just Eat Takeaway, ASML, Shell, Philips |
+| SAP SuccessFactors (5) | Lidl, Heineken, TU Delft, KLM, MediaMarkt |
+| Greenhouse (2) | Adyen, bol |
+| Recruitee (2) | LUMC, Maastricht UMC+ |
+| Visma EasyCruit (2) | Zuyderland, Isala |
+| Jobylon (2) | HEMA, Radboudumc |
+| Ubeeo (2) | Universiteit Utrecht, Fontys |
+| Cegid Talentsoft (2) | UMC Utrecht, Jumbo |
+| Bullhorn / Connexys (2) | Nedap, Gemeente Den Haag |
+| Cornerstone incl. TalentLink (2) | Hogeschool Utrecht, Royal HaskoningDHV |
+| 1 each | iCIMS (Booking.com), Ashby (Mollie), Carerix (ANWB), Lever (TomTom), Avature (DHL), Tangram (UMCG), Hireserve (Gemeente Utrecht), McHire (McDonald's) |
 
-Greenhouse's job-board API confirms it for a few Dutch-based employers: Adyen (60 NL jobs), bol (32), Databricks Amsterdam (31), Catawiki (26), HelloFresh (17). These are mostly English-language tech roles.
+Other observations:
+- A shared careers platform with a built-in form (`/vacature/<id>/…`, `#vacancy-application-form`, built by Getnoticed) is used by ABN AMRO, KPN, Randstad, Ahold Delhaize, Intergamma and Tata Steel.
+- Action and Zeeman ask for no CV on the first application step (name, contact details and a few questions only). PLUS asks for a CV upload and a date of birth.
+- Greenhouse's job-board API also shows Databricks Amsterdam (31 NL jobs), Catawiki (26) and HelloFresh (17): mostly English-language tech roles.
 
 ## 3. What Dutch job seekers search
 
@@ -41,5 +50,5 @@ Bing NL for "ats cv", "ats systeem cv" and "ats vriendelijk cv": CVMaker, LiveCa
 
 ## 5. Conclusion
 
-- Per-system guides (Greenhouse, Workday, …) in Dutch: **don't build them.** There is no measurable job-seeker demand, many employers hide their system behind their own form, and no system is common enough to justify a guide (the most common, Workday, appears at 5 of 90).
+- Per-system guides (Greenhouse, Workday, …) in Dutch: **don't build them.** There is no measurable job-seeker demand, many employers hide their system behind their own form, and no system is common enough to justify a guide (the most common, Workday, appears at 8 of 90, mostly large international employers).
 - The research is itself the asset: an original, dated finding ("which systems Dutch employers use, and what it means for your CV"), which is the kind of content AI assistants and journalists cite.
