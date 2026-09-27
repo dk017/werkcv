@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { UiLanguage } from "@/lib/ui-language";
 
 type FooterLink = { href: string; label: string };
@@ -144,6 +145,23 @@ export default function Footer({
               ? isEnglish ? "Evidence-linked candidate proposals" : "Onderbouwde kandidaatvoorstellen"
               : isEnglish ? "Build a professional CV for jobs in the Netherlands" : "Maak een professioneel CV voor Nederlandse vacatures"}
           </p>
+          {product === "personal" && (
+            <a
+              href="https://www.scrolllaunch.com/products/werkcv?ref=badge"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="wk-footer-badge"
+              aria-label="WerkCV featured on ScrollLaunch (opens in a new tab)"
+            >
+              <Image
+                src="https://www.scrolllaunch.com/api/badge/werkcv?variant=featured&theme=light"
+                alt="WerkCV - Featured on ScrollLaunch"
+                width={220}
+                height={48}
+                unoptimized
+              />
+            </a>
+          )}
         </div>
       </div>
     </footer>

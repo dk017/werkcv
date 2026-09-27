@@ -659,6 +659,18 @@ body {
   line-height: 1.5;
 }
 
+.wk-footer-badge {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+.wk-footer-badge img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 .wk-footer-legal {
   display: flex;
   flex-wrap: wrap;
