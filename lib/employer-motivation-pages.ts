@@ -36,7 +36,7 @@ export const albertHeijnMotivationPage: EmployerMotivationPageData = {
   exampleContext:
     "Situatie: scholier met winkelervaring, beschikbaar op een vaste avond en in het weekend. Vervang alle feiten tussen de regels door jouw eigen situatie.",
   exampleParagraphs: [
-    "Graag solliciteer ik naar de functie van medewerker verkoopklaar bij Albert Heijn [plaats of filiaal]. Ik werk graag in een omgeving waar tempo en klantcontact samenkomen. De manier waarop Albert Heijn beter eten bereikbaar wil maken spreekt mij aan, omdat een verzorgde en goed gevulde winkel klanten helpt om snel te vinden wat zij nodig hebben.",
+    "De functie van medewerker verkoopklaar bij Albert Heijn [plaats of filiaal] past bij mij, omdat ik in mijn bijbaan al werk waar tempo en klantcontact samenkomen. Dat Albert Heijn beter eten bereikbaar wil maken, spreekt mij aan: een verzorgde en goed gevulde winkel helpt klanten om snel te vinden wat zij nodig hebben.",
     "In mijn huidige bijbaan heb ik geleerd om schappen zorgvuldig bij te vullen, houdbaarheid te controleren en mijn afdeling netjes over te dragen. Wanneer een klant iets vraagt, loop ik mee naar het product of schakel ik een collega in. Ook tijdens drukke momenten blijf ik vriendelijk en werk ik mijn taken stap voor stap af.",
     "Ik ben iedere donderdagavond en zaterdag beschikbaar en kan in schoolvakanties extra werken. Graag licht ik in een gesprek toe hoe ik in het team van [filiaal] kan bijdragen.",
   ],
