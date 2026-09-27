@@ -35,9 +35,9 @@ export const primaryAiPages = [
     description: "Dutch guide based on a test of 24 CVs written by OpenAI's gpt-5.5 (27 Sep 2026): markdown in 24/24, placeholders in 7/24, advice mixed into 8/8 tailored CVs, no invented requirements; tested prompts that removed the leftovers (0/16), employer attitudes (Tilburg University 2024: 79% allow AI if truthful) and privacy settings.",
   },
   {
-    title: "Create a CV with ChatGPT without invented facts",
+    title: "Using ChatGPT for your CV in the Netherlands: tested prompts",
     url: `${siteBaseUrl}/en/guides/create-cv-with-chatgpt`,
-    description: "English worked guide to using ChatGPT for CV wording while preserving evidence, qualifiers, numbers and employer attribution.",
+    description: "English guide based on a test of 24 English CVs for international job seekers written by gpt-5.5 (27 Sep 2026): markdown 24/24, placeholders 17/24, advice mixed into 8/8 tailored CVs, 2/8 tailored CVs switched to Dutch unasked, no invented requirements; tested prompts that removed the leftovers (0/16), Dutch employer attitudes and privacy settings.",
   },
   {
     title: "WerkCV homepage",

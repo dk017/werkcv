@@ -45,3 +45,8 @@ test("markdown alone is important, not critical", () => {
   assert.equal(check.status, "fail");
   assert.equal(check.severity, "important");
 });
+
+test("finds English chatbot framing", () => {
+  const pasted = "Below is a tailored, honest version of your CV for the vacancy.\nProfile\nWarehouse operative with forklift experience.";
+  assert.ok(findAiLeftovers(pasted).some((hit) => hit.kind === "chat"));
+});

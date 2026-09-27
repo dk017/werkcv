@@ -3,7 +3,15 @@
 import { useState } from "react";
 import { track } from "@/lib/analytics";
 
-export default function CopyPromptButton({ text, promptId }: { text: string; promptId: string }) {
+export default function CopyPromptButton({
+  text,
+  promptId,
+  labels,
+}: {
+  text: string;
+  promptId: string;
+  labels: { idle: string; done: string };
+}) {
   const [copied, setCopied] = useState(false);
 
   async function copy() {
@@ -19,7 +27,7 @@ export default function CopyPromptButton({ text, promptId }: { text: string; pro
 
   return (
     <button type="button" onClick={copy} className="wk-button wk-button-secondary text-sm" aria-live="polite">
-      {copied ? "Gekopieerd" : "Kopieer prompt"}
+      {copied ? labels.done : labels.idle}
     </button>
   );
 }

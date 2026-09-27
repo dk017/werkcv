@@ -32,9 +32,9 @@ export default function EnglishGuidesHubPage() {
             description: 'Use the main decision page for CV language, work route wording, Dutch level, and personal details.',
         },
         {
-            href: '/en/expat-cv-netherlands',
-            title: 'Need the big picture first?',
-            description: 'Start with the expat overview if you want the Dutch recruiter logic behind English CVs.',
+            href: '/en/guides/create-cv-with-chatgpt',
+            title: 'Using ChatGPT for your CV?',
+            description: 'Tested prompts, what went wrong in 24 ChatGPT CVs, and a free check for leftovers before you apply.',
         },
         {
             href: '/en/guides/cv-for-international-students-netherlands',

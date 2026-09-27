@@ -14,6 +14,12 @@ const LEFTOVER_PATTERNS: Array<{ kind: "placeholder" | "markdown" | "chat"; patt
       /^\W{0,3}(?:natuurlijk\b|zeker[!,]|hieronder (?:staat|vind je|een)|hier is (?:je|een|jouw)|laat (?:het )?me weten|wil je dat ik|succes met (?:je|de|jouw) sollicitatie|here is (?:your|a|an)\b|certainly[!,]|let me know|feel free to)/im,
   },
   {
+    // English framing seen in the 27 Sep 2026 English test, e.g. "Below is a tailored version of your CV".
+    kind: "chat",
+    pattern:
+      /^\W{0,3}(?:below is (?:a|an|your)\b|here(?:'|’)s (?:a|an|your)\b)|\bi(?:'|’)ve (?:kept|emphasi[sz]ed|tailored|highlighted|added)\b|\bi have (?:emphasi[sz]ed|tailored|highlighted|kept)\b|\(only (?:include|add) (?:this )?if (?:it is |it's )?true\)|\bif you have\b[^.\n]{0,80}\badd\b/im,
+  },
+  {
     kind: "chat",
     pattern:
       /\balleen opnemen als dit klopt\b|\bals je (?:wél|geen|nog geen)\b[^.\n]{0,60}\b(?:voeg|zet|kun je|vul)\b|\bif you (?:do|don't) have\b[^.\n]{0,60}\badd\b|\(vul (?:hier )?in\)|\bvul hier\b/i,

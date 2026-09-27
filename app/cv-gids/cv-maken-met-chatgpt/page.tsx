@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ChatGptCvGuide from "@/components/seo/ChatGptCvGuide";
+import { CHATGPT_GUIDE_NL } from "@/lib/chatgpt-guide/content";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 
 export const metadata: Metadata = buildDutchMetadata({
@@ -19,5 +20,5 @@ export const metadata: Metadata = buildDutchMetadata({
 });
 
 export default function Page() {
-  return <ChatGptCvGuide />;
+  return <ChatGptCvGuide content={CHATGPT_GUIDE_NL} />;
 }

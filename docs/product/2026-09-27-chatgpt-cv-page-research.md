@@ -43,3 +43,18 @@ Prompts with explicit rules (only my facts; plain text, no placeholders; Dutch h
 - Rewrite `/cv-gids/cv-maken-met-chatgpt` (keeps its URL and EN pair) as the flagship guide: dated intro, whether employers allow it (Tilburg), our test results, a step-by-step plan with copy-paste Dutch prompts (incl. privacy step), a checklist, and the CV-check embedded with pasted text as the default input.
 - Add an "AI-restanten" check to the CV-check engine: placeholders in brackets, markdown, chat phrases and conditional instructions left in the CV. Bump the score version and the methodology page.
 - Keep `/cv-tips/cv-schrijven-met-ai` (different keyword, position 7) and link both ways; English guide rewrite follows.
+
+## 6. English test (for /en/guides/create-cv-with-chatgpt)
+Same method, 8 expat personas (e.g. a nurse with BIG registration in progress, Dutch A2–B2), English prompts: "Write a CV for a [job] in the Netherlands", "Create a CV from these details", "Tailor my CV to this job" (ad asks for two missing items and good Dutch), plus English versions of the WerkCV rules. 40 CVs, gpt-5.5, 27 Sep 2026. Raw: `data/2026-09-27-chatgpt-cv-test-outputs-en.json`.
+
+| Finding | Popular prompts | WerkCV prompts |
+|---|---|---|
+| Formatting symbols | 24/24 | 0/16 |
+| Placeholders | 17/24 (8/8 example prompt) | 0/16 |
+| Advice/alternatives mixed into tailored CV | 8/8 | 0/8 |
+| Traits not in the notes | 6/8 (notes prompt) | 0/8 |
+| Date of birth / nationality / marital status added | 3/8 example prompt (0/8 notes, 0/8 tailored; an earlier count of 5 matched "age:" inside "language:") | 0/16 |
+| Tailored CV switched to Dutch unasked | 2/8 (nurse, admin assistant; Dutch A2/B1) | 0/8 |
+| Missing requirement claimed | 0/8 (2 borderline "familiar with") | 0/8 |
+
+Detector: English framing patterns added ("Below is…", "I've kept…", "If you have…, add"); raw English outputs flagged 24/24; clean Dutch + English CVs flagged 0/87.
