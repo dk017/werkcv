@@ -37,7 +37,7 @@ const personalGroupsEn: FooterGroup[] = [
   { label: "Resources", links: [
     { href: "/en/dutch-cv-examples", label: "CV examples" },
     { href: "/en/guides", label: "Guides" },
-    { href: "/en/dutch-cv-checker", label: "CV checker" },
+    { href: "/en/cv-check", label: "CV checker" },
   ] },
   { label: "Help", links: [
     { href: "/en/pricing", label: "Payment questions" },
