@@ -27,6 +27,10 @@ on:
         description: "Signup window in days for the outreach"
         required: true
         default: "14"
+      indexnow_paths:
+        description: "Changed page paths to submit to IndexNow after deploy (space or comma separated, e.g. /cv-check /prijzen). Empty = skip."
+        required: false
+        default: ""
       prune_dangling_images:
         description: "Remove only untagged Docker images on the deploy host"
         required: true
@@ -126,6 +130,39 @@ jobs:
             if [ "${{ github.event.inputs.prune_dangling_images }}" = "true" ]; then
               docker image prune -f
             fi
+
+      # Tell Bing (and other IndexNow engines, e.g. used by DuckDuckGo, Ecosia and Yahoo results)
+      # which pages changed. Only the given paths are sent; unchanged pages should not be resubmitted.
+      - name: Submit changed pages to IndexNow
+        if: ${{ github.event.inputs.indexnow_paths != '' }}
+        env:
+          INDEXNOW_PATHS: ${{ github.event.inputs.indexnow_paths }}
+          EXPECTED_BUILD: ${{ needs.build.outputs.tag }}
+        run: |
+          set -eu
+          host="werkcv.nl"
+          key_file="$(ls public | grep -E '^[a-f0-9]{32}\.txt$' | head -n1)"
+          key="${key_file%.txt}"
+          [ -n "$key" ] || { echo "IndexNow key file not found in public/"; exit 1; }
+          # Wait until the new build is live, so engines fetch the updated pages.
+          for i in $(seq 1 30); do
+            live="$(curl -fsS "https://$host/api/build-version" | sed -n 's/.*"buildId":"\([^"]*\)".*/\1/p' || true)"
+            [ "$live" = "$EXPECTED_BUILD" ] && break
+            sleep 10
+          done
+          urls=""
+          for p in $(echo "$INDEXNOW_PATHS" | tr ',' ' '); do
+            case "$p" in
+              /api/*|/admin*|/editor*|/en/editor*|/login*|/success*|/mijn-cvs*) echo "Skipping private path $p"; continue ;;
+              /*) urls="$urls\"https://$host$p\"," ;;
+              *) echo "Skipping invalid path $p (must start with /)" ;;
+            esac
+          done
+          [ -n "$urls" ] || { echo "No valid paths to submit"; exit 0; }
+          body="{\"host\":\"$host\",\"key\":\"$key\",\"keyLocation\":\"https://$host/$key_file\",\"urlList\":[${urls%,}]}"
+          status="$(curl -sS -o /tmp/indexnow.out -w '%{http_code}' -X POST https://api.indexnow.org/IndexNow -H 'Content-Type: application/json; charset=utf-8' -d "$body")"
+          echo "IndexNow responded $status"; cat /tmp/indexnow.out || true
+          case "$status" in 200|202) ;; *) echo "IndexNow submission failed"; exit 1 ;; esac
 
       - name: Run signup feedback outreach
         if: ${{ github.event.inputs.run_signup_feedback == 'true' }}
