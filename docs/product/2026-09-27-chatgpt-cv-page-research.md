@@ -1,0 +1,45 @@
+# "CV maken met ChatGPT": research and page plan
+
+Research date: 27 September 2026.
+
+## 1. Demand
+- Google Trends NL (5 years): "chatgpt cv" 7–11 vs "cv maken" 50–58, i.e. roughly 12–20% of the head term. Autocomplete: "chatgpt cv maken", "chatgpt cv laten maken", "chatgpt cv prompt", "cv laten maken door chatgpt", "cv ai checker".
+- WerkCV today (Search Console, 3 months): `/cv-gids/cv-maken-met-chatgpt` 30 impressions at 19,1 · `/cv-tips/cv-schrijven-met-ai` 48 at 7,2 · `/cv-maken-met-ai` 28 at 41,9 · `/en/guides/create-cv-with-chatgpt` 24 at 7,75. The ChatGPT guide is about 300 words, has no prompts or steps, and says the AI writing help "wordt nog getest".
+
+## 2. What ranks (Bing NL, 26–27 Sep)
+1. chatgpt.com's own "CV-generator" page. 2. cvtips.nl (~1.300 words, 7 prompts, pros/cons, no sources, no date). 3. solliciteer.net (~2.000 words, 9 prompts, "written by AI (Grok) and checked", dated April 2025, no sources).
+Gaps in all of them: no privacy advice on what not to paste, nothing on Dutch conventions (language levels, 'pre'), no data or sources, no way to check the result.
+
+## 3. External evidence (verified at the primary source)
+Tilburg University & Rendement, press release 19 Nov 2024 ("Werkgevers gedogen sollicitatiebrief en cv door ChatGPT"):
+- 94% of organisations select with a CV and/or form; 80% ask for a letter.
+- Employers estimate 25% of CVs and 29% of letters are written with a language model, and probably underestimate it.
+- 79% let applicants decide, as long as the letter or CV matches reality; 11% forbid it.
+- 18% say an AI-looking letter lowers the chance of an interview (37% no difference, 23% depends on the role); organisations are "iets minder streng" for CVs.
+- Concerns: skills harder to judge 62% · less authentic 49% · unintentionally wrong information 28% · privacy 15% · deliberately wrong information 14%. Only 8% plan to respond.
+
+OpenAI Help Center, "Data controls in ChatGPT" (read 27 Sep 2026): conversations can be used to train models unless "Improve the model for everyone" is turned off (Settings → Data controls). Temporary chats are not used for training and may be kept up to 30 days.
+
+## 4. Our test: 24 CVs written by gpt-5.5
+Method: OpenAI API, model `gpt-5.5` (27 Sep 2026), default settings, no system prompt. 8 roles × 3 prompt styles taken from the ranking guides: (1) "Schrijf een voorbeeld cv voor een [functie]", (2) "Maak een cv van deze gegevens: [notities]", (3) "Hier is mijn cv … Pas mijn cv aan op deze vacature", where the vacancy asks for two things the person does not have. All people are fictional. Raw outputs and scripts: `docs/product/data/2026-09-27-chatgpt-cv-test-*`.
+
+| Finding | Count |
+|---|---|
+| Markdown formatting (**, ##, ---) | 24/24 |
+| Advice or "if you do have this, add…" alternatives mixed into the CV text | 8/8 tailored CVs |
+| Placeholders such as [jouw telefoonnummer] | 7/24 (3/8 from notes, 4/8 tailored) |
+| Personality traits added that were not in the notes (stressbestendig, resultaatgericht, …) | 5/8 CVs from notes |
+| Tool added that was not in the notes (Microsoft Office) | 1/8 |
+| Missing vacancy requirement claimed as experience | 0/8 (1 borderline: "Bekend met IPM-principes") |
+| Language level as moedertaal/CEFR | only where the input had one; otherwise "vloeiend", "redelijk", "goed" |
+| Example-CV prompt: fictional name, address and employers; date of birth 2/8; "Referenties op aanvraag" 3/8 | – |
+
+Reading: the current model is careful about claims, but the copy-paste result is not a finished Dutch CV. The risks are leftovers, placeholders, formatting, empty traits and vague language levels, not invented jobs.
+
+### 4b. Same people, WerkCV prompts (16 CVs)
+Prompts with explicit rules (only my facts; plain text, no placeholders; Dutch headings; languages as moedertaal/CEFR; no advice inside the CV; questions after an end marker). Result: leftovers 0/16 (vs 24/24), traits not in the notes 0/8 (vs 5/8), missing requirements claimed 0/8, end marker used 16/16. Where the notes had no language level, it asked for it instead of guessing (one guessed "Duits: A1" from "basis"). Raw outputs: `docs/product/data/2026-09-27-chatgpt-cv-test-outputs-werkcv-prompts.json`.
+
+## 5. Plan
+- Rewrite `/cv-gids/cv-maken-met-chatgpt` (keeps its URL and EN pair) as the flagship guide: dated intro, whether employers allow it (Tilburg), our test results, a step-by-step plan with copy-paste Dutch prompts (incl. privacy step), a checklist, and the CV-check embedded with pasted text as the default input.
+- Add an "AI-restanten" check to the CV-check engine: placeholders in brackets, markdown, chat phrases and conditional instructions left in the CV. Bump the score version and the methodology page.
+- Keep `/cv-tips/cv-schrijven-met-ai` (different keyword, position 7) and link both ways; English guide rewrite follows.

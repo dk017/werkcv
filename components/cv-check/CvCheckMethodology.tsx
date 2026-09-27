@@ -32,6 +32,7 @@ const COPY = {
         "Profieltekst: aanwezig, lengte, jaren ervaring, geen holle containerwoorden.",
         "Werkervaring: meetbare resultaten, actieve werkwoorden, data bij functies.",
         "Taalgebruik: consistente taal, geen ik-vorm, leesbare kopjes.",
+        "Restanten van een AI-tool of sjabloon: invulvelden zoals [jouw telefoonnummer] en chatbottekst of advies (ernstig probleem), en opmaaktekens zoals **.",
       ],
       dutch: [
         "Taalniveaus: moedertaal of een ERK-niveau (A1–C2) per taal.",
@@ -45,7 +46,7 @@ const COPY = {
     grade: (cap: string) => [
       "Elke controle heeft een gewicht binnen zijn onderdeel; deels goed levert deels punten op. Controles die voor jouw cv niet gelden, tellen niet mee.",
       "De onderdelen tellen mee volgens de tabel hierboven en vormen samen een score van 0 tot 100. Die zetten we om naar een cijfer: 0 wordt 1,0 en 100 wordt 10,0.",
-      `Een ernstig probleem, zoals een gescande pdf of je BSN op je cv, houdt het cijfer op maximaal ${cap} tot je het oplost.`,
+      `Een ernstig probleem, zoals een gescande pdf, je BSN op je cv of een invulveld als [telefoonnummer], houdt het cijfer op maximaal ${cap} tot je het oplost.`,
       "Onvoldoende onder 5,5 · voldoende tot 7,0 · goed tot 8,5 · uitstekend vanaf 8,5.",
     ],
     aiTitle: "Wat regels doen en wat AI doet",
@@ -89,6 +90,7 @@ const COPY = {
         "Profile: present, length, years of experience, no empty buzzwords.",
         "Experience: measurable results, active verbs, dates for each role.",
         "Language: one consistent language, no first-person sentences, readable headings.",
+        "Leftovers from an AI tool or template: placeholders such as [your phone number] and chatbot text or advice (critical problem), and formatting symbols such as **.",
       ],
       dutch: [
         "Language levels: native or a CEFR level (A1–C2) for each language.",
@@ -102,7 +104,7 @@ const COPY = {
     grade: (cap: string) => [
       "Each check has a weight within its part; partly met earns partial credit. Checks that do not apply to your CV are left out.",
       "The parts count as shown in the table above and add up to a score from 0 to 100, which we convert to a grade: 0 becomes 1.0 and 100 becomes 10.0.",
-      `A critical problem, such as a scanned PDF or your BSN on your CV, keeps the grade at ${cap} at most until you fix it.`,
+      `A critical problem, such as a scanned PDF, your BSN on your CV or a placeholder such as [phone number], keeps the grade at ${cap} at most until you fix it.`,
       "Below 5.5 insufficient · up to 7.0 sufficient · up to 8.5 good · 8.5 and above excellent.",
     ],
     aiTitle: "What rules do and what AI does",

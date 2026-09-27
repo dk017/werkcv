@@ -156,6 +156,7 @@ export default function CvCheckTool({
   locale,
   initialVacancyText = "",
   initialShowVacancy = false,
+  initialInputMode = "file",
   entry = "direct",
   methodologyHref,
   editorHref,
@@ -164,12 +165,14 @@ export default function CvCheckTool({
   initialVacancyText?: string;
   /** Opens the vacancy field on load (the /cv-check/vacature pages). */
   initialShowVacancy?: boolean;
-  entry?: "direct" | "vacancy_page" | "vacancy_mode";
+  /** "text" opens the paste field first (e.g. for text copied from ChatGPT). */
+  initialInputMode?: InputMode;
+  entry?: "direct" | "vacancy_page" | "vacancy_mode" | "chatgpt_guide";
   methodologyHref: string;
   editorHref: string;
 }) {
   const copy = COPY[locale];
-  const [inputMode, setInputMode] = useState<InputMode>("file");
+  const [inputMode, setInputMode] = useState<InputMode>(initialInputMode);
   const [file, setFile] = useState<File | null>(null);
   const [cvText, setCvText] = useState("");
   const [showVacancy, setShowVacancy] = useState(initialShowVacancy || Boolean(initialVacancyText));

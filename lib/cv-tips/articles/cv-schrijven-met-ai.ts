@@ -56,6 +56,11 @@ export const cvSchrijvenMetAi: BlogArticle = {
                     label: 'Laat losse taken herschrijven naar sterkere bullets',
                     description: 'Beter dan een volledig cv in één prompt laten genereren.',
                 },
+                {
+                    href: '/cv-gids/cv-maken-met-chatgpt',
+                    label: 'Gebruik je ChatGPT? Neem de geteste prompts',
+                    description: "Wij lieten ChatGPT 24 cv's schrijven: zo voorkom je invulvelden, opmaaktekens en advies in je cv.",
+                },
             ],
         },
         {

@@ -113,7 +113,7 @@ const NL_GENERAL_FAQ = [
   {
     question: "Wat betekent mijn cijfer?",
     answer:
-      "Het cijfer (1 tot 10) vat vier onderdelen samen: leesbaarheid voor systemen, basis en contact, inhoud en bewijs, en Nederlandse conventies. Met een vacature telt de aansluiting op de vacature voor de helft mee. Een ernstig probleem, zoals een gescande pdf of je BSN op je cv, houdt het cijfer onder de 5,5 tot je het oplost.",
+      "Het cijfer (1 tot 10) vat vier onderdelen samen: leesbaarheid voor systemen, basis en contact, inhoud en bewijs, en Nederlandse conventies. Met een vacature telt de aansluiting op de vacature voor de helft mee. Een ernstig probleem, zoals een gescande pdf, je BSN op je cv of een achtergebleven invulveld als [telefoonnummer], houdt het cijfer onder de 5,5 tot je het oplost.",
   },
   {
     question: "Kan ik mijn cv door AI laten checken?",
@@ -241,7 +241,7 @@ const NL_RELATED = [
   { href: "/cv-check/methodologie", label: "Zo berekenen we je cijfer", body: "Controles, weging en wat AI wel en niet doet." },
   { href: "/cv-tips/ats-vriendelijk-cv", label: "ATS-vriendelijk cv maken", body: "Opmaak en kopjes die systemen goed lezen." },
   { href: "/ats-cv-template", label: "ATS cv template", body: "Een opmaak met één kolom die systemen goed lezen." },
-  { href: "/tools/linkedin-naar-cv", label: "LinkedIn naar cv", body: "Zet je LinkedIn-profiel om in een cv." },
+  { href: "/cv-gids/cv-maken-met-chatgpt", label: "CV maken met ChatGPT", body: "Geteste prompts, en wat er misgaat als je alles kopieert." },
 ];
 
 const EN_RELATED = [

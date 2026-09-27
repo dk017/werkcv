@@ -20,7 +20,7 @@ async function main() {
       else if (url.startsWith(origin) || url.startsWith("data:") || url.startsWith("blob:")) void request.continue();
       else void request.abort(); // No third-party telemetry from certification.
     });
-    for (const route of ["/cv-maken-met-ai", "/en/ai-cv-builder", "/cv-gids/cv-maken-met-chatgpt", "/en/guides/create-cv-with-chatgpt"]) {
+    for (const route of ["/cv-maken-met-ai", "/en/ai-cv-builder", "/en/guides/create-cv-with-chatgpt"]) {
       for (const width of [320, 375, 768, 1440]) {
         await page.setViewport({ width, height: 1000 });
         const response = await page.goto(origin + route, { waitUntil: "networkidle0" });

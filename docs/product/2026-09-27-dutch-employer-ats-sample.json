@@ -1,0 +1,426 @@
+{
+ "ING": [
+  "finance",
+  [
+   "Radancy / TMP",
+   "Workday"
+  ]
+ ],
+ "ABN AMRO": [
+  "finance",
+  []
+ ],
+ "Rabobank": [
+  "finance",
+  []
+ ],
+ "Achmea": [
+  "finance",
+  []
+ ],
+ "Nationale-Nederlanden": [
+  "finance",
+  [
+   "Workday"
+  ]
+ ],
+ "a.s.r.": [
+  "finance",
+  []
+ ],
+ "de Volksbank": [
+  "finance",
+  []
+ ],
+ "Aegon": [
+  "finance",
+  []
+ ],
+ "KPN": [
+  "telecom",
+  []
+ ],
+ "VodafoneZiggo": [
+  "telecom",
+  []
+ ],
+ "NS": [
+  "transport",
+  []
+ ],
+ "ProRail": [
+  "transport",
+  []
+ ],
+ "PostNL": [
+  "logistics",
+  []
+ ],
+ "KLM": [
+  "transport",
+  []
+ ],
+ "Schiphol": [
+  "transport",
+  []
+ ],
+ "DHL": [
+  "logistics",
+  [
+   "Phenom"
+  ]
+ ],
+ "Albert Heijn": [
+  "retail",
+  []
+ ],
+ "Jumbo": [
+  "retail",
+  []
+ ],
+ "Lidl": [
+  "retail",
+  [
+   "SAP SuccessFactors"
+  ]
+ ],
+ "Action": [
+  "retail",
+  []
+ ],
+ "HEMA": [
+  "retail",
+  [
+   "Jobylon"
+  ]
+ ],
+ "Kruidvat": [
+  "retail",
+  []
+ ],
+ "Zeeman": [
+  "retail",
+  []
+ ],
+ "MediaMarkt": [
+  "retail",
+  []
+ ],
+ "Dirk": [
+  "retail",
+  [
+   "Phenom"
+  ]
+ ],
+ "PLUS": [
+  "retail",
+  []
+ ],
+ "Coolblue": [
+  "ecommerce",
+  []
+ ],
+ "bol": [
+  "ecommerce",
+  [
+   "Greenhouse"
+  ]
+ ],
+ "Picnic": [
+  "ecommerce",
+  []
+ ],
+ "Booking.com": [
+  "tech",
+  [
+   "iCIMS"
+  ]
+ ],
+ "Adyen": [
+  "tech",
+  [
+   "Greenhouse"
+  ]
+ ],
+ "Mollie": [
+  "tech",
+  [
+   "Ashby"
+  ]
+ ],
+ "Exact": [
+  "tech",
+  []
+ ],
+ "TomTom": [
+  "tech",
+  []
+ ],
+ "Just Eat Takeaway": [
+  "tech",
+  [
+   "Phenom",
+   "Workday"
+  ]
+ ],
+ "Philips": [
+  "industry",
+  [
+   "Phenom"
+  ]
+ ],
+ "ASML": [
+  "industry",
+  []
+ ],
+ "Heineken": [
+  "industry",
+  [
+   "SAP SuccessFactors"
+  ]
+ ],
+ "Shell": [
+  "industry",
+  []
+ ],
+ "Tata Steel": [
+  "industry",
+  []
+ ],
+ "Unilever": [
+  "industry",
+  [
+   "Radancy / TMP",
+   "Workday"
+  ]
+ ],
+ "Randstad": [
+  "staffing",
+  []
+ ],
+ "Eneco": [
+  "energy",
+  []
+ ],
+ "Vattenfall": [
+  "energy",
+  []
+ ],
+ "Essent": [
+  "energy",
+  []
+ ],
+ "ANWB": [
+  "services",
+  [
+   "Carerix"
+  ]
+ ],
+ "BAM": [
+  "construction",
+  [
+   "Phenom"
+  ]
+ ],
+ "Heijmans": [
+  "construction",
+  [
+   "Otys"
+  ]
+ ],
+ "Arcadis": [
+  "construction",
+  [
+   "Eightfold"
+  ]
+ ],
+ "Royal HaskoningDHV": [
+  "construction",
+  []
+ ],
+ "Van Oord": [
+  "construction",
+  []
+ ],
+ "Rijksoverheid": [
+  "government",
+  []
+ ],
+ "Belastingdienst": [
+  "government",
+  []
+ ],
+ "UWV": [
+  "government",
+  []
+ ],
+ "Politie": [
+  "government",
+  []
+ ],
+ "Defensie": [
+  "government",
+  []
+ ],
+ "Gemeente Amsterdam": [
+  "government",
+  []
+ ],
+ "Gemeente Rotterdam": [
+  "government",
+  [
+   "Radancy / TMP"
+  ]
+ ],
+ "Gemeente Den Haag": [
+  "government",
+  []
+ ],
+ "Gemeente Utrecht": [
+  "government",
+  []
+ ],
+ "Gemeente Eindhoven": [
+  "government",
+  []
+ ],
+ "Erasmus MC": [
+  "healthcare",
+  []
+ ],
+ "UMC Utrecht": [
+  "healthcare",
+  [
+   "Cegid / Talentsoft"
+  ]
+ ],
+ "Amsterdam UMC": [
+  "healthcare",
+  [
+   "Visma|Raet / Youforce / EasyCruit"
+  ]
+ ],
+ "Radboudumc": [
+  "healthcare",
+  [
+   "Jobylon"
+  ]
+ ],
+ "LUMC": [
+  "healthcare",
+  [
+   "Recruitee"
+  ]
+ ],
+ "UMCG": [
+  "healthcare",
+  []
+ ],
+ "Maastricht UMC+": [
+  "healthcare",
+  [
+   "Recruitee"
+  ]
+ ],
+ "Buurtzorg": [
+  "healthcare",
+  []
+ ],
+ "Philadelphia": [
+  "healthcare",
+  []
+ ],
+ "Sanquin": [
+  "healthcare",
+  []
+ ],
+ "Zuyderland": [
+  "healthcare",
+  [
+   "Visma|Raet / Youforce / EasyCruit"
+  ]
+ ],
+ "Isala": [
+  "healthcare",
+  []
+ ],
+ "TU Delft": [
+  "education",
+  [
+   "SAP SuccessFactors"
+  ]
+ ],
+ "Universiteit van Amsterdam": [
+  "education",
+  []
+ ],
+ "Universiteit Utrecht": [
+  "education",
+  [
+   "Talentlyft/other"
+  ]
+ ],
+ "Hogeschool Utrecht": [
+  "education",
+  [
+   "Cornerstone",
+   "Visma|Raet / Youforce / EasyCruit"
+  ]
+ ],
+ "Fontys": [
+  "education",
+  []
+ ],
+ "Partou": [
+  "childcare",
+  []
+ ],
+ "McDonald's": [
+  "hospitality",
+  []
+ ],
+ "IKEA": [
+  "retail",
+  []
+ ],
+ "Wolters Kluwer": [
+  "tech",
+  [
+   "Workday"
+  ]
+ ],
+ "Ahold Delhaize": [
+  "retail",
+  []
+ ],
+ "Gamma Karwei": [
+  "retail",
+  []
+ ],
+ "Rituals": [
+  "retail",
+  []
+ ],
+ "Thuiszorg Vivium": [
+  "healthcare",
+  []
+ ],
+ "Rijkswaterstaat": [
+  "government",
+  []
+ ],
+ "Nedap": [
+  "tech",
+  [
+   "Bullhorn/Connexys"
+  ]
+ ],
+ "Enexis": [
+  "energy",
+  []
+ ],
+ "Alliander": [
+  "energy",
+  []
+ ]
+}

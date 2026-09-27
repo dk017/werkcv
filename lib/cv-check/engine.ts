@@ -1,6 +1,7 @@
 import { CvScoreInputError, scoreCv, type CvScoreDimension } from "@/lib/tools/cv-score";
 import { matchCvVacature } from "@/lib/tools/cv-vacature-match";
 import { classifyAiToolError, type AiToolErrorCode } from "@/lib/tools/ai-tool-errors";
+import { aiLeftoversCheck } from "./ai-leftovers";
 import { dutchConventionChecks } from "./dutch";
 import { emptyLayoutSignals, type LayoutSignals } from "./layout";
 import { buildParsePreview } from "./parse-preview";
@@ -290,6 +291,7 @@ export async function runCvCheck(input: RunCvCheckInput): Promise<CvCheckResult 
   const checks: CvCheckItem[] = [
     ...parsingChecks(layout, locale),
     ...scoreChecksToItems(scoreOutcome.value.dimensions, layout, locale),
+    aiLeftoversCheck(cvText, locale),
     ...dutchConventionChecks({ cvText, vacancyText, layout, wordCount, locale }),
   ];
 

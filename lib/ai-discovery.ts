@@ -30,9 +30,9 @@ export const primaryAiPages = [
     description: "English wording tool for a Netherlands CV: provide only your real role and strengths, review the draft, then optionally move it to the English WerkCV editor through a secure handoff.",
   },
   {
-    title: "CV maken met ChatGPT zonder verzonnen feiten",
+    title: "CV maken met ChatGPT: geteste prompts en valkuilen",
     url: `${siteBaseUrl}/cv-gids/cv-maken-met-chatgpt`,
-    description: "Dutch five-step ChatGPT CV workflow with a worked source-to-suggestion example and factual review checklist.",
+    description: "Dutch guide based on a test of 24 CVs written by OpenAI's gpt-5.5 (27 Sep 2026): markdown in 24/24, placeholders in 7/24, advice mixed into 8/8 tailored CVs, no invented requirements; tested prompts that removed the leftovers (0/16), employer attitudes (Tilburg University 2024: 79% allow AI if truthful) and privacy settings.",
   },
   {
     title: "Create a CV with ChatGPT without invented facts",
