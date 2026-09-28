@@ -36,6 +36,9 @@ interface FullCvPreviewDialogProps {
   onPageCountChange: (pageCount: number) => void;
   onSelectTemplate: (templateId: string, defaultThemeId: string) => void | Promise<void>;
   onSelectTheme: (themeId: string) => void | Promise<void>;
+  /** Price-copy experiment: short line for the desktop header, full line for the mobile footer. */
+  priceCopyShort?: string;
+  priceCopyLong?: string;
 }
 
 const MIN_CUSTOM_ZOOM = 0.5;
@@ -81,6 +84,8 @@ export default function FullCvPreviewDialog({
   onPageCountChange,
   onSelectTemplate,
   onSelectTheme,
+  priceCopyShort,
+  priceCopyLong,
 }: FullCvPreviewDialogProps) {
   const isEnglish = uiLanguage === "en";
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -369,9 +374,11 @@ export default function FullCvPreviewDialog({
   const mobilePageLabel = isEnglish
     ? `Page ${activePage} of ${pageCount}`
     : `Pagina ${activePage} van ${pageCount}`;
-  const priceCopy = isEnglish
+  const defaultPriceCopy = isEnglish
     ? "Secure checkout · No subscription · Immediate PDF"
     : "Veilig betalen · Geen abonnement · Direct je PDF";
+  const priceCopy = priceCopyShort ?? defaultPriceCopy;
+  const priceCopyFooter = priceCopyLong ?? defaultPriceCopy;
   const completionNote = !isReady && hasExportableContent
     ? isEnglish
       ? `${completionScore}% complete · ${remainingSteps} recommended ${remainingSteps === 1 ? "section" : "sections"} left. You can download this version now.`
@@ -647,7 +654,7 @@ export default function FullCvPreviewDialog({
             {hasExportableContent ? <DownloadIcon /> : null}
             {isDownloading ? isEnglish ? "Working..." : "Bezig..." : primaryLabel}
           </button>
-          {hasExportableContent ? <p className="mt-1.5 text-center text-[10px] font-medium text-slate-500">{priceCopy}</p> : null}
+          {hasExportableContent ? <p className="mt-1.5 text-center text-[10px] font-medium text-slate-500">{priceCopyFooter}</p> : null}
           {completionNote ? <p className="mt-1 text-center text-[10px] font-semibold leading-relaxed text-amber-700">{completionNote}</p> : null}
         </footer>
 

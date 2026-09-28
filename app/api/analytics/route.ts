@@ -24,6 +24,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'cta_clicked',
     'cta_experiment_assigned',
     'cta_experiment_clicked',
+    'price_copy_exposed',
     'login_view',
     'login_code_requested',
     'login_verified',

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { readStoredPriceCopyVariant } from "@/lib/pricing-copy-experiment";
 import { useEffect, useRef, useState } from "react";
 import { getCheckoutURL } from "@/app/actions";
 import AgencyCheckoutButton from "@/components/agency/AgencyCheckoutButton";
@@ -150,6 +151,7 @@ export default function PublicDraftClaimClient({ draftId, flow, intent }: Public
                         cvId: result.cvId,
                         product: "cv-download",
                         source: "public_editor_post_login",
+                        priceCopyVariant: readStoredPriceCopyVariant(),
                     });
 
                     try {
@@ -159,6 +161,7 @@ export default function PublicDraftClaimClient({ draftId, flow, intent }: Public
                                 cvId: result.cvId,
                                 product: "cv-download",
                                 source: "public_editor_post_login",
+                        priceCopyVariant: readStoredPriceCopyVariant(),
                             });
                             clearPublicDraft(draftId);
                             window.location.assign(checkout.url);
@@ -169,6 +172,7 @@ export default function PublicDraftClaimClient({ draftId, flow, intent }: Public
                             cvId: result.cvId,
                             product: "cv-download",
                             source: "public_editor_post_login",
+                        priceCopyVariant: readStoredPriceCopyVariant(),
                             reason: checkout.reason || checkout.code,
                         });
                     } catch {
@@ -176,6 +180,7 @@ export default function PublicDraftClaimClient({ draftId, flow, intent }: Public
                             cvId: result.cvId,
                             product: "cv-download",
                             source: "public_editor_post_login",
+                        priceCopyVariant: readStoredPriceCopyVariant(),
                             reason: "network_error",
                         });
                     }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
+import PricingCopyLead from "@/components/pricing/PricingCopyLead";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
 import {
@@ -204,6 +205,7 @@ export default function PrijzenPage() {
                         Maak en bekijk je CV gratis. Download voor{" "}
                         <span className="wk-hero-highlight">{cvDownloadPrice.display}</span>.
                     </h1>
+                    <PricingCopyLead locale="nl" />
                     <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-[var(--wk-ink-muted)] md:text-lg md:leading-8">
                         Betaal één keer voor de PDF van dit CV. Geen proefperiode, maandkosten of automatische verlenging.
                         {" "}Pas hetzelfde betaalde cv later gratis aan en download het opnieuw. Een nieuw, afzonderlijk cv betaal je apart.

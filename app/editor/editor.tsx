@@ -38,6 +38,7 @@ import CvScoreWidget from "./CvScoreWidget";
 import KeywordScannerWidget from "./KeywordScannerWidget";
 import PhotoUpload from "./PhotoUpload";
 import { cvDownloadPrice } from "@/lib/site-content";
+import { usePriceCopy } from "@/components/pricing/usePriceCopy";
 import {
     hasCompletionTracked,
     hasEditorStartedTracked,
@@ -734,6 +735,8 @@ export default function Editor({
 
         return result.ok;
     }, [colorThemeId, isEnglish, isPublicMode, publicDraftId, publicFlow, publicSource, templateId, uiLanguage]);
+    // Price-copy experiment (price_copy_v1): all consumer editors, including the anonymous draft editor; off for agency workspaces.
+    const priceCopyExperiment = usePriceCopy(isEnglish ? "en" : "nl", "editor", !isMatchPackWorkspace);
     const paidDownloadCtaLabel = tr(
         "PDF downloaden",
         "Download PDF"
@@ -1406,6 +1409,7 @@ export default function Editor({
             source,
             variant: CHECKOUT_FLOW_VARIANT,
             experimentVariant: CHECKOUT_FLOW_VARIANT,
+            priceCopyVariant: priceCopyExperiment.variant,
             templateId,
             uiLanguage,
             ...getEditorSearchContext(),
@@ -1507,6 +1511,7 @@ export default function Editor({
                         cvId: id,
                         variant: CHECKOUT_FLOW_VARIANT,
                         experimentVariant: CHECKOUT_FLOW_VARIANT,
+                        priceCopyVariant: priceCopyExperiment.variant,
                         source,
                         completionScore,
                         pageCount,
@@ -1688,6 +1693,7 @@ export default function Editor({
                                 {tr("Alleen bekijken", "View only")}
                             </span>
                         ) : null}
+                        <div className="flex flex-col items-end">
                         <div className="flex items-center gap-1 sm:gap-2">
                             {!isCurrentCvEmpty && !isReadOnlyWorkspace ? (
                                 <button
@@ -1789,6 +1795,12 @@ export default function Editor({
                                     <span>{toolbarCtaLabel}</span>
                                 )}
                             </button>
+                        </div>
+                        {hasExportableContent && !isCompactToolbar && priceCopyExperiment.copy.toolbarCaption ? (
+                            <p className="mt-1 text-right text-[11px] font-medium text-slate-500" data-price-copy={priceCopyExperiment.variant}>
+                                {priceCopyExperiment.copy.toolbarCaption}
+                            </p>
+                        ) : null}
                         </div>
                     </div>
                 </div>
@@ -2574,6 +2586,8 @@ export default function Editor({
                     onPageCountChange={setPageCount}
                     onSelectTemplate={handleTemplateChange}
                     onSelectTheme={handleColorThemeChange}
+                    priceCopyShort={priceCopyExperiment.copy.toolbarCaption ?? undefined}
+                    priceCopyLong={priceCopyExperiment.variant === "control" ? undefined : priceCopyExperiment.copy.previewLine}
                 />
             ) : null}
 

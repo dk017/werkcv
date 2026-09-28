@@ -105,6 +105,8 @@ type EditorSourceContext = {
 type CheckoutExperimentContext = EditorSourceContext & {
     variant?: 'modal' | 'direct';
     experimentVariant?: 'modal' | 'direct';
+    /** price_copy_v1 arm shown to this visitor (see lib/pricing-copy-experiment.ts). */
+    priceCopyVariant?: 'control' | 'pizza' | 'competitor';
 };
 
 // ============================================================
@@ -548,6 +550,10 @@ export type AnalyticsEvent =
     | {
           event: 'checkout_modal_closed';
           properties: { cvId: string; reason: 'later_button' | 'close_button' | 'overlay' };
+      }
+    | {
+          event: 'price_copy_exposed';
+          properties: { experiment: string; variant: 'control' | 'pizza' | 'competitor'; surface: 'editor' | 'full_preview' | 'pricing_page'; locale: 'nl' | 'en'; newAssignment: boolean };
       }
     | { event: 'checkout_start'; properties: { cvId: string; product?: string; amountCents?: number; source?: string } & CheckoutExperimentContext }
     | { event: 'checkout_started'; properties: { cvId: string; product?: string; amountCents?: number; source?: string } & CheckoutExperimentContext }
