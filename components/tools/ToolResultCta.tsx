@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import TrackedToolLink from "@/components/analytics/TrackedToolLink";
 
 type ToolResultCtaProps = {
@@ -22,7 +23,7 @@ export function ToolResultCta({
   primaryLabel = "Start gratis",
   secondaryHref = "/templates",
   secondaryLabel = "Kies eerst een template",
-  proofItems = ["Gratis starten", "Eenmalig €4,99 bij PDF-download", "Geen abonnement"],
+  proofItems = ["Gratis starten", `Eenmalig ${cvDownloadPrice.display} bij PDF-download`, "Geen abonnement"],
   toolName = "tool-result",
   ctaIntent = "general",
   resultState = "calculator_result",

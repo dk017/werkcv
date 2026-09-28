@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
@@ -363,7 +364,7 @@ export default function HowToWriteDutchCvWithoutSpeakingDutchPage() {
           <p className="mt-3 max-w-3xl text-slate-200">
             Start with an English CV template, add honest language levels, and keep
             the first page focused on role fit. You can edit for free; the final PDF costs
-            €4.99 including VAT. There is no subscription.
+            {cvDownloadPrice.displayEn} including VAT. There is no subscription.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <TrackedLandingLink

@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import openai from "@/lib/openai-client";
 
 export type CvScoreStatus = "good" | "improvement" | "critical";
@@ -353,7 +354,7 @@ const ENGLISH_FUNCTION_WORDS = [
 
 const CTA = {
   headline: "Verbeter je score met een WerkCV template",
-  subtext: "ATS-vriendelijk, geoptimaliseerd voor de Nederlandse markt. Eenmalig €4,99.",
+  subtext: `ATS-vriendelijk, geoptimaliseerd voor de Nederlandse markt. Eenmalig ${cvDownloadPrice.display}.`,
   primary_button_text: "Begin in de editor →",
   primary_button_url: "/editor?template=professional&startSource=cv_score_result",
   secondary_button_text: "Vergelijk templates",

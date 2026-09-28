@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 /**
  * Shared OG image layout for all route-level opengraph-image.tsx files.
  * Returns a JSX element to pass into ImageResponse.
@@ -103,7 +104,7 @@ export function buildOgImage({
 
                 {/* Footer tagline */}
                 <div style={{ fontSize: 22, color: '#666', fontWeight: 700 }}>
-                    werkcv.nl · professioneel cv maken · eenmalig €4,99
+                    werkcv.nl · professioneel cv maken · eenmalig {cvDownloadPrice.display}
                 </div>
             </div>
 
@@ -121,7 +122,7 @@ export function buildOgImage({
                     padding: '40px 28px',
                 }}
             >
-                <div style={{ fontSize: 100, fontWeight: 900, color: '#000', lineHeight: 1 }}>€4,99</div>
+                <div style={{ fontSize: 100, fontWeight: 900, color: '#000', lineHeight: 1 }}>{cvDownloadPrice.display}</div>
                 <div
                     style={{
                         fontSize: 17,

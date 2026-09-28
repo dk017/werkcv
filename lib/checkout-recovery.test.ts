@@ -10,6 +10,7 @@ import {
   evaluateCheckoutRecoveryEligibility,
 } from "@/lib/checkout-recovery";
 import { isConsumerExcludedEmail } from "@/lib/consumer-analytics-exclusions";
+import { cvDownloadPrice } from "@/lib/site-content";
 
 const now = new Date("2026-08-30T12:00:00.000Z");
 
@@ -86,7 +87,7 @@ test("recovery URL is canonical, content-free and HTTPS-only", () => {
     cvId: "cv-123",
     configuredOrigin: "https://werkcv.nl",
   });
-  assert.match(email.body, /€4\.99 including VAT/);
+  assert.ok(email.body.includes(`${cvDownloadPrice.displayEn} including VAT`));
   assert.match(email.body, /one-time payment, not a subscription/);
   assert.doesNotMatch(email.body, /discount|hurry|expires soon/i);
 });

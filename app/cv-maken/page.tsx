@@ -882,7 +882,7 @@ export default function CvMakenPage() {
                 href="/prijzen"
                 className="wk-button wk-button-secondary"
               >
-                Bekijk €4,99 zonder abonnement
+                Bekijk {cvDownloadPrice.display} zonder abonnement
               </Link>
             </div>
           </div>

@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Manrope } from "next/font/google";
 import "./globals.css";
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     default: "WerkCV - Professioneel CV Maken | Online CV Builder",
     template: "%s",
   },
-  description: "Maak binnen 5 minuten een professioneel CV. Kies uit 13+ ATS-vriendelijke templates, vul je gegevens in en download als PDF. Eenmalig €4,99, geen abonnement.",
+  description: `Maak binnen 5 minuten een professioneel CV. Kies uit 13+ ATS-vriendelijke templates, vul je gegevens in en download als PDF. Eenmalig ${cvDownloadPrice.display}, geen abonnement.`,
   keywords: [
     "cv maken",
     "cv builder",
@@ -50,7 +51,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "WerkCV - Professioneel CV Maken | Online CV Builder",
-    description: "Maak binnen 5 minuten een professioneel CV. Kies uit 13+ ATS-vriendelijke templates en download als PDF. Eenmalig €4,99.",
+    description: `Maak binnen 5 minuten een professioneel CV. Kies uit 13+ ATS-vriendelijke templates en download als PDF. Eenmalig ${cvDownloadPrice.display}.`,
     url: "https://werkcv.nl",
     siteName: "WerkCV",
     locale: "nl_NL",
@@ -68,7 +69,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@werkcvnl",
     title: "WerkCV - Professioneel CV Maken",
-    description: "Maak binnen 5 minuten een professioneel CV. 13+ templates, eenmalig €4,99, geen abonnement.",
+    description: `Maak binnen 5 minuten een professioneel CV. 13+ templates, eenmalig ${cvDownloadPrice.display}, geen abonnement.`,
     images: ["/opengraph-image"],
   },
 };

@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import Link from "next/link";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
 import MobileStickyCta from "@/components/landing/MobileStickyCta";
@@ -143,7 +144,7 @@ export default function AtsResumeNetherlandsPage() {
             </TrackedLandingLink>
           </div>
           <p className="mt-4 text-sm font-semibold text-slate-700">
-            Start free. Final PDF €4.99 including VAT. No subscription.
+            Start free. Final PDF {cvDownloadPrice.displayEn} including VAT. No subscription.
           </p>
         </div>
       </section>
@@ -313,7 +314,7 @@ export default function AtsResumeNetherlandsPage() {
         </div>
       </section>
       <MobileStickyCta
-        text="Start free. Final PDF €4.99 including VAT. No subscription."
+        text={`Start free. Final PDF ${cvDownloadPrice.displayEn} including VAT. No subscription.`}
         buttonLabel="Start CV"
         href="/en/editor?template=professional&startSource=en_ats_resume_sticky"
         trackingLocation="ats_resume_netherlands_mobile_sticky"

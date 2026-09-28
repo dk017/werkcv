@@ -16,6 +16,7 @@ import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { geolocateIp, getClientIp } from '@/lib/geoip'
 import { cvContentVersion } from '@/lib/cv-content-version'
+import { hasCvDownloadAccess } from '@/lib/cv-download-access'
 import {
     buildPersonalCvPreview,
     personalCvLibraryQuerySchema,
@@ -131,6 +132,8 @@ export async function getCVWithSettings(id: string, expectedWorkspace?: 'persona
         colorThemeId: cv.colorThemeId ?? getDefaultThemeId(cv.templateId),
         agencyRouteLocked: isMatchPack,
         workspace: cv.workspace,
+        // Already paid (or free): the editor then shows the download button without a price.
+        downloadIncluded: await hasCvDownloadAccess(user.id, id, cv.workspace.kind),
         workspaceContext: {
             kind: isMatchPack ? 'matchpack' as const : 'personal' as const,
             label: isMatchPack ? 'MatchPack' : 'Persoonlijke CV',

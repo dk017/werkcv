@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
@@ -539,7 +540,7 @@ export default function VakantiegeldBerekenenPage() {
                     primaryHref="/editor?template=professional&startSource=tool_vakantiegeld_berekenen"
                     secondaryLabel="Bekijk eerst cv-templates"
                     intent="salary"
-                    proofItems={["Gratis starten", "Eenmalig €4,99 bij PDF-download", "Geen abonnement"]}
+                    proofItems={["Gratis starten", `Eenmalig ${cvDownloadPrice.display} bij PDF-download`, "Geen abonnement"]}
                 />
 
                 <section className="bg-slate-50 border-2 border-slate-200 p-6">

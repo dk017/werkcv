@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import { BlogArticle } from '../types';
 
 export const cvMakenAlsStudent: BlogArticle = {
@@ -265,7 +266,7 @@ export const cvMakenAlsStudent: BlogArticle = {
         },
         {
             question: 'Is gratis een CV maken als student mogelijk?',
-            answer: 'Ja. WerkCV.nl biedt gratis CV-templates die je kunt invullen en bewaren. Wil je een PDF-download, dan betaal je eenmalig €4,99 — een éénmalige investering voor een professionele indruk bij tientallen sollicitaties.',
+            answer: `Ja. WerkCV.nl biedt gratis CV-templates die je kunt invullen en bewaren. Wil je een PDF-download, dan betaal je eenmalig ${cvDownloadPrice.display} — een éénmalige investering voor een professionele indruk bij tientallen sollicitaties.`,
         },
     ],
 

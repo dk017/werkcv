@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
@@ -225,7 +226,7 @@ export default function LinkedinNaarCvPage() {
           secondaryLabel="Check daarna je ATS-score"
           intent="cv_content"
           insightText="Je kunt gratis starten en alles aanpassen. Je betaalt alleen eenmalig als je de definitieve cv als PDF wilt downloaden."
-          proofItems={["LinkedIn-tekst als basis", "Gratis bewerken", "Eenmalig €4,99", "Geen abonnement"]}
+          proofItems={["LinkedIn-tekst als basis", "Gratis bewerken", `Eenmalig ${cvDownloadPrice.display}`, "Geen abonnement"]}
         />
       </main>
 

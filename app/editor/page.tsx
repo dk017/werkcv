@@ -101,6 +101,7 @@ export default async function EditorPage({
       uiLanguage="nl"
       agencyRouteLocked={cv.agencyRouteLocked}
       workspaceContext={cv.workspaceContext}
+      downloadIncluded={cv.downloadIncluded}
       workspaceEntitlements={workspaceEntitlements}
       workspaceSwitcherEnabled={isWorkspaceSwitcherEnabled(workspaceEntitlements)}
     />

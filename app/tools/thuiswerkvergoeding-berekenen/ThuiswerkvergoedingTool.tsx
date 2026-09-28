@@ -1,5 +1,6 @@
 "use client";
 
+import { cvDownloadPrice } from "@/lib/site-content";
 import { useState } from "react";
 import Link from "next/link";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
@@ -179,7 +180,7 @@ export default function ThuiswerkvergoedingTool() {
                 href="/editor"
                 className="border-2 border-white bg-[#4ECDC4] px-4 py-2 text-sm font-black text-slate-900"
               >
-                Maak gratis een ATS-vriendelijk CV - eenmalig €4,99
+                Maak gratis een ATS-vriendelijk CV - eenmalig {cvDownloadPrice.display}
               </Link>
               <Link
                 href="/tools/netto-bruto-calculator"

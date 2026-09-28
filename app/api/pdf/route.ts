@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
 import { generatePDF } from '@/lib/pdf';
 import { CVData } from '@/lib/cv';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 import { reportOpsIncident } from '@/lib/ops-alerts';
 import { getDefaultThemeId } from '@/lib/templates/registry';
 import { authorizeCvDocument, CvAuthorizationError } from '@/lib/workspace/cv-authorization';
+import { hasCvDownloadAccess } from '@/lib/cv-download-access';
 
 export async function GET(request: NextRequest) {
     const user = await getCurrentUserFromRequest(request);
@@ -39,29 +39,12 @@ export async function GET(request: NextRequest) {
         );
     }
 
-    // Payment gate — enabled via PAYMENT_ENABLED=true env var
-    const paymentEnabled = process.env.PAYMENT_ENABLED === 'true';
-    const pilotAccess = await prisma.pilotAccess.findFirst({
-        where: {
-            userId: user.id,
-            expiresAt: { gte: new Date() },
-        },
-        orderBy: { expiresAt: 'desc' },
-    });
-    if (paymentEnabled && !pilotAccess && cv.workspace.kind === 'personal') {
-        const order = await prisma.order.findFirst({
-            where: {
-                cvId: cvId,
-                paidAt: { not: null },
-            },
-        });
-
-        if (!order) {
-            return NextResponse.json(
-                { error: 'Payment required', code: 'PAYMENT_REQUIRED' },
-                { status: 402 }
-            );
-        }
+    // Payment gate (PAYMENT_ENABLED=true): a paid order for this CV, a pilot pass, or an agency workspace.
+    if (!(await hasCvDownloadAccess(user.id, cvId, cv.workspace.kind))) {
+        return NextResponse.json(
+            { error: 'Payment required', code: 'PAYMENT_REQUIRED' },
+            { status: 402 }
+        );
     }
 
     // Generate PDF with template and color theme

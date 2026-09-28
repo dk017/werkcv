@@ -1,6 +1,7 @@
 import { createHmac, timingSafeEqual } from "crypto";
 import { getEditorPathForLanguage, getSuccessPathForLanguage } from "@/lib/editor-path";
 import type { ResumeLanguage } from "@/lib/resume-language";
+import { CHECKOUT_CANCEL_PARAM, CHECKOUT_CANCEL_VALUE } from "@/lib/checkout-exit";
 import { CV_DOWNLOAD_PRODUCT } from "@/lib/polar";
 import type { CheckoutAddon, CheckoutProduct } from "@/lib/polar";
 import { AGENCY_PLAN_CODE, getAgencyPlanMetadata } from "@/lib/agency-plan";
@@ -58,6 +59,22 @@ function normalizeCountryCode(countryCode: string | null | undefined): string | 
   return /^[A-Z]{2}$/.test(normalized) ? normalized : null;
 }
 
+// Local EUR payment methods. Dodo only shows them with EUR billing and a billing address in that
+// country (docs.dodopayments.com/features/payment-methods). NL is live; BE/AT/PT wait for
+// DODO_EU_LOCAL_METHODS=true until one live checkout session per country has been checked.
+const EU_LOCAL_PAYMENT_METHODS: Record<string, string> = {
+  NL: "ideal",
+  BE: "bancontact_card",
+  AT: "eps",
+  PT: "multibanco",
+};
+
+function euroCheckoutCountry(visitorCountry: string | null, resumeLanguage: ResumeLanguage): string | null {
+  if (!visitorCountry) return resumeLanguage === "nl" ? "NL" : null;
+  if (visitorCountry === "NL") return "NL";
+  return process.env.DODO_EU_LOCAL_METHODS === "true" && EU_LOCAL_PAYMENT_METHODS[visitorCountry] ? visitorCountry : null;
+}
+
 // Billing follows where the buyer is, not the CV language: expats in NL writing
 // an English CV still expect EUR + iDEAL. Language is only the fallback when the
 // visitor country is unknown.
@@ -72,20 +89,25 @@ export function buildDodoCheckoutBody(
   }
 
   const visitorCountry = normalizeCountryCode(visitorCountryCode);
-  const isDutchCheckout = visitorCountry ? visitorCountry === "NL" : resumeLanguage === "nl";
+  const euroCountry = euroCheckoutCountry(visitorCountry, resumeLanguage);
+  const localMethod = euroCountry ? EU_LOCAL_PAYMENT_METHODS[euroCountry] : null;
   const allowedPaymentMethodTypes = [
-    "ideal",
-    "credit",
-    "debit",
-    "apple_pay",
-    "google_pay",
-    ...(isDutchCheckout ? [] : ["upi_collect"]),
+    ...new Set([
+      localMethod ?? "ideal",
+      "ideal",
+      "credit",
+      "debit",
+      "apple_pay",
+      "google_pay",
+      ...(euroCountry ? [] : ["upi_collect"]),
+    ]),
   ];
   const body: Record<string, unknown> = {
     product_cart: [{ product_id: DODO_PRODUCT_ID, quantity: 1 }],
     allowed_payment_method_types: allowedPaymentMethodTypes,
     return_url: `${APP_URL}${getSuccessPathForLanguage(resumeLanguage, cvId)}`,
-    cancel_url: `${APP_URL}${getEditorPathForLanguage(resumeLanguage, cvId)}`,
+    // The marker lets the editor ask "what held you back?" (lib/checkout-exit.ts).
+    cancel_url: `${APP_URL}${getEditorPathForLanguage(resumeLanguage, cvId)}&${CHECKOUT_CANCEL_PARAM}=${CHECKOUT_CANCEL_VALUE}`,
     metadata: {
       cv_id: cvId,
       product: CV_DOWNLOAD_PRODUCT,
@@ -98,19 +120,22 @@ export function buildDodoCheckoutBody(
       force_language: resumeLanguage,
     },
     feature_flags: {
-      allow_currency_selection: !isDutchCheckout,
+      allow_currency_selection: !euroCountry,
       allow_discount_code: false,
       allow_phone_number_collection: false,
     },
     minimal_address: true,
   };
 
-  if (isDutchCheckout) {
+  if (euroCountry === "NL") {
     body.billing_currency = "EUR";
     body.billing_address = {
       country: "NL",
       zipcode: "1012JS",
     };
+  } else if (euroCountry) {
+    body.billing_currency = "EUR";
+    body.billing_address = { country: euroCountry };
   }
 
   if (email) {

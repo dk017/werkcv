@@ -14,7 +14,7 @@ test("English checkout keeps the English return flow and explicitly requests Eng
   const featureFlags = body.feature_flags as Record<string, unknown>;
 
   assert.equal(body.return_url, "https://werkcv.nl/success?lang=en&cvId=cv-123");
-  assert.equal(body.cancel_url, "https://werkcv.nl/en/editor?id=cv-123");
+  assert.equal(body.cancel_url, "https://werkcv.nl/en/editor?id=cv-123&checkout=cancelled");
   assert.equal(customization.force_language, "en");
   assert.equal(featureFlags.allow_currency_selection, true);
   assert.equal(body.billing_address, undefined);
@@ -29,7 +29,7 @@ test("Dutch checkout preserves EUR, iDEAL and Dutch checkout language", async ()
   const featureFlags = body.feature_flags as Record<string, unknown>;
 
   assert.equal(body.return_url, "https://werkcv.nl/success?lang=nl&cvId=cv-456");
-  assert.equal(body.cancel_url, "https://werkcv.nl/editor?id=cv-456");
+  assert.equal(body.cancel_url, "https://werkcv.nl/editor?id=cv-456&checkout=cancelled");
   assert.equal(customization.force_language, "nl");
   assert.equal(featureFlags.allow_currency_selection, false);
   assert.equal(body.billing_currency, "EUR");
@@ -147,4 +147,36 @@ test("Agency checkout metadata carries the 99/300 contract without personal or d
   );
   const metadataText = JSON.stringify(metadata).toLowerCase();
   assert.doesNotMatch(metadataText, /email|cv[_-]?id|candidate|vacancy|proposal/u);
+});
+
+test("Belgian, Austrian and Portuguese buyers keep the old checkout until DODO_EU_LOCAL_METHODS is on", async () => {
+  const { buildDodoCheckoutBody } = await dodoModule;
+  delete process.env.DODO_EU_LOCAL_METHODS;
+  const off = buildDodoCheckoutBody("cv-800", undefined, "nl", "BE");
+  assert.equal(off.billing_currency, undefined);
+  assert.equal(off.billing_address, undefined);
+  assert.ok(!(off.allowed_payment_method_types as string[]).includes("bancontact_card"));
+});
+
+test("With DODO_EU_LOCAL_METHODS on, BE/AT/PT get EUR, their country and their local method", async () => {
+  const { buildDodoCheckoutBody } = await dodoModule;
+  process.env.DODO_EU_LOCAL_METHODS = "true";
+  try {
+    for (const [country, method] of [["BE", "bancontact_card"], ["AT", "eps"], ["PT", "multibanco"]] as const) {
+      const body = buildDodoCheckoutBody("cv-801", undefined, "nl", country);
+      const methods = body.allowed_payment_method_types as string[];
+      assert.equal(body.billing_currency, "EUR");
+      assert.deepEqual(body.billing_address, { country });
+      assert.equal(methods[0], method);
+      assert.ok(methods.includes("credit") && methods.includes("apple_pay"));
+      assert.ok(!methods.includes("upi_collect"));
+      assert.equal((body.feature_flags as Record<string, unknown>).allow_currency_selection, false);
+    }
+    const germany = buildDodoCheckoutBody("cv-802", undefined, "en", "DE");
+    assert.equal(germany.billing_currency, undefined, "countries without a local method are unchanged");
+    const nl = buildDodoCheckoutBody("cv-803", undefined, "en", "NL");
+    assert.deepEqual(nl.billing_address, { country: "NL", zipcode: "1012JS" });
+  } finally {
+    delete process.env.DODO_EU_LOCAL_METHODS;
+  }
 });

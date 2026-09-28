@@ -3,6 +3,7 @@ import { extraDutchEditorialPages } from './extra-dutch-pages';
 import { SeoGuidePage } from './types';
 import { englishQuestionGuides } from './english-question-guides';
 import { buildConsumerPricingComparisonRows } from '@/lib/commercial/pricing-comparison-rows';
+import { cvDownloadPrice } from '@/lib/site-content';
 
 type DutchSeed = {
     slug: string;
@@ -3917,7 +3918,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                     rows: [
                         {
                             label: 'Prijsmodel',
-                            primary: 'Gratis starten, daarna eenmalig EUR4,99 per CV als je downloadt.',
+                            primary: `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per CV als je downloadt.`,
                             secondary: 'Gratis basisaccount; Pro kost EUR2,95 voor 14 dagen en daarna EUR21,99 per maand met automatische verlenging.',
                         },
                         {
@@ -4148,7 +4149,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                     rows: [
                         {
                             label: 'Prijsmodel',
-                            primary: 'Gratis starten, daarna eenmalig EUR4,99 per CV als je wilt downloaden.',
+                            primary: `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per CV als je wilt downloaden.`,
                             secondary: 'Abonnementsmodel: de publieke pricingpagina toont EUR0,99 voor 14 dagen en daarna EUR19,99 per maand met automatische verlenging.',
                         },
                         {
@@ -4393,7 +4394,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                     rows: [
                         {
                             label: 'Prijsmodel',
-                            primary: 'Gratis starten, daarna eenmalig EUR4,99 per CV zodra je wilt downloaden.',
+                            primary: `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per CV zodra je wilt downloaden.`,
                             secondary: 'Gratis toegang met beperkingen, 7-daagse proef voor EUR2,95, daarna EUR14,95 per 4 weken; ook 6-maanden- en jaarpakketten als eenmalige betaling.',
                         },
                         {
@@ -4677,7 +4678,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                     rows: [
                         {
                             label: 'Prijsmodel',
-                            primary: 'Gratis starten, daarna eenmalig EUR4,99 per cv als je wilt downloaden.',
+                            primary: `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per cv als je wilt downloaden.`,
                             secondary: 'Volgens de officiële Zety.com-pricingpagina: gratis starten, daarna trial vanaf USD1,95 voor 14 dagen; daarna automatische verlenging tegen een hoger premiumtarief. Prijzen kunnen per markt verschillen.',
                         },
                         {
@@ -4936,7 +4937,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                     rows: [
                         {
                             label: 'Prijsmodel',
-                            primary: 'Gratis starten, daarna eenmalig EUR4,99 per cv wanneer je wilt downloaden.',
+                            primary: `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per cv wanneer je wilt downloaden.`,
                             secondary: 'Officiële help- en pricingpagina\'s zeggen dat plans per locatie kunnen verschillen en onder meer trial, 6 maanden, 1 jaar en in sommige landen one-time payments kunnen omvatten.',
                         },
                         {
@@ -5157,7 +5158,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                     rows: [
                         {
                             label: 'Prijsmodel',
-                            primary: 'Gratis starten, daarna eenmalig EUR4,99 per CV wanneer je wilt downloaden.',
+                            primary: `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per CV wanneer je wilt downloaden.`,
                             secondary: 'Officiële voorwaarden spreken over subscriptions en terugkerende kosten; opzeggen of opschorten kan via accountinstellingen of support.',
                         },
                         {
@@ -6166,7 +6167,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                     rows: [
                         {
                             label: 'Prijsmodel',
-                            primary: 'Gratis starten, daarna eenmalig EUR4,99 per CV als je downloadt.',
+                            primary: `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per CV als je downloadt.`,
                             secondary: 'Volgens de officiële voorwaarden een maandelijks abonnement met een proefabonnement van 14 dagen; daarna automatisch terugkerende maandkosten van ongeveer USD 30 inclusief btw, afhankelijk van regio, tenzij je tijdig opzegt.',
                         },
                         {
@@ -6405,7 +6406,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                     rows: [
                         {
                             label: 'Prijsmodel',
-                            primary: 'Gratis starten, daarna eenmalig EUR4,99 per CV als je downloadt.',
+                            primary: `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per CV als je downloadt.`,
                             secondary: 'Gratis plan met 1 gratis PDF per maand en extra PDF\'s voor EUR4,95 per download; Pro kost EUR9,95 per maand, of eenmalig EUR19,95 voor 3 maanden.',
                         },
                         {
@@ -6650,7 +6651,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         {
                             label: 'Prijsmodel',
                             primary: 'Canva Free is altijd gratis; Canva Pro is een abonnement met 30-daagse proefperiode. Free gebruikers kunnen ook eenmalig betalen voor Pro-content in een design.',
-                            secondary: 'Gratis starten, daarna eenmalig EUR4,99 per CV als je downloadt.',
+                            secondary: `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per CV als je downloadt.`,
                         },
                         {
                             label: 'Designvrijheid',

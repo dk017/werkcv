@@ -1,4 +1,5 @@
 import type { SeoGuidePage } from "./types";
+import { cvDownloadPrice } from "@/lib/site-content";
 
 export const extraDutchEditorialPages: SeoGuidePage[] = [
   {
@@ -33,7 +34,7 @@ export const extraDutchEditorialPages: SeoGuidePage[] = [
             {
               label: "Prijsmodel",
               primary:
-                "Gratis starten, daarna eenmalig EUR4,99 per CV zodra je wilt downloaden.",
+                `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per CV zodra je wilt downloaden.`,
               secondary:
                 "Volgens de officiele pricingpagina momenteel 14 dagen volledige toegang voor $0,99 en daarna $19,99 per maand, automatisch verlengd tenzij je opzegt.",
             },
@@ -308,7 +309,7 @@ export const extraDutchEditorialPages: SeoGuidePage[] = [
             {
               label: "Prijsmodel",
               primary:
-                "Gratis starten, daarna eenmalig EUR4,99 per CV zodra je wilt downloaden.",
+                `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per CV zodra je wilt downloaden.`,
               secondary:
                 "Gratis dienst; de officiele Europass-pagina noemt dat je zoveel CVs kunt maken als je wilt zonder betaalmodel.",
             },

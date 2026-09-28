@@ -11,16 +11,17 @@ import {
 } from "@/lib/pricing-copy-experiment";
 
 /**
- * Returns the visitor's price-copy variant (sticky) and its copy. Renders control copy until
- * assigned on the client, so server and first client render match. Records one exposure per
- * surface per mount.
+ * Returns the visitor's price-copy variant (sticky) and its copy. Until assigned on the client
+ * (and whenever disabled) the variant is undefined and the copy is the plain arm's, so server and
+ * first client render match and events never claim an arm that was not shown. Records one exposure
+ * per surface per mount.
  */
 export function usePriceCopy(
   locale: "nl" | "en",
   surface: "editor" | "full_preview" | "pricing_page",
   enabled = true,
-): { variant: PriceCopyVariant; copy: PriceCopy } {
-  const [variant, setVariant] = useState<PriceCopyVariant>("control");
+): { variant: PriceCopyVariant | undefined; copy: PriceCopy } {
+  const [variant, setVariant] = useState<PriceCopyVariant | undefined>(undefined);
 
   useEffect(() => {
     if (!enabled) return;
@@ -39,5 +40,6 @@ export function usePriceCopy(
     return () => window.clearTimeout(timeoutId);
   }, [enabled, locale, surface]);
 
-  return { variant, copy: getPriceCopy(variant, locale) };
+  const active = enabled ? variant : undefined;
+  return { variant: active, copy: getPriceCopy(active ?? "plain", locale) };
 }

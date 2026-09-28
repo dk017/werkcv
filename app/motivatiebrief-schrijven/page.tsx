@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
@@ -302,7 +303,7 @@ export default function MotivatiebriefSchrijvenPage() {
           text="Een sterke motivatiebrief werkt beter met een duidelijke, professionele cv erbij. Gebruik WerkCV om een nette, ATS-vriendelijke cv te maken voor dezelfde vacature."
           buttonLabel="Maak bijpassende cv"
           buttonHref="/cv-maken"
-          supportLine="Gratis bouwen. Eenmalig EUR 4,99 bij PDF-download. Geen abonnement."
+          supportLine={`Gratis bouwen. Eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen abonnement.`}
           eventName="cta_motivatiebrief_cv_click"
           ctaLocation="motivatiebrief:bottom_cv"
         />

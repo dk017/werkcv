@@ -1,5 +1,6 @@
 "use client";
 
+import { cvDownloadPrice } from "@/lib/site-content";
 import { UiLanguage } from "@/lib/ui-language";
 
 interface WelcomeOnboardingProps {
@@ -31,7 +32,7 @@ export default function WelcomeOnboarding({
         {
           title: "Download your CV",
           description:
-            "Ready? Download as a professional PDF. One-time €4.99, no subscription.",
+            `Ready? Download as a professional PDF. One-time ${cvDownloadPrice.displayEn}, no subscription.`,
           color: "bg-pink-400",
         },
       ]
@@ -51,7 +52,7 @@ export default function WelcomeOnboarding({
         {
           title: "Download je CV",
           description:
-            "Klaar? Download als professionele PDF. Eenmalig €4,99, geen abonnement.",
+            `Klaar? Download als professionele PDF. Eenmalig ${cvDownloadPrice.display}, geen abonnement.`,
           color: "bg-pink-400",
         },
       ];

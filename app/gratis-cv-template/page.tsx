@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
@@ -176,7 +177,7 @@ export default function GratisCvTemplatePage() {
               {[
                 `${templateList.length} templates`,
                 "ATS-vriendelijke optie",
-                "Eenmalig €4,99 bij download",
+                `Eenmalig ${cvDownloadPrice.display} bij download`,
               ].map((item) => (
                 <div
                   key={item}

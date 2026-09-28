@@ -1,20 +1,23 @@
 export const siteUrl = "https://werkcv.nl";
 export const siteName = "WerkCV";
 
+// One CV: unlimited edits and re-downloads of that CV. The Dodo product (DODO_PRODUCT_ID) must be
+// set to the same amount before this is deployed; Dodo decides what is actually charged.
+// €4,99 until 2026-09; see docs/product/2026-09-28-price-copy-exit-plan.md.
 export const cvDownloadPrice = {
-  display: "€4,99",
-  displayEn: "€4.99",
-  value: "4.99",
-  amountCents: 499,
+  display: "€7,95",
+  displayEn: "€7.95",
+  value: "7.95",
+  amountCents: 795,
   currency: "EUR",
 };
 
 // Date the CV download price was last confirmed on the live /prijzen page. Shown next to
 // price statements so search engines and AI assistants can tell current facts from old copies.
 export const cvDownloadPriceCheckedAt = {
-  iso: "2026-09-26",
-  display: "26 september 2026",
-  displayEn: "26 September 2026",
+  iso: "2026-09-28",
+  display: "28 september 2026",
+  displayEn: "28 September 2026",
 };
 
 export const profilePhotoPrice = {

@@ -1,4 +1,5 @@
 "use client";
+import { cvDownloadPrice } from "@/lib/site-content";
 import { useRef, useState } from "react";
 import TrackedToolLink from "@/components/analytics/TrackedToolLink";
 import { track } from "@/lib/analytics";
@@ -64,7 +65,7 @@ const copy = {
     resolveBody: "Gebruik deze check als prioriteitenlijst. Zet je profiel, secties en werkervaring meteen over naar een rustige Nederlandse template en betaal pas als je de PDF wilt downloaden.",
     primaryCta: "Maak een ATS-vriendelijke cv",
     secondaryCta: "Bekijk ATS-vriendelijke templates",
-    priceLine: "Gratis bouwen. Eénmalig €4,99 bij PDF-download. Geen abonnement.",
+    priceLine: `Gratis bouwen. Eénmalig ${cvDownloadPrice.display} bij PDF-download. Geen abonnement.`,
     analyzeAnother: "Ander CV analyseren",
   },
   en: {

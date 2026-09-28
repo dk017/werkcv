@@ -37,6 +37,8 @@ interface FullCvPreviewDialogProps {
   onSelectTemplate: (templateId: string, defaultThemeId: string) => void | Promise<void>;
   onSelectTheme: (themeId: string) => void | Promise<void>;
   /** Price-copy experiment: short line for the desktop header, full line for the mobile footer. */
+  /** Download button label (with the price for unpaid CVs). */
+  downloadLabel?: string;
   priceCopyShort?: string;
   priceCopyLong?: string;
 }
@@ -84,6 +86,7 @@ export default function FullCvPreviewDialog({
   onPageCountChange,
   onSelectTemplate,
   onSelectTheme,
+  downloadLabel,
   priceCopyShort,
   priceCopyLong,
 }: FullCvPreviewDialogProps) {
@@ -360,9 +363,9 @@ export default function FullCvPreviewDialog({
   const saveLabel = isSaving || !isSaved
     ? isEnglish ? "Saving..." : "Opslaan..."
     : isEnglish ? "Saved" : "Opgeslagen";
-  const paidDownloadLabel = isEnglish
+  const paidDownloadLabel = downloadLabel ?? (isEnglish
     ? "Download PDF"
-    : "PDF downloaden";
+    : "PDF downloaden");
   const primaryLabel = !hasExportableContent
     ? isEnglish ? "Add content to download" : "Voeg inhoud toe om te downloaden"
     : pdfPreviewStatus === "ready"
@@ -481,7 +484,7 @@ export default function FullCvPreviewDialog({
               {pageLabel}
             </span>
 
-            <div className="w-[196px] text-center">
+            <div className="w-[212px] shrink-0 text-center">
               <button
                 type="button"
                 onClick={handlePrimaryAction}

@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
@@ -299,7 +300,7 @@ export default function OntslagbriefSchrijvenPage() {
           text="Zodra je je ontslag voorbereidt, is dit ook een goed moment om je cv bij te werken. Met WerkCV maak je een nette, ATS-vriendelijke Nederlandse cv zonder abonnement."
           buttonLabel="Werk mijn cv bij"
           buttonHref="/cv-maken-zonder-abonnement"
-          supportLine="Gratis starten. Eenmalig EUR 4,99 bij PDF-download. Geen abonnement."
+          supportLine={`Gratis starten. Eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen abonnement.`}
           eventName="cta_ontslagbrief_cv_click"
           ctaLocation="ontslagbrief:bottom_cv"
         />

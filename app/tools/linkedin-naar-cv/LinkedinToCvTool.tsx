@@ -1,5 +1,6 @@
 "use client";
 
+import { cvDownloadPrice } from "@/lib/site-content";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import TrackedToolLink from "@/components/analytics/TrackedToolLink";
@@ -328,7 +329,7 @@ export default function LinkedinToCvTool() {
               </TrackedToolLink>
             </div>
             <p className="mt-3 text-sm font-medium text-slate-200">
-              Gratis bouwen. Eénmalig €4,99 bij PDF-download. Geen abonnement.
+              Gratis bouwen. Eénmalig {cvDownloadPrice.display} bij PDF-download. Geen abonnement.
             </p>
           </div>
         </section>

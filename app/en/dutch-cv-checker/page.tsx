@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
@@ -275,7 +276,7 @@ export default function DutchCvCheckerPage() {
         <FinalCtaSection
           title="Need the final Dutch-style version next?"
           description="Use the check to spot the issues first, then move into the English WerkCV editor to rebuild the final version in a cleaner Dutch-market structure."
-          supportLine="Start free. Final PDF €4.99 including VAT. No subscription."
+          supportLine={`Start free. Final PDF ${cvDownloadPrice.displayEn} including VAT. No subscription.`}
           buttonLabel="Open English editor"
           buttonHref="/en/editor"
           trackingLocation="dutch-cv-checker:bottom_primary"

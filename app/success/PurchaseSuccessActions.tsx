@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { clearPendingCheckout } from "@/lib/checkout-exit";
 import PurchaseTracker from "./PurchaseTracker";
 import PdfDownloadButton from "./PdfDownloadButton";
 
@@ -34,6 +35,11 @@ export default function PurchaseSuccessActions({
   const [order, setOrder] = useState<PaidOrder | null>(initialOrder);
   const [timedOut, setTimedOut] = useState(false);
   const tr = (dutch: string, english: string) => language === "en" ? english : dutch;
+
+  // Paid: stop the editor from asking "what held you back?" if the buyer navigates back to it.
+  useEffect(() => {
+    if (order) clearPendingCheckout(cvId);
+  }, [cvId, order]);
 
   useEffect(() => {
     if (order) return;

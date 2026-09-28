@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { sanitizeAiWritingProperties } from '@/lib/ai-writing-analytics';
+import { sanitizeCheckoutExitProperties } from '@/lib/checkout-exit';
 import { prisma } from '@/lib/prisma';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { normalizeAnalyticsPath } from '@/lib/analytics-paths';
@@ -16,6 +17,8 @@ import { agencyAnalyticsEventSchemas } from '@/lib/agency-analytics-contract';
 import { agencyAnalyticsAllowed } from '@/lib/agency-analytics-consent';
 
 const PERSISTED_FUNNEL_EVENTS = new Set([
+    'checkout_exit_prompt_shown',
+    'checkout_exit_reason',
     'page_view',
     'landing',
     'landing_cta_click',
@@ -302,7 +305,9 @@ export async function POST(request: NextRequest) {
         const safeProperties = (
             parsedAgencyProperties?.data
             || parsedRoleProperties
-            || (event.startsWith('ai_writing_') ? sanitizeAiWritingProperties(event, rawProperties) : rawProperties)
+            || (event.startsWith('ai_writing_') ? sanitizeAiWritingProperties(event, rawProperties)
+                : event.startsWith('checkout_exit_') ? sanitizeCheckoutExitProperties(event, rawProperties)
+                : rawProperties)
         ) as Record<string, unknown>;
         const cvId = typeof safeProperties.cvId === 'string' ? safeProperties.cvId : null;
         const orderId = typeof safeProperties.orderId === 'string' ? safeProperties.orderId : null;

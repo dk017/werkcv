@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
@@ -332,7 +333,7 @@ export default function ResumeOptimizerNetherlandsPage() {
         <FinalCtaSection
           title="Optimize your resume for Dutch job applications"
           description="Use the check to improve clarity, ATS readability, and role alignment, then build the final Dutch-style version in WerkCV."
-          supportLine="Start free. Final PDF €4.99 including VAT. No subscription."
+          supportLine={`Start free. Final PDF ${cvDownloadPrice.displayEn} including VAT. No subscription.`}
           buttonLabel="Create a Dutch CV"
           buttonHref="/en/editor"
           trackingLocation="resume-optimizer-netherlands:final_primary"

@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import TrackedLandingLink from "@/components/analytics/TrackedLandingLink";
@@ -334,7 +335,7 @@ export default function DutchCvMistakesEnglishSpeakingJobSeekersPage() {
           <h2 className="text-3xl font-black">Not sure which mistake is in your CV?</h2>
           <p className="mt-3 max-w-3xl text-slate-200">
             Upload your existing CV, check Dutch-market fit, then rebuild only the parts
-            that need work. You can edit for free; the final PDF costs €4.99 including VAT.
+            that need work. You can edit for free; the final PDF costs {cvDownloadPrice.displayEn} including VAT.
             There is no subscription.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">

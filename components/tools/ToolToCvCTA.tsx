@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import Link from "next/link";
 import TrackedToolLink from "@/components/analytics/TrackedToolLink";
 
@@ -27,7 +28,7 @@ export function ToolToCvCTA({
   eyebrow = "Maak je volgende stap concreet",
   insightText = "Gebruik dit resultaat terwijl het nog vers is: zet je CV klaar voor de functie, uren of voorwaarden die je nu serieus overweegt.",
   intent = "general",
-  proofItems = ["Gratis starten", "Eenmalig €4,99 bij PDF-download", "Geen abonnement"],
+  proofItems = ["Gratis starten", `Eenmalig ${cvDownloadPrice.display} bij PDF-download`, "Geen abonnement"],
   resultState = "tool_page_cta",
 }: ToolToCvCTAProps) {
   const locationPrefix = `${toolName}:tool_to_cv`;

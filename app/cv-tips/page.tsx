@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { getAllArticles, getFeaturedArticles } from '@/lib/cv-tips/registry';
@@ -176,7 +177,7 @@ export default function CVTipsHub() {
                         </h2>
                         <p className="mx-auto mb-8 max-w-2xl text-lg leading-8 text-[var(--wk-ink-muted)]">
                             Pas deze tips direct toe. Maak binnen 5 minuten een professioneel CV
-                            met onze templates. Eenmalig €4,99, geen abonnement.
+                            met onze templates. Eenmalig {cvDownloadPrice.display}, geen abonnement.
                         </p>
                         <Link href="/templates" className="wk-button wk-button-primary px-10 py-5 text-xl">
                             Start je CV nu

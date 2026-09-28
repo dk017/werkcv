@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -219,8 +220,8 @@ export default function SollicitatiebriefGeneratorPage() {
                     secondaryHref="/cv-maken-zonder-abonnement"
                     secondaryLabel="Bekijk hoe betalen werkt"
                     intent="cover_letter"
-                    insightText="Start gratis in de editor, kies een rustige Nederlandse template en betaal pas €4,99 als je de PDF echt wilt downloaden."
-                    proofItems={["Brief en CV sluiten beter op elkaar aan", "Gratis bewerken voor betaling", "Eenmalig €4,99", "Geen abonnement"]}
+                    insightText={`Start gratis in de editor, kies een rustige Nederlandse template en betaal pas ${cvDownloadPrice.display} als je de PDF echt wilt downloaden.`}
+                    proofItems={["Brief en CV sluiten beter op elkaar aan", "Gratis bewerken voor betaling", `Eenmalig ${cvDownloadPrice.display}`, "Geen abonnement"]}
                 />
             </div>
 

@@ -78,6 +78,8 @@ import ScaledCvPreview, { A4_WIDTH_PX } from "./ScaledCvPreview";
 import FullCvPreviewDialog from "./FullCvPreviewDialog";
 import SectionOrderPanel from "./SectionOrderPanel";
 import EditorFeedbackWidget from "./EditorFeedbackWidget";
+import CheckoutExitQuestion from "@/components/checkout/CheckoutExitQuestion";
+import { markCheckoutPending } from "@/lib/checkout-exit";
 import WorkspaceSwitcher from "@/components/workspace/WorkspaceSwitcher";
 import type { WorkspaceEntitlements } from "@/lib/workspace/types";
 import {
@@ -105,6 +107,8 @@ interface EditorProps {
     };
     workspaceEntitlements?: WorkspaceEntitlements;
     workspaceSwitcherEnabled?: boolean;
+    /** This CV is already paid for (or free): the download button then shows no price. */
+    downloadIncluded?: boolean;
     aiReviewEnabled?: boolean;
     initialContentVersion?: string;
     mode?: "account" | "public";
@@ -136,7 +140,7 @@ const COMPACT_EDITOR_TOOLBAR_WIDTH_PX = 980;
 const READY_TO_DOWNLOAD_TRACKED_PREFIX = 'werkcv_ready_to_download_tracked_';
 const CHECKOUT_FLOW_VARIANT = 'direct' as const;
 
-type DownloadSource = 'toolbar' | 'post_completion_tools';
+type DownloadSource = 'toolbar' | 'post_completion_tools' | 'checkout_exit_question';
 type TemplateSelectorSource = 'toolbar' | 'ready_state';
 type MatchImportFeedback =
     | { status: 'idle' }
@@ -339,6 +343,7 @@ export default function Editor({
     workspaceContext,
     workspaceEntitlements,
     workspaceSwitcherEnabled = false,
+    downloadIncluded = false,
     aiReviewEnabled = false,
     initialContentVersion,
     mode = "account",
@@ -735,12 +740,13 @@ export default function Editor({
 
         return result.ok;
     }, [colorThemeId, isEnglish, isPublicMode, publicDraftId, publicFlow, publicSource, templateId, uiLanguage]);
-    // Price-copy experiment (price_copy_v1): all consumer editors, including the anonymous draft editor; off for agency workspaces.
-    const priceCopyExperiment = usePriceCopy(isEnglish ? "en" : "nl", "editor", !isMatchPackWorkspace);
-    const paidDownloadCtaLabel = tr(
-        "PDF downloaden",
-        "Download PDF"
-    );
+    // Price copy (price_copy_v2): consumer CVs that still need paying, including the anonymous draft
+    // editor. Paid CVs and agency workspaces keep the plain label and are not enrolled.
+    const showsDownloadPrice = !isMatchPackWorkspace && !downloadIncluded;
+    const priceCopyExperiment = usePriceCopy(isEnglish ? "en" : "nl", "editor", showsDownloadPrice);
+    const paidDownloadCtaLabel = showsDownloadPrice
+        ? priceCopyExperiment.copy.downloadLabel
+        : tr("PDF downloaden", "Download PDF");
     // Completion is guidance, not an export gate. A user may intentionally
     // download a partly completed CV and finish it later. Keep the empty-CV
     // guard so we never send someone to payment for a blank document.
@@ -1429,6 +1435,7 @@ export default function Editor({
                 return;
             }
             track('checkout_started', checkoutEventContext);
+            markCheckoutPending(id);
             window.location.href = checkoutResult.url;
         } catch (error) {
             track('checkout_failed', {
@@ -1796,8 +1803,8 @@ export default function Editor({
                                 )}
                             </button>
                         </div>
-                        {hasExportableContent && !isCompactToolbar && priceCopyExperiment.copy.toolbarCaption ? (
-                            <p className="mt-1 text-right text-[11px] font-medium text-slate-500" data-price-copy={priceCopyExperiment.variant}>
+                        {hasExportableContent && showsDownloadPrice && priceCopyExperiment.copy.toolbarCaption ? (
+                            <p className="mt-1 whitespace-nowrap text-right text-[11px] font-medium leading-none text-slate-500" data-price-copy={priceCopyExperiment.variant}>
                                 {priceCopyExperiment.copy.toolbarCaption}
                             </p>
                         ) : null}
@@ -1811,6 +1818,14 @@ export default function Editor({
                     onInputCapture={handleQuickBuildInput}
                 >
                     <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12">
+                        <CheckoutExitQuestion
+                            cvId={id}
+                            locale={isEnglish ? "en" : "nl"}
+                            enabled={showsDownloadPrice && !isPublicMode}
+                            downloadLabel={paidDownloadCtaLabel}
+                            isDownloading={isDownloading}
+                            onRetry={() => void handleDownload("checkout_exit_question")}
+                        />
 
                         {isGuidedBuild ? (
                             <section className="rounded-2xl border border-teal-200 bg-white p-4 shadow-sm sm:p-5">
@@ -2586,8 +2601,15 @@ export default function Editor({
                     onPageCountChange={setPageCount}
                     onSelectTemplate={handleTemplateChange}
                     onSelectTheme={handleColorThemeChange}
-                    priceCopyShort={priceCopyExperiment.copy.toolbarCaption ?? undefined}
-                    priceCopyLong={priceCopyExperiment.variant === "control" ? undefined : priceCopyExperiment.copy.previewLine}
+                    downloadLabel={showsDownloadPrice
+                        ? tr(`Downloaden · ${cvDownloadPrice.display}`, `Download · ${cvDownloadPrice.displayEn}`)
+                        : undefined}
+                    priceCopyShort={showsDownloadPrice
+                        ? priceCopyExperiment.copy.toolbarCaption ?? undefined
+                        : isMatchPackWorkspace ? undefined : tr("Al inbegrepen · je betaalt niet opnieuw", "Included · you won't pay again")}
+                    priceCopyLong={showsDownloadPrice
+                        ? priceCopyExperiment.copy.previewLine
+                        : isMatchPackWorkspace ? undefined : tr("Al inbegrepen · je betaalt niet opnieuw", "Included · you won't pay again")}
                 />
             ) : null}
 

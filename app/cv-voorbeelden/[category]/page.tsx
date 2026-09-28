@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
@@ -219,7 +220,7 @@ export default async function CategoryPage({ params }: PageProps) {
                     </h2>
                     <p className="mx-auto mb-6 max-w-2xl text-lg text-white/85">
                         Kies een voorbeeld hierboven of start direct met een leeg template.
-                        Eenmalig €4,99, geen abonnement.
+                        Eenmalig {cvDownloadPrice.display}, geen abonnement.
                     </p>
                     <Link
                         href="/templates"

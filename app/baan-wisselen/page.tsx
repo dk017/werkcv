@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
@@ -262,7 +263,7 @@ export default function BaanWisselenPage() {
           text="Werk je cv bij voordat je solliciteert. Met WerkCV maak je gratis een professionele Nederlandse cv en betaal je alleen bij PDF-download."
           buttonLabel="Werk mijn cv bij"
           buttonHref="/cv-maken-zonder-abonnement"
-          supportLine="Geen abonnement. Eenmalig EUR 4,99 bij PDF-download."
+          supportLine={`Geen abonnement. Eenmalig ${cvDownloadPrice.display} bij PDF-download.`}
           eventName="cta_baan_wisselen_cv_click"
           ctaLocation="baan-wisselen:bottom_cv"
         />

@@ -113,6 +113,7 @@ export default async function EnglishEditorPage({
       workspaceEntitlements={workspaceEntitlements}
       workspaceSwitcherEnabled={isWorkspaceSwitcherEnabled(workspaceEntitlements)}
       workspaceContext={cv.workspaceContext}
+      downloadIncluded={cv.downloadIncluded}
     />
   );
 }

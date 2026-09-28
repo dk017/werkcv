@@ -1,3 +1,4 @@
+import type { CheckoutExitEventContext, CheckoutExitReason } from "./checkout-exit";
 import { sanitizeAiWritingProperties } from "./ai-writing-analytics";
 /**
  * WerkCV Analytics — lightweight client-side event tracking.
@@ -105,8 +106,8 @@ type EditorSourceContext = {
 type CheckoutExperimentContext = EditorSourceContext & {
     variant?: 'modal' | 'direct';
     experimentVariant?: 'modal' | 'direct';
-    /** price_copy_v1 arm shown to this visitor (see lib/pricing-copy-experiment.ts). */
-    priceCopyVariant?: 'control' | 'pizza' | 'competitor';
+    /** price_copy_v2 arm shown to this visitor (see lib/pricing-copy-experiment.ts). */
+    priceCopyVariant?: 'plain' | 'pizza' | 'competitor';
 };
 
 // ============================================================
@@ -552,8 +553,16 @@ export type AnalyticsEvent =
           properties: { cvId: string; reason: 'later_button' | 'close_button' | 'overlay' };
       }
     | {
+          event: 'checkout_exit_prompt_shown';
+          properties: CheckoutExitEventContext;
+      }
+    | {
+          event: 'checkout_exit_reason';
+          properties: CheckoutExitEventContext & { reason: CheckoutExitReason; detail?: string };
+      }
+    | {
           event: 'price_copy_exposed';
-          properties: { experiment: string; variant: 'control' | 'pizza' | 'competitor'; surface: 'editor' | 'full_preview' | 'pricing_page'; locale: 'nl' | 'en'; newAssignment: boolean };
+          properties: { experiment: string; variant: 'plain' | 'pizza' | 'competitor'; surface: 'editor' | 'full_preview' | 'pricing_page'; locale: 'nl' | 'en'; newAssignment: boolean };
       }
     | { event: 'checkout_start'; properties: { cvId: string; product?: string; amountCents?: number; source?: string } & CheckoutExperimentContext }
     | { event: 'checkout_started'; properties: { cvId: string; product?: string; amountCents?: number; source?: string } & CheckoutExperimentContext }

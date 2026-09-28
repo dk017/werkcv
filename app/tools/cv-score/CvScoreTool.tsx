@@ -1,5 +1,6 @@
 "use client";
 
+import { cvDownloadPrice } from "@/lib/site-content";
 import Link from "next/link";
 import { useEffect, useRef, useState, type DragEvent } from "react";
 import { track } from "@/lib/analytics";
@@ -763,7 +764,7 @@ export default function CvScoreTool() {
               </Link>
             </div>
             <p className="mt-3 text-xs font-semibold text-[var(--wk-ink-muted,#606a67)]">
-              Gratis bouwen. Eénmalig €4,99 bij PDF-download. Geen abonnement.
+              Gratis bouwen. Eénmalig {cvDownloadPrice.display} bij PDF-download. Geen abonnement.
             </p>
           </section>
 

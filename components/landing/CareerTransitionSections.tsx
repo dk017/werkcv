@@ -1,3 +1,4 @@
+import { cvDownloadPrice } from "@/lib/site-content";
 import Link from "next/link";
 import TrackedCareerLink from "@/components/analytics/TrackedCareerLink";
 import type { CareerTransitionCtaEvent } from "@/lib/analytics";
@@ -9,7 +10,7 @@ export type CareerFaqItem = {
 
 export function CareerToCvCTA({
   title = "Werk je cv direct bij",
-  text = "Met WerkCV maak je gratis een nette, ATS-vriendelijke Nederlandse cv. Je betaalt alleen eenmalig EUR 4,99 wanneer je jouw cv als PDF downloadt.",
+  text = `Met WerkCV maak je gratis een nette, ATS-vriendelijke Nederlandse cv. Je betaalt alleen eenmalig ${cvDownloadPrice.display} wanneer je jouw cv als PDF downloadt.`,
   buttonLabel = "Werk mijn cv bij",
   buttonHref = "/cv-maken-zonder-abonnement",
   supportLine = "Geen abonnement. Geen proefperiode. Geen automatische verlenging.",
