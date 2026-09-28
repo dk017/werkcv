@@ -104,7 +104,7 @@ export function buildOgImage({
 
                 {/* Footer tagline */}
                 <div style={{ fontSize: 22, color: '#666', fontWeight: 700 }}>
-                    werkcv.nl · professioneel cv maken · eenmalig {cvDownloadPrice.display}
+                    {`werkcv.nl · professioneel cv maken · eenmalig ${cvDownloadPrice.display}`}
                 </div>
             </div>
 
