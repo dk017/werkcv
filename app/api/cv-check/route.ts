@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { extractTextFromFile } from "@/lib/cv-parser";
 import { CvCheckInputError, runCvCheck } from "@/lib/cv-check/engine";
 import { layoutSignalsForFile } from "@/lib/cv-check/layout";
+import { transcribeScannedPdf } from "@/lib/cv-check/ocr";
 import type { CvCheckLocale } from "@/lib/cv-check/types";
 import { reportOpsIncident } from "@/lib/ops-alerts";
 import { classifyAiToolError, shouldAlertAiToolError, toSafeAiToolError } from "@/lib/tools/ai-tool-errors";
@@ -81,6 +82,30 @@ export async function POST(request: NextRequest) {
         );
       }
       layout = await layoutSignalsForFile(buffer, file.name, cvText);
+      if (layout.fileType === "pdf" && layout.pageCount && layout.imageOnlyPages.length === layout.pageCount) {
+        // Scanned or image-only PDF: read the pages with a vision model instead of refusing the file.
+        // If that fails, the engine still answers with the SCANNED_PDF message.
+        try {
+          const transcribed = (await transcribeScannedPdf(buffer)).slice(0, MAX_TEXT_LENGTH);
+          if (transcribed.length >= 40) {
+            cvText = transcribed;
+            layout.textFromImages = true;
+          }
+        } catch (error) {
+          const code = classifyAiToolError(error);
+          console.error("cv-check ocr error", { code, error: toSafeAiToolError(error).message });
+          if (shouldAlertAiToolError(code)) {
+            await reportOpsIncident({
+              event: "ops_ai_tool_failed",
+              route: "/api/cv-check",
+              stage: `ocr_${code}`,
+              error: toSafeAiToolError(error),
+              locale,
+              context: { tool: "cv-check" },
+            }).catch(() => undefined);
+          }
+        }
+      }
     } else {
       const body = await request.json();
       locale = parseLocale(body?.locale ?? locale);

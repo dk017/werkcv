@@ -55,6 +55,7 @@ const COPY = {
     parseSections: "Standaardkopjes gevonden",
     parsePeriods: "Periodes met datum",
     parseColumns: "Let op: twee kolommen naast elkaar. Systemen kunnen links en rechts door elkaar lezen.",
+    parseFromImages: "Let op: je cv is een afbeelding. Wij lazen deze gegevens met AI; de meeste sollicitatiesystemen lezen hier niets uit.",
     notFound: "Niet gevonden",
     found: "Gevonden",
     sectionNames: { profile: "Profiel", experience: "Werkervaring", education: "Opleiding", skills: "Vaardigheden", languages: "Talen" },
@@ -115,6 +116,7 @@ const COPY = {
     parseSections: "Standard headings found",
     parsePeriods: "Periods with dates",
     parseColumns: "Note: two columns side by side. Systems may mix up the left and right text.",
+    parseFromImages: "Note: your CV is an image. We read these details with AI; most application systems read nothing from it.",
     notFound: "Not found",
     found: "Found",
     sectionNames: { profile: "Profile", experience: "Experience", education: "Education", skills: "Skills", languages: "Languages" },
@@ -271,6 +273,7 @@ export default function CvCheckTool({
           .map((check) => check.id)
           .join(","),
         ai_status: data.result.aiStatus,
+        text_source: data.result.layout.textFromImages ? "ocr" : inputMode,
         duration_ms: Date.now() - startedAt,
         score_version: data.result.scoreVersion,
       });
@@ -635,6 +638,7 @@ function ParsePreviewCard({ result, locale }: { result: CvCheckResult; locale: C
           </div>
         ))}
       </dl>
+      {result.layout.textFromImages && <p className="mt-3 text-sm font-semibold text-rose-700">{copy.parseFromImages}</p>}
       {columns && <p className="mt-3 text-sm font-semibold text-amber-800">{copy.parseColumns}</p>}
     </section>
   );

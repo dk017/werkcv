@@ -10,6 +10,8 @@ export type LayoutSignals = {
   pageCount: number | null;
   /** Pages with (almost) no extractable text: scanned or image-only. */
   imageOnlyPages: number[];
+  /** Every page was an image, so the checked text was read from the page images by a vision model. */
+  textFromImages: boolean;
   /** Share of text rows (0–1) that contain two separated text blocks side by side. */
   twoColumnRowShare: number | null;
   /** DOCX: contact details found only in the page header/footer. */
@@ -32,6 +34,7 @@ export function emptyLayoutSignals(fileType: LayoutSignals["fileType"]): LayoutS
     fileType,
     pageCount: null,
     imageOnlyPages: [],
+    textFromImages: false,
     twoColumnRowShare: null,
     contactOnlyInHeaderFooter: false,
     textBoxCount: 0,

@@ -106,9 +106,14 @@ function parsingChecks(layout: LayoutSignals, locale: CvCheckLocale): CvCheckIte
       status: layout.imageOnlyPages.length ? "fail" : "pass",
       weight: 5,
       label: t(locale, { nl: "Tekst is leesbaar (geen scan)", en: "Text is readable (not a scan)" }),
-      evidence: layout.imageOnlyPages.length
-        ? t(locale, { nl: `Pagina ${layout.imageOnlyPages.join(", ")} bevat geen leesbare tekst`, en: `Page ${layout.imageOnlyPages.join(", ")} has no readable text` })
-        : null,
+      evidence: layout.textFromImages
+        ? t(locale, {
+            nl: "Je cv is een afbeelding zonder tekst. Wij hebben de tekst met AI van de afbeelding gelezen, maar de meeste sollicitatiesystemen doen dat niet en zien een leeg cv.",
+            en: "Your CV is an image without text. We read the text from the image with AI, but most application systems do not and see an empty CV.",
+          })
+        : layout.imageOnlyPages.length
+          ? t(locale, { nl: `Pagina ${layout.imageOnlyPages.join(", ")} bevat geen leesbare tekst`, en: `Page ${layout.imageOnlyPages.join(", ")} has no readable text` })
+          : null,
       fix: layout.imageOnlyPages.length
         ? t(locale, {
             nl: "Exporteer je cv opnieuw als tekst-PDF vanuit Word, Google Docs of een cv-builder. Een scan of foto kunnen systemen niet lezen.",
@@ -249,7 +254,7 @@ export async function runCvCheck(input: RunCvCheckInput): Promise<CvCheckResult 
   const layout = input.layout ?? emptyLayoutSignals("text");
   const wordCount = countWords(cvText);
 
-  if (layout.fileType === "pdf" && layout.pageCount && layout.imageOnlyPages.length === layout.pageCount) {
+  if (layout.fileType === "pdf" && layout.pageCount && layout.imageOnlyPages.length === layout.pageCount && !layout.textFromImages) {
     throw new CvCheckInputError(
       "SCANNED_PDF",
       t(locale, {
