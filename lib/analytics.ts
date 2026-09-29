@@ -792,7 +792,7 @@ export type AnalyticsEvent =
               critical_count: number;
               failed_checks: string;
               ai_status: 'ok' | 'unavailable';
-              text_source: 'text' | 'file' | 'ocr';
+              text_source?: 'text' | 'file' | 'ocr';
               duration_ms: number;
               score_version: string;
           };
