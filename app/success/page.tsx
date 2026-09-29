@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { getResumeLanguage, ResumeLanguage } from "@/lib/resume-language";
 import PurchaseSuccessActions from "./PurchaseSuccessActions";
 import { getCurrentUser } from "@/lib/auth";
+import { isCvPhotoDataUrl } from "@/lib/profile-photo-cv";
 
 export const metadata: Metadata = {
   title: "Betaling Geslaagd - WerkCV",
@@ -23,7 +24,8 @@ export default async function SuccessPage({
   const { cvId, lang, bundle } = await searchParams;
   if (!cvId) redirect("/");
 
-  if (!await getCurrentUser()) {
+  const user = await getCurrentUser();
+  if (!user) {
     const returnParams = new URLSearchParams({ cvId });
     if (lang === "en" || lang === "nl") returnParams.set("lang", lang);
     if (bundle === "profile-photo") returnParams.set("bundle", bundle);
@@ -47,6 +49,12 @@ export default async function SuccessPage({
     orderBy: { paidAt: "desc" },
     select: { id: true, product: true, amountCents: true, currency: true },
   });
+  // Offer the AI profile photo unless this person already bought one.
+  const hasPaidProfilePhoto = Boolean(await prisma.profilePhotoProject.findFirst({
+    where: { userId: user.id, status: "paid" },
+    select: { id: true },
+  }));
+  const cvPhoto = isCvPhotoDataUrl(cv.personal.photo) ? cv.personal.photo : null;
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4 py-10">
@@ -58,6 +66,7 @@ export default async function SuccessPage({
           profilePhotoPath={profilePhotoPath}
           hasProfilePhotoBundle={hasProfilePhotoBundle}
           initialOrder={paidOrder}
+          profilePhotoOffer={hasProfilePhotoBundle || hasPaidProfilePhoto ? null : { cvPhoto }}
         />
       </div>
     </div>

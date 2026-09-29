@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { clearPendingCheckout } from "@/lib/checkout-exit";
 import PurchaseTracker from "./PurchaseTracker";
 import PdfDownloadButton from "./PdfDownloadButton";
+import ProfilePhotoOffer from "./ProfilePhotoOffer";
 
 type PaidOrder = {
   id: string;
@@ -20,6 +21,8 @@ type Props = {
   profilePhotoPath: string;
   hasProfilePhotoBundle: boolean;
   initialOrder: PaidOrder | null;
+  /** Null when the buyer already has the AI profile photo. */
+  profilePhotoOffer?: { cvPhoto: string | null } | null;
 };
 
 const MAX_ATTEMPTS = 20;
@@ -31,6 +34,7 @@ export default function PurchaseSuccessActions({
   profilePhotoPath,
   hasProfilePhotoBundle,
   initialOrder,
+  profilePhotoOffer = null,
 }: Props) {
   const [order, setOrder] = useState<PaidOrder | null>(initialOrder);
   const [timedOut, setTimedOut] = useState(false);
@@ -182,6 +186,7 @@ export default function PurchaseSuccessActions({
       ) : (
         <div className="space-y-4">
           <PdfDownloadButton cvId={cvId} language={language} className="block w-full rounded-full bg-gray-900 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-black" />
+          {profilePhotoOffer ? <ProfilePhotoOffer cvId={cvId} language={language} cvPhoto={profilePhotoOffer.cvPhoto} /> : null}
           <Link href={editorPath} className="block w-full rounded-full bg-gray-100 px-6 py-3 text-sm font-bold text-gray-700 transition hover:bg-gray-200">
             {tr("Terug naar editor", "Back to editor")}
           </Link>

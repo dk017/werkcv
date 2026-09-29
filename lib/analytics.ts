@@ -79,6 +79,9 @@ export type LinkedinToCvEvent =
     | 'linkedin_to_cv_cta_editor_click'
     | 'linkedin_to_cv_cta_templates_click';
 
+/** AI profile photo offered next to a CV (editor photo card, success page after paying). */
+type ProfilePhotoOfferContext = { location: 'editor_photo_card' | 'success_page'; cvId: string; has_photo: boolean; uiLanguage: 'nl' | 'en' };
+
 export type ProfilePhotoEvent =
     | 'profile_photo_tool_view'
     | 'profile_photo_checkout_click'
@@ -88,7 +91,11 @@ export type ProfilePhotoEvent =
     | 'profile_photo_refine_submit'
     | 'profile_photo_refined'
     | 'profile_photo_download'
-    | 'profile_photo_cta_editor_click';
+    | 'profile_photo_cta_editor_click'
+    | 'profile_photo_cv_photo_used'
+    | 'profile_photo_applied_to_cv'
+    | 'profile_photo_offer_viewed'
+    | 'profile_photo_offer_clicked';
 
 export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboarding';
 export type FullPreviewSource = 'desktop_preview_header' | 'desktop_document' | 'mobile_floating' | 'upload_success';
@@ -716,7 +723,11 @@ export type AnalyticsEvent =
           event: 'linkedin_to_cv_cta_templates_click';
           properties: { page_path: string; cta_location: string; cta_text: string };
       }
-    | { event: 'profile_photo_tool_view'; properties: { page_path: string } }
+    | { event: 'profile_photo_tool_view'; properties: { page_path: string; source?: string; has_return_cv?: boolean } }
+    | { event: 'profile_photo_cv_photo_used'; properties: { page_path: string } }
+    | { event: 'profile_photo_applied_to_cv'; properties: { page_path: string; target: 'return_cv' | 'new_cv' } }
+    | { event: 'profile_photo_offer_viewed'; properties: ProfilePhotoOfferContext }
+    | { event: 'profile_photo_offer_clicked'; properties: ProfilePhotoOfferContext }
     | {
           event: 'profile_photo_checkout_click';
           properties: { page_path: string; amount_cents: number; currency: string };
@@ -781,6 +792,7 @@ export type AnalyticsEvent =
               critical_count: number;
               failed_checks: string;
               ai_status: 'ok' | 'unavailable';
+              text_source: 'text' | 'file' | 'ocr';
               duration_ms: number;
               score_version: string;
           };

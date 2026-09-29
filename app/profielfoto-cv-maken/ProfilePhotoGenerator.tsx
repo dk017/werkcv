@@ -4,6 +4,8 @@ import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { track } from "@/lib/analytics";
 import { profilePhotoPrice } from "@/lib/site-content";
+import { CV_PHOTO_SIZE, cvPhotoCrop, readReturnCv, rememberReturnCv } from "@/lib/profile-photo-cv";
+import { applyProfilePhotoToCv, getCvPhotoForProfilePhoto } from "./actions";
 
 type GeneratedImage = {
   id: string;
@@ -243,6 +245,10 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
   const [isGenerating, setIsGenerating] = useState(false);
   const [isRefining, setIsRefining] = useState(false);
   const [isCheckoutRedirecting, setIsCheckoutRedirecting] = useState(false);
+  // The CV the person came from (editor, success page): start from its photo, put the result back on it.
+  const [returnCvId, setReturnCvId] = useState<string | null>(null);
+  const [cvPhoto, setCvPhoto] = useState<string | null>(null);
+  const [isApplyingToCv, setIsApplyingToCv] = useState(false);
   const photoInspectionId = useRef(0);
 
   const selectedStyle = useMemo(
@@ -258,8 +264,33 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
   const statusCopy = getStatusCopy(isProfilePhotoPaid, bundleIncluded, uiLanguage);
 
   useEffect(() => {
-    track("profile_photo_tool_view", { page_path: pagePath });
+    const params = new URLSearchParams(window.location.search);
+    const urlCvId = params.get("cvId");
+    if (urlCvId) rememberReturnCv(urlCvId);
+    const cvId = urlCvId || readReturnCv();
+    const source = params.get("bron");
+    // Deferred like usePriceCopy: URL and session storage only exist on the client.
+    const timeoutId = window.setTimeout(() => setReturnCvId(cvId), 0);
+    track("profile_photo_tool_view", {
+      page_path: pagePath,
+      ...(source ? { source } : {}),
+      has_return_cv: Boolean(cvId),
+    });
+    return () => window.clearTimeout(timeoutId);
   }, [pagePath]);
+
+  useEffect(() => {
+    if (!returnCvId || authStatus !== "authenticated") return;
+    let isMounted = true;
+    void getCvPhotoForProfilePhoto(returnCvId).then((result) => {
+      if (!isMounted) return;
+      if (result.ok) setCvPhoto(result.photo);
+      else setReturnCvId(null);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [authStatus, returnCvId]);
 
   useEffect(() => {
     let isMounted = true;
@@ -314,8 +345,18 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
   }, [files]);
 
   async function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
+    await acceptFiles(Array.from(event.target.files ?? []));
+  }
+
+  async function startFromCvPhoto() {
+    if (!cvPhoto) return;
+    const blob = await (await fetch(cvPhoto)).blob();
+    track("profile_photo_cv_photo_used", { page_path: pagePath });
+    await acceptFiles([new File([blob], "cv-foto.jpg", { type: "image/jpeg" })]);
+  }
+
+  async function acceptFiles(selectedFiles: File[]) {
     const inspectionId = ++photoInspectionId.current;
-    const selectedFiles = Array.from(event.target.files ?? []);
     setImages([]);
     setSelectedImageId(null);
     setRefinement("");
@@ -542,6 +583,36 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
     });
   }
 
+  async function applyToCv(image: GeneratedImage) {
+    if (!project?.id || !image.url) return;
+    setIsApplyingToCv(true);
+    setError(null);
+    try {
+      const bitmap = await createImageBitmap(await (await fetch(image.url)).blob());
+      const { sx, sy, side } = cvPhotoCrop(bitmap.width, bitmap.height);
+      const canvas = document.createElement("canvas");
+      canvas.width = CV_PHOTO_SIZE;
+      canvas.height = CV_PHOTO_SIZE;
+      canvas.getContext("2d")?.drawImage(bitmap, sx, sy, side, side, 0, 0, CV_PHOTO_SIZE, CV_PHOTO_SIZE);
+      bitmap.close();
+      const result = await applyProfilePhotoToCv({
+        projectId: project.id,
+        cvId: returnCvId,
+        photoDataUrl: canvas.toDataURL("image/jpeg", 0.9),
+        locale: uiLanguage,
+      });
+      if (!result.ok) throw new Error(result.error);
+      track("profile_photo_applied_to_cv", { page_path: pagePath, target: returnCvId ? "return_cv" : "new_cv" });
+      window.location.href = result.editorPath;
+    } catch {
+      setError(tr(
+        "De foto kon niet in je cv worden gezet. Download hem en voeg hem in de editor toe bij Persoonlijke gegevens.",
+        "The photo could not be added to your CV. Download it and add it in the editor under Personal details."
+      ));
+      setIsApplyingToCv(false);
+    }
+  }
+
   async function startCheckout() {
     if (bundleIncluded) {
       setError(tr(
@@ -676,9 +747,29 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
                     "Unsure about your photos? Read the complete source-photo guide."
                   )}
                 </Link>
+                {cvPhoto && images.length === 0 && files.length === 0 ? (
+                  <div className="mb-5 flex items-center gap-4 rounded-2xl border-2 border-black bg-[#E9FFFC] p-4">
+                    {/* eslint-disable-next-line @next/next/no-img-element -- data URL from the person's own CV */}
+                    <img src={cvPhoto} alt="" className="h-16 w-16 shrink-0 rounded-lg border-2 border-black object-cover" />
+                    <div className="min-w-0">
+                      <p className="text-sm font-black text-slate-900">
+                        {tr("Begin met de foto uit je cv", "Start from the photo on your CV")}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => void startFromCvPhoto()}
+                        className="mt-2 inline-flex rounded-full bg-black px-4 py-2 text-xs font-black text-white"
+                      >
+                        {tr("Gebruik deze foto", "Use this photo")}
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
                 <label className="block">
                   <span className="text-sm font-black text-slate-900">
-                    {tr("Upload je bestaande foto", "Upload your existing photo")}
+                    {cvPhoto && images.length === 0 && files.length === 0
+                      ? tr("Of upload een andere foto", "Or upload another photo")
+                      : tr("Upload je bestaande foto", "Upload your existing photo")}
                   </span>
                   <span className="mt-1 block text-sm font-medium leading-relaxed text-slate-600">
                     {tr(
@@ -1077,13 +1168,26 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
                                 : tr(`Betaal ${profilePhotoPrice.display} en download`, `Pay ${profilePhotoPrice.display} and download`)}
                           </button>
                         )}
-                        <Link
-                          href={editorPath}
-                          onClick={() => trackEditorClick("selected_photo_action")}
-                          className="inline-flex justify-center rounded-full border-2 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black"
-                        >
-                          {tr("Maak cv met deze foto", "Create CV with this photo")}
-                        </Link>
+                        {project?.status === "paid" ? (
+                          <button
+                            type="button"
+                            onClick={() => void applyToCv(selectedImage)}
+                            disabled={isApplyingToCv}
+                            className="inline-flex justify-center rounded-full border-2 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black disabled:cursor-not-allowed disabled:opacity-60"
+                          >
+                            {isApplyingToCv
+                              ? tr("Foto in je cv zetten...", "Adding photo to your CV...")
+                              : returnCvId
+                                ? tr("Zet deze foto in mijn cv", "Put this photo on my CV")
+                                : tr("Maak een cv met deze foto", "Create a CV with this photo")}
+                          </button>
+                        ) : (
+                          <p className="text-xs font-bold leading-relaxed text-slate-600">
+                            {returnCvId
+                              ? tr("Na betalen zet je deze foto met één klik in je cv.", "After paying, one click puts this photo on your CV.")
+                              : tr("Na betalen zet je deze foto met één klik in een nieuw cv.", "After paying, one click puts this photo on a new CV.")}
+                          </p>
+                        )}
                       </div>
                     </div>
 
@@ -1154,13 +1258,26 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
                     )}
                   </p>
                   <div className="mt-4 flex flex-col gap-3 sm:flex-row">
-                    <Link
-                      href={editorPath}
-                      onClick={() => trackEditorClick("output_final_cta")}
-                      className="inline-flex flex-1 items-center justify-center border-2 border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-black"
-                    >
-                      {tr("Maak mijn CV met deze foto", "Create my CV with this photo")}
-                    </Link>
+                    {project?.status === "paid" && selectedImage ? (
+                      <button
+                        type="button"
+                        onClick={() => void applyToCv(selectedImage)}
+                        disabled={isApplyingToCv}
+                        className="inline-flex flex-1 items-center justify-center border-2 border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-black disabled:cursor-not-allowed disabled:opacity-60"
+                      >
+                        {returnCvId
+                          ? tr("Zet deze foto in mijn cv", "Put this photo on my CV")
+                          : tr("Maak mijn cv met deze foto", "Create my CV with this photo")}
+                      </button>
+                    ) : (
+                      <Link
+                        href={returnCvId ? `${editorPath}?id=${encodeURIComponent(returnCvId)}` : editorPath}
+                        onClick={() => trackEditorClick("output_final_cta")}
+                        className="inline-flex flex-1 items-center justify-center border-2 border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-black"
+                      >
+                        {returnCvId ? tr("Terug naar mijn cv", "Back to my CV") : tr("Maak eerst mijn cv", "Create my CV first")}
+                      </Link>
+                    )}
                     <Link
                       href={templatesPath}
                       className="inline-flex flex-1 items-center justify-center border-2 border-black bg-white px-4 py-3 text-sm font-black text-black"

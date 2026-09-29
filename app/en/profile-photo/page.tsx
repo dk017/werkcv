@@ -3,7 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import NavUserMenu from "@/components/NavUserMenu";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
-import { applicationBundlePrice, profilePhotoPrice } from "@/lib/site-content";
+import { profilePhotoPrice } from "@/lib/site-content";
 import ProfilePhotoGenerator from "@/app/profielfoto-cv-maken/ProfilePhotoGenerator";
 import ProfilePhotoSamples, { type ProfilePhotoSample } from "@/app/profielfoto-cv-maken/ProfilePhotoSamples";
 
@@ -66,12 +66,7 @@ const faqItems = [
   {
     question: "Do I pay before seeing the result?",
     answer:
-      `No. You create preview variants first. You only pay the one-time ${profilePhotoPrice.display} when you want to download the chosen photo.`,
-  },
-  {
-    question: "Is the profile photo included in the CV bundle?",
-    answer:
-      `Yes. If you bought the CV + profile photo bundle for ${applicationBundlePrice.display}, the profile photo download is included.`,
+      `No. You create preview variants first. You only pay the one-time ${profilePhotoPrice.displayEn} when you want to download the chosen photo.`,
   },
   {
     question: "What do I receive?",
@@ -108,7 +103,7 @@ const valueComparison = [
   },
   {
     label: "WerkCV AI profile photo",
-    price: profilePhotoPrice.display,
+    price: profilePhotoPrice.displayEn,
     detail: "A faster option when you already have a usable photo and need a cleaner CV, LinkedIn or application profile today.",
   },
 ];
@@ -134,14 +129,14 @@ const deliverables = [
   },
   {
     title: "One-time payment",
-    detail: `Pay ${profilePhotoPrice.display} including VAT only when you choose to download. No subscription.`,
+    detail: `Pay ${profilePhotoPrice.displayEn} including VAT only when you choose to download. No subscription.`,
   },
 ];
 
 export const metadata: Metadata = {
-  title: `AI headshot generator Netherlands | CV & LinkedIn photo | ${profilePhotoPrice.display}`,
+  title: `AI headshot generator Netherlands | CV & LinkedIn photo | ${profilePhotoPrice.displayEn}`,
   description:
-    `AI headshot generator for the Netherlands. Create a realistic profile photo for your Dutch CV and LinkedIn. Preview first, download for ${profilePhotoPrice.display}.`,
+    `AI headshot generator for the Netherlands. Create a realistic profile photo for your Dutch CV and LinkedIn. Preview first, download for ${profilePhotoPrice.displayEn}.`,
   keywords: [
     "ai headshot generator netherlands",
     "linkedin profile photo netherlands",
@@ -163,7 +158,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: `AI headshot generator Netherlands | CV & LinkedIn photo | WerkCV`,
     description:
-      `Create a professional AI profile photo for Dutch job applications, CVs and LinkedIn. Preview first, download for ${profilePhotoPrice.display}.`,
+      `Create a professional AI profile photo for Dutch job applications, CVs and LinkedIn. Preview first, download for ${profilePhotoPrice.displayEn}.`,
     url: "https://werkcv.nl/en/profile-photo",
     siteName: "WerkCV",
     locale: "en_NL",
@@ -182,7 +177,7 @@ export const metadata: Metadata = {
     site: "@werkcvnl",
     title: `AI headshot generator Netherlands | WerkCV`,
     description:
-      `Create a realistic AI profile photo for your Dutch CV and LinkedIn. Preview first, download for ${profilePhotoPrice.display}.`,
+      `Create a realistic AI profile photo for your Dutch CV and LinkedIn. Preview first, download for ${profilePhotoPrice.displayEn}.`,
     images: ["https://werkcv.nl/opengraph-image"],
   },
 };
@@ -264,7 +259,7 @@ export default function EnglishProfilePhotoPage() {
                 </Link>
               </div>
               <p className="mt-4 text-sm font-bold text-slate-700">
-                One-time {profilePhotoPrice.display}. Or together with your CV for {applicationBundlePrice.display}. No subscription.
+                4 free previews first. One-time {profilePhotoPrice.displayEn} if you use one. No subscription.
               </p>
               <p className="mt-3 text-sm leading-6 text-slate-600">
                 Not sure which source photo to use?{" "}

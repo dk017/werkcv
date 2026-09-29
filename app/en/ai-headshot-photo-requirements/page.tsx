@@ -156,7 +156,7 @@ export default function AiHeadshotPhotoRequirementsPage() {
                 </a>
               </div>
               <p className="mt-5 text-sm font-bold text-slate-600">
-                Preview first. Download for a one-time {profilePhotoPrice.display}, including
+                Preview first. Download for a one-time {profilePhotoPrice.displayEn}, including
                 VAT. No subscription.
               </p>
             </div>

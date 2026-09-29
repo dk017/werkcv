@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import NavUserMenu from "@/components/NavUserMenu";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { buildDutchMetadata } from "@/lib/page-metadata";
-import { applicationBundlePrice, profilePhotoPrice } from "@/lib/site-content";
+import { profilePhotoPrice } from "@/lib/site-content";
 import ProfilePhotoGenerator from "./ProfilePhotoGenerator";
 import ProfilePhotoSamples, { type ProfilePhotoSample } from "./ProfilePhotoSamples";
 
@@ -37,7 +37,7 @@ const faqItems = [
   {
     question: "Wat gaat de profielfoto-tool kosten?",
     answer:
-      `De AI-profielfoto is een eenmalige add-on van ${profilePhotoPrice.display}. Je krijgt 4 startvarianten en 2 inbegrepen verfijningen. Combineer je hem met je CV, dan is de bundle ${applicationBundlePrice.display}. Er is geen abonnement.`,
+      `De AI-profielfoto is een eenmalige add-on van ${profilePhotoPrice.display}. Je krijgt 4 startvarianten en 2 inbegrepen verfijningen, en je betaalt pas als je een variant wilt gebruiken. Er is geen abonnement.`,
   },
   {
     question: "Mag ik de gedownloade foto professioneel gebruiken?",
@@ -256,7 +256,7 @@ export default function ProfielfotoCvMakenPage() {
                 </Link>
               </div>
               <p className="mt-4 text-sm font-bold text-slate-700">
-                Eénmalig {profilePhotoPrice.display}. Of samen met je CV voor {applicationBundlePrice.display}. Geen abonnement.
+                Eerst gratis 4 voorbeelden. Eénmalig {profilePhotoPrice.display} als je er een gebruikt. Geen abonnement.
               </p>
               <p className="mt-3 text-sm leading-6 text-slate-600">
                 Weet je niet welke bronfoto geschikt is?{" "}

@@ -7,7 +7,6 @@ import Link from "next/link";
 import type { TemplateConfig } from "@/lib/templates";
 import { getStoredAttribution, track } from "@/lib/analytics";
 import {
-    applicationBundlePrice,
     cvDownloadPrice,
     cvDownloadPriceCheckedAt,
     homepageFaqItems,
@@ -566,9 +565,9 @@ export default function HomePageClient({
                                 ))}
                             </div>
                             <div className="mb-6 rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] bg-[var(--wk-accent-soft)] p-3 text-left">
-                                <p className="text-xs font-semibold uppercase tracking-wide text-[var(--wk-ink)]">Nieuw</p>
+                                <p className="text-xs font-semibold uppercase tracking-wide text-[var(--wk-ink)]">Optioneel</p>
                                 <p className="mt-1 text-sm font-medium text-[var(--wk-ink-muted)]">
-                                    Maak je CV en AI-profielfoto samen voor {applicationBundlePrice.display}. De profielfoto los kost {profilePhotoPrice.display}.
+                                    AI-profielfoto voor je cv en LinkedIn: eerst gratis voorbeelden, {profilePhotoPrice.display} als je hem gebruikt.
                                 </p>
                             </div>
                             <Link

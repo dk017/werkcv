@@ -22,6 +22,7 @@ export const cvDownloadPriceCheckedAt = {
 
 export const profilePhotoPrice = {
   display: "€9,99",
+  displayEn: "€9.99",
   value: "9.99",
   amountCents: 999,
   currency: "EUR",

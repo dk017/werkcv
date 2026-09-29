@@ -37,7 +37,8 @@ import CVUploader from "./CVUploader";
 import CvScoreWidget from "./CvScoreWidget";
 import KeywordScannerWidget from "./KeywordScannerWidget";
 import PhotoUpload from "./PhotoUpload";
-import { cvDownloadPrice } from "@/lib/site-content";
+import { cvDownloadPrice, profilePhotoPrice } from "@/lib/site-content";
+import { getProfilePhotoToolPath } from "@/lib/profile-photo-cv";
 import { usePriceCopy } from "@/components/pricing/usePriceCopy";
 import {
     hasCompletionTracked,
@@ -757,6 +758,25 @@ export default function Editor({
     const toolbarCtaLabel = hasExportableContent
         ? downloadActionLabel
         : tr("Voeg inhoud toe om te downloaden", "Add content to download");
+
+    // AI profile photo offer next to the photo upload. Saves first: leaving within the 3-second
+    // autosave window would otherwise drop the photo that was just uploaded.
+    const [isOpeningPhotoTool, setIsOpeningPhotoTool] = useState(false);
+    const openProfilePhotoTool = async () => {
+        setIsOpeningPhotoTool(true);
+        const hasPhoto = Boolean(watch("personal.photo"));
+        track("profile_photo_offer_clicked", { location: "editor_photo_card", cvId: id, has_photo: hasPhoto, uiLanguage });
+        if (!isReadOnlyWorkspace) {
+            if (autoSaveTimerRef.current) clearTimeout(autoSaveTimerRef.current);
+            const saved = await saveEditorData(watch() as CVData, "manual_save").catch(() => ({ success: false }));
+            if (!saved.success) {
+                setIsOpeningPhotoTool(false);
+                alert(tr("Je cv kon niet worden opgeslagen. Probeer het opnieuw.", "Your CV could not be saved. Please try again."));
+                return;
+            }
+        }
+        window.location.href = getProfilePhotoToolPath(isEnglish ? "en" : "nl", id, "editor_photo_card");
+    };
 
     const openUploader = useCallback((source: CvUploadSource) => {
         track("cv_upload_modal_opened", {
@@ -2110,14 +2130,30 @@ export default function Editor({
                                     <div className="flex-1 rounded-md border border-slate-200 bg-white p-3">
                                         <p className="text-sm font-semibold text-slate-900">{tr("Profielfoto", "Profile photo")}</p>
                                         <p className="mt-1 text-xs leading-relaxed text-slate-600">
-                                            {tr("Optioneel. Voeg alleen een professionele, actuele foto toe als dit past bij je sollicitatie.", "Optional. Add one only if it is professional, current, and fits the job application.")}
+                                            {data.personal.photo
+                                                ? tr(
+                                                    `Maak van deze foto een zakelijke cv- en LinkedIn-foto. Je ziet eerst gratis 4 voorbeelden en betaalt ${profilePhotoPrice.display} alleen als je er een gebruikt.`,
+                                                    `Turn this photo into a professional CV and LinkedIn photo. You see 4 previews for free and pay ${profilePhotoPrice.displayEn} only if you use one.`
+                                                )
+                                                : tr(
+                                                    `Optioneel. Geen goede foto? Maak er een van een gewone foto of selfie. Eerst gratis voorbeelden, ${profilePhotoPrice.display} als je hem gebruikt.`,
+                                                    `Optional. No good photo? Make one from a regular photo or selfie. Free previews first, ${profilePhotoPrice.displayEn} if you use it.`
+                                                )}
                                         </p>
-                                        <Link
-                                            href={isEnglish ? "/en/profile-photo" : "/profielfoto-cv-maken"}
-                                            className="mt-2 inline-flex text-xs font-semibold text-emerald-700 underline underline-offset-2 hover:text-emerald-800"
-                                        >
-                                            {tr("AI-profielfoto maken (€9,99)", "Create an AI profile photo (€9.99)")}
-                                        </Link>
+                                        {!isPublicMode && !isMatchPackWorkspace ? (
+                                            <button
+                                                type="button"
+                                                onClick={() => void openProfilePhotoTool()}
+                                                disabled={isOpeningPhotoTool}
+                                                className={data.personal.photo
+                                                    ? "mt-2 inline-flex rounded-md border border-emerald-700 bg-white px-3 py-1.5 text-xs font-semibold text-emerald-800 hover:bg-emerald-50 disabled:opacity-60"
+                                                    : "mt-2 inline-flex text-xs font-semibold text-emerald-700 underline underline-offset-2 hover:text-emerald-800 disabled:opacity-60"}
+                                            >
+                                                {data.personal.photo
+                                                    ? tr("Maak een professionele versie", "Make a professional version")
+                                                    : tr("Maak een AI-profielfoto", "Create an AI profile photo")}
+                                            </button>
+                                        ) : null}
                                     </div>
                                 </div>
                             </div> : null}
