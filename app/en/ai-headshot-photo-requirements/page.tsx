@@ -380,7 +380,7 @@ export default function AiHeadshotPhotoRequirementsPage() {
         </article>
       </main>
 
-      <Footer />
+      <Footer uiLanguage="en" />
     </div>
   );
 }

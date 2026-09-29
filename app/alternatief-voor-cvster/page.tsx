@@ -53,7 +53,7 @@ const sourceLinks = [
 const comparisonRows = [
   {
     label: "Prijsmodel",
-    werkcv: `Gratis starten, daarna éénmalig ${cvDownloadPrice.display} per cv-download.`,
+    werkcv: `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per cv.`,
     cvster: "Pricingpagina toont €2,95 voor 7 dagen en daarna €14,95 per 4 weken, plus langere premiumopties.",
   },
   {
@@ -492,7 +492,7 @@ export default function AlternatiefVoorCvsterPage() {
                 Wil je vooral een goed cv zonder proefabonnement?
               </h2>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
-                Maak je cv gratis in WerkCV en betaal pas éénmalig {cvDownloadPrice.display} als je de PDF echt wilt downloaden.
+                Maak je cv gratis in WerkCV en betaal pas eenmalig {cvDownloadPrice.display} als je de PDF echt wilt downloaden.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">

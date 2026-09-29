@@ -336,7 +336,7 @@ export default function CvNakijkenPage() {
         <FinalCtaSection
           title="Laat je cv checken en maak direct een betere versie"
           description="Gebruik de automatische review om zwakke plekken snel te vinden en zet de uitkomst daarna direct om in een nieuwe, duidelijkere cv-versie."
-          supportLine="Gratis starten. Geen abonnement. Eénmalig betalen bij PDF-download."
+          supportLine="Gratis starten. Geen abonnement. Eenmalig betalen bij PDF-download."
           buttonLabel="Maak direct een betere versie"
           buttonHref="/editor"
           trackingLocation="cv-nakijken:final_primary"

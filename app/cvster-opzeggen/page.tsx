@@ -57,7 +57,7 @@ const differenceBullets = [
   "Geen maandelijkse verlenging",
   "Geen opzegmoment om te onthouden",
   "Gratis bouwen, pas betalen bij PDF-download",
-  `Eénmalig ${cvDownloadPrice.display} per cv-download`,
+  `Eenmalig ${cvDownloadPrice.display} per cv`,
 ];
 
 const whyWerkCvBullets = [
@@ -97,7 +97,7 @@ const faqs = [
   {
     question: "Is WerkCV een alternatief voor CVster?",
     answer:
-      `Ja, vooral als je geen proefabonnement of automatische verlenging wilt. Je maakt je cv gratis en betaalt alleen éénmalig ${cvDownloadPrice.display} bij PDF-download.`,
+      `Ja, vooral als je geen proefabonnement of automatische verlenging wilt. Je maakt je cv gratis en betaalt alleen eenmalig ${cvDownloadPrice.display} bij PDF-download.`,
   },
 ];
 
@@ -213,7 +213,7 @@ export default function CvsterOpzeggenPage() {
               </Link>
             </div>
             <p className="mt-3 text-sm font-medium text-slate-600">
-              Daarna opnieuw een cv nodig? WerkCV werkt met éénmalig betalen bij PDF-download.
+              Daarna opnieuw een cv nodig? WerkCV werkt met eenmalig betalen bij PDF-download.
             </p>
             <p className="mt-4 border-2 border-black bg-white px-4 py-3 text-sm font-medium leading-relaxed text-slate-700">
               Let op: WerkCV is niet verbonden aan CVster. We vatten hier openbare informatie samen en tonen daarna een alternatief zonder proefabonnement.
@@ -481,7 +481,7 @@ export default function CvsterOpzeggenPage() {
                 Nieuwe cv nodig, maar geen nieuw abonnement?
               </h2>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
-                Gebruik WerkCV als simpel alternatief: gratis bouwen, éénmalig betalen bij download en daarna klaar.
+                Gebruik WerkCV als simpel alternatief: gratis bouwen, eenmalig betalen bij download en daarna klaar.
               </p>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black">
                 Geen proefperiode. Geen automatische verlenging. Geen opzegging achteraf.

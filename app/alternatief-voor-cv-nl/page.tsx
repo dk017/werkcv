@@ -43,7 +43,7 @@ const sourceLinks = [
 const comparisonRows = [
   {
     label: "Prijsmodel",
-    werkcv: `Gratis starten, daarna éénmalig ${cvDownloadPrice.display} per cv-download.`,
+    werkcv: `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per cv.`,
     cvnl: "Pricingpagina toont €0,99 voor 14 dagen en daarna €19,99 per maand met automatische verlenging.",
   },
   {
@@ -480,7 +480,7 @@ export default function AlternatiefVoorCvNlPage() {
                 Wil je vooral een goed cv zonder abonnement?
               </h2>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
-                Maak je cv gratis in WerkCV en betaal pas éénmalig {cvDownloadPrice.display} als je de PDF echt wilt downloaden.
+                Maak je cv gratis in WerkCV en betaal pas eenmalig {cvDownloadPrice.display} als je de PDF echt wilt downloaden.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">

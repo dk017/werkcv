@@ -214,7 +214,7 @@ export default function LoopbaancoachPage() {
               </Link>
             </div>
             <p className="mt-3 text-sm font-medium text-slate-700">
-              Voor individuele cliënten: gratis starten, éénmalig {cvDownloadPrice.display} bij PDF-download, geen abonnement.
+              Voor individuele cliënten: gratis starten, eenmalig {cvDownloadPrice.display} bij PDF-download, geen abonnement.
             </p>
           </div>
 

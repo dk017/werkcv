@@ -1,3 +1,4 @@
+import { profilePhotoPrice } from '@/lib/site-content';
 import { BlogArticle } from '../types';
 
 export const fotoOpJeCv: BlogArticle = {
@@ -5,7 +6,7 @@ export const fotoOpJeCv: BlogArticle = {
     title: 'Foto op je CV: wel of niet? Alles wat je moet weten',
     description: 'Een foto op je CV is in Nederland niet verplicht. Ontdek wanneer een foto wel helpt, wanneer je hem beter weglaat en welke CV-template past.',
     publishedAt: '2026-02-19',
-    updatedAt: '2026-05-12',
+    updatedAt: '2026-09-29',
 
     metaTitle: 'Foto op je CV: wel of niet? Alles wat je moet weten',
     metaDesc: 'Een foto op je CV is in Nederland niet verplicht. Bekijk wanneer het wel of niet werkt, plus CV-foto tips en templates met of zonder foto.',
@@ -47,7 +48,7 @@ export const fotoOpJeCv: BlogArticle = {
             answerCapsule: 'Nee. Een foto op je CV is in Nederland niet verplicht. Zet hem alleen op je CV als hij professioneel oogt en past bij de vacature, werkgever en sector.',
             content: [
                 'Nee. Er is geen algemene verplichting om een foto op je CV te zetten. In Nederland zie je CV-foto\'s nog regelmatig, vooral bij functies met persoonlijk contact, vertrouwen of representatie. Denk aan zorg, onderwijs, hospitality, sales, HR, retail en klantgerichte functies.',
-                'Dat betekent niet dat een foto altijd beter is. Een rustige, professionele foto kan herkenbaarheid geven. Een selfie, vakantiefoto, groepsfoto, zwaar bewerkte AI-foto of verouderde foto kan juist tegen je werken en aandacht weghalen bij je ervaring.',
+                'Dat betekent niet dat een foto altijd beter is. Een rustige, professionele foto kan herkenbaarheid geven. Een selfie, vakantiefoto, groepsfoto, verouderde foto of een zwaar bewerkte foto (ook met AI) waarop je jezelf niet meer herkent kan juist tegen je werken en aandacht weghalen bij je ervaring.',
                 'De beste regel is simpel: volg de vacaturetekst. Staat er "zonder foto", "anoniem solliciteren" of "objectieve selectie", laat de foto weg. Solliciteer je bij een internationale werkgever met Angelsaksische recruitmentstijl, kies dan vaak liever voor geen foto op het CV en zet een nette foto op LinkedIn.',
             ],
         },
@@ -73,8 +74,8 @@ export const fotoOpJeCv: BlogArticle = {
                 },
                 {
                     href: '/profielfoto-cv-maken',
-                    label: 'Maak een professionele CV- en LinkedIn-foto',
-                    description: 'Gebruik dit alleen als een foto echt past bij jouw sollicitatiecontext.',
+                    label: 'Geen nette foto? Maak er een van een gewone foto of selfie',
+                    description: `Je ziet eerst gratis 4 herkenbare voorbeelden. Eenmalig ${profilePhotoPrice.display} om ze te downloaden en in je cv te zetten. Geen fotoshoot, geen abonnement.`,
                 },
             ],
         },
@@ -118,7 +119,7 @@ export const fotoOpJeCv: BlogArticle = {
                 {
                     href: '/profielfoto-cv-maken',
                     label: 'Maak eerst een nette profielfoto voor CV en LinkedIn',
-                    description: 'Upload een bestaande foto, bekijk AI-previewvarianten en betaal pas als je wilt downloaden.',
+                    description: `Upload een bestaande foto en bekijk gratis 4 voorbeelden. Je betaalt pas als je ze wilt gebruiken: eenmalig ${profilePhotoPrice.display}.`,
                 },
             ],
         },

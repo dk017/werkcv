@@ -12,7 +12,7 @@ const pageUrl = "https://werkcv.nl/cv-maken-zonder-verborgen-kosten";
 const clarityChecks = [
   ["Gratis starten", "Ja, je kunt je cv eerst maken, aanpassen en bekijken."],
   ["Betaalmoment", "Alleen wanneer je de definitieve PDF wilt downloaden."],
-  ["Prijs", `Eénmalig ${cvDownloadPrice.display} per cv-download.`],
+  ["Prijs", `Eenmalig ${cvDownloadPrice.display} per cv.`],
   ["Abonnement", "Nee, er is geen maandbedrag of automatische verlenging."],
   ["Opzeggen nodig", "Nee, omdat er geen abonnement loopt."],
   ["Verborgen kosten", "Nee, de downloadprijs wordt vooraf duidelijk genoemd."],
@@ -37,7 +37,7 @@ const faqItems = [
   {
     question: "Is gratis starten hetzelfde als gratis downloaden?",
     answer:
-      `Nee. Het bouwen, bewerken en bekijken is gratis. De definitieve PDF-download kost éénmalig ${cvDownloadPrice.display}.`,
+      `Nee. Het bouwen, bewerken en bekijken is gratis. De definitieve PDF-download kost eenmalig ${cvDownloadPrice.display}.`,
   },
 ];
 
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     absolute: "CV maken zonder verborgen kosten | Geen abonnement | WerkCV",
   },
   description:
-    `Maak gratis je cv en betaal pas éénmalig ${cvDownloadPrice.display} bij PDF-download. Geen verborgen kosten, geen proefperiode, geen automatische verlenging en niets om op te zeggen.`,
+    `Maak gratis je cv en betaal pas eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen verborgen kosten, geen proefperiode, geen automatische verlenging en niets om op te zeggen.`,
   keywords: [
     "cv maken zonder verborgen kosten",
     "cv maken geen verborgen kosten",
@@ -121,7 +121,7 @@ export default function CvMakenZonderVerborgenKostenPage() {
               CV maken zonder verborgen kosten
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Bouw gratis je Nederlandse cv, bekijk je voorbeeld en betaal pas éénmalig {cvDownloadPrice.display} wanneer je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en geen abonnement om later op te zeggen.
+              Bouw gratis je Nederlandse cv, bekijk je voorbeeld en betaal pas eenmalig {cvDownloadPrice.display} wanneer je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en geen abonnement om later op te zeggen.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <TrackedLandingLink
@@ -152,7 +152,7 @@ export default function CvMakenZonderVerborgenKostenPage() {
               Wat betaal je wel en niet?
             </h2>
             <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-              <p>Wel: éénmalig betalen als je jouw cv als PDF downloadt.</p>
+              <p>Wel: eenmalig betalen als je jouw cv als PDF downloadt.</p>
               <p>Niet: maandkosten, proefperiode, automatische verlenging of extra opzegstappen.</p>
               <p>Ook niet: betalen voordat je weet of de editor en template bij je passen.</p>
             </div>

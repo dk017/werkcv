@@ -329,7 +329,7 @@ export default function LinkedinToCvTool() {
               </TrackedToolLink>
             </div>
             <p className="mt-3 text-sm font-medium text-slate-200">
-              Gratis bouwen. Eénmalig {cvDownloadPrice.display} bij PDF-download. Geen abonnement.
+              Gratis bouwen. Eenmalig {cvDownloadPrice.display} bij PDF-download. Geen abonnement.
             </p>
           </div>
         </section>

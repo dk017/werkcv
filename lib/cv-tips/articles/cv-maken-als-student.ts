@@ -266,7 +266,7 @@ export const cvMakenAlsStudent: BlogArticle = {
         },
         {
             question: 'Is gratis een CV maken als student mogelijk?',
-            answer: `Ja. WerkCV.nl biedt gratis CV-templates die je kunt invullen en bewaren. Wil je een PDF-download, dan betaal je eenmalig ${cvDownloadPrice.display} — een éénmalige investering voor een professionele indruk bij tientallen sollicitaties.`,
+            answer: `Ja. WerkCV.nl biedt gratis CV-templates die je kunt invullen en bewaren. Wil je een PDF-download, dan betaal je eenmalig ${cvDownloadPrice.display} — een eenmalige investering voor een professionele indruk bij tientallen sollicitaties.`,
         },
     ],
 

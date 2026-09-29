@@ -408,7 +408,7 @@ export default function CvVerbeterenPage() {
         <FinalCtaSection
           title="Maak een sterkere cv-versie in WerkCV"
           description="Gebruik de feedback om profieltekst, werkervaring en structuur meteen te verbeteren en zet die versie direct om in een nette sollicitatie-PDF."
-          supportLine={`Gratis bouwen. Eénmalig ${cvDownloadPrice.display} bij PDF-download. Geen abonnement.`}
+          supportLine={`Gratis bouwen. Eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen abonnement.`}
           buttonLabel="Maak een sterkere cv-versie"
           buttonHref="/editor"
           trackingLocation="cv-verbeteren:final_primary"

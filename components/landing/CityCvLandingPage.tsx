@@ -121,7 +121,7 @@ export default function CityCvLandingPage({
               </Link>
             </div>
             <p className="mt-3 text-sm font-medium text-slate-700">
-              Gratis starten. Eénmalig {cvDownloadPrice.display} bij PDF-download. Geen abonnement.
+              Gratis starten. Eenmalig {cvDownloadPrice.display} bij PDF-download. Geen abonnement.
             </p>
           </div>
 

@@ -584,7 +584,7 @@ export default async function ExamplePage({ params }: PageProps) {
                                 </h3>
                                 <p className="text-gray-700 mb-4">
                                     Start met deze structuur, vul je opleiding, bijbaan, stage of projecten in en download pas
-                                    als je tevreden bent met je PDF. Geen abonnement, éénmalig {cvDownloadPrice.display} bij download.
+                                    als je tevreden bent met je PDF. Geen abonnement, eenmalig {cvDownloadPrice.display} bij download.
                                 </p>
                                 <div className="flex flex-wrap gap-3">
                                     <UseExampleButton

@@ -76,7 +76,7 @@ const coachProof = [
   {
     title: "Gratis starten, pas betalen bij download",
     body:
-      "De éénmalige downloadlogica maakt doorverwijzen veel makkelijker dan een CV-tool met abonnement als basisverhaal.",
+      "De eenmalige downloadlogica maakt doorverwijzen veel makkelijker dan een CV-tool met abonnement als basisverhaal.",
   },
   {
     title: "Expat- en Engelstalige routes al live",

@@ -2132,12 +2132,12 @@ export default function Editor({
                                         <p className="mt-1 text-xs leading-relaxed text-slate-600">
                                             {data.personal.photo
                                                 ? tr(
-                                                    `Maak van deze foto een zakelijke cv- en LinkedIn-foto. Je ziet eerst gratis 4 voorbeelden en betaalt ${profilePhotoPrice.display} alleen als je er een gebruikt.`,
-                                                    `Turn this photo into a professional CV and LinkedIn photo. You see 4 previews for free and pay ${profilePhotoPrice.displayEn} only if you use one.`
+                                                    `Maak van deze foto een zakelijke cv- en LinkedIn-foto. Je ziet eerst gratis 4 voorbeelden; wil je ze gebruiken, dan betaal je eenmalig ${profilePhotoPrice.display}.`,
+                                                    `Turn this photo into a professional CV and LinkedIn photo. You see 4 previews for free; to use them, you pay a one-time ${profilePhotoPrice.displayEn}.`
                                                 )
                                                 : tr(
-                                                    `Optioneel. Geen goede foto? Maak er een van een gewone foto of selfie. Eerst gratis voorbeelden, ${profilePhotoPrice.display} als je hem gebruikt.`,
-                                                    `Optional. No good photo? Make one from a regular photo or selfie. Free previews first, ${profilePhotoPrice.displayEn} if you use it.`
+                                                    `Optioneel. Geen goede foto? Maak er een van een gewone foto of selfie. Eerst gratis voorbeelden, daarna eenmalig ${profilePhotoPrice.display} als je ze wilt gebruiken.`,
+                                                    `Optional. No good photo? Make one from a regular photo or selfie. Free previews first, then a one-time ${profilePhotoPrice.displayEn} if you want to use them.`
                                                 )}
                                         </p>
                                         {!isPublicMode && !isMatchPackWorkspace ? (

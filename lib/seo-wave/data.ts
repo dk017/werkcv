@@ -3,7 +3,7 @@ import { extraDutchEditorialPages } from './extra-dutch-pages';
 import { SeoGuidePage } from './types';
 import { englishQuestionGuides } from './english-question-guides';
 import { buildConsumerPricingComparisonRows } from '@/lib/commercial/pricing-comparison-rows';
-import { cvDownloadPrice } from '@/lib/site-content';
+import { cvDownloadPrice, profilePhotoPrice } from '@/lib/site-content';
 
 type DutchSeed = {
     slug: string;
@@ -2230,6 +2230,11 @@ const englishBespokeOverrides: Record<string, GuideOverride> = {
             },
             'special-case': {
                 intentLinks: [
+                    {
+                        href: '/en/profile-photo?bron=en_photo_rules_guide#profielfoto-tool',
+                        label: 'No suitable photo? Create a professional one from a selfie',
+                        description: `See 4 recognisable previews for free; a one-time ${profilePhotoPrice.displayEn} to download them and put one on your CV. No photo shoot, no subscription.`,
+                    },
                     {
                         href: '/en/dutch-cv-template',
                         label: 'Create a content-first Dutch CV in English',

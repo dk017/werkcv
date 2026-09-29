@@ -256,7 +256,7 @@ export default function ProfielfotoCvMakenPage() {
                 </Link>
               </div>
               <p className="mt-4 text-sm font-bold text-slate-700">
-                Eerst gratis 4 voorbeelden. Eénmalig {profilePhotoPrice.display} als je er een gebruikt. Geen abonnement.
+                Eerst gratis 4 voorbeelden. Eenmalig {profilePhotoPrice.display} om ze te downloaden en in je cv te zetten. Geen abonnement.
               </p>
               <p className="mt-3 text-sm leading-6 text-slate-600">
                 Weet je niet welke bronfoto geschikt is?{" "}

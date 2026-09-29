@@ -764,7 +764,7 @@ export default function CvScoreTool() {
               </Link>
             </div>
             <p className="mt-3 text-xs font-semibold text-[var(--wk-ink-muted,#606a67)]">
-              Gratis bouwen. Eénmalig {cvDownloadPrice.display} bij PDF-download. Geen abonnement.
+              Gratis bouwen. Eenmalig {cvDownloadPrice.display} bij PDF-download. Geen abonnement.
             </p>
           </section>
 

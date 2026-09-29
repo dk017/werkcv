@@ -26,7 +26,7 @@ const downloadSteps = [
   },
   {
     title: "2. Betaal pas bij de PDF-download",
-    body: `Pas wanneer je cv klaar is en je de PDF wilt hebben, betaal je éénmalig ${cvDownloadPrice.display}.`,
+    body: `Pas wanneer je cv klaar is en je de PDF wilt hebben, betaal je eenmalig ${cvDownloadPrice.display}.`,
   },
   {
     title: "3. Download zonder maandkosten",
@@ -57,7 +57,7 @@ const downloadChecks = [
   },
   {
     question: "Wat kost downloaden?",
-    answer: `Eénmalig ${cvDownloadPrice.display}`,
+    answer: `Eenmalig ${cvDownloadPrice.display}`,
   },
 ];
 
@@ -113,7 +113,7 @@ const faqItems = [
   {
     question: "Kan ik bij WerkCV een cv downloaden zonder abonnement?",
     answer:
-      `Ja. Je betaalt alleen éénmalig ${cvDownloadPrice.display} wanneer je jouw cv als PDF downloadt. Er start geen proefperiode, geen maandabonnement en geen automatische verlenging.`,
+      `Ja. Je betaalt alleen eenmalig ${cvDownloadPrice.display} wanneer je jouw cv als PDF downloadt. Er start geen proefperiode, geen maandabonnement en geen automatische verlenging.`,
   },
   {
     question: "Moet ik eerst betalen voordat ik mijn cv zie?",
@@ -128,7 +128,7 @@ const faqItems = [
   {
     question: "Is cv downloaden zonder abonnement hetzelfde als gratis downloaden?",
     answer:
-      `Nee. Het bouwen en bewerken is gratis. De definitieve PDF-download kost éénmalig ${cvDownloadPrice.display}.`,
+      `Nee. Het bouwen en bewerken is gratis. De definitieve PDF-download kost eenmalig ${cvDownloadPrice.display}.`,
   },
   {
     question: "Wat is het verschil met een proefperiode?",
@@ -142,7 +142,7 @@ export const metadata: Metadata = {
     absolute: "CV downloaden zonder abonnement | PDF direct downloaden | WerkCV",
   },
   description:
-    `Download je cv zonder abonnement. Maak gratis je cv, betaal pas éénmalig ${cvDownloadPrice.display} bij PDF-download en voorkom proefperiodes, automatische verlenging en maandkosten.`,
+    `Download je cv zonder abonnement. Maak gratis je cv, betaal pas eenmalig ${cvDownloadPrice.display} bij PDF-download en voorkom proefperiodes, automatische verlenging en maandkosten.`,
   keywords: [
     "cv downloaden zonder abonnement",
     "cv pdf downloaden zonder abonnement",
@@ -160,7 +160,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "CV downloaden zonder abonnement | WerkCV",
-    description: `Maak gratis je cv en betaal pas éénmalig ${cvDownloadPrice.display} als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en geen maandkosten.`,
+    description: `Maak gratis je cv en betaal pas eenmalig ${cvDownloadPrice.display} als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en geen maandkosten.`,
     url: pageUrl,
     siteName: "WerkCV",
     locale: "nl_NL",
@@ -177,7 +177,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "CV downloaden zonder abonnement | WerkCV",
-    description: `Maak gratis je cv en betaal pas éénmalig ${cvDownloadPrice.display} als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en geen maandkosten.`,
+    description: `Maak gratis je cv en betaal pas eenmalig ${cvDownloadPrice.display} als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en geen maandkosten.`,
     images: ["/opengraph-image"],
   },
 };
@@ -239,7 +239,7 @@ export default function CvDownloadenZonderAbonnementPage() {
               CV downloaden zonder abonnement
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Maak gratis je cv, download je PDF pas als je klaar bent en betaal dan éénmalig{" "}
+              Maak gratis je cv, download je PDF pas als je klaar bent en betaal dan eenmalig{" "}
               {cvDownloadPrice.display}. Geen proefperiode, geen automatische verlenging en geen maandkosten die later doorlopen.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">

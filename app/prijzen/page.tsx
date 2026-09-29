@@ -15,7 +15,7 @@ import { cvDownloadPrice, cvDownloadPriceCheckedAt } from "@/lib/site-content";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-    title: `CV maken kosten: ${cvDownloadPrice.display} per PDF, eenmalig betalen | WerkCV`,
+    title: `CV maken kosten: ${cvDownloadPrice.display} per cv, eenmalig betalen | WerkCV`,
     description: `Wat kost een CV maken? Bij WerkCV bouw je gratis en betaal je eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.`,
     keywords: [
         "cv maken kosten",
@@ -327,9 +327,9 @@ export default function PrijzenPage() {
                         </h2>
                         <p className="mt-3 text-sm leading-7 text-[var(--wk-ink-muted)] md:text-base">
                             {cvNlPricing.fresh ? (
-                                <>Volgens de officiële prijzenpagina van CV.nl geldt {cvNlPricing.displayedInitialPriceTextNl} en {cvNlPricing.displayedRecurringPriceTextNl?.toLowerCase()}, met automatische verlenging. Gecontroleerd op {formatPricingCheckedAtNl(cvNlPricing.checkedAt)}. WerkCV gebruikt een ander model: gratis starten en {cvDownloadPrice.display} eenmalig per CV-download.</>
+                                <>Volgens de officiële prijzenpagina van CV.nl geldt {cvNlPricing.displayedInitialPriceTextNl} en {cvNlPricing.displayedRecurringPriceTextNl?.toLowerCase()}, met automatische verlenging. Gecontroleerd op {formatPricingCheckedAtNl(cvNlPricing.checkedAt)}. WerkCV gebruikt een ander model: gratis starten en {cvDownloadPrice.display} eenmalig per cv.</>
                             ) : (
-                                <>De actuele CV.nl-prijs kon niet recent genoeg onafhankelijk worden geverifieerd. Open de officiële bron voordat je vergelijkt. WerkCV gebruikt een ander model: gratis starten en {cvDownloadPrice.display} eenmalig per CV-download.</>
+                                <>De actuele CV.nl-prijs kon niet recent genoeg onafhankelijk worden geverifieerd. Open de officiële bron voordat je vergelijkt. WerkCV gebruikt een ander model: gratis starten en {cvDownloadPrice.display} eenmalig per cv.</>
                             )}
                         </p>
                         <div className="mt-6 grid gap-4 md:grid-cols-2">
@@ -349,7 +349,7 @@ export default function PrijzenPage() {
                                 </p>
                                 <ul className="mt-3 space-y-2 text-sm font-medium leading-6 text-[var(--wk-ink)]">
                                     <li>&bull; Gratis starten</li>
-                                    <li>&bull; {cvDownloadPrice.display} per CV-download</li>
+                                    <li>&bull; {cvDownloadPrice.display} per cv</li>
                                     <li>&bull; Geen abonnement of automatische verlenging</li>
                                 </ul>
                             </div>

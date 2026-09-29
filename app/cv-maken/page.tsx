@@ -314,7 +314,7 @@ export default function CvMakenPage() {
                 <span className="wk-hero-highlight">CV maken</span> voor Nederlandse vacatures
               </h1>
               <p className="mt-5 max-w-3xl text-lg leading-8 text-[var(--wk-ink-muted)]">
-                Maak gratis je cv, kies een rustige Nederlandse template en betaal pas éénmalig {cvDownloadPrice.display} wanneer je de PDF wilt downloaden. Geen abonnement, geen proefperiode en geen automatische verlenging.
+                Maak gratis je cv, kies een rustige Nederlandse template en betaal pas eenmalig {cvDownloadPrice.display} wanneer je de PDF wilt downloaden. Geen abonnement, geen proefperiode en geen automatische verlenging.
               </p>
               <p className="mt-4 max-w-3xl text-sm leading-6 text-[var(--wk-ink-muted)]">
                 Begin vanaf nul, upload je bestaande cv of gebruik je LinkedIn-profiel als basis. WerkCV helpt je inhoud, opmaak en PDF-export op één plek af te ronden.

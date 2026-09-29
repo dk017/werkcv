@@ -249,7 +249,7 @@ export const cvMakenInWord: BlogArticle = {
         },
         {
             question: 'Wat is sneller: een CV in Word maken of een online CV-builder?',
-            answer: 'Een online CV-builder is gemiddeld 2-3 keer sneller voor mensen zonder opmaakervaring. Je vult je gegevens in, kiest een template en exporteert als PDF — de opmaak is al geregeld. In Word moet je ook de opmaak bewaken, uitlijnen en testen. Voor een éénmalig CV kan Word volstaan; voor meerdere sollicitaties is een builder efficiënter.',
+            answer: 'Een online CV-builder is gemiddeld 2-3 keer sneller voor mensen zonder opmaakervaring. Je vult je gegevens in, kiest een template en exporteert als PDF — de opmaak is al geregeld. In Word moet je ook de opmaak bewaken, uitlijnen en testen. Voor een eenmalig CV kan Word volstaan; voor meerdere sollicitaties is een builder efficiënter.',
         },
     ],
 

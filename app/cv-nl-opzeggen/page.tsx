@@ -30,7 +30,7 @@ const steps = [
 
 const nextCvBullets = [
   "Gratis bouwen en aanpassen",
-  `Eénmalig betalen bij PDF-download`,
+  `Eenmalig betalen bij PDF-download`,
   "Geen maandabonnement",
   "Later hetzelfde cv opnieuw openen",
   "Nederlandse, ATS-vriendelijke templates",
@@ -159,7 +159,7 @@ export default function CvNlOpzeggenPage() {
               CV.nl opzeggen: stappen en alternatief zonder abonnement
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Wil je je CV.nl abonnement stopzetten? Hieronder vind je de stappen om je abonnement te controleren en op te zeggen. Wil je daarna opnieuw een cv maken zonder maandabonnement? Dan kun je WerkCV gebruiken met een eenmalige betaling van {cvDownloadPrice.display} per PDF-download.
+              Wil je je CV.nl abonnement stopzetten? Hieronder vind je de stappen om je abonnement te controleren en op te zeggen. Wil je daarna opnieuw een cv maken zonder maandabonnement? Dan kun je WerkCV gebruiken met een eenmalige betaling van {cvDownloadPrice.display} per cv.
             </p>
             <p className="mt-5 border-4 border-black bg-yellow-100 px-4 py-3 text-sm font-medium leading-relaxed text-slate-800">
               <span className="font-black">Kort antwoord:</span> log in bij CV.nl, open via je profielicoon de pagina Instellingen en klik op Opzeggen. Controleer daarna of je de bevestiging per e-mail ontvangt.
@@ -241,7 +241,7 @@ export default function CvNlOpzeggenPage() {
             Volgende cv zonder abonnement maken?
           </h2>
           <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-black sm:text-base">
-            Als je opzegt omdat je geen doorlopend CV-abonnement wilt, kun je bij WerkCV gratis opnieuw beginnen. Je betaalt pas éénmalig {cvDownloadPrice.display} wanneer je je cv als PDF downloadt.
+            Als je opzegt omdat je geen doorlopend CV-abonnement wilt, kun je bij WerkCV gratis opnieuw beginnen. Je betaalt pas eenmalig {cvDownloadPrice.display} wanneer je je cv als PDF downloadt.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <TrackedLandingLink
@@ -488,7 +488,7 @@ export default function CvNlOpzeggenPage() {
                 Wil je gewoon een nette cv-PDF zonder abonnement?
               </h2>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
-                Maak je cv gratis in WerkCV. Pas als je tevreden bent en de PDF wilt downloaden, betaal je éénmalig {cvDownloadPrice.display}.
+                Maak je cv gratis in WerkCV. Pas als je tevreden bent en de PDF wilt downloaden, betaal je eenmalig {cvDownloadPrice.display}.
               </p>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black">
                 Geen accountabonnement. Geen maandelijkse kosten. Geen opzegstress.

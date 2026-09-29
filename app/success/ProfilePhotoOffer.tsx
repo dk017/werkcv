@@ -34,12 +34,12 @@ export default function ProfilePhotoOffer({ cvId, language, cvPhoto }: { cvId: s
           <p className="mt-1 text-sm leading-relaxed text-gray-600">
             {cvPhoto
               ? tr(
-                  `Je ziet eerst gratis 4 voorbeelden. Gebruik je er een, dan betaal je ${price} en staat hij direct in dit cv.`,
-                  `You see 4 previews for free. If you use one, you pay ${price} and it goes straight onto this CV.`,
+                  `Je ziet eerst gratis 4 voorbeelden. Wil je ze gebruiken, dan betaal je eenmalig ${price} en zet je je favoriet met één klik in dit cv.`,
+                  `You see 4 previews for free. To use them, you pay a one-time ${price} and put your favourite on this CV in one click.`,
                 )
               : tr(
-                  `7 op de 10 WerkCV-kopers zetten een foto op hun cv. Maak er een van een gewone foto of selfie: eerst gratis voorbeelden, ${price} als je hem gebruikt.`,
-                  `7 in 10 WerkCV buyers put a photo on their CV. Make one from a regular photo or selfie: free previews first, ${price} if you use it.`,
+                  `7 op de 10 WerkCV-kopers zetten een foto op hun cv. Maak er een van een gewone foto of selfie: eerst gratis voorbeelden, daarna eenmalig ${price} als je ze wilt gebruiken.`,
+                  `7 in 10 WerkCV buyers put a photo on their CV. Make one from a regular photo or selfie: free previews first, then a one-time ${price} if you want to use them.`,
                 )}
           </p>
         </div>

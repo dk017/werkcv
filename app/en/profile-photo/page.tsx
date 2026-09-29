@@ -259,7 +259,7 @@ export default function EnglishProfilePhotoPage() {
                 </Link>
               </div>
               <p className="mt-4 text-sm font-bold text-slate-700">
-                4 free previews first. One-time {profilePhotoPrice.displayEn} if you use one. No subscription.
+                4 free previews first. A one-time {profilePhotoPrice.displayEn} to download them and put one on your CV. No subscription.
               </p>
               <p className="mt-3 text-sm leading-6 text-slate-600">
                 Not sure which source photo to use?{" "}

@@ -213,7 +213,7 @@ function getStatusCopy(
     title: tr("Maak eerst gratis je voorbeeldvarianten", "Create your preview variants first"),
     description: tr(
       `Log in, maak 4 voorbeeldvarianten en verfijn maximaal 2 keer. Je betaalt pas ${profilePhotoPrice.display} als je wilt downloaden.`,
-      `Log in, create 4 preview variants and refine up to 2 times. You only pay ${profilePhotoPrice.display} when you want to download.`
+      `Log in, create 4 preview variants and refine up to 2 times. You only pay ${profilePhotoPrice.displayEn} when you want to download.`
     ),
   };
 }
@@ -249,6 +249,9 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
   const [returnCvId, setReturnCvId] = useState<string | null>(null);
   const [cvPhoto, setCvPhoto] = useState<string | null>(null);
   const [isApplyingToCv, setIsApplyingToCv] = useState(false);
+  // Back from checkout (?paid=1) before the payment webhook has marked the project paid: wait for
+  // it instead of showing the pay button again, which could start a second payment.
+  const [paymentConfirmation, setPaymentConfirmation] = useState<"idle" | "waiting" | "timed_out">("idle");
   const photoInspectionId = useRef(0);
 
   const selectedStyle = useMemo(
@@ -278,6 +281,39 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
     });
     return () => window.clearTimeout(timeoutId);
   }, [pagePath]);
+
+  useEffect(() => {
+    if (paymentConfirmation !== "waiting" || !project?.id) return;
+    let cancelled = false;
+    let attempts = 0;
+    let timeoutId: number | undefined;
+    const poll = async () => {
+      attempts += 1;
+      try {
+        const response = await fetch(`/api/profile-photo?projectId=${encodeURIComponent(project.id)}`, { cache: "no-store" });
+        const payload = (await response.json()) as ProfilePhotoStatusResponse;
+        if (cancelled) return;
+        if (payload.project?.status === "paid") {
+          setProject(payload.project);
+          setPaymentConfirmation("idle");
+          return;
+        }
+      } catch {
+        // Keep polling; a network blip should not look like a failed payment.
+      }
+      if (cancelled) return;
+      if (attempts >= 30) {
+        setPaymentConfirmation("timed_out");
+        return;
+      }
+      timeoutId = window.setTimeout(poll, 2000);
+    };
+    timeoutId = window.setTimeout(poll, 1500);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, [paymentConfirmation, project?.id]);
 
   useEffect(() => {
     if (!returnCvId || authStatus !== "authenticated") return;
@@ -314,6 +350,9 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
         setAuthStatus(payload.authenticated ? "authenticated" : "anonymous");
         setBundleIncluded(Boolean(payload.bundleIncluded));
         setProject(payload.project ?? null);
+        if (params.get("paid") === "1" && payload.project && payload.project.status !== "paid") {
+          setPaymentConfirmation("waiting");
+        }
         const savedImages = normalizeGeneratedImages(payload.project?.images ?? [], payload.project?.id);
         setImages(savedImages);
         setSelectedImageId(savedImages[0]?.id ?? null);
@@ -1013,8 +1052,8 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
                 {bundleIncluded
                   ? tr("Downloaden zit al in je bundle. Maak je varianten en kies je favoriet.", "Downloading is already included in your bundle. Create your variants and choose your favorite.")
                   : tr(
-                    `Voorbeelden maken kan na login. Downloaden kost éénmalig ${profilePhotoPrice.display}. Geen abonnement.`,
-                    `You can create previews after login. Downloading is a one-time ${profilePhotoPrice.display}. No subscription.`
+                    `Voorbeelden maken kan na login. Downloaden kost eenmalig ${profilePhotoPrice.display}. Geen abonnement.`,
+                    `You can create previews after login. Downloading is a one-time ${profilePhotoPrice.displayEn}. No subscription.`
                   )}
               </p>
             </div>
@@ -1154,6 +1193,20 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
                           >
                             {tr("Download geselecteerde foto", "Download selected photo")}
                           </a>
+                        ) : paymentConfirmation !== "idle" ? (
+                          <div className="rounded-2xl border-2 border-amber-300 bg-amber-50 p-3 text-sm font-bold text-slate-800" role="status" aria-live="polite">
+                            {paymentConfirmation === "waiting"
+                              ? tr("Je betaling wordt bevestigd… Dit duurt meestal een paar seconden.", "Confirming your payment… This usually takes a few seconds.")
+                              : tr(
+                                  "Je betaling wordt nog verwerkt. Vernieuw de pagina over een minuut; je hoeft niet opnieuw te betalen.",
+                                  "Your payment is still being processed. Refresh the page in a minute; you do not need to pay again."
+                                )}
+                            {paymentConfirmation === "timed_out" ? (
+                              <button type="button" onClick={() => window.location.reload()} className="mt-2 block text-xs font-black underline underline-offset-2">
+                                {tr("Pagina vernieuwen", "Refresh page")}
+                              </button>
+                            ) : null}
+                          </div>
                         ) : (
                           <button
                             type="button"
@@ -1165,7 +1218,7 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
                               ? tr("Checkout openen...", "Opening checkout...")
                               : bundleIncluded
                                 ? tr("Download zit in je bundle", "Download included in your bundle")
-                                : tr(`Betaal ${profilePhotoPrice.display} en download`, `Pay ${profilePhotoPrice.display} and download`)}
+                                : tr(`Betaal ${profilePhotoPrice.display} en download`, `Pay ${profilePhotoPrice.displayEn} and download`)}
                           </button>
                         )}
                         {project?.status === "paid" ? (

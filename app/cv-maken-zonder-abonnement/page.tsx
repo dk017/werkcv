@@ -50,7 +50,7 @@ const subscriptionChecks = [
   },
   {
     question: "Wat kost het?",
-    answer: `Eénmalig ${cvDownloadPrice.display}`,
+    answer: `Eenmalig ${cvDownloadPrice.display}`,
   },
 ];
 
@@ -142,7 +142,7 @@ const relatedLinks = [
 
 export const metadata: Metadata = {
   title: {
-    absolute: `CV maken zonder abonnement: ${cvDownloadPrice.display} per PDF | WerkCV`,
+    absolute: `CV maken zonder abonnement: ${cvDownloadPrice.display} per cv | WerkCV`,
   },
   description:
     `CV maken zonder abonnement? Bouw gratis, bekijk je volledige CV en betaal eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.`,
@@ -160,7 +160,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: `CV maken zonder abonnement: ${cvDownloadPrice.display} per PDF | WerkCV`,
+    title: `CV maken zonder abonnement: ${cvDownloadPrice.display} per cv | WerkCV`,
     description:
       `CV maken zonder abonnement? Bouw gratis, bekijk je volledige CV en betaal eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.`,
     url: pageUrl,
@@ -178,7 +178,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `CV maken zonder abonnement: ${cvDownloadPrice.display} per PDF | WerkCV`,
+    title: `CV maken zonder abonnement: ${cvDownloadPrice.display} per cv | WerkCV`,
     description:
       `CV maken zonder abonnement? Bouw gratis, bekijk je volledige CV en betaal eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen proefabonnement, maandkosten of automatische verlenging.`,
     images: ["/opengraph-image"],
@@ -242,7 +242,7 @@ export default function CvMakenZonderAbonnementPage() {
               CV maken zonder abonnement: gratis bouwen, eenmalig betalen
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Maak gratis je Nederlandse cv, bekijk je voorbeeld en betaal pas éénmalig {cvDownloadPrice.display} inclusief btw als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en niets om later op te zeggen.
+              Maak gratis je Nederlandse cv, bekijk je voorbeeld en betaal pas eenmalig {cvDownloadPrice.display} inclusief btw als je de PDF wilt downloaden. Geen proefperiode, geen automatische verlenging en niets om later op te zeggen.
             </p>
             <p className="mt-2 text-sm text-slate-600">
               Actuele prijs per <time dateTime={cvDownloadPriceCheckedAt.iso}>{cvDownloadPriceCheckedAt.display}</time>.
@@ -405,7 +405,7 @@ export default function CvMakenZonderAbonnementPage() {
               Kies de cv-maker zonder abonnement
             </h3>
             <p className="mt-2 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
-              Wil je gewoon een nette cv-PDF zonder maandkosten? Start gratis, maak je cv af en betaal pas éénmalig {cvDownloadPrice.display} inclusief btw wanneer je wilt downloaden.
+              Wil je gewoon een nette cv-PDF zonder maandkosten? Start gratis, maak je cv af en betaal pas eenmalig {cvDownloadPrice.display} inclusief btw wanneer je wilt downloaden.
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-4">
               <TrackedLandingLink
@@ -548,7 +548,7 @@ export default function CvMakenZonderAbonnementPage() {
                 Klaar om zonder abonnement te starten?
               </h2>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
-                Bouw je cv gratis, betaal later éénmalig bij download en houd toegang tot hetzelfde cv.
+                Bouw je cv gratis, betaal later eenmalig bij download en houd toegang tot hetzelfde cv.
               </p>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black sm:text-base">
                 {supportLine}
