@@ -97,7 +97,7 @@ export type ProfilePhotoEvent =
     | 'profile_photo_offer_viewed'
     | 'profile_photo_offer_clicked';
 
-export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboarding';
+export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboarding' | 'cv_check';
 export type FullPreviewSource = 'desktop_preview_header' | 'desktop_document' | 'mobile_floating' | 'upload_success';
 
 type EditorSourceContext = {
@@ -798,7 +798,7 @@ export type AnalyticsEvent =
           };
       }
     | { event: 'cv_check_failed'; properties: { locale: 'nl' | 'en'; mode: 'general' | 'vacancy'; input_type: 'file' | 'text'; code: string } }
-    | { event: 'cv_check_fix_clicked'; properties: { locale: 'nl' | 'en'; check_id: string; category: string } }
+    | { event: 'cv_check_fix_clicked'; properties: { locale: 'nl' | 'en'; check_id: string; category: string; handoff?: boolean } }
     | { event: 'cv_check_rescan_clicked'; properties: { locale: 'nl' | 'en' } }
     | {
           event: 'letter_check_completed';

@@ -81,6 +81,7 @@ import SectionOrderPanel from "./SectionOrderPanel";
 import EditorFeedbackWidget from "./EditorFeedbackWidget";
 import CheckoutExitQuestion from "@/components/checkout/CheckoutExitQuestion";
 import { markCheckoutPending } from "@/lib/checkout-exit";
+import { isCvCheckStartSource, takeCheckedCvForEditor } from "@/lib/cv-check/handoff";
 import WorkspaceSwitcher from "@/components/workspace/WorkspaceSwitcher";
 import type { WorkspaceEntitlements } from "@/lib/workspace/types";
 import {
@@ -424,6 +425,8 @@ export default function Editor({
     const designSaveRequestRef = useRef(0);
     const [showUploader, setShowUploader] = useState(false);
     const [uploaderSource, setUploaderSource] = useState<CvUploadSource>("toolbar");
+    // The CV someone just checked on /cv-check, imported without uploading it again.
+    const [uploaderInitialFile, setUploaderInitialFile] = useState<File | null>(null);
     const [pageCount, setPageCount] = useState(1);
     const [desktopPreviewScale, setDesktopPreviewScale] = useState(DESKTOP_PREVIEW_SCALE);
     const [mobilePreviewScale, setMobilePreviewScale] = useState(0.42);
@@ -806,7 +809,14 @@ export default function Editor({
                 '',
                 `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ''}${window.location.hash}`,
             );
-            openUploader("route_intent");
+            if (isCvCheckStartSource(params.get('startSource'))) {
+                void takeCheckedCvForEditor().then((checkedFile) => {
+                    setUploaderInitialFile(checkedFile);
+                    openUploader(checkedFile ? "cv_check" : "route_intent");
+                });
+            } else {
+                openUploader("route_intent");
+            }
         }
     }, [isPublicMode, openUploader]);
 
@@ -2670,8 +2680,12 @@ export default function Editor({
                 <CVUploader
                     cvId={id}
                     source={uploaderSource}
+                    initialFile={uploaderInitialFile}
                     onParsed={handleCVParsed}
-                    onClose={() => setShowUploader(false)}
+                    onClose={() => {
+                        setShowUploader(false);
+                        setUploaderInitialFile(null);
+                    }}
                     uiLanguage={uiLanguage}
                     endpoint={isPublicMode ? "/api/public/cv/parse" : undefined}
                     allowLegacyDoc={!isPublicMode}

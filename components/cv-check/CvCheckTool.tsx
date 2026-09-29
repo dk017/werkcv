@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type DragEvent } from "react";
 import { track } from "@/lib/analytics";
+import { saveCheckedCvForEditor } from "@/lib/cv-check/handoff";
+import { cvDownloadPrice } from "@/lib/site-content";
 import type { CvCheckCategory, CvCheckItem, CvCheckLocale, CvCheckResult } from "@/lib/cv-check/types";
 
 type InputMode = "file" | "text";
@@ -31,6 +33,9 @@ const COPY = {
     bands: { onvoldoende: "Onvoldoende", voldoende: "Voldoende", goed: "Goed", uitstekend: "Uitstekend" },
     topFixes: "Verbeter eerst deze 3 punten",
     fixInEditor: "Verbeter in de editor",
+    editorNoteFile: `Je gecheckte cv wordt direct in de editor ingeladen, je hoeft het niet opnieuw te uploaden. Aanpassen is gratis; je betaalt pas ${cvDownloadPrice.display} als je de PDF downloadt.`,
+    editorNoteText: `In de editor pas je je cv gratis aan. Je betaalt pas ${cvDownloadPrice.display} als je de PDF downloadt.`,
+    openingEditor: "Editor openen...",
     requirements: "Eisen uit de vacature",
     hardFirst: "Harde eisen staan bovenaan; een 'pre' is een pluspunt, geen harde eis.",
     essential: "Harde eis",
@@ -88,6 +93,9 @@ const COPY = {
     bands: { onvoldoende: "Below standard", voldoende: "Sufficient", goed: "Good", uitstekend: "Excellent" },
     topFixes: "Fix these 3 points first",
     fixInEditor: "Improve in the editor",
+    editorNoteFile: `The CV you checked opens in the editor straight away, no need to upload it again. Editing is free; you only pay ${cvDownloadPrice.displayEn} when you download the PDF.`,
+    editorNoteText: `Editing your CV in the editor is free. You only pay ${cvDownloadPrice.displayEn} when you download the PDF.`,
+    openingEditor: "Opening the editor...",
     requirements: "Requirements from the job ad",
     hardFirst: "Hard requirements come first; a nice-to-have is a plus, not a requirement.",
     essential: "Requirement",
@@ -182,8 +190,19 @@ export default function CvCheckTool({
   const [error, setError] = useState("");
   const [result, setResult] = useState<CvCheckResult | null>(null);
   const [dragging, setDragging] = useState(false);
+  const [openingEditor, setOpeningEditor] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const reportRef = useRef<HTMLDivElement>(null);
+  // The checked file is handed to the editor (see lib/cv-check/handoff.ts) so it opens with this CV.
+  const canHandOffFile = inputMode === "file" && Boolean(file);
+
+  async function openEditor(fix: { checkId: string; category: string }) {
+    if (openingEditor) return;
+    setOpeningEditor(true);
+    const handoff = canHandOffFile && file ? await saveCheckedCvForEditor(file) : false;
+    track("cv_check_fix_clicked", { locale, check_id: fix.checkId, category: fix.category, handoff });
+    window.location.assign(handoff ? `${editorHref}${editorHref.includes("?") ? "&" : "?"}upload=1` : editorHref);
+  }
 
   const withVacancy = showVacancy && vacancyText.trim().length > 0;
   const steps = withVacancy ? [...copy.stepsGeneral, copy.stepVacancy] : [...copy.stepsGeneral];
@@ -391,7 +410,14 @@ export default function CvCheckTool({
       {result && (
         <div ref={reportRef} className="scroll-mt-24 space-y-6">
           <Summary result={result} locale={locale} />
-          <TopFixes result={result} locale={locale} editorHref={editorHref} />
+          <TopFixes
+            result={result}
+            locale={locale}
+            editorHref={editorHref}
+            note={canHandOffFile ? copy.editorNoteFile : copy.editorNoteText}
+            opening={openingEditor}
+            onImprove={(fix) => void openEditor(fix)}
+          />
           {result.aiStatus === "unavailable" && (
             <p className="rounded-[var(--wk-radius-sm)] border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">{copy.aiUnavailable}</p>
           )}
@@ -457,7 +483,21 @@ function Summary({ result, locale }: { result: CvCheckResult; locale: CvCheckLoc
   );
 }
 
-function TopFixes({ result, locale, editorHref }: { result: CvCheckResult; locale: CvCheckLocale; editorHref: string }) {
+function TopFixes({
+  result,
+  locale,
+  editorHref,
+  note,
+  opening,
+  onImprove,
+}: {
+  result: CvCheckResult;
+  locale: CvCheckLocale;
+  editorHref: string;
+  note: string;
+  opening: boolean;
+  onImprove: (fix: { checkId: string; category: string }) => void;
+}) {
   const copy = COPY[locale];
   if (!result.topFixes.length) return null;
   return (
@@ -475,14 +515,21 @@ function TopFixes({ result, locale, editorHref }: { result: CvCheckResult; local
             <p className="mt-2 text-sm text-[var(--wk-ink)]">{fix.fix}</p>
             <Link
               href={editorHref}
-              onClick={() => track("cv_check_fix_clicked", { locale, check_id: fix.checkId, category: fix.category })}
+              onClick={(event) => {
+                // Plain clicks go through the handoff; new-tab clicks just open the editor.
+                if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+                event.preventDefault();
+                onImprove(fix);
+              }}
+              aria-disabled={opening}
               className="mt-3 inline-block text-sm font-semibold underline underline-offset-4"
             >
-              {copy.fixInEditor}
+              {opening ? copy.openingEditor : copy.fixInEditor}
             </Link>
           </li>
         ))}
       </ol>
+      <p className="mt-3 text-sm text-[var(--wk-ink-muted)]">{note}</p>
     </section>
   );
 }

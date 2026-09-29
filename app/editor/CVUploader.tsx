@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { CVData } from "@/lib/cv";
 import { UiLanguage } from "@/lib/ui-language";
 import { track, type CvUploadSource } from "@/lib/analytics";
@@ -14,6 +14,8 @@ interface CVUploaderProps {
   endpoint?: string;
   allowLegacyDoc?: boolean;
   maxFileSizeMb?: number;
+  /** A file to import right away (the CV just checked on /cv-check). */
+  initialFile?: File | null;
 }
 
 type UploadFileType = "pdf" | "doc" | "docx";
@@ -47,6 +49,7 @@ export default function CVUploader({
   endpoint = "/api/parse-cv-only",
   allowLegacyDoc = true,
   maxFileSizeMb = 10,
+  initialFile = null,
 }: CVUploaderProps) {
   const isEnglish = uiLanguage === "en";
   const [isDragging, setIsDragging] = useState(false);
@@ -171,6 +174,13 @@ export default function CVUploader({
     },
     [allowLegacyDoc, cvId, endpoint, isEnglish, maxFileSizeMb, onParsed, source, uiLanguage],
   );
+
+  const initialFileStartedRef = useRef(false);
+  useEffect(() => {
+    if (!initialFile || initialFileStartedRef.current) return;
+    initialFileStartedRef.current = true;
+    void handleFile(initialFile);
+  }, [handleFile, initialFile]);
 
   const handleClose = useCallback(() => {
     track("cv_upload_cancelled", {
