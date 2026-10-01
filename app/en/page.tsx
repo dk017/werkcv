@@ -5,6 +5,7 @@ import MobileStickyCta from "@/components/landing/MobileStickyCta";
 import EnglishRoleExampleBand from "./components/EnglishRoleExampleBand";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { cvDownloadPrice } from "@/lib/site-content";
+import CustomerQuote from "@/components/CustomerQuote";
 
 export const metadata = buildEnglishMetadata({
   title: "English CV Builder for Jobs in the Netherlands",
@@ -427,6 +428,12 @@ export default function EnglishHubPage() {
           <p className="mt-4 text-sm leading-6 text-[var(--wk-ink-muted)]">
             Best for expats, international students, English-speaking professionals and candidates applying to Dutch companies in English.
           </p>
+        </div>
+      </section>
+
+      <section className="wk-section pt-0" aria-label="What a customer says">
+        <div className="wk-container max-w-3xl">
+          <CustomerQuote locale="en" />
         </div>
       </section>
 

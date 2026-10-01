@@ -80,6 +80,7 @@ import FullCvPreviewDialog from "./FullCvPreviewDialog";
 import SectionOrderPanel from "./SectionOrderPanel";
 import EditorFeedbackWidget from "./EditorFeedbackWidget";
 import CheckoutExitQuestion from "@/components/checkout/CheckoutExitQuestion";
+import CustomerQuote from "@/components/CustomerQuote";
 import { markCheckoutPending } from "@/lib/checkout-exit";
 import { isCvCheckStartSource, takeCheckedCvForEditor } from "@/lib/cv-check/handoff";
 import WorkspaceSwitcher from "@/components/workspace/WorkspaceSwitcher";
@@ -2362,6 +2363,10 @@ export default function Editor({
                                     </button>
                                 ) : null}
                             </div>
+
+                            {isReadyToDownload ? (
+                                <CustomerQuote locale={uiLanguage === "en" ? "en" : "nl"} variant="compact" className="mt-4" />
+                            ) : null}
 
                             <div className="mt-5 grid gap-4">
                                 <CvScoreWidget data={data} uiLanguage={uiLanguage} />

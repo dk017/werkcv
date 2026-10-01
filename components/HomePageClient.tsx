@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { TemplateConfig } from "@/lib/templates";
 import { getStoredAttribution, track } from "@/lib/analytics";
+import CustomerQuote from "@/components/CustomerQuote";
 import {
     cvDownloadPrice,
     cvDownloadPriceCheckedAt,
@@ -324,6 +325,13 @@ export default function HomePageClient({
                             <span className="text-sm font-semibold text-[var(--wk-ink-muted)]">{stat.label}</span>
                         </div>
                     ))}
+                </div>
+            </section>
+
+            {/* CUSTOMER QUOTE - a real buyer, published with permission */}
+            <section className="relative z-10 wk-section pt-0 bg-[var(--wk-surface)]" aria-label="Wat een klant zegt">
+                <div className="max-w-3xl mx-auto px-6">
+                    <CustomerQuote locale="nl" />
                 </div>
             </section>
 
