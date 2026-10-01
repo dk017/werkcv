@@ -248,6 +248,12 @@ export const ELIGIBLE_USERS_SQL = `
         AND LOWER(u.email) <> 'dhineshkumar.stoic@gmail.com'
         AND NOT EXISTS (
           SELECT 1
+          FROM "FollowupContact" fc
+          WHERE LOWER(fc.email) = LOWER(u.email)
+            AND fc.status IN ('do_not_contact', 'paused')
+        )
+        AND NOT EXISTS (
+          SELECT 1
           FROM "FollowupTask" ft
           WHERE LOWER(ft.email) = LOWER(u.email)
             AND ft.type = 'signup_no_cv_feedback'

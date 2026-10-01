@@ -1,0 +1,11 @@
+[Unit]
+Description=Sync contact@werkcv.nl replies hourly
+
+[Timer]
+OnCalendar=hourly
+RandomizedDelaySec=300
+Persistent=true
+Unit=werkcv-mail-sync.service
+
+[Install]
+WantedBy=timers.target

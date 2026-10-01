@@ -261,6 +261,12 @@ async function queryEligibleUsers(pool, start, end) {
         )
         AND NOT EXISTS (
           SELECT 1
+          FROM "FollowupContact" contact
+          WHERE LOWER(contact.email) = LOWER(u.email)
+            AND contact.status IN ('do_not_contact', 'paused')
+        )
+        AND NOT EXISTS (
+          SELECT 1
           FROM "EmailMessage" message
           WHERE LOWER(message.email) = LOWER(u.email)
             AND message.direction IN ('outbound', 'inbound')
