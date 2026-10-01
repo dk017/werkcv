@@ -21,7 +21,9 @@ const SUPPORTED_ADDONS = ['ats-rewrite', 'cover-letter', 'localization-polish'] 
 export type CheckoutAddon = typeof SUPPORTED_ADDONS[number];
 export const CV_DOWNLOAD_PRODUCT = 'cv-download';
 export const CV_PROFILE_PHOTO_BUNDLE_PRODUCT = 'cv-profile-photo-bundle';
-const SUPPORTED_CHECKOUT_PRODUCTS = [CV_DOWNLOAD_PRODUCT, CV_PROFILE_PHOTO_BUNDLE_PRODUCT] as const;
+// Sollicitatiepas; sold through Dodo only (lib/dodo.ts), see lib/job-pass.ts.
+export const JOB_PASS_CHECKOUT_PRODUCT = 'job-pass';
+const SUPPORTED_CHECKOUT_PRODUCTS = [CV_DOWNLOAD_PRODUCT, CV_PROFILE_PHOTO_BUNDLE_PRODUCT, JOB_PASS_CHECKOUT_PRODUCT] as const;
 export type CheckoutProduct = typeof SUPPORTED_CHECKOUT_PRODUCTS[number];
 
 function isCheckoutAddon(value: string): value is CheckoutAddon {
@@ -70,6 +72,10 @@ export async function buildCheckoutURL(
 ): Promise<string> {
     if (!POLAR_ACCESS_TOKEN) {
         throw new Error('POLAR_ACCESS_TOKEN is not configured');
+    }
+    if (checkoutProduct === JOB_PASS_CHECKOUT_PRODUCT) {
+        // Never fall through to the single-CV product: that would sell the pass at the CV price.
+        throw new Error('The Sollicitatiepas is only sold through Dodo');
     }
     if (checkoutProduct === CV_DOWNLOAD_PRODUCT && !POLAR_PRODUCT_ID && !POLAR_PRICE_ID) {
         throw new Error('POLAR_PRODUCT_ID_CV_DOWNLOAD or POLAR_PRICE_ID_CV_DOWNLOAD is not configured');

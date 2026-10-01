@@ -112,7 +112,7 @@ export async function getEnglishRoleExampleFunnelReport(
       select: { id: true, cvId: true, event: true, path: true, properties: true, createdAt: true },
     }),
     prisma.order.findMany({
-      where: { product: "cv-download", paidAt: { gte: since }, cvId: { not: null } },
+      where: { product: { in: ["cv-download", "job-pass"] }, paidAt: { gte: since }, cvId: { not: null } },
       select: { cvId: true, paidAt: true, amountCents: true },
     }),
     prisma.analyticsEvent.findMany({

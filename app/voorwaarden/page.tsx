@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { getLanguageAlternates } from "@/lib/i18n/route-pairs";
+import { jobPassPrice } from "@/lib/site-content";
 
 export const metadata: Metadata = {
     title: "Algemene Voorwaarden - WerkCV",
@@ -69,6 +70,11 @@ export default function VoorwaardenPage() {
                             <h2 className="text-lg font-black text-black mb-2">4. Prijzen en betaling</h2>
                             <ul className="list-disc pl-6 space-y-1 font-medium">
                                 <li>Het downloaden van een CV als PDF kost een eenmalig bedrag (zie de actuele prijs op de website)</li>
+                                <li>
+                                    In plaats daarvan kun je de Sollicitatiepas kopen ({jobPassPrice.display}, eenmalig). Daarmee kun je elke CV
+                                    downloaden die je binnen {jobPassPrice.days} dagen na betaling aanmaakt, ook nadat de pas is afgelopen. De pas
+                                    verlengt niet automatisch.
+                                </li>
                                 <li>Er zijn geen abonnementen of terugkerende kosten</li>
                                 <li>De standaard CV-download wordt afgerekend via Dodo Payments</li>
                                 <li>Voor bepaalde aanvullende producten, zoals een profielfoto, kan de betaling via Polar verlopen</li>

@@ -2,8 +2,10 @@
 
 import { prisma } from '@/lib/prisma'
 import { cvSchema, CVData, defaultCV } from '@/lib/cv'
-import { buildCheckoutURL, CheckoutAddon, CheckoutProduct, parseCheckoutAddons, parseCheckoutProduct } from '@/lib/polar'
-import { buildDodoCheckoutURL, isDodoEnabledForCheckout } from '@/lib/dodo'
+import { buildCheckoutURL, CheckoutAddon, CheckoutProduct, JOB_PASS_CHECKOUT_PRODUCT, parseCheckoutAddons, parseCheckoutProduct } from '@/lib/polar'
+import { buildDodoCheckoutURL, isDodoEnabledForCheckout, isJobPassOffered } from '@/lib/dodo'
+import { isCoveredByJobPass, jobPassStatusFrom } from '@/lib/job-pass'
+import { getJobPassPaidAts } from '@/lib/job-pass-server'
 import { getCurrentUser } from '@/lib/auth'
 import { reportOpsIncident } from '@/lib/ops-alerts'
 import { getResumeLanguage } from '@/lib/resume-language'
@@ -46,7 +48,7 @@ export type CheckoutUrlResult =
     | { ok: true; url: string }
     | {
         ok: false;
-        code: 'AUTH_REQUIRED' | 'NOT_FOUND' | 'CV_WORKSPACE_FORBIDDEN' | 'CHECKOUT_FAILED';
+        code: 'AUTH_REQUIRED' | 'NOT_FOUND' | 'CV_WORKSPACE_FORBIDDEN' | 'CHECKOUT_FAILED' | 'PASS_UNAVAILABLE' | 'PASS_ALREADY_ACTIVE';
         reason?: string;
         supportNotified?: boolean;
     };
@@ -125,6 +127,7 @@ export async function getCVWithSettings(id: string, expectedWorkspace?: 'persona
             canExport = false;
         }
     }
+    const downloadIncluded = await hasCvDownloadAccess(user.id, id, cv.workspace.kind);
     return {
         data: cv.data as unknown as CVData,
         contentVersion: cvContentVersion(cv.data),
@@ -133,7 +136,9 @@ export async function getCVWithSettings(id: string, expectedWorkspace?: 'persona
         agencyRouteLocked: isMatchPack,
         workspace: cv.workspace,
         // Already paid (or free): the editor then shows the download button without a price.
-        downloadIncluded: await hasCvDownloadAccess(user.id, id, cv.workspace.kind),
+        downloadIncluded,
+        // Show the "Sollicitatiepas" choice at checkout only when it is for sale and this CV still needs paying.
+        jobPassOffered: !downloadIncluded && cv.workspace.kind === 'personal' && isJobPassOffered(),
         workspaceContext: {
             kind: isMatchPack ? 'matchpack' as const : 'personal' as const,
             label: isMatchPack ? 'MatchPack' : 'Persoonlijke CV',
@@ -226,19 +231,15 @@ export async function checkPaymentStatus(cvId: string): Promise<boolean> {
     const user = await getCurrentUser();
     if (!user) return false;
 
+    let cv;
     try {
-        await authorizeCvDocument(user.id, cvId, 'personal_download');
+        cv = await authorizeCvDocument(user.id, cvId, 'personal_download');
     } catch {
         return false;
     }
 
-    const order = await prisma.order.findFirst({
-        where: {
-            cvId: cvId,
-            paidAt: { not: null },
-        },
-    })
-    return !!order
+    // Same rule as the PDF route: this CV's own order, or a Sollicitatiepas that covers it.
+    return hasCvDownloadAccess(user.id, cvId, cv.workspace.kind);
 }
 
 type PersonalCvCursor = {
@@ -426,6 +427,7 @@ export async function getUserCVs(input: unknown = {}): Promise<PersonalCvLibrary
         const paidCvIds = new Set(
             paidOrders.flatMap((order: PaidOrderItem) => (order.cvId ? [order.cvId] : []))
         );
+        const jobPassPaidAts = cvIds.length ? await getJobPassPaidAts(user.id, user.email) : [];
 
         return {
             ok: true,
@@ -437,7 +439,7 @@ export async function getUserCVs(input: unknown = {}): Promise<PersonalCvLibrary
                 previewData: buildPersonalCvPreview(cv.previewData),
                 createdAt: cv.createdAt.toISOString(),
                 updatedAt: cv.updatedAt.toISOString(),
-                isPaid: paidCvIds.has(cv.id),
+                isPaid: paidCvIds.has(cv.id) || isCoveredByJobPass(cv.createdAt, jobPassPaidAts),
             })),
             nextCursor: hasMore && cvs.length ? encodePersonalCvCursor(cvs[cvs.length - 1], query.sort) : null,
             totalCount,
@@ -545,6 +547,13 @@ export async function getCheckoutURL(
 
     const safeAddons = parseCheckoutAddons(addons);
     const safeProduct = parseCheckoutProduct(checkoutProduct);
+    if (safeProduct === JOB_PASS_CHECKOUT_PRODUCT) {
+        if (!isJobPassOffered()) return { ok: false, code: 'PASS_UNAVAILABLE' };
+        // One active pass at a time: a second one would add nothing, every new CV is already covered.
+        if (jobPassStatusFrom(await getJobPassPaidAts(user.id, user.email)).active) {
+            return { ok: false, code: 'PASS_ALREADY_ACTIVE' };
+        }
+    }
     const resumeLanguage = getResumeLanguage(owned.data as CVData);
     const paymentProvider = isDodoEnabledForCheckout(safeProduct, safeAddons) ? 'dodo' : 'polar';
     try {
@@ -556,7 +565,8 @@ export async function getCheckoutURL(
                 cvId,
                 email || user.email,
                 resumeLanguage,
-                visitorGeo?.countryCode
+                visitorGeo?.countryCode,
+                safeProduct
             );
             url = checkout.checkoutUrl;
 

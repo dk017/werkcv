@@ -3,6 +3,7 @@ import test from "node:test";
 
 process.env.DODO_PRODUCT_ID = "product_test";
 process.env.DODO_AGENCY_PRODUCT_ID = "agency_product_test";
+process.env.DODO_JOB_PASS_PRODUCT_ID = "job_pass_product_test";
 process.env.NEXT_PUBLIC_APP_URL = "https://werkcv.nl";
 
 const dodoModule = import("./dodo");
@@ -179,4 +180,25 @@ test("With DODO_EU_LOCAL_METHODS on, BE/AT/PT get EUR, their country and their l
   } finally {
     delete process.env.DODO_EU_LOCAL_METHODS;
   }
+});
+
+test("Sollicitatiepas checkout uses the pass product and says so in the metadata", async () => {
+  const { buildDodoCheckoutBody } = await dodoModule;
+  const body = buildDodoCheckoutBody("cv-900", undefined, "nl", "NL", "job-pass");
+  assert.deepEqual(body.product_cart, [{ product_id: "job_pass_product_test", quantity: 1 }]);
+  assert.equal((body.metadata as Record<string, unknown>).product, "job-pass");
+  assert.equal((body.metadata as Record<string, unknown>).cv_id, "cv-900");
+  assert.equal(body.billing_currency, "EUR");
+
+  const single = buildDodoCheckoutBody("cv-901", undefined, "nl", "NL");
+  assert.deepEqual(single.product_cart, [{ product_id: "product_test", quantity: 1 }]);
+  assert.equal((single.metadata as Record<string, unknown>).product, "cv-download");
+});
+
+test("Dodo product ids map back to the order product", async () => {
+  const { checkoutProductForDodoProductId } = await dodoModule;
+  assert.equal(checkoutProductForDodoProductId("job_pass_product_test"), "job-pass");
+  assert.equal(checkoutProductForDodoProductId("product_test"), "cv-download");
+  assert.equal(checkoutProductForDodoProductId("agency_product_test"), null);
+  assert.equal(checkoutProductForDodoProductId(null), null);
 });

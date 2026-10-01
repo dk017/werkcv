@@ -102,6 +102,7 @@ export default async function EditorPage({
       agencyRouteLocked={cv.agencyRouteLocked}
       workspaceContext={cv.workspaceContext}
       downloadIncluded={cv.downloadIncluded}
+      jobPassOffered={cv.jobPassOffered}
       workspaceEntitlements={workspaceEntitlements}
       workspaceSwitcherEnabled={isWorkspaceSwitcherEnabled(workspaceEntitlements)}
     />

@@ -6,6 +6,12 @@ import { clearPendingCheckout } from "@/lib/checkout-exit";
 import PurchaseTracker from "./PurchaseTracker";
 import PdfDownloadButton from "./PdfDownloadButton";
 import ProfilePhotoOffer from "./ProfilePhotoOffer";
+import { JOB_PASS_PRODUCT, jobPassExpiry } from "@/lib/job-pass";
+
+// The pass was paid moments ago, so its window ends 90 days from now.
+function jobPassEndDate(locale: string): string {
+  return jobPassExpiry(new Date()).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
+}
 
 type PaidOrder = {
   id: string;
@@ -155,6 +161,14 @@ export default function PurchaseSuccessActions({
       <h1 className="mb-2 text-2xl font-bold text-gray-900">
         {tr("Betaling geslaagd!", "Payment successful!")}
       </h1>
+      {order?.product === JOB_PASS_PRODUCT ? (
+        <p className="mb-4 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-900">
+          {tr(
+            `Je Sollicitatiepas is actief tot ${jobPassEndDate("nl-NL")}. Elke cv die je tot dan maakt, kun je downloaden.`,
+            `Your Job Search Pass is active until ${jobPassEndDate("en-GB")}. You can download every CV you make until then.`,
+          )}
+        </p>
+      ) : null}
       <p className="mb-8 text-gray-600" aria-live="polite">
         {tr(
           hasProfilePhotoBundle

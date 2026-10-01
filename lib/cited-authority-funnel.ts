@@ -88,7 +88,7 @@ export function rollupCitedAuthorityFunnelFixture(
       !document.agency,
   );
   const documentById = new Map(documents.map((document) => [document.cvId, document]));
-  const allowedOrderProducts = new Set(["cv-download", "cv-profile-photo-bundle"]);
+  const allowedOrderProducts = new Set(["cv-download", "cv-profile-photo-bundle", "job-pass"]);
   const uniqueOrders = new Map(
     fixture.orders
       .filter(
@@ -267,7 +267,7 @@ export async function getCitedAuthorityFunnel(since: Date): Promise<CitedAuthori
         EXTRACT(EPOCH FROM (o."paidAt" - d.created_at)) / 3600.0 AS hours_to_paid
       FROM documents d
       JOIN "Order" o ON o."cvId" = d.cv_id
-      WHERE o.product IN ('cv-download', 'cv-profile-photo-bundle')
+      WHERE o.product IN ('cv-download', 'cv-profile-photo-bundle', 'job-pass')
         AND o."paidAt" IS NOT NULL
         AND o."paidAt" >= d.created_at
     ),
@@ -318,7 +318,7 @@ export async function getCitedAuthorityFunnel(since: Date): Promise<CitedAuthori
         EXISTS (
           SELECT 1 FROM "Order" o
           WHERE o."cvId" = d.id
-            AND o.product IN ('cv-download', 'cv-profile-photo-bundle')
+            AND o.product IN ('cv-download', 'cv-profile-photo-bundle', 'job-pass')
             AND o."paidAt" IS NOT NULL
         ) AS paid
       FROM "CVDocument" d

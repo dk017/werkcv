@@ -92,7 +92,7 @@ export async function getCertifiedConsumerFunnel(
         EXISTS (
           SELECT 1 FROM "Order" o
           WHERE LOWER(o.email) = c.email
-            AND o.product = 'cv-download'
+            AND o.product IN ('cv-download', 'job-pass')
             AND o."paidAt" IS NOT NULL
             AND o."paidAt" >= c.signup_at
         ) AS paid
@@ -101,7 +101,7 @@ export async function getCertifiedConsumerFunnel(
     paid_orders AS (
       SELECT o.*
       FROM "Order" o
-      WHERE o.product = 'cv-download'
+      WHERE o.product IN ('cv-download', 'job-pass')
         AND o."paidAt" IS NOT NULL
         AND o."paidAt" >= ${since}
         AND LOWER(o.email) NOT IN (${Prisma.join(excludedEmails)})

@@ -28,6 +28,17 @@ export const profilePhotoPrice = {
   currency: "EUR",
 };
 
+// Sollicitatiepas: one payment, never renews. Every CV created within `days` of payment can be
+// downloaded, also after the pass ends (rules in lib/job-pass.ts).
+export const jobPassPrice = {
+  display: "€24,99",
+  displayEn: "€24.99",
+  value: "24.99",
+  amountCents: 2499,
+  currency: "EUR",
+  days: 90,
+};
+
 export const applicationBundlePrice = {
   display: "€14,99",
   value: "14.99",

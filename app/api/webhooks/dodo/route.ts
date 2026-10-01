@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { getDodoSiteHost, verifyDodoWebhookSignature } from "@/lib/dodo";
+import { checkoutProductForDodoProductId, getDodoSiteHost, verifyDodoWebhookSignature } from "@/lib/dodo";
 import { reportOpsIncident } from "@/lib/ops-alerts";
 import { CV_DOWNLOAD_PRODUCT } from "@/lib/polar";
 import { AGENCY_PLAN_CODE } from "@/lib/agency-plan";
@@ -319,7 +319,8 @@ export async function POST(request: NextRequest) {
 
   const metadata = data.metadata || {};
   const cvId = metadataString(metadata, "cv_id") || metadataString(metadata, "cvId");
-  const product = metadataString(metadata, "product") || CV_DOWNLOAD_PRODUCT;
+  // The paid Dodo product decides what was bought (pass vs single CV); metadata is the fallback.
+  const product = checkoutProductForDodoProductId(readProductId(data)) || metadataString(metadata, "product") || CV_DOWNLOAD_PRODUCT;
   const email = data.customer?.email || metadataString(metadata, "email") || "";
   const eventSiteHost = metadataString(metadata, "site_host")?.toLowerCase() || null;
   const expectedSiteHost = getDodoSiteHost();

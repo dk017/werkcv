@@ -2,7 +2,7 @@ import { createHmac, timingSafeEqual } from "crypto";
 import { getEditorPathForLanguage, getSuccessPathForLanguage } from "@/lib/editor-path";
 import type { ResumeLanguage } from "@/lib/resume-language";
 import { CHECKOUT_CANCEL_PARAM, CHECKOUT_CANCEL_VALUE } from "@/lib/checkout-exit";
-import { CV_DOWNLOAD_PRODUCT } from "@/lib/polar";
+import { CV_DOWNLOAD_PRODUCT, JOB_PASS_CHECKOUT_PRODUCT } from "@/lib/polar";
 import type { CheckoutAddon, CheckoutProduct } from "@/lib/polar";
 import { AGENCY_PLAN_CODE, getAgencyPlanMetadata } from "@/lib/agency-plan";
 import type { AttributionSnapshot } from "@/lib/attribution";
@@ -12,6 +12,8 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 const DODO_API_KEY = process.env.DODO_API_KEY || process.env.DODO_PAYMENTS_API_KEY;
 const DODO_PRODUCT_ID = process.env.DODO_PRODUCT_ID;
 const DODO_AGENCY_PRODUCT_ID = process.env.DODO_AGENCY_PRODUCT_ID;
+// Sollicitatiepas (€24,99 one-time). Unset = the pass is not offered anywhere.
+const DODO_JOB_PASS_PRODUCT_ID = process.env.DODO_JOB_PASS_PRODUCT_ID;
 const DODO_ENVIRONMENT =
   process.env.DODO_ENVIRONMENT || process.env.DODO_PAYMENTS_ENVIRONMENT || "live_mode";
 
@@ -43,10 +45,22 @@ export function getDodoSiteHost(): string | null {
   }
 }
 
+export function isJobPassOffered(): boolean {
+  return Boolean(process.env.PAYMENT_PROVIDER === "dodo" && DODO_API_KEY && DODO_JOB_PASS_PRODUCT_ID);
+}
+
+/** Maps a Dodo product id back to our Order.product, so the webhook does not rely on metadata alone. */
+export function checkoutProductForDodoProductId(productId: string | null | undefined): CheckoutProduct | null {
+  if (productId && DODO_JOB_PASS_PRODUCT_ID && productId === DODO_JOB_PASS_PRODUCT_ID) return JOB_PASS_CHECKOUT_PRODUCT;
+  if (productId && DODO_PRODUCT_ID && productId === DODO_PRODUCT_ID) return CV_DOWNLOAD_PRODUCT;
+  return null;
+}
+
 export function isDodoEnabledForCheckout(
   checkoutProduct: CheckoutProduct,
   selectedAddons: CheckoutAddon[] = []
 ): boolean {
+  if (checkoutProduct === JOB_PASS_CHECKOUT_PRODUCT) return isJobPassOffered() && selectedAddons.length === 0;
   return (
     process.env.PAYMENT_PROVIDER === "dodo" &&
     checkoutProduct === CV_DOWNLOAD_PRODUCT &&
@@ -82,10 +96,13 @@ export function buildDodoCheckoutBody(
   cvId: string,
   email: string | undefined,
   resumeLanguage: ResumeLanguage = "nl",
-  visitorCountryCode?: string | null
+  visitorCountryCode?: string | null,
+  checkoutProduct: CheckoutProduct = CV_DOWNLOAD_PRODUCT
 ): Record<string, unknown> {
-  if (!DODO_PRODUCT_ID) {
-    throw new Error("DODO_PRODUCT_ID is not configured");
+  const isJobPass = checkoutProduct === JOB_PASS_CHECKOUT_PRODUCT;
+  const productId = isJobPass ? DODO_JOB_PASS_PRODUCT_ID : DODO_PRODUCT_ID;
+  if (!productId) {
+    throw new Error(isJobPass ? "DODO_JOB_PASS_PRODUCT_ID is not configured" : "DODO_PRODUCT_ID is not configured");
   }
 
   const visitorCountry = normalizeCountryCode(visitorCountryCode);
@@ -103,14 +120,14 @@ export function buildDodoCheckoutBody(
     ]),
   ];
   const body: Record<string, unknown> = {
-    product_cart: [{ product_id: DODO_PRODUCT_ID, quantity: 1 }],
+    product_cart: [{ product_id: productId, quantity: 1 }],
     allowed_payment_method_types: allowedPaymentMethodTypes,
     return_url: `${APP_URL}${getSuccessPathForLanguage(resumeLanguage, cvId)}`,
     // The marker lets the editor ask "what held you back?" (lib/checkout-exit.ts).
     cancel_url: `${APP_URL}${getEditorPathForLanguage(resumeLanguage, cvId)}&${CHECKOUT_CANCEL_PARAM}=${CHECKOUT_CANCEL_VALUE}`,
     metadata: {
       cv_id: cvId,
-      product: CV_DOWNLOAD_PRODUCT,
+      product: isJobPass ? JOB_PASS_CHECKOUT_PRODUCT : CV_DOWNLOAD_PRODUCT,
       provider: "dodo",
       site_host: getDodoSiteHost(),
     },
@@ -149,12 +166,13 @@ export async function buildDodoCheckoutURL(
   cvId: string,
   email: string | undefined,
   resumeLanguage: ResumeLanguage = "nl",
-  visitorCountryCode?: string | null
+  visitorCountryCode?: string | null,
+  checkoutProduct: CheckoutProduct = CV_DOWNLOAD_PRODUCT
 ): Promise<DodoCheckoutResult> {
   if (!DODO_API_KEY) {
     throw new Error("DODO_API_KEY is not configured");
   }
-  const body = buildDodoCheckoutBody(cvId, email, resumeLanguage, visitorCountryCode);
+  const body = buildDodoCheckoutBody(cvId, email, resumeLanguage, visitorCountryCode, checkoutProduct);
 
   const res = await fetch(`${DODO_API_BASE}/checkouts`, {
     method: "POST",

@@ -1051,7 +1051,7 @@ export async function getAnalyticsDashboardData(
           AND events."createdAt" <= orders."paidAt"
         WHERE orders."paidAt" IS NOT NULL
           AND orders."paidAt" >= ${since}
-          AND orders.product = 'cv-download'
+          AND orders.product IN ('cv-download', 'job-pass')
         GROUP BY orders.id, events.session_id
       ),
       order_sessions AS (
@@ -1356,7 +1356,7 @@ export async function getAnalyticsDashboardData(
         LEFT JOIN "Order" orders
           ON orders."cvId" = cohort.cv_id
           AND orders."paidAt" >= cohort.assigned_at
-          AND orders.product IN ('cv-download', 'cv-profile-photo-bundle')
+          AND orders.product IN ('cv-download', 'cv-profile-photo-bundle', 'job-pass')
         GROUP BY cohort.cv_id
       )
       SELECT

@@ -37,7 +37,7 @@ import CVUploader from "./CVUploader";
 import CvScoreWidget from "./CvScoreWidget";
 import KeywordScannerWidget from "./KeywordScannerWidget";
 import PhotoUpload from "./PhotoUpload";
-import { cvDownloadPrice, profilePhotoPrice } from "@/lib/site-content";
+import { cvDownloadPrice, jobPassPrice, profilePhotoPrice } from "@/lib/site-content";
 import { getProfilePhotoToolPath } from "@/lib/profile-photo-cv";
 import { usePriceCopy } from "@/components/pricing/usePriceCopy";
 import {
@@ -80,6 +80,7 @@ import FullCvPreviewDialog from "./FullCvPreviewDialog";
 import SectionOrderPanel from "./SectionOrderPanel";
 import EditorFeedbackWidget from "./EditorFeedbackWidget";
 import CheckoutExitQuestion from "@/components/checkout/CheckoutExitQuestion";
+import CheckoutPlanSheet, { type CheckoutPlan } from "./CheckoutPlanSheet";
 import CustomerQuote from "@/components/CustomerQuote";
 import { markCheckoutPending } from "@/lib/checkout-exit";
 import { isCvCheckStartSource, takeCheckedCvForEditor } from "@/lib/cv-check/handoff";
@@ -112,6 +113,8 @@ interface EditorProps {
     workspaceSwitcherEnabled?: boolean;
     /** This CV is already paid for (or free): the download button then shows no price. */
     downloadIncluded?: boolean;
+    /** The Sollicitatiepas is for sale and this CV still needs paying: offer it at checkout. */
+    jobPassOffered?: boolean;
     aiReviewEnabled?: boolean;
     initialContentVersion?: string;
     mode?: "account" | "public";
@@ -347,6 +350,7 @@ export default function Editor({
     workspaceEntitlements,
     workspaceSwitcherEnabled = false,
     downloadIncluded = false,
+    jobPassOffered = false,
     aiReviewEnabled = false,
     initialContentVersion,
     mode = "account",
@@ -418,6 +422,9 @@ export default function Editor({
         return result;
     }, [saveQueue, watch]);
     const [isDownloading, setIsDownloading] = useState(false);
+    // Download source that opened the plan choice (this CV vs Sollicitatiepas); null = closed.
+    const [planSheetSource, setPlanSheetSource] = useState<DownloadSource | null>(null);
+    const [isStartingCheckout, setIsStartingCheckout] = useState(false);
     const [isPublicEditorFullscreen, setIsPublicEditorFullscreen] = useState(false);
     const [templateId, setTemplateId] = useState(initialTemplateId);
     const [colorThemeId, setColorThemeId] = useState(initialColorThemeId);
@@ -1438,11 +1445,11 @@ export default function Editor({
         track('quick_build_design_revealed', { cvId: id, completionScore });
     };
 
-    const startCheckout = async (source: DownloadSource) => {
+    const startCheckout = async (source: DownloadSource, plan: CheckoutPlan = "cv-download") => {
         const checkoutEventContext = {
             cvId: id,
-            product: "cv-download" as const,
-            amountCents: cvDownloadPrice.amountCents,
+            product: plan,
+            amountCents: plan === "job-pass" ? jobPassPrice.amountCents : cvDownloadPrice.amountCents,
             source,
             variant: CHECKOUT_FLOW_VARIANT,
             experimentVariant: CHECKOUT_FLOW_VARIANT,
@@ -1453,7 +1460,13 @@ export default function Editor({
         };
         track('checkout_start', checkoutEventContext);
         try {
-            const checkoutResult = await getCheckoutURL(id, undefined, [], "cv-download");
+            const checkoutResult = await getCheckoutURL(id, undefined, [], plan);
+            if (!checkoutResult.ok && checkoutResult.code === "PASS_ALREADY_ACTIVE") {
+                // A pass bought in another tab already covers this CV: reload so the download is free.
+                track('checkout_failed', { ...checkoutEventContext, reason: checkoutResult.code });
+                window.location.reload();
+                return;
+            }
             if (!checkoutResult.ok) {
                 track('checkout_failed', {
                     ...checkoutEventContext,
@@ -1557,7 +1570,12 @@ export default function Editor({
                         uiLanguage,
                         ...getEditorSearchContext(),
                     });
-                    await startCheckout(source);
+                    if (jobPassOffered) {
+                        setPlanSheetSource(source);
+                        track('checkout_plan_viewed', { cvId: id, source, uiLanguage });
+                    } else {
+                        await startCheckout(source);
+                    }
                 } else if (errorData?.code === 'PDF_ERROR') {
                     alert(errorData?.supportNotified
                         ? supportNotifiedMessage
@@ -1849,6 +1867,25 @@ export default function Editor({
                     onInputCapture={handleQuickBuildInput}
                 >
                     <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12">
+                        {planSheetSource ? (
+                            <CheckoutPlanSheet
+                                uiLanguage={isEnglish ? "en" : "nl"}
+                                busy={isStartingCheckout}
+                                onChoose={async (plan) => {
+                                    track('checkout_plan_selected', { cvId: id, plan, source: planSheetSource, uiLanguage });
+                                    setIsStartingCheckout(true);
+                                    try {
+                                        await startCheckout(planSheetSource, plan);
+                                    } finally {
+                                        setIsStartingCheckout(false);
+                                    }
+                                }}
+                                onClose={(plan) => {
+                                    track('checkout_plan_closed', { cvId: id, plan, source: planSheetSource, uiLanguage });
+                                    setPlanSheetSource(null);
+                                }}
+                            />
+                        ) : null}
                         <CheckoutExitQuestion
                             cvId={id}
                             locale={isEnglish ? "en" : "nl"}

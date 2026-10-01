@@ -575,6 +575,10 @@ export type AnalyticsEvent =
     | { event: 'checkout_started'; properties: { cvId: string; product?: string; amountCents?: number; source?: string } & CheckoutExperimentContext }
     | { event: 'checkout_failed'; properties: { cvId: string; reason?: string; product?: string; amountCents?: number; source?: string } & CheckoutExperimentContext }
     | { event: 'checkout_completed'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } & EditorSourceContext }
+    // Sollicitatiepas choice shown before checkout (only when the pass is for sale).
+    | { event: 'checkout_plan_viewed'; properties: { cvId: string; source?: string; uiLanguage?: string } }
+    | { event: 'checkout_plan_selected'; properties: { cvId: string; plan: 'cv-download' | 'job-pass'; source?: string; uiLanguage?: string } }
+    | { event: 'checkout_plan_closed'; properties: { cvId: string; plan: 'cv-download' | 'job-pass'; source?: string; uiLanguage?: string } }
     | { event: 'paid'; properties: { cvId: string; orderId?: string; amountCents?: number; product?: string } & EditorSourceContext }
     | { event: 'payment_completed'; properties: { cvId: string } }
     // B2B lead capture
