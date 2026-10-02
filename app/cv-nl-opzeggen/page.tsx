@@ -82,14 +82,6 @@ export const metadata: Metadata = buildDutchMetadata({
   description:
     `Zeg je CV.nl abonnement op via de officiele route. Bekijk de stappen, bewaar je bevestiging en bouw daarna eventueel een CV zonder abonnement voor eenmalig ${cvDownloadPrice.display}.`,
   path: "/cv-nl-opzeggen",
-  keywords: [
-    "cv.nl opzeggen",
-    "cv nl opzeggen",
-    "cv.nl abonnement opzeggen",
-    "cv nl opzeggen contact",
-    "abonnement cv.nl stoppen",
-    "cv.nl account opzeggen",
-  ],
   languages: {
     "nl-NL": "https://werkcv.nl/cv-nl-opzeggen",
     "x-default": "https://werkcv.nl/cv-nl-opzeggen",
@@ -379,7 +371,7 @@ export default function CvNlOpzeggenPage() {
             Klaar met opzeggen?
           </p>
           <h2 className="mt-2 text-3xl font-black text-black">
-            Voorkom hetzelfde probleem bij je volgende cv
+            Een cv maken zonder abonnement
           </h2>
           <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
             Veel mensen hebben een CV-builder maar kort nodig: cv maken, downloaden en solliciteren. Daarom werkt WerkCV anders.
@@ -491,7 +483,7 @@ export default function CvNlOpzeggenPage() {
                 Maak je cv gratis in WerkCV. Pas als je tevreden bent en de PDF wilt downloaden, betaal je eenmalig {cvDownloadPrice.display}.
               </p>
               <p className="mt-2 text-sm font-medium leading-relaxed text-black">
-                Geen accountabonnement. Geen maandelijkse kosten. Geen opzegstress.
+                Geen accountabonnement. Geen maandelijkse kosten.
               </p>
             </div>
             <TrackedLandingLink

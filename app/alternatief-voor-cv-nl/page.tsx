@@ -146,14 +146,6 @@ export const metadata: Metadata = {
   },
   description:
     "Zoek je een alternatief voor CV.nl? Vergelijk het actuele CV.nl abonnementsmodel met WerkCV: eenmalig betalen bij download, geen automatische verlenging en een rustigere cv-flow.",
-  keywords: [
-    "alternatief voor cv.nl",
-    "cv.nl alternatief",
-    "cv.nl kosten alternatief",
-    "cv.nl abonnement alternatief",
-    "werkcv vs cv.nl",
-    "cv maken zonder abonnement",
-  ],
   alternates: {
     canonical: pageUrl,
     languages: {

@@ -4131,20 +4131,12 @@ const dutchEditorialPages: SeoGuidePage[] = [
         description: 'Zoek je een alternatief voor CV.nl? Eerlijke vergelijking tussen WerkCV en CV.nl voor Nederlandse werkzoekenden. Vergelijk abonnement, productbreedte, app, jobs en eenmalig CV-model.',
         metaTitle: 'CV.nl alternatief Nederland (2026) | WerkCV vs CV.nl | WerkCV.nl',
         metaDesc: 'Zoek je een CV.nl alternatief in Nederland? Vergelijk WerkCV en CV.nl op eenmalige prijs vs abonnement, compacte CV-flow vs breder platform met jobs en tracker.',
-        keywords: [
-            'werkcv vs cv.nl',
-            'cv.nl alternatief',
-            'beste cv nl alternatief',
-            'cv.nl alternatief nederland',
-            'cv nl abonnement',
-            'beste cv builder zonder abonnement',
-            'werkcv of cv nl',
-        ],
+        keywords: [],
         intro: 'Zoek je een alternatief voor CV.nl, dan draait de keuze meestal om productomvang en prijsrust. WerkCV past meestal beter als je zonder abonnement snel een sterk CV wilt afronden. CV.nl past beter als je juist een groter Nederlands sollicitatieplatform met vacatures, tracker, app en doorlopende toegang zoekt.',
         sections: [
             {
                 id: 'vergelijking',
-                title: 'Direct antwoord: wanneer WerkCV een slimmer CV.nl alternatief is',
+                title: 'Direct antwoord: wanneer WerkCV een passend alternatief voor CV.nl is',
                 paragraphs: [
                     'WerkCV en CV.nl lossen niet precies hetzelfde probleem op. WerkCV is bewust smal gehouden: snel van inhoud naar een sterk CV, met een transparant eenmalig prijsmodel per document. CV.nl positioneert zich juist als een bredere sollicitatieomgeving met CV, sollicitatiebrief, vacaturedatabase, sollicitatietracker en mobiele app.',
                     'Daardoor zit het echte verschil niet alleen in templates of looks, maar in de vraag hoeveel platform je nodig hebt. Veel werkzoekenden hebben vooral een goed CV nodig. Anderen willen een langer lopend account waarin meer van hun sollicitatieproces samenkomt.',
