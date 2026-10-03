@@ -6,6 +6,7 @@ import EnglishRoleExampleBand from "./components/EnglishRoleExampleBand";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { cvDownloadPrice } from "@/lib/site-content";
 import CustomerQuote from "@/components/CustomerQuote";
+import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
 
 export const metadata = buildEnglishMetadata({
   title: "English CV Builder for Jobs in the Netherlands",
@@ -430,6 +431,11 @@ export default function EnglishHubPage() {
           </p>
         </div>
       </section>
+
+      <PublicEditorSection
+        locale="en"
+        source="public_editor_home_en"
+      />
 
       <section className="wk-section pt-0" aria-label="What a customer says">
         <div className="wk-container max-w-3xl">

@@ -7,6 +7,7 @@ import Link from "next/link";
 import type { TemplateConfig } from "@/lib/templates";
 import { getStoredAttribution, track } from "@/lib/analytics";
 import CustomerQuote from "@/components/CustomerQuote";
+import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
 import {
     cvDownloadPrice,
     cvDownloadPriceCheckedAt,
@@ -304,6 +305,11 @@ export default function HomePageClient({
                     </div>
                 </div>
             </section>
+
+            <PublicEditorSection
+                locale="nl"
+                source="public_editor_home_nl"
+            />
 
             {/* ============================================================ */}
             {/* TRUST BAR - Factual product stats */}

@@ -121,6 +121,8 @@ interface EditorProps {
     publicDraftId?: string;
     publicFlow?: PublicEditorFlow;
     publicSource?: string;
+    /** Public mode: import the CV handed over by the CV-check (lib/cv-check/handoff.ts) on open. */
+    publicImportCheckedCv?: boolean;
     onPublicDownloadRequest?: (input: {
         data: CVData;
         templateId: string;
@@ -357,6 +359,7 @@ export default function Editor({
     publicDraftId,
     publicFlow = "consumer",
     publicSource = "public_editor",
+    publicImportCheckedCv = false,
     onPublicDownloadRequest,
 }: EditorProps) {
     const isEnglish = uiLanguage === "en";
@@ -802,7 +805,18 @@ export default function Editor({
     }, [id, templateId, uiLanguage]);
 
     useEffect(() => {
-        if (isPublicMode) return;
+        if (isPublicMode) {
+            // CV-check visitors without an account: load the checked file once. Without a handed-over
+            // file (pasted text, expired, blocked storage) the editor simply opens as usual.
+            if (!publicImportCheckedCv || uploadIntentHandledRef.current) return;
+            uploadIntentHandledRef.current = true;
+            void takeCheckedCvForEditor().then((checkedFile) => {
+                if (!checkedFile) return;
+                setUploaderInitialFile(checkedFile);
+                openUploader("cv_check");
+            });
+            return;
+        }
         if (typeof window === 'undefined') return;
         const params = new URLSearchParams(window.location.search);
         if (params.get('upload') === '1' && !uploadIntentHandledRef.current) {
@@ -826,7 +840,7 @@ export default function Editor({
                 openUploader("route_intent");
             }
         }
-    }, [isPublicMode, openUploader]);
+    }, [isPublicMode, openUploader, publicImportCheckedCv]);
 
     useEffect(() => {
         if (isPublicMode) return;
