@@ -394,9 +394,10 @@ const CTA = {
   secondary_button_url: "/templates?startSource=cv_score_result_template_compare",
 };
 
-export async function scoreCv(text: string, source: InputSource): Promise<CvScoreResult> {
+export async function scoreCv(text: string, source: InputSource, options: { ai?: boolean } = {}): Promise<CvScoreResult> {
   const context = prepareContext(text, source);
-  const nuanced = await getNuancedAnalysis(context);
+  // Without AI every check falls back to its local rule (the editor grade runs on each edit, for free).
+  const nuanced = options.ai === false ? null : await getNuancedAnalysis(context);
 
   const dimensions = [
     scoreStructure(context),

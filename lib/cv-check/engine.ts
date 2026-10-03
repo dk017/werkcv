@@ -31,6 +31,8 @@ export type RunCvCheckInput = {
   locale: CvCheckLocale;
   layout?: LayoutSignals;
   fileName?: string | null;
+  /** false: skip the AI judgement in the score checks and use their local rules (no cost, no network). */
+  ai?: boolean;
 };
 
 type Copy = { nl: string; en: string };
@@ -298,7 +300,7 @@ export async function runCvCheck(input: RunCvCheckInput): Promise<CvCheckResult 
   }
 
   const [scoreOutcome, vacancyOutcome] = await Promise.allSettled([
-    scoreCv(cvText, { mode: input.fileName ? "file" : "text", fileName: input.fileName ?? undefined }),
+    scoreCv(cvText, { mode: input.fileName ? "file" : "text", fileName: input.fileName ?? undefined }, { ai: input.ai }),
     vacancyText ? matchCvVacature(cvText, vacancyText, locale) : Promise.resolve(null),
   ]);
 

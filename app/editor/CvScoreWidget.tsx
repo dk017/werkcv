@@ -1,7 +1,6 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CVData } from "@/lib/cv";
-import { computeCvScore } from "@/lib/cv-score";
 import { UiLanguage } from "@/lib/ui-language";
 
 interface CvScoreWidgetProps {
@@ -9,161 +8,155 @@ interface CvScoreWidgetProps {
     uiLanguage?: UiLanguage;
 }
 
+type GradeBand = "onvoldoende" | "voldoende" | "goed" | "uitstekend";
+type FailedCheck = { id: string; category: string; severity: "critical" | "important" | "tip"; label: string; fix: string | null };
+type GradeResponse =
+    | { status: "ok"; grade: number; gradeBand: GradeBand; failed: FailedCheck[]; passedCount: number }
+    | { status: "too_short" };
+
 const RADIUS = 28;
 const CIRC = 2 * Math.PI * RADIUS;
+const REGRADE_DELAY_MS = 1500;
+const VISIBLE_FIXES = 5;
 
+const BAND: Record<GradeBand, { nl: string; en: string; text: string; ring: string }> = {
+    onvoldoende: { nl: "Onvoldoende", en: "Insufficient", text: "text-red-600", ring: "#dc2626" },
+    voldoende: { nl: "Voldoende", en: "Sufficient", text: "text-amber-600", ring: "#d97706" },
+    goed: { nl: "Goed", en: "Good", text: "text-emerald-600", ring: "#059669" },
+    uitstekend: { nl: "Uitstekend", en: "Excellent", text: "text-emerald-700", ring: "#047857" },
+};
+
+/**
+ * The CV-check grade (the same checks and 1–10 grade as /cv-check) for the CV in the editor. It
+ * regrades shortly after each edit, so fixing a point from the report visibly raises the grade.
+ */
 export default function CvScoreWidget({ data, uiLanguage = "nl" }: CvScoreWidgetProps) {
     const isEnglish = uiLanguage === "en";
-    const [checked, setChecked] = useState(false);
-    const [expanded, setExpanded] = useState(true);
+    const tr = (nl: string, en: string) => (isEnglish ? en : nl);
+    const formatGrade = (value: number) => (isEnglish ? value.toFixed(1) : value.toFixed(1).replace(".", ","));
+    const [result, setResult] = useState<GradeResponse | null>(null);
+    const [failedRequest, setFailedRequest] = useState(false);
+    const [showAll, setShowAll] = useState(false);
+    const firstGradeRef = useRef<number | null>(null);
 
-    // Only compute once user triggers the check
-    const result = useMemo(
-        () => (checked ? computeCvScore(data, uiLanguage) : null),
+    // The photo is not graded and can be large.
+    const gradedData = JSON.stringify({ ...data, personal: { ...data.personal, photo: "" } });
+
+    useEffect(() => {
+        const controller = new AbortController();
+        const timer = window.setTimeout(async () => {
+            try {
+                const response = await fetch("/api/cv-check/editor-grade", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: `{"locale":${JSON.stringify(uiLanguage)},"data":${gradedData}}`,
+                    signal: controller.signal,
+                });
+                if (!response.ok) throw new Error(String(response.status));
+                const next = (await response.json()) as GradeResponse;
+                if (next.status === "ok" && firstGradeRef.current === null) firstGradeRef.current = next.grade;
+                setResult(next);
+                setFailedRequest(false);
+            } catch {
+                if (!controller.signal.aborted) setFailedRequest(true);
+            }
+        }, result ? REGRADE_DELAY_MS : 0);
+        return () => {
+            controller.abort();
+            window.clearTimeout(timer);
+        };
+        // Regrade on content changes only; `result` just picks the first-load delay.
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [checked, checked ? data : null, uiLanguage]
+    }, [gradedData, uiLanguage]);
+
+    const methodologyHref = isEnglish ? "/en/cv-check/methodology" : "/cv-check/methodologie";
+    const header = (
+        <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500 mb-0.5">{tr("CV-check cijfer", "CV check grade")}</p>
     );
 
-    const passedCount = result?.checks.filter(c => c.passed).length ?? 0;
-    const totalCount = result?.checks.length ?? 0;
-    const dashOffset = result ? CIRC * (1 - result.score / 100) : CIRC;
-    const failedChecks = result?.checks.filter(c => !c.passed) ?? [];
-    const passedChecks = result?.checks.filter(c => c.passed) ?? [];
-
-    // ── Pre-check state ────────────────────────────────────────────────────────
-    if (!checked) {
+    if (!result || result.status === "too_short") {
         return (
-            <section className="bg-white border border-slate-200 rounded-2xl shadow-sm px-5 py-4 flex items-center gap-4">
-                <div className="flex-shrink-0 w-10 h-10 rounded-full bg-[#4ECDC4]/15 flex items-center justify-center">
-                    <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                </div>
-                <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500 mb-0.5">CV Score</p>
-                    <p className="text-xs text-slate-500">{isEnglish ? "Check how strong your CV is and what to improve." : "Controleer hoe sterk je CV is en wat je kunt verbeteren."}</p>
-                </div>
-                <button
-                    onClick={() => setChecked(true)}
-                    className="flex-shrink-0 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg transition-colors whitespace-nowrap"
-                >
-                    {isEnglish ? "Check CV" : "Controleer CV"}
-                </button>
+            <section className="bg-white border border-slate-200 rounded-2xl shadow-sm px-5 py-4">
+                {header}
+                <p className="text-xs text-slate-500">
+                    {failedRequest
+                        ? tr("Het cijfer kon niet worden berekend. Je cv is niet gewijzigd.", "The grade could not be calculated. Your CV is unchanged.")
+                        : result?.status === "too_short"
+                            ? tr("Vul je cv verder aan; vanaf ongeveer 100 woorden krijg je hier je cijfer uit de CV-check.", "Keep filling in your CV; from about 100 words you get your CV check grade here.")
+                            : tr("Je cijfer wordt berekend…", "Calculating your grade…")}
+                </p>
             </section>
         );
     }
 
-    // ── Post-check state ───────────────────────────────────────────────────────
+    const band = BAND[result.gradeBand];
+    const firstGrade = firstGradeRef.current;
+    const change = firstGrade === null ? 0 : Math.round((result.grade - firstGrade) * 10) / 10;
+    const fixes = showAll ? result.failed : result.failed.slice(0, VISIBLE_FIXES);
+
     return (
-        <section className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
-            {/* Header */}
+        <section className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden" aria-live="polite">
             <div className="flex w-full items-center gap-4 px-5 py-4">
-                {/* Score Ring */}
                 <div className="relative flex-shrink-0 w-16 h-16">
-                    <svg width="64" height="64" viewBox="0 0 64 64" className="-rotate-90">
+                    <svg width="64" height="64" viewBox="0 0 64 64" className="-rotate-90" aria-hidden="true">
                         <circle cx="32" cy="32" r={RADIUS} fill="none" stroke="#e2e8f0" strokeWidth="6" />
                         <circle
                             cx="32" cy="32" r={RADIUS}
                             fill="none"
-                            stroke={result?.ringColor ?? '#e2e8f0'}
+                            stroke={band.ring}
                             strokeWidth="6"
                             strokeLinecap="round"
                             strokeDasharray={CIRC}
-                            strokeDashoffset={dashOffset}
-                            style={{ transition: 'stroke-dashoffset 0.5s ease, stroke 0.4s ease' }}
+                            strokeDashoffset={CIRC * (1 - result.grade / 10)}
+                            style={{ transition: "stroke-dashoffset 0.5s ease, stroke 0.4s ease" }}
                         />
                     </svg>
                     <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-sm font-black text-slate-800">{result?.score ?? 0}</span>
+                        <span className="text-base font-black text-slate-800">{formatGrade(result.grade)}</span>
                     </div>
                 </div>
-
-                {/* Label */}
                 <div className="flex-1 min-w-0">
-                    <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500 mb-0.5">CV Score</p>
-                    <p className={`text-sm font-bold ${result?.color ?? ''} leading-tight`}>{result?.label}</p>
+                    {header}
+                    <p className={`text-sm font-bold leading-tight ${band.text}`}>{isEnglish ? band.en : band.nl}</p>
                     <p className="text-xs text-slate-500 mt-0.5">
-                        {isEnglish ? `${passedCount} of ${totalCount} checks passed` : `${passedCount} van ${totalCount} checks geslaagd`}
+                        {change > 0
+                            ? tr(`+${formatGrade(change)} sinds je deze editor opende`, `+${formatGrade(change)} since you opened this editor`)
+                            : change < 0
+                                ? tr(`${formatGrade(change)} sinds je deze editor opende`, `${formatGrade(change)} since you opened this editor`)
+                                : result.failed.length
+                                    ? tr(`${result.failed.length} ${result.failed.length === 1 ? "punt" : "punten"} om te verbeteren`, `${result.failed.length} ${result.failed.length === 1 ? "point" : "points"} to improve`)
+                                    : tr("Alle checks geslaagd", "All checks passed")}
                     </p>
-                </div>
-
-                {/* Reset and expand controls */}
-                <div className="flex items-center gap-3 flex-shrink-0">
-                    <button
-                        type="button"
-                        onClick={() => setChecked(false)}
-                        className="text-[11px] font-semibold text-slate-400 hover:text-slate-600 transition-colors"
-                    >
-                        {isEnglish ? "Reset" : "Opnieuw"}
-                    </button>
-                    <button
-                        type="button"
-                        onClick={() => setExpanded(v => !v)}
-                        aria-expanded={expanded}
-                        aria-label={isEnglish ? (expanded ? "Collapse CV score" : "Expand CV score") : (expanded ? "CV-score inklappen" : "CV-score uitklappen")}
-                        className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600"
-                    >
-                        <svg
-                            className={`w-4 h-4 transition-transform duration-200 ${expanded ? 'rotate-180' : ''}`}
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
                 </div>
             </div>
 
-            {/* Check list */}
-            {expanded && (
-                <div className="border-t border-slate-100 px-5 pb-4 pt-3 space-y-1">
-                    {failedChecks.map(check => (
-                        <div key={check.id} className="flex items-start gap-2.5 py-1.5">
-                            <span className="flex-shrink-0 mt-0.5 w-4 h-4 rounded-full bg-red-100 flex items-center justify-center">
-                                <svg className="w-2.5 h-2.5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </span>
+            {result.failed.length > 0 && (
+                <ul className="border-t border-slate-100 px-5 pb-2 pt-3 space-y-2">
+                    {fixes.map((check) => (
+                        <li key={check.id} className="flex items-start gap-2.5">
+                            <span
+                                aria-hidden="true"
+                                className={`flex-shrink-0 mt-1 w-2 h-2 rounded-full ${check.severity === "tip" ? "bg-slate-300" : "bg-amber-500"}`}
+                            />
                             <div className="flex-1 min-w-0">
                                 <p className="text-xs font-semibold text-slate-700 leading-snug">{check.label}</p>
-                                <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">{check.tip}</p>
+                                {check.fix && <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">{check.fix}</p>}
                             </div>
-                            <span className="flex-shrink-0 text-[10px] font-bold text-slate-400 mt-0.5">+{check.points}</span>
-                        </div>
+                        </li>
                     ))}
-
-                    {passedChecks.length > 0 && failedChecks.length > 0 && (
-                        <div className="border-t border-slate-100 pt-1 mt-1" />
-                    )}
-
-                    {passedChecks.map(check => (
-                        <div key={check.id} className="flex items-center gap-2.5 py-1">
-                            <span className="flex-shrink-0 w-4 h-4 rounded-full bg-emerald-100 flex items-center justify-center">
-                                <svg className="w-2.5 h-2.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                </svg>
-                            </span>
-                            <p className="text-xs text-slate-400 line-through leading-snug">{check.label}</p>
-                        </div>
-                    ))}
-
-                    {result?.score === 100 && (
-                        <p className="text-xs text-emerald-700 font-semibold text-center py-2">
-                            {isEnglish ? "Your CV is fully optimized." : "🎉 Je CV is volledig geoptimaliseerd!"}
-                        </p>
-                    )}
-
-                    {/* Re-check button at bottom */}
-                    <div className="pt-2">
-                        <button
-                            onClick={() => { setChecked(false); setTimeout(() => setChecked(true), 50); }}
-                            className="w-full py-2 text-xs font-semibold text-slate-500 hover:text-slate-700 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
-                        >
-                            {isEnglish ? "Recalculate score" : "Score opnieuw berekenen"}
-                        </button>
-                    </div>
-                </div>
+                </ul>
             )}
+
+            <div className="flex flex-wrap items-center justify-between gap-2 px-5 pb-4 pt-1">
+                {result.failed.length > VISIBLE_FIXES ? (
+                    <button type="button" onClick={() => setShowAll((value) => !value)} className="text-[11px] font-semibold text-slate-500 hover:text-slate-700">
+                        {showAll ? tr("Toon minder", "Show fewer") : tr(`Toon alle ${result.failed.length} punten`, `Show all ${result.failed.length} points`)}
+                    </button>
+                ) : <span />}
+                <a href={methodologyHref} target="_blank" rel="noopener" className="text-[11px] font-semibold text-slate-500 underline underline-offset-2 hover:text-slate-700">
+                    {tr("Zo berekenen we je cijfer", "How we calculate your grade")}
+                </a>
+            </div>
         </section>
     );
 }

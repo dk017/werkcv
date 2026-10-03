@@ -271,3 +271,39 @@ test("a missing interests section is a neutral note that costs no points", async
   assert.equal(scoreChecksToItems(dimension(true), emptyLayoutSignals("text"), "en")[0].label, "Interests listed");
   assert.equal(categoryScore([missing], "basics"), 100);
 });
+
+test("editor CV text: headings the templates print, so the CV-check finds every section", async () => {
+  const { cvDataToCheckText } = await import("./cv-data-text");
+  const { detectCvSectionKeys } = await import("../tools/cv-score");
+  const { defaultCV } = await import("../cv");
+  const data = {
+    ...defaultCV,
+    personal: { ...defaultCV.personal, name: "Sanne de Vries", email: "sanne.voorbeeld@example.com", phone: "06-12345678", location: "Utrecht", summary: "Commercieel medewerker met vijf jaar ervaring." },
+    experience: [{ role: "Commercieel medewerker", company: "Voorbeeld BV", location: "Utrecht", start: "2021", end: "heden", description: "", highlights: ["Verhoogde de klanttevredenheid met 12%"] }],
+    education: [{ degree: "MBO 4 Commercieel medewerker", school: "ROC Midden Nederland", location: "", start: "2017", end: "2021", description: "" }],
+    skills: [{ name: "Excel", level: 4 }],
+    languages: [{ name: "Nederlands", level: "Moedertaal" as const }, { name: "Engels", level: "Goed" as const }],
+    courses: [{ name: "VCA", institution: "SSVV", year: "2022" }],
+  };
+  const text = cvDataToCheckText(data);
+  assert.match(text, /^Sanne de Vries/);
+  assert.match(text, /Engels: Goed/);
+  assert.deepEqual(detectCvSectionKeys(text), ["courses", "education", "experience", "languages", "profile", "skills"]);
+  assert.equal(cvDataToCheckText({ ...defaultCV }).includes("Werkervaring"), false, "empty sections get no heading");
+});
+
+test("the editor grade runs the score checks without calling AI", async () => {
+  const { runCvCheck } = await import("./engine");
+  const openai = (await import("../openai-client")).default;
+  const original = openai.chat.completions.create;
+  let aiCalls = 0;
+  openai.chat.completions.create = (async () => { aiCalls += 1; throw new Error("no AI in this test"); }) as unknown as typeof original;
+  try {
+    const filler = Array.from({ length: 30 }, (_, index) => `Verhoogde de omzet met ${index + 5}% door betere planning.`).join("\n");
+    const result = await runCvCheck({ cvText: `${baseCv}\nWerkervaring\nVerkoper, Voorbeeld BV (2020 - 2023)\n${filler}`, locale: "nl", ai: false });
+    assert.equal(aiCalls, 0);
+    assert.ok(result.grade >= 1 && result.grade <= 10);
+  } finally {
+    openai.chat.completions.create = original;
+  }
+});
