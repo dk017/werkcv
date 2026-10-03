@@ -137,6 +137,18 @@ const SECTION_ALIASES: Array<{ key: SectionKey; aliases: string[] }> = [
       "professional experience",
       "employment history",
       "career history",
+      "relevante werkervaring",
+      "relevante ervaring",
+      "professionele ervaring",
+      "arbeidsverleden",
+      "werkgeschiedenis",
+      "loopbaan",
+      "work history",
+      "employment",
+      "relevant experience",
+      "professional background",
+      "professional history",
+      "career",
     ],
   },
   {
@@ -148,6 +160,14 @@ const SECTION_ALIASES: Array<{ key: SectionKey; aliases: string[] }> = [
       "studie",
       "education",
       "academic background",
+      "scholing",
+      "educatie",
+      "opleidingsachtergrond",
+      "academische achtergrond",
+      "education history",
+      "academic history",
+      "qualifications",
+      "studies",
     ],
   },
   {
@@ -161,6 +181,12 @@ const SECTION_ALIASES: Array<{ key: SectionKey; aliases: string[] }> = [
       "technical skills",
       "core skills",
       "key skills",
+      "kernvaardigheden",
+      "kerncompetenties",
+      "computervaardigheden",
+      "it-vaardigheden",
+      "it skills",
+      "expertise",
     ],
   },
   {
@@ -185,6 +211,13 @@ const SECTION_ALIASES: Array<{ key: SectionKey; aliases: string[] }> = [
   { key: "internships", aliases: ["stage", "stages", "vrijwilligerswerk", "vrijwilligerservaring", "internship", "internships", "volunteer experience"] },
   { key: "references", aliases: ["prijzen", "prestaties", "referenties", "achievements", "awards", "references"] },
 ];
+
+// Letter-spaced headings lose their word breaks ("P R O F E S S I O N A L  E X P E R I E N C E").
+const SPACELESS_ALIASES = new Map<string, SectionKey>(
+  SECTION_ALIASES.flatMap((entry) =>
+    entry.aliases.filter((alias) => alias.includes(" ")).map((alias) => [alias.replace(/\s+/g, ""), entry.key] as [string, SectionKey]),
+  ),
+);
 
 const DUTCH_BUZZWORDS = [
   "resultaatgericht",
@@ -420,17 +453,7 @@ function prepareContext(text: string, source: InputSource): PreparedContext {
     );
   }
 
-  const lineParsed = parseSections(lines);
-  const textParsed =
-    lineParsed.headerMatches.length < 2 ? parseSectionsFromText(normalizedText) : null;
-  const headerMatches = mergeHeaderMatches(
-    lineParsed.headerMatches,
-    textParsed?.headerMatches ?? []
-  );
-  const sections = mergeSections(
-    lineParsed.sections,
-    textParsed?.sections ?? {}
-  );
+  const { headerMatches, sections } = findSections(normalizedText, lines);
 
   if (new Set(headerMatches.map((match) => match.key)).size < 2 && wordCount < 250) {
     throw new CvScoreInputError(
@@ -451,6 +474,40 @@ function prepareContext(text: string, source: InputSource): PreparedContext {
     experienceBullets: extractExperienceBullets(sections.experience),
     localLanguage: detectDominantLanguage(normalizedText),
   };
+}
+
+function findSections(normalizedText: string, lines: string[]): {
+  headerMatches: Array<{ key: SectionKey; line: string }>;
+  sections: Partial<Record<SectionKey, SectionInfo>>;
+} {
+  const lineParsed = parseSections(lines);
+  if (lineParsed.headerMatches.length < 2) {
+    const textParsed = parseSectionsFromText(normalizedText);
+    return {
+      headerMatches: mergeHeaderMatches(lineParsed.headerMatches, textParsed.headerMatches),
+      sections: mergeSections(lineParsed.sections, textParsed.sections),
+    };
+  }
+  // Headings were found line by line, but work experience or education was not: two-column PDFs
+  // often merge those headings into other lines. Look for just the missing ones in the running text.
+  const missing = (["experience", "education"] as const).filter((key) => !lineParsed.sections[key]);
+  if (!missing.length) return lineParsed;
+  const textParsed = parseSectionsFromText(normalizedText);
+  const found = missing.filter((key) => textParsed.sections[key]);
+  return {
+    headerMatches: mergeHeaderMatches(
+      lineParsed.headerMatches,
+      textParsed.headerMatches.filter((match) => found.includes(match.key as (typeof missing)[number])),
+    ),
+    sections: { ...lineParsed.sections, ...Object.fromEntries(found.map((key) => [key, textParsed.sections[key]])) },
+  };
+}
+
+/** Section keys the score checks will see for this CV text (exported for tests). */
+export function detectCvSectionKeys(text: string): SectionKey[] {
+  const normalizedText = text.replace(/\r\n/g, "\n").trim();
+  const lines = normalizedText.split("\n").map((line) => line.trim()).filter(Boolean);
+  return (Object.keys(findSections(normalizedText, lines).sections) as SectionKey[]).sort();
 }
 
 function parseSections(lines: string[]): {
@@ -589,19 +646,53 @@ function mergeHeaderMatches(
   return merged;
 }
 
-function detectSectionKey(line: string): SectionKey | null {
-  const normalized = normalizeHeader(line);
-  if (!normalized || normalized.length > 40) {
-    return null;
-  }
+// Second parts of combined headings that are not section names themselves ("Werkervaring en projecten").
+const COMBINED_HEADING_WORDS = new Set([
+  "projecten", "projects", "nevenactiviteiten", "bijbanen", "activiteiten", "activities", "certificeringen",
+  "diploma's", "diplomas", "qualifications", "tools", "software", "eigenschappen", "persoonlijke eigenschappen",
+  "werk", "volunteering", "publicaties", "publications",
+]);
 
+function matchAlias(normalized: string): SectionKey | null {
   for (const entry of SECTION_ALIASES) {
     if (entry.aliases.some((alias) => normalizeHeader(alias) === normalized)) {
       return entry.key;
     }
   }
-
   return null;
+}
+
+/** Heading text without icons, bullets or numbering; letter-spaced design headings joined up. */
+function cleanHeading(value: string): string {
+  const normalized = normalizeHeader(value).replace(/^[^\p{L}]+/u, "").replace(/[^\p{L}'’)]+$/u, "").trim();
+  // "W E R K E R V A R I N G" → "werkervaring"; the spaces between words are lost, so it is matched
+  // against aliases without spaces too.
+  return /^(?:\p{L} ){3,}\p{L}$/u.test(normalized) ? normalized.replace(/ /g, "") : normalized;
+}
+
+function detectSectionKey(line: string): SectionKey | null {
+  // Two-column PDFs can put two headings on one row ("WERKERVARING      TALEN"): the first one opens a section.
+  const columns = line.split(/\s{3,}|\t+/).map((part) => part.trim()).filter(Boolean);
+  if (columns.length > 1) {
+    const keys = columns.map((column) => detectSectionKey(column));
+    return keys.every(Boolean) ? keys[0] : null;
+  }
+
+  const normalized = cleanHeading(line);
+  if (!normalized || normalized.length > 40) {
+    return null;
+  }
+
+  const direct = matchAlias(normalized) ?? SPACELESS_ALIASES.get(normalized) ?? null;
+  if (direct) return direct;
+
+  // Combined headings ("Opleiding & cursussen", "Education and certifications") count as their first
+  // part, but only when every part is heading vocabulary, so content lines such as "Training & coaching" stay content.
+  const parts = normalized.split(/\s*(?:&|\+|\/)\s*|\s+(?:en|and)\s+/).map((part) => part.trim()).filter(Boolean);
+  if (parts.length < 2) return null;
+  const first = matchAlias(parts[0]);
+  if (!first) return null;
+  return parts.slice(1).every((part) => matchAlias(part) || COMBINED_HEADING_WORDS.has(part)) ? first : null;
 }
 
 function normalizeHeader(value: string): string {
@@ -709,6 +800,12 @@ function isPlausibleTextSectionMatch(
     "languages",
     "kennis",
     "studie",
+    "studies",
+    "loopbaan",
+    "career",
+    "employment",
+    "expertise",
+    "qualifications",
   ]);
 
   const normalizedAlias = normalizeHeader(alias);

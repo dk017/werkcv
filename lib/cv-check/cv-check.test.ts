@@ -241,3 +241,33 @@ test("readability problems rank before content problems of the same severity", (
   ]);
   assert.deepEqual(ranked.map((item) => item.id), ["reading-order", "content-big"]);
 });
+
+test("section headings: combined, letter-spaced, icon and two-column headings are found; prose is not", async () => {
+  const { detectCvSectionKeys } = await import("../tools/cv-score");
+  const body = "Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore.";
+  const has = (lines: string[], keys: string[]) => {
+    const found = detectCvSectionKeys(lines.join("\n"));
+    for (const key of keys) assert.ok(found.includes(key as never), `${key} missing in ${found.join(",")} for ${lines[3]}`);
+  };
+  has(["Jan Jansen", "Profiel", body, "Werkervaring en stages", "Medewerker (2020 - 2023)", body, "Opleiding & cursussen", "HBO (2019)"], ["experience", "education"]);
+  has(["Jan Jansen", "P R O F I E L", body, "W E R K E R V A R I N G", "Medewerker (2020 - 2023)", body, "O P L E I D I N G", "HBO (2019)"], ["experience", "education"]);
+  has(["Jane Doe", "■ PROFESSIONAL SUMMARY", body, "■ WORK HISTORY", "Analyst (2020 - 2023)", body, "■ EDUCATION & CERTIFICATIONS", "BSc (2019)"], ["experience", "education"]);
+  has(["Jan Jansen", "Profiel", body, "Vaardigheden", "Excel", "WERKERVARING          TALEN", "Medewerker (2020 - 2023)", body, "OPLEIDING          INTERESSES", "HBO (2019)"], ["experience", "education"]);
+
+  const prose = detectCvSectionKeys(["Jan Jansen", "Profiel", body, "Vaardigheden", "Training & coaching", "Ik heb vijf jaar werk ervaring en volg een opleiding tot verpleegkundige.", body].join("\n"));
+  assert.ok(!prose.includes("experience" as never) && !prose.includes("education" as never) && !prose.includes("courses" as never), prose.join(","));
+});
+
+test("a missing interests section is a neutral note that costs no points", async () => {
+  const { scoreChecksToItems } = await import("./engine");
+  const dimension = (passed: boolean) => [{
+    id: "volledigheid", name: "Volledigheid", icon: "checklist", score: 0, max: 10, percentage: 0, status: "good" as const,
+    checks: [{ id: "interests_present", passed, points_earned: passed ? 2 : 0, points_max: 2, label: "x", feedback: null, fix: null }],
+  }];
+  const missing = scoreChecksToItems(dimension(false), emptyLayoutSignals("text"), "nl")[0];
+  assert.equal(missing.status, "info");
+  assert.equal(missing.weight, 0);
+  assert.ok(missing.fix);
+  assert.equal(scoreChecksToItems(dimension(true), emptyLayoutSignals("text"), "en")[0].label, "Interests listed");
+  assert.equal(categoryScore([missing], "basics"), 100);
+});

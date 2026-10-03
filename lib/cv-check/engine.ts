@@ -48,6 +48,17 @@ const DIMENSION_CATEGORY: Record<string, CvCheckCategory> = {
 // Covered better elsewhere: length by nl_length, languages by nl_language_levels,
 // text-based column detection by the PDF layout signal when available.
 const SKIPPED_SCORE_CHECKS = new Set(["cv_length", "languages_present"]);
+// Optional on a Dutch CV: shown as a neutral note, never costs points (it failed on ~80% of checked CVs).
+const INFO_ONLY_SCORE_CHECKS: Record<string, { present: Copy; missing: Copy; fix: Copy }> = {
+  interests_present: {
+    present: { nl: "Interesses vermeld", en: "Interests listed" },
+    missing: { nl: "Geen interesses vermeld (optioneel)", en: "No interests listed (optional)" },
+    fix: {
+      nl: "Niet verplicht. Twee tot vier concrete interesses kunnen een gesprek openen; zonder kost het je geen punten.",
+      en: "Not required. Two to four concrete interests can start a conversation; leaving them out costs no points.",
+    },
+  },
+};
 // Fairer wording when cv-score gives partial credit (e.g. one or two generic phrases, not an empty profile).
 const PARTIAL_LABELS: Record<string, Copy> = {
   profile_buzzwords: { nl: "Profieltekst kan concreter", en: "Profile could be more concrete" },
@@ -59,7 +70,7 @@ const DEPENDENT_CHECKS: Record<string, string[]> = {
   experience_exists: ["quantified_achievement", "active_verbs", "experience_dates"],
 };
 
-function scoreChecksToItems(dimensions: CvScoreDimension[], layout: LayoutSignals, locale: CvCheckLocale): CvCheckItem[] {
+export function scoreChecksToItems(dimensions: CvScoreDimension[], layout: LayoutSignals, locale: CvCheckLocale): CvCheckItem[] {
   const missingSections = new Set(
     dimensions.flatMap((dimension) => dimension.checks).filter((check) => DEPENDENT_CHECKS[check.id] && !check.passed).map((check) => check.id),
   );
@@ -70,6 +81,19 @@ function scoreChecksToItems(dimensions: CvScoreDimension[], layout: LayoutSignal
       .filter((check) => !SKIPPED_SCORE_CHECKS.has(check.id))
       .filter((check) => !(check.id === "no_columns" && layout.twoColumnRowShare !== null))
       .map<CvCheckItem>((check) => {
+        const infoOnly = INFO_ONLY_SCORE_CHECKS[check.id];
+        if (infoOnly) {
+          return {
+            id: `score_${check.id}`,
+            category: DIMENSION_CATEGORY[dimension.id] ?? "content",
+            severity: "tip",
+            status: "info",
+            weight: 0,
+            label: t(locale, check.passed ? infoOnly.present : infoOnly.missing),
+            evidence: null,
+            fix: check.passed ? null : t(locale, infoOnly.fix),
+          };
+        }
         // cv-score only has Dutch copy; English reports use translated labels and drop the Dutch explanation.
         const english = locale === "en" ? SCORE_CHECK_COPY_EN[check.id] : undefined;
         const credit = check.points_max > 0 ? check.points_earned / check.points_max : check.passed ? 1 : 0;
