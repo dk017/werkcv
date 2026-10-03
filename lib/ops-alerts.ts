@@ -245,6 +245,11 @@ function buildOpsEmailText(input: ReportOpsIncidentInput, recentEvents: string):
   ].join("\n");
 }
 
+/** A local dev server that copied production mail settings must not email real alerts. */
+export function opsEmailsEnabled(env: Record<string, string | undefined> = process.env): boolean {
+  return env.NODE_ENV !== "development" || env.OPS_ALERT_EMAILS_IN_DEV === "true";
+}
+
 export async function reportOpsIncident(input: ReportOpsIncidentInput): Promise<ReportOpsIncidentResult> {
   const locale = input.locale || "nl";
   let shouldSendEmail = true;
@@ -283,6 +288,11 @@ export async function reportOpsIncident(input: ReportOpsIncidentInput): Promise<
     });
   } catch (persistError) {
     console.error(`${input.event}_persist_failed`, persistError);
+  }
+
+  if (!opsEmailsEnabled()) {
+    console.error(`${input.event}_email_skipped_in_development`, { route: input.route, stage: input.stage });
+    return { supportNotified: false, userNotified: false };
   }
 
   const transporter = getEmailTransporter();
