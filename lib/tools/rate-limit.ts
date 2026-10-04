@@ -28,7 +28,7 @@ setInterval(() => {
         entry.timestamps = entry.timestamps.filter(t => t > cutoff);
         if (entry.timestamps.length === 0) store.delete(key);
     }
-}, 15 * 60 * 1000);
+}, 15 * 60 * 1000).unref();
 
 export function checkRateLimit(ip: string, options: RateLimitOptions = {}): { allowed: boolean; remaining: number } {
     const now = Date.now();

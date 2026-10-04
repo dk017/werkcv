@@ -123,6 +123,8 @@ interface EditorProps {
     publicSource?: string;
     /** Public mode: import the CV handed over by the CV-check (lib/cv-check/handoff.ts) on open. */
     publicImportCheckedCv?: boolean;
+    /** Public mode: single-use token from an AI-assistant (MCP) link, exchanged for the CV it carries. */
+    publicHandoffToken?: string | null;
     onPublicDownloadRequest?: (input: {
         data: CVData;
         templateId: string;
@@ -360,6 +362,7 @@ export default function Editor({
     publicFlow = "consumer",
     publicSource = "public_editor",
     publicImportCheckedCv = false,
+    publicHandoffToken = null,
     onPublicDownloadRequest,
 }: EditorProps) {
     const isEnglish = uiLanguage === "en";
@@ -536,6 +539,9 @@ export default function Editor({
     const progressTrackingInitializedRef = useRef(false);
     const readyToDownloadTrackedRef = useRef(false);
     const uploadIntentHandledRef = useRef(false);
+    // Link from an AI assistant (MCP): "loading" while the one-time token is exchanged, "failed" when it is no longer valid.
+    const [handoffState, setHandoffState] = useState<"idle" | "loading" | "failed">(publicHandoffToken ? "loading" : "idle");
+    const handoffExchangedRef = useRef(false);
     const matchImportHandledRef = useRef(false);
     const quickBuildViewedRef = useRef(false);
     const quickBuildStartedRef = useRef(false);
@@ -1453,6 +1459,36 @@ export default function Editor({
             entryMethod: 'upload',
         });
     };
+
+    useEffect(() => {
+        if (!isPublicMode || !publicHandoffToken || handoffExchangedRef.current) return;
+        handoffExchangedRef.current = true;
+        // The token is single-use and secret: take it out of the address bar straight away.
+        const cleaned = new URL(window.location.href);
+        cleaned.searchParams.delete('handoff');
+        window.history.replaceState(window.history.state, '', `${cleaned.pathname}${cleaned.search}${cleaned.hash}`);
+        void (async () => {
+            try {
+                const response = await fetch('/api/public/cv/handoff', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token: publicHandoffToken }),
+                });
+                const result = await response.json().catch(() => ({}));
+                if (!response.ok || !result.data) {
+                    setHandoffState('failed');
+                    return;
+                }
+                handleCVParsed(result.data as CVData);
+                if (typeof result.vacancyText === 'string') setTargetVacancy(result.vacancyText);
+                setHandoffState('idle');
+            } catch {
+                setHandoffState('failed');
+            }
+        })();
+        // handleCVParsed is recreated on every render; the exchange must run once per token.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isPublicMode, publicHandoffToken]);
 
     const revealDesignWorkspace = () => {
         setShowDesignWorkspace(true);
@@ -2713,6 +2749,29 @@ export default function Editor({
                         ? priceCopyExperiment.copy.previewLine
                         : isMatchPackWorkspace ? undefined : tr("Al inbegrepen · je betaalt niet opnieuw", "Included · you won't pay again")}
                 />
+            ) : null}
+
+            {handoffState !== 'idle' ? (
+                <div role="status" aria-live="polite" className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
+                    <div className="max-w-sm rounded-2xl bg-white p-6 text-center shadow-xl">
+                        {handoffState === 'loading' ? (
+                            <>
+                                <p className="text-sm font-semibold text-slate-800">{tr("Je cv wordt ingeladen…", "Loading your CV…")}</p>
+                                <p className="mt-1 text-xs text-slate-500">{tr("Even geduld, dit duurt meestal enkele seconden.", "One moment, this usually takes a few seconds.")}</p>
+                            </>
+                        ) : (
+                            <>
+                                <p className="text-sm font-semibold text-slate-800">{tr("Deze link is niet meer geldig", "This link is no longer valid")}</p>
+                                <p className="mt-1 text-xs text-slate-500">
+                                    {tr("De link werkt één keer en 60 minuten. Vraag de assistent om een nieuwe link, of begin hier met je cv.", "The link works once and for 60 minutes. Ask the assistant for a new link, or start your CV here.")}
+                                </p>
+                                <button type="button" onClick={() => setHandoffState('idle')} className="mt-4 rounded-lg bg-slate-900 px-4 py-2 text-xs font-bold text-white">
+                                    {tr("Verder in de editor", "Continue in the editor")}
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </div>
             ) : null}
 
             {!isPublicMode ? (

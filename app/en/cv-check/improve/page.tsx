@@ -12,15 +12,17 @@ export const metadata: Metadata = {
 
 // "Improve in the editor" from the CV check. Visitors without an account edit their checked CV here
 // and only sign in at download; signed-in visitors keep their account editor.
-export default async function EnglishCvCheckImprovePage({ searchParams }: { searchParams: Promise<{ upload?: string }> }) {
-  const { upload } = await searchParams;
-  if (await getCurrentUser()) {
+export default async function EnglishCvCheckImprovePage({ searchParams }: { searchParams: Promise<{ upload?: string; handoff?: string }> }) {
+  const { upload, handoff } = await searchParams;
+  // A link from an AI assistant (MCP) carries a one-time token that only the public editor can open.
+  const handoffToken = typeof handoff === "string" && /^[A-Za-z0-9_-]{43}$/.test(handoff) ? handoff : null;
+  if (!handoffToken && (await getCurrentUser())) {
     redirect(`/en/editor?template=professional&startSource=cv_check_en${upload === "1" ? "&upload=1" : ""}`);
   }
 
   return (
     <main>
-      <PublicEditorSection locale="en" source="public_editor_cv_check_en" variant="cv_check" importCheckedCv={upload === "1"} />
+      <PublicEditorSection locale="en" source="public_editor_cv_check_en" variant="cv_check" importCheckedCv={upload === "1"} handoffToken={handoffToken} />
     </main>
   );
 }

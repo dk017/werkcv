@@ -22,6 +22,8 @@ type PublicEditorSectionProps = {
     variant?: "home" | "cv_check";
     /** Load the CV the visitor just checked (see lib/cv-check/handoff.ts) into the editor. */
     importCheckedCv?: boolean;
+    /** Single-use token from an AI-assistant (MCP) link: the editor exchanges it for the CV it carries. */
+    handoffToken?: string | null;
 };
 
 function createEmptyData(locale: UiLanguage): CVData {
@@ -41,6 +43,7 @@ export default function PublicEditorSection({
     className = "",
     variant = "home",
     importCheckedCv = false,
+    handoffToken = null,
 }: PublicEditorSectionProps) {
     const isCvCheck = variant === "cv_check" && flow === "consumer";
     const draftKey = useSyncExternalStore(
@@ -140,6 +143,7 @@ export default function PublicEditorSection({
                         publicSource={source}
                         onPublicDownloadRequest={handlePublicDownloadRequest}
                         publicImportCheckedCv={importCheckedCv}
+                        publicHandoffToken={handoffToken}
                     />
                 ) : (
                     <div className="flex min-h-[760px] items-center justify-center rounded-2xl border border-slate-200 bg-white text-sm font-semibold text-slate-500">
