@@ -142,9 +142,52 @@ const nextConfig: NextConfig = {
         destination: '/en/expat-cv-netherlands',
         permanent: true,
       },
+      // "How to cancel X" pages replaced by the "WerkCV vs X" comparisons (4 Oct 2026). The old
+      // cancel pages brought visitors who wanted to cancel, not to buy (137 visitors in 120 days,
+      // 0 paid orders). Novoresume has no vs page, so it goes to the no-subscription page.
       {
         source: '/cv.nl-opzeggen',
-        destination: '/cv-nl-opzeggen',
+        destination: '/cv-gids/werkcv-vs-cv-nl',
+        permanent: true,
+      },
+      {
+        source: '/cv-nl-opzeggen',
+        destination: '/cv-gids/werkcv-vs-cv-nl',
+        permanent: true,
+      },
+      {
+        source: '/cvster-opzeggen',
+        destination: '/cv-gids/werkcv-vs-cvster',
+        permanent: true,
+      },
+      {
+        source: '/livecareer-opzeggen',
+        destination: '/cv-gids/werkcv-vs-livecareer',
+        permanent: true,
+      },
+      {
+        source: '/cvmaker-opzeggen',
+        destination: '/cv-gids/werkcv-vs-cvmaker',
+        permanent: true,
+      },
+      {
+        source: '/zety-opzeggen',
+        destination: '/cv-gids/werkcv-vs-zety',
+        permanent: true,
+      },
+      {
+        source: '/resume-io-opzeggen',
+        destination: '/cv-gids/werkcv-vs-resume-io',
+        permanent: true,
+      },
+      {
+        source: '/novoresume-opzeggen',
+        destination: '/cv-maken-zonder-abonnement',
+        permanent: true,
+      },
+      {
+        source: '/cv-gids/cv-builder-opzeggen-en-alternatieven',
+        destination: '/cv-gids/beste-cv-builder-zonder-abonnement',
         permanent: true,
       },
 

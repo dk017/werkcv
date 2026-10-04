@@ -105,18 +105,6 @@ const comparisonGuideGroups = [
       { href: "/cv-gids/werkcv-vs-maakeencv", label: "WerkCV vs maakeencv.nl" },
     ],
   },
-  {
-    title: "Opzeggen en overstappen",
-    description:
-      "Gebruik deze pagina's als je huidige vraag eigenlijk begint bij cancelen, billing of de overstap naar een rustiger alternatief.",
-    links: [
-      { href: "/cv-gids/cv-builder-opzeggen-en-alternatieven", label: "Alle opzegroutes + alternatieven" },
-      { href: "/resume-io-opzeggen", label: "Resume.io opzeggen" },
-      { href: "/zety-opzeggen", label: "Zety opzeggen" },
-      { href: "/novoresume-opzeggen", label: "Novoresume opzeggen" },
-      { href: "/livecareer-opzeggen", label: "LiveCareer opzeggen" },
-    ],
-  },
 ];
 
 const contentBlocks = [

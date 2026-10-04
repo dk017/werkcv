@@ -91,9 +91,9 @@ const relatedLinks = [
     body: `Handig als je het verschil tussen eenmalig ${cvDownloadPrice.display} en een maandabonnement concreet wilt zien.`,
   },
   {
-    href: "/cv-nl-opzeggen",
-    title: "Check eerst de CV.nl opzegroute",
-    body: "Gebruik deze pagina als je eerst wilt controleren hoe opzeggen via account, Instellingen en bevestigingsmail werkt.",
+    href: "/cv-gids/werkcv-vs-cv-nl",
+    title: "WerkCV vs CV.nl naast elkaar",
+    body: "Vergelijk prijsmodel, productomvang en wanneer CV.nl juist de betere keuze is.",
   },
   {
     href: "/cv-maken-zonder-abonnement",

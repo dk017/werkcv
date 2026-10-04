@@ -106,9 +106,9 @@ const relatedLinks = [
     body: `Handig als je eenmalig ${cvDownloadPrice.display} concreet wilt afzetten tegen een proef- of premiummodel.`,
   },
   {
-    href: "/cvster-opzeggen",
-    title: "Controleer eerst de CVster opzegroute",
-    body: "Gebruik deze pagina als je eerst wilt nagaan hoe annuleren via website, account en bevestigingsmail werkt.",
+    href: "/cv-gids/werkcv-vs-cvster",
+    title: "WerkCV vs CVster naast elkaar",
+    body: "Vergelijk prijsmodel, proefperiode en wanneer CVster juist de betere keuze is.",
   },
   {
     href: "/cv-maken-zonder-abonnement",

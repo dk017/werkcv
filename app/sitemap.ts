@@ -800,12 +800,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.85,
         },
         {
-            url: `${baseUrl}/cv-gids/cv-builder-opzeggen-en-alternatieven`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.79,
-        },
-        {
             url: `${baseUrl}/cv-gids/cv-voorbeelden-per-situatie`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -1032,48 +1026,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.77,
-        },
-        {
-            url: `${baseUrl}/cv-nl-opzeggen`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.74,
-        },
-        {
-            url: `${baseUrl}/cvmaker-opzeggen`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.74,
-        },
-        {
-            url: `${baseUrl}/cvster-opzeggen`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.74,
-        },
-        {
-            url: `${baseUrl}/resume-io-opzeggen`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.74,
-        },
-        {
-            url: `${baseUrl}/zety-opzeggen`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.74,
-        },
-        {
-            url: `${baseUrl}/novoresume-opzeggen`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.74,
-        },
-        {
-            url: `${baseUrl}/livecareer-opzeggen`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.74,
         },
         {
             url: `${baseUrl}/faq`,

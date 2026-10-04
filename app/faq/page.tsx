@@ -50,19 +50,19 @@ const comparisonGuides = [
         body: "Gebruik deze gids als je twijfelt tussen een designtool en een rustiger sollicitatiedocument.",
     },
     {
-        href: "/cv-nl-opzeggen",
-        title: "CV.nl opzeggen",
-        body: "Handig als je juist zoekt naar een abonnements-exit en daarna een alternatief zonder maandelijkse verlenging wilt vergelijken.",
+        href: "/cv-gids/werkcv-vs-cv-nl",
+        title: "WerkCV vs CV.nl",
+        body: "Vergelijk eenmalig betalen met een maandabonnement als je een alternatief zonder automatische verlenging zoekt.",
     },
     {
-        href: "/cvmaker-opzeggen",
-        title: "CVMaker opzeggen",
-        body: "Gebruik deze pagina als je CVMaker wilt stoppen en daarna een eenvoudiger prijsmodel wilt afwegen.",
+        href: "/cv-gids/werkcv-vs-cvmaker",
+        title: "WerkCV vs CVMaker",
+        body: "Gebruik deze vergelijking als je een eenvoudiger prijsmodel dan een CVMaker-abonnement wilt afwegen.",
     },
     {
-        href: "/cvster-opzeggen",
-        title: "CVster opzeggen",
-        body: "Handig als je uit een proef- of premiummodel wilt stappen en daarna zonder abonnement wilt vergelijken.",
+        href: "/cv-gids/werkcv-vs-cvster",
+        title: "WerkCV vs CVster",
+        body: "Handig als je uit een proef- of premiummodel wilt stappen en zonder abonnement wilt vergelijken.",
     },
     {
         href: "/cv-gids/werkcv-vs-cvwizard",

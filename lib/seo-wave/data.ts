@@ -4083,11 +4083,6 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ],
         relatedLinks: [
             {
-                href: '/cvmaker-opzeggen',
-                title: 'CVMaker opzeggen',
-                description: 'Gebruik deze pagina als je huidige vraag eerst over trial, verlenging of stopzetten gaat.',
-            },
-            {
                 href: '/templates',
                 title: 'WerkCV templates vergelijken',
                 description: 'Open de templates eerst gratis en kijk of de no-subscription flow al genoeg is voor jouw sollicitaties.',
@@ -4309,11 +4304,6 @@ const dutchEditorialPages: SeoGuidePage[] = [
             },
         ],
         relatedLinks: [
-            {
-                href: '/cv-nl-opzeggen',
-                title: 'CV.nl opzeggen',
-                description: 'Gebruik deze pagina als je eerst de trial- of abonnementsroute van CV.nl wilt checken.',
-            },
             {
                 href: '/prijzen',
                 title: 'WerkCV prijzen',
@@ -4559,11 +4549,6 @@ const dutchEditorialPages: SeoGuidePage[] = [
             },
         ],
         relatedLinks: [
-            {
-                href: '/cvster-opzeggen',
-                title: 'CVster opzeggen',
-                description: 'Gebruik deze pagina als je eerst CVster billing, proefperiode of stopzetten wilt checken.',
-            },
             {
                 href: '/ats-cv-template',
                 title: 'ATS CV template',
@@ -4832,11 +4817,6 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 title: 'Engels cv maken',
                 description: 'Handig als je Zety overwoog vanwege de Engelstalige builder-ervaring maar toch in Nederland solliciteert.',
             },
-            {
-                href: '/zety-opzeggen',
-                title: 'Zety opzeggen',
-                description: 'Gebruik deze pagina als je eerst de officiele cancel-routes en billinglogica van Zety wilt checken.',
-            },
         ],
         sources: [
             {
@@ -4914,11 +4894,6 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         href: '/prijzen',
                         label: 'Bekijk eerst hoe WerkCV-pricing werkt',
                         description: 'Handig als voorspelbaarheid van het prijsmodel voor jou het grootste verschil maakt.',
-                    },
-                    {
-                        href: '/resume-io-opzeggen',
-                        label: 'Lees ook de officiele cancel-samenvatting voor Resume.io',
-                        description: 'Relevant als je huidige vraag eigenlijk eerst over downgraden of stoppen gaat.',
                     },
                 ],
             },
@@ -5034,11 +5009,6 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ],
         relatedLinks: [
             {
-                href: '/resume-io-opzeggen',
-                title: 'Resume.io opzeggen',
-                description: 'Gebruik deze pagina als je eerst de officiele cancel- en downgrade-informatie wilt checken.',
-            },
-            {
                 href: '/cv-maken-zonder-abonnement',
                 title: 'CV maken zonder abonnement',
                 description: 'Relevant als jouw alternatief-intentie vooral door billing- en planfrictie wordt gedreven.',
@@ -5135,11 +5105,6 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         href: '/prijzen',
                         label: 'Bekijk eerst hoe WerkCV-pricing werkt',
                         description: 'Handig als het prijsmodel voor jou het grootste verschil maakt.',
-                    },
-                    {
-                        href: '/livecareer-opzeggen',
-                        label: 'Lees ook de officiële cancel-samenvatting voor LiveCareer',
-                        description: 'Relevant als je huidige vraag eerst over stoppen of factureringsperiode gaat.',
                     },
                 ],
             },
@@ -5259,11 +5224,6 @@ const dutchEditorialPages: SeoGuidePage[] = [
             },
         ],
         relatedLinks: [
-            {
-                href: '/livecareer-opzeggen',
-                title: 'LiveCareer opzeggen',
-                description: 'Gebruik deze pagina als je eerst de officiële cancelroute en factureringslogica wilt checken.',
-            },
             {
                 href: '/cv-maken-zonder-abonnement',
                 title: 'CV maken zonder abonnement',
