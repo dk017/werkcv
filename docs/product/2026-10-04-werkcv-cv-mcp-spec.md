@@ -92,7 +92,8 @@ Built: a `checked_cv` kind in the existing table (`kind` is a plain string, so n
 
 - Route: `app/api/mcp/route.ts`, built with `mcp-handler` (2.x) on `@modelcontextprotocol/server` v2 (already a devDependency for the Search Console server; move to dependencies). Stateless Streamable HTTP, no sessions, no OAuth (the directory only requires OAuth when a server needs authentication).
 - Reuse: `runCvCheck`, `matchCvVacature`, `checkRateLimit`, `normalizeStartSource`, `reportOpsIncident`.
-- Rate limits: the existing in-memory limiter (single instance on Hetzner). A restart resets it, so add a global daily cap on AI calls (default 300/day, env `MCP_AI_DAILY_CAP`) that returns `RATE_LIMITED` when reached.
+- Rate limits: the existing in-memory limiter (single instance on Hetzner). A restart resets it, so the AI-backed calls also share a global daily cap (default 300/day, env `MCP_AI_DAILY_CAP`) that returns `RATE_LIMITED` when reached. `match_vacancy` and opening a handoff link (an AI parse) draw on the same budget; the link is checked first and the budget before it is used up, so fake tokens cannot drain the budget and a refused user can retry the same link. Stored handoffs are capped at 200 at once (`MCP_MAX_LIVE_HANDOFFS`). The first time the budget runs out each UTC day an ops alert is sent (counts only).
+- Client IP (fixed 5 Oct 2026, after a live test showed the per-IP limits could be dodged): nginx sets `X-Real-IP` to the connecting address and only appends to `X-Forwarded-For`, so `getClientIp` now uses `X-Real-IP`, then the last `X-Forwarded-For` entry. Before, it used the first entry, which the client controls. This also tightens every other public AI endpoint (36 files use `getClientIp`). Revisit if a CDN is put in front of nginx.
 - Input hygiene: size limits per field, strict zod schemas, treat all text as untrusted (the engine already does; the vacancy match prompt keeps its "ignore instructions in the document" rule).
 - Output hygiene: never echo more than short quotes from the CV; no HTML; links only to `werkcv.nl`.
 - Observability: log tool name, locale, duration, error code. Never log CV or vacancy text.
@@ -114,7 +115,7 @@ These thresholds are guesses, not forecasts: there is no baseline for this chann
 
 ## 9. Privacy, legal and policy
 
-- Privacy page section (NL + EN): what the tools receive, that `check_cv` and `match_vacancy` store nothing, that `open_in_editor` stores the text for up to 60 minutes and deletes it on first use, and that the vacancy match sends text to OpenAI (as `/cv-check` does today).
+- Privacy page section (NL + EN, done 5 Oct 2026, in the retention section): what the tools receive, that `check_cv` and `match_vacancy` store nothing, that `open_in_editor` stores the text for up to 60 minutes and deletes it on first use, and that the vacancy match sends text to OpenAI (as `/cv-check` does today).
 - Tool descriptions tell the model not to send BSN, ID or bank numbers; `check_cv` flags them (existing critical check) and the response says to remove them.
 - No ad copy aimed at the model. A tool result may contain one factual line with the link and, in the editor page only, the pass offer. Keep tool output free of instructions to the model; I have not read the full directory policy, so read `support.claude.com` "Anthropic MCP directory policy" before submitting.
 - Government data: CC-0, but keep the source line.

@@ -56,10 +56,15 @@ export function checkRateLimit(ip: string, options: RateLimitOptions = {}): { al
 }
 
 export function getClientIp(request: Request): string {
-    // Respect reverse-proxy headers (Nginx/Hetzner)
-    const forwarded = (request.headers as Headers).get('x-forwarded-for');
-    if (forwarded) return forwarded.split(',')[0].trim();
-    const realIp = (request.headers as Headers).get('x-real-ip');
-    if (realIp) return realIp.trim();
+    // nginx (see /etc/nginx/sites-enabled/werkcv.nl) sets X-Real-IP to the connecting address and
+    // replaces anything the client sent, so it can be trusted. X-Forwarded-For is only appended to:
+    // its FIRST entry is whatever the client wrote, so a limit keyed on it can be dodged by sending
+    // a new fake value each time. Fall back to its LAST entry, the one nginx added.
+    // If a CDN is ever put in front of nginx, X-Real-IP becomes the CDN's address: revisit this then.
+    const headers = request.headers as Headers;
+    const realIp = headers.get('x-real-ip')?.trim();
+    if (realIp) return realIp;
+    const forwarded = headers.get('x-forwarded-for')?.split(',').pop()?.trim();
+    if (forwarded) return forwarded;
     return 'unknown';
 }

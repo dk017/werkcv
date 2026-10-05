@@ -540,7 +540,7 @@ export default function Editor({
     const readyToDownloadTrackedRef = useRef(false);
     const uploadIntentHandledRef = useRef(false);
     // Link from an AI assistant (MCP): "loading" while the one-time token is exchanged, "failed" when it is no longer valid.
-    const [handoffState, setHandoffState] = useState<"idle" | "loading" | "failed">(publicHandoffToken ? "loading" : "idle");
+    const [handoffState, setHandoffState] = useState<"idle" | "loading" | "failed" | "busy">(publicHandoffToken ? "loading" : "idle");
     const handoffExchangedRef = useRef(false);
     const matchImportHandledRef = useRef(false);
     const quickBuildViewedRef = useRef(false);
@@ -1463,10 +1463,14 @@ export default function Editor({
     useEffect(() => {
         if (!isPublicMode || !publicHandoffToken || handoffExchangedRef.current) return;
         handoffExchangedRef.current = true;
-        // The token is single-use and secret: take it out of the address bar straight away.
-        const cleaned = new URL(window.location.href);
-        cleaned.searchParams.delete('handoff');
-        window.history.replaceState(window.history.state, '', `${cleaned.pathname}${cleaned.search}${cleaned.hash}`);
+        // The token is single-use and secret: take it out of the address bar once the server has
+        // answered. When the answer is "busy" (429) the handoff is still valid, so the link stays
+        // in the address bar and can be reloaded later.
+        const removeTokenFromUrl = () => {
+            const cleaned = new URL(window.location.href);
+            cleaned.searchParams.delete('handoff');
+            window.history.replaceState(window.history.state, '', `${cleaned.pathname}${cleaned.search}${cleaned.hash}`);
+        };
         void (async () => {
             try {
                 const response = await fetch('/api/public/cv/handoff', {
@@ -1474,6 +1478,11 @@ export default function Editor({
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ token: publicHandoffToken }),
                 });
+                if (response.status === 429) {
+                    setHandoffState('busy');
+                    return;
+                }
+                removeTokenFromUrl();
                 const result = await response.json().catch(() => ({}));
                 if (!response.ok || !result.data) {
                     setHandoffState('failed');
@@ -1483,6 +1492,7 @@ export default function Editor({
                 if (typeof result.vacancyText === 'string') setTargetVacancy(result.vacancyText);
                 setHandoffState('idle');
             } catch {
+                removeTokenFromUrl();
                 setHandoffState('failed');
             }
         })();
@@ -2758,6 +2768,16 @@ export default function Editor({
                             <>
                                 <p className="text-sm font-semibold text-slate-800">{tr("Je cv wordt ingeladen…", "Loading your CV…")}</p>
                                 <p className="mt-1 text-xs text-slate-500">{tr("Even geduld, dit duurt meestal enkele seconden.", "One moment, this usually takes a few seconds.")}</p>
+                            </>
+                        ) : handoffState === 'busy' ? (
+                            <>
+                                <p className="text-sm font-semibold text-slate-800">{tr("Het is nu even druk", "It is busy right now")}</p>
+                                <p className="mt-1 text-xs text-slate-500">
+                                    {tr("Je cv is niet verloren: de link blijft nog even geldig. Probeer deze pagina over een uur opnieuw te laden, of begin hier met je cv.", "Your CV is not lost: the link stays valid for a while. Reload this page in an hour, or start your CV here.")}
+                                </p>
+                                <button type="button" onClick={() => setHandoffState('idle')} className="mt-4 rounded-lg bg-slate-900 px-4 py-2 text-xs font-bold text-white">
+                                    {tr("Verder in de editor", "Continue in the editor")}
+                                </button>
                             </>
                         ) : (
                             <>

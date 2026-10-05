@@ -5,8 +5,8 @@ import { emptyLayoutSignals } from "@/lib/cv-check/layout";
 import type { CvCheckResult } from "@/lib/cv-check/types";
 import { classifyAiToolError } from "@/lib/tools/ai-tool-errors";
 import { matchCvVacature, type CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match";
-import { createCheckedCvHandoff, type HandoffLocale } from "./handoff";
-import { takeAiBudget } from "./limits";
+import { takeAiBudgetOrAlert } from "./alerts";
+import { createCheckedCvHandoff, HandoffCapacityError, type HandoffLocale } from "./handoff";
 import type { McpClient } from "./context";
 
 export type McpToolFailureCode = "RATE_LIMITED" | "TEXT_TOO_SHORT" | "VACANCY_TOO_SHORT" | "AI_UNAVAILABLE" | "FAILED";
@@ -112,7 +112,7 @@ type MatchDeps = { runMatch: typeof matchCvVacature; takeBudget: () => boolean }
 
 export async function matchVacancy(
   input: { cvText: string; vacancyText: string; locale?: HandoffLocale },
-  deps: MatchDeps = { runMatch: matchCvVacature, takeBudget: () => takeAiBudget() },
+  deps: MatchDeps = { runMatch: matchCvVacature, takeBudget: () => takeAiBudgetOrAlert("match_vacancy") },
 ): Promise<McpToolResult<MatchVacancyData> & { locale: HandoffLocale }> {
   const locale = resolveLocale(input.locale, input.cvText);
   if (!deps.takeBudget()) return { locale, ...failure("RATE_LIMITED", locale) };
@@ -164,7 +164,9 @@ export async function openInEditor(
   try {
     const { token } = await deps.createHandoff({ cvText: input.cvText, vacancyText: input.vacancyText ?? null, locale });
     return { locale, ok: true, data: { url: editorLink(token, locale, client), expiresInMinutes: 60 } };
-  } catch {
+  } catch (error) {
+    // All links in use: the same plain "limit reached" answer as a rate limit.
+    if (error instanceof HandoffCapacityError) return { locale, ...failure("RATE_LIMITED", locale) };
     return { locale, ...failure("FAILED", locale) };
   }
 }

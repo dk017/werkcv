@@ -2,7 +2,8 @@ import "./test-env";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { classifyMcpClient } from "./context";
-import { CHECKED_CV_KIND, CHECKED_CV_TTL_MS, createCheckedCvHandoff, takeCheckedCvHandoff } from "./handoff";
+import { alertAiCapReached, resetAlertForTests } from "./alerts";
+import { CHECKED_CV_KIND, CHECKED_CV_TTL_MS, createCheckedCvHandoff, HandoffCapacityError, maxLiveHandoffs, peekCheckedCvHandoff, takeCheckedCvHandoff } from "./handoff";
 import { aiDailyCap, resetAiBudgetForTests, takeAiBudget, takeToolSlot } from "./limits";
 import { checkCv, editorLink, matchVacancy, openInEditor } from "./tools";
 
@@ -59,6 +60,7 @@ function fakeDb() {
       },
       findFirst: async ({ where }: { where: { tokenHash: string; kind: string } }) =>
         rows.find((row) => row.tokenHash === where.tokenHash && row.kind === where.kind) ?? null,
+      count: async ({ where }: { where: { kind: string } }) => rows.filter((row) => row.kind === where.kind).length,
     },
   };
   return { db: db as unknown as Parameters<typeof createCheckedCvHandoff>[0], rows };
@@ -227,4 +229,53 @@ test("creating a handoff removes expired ones, and other kinds are left alone", 
   await createCheckedCvHandoff(db, { cvText: CV, vacancyText: null, locale: "nl" }, now);
   assert.equal(rows.filter((row) => row.kind === CHECKED_CV_KIND).length, 1);
   assert.equal(rows.filter((row) => row.kind === "profile").length, 1);
+});
+
+
+test("at most N unexpired handoffs exist at once; expired ones do not count", async () => {
+  const { db, rows } = fakeDb();
+  const now = new Date("2026-10-05T10:00:00Z");
+  await createCheckedCvHandoff(db, { cvText: CV, vacancyText: null, locale: "nl" }, now, 2);
+  await createCheckedCvHandoff(db, { cvText: CV, vacancyText: null, locale: "nl" }, now, 2);
+  await assert.rejects(() => createCheckedCvHandoff(db, { cvText: CV, vacancyText: null, locale: "nl" }, now, 2), HandoffCapacityError);
+  assert.equal(rows.length, 2, "the refused handoff stored nothing");
+  // An hour later the first two have expired, so there is room again.
+  await createCheckedCvHandoff(db, { cvText: CV, vacancyText: null, locale: "nl" }, new Date(now.getTime() + CHECKED_CV_TTL_MS), 2);
+  assert.equal(rows.length, 1);
+  assert.equal(maxLiveHandoffs({ MCP_MAX_LIVE_HANDOFFS: "50" }), 50);
+  assert.equal(maxLiveHandoffs({ MCP_MAX_LIVE_HANDOFFS: "x" }), 200);
+  assert.equal(maxLiveHandoffs({}), 200);
+});
+
+test("peeking at a handoff changes nothing, and only a real unexpired token passes", async () => {
+  const { db, rows } = fakeDb();
+  const now = new Date("2026-10-05T10:00:00Z");
+  const { token } = await createCheckedCvHandoff(db, { cvText: CV, vacancyText: null, locale: "nl" }, now);
+  assert.equal(await peekCheckedCvHandoff(db, token, now), true);
+  assert.equal(await peekCheckedCvHandoff(db, token, now), true, "peeking twice still works");
+  assert.equal(rows.length, 1, "nothing was deleted");
+  assert.equal(await peekCheckedCvHandoff(db, "c".repeat(43), now), false, "unknown token");
+  assert.equal(await peekCheckedCvHandoff(db, "short", now), false, "malformed token");
+  assert.equal(await peekCheckedCvHandoff(db, token, new Date(now.getTime() + CHECKED_CV_TTL_MS)), false, "expired");
+  assert.deepEqual(await takeCheckedCvHandoff(db, token, now), { cvText: CV, vacancyText: null, locale: "nl" });
+});
+
+test("open_in_editor answers 'limit reached' when every link slot is in use", async () => {
+  const full = await openInEditor({ cvText: CV, locale: "en" }, "claude", { createHandoff: async () => { throw new HandoffCapacityError(); } });
+  assert.equal(full.ok === false && full.code, "RATE_LIMITED");
+  assert.ok(full.ok === false && /limit/i.test(full.message));
+});
+
+test("the daily AI cap alerts once per UTC day, with counts only", () => {
+  resetAlertForTests();
+  const reports: Array<{ stage: string; context?: Record<string, unknown>; error: unknown }> = [];
+  const report = (async (input: { stage: string; context?: Record<string, unknown>; error: unknown }) => { reports.push(input); return { supportNotified: true, userNotified: false }; }) as never;
+  const monday = new Date("2026-10-05T10:00:00Z");
+  assert.equal(alertAiCapReached("match_vacancy", monday, report, 300), true);
+  assert.equal(alertAiCapReached("handoff_exchange", monday, report, 300), false, "same day: no second alert");
+  assert.equal(alertAiCapReached("match_vacancy", new Date("2026-10-06T00:00:01Z"), report, 300), true, "next day alerts again");
+  assert.equal(reports.length, 2);
+  assert.equal(reports[0].stage, "daily_cap_reached");
+  assert.deepEqual(reports[0].context, { tool: "mcp", cap: 300, source: "match_vacancy" });
+  assert.match(String((reports[0].error as Error).message), /daily AI cap reached/);
 });

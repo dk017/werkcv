@@ -151,6 +151,18 @@ export default function EnglishPrivacyPage() {
                 your browser&apos;s session storage for up to 24 hours so you can recover them after a
                 refresh. You can discard that draft directly from the interview.
               </p>
+              <p className="mt-2 font-medium leading-relaxed">
+                <strong>Use through an AI assistant (MCP connector).</strong> If you have your CV or a
+                vacancy checked through the WerkCV connector in an AI assistant such as Claude, we
+                process the text the assistant sends. When a CV is checked we do not store that text.
+                When it is compared with a vacancy, the text is sent to OpenAI for the analysis, and we
+                do not store it either. If you ask for your CV to be opened in the editor, WerkCV keeps
+                the CV text (and the vacancy text, if any) on our server for at most 60 minutes, for one
+                single-use link. The text is deleted the first time the link is opened, or after 60
+                minutes. Never send your BSN, ID number or bank details. We record only counts (which
+                function, language and outcome), never the text itself. We use your IP address only
+                briefly in working memory to limit abuse and do not store it for that purpose.
+              </p>
             </section>
 
             <section>

@@ -124,6 +124,19 @@ export default function PrivacyPage() {
                                 de sessieopslag van je eigen browser blijven staan, zodat je na verversen kunt doorgaan.
                                 Je kunt dit concept vanuit het interview direct verwijderen.
                             </p>
+                            <p className="font-medium leading-relaxed mt-2">
+                                <strong>Gebruik via een AI-assistent (MCP-koppeling).</strong> Laat je je cv of een
+                                vacature controleren via de WerkCV-koppeling in een AI-assistent zoals Claude, dan
+                                verwerken wij de tekst die de assistent doorstuurt. Bij het controleren van een cv
+                                bewaren wij die tekst niet. Bij het vergelijken met een vacature wordt de tekst voor de
+                                analyse naar OpenAI gestuurd en ook die bewaren wij niet. Vraag je om je cv in de editor
+                                te openen, dan bewaart WerkCV de cv-tekst (en eventueel de vacaturetekst) maximaal 60
+                                minuten op onze server, voor één eenmalige link. De tekst wordt verwijderd zodra de link
+                                voor het eerst wordt geopend, of na 60 minuten. Stuur nooit je BSN, identiteitsnummer of
+                                bankgegevens mee. Wij registreren alleen aantallen (welke functie, taal en uitkomst),
+                                nooit de tekst zelf. Je IP-adres gebruiken we alleen kortdurend in het werkgeheugen om
+                                misbruik te beperken en slaan we daarvoor niet op.
+                            </p>
                         </section>
 
                         <section>

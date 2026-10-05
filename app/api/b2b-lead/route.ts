@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getPathCluster, sanitizeAttribution } from "@/lib/attribution";
 import { b2bLeadPayloadSchema, getB2BLeadPageLabel } from "@/lib/b2b-leads";
 import { prisma } from "@/lib/prisma";
+import { getClientIp } from "@/lib/tools/rate-limit";
 
 function getEmailTransporter() {
   const host = process.env.SMTP_HOST;
@@ -88,7 +89,7 @@ export async function POST(request: NextRequest) {
 
   const attribution = sanitizeAttribution(parsed.data.attribution);
   const cluster = attribution?.firstTouchCluster || getPathCluster(parsed.data.pagePath);
-  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const ip = getClientIp(request);
   const userAgent = request.headers.get("user-agent") || "unknown";
   const from = process.env.AUTH_FROM_EMAIL || process.env.SMTP_USER || "noreply@werkcv.nl";
   const pageLabel = getB2BLeadPageLabel(parsed.data.pageType);
