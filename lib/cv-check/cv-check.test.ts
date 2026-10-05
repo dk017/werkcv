@@ -307,3 +307,17 @@ test("the editor grade runs the score checks without calling AI", async () => {
     openai.chat.completions.create = original;
   }
 });
+
+
+test("years of experience are recognised as digits and as spelled-out numbers, in Dutch and English", async () => {
+  const { hasYearsOfExperience } = await import("../tools/cv-score");
+  for (const text of [
+    "Klantgerichte medewerker met 5 jaar ervaring", "Ruim 10+ jaar ervaring in de zorg", "Met vijf jaar ervaring in telefonisch contact",
+    "Meer dan tien jaren ervaring", "Ruim twintig jaar in de bouw", "Account manager with five years of experience", "Analyst, 8 years in finance",
+    "Twee-drie jaar ervaring", "Vijf Jaar ervaring",
+  ]) assert.equal(hasYearsOfExperience(text), true, text);
+  for (const text of [
+    "Klantgerichte medewerker met ervaring in telefonisch contact", "Ik heb in een jaar veel geleerd", "Werkte een jaar lang bij een winkel",
+    "Gedreven en resultaatgericht", "Bijna vijfhonderd klanten per jaar", "Winner of the one year award",
+  ]) assert.equal(hasYearsOfExperience(text), false, text);
+});

@@ -7,7 +7,7 @@ import {
   type CvVacatureMatchResult,
 } from "@/lib/tools/cv-vacature-match-schema";
 import { z } from "zod";
-import { pickTopFixes, reconcileRequirementStatus } from "@/lib/tools/cv-vacature-match-rules";
+import { dropFixesForMetRequirements, pickTopFixes, reconcileRequirementStatus } from "@/lib/tools/cv-vacature-match-rules";
 
 export { cvVacatureMatchResultSchema, type CvVacatureMatchResult } from "@/lib/tools/cv-vacature-match-schema";
 
@@ -311,7 +311,7 @@ ${languageInstruction}`,
     strengths: analysis.strengths.slice(0, 4),
     requirements: requirements.slice(0, 8),
     missingKeywords: validatedMissingKeywords(requirements, vacancy),
-    topFixes: pickTopFixes(analysis.topFixes, 3),
+    topFixes: pickTopFixes(dropFixesForMetRequirements(analysis.topFixes, requirements), 3),
     limitations: copy.limitations,
   });
 }

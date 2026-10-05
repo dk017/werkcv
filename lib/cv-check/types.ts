@@ -3,7 +3,7 @@ import type { LayoutSignals } from "./layout";
 import type { ParsePreview } from "./parse-preview";
 
 /** Bump when checks or weights change; stored with every result and shown on the methodology page. */
-export const CV_CHECK_SCORE_VERSION = "2026-10.3";
+export const CV_CHECK_SCORE_VERSION = "2026-10.4";
 
 export type CvCheckLocale = "nl" | "en";
 

@@ -1087,6 +1087,21 @@ function scorePersonalDetails(context: PreparedContext): CvScoreDimension {
   return buildDimension("personalia", "Persoonlijke Gegevens", "contact", 10, checks);
 }
 
+// Spelled-out numbers count too ("vijf jaar ervaring", "ten years"). "een"/"one" are left out: they are
+// also the article ("in een jaar"), so they would flag text that names no experience.
+const NUMBER_WORDS =
+  "twee|drie|vier|vijf|zes|zeven|acht|negen|tien|elf|twaalf|dertien|veertien|vijftien|zestien|zeventien|achttien|negentien|twintig|dertig|veertig|" +
+  "two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty";
+const YEARS_OF_EXPERIENCE = new RegExp(
+  `\\b(?:\\d+\\s*[+]?|(?:${NUMBER_WORDS})(?:\\s*[-\\u2013]\\s*(?:${NUMBER_WORDS}))?)\\s*(?:jaar|jaren|year|years)\\b`,
+  "i",
+);
+
+/** True when the profile names how many years of experience the person has ("5 jaar", "vijf jaar", "10+ years"). */
+export function hasYearsOfExperience(profileText: string): boolean {
+  return YEARS_OF_EXPERIENCE.test(profileText);
+}
+
 function scoreProfile(
   context: PreparedContext,
   nuancedAnalysis: NuancedAnalysis | null
@@ -1094,8 +1109,7 @@ function scoreProfile(
   const hasProfile = Boolean(context.sections.profile);
   const profileWordCount = countWords(context.profileText);
   const profileLengthPoints = hasProfile ? getProfileLengthPoints(profileWordCount) : 0;
-  const yearsOfExperience =
-    /\b\d+[+]?\s*(jaar|jaren|year|years)\b/i.test(context.profileText);
+  const yearsOfExperience = hasYearsOfExperience(context.profileText);
   const localBuzzwordBand = getLocalBuzzwordBand(context.profileText, context.localLanguage);
   const buzzwordBand = resolveBuzzwordBand(localBuzzwordBand, nuancedAnalysis?.profile_buzzword_band);
   const buzzwordReason =

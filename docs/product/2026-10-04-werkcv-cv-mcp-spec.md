@@ -148,3 +148,15 @@ Tests (phases 0–1, `npm run test:mcp`, 9 tests; plus a manual protocol run wit
 2. Do we offer ChatGPT support in the pilot? Not verified how its connector setup works today; revisit after week 2.
 3. Should `check_cv` ever call the AI buzzword check? Not in the pilot, to keep it free and fast; the grade can differ slightly from `/cv-check` (in a local test the editor grade, which also skips the AI step, was 0,1 higher). Say so on the landing page.
 4. Who emails KOOP, and who owns the Sollicitatiepas copy shown on the editor page for `mcp_*` visitors?
+
+## 13. Findings from the first real Claude session (5 Oct 2026)
+
+Tested in a real Claude account with a fictional CV: custom connector, no sign-in, three tools, each call approved once. All three tools worked; Claude chose them from plain Dutch and passed `locale`. The link carried `utm_medium=claude` and opened the editor with the CV loaded.
+
+What it showed, and what changed (commit after 0435975):
+1. **False "years of experience missing"** on "vijf jaar ervaring": the check only matched digits. Now spelled-out numbers (NL and EN) count; "een"/"one" do not (they are articles). Score version 2026-10.4. This also fixes the website checker.
+2. **A fix for a requirement the list showed as met** (English B2: "aangetoond", yet fix number one). The rules correct statuses after the model wrote its fixes. `dropFixesForMetRequirements` now drops a fix when everything it is about is met.
+3. **Essential versus preferred was missing from the text** ("rijbewijs B is een pre"). The text now marks each requirement `essentieel` or `pre`.
+4. **The editor was never offered.** The instructions said to call `open_in_editor` only when the user wants to edit or download, so Claude offered to rewrite the CV itself instead. The instructions now let the model offer the editor, and tool results that can open in the editor state that editing is free without an account and the PDF is a one-time €7,95.
+
+Not changed yet: the match only covers the "Wat vragen wij" requirements and ignores "Wat ga je doen"; fix wording assumes a motivatiebrief; a missing vacancy keyword ("per e-mail") is not flagged. Each tool call re-sends the whole CV, which is costly on usage: the test chat used about 90% of a Pro session limit.

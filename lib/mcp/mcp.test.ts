@@ -5,7 +5,8 @@ import { classifyMcpClient } from "./context";
 import { alertAiCapReached, resetAlertForTests } from "./alerts";
 import { CHECKED_CV_KIND, CHECKED_CV_TTL_MS, createCheckedCvHandoff, HandoffCapacityError, maxLiveHandoffs, peekCheckedCvHandoff, takeCheckedCvHandoff } from "./handoff";
 import { aiDailyCap, resetAiBudgetForTests, takeAiBudget, takeToolSlot } from "./limits";
-import { checkCv, editorLink, matchVacancy, openInEditor } from "./tools";
+import { formatCheck, formatMatch, MCP_INSTRUCTIONS } from "./server";
+import { checkCv, editorLink, matchVacancy, openInEditor, type CheckCvData, type MatchVacancyData } from "./tools";
 
 // All CV text below is fictional.
 const CV = [
@@ -278,4 +279,49 @@ test("the daily AI cap alerts once per UTC day, with counts only", () => {
   assert.equal(reports[0].stage, "daily_cap_reached");
   assert.deepEqual(reports[0].context, { tool: "mcp", cap: 300, source: "match_vacancy" });
   assert.match(String((reports[0].error as Error).message), /daily AI cap reached/);
+});
+
+
+// What the real Claude session showed: the model only offered the editor when asked, did not know which
+// requirements were optional, and the user was never told the PDF is paid.
+const matchData: MatchVacancyData = {
+  score: 79,
+  scoreLabel: "Goede match",
+  summary: "Past bij de functie.",
+  requirements: [
+    { requirement: "minimaal mbo 4 niveau", importance: "essential", status: "strong", cvEvidence: "MBO 4", vacancyEvidence: "mbo 4", honestAction: "" },
+    { requirement: "rijbewijs B is een pre", importance: "preferred", status: "missing", cvEvidence: "", vacancyEvidence: "rijbewijs B", honestAction: "Vermeld je rijbewijs als je dat hebt." },
+  ],
+  topFixes: [{ title: "Vermeld je rijbewijs B", action: "Zet het bij je persoonsgegevens.", evidence: "" }],
+  missingKeywords: [],
+  canOpenInEditor: true,
+};
+const checkData: CheckCvData = {
+  grade: 6.8, band: "voldoende", categories: [{ label: "Inhoud", score: 60 }], topFixes: [], criticalIssues: 0,
+  sectionsFound: ["profile"], canOpenInEditor: true, limitations: "Alleen tekst.",
+};
+
+test("the vacancy match text says which requirements are essential and which are preferred", () => {
+  const text = formatMatch(matchData, "nl");
+  assert.match(text, /\[aangetoond, essentieel\] minimaal mbo 4 niveau/);
+  assert.match(text, /\[ontbreekt, pre\] rijbewijs B is een pre/);
+  assert.match(formatMatch(matchData, "en"), /\[missing, nice to have\]/);
+});
+
+test("results that can be opened in the editor state what is free and what costs money", () => {
+  for (const text of [formatCheck(checkData, "nl"), formatMatch(matchData, "nl")]) {
+    assert.match(text, /Bewerken is gratis/);
+    assert.match(text, /eenmalig €7,95/);
+    assert.match(text, /zonder abonnement/);
+  }
+  assert.match(formatCheck(checkData, "en"), /costs €7\.95 once/);
+  assert.doesNotMatch(formatCheck({ ...checkData, canOpenInEditor: false, grade: 9 }, "nl"), /WerkCV-editor/, "no offer when there is nothing to fix");
+  assert.doesNotMatch(formatMatch({ ...matchData, canOpenInEditor: false }, "nl"), /WerkCV-editor/);
+});
+
+test("the server instructions let the model offer the editor but not open it before the user agrees", () => {
+  assert.match(MCP_INSTRUCTIONS, /you may offer that as one option/);
+  assert.match(MCP_INSTRUCTIONS, /one-time paid step/);
+  assert.match(MCP_INSTRUCTIONS, /only after the user has agreed/);
+  assert.doesNotMatch(MCP_INSTRUCTIONS, /only when the user wants to edit or download/, "the old wording that stopped the model from offering");
 });

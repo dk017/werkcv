@@ -136,6 +136,42 @@ export function isAvailabilityFix(fix: FixLike): boolean {
   return AVAILABILITY_PATTERN.test(normalize(`${fix.title} ${fix.action}`));
 }
 
+// Words that appear in many requirements and fixes without naming one ("goede beheersing", "ervaring").
+const GENERIC_WORDS = new Set([
+  "goede", "beheersing", "ervaring", "kennis", "minimaal", "vereist", "niveau", "vaardigheden", "voorbeelden",
+  "onderbouwen", "overweeg", "ondersteun", "verder", "meer", "beter", "vermeld", "voeg", "toe", "werkt", "graag",
+  "skills", "experience", "knowledge", "strong", "good", "level", "required", "consider", "support", "further",
+  "examples", "mention", "state", "show", "more", "better",
+]);
+
+/** Distinctive word stems: 5-letter prefixes, so "Engelse" and "Engels" match and endings do not matter. */
+function distinctiveStems(text: string): Set<string> {
+  const stems = new Set<string>();
+  for (const word of normalize(text).split(/[^a-z0-9+#]+/)) {
+    if (word.length < 4 || GENERIC_WORDS.has(word)) continue;
+    stems.add(word.slice(0, 5));
+  }
+  return stems;
+}
+
+/**
+ * The model writes its fixes before the rules above correct the requirement statuses, so a fix can
+ * ask for more proof of something the final list shows as met (English B2 against "goede beheersing":
+ * "aangetoond" in the list, yet fix number one). A fix is dropped when everything it is about is met.
+ * A fix that matches no requirement (structure, clarity) or at least one unmet requirement stays.
+ */
+export function dropFixesForMetRequirements<T extends FixLike>(fixes: T[], requirements: RequirementLike[]): T[] {
+  const requirementStems = requirements.map((requirement) => ({
+    status: requirement.status,
+    stems: distinctiveStems(requirement.requirement),
+  }));
+  return fixes.filter((fix) => {
+    const fixStems = distinctiveStems(`${fix.title} ${fix.action}`);
+    const about = requirementStems.filter(({ stems }) => [...stems].some((stem) => fixStems.has(stem)));
+    return about.length === 0 || about.some(({ status }) => status !== "strong");
+  });
+}
+
 export function pickTopFixes<T extends FixLike>(fixes: T[], count = 3): T[] {
   const substantive = fixes.filter((fix) => !isAvailabilityFix(fix));
   const availability = fixes.filter((fix) => isAvailabilityFix(fix));

@@ -1,5 +1,6 @@
 import type { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
+import { cvDownloadPrice } from "@/lib/site-content";
 import { currentMcpContext } from "./context";
 import { recordMcpEvent } from "./events";
 import { CV_TEXT_MAX, CV_TEXT_MIN, VACANCY_TEXT_MAX, VACANCY_TEXT_MIN, type HandoffLocale } from "./handoff";
@@ -22,9 +23,13 @@ export const MCP_INSTRUCTIONS = [
   "WerkCV checks a CV against Dutch hiring conventions and, with a vacancy, against its requirements.",
   "Send the CV text only when the user has asked for a check, and never send BSN, ID or bank numbers: remove them first.",
   "check_cv grades a CV (1-10) without AI. match_vacancy compares a CV with one vacancy, requirement by requirement.",
-  "open_in_editor stores the text for at most 60 minutes and returns a link to the WerkCV editor; call it only when the user wants to edit or download the CV.",
+  "When a result says the CV can be opened in the editor (canOpenInEditor), you may offer that as one option next to rewriting the text yourself, and say plainly that editing is free without an account while downloading the PDF is a one-time paid step.",
+  "open_in_editor stores the text for at most 60 minutes and returns a link to the WerkCV editor; call it only after the user has agreed to open the CV there, or has asked to edit or download it.",
   "Report the grade and fixes as given; do not invent facts about the person's experience.",
 ].join(" ");
+
+const priceNl = cvDownloadPrice.display;
+const priceEn = cvDownloadPrice.displayEn;
 
 const locale = z.enum(["nl", "en"]).optional().describe('Language of the CV and the answer. Detected from the text when omitted.');
 const cvText = z
@@ -50,7 +55,7 @@ function overLimit(tool: McpLimitedTool, loc: HandoffLocale): ToolContent | null
   return asError(failure("RATE_LIMITED", loc));
 }
 
-function formatCheck(data: CheckCvData, loc: HandoffLocale): string {
+export function formatCheck(data: CheckCvData, loc: HandoffLocale): string {
   const en = loc === "en";
   const lines = [
     en ? `Grade: ${data.grade.toFixed(1)} / 10 (${data.band})` : `Cijfer: ${String(data.grade.toFixed(1)).replace(".", ",")} / 10 (${data.band})`,
@@ -63,21 +68,37 @@ function formatCheck(data: CheckCvData, loc: HandoffLocale): string {
   if (data.criticalIssues) lines.push("", en ? `Critical issues: ${data.criticalIssues}` : `Kritieke punten: ${data.criticalIssues}`);
   lines.push("", data.limitations);
   if (data.canOpenInEditor) {
-    lines.push(en ? "The CV can be opened in the WerkCV editor (no account needed) if the user wants to edit it." : "Het cv kan in de WerkCV-editor worden geopend (zonder account) als de gebruiker het wil aanpassen.");
+    lines.push(
+      en
+        ? `The CV can be opened in the WerkCV editor without an account. Editing is free; downloading the PDF costs ${priceEn} once, with no subscription.`
+        : `Het cv kan zonder account in de WerkCV-editor worden geopend. Bewerken is gratis; het pdf downloaden kost eenmalig ${priceNl}, zonder abonnement.`,
+    );
   }
   return lines.join("\n");
 }
 
-function formatMatch(data: MatchVacancyData, loc: HandoffLocale): string {
+export function formatMatch(data: MatchVacancyData, loc: HandoffLocale): string {
   const en = loc === "en";
   const status = { strong: en ? "shown" : "aangetoond", partial: en ? "partly" : "deels", missing: en ? "missing" : "ontbreekt" } as const;
+  // Essential versus preferred decides what to fix first, so the text states it (the vacancy's "pre" is "preferred").
+  const importance = { essential: en ? "essential" : "essentieel", preferred: en ? "nice to have" : "pre" } as const;
   const lines = [`${en ? "Match" : "Match"}: ${data.score}/100 (${data.scoreLabel})`, data.summary, ""];
   data.requirements.forEach((requirement) => {
-    lines.push(`- [${status[requirement.status]}] ${requirement.requirement}${requirement.status === "strong" ? "" : ` - ${requirement.honestAction}`}`);
+    lines.push(
+      `- [${status[requirement.status]}, ${importance[requirement.importance]}] ${requirement.requirement}${requirement.status === "strong" ? "" : ` - ${requirement.honestAction}`}`,
+    );
   });
   if (data.topFixes.length) {
     lines.push("", en ? "Fix first:" : "Verbeter eerst:");
     data.topFixes.forEach((fix, index) => lines.push(`${index + 1}. ${fix.title}: ${fix.action}`));
+  }
+  if (data.canOpenInEditor) {
+    lines.push(
+      "",
+      en
+        ? `The CV can be opened in the WerkCV editor without an account. Editing is free; downloading the PDF costs ${priceEn} once, with no subscription.`
+        : `Het cv kan zonder account in de WerkCV-editor worden geopend. Bewerken is gratis; het pdf downloaden kost eenmalig ${priceNl}, zonder abonnement.`,
+    );
   }
   return lines.join("\n");
 }
@@ -162,8 +183,8 @@ export function registerWerkcvTools(server: McpServer): void {
         startedAt,
         (data, l) =>
           l === "en"
-            ? `Open your CV in the editor: ${data.url}\nThe link works once and expires in ${data.expiresInMinutes} minutes. No account is needed to edit; you only sign in to download.`
-            : `Open je cv in de editor: ${data.url}\nDe link werkt één keer en verloopt over ${data.expiresInMinutes} minuten. Je hebt geen account nodig om te bewerken; alleen om te downloaden meld je je aan.`,
+            ? `Open your CV in the editor: ${data.url}\nThe link works once and expires in ${data.expiresInMinutes} minutes. Editing is free and needs no account; you sign in only to download, and the PDF costs ${priceEn} once, with no subscription.`
+            : `Open je cv in de editor: ${data.url}\nDe link werkt één keer en verloopt over ${data.expiresInMinutes} minuten. Bewerken is gratis en zonder account; je meldt je pas aan om te downloaden, en het pdf kost eenmalig ${priceNl}, zonder abonnement.`,
       );
     },
   );
