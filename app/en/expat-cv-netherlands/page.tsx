@@ -129,6 +129,13 @@ const personalDetails = [
 
 const routeSteps = [
   {
+    title: "Recognised sponsor check",
+    body:
+      "A highly skilled migrant permit needs an employer that the IND has recognised as a sponsor. Check the employer before you invest in an application.",
+    href: "/en/netherlands-visa-sponsor-checker",
+    cta: "Check if an employer is a recognised sponsor",
+  },
+  {
     title: "Highly skilled migrant",
     body:
       "Best when an employer is or can become the recognised sponsor and your salary meets the IND threshold for your age or reduced criterion.",

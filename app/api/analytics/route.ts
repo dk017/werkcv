@@ -69,6 +69,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'cta_transitievergoeding_tool_click',
     'cta_transitievergoeding_cv_click',
     'tool_to_cv_cta_click',
+    'sponsor_check_searched',
     'resume_screener_viewed',
     'resume_screener_started',
     'resume_screener_completed',

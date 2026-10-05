@@ -174,6 +174,9 @@ export default function HighlySkilledMigrantCvPage() {
             <TrackedLandingLink href="/tools/kennismigrant-salary-checker" trackingLocation="hsm_cv_hero" trackingLabel="salary_checker" className="border-4 border-black bg-black px-6 py-3 text-sm font-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               Check HSM salary route
             </TrackedLandingLink>
+            <TrackedLandingLink href="/en/netherlands-visa-sponsor-checker" trackingLocation="hsm_cv_hero" trackingLabel="sponsor_checker" className="border-4 border-black bg-white px-6 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+              Check a recognised sponsor
+            </TrackedLandingLink>
             <TrackedLandingLink href="/en/templates" trackingLocation="hsm_cv_hero" trackingLabel="templates" className="border-4 border-black bg-[#4ECDC4] px-6 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
               Choose English template
             </TrackedLandingLink>
@@ -257,6 +260,7 @@ export default function HighlySkilledMigrantCvPage() {
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/en/expat-cv-netherlands" className="underline font-bold">Main expat CV guide</Link>
+            <Link href="/en/netherlands-visa-sponsor-list" className="underline font-bold">Netherlands visa sponsor list A-Z</Link>
             <Link href="/en/english-cv-example-software-engineer-netherlands" className="underline font-bold">Software engineer CV example</Link>
           </div>
         </section>

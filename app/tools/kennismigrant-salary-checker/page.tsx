@@ -28,6 +28,11 @@ const faqItems = [
 
 const migrationCvIntentLinks = [
     {
+        href: "/en/netherlands-visa-sponsor-checker",
+        label: "Check whether the employer is a recognised sponsor",
+        description: "A highly skilled migrant permit needs a recognised sponsor. Check the employer before you plan around the job.",
+    },
+    {
         href: "/en/dutch-cv-template",
         label: "Use a Dutch CV template",
         description: "Move from salary eligibility to a CV that matches Dutch hiring expectations.",

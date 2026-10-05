@@ -12,6 +12,27 @@ import { PRODUCT_DISCOVERY_MODIFIED } from '@/lib/product-discovery';
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
 
+// IND register of recognised sponsors: the checker, the A-Z hub and one page per letter, in both languages.
+function sponsorSitemapEntries(baseUrl: string): MetadataRoute.Sitemap {
+    const letters = '0abcdefghijklmnopqrstuvwxyz'.split('');
+    const pages: Array<{ path: string; priority: number }> = [
+        { path: '/tools/erkend-referent-check', priority: 0.8 },
+        { path: '/en/netherlands-visa-sponsor-checker', priority: 0.8 },
+        { path: '/erkende-referenten-lijst', priority: 0.75 },
+        { path: '/en/netherlands-visa-sponsor-list', priority: 0.75 },
+        ...letters.flatMap((letter) => [
+            { path: `/erkende-referenten-lijst/${letter}`, priority: 0.4 },
+            { path: `/en/netherlands-visa-sponsor-list/${letter}`, priority: 0.4 },
+        ]),
+    ];
+    return pages.map(({ path, priority }) => ({
+        url: `${baseUrl}${path}`,
+        lastModified: new Date('2026-10-06'),
+        changeFrequency: 'monthly' as const,
+        priority,
+    }));
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const baseUrl = 'https://werkcv.nl';
 
@@ -1015,6 +1036,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: 'monthly',
             priority: 0.55,
         },
+        ...sponsorSitemapEntries(baseUrl),
         {
             url: `${baseUrl}/en/cv-check/ai-assistant`,
             lastModified: new Date('2026-10-05'),

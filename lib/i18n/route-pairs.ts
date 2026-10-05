@@ -93,6 +93,31 @@ export const routePairs = [
     preserveSearch: false,
   },
   {
+    id: "sponsor-checker",
+    nl: "/tools/erkend-referent-check",
+    en: "/en/netherlands-visa-sponsor-checker",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
+    id: "sponsor-list",
+    nl: "/erkende-referenten-lijst",
+    en: "/en/netherlands-visa-sponsor-list",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  // One pair per letter page ("0" holds names that do not start with a letter).
+  ...("0abcdefghijklmnopqrstuvwxyz".split("").map((letter) => ({
+    id: `sponsor-list-${letter}`,
+    nl: `/erkende-referenten-lijst/${letter}` as const,
+    en: `/en/netherlands-visa-sponsor-list/${letter}` as const,
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  }))),
+  {
     id: "candidate-proposal-checker",
     nl: "/tools/kandidaatvoorstel-checker",
     en: "/en/candidate-proposal-checker",

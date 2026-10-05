@@ -641,6 +641,11 @@ export type AnalyticsEvent =
           properties: { page_path: string; cta_location: string; cta_text: string };
       }
     | {
+          // Sponsor checker search. Counts only: no employer name or KvK number is sent.
+          event: 'sponsor_check_searched';
+          properties: { locale: 'nl' | 'en'; status: 'listed' | 'possible' | 'not_found'; match_count: number; query_kind: 'name' | 'kvk' };
+      }
+    | {
           event: 'tool_to_cv_cta_click';
           properties: {
               tool_name: string;

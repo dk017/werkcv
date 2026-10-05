@@ -386,6 +386,13 @@ const sections: ToolSection[] = [
         description: "Deze tools zijn gericht op expats en internationals die Nederlandse salarisdrempels, functietitels en CV-verwachtingen willen begrijpen.",
         tools: [
             {
+                href: "/tools/erkend-referent-check",
+                title: "Erkend referent check",
+                description: "Check of een werkgever erkend referent (visa sponsor) is in het IND-register, op naam of KvK-nummer.",
+                badge: "Expat",
+                badgeClass: "bg-violet-100 text-violet-800 border-violet-300",
+            },
+            {
                 href: "/tools/kennismigrant-salary-checker",
                 title: "Kennismigrant salary checker",
                 description: "Check de actuele IND-drempels voor under 30, 30+ en reduced criterion.",

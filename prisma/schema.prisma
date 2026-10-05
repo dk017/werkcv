@@ -814,3 +814,13 @@ enum JobListingKind {
   role_family_nl
   starter_nl
 }
+
+/// One row per monthly update of the IND public register of recognised sponsors (work and highly skilled
+/// migrants). `registerDate` is the date the IND states (YYYY-MM-DD); `entries` is [[name, kvk], ...].
+model SponsorRegisterSnapshot {
+  id           String   @id @default(cuid())
+  registerDate String   @unique
+  rowCount     Int
+  entries      Json
+  createdAt    DateTime @default(now())
+}
