@@ -85,6 +85,14 @@ export const routePairs = [
     preserveSearch: false,
   },
   {
+    id: "cv-check-ai-assistant",
+    nl: "/cv-check/ai-assistent",
+    en: "/en/cv-check/ai-assistant",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
     id: "candidate-proposal-checker",
     nl: "/tools/kandidaatvoorstel-checker",
     en: "/en/candidate-proposal-checker",

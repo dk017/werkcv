@@ -160,3 +160,71 @@ What it showed, and what changed (commit after 0435975):
 4. **The editor was never offered.** The instructions said to call `open_in_editor` only when the user wants to edit or download, so Claude offered to rewrite the CV itself instead. The instructions now let the model offer the editor, and tool results that can open in the editor state that editing is free without an account and the PDF is a one-time €7,95.
 
 Not changed yet: the match only covers the "Wat vragen wij" requirements and ignores "Wat ga je doen"; fix wording assumes a motivatiebrief; a missing vacancy keyword ("per e-mail") is not flagged. Each tool call re-sends the whole CV, which is costly on usage: the test chat used about 90% of a Pro session limit.
+
+## 14. Phase 2: public documentation and the connector directory (6 Oct 2026)
+
+Sources read on 5 Oct 2026: Anthropic's "Submit a connector to the directory" and "Connector pre-submission checklist" (claude.com/docs/connectors/building), and the Software Directory Policy (support.claude.com article 13145358, which replaced the MCP Directory Policy on 15 Apr 2026). Re-read them before submitting: they change.
+
+### 14.1 Built in this phase (not deployed until approved)
+
+- Public documentation, NL and EN: `/cv-check/ai-assistent` and `/en/cv-check/ai-assistant` (`components/cv-check/CvCheckAssistant.tsx`). Contents: the three tools, the connect steps (tested in Claude on the web), three example prompts, a table of what is received and kept per tool, limits, the usage cost, the price of the PDF, FAQ with JSON-LD, support email, and a "not affiliated with Anthropic" line.
+- Language pair, sitemap entries, a link from the CV-check page, and a line in `llms.txt`.
+- The copy button selects the URL when the browser blocks clipboard access.
+
+### 14.2 What the directory requires, and where we stand
+
+| Requirement | Status |
+|---|---|
+| Remote server over HTTPS, Streamable HTTP | Yes (`https://werkcv.nl/api/mcp`) |
+| Every tool has `title` and `readOnlyHint` or `destructiveHint` | Yes (checked in the real Claude: two read-only tools, one write tool) |
+| Tool names at most 64 characters | Yes |
+| OAuth only if the tools need an account | Not needed: no sign-in, no account data |
+| Tested in Claude as a custom connector | Yes, 5 Oct 2026 |
+| Documentation URL | The new page (public by the publish date) |
+| Privacy policy URL | `/en/privacy` and `/privacy`, which now describe the connector |
+| Support contact | contact@werkcv.nl |
+| Test account for reviewers | No account exists; give reviewers a fictional CV, a vacancy and the three prompts (below) |
+| Three working prompt examples | On the page |
+| Own first-party API on a matching domain | Yes: werkcv.nl |
+| No extra conversation data, no reading memory or files | Yes: counts only, nothing else collected |
+| Actionable error messages | Yes (plain-language codes in NL and EN) |
+| Seven compliance acknowledgments in the portal | A person at the company must tick them (see 14.4) |
+
+After submission Anthropic scans automatically and, by default, lists the connector as a Community connector; some get a human review. Escalations: mcp-review@anthropic.com. Submitting needs a paid Claude plan.
+
+### 14.3 The one real risk: promotion
+
+The policy rejects software that "exists primarily as an advertising or promotional vehicle", and tool descriptions that "promote products and services" or tell Claude "to behave in ways unrelated to the tool's function". Our connector does real work (check, compare), but two things lean toward promotion:
+1. The server instructions added on 5 Oct tell the model it "may offer" the editor and "say plainly" that the PDF is a paid step. That is steering.
+2. `open_in_editor` leads to a paid download.
+
+Options for the listed version:
+- **A (recommended for the directory):** neutral instructions that only describe each tool and when to call it, e.g. "open_in_editor opens the CV in the WerkCV editor; call it when the user asks to edit the CV there or to download it as a PDF." Keep the factual price line inside tool results (it is information, not steering). Expect fewer unprompted editor offers: in the first real session Claude never offered the editor until asked.
+- **B:** keep the steering and accept a rejection risk. For the private custom connector this is fine; for the directory it is a gamble.
+Decision needed from the owner. Either way, the landing page is documentation, not part of the review of tool text.
+
+### 14.4 Who does what
+
+- **Owner (needs a person at WerkCV):** open the portal (claude.ai/directory/manage, "Submit new", "MCP connector"), enter company name, website and primary contact, choose categories, upload an icon, tick the seven compliance acknowledgments and agree to the Software Directory Terms. These are legal acknowledgments, so they are not done on the owner's behalf.
+- **Prepared below:** all listing text and the reviewer instructions.
+
+### 14.5 Listing draft (portal limits: name 100, one-liner 200, description 2,000)
+
+- **Name:** WerkCV CV-check
+- **One-liner (EN):** Check a CV against Dutch hiring conventions, compare it with a vacancy and open it in an editor. Free, no account, nothing stored.
+- **Description (EN):** WerkCV CV-check lets you check a CV inside a conversation. Paste your CV and get a grade from 1 to 10 for readability by application systems, contact basics, content and Dutch conventions (language levels, MBO/HBO/WO, sensitive numbers such as BSN), with the fixes to make first. Paste a vacancy as well and see, requirement by requirement, whether the CV shows it, with quotes from both texts and whether each requirement is essential or a nice-to-have. When you want to edit the CV, a one-time link opens it in the WerkCV editor without an account. Checking and comparing store nothing. The editor link keeps the text for at most 60 minutes and deletes it the first time the link is opened. Editing is free; downloading the PDF is a one-time paid step with no subscription. Available in Dutch and English. Not affiliated with Anthropic.
+- **Documentation URL:** https://werkcv.nl/en/cv-check/ai-assistant (NL: https://werkcv.nl/cv-check/ai-assistent)
+- **Privacy policy URL:** https://werkcv.nl/en/privacy
+- **Support:** contact@werkcv.nl
+- **Slug (permanent once published):** werkcv-cv-check
+- **Categories (1 to 5, choose from the portal's list):** career, documents, productivity (names to be matched to the portal)
+- **Icon:** needs an owner-provided file (portal specs not checked); `public/logo.png` exists on the site.
+- **Authentication step:** no authentication. **Data handling step:** our own first-party API; no sponsored content; CVs can contain personal data, which the privacy page describes.
+
+### 14.6 Reviewer instructions (for "Test & launch")
+
+No account or credentials are needed. In Claude, add `https://werkcv.nl/api/mcp` as a custom connector with no sign-in. Use a fictional CV and vacancy, for example the text on the documentation page, and run: (1) "Can you check my CV? [paste CV]" which calls the check tool; (2) "Compare my CV with this vacancy: [paste both]" which calls the comparison tool; (3) "Can I edit this CV and download it as a PDF?" which calls the editor tool and returns a link that opens the CV in the editor once. The comparison tool is limited to 8 calls per hour per user.
+
+### 14.7 After listing
+
+Watch the weekly report (section 7) for `client = claude`, the link open rate and orders with first touch `utm_source=mcp`; apply the stop rules in section 8. Keep the documentation, privacy text and tool behaviour in step: reviewers re-check ("initial and ongoing reviews").

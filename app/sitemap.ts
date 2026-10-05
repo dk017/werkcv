@@ -992,6 +992,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.6,
         },
         {
+            url: `${baseUrl}/cv-check/ai-assistent`,
+            lastModified: new Date('2026-10-05'),
+            changeFrequency: 'monthly',
+            priority: 0.6,
+        },
+        {
             url: `${baseUrl}/en/cv-check`,
             lastModified: new Date('2026-09-26'),
             changeFrequency: 'weekly',
@@ -1006,6 +1012,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         {
             url: `${baseUrl}/en/cv-check/methodology`,
             lastModified: new Date('2026-09-26'),
+            changeFrequency: 'monthly',
+            priority: 0.55,
+        },
+        {
+            url: `${baseUrl}/en/cv-check/ai-assistant`,
+            lastModified: new Date('2026-10-05'),
             changeFrequency: 'monthly',
             priority: 0.55,
         },

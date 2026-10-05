@@ -242,6 +242,7 @@ const NL_RELATED = [
   { href: "/cv-tips/ats-vriendelijk-cv", label: "ATS-vriendelijk cv maken", body: "Opmaak en kopjes die systemen goed lezen." },
   { href: "/ats-cv-template", label: "ATS cv template", body: "Een opmaak met één kolom die systemen goed lezen." },
   { href: "/cv-gids/cv-maken-met-chatgpt", label: "CV maken met ChatGPT", body: "Geteste prompts, en wat er misgaat als je alles kopieert." },
+  { href: "/cv-check/ai-assistent", label: "De cv-check in Claude", body: "Verbind WerkCV met Claude en check je cv in een gesprek." },
 ];
 
 const EN_RELATED = [
@@ -249,6 +250,7 @@ const EN_RELATED = [
   { href: "/en/ats-resume-netherlands", label: "ATS resumes in the Netherlands", body: "What Dutch application systems read and skip." },
   { href: "/en/guides/cv-format-netherlands-english", label: "Netherlands CV format", body: "Structure and length Dutch recruiters expect." },
   { href: "/en/dutch-cv-template", label: "Dutch CV template", body: "A clean single-column layout for Dutch applications." },
+  { href: "/en/cv-check/ai-assistant", label: "The CV check in Claude", body: "Connect WerkCV to Claude and check your CV in a conversation." },
 ];
 
 const NL_BASE = {
