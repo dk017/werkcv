@@ -23,8 +23,7 @@ export const MCP_INSTRUCTIONS = [
   "WerkCV checks a CV against Dutch hiring conventions and, with a vacancy, against its requirements.",
   "Send the CV text only when the user has asked for a check, and never send BSN, ID or bank numbers: remove them first.",
   "check_cv grades a CV (1-10) without AI. match_vacancy compares a CV with one vacancy, requirement by requirement.",
-  "When a result says the CV can be opened in the editor (canOpenInEditor), you may offer that as one option next to rewriting the text yourself, and say plainly that editing is free without an account while downloading the PDF is a one-time paid step.",
-  "open_in_editor stores the text for at most 60 minutes and returns a link to the WerkCV editor; call it only after the user has agreed to open the CV there, or has asked to edit or download it.",
+  "open_in_editor opens the CV in the WerkCV editor and returns a one-time link; the text is stored for at most 60 minutes and deleted when the link is first opened. Call it when the user asks to edit the CV in that editor or to download it as a PDF.",
   "Report the grade and fixes as given; do not invent facts about the person's experience.",
 ].join(" ");
 

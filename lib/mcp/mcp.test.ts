@@ -319,9 +319,18 @@ test("results that can be opened in the editor state what is free and what costs
   assert.doesNotMatch(formatMatch({ ...matchData, canOpenInEditor: false }, "nl"), /WerkCV-editor/);
 });
 
-test("the server instructions let the model offer the editor but not open it before the user agrees", () => {
-  assert.match(MCP_INSTRUCTIONS, /you may offer that as one option/);
-  assert.match(MCP_INSTRUCTIONS, /one-time paid step/);
-  assert.match(MCP_INSTRUCTIONS, /only after the user has agreed/);
-  assert.doesNotMatch(MCP_INSTRUCTIONS, /only when the user wants to edit or download/, "the old wording that stopped the model from offering");
+test("the server instructions only describe the tools and when to call them (directory policy: no promotion)", () => {
+  // Anthropic's directory policy rejects tool text that promotes products or steers the model beyond the tool's function.
+  assert.match(MCP_INSTRUCTIONS, /open_in_editor opens the CV in the WerkCV editor/);
+  assert.match(MCP_INSTRUCTIONS, /Call it when the user asks to edit/);
+  for (const steering of [/you may offer/i, /say plainly/i, /paid step/i, /one option/i, /recommend/i, /promot/i, /always (mention|offer)/i]) {
+    assert.doesNotMatch(MCP_INSTRUCTIONS, steering, String(steering));
+  }
+});
+
+test("tool results state the price as a fact and carry no instruction to the model", () => {
+  for (const text of [formatCheck(checkData, "nl"), formatMatch(matchData, "nl"), formatCheck(checkData, "en"), formatMatch(matchData, "en")]) {
+    assert.doesNotMatch(text, /\b(you should|you must|always|tell the user|mention (this|that)|offer (this|it))\b/i);
+    assert.doesNotMatch(text, /\b(moet je|vertel de gebruiker|noem altijd|bied (dit|het) aan)\b/i);
+  }
 });

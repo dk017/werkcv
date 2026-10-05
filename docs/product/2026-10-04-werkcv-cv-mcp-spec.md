@@ -157,7 +157,7 @@ What it showed, and what changed (commit after 0435975):
 1. **False "years of experience missing"** on "vijf jaar ervaring": the check only matched digits. Now spelled-out numbers (NL and EN) count; "een"/"one" do not (they are articles). Score version 2026-10.4. This also fixes the website checker.
 2. **A fix for a requirement the list showed as met** (English B2: "aangetoond", yet fix number one). The rules correct statuses after the model wrote its fixes. `dropFixesForMetRequirements` now drops a fix when everything it is about is met.
 3. **Essential versus preferred was missing from the text** ("rijbewijs B is een pre"). The text now marks each requirement `essentieel` or `pre`.
-4. **The editor was never offered.** The instructions said to call `open_in_editor` only when the user wants to edit or download, so Claude offered to rewrite the CV itself instead. The instructions now let the model offer the editor, and tool results that can open in the editor state that editing is free without an account and the PDF is a one-time €7,95.
+4. **The editor was never offered.** The instructions said to call `open_in_editor` only when the user wants to edit or download, so Claude offered to rewrite the CV itself instead. On 5 Oct the instructions were changed to let the model offer the editor; on 6 Oct that was reverted to neutral wording (section 14.3) because the directory policy rejects promotional steering. Tool results that can open in the editor still state, as a fact, that editing is free without an account and the PDF is a one-time €7,95.
 
 Not changed yet: the match only covers the "Wat vragen wij" requirements and ignores "Wat ga je doen"; fix wording assumes a motivatiebrief; a missing vacancy keyword ("per e-mail") is not flagged. Each tool call re-sends the whole CV, which is costly on usage: the test chat used about 90% of a Pro session limit.
 
@@ -201,7 +201,7 @@ The policy rejects software that "exists primarily as an advertising or promotio
 Options for the listed version:
 - **A (recommended for the directory):** neutral instructions that only describe each tool and when to call it, e.g. "open_in_editor opens the CV in the WerkCV editor; call it when the user asks to edit the CV there or to download it as a PDF." Keep the factual price line inside tool results (it is information, not steering). Expect fewer unprompted editor offers: in the first real session Claude never offered the editor until asked.
 - **B:** keep the steering and accept a rejection risk. For the private custom connector this is fine; for the directory it is a gamble.
-Decision needed from the owner. Either way, the landing page is documentation, not part of the review of tool text.
+**Decision (6 Oct 2026, owner): option A.** The server instructions now only describe the tools and when to call them (`lib/mcp/server.ts`, tests in `lib/mcp/mcp.test.ts`); the price stays in tool results as a fact. The landing page is documentation, not part of the review of tool text.
 
 ### 14.4 Who does what
 
