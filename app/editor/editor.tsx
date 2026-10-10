@@ -18,6 +18,8 @@ import type { WritingSelection, WritingChange } from "@/lib/ai-writing-changes";
 import { createCvSaveQueue } from "@/lib/cv-save-queue";
 import { getStepStates, stepForPreviewTarget, stepForSection, stepParamName, type EditorStepId } from "@/lib/editor-steps";
 import { appPaths, type AppLocale } from "@/lib/app-v2-paths";
+import { AppSidebar } from "@/components/app/AppFrame";
+import { NewCvDialogProvider } from "@/components/app/NewCvDialog";
 import StepsTopBar from "./StepsTopBar";
 import { StepHeader, StepNav } from "./StepParts";
 import StepsFinishPanel from "./StepsFinishPanel";
@@ -2988,9 +2990,17 @@ export default function Editor({
     );
 
     const editorMarkup = isSteps ? (
-        <div className="flex h-screen flex-col overflow-hidden bg-[var(--wk-canvas)]">
-            {stepsTopBar}
-            <SectionStylesProvider value={sectionStyles}>{editorRow}</SectionStylesProvider>
+        <div className="flex h-screen overflow-hidden bg-[var(--wk-canvas)]">
+            {/* Only the rail carries the brand wrapper: the CV preview keeps its own fonts and colours. */}
+            <div className="werkcv-brand hidden min-[520px]:flex" style={{ minHeight: 0 }}>
+                <NewCvDialogProvider locale={appLocale}>
+                    <AppSidebar active="none" email={accountEmail} locale={appLocale} mode="rail" />
+                </NewCvDialogProvider>
+            </div>
+            <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+                {stepsTopBar}
+                <SectionStylesProvider value={sectionStyles}>{editorRow}</SectionStylesProvider>
+            </div>
         </div>
     ) : editorRow;
 

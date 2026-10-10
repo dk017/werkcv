@@ -74,7 +74,7 @@ export default function StepsTopBar({
                     href={appPaths(locale).dashboard}
                     aria-label={c.toDashboard}
                     title={c.dashboard}
-                    className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-[var(--wk-primary)] text-[15px] font-extrabold text-white"
+                    className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-[var(--wk-primary)] text-[15px] font-extrabold text-white min-[520px]:hidden"
                 >
                     W
                 </Link>
