@@ -94,7 +94,7 @@ function ContactDetails({ data, inline = false }: { data: CVData; inline?: boole
         data.personal.maritalStatus ? `${resumeText(data, "maritalStatus")}: ${formatMaritalStatus(data.personal.maritalStatus, data)}` : null,
     ].filter((value): value is string => Boolean(value));
     const contactValues = [...values, ...links];
-    return <div className={inline ? "flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] opacity-75" : "space-y-1 text-[11px] opacity-75"}>
+    return <div data-cv-edit="personal" className={inline ? "flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] opacity-75" : "space-y-1 text-[11px] opacity-75"}>
         {contactValues.map((value, index) => <span key={`${value}-${index}`} className={inline ? "inline-flex min-w-0 items-center gap-3 break-words" : "block break-words"}>
             {inline && index > 0 ? <span aria-hidden="true" className="opacity-50">·</span> : null}
             <LinkText value={value} />
@@ -110,17 +110,17 @@ function Photo({ data, theme, visualStyle, centered = true }: { data: CVData; th
     if (!data.personal.photo) return null;
     return (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={data.personal.photo} alt={data.personal.name || resumeText(data, "profilePhotoAlt")} className={`${alignment} mb-3 h-20 w-20 object-cover ${radius}`} style={{ border: `3px solid ${theme.primary}` }} />
+        <img data-cv-edit="personal" src={data.personal.photo} alt={data.personal.name || resumeText(data, "profilePhotoAlt")} className={`${alignment} mb-3 h-20 w-20 object-cover ${radius}`} style={{ border: `3px solid ${theme.primary}` }} />
     );
 }
 
 function Identity({ data, visualStyle, compact = false }: { data: CVData; visualStyle: TemplateVisualStyle; compact?: boolean }) {
-    return <div className={visualStyle.headerAlign === "center" ? "text-center" : "text-left"}><CvDocumentHeading className={compact ? "text-xl font-bold leading-tight" : "text-[31px] font-extrabold leading-tight"}>{data.personal.name || resumeText(data, "nameFallback")}</CvDocumentHeading>{data.personal.title ? <p className={`${compact ? "text-xs" : "text-[15px]"} mt-1 font-medium opacity-65`}>{data.personal.title}</p> : null}</div>;
+    return <div data-cv-edit="personal" className={visualStyle.headerAlign === "center" ? "text-center" : "text-left"}><CvDocumentHeading className={compact ? "text-xl font-bold leading-tight" : "text-[31px] font-extrabold leading-tight"}>{data.personal.name || resumeText(data, "nameFallback")}</CvDocumentHeading>{data.personal.title ? <p className={`${compact ? "text-xs" : "text-[15px]"} mt-1 font-medium opacity-65`}>{data.personal.title}</p> : null}</div>;
 }
 
 function Profile({ data, visualStyle }: { data: CVData; visualStyle: TemplateVisualStyle }) {
     if (!data.personal.summary) return null;
-    return <section className="mb-6"><h2 className={headingClass(visualStyle.heading)} style={{ color: "var(--cv-primary)", borderColor: "var(--cv-border)" }}>{resumeText(data, "profile")}</h2><p className="whitespace-pre-wrap text-[12.5px] leading-[1.65]">{data.personal.summary}</p></section>;
+    return <section data-cv-edit="profile" className="mb-6"><h2 className={headingClass(visualStyle.heading)} style={{ color: "var(--cv-primary)", borderColor: "var(--cv-border)" }}>{resumeText(data, "profile")}</h2><p className="whitespace-pre-wrap text-[12.5px] leading-[1.65]">{data.personal.summary}</p></section>;
 }
 
 function BodySections({ data, templateId, lane, visualStyle, renderSection, inverse = false }: { data: CVData; templateId: string; lane: "main" | "sidebar"; visualStyle: TemplateVisualStyle; renderSection: (props: TemplateSectionRenderProps) => ReactElement; inverse?: boolean }) {

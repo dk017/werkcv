@@ -5,6 +5,7 @@ import {
     useCallback,
     useRef,
     type KeyboardEvent as ReactKeyboardEvent,
+    type MouseEvent as ReactMouseEvent,
     type PointerEvent as ReactPointerEvent,
 } from "react";
 import { createPortal } from "react-dom";
@@ -15,6 +16,11 @@ import { downloadPdfResponse } from "@/lib/pdf-download";
 import AiWritingAssistant from "./AiWritingAssistant";
 import type { WritingSelection, WritingChange } from "@/lib/ai-writing-changes";
 import { createCvSaveQueue } from "@/lib/cv-save-queue";
+import { getStepStates, stepForPreviewTarget, stepForSection, type EditorStepId } from "@/lib/editor-steps";
+import StepsTopBar from "./StepsTopBar";
+import { StepHeader, StepNav } from "./StepParts";
+import StepsFinishPanel from "./StepsFinishPanel";
+import { CLASSIC_SECTION_STYLES, SectionStylesProvider, stepsSectionStyles } from "./section-styles";
 import { updateCV, updateCVTemplate, updateCVColorTheme, getCheckoutURL } from "../actions";
 import { savePublicDraft, type PublicEditorFlow } from "@/lib/public-cv-draft";
 import {
@@ -133,11 +139,23 @@ interface EditorProps {
         flow: PublicEditorFlow;
         source: string;
     }) => void | Promise<void>;
+    /** "steps" shows one part of the CV at a time (app v2, lib/app-v2.ts). */
+    layoutVariant?: "classic" | "steps";
+    initialStep?: EditorStepId;
 }
 
 // Reusable input styles for cleaner, calmer form UI
 const inputClass = "w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100";
 const inputStyle = undefined;
+// Steps layout: parts of the live preview that open a step get a dashed outline on hover.
+const PREVIEW_CLICK_TO_EDIT_CLASS = [
+    "[&_[data-cv-section]]:cursor-pointer [&_[data-cv-edit]]:cursor-pointer",
+    "[&_[data-cv-section]]:rounded-sm [&_[data-cv-edit]]:rounded-sm",
+    "[&_[data-cv-section]:hover]:outline-dashed [&_[data-cv-edit]:hover]:outline-dashed",
+    "[&_[data-cv-section]:hover]:outline-[3px] [&_[data-cv-edit]:hover]:outline-[3px]",
+    "[&_[data-cv-section]:hover]:outline-offset-[6px] [&_[data-cv-edit]:hover]:outline-offset-[6px]",
+    "[&_[data-cv-section]:hover]:outline-[#4ecdc4] [&_[data-cv-edit]:hover]:outline-[#4ecdc4]",
+].join(" ");
 const DESKTOP_PREVIEW_SCALE = 0.58;
 const DESKTOP_PREVIEW_MIN_SCALE = 0.42;
 const DESKTOP_PREVIEW_MAX_SCALE = 1.4;
@@ -364,10 +382,13 @@ export default function Editor({
     publicImportCheckedCv = false,
     publicHandoffToken = null,
     onPublicDownloadRequest,
+    layoutVariant = "classic",
+    initialStep = "persoonlijk",
 }: EditorProps) {
     const isEnglish = uiLanguage === "en";
     const isPublicMode = mode === "public";
     const isMatchPackWorkspace = workspaceContext?.kind === "matchpack" || agencyRouteLocked;
+    const isSteps = layoutVariant === "steps" && !isPublicMode && !isMatchPackWorkspace && !isEnglish;
     const isReadOnlyWorkspace = Boolean(isMatchPackWorkspace && workspaceContext && !workspaceContext.canEdit);
     const canChangeWorkspaceDesign = !isMatchPackWorkspace || !workspaceContext || workspaceContext.canEditDesign;
     const canDownloadWorkspace = !isMatchPackWorkspace || Boolean(workspaceContext?.canExport);
@@ -409,6 +430,22 @@ export default function Editor({
     const completionScore = completionState.score;
     const isReadyToDownload = completionState.isReady;
     const remainingCoreSteps = completionState.steps.filter((step) => !step.complete).length;
+    const [activeStep, setActiveStep] = useState<EditorStepId>(initialStep);
+    const stepStates = getStepStates(data);
+    const formScrollRef = useRef<HTMLDivElement>(null);
+    const sectionStyles = isSteps
+        ? stepsSectionStyles({ showHeading: activeStep === "vaardigheden" || activeStep === "extra" })
+        : CLASSIC_SECTION_STYLES;
+    const fieldInputClass = isSteps ? sectionStyles.input : inputClass;
+    const labelClass = isSteps ? sectionStyles.label : "block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5";
+    const goToStep = (step: EditorStepId, source: string) => {
+        setActiveStep(step);
+        const url = new URL(window.location.href);
+        url.searchParams.set("stap", step);
+        window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+        formScrollRef.current?.scrollTo({ top: 0 });
+        track("cta_clicked", { location: "editor_steps", label: `${source}_${step}` });
+    };
     const [isSaved, setIsSaved] = useState(true);
     const [saveProblem, setSaveProblem] = useState(false);
     const [saveQueue] = useState(() => createCvSaveQueue(
@@ -1668,26 +1705,63 @@ export default function Editor({
         ? { flex: `0 0 ${100 - editorPaneWidth}%`, minWidth: 0 }
         : undefined;
 
-    const editorMarkup = (
+    const handleStepsDownload = () => {
+        if (!hasExportableContent) {
+            goToStep("persoonlijk", "download_without_content");
+            return;
+        }
+        void handleDownload("toolbar");
+    };
+
+    const handlePreviewClick = (event: ReactMouseEvent<HTMLElement>) => {
+        const target = (event.target as HTMLElement).closest<HTMLElement>("[data-cv-edit],[data-cv-section]");
+        if (!target) return;
+        const step = stepForPreviewTarget({ edit: target.dataset.cvEdit, section: target.dataset.cvSection });
+        if (step) goToStep(step, "preview_click");
+    };
+
+    const stepsTopBar = isSteps ? (
+        <StepsTopBar
+            activeStep={activeStep}
+            stepStates={stepStates}
+            onStep={(step) => goToStep(step, "top_bar")}
+            saveState={saveProblem ? "problem" : isSaved ? "saved" : "saving"}
+            onUpload={!isReadOnlyWorkspace ? () => openUploader("toolbar") : undefined}
+            onOpenPreview={() => {
+                track("cta_clicked", { location: "editor_mobile_preview", label: "open_preview" });
+                mobilePreviewPreviousFocusRef.current = document.activeElement as HTMLElement | null;
+                setIsMobilePreviewOpen(true);
+            }}
+            previewTriggerRef={mobilePreviewTriggerRef}
+            downloadLabel={toolbarCtaLabel}
+            onDownload={handleStepsDownload}
+            downloadDisabled={isDownloading || !canDownloadWorkspace}
+            isDownloading={isDownloading}
+            priceCaption={hasExportableContent && showsDownloadPrice ? priceCopyExperiment.copy.toolbarCaption : null}
+            completionScore={completionScore}
+        />
+    ) : null;
+
+    const editorRow = (
         <div
             ref={editorSplitRef}
             className={`${isPublicEditorFullscreen ? "" : "relative"} flex flex-col lg:flex-row bg-[#FFFEF9] font-sans text-slate-900 overflow-hidden ${isResizingPanes ? "select-none" : ""} ${isPublicMode
             ? isPublicEditorFullscreen
                 ? "fixed inset-0 z-[70] h-[100dvh] min-h-0 w-full rounded-none border-0 shadow-none"
                 : "h-[980px] min-h-[760px] rounded-2xl border border-slate-200 shadow-[0_20px_60px_rgba(15,23,42,0.12)] lg:h-[760px]"
-            : "h-screen"
+            : isSteps ? "min-h-0 flex-1" : "h-screen"
         }`}
         >
             {/* Left: Editor Form */}
             <div
                 ref={editorPaneRef}
-                className={`flex w-full min-h-0 flex-col border-r-0 border-slate-200 bg-[#FFFEF9] z-10 ${isPublicMode
+                className={`${isSteps ? "werkcv-brand bg-[var(--wk-canvas)]" : "bg-[#FFFEF9]"} flex w-full min-h-0 flex-col border-r-0 border-slate-200 z-10 ${isPublicMode
                 ? isPublicEditorFullscreen
                     ? "h-[55%] min-h-0 shrink-0 lg:h-auto lg:w-1/2 lg:flex-none lg:border-r"
                     : "h-[540px] shrink-0 lg:h-auto lg:w-1/2 lg:flex-none lg:border-r"
-                : `h-screen ${showLivePreview ? "lg:w-1/2 lg:flex-none lg:border-r" : "lg:w-full"}`
+                : `${isSteps ? "h-full" : "h-screen"} ${showLivePreview ? "lg:w-1/2 lg:flex-none lg:border-r" : "lg:w-full"}`
             }`}
-                style={desktopEditorPaneStyle}
+                style={isSteps ? { ...desktopEditorPaneStyle, minHeight: 0 } : desktopEditorPaneStyle}
             >
                 {saveProblem && <div role="alert" className="border-b border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
                     {tr("Opslaan is gestopt om je tekst te beschermen. Een andere tab kan dit CV hebben gewijzigd, of de verbinding is onderbroken. Bewaar eerst een kopie van je tekst voordat je opnieuw laadt. Je lokale wijzigingen blijven hier zichtbaar.",
@@ -1697,6 +1771,7 @@ export default function Editor({
                     {designSaveError}
                 </div>}
                 {/* Toolbar */}
+                {!isSteps ? (
                 <div className="sticky top-0 z-20 flex min-h-14 w-full min-w-0 items-center justify-between gap-2 border-b border-slate-200 bg-white/95 px-2 py-2 backdrop-blur sm:px-3">
                     {/* Left side - Logo and tools */}
                     <div className="flex min-w-0 flex-1 items-center gap-1 overflow-visible sm:gap-2">
@@ -1920,13 +1995,15 @@ export default function Editor({
                         </div>
                     </div>
                 </div>
+                ) : null}
 
                 {/* Scrollable Form Area */}
                 <div
-                    className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-5 scroll-smooth bg-[#FFFEF9]"
+                    ref={formScrollRef}
+                    className={`min-h-0 flex-1 overflow-y-auto scroll-smooth ${isSteps ? "px-4 pb-6 pt-7 sm:px-8 lg:px-10" : "p-4 sm:p-5 bg-[#FFFEF9]"}`}
                     onInputCapture={handleQuickBuildInput}
                 >
-                    <div className="max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12">
+                    <div className={isSteps ? "mx-auto flex max-w-[680px] flex-col gap-5 pb-12" : "max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12"}>
                         {planSheetSource ? (
                             <CheckoutPlanSheet
                                 uiLanguage={isEnglish ? "en" : "nl"}
@@ -1955,7 +2032,7 @@ export default function Editor({
                             onRetry={() => void handleDownload("checkout_exit_question")}
                         />
 
-                        {isGuidedBuild ? (
+                        {isSteps ? <StepHeader step={activeStep} /> : isGuidedBuild ? (
                             <section className="rounded-2xl border border-teal-200 bg-white p-4 shadow-sm sm:p-5">
                                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                     <div className="min-w-0">
@@ -2078,7 +2155,23 @@ export default function Editor({
                             </section>
                         ) : null}
 
-                        {!isGuidedBuild && !isReadyToDownload && isCurrentCvEmpty ? (
+                        {isSteps && activeStep === "persoonlijk" && isCurrentCvEmpty && !isReadOnlyWorkspace ? (
+                            <button
+                                type="button"
+                                onClick={() => openUploader("empty_state")}
+                                className="flex w-full items-center gap-3 rounded-[14px] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-4 text-left transition-colors hover:border-[var(--wk-border-strong)]"
+                            >
+                                <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--wk-accent-soft)] text-[var(--wk-primary)]">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" /></svg>
+                                </span>
+                                <span className="flex-1">
+                                    <span className="block text-[15px] font-bold text-[var(--wk-ink)]">Heb je al een CV?</span>
+                                    <span className="block text-[13px] text-[var(--wk-ink-muted)]">Upload je PDF of Word-bestand, dan vullen we alle stappen voor je in.</span>
+                                </span>
+                            </button>
+                        ) : null}
+
+                        {!isSteps && !isGuidedBuild && !isReadyToDownload && isCurrentCvEmpty ? (
                             <section className="rounded-2xl border border-teal-200 bg-teal-50 p-4 shadow-sm sm:p-5">
                                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                                     <div>
@@ -2155,21 +2248,25 @@ export default function Editor({
                         ) : null}
 
                         {/* Personal Section */}
+                        {!isSteps || activeStep === "persoonlijk" || activeStep === "profiel" ? (
                         <section id="section-personal" className="scroll-mt-28 bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+                            {!isSteps ? (
                             <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
                                 <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md">
                                     {tr("Persoonlijke Gegevens", "Personal Details")}
                                 </span>
                             </h2>
+                            ) : null}
 
+                            {!isSteps || activeStep === "persoonlijk" ? (
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Volledige Naam", "Full Name")}</label>
-                                    <input {...register("personal.name")} placeholder={tr("bv. Simone van Roodenburg", "e.g. Emma Johnson")} className={inputClass} style={inputStyle} />
+                                    <label className={labelClass}>{tr("Volledige Naam", "Full Name")}</label>
+                                    <input {...register("personal.name")} placeholder={tr("bv. Simone van Roodenburg", "e.g. Emma Johnson")} className={fieldInputClass} style={inputStyle} />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Gewenste Functie", "Target Role")}</label>
-                                    <input {...register("personal.title")} placeholder={tr("bv. Leerkracht Basisonderwijs", "e.g. Primary School Teacher")} className={inputClass} style={inputStyle} />
+                                    <label className={labelClass}>{tr("Gewenste Functie", "Target Role")}</label>
+                                    <input {...register("personal.title")} placeholder={tr("bv. Leerkracht Basisonderwijs", "e.g. Primary School Teacher")} className={fieldInputClass} style={inputStyle} />
                                     {suggestedTargetRole && data.personal.title.trim() === suggestedTargetRole ? (
                                         <p className="mt-1.5 text-xs leading-relaxed text-emerald-700" role="status">
                                             {tr(
@@ -2180,38 +2277,41 @@ export default function Editor({
                                     ) : null}
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Email</label>
-                                    <input {...register("personal.email")} placeholder={tr("email@voorbeeld.nl", "email@example.com")} className={inputClass} style={inputStyle} />
+                                    <label className={labelClass}>Email</label>
+                                    <input {...register("personal.email")} placeholder={tr("email@voorbeeld.nl", "email@example.com")} className={fieldInputClass} style={inputStyle} />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Telefoonnummer", "Phone number")}</label>
-                                    <input {...register("personal.phone")} placeholder={tr("06 12345678", "+31 6 12345678")} className={inputClass} style={inputStyle} />
+                                    <label className={labelClass}>{tr("Telefoonnummer", "Phone number")}</label>
+                                    <input {...register("personal.phone")} placeholder={tr("06 12345678", "+31 6 12345678")} className={fieldInputClass} style={inputStyle} />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Plaats", "City")}</label>
-                                    <input {...register("personal.location")} placeholder={tr("bv. Utrecht", "e.g. Utrecht")} className={inputClass} style={inputStyle} />
+                                    <label className={labelClass}>{tr("Plaats", "City")}</label>
+                                    <input {...register("personal.location")} placeholder={tr("bv. Utrecht", "e.g. Utrecht")} className={fieldInputClass} style={inputStyle} />
                                 </div>
                                 <div>
-                                    <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("CV taal", "CV language")}</label>
-                                    <select {...register("personal.resumeLanguage")} className={inputClass} style={inputStyle}>
+                                    <label className={labelClass}>{tr("CV taal", "CV language")}</label>
+                                    <select {...register("personal.resumeLanguage")} className={fieldInputClass} style={inputStyle}>
                                         <option value="nl">{tr("Nederlands", "Dutch")}</option>
                                         <option value="en">English</option>
                                     </select>
                                 </div>
                             </div>
+                            ) : null}
 
                             {/* Summary */}
-                            <div className="mt-4">
-                                <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Persoonlijk Profiel", "Personal Profile")}</label>
-                                <textarea {...register("personal.summary")} placeholder={tr("Korte introductie over jezelf, je ervaring en wat je zoekt...", "Short introduction about yourself, your experience, and what you are looking for...")} className={`${inputClass} h-28`} style={inputStyle} />
+                            {!isSteps || activeStep === "profiel" ? (
+                            <div className={isSteps ? "" : "mt-4"}>
+                                <label className={labelClass}>{tr("Persoonlijk Profiel", "Personal Profile")}</label>
+                                <textarea {...register("personal.summary")} placeholder={tr("Korte introductie over jezelf, je ervaring en wat je zoekt...", "Short introduction about yourself, your experience, and what you are looking for...")} className={`${fieldInputClass} h-28`} style={inputStyle} />
                                 {aiReviewEnabled && !isPublicMode && !isMatchPackWorkspace && <div className="mt-2 flex flex-wrap gap-2">
                                     <button type="button" data-writing-trigger="profile:draft_profile" className="rounded-lg border px-3 py-2 text-sm" disabled={saveProblem} onClick={() => setWritingSelection({ target: { kind: "profile" }, action: "draft_profile" })}>{tr("Help mijn profiel schrijven", "Help write my profile")}</button>
                                     <button type="button" data-writing-trigger="profile:improve" className="rounded-lg border px-3 py-2 text-sm" disabled={saveProblem || !data.personal.summary.trim()} onClick={() => setWritingSelection({ target: { kind: "profile" }, action: "improve" })}>{tr("Verbeter de formulering", "Improve wording")}</button>
                                     <button type="button" data-writing-trigger="profile:shorten" className="rounded-lg border px-3 py-2 text-sm" disabled={saveProblem || !data.personal.summary.trim()} onClick={() => setWritingSelection({ target: { kind: "profile" }, action: "shorten" })}>{tr("Maak korter", "Make shorter")}</button>
                                 </div>}
                             </div>
+                            ) : null}
 
-                            {!isGuidedBuild ? <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4">
+                            {(isSteps ? activeStep === "persoonlijk" : !isGuidedBuild) ? <div className="mt-5 rounded-lg border border-slate-200 bg-slate-50 p-4">
                                 {!data.personal.photo ? (
                                     <button
                                         type="button"
@@ -2266,6 +2366,7 @@ export default function Editor({
                                 </div>
                             </div> : null}
 
+                            {!isSteps || activeStep === "persoonlijk" ? (<>
                             <button
                                 type="button"
                                 onClick={() => setShowAdditionalPersonalDetails((open) => !open)}
@@ -2283,63 +2384,65 @@ export default function Editor({
                                 <div className="mt-4 space-y-4 rounded-lg border border-slate-200 bg-slate-50 p-4">
                                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                         <div>
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Adres", "Address")}</label>
-                                            <input {...register("personal.address")} placeholder={tr("bv. Wilhelminastraat 78", "e.g. Wilhelminastraat 78")} className={inputClass} style={inputStyle} />
+                                            <label className={labelClass}>{tr("Adres", "Address")}</label>
+                                            <input {...register("personal.address")} placeholder={tr("bv. Wilhelminastraat 78", "e.g. Wilhelminastraat 78")} className={fieldInputClass} style={inputStyle} />
                                         </div>
                                         <div>
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Postcode", "Postal code")}</label>
-                                            <input {...register("personal.postalCode")} placeholder="1234 AB" className={inputClass} style={inputStyle} />
+                                            <label className={labelClass}>{tr("Postcode", "Postal code")}</label>
+                                            <input {...register("personal.postalCode")} placeholder="1234 AB" className={fieldInputClass} style={inputStyle} />
                                         </div>
                                         <div>
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Geboortedatum", "Date of birth")}</label>
-                                            <input {...register("personal.birthDate")} placeholder="15-03-1994" className={inputClass} style={inputStyle} />
+                                            <label className={labelClass}>{tr("Geboortedatum", "Date of birth")}</label>
+                                            <input {...register("personal.birthDate")} placeholder="15-03-1994" className={fieldInputClass} style={inputStyle} />
                                         </div>
                                         <div>
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Geboorteplaats", "Place of birth")}</label>
-                                            <input {...register("personal.birthPlace")} placeholder="Naarden" className={inputClass} style={inputStyle} />
+                                            <label className={labelClass}>{tr("Geboorteplaats", "Place of birth")}</label>
+                                            <input {...register("personal.birthPlace")} placeholder="Naarden" className={fieldInputClass} style={inputStyle} />
                                         </div>
                                         <div>
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Nationaliteit", "Nationality")}</label>
-                                            <input {...register("personal.nationality")} placeholder={tr("Nederlandse", "Dutch")} className={inputClass} style={inputStyle} />
+                                            <label className={labelClass}>{tr("Nationaliteit", "Nationality")}</label>
+                                            <input {...register("personal.nationality")} placeholder={tr("Nederlandse", "Dutch")} className={fieldInputClass} style={inputStyle} />
                                         </div>
                                         <div>
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Rijbewijs", "Driver's license")}</label>
-                                            <input {...register("personal.driversLicense")} placeholder="B" className={inputClass} style={inputStyle} />
+                                            <label className={labelClass}>{tr("Rijbewijs", "Driver's license")}</label>
+                                            <input {...register("personal.driversLicense")} placeholder="B" className={fieldInputClass} style={inputStyle} />
                                         </div>
                                         <div>
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Geslacht", "Gender")}</label>
-                                            <select {...register("personal.gender")} className={inputClass} style={inputStyle}>
+                                            <label className={labelClass}>{tr("Geslacht", "Gender")}</label>
+                                            <select {...register("personal.gender")} className={fieldInputClass} style={inputStyle}>
                                                 {genderOptions.map((option) => (
                                                     <option key={option.value || "empty"} value={option.value}>{option.label}</option>
                                                 ))}
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Burgerlijke staat", "Marital status")}</label>
-                                            <select {...register("personal.maritalStatus")} className={inputClass} style={inputStyle}>
+                                            <label className={labelClass}>{tr("Burgerlijke staat", "Marital status")}</label>
+                                            <select {...register("personal.maritalStatus")} className={fieldInputClass} style={inputStyle}>
                                                 {maritalStatusOptions.map((option) => (
                                                     <option key={option.value || "empty"} value={option.value}>{option.label}</option>
                                                 ))}
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">LinkedIn</label>
-                                            <input {...register("personal.linkedIn")} placeholder={tr("linkedin.com/in/naam", "linkedin.com/in/name")} className={inputClass} style={inputStyle} />
+                                            <label className={labelClass}>LinkedIn</label>
+                                            <input {...register("personal.linkedIn")} placeholder={tr("linkedin.com/in/naam", "linkedin.com/in/name")} className={fieldInputClass} style={inputStyle} />
                                         </div>
                                         <div>
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">GitHub</label>
-                                            <input {...register("personal.github")} placeholder="github.com/username" className={inputClass} style={inputStyle} />
+                                            <label className={labelClass}>GitHub</label>
+                                            <input {...register("personal.github")} placeholder="github.com/username" className={fieldInputClass} style={inputStyle} />
                                         </div>
                                         <div className="sm:col-span-2">
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">Website</label>
-                                            <input {...register("personal.website")} placeholder="portfolio.example.com" className={inputClass} style={inputStyle} />
+                                            <label className={labelClass}>Website</label>
+                                            <input {...register("personal.website")} placeholder="portfolio.example.com" className={fieldInputClass} style={inputStyle} />
                                         </div>
                                     </div>
                                 </div>
                             ) : null}
+                            </>) : null}
                         </section>
+                        ) : null}
 
-                        {!isGuidedBuild ? (
+                        {(isSteps ? activeStep === "extra" : !isGuidedBuild) ? (
                             <SectionOrderPanel
                                 layout={resolveCvSectionLayout(data, templateId, visibleOptionalSections)}
                                 uiLanguage={uiLanguage}
@@ -2348,9 +2451,9 @@ export default function Editor({
                         ) : null}
 
                         {getOrderedSectionIds(data, visibleOptionalSections).map((sectionId) => {
-                            if (
-                                isGuidedBuild
-                                && !["experience", "education", "skills"].includes(sectionId)
+                            if (isSteps
+                                ? stepForSection(sectionId) !== activeStep
+                                : isGuidedBuild && !["experience", "education", "skills"].includes(sectionId)
                             ) return null;
 
                             const section = sectionId === "experience"
@@ -2401,7 +2504,43 @@ export default function Editor({
                             ) : null;
                         })}
 
-                        <div className={isGuidedBuild ? "hidden" : "contents"} aria-hidden={isGuidedBuild}>
+                        <div className={isGuidedBuild && !isSteps ? "hidden" : "contents"} aria-hidden={isGuidedBuild && !isSteps}>
+                        {isSteps && activeStep === "afronden" ? (
+                            <StepsFinishPanel
+                                templateSelector={canChangeWorkspaceDesign ? (
+                                    <TemplateSelector
+                                        currentTemplateId={templateId}
+                                        data={data}
+                                        isOpen={isTemplateSelectorOpen}
+                                        reviewMode={isReadyToDownload}
+                                        compactToolbar={false}
+                                        onOpen={() => openTemplateSelector("ready_state")}
+                                        onClose={closeTemplateSelector}
+                                        onSelectTemplate={handleTemplateChange}
+                                        uiLanguage={uiLanguage}
+                                    />
+                                ) : null}
+                                colorPicker={canChangeWorkspaceDesign ? (
+                                    <ColorThemePicker
+                                        templateId={templateId}
+                                        currentThemeId={colorThemeId}
+                                        onSelectTheme={handleColorThemeChange}
+                                        uiLanguage={uiLanguage}
+                                        disabled={isDesignSaving}
+                                    />
+                                ) : null}
+                                hasContent={hasExportableContent}
+                                isReady={isReadyToDownload}
+                                downloadLabel={paidDownloadCtaLabel}
+                                priceLine={showsDownloadPrice ? `${cvDownloadPrice.display} eenmalig · geen abonnement` : "Al betaald · je betaalt niet opnieuw"}
+                                isDownloading={isDownloading}
+                                downloadDisabled={isDownloading || !canDownloadWorkspace}
+                                onDownload={() => void handleDownload("post_completion_tools")}
+                                onPreviewPdf={() => setIsFinalPdfPreviewOpen(true)}
+                                onFillIn={() => goToStep(stepStates.persoonlijk ? "werkervaring" : "persoonlijk", "finish_fill_in")}
+                            />
+                        ) : null}
+                        {!isSteps || activeStep === "extra" ? (
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                             <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
                                 <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
@@ -2432,7 +2571,9 @@ export default function Editor({
                                 })}
                             </div>
                         </section>
+                        ) : null}
 
+                        {!isSteps || activeStep === "afronden" ? (
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                                 <div>
@@ -2482,8 +2623,9 @@ export default function Editor({
                                 )}
                             </div>
                         </section>
+                        ) : null}
 
-                        {!isPublicMode ? (
+                        {!isPublicMode && (!isSteps || activeStep === "afronden") ? (
                             <>
                                 {aiReviewEnabled && <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                                     <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
@@ -2494,13 +2636,13 @@ export default function Editor({
 
                                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                                         <div className="sm:col-span-2">
-                                            <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Doelrol", "Target role")}</label>
+                                            <label className={labelClass}>{tr("Doelrol", "Target role")}</label>
                                             <input
                                                 value={atsTargetRole}
                                                 maxLength={200}
                                                 onChange={(e) => setAtsTargetRole(e.target.value)}
                                                 placeholder={data.personal.title || tr("bv. Backend Developer", "e.g. Backend Developer")}
-                                                className={inputClass}
+                                                className={fieldInputClass}
                                                 style={inputStyle}
                                             />
                                         </div>
@@ -2508,13 +2650,13 @@ export default function Editor({
                                     </div>
 
                                     <div className="mb-4">
-                                        <label className="block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5">{tr("Vacaturetekst (optioneel)", "Job description (optional)")}</label>
+                                        <label className={labelClass}>{tr("Vacaturetekst (optioneel)", "Job description (optional)")}</label>
                                         <textarea
                                             value={targetVacancy}
                                             maxLength={8000}
                                             onChange={(e) => setTargetVacancy(e.target.value)}
                                             placeholder={tr("Plak de vacature. Gevraagde vaardigheden worden niet automatisch aan je cv toegevoegd.", "Paste the vacancy. Requested skills are not automatically added to your CV.")}
-                                            className={`${inputClass} h-24`}
+                                            className={`${fieldInputClass} h-24`}
                                             style={inputStyle}
                                         />
                                     </div>
@@ -2554,6 +2696,7 @@ export default function Editor({
                         ) : null}
                         </div>
 
+                        {isSteps ? <StepNav step={activeStep} onStep={(step) => goToStep(step, "step_nav")} /> : null}
                     </div>
                 </div>
             </div>
@@ -2593,7 +2736,9 @@ export default function Editor({
                 {/* Fixed header */}
                 <div className="shrink-0 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200">
                     <div className="flex min-w-0 items-center gap-2">
-                        <span className="text-xs font-semibold text-slate-600">{tr("Live preview", "Live preview")}</span>
+                        <span className="text-xs font-semibold text-slate-600">
+                            {isSteps ? "Klik op een onderdeel om het te bewerken" : tr("Live preview", "Live preview")}
+                        </span>
                         {isCurrentCvEmpty ? (
                             <span className="truncate rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-800">
                                 {tr("Voorbeeldtemplate", "Example template")}
@@ -2628,7 +2773,8 @@ export default function Editor({
                 <div
                     ref={desktopPreviewViewportRef}
                     data-live-preview-viewport
-                    className="min-h-0 flex-1 overflow-y-auto p-2 flex justify-center items-start"
+                    onClick={isSteps ? handlePreviewClick : undefined}
+                    className={`min-h-0 flex-1 overflow-y-auto p-2 flex justify-center items-start ${isSteps ? PREVIEW_CLICK_TO_EDIT_CLASS : ""}`}
                 >
                     <ScaledCvPreview
                         data={previewData}
@@ -2830,6 +2976,13 @@ export default function Editor({
 
         </div>
     );
+
+    const editorMarkup = isSteps ? (
+        <div className="flex h-screen flex-col overflow-hidden bg-[var(--wk-canvas)]">
+            {stepsTopBar}
+            <SectionStylesProvider value={sectionStyles}>{editorRow}</SectionStylesProvider>
+        </div>
+    ) : editorRow;
 
     return isPublicEditorFullscreen && typeof document !== "undefined"
         ? createPortal(editorMarkup, document.body)
