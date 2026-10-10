@@ -7,6 +7,7 @@ import {
   initialEditorStep,
   neighbourSteps,
   normalizeEditorStep,
+  resolveInitialStep,
   stepForPreviewTarget,
   stepForSection,
 } from "./editor-steps";
@@ -56,4 +57,12 @@ test("steps link to their neighbours", () => {
   assert.deepEqual(neighbourSteps("persoonlijk"), { previous: null, next: "profiel" });
   assert.deepEqual(neighbourSteps("extra"), { previous: "vaardigheden", next: "afronden" });
   assert.deepEqual(neighbourSteps("afronden"), { previous: "extra", next: null });
+});
+
+test("the opening step prefers the URL, then focus and upload requests", () => {
+  const base = { focus: null, uploadRequested: false, data: defaultCV, isEmpty: true } as const;
+  assert.equal(resolveInitialStep({ ...base, step: "opleiding" }), "opleiding");
+  assert.equal(resolveInitialStep({ ...base, step: "nonsense", focus: "skills" }), "vaardigheden");
+  assert.equal(resolveInitialStep({ ...base, step: undefined, uploadRequested: true }), "persoonlijk");
+  assert.equal(resolveInitialStep({ ...base, step: undefined }), "persoonlijk");
 });

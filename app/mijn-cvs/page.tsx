@@ -5,10 +5,8 @@ import { getCurrentUser } from '@/lib/auth';
 import { getUserCVs } from '@/app/actions';
 import CvGrid from './CvGrid';
 import PersonalAppShell from '@/components/workspace/PersonalAppShell';
-import AppShell from '@/components/app/AppShell';
 import { isAppV2Active } from '@/lib/app-v2';
-import Dashboard, { type DashboardTab } from './Dashboard';
-import { getUserCoverLetters } from './actions';
+import DashboardScreen from './DashboardScreen';
 
 export const metadata = {
     title: 'Mijn CV\'s | WerkCV',
@@ -22,16 +20,7 @@ export default async function MijnCvsPage({ searchParams }: { searchParams: Prom
 
     if (await isAppV2Active()) {
         const { tab } = await searchParams;
-        const activeTab: DashboardTab = tab === 'brieven' ? 'brieven' : 'cvs';
-        const [library, letters] = await Promise.all([
-            getUserCVs(),
-            activeTab === 'brieven' ? getUserCoverLetters() : Promise.resolve([]),
-        ]);
-        return (
-            <AppShell active={activeTab === 'brieven' ? 'letters' : 'cvs'}>
-                <Dashboard tab={activeTab} initialResult={library} letters={letters} />
-            </AppShell>
-        );
+        return <DashboardScreen tab={tab} locale="nl" />;
     }
 
     const library = await getUserCVs();

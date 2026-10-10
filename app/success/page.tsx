@@ -7,6 +7,8 @@ import { getResumeLanguage, ResumeLanguage } from "@/lib/resume-language";
 import PurchaseSuccessActions from "./PurchaseSuccessActions";
 import { getCurrentUser } from "@/lib/auth";
 import { isCvPhotoDataUrl } from "@/lib/profile-photo-cv";
+import AppShell from "@/components/app/AppShell";
+import { isAppV2Active } from "@/lib/app-v2";
 
 export const metadata: Metadata = {
   title: "Betaling Geslaagd - WerkCV",
@@ -56,18 +58,34 @@ export default async function SuccessPage({
   }));
   const cvPhoto = isCvPhotoDataUrl(cv.personal.photo) ? cv.personal.photo : null;
 
+  const actions = (
+    <PurchaseSuccessActions
+      cvId={cvId}
+      language={resolvedLanguage}
+      editorPath={editorPath}
+      profilePhotoPath={profilePhotoPath}
+      hasProfilePhotoBundle={hasProfilePhotoBundle}
+      initialOrder={paidOrder}
+      profilePhotoOffer={hasProfilePhotoBundle || hasPaidProfilePhoto ? null : { cvPhoto }}
+    />
+  );
+
+  if (await isAppV2Active()) {
+    return (
+      <AppShell active="cvs" locale={resolvedLanguage}>
+        <main className="flex justify-center px-4 py-10 sm:py-16">
+          <div className="w-full max-w-xl rounded-2xl border border-[var(--wk-border)] bg-[var(--wk-surface)] p-8 text-center shadow-[var(--wk-shadow-md)]">
+            {actions}
+          </div>
+        </main>
+      </AppShell>
+    );
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4 py-10">
       <div className="w-full max-w-xl rounded-xl bg-white p-8 text-center shadow-lg">
-        <PurchaseSuccessActions
-          cvId={cvId}
-          language={resolvedLanguage}
-          editorPath={editorPath}
-          profilePhotoPath={profilePhotoPath}
-          hasProfilePhotoBundle={hasProfilePhotoBundle}
-          initialOrder={paidOrder}
-          profilePhotoOffer={hasProfilePhotoBundle || hasPaidProfilePhoto ? null : { cvPhoto }}
-        />
+        {actions}
       </div>
     </div>
   );

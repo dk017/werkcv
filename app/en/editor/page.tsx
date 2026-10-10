@@ -11,6 +11,9 @@ import { isAgencyAccessError } from "@/lib/agency-access";
 import { getWorkspaceEntitlementsForUser, isWorkspaceSwitcherEnabled } from "@/lib/workspace/entitlements";
 import type { Metadata } from "next";
 import { normalizeEditorFocus } from "@/lib/editor-focus";
+import { isAppV2Active } from "@/lib/app-v2";
+import { resolveInitialStep } from "@/lib/editor-steps";
+import { isCvEmpty } from "@/lib/cv-empty";
 
 export const metadata: Metadata = {
   title: "English CV Editor for the Netherlands | WerkCV",
@@ -34,9 +37,9 @@ function isUploadRequested(value: string | string[] | undefined): boolean {
 export default async function EnglishEditorPage({
   searchParams,
 }: {
-  searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string; downloadIntent?: string; focus?: string }>;
+  searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string; downloadIntent?: string; focus?: string; step?: string; stap?: string }>;
 }) {
-  const { id, template, startSource, upload, workspace, downloadIntent, focus } = await searchParams;
+  const { id, template, startSource, upload, workspace, downloadIntent, focus, step, stap } = await searchParams;
   const user = await getCurrentUser();
   const templateId = normalizeTemplateId(template);
   const uploadRequested = isUploadRequested(upload);
@@ -98,9 +101,19 @@ export default async function EnglishEditorPage({
   }
 
   const workspaceEntitlements = await getWorkspaceEntitlementsForUser(user.id);
+  const useSteps = cv.workspaceContext?.kind !== "matchpack" && !cv.agencyRouteLocked && await isAppV2Active();
+  const initialStep = resolveInitialStep({
+    step: step ?? stap,
+    focus: resolvedFocus,
+    uploadRequested,
+    data: cv.data,
+    isEmpty: isCvEmpty(cv.data),
+  });
   return (
     <Editor
       key={id}
+      layoutVariant={useSteps ? "steps" : "classic"}
+      initialStep={initialStep}
       initialContentVersion={cv.contentVersion}
       aiReviewEnabled={process.env.CONSUMER_AI_REVIEW_ENABLED === "true" && !cv.agencyRouteLocked}
       initialData={cv.data}

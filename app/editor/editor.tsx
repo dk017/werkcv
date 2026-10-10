@@ -16,7 +16,8 @@ import { downloadPdfResponse } from "@/lib/pdf-download";
 import AiWritingAssistant from "./AiWritingAssistant";
 import type { WritingSelection, WritingChange } from "@/lib/ai-writing-changes";
 import { createCvSaveQueue } from "@/lib/cv-save-queue";
-import { getStepStates, stepForPreviewTarget, stepForSection, type EditorStepId } from "@/lib/editor-steps";
+import { getStepStates, stepForPreviewTarget, stepForSection, stepParamName, type EditorStepId } from "@/lib/editor-steps";
+import { appPaths, type AppLocale } from "@/lib/app-v2-paths";
 import StepsTopBar from "./StepsTopBar";
 import { StepHeader, StepNav } from "./StepParts";
 import StepsFinishPanel from "./StepsFinishPanel";
@@ -388,7 +389,8 @@ export default function Editor({
     const isEnglish = uiLanguage === "en";
     const isPublicMode = mode === "public";
     const isMatchPackWorkspace = workspaceContext?.kind === "matchpack" || agencyRouteLocked;
-    const isSteps = layoutVariant === "steps" && !isPublicMode && !isMatchPackWorkspace && !isEnglish;
+    const isSteps = layoutVariant === "steps" && !isPublicMode && !isMatchPackWorkspace;
+    const appLocale: AppLocale = isEnglish ? "en" : "nl";
     const isReadOnlyWorkspace = Boolean(isMatchPackWorkspace && workspaceContext && !workspaceContext.canEdit);
     const canChangeWorkspaceDesign = !isMatchPackWorkspace || !workspaceContext || workspaceContext.canEditDesign;
     const canDownloadWorkspace = !isMatchPackWorkspace || Boolean(workspaceContext?.canExport);
@@ -441,7 +443,7 @@ export default function Editor({
     const goToStep = (step: EditorStepId, source: string) => {
         setActiveStep(step);
         const url = new URL(window.location.href);
-        url.searchParams.set("stap", step);
+        url.searchParams.set(stepParamName(appLocale), step);
         window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
         formScrollRef.current?.scrollTo({ top: 0 });
         track("cta_clicked", { location: "editor_steps", label: `${source}_${step}` });
@@ -1739,6 +1741,7 @@ export default function Editor({
             isDownloading={isDownloading}
             priceCaption={hasExportableContent && showsDownloadPrice ? priceCopyExperiment.copy.toolbarCaption : null}
             completionScore={completionScore}
+            locale={appLocale}
         />
     ) : null;
 
@@ -2032,7 +2035,7 @@ export default function Editor({
                             onRetry={() => void handleDownload("checkout_exit_question")}
                         />
 
-                        {isSteps ? <StepHeader step={activeStep} /> : isGuidedBuild ? (
+                        {isSteps ? <StepHeader step={activeStep} locale={appLocale} /> : isGuidedBuild ? (
                             <section className="rounded-2xl border border-teal-200 bg-white p-4 shadow-sm sm:p-5">
                                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                     <div className="min-w-0">
@@ -2165,8 +2168,8 @@ export default function Editor({
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 16V4m0 0-4 4m4-4 4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3" /></svg>
                                 </span>
                                 <span className="flex-1">
-                                    <span className="block text-[15px] font-bold text-[var(--wk-ink)]">Heb je al een CV?</span>
-                                    <span className="block text-[13px] text-[var(--wk-ink-muted)]">Upload je PDF of Word-bestand, dan vullen we alle stappen voor je in.</span>
+                                    <span className="block text-[15px] font-bold text-[var(--wk-ink)]">{tr("Heb je al een CV?", "Already have a CV?")}</span>
+                                    <span className="block text-[13px] text-[var(--wk-ink-muted)]">{tr("Upload je PDF of Word-bestand, dan vullen we alle stappen voor je in.", "Upload your PDF or Word file and we fill in every step for you.")}</span>
                                 </span>
                             </button>
                         ) : null}
@@ -2529,12 +2532,15 @@ export default function Editor({
                                 hasContent={hasExportableContent}
                                 isReady={isReadyToDownload}
                                 downloadLabel={paidDownloadCtaLabel}
-                                priceLine={showsDownloadPrice ? `${cvDownloadPrice.display} eenmalig · geen abonnement` : "Al betaald · je betaalt niet opnieuw"}
+                                priceLine={showsDownloadPrice
+                                    ? tr(`${cvDownloadPrice.display} eenmalig · geen abonnement`, `${cvDownloadPrice.displayEn} one-time · no subscription`)
+                                    : tr("Al betaald · je betaalt niet opnieuw", "Already paid · you will not pay again")}
                                 isDownloading={isDownloading}
                                 downloadDisabled={isDownloading || !canDownloadWorkspace}
                                 onDownload={() => void handleDownload("post_completion_tools")}
                                 onPreviewPdf={() => setIsFinalPdfPreviewOpen(true)}
                                 onFillIn={() => goToStep(stepStates.persoonlijk ? "werkervaring" : "persoonlijk", "finish_fill_in")}
+                                locale={appLocale}
                             />
                         ) : null}
                         {!isSteps || activeStep === "extra" ? (
@@ -2682,7 +2688,7 @@ export default function Editor({
                                         </p>
                                     </div>
                                     <Link
-                                        href={isEnglish ? `/en/cover-letter?id=${encodeURIComponent(id)}` : `/sollicitatiebrief?id=${encodeURIComponent(id)}`}
+                                        href={isSteps ? appPaths(appLocale).coverLetter(id) : isEnglish ? `/en/cover-letter?id=${encodeURIComponent(id)}` : `/sollicitatiebrief?id=${encodeURIComponent(id)}`}
                                         onClick={handleOpenCoverLetter}
                                         className="inline-flex shrink-0 items-center justify-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 hover:bg-slate-50"
                                     >
@@ -2693,7 +2699,7 @@ export default function Editor({
                         ) : null}
                         </div>
 
-                        {isSteps ? <StepNav step={activeStep} onStep={(step) => goToStep(step, "step_nav")} /> : null}
+                        {isSteps ? <StepNav step={activeStep} onStep={(step) => goToStep(step, "step_nav")} locale={appLocale} /> : null}
                     </div>
                 </div>
             </div>
@@ -2734,7 +2740,7 @@ export default function Editor({
                 <div className="shrink-0 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200">
                     <div className="flex min-w-0 items-center gap-2">
                         <span className="text-xs font-semibold text-slate-600">
-                            {isSteps ? "Klik op een onderdeel om het te bewerken" : tr("Live preview", "Live preview")}
+                            {isSteps ? tr("Klik op een onderdeel om het te bewerken", "Click any part to edit it") : tr("Live preview", "Live preview")}
                         </span>
                         {isCurrentCvEmpty ? (
                             <span className="truncate rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-800">
@@ -2823,7 +2829,14 @@ export default function Editor({
                     </header>
 
                     <div className="min-h-0 flex-1 overflow-auto p-3">
-                        <div className="mx-auto w-max rounded-md border border-slate-200 bg-white p-2 shadow-lg">
+                        <div
+                            onClick={isSteps ? (event) => {
+                                if (!(event.target as HTMLElement).closest("[data-cv-edit],[data-cv-section]")) return;
+                                handlePreviewClick(event);
+                                setIsMobilePreviewOpen(false);
+                            } : undefined}
+                            className={`mx-auto w-max rounded-md border border-slate-200 bg-white p-2 shadow-lg ${isSteps ? PREVIEW_CLICK_TO_EDIT_CLASS : ""}`}
+                        >
                             <ScaledCvPreview
                                 data={previewData}
                                 templateId={templateId}

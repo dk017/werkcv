@@ -31,6 +31,8 @@ test("return-path helpers identify the intended workspace", () => {
 
 test("route context separates Personal, MatchPack and private surfaces", () => {
   assert.equal(getRouteWorkspaceContext("/mijn-cvs"), "personal_app");
+  assert.equal(getRouteWorkspaceContext("/mijn-cvs/brief?id=abc"), "personal_app");
+  assert.equal(getRouteWorkspaceContext("/en/my-cvs/letter?id=abc"), "personal_app");
   assert.equal(getRouteWorkspaceContext("/editor?id=abc"), "document_derived");
   assert.equal(getRouteWorkspaceContext("/agency/account/matchpack"), "matchpack_app");
   assert.equal(getRouteWorkspaceContext("/voor-bureaus/kennisbank"), "matchpack_marketing");

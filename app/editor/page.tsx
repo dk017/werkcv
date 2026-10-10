@@ -11,7 +11,7 @@ import { getWorkspaceEntitlementsForUser, isWorkspaceSwitcherEnabled } from "@/l
 import { normalizeEditorFocus } from "@/lib/editor-focus";
 import { consumerAiEnabled } from "@/lib/consumer-ai-availability";
 import { isAppV2Active } from "@/lib/app-v2";
-import { initialEditorStep, normalizeEditorStep } from "@/lib/editor-steps";
+import { resolveInitialStep } from "@/lib/editor-steps";
 import { isCvEmpty } from "@/lib/cv-empty";
 
 export const dynamic = "force-dynamic";
@@ -30,9 +30,9 @@ function isUploadRequested(value: string | string[] | undefined): boolean {
 export default async function EditorPage({
     searchParams,
 }: {
-    searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string; focus?: string; downloadIntent?: string; stap?: string }>;
+    searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string; focus?: string; downloadIntent?: string; stap?: string; step?: string }>;
 }) {
-    const { id, template, startSource, upload, workspace, focus, downloadIntent, stap } = await searchParams;
+    const { id, template, startSource, upload, workspace, focus, downloadIntent, stap, step } = await searchParams;
     const user = await getCurrentUser();
     const templateId = normalizeTemplateId(template);
     const uploadRequested = isUploadRequested(upload);
@@ -92,10 +92,13 @@ export default async function EditorPage({
 
     const workspaceEntitlements = await getWorkspaceEntitlementsForUser(user.id);
     const useSteps = cv.workspaceContext?.kind !== "matchpack" && !cv.agencyRouteLocked && await isAppV2Active();
-    const initialStep = normalizeEditorStep(stap)
-        ?? (resolvedFocus === "profile" ? "profiel" : resolvedFocus === "skills" ? "vaardigheden" : null)
-        ?? (uploadRequested ? "persoonlijk" : null)
-        ?? initialEditorStep(cv.data, isCvEmpty(cv.data));
+    const initialStep = resolveInitialStep({
+        step: stap ?? step,
+        focus: resolvedFocus,
+        uploadRequested,
+        data: cv.data,
+        isEmpty: isCvEmpty(cv.data),
+    });
     return (
         <Editor
             layoutVariant={useSteps ? "steps" : "classic"}

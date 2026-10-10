@@ -26,7 +26,7 @@ export function getRouteWorkspaceContext(pathname: string): RouteWorkspaceContex
   if (startsWithFamily(path, "/chrome")) return "none";
   if (startsWithFamily(path, "/login")) return "auth_derived";
   if (startsWithFamily(path, "/editor") || startsWithFamily(path, "/en/editor")) return "document_derived";
-  if (startsWithFamily(path, "/mijn-cvs")) return "personal_app";
+  if (startsWithFamily(path, "/mijn-cvs") || startsWithFamily(path, "/en/my-cvs")) return "personal_app";
   if (startsWithFamily(path, "/agency/account")) return "matchpack_app";
   if (
     startsWithFamily(path, "/agency") ||

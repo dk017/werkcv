@@ -2,6 +2,7 @@ import type { CVData } from "@/lib/cv";
 import type { CvBodySectionId } from "@/lib/cv-sections";
 import { cvSectionHasSubstantiveContent } from "@/lib/cv-sections";
 import { getCompletionState, type CompletionStepId } from "@/lib/cv-completion";
+import type { AppLocale } from "@/lib/app-v2-paths";
 
 // The stepped editor shows one part of the CV at a time. "afronden" is the
 // finish step: design, checks and download.
@@ -21,43 +22,87 @@ export const CONTENT_STEPS = EDITOR_STEPS.filter((step) => step !== "afronden");
 
 type StepCopy = { label: string; title: string; intro: string };
 
-export const EDITOR_STEP_COPY: Record<EditorStepId, StepCopy> = {
-  persoonlijk: {
-    label: "Persoonlijk",
-    title: "Persoonlijke gegevens",
-    intro: "Hoe werkgevers je kunnen bereiken. Je gewenste functie staat bovenaan je CV.",
+export const EDITOR_STEP_COPY: Record<AppLocale, Record<EditorStepId, StepCopy>> = {
+  nl: {
+    persoonlijk: {
+      label: "Persoonlijk",
+      title: "Persoonlijke gegevens",
+      intro: "Hoe werkgevers je kunnen bereiken. Je gewenste functie staat bovenaan je CV.",
+    },
+    profiel: {
+      label: "Profiel",
+      title: "Profieltekst",
+      intro: "Drie tot vijf zinnen over wie je bent, wat je kunt en wat je zoekt. Dit is het eerste wat een recruiter leest.",
+    },
+    werkervaring: {
+      label: "Werkervaring",
+      title: "Werkervaring",
+      intro: "Begin met je huidige of laatste baan. Twee tot vijf banen is genoeg; oudere banen mag je korter houden.",
+    },
+    opleiding: {
+      label: "Opleiding",
+      title: "Opleiding",
+      intro: "Je hoogst afgeronde opleiding eerst. Nog bezig? Zet dan de verwachte einddatum erbij.",
+    },
+    vaardigheden: {
+      label: "Vaardigheden",
+      title: "Vaardigheden en talen",
+      intro: "Kies vaardigheden die bij de functie passen en die je kunt onderbouwen in een gesprek.",
+    },
+    extra: {
+      label: "Extra",
+      title: "Extra onderdelen",
+      intro: "Optioneel: stages, cursussen, referenties en meer. Voeg alleen toe wat iets zegt over jou als werknemer.",
+    },
+    afronden: {
+      label: "Afronden",
+      title: "Afronden",
+      intro: "Kies je ontwerp, controleer je CV en download je PDF.",
+    },
   },
-  profiel: {
-    label: "Profiel",
-    title: "Profieltekst",
-    intro: "Drie tot vijf zinnen over wie je bent, wat je kunt en wat je zoekt. Dit is het eerste wat een recruiter leest.",
-  },
-  werkervaring: {
-    label: "Werkervaring",
-    title: "Werkervaring",
-    intro: "Begin met je huidige of laatste baan. Twee tot vijf banen is genoeg; oudere banen mag je korter houden.",
-  },
-  opleiding: {
-    label: "Opleiding",
-    title: "Opleiding",
-    intro: "Je hoogst afgeronde opleiding eerst. Nog bezig? Zet dan de verwachte einddatum erbij.",
-  },
-  vaardigheden: {
-    label: "Vaardigheden",
-    title: "Vaardigheden en talen",
-    intro: "Kies vaardigheden die bij de functie passen en die je kunt onderbouwen in een gesprek.",
-  },
-  extra: {
-    label: "Extra",
-    title: "Extra onderdelen",
-    intro: "Optioneel: stages, cursussen, referenties en meer. Voeg alleen toe wat iets zegt over jou als werknemer.",
-  },
-  afronden: {
-    label: "Afronden",
-    title: "Afronden",
-    intro: "Kies je ontwerp, controleer je CV en download je PDF.",
+  en: {
+    persoonlijk: {
+      label: "Personal",
+      title: "Personal details",
+      intro: "How employers can reach you. Your target role appears at the top of your CV.",
+    },
+    profiel: {
+      label: "Profile",
+      title: "Profile summary",
+      intro: "Three to five sentences on who you are, what you can do and what you are looking for. It is the first thing a recruiter reads.",
+    },
+    werkervaring: {
+      label: "Experience",
+      title: "Work experience",
+      intro: "Start with your current or most recent job. Two to five jobs is enough; keep older ones short.",
+    },
+    opleiding: {
+      label: "Education",
+      title: "Education",
+      intro: "Your highest completed education first. Still studying? Add the expected end date.",
+    },
+    vaardigheden: {
+      label: "Skills",
+      title: "Skills and languages",
+      intro: "Choose skills that fit the role and that you can back up in an interview.",
+    },
+    extra: {
+      label: "Extra",
+      title: "Extra sections",
+      intro: "Optional: internships, courses, references and more. Only add what says something about you as an employee.",
+    },
+    afronden: {
+      label: "Finish",
+      title: "Finish",
+      intro: "Choose your design, check your CV and download your PDF.",
+    },
   },
 };
+
+// The URL parameter that holds the step: Dutch pages use ?stap=, English pages ?step=.
+export function stepParamName(locale: AppLocale): "stap" | "step" {
+  return locale === "en" ? "step" : "stap";
+}
 
 const SECTION_STEP: Record<CvBodySectionId, EditorStepId> = {
   experience: "werkervaring",
@@ -133,4 +178,19 @@ export function neighbourSteps(step: EditorStepId): { previous: EditorStepId | n
     previous: index > 0 ? EDITOR_STEPS[index - 1] : null,
     next: index < EDITOR_STEPS.length - 1 ? EDITOR_STEPS[index + 1] : null,
   };
+}
+
+// The step the editor opens on: an explicit ?stap= / ?step=, then a focus or upload
+// request from another page, then the first unfinished part of the CV.
+export function resolveInitialStep(input: {
+  step: unknown;
+  focus: "profile" | "skills" | null;
+  uploadRequested: boolean;
+  data: CVData;
+  isEmpty: boolean;
+}): EditorStepId {
+  return normalizeEditorStep(input.step)
+    ?? (input.focus === "profile" ? "profiel" : input.focus === "skills" ? "vaardigheden" : null)
+    ?? (input.uploadRequested ? "persoonlijk" : null)
+    ?? initialEditorStep(input.data, input.isEmpty);
 }

@@ -141,7 +141,7 @@ export default function NavUserMenu({
       {menuOpen ? (
         <div className="wk-account-menu-panel" role="group" aria-label={isEnglish ? "Account options" : "Accountopties"}>
           <p className="wk-account-menu-email">{email}</p>
-          <Link href="/mijn-cvs" className="wk-account-menu-link">
+          <Link href={isEnglish ? "/en/my-cvs" : "/mijn-cvs"} className="wk-account-menu-link">
             {isEnglish ? "My CVs" : "Mijn CV's"}
           </Link>
           {workspaces?.matchpack ? (
