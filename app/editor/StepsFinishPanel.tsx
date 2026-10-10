@@ -30,20 +30,6 @@ export default function StepsFinishPanel({
 }) {
     return (
         <>
-            {templateSelector || colorPicker ? (
-                <section aria-labelledby="finish-design-title" className="flex flex-col gap-4 rounded-2xl border border-[var(--wk-border)] bg-[var(--wk-surface)] p-5">
-                    <div className="flex items-center gap-2">
-                        <Icon name="palette" className="text-[var(--wk-primary)]" />
-                        <h2 id="finish-design-title" className="text-[17px] font-extrabold text-[var(--wk-ink)]">Ontwerp</h2>
-                    </div>
-                    <p className="-mt-2 text-sm text-[var(--wk-ink-muted)]">Je tekst blijft staan als je een ander ontwerp kiest. Het voorbeeld rechts past zich meteen aan.</p>
-                    <div className="flex flex-wrap items-center gap-3">
-                        {templateSelector}
-                        {colorPicker}
-                    </div>
-                </section>
-            ) : null}
-
             {hasContent ? (
                 <section aria-labelledby="finish-download-title" className="flex flex-col gap-3 rounded-2xl bg-[var(--wk-primary)] p-5 text-white">
                     <h2 id="finish-download-title" className="text-[17px] font-extrabold">{isReady ? "Klaar om te versturen" : "Je kunt al downloaden"}</h2>
@@ -81,6 +67,23 @@ export default function StepsFinishPanel({
                     </button>
                 </section>
             )}
+
+            {templateSelector || colorPicker ? (
+                <section aria-labelledby="finish-design-title" className="flex flex-col gap-4 rounded-2xl border border-[var(--wk-border)] bg-[var(--wk-surface)] p-5">
+                    <div className="flex items-center gap-2">
+                        <Icon name="palette" className="text-[var(--wk-primary)]" />
+                        <h2 id="finish-design-title" className="text-[17px] font-extrabold text-[var(--wk-ink)]">Ontwerp</h2>
+                    </div>
+                    <p className="-mt-2 text-sm text-[var(--wk-ink-muted)]">Je tekst blijft staan als je een ander ontwerp kiest. Het voorbeeld rechts past zich meteen aan.</p>
+                    {colorPicker ? (
+                        <div className="flex items-center gap-3">
+                            <span className="text-[13px] font-bold text-[var(--wk-ink)]">Kleur</span>
+                            {colorPicker}
+                        </div>
+                    ) : null}
+                    {templateSelector}
+                </section>
+            ) : null}
         </>
     );
 }

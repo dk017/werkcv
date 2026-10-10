@@ -1,11 +1,12 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useFieldArray, Control, UseFormRegister, Controller } from "react-hook-form";
+import { useState, type ReactNode } from "react";
+import { useFieldArray, useWatch, Control, UseFormRegister, Controller } from "react-hook-form";
 import { CVData } from "@/lib/cv";
 import { UiLanguage } from "@/lib/ui-language";
 import type { WritingAction, BulletSelection } from "@/lib/ai-writing-changes";
-import { useSectionStyles } from "./section-styles";
+import { SectionStylesProvider, useSectionStyles } from "./section-styles";
 
 interface SectionProps {
     control: Control<CVData>;
@@ -20,6 +21,57 @@ function t(uiLanguage: UiLanguage, dutch: string, english: string) {
     return uiLanguage === "en" ? english : dutch;
 }
 
+const OPEN_LAST = "__last__";
+
+// Steps layout: which list entry is unfolded. Starts with the first one; a new entry opens itself.
+function useEntryDisclosure(fields: Array<{ id: string }>, enabled: boolean) {
+    const [openKey, setOpenKey] = useState<string | null>(() => fields[0]?.id ?? null);
+    return {
+        isOpen: (id: string, index: number) => !enabled || (openKey === OPEN_LAST ? index === fields.length - 1 : openKey === id),
+        toggle: (id: string, open: boolean) => setOpenKey(open ? null : id),
+        openLast: () => setOpenKey(OPEN_LAST),
+    };
+}
+
+function EntryCard({ control, name, kind, open, onToggle, uiLanguage, children }: {
+    control: Control<CVData>;
+    name: `experience.${number}` | `internships.${number}` | `education.${number}`;
+    kind: "job" | "education";
+    open: boolean;
+    onToggle: () => void;
+    uiLanguage: UiLanguage;
+    children: ReactNode;
+}) {
+    const s = useSectionStyles();
+    const value = useWatch({ control, name }) as Record<string, unknown> | undefined;
+    const text = (key: string) => (typeof value?.[key] === "string" ? (value[key] as string).trim() : "");
+    const title = kind === "education" ? text("degree") : text("role");
+    const period = [text("start"), text("end")].filter(Boolean).join(" – ");
+    const meta = [kind === "education" ? text("school") : text("company"), text("location"), period].filter(Boolean).join(" · ");
+    const fallback = kind === "education" ? t(uiLanguage, "Nieuwe opleiding", "New education") : t(uiLanguage, "Nieuwe functie", "New position");
+
+    return (
+        <div className={`rounded-[14px] bg-[var(--wk-surface)] transition-shadow ${open ? "border-2 border-[var(--wk-primary)] shadow-[var(--wk-shadow-md)]" : "border border-[var(--wk-border)]"}`}>
+            <button type="button" onClick={onToggle} aria-expanded={open} className="flex min-h-14 w-full items-center gap-3 px-4 py-3 text-left">
+                <span className="min-w-0 flex-1">
+                    <span className="block truncate text-[15px] font-extrabold text-[var(--wk-ink)]">{title || fallback}</span>
+                    {meta ? <span className="block truncate text-[13px] text-[var(--wk-ink-muted)]">{meta}</span> : null}
+                </span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true" className={`shrink-0 text-[var(--wk-ink-muted)] transition-transform ${open ? "rotate-180" : ""}`}>
+                    <path d="m6 9 6 6 6-6" />
+                </svg>
+            </button>
+            {open ? (
+                <div className="border-t border-[#e6ebe7] px-4 pb-4 pt-4 sm:px-5">
+                    <SectionStylesProvider value={{ ...s, item: s.itemInCard, removeAbs: s.removeInCard }}>
+                        {children}
+                    </SectionStylesProvider>
+                </div>
+            ) : null}
+        </div>
+    );
+}
+
 export function ExperienceSection({ control, register, uiLanguage = "nl", onWritingAssist, writingBlocked }: SectionProps & {
     onWritingAssist?: (entryId: string, action: WritingAction, bullet?: BulletSelection) => void;
     writingBlocked?: boolean;
@@ -29,6 +81,7 @@ export function ExperienceSection({ control, register, uiLanguage = "nl", onWrit
         control,
         name: "experience",
     });
+    const entries = useEntryDisclosure(fields, s.collapsible);
 
     return (
         <section className={s.card}>
@@ -40,7 +93,10 @@ export function ExperienceSection({ control, register, uiLanguage = "nl", onWrit
                 </h2>
                 <button
                     type="button"
-                    onClick={() => append({ entryId: crypto.randomUUID(), role: "", company: "", description: "", start: "", end: "", location: "", highlights: [] })}
+                    onClick={() => {
+                        append({ entryId: crypto.randomUUID(), role: "", company: "", description: "", start: "", end: "", location: "", highlights: [] });
+                        entries.openLast();
+                    }}
                     className={s.addButton}
                 >
                     {t(uiLanguage, "+ Toevoegen", "+ Add")}
@@ -48,8 +104,8 @@ export function ExperienceSection({ control, register, uiLanguage = "nl", onWrit
             </div>
 
             <div className="space-y-4">
-                {fields.map((item, index) => (
-                    <div key={item.id}>
+                {fields.map((item, index) => {
+                    const entryBody = (<>
                     <ExperienceItem
                         key={item.id}
                         index={index}
@@ -66,8 +122,15 @@ export function ExperienceSection({ control, register, uiLanguage = "nl", onWrit
                         <button type="button" data-writing-trigger={`experience:${item.entryId}:improve`} disabled={writingBlocked} className={s.assist} onClick={() => onWritingAssist(item.entryId!, "improve")}>{t(uiLanguage, "Verbeter de formulering", "Improve wording")}</button>
                         <button type="button" data-writing-trigger={`experience:${item.entryId}:shorten`} disabled={writingBlocked} className={s.assist} onClick={() => onWritingAssist(item.entryId!, "shorten")}>{t(uiLanguage, "Maak korter", "Make shorter")}</button>
                     </div>}
-                    </div>
-                ))}
+                    </>);
+                    if (!s.collapsible) return <div key={item.id}>{entryBody}</div>;
+                    const open = entries.isOpen(item.id, index);
+                    return (
+                        <EntryCard key={item.id} control={control} name={`experience.${index}`} kind="job" open={open} onToggle={() => entries.toggle(item.id, open)} uiLanguage={uiLanguage}>
+                            {entryBody}
+                        </EntryCard>
+                    );
+                })}
                 {fields.length === 0 && (
                     <div className={s.emptyTall}>
                         {t(uiLanguage, "Nog geen werkervaring toegevoegd.", "No experience added yet.")}
@@ -252,6 +315,7 @@ export function InternshipsSection({ control, register, uiLanguage = "nl" }: Sec
         control,
         name: "internships",
     });
+    const entries = useEntryDisclosure(fields, s.collapsible);
 
     return (
         <section className={s.card}>
@@ -263,7 +327,10 @@ export function InternshipsSection({ control, register, uiLanguage = "nl" }: Sec
                 </h2>
                 <button
                     type="button"
-                    onClick={() => append({ role: "", company: "", description: "", start: "", end: "", location: "", highlights: [] })}
+                    onClick={() => {
+                        append({ role: "", company: "", description: "", start: "", end: "", location: "", highlights: [] });
+                        entries.openLast();
+                    }}
                     className={s.addButton}
                 >
                     {t(uiLanguage, "+ Toevoegen", "+ Add")}
@@ -271,7 +338,8 @@ export function InternshipsSection({ control, register, uiLanguage = "nl" }: Sec
             </div>
 
             <div className="space-y-4">
-                {fields.map((item, index) => (
+                {fields.map((item, index) => {
+                    const entryBody = (
                     <ExperienceItem
                         key={item.id}
                         index={index}
@@ -281,7 +349,15 @@ export function InternshipsSection({ control, register, uiLanguage = "nl" }: Sec
                         fieldName="internships"
                         uiLanguage={uiLanguage}
                     />
-                ))}
+                    );
+                    if (!s.collapsible) return entryBody;
+                    const open = entries.isOpen(item.id, index);
+                    return (
+                        <EntryCard key={item.id} control={control} name={`internships.${index}`} kind="job" open={open} onToggle={() => entries.toggle(item.id, open)} uiLanguage={uiLanguage}>
+                            {entryBody}
+                        </EntryCard>
+                    );
+                })}
                 {fields.length === 0 && (
                     <div className={s.emptyLarge}>
                         {t(uiLanguage, "Nog geen stages toegevoegd.", "No internships added yet.")}
@@ -298,6 +374,7 @@ export function EducationSection({ control, register, uiLanguage = "nl" }: Secti
         control,
         name: "education",
     });
+    const entries = useEntryDisclosure(fields, s.collapsible);
 
     return (
         <section className={s.card}>
@@ -309,7 +386,10 @@ export function EducationSection({ control, register, uiLanguage = "nl" }: Secti
                 </h2>
                 <button
                     type="button"
-                    onClick={() => append({ degree: "", school: "", start: "", end: "", location: "", description: "" })}
+                    onClick={() => {
+                        append({ degree: "", school: "", start: "", end: "", location: "", description: "" });
+                        entries.openLast();
+                    }}
                     className={s.addButton}
                 >
                     {t(uiLanguage, "+ Toevoegen", "+ Add")}
@@ -317,12 +397,14 @@ export function EducationSection({ control, register, uiLanguage = "nl" }: Secti
             </div>
 
             <div className="space-y-4">
-                {fields.map((item, index) => (
-                    <div key={item.id} className={s.item}>
+                {fields.map((item, index) => {
+                    const open = entries.isOpen(item.id, index);
+                    const entryBody = (
+                    <div key={item.id} className={s.collapsible ? s.itemInCard : s.item}>
                         <button
                             type="button"
                             onClick={() => remove(index)}
-                            className={s.removeAbs}
+                            className={s.collapsible ? s.removeInCard : s.removeAbs}
                             title={t(uiLanguage, "Verwijderen", "Remove")}
                         >
                             ✕
@@ -388,7 +470,14 @@ export function EducationSection({ control, register, uiLanguage = "nl" }: Secti
                             />
                         </div>
                     </div>
-                ))}
+                    );
+                    if (!s.collapsible) return entryBody;
+                    return (
+                        <EntryCard key={item.id} control={control} name={`education.${index}`} kind="education" open={open} onToggle={() => entries.toggle(item.id, open)} uiLanguage={uiLanguage}>
+                            {entryBody}
+                        </EntryCard>
+                    );
+                })}
                 {fields.length === 0 && (
                     <div className={s.emptyLarge}>
                         {t(uiLanguage, "Nog geen opleiding toegevoegd.", "No education added yet.")}

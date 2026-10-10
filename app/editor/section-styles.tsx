@@ -25,6 +25,10 @@ export type SectionStyles = {
     removeInlineAlt: string;
     smallAdd: string;
     assist: string;
+    /** Steps layout: list entries fold into a summary row, one open at a time. */
+    collapsible: boolean;
+    itemInCard: string;
+    removeInCard: string;
 };
 
 export const CLASSIC_SECTION_STYLES: SectionStyles = {
@@ -47,6 +51,9 @@ export const CLASSIC_SECTION_STYLES: SectionStyles = {
     removeInlineAlt: "bg-red-400 text-black font-black px-2 py-2 text-xs border border-slate-300 hover:bg-red-500 transition-all",
     smallAdd: "text-xs bg-sky-100 text-sky-900 font-semibold px-2 py-1 rounded-md border border-sky-300 hover:bg-sky-200 transition-colors",
     assist: "rounded-lg border px-3 py-2 text-sm",
+    collapsible: false,
+    itemInCard: "relative bg-slate-50 p-4 border border-slate-200 rounded-xl group",
+    removeInCard: "absolute top-2 right-2 bg-white text-rose-700 font-semibold px-2 py-1 text-xs border border-rose-200 rounded-md opacity-0 group-hover:opacity-100 hover:bg-rose-50 transition-colors",
 };
 
 const STEPS_REMOVE = "inline-flex min-h-8 items-center rounded-lg px-2 text-xs font-bold text-[var(--wk-danger)] hover:bg-[var(--wk-danger-soft)]";
@@ -72,6 +79,9 @@ export function stepsSectionStyles({ showHeading }: { showHeading: boolean }): S
         removeInlineAlt: STEPS_REMOVE,
         smallAdd: "inline-flex min-h-8 items-center rounded-full border border-[var(--wk-border)] bg-white px-3 text-xs font-bold text-[var(--wk-primary)] hover:bg-[var(--wk-surface-subtle)]",
         assist: "inline-flex min-h-10 items-center rounded-full border border-[var(--wk-border)] bg-white px-3.5 text-[13px] font-bold text-[var(--wk-ink)] transition-colors hover:border-[var(--wk-primary)] hover:bg-[var(--wk-surface-subtle)] disabled:opacity-50",
+        collapsible: true,
+        itemInCard: "relative pt-1",
+        removeInCard: "absolute right-0 top-0 inline-flex h-8 items-center rounded-lg px-2 text-xs font-bold text-[var(--wk-danger)] hover:bg-[var(--wk-danger-soft)]",
     };
 }
 

@@ -37,7 +37,7 @@ import {
     SideActivitiesSection,
     CustomSectionsSection
 } from "./sections";
-import TemplateSelector, { getTemplatePreviewData } from "./TemplateSelector";
+import TemplateSelector, { getTemplatePreviewData, TemplateGallery } from "./TemplateSelector";
 import ColorThemePicker from "./ColorThemePicker";
 import CVUploader from "./CVUploader";
 import CvScoreWidget from "./CvScoreWidget";
@@ -2508,16 +2508,13 @@ export default function Editor({
                         {isSteps && activeStep === "afronden" ? (
                             <StepsFinishPanel
                                 templateSelector={canChangeWorkspaceDesign ? (
-                                    <TemplateSelector
+                                    <TemplateGallery
+                                        compact
                                         currentTemplateId={templateId}
-                                        data={data}
-                                        isOpen={isTemplateSelectorOpen}
-                                        reviewMode={isReadyToDownload}
-                                        compactToolbar={false}
-                                        onOpen={() => openTemplateSelector("ready_state")}
-                                        onClose={closeTemplateSelector}
+                                        data={isReadyToDownload ? data : getTemplatePreviewData(uiLanguage)}
                                         onSelectTemplate={handleTemplateChange}
                                         uiLanguage={uiLanguage}
+                                        idPrefix="steps-template"
                                     />
                                 ) : null}
                                 colorPicker={canChangeWorkspaceDesign ? (
