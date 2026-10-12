@@ -70,24 +70,32 @@ something works.
 
 ## 3. Where the code is
 
-- Main repo folder: `D:\DKPlayground\werkcv` (currently on branch `cv-check-handoff`; it contains
-  **other sessions' uncommitted, unfinished edits**. Do not commit them, do not `git add -A` there).
-- **The redesign lives in a separate git worktree:** `D:\DKPlayground\werkcv-app-redesign`,
-  branch **`feat/app-redesign`**, cut from `origin/main` at `13f1be5`.
+- Work in the main repo folder **`D:\DKPlayground\werkcv`**, branch **`feat/app-redesign`**
+  (cut from `origin/main` at `13f1be5`; `node_modules` and `.env` are in place).
 - Commits on the branch (all local, **not pushed, not deployed**):
   - `8712939` feat(app-v2): app shell and Mijn CV's dashboard behind APP_V2_MODE
   - `1d40b17` feat(app-v2): stepped editor with click-to-edit live preview
   - `5bd667d` feat(app-v2): foldable entries, inline template gallery in Afronden
   - `af9783f` feat(app-v2): English app, cover letter workspace and success page in the app frame
   - `0e159c4` feat(app-v2): left navigation rail on every app screen, like the reference
-- Work in the worktree folder (it has its own `node_modules` and `.env`). If you prefer the main
-  folder, `git checkout feat/app-redesign` there only after the owner confirms the other uncommitted
-  work is safe; the main folder has **no `node_modules`** at the moment.
+  - `618b974` docs: this handoff spec
+- History (12 Oct 2026): the work was first done in a separate worktree
+  (`D:\DKPlayground\werkcv-app-redesign`, now removed) because the main folder held other sessions'
+  unfinished edits. Those edits were set aside, nothing was lost:
+  - `git stash list` → `stash@{0}` "other-session-wip": uncommitted changes to
+    `app/api/cv-check/route.ts`, `components/cv-check/CvCheckTool.tsx`, `lib/cv-check/engine.ts`,
+    `lib/cv-check/layout.ts`, `lib/pdf-preview-images.ts` (from branch `cv-check-handoff`).
+    **Do not drop or apply this stash on `feat/app-redesign`**; it belongs to the CV-check work.
+  - `D:\DKPlayground\werkcv-wip-backup-2026-10-12\`: untracked files that clashed with the branch
+    (a different draft of `docs/product/2026-10-04-werkcv-cv-mcp-spec.md`; copies of `lib/cv-check/ocr.ts`
+    and this spec that were identical to the branch).
+  - Other untracked files in the folder (logs, `tmp/`, `output/`, other docs) belong to other work:
+    never `git add -A`; stage only your own files.
 
 ### Run it locally
 
 ```bash
-cd D:/DKPlayground/werkcv-app-redesign
+cd D:/DKPlayground/werkcv
 npm run dev -- -p 3021
 ```
 
@@ -204,7 +212,7 @@ Every layout change is gated by `isSteps`, so the classic editor renders exactly
 ### 4.6 Tests and checks that pass
 
 ```bash
-cd D:/DKPlayground/werkcv-app-redesign
+cd D:/DKPlayground/werkcv
 node node_modules/typescript/bin/tsc --noEmit -p .
 npx eslint components/app app/mijn-cvs app/en/my-cvs app/editor app/cover-letter app/success lib/app-v2.ts lib/app-v2-paths.ts lib/editor-steps.ts
 npx tsx --test lib/app-v2.test.ts lib/editor-steps.test.ts app/editor/templates/section-layout.test.tsx lib/cv-sections.test.ts lib/cv-empty.test.ts lib/pdf-section-order.test.ts scripts/workspace-boundary.test.ts
