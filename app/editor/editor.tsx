@@ -494,6 +494,9 @@ export default function Editor({
     const [mobilePreviewScale, setMobilePreviewScale] = useState(0.42);
     const [isMobilePreviewOpen, setIsMobilePreviewOpen] = useState(false);
     const [isFinalPdfPreviewOpen, setIsFinalPdfPreviewOpen] = useState(false);
+    // Pages of the real PDF while the final PDF view is open. Kept apart from the live preview's count,
+    // which uses a different renderer and kept overwriting it (e.g. "3 pages" for a 2-page PDF).
+    const [finalPdfPageCount, setFinalPdfPageCount] = useState<number | null>(null);
     const [editorPaneWidth, setEditorPaneWidth] = useState(DEFAULT_EDITOR_PANE_WIDTH);
     const [panePreferenceLoaded, setPanePreferenceLoaded] = useState(false);
     const [isDesktopSplit, setIsDesktopSplit] = useState(false);
@@ -2974,13 +2977,13 @@ export default function Editor({
                     isSaved={isSaved}
                     isSaving={!isSaved}
                     isDownloading={isDownloading}
-                    pageCount={pageCount}
+                    pageCount={finalPdfPageCount ?? pageCount}
                     source="desktop_preview_header"
                     uiLanguage={uiLanguage}
-                    onClose={() => setIsFinalPdfPreviewOpen(false)}
-                    onContinueEditing={() => setIsFinalPdfPreviewOpen(false)}
+                    onClose={() => { setIsFinalPdfPreviewOpen(false); setFinalPdfPageCount(null); }}
+                    onContinueEditing={() => { setIsFinalPdfPreviewOpen(false); setFinalPdfPageCount(null); }}
                     onDownload={() => handleDownload("toolbar")}
-                    onPageCountChange={setPageCount}
+                    onPageCountChange={setFinalPdfPageCount}
                     onSelectTemplate={handleTemplateChange}
                     onSelectTheme={handleColorThemeChange}
                     downloadLabel={showsDownloadPrice

@@ -4,45 +4,10 @@ import { useCallback, useState } from "react";
 import type { CVData } from "@/lib/cv";
 import Preview, { type PreviewLayout } from "./preview";
 import { LinkTextProvider } from "./templates/link-utils";
+import { A4_HEIGHT_PX, CONTINUED_PAGE_TOP_PADDING_PX, calculatePageBreaks } from "@/lib/preview-pagination";
 
 export const A4_WIDTH_PX = 794;
-export const A4_HEIGHT_PX = 1123;
-const CONTINUED_PAGE_TOP_PADDING_PX = 38;
-const MAX_PREVIEW_PAGES = 100;
-
-function calculatePageBreaks(layout: PreviewLayout): number[] {
-  const height = Math.max(A4_HEIGHT_PX, layout.height);
-  const ranges = layout.breakAvoidRanges
-    .filter((range) => range.top > 0 && range.bottom > range.top)
-    .sort((a, b) => a.top - b.top);
-  const pageBreaks = [0];
-  let pageStart = 0;
-
-  while (pageBreaks.length < MAX_PREVIEW_PAGES) {
-    const firstPage = pageBreaks.length === 1;
-    const pageCapacity = firstPage
-      ? A4_HEIGHT_PX
-      : A4_HEIGHT_PX - CONTINUED_PAGE_TOP_PADDING_PX;
-    const nominalNextBreak = pageStart + pageCapacity;
-
-    if (nominalNextBreak >= height - 1) break;
-
-    const crossingRange = ranges.find((range) => (
-      range.top > pageStart + 1
-      && range.top < nominalNextBreak
-      && range.bottom > nominalNextBreak
-      && range.bottom - range.top <= pageCapacity
-    ));
-    const nextBreak = crossingRange?.top ?? nominalNextBreak;
-
-    if (nextBreak <= pageStart + 1) break;
-
-    pageBreaks.push(nextBreak);
-    pageStart = nextBreak;
-  }
-
-  return pageBreaks;
-}
+export { A4_HEIGHT_PX };
 
 interface ScaledCvPreviewProps {
   data: CVData;
