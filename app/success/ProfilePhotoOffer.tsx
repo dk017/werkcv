@@ -9,7 +9,7 @@ import { profilePhotoPrice } from "@/lib/site-content";
  * AI profile photo offer after a CV purchase. 7 in 10 buyers put a photo on their CV (44 of 63
  * buyers, June–Sept 2026); the offer starts from that photo and puts the result back on this CV.
  */
-export default function ProfilePhotoOffer({ cvId, language, cvPhoto }: { cvId: string; language: "nl" | "en"; cvPhoto: string | null }) {
+export default function ProfilePhotoOffer({ cvId, language, cvPhoto, inApp = false }: { cvId: string; language: "nl" | "en"; cvPhoto: string | null; inApp?: boolean }) {
   const tr = (dutch: string, english: string) => (language === "en" ? english : dutch);
   const price = language === "en" ? profilePhotoPrice.displayEn : profilePhotoPrice.display;
   const context = { location: "success_page" as const, cvId, has_photo: Boolean(cvPhoto), uiLanguage: language };
@@ -45,7 +45,7 @@ export default function ProfilePhotoOffer({ cvId, language, cvPhoto }: { cvId: s
         </div>
       </div>
       <a
-        href={getProfilePhotoToolPath(language, cvId, "success_page")}
+        href={getProfilePhotoToolPath(language, cvId, "success_page", inApp ? "app" : "public")}
         onClick={() => track("profile_photo_offer_clicked", context)}
         className="mt-4 block w-full rounded-full border border-teal-700 bg-white px-6 py-3 text-center text-sm font-bold text-teal-900 transition hover:bg-teal-100"
       >

@@ -843,7 +843,7 @@ export default function Editor({
                 return;
             }
         }
-        window.location.href = getProfilePhotoToolPath(isEnglish ? "en" : "nl", id, "editor_photo_card");
+        window.location.href = getProfilePhotoToolPath(isEnglish ? "en" : "nl", id, "editor_photo_card", isSteps ? "app" : "public");
     };
 
     const openUploader = useCallback((source: CvUploadSource) => {

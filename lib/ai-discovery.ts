@@ -359,7 +359,7 @@ export const primaryAiPages = [
   },
 ];
 
-const englishAiFaqItems = [
+export const englishAiFaqItems = [
   {
     question: "What is WerkCV CV Builder?",
     answer:

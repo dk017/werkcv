@@ -177,7 +177,7 @@ export default function CvCheckTool({
   initialShowVacancy?: boolean;
   /** "text" opens the paste field first (e.g. for text copied from ChatGPT). */
   initialInputMode?: InputMode;
-  entry?: "direct" | "vacancy_page" | "vacancy_mode" | "chatgpt_guide";
+  entry?: "direct" | "vacancy_page" | "vacancy_mode" | "chatgpt_guide" | "app" | "app_vacancy";
   methodologyHref: string;
   editorHref: string;
 }) {

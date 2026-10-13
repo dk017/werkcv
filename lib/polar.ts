@@ -1,3 +1,4 @@
+import { profilePhotoToolAnchor, profilePhotoToolBase, type ProfilePhotoReturnTarget } from '@/lib/profile-photo-cv';
 import { getEditorPathForLanguage, getSuccessPathForLanguage } from "@/lib/editor-path";
 import { ResumeLanguage } from "@/lib/resume-language";
 
@@ -161,7 +162,7 @@ export async function buildCheckoutURL(
     return checkout.url;
 }
 
-export async function buildProfilePhotoCheckoutURL(projectId: string, email: string): Promise<string> {
+export async function buildProfilePhotoCheckoutURL(projectId: string, email: string, returnTarget: ProfilePhotoReturnTarget = 'public_nl'): Promise<string> {
     if (!POLAR_ACCESS_TOKEN) {
         throw new Error('POLAR_ACCESS_TOKEN is not configured');
     }
@@ -170,8 +171,9 @@ export async function buildProfilePhotoCheckoutURL(projectId: string, email: str
     }
 
     const body: Record<string, unknown> = {
-        success_url: `${APP_URL}/profielfoto-cv-maken?project=${encodeURIComponent(projectId)}&paid=1#profielfoto-tool`,
-        return_url: `${APP_URL}/profielfoto-cv-maken#profielfoto-tool`,
+        // Back to the page the checkout started from (public tool or the app), from a fixed list.
+        success_url: `${APP_URL}${profilePhotoToolBase(returnTarget)}?project=${encodeURIComponent(projectId)}&paid=1${profilePhotoToolAnchor(returnTarget)}`,
+        return_url: `${APP_URL}${profilePhotoToolBase(returnTarget)}${profilePhotoToolAnchor(returnTarget)}`,
         currency: POLAR_CHECKOUT_CURRENCY,
         products: [POLAR_PRODUCT_ID_PROFILE_PHOTO],
         customer_email: email,

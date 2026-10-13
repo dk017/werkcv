@@ -7,7 +7,7 @@ import { Icon, type IconName } from '@/components/app/icons';
 import { NewCvDialogProvider, useNewCvDialog } from '@/components/app/NewCvDialog';
 import { appPaths, type AppLocale } from '@/lib/app-v2-paths';
 
-export type AppSection = 'cvs' | 'letters' | 'jobs' | 'applications' | 'none';
+export type AppSection = 'cvs' | 'letters' | 'jobs' | 'applications' | 'cvCheck' | 'vacancyMatch' | 'profilePhoto' | 'examples' | 'help' | 'account' | 'none';
 
 // "responsive": icon rail from 520px, full sidebar with labels from 1280px.
 // "rail": always the icon rail (the editor needs the width for the form and preview).
@@ -25,12 +25,12 @@ function navFor(locale: AppLocale) {
         { href: paths.applications, label: en ? 'My applications' : 'Mijn sollicitaties', icon: 'check', section: 'applications' },
     ];
     const tools: NavItem[] = [
-        { href: paths.cvCheck, label: en ? 'CV check' : 'CV-check', icon: 'shieldCheck' },
-        { href: paths.vacancyMatch, label: en ? 'Job match' : 'Vacature-match', icon: 'target' },
-        { href: paths.profilePhoto, label: en ? 'Profile photo' : 'Profielfoto', icon: 'camera' },
-        { href: paths.examples, label: en ? 'Examples' : 'Voorbeelden', icon: 'grid' },
+        { href: paths.cvCheck, label: en ? 'CV check' : 'CV-check', icon: 'shieldCheck', section: 'cvCheck' },
+        { href: paths.vacancyMatch, label: en ? 'Job match' : 'Vacature-match', icon: 'target', section: 'vacancyMatch' },
+        { href: paths.profilePhoto, label: en ? 'Profile photo' : 'Profielfoto', icon: 'camera', section: 'profilePhoto' },
+        { href: paths.examples, label: en ? 'Examples' : 'Voorbeelden', icon: 'grid', section: 'examples' },
     ];
-    const help: NavItem = { href: paths.help, label: en ? 'Help' : 'Hulp', icon: 'help' };
+    const help: NavItem = { href: paths.help, label: en ? 'Help' : 'Hulp', icon: 'help', section: 'help' };
     return { main, tools, help };
 }
 
@@ -145,19 +145,28 @@ function NavContent({ active, email, locale, mode }: { active: AppSection; email
                 {nav.main.map((item) => <NavLink key={item.href} item={item} active={item.section === active} mode={mode} />)}
                 <div className="mx-2 my-2.5 h-px bg-[#e6ebe7]" />
                 <p className={`mx-3 mb-1 text-[11px] font-extrabold uppercase tracking-[0.12em] text-[var(--wk-ink-muted)] ${m ? m.toolsHeading : ''}`}>Tools</p>
-                {nav.tools.map((item) => <NavLink key={item.href} item={item} active={false} mode={mode} />)}
+                {nav.tools.map((item) => <NavLink key={item.href} item={item} active={item.section === active} mode={mode} />)}
             </nav>
             <div className="mt-auto flex flex-col gap-0.5 pt-6">
-                <NavLink item={nav.help} active={false} mode={mode} />
+                <NavLink item={nav.help} active={active === 'help'} mode={mode} />
                 <div className={`mt-2 flex items-center gap-2.5 border-t border-[#e6ebe7] pt-3 ${m ? `${m.account} ${mode === 'responsive' ? 'px-0 xl:px-3' : 'px-0'}` : 'px-3'}`}>
-                    <span
-                        title={email}
-                        aria-hidden="true"
-                        className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--wk-primary)] text-[13px] font-extrabold uppercase text-white"
+                    <Link
+                        href={appPaths(locale).account}
+                        aria-current={active === 'account' ? 'page' : undefined}
+                        aria-label={`Account: ${email}`}
+                        title={`Account (${email})`}
+                        className={`flex min-h-11 min-w-0 flex-1 items-center gap-2.5 rounded-[10px] ${m ? m.account : ''} ${active === 'account' ? 'bg-[var(--wk-accent-soft)]' : 'hover:bg-[var(--wk-surface-subtle)]'}`}
                     >
-                        {email.slice(0, 1) || '?'}
-                    </span>
-                    <span className={`min-w-0 flex-1 truncate text-[13px] text-[#3c4744] ${m ? m.email : ''}`} title={email}>{email}</span>
+                        <span
+                            aria-hidden="true"
+                            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--wk-primary)] text-[13px] font-extrabold uppercase text-white"
+                        >
+                            {email.slice(0, 1) || '?'}
+                        </span>
+                        <span className={`min-w-0 flex-1 truncate text-[13px] text-[#3c4744] ${m ? m.email : ''}`}>
+                            {email}
+                        </span>
+                    </Link>
                     <LogoutButton locale={locale} />
                 </div>
             </div>

@@ -4,7 +4,7 @@ import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { track } from "@/lib/analytics";
 import { profilePhotoPrice } from "@/lib/site-content";
-import { CV_PHOTO_SIZE, cvPhotoCrop, readReturnCv, rememberReturnCv } from "@/lib/profile-photo-cv";
+import { CV_PHOTO_SIZE, cvPhotoCrop, profilePhotoReturnTarget, profilePhotoToolAnchor, profilePhotoToolBase, readReturnCv, rememberReturnCv, type ProfilePhotoToolContext } from "@/lib/profile-photo-cv";
 import { applyProfilePhotoToCv, getCvPhotoForProfilePhoto } from "./actions";
 
 type GeneratedImage = {
@@ -218,12 +218,16 @@ function getStatusCopy(
   };
 }
 
-export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguage?: "nl" | "en" }) {
+export default function ProfilePhotoGenerator({ uiLanguage = "nl", context = "public" }: { uiLanguage?: "nl" | "en"; context?: ProfilePhotoToolContext }) {
   const tr = (dutch: string, english: string) => (uiLanguage === "en" ? english : dutch);
-  const pagePath = uiLanguage === "en" ? "/en/profile-photo" : "/profielfoto-cv-maken";
-  const pageAnchorPath = `${pagePath}#profielfoto-tool`;
+  // "app": the same tool inside the signed-in app; login and checkout return there.
+  const returnTarget = profilePhotoReturnTarget(uiLanguage, context);
+  const pagePath = profilePhotoToolBase(returnTarget);
+  const pageAnchorPath = `${pagePath}${profilePhotoToolAnchor(returnTarget)}`;
   const editorPath = uiLanguage === "en" ? "/en/editor" : "/editor";
-  const templatesPath = uiLanguage === "en" ? "/en/templates" : "/templates";
+  const inApp = context === "app";
+  // In the app the secondary action goes back to the dashboard instead of the public template gallery.
+  const templatesPath = inApp ? (uiLanguage === "en" ? "/en/my-cvs" : "/mijn-cvs") : uiLanguage === "en" ? "/en/templates" : "/templates";
   const sourcePhotoGuidePath =
     uiLanguage === "en"
       ? "/en/ai-headshot-photo-requirements"
@@ -678,7 +682,7 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
       const response = await fetch("/api/profile-photo/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ projectId: project.id }),
+        body: JSON.stringify({ projectId: project.id, returnTo: returnTarget }),
       });
       const payload = (await response.json()) as { url?: string; error?: string };
 
@@ -772,6 +776,7 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
                 </div>
                 <Link
                   href={sourcePhotoGuidePath}
+                  {...(inApp ? { target: "_blank", rel: "noopener" } : {})}
                   className="mb-5 inline-flex text-xs font-black text-slate-700 underline decoration-2 underline-offset-4 hover:text-black"
                   onClick={() =>
                     track("landing_cta_click", {
@@ -1335,7 +1340,7 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl" }: { uiLanguag
                       href={templatesPath}
                       className="inline-flex flex-1 items-center justify-center border-2 border-black bg-white px-4 py-3 text-sm font-black text-black"
                     >
-                      {tr("Bekijk templates", "View templates")}
+                      {inApp ? tr("Naar mijn CV's", "Go to my CVs") : tr("Bekijk templates", "View templates")}
                     </Link>
                   </div>
                 </div>

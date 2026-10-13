@@ -46,9 +46,11 @@ export default async function SuccessPage({
   const resolvedLanguage = requestedLanguage ?? getResumeLanguage(cv);
   const editorPath = getEditorPathForLanguage(resolvedLanguage, cvId);
   const hasProfilePhotoBundle = bundle === "profile-photo";
-  const profilePhotoPath = resolvedLanguage === "en"
-    ? "/en/profile-photo#profielfoto-tool"
-    : "/profielfoto-cv-maken#profielfoto-tool";
+  const profilePhotoPath = appHome
+    ? appPaths(resolvedLanguage).profilePhoto
+    : resolvedLanguage === "en"
+      ? "/en/profile-photo#profielfoto-tool"
+      : "/profielfoto-cv-maken#profielfoto-tool";
   const paidOrder = await prisma.order.findFirst({
     where: { cvId, paidAt: { not: null } },
     orderBy: { paidAt: "desc" },
@@ -70,6 +72,7 @@ export default async function SuccessPage({
       hasProfilePhotoBundle={hasProfilePhotoBundle}
       initialOrder={paidOrder}
       profilePhotoOffer={hasProfilePhotoBundle || hasPaidProfilePhoto ? null : { cvPhoto }}
+      inApp={Boolean(appHome)}
     />
   );
 

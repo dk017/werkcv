@@ -13,11 +13,20 @@ export function appPaths(locale: AppLocale) {
     // The app's own cover letter workspace; the classic /sollicitatiebrief and /en/cover-letter stay as they are.
     coverLetter: (cvId: string) => `${en ? "/en/my-cvs/letter" : "/mijn-cvs/brief"}?id=${encodeURIComponent(cvId)}`,
     classicCoverLetter: (cvId: string) => `${en ? "/en/cover-letter" : "/sollicitatiebrief"}?id=${encodeURIComponent(cvId)}`,
-    cvCheck: en ? "/en/cv-check" : "/cv-check",
-    vacancyMatch: en ? "/en/cv-check/job-match" : "/cv-check/vacature",
-    profilePhoto: en ? "/en/profile-photo" : "/profielfoto-cv-maken",
-    examples: en ? "/en/dutch-cv-examples" : "/cv-voorbeelden",
-    help: en ? "/contact" : "/faq",
+    // Tools, help and account open inside the app frame. The public SEO pages stay as they are (publicTools).
+    cvCheck: en ? "/en/my-cvs/cv-check" : "/mijn-cvs/cv-check",
+    vacancyMatch: en ? "/en/my-cvs/job-match" : "/mijn-cvs/vacature-match",
+    profilePhoto: en ? "/en/my-cvs/profile-photo" : "/mijn-cvs/profielfoto",
+    examples: en ? "/en/my-cvs/examples" : "/mijn-cvs/voorbeelden",
+    help: en ? "/en/my-cvs/help" : "/mijn-cvs/hulp",
+    account: en ? "/en/my-cvs/account" : "/mijn-cvs/account",
+    publicTools: {
+      cvCheck: en ? "/en/cv-check" : "/cv-check",
+      vacancyMatch: en ? "/en/cv-check/job-match" : "/cv-check/vacature",
+      profilePhoto: en ? "/en/profile-photo" : "/profielfoto-cv-maken",
+      examples: en ? "/en/dutch-cv-examples" : "/cv-voorbeelden",
+      help: en ? "/contact" : "/faq",
+    },
   };
 }
 

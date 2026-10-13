@@ -407,3 +407,45 @@ Steps mode only; classic class strings are kept byte-for-byte (moved into `class
 Still open from 6B: step highlight inside the phone preview dialog, larger template gallery
 cards and a proper `template_selected` source for the inline gallery, `CvScoreWidget` /
 `KeywordScannerWidget` internals, phone photo toggle.
+
+## 12. "Never leave the app": login routing, in-app tools, account (13 October 2026)
+
+Owner's requirement: once signed in, the user stays inside the app frame; the same applies when
+arriving from other pages through login, signup or a handoff.
+
+**Login and handoffs** (commit `256485e`), all behind `isAppV2Active()` unless noted:
+- `lib/app-v2-entry.ts` (+ tests): generic destinations (`/`, `/editor`, `/editor?template=professional`,
+  `/templates`, `/prijzen`, none) → dashboard in the right language; specific ones (editor id,
+  template + startSource, claim, handoff, success) are kept. Used by `app/api/auth/verify-code` and
+  `app/login/page.tsx` (signed-in users skip the form).
+- `lib/auth/safe-return-path.ts` now allows `/en/my-cvs`, `/sollicitatiebrief`, `/en/cover-letter`,
+  `/profielfoto-cv-maken`, `/en/profile-photo` (flag-independent bug fix: these used to fall back to
+  a new blank Dutch draft).
+- Classic cover letter routes forward to the app letter workspace; `/success` dead ends,
+  `/cv-handoff` Cancel and claim-error links go to the dashboard.
+
+**In-app tools, help and account** (`appPaths()` now points here; public SEO pages unchanged and
+still reachable via `appPaths().publicTools`; every route falls back to its public page when the flag is off):
+
+| NL | EN | Content |
+|---|---|---|
+| `/mijn-cvs/cv-check` | `/en/my-cvs/cv-check` | `CvCheckTool`, `entry="app"`, editor link straight to `/editor?…startSource=cv_check` (keeps the file handoff) |
+| `/mijn-cvs/vacature-match` | `/en/my-cvs/job-match` | same tool, vacancy mode, `entry="app_vacancy"` |
+| `/mijn-cvs/profielfoto` | `/en/my-cvs/profile-photo` | `ProfilePhotoGenerator context="app"`; login/checkout return here |
+| `/mijn-cvs/voorbeelden` | `/en/my-cvs/examples` | gallery from the examples registry (+ 4 English role examples), `startSource=app_examples` |
+| `/mijn-cvs/hulp` | `/en/my-cvs/help` | product FAQ (NL) / English consumer FAQ, contact by email |
+| `/mijn-cvs/account` | `/en/my-cvs/account` | email, paid orders (by email or CV), app language, log out, deletion by email |
+
+- Profile photo checkout: `returnTo` is one of `public_nl | public_en | app_nl | app_en`
+  (`parseProfilePhotoReturnTarget`, unknown → `public_nl`, so no open redirect). Side effect: the
+  public English page now returns English buyers to `/en/profile-photo` instead of the Dutch page.
+- Editor photo card (steps mode) and the success-page photo offer (flag on) open the in-app tool.
+- Sidebar: tools and Help have active states; the email row is the link to Account.
+
+**Verified** (local, Puppeteer): crawler from every app screen (NL+EN) — all links stay in the
+frame except deliberate new-tab links; 25 login journeys incl. flag off; "use this example" lands in
+the editor; editor photo card → in-app tool with `cvId`; flag-off fallbacks; CV-check at 390 px.
+
+**Known gaps:** the profile photo generator keeps its neo-brutalist styling inside the app; the
+CV-check methodology link opens the public page; claim (`/editor/claim`) and `/cv-handoff` screens
+are transitional pages without the frame; logout goes to the marketing home (intended).

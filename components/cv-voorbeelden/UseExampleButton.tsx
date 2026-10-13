@@ -90,7 +90,7 @@ export function UseExampleButton({
             });
             router.push(`${editorPath}?${editorParams.toString()}`);
         } catch {
-            setErrorMessage('Het ingevulde voorbeeld kon niet worden geopend. Probeer het opnieuw.');
+            setErrorMessage(uiLanguage === 'en' ? 'The example could not be opened. Please try again.' : 'Het ingevulde voorbeeld kon niet worden geopend. Probeer het opnieuw.');
             setIsLoading(false);
             requestInFlightRef.current = false;
         }

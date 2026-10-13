@@ -18,13 +18,42 @@ export function isCvPhotoDataUrl(value: unknown): value is string {
   );
 }
 
-export function getProfilePhotoToolPath(locale: "nl" | "en", cvId: string | null, location?: ProfilePhotoOfferLocation): string {
-  const base = locale === "en" ? "/en/profile-photo" : "/profielfoto-cv-maken";
+/** Where the tool lives: the public SEO page, or inside the signed-in app (app v2). */
+export type ProfilePhotoToolContext = "public" | "app";
+/** Fixed list of checkout return targets, so the return URL can never be chosen freely. */
+export const PROFILE_PHOTO_RETURN_TARGETS = ["public_nl", "public_en", "app_nl", "app_en"] as const;
+export type ProfilePhotoReturnTarget = (typeof PROFILE_PHOTO_RETURN_TARGETS)[number];
+
+export function profilePhotoReturnTarget(locale: "nl" | "en", context: ProfilePhotoToolContext): ProfilePhotoReturnTarget {
+  return `${context}_${locale}` as ProfilePhotoReturnTarget;
+}
+
+export function parseProfilePhotoReturnTarget(value: unknown): ProfilePhotoReturnTarget {
+  return (PROFILE_PHOTO_RETURN_TARGETS as readonly unknown[]).includes(value) ? value as ProfilePhotoReturnTarget : "public_nl";
+}
+
+/** The tool page without query or anchor. */
+export function profilePhotoToolBase(target: ProfilePhotoReturnTarget): string {
+  switch (target) {
+    case "app_nl": return "/mijn-cvs/profielfoto";
+    case "app_en": return "/en/my-cvs/profile-photo";
+    case "public_en": return "/en/profile-photo";
+    default: return "/profielfoto-cv-maken";
+  }
+}
+
+/** The public pages scroll to the tool section; in the app the tool is the page. */
+export function profilePhotoToolAnchor(target: ProfilePhotoReturnTarget): string {
+  return target.startsWith("public") ? "#profielfoto-tool" : "";
+}
+
+export function getProfilePhotoToolPath(locale: "nl" | "en", cvId: string | null, location?: ProfilePhotoOfferLocation, context: ProfilePhotoToolContext = "public"): string {
+  const target = profilePhotoReturnTarget(locale, context);
   const params = new URLSearchParams();
   if (cvId) params.set("cvId", cvId);
   if (location) params.set("bron", location);
   const query = params.toString();
-  return `${base}${query ? `?${query}` : ""}#profielfoto-tool`;
+  return `${profilePhotoToolBase(target)}${query ? `?${query}` : ""}${profilePhotoToolAnchor(target)}`;
 }
 
 // The CV the person came from has to survive the login and payment redirects (same tab).

@@ -29,6 +29,8 @@ type Props = {
   initialOrder: PaidOrder | null;
   /** Null when the buyer already has the AI profile photo. */
   profilePhotoOffer?: { cvPhoto: string | null } | null;
+  /** App v2: the profile photo tool opens inside the app. */
+  inApp?: boolean;
 };
 
 const MAX_ATTEMPTS = 20;
@@ -41,6 +43,7 @@ export default function PurchaseSuccessActions({
   hasProfilePhotoBundle,
   initialOrder,
   profilePhotoOffer = null,
+  inApp = false,
 }: Props) {
   const [order, setOrder] = useState<PaidOrder | null>(initialOrder);
   const [timedOut, setTimedOut] = useState(false);
@@ -200,7 +203,7 @@ export default function PurchaseSuccessActions({
       ) : (
         <div className="space-y-4">
           <PdfDownloadButton cvId={cvId} language={language} className="block w-full rounded-full bg-gray-900 px-6 py-3 text-sm font-bold text-white shadow-md transition hover:bg-black" />
-          {profilePhotoOffer ? <ProfilePhotoOffer cvId={cvId} language={language} cvPhoto={profilePhotoOffer.cvPhoto} /> : null}
+          {profilePhotoOffer ? <ProfilePhotoOffer cvId={cvId} language={language} cvPhoto={profilePhotoOffer.cvPhoto} inApp={inApp} /> : null}
           <Link href={editorPath} className="block w-full rounded-full bg-gray-100 px-6 py-3 text-sm font-bold text-gray-700 transition hover:bg-gray-200">
             {tr("Terug naar editor", "Back to editor")}
           </Link>

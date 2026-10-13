@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { buildProfilePhotoCheckoutURL } from "@/lib/polar";
 import { profilePhotoPrice } from "@/lib/site-content";
 import { reportOpsIncident } from "@/lib/ops-alerts";
+import { parseProfilePhotoReturnTarget, profilePhotoToolBase } from "@/lib/profile-photo-cv";
 
 export async function POST(request: NextRequest) {
   const user = await getCurrentUserFromRequest(request);
@@ -13,7 +14,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "AUTH_REQUIRED" }, { status: 401 });
   }
 
-  const body = await request.json().catch(() => ({})) as { projectId?: string };
+  const body = await request.json().catch(() => ({})) as { projectId?: string; returnTo?: unknown };
+  const returnTarget = parseProfilePhotoReturnTarget(body.returnTo);
   const projectId = typeof body.projectId === "string" ? body.projectId : "";
 
   if (!projectId) {
@@ -40,12 +42,12 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const url = await buildProfilePhotoCheckoutURL(project.id, user.email);
+    const url = await buildProfilePhotoCheckoutURL(project.id, user.email, returnTarget);
 
     await prisma.analyticsEvent.create({
       data: {
         event: "profile_photo_checkout_started",
-        path: "/profielfoto-cv-maken",
+        path: profilePhotoToolBase(returnTarget),
         properties: {
           projectId: project.id,
           product: "profile-photo",
