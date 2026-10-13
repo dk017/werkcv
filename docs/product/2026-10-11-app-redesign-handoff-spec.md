@@ -484,3 +484,34 @@ production-mode render via 127.0.0.1. QA scripts live outside the repo (`D:\DKPl
 `PDF_RENDERER=react` in `/opt/werkcv/.env` and recreate the app container; watch logs for
 `pdf_render_fallback`. Customers then receive the design they chose; previously generated PDFs differ.
 Not changed: agency/MatchPack PDFs (`lib/agency-submission-pdf.ts`).
+
+## 14. Experiment: edit in place in Afronden (13 October 2026)
+
+Owner: "let's try it; if it works fine we keep it, else we revert". One commit, so `git revert <hash>`
+removes it completely.
+
+**Research:** ResumAI and Rezi edit directly in the Finish Up preview (Rezi docs: "make edits
+directly from the preview page or return to any section"), next to font/spacing controls and
+Auto-Adjust; Enhancv calls its editor a "live editing canvas"; Kickresume, Resume.io and CVmaker.nl
+use forms with a non-editable preview. Technical: React re-rendering a focused contenteditable
+moves the caret; `contenteditable="plaintext-only"` has ~97% support (Firefox ≥136), so paste is
+also forced to plain text; editable regions need role=textbox + an accessible name (WCAG 4.1.2).
+
+**Built (steps mode, Afronden, desktop preview; toggle "Direct bewerken", default on, remembered in
+localStorage `werkcv_inline_edit_v1`):**
+- `app/editor/templates/inline-edit.tsx`: `<Editable>` renders the plain value unless an
+  `InlineEditProvider` is present, so thumbnails, gallery, normal preview and PDF are unchanged
+  (verified: identical PDF text and page counts for all 13 templates). Uncontrolled while focused
+  (no caret jumps); Escape restores; Enter in a bullet adds one, Backspace on an empty bullet removes it.
+- Editable: name, job title, profile, filled contact fields, role/company/location/dates/description
+  of jobs, internships and education, bullets, skills, languages. Other sections stay click-to-edit
+  via the steps (navigation is off while editing; toggle off restores it).
+- `ScaledCvPreview editable`: one continuous document with "Pagina N" markers (the paginated view
+  renders a copy per page, which would duplicate every field).
+- Writes via `setValue` → same autosave as the forms. Analytics: `cta_clicked` with location
+  `editor_inline_edit`, labels `toggle_on|toggle_off|first_edit`.
+- Bullet/skill keys are now positional (text keys remounted the field on each keystroke).
+
+**Verified:** 11/11 browser checks on a fictional CV (caret stays mid-word, Enter/Backspace bullets,
+Escape, plain paste, autosave in the database, toggle off, no console errors).
+Not done (phase 2/3): adding/removing whole entries in the page, a layout toolbar, mobile.

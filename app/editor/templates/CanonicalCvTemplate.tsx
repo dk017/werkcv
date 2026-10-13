@@ -6,6 +6,7 @@ import { cvSectionHasSubstantiveContent, resolveCvSectionLayout, type CvBodySect
 import { OrderedSectionContainer } from "./section-layout";
 import { LinkText } from "./link-utils";
 import { CvDocumentHeading } from "./document-heading";
+import { Editable, InlineSeparator, WhenFilledOrEditing } from "./inline-edit";
 
 export type TemplateVisualStyle = {
     id: string;
@@ -51,30 +52,31 @@ function headingClass(style: TemplateVisualStyle["heading"]) {
     return `${base} border-b`;
 }
 
-function ArrayList({ items }: { items: string[] }) {
-    return <ul className="list-disc space-y-1 pl-5 text-[11.5px] leading-[1.5]">{items.map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ul>;
+function ArrayList({ items, listPath }: { items: string[]; listPath?: string }) {
+    return <ul className="list-disc space-y-1 pl-5 text-[11.5px] leading-[1.5]">{items.map((item, index) => <li key={index}>{listPath ? <Editable path={`${listPath}.${index}`} value={item} field="bullet" list={{ path: listPath, index }} /> : item}</li>)}</ul>;
 }
 
 function RatedItems({ items, style }: { items: Array<{ name: string; level?: number }>; style: TemplateVisualStyle["skills"] }) {
-    if (style === "plain") return <div className="space-y-1 text-[11.5px]">{items.map((item, index) => <div key={`${item.name}-${index}`}>{item.name}</div>)}</div>;
-    if (style === "bars") return <div className="space-y-2">{items.map((item, index) => <div key={`${item.name}-${index}`}><div className="mb-1 text-[11px]">{item.name}</div><div className="h-1.5 rounded-full bg-current opacity-20"><div className="h-full rounded-full bg-current opacity-80" style={{ width: `${Math.max(20, Math.min(100, (item.level ?? 3) * 20))}%` }} /></div></div>)}</div>;
-    if (style === "dots") return <div className="space-y-2">{items.map((item, index) => <div key={`${item.name}-${index}`} className="flex items-center justify-between gap-3 text-[11px]"><span>{item.name}</span><span className="flex gap-1" aria-label={`${item.level ?? 3} / 5`}>{[1, 2, 3, 4, 5].map((dot) => <span key={dot} className={`h-1.5 w-1.5 rounded-full border ${dot <= (item.level ?? 3) ? "bg-current" : "opacity-30"}`} />)}</span></div>)}</div>;
-    return <div className="flex flex-wrap gap-2">{items.map((item, index) => <span key={`${item.name}-${index}`} className="rounded-full px-3 py-1 text-[11px] font-medium" style={{ backgroundColor: "var(--cv-soft)", color: "var(--cv-primary)" }}>{item.name}</span>)}</div>;
+    const name = (item: { name: string }, index: number) => <Editable path={`skills.${index}.name`} value={item.name} field="skill" />;
+    if (style === "plain") return <div className="space-y-1 text-[11.5px]">{items.map((item, index) => <div key={index}>{name(item, index)}</div>)}</div>;
+    if (style === "bars") return <div className="space-y-2">{items.map((item, index) => <div key={index}><div className="mb-1 text-[11px]">{name(item, index)}</div><div className="h-1.5 rounded-full bg-current opacity-20"><div className="h-full rounded-full bg-current opacity-80" style={{ width: `${Math.max(20, Math.min(100, (item.level ?? 3) * 20))}%` }} /></div></div>)}</div>;
+    if (style === "dots") return <div className="space-y-2">{items.map((item, index) => <div key={index} className="flex items-center justify-between gap-3 text-[11px]"><span>{name(item, index)}</span><span className="flex gap-1" aria-label={`${item.level ?? 3} / 5`}>{[1, 2, 3, 4, 5].map((dot) => <span key={dot} className={`h-1.5 w-1.5 rounded-full border ${dot <= (item.level ?? 3) ? "bg-current" : "opacity-30"}`} />)}</span></div>)}</div>;
+    return <div className="flex flex-wrap gap-2">{items.map((item, index) => <span key={index} className="rounded-full px-3 py-1 text-[11px] font-medium" style={{ backgroundColor: "var(--cv-soft)", color: "var(--cv-primary)" }}>{name(item, index)}</span>)}</div>;
 }
 
 function SectionBody({ id, data, visualStyle }: { id: CvBodySectionId; data: CVData; visualStyle: TemplateVisualStyle }) {
     switch (id) {
         case "experience":
-            return <div className="space-y-4">{data.experience.map((item, index) => <article data-cv-entry={`experience:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div className="min-w-0"><h3 className="text-[13px] font-bold">{item.role}</h3><p className="text-[12px] text-current/65">{item.company}{item.location ? ` | ${item.location}` : ""}</p></div><span className="shrink-0 text-[11px] text-current/65">{dateRange(item.start, item.end)}</span></div>{item.description ? <p className="mt-1 text-[11.5px] leading-relaxed text-current/80">{item.description}</p> : null}{item.highlights?.length ? <ArrayList items={item.highlights} /> : null}</article>)}</div>;
+            return <div className="space-y-4">{data.experience.map((item, index) => <article data-cv-entry={`experience:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div className="min-w-0"><h3 className="text-[13px] font-bold"><Editable path={`experience.${index}.role`} value={item.role} field="role" /></h3><p className="text-[12px] text-current/65"><Editable path={`experience.${index}.company`} value={item.company} field="company" /><InlineSeparator show={Boolean(item.location)} text=" | " /><WhenFilledOrEditing value={item.location}><Editable path={`experience.${index}.location`} value={item.location} field="location" /></WhenFilledOrEditing></p></div><span className="shrink-0 text-[11px] text-current/65"><Editable path={`experience.${index}.start`} value={item.start} field="start" /><InlineSeparator show={Boolean(item.start && item.end)} text=" – " /><WhenFilledOrEditing value={item.end}><Editable path={`experience.${index}.end`} value={item.end} field="end" /></WhenFilledOrEditing></span></div>{item.description ? <p className="mt-1 text-[11.5px] leading-relaxed text-current/80"><Editable path={`experience.${index}.description`} value={item.description} field="description" /></p> : null}{item.highlights?.length ? <ArrayList items={item.highlights} listPath={`experience.${index}.highlights`} /> : null}</article>)}</div>;
         case "education":
-            return <div className="space-y-3">{data.education.map((item, index) => <article data-cv-entry={`education:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div><h3 className="text-[13px] font-bold">{item.degree}</h3><p className="text-[12px] text-current/65">{item.school}{item.location ? ` | ${item.location}` : ""}</p></div><span className="shrink-0 text-[11px] text-current/65">{dateRange(item.start, item.end)}</span></div>{item.description ? <p className="mt-1 text-[11.5px] leading-relaxed text-current/80">{item.description}</p> : null}</article>)}</div>;
+            return <div className="space-y-3">{data.education.map((item, index) => <article data-cv-entry={`education:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div><h3 className="text-[13px] font-bold"><Editable path={`education.${index}.degree`} value={item.degree} field="degree" /></h3><p className="text-[12px] text-current/65"><Editable path={`education.${index}.school`} value={item.school} field="school" /><InlineSeparator show={Boolean(item.location)} text=" | " /><WhenFilledOrEditing value={item.location}><Editable path={`education.${index}.location`} value={item.location} field="location" /></WhenFilledOrEditing></p></div><span className="shrink-0 text-[11px] text-current/65"><Editable path={`education.${index}.start`} value={item.start} field="start" /><InlineSeparator show={Boolean(item.start && item.end)} text=" – " /><WhenFilledOrEditing value={item.end}><Editable path={`education.${index}.end`} value={item.end} field="end" /></WhenFilledOrEditing></span></div>{item.description ? <p className="mt-1 text-[11.5px] leading-relaxed text-current/80"><Editable path={`education.${index}.description`} value={item.description} field="description" /></p> : null}</article>)}</div>;
         case "internships":
-            return <div className="space-y-4">{(data.internships ?? []).map((item, index) => <article data-cv-entry={`internships:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div><h3 className="text-[13px] font-bold">{item.role}</h3><p className="text-[12px] text-current/65">{item.company}{item.location ? ` | ${item.location}` : ""}</p></div><span className="shrink-0 text-[11px] text-current/65">{dateRange(item.start, item.end)}</span></div>{item.description ? <p className="mt-1 text-[11.5px] leading-relaxed text-current/80">{item.description}</p> : null}{item.highlights?.length ? <ArrayList items={item.highlights} /> : null}</article>)}</div>;
+            return <div className="space-y-4">{(data.internships ?? []).map((item, index) => <article data-cv-entry={`internships:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div><h3 className="text-[13px] font-bold"><Editable path={`internships.${index}.role`} value={item.role} field="role" /></h3><p className="text-[12px] text-current/65"><Editable path={`internships.${index}.company`} value={item.company} field="company" /><InlineSeparator show={Boolean(item.location)} text=" | " /><WhenFilledOrEditing value={item.location}><Editable path={`internships.${index}.location`} value={item.location} field="location" /></WhenFilledOrEditing></p></div><span className="shrink-0 text-[11px] text-current/65"><Editable path={`internships.${index}.start`} value={item.start} field="start" /><InlineSeparator show={Boolean(item.start && item.end)} text=" – " /><WhenFilledOrEditing value={item.end}><Editable path={`internships.${index}.end`} value={item.end} field="end" /></WhenFilledOrEditing></span></div>{item.description ? <p className="mt-1 text-[11.5px] leading-relaxed text-current/80"><Editable path={`internships.${index}.description`} value={item.description} field="description" /></p> : null}{item.highlights?.length ? <ArrayList items={item.highlights} listPath={`internships.${index}.highlights`} /> : null}</article>)}</div>;
         case "courses":
             return <div className="space-y-2">{data.courses.map((item, index) => <div key={index} className="flex justify-between gap-4 text-[11.5px]"><span className="font-semibold">{item.name}</span><span className="text-current/65">{item.institution}{item.year ? ` | ${item.year}` : ""}</span></div>)}</div>;
         case "awards": return <ArrayList items={data.awards} />;
         case "skills": return <RatedItems items={data.skills.map((item) => ({ name: item.name, level: item.level }))} style={visualStyle.skills} />;
-        case "languages": return <div className="space-y-1.5">{data.languages.map((item, index) => <div key={index} className="text-[11.5px]">{item.name}{item.level ? ` (${formatLanguageLevel(item.level, data)})` : ""}</div>)}</div>;
+        case "languages": return <div className="space-y-1.5">{data.languages.map((item, index) => <div key={index} className="text-[11.5px]"><Editable path={`languages.${index}.name`} value={item.name} field="language" />{item.level ? ` (${formatLanguageLevel(item.level, data)})` : ""}</div>)}</div>;
         case "interests": return <div className="flex flex-wrap gap-2">{(data.interests ?? []).map((item, index) => <span key={index} className="rounded px-2 py-1 text-[11px] text-current/80" style={{ backgroundColor: "var(--cv-soft)" }}>{item}</span>)}</div>;
         case "properties": return <ArrayList items={(data.properties ?? []).filter(Boolean)} />;
         case "references": return <div className="space-y-3">{(data.references ?? []).map((item, index) => <div key={index} className="text-[11.5px]"><strong>{item.name}</strong>{item.role || item.company ? <div className="text-current/65">{[item.role, item.company].filter(Boolean).join(" · ")}</div> : null}{item.email ? <div><LinkText value={item.email} /></div> : null}{item.phone ? <div>{item.phone}</div> : null}</div>)}</div>;
@@ -84,8 +86,10 @@ function SectionBody({ id, data, visualStyle }: { id: CvBodySectionId; data: CVD
 }
 
 function ContactDetails({ data, inline = false }: { data: CVData; inline?: boolean }) {
-    const values = [data.personal.email, data.personal.phone, data.personal.location, data.personal.address, data.personal.postalCode].filter((value): value is string => Boolean(value?.trim()));
-    const links = [data.personal.linkedIn, data.personal.github, data.personal.website].filter((value): value is string => Boolean(value?.trim()));
+    const contactFields = [
+        { key: "email", field: "email" }, { key: "phone", field: "phone" }, { key: "location", field: "city" }, { key: "address" }, { key: "postalCode" },
+        { key: "linkedIn", field: "linkedIn" }, { key: "github", field: "github" }, { key: "website", field: "website" },
+    ] as const;
     const personalDetails = [
         data.personal.birthDate || data.personal.birthPlace ? `${resumeText(data, "birthDateAndPlace")}: ${data.personal.birthDate || ""}${data.personal.birthPlace ? `, ${data.personal.birthPlace}` : ""}` : null,
         data.personal.nationality ? `${resumeText(data, "nationality")}: ${data.personal.nationality}` : null,
@@ -93,11 +97,13 @@ function ContactDetails({ data, inline = false }: { data: CVData; inline?: boole
         data.personal.gender ? `${resumeText(data, "gender")}: ${formatGender(data.personal.gender, data)}` : null,
         data.personal.maritalStatus ? `${resumeText(data, "maritalStatus")}: ${formatMaritalStatus(data.personal.maritalStatus, data)}` : null,
     ].filter((value): value is string => Boolean(value));
-    const contactValues = [...values, ...links];
+    const contactValues = contactFields
+        .map((entry) => ({ ...entry, value: data.personal[entry.key] }))
+        .filter((entry): entry is typeof entry & { value: string } => Boolean(entry.value?.trim()));
     return <div data-cv-edit="personal" className={inline ? "flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-current/75" : "space-y-1 text-[11px] text-current/75"}>
-        {contactValues.map((value, index) => <span key={`${value}-${index}`} className={inline ? "inline-flex min-w-0 items-center gap-3 break-words" : "block break-words"}>
+        {contactValues.map((entry, index) => <span key={entry.key} className={inline ? "inline-flex min-w-0 items-center gap-3 break-words" : "block break-words"}>
             {inline && index > 0 ? <span aria-hidden="true" className="text-current/50">·</span> : null}
-            <LinkText value={value} />
+            {"field" in entry ? <Editable path={`personal.${entry.key}`} value={entry.value} field={entry.field} fallback={<LinkText value={entry.value} />} /> : <LinkText value={entry.value} />}
         </span>)}
         {personalDetails.length > 0 ? <div className="mt-2 w-full space-y-0.5 text-[10px]">{personalDetails.map((value) => <div key={value}>{value}</div>)}</div> : null}
     </div>;
@@ -115,12 +121,11 @@ function Photo({ data, theme, visualStyle, centered = true }: { data: CVData; th
 }
 
 function Identity({ data, visualStyle, compact = false }: { data: CVData; visualStyle: TemplateVisualStyle; compact?: boolean }) {
-    return <div data-cv-edit="personal" className={visualStyle.headerAlign === "center" ? "text-center" : "text-left"}><CvDocumentHeading className={compact ? "text-xl font-bold leading-tight" : "text-[31px] font-extrabold leading-tight"}>{data.personal.name || resumeText(data, "nameFallback")}</CvDocumentHeading>{data.personal.title ? <p className={`${compact ? "text-xs" : "text-[15px]"} mt-1 font-medium text-current/65`}>{data.personal.title}</p> : null}</div>;
+    return <div data-cv-edit="personal" className={visualStyle.headerAlign === "center" ? "text-center" : "text-left"}><CvDocumentHeading className={compact ? "text-xl font-bold leading-tight" : "text-[31px] font-extrabold leading-tight"}><Editable path="personal.name" value={data.personal.name} field="name" fallback={data.personal.name || resumeText(data, "nameFallback")} /></CvDocumentHeading><WhenFilledOrEditing value={data.personal.title}><p className={`${compact ? "text-xs" : "text-[15px]"} mt-1 font-medium text-current/65`}><Editable path="personal.title" value={data.personal.title} field="title" /></p></WhenFilledOrEditing></div>;
 }
 
 function Profile({ data, visualStyle }: { data: CVData; visualStyle: TemplateVisualStyle }) {
-    if (!data.personal.summary) return null;
-    return <section data-cv-edit="profile" className="mb-6"><h2 className={headingClass(visualStyle.heading)} style={{ color: "var(--cv-primary)", borderColor: "var(--cv-border)" }}>{resumeText(data, "profile")}</h2><p className="whitespace-pre-wrap text-[12.5px] leading-[1.65]">{data.personal.summary}</p></section>;
+    return <WhenFilledOrEditing value={data.personal.summary}><section data-cv-edit="profile" className="mb-6"><h2 className={headingClass(visualStyle.heading)} style={{ color: "var(--cv-primary)", borderColor: "var(--cv-border)" }}>{resumeText(data, "profile")}</h2><p className="whitespace-pre-wrap text-[12.5px] leading-[1.65]"><Editable path="personal.summary" value={data.personal.summary} field="summary" multiline /></p></section></WhenFilledOrEditing>;
 }
 
 function BodySections({ data, templateId, lane, visualStyle, renderSection, inverse = false }: { data: CVData; templateId: string; lane: "main" | "sidebar"; visualStyle: TemplateVisualStyle; renderSection: (props: TemplateSectionRenderProps) => ReactElement; inverse?: boolean }) {

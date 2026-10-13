@@ -4,6 +4,7 @@ import {
     useEffect,
     useCallback,
     useRef,
+    useMemo,
     type KeyboardEvent as ReactKeyboardEvent,
     type MouseEvent as ReactMouseEvent,
     type PointerEvent as ReactPointerEvent,
@@ -20,6 +21,7 @@ import { entryForPreviewTarget, type PreviewEntryTarget, getStepStates, stepForP
 import { appPaths, type AppLocale } from "@/lib/app-v2-paths";
 import { AppSidebar } from "@/components/app/AppFrame";
 import { Icon } from "@/components/app/icons";
+import { InlineEditProvider, type InlineEditApi, type InlineField } from "./templates/inline-edit";
 import { NewCvDialogProvider } from "@/components/app/NewCvDialog";
 import StepsTopBar from "./StepsTopBar";
 import { StepHeader, StepNav } from "./StepParts";
@@ -153,6 +155,8 @@ interface EditorProps {
 const inputClass = "w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100";
 const inputStyle = undefined;
 // Steps layout: parts of the live preview that open a step get a dashed outline on hover.
+const INLINE_EDIT_STORAGE_KEY = "werkcv_inline_edit_v1";
+
 const STEPS_CARD_HEADING = "text-[17px] font-extrabold text-[var(--wk-ink)]";
 
 const PREVIEW_CLICK_TO_EDIT_CLASS = [
@@ -428,6 +432,7 @@ export default function Editor({
         watch,
         reset,
         setValue,
+        getValues,
         formState: { isSubmitting },
     } = useForm<CVData>({
         defaultValues: normalizedInitialData,
@@ -1729,6 +1734,63 @@ export default function Editor({
         void handleDownload("toolbar");
     };
 
+    // In-place editing of the CV page (Afronden, desktop). Writes to the same form values as the
+    // step forms, so autosave, the step forms and the PDF stay in sync.
+    const [inlineEditPreferred, setInlineEditPreferred] = useState(true);
+    useEffect(() => {
+        try {
+            if (window.localStorage.getItem(INLINE_EDIT_STORAGE_KEY) === "0") setInlineEditPreferred(false);
+        } catch { /* storage blocked: keep the default */ }
+    }, []);
+    const inlineEditAvailable = isSteps && activeStep === "afronden" && !isCurrentCvEmpty && !isReadOnlyWorkspace;
+    const inlineEditActive = inlineEditAvailable && inlineEditPreferred;
+    const inlineFirstEditTracked = useRef(false);
+    const inlineFocusRequest = useRef<string | null>(null);
+    const toggleInlineEdit = () => {
+        const next = !inlineEditPreferred;
+        setInlineEditPreferred(next);
+        try { window.localStorage.setItem(INLINE_EDIT_STORAGE_KEY, next ? "1" : "0"); } catch { /* ignore */ }
+        track("cta_clicked", { location: "editor_inline_edit", label: next ? "toggle_on" : "toggle_off" });
+    };
+    const inlineEditApi = useMemo<InlineEditApi>(() => {
+        const labels: Record<InlineField, [string, string]> = {
+            name: ["Naam", "Name"], title: ["Functietitel", "Job title"], summary: ["Schrijf hier je profiel", "Write your profile here"],
+            email: ["E-mail", "Email"], phone: ["Telefoon", "Phone"], city: ["Plaats", "City"],
+            linkedIn: ["LinkedIn", "LinkedIn"], github: ["GitHub", "GitHub"], website: ["Website", "Website"],
+            role: ["Functie", "Job title"], company: ["Bedrijf", "Company"], location: ["Plaats", "Location"],
+            start: ["Start", "Start"], end: ["Eind", "End"], description: ["Omschrijving", "Description"], bullet: ["Punt", "Bullet"],
+            degree: ["Opleiding", "Degree"], school: ["School", "School"], skill: ["Vaardigheid", "Skill"], language: ["Taal", "Language"],
+        };
+        const update = (path: string, value: unknown) => setValue(path as never, value as never, { shouldDirty: true });
+        return {
+            onChange: (path, value) => {
+                update(path, value);
+                if (!inlineFirstEditTracked.current) {
+                    inlineFirstEditTracked.current = true;
+                    track("cta_clicked", { location: "editor_inline_edit", label: "first_edit" });
+                }
+            },
+            insertListItem: (listPath, afterIndex) => {
+                const list = [...((getValues(listPath as never) as unknown as string[] | undefined) ?? [])];
+                list.splice(afterIndex + 1, 0, "");
+                inlineFocusRequest.current = `${listPath}.${afterIndex + 1}`;
+                update(listPath, list);
+            },
+            removeListItem: (listPath, index) => {
+                const list = [...((getValues(listPath as never) as unknown as string[] | undefined) ?? [])];
+                list.splice(index, 1);
+                if (index > 0) inlineFocusRequest.current = `${listPath}.${index - 1}`;
+                update(listPath, list);
+            },
+            takeFocusRequest: (path) => {
+                if (inlineFocusRequest.current !== path) return false;
+                inlineFocusRequest.current = null;
+                return true;
+            },
+            label: (field) => labels[field][uiLanguage === "en" ? 1 : 0],
+        };
+    }, [getValues, setValue, uiLanguage]);
+
     const handlePreviewClick = (event: ReactMouseEvent<HTMLElement>) => {
         const target = (event.target as HTMLElement).closest<HTMLElement>("[data-cv-edit],[data-cv-section]");
         if (!target) return;
@@ -2820,8 +2882,24 @@ export default function Editor({
                 <div className="shrink-0 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200">
                     <div className="flex min-w-0 items-center gap-2">
                         <span className="text-xs font-semibold text-slate-600">
-                            {isSteps ? tr("Klik op een onderdeel om het te bewerken", "Click any part to edit it") : tr("Live preview", "Live preview")}
+                            {inlineEditActive
+                                ? tr("Klik op tekst om die direct aan te passen", "Click any text to change it")
+                                : isSteps ? tr("Klik op een onderdeel om het te bewerken", "Click any part to edit it") : tr("Live preview", "Live preview")}
                         </span>
+                        {inlineEditAvailable ? (
+                            <button
+                                type="button"
+                                role="switch"
+                                aria-checked={inlineEditPreferred}
+                                onClick={toggleInlineEdit}
+                                className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2 py-1 text-[11px] font-bold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                            >
+                                <span aria-hidden="true" className={`relative h-3.5 w-6 rounded-full transition-colors ${inlineEditPreferred ? "bg-emerald-600" : "bg-slate-300"}`}>
+                                    <span className={`absolute top-0.5 h-2.5 w-2.5 rounded-full bg-white transition-[left] ${inlineEditPreferred ? "left-3" : "left-0.5"}`} />
+                                </span>
+                                {tr("Direct bewerken", "Edit in place")}
+                            </button>
+                        ) : null}
                         {isCurrentCvEmpty ? (
                             <span className="truncate rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-800">
                                 {tr("Voorbeeldtemplate", "Example template")}
@@ -2857,19 +2935,37 @@ export default function Editor({
                     ref={desktopPreviewViewportRef}
                     data-live-preview-viewport
                     data-preview-step-scope={isSteps ? "" : undefined}
-                    onClick={isSteps ? handlePreviewClick : undefined}
-                    className={`min-h-0 flex-1 overflow-y-auto p-2 flex justify-center items-start ${isSteps ? PREVIEW_CLICK_TO_EDIT_CLASS : ""}`}
+                    onClick={isSteps && !inlineEditActive ? handlePreviewClick : undefined}
+                    className={`min-h-0 flex-1 overflow-y-auto p-2 flex justify-center items-start ${isSteps && !inlineEditActive ? PREVIEW_CLICK_TO_EDIT_CLASS : ""}`}
                 >
                     {previewHighlightStyle}
-                    <ScaledCvPreview
-                        data={previewData}
-                        templateId={templateId}
-                        colorThemeId={colorThemeId}
-                        scale={desktopPreviewScale}
-                        pageCount={pageCount}
-                        paginated
-                        onPageCountChange={handlePageCountChange}
-                    />
+                    {inlineEditActive ? (
+                        <InlineEditProvider value={inlineEditApi}>
+                            {/* lang: the spell checker uses the CV's language, not the browser's. */}
+                            <div lang={data.personal.resumeLanguage === "en" ? "en" : "nl"}>
+                            <ScaledCvPreview
+                                data={previewData}
+                                templateId={templateId}
+                                colorThemeId={colorThemeId}
+                                scale={desktopPreviewScale}
+                                pageCount={pageCount}
+                                editable
+                                pageBreakLabel={(page) => tr(`Pagina ${page}`, `Page ${page}`)}
+                                onPageCountChange={handlePageCountChange}
+                            />
+                            </div>
+                        </InlineEditProvider>
+                    ) : (
+                        <ScaledCvPreview
+                            data={previewData}
+                            templateId={templateId}
+                            colorThemeId={colorThemeId}
+                            scale={desktopPreviewScale}
+                            pageCount={pageCount}
+                            paginated
+                            onPageCountChange={handlePageCountChange}
+                        />
+                    )}
                 </div>
             </div> : null}
 
