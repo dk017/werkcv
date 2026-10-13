@@ -18,9 +18,9 @@ const visualStyle: TemplateVisualStyle = {
 
 function renderSection({ id, title, children, inverse }: TemplateSectionRenderProps) {
     return (
-        <section data-cv-section={id} className="mb-7 break-inside-avoid font-serif">
+        <section data-cv-section={id} className="mb-[calc(1.75rem*var(--cv-gap,1))] break-inside-avoid">
             <h2
-                className="mb-3 border-b pb-2 text-[12px] font-semibold uppercase tracking-[0.1em] italic"
+                className="mb-3 border-b pb-2 text-[length:calc(12px*var(--cv-fs,1))] font-semibold uppercase tracking-[0.1em] italic"
                 style={{
                     color: inverse ? "inherit" : "var(--cv-primary)",
                     borderColor: inverse ? "rgba(255,255,255,.4)" : "var(--cv-border)",

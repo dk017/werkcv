@@ -23,6 +23,7 @@ import { AppSidebar } from "@/components/app/AppFrame";
 import { Icon } from "@/components/app/icons";
 import { InlineEditProvider, type InlineEditApi, type InlineField } from "./templates/inline-edit";
 import DocumentDesignPanel from "./DocumentDesignPanel";
+import LayoutControls, { LAYOUT_LIMITS, type CvLayout } from "./LayoutControls";
 import { NewCvDialogProvider } from "@/components/app/NewCvDialog";
 import StepsTopBar from "./StepsTopBar";
 import { StepHeader, StepNav } from "./StepParts";
@@ -623,6 +624,36 @@ export default function Editor({
     const inlineEditActive = documentMode;
     const inlineFirstEditTracked = useRef(false);
     const inlineFocusRequest = useRef<string | null>(null);
+    const [isFittingPage, setIsFittingPage] = useState(false);
+    const [fitPageFailed, setFitPageFailed] = useState(false);
+    const setCvLayout = (next: CvLayout) => {
+        setFitPageFailed(false);
+        setValue("layout", next, { shouldDirty: true });
+    };
+    // Tighten spacing, then line height, then font size, until the CV fits on one page. Never
+    // loosens what the user already set; restores the original settings when it cannot fit.
+    const fitOnOnePage = async () => {
+        const original: CvLayout = { ...(getValues("layout") ?? {}) };
+        const tighter = (key: keyof typeof LAYOUT_LIMITS, target: number) => Math.max(LAYOUT_LIMITS[key].min, Math.min(original[key] ?? 1, target));
+        const steps: Array<[number, number, number]> = [
+            [0.8, 1, 1], [0.6, 1, 1], [0.6, 0.95, 1], [0.5, 0.9, 1], [0.5, 0.9, 0.95], [0.4, 0.88, 0.92], [0.4, 0.85, 0.9], [0.4, 0.85, 0.85],
+        ];
+        setIsFittingPage(true);
+        setFitPageFailed(false);
+        for (const [gap, line, size] of steps) {
+            setValue("layout", { ...original, sectionSpacing: tighter("sectionSpacing", gap), lineSpacing: tighter("lineSpacing", line), fontScale: tighter("fontScale", size) }, { shouldDirty: true });
+            await new Promise((resolve) => setTimeout(resolve, 350));
+            if (pageCountRef.current <= 1) {
+                setIsFittingPage(false);
+                track("cta_clicked", { location: "editor_document_layout", label: "fit_one_page_success" });
+                return;
+            }
+        }
+        setValue("layout", original, { shouldDirty: true });
+        setIsFittingPage(false);
+        setFitPageFailed(true);
+        track("cta_clicked", { location: "editor_document_layout", label: "fit_one_page_failed" });
+    };
     const changeEditorMode = (mode: "form" | "document") => {
         if (mode === editorMode) return;
         setEditorMode(mode);
@@ -1108,7 +1139,9 @@ export default function Editor({
         if (storedVacancy) setTargetVacancy(storedVacancy);
     }, [id]);
 
+    const pageCountRef = useRef(1);
     const handlePageCountChange = useCallback((count: number) => {
+        pageCountRef.current = count;
         setPageCount(count);
     }, []);
 
@@ -2964,6 +2997,17 @@ export default function Editor({
                 {documentMode ? (
                     <DocumentDesignPanel
                         locale={appLocale}
+                        layoutControls={(
+                            <LayoutControls
+                                layout={data.layout}
+                                onChange={setCvLayout}
+                                pageCount={pageCount}
+                                onFitOnePage={() => void fitOnOnePage()}
+                                fitting={isFittingPage}
+                                fitFailed={fitPageFailed}
+                                locale={appLocale}
+                            />
+                        )}
                         colorPicker={canChangeWorkspaceDesign ? (
                             <ColorThemePicker
                                 templateId={templateId}

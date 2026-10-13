@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { CV_BODY_SECTION_IDS, DEFAULT_CV_SECTION_ORDER } from "./cv-sections";
 
+/** Fonts that can be chosen in document mode; "template" keeps the design's own font. */
+export const CV_LAYOUT_FONTS = ["template", "manrope", "inter", "source-serif", "merriweather"] as const;
+export type CvLayoutFont = (typeof CV_LAYOUT_FONTS)[number];
+
 export const cvSchema = z.object({
     personal: z.object({
         name: z.string().default(""),
@@ -117,6 +121,14 @@ export const cvSchema = z.object({
     sectionOrder: z.array(z.enum(CV_BODY_SECTION_IDS)).default([...DEFAULT_CV_SECTION_ORDER]),
     // Own wording for a section heading ("Relevante werkervaring"); empty or missing = the default.
     sectionTitles: z.partialRecord(z.enum([...CV_BODY_SECTION_IDS, "profile"]), z.string().max(80)).optional(),
+    // Layout set in document mode; missing values = the template's own design. Applied by the
+    // React templates, so preview and PDF follow it.
+    layout: z.object({
+        font: z.enum(CV_LAYOUT_FONTS).optional(),
+        fontScale: z.number().min(0.8).max(1.2).optional(),
+        lineSpacing: z.number().min(0.8).max(1.3).optional(),
+        sectionSpacing: z.number().min(0.4).max(1.6).optional(),
+    }).optional(),
 });
 
 type ParsedCVData = z.infer<typeof cvSchema>;

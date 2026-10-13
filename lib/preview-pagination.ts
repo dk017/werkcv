@@ -4,6 +4,11 @@
 
 export const A4_HEIGHT_PX = 1123;
 export const CONTINUED_PAGE_TOP_PADDING_PX = 38;
+/**
+ * Usable height of a printed A4 page for page breaks. A4 is 1122.52 px; deciding with 1123 let
+ * content that fits the preview spill a line onto the next PDF page.
+ */
+export const PAGE_CONTENT_HEIGHT_PX = 1122;
 const MAX_PREVIEW_PAGES = 100;
 /** A section heading plus its spacing. Never leave just that at the bottom of a page. */
 const HEADING_KEEP_PX = 60;
@@ -12,8 +17,10 @@ const SMALL_SECTION_SHARE = 0.25;
 
 export type BreakAvoidRange = { top: number; bottom: number };
 
-export function calculatePageBreaks(layout: { height: number; breakAvoidRanges: BreakAvoidRange[] }): number[] {
-  const height = Math.max(A4_HEIGHT_PX, layout.height);
+export function calculatePageBreaks(layout: { height: number; contentBottom?: number; breakAvoidRanges: BreakAvoidRange[] }): number[] {
+  // Where the content ends: the template's bottom padding and last margin are empty space and
+  // must not create a page of their own (they are dropped when printing).
+  const height = layout.contentBottom ?? layout.height;
   const ranges = layout.breakAvoidRanges
     .filter((range) => range.top > 0 && range.bottom > range.top)
     .sort((a, b) => a.top - b.top);
@@ -22,10 +29,10 @@ export function calculatePageBreaks(layout: { height: number; breakAvoidRanges: 
 
   while (pageBreaks.length < MAX_PREVIEW_PAGES) {
     const firstPage = pageBreaks.length === 1;
-    const pageCapacity = firstPage ? A4_HEIGHT_PX : A4_HEIGHT_PX - CONTINUED_PAGE_TOP_PADDING_PX;
+    const pageCapacity = firstPage ? PAGE_CONTENT_HEIGHT_PX : PAGE_CONTENT_HEIGHT_PX - CONTINUED_PAGE_TOP_PADDING_PX;
     const nominalNextBreak = pageStart + pageCapacity;
 
-    if (nominalNextBreak >= height - 1) break;
+    if (nominalNextBreak >= height) break;
 
     const crossing = ranges.filter((range) => (
       range.top > pageStart + 1

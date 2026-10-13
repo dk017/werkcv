@@ -15,6 +15,8 @@ interface PreviewProps {
 
 export interface PreviewLayout {
     height: number;
+    /** Bottom of the lowest content, without the template's trailing padding and margin. */
+    contentBottom: number;
     breakAvoidRanges: Array<{ top: number; bottom: number }>;
 }
 
@@ -79,7 +81,10 @@ export default function Preview({
             onPageCountChange(pages);
         }
 
-        onLayoutChange?.({ height: measuredHeight, breakAvoidRanges });
+        const contentBottom = Array.from(container.querySelectorAll<HTMLElement>("[data-cv-template] *"))
+            .reduce((lowest, element) => Math.max(lowest, (element.getBoundingClientRect().bottom - containerRect.top) / renderScale), 0);
+
+        onLayoutChange?.({ height: measuredHeight, contentBottom: contentBottom || measuredHeight, breakAvoidRanges });
     }, [continuedPageTopPadding, onLayoutChange, onPageCountChange]);
 
     // Stable callback for ResizeObserver

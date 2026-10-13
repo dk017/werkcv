@@ -24,6 +24,12 @@ test("small sections still move as a whole", () => {
 });
 
 test("without ranges the page is cut at the A4 height; content taller than a page is not kept together", () => {
-  assert.deepEqual(calculatePageBreaks({ height: 2000, breakAvoidRanges: [] }), [0, 1123]);
-  assert.deepEqual(calculatePageBreaks({ height: 2600, breakAvoidRanges: [{ top: 100, bottom: 1400 }] }), [0, 1123, 2208]);
+  assert.deepEqual(calculatePageBreaks({ height: 2000, breakAvoidRanges: [] }), [0, 1122]);
+  assert.deepEqual(calculatePageBreaks({ height: 2600, breakAvoidRanges: [{ top: 100, bottom: 1400 }] }), [0, 1122, 2206]);
+});
+
+test("trailing padding does not make an extra page; content past the A4 height does", () => {
+  // Content ends at 1066; padding and the last margin take the box to 1124 (just over A4).
+  assert.deepEqual(calculatePageBreaks({ height: 1124, contentBottom: 1066, breakAvoidRanges: [] }), [0]);
+  assert.deepEqual(calculatePageBreaks({ height: 1180, contentBottom: 1122.6, breakAvoidRanges: [] }), [0, 1122]);
 });

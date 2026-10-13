@@ -1,6 +1,6 @@
 import { cvDownloadPrice } from "@/lib/site-content";
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Manrope } from "next/font/google";
+import { Gelasio, Geist, Geist_Mono, Inter, Manrope, Merriweather, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import AnalyticsProvider from "@/components/AnalyticsProvider";
 import BuildVersionGuard from "@/components/BuildVersionGuard";
@@ -25,6 +25,14 @@ const manrope = Manrope({
   subsets: ["latin"],
   display: "swap",
 });
+
+// CV fonts (templates and the document-mode font choice). Bundled, so the browser preview and the
+// server-side PDF render the same font; not preloaded, so other pages do not download them.
+// Gelasio has the same character widths as Georgia, so the serif templates keep their layout.
+const cvTemplateSerif = Gelasio({ variable: "--font-cv-template-serif", subsets: ["latin"], display: "swap", preload: false });
+const cvSerif = Source_Serif_4({ variable: "--font-cv-serif", subsets: ["latin"], display: "swap", preload: false });
+const cvInter = Inter({ variable: "--font-cv-inter", subsets: ["latin"], display: "swap", preload: false });
+const cvMerriweather = Merriweather({ variable: "--font-cv-merriweather", subsets: ["latin"], weight: ["400", "700"], display: "swap", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://werkcv.nl'),
@@ -101,7 +109,7 @@ export default function RootLayout({
         <SharedSiteJsonLd />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${manrope.variable} antialiased notranslate`}
+        className={`${geistSans.variable} ${geistMono.variable} ${manrope.variable} ${cvTemplateSerif.variable} ${cvSerif.variable} ${cvInter.variable} ${cvMerriweather.variable} antialiased notranslate`}
       >
         <ConditionalClarity />
         <GoogleAnalytics />

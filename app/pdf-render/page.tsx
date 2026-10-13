@@ -14,6 +14,10 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
 /* Whole sections may split; entries (a job, a study) stay together. Page breaks are
    placed explicitly by PdfRenderClient, exactly where the preview breaks. */
 #pdf-root [data-cv-section].break-inside-avoid { break-inside: auto; }
+/* Trailing padding is empty space; on paper it would only push a line onto an extra page.
+   Keep a full-page minimum (sidebar colour) just under the A4 height. */
+#pdf-root [data-cv-template] { min-height: calc(297mm - 2px) !important; padding-bottom: 0 !important; }
+#pdf-root [data-cv-lane] { padding-bottom: 0 !important; }
 nextjs-portal { display: none !important; }
 `;
 
