@@ -93,7 +93,7 @@ import CheckoutExitQuestion from "@/components/checkout/CheckoutExitQuestion";
 import CheckoutPlanSheet, { type CheckoutPlan } from "./CheckoutPlanSheet";
 import CustomerQuote from "@/components/CustomerQuote";
 import { markCheckoutPending } from "@/lib/checkout-exit";
-import { isCvCheckStartSource, takeCheckedCvForEditor } from "@/lib/cv-check/handoff";
+import { hasEditorFileHandoff, isCvCheckStartSource, takeCheckedCvForEditor } from "@/lib/cv-check/handoff";
 import WorkspaceSwitcher from "@/components/workspace/WorkspaceSwitcher";
 import type { WorkspaceEntitlements } from "@/lib/workspace/types";
 import {
@@ -888,10 +888,12 @@ export default function Editor({
                 '',
                 `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ''}${window.location.hash}`,
             );
-            if (isCvCheckStartSource(params.get('startSource'))) {
+            const startSourceParam = params.get('startSource');
+            if (hasEditorFileHandoff(startSourceParam)) {
+                // The file was already chosen (CV-check or the New CV dialog): import it straight away.
                 void takeCheckedCvForEditor().then((checkedFile) => {
                     setUploaderInitialFile(checkedFile);
-                    openUploader(checkedFile ? "cv_check" : "route_intent");
+                    openUploader(checkedFile ? (isCvCheckStartSource(startSourceParam) ? "cv_check" : "dashboard") : "route_intent");
                 });
             } else {
                 openUploader("route_intent");

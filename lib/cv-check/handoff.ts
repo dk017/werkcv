@@ -67,3 +67,8 @@ export async function takeCheckedCvForEditor(now = Date.now()): Promise<File | n
 export function isCvCheckStartSource(value: string | null): boolean {
   return value === "cv_check" || value === "cv_check_en";
 }
+
+/** Entry points that store the chosen file before opening the editor: the CV-check and the New CV dialog. */
+export function hasEditorFileHandoff(value: string | null): boolean {
+  return isCvCheckStartSource(value) || value === "dashboard_upload";
+}

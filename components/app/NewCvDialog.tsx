@@ -8,6 +8,7 @@ import { getUserCVs } from '@/app/actions';
 import { getTargetVacancySessionKey } from '@/lib/cover-letter-session';
 import { track } from '@/lib/analytics';
 import { appPaths, type AppLocale } from '@/lib/app-v2-paths';
+import { saveCheckedCvForEditor } from '@/lib/cv-check/handoff';
 
 type NewCvDialogContextValue = { openNewCv: (source: string) => void };
 
@@ -38,6 +39,7 @@ const COPY = {
         cancel: 'Annuleren',
         submit: 'CV maken',
         busy: 'Bezig…',
+        opening: 'Bezig met openen',
         untitled: 'Naamloos CV',
         starts: [
             { id: 'blank', title: 'Leeg beginnen', text: 'Vul je CV stap voor stap in.', icon: 'file' },
@@ -63,6 +65,7 @@ const COPY = {
         cancel: 'Cancel',
         submit: 'Create CV',
         busy: 'Working…',
+        opening: 'Opening',
         untitled: 'Untitled CV',
         starts: [
             { id: 'blank', title: 'Start blank', text: 'Fill in your CV step by step.', icon: 'file' },
@@ -87,6 +90,9 @@ export function NewCvDialogProvider({ locale = 'nl', children }: { locale?: AppL
     const [vacancy, setVacancy] = useState('');
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    // "Upload a CV" opens the file picker straight away; the chosen file is handed to the editor.
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const [uploadName, setUploadName] = useState('');
 
     const openNewCv = useCallback((source: string) => {
         setTitle('');
@@ -96,6 +102,7 @@ export function NewCvDialogProvider({ locale = 'nl', children }: { locale?: AppL
         setVacancy('');
         setError(null);
         setSubmitting(false);
+        setUploadName('');
         dialogRef.current?.showModal();
         track('cta_clicked', { location: source, label: 'open_new_cv' });
     }, []);
@@ -116,8 +123,8 @@ export function NewCvDialogProvider({ locale = 'nl', children }: { locale?: AppL
 
     const close = () => dialogRef.current?.close();
 
-    const submit = async () => {
-        if (start === 'copy' && !sourceCvId) {
+    const submit = async (startValue: NewCvStart = start) => {
+        if (startValue === 'copy' && !sourceCvId) {
             setError(c.chooseCopy);
             return;
         }
@@ -125,13 +132,14 @@ export function NewCvDialogProvider({ locale = 'nl', children }: { locale?: AppL
         setError(null);
         const result = await createCvFromDashboard({
             title: title.trim(),
-            start,
+            start: startValue,
             locale,
-            ...(start === 'copy' ? { sourceCvId } : {}),
+            ...(startValue === 'copy' ? { sourceCvId } : {}),
         });
         if (!result.ok) {
             setError(result.message);
             setSubmitting(false);
+            setUploadName('');
             return;
         }
         const vacancyText = targetVacancy ? vacancy.trim() : '';
@@ -142,10 +150,22 @@ export function NewCvDialogProvider({ locale = 'nl', children }: { locale?: AppL
                 // Private mode: the CV still opens, the vacancy can be pasted again in the editor.
             }
         }
-        track('cta_clicked', { location: 'dashboard_new_cv', label: `${start}${vacancyText ? '_with_vacancy' : ''}` });
-        const params = new URLSearchParams({ id: result.id, startSource: `dashboard_${start}` });
-        if (start === 'upload') params.set('upload', '1');
+        track('cta_clicked', { location: 'dashboard_new_cv', label: `${startValue}${vacancyText ? '_with_vacancy' : ''}` });
+        const params = new URLSearchParams({ id: result.id, startSource: `dashboard_${startValue}` });
+        if (startValue === 'upload') params.set('upload', '1');
         router.push(`${appPaths(locale).editorBase}?${params.toString()}`);
+    };
+
+    const pickFile = () => fileInputRef.current?.click();
+
+    const handleFileChosen = async (file: File | undefined) => {
+        if (!file) return;
+        setUploadName(file.name);
+        setSubmitting(true);
+        setError(null);
+        // If the browser blocks storage the editor still opens its uploader, just without the file.
+        await saveCheckedCvForEditor(file);
+        await submit('upload');
     };
 
     const contextValue = useMemo(() => ({ openNewCv }), [openNewCv]);
@@ -162,7 +182,9 @@ export function NewCvDialogProvider({ locale = 'nl', children }: { locale?: AppL
                     method="dialog"
                     onSubmit={(event) => {
                         event.preventDefault();
-                        void submit();
+                        // Upload without a chosen file: open the picker instead of creating an empty CV.
+                        if (start === 'upload') pickFile();
+                        else void submit();
                     }}
                     className="flex flex-col"
                 >
@@ -197,18 +219,37 @@ export function NewCvDialogProvider({ locale = 'nl', children }: { locale?: AppL
                                             key={option.id}
                                             type="button"
                                             aria-pressed={selected}
-                                            onClick={() => setStart(option.id)}
+                                            onClick={() => {
+                                                setStart(option.id);
+                                                if (option.id === 'upload') pickFile();
+                                            }}
+                                            disabled={submitting}
                                             className={`flex flex-col items-start gap-1.5 rounded-xl p-3.5 text-left transition-colors ${selected
                                                 ? 'border-2 border-[var(--wk-primary)] bg-[var(--wk-surface-subtle)]'
                                                 : 'border border-[var(--wk-border)] bg-[var(--wk-surface)] hover:border-[var(--wk-border-strong)]'}`}
                                         >
                                             <Icon name={option.icon} className="text-[var(--wk-primary)]" />
                                             <span className="text-sm font-extrabold">{option.title}</span>
-                                            <span className="text-[13px] leading-snug text-[var(--wk-ink-muted)]">{option.text}</span>
+                                            <span className="text-[13px] leading-snug text-[var(--wk-ink-muted)]">
+                                                {option.id === 'upload' && uploadName ? `${c.opening}: ${uploadName}` : option.text}
+                                            </span>
                                         </button>
                                     );
                                 })}
                             </div>
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept=".pdf,.doc,.docx"
+                                className="hidden"
+                                tabIndex={-1}
+                                aria-hidden="true"
+                                onChange={(event) => {
+                                    const file = event.target.files?.[0];
+                                    event.target.value = '';
+                                    void handleFileChosen(file);
+                                }}
+                            />
                             {start === 'copy' ? (
                                 <label className="mt-1 flex flex-col gap-1.5 text-[13px] font-bold">
                                     {c.copyWhich}

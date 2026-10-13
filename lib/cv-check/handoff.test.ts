@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { CV_CHECK_HANDOFF_MAX_AGE_MS, isCvCheckStartSource, isFreshHandoff } from "./handoff";
+import { CV_CHECK_HANDOFF_MAX_AGE_MS, isCvCheckStartSource, hasEditorFileHandoff, isFreshHandoff } from "./handoff";
 
 test("only CV-check links hand a file to the editor", () => {
   assert.equal(isCvCheckStartSource("cv_check"), true);
@@ -15,4 +15,11 @@ test("a checked CV is only used shortly after the check", () => {
   assert.equal(isFreshHandoff(now - CV_CHECK_HANDOFF_MAX_AGE_MS, now), false);
   assert.equal(isFreshHandoff(now + 60_000, now), false, "clock skew");
   assert.equal(isFreshHandoff("yesterday", now), false);
+});
+
+test("the New CV dialog hands its chosen file to the editor too", () => {
+  assert.equal(hasEditorFileHandoff("dashboard_upload"), true);
+  assert.equal(hasEditorFileHandoff("cv_check_en"), true);
+  assert.equal(hasEditorFileHandoff("dashboard_blank"), false);
+  assert.equal(hasEditorFileHandoff(null), false);
 });

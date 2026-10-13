@@ -97,7 +97,7 @@ export type ProfilePhotoEvent =
     | 'profile_photo_offer_viewed'
     | 'profile_photo_offer_clicked';
 
-export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboarding' | 'cv_check';
+export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboarding' | 'cv_check' | 'dashboard';
 export type FullPreviewSource = 'desktop_preview_header' | 'desktop_document' | 'mobile_floating' | 'upload_success';
 
 type EditorSourceContext = {
