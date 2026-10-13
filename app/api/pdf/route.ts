@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { generatePDF } from '@/lib/pdf';
+import { generateCvPdf } from '@/lib/pdf';
 import { CVData } from '@/lib/cv';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 import { reportOpsIncident } from '@/lib/ops-alerts';
@@ -50,11 +50,16 @@ export async function GET(request: NextRequest) {
     // Generate PDF with template and color theme
     let pdfBuffer: Buffer;
     try {
-        pdfBuffer = await generatePDF(
+        ({ pdf: pdfBuffer } = await generateCvPdf(
             cv.data as CVData,
             cv.templateId,
-            cv.colorThemeId ?? getDefaultThemeId(cv.templateId)
-        );
+            cv.colorThemeId ?? getDefaultThemeId(cv.templateId),
+            {
+                requestOrigin: request.nextUrl.origin,
+                // The template renderer failed; the legacy builder produced this PDF instead.
+                onFallback: (error) => console.error('pdf_render_fallback', { route: '/api/pdf', cvId: cv.id, templateId: cv.templateId, error }),
+            },
+        ));
     } catch (error) {
         console.error('PDF generation failed:', error);
         const cvData = cv.data as CVData;

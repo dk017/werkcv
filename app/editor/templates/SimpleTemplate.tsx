@@ -20,7 +20,7 @@ function renderSection({ id, title, children, inverse }: TemplateSectionRenderPr
     return (
         <section data-cv-section={id} className="mb-6 break-inside-avoid">
             <h2
-                className="mb-2 text-[12px] font-bold uppercase tracking-[0.12em]"
+                className="mb-2 text-[12px] font-bold uppercase tracking-[0.1em]"
                 style={{
                     color: inverse ? "inherit" : "var(--cv-primary)",
                     borderColor: inverse ? "rgba(255,255,255,.4)" : "var(--cv-border)",

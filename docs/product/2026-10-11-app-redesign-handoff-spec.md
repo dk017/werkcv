@@ -449,3 +449,38 @@ the editor; editor photo card → in-app tool with `cvId`; flag-off fallbacks; C
 **Known gaps:** the profile photo generator keeps its neo-brutalist styling inside the app; the
 CV-check methodology link opens the public page; claim (`/editor/claim`) and `/cv-handoff` screens
 are transitional pages without the frame; logout goes to the marketing home (intended).
+
+## 13. PDF = preview: one renderer (13 October 2026)
+
+**Problem found:** the downloaded PDF was built by `lib/pdf.ts` (4 generic HTML layouts), while the
+preview and template gallery use the 13 React templates. Several PDFs were a different design from
+what the user chose (Dynamic: other layout; Classical: no serif; Formal/Modern/JobBoss: extra
+initials badge; Simple/ATS: other header and skills), and page counts differed for 6 of 13.
+
+**Also fixed first (commit `1190643`):** the preview moved a whole section to the next page when it
+crossed the page edge (big gap after the profile on ATS/Simple); breaks now go between entries
+(`lib/preview-pagination.ts`). The final PDF view showed the preview's page count instead of the PDF's.
+
+**New renderer** (switch `PDF_RENDERER=react`, default `legacy`):
+- `app/pdf-render/` renders `<Preview>` (same templates) and forces `break-before: page` on the
+  exact blocks the preview breaks before (`calculatePageBreaks`). `@page` gives continued pages the
+  same 38px top margin as the preview. The page loads no CV data itself; the server injects it.
+  Excluded from analytics (private path + AnalyticsProvider), marketing header (`none` context), robots.
+- `generateCvPdf()` in `lib/pdf.ts` is used by `/api/pdf` (download) and `/api/pdf-preview` (final
+  PDF view). Any error → legacy builder + `pdf_render_fallback` log; downloads cannot break on it.
+- Origin: `PDF_RENDER_ORIGIN` or `http://127.0.0.1:$PORT` in production (container has PORT=3000).
+- ATS: faded text uses `text-current/NN` instead of `opacity-NN` (opacity made Chrome emit
+  transparency groups → text out of reading order); section-heading letter spacing capped at
+  0.1em (above ~0.1em, extractors read "P R O F I L E"). Both apply to preview and PDF alike.
+
+**Verified locally:** all 13 templates, PDF page count = preview page count (legacy: 6 differed);
+visual side-by-side identical apart from clickable links being underlined; text extraction in
+reading order, no spaced headings, same word count; links now include phone, LinkedIn, GitHub;
+photo templates; fallback (renderer unreachable → valid legacy PDF); real download route and final
+PDF view with `PDF_RENDERER=react` (local `.env.development.local`); production build and a
+production-mode render via 127.0.0.1. QA scripts live outside the repo (`D:\DKPlayground\werkcv-qa`).
+
+**Rollout (owner's OK needed):** deploy with `PDF_RENDERER` unset (no change), then set
+`PDF_RENDERER=react` in `/opt/werkcv/.env` and recreate the app container; watch logs for
+`pdf_render_fallback`. Customers then receive the design they chose; previously generated PDFs differ.
+Not changed: agency/MatchPack PDFs (`lib/agency-submission-pdf.ts`).

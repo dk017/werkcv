@@ -14,6 +14,8 @@ export default function AnalyticsProvider() {
     const pathname = usePathname();
 
     useEffect(() => {
+        // The PDF renderer is opened by the server's headless browser, not by a visitor.
+        if (pathname === '/pdf-render') return;
         const search = typeof window !== 'undefined' ? window.location.search : '';
         trackLanding(pathname, search);
         trackPageView(pathname);

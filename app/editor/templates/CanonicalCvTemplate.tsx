@@ -44,7 +44,7 @@ function fontClass(font: TemplateVisualStyle["font"]) {
 }
 
 function headingClass(style: TemplateVisualStyle["heading"]) {
-    const base = "mb-3 pb-2 text-[12px] font-bold uppercase tracking-[0.16em]";
+    const base = "mb-3 pb-2 text-[12px] font-bold uppercase tracking-[0.1em]";
     if (style === "minimal") return `${base} pb-0`;
     if (style === "boxed") return `${base} border px-2 py-1.5`;
     if (style === "accent") return `${base} border-l-4 pl-3`;
@@ -65,20 +65,20 @@ function RatedItems({ items, style }: { items: Array<{ name: string; level?: num
 function SectionBody({ id, data, visualStyle }: { id: CvBodySectionId; data: CVData; visualStyle: TemplateVisualStyle }) {
     switch (id) {
         case "experience":
-            return <div className="space-y-4">{data.experience.map((item, index) => <article data-cv-entry={`experience:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div className="min-w-0"><h3 className="text-[13px] font-bold">{item.role}</h3><p className="text-[12px] opacity-65">{item.company}{item.location ? ` | ${item.location}` : ""}</p></div><span className="shrink-0 text-[11px] opacity-65">{dateRange(item.start, item.end)}</span></div>{item.description ? <p className="mt-1 text-[11.5px] leading-relaxed opacity-80">{item.description}</p> : null}{item.highlights?.length ? <ArrayList items={item.highlights} /> : null}</article>)}</div>;
+            return <div className="space-y-4">{data.experience.map((item, index) => <article data-cv-entry={`experience:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div className="min-w-0"><h3 className="text-[13px] font-bold">{item.role}</h3><p className="text-[12px] text-current/65">{item.company}{item.location ? ` | ${item.location}` : ""}</p></div><span className="shrink-0 text-[11px] text-current/65">{dateRange(item.start, item.end)}</span></div>{item.description ? <p className="mt-1 text-[11.5px] leading-relaxed text-current/80">{item.description}</p> : null}{item.highlights?.length ? <ArrayList items={item.highlights} /> : null}</article>)}</div>;
         case "education":
-            return <div className="space-y-3">{data.education.map((item, index) => <article data-cv-entry={`education:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div><h3 className="text-[13px] font-bold">{item.degree}</h3><p className="text-[12px] opacity-65">{item.school}{item.location ? ` | ${item.location}` : ""}</p></div><span className="shrink-0 text-[11px] opacity-65">{dateRange(item.start, item.end)}</span></div>{item.description ? <p className="mt-1 text-[11.5px] leading-relaxed opacity-80">{item.description}</p> : null}</article>)}</div>;
+            return <div className="space-y-3">{data.education.map((item, index) => <article data-cv-entry={`education:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div><h3 className="text-[13px] font-bold">{item.degree}</h3><p className="text-[12px] text-current/65">{item.school}{item.location ? ` | ${item.location}` : ""}</p></div><span className="shrink-0 text-[11px] text-current/65">{dateRange(item.start, item.end)}</span></div>{item.description ? <p className="mt-1 text-[11.5px] leading-relaxed text-current/80">{item.description}</p> : null}</article>)}</div>;
         case "internships":
-            return <div className="space-y-4">{(data.internships ?? []).map((item, index) => <article data-cv-entry={`internships:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div><h3 className="text-[13px] font-bold">{item.role}</h3><p className="text-[12px] opacity-65">{item.company}{item.location ? ` | ${item.location}` : ""}</p></div><span className="shrink-0 text-[11px] opacity-65">{dateRange(item.start, item.end)}</span></div>{item.description ? <p className="mt-1 text-[11.5px] leading-relaxed opacity-80">{item.description}</p> : null}{item.highlights?.length ? <ArrayList items={item.highlights} /> : null}</article>)}</div>;
+            return <div className="space-y-4">{(data.internships ?? []).map((item, index) => <article data-cv-entry={`internships:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div><h3 className="text-[13px] font-bold">{item.role}</h3><p className="text-[12px] text-current/65">{item.company}{item.location ? ` | ${item.location}` : ""}</p></div><span className="shrink-0 text-[11px] text-current/65">{dateRange(item.start, item.end)}</span></div>{item.description ? <p className="mt-1 text-[11.5px] leading-relaxed text-current/80">{item.description}</p> : null}{item.highlights?.length ? <ArrayList items={item.highlights} /> : null}</article>)}</div>;
         case "courses":
-            return <div className="space-y-2">{data.courses.map((item, index) => <div key={index} className="flex justify-between gap-4 text-[11.5px]"><span className="font-semibold">{item.name}</span><span className="opacity-65">{item.institution}{item.year ? ` | ${item.year}` : ""}</span></div>)}</div>;
+            return <div className="space-y-2">{data.courses.map((item, index) => <div key={index} className="flex justify-between gap-4 text-[11.5px]"><span className="font-semibold">{item.name}</span><span className="text-current/65">{item.institution}{item.year ? ` | ${item.year}` : ""}</span></div>)}</div>;
         case "awards": return <ArrayList items={data.awards} />;
         case "skills": return <RatedItems items={data.skills.map((item) => ({ name: item.name, level: item.level }))} style={visualStyle.skills} />;
         case "languages": return <div className="space-y-1.5">{data.languages.map((item, index) => <div key={index} className="text-[11.5px]">{item.name}{item.level ? ` (${formatLanguageLevel(item.level, data)})` : ""}</div>)}</div>;
-        case "interests": return <div className="flex flex-wrap gap-2">{(data.interests ?? []).map((item, index) => <span key={index} className="rounded px-2 py-1 text-[11px] opacity-80" style={{ backgroundColor: "var(--cv-soft)" }}>{item}</span>)}</div>;
+        case "interests": return <div className="flex flex-wrap gap-2">{(data.interests ?? []).map((item, index) => <span key={index} className="rounded px-2 py-1 text-[11px] text-current/80" style={{ backgroundColor: "var(--cv-soft)" }}>{item}</span>)}</div>;
         case "properties": return <ArrayList items={(data.properties ?? []).filter(Boolean)} />;
-        case "references": return <div className="space-y-3">{(data.references ?? []).map((item, index) => <div key={index} className="text-[11.5px]"><strong>{item.name}</strong>{item.role || item.company ? <div className="opacity-65">{[item.role, item.company].filter(Boolean).join(" · ")}</div> : null}{item.email ? <div><LinkText value={item.email} /></div> : null}{item.phone ? <div>{item.phone}</div> : null}</div>)}</div>;
-        case "sideActivities": return <div className="space-y-3">{(data.sideActivities ?? []).map((item, index) => <article key={index}><div className="flex items-start justify-between gap-4"><div><h3 className="text-[13px] font-bold">{item.title}</h3><p className="text-[12px] opacity-65">{item.organization}</p></div><span className="text-[11px] opacity-65">{dateRange(item.start, item.end)}</span></div>{item.description ? <p className="mt-1 text-[11.5px] opacity-80">{item.description}</p> : null}</article>)}</div>;
+        case "references": return <div className="space-y-3">{(data.references ?? []).map((item, index) => <div key={index} className="text-[11.5px]"><strong>{item.name}</strong>{item.role || item.company ? <div className="text-current/65">{[item.role, item.company].filter(Boolean).join(" · ")}</div> : null}{item.email ? <div><LinkText value={item.email} /></div> : null}{item.phone ? <div>{item.phone}</div> : null}</div>)}</div>;
+        case "sideActivities": return <div className="space-y-3">{(data.sideActivities ?? []).map((item, index) => <article key={index}><div className="flex items-start justify-between gap-4"><div><h3 className="text-[13px] font-bold">{item.title}</h3><p className="text-[12px] text-current/65">{item.organization}</p></div><span className="text-[11px] text-current/65">{dateRange(item.start, item.end)}</span></div>{item.description ? <p className="mt-1 text-[11.5px] text-current/80">{item.description}</p> : null}</article>)}</div>;
         case "customSections": return <div className="space-y-3">{(data.customSections ?? []).map((item, index) => <div key={index}>{item.title ? <h3 className="text-[13px] font-bold">{item.title}</h3> : null}{item.items?.length ? <ArrayList items={item.items} /> : null}</div>)}</div>;
     }
 }
@@ -94,9 +94,9 @@ function ContactDetails({ data, inline = false }: { data: CVData; inline?: boole
         data.personal.maritalStatus ? `${resumeText(data, "maritalStatus")}: ${formatMaritalStatus(data.personal.maritalStatus, data)}` : null,
     ].filter((value): value is string => Boolean(value));
     const contactValues = [...values, ...links];
-    return <div data-cv-edit="personal" className={inline ? "flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] opacity-75" : "space-y-1 text-[11px] opacity-75"}>
+    return <div data-cv-edit="personal" className={inline ? "flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-current/75" : "space-y-1 text-[11px] text-current/75"}>
         {contactValues.map((value, index) => <span key={`${value}-${index}`} className={inline ? "inline-flex min-w-0 items-center gap-3 break-words" : "block break-words"}>
-            {inline && index > 0 ? <span aria-hidden="true" className="opacity-50">·</span> : null}
+            {inline && index > 0 ? <span aria-hidden="true" className="text-current/50">·</span> : null}
             <LinkText value={value} />
         </span>)}
         {personalDetails.length > 0 ? <div className="mt-2 w-full space-y-0.5 text-[10px]">{personalDetails.map((value) => <div key={value}>{value}</div>)}</div> : null}
@@ -115,7 +115,7 @@ function Photo({ data, theme, visualStyle, centered = true }: { data: CVData; th
 }
 
 function Identity({ data, visualStyle, compact = false }: { data: CVData; visualStyle: TemplateVisualStyle; compact?: boolean }) {
-    return <div data-cv-edit="personal" className={visualStyle.headerAlign === "center" ? "text-center" : "text-left"}><CvDocumentHeading className={compact ? "text-xl font-bold leading-tight" : "text-[31px] font-extrabold leading-tight"}>{data.personal.name || resumeText(data, "nameFallback")}</CvDocumentHeading>{data.personal.title ? <p className={`${compact ? "text-xs" : "text-[15px]"} mt-1 font-medium opacity-65`}>{data.personal.title}</p> : null}</div>;
+    return <div data-cv-edit="personal" className={visualStyle.headerAlign === "center" ? "text-center" : "text-left"}><CvDocumentHeading className={compact ? "text-xl font-bold leading-tight" : "text-[31px] font-extrabold leading-tight"}>{data.personal.name || resumeText(data, "nameFallback")}</CvDocumentHeading>{data.personal.title ? <p className={`${compact ? "text-xs" : "text-[15px]"} mt-1 font-medium text-current/65`}>{data.personal.title}</p> : null}</div>;
 }
 
 function Profile({ data, visualStyle }: { data: CVData; visualStyle: TemplateVisualStyle }) {

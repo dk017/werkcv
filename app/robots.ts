@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next';
 
-const privatePaths = ['/api/', '/admin', '/editor', '/en/editor', '/mijn-cvs', '/login', '/success', '/agency/account'];
+const privatePaths = ['/api/', '/admin', '/editor', '/en/editor', '/mijn-cvs', '/en/my-cvs', '/login', '/success', '/agency/account', '/pdf-render'];
 
 export default function robots(): MetadataRoute.Robots {
     return {

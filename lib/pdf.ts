@@ -1498,9 +1498,8 @@ export async function generatePDF(
     return generatePDFFromHTML(html);
 }
 
-export async function generatePDFFromHTML(html: string): Promise<Buffer> {
-
-    const browser = await puppeteer.launch({
+function launchPdfBrowser() {
+    return puppeteer.launch({
         headless: true,
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
         args: [
@@ -1512,6 +1511,11 @@ export async function generatePDFFromHTML(html: string): Promise<Buffer> {
             '--disable-crash-reporter',
         ],
     });
+}
+
+export async function generatePDFFromHTML(html: string): Promise<Buffer> {
+
+    const browser = await launchPdfBrowser();
 
     try {
         const page = await browser.newPage();
@@ -1533,5 +1537,70 @@ export async function generatePDFFromHTML(html: string): Promise<Buffer> {
     }
 }
 
+// ============================================================
+// PDF FROM THE PREVIEW TEMPLATES (PDF_RENDERER=react)
+// The PDF is printed from /pdf-render, which renders the same React templates and
+// page breaks as the live preview, so the download matches what the user chose.
+// The builders above stay as the fallback and for PDF_RENDERER=legacy (default).
+// ============================================================
 
+export type PdfRenderer = 'legacy' | 'react';
 
+export function getPdfRenderer(env: Record<string, string | undefined> = process.env): PdfRenderer {
+    return env.PDF_RENDERER?.trim().toLowerCase() === 'react' ? 'react' : 'legacy';
+}
+
+/**
+ * Where the server's headless browser opens /pdf-render. Production calls the app inside its
+ * own container (PORT=3000); development uses the origin of the incoming request.
+ */
+export function getPdfRenderOrigin(requestOrigin?: string, env: Record<string, string | undefined> = process.env): string {
+    const configured = env.PDF_RENDER_ORIGIN?.trim();
+    if (configured) return configured.replace(/\/+$/, '');
+    if (env.NODE_ENV !== 'production' && requestOrigin) return requestOrigin.replace(/\/+$/, '');
+    return `http://127.0.0.1:${env.PORT || 3000}`;
+}
+
+export async function generatePDFFromTemplates(
+    data: CVData,
+    templateId: string,
+    colorThemeId: string,
+    origin: string,
+): Promise<Buffer> {
+    const browser = await launchPdfBrowser();
+    try {
+        const page = await browser.newPage();
+        await page.setViewport({ width: 794, height: 1123 });
+        await page.goto(`${origin}/pdf-render`, { waitUntil: 'load', timeout: 15000 });
+        await page.waitForSelector('html[data-pdf-host="ready"]', { timeout: 15000 });
+        await page.evaluate((payload) => window.__werkcvRenderPdf?.(payload), { data, templateId, colorThemeId });
+        await page.waitForSelector('#pdf-root[data-pdf-ready="true"]', { timeout: 15000 });
+        await page.evaluate(() => document.fonts.ready);
+        const pdfBuffer = await page.pdf({ format: 'A4', printBackground: true, preferCSSPageSize: true });
+        return Buffer.from(pdfBuffer);
+    } finally {
+        await browser.close();
+    }
+}
+
+/**
+ * The CV PDF for download and the "final PDF" view. With PDF_RENDERER=react it prints the
+ * preview templates and falls back to the legacy builder on any error, so a download never fails
+ * because of the new renderer.
+ */
+export async function generateCvPdf(
+    data: CVData,
+    templateId: string,
+    colorThemeId: string,
+    options: { requestOrigin?: string; renderer?: PdfRenderer; onFallback?: (error: unknown) => void } = {},
+): Promise<{ pdf: Buffer; renderer: PdfRenderer }> {
+    const renderer = options.renderer ?? getPdfRenderer();
+    if (renderer === 'react') {
+        try {
+            return { pdf: await generatePDFFromTemplates(data, templateId, colorThemeId, getPdfRenderOrigin(options.requestOrigin)), renderer };
+        } catch (error) {
+            options.onFallback?.(error);
+        }
+    }
+    return { pdf: await generatePDF(data, templateId, colorThemeId), renderer: 'legacy' };
+}

@@ -24,6 +24,7 @@ export function getRouteWorkspaceContext(pathname: string): RouteWorkspaceContex
   if (startsWithFamily(path, "/embed")) return "embedded";
   if (startsWithFamily(path, "/admin")) return "admin";
   if (startsWithFamily(path, "/chrome")) return "none";
+  if (startsWithFamily(path, "/pdf-render")) return "none";
   if (startsWithFamily(path, "/login")) return "auth_derived";
   if (startsWithFamily(path, "/editor") || startsWithFamily(path, "/en/editor")) return "document_derived";
   if (startsWithFamily(path, "/mijn-cvs") || startsWithFamily(path, "/en/my-cvs")) return "personal_app";

@@ -10,6 +10,8 @@ const PRIVATE_CONTENT_PATHS = new Set([
   "/kandidaat/bevestigen",
   "/cv-handoff",
   "/en/cv-handoff",
+  // Server-side PDF rendering of a CV (headless browser only).
+  "/pdf-render",
 ]);
 
 export function isPrivateContentPath(pathname: string): boolean {

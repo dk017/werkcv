@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUserFromRequest } from "@/lib/auth";
 import { cvSchema } from "@/lib/cv";
-import { generatePDF } from "@/lib/pdf";
+import { generateCvPdf } from "@/lib/pdf";
 import { renderPdfPreviewImages } from "@/lib/pdf-preview-images";
 import { prisma } from "@/lib/prisma";
 import { getDefaultThemeId, templateRegistry } from "@/lib/templates/registry";
@@ -59,7 +59,10 @@ export async function POST(request: NextRequest) {
     ? templateId
     : "professional";
   const safeThemeId = colorThemeId || getDefaultThemeId(safeTemplateId);
-  const pdf = await generatePDF(parsed.data, safeTemplateId, safeThemeId);
+  const { pdf } = await generateCvPdf(parsed.data, safeTemplateId, safeThemeId, {
+    requestOrigin: request.nextUrl.origin,
+    onFallback: (error) => console.error("pdf_render_fallback", { route: "/api/pdf-preview", cvId, templateId: safeTemplateId, error }),
+  });
   const pages = await renderPdfPreviewImages(pdf);
 
   return previewJson(
