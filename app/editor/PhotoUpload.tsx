@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, type CSSProperties } from "react";
 import { track } from "@/lib/analytics";
 import { UiLanguage } from "@/lib/ui-language";
 
@@ -8,7 +8,53 @@ interface PhotoUploadProps {
   currentPhoto: string;
   onPhotoChange: (base64: string) => void;
   uiLanguage?: UiLanguage;
+  /** "steps": the app v2 stepped editor look (brand tokens from .werkcv-brand). */
+  variant?: "classic" | "steps";
 }
+
+// The classic strings are the original ones, unchanged.
+const PHOTO_STYLES = {
+  classic: {
+    box: "relative flex h-24 w-24 cursor-pointer items-center justify-center overflow-hidden border-3 border-black transition-all group sm:h-28 sm:w-28",
+    boxDragging: "border-dashed bg-yellow-100 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]",
+    boxPhoto: "bg-gray-100 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]",
+    boxEmpty: "bg-gray-100 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:bg-gray-200 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]",
+    boxStyle: { borderWidth: "3px" } as CSSProperties | undefined,
+    remove: "absolute -right-1.5 -top-1.5 z-10 flex h-6 w-6 items-center justify-center border-2 border-black bg-red-400 text-xs font-black text-black opacity-0 transition-opacity hover:bg-red-500 group-hover:opacity-100",
+    plusIcon: "h-6 w-6 text-gray-400 transition-colors group-hover:text-gray-600",
+    plusLabel: "text-center text-[10px] font-bold leading-tight text-gray-500",
+    error: "max-w-[7rem] text-center text-[10px] font-bold text-red-600 sm:text-left",
+    editCrop: "text-[10px] font-bold text-gray-700 underline hover:text-black",
+    panel: "mt-2 w-[216px] border-3 border-black bg-white p-2 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]",
+    panelStyle: { borderWidth: "3px" } as CSSProperties | undefined,
+    panelTitle: "text-[11px] font-black text-black",
+    panelHint: "mb-2 text-[10px] text-gray-600",
+    cropArea: "relative overflow-hidden border-2 border-black touch-none select-none",
+    btnCenter: "border-2 border-black bg-gray-100 px-2 py-1 text-[10px] font-black hover:bg-gray-200",
+    btnCancel: "border-2 border-black bg-red-100 px-2 py-1 text-[10px] font-black hover:bg-red-200",
+    btnApply: "border-2 border-black bg-green-300 px-2 py-1 text-[10px] font-black hover:bg-green-400",
+  },
+  steps: {
+    box: "relative flex h-24 w-24 cursor-pointer items-center justify-center overflow-hidden rounded-[14px] border-2 transition-colors group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--wk-focus)] sm:h-28 sm:w-28",
+    boxDragging: "border-dashed border-[var(--wk-primary)] bg-[var(--wk-accent-soft)]",
+    boxPhoto: "border-[var(--wk-border)] bg-[var(--wk-surface-subtle)]",
+    boxEmpty: "border-dashed border-[var(--wk-border-strong)] bg-white hover:border-[var(--wk-primary)] hover:bg-[var(--wk-surface-subtle)]",
+    boxStyle: undefined,
+    remove: "absolute right-1 top-1 z-10 flex h-7 w-7 items-center justify-center rounded-full border border-[var(--wk-border)] bg-white text-xs font-bold text-[var(--wk-danger)] opacity-0 shadow-sm transition-opacity hover:bg-[var(--wk-danger-soft)] focus-visible:opacity-100 group-hover:opacity-100",
+    plusIcon: "h-6 w-6 text-[var(--wk-ink-muted)] transition-colors group-hover:text-[var(--wk-primary)]",
+    plusLabel: "text-center text-xs font-bold leading-tight text-[var(--wk-ink-muted)]",
+    error: "max-w-[7rem] text-center text-xs font-bold text-[var(--wk-danger)] sm:text-left",
+    editCrop: "inline-flex min-h-8 items-center text-xs font-bold text-[var(--wk-primary)] underline underline-offset-2",
+    panel: "mt-2 w-[216px] rounded-[14px] border border-[var(--wk-border)] bg-white p-3 shadow-[var(--wk-shadow-md)]",
+    panelStyle: undefined,
+    panelTitle: "text-[13px] font-bold text-[var(--wk-ink)]",
+    panelHint: "mb-2 text-xs text-[var(--wk-ink-muted)]",
+    cropArea: "relative overflow-hidden rounded-[10px] border border-[var(--wk-border-strong)] touch-none select-none",
+    btnCenter: "min-h-9 rounded-lg border border-[var(--wk-border)] bg-white px-2 text-xs font-bold text-[var(--wk-ink)] hover:bg-[var(--wk-surface-subtle)]",
+    btnCancel: "min-h-9 rounded-lg px-2 text-xs font-bold text-[var(--wk-danger)] hover:bg-[var(--wk-danger-soft)]",
+    btnApply: "min-h-9 rounded-lg bg-[var(--wk-primary)] px-2 text-xs font-bold text-[var(--wk-primary-contrast)] hover:bg-[var(--wk-primary-hover)]",
+  },
+};
 
 const MAX_SIZE_MB = 5;
 const CROP_SIZE = 192;
@@ -20,8 +66,10 @@ export default function PhotoUpload({
   currentPhoto,
   onPhotoChange,
   uiLanguage = "nl",
+  variant = "classic",
 }: PhotoUploadProps) {
   const isEnglish = uiLanguage === "en";
+  const v = PHOTO_STYLES[variant];
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [editorSrc, setEditorSrc] = useState<string | null>(null);
@@ -194,17 +242,25 @@ export default function PhotoUpload({
           event.stopPropagation();
           setIsDragging(false);
         }}
+        role="button"
+        tabIndex={0}
+        aria-label={currentPhoto ? (isEnglish ? "Change photo" : "Foto wijzigen") : (isEnglish ? "Add a photo" : "Foto toevoegen")}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget || (event.key !== "Enter" && event.key !== " ")) return;
+          event.preventDefault();
+          fileInputRef.current?.click();
+        }}
         className={`
-          relative flex h-24 w-24 cursor-pointer items-center justify-center overflow-hidden border-3 border-black transition-all group sm:h-28 sm:w-28
+          ${v.box}
           ${
             isDragging
-              ? "border-dashed bg-yellow-100 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
+              ? v.boxDragging
               : currentPhoto
-                ? "bg-gray-100 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-                : "bg-gray-100 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:bg-gray-200 hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+                ? v.boxPhoto
+                : v.boxEmpty
           }
         `}
-        style={{ borderWidth: "3px" }}
+        style={v.boxStyle}
         title={
           currentPhoto
             ? isEnglish
@@ -228,6 +284,8 @@ export default function PhotoUpload({
               </span>
             </div>
             <button
+              type="button"
+              aria-label={isEnglish ? "Remove photo" : "Foto verwijderen"}
               onClick={(event) => {
                 event.stopPropagation();
                 onPhotoChange("");
@@ -235,7 +293,7 @@ export default function PhotoUpload({
                 setEditorImage(null);
                 track("photo_removed", {});
               }}
-              className="absolute -right-1.5 -top-1.5 z-10 flex h-6 w-6 items-center justify-center border-2 border-black bg-red-400 text-xs font-black text-black opacity-0 transition-opacity hover:bg-red-500 group-hover:opacity-100"
+              className={v.remove}
               title={isEnglish ? "Remove photo" : "Foto verwijderen"}
             >
               ✕
@@ -243,10 +301,10 @@ export default function PhotoUpload({
           </>
         ) : (
           <div className="flex flex-col items-center gap-1 px-2">
-            <svg className="h-6 w-6 text-gray-400 transition-colors group-hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={v.plusIcon} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
-            <span className="text-center text-[10px] font-bold leading-tight text-gray-500">
+            <span className={v.plusLabel}>
               {isEnglish ? "Photo" : "Foto"}
             </span>
           </div>
@@ -254,7 +312,7 @@ export default function PhotoUpload({
       </div>
 
       {error && (
-        <p className="max-w-[7rem] text-center text-[10px] font-bold text-red-600 sm:text-left">
+        <p className={v.error}>
           {error}
         </p>
       )}
@@ -263,7 +321,7 @@ export default function PhotoUpload({
         <button
           type="button"
           onClick={handleEditCurrent}
-          className="text-[10px] font-bold text-gray-700 underline hover:text-black"
+          className={v.editCrop}
         >
           {isEnglish ? "Edit crop" : "Uitsnede bewerken"}
         </button>
@@ -271,18 +329,18 @@ export default function PhotoUpload({
 
       {editorSrc && editorImage && (
         <div
-          className="mt-2 w-[216px] border-3 border-black bg-white p-2 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"
-          style={{ borderWidth: "3px" }}
+          className={v.panel}
+          style={v.panelStyle}
         >
-          <p className="text-[11px] font-black text-black">
+          <p className={v.panelTitle}>
             {isEnglish ? "Position photo" : "Foto positioneren"}
           </p>
-          <p className="mb-2 text-[10px] text-gray-600">
+          <p className={v.panelHint}>
             {isEnglish ? "Drag to center your face." : "Sleep om je gezicht te centreren."}
           </p>
 
           <div
-            className={`relative overflow-hidden border-2 border-black touch-none select-none ${
+            className={`${v.cropArea} ${
               isDraggingEditor ? "cursor-grabbing" : "cursor-grab"
             }`}
             style={{ width: `${CROP_SIZE}px`, height: `${CROP_SIZE}px` }}
@@ -310,7 +368,7 @@ export default function PhotoUpload({
             <button
               type="button"
               onClick={() => setEditorOffset(getCenteredOffset(editorImage, editorScale))}
-              className="border-2 border-black bg-gray-100 px-2 py-1 text-[10px] font-black hover:bg-gray-200"
+              className={v.btnCenter}
             >
               {isEnglish ? "Center" : "Centreren"}
             </button>
@@ -322,14 +380,14 @@ export default function PhotoUpload({
                 setIsDraggingEditor(false);
                 dragStateRef.current = null;
               }}
-              className="border-2 border-black bg-red-100 px-2 py-1 text-[10px] font-black hover:bg-red-200"
+              className={v.btnCancel}
             >
               {isEnglish ? "Cancel" : "Annuleren"}
             </button>
             <button
               type="button"
               onClick={handleApplyEditor}
-              className="border-2 border-black bg-green-300 px-2 py-1 text-[10px] font-black hover:bg-green-400"
+              className={v.btnApply}
             >
               {isEnglish ? "Use photo" : "Gebruik foto"}
             </button>

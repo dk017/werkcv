@@ -155,6 +155,16 @@ export function stepForPreviewTarget(target: { section?: string | null; edit?: s
   return null;
 }
 
+// The reverse of stepForPreviewTarget: the preview parts a step edits, as CSS
+// selectors, so the live preview can highlight them. Afronden edits none.
+export function previewSelectorsForStep(step: EditorStepId): string[] {
+  if (step === "persoonlijk") return ['[data-cv-edit="personal"]'];
+  if (step === "profiel") return ['[data-cv-edit="profile"]'];
+  return (Object.keys(SECTION_STEP) as CvBodySectionId[])
+    .filter((id) => SECTION_STEP[id] === step)
+    .map((id) => `[data-cv-section="${id}"]`);
+}
+
 const COMPLETION_STEP: Partial<Record<EditorStepId, CompletionStepId>> = {
   persoonlijk: "contact",
   profiel: "summary",

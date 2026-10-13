@@ -387,3 +387,23 @@ accept/reject/undo review flow. The API key is only in ignored local configurati
 Implementation, migration/setup, quota controls, limitations and validation results:
 [`2026-10-12-personal-app-jobs.md`](./2026-10-12-personal-app-jobs.md).
 Changes remain local on `feat/app-redesign`; shipping remains a separate step.
+
+## 11. Editor polish continuation: 13 October 2026 (Claude Code)
+
+Steps mode only; classic class strings are kept byte-for-byte (moved into `classic` style maps).
+
+- `PhotoUpload.tsx` and `SectionOrderPanel.tsx` take `variant="steps"`: brand-token look,
+  larger touch targets. The photo box is now keyboard-operable (both variants, no visual change).
+- Persoonlijk: real chevron icon on "Meer persoonlijke gegevens"; profile AI buttons use `assist`.
+- Extra: new "Wat wil je toevoegen?" picker first (pill toggles, `aria-pressed`), then the
+  section forms, then the section-order panel. The old chip-heading card is classic-only.
+- Afronden: plain headings for "Laatste controle" and "Pas aan op een vacature"; the duplicate
+  download button inside "Laatste controle" is hidden (the download card has one); brand tailor button.
+- Live preview outlines the parts the current step edits: `previewSelectorsForStep` in
+  `lib/editor-steps.ts` (tested as the inverse of click-to-edit), rendered as a scoped `<style>`.
+- Verified in a browser: desktop 1440 (Persoonlijk, Werkervaring, Extra, Afronden), phone 390
+  (Persoonlijk, Extra), flag-off classic editor unchanged, no console errors.
+
+Still open from 6B: step highlight inside the phone preview dialog, larger template gallery
+cards and a proper `template_selected` source for the inline gallery, `CvScoreWidget` /
+`KeywordScannerWidget` internals, phone photo toggle.

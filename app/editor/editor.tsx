@@ -16,9 +16,10 @@ import { downloadPdfResponse } from "@/lib/pdf-download";
 import AiWritingAssistant from "./AiWritingAssistant";
 import type { WritingSelection, WritingChange } from "@/lib/ai-writing-changes";
 import { createCvSaveQueue } from "@/lib/cv-save-queue";
-import { entryForPreviewTarget, type PreviewEntryTarget, getStepStates, stepForPreviewTarget, stepForSection, stepParamName, type EditorStepId } from "@/lib/editor-steps";
+import { entryForPreviewTarget, type PreviewEntryTarget, getStepStates, stepForPreviewTarget, stepForSection, stepParamName, previewSelectorsForStep, type EditorStepId } from "@/lib/editor-steps";
 import { appPaths, type AppLocale } from "@/lib/app-v2-paths";
 import { AppSidebar } from "@/components/app/AppFrame";
+import { Icon } from "@/components/app/icons";
 import { NewCvDialogProvider } from "@/components/app/NewCvDialog";
 import StepsTopBar from "./StepsTopBar";
 import { StepHeader, StepNav } from "./StepParts";
@@ -152,6 +153,8 @@ interface EditorProps {
 const inputClass = "w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100";
 const inputStyle = undefined;
 // Steps layout: parts of the live preview that open a step get a dashed outline on hover.
+const STEPS_CARD_HEADING = "text-[17px] font-extrabold text-[var(--wk-ink)]";
+
 const PREVIEW_CLICK_TO_EDIT_CLASS = [
     "[&_[data-cv-section]]:cursor-pointer [&_[data-cv-edit]]:cursor-pointer",
     "[&_[data-cv-section]]:rounded-sm [&_[data-cv-edit]]:rounded-sm",
@@ -1732,6 +1735,38 @@ export default function Editor({
         }
     };
 
+    const extraSectionPicker = (
+        <section aria-labelledby="extra-picker-title" className="rounded-2xl border border-[var(--wk-border)] bg-[var(--wk-surface)] p-5 sm:p-6">
+            <h2 id="extra-picker-title" className={STEPS_CARD_HEADING}>{tr("Wat wil je toevoegen?", "What would you like to add?")}</h2>
+            <p className="mt-1 text-sm leading-relaxed text-[var(--wk-ink-muted)]">
+                {tr("Kies de onderdelen die iets over jou zeggen. Ze verschijnen hieronder om in te vullen.", "Pick the sections that say something about you. They appear below for you to fill in.")}
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+                {optionalSectionOptions.map((option) => {
+                    const isActive = visibleOptionalSections[option.id];
+                    return (
+                        <button
+                            key={option.id}
+                            type="button"
+                            aria-pressed={isActive}
+                            onClick={() => toggleOptionalSection(option.id)}
+                            className={`inline-flex min-h-11 items-center gap-1.5 rounded-full border px-4 text-sm font-bold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--wk-focus)] ${isActive
+                                ? "border-[var(--wk-primary)] bg-[var(--wk-primary)] text-[var(--wk-primary-contrast)] hover:bg-[var(--wk-primary-hover)]"
+                                : "border-[var(--wk-border-strong)] bg-white text-[var(--wk-ink)] hover:border-[var(--wk-primary)] hover:bg-[var(--wk-surface-subtle)]"}`}
+                        >
+                            <Icon name={isActive ? "check" : "plus"} size={16} aria-hidden="true" />
+                            {option.label}
+                        </button>
+                    );
+                })}
+            </div>
+        </section>
+    );
+    const previewHighlightSelectors = isSteps ? previewSelectorsForStep(activeStep) : [];
+    const previewHighlightStyle = previewHighlightSelectors.length ? (
+        <style>{`${previewHighlightSelectors.map((selector) => `[data-preview-step-scope] ${selector}`).join(",")}{outline:2px solid rgba(78,205,196,.55);outline-offset:6px;border-radius:2px}`}</style>
+    ) : null;
+
     const stepsTopBar = isSteps ? (
         <StepsTopBar
             activeStep={activeStep}
@@ -2317,9 +2352,9 @@ export default function Editor({
                                 <label className={labelClass}>{tr("Persoonlijk Profiel", "Personal Profile")}</label>
                                 <textarea {...register("personal.summary")} placeholder={tr("Korte introductie over jezelf, je ervaring en wat je zoekt...", "Short introduction about yourself, your experience, and what you are looking for...")} className={`${fieldInputClass} h-28`} style={inputStyle} />
                                 {aiReviewEnabled && !isPublicMode && !isMatchPackWorkspace && <div className="mt-2 flex flex-wrap gap-2">
-                                    <button type="button" data-writing-trigger="profile:draft_profile" className="rounded-lg border px-3 py-2 text-sm" disabled={saveProblem} onClick={() => setWritingSelection({ target: { kind: "profile" }, action: "draft_profile" })}>{tr("Help mijn profiel schrijven", "Help write my profile")}</button>
-                                    <button type="button" data-writing-trigger="profile:improve" className="rounded-lg border px-3 py-2 text-sm" disabled={saveProblem || !data.personal.summary.trim()} onClick={() => setWritingSelection({ target: { kind: "profile" }, action: "improve" })}>{tr("Verbeter de formulering", "Improve wording")}</button>
-                                    <button type="button" data-writing-trigger="profile:shorten" className="rounded-lg border px-3 py-2 text-sm" disabled={saveProblem || !data.personal.summary.trim()} onClick={() => setWritingSelection({ target: { kind: "profile" }, action: "shorten" })}>{tr("Maak korter", "Make shorter")}</button>
+                                    <button type="button" data-writing-trigger="profile:draft_profile" className={isSteps ? sectionStyles.assist : "rounded-lg border px-3 py-2 text-sm"} disabled={saveProblem} onClick={() => setWritingSelection({ target: { kind: "profile" }, action: "draft_profile" })}>{tr("Help mijn profiel schrijven", "Help write my profile")}</button>
+                                    <button type="button" data-writing-trigger="profile:improve" className={isSteps ? sectionStyles.assist : "rounded-lg border px-3 py-2 text-sm"} disabled={saveProblem || !data.personal.summary.trim()} onClick={() => setWritingSelection({ target: { kind: "profile" }, action: "improve" })}>{tr("Verbeter de formulering", "Improve wording")}</button>
+                                    <button type="button" data-writing-trigger="profile:shorten" className={isSteps ? sectionStyles.assist : "rounded-lg border px-3 py-2 text-sm"} disabled={saveProblem || !data.personal.summary.trim()} onClick={() => setWritingSelection({ target: { kind: "profile" }, action: "shorten" })}>{tr("Maak korter", "Make shorter")}</button>
                                 </div>}
                             </div>
                             ) : null}
@@ -2347,6 +2382,7 @@ export default function Editor({
                                         currentPhoto={data.personal.photo}
                                         onPhotoChange={handlePhotoChange}
                                         uiLanguage={uiLanguage}
+                                        variant={isSteps ? "steps" : "classic"}
                                     />
                                     <div className="flex-1 rounded-md border border-slate-200 bg-white p-3">
                                         <p className="text-sm font-semibold text-slate-900">{tr("Profielfoto", "Profile photo")}</p>
@@ -2384,13 +2420,17 @@ export default function Editor({
                                 type="button"
                                 onClick={() => setShowAdditionalPersonalDetails((open) => !open)}
                                 aria-expanded={showAdditionalPersonalDetails}
-                                className="mt-5 flex w-full items-center justify-between border-t border-slate-200 pt-4 text-left text-sm font-semibold text-slate-700 hover:text-slate-950"
+                                className={isSteps
+                                    ? "mt-5 flex min-h-11 w-full items-center justify-between border-t border-[var(--wk-border)] pt-4 text-left text-sm font-bold text-[var(--wk-ink)] hover:text-[var(--wk-primary)]"
+                                    : "mt-5 flex w-full items-center justify-between border-t border-slate-200 pt-4 text-left text-sm font-semibold text-slate-700 hover:text-slate-950"}
                             >
                                 <span>
                                     {tr("Meer persoonlijke gegevens", "More personal details")}
                                     <span className="ml-2 text-xs font-medium text-slate-400">{tr("optioneel", "optional")}</span>
                                 </span>
-                                <span className={`text-slate-400 transition-transform ${showAdditionalPersonalDetails ? "rotate-180" : ""}`}>⌄</span>
+                                {isSteps
+                                    ? <Icon name="chevronDown" aria-hidden="true" className={`text-[var(--wk-ink-muted)] transition-transform ${showAdditionalPersonalDetails ? "rotate-180" : ""}`} />
+                                    : <span className={`text-slate-400 transition-transform ${showAdditionalPersonalDetails ? "rotate-180" : ""}`}>⌄</span>}
                             </button>
 
                             {showAdditionalPersonalDetails ? (
@@ -2455,7 +2495,9 @@ export default function Editor({
                         </section>
                         ) : null}
 
-                        {(isSteps ? activeStep === "extra" : !isGuidedBuild) ? (
+                        {isSteps && activeStep === "extra" ? extraSectionPicker : null}
+
+                        {!isSteps && !isGuidedBuild ? (
                             <SectionOrderPanel
                                 layout={resolveCvSectionLayout(data, templateId, visibleOptionalSections)}
                                 uiLanguage={uiLanguage}
@@ -2517,6 +2559,15 @@ export default function Editor({
                             ) : null;
                         })}
 
+                        {isSteps && activeStep === "extra" ? (
+                            <SectionOrderPanel
+                                layout={resolveCvSectionLayout(data, templateId, visibleOptionalSections)}
+                                uiLanguage={uiLanguage}
+                                onMove={moveReorderableSection}
+                                variant="steps"
+                            />
+                        ) : null}
+
                         <div className={isGuidedBuild && !isSteps ? "hidden" : "contents"} aria-hidden={isGuidedBuild && !isSteps}>
                         {isSteps && activeStep === "afronden" ? (
                             <StepsFinishPanel
@@ -2553,7 +2604,7 @@ export default function Editor({
                                 locale={appLocale}
                             />
                         ) : null}
-                        {!isSteps || activeStep === "extra" ? (
+                        {!isSteps ? (
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                             <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
                                 <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
@@ -2590,18 +2641,22 @@ export default function Editor({
                         <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                                 <div>
+                                    {isSteps ? (
+                                    <h2 className={STEPS_CARD_HEADING}>{tr("Laatste controle", "Final check")}</h2>
+                                    ) : (
                                     <h2 className="text-base sm:text-lg font-semibold text-slate-900">
                                         <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
                                             {tr("Laatste controle", "Final check")}
                                         </span>
                                     </h2>
+                                    )}
                                     <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">
                                         {isReadyToDownload
                                             ? tr("Je basis-CV is klaar. Gebruik deze checks om je PDF sterker te maken voor een specifieke vacature.", "Your core CV is ready. Use these checks to make your PDF stronger for a specific vacancy.")
                                             : tr("Je kunt je CV nu al downloaden. Vul deze onderdelen aan als je de inhoud verder wilt versterken.", "You can download your CV now. Complete these sections if you want to strengthen the content further.")}
                                     </p>
                                 </div>
-                                {isReadyToDownload ? (
+                                {isReadyToDownload && !isSteps ? (
                                     <button
                                         type="button"
                                         onClick={() => handleDownload("post_completion_tools")}
@@ -2641,11 +2696,15 @@ export default function Editor({
                         {!isPublicMode && (!isSteps || activeStep === "afronden") ? (
                             <>
                                 {(aiReviewEnabled || initialTargetVacancy) && <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+                                    {isSteps ? (
+                                    <h2 className={`${STEPS_CARD_HEADING} mb-4`}>{tr("Pas aan op een vacature", "Tailor to a vacancy")}</h2>
+                                    ) : (
                                     <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
                                         <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
                                             {tr("Pas aan op een vacature", "Tailor to a vacancy")}
                                         </span>
                                     </h2>
+                                    )}
 
                                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                                         <div className="sm:col-span-2">
@@ -2683,11 +2742,13 @@ export default function Editor({
                                             type="button"
                                             onClick={() => setWritingSelection({ target: { kind: "all" }, action: "tailor" })}
                                             disabled={saveProblem}
-                                            className="px-4 py-2 rounded-md border border-sky-300 bg-sky-50 text-sky-900 font-semibold text-xs hover:bg-sky-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                                            className={isSteps
+                                                ? "inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full bg-[var(--wk-primary)] px-5 text-sm font-bold text-[var(--wk-primary-contrast)] hover:bg-[var(--wk-primary-hover)] disabled:cursor-not-allowed disabled:opacity-60"
+                                                : "px-4 py-2 rounded-md border border-sky-300 bg-sky-50 text-sky-900 font-semibold text-xs hover:bg-sky-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"}
                                         >
                                             {tr('Bekijk voorgestelde aanpassingen', 'Review proposed changes')}
                                         </button>}
-                                        <p className="text-xs font-bold text-gray-600">
+                                        <p className={isSteps ? "text-sm text-[var(--wk-ink-muted)]" : "text-xs font-bold text-gray-600"}>
                                             {aiReviewEnabled ? tr("Controleer de suggestie voordat je tekst vervangt. Controleer alle feiten zelf.", "Review the suggestion before replacing text. Check every fact yourself.") : tr("AI-suggesties zijn momenteel niet beschikbaar. Pas je CV handmatig aan via de stappen hierboven.", "AI suggestions are currently unavailable. Edit your CV manually using the steps above.")}
                                         </p>
                                     </div>
@@ -2790,9 +2851,11 @@ export default function Editor({
                 <div
                     ref={desktopPreviewViewportRef}
                     data-live-preview-viewport
+                    data-preview-step-scope={isSteps ? "" : undefined}
                     onClick={isSteps ? handlePreviewClick : undefined}
                     className={`min-h-0 flex-1 overflow-y-auto p-2 flex justify-center items-start ${isSteps ? PREVIEW_CLICK_TO_EDIT_CLASS : ""}`}
                 >
+                    {previewHighlightStyle}
                     <ScaledCvPreview
                         data={previewData}
                         templateId={templateId}
@@ -2849,6 +2912,7 @@ export default function Editor({
                                 handlePreviewClick(event);
                                 setIsMobilePreviewOpen(false);
                             } : undefined}
+                            data-preview-step-scope={isSteps ? "" : undefined}
                             className={`mx-auto w-max rounded-md border border-slate-200 bg-white p-2 shadow-lg ${isSteps ? PREVIEW_CLICK_TO_EDIT_CLASS : ""}`}
                         >
                             <ScaledCvPreview

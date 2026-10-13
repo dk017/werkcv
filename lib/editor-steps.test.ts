@@ -10,6 +10,7 @@ import {
   normalizeEditorStep,
   resolveInitialStep,
   stepForPreviewTarget,
+  previewSelectorsForStep,
   stepForSection,
 } from "./editor-steps";
 import { CV_BODY_SECTION_IDS } from "./cv-sections";
@@ -76,4 +77,14 @@ test("the opening step prefers the URL, then focus and upload requests", () => {
   assert.equal(resolveInitialStep({ ...base, step: "nonsense", focus: "skills" }), "vaardigheden");
   assert.equal(resolveInitialStep({ ...base, step: undefined, uploadRequested: true }), "persoonlijk");
   assert.equal(resolveInitialStep({ ...base, step: undefined }), "persoonlijk");
+});
+
+test("preview highlight selectors are the inverse of click-to-edit", () => {
+  assert.deepEqual(previewSelectorsForStep("persoonlijk"), ['[data-cv-edit="personal"]']);
+  assert.deepEqual(previewSelectorsForStep("vaardigheden"), ['[data-cv-section="skills"]', '[data-cv-section="languages"]']);
+  assert.deepEqual(previewSelectorsForStep("afronden"), []);
+  for (const id of CV_BODY_SECTION_IDS) {
+    const step = stepForPreviewTarget({ section: id });
+    assert.ok(step && previewSelectorsForStep(step).includes(`[data-cv-section="${id}"]`), id);
+  }
 });
