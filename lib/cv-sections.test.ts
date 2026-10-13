@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { defaultCV, type CVData } from "./cv";
 import {
+  reorderSectionsInLane,
   DEFAULT_CV_SECTION_ORDER,
   cvSectionHasSubstantiveContent,
   getEditorSectionIds,
@@ -80,4 +81,14 @@ test("two-column movement stays within the designed lane", () => {
   assert.deepEqual(layout.main, ["education", "experience"]);
   assert.deepEqual(moveSectionWithinLane(data, "modern", "skills", -1), data.sectionOrder);
   assert.deepEqual(moveSectionWithinLane(data, "modern", "education", 1), ["experience", "education", "skills", "languages", "internships", "courses", "awards", "interests", "properties", "references", "sideActivities", "customSections"]);
+});
+
+test("drag-and-drop reorders only the visible sections of a lane", () => {
+  const order = ["experience", "education", "internships", "skills", "languages", "courses"] as const;
+  // internships is hidden (no content); languages is in the other lane.
+  const visibleMain = ["experience", "education", "courses"] as const;
+  assert.deepEqual(reorderSectionsInLane([...order], [...visibleMain], "courses", 0), ["courses", "experience", "internships", "skills", "languages", "education"]);
+  assert.deepEqual(reorderSectionsInLane([...order], [...visibleMain], "experience", 2), ["education", "courses", "internships", "skills", "languages", "experience"]);
+  assert.deepEqual(reorderSectionsInLane([...order], [...visibleMain], "education", 1), [...order]);
+  assert.deepEqual(reorderSectionsInLane([...order], [...visibleMain], "awards", 0), [...order]);
 });

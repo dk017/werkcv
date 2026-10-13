@@ -515,3 +515,33 @@ localStorage `werkcv_inline_edit_v1`):**
 **Verified:** 11/11 browser checks on a fictional CV (caret stays mid-word, Enter/Backspace bullets,
 Escape, plain paste, autosave in the database, toggle off, no console errors).
 Not done (phase 2/3): adding/removing whole entries in the page, a layout toolbar, mobile.
+
+## 15. Document mode "Op je CV" (13 October 2026, replaces the Afronden toggle of section 14)
+
+Owner: hide the form while editing in place, design controls on the right, draggable sections,
+editable headings, switchable on/off, best possible UX. Built in three commits (A `66b19a1`,
+B `1f8c4ae`, C = this commit); revert newest-first to remove.
+
+- **Switch:** "Formulier | Op je CV" in the top bar (desktop ≥ the split breakpoint, every step,
+  remembered in localStorage `werkcv_editor_mode_v1`; needs a CV with content). Phones keep the forms.
+- **Layout:** form pane hidden, CV large (scale ≤ 1.0) with "Pagina N" markers, design panel
+  (`DocumentDesignPanel`): Opmaak, Kleur, Template. Step pills replaced by a title in the top bar.
+- **Headings:** every section heading is editable in place (`data.sectionTitles`, empty or typed
+  back to the default = default); custom sections use their own title as heading.
+- **Opmaak (`data.layout`):** font (design default, Manrope, Inter, Source Serif, Merriweather),
+  size, line spacing, section spacing, "Pas op 1 pagina" (tightens gap → line → size; restores and
+  explains when impossible), "Standaard herstellen". Templates scale via `--cv-fs/--cv-lh/--cv-gap`
+  (defaults keep every template byte-identical in text and pages). Fonts are bundled via next/font;
+  the serif templates now use Gelasio (Georgia's metrics) so browser and server PDF match.
+- **Reorder:** hover a section → grip; drag (drop line) or arrow keys; within its lane
+  (`reorderSectionsInLane`, only visible sections, tested). Custom sections move together.
+- **Add in place:** "+ Werkervaring/Opleiding/Stage toevoegen" at the end of those sections and
+  "+ Punt toevoegen" for entries without bullets; same shapes as the forms (experience `entryId`).
+  Edit-mode only: not in preview thumbnails or the PDF (verified).
+- **Page-count fix found on the way:** pages are counted where the content ends with the exact A4
+  height (1122 px); trailing padding is dropped when printing. A CV that just fitted the preview
+  could otherwise spill one line onto a second PDF page.
+
+Verified: 15/15 editing checks, 7/7 layout checks (incl. fit failure + restore), fit success
+(2 → 1 page, PDF also 1 page), 7/7 reorder/add checks, preview page count = PDF page count for all
+13 templates, 64/64 unit tests. Not built: removing whole entries in the page, mobile document mode.

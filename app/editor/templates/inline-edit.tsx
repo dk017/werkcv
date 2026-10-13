@@ -14,6 +14,8 @@ export type InlineEditApi = {
     removeListItem: (listPath: string, index: number) => void;
     /** True once for the path that should get focus when it mounts (a new bullet, or the one before a removed bullet). */
     takeFocusRequest: (path: string) => boolean;
+    /** Add an item at the end of a list and focus the given path once it renders. */
+    appendListItem: (listPath: string, item: unknown, focusPath: string) => void;
     /** Accessible name and empty-field hint, in the app language. */
     label: (field: InlineField) => string;
 };
@@ -21,7 +23,8 @@ export type InlineEditApi = {
 export type InlineField =
     | "name" | "title" | "summary" | "email" | "phone" | "city" | "linkedIn" | "github" | "website"
     | "role" | "company" | "location" | "start" | "end" | "description" | "bullet"
-    | "degree" | "school" | "skill" | "language" | "heading";
+    | "degree" | "school" | "skill" | "language" | "heading"
+    | "addExperience" | "addEducation" | "addInternship" | "addBullet";
 
 const InlineEditContext = createContext<InlineEditApi | null>(null);
 
@@ -166,4 +169,32 @@ export function WhenFilledOrEditing({ value, children }: { value: unknown; child
     const editing = useInlineEditing();
     const filled = typeof value === "string" ? value.trim().length > 0 : Boolean(value);
     return filled || editing ? <>{children}</> : null;
+}
+
+/** "+ add" in the document (edit mode only): a new entry or bullet, focused right away. */
+export function InlineAddButton({ kind, listPath, count }: { kind: "experience" | "education" | "internship" | "bullet"; listPath: string; count: number }) {
+    const api = useContext(InlineEditContext);
+    if (!api) return null;
+    const field: InlineField = kind === "experience" ? "addExperience" : kind === "education" ? "addEducation" : kind === "internship" ? "addInternship" : "addBullet";
+    const add = () => {
+        // Same shapes as the step forms create (sections.tsx), including the experience entry id
+        // that AI writing uses to apply changes to the right job.
+        const item = kind === "bullet"
+            ? ""
+            : kind === "education"
+                ? { degree: "", school: "", start: "", end: "", location: "", description: "" }
+                : { ...(kind === "experience" ? { entryId: crypto.randomUUID() } : {}), role: "", company: "", description: "", start: "", end: "", location: "", highlights: [] };
+        const focus = kind === "bullet" ? `${listPath}.${count}` : `${listPath}.${count}.${kind === "education" ? "degree" : "role"}`;
+        api.appendListItem(listPath, item, focus);
+    };
+    return (
+        <button
+            type="button"
+            data-cv-inline-add=""
+            onClick={add}
+            className="mt-2 inline-flex items-center gap-1 rounded-full border border-dashed border-[#4ecdc4] bg-white px-3 py-1 text-[11px] font-bold text-[#173f38] hover:bg-[#e8f8f6] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#173f38]"
+        >
+            <span aria-hidden="true">+</span> {api.label(field)}
+        </button>
+    );
 }

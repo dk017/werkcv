@@ -244,3 +244,25 @@ export function moveSectionWithinLane(
   next[targetPosition] = sectionId;
   return next;
 }
+
+/**
+ * Drag-and-drop in the document: move one visible section to a new position among the sections
+ * shown in its lane. Only the positions those visible sections already hold are rewritten, so
+ * sections that are hidden (no content) or in the other lane keep their place.
+ */
+export function reorderSectionsInLane(
+  order: CvBodySectionId[],
+  visibleLane: CvBodySectionId[],
+  sectionId: CvBodySectionId,
+  targetIndex: number,
+): CvBodySectionId[] {
+  const from = visibleLane.indexOf(sectionId);
+  if (from < 0) return order;
+  const desired = visibleLane.filter((id) => id !== sectionId);
+  desired.splice(Math.max(0, Math.min(desired.length, targetIndex)), 0, sectionId);
+  const positions = order.map((id, index) => (visibleLane.includes(id) ? index : -1)).filter((index) => index >= 0);
+  if (positions.length !== visibleLane.length) return order;
+  const next = [...order];
+  positions.forEach((position, index) => { next[position] = desired[index]; });
+  return next;
+}

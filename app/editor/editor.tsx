@@ -24,6 +24,7 @@ import { Icon } from "@/components/app/icons";
 import { InlineEditProvider, type InlineEditApi, type InlineField } from "./templates/inline-edit";
 import DocumentDesignPanel from "./DocumentDesignPanel";
 import LayoutControls, { LAYOUT_LIMITS, type CvLayout } from "./LayoutControls";
+import SectionDragHandles from "./SectionDragHandles";
 import { NewCvDialogProvider } from "@/components/app/NewCvDialog";
 import StepsTopBar from "./StepsTopBar";
 import { StepHeader, StepNav } from "./StepParts";
@@ -82,9 +83,11 @@ import { cvVacatureMatchResultSchema } from "@/lib/tools/cv-vacature-match-schem
 import { suggestTargetRoleFromExperience } from "@/lib/cv-normalize";
 import {
     cvSectionHasSubstantiveContent,
+    getCvSectionLabel,
     getOrderedSectionIds,
     moveSectionWithinLane,
     normalizeCvSectionOrder,
+    reorderSectionsInLane,
     resolveCvSectionLayout,
     type CvBodySectionId,
 } from "@/lib/cv-sections";
@@ -653,6 +656,11 @@ export default function Editor({
         setIsFittingPage(false);
         setFitPageFailed(true);
         track("cta_clicked", { location: "editor_document_layout", label: "fit_one_page_failed" });
+    };
+    const reorderSectionInDocument = (sectionId: CvBodySectionId, visibleLane: CvBodySectionId[], targetIndex: number) => {
+        const next = reorderSectionsInLane(normalizeCvSectionOrder(getValues("sectionOrder")), visibleLane, sectionId, targetIndex);
+        setValue("sectionOrder", next, { shouldDirty: true });
+        track("cta_clicked", { location: "editor_document_reorder", label: sectionId });
     };
     const changeEditorMode = (mode: "form" | "document") => {
         if (mode === editorMode) return;
@@ -1798,6 +1806,8 @@ export default function Editor({
             start: ["Start", "Start"], end: ["Eind", "End"], description: ["Omschrijving", "Description"], bullet: ["Punt", "Bullet"],
             degree: ["Opleiding", "Degree"], school: ["School", "School"], skill: ["Vaardigheid", "Skill"], language: ["Taal", "Language"],
             heading: ["Kop", "Heading"],
+            addExperience: ["Werkervaring toevoegen", "Add work experience"], addEducation: ["Opleiding toevoegen", "Add education"],
+            addInternship: ["Stage toevoegen", "Add internship"], addBullet: ["Punt toevoegen", "Add bullet"],
         };
         const update = (path: string, value: unknown) => setValue(path as never, value as never, { shouldDirty: true });
         return {
@@ -1819,6 +1829,13 @@ export default function Editor({
                 list.splice(index, 1);
                 if (index > 0) inlineFocusRequest.current = `${listPath}.${index - 1}`;
                 update(listPath, list);
+            },
+            appendListItem: (listPath, item, focusPath) => {
+                const list = [...((getValues(listPath as never) as unknown as unknown[] | undefined) ?? [])];
+                list.push(item);
+                inlineFocusRequest.current = focusPath;
+                update(listPath, list);
+                track("cta_clicked", { location: "editor_document_add", label: listPath.split(".").pop() ?? listPath });
             },
             takeFocusRequest: (path) => {
                 if (inlineFocusRequest.current !== path) return false;
@@ -2963,9 +2980,17 @@ export default function Editor({
                     data-live-preview-viewport
                     data-preview-step-scope={isSteps ? "" : undefined}
                     onClick={isSteps && !inlineEditActive ? handlePreviewClick : undefined}
-                    className={`min-h-0 flex-1 overflow-y-auto p-2 flex justify-center items-start ${isSteps && !inlineEditActive ? PREVIEW_CLICK_TO_EDIT_CLASS : ""}`}
+                    className={`relative min-h-0 flex-1 overflow-y-auto p-2 flex justify-center items-start ${isSteps && !inlineEditActive ? PREVIEW_CLICK_TO_EDIT_CLASS : ""}`}
                 >
                     {previewHighlightStyle}
+                    {documentMode ? (
+                        <SectionDragHandles
+                            rootRef={desktopPreviewViewportRef}
+                            sectionLabel={(sectionId) => getCvSectionLabel(sectionId, uiLanguage)}
+                            onReorder={reorderSectionInDocument}
+                            locale={appLocale}
+                        />
+                    ) : null}
                     {inlineEditActive ? (
                         <InlineEditProvider value={inlineEditApi}>
                             {/* lang: the spell checker uses the CV's language, not the browser's. */}
