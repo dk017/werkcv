@@ -34,10 +34,9 @@ function ExampleGrid({ cards, locale, useLabel }: { cards: Card[]; locale: AppLo
     <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {cards.map((card) => (
         <li key={card.key} className="flex flex-col overflow-hidden rounded-2xl border border-[var(--wk-border)] bg-[var(--wk-surface)]">
-          <div className="border-b border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-3" aria-hidden="true">
-            <div className="mx-auto aspect-[210/297] w-full max-w-[220px] overflow-hidden rounded-md bg-white shadow-sm">
-              <CvThumbnail data={card.sampleCV} templateId={card.templateId} colorThemeId={card.colorThemeId} />
-            </div>
+          {/* The page fills the card width and shows its top part, like the dashboard CV cards. */}
+          <div className="border-b border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] px-4 pt-4" aria-hidden="true">
+            <CvThumbnail data={card.sampleCV} templateId={card.templateId} colorThemeId={card.colorThemeId} />
           </div>
           <div className="flex flex-1 flex-col gap-2 p-4">
             <h3 className="text-[15px] font-extrabold text-[var(--wk-ink)]">{card.name}</h3>
@@ -110,7 +109,7 @@ export default async function ExamplesScreen({ locale, searchParams }: { locale:
 
         <section aria-labelledby="examples-library" className="flex flex-col gap-3">
           {en ? <h2 id="examples-library" className="text-[17px] font-extrabold text-[var(--wk-ink)]">{COPY.en.dutch}</h2> : <h2 id="examples-library" className="sr-only">{t.title}</h2>}
-          <nav aria-label={t.categories} className="flex flex-wrap gap-2">
+          <nav aria-label={t.categories} className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
             {categories.map((category) => {
               const isActive = category.slug === active.slug;
               return (
@@ -119,7 +118,7 @@ export default async function ExamplesScreen({ locale, searchParams }: { locale:
                   href={`${paths.examples}?${param}=${encodeURIComponent(category.slug)}`}
                   scroll={false}
                   aria-current={isActive ? "page" : undefined}
-                  className={`inline-flex min-h-10 items-center rounded-full border px-4 text-sm font-bold transition-colors ${isActive
+                  className={`inline-flex min-h-10 shrink-0 items-center whitespace-nowrap rounded-full border px-4 text-sm font-bold transition-colors ${isActive
                     ? "border-[var(--wk-primary)] bg-[var(--wk-primary)] text-[var(--wk-primary-contrast)]"
                     : "border-[var(--wk-border-strong)] bg-white text-[var(--wk-ink)] hover:border-[var(--wk-primary)]"}`}
                 >
