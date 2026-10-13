@@ -4,6 +4,11 @@ const SAFE_APPLICATION_PREFIXES = [
   "/templates",
   "/en/templates",
   "/mijn-cvs",
+  "/en/my-cvs",
+  "/sollicitatiebrief",
+  "/en/cover-letter",
+  "/profielfoto-cv-maken",
+  "/en/profile-photo",
   "/agency/account",
 ] as const;
 
@@ -46,6 +51,8 @@ export function isEnglishReturnPath(value: string): boolean {
   }
   const pathname = value.split(/[?#]/, 1)[0];
   return pathname === "/en/editor" || pathname.startsWith("/en/editor/")
+    || pathname === "/en/my-cvs" || pathname.startsWith("/en/my-cvs/")
+    || pathname === "/en/cover-letter" || pathname === "/en/profile-photo"
     || pathname === "/en/cv-handoff"
     || pathname === "/en/templates" || pathname.startsWith("/en/templates/");
 }

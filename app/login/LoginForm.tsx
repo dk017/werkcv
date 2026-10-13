@@ -184,6 +184,7 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
           email,
           code,
           next,
+          locale,
           attribution: getStoredAttribution(),
         }),
       });

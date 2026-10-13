@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { appPaths } from "@/lib/app-v2-paths";
 import { readStoredPriceCopyVariant } from "@/lib/pricing-copy-experiment";
 import { useEffect, useRef, useState } from "react";
 import { getCheckoutURL } from "@/app/actions";
@@ -15,6 +16,8 @@ type PublicDraftClaimClientProps = {
     draftId: string;
     flow: PublicEditorFlow;
     intent: "download" | "resume";
+    /** App v2 on: "back" goes to the dashboard instead of the marketing home. */
+    appV2?: boolean;
 };
 
 type ClaimState =
@@ -43,7 +46,7 @@ function getErrorMessage(code: string, uiLanguage: "nl" | "en"): string {
     return messages[uiLanguage][code as keyof typeof messages[typeof uiLanguage]] || messages[uiLanguage].default;
 }
 
-export default function PublicDraftClaimClient({ draftId, flow, intent }: PublicDraftClaimClientProps) {
+export default function PublicDraftClaimClient({ draftId, flow, intent, appV2 = false }: PublicDraftClaimClientProps) {
     const [state, setState] = useState<ClaimState>({ status: "loading", phase: "claim", uiLanguage: "nl" });
     const startedRef = useRef(false);
 
@@ -285,7 +288,7 @@ export default function PublicDraftClaimClient({ draftId, flow, intent }: Public
                 >
                     {isEnglish ? "Try again" : "Opnieuw proberen"}
                 </button>
-                <Link href={flow === "agency" ? "/agency/account" : isEnglish ? "/en" : "/"} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700">
+                <Link href={flow === "agency" ? "/agency/account" : appV2 ? appPaths(isEnglish ? "en" : "nl").dashboard : isEnglish ? "/en" : "/"} className="border-2 border-slate-300 bg-white px-4 py-3 text-sm font-black text-slate-700">
                     {flow === "agency" ? (isEnglish ? "Open agency account" : "Open agency-account") : (isEnglish ? "Back to WerkCV" : "Terug naar WerkCV")}
                 </Link>
             </div>

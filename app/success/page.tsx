@@ -9,6 +9,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { isCvPhotoDataUrl } from "@/lib/profile-photo-cv";
 import AppShell from "@/components/app/AppShell";
 import { isAppV2Active } from "@/lib/app-v2";
+import { appPaths } from "@/lib/app-v2-paths";
 
 export const metadata: Metadata = {
   title: "Betaling Geslaagd - WerkCV",
@@ -24,7 +25,9 @@ export default async function SuccessPage({
   searchParams: Promise<{ cvId?: string; lang?: string; bundle?: string }>;
 }) {
   const { cvId, lang, bundle } = await searchParams;
-  if (!cvId) redirect("/");
+  // App on: never drop a signed-in user on the marketing home; the dashboard is home.
+  const appHome = (await isAppV2Active()) ? appPaths(lang === "en" ? "en" : "nl").dashboard : null;
+  if (!cvId) redirect(appHome ?? "/");
 
   const user = await getCurrentUser();
   if (!user) {
@@ -37,7 +40,7 @@ export default async function SuccessPage({
   // Always authorise the requested CV, even when checkout returned a language.
   // This keeps arbitrary CV IDs from exposing payment metadata.
   const cv = await getCV(cvId, "personal");
-  if (!cv) redirect("/login");
+  if (!cv) redirect(appHome ?? "/login");
 
   const requestedLanguage: ResumeLanguage | null = lang === "en" || lang === "nl" ? lang : null;
   const resolvedLanguage = requestedLanguage ?? getResumeLanguage(cv);
@@ -70,7 +73,7 @@ export default async function SuccessPage({
     />
   );
 
-  if (await isAppV2Active()) {
+  if (appHome) {
     return (
       <AppShell active="cvs" locale={resolvedLanguage}>
         <main className="flex justify-center px-4 py-10 sm:py-16">

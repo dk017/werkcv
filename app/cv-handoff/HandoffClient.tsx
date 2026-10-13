@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import type { ToolHandoff } from "@/lib/tool-cv-handoff-schema";
 const TOKEN_KEY = "werkcv_tool_handoff_token_v1";
 type Review = { handoff: ToolHandoff; documents: { id: string; title: string }[]; expiresAt: string; destination: { id: string; title: string; summary: string; language?: string; version: string } | null };
-export default function HandoffClient({ locale = "nl" }: { locale?: "nl" | "en" }) {
+export default function HandoffClient({ locale = "nl", cancelHref }: { locale?: "nl" | "en"; cancelHref?: string }) {
   const router = useRouter(); const en = locale === "en";
   const [review, setReview] = useState<Review | null>(null);
   const [selected, setSelected] = useState(""); const [busy, setBusy] = useState(false); const [error, setError] = useState("");
@@ -57,6 +57,6 @@ export default function HandoffClient({ locale = "nl" }: { locale?: "nl" | "en" 
       <button type="button" disabled={busy} onClick={() => void exchange("apply", selected, review.destination?.version ?? null)} className="rounded-xl bg-teal-900 px-4 py-3 font-semibold text-white disabled:opacity-50">{en ? "Apply to selected CV" : "Toepassen op gekozen CV"}</button>
     </>}
     {error && <button type="button" disabled={busy} onClick={() => void exchange("review", selected)} className="my-3 rounded-lg border p-3">{en ? "Reload review" : "Controle opnieuw laden"}</button>}
-    <a href={en ? "/en/templates" : "/templates"} onClick={() => sessionStorage.removeItem(TOKEN_KEY)} className="ml-3 inline-block py-3 underline">{en ? "Cancel" : "Annuleren"}</a>
+    <a href={cancelHref ?? (en ? "/en/templates" : "/templates")} onClick={() => sessionStorage.removeItem(TOKEN_KEY)} className="ml-3 inline-block py-3 underline">{en ? "Cancel" : "Annuleren"}</a>
   </main>;
 }

@@ -4,6 +4,8 @@ import { applySessionCookie, verifyEmailLoginCode } from '@/lib/auth';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { prisma } from '@/lib/prisma';
 import { sanitizeInternalReturnPath } from '@/lib/auth/safe-return-path';
+import { isAppV2Active } from '@/lib/app-v2';
+import { appEntryLocale, appPostLoginPath } from '@/lib/app-v2-entry';
 
 function resolvePostLoginPath(nextPath: string | null, attribution: ReturnType<typeof sanitizeAttribution>) {
     const sourcePath = attribution?.firstTouchPath || '';
@@ -23,7 +25,10 @@ export async function POST(request: NextRequest) {
             ? sanitizeInternalReturnPath(body.next, '/templates')
             : null;
         const attribution = sanitizeAttribution(body.attribution);
-        const redirectTo = resolvePostLoginPath(nextPath, attribution);
+        // With the redesigned app on, a returning user lands in the dashboard, not on a new draft or /templates.
+        const redirectTo = await isAppV2Active()
+            ? appPostLoginPath(nextPath, appEntryLocale({ next: nextPath, locale: body.locale, firstTouchPath: attribution?.firstTouchPath, attributionLocale: attribution?.locale }))
+            : resolvePostLoginPath(nextPath, attribution);
 
         const session = await verifyEmailLoginCode(email, code, attribution);
         if (!session) {
