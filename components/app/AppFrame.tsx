@@ -7,7 +7,7 @@ import { Icon, type IconName } from '@/components/app/icons';
 import { NewCvDialogProvider, useNewCvDialog } from '@/components/app/NewCvDialog';
 import { appPaths, type AppLocale } from '@/lib/app-v2-paths';
 
-export type AppSection = 'cvs' | 'letters' | 'none';
+export type AppSection = 'cvs' | 'letters' | 'jobs' | 'applications' | 'none';
 
 // "responsive": icon rail from 520px, full sidebar with labels from 1280px.
 // "rail": always the icon rail (the editor needs the width for the form and preview).
@@ -21,6 +21,8 @@ function navFor(locale: AppLocale) {
     const main: NavItem[] = [
         { href: paths.dashboard, label: en ? 'My CVs' : "Mijn CV's", icon: 'file', section: 'cvs' },
         { href: paths.letters, label: en ? 'Cover letters' : 'Sollicitatiebrieven', icon: 'mail', section: 'letters' },
+        { href: paths.jobs, label: en ? 'Jobs for you' : 'Vacatures voor jou', icon: 'search', section: 'jobs' },
+        { href: paths.applications, label: en ? 'My applications' : 'Mijn sollicitaties', icon: 'check', section: 'applications' },
     ];
     const tools: NavItem[] = [
         { href: paths.cvCheck, label: en ? 'CV check' : 'CV-check', icon: 'shieldCheck' },

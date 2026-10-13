@@ -288,7 +288,8 @@ icon rail at 582px and full sidebar at 1440px, phone layouts. Flag off: classic 
 ### C. Remaining app screens
 - Login page (`app/login/`) in the new look when the flag is on (careful: logic is shared with all entry flows).
 - Consider showing the app frame on the profile-photo tool when opened from the app (keep the public SEO page as is).
-- Job search was explicitly postponed.
+- Job search was originally postponed; the owner subsequently requested implementation.
+  See section 10 and `2026-10-12-personal-app-jobs.md` for the implemented slice.
 
 ### D. Rollout
 - After the owner is happy: A/B test old vs new editor with `APP_V2_MODE`-style assignment (cookie per
@@ -334,3 +335,55 @@ nobody can see it.
 | Click-to-edit markers | `app/editor/templates/CanonicalCvTemplate.tsx` (`data-cv-edit`), section renderers (`data-cv-section`) |
 | Route contexts | `lib/workspace/route-context.ts`, `scripts/workspace-boundary.test.ts` |
 | PDF (separate renderer) | `lib/pdf.ts` |
+
+---
+
+## 9. Continuation: 12 October 2026 (Codex)
+
+Completed the first editor-polish slice from section 6B on `feat/app-redesign`:
+
+- Linked all 23 single-field labels in `sections.tsx` to their controls. Added bilingual
+  accessible names to placeholder-only fields; group headings are no longer unattached labels.
+- Preview clicks now open, scroll to and focus the exact experience, education or internship
+  entry, including when entering from another step or the phone preview dialog.
+  `data-cv-entry` uses the current array index, resolved immediately to React Hook Form's
+  field ID. This supports legacy education/internship records without a schema migration.
+  Each click creates a fresh request so a manually collapsed entry can be opened again.
+- Open entry cards have a separate 44px-high "Verwijderen" / "Remove" control that cannot
+  overlap the first field label. Disclosure buttons have visible keyboard focus and panel IDs.
+- Classic section class strings, persistence, checkout, PDF rendering and analytics handlers
+  are unchanged. Changes remain local; nothing was pushed or deployed.
+
+Verification:
+
+- TypeScript check and lint of all changed code/test files passed.
+- Full lint was rerun excluding `.claude/**`, `.codex-chrome-profile/**`,
+  `.codex-remote-attachments/**`, `output/**` and `tmp/**` after the default command scanned
+  generated bundles in another worktree. It reports 8 existing CommonJS-import errors in
+  `local/wordpress-sandbox/capture-screenshots.cjs`, `scripts/create_pilot_access.js` and
+  the two WordPress webpack configs, plus 12 warnings in untouched files.
+- The section 4.6 regression command passed **37/37** tests. Added invalid-entry-marker
+  coverage and entry-marker assertions across every registered template.
+- Real browser: Dutch jobs, English education/internships, repeated selection after collapse,
+  cross-step selection, saved content surviving navigation, 390px mobile preview selection,
+  and flag-off classic editor checked. No browser console errors at the final check.
+- Screenshots: `output/app-redesign-2026-10-12/desktop-entry.jpg` and `mobile-entry.jpg`.
+- Local QA CV: `585fec15-12c7-4f42-87be-c63fe4f27c14`, named
+  "Redesign QA 12 Oct – entry selection", in `redesign-test@werkcv.test`.
+- No production build in this session: an existing development server owns port 3021 and was
+  left running. No payment, upload/import, public-mode or agency browser flows exercised.
+
+Next: remaining visual polish from 6B (photo/Extra/finish widgets, preview highlighting,
+template-gallery sizing and analytics source). Shipping and rollout remain separate steps.
+
+## 10. Personal jobs continuation: 12 October 2026
+
+The owner requested job discovery, saved applications and vacancy-specific CV tailoring.
+Implemented NL/EN screens in the app frame, a server-side JSearch integration, persisted
+tracking statuses, manual vacancies, and idempotent separate CV copies with durable
+vacancy context in the editor. The original CV is preserved; AI proposals use the existing
+accept/reject/undo review flow. The API key is only in ignored local configuration.
+
+Implementation, migration/setup, quota controls, limitations and validation results:
+[`2026-10-12-personal-app-jobs.md`](./2026-10-12-personal-app-jobs.md).
+Changes remain local on `feat/app-redesign`; shipping remains a separate step.

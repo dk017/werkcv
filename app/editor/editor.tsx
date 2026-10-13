@@ -16,7 +16,7 @@ import { downloadPdfResponse } from "@/lib/pdf-download";
 import AiWritingAssistant from "./AiWritingAssistant";
 import type { WritingSelection, WritingChange } from "@/lib/ai-writing-changes";
 import { createCvSaveQueue } from "@/lib/cv-save-queue";
-import { getStepStates, stepForPreviewTarget, stepForSection, stepParamName, type EditorStepId } from "@/lib/editor-steps";
+import { entryForPreviewTarget, type PreviewEntryTarget, getStepStates, stepForPreviewTarget, stepForSection, stepParamName, type EditorStepId } from "@/lib/editor-steps";
 import { appPaths, type AppLocale } from "@/lib/app-v2-paths";
 import { AppSidebar } from "@/components/app/AppFrame";
 import { NewCvDialogProvider } from "@/components/app/NewCvDialog";
@@ -145,6 +145,7 @@ interface EditorProps {
     /** "steps" shows one part of the CV at a time (app v2, lib/app-v2.ts). */
     layoutVariant?: "classic" | "steps";
     initialStep?: EditorStepId;
+    initialTargetVacancy?: string;
 }
 
 // Reusable input styles for cleaner, calmer form UI
@@ -387,6 +388,7 @@ export default function Editor({
     onPublicDownloadRequest,
     layoutVariant = "classic",
     initialStep = "persoonlijk",
+    initialTargetVacancy = "",
 }: EditorProps) {
     const isEnglish = uiLanguage === "en";
     const isPublicMode = mode === "public";
@@ -434,6 +436,7 @@ export default function Editor({
     const completionScore = completionState.score;
     const isReadyToDownload = completionState.isReady;
     const remainingCoreSteps = completionState.steps.filter((step) => !step.complete).length;
+    const [previewEntry, setPreviewEntry] = useState<PreviewEntryTarget | null>(null);
     const [activeStep, setActiveStep] = useState<EditorStepId>(initialStep);
     const stepStates = getStepStates(data);
     const formScrollRef = useRef<HTMLDivElement>(null);
@@ -444,6 +447,7 @@ export default function Editor({
     const labelClass = isSteps ? sectionStyles.label : "block text-[11px] font-semibold uppercase tracking-wide text-slate-500 mb-1.5";
     const goToStep = (step: EditorStepId, source: string) => {
         setActiveStep(step);
+        setPreviewEntry(null);
         const url = new URL(window.location.href);
         url.searchParams.set(stepParamName(appLocale), step);
         window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
@@ -558,7 +562,7 @@ export default function Editor({
         };
     }, []);
     const [atsTargetRole, setAtsTargetRole] = useState(initialData.personal.title || '');
-    const [targetVacancy, setTargetVacancy] = useState('');
+    const [targetVacancy, setTargetVacancy] = useState(initialTargetVacancy);
     const [writingSelection, setWritingSelection] = useState<WritingSelection | null>(null);
     const [writingHistory, setWritingHistory] = useState<Array<WritingChange & { historyId: string }>>([]);
     const [matchImportFeedback, setMatchImportFeedback] = useState<MatchImportFeedback>({ status: 'idle' });
@@ -1721,7 +1725,11 @@ export default function Editor({
         const target = (event.target as HTMLElement).closest<HTMLElement>("[data-cv-edit],[data-cv-section]");
         if (!target) return;
         const step = stepForPreviewTarget({ edit: target.dataset.cvEdit, section: target.dataset.cvSection });
-        if (step) goToStep(step, "preview_click");
+        if (step) {
+            goToStep(step, "preview_click");
+            const entry = (event.target as HTMLElement).closest<HTMLElement>("[data-cv-entry]");
+            setPreviewEntry(entryForPreviewTarget(entry?.dataset.cvEntry));
+        }
     };
 
     const stepsTopBar = isSteps ? (
@@ -2462,17 +2470,17 @@ export default function Editor({
                             ) return null;
 
                             const section = sectionId === "experience"
-                                ? <ExperienceSection control={control} register={register} uiLanguage={uiLanguage}
+                                ? <ExperienceSection entryRequest={isSteps && previewEntry?.section === "experience" ? previewEntry : undefined} control={control} register={register} uiLanguage={uiLanguage}
                                     onWritingAssist={aiReviewEnabled && !isPublicMode && !isMatchPackWorkspace ? (entryId, action, bullet) => setWritingSelection({ target: { kind: "experience", entryId }, action, bullet }) : undefined}
                                     writingBlocked={saveProblem} />
                                 : sectionId === "education"
-                                    ? <EducationSection control={control} register={register} uiLanguage={uiLanguage} />
+                                    ? <EducationSection entryRequest={isSteps && previewEntry?.section === "education" ? previewEntry : undefined} control={control} register={register} uiLanguage={uiLanguage} />
                                     : sectionId === "skills"
                                         ? <SkillsSection control={control} register={register} uiLanguage={uiLanguage} />
                                         : sectionId === "languages"
                                             ? <LanguagesSection control={control} register={register} uiLanguage={uiLanguage} />
                                             : sectionId === "internships"
-                                                ? <InternshipsSection control={control} register={register} uiLanguage={uiLanguage} />
+                                                ? <InternshipsSection entryRequest={isSteps && previewEntry?.section === "internships" ? previewEntry : undefined} control={control} register={register} uiLanguage={uiLanguage} />
                                                 : sectionId === "courses"
                                                     ? <CoursesSection control={control} register={register} uiLanguage={uiLanguage} />
                                                     : sectionId === "awards"
@@ -2632,7 +2640,7 @@ export default function Editor({
 
                         {!isPublicMode && (!isSteps || activeStep === "afronden") ? (
                             <>
-                                {aiReviewEnabled && <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
+                                {(aiReviewEnabled || initialTargetVacancy) && <section className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                                     <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4">
                                         <span className="bg-slate-100 text-slate-700 px-2.5 py-1 border border-slate-200 rounded-md inline-block">
                                             {tr("Pas aan op een vacature", "Tailor to a vacancy")}
@@ -2641,8 +2649,9 @@ export default function Editor({
 
                                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                                         <div className="sm:col-span-2">
-                                            <label className={labelClass}>{tr("Doelrol", "Target role")}</label>
+                                            <label htmlFor="vacancy-target-role" className={labelClass}>{tr("Doelrol", "Target role")}</label>
                                             <input
+                                                id="vacancy-target-role"
                                                 value={atsTargetRole}
                                                 maxLength={200}
                                                 onChange={(e) => setAtsTargetRole(e.target.value)}
@@ -2655,28 +2664,31 @@ export default function Editor({
                                     </div>
 
                                     <div className="mb-4">
-                                        <label className={labelClass}>{tr("Vacaturetekst (optioneel)", "Job description (optional)")}</label>
+                                        {initialTargetVacancy && <p className="mb-3 text-sm text-slate-600">{tr("Dit is een aparte CV-kopie voor je bewaarde vacature. Je originele CV blijft behouden.", "This is a separate CV copy for your saved vacancy. Your original CV is preserved.")}</p>}
+                                        <label htmlFor="target-vacancy" className={labelClass}>{tr("Vacaturetekst (optioneel)", "Job description (optional)")}</label>
                                         <textarea
+                                            id="target-vacancy"
                                             value={targetVacancy}
-                                            maxLength={8000}
+                                            maxLength={19000}
                                             onChange={(e) => setTargetVacancy(e.target.value)}
                                             placeholder={tr("Plak de vacature. Gevraagde vaardigheden worden niet automatisch aan je cv toegevoegd.", "Paste the vacancy. Requested skills are not automatically added to your CV.")}
                                             className={`${fieldInputClass} h-24`}
                                             style={inputStyle}
                                         />
+                                        {targetVacancy.length > 8000 && <p className="mt-2 text-xs text-slate-600">{tr("Voor AI-suggesties worden de eerste 8.000 tekens gebruikt. Kort de tekst zo nodig in tot de belangrijkste eisen.", "AI suggestions use the first 8,000 characters. If needed, shorten the text to the most relevant requirements.")}</p>}
                                     </div>
 
                                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-                                        <button
+                                        {aiReviewEnabled && <button
                                             type="button"
                                             onClick={() => setWritingSelection({ target: { kind: "all" }, action: "tailor" })}
                                             disabled={saveProblem}
                                             className="px-4 py-2 rounded-md border border-sky-300 bg-sky-50 text-sky-900 font-semibold text-xs hover:bg-sky-100 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                                         >
                                             {tr('Bekijk voorgestelde aanpassingen', 'Review proposed changes')}
-                                        </button>
+                                        </button>}
                                         <p className="text-xs font-bold text-gray-600">
-                                            {tr("Controleer de suggestie voordat je tekst vervangt. Controleer alle feiten zelf.", "Review the suggestion before replacing text. Check every fact yourself.")}
+                                            {aiReviewEnabled ? tr("Controleer de suggestie voordat je tekst vervangt. Controleer alle feiten zelf.", "Review the suggestion before replacing text. Check every fact yourself.") : tr("AI-suggesties zijn momenteel niet beschikbaar. Pas je CV handmatig aan via de stappen hierboven.", "AI suggestions are currently unavailable. Edit your CV manually using the steps above.")}
                                         </p>
                                     </div>
                                 </section>
@@ -2879,7 +2891,7 @@ export default function Editor({
             ) : null}
 
             {writingSelection && aiReviewEnabled && !isPublicMode && !isMatchPackWorkspace && <AiWritingAssistant
-                selection={writingSelection} locale={uiLanguage} cvId={id} vacancy={targetVacancy}
+                selection={writingSelection} locale={uiLanguage} cvId={id} vacancy={targetVacancy.slice(0, 8000)}
                 role={atsTargetRole.trim() || data.personal.title} getData={() => watch() as CVData}
                 prepare={async source => (await saveEditorData(source, "manual_save")).success}
                 getVersion={saveQueue.getVersion} apply={next => { reset(next); setIsSaved(false); }}

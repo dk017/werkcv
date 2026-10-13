@@ -81,7 +81,7 @@ export function stepsSectionStyles({ showHeading }: { showHeading: boolean }): S
         assist: "inline-flex min-h-10 items-center rounded-full border border-[var(--wk-border)] bg-white px-3.5 text-[13px] font-bold text-[var(--wk-ink)] transition-colors hover:border-[var(--wk-primary)] hover:bg-[var(--wk-surface-subtle)] disabled:opacity-50",
         collapsible: true,
         itemInCard: "relative pt-1",
-        removeInCard: "absolute right-0 top-0 inline-flex h-8 items-center rounded-lg px-2 text-xs font-bold text-[var(--wk-danger)] hover:bg-[var(--wk-danger-soft)]",
+        removeInCard: "mb-3 ml-auto flex min-h-11 items-center rounded-lg px-3 text-sm font-bold text-[var(--wk-danger)] hover:bg-[var(--wk-danger-soft)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--wk-focus)]",
     };
 }
 

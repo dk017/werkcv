@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { defaultCV, type CVData } from "./cv";
 import {
   EDITOR_STEPS,
+  entryForPreviewTarget,
   getStepStates,
   initialEditorStep,
   neighbourSteps,
@@ -29,6 +30,16 @@ test("preview clicks open the matching step", () => {
   assert.equal(stepForPreviewTarget({ section: "references" }), "extra");
   assert.equal(stepForPreviewTarget({ section: "toString" }), null);
   assert.equal(stepForPreviewTarget({}), null);
+});
+
+test("preview entry markers support legacy arrays and reject malformed indices", () => {
+  for (const section of ["experience", "education", "internships"]) {
+    assert.deepEqual(entryForPreviewTarget(`${section}:0`), { section, index: 0 });
+    assert.deepEqual(entryForPreviewTarget(`${section}:12`), { section, index: 12 });
+  }
+  for (const marker of [undefined, "", "skills:0", "experience:-1", "education:1.5", "education:01", "internships:Infinity", "experience:9007199254740992"]) {
+    assert.equal(entryForPreviewTarget(marker), null, marker);
+  }
 });
 
 test("step names from the URL are validated", () => {

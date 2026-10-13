@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "test:app-jobs": "tsx --test lib/app-jobs/jobs.test.ts",
+    "test:app-jobs:db": "tsx --env-file=.env --test lib/app-jobs/jobs-db.test.ts",
     "test:ai-rewrite-review": "tsx --test lib/ai-rewrite-review.test.ts",
     "test:ai-writing-controls": "tsx --test lib/ai-writing-changes.test.ts lib/ai-writing-v2.test.ts lib/ai-safeguards.test.ts lib/tool-cv-handoff.test.ts lib/tool-handoff-service.test.ts",
     "test:ai-quality": "tsx lib/maintenance/consumer-ai-quality-evaluation.ts",

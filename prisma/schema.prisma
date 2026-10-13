@@ -23,6 +23,7 @@ model User {
   agencyTemplates       AgencyTemplate[]
   profilePhotoProjects  ProfilePhotoProject[]
   consumedToolHandoffs  ToolCvHandoff[]
+  jobApplications      PersonalJobApplication[]
 }
 
 // Short-lived bridge from a public writing tool to an authenticated personal CV.
@@ -102,6 +103,7 @@ model CVDocument {
   meaningfulContentAt  DateTime?
   meaningfulContentSignals Json?
   matchPack            AgencyMatchPack?
+  jobApplications      PersonalJobApplication[]
   createdAt            DateTime         @default(now())
   updatedAt            DateTime         @updatedAt
 
@@ -109,6 +111,37 @@ model CVDocument {
   @@index([userId, agencySubscriptionId, updatedAt])
   @@index([userId, agencySubscriptionId, hasMeaningfulContent])
   @@index([meaningfulContentAt])
+}
+
+// Personal app only. Vacancy snapshots survive expired listings and CV deletion.
+model PersonalJobApplication {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  jobKey       String
+  snapshot     Json
+  status       String   @default("saved")
+  tailoredCvId String?
+  tailoredCv   CVDocument? @relation(fields: [tailoredCvId], references: [id], onDelete: SetNull)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([userId, jobKey])
+  @@index([userId, updatedAt])
+  @@index([tailoredCvId])
+}
+
+// Shared public vacancy results; never contains CVs or contact details.
+model PersonalJobSearchCache {
+  id        String @id
+  jobs      Json
+  expiresAt DateTime
+}
+
+model PersonalJobSearchBudget {
+  id        String @id
+  used      Int @default(0)
+  expiresAt DateTime
 }
 
 // No CV text, email or raw network identifiers. Rows expire after 24 hours.

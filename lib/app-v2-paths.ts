@@ -7,6 +7,8 @@ export function appPaths(locale: AppLocale) {
   return {
     dashboard: en ? "/en/my-cvs" : "/mijn-cvs",
     letters: en ? "/en/my-cvs?tab=letters" : "/mijn-cvs?tab=brieven",
+    jobs: en ? "/en/my-cvs/jobs" : "/mijn-cvs/vacatures",
+    applications: en ? "/en/my-cvs/applications" : "/mijn-cvs/sollicitaties",
     editorBase: en ? "/en/editor" : "/editor",
     // The app's own cover letter workspace; the classic /sollicitatiebrief and /en/cover-letter stay as they are.
     coverLetter: (cvId: string) => `${en ? "/en/my-cvs/letter" : "/mijn-cvs/brief"}?id=${encodeURIComponent(cvId)}`,

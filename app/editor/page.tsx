@@ -13,6 +13,7 @@ import { consumerAiEnabled } from "@/lib/consumer-ai-availability";
 import { isAppV2Active } from "@/lib/app-v2";
 import { resolveInitialStep } from "@/lib/editor-steps";
 import { isCvEmpty } from "@/lib/cv-empty";
+import { jobVacancyForCv } from "@/lib/app-jobs/service";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -103,6 +104,7 @@ export default async function EditorPage({
         <Editor
             layoutVariant={useSteps ? "steps" : "classic"}
             initialStep={initialStep}
+            initialTargetVacancy={useSteps ? await jobVacancyForCv(user.id, id) : ""}
             key={id}
             initialContentVersion={cv.contentVersion}
             aiReviewEnabled={consumerAiEnabled() && !cv.agencyRouteLocked}

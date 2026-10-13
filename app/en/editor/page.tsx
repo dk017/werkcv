@@ -14,6 +14,7 @@ import { normalizeEditorFocus } from "@/lib/editor-focus";
 import { isAppV2Active } from "@/lib/app-v2";
 import { resolveInitialStep } from "@/lib/editor-steps";
 import { isCvEmpty } from "@/lib/cv-empty";
+import { jobVacancyForCv } from "@/lib/app-jobs/service";
 
 export const metadata: Metadata = {
   title: "English CV Editor for the Netherlands | WerkCV",
@@ -114,6 +115,7 @@ export default async function EnglishEditorPage({
       key={id}
       layoutVariant={useSteps ? "steps" : "classic"}
       initialStep={initialStep}
+      initialTargetVacancy={useSteps ? await jobVacancyForCv(user.id, id) : ""}
       initialContentVersion={cv.contentVersion}
       aiReviewEnabled={process.env.CONSUMER_AI_REVIEW_ENABLED === "true" && !cv.agencyRouteLocked}
       initialData={cv.data}

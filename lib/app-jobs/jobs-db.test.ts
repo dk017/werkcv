@@ -1,0 +1,88 @@
+import test from "node:test";
+import assert from "node:assert/strict";
+import { randomUUID } from "node:crypto";
+import { prisma } from "../prisma";
+import { cvSchema } from "../cv";
+import { applicationStatuses } from "./model";
+import { JobServiceError, searchKey } from "./provider";
+import { createTailoredCopy, jobVacancyForCv, listApplications, listCvChoices, manualJob, ownedCv, saveJob, saveSearchJob, searchJobs, updateApplication } from "./service";
+
+test("personal jobs: ownership, persistence, copies, cache coalescing and quota", { timeout: 60000 }, async () => {
+  assert.ok(["localhost", "127.0.0.1"].includes(new URL(process.env.DATABASE_URL!).hostname), "DB tests must run against localhost");
+  const run = randomUUID();
+  const users: string[] = [];
+  const keys: string[] = [];
+  const now = new Date("2097-03-15T10:00:00Z");
+  const monthId = "month:2097-03";
+  assert.equal(await prisma.personalJobSearchBudget.findUnique({ where: { id: monthId } }), null, "reserved test month must be unused");
+  const denied = (error: unknown) => error instanceof JobServiceError && error.code === "NOT_FOUND";
+  try {
+    for (let i = 0; i < 2; i++) users.push((await prisma.user.create({ data: { email: `jobs-qa-${run}-${i}@example.test` } })).id);
+    const data = cvSchema.parse({ personal: { name: "Test User", title: "Developer", location: "Utrecht", email: "private@example.test" }, skills: [{ name: "SQL" }] });
+    const source = await prisma.cVDocument.create({ data: { userId: users[0], title: "Original", data, coverLetter: "Original letter" } });
+    const legacy = await prisma.cVDocument.create({ data: { userId: users[0], title: "Agency", data, startSource: "agency_matchpack" } });
+    assert.deepEqual((await listCvChoices(users[0])).map(cv => cv.id), [source.id]);
+    await assert.rejects(ownedCv(users[1], source.id), denied);
+    await assert.rejects(ownedCv(users[0], legacy.id), denied);
+    const job = manualJob({ title: "Developer", company: "Test", location: "Utrecht", description: "Build and maintain reporting tools using SQL with our engineering team.", url: "https://example.com/job" });
+    const saved = await saveJob(users[0], job);
+    for (const status of applicationStatuses) {
+      await updateApplication(users[0], saved.id, status);
+      assert.equal((await listApplications(users[0]))[0].status, status);
+    }
+    assert.equal((await saveJob(users[0], job)).status, "rejected");
+    assert.equal((await listApplications(users[0])).length, 1);
+    assert.equal((await listApplications(users[1])).length, 0);
+    await assert.rejects(updateApplication(users[1], saved.id, "offer"), denied);
+    await assert.rejects(createTailoredCopy(users[1], saved.id, source.id, "en"), denied);
+    const otherCv = await prisma.cVDocument.create({ data: { userId: users[1], title: "Other", data } });
+    await assert.rejects(createTailoredCopy(users[1], saved.id, otherCv.id, "en"), denied);
+    const [a, b] = await Promise.all([createTailoredCopy(users[0], saved.id, source.id, "nl"), createTailoredCopy(users[0], saved.id, source.id, "nl")]);
+    assert.equal(a.cvId, b.cvId);
+    const copy = await prisma.cVDocument.findUniqueOrThrow({ where: { id: a.cvId } });
+    assert.deepEqual(copy.data, source.data);
+    assert.equal(copy.coverLetter, null);
+    assert.equal(copy.templateId, source.templateId);
+    assert.equal((await prisma.cVDocument.findUniqueOrThrow({ where: { id: source.id } })).title, "Original");
+    assert.match(await jobVacancyForCv(users[0], copy.id), /reporting tools/);
+    assert.equal(await jobVacancyForCv(users[1], copy.id), "");
+    await prisma.cVDocument.delete({ where: { id: copy.id } });
+    assert.equal((await listApplications(users[0]))[0].tailoredCvId, null);
+    assert.notEqual((await createTailoredCopy(users[0], saved.id, source.id, "en")).cvId, copy.id);
+    const input = { role: `qa-${run}`, location: "Utrecht", locale: "nl" as const, remote: false, cvId: source.id };
+    keys.push(searchKey(input));
+    let calls = 0;
+    const provider = async () => { calls++; return [job]; };
+    await assert.rejects(searchJobs(users[1], input, { provider, now }), denied);
+    assert.equal(calls, 0);
+    const results = await Promise.all([searchJobs(users[0], input, { provider, now }), searchJobs(users[0], input, { provider, now })]);
+    assert.equal(calls, 1);
+    assert.equal(results.filter(r => r.cached).length, 1);
+    assert.deepEqual(results[0].results[0].match.matched, ["SQL"]);
+    const other = await searchJobs(users[1], { ...input, cvId: otherCv.id }, { provider, now });
+    assert.equal(other.cached, true);
+    assert.equal((await saveSearchJob(users[0], keys[0], job.key)).id, saved.id);
+    await assert.rejects(saveSearchJob(users[0], keys[0], "missing"), denied);
+    const failInput = { ...input, role: `fail-${run}` };
+    keys.push(searchKey(failInput));
+    await assert.rejects(searchJobs(users[0], failInput, { now, provider: async () => { throw new JobServiceError("UNAVAILABLE"); } }));
+    assert.equal((await prisma.personalJobSearchBudget.findUniqueOrThrow({ where: { id: monthId } })).used, 2);
+    const dailyId = `user:${users[0]}:2097-03-15`;
+    await prisma.personalJobSearchBudget.update({ where: { id: dailyId }, data: { used: 10 } });
+    await assert.rejects(searchJobs(users[0], failInput, { now, provider }), (e: unknown) => e instanceof JobServiceError && e.code === "QUOTA");
+    assert.equal(calls, 1);
+    assert.equal((await prisma.personalJobSearchBudget.findUniqueOrThrow({ where: { id: monthId } })).used, 2, "daily refusal rolls back monthly reservation");
+    assert.equal((await searchJobs(users[0], input, { now, provider })).cached, true, "cached searches remain available at quota");
+    await prisma.personalJobSearchBudget.update({ where: { id: dailyId }, data: { used: 0 } });
+    await prisma.personalJobSearchBudget.update({ where: { id: monthId }, data: { used: 100000 } });
+    await assert.rejects(searchJobs(users[0], failInput, { now, provider }), (e: unknown) => e instanceof JobServiceError && e.code === "QUOTA");
+    assert.equal(calls, 1, "global budget prevents provider calls even with user quota remaining");
+  } finally {
+    await prisma.personalJobApplication.deleteMany({ where: { userId: { in: users } } });
+    await prisma.cVDocument.deleteMany({ where: { userId: { in: users } } });
+    await prisma.user.deleteMany({ where: { id: { in: users } } });
+    await prisma.personalJobSearchCache.deleteMany({ where: { id: { in: keys } } });
+    await prisma.personalJobSearchBudget.deleteMany({ where: { OR: [{ id: monthId }, ...users.map(id => ({ id: { startsWith: `user:${id}:` } }))] } });
+    await prisma.$disconnect();
+  }
+});

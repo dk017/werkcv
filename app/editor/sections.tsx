@@ -1,17 +1,20 @@
 "use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { useFieldArray, useWatch, Control, UseFormRegister, Controller } from "react-hook-form";
 import { CVData } from "@/lib/cv";
 import { UiLanguage } from "@/lib/ui-language";
 import type { WritingAction, BulletSelection } from "@/lib/ai-writing-changes";
 import { SectionStylesProvider, useSectionStyles } from "./section-styles";
 
+export type EntryOpenRequest = { index: number };
+
 interface SectionProps {
     control: Control<CVData>;
     register: UseFormRegister<CVData>;
     uiLanguage?: UiLanguage;
+    entryRequest?: EntryOpenRequest;
 }
 
 // Class names come from useSectionStyles() (section-styles.tsx): classic or stepped editor.
@@ -24,8 +27,13 @@ function t(uiLanguage: UiLanguage, dutch: string, english: string) {
 const OPEN_LAST = "__last__";
 
 // Steps layout: which list entry is unfolded. Starts with the first one; a new entry opens itself.
-function useEntryDisclosure(fields: Array<{ id: string }>, enabled: boolean) {
+function useEntryDisclosure(fields: Array<{ id: string }>, enabled: boolean, request?: EntryOpenRequest) {
     const [openKey, setOpenKey] = useState<string | null>(() => fields[0]?.id ?? null);
+    const [handledRequest, setHandledRequest] = useState<EntryOpenRequest>();
+    if (request !== handledRequest) {
+        setHandledRequest(request);
+        if (enabled && request && fields[request.index]) setOpenKey(fields[request.index].id);
+    }
     return {
         isOpen: (id: string, index: number) => !enabled || (openKey === OPEN_LAST ? index === fields.length - 1 : openKey === id),
         toggle: (id: string, open: boolean) => setOpenKey(open ? null : id),
@@ -33,7 +41,7 @@ function useEntryDisclosure(fields: Array<{ id: string }>, enabled: boolean) {
     };
 }
 
-function EntryCard({ control, name, kind, open, onToggle, uiLanguage, children }: {
+function EntryCard({ control, name, kind, open, onToggle, uiLanguage, children, focusRequest }: {
     control: Control<CVData>;
     name: `experience.${number}` | `internships.${number}` | `education.${number}`;
     kind: "job" | "education";
@@ -41,8 +49,16 @@ function EntryCard({ control, name, kind, open, onToggle, uiLanguage, children }
     onToggle: () => void;
     uiLanguage: UiLanguage;
     children: ReactNode;
+    focusRequest?: EntryOpenRequest;
 }) {
     const s = useSectionStyles();
+    const cardRef = useRef<HTMLDivElement>(null);
+    const panelId = useId();
+    useEffect(() => {
+        if (!focusRequest || !open) return;
+        cardRef.current?.scrollIntoView({ block: "nearest" });
+        cardRef.current?.querySelector<HTMLInputElement>("input")?.focus({ preventScroll: true });
+    }, [focusRequest, open]);
     const value = useWatch({ control, name }) as Record<string, unknown> | undefined;
     const text = (key: string) => (typeof value?.[key] === "string" ? (value[key] as string).trim() : "");
     const title = kind === "education" ? text("degree") : text("role");
@@ -51,8 +67,8 @@ function EntryCard({ control, name, kind, open, onToggle, uiLanguage, children }
     const fallback = kind === "education" ? t(uiLanguage, "Nieuwe opleiding", "New education") : t(uiLanguage, "Nieuwe functie", "New position");
 
     return (
-        <div className={`rounded-[14px] bg-[var(--wk-surface)] transition-shadow ${open ? "border-2 border-[var(--wk-primary)] shadow-[var(--wk-shadow-md)]" : "border border-[var(--wk-border)]"}`}>
-            <button type="button" onClick={onToggle} aria-expanded={open} className="flex min-h-14 w-full items-center gap-3 px-4 py-3 text-left">
+        <div ref={cardRef} className={`rounded-[14px] bg-[var(--wk-surface)] transition-shadow ${open ? "border-2 border-[var(--wk-primary)] shadow-[var(--wk-shadow-md)]" : "border border-[var(--wk-border)]"}`}>
+            <button type="button" onClick={onToggle} aria-expanded={open} aria-controls={open ? panelId : undefined} className="flex min-h-14 w-full items-center gap-3 rounded-[12px] px-4 py-3 text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--wk-focus)]">
                 <span className="min-w-0 flex-1">
                     <span className="block truncate text-[15px] font-extrabold text-[var(--wk-ink)]">{title || fallback}</span>
                     {meta ? <span className="block truncate text-[13px] text-[var(--wk-ink-muted)]">{meta}</span> : null}
@@ -62,7 +78,7 @@ function EntryCard({ control, name, kind, open, onToggle, uiLanguage, children }
                 </svg>
             </button>
             {open ? (
-                <div className="border-t border-[#e6ebe7] px-4 pb-4 pt-4 sm:px-5">
+                <div id={panelId} className="border-t border-[#e6ebe7] px-4 pb-4 pt-4 sm:px-5">
                     <SectionStylesProvider value={{ ...s, item: s.itemInCard, removeAbs: s.removeInCard }}>
                         {children}
                     </SectionStylesProvider>
@@ -72,7 +88,7 @@ function EntryCard({ control, name, kind, open, onToggle, uiLanguage, children }
     );
 }
 
-export function ExperienceSection({ control, register, uiLanguage = "nl", onWritingAssist, writingBlocked }: SectionProps & {
+export function ExperienceSection({ control, register, entryRequest, uiLanguage = "nl", onWritingAssist, writingBlocked }: SectionProps & {
     onWritingAssist?: (entryId: string, action: WritingAction, bullet?: BulletSelection) => void;
     writingBlocked?: boolean;
 }) {
@@ -81,7 +97,7 @@ export function ExperienceSection({ control, register, uiLanguage = "nl", onWrit
         control,
         name: "experience",
     });
-    const entries = useEntryDisclosure(fields, s.collapsible);
+    const entries = useEntryDisclosure(fields, s.collapsible, entryRequest);
 
     return (
         <section className={s.card}>
@@ -126,7 +142,7 @@ export function ExperienceSection({ control, register, uiLanguage = "nl", onWrit
                     if (!s.collapsible) return <div key={item.id}>{entryBody}</div>;
                     const open = entries.isOpen(item.id, index);
                     return (
-                        <EntryCard key={item.id} control={control} name={`experience.${index}`} kind="job" open={open} onToggle={() => entries.toggle(item.id, open)} uiLanguage={uiLanguage}>
+                        <EntryCard focusRequest={entryRequest?.index === index ? entryRequest : undefined} key={item.id} control={control} name={`experience.${index}`} kind="job" open={open} onToggle={() => entries.toggle(item.id, open)} uiLanguage={uiLanguage}>
                             {entryBody}
                         </EntryCard>
                     );
@@ -171,12 +187,13 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
                 className={s.removeAbs}
                 title={t(uiLanguage, "Verwijderen", "Remove")}
             >
-                ✕
+                {s.collapsible ? t(uiLanguage, "Verwijderen", "Remove") : "✕"}
             </button>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
-                    <label className={s.label}>{t(uiLanguage, "Functie", "Role")}</label>
+                    <label htmlFor={`${fieldName}.${index}.role`} className={s.label}>{t(uiLanguage, "Functie", "Role")}</label>
                     <input
+                        id={`${fieldName}.${index}.role`}
                         {...register(`${fieldName}.${index}.role` as any)}
                         placeholder={t(uiLanguage, "bv. Software Developer", "e.g. Software Developer")}
                         className={s.input}
@@ -184,8 +201,9 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
                     />
                 </div>
                 <div>
-                    <label className={s.label}>{t(uiLanguage, "Bedrijf", "Company")}</label>
+                    <label htmlFor={`${fieldName}.${index}.company`} className={s.label}>{t(uiLanguage, "Bedrijf", "Company")}</label>
                     <input
+                        id={`${fieldName}.${index}.company`}
                         {...register(`${fieldName}.${index}.company` as any)}
                         placeholder={t(uiLanguage, "bv. Tech Solutions BV", "e.g. Tech Solutions BV")}
                         className={s.input}
@@ -196,8 +214,9 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                 <div>
-                    <label className={s.label}>{t(uiLanguage, "Start", "Start")}</label>
+                    <label htmlFor={`${fieldName}.${index}.start`} className={s.label}>{t(uiLanguage, "Start", "Start")}</label>
                     <input
+                        id={`${fieldName}.${index}.start`}
                         {...register(`${fieldName}.${index}.start` as any)}
                         placeholder={t(uiLanguage, "bv. jan 2020", "e.g. Jan 2020")}
                         className={s.input}
@@ -205,8 +224,9 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
                     />
                 </div>
                 <div>
-                    <label className={s.label}>{t(uiLanguage, "Eind", "End")}</label>
+                    <label htmlFor={`${fieldName}.${index}.end`} className={s.label}>{t(uiLanguage, "Eind", "End")}</label>
                     <input
+                        id={`${fieldName}.${index}.end`}
                         {...register(`${fieldName}.${index}.end` as any)}
                         placeholder={t(uiLanguage, "bv. heden", "e.g. Present")}
                         className={s.input}
@@ -214,8 +234,9 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
                     />
                 </div>
                 <div>
-                    <label className={s.label}>{t(uiLanguage, "Locatie", "Location")}</label>
+                    <label htmlFor={`${fieldName}.${index}.location`} className={s.label}>{t(uiLanguage, "Locatie", "Location")}</label>
                     <input
+                        id={`${fieldName}.${index}.location`}
                         {...register(`${fieldName}.${index}.location` as any)}
                         placeholder={t(uiLanguage, "bv. Amsterdam", "e.g. Amsterdam")}
                         className={s.input}
@@ -225,8 +246,9 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
             </div>
 
             <div className="mb-4">
-                <label className={s.label}>{t(uiLanguage, "Omschrijving (optioneel)", "Description (optional)")}</label>
+                <label htmlFor={`${fieldName}.${index}.description`} className={s.label}>{t(uiLanguage, "Omschrijving (optioneel)", "Description (optional)")}</label>
                 <textarea
+                    id={`${fieldName}.${index}.description`}
                     {...register(`${fieldName}.${index}.description` as any)}
                     placeholder={t(uiLanguage, "Korte omschrijving van je rol...", "Short description of your role...")}
                     className={`${s.input} min-h-[60px]`}
@@ -236,7 +258,7 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
 
             <div>
                 <div className="flex justify-between items-center mb-2">
-                    <label className={s.labelBare}>{t(uiLanguage, "Taken & Resultaten", "Tasks & Results")}</label>
+                    <p className={s.labelBare}>{t(uiLanguage, "Taken & Resultaten", "Tasks & Results")}</p>
                     <button
                         type="button"
                         onClick={() => appendHighlight("" as any)}
@@ -252,6 +274,7 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
                             <span className="text-black mt-2">•</span>
                             <textarea
                                 {...register(`${fieldName}.${index}.highlights.${hIndex}` as any)}
+                                aria-label={t(uiLanguage, "Taak of resultaat", "Task or result")}
                                 placeholder={t(uiLanguage, "Beschrijf een taak of resultaat...", "Describe a task or result...")}
                                 className={`${s.input} min-h-[50px] min-w-0 flex-1`}
                                 style={inputStyle}
@@ -309,13 +332,13 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
     );
 }
 
-export function InternshipsSection({ control, register, uiLanguage = "nl" }: SectionProps) {
+export function InternshipsSection({ control, register, entryRequest, uiLanguage = "nl" }: SectionProps) {
     const s = useSectionStyles();
     const { fields, append, remove } = useFieldArray({
         control,
         name: "internships",
     });
-    const entries = useEntryDisclosure(fields, s.collapsible);
+    const entries = useEntryDisclosure(fields, s.collapsible, entryRequest);
 
     return (
         <section className={s.card}>
@@ -353,7 +376,7 @@ export function InternshipsSection({ control, register, uiLanguage = "nl" }: Sec
                     if (!s.collapsible) return entryBody;
                     const open = entries.isOpen(item.id, index);
                     return (
-                        <EntryCard key={item.id} control={control} name={`internships.${index}`} kind="job" open={open} onToggle={() => entries.toggle(item.id, open)} uiLanguage={uiLanguage}>
+                        <EntryCard focusRequest={entryRequest?.index === index ? entryRequest : undefined} key={item.id} control={control} name={`internships.${index}`} kind="job" open={open} onToggle={() => entries.toggle(item.id, open)} uiLanguage={uiLanguage}>
                             {entryBody}
                         </EntryCard>
                     );
@@ -368,13 +391,13 @@ export function InternshipsSection({ control, register, uiLanguage = "nl" }: Sec
     );
 }
 
-export function EducationSection({ control, register, uiLanguage = "nl" }: SectionProps) {
+export function EducationSection({ control, register, entryRequest, uiLanguage = "nl" }: SectionProps) {
     const s = useSectionStyles();
     const { fields, append, remove } = useFieldArray({
         control,
         name: "education",
     });
-    const entries = useEntryDisclosure(fields, s.collapsible);
+    const entries = useEntryDisclosure(fields, s.collapsible, entryRequest);
 
     return (
         <section className={s.card}>
@@ -407,12 +430,13 @@ export function EducationSection({ control, register, uiLanguage = "nl" }: Secti
                             className={s.collapsible ? s.removeInCard : s.removeAbs}
                             title={t(uiLanguage, "Verwijderen", "Remove")}
                         >
-                            ✕
+                            {s.collapsible ? t(uiLanguage, "Verwijderen", "Remove") : "✕"}
                         </button>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Opleiding / Studie", "Degree / Study")}</label>
+                                <label htmlFor={`education.${index}.degree`} className={s.label}>{t(uiLanguage, "Opleiding / Studie", "Degree / Study")}</label>
                                 <input
+                                    id={`education.${index}.degree`}
                                     {...register(`education.${index}.degree`)}
                                     placeholder={t(uiLanguage, "bv. HBO Informatica", "e.g. BSc Computer Science")}
                                     className={s.input}
@@ -420,8 +444,9 @@ export function EducationSection({ control, register, uiLanguage = "nl" }: Secti
                                 />
                             </div>
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Onderwijsinstelling", "Institution")}</label>
+                                <label htmlFor={`education.${index}.school`} className={s.label}>{t(uiLanguage, "Onderwijsinstelling", "Institution")}</label>
                                 <input
+                                    id={`education.${index}.school`}
                                     {...register(`education.${index}.school`)}
                                     placeholder={t(uiLanguage, "bv. Hogeschool Utrecht", "e.g. Utrecht University")}
                                     className={s.input}
@@ -432,8 +457,9 @@ export function EducationSection({ control, register, uiLanguage = "nl" }: Secti
 
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Start", "Start")}</label>
+                                <label htmlFor={`education.${index}.start`} className={s.label}>{t(uiLanguage, "Start", "Start")}</label>
                                 <input
+                                    id={`education.${index}.start`}
                                     {...register(`education.${index}.start`)}
                                     placeholder={t(uiLanguage, "sep 2016", "Sep 2016")}
                                     className={s.input}
@@ -441,8 +467,9 @@ export function EducationSection({ control, register, uiLanguage = "nl" }: Secti
                                 />
                             </div>
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Eind", "End")}</label>
+                                <label htmlFor={`education.${index}.end`} className={s.label}>{t(uiLanguage, "Eind", "End")}</label>
                                 <input
+                                    id={`education.${index}.end`}
                                     {...register(`education.${index}.end`)}
                                     placeholder={t(uiLanguage, "jun 2020", "Jun 2020")}
                                     className={s.input}
@@ -450,8 +477,9 @@ export function EducationSection({ control, register, uiLanguage = "nl" }: Secti
                                 />
                             </div>
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Locatie", "Location")}</label>
+                                <label htmlFor={`education.${index}.location`} className={s.label}>{t(uiLanguage, "Locatie", "Location")}</label>
                                 <input
+                                    id={`education.${index}.location`}
                                     {...register(`education.${index}.location`)}
                                     placeholder={t(uiLanguage, "bv. Utrecht", "e.g. Utrecht")}
                                     className={s.input}
@@ -461,8 +489,9 @@ export function EducationSection({ control, register, uiLanguage = "nl" }: Secti
                         </div>
 
                         <div>
-                            <label className={s.label}>{t(uiLanguage, "Omschrijving (optioneel)", "Description (optional)")}</label>
+                            <label htmlFor={`education.${index}.description`} className={s.label}>{t(uiLanguage, "Omschrijving (optioneel)", "Description (optional)")}</label>
                             <textarea
+                                id={`education.${index}.description`}
                                 {...register(`education.${index}.description`)}
                                 placeholder={t(uiLanguage, "Relevante vakken, thesis, etc...", "Relevant coursework, thesis, etc.")}
                                 className={`${s.input} min-h-[60px]`}
@@ -473,7 +502,7 @@ export function EducationSection({ control, register, uiLanguage = "nl" }: Secti
                     );
                     if (!s.collapsible) return entryBody;
                     return (
-                        <EntryCard key={item.id} control={control} name={`education.${index}`} kind="education" open={open} onToggle={() => entries.toggle(item.id, open)} uiLanguage={uiLanguage}>
+                        <EntryCard focusRequest={entryRequest?.index === index ? entryRequest : undefined} key={item.id} control={control} name={`education.${index}`} kind="education" open={open} onToggle={() => entries.toggle(item.id, open)} uiLanguage={uiLanguage}>
                             {entryBody}
                         </EntryCard>
                     );
@@ -501,6 +530,7 @@ function SkillItem({ index, control, register, onRemove, uiLanguage }: {
         <div className="flex flex-col sm:flex-row gap-3 sm:items-center bg-slate-50 p-3 border border-slate-200 rounded-xl">
             <input
                 {...register(`skills.${index}.name`)}
+                aria-label={t(uiLanguage, "Vaardigheid", "Skill")}
                 placeholder={t(uiLanguage, "bv. Projectmanagement", "e.g. Project Management")}
                 className={`${s.input} flex-1`}
                 style={inputStyle}
@@ -621,12 +651,14 @@ export function LanguagesSection({ control, register, uiLanguage = "nl" }: Secti
                     <div key={item.id} className={s.row}>
                         <input
                             {...register(`languages.${index}.name`)}
+                            aria-label={t(uiLanguage, "Taal", "Language")}
                             placeholder={t(uiLanguage, "bv. Engels", "e.g. English")}
                             className={`${s.input} flex-1`}
                             style={inputStyle}
                         />
                         <select
                             {...register(`languages.${index}.level`)}
+                            aria-label={t(uiLanguage, "Taalniveau", "Language level")}
                             className={`${s.input} w-40`}
                             style={inputStyle}
                         >
@@ -681,6 +713,7 @@ export function InterestsSection({ control, register, uiLanguage = "nl" }: Secti
                     <div key={item.id} className="flex gap-1 items-center bg-lime-200 px-3 py-2 border border-slate-300">
                         <input
                             {...register(`interests.${index}` as any)}
+                            aria-label={t(uiLanguage, "Interesse", "Interest")}
                             placeholder={t(uiLanguage, "bv. Lezen", "e.g. Reading")}
                             className="bg-transparent border-none outline-none text-sm font-medium w-24"
                         />
@@ -731,18 +764,21 @@ export function CoursesSection({ control, register, uiLanguage = "nl" }: Section
                     <div key={item.id} className={s.row}>
                         <input
                             {...register(`courses.${index}.name`)}
+                            aria-label={t(uiLanguage, "Cursus", "Course")}
                             placeholder={t(uiLanguage, "Naam van cursus", "Course name")}
                             className={`${s.input} flex-1`}
                             style={inputStyle}
                         />
                         <input
                             {...register(`courses.${index}.institution`)}
+                            aria-label={t(uiLanguage, "Opleider", "Provider")}
                             placeholder={t(uiLanguage, "Instituut", "Institution")}
                             className={`${s.input} w-32`}
                             style={inputStyle}
                         />
                         <input
                             {...register(`courses.${index}.year`)}
+                            aria-label={t(uiLanguage, "Jaar", "Year")}
                             placeholder={t(uiLanguage, "Jaar", "Year")}
                             className={`${s.input} w-20`}
                             style={inputStyle}
@@ -795,6 +831,7 @@ export function AwardsSection({ control, register, uiLanguage = "nl" }: SectionP
                         <span className="text-black mt-2">🏆</span>
                         <textarea
                             {...register(`awards.${index}` as any)}
+                            aria-label={t(uiLanguage, "Onderscheiding", "Award")}
                             placeholder={t(uiLanguage, "Beschrijf een prijs, certificaat of bijzondere prestatie...", "Describe an award, certificate, or notable achievement...")}
                             className={`${s.input} min-h-[50px] flex-1`}
                             style={inputStyle}
@@ -846,6 +883,7 @@ export function PropertiesSection({ control, register, uiLanguage = "nl" }: Sect
                     <div key={item.id} className="flex gap-1 items-center bg-sky-100 px-3 py-2 border border-slate-300">
                         <input
                             {...register(`properties.${index}` as any)}
+                            aria-label={t(uiLanguage, "Eigenschap", "Personal trait")}
                             placeholder={t(uiLanguage, "bv. Proactief", "e.g. Proactive")}
                             className="bg-transparent border-none outline-none text-sm font-medium w-28"
                         />
@@ -905,8 +943,9 @@ export function ReferencesSection({ control, register, uiLanguage = "nl" }: Sect
                         </button>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Naam", "Name")}</label>
+                                <label htmlFor={`references.${index}.name`} className={s.label}>{t(uiLanguage, "Naam", "Name")}</label>
                                 <input
+                                    id={`references.${index}.name`}
                                     {...register(`references.${index}.name` as any)}
                                     placeholder={t(uiLanguage, "bv. Jan Jansen", "e.g. Jane Smith")}
                                     className={s.input}
@@ -914,8 +953,9 @@ export function ReferencesSection({ control, register, uiLanguage = "nl" }: Sect
                                 />
                             </div>
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Functie", "Role")}</label>
+                                <label htmlFor={`references.${index}.role`} className={s.label}>{t(uiLanguage, "Functie", "Role")}</label>
                                 <input
+                                    id={`references.${index}.role`}
                                     {...register(`references.${index}.role` as any)}
                                     placeholder={t(uiLanguage, "bv. Teamlead Engineering", "e.g. Engineering Manager")}
                                     className={s.input}
@@ -925,8 +965,9 @@ export function ReferencesSection({ control, register, uiLanguage = "nl" }: Sect
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Bedrijf", "Company")}</label>
+                                <label htmlFor={`references.${index}.company`} className={s.label}>{t(uiLanguage, "Bedrijf", "Company")}</label>
                                 <input
+                                    id={`references.${index}.company`}
                                     {...register(`references.${index}.company` as any)}
                                     placeholder={t(uiLanguage, "bv. Tech BV", "e.g. Tech BV")}
                                     className={s.input}
@@ -934,8 +975,9 @@ export function ReferencesSection({ control, register, uiLanguage = "nl" }: Sect
                                 />
                             </div>
                             <div>
-                                <label className={s.label}>Email</label>
+                                <label htmlFor={`references.${index}.email`} className={s.label}>Email</label>
                                 <input
+                                    id={`references.${index}.email`}
                                     {...register(`references.${index}.email` as any)}
                                     placeholder="jan@bedrijf.nl"
                                     className={s.input}
@@ -943,8 +985,9 @@ export function ReferencesSection({ control, register, uiLanguage = "nl" }: Sect
                                 />
                             </div>
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Telefoon", "Phone")}</label>
+                                <label htmlFor={`references.${index}.phone`} className={s.label}>{t(uiLanguage, "Telefoon", "Phone")}</label>
                                 <input
+                                    id={`references.${index}.phone`}
                                     {...register(`references.${index}.phone` as any)}
                                     placeholder={t(uiLanguage, "06 12345678", "+31 6 12345678")}
                                     className={s.input}
@@ -1002,8 +1045,9 @@ export function SideActivitiesSection({ control, register, uiLanguage = "nl" }: 
                         </button>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Rol of activiteit", "Role or activity")}</label>
+                                <label htmlFor={`sideActivities.${index}.title`} className={s.label}>{t(uiLanguage, "Rol of activiteit", "Role or activity")}</label>
                                 <input
+                                    id={`sideActivities.${index}.title`}
                                     {...register(`sideActivities.${index}.title` as any)}
                                     placeholder={t(uiLanguage, "bv. Vrijwilliger evenementen", "e.g. Volunteer events coordinator")}
                                     className={s.input}
@@ -1011,8 +1055,9 @@ export function SideActivitiesSection({ control, register, uiLanguage = "nl" }: 
                                 />
                             </div>
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Organisatie", "Organization")}</label>
+                                <label htmlFor={`sideActivities.${index}.organization`} className={s.label}>{t(uiLanguage, "Organisatie", "Organization")}</label>
                                 <input
+                                    id={`sideActivities.${index}.organization`}
                                     {...register(`sideActivities.${index}.organization` as any)}
                                     placeholder={t(uiLanguage, "bv. Stichting X", "e.g. Foundation X")}
                                     className={s.input}
@@ -1022,8 +1067,9 @@ export function SideActivitiesSection({ control, register, uiLanguage = "nl" }: 
                         </div>
                         <div className="grid grid-cols-2 gap-4 mb-4">
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Start", "Start")}</label>
+                                <label htmlFor={`sideActivities.${index}.start`} className={s.label}>{t(uiLanguage, "Start", "Start")}</label>
                                 <input
+                                    id={`sideActivities.${index}.start`}
                                     {...register(`sideActivities.${index}.start` as any)}
                                     placeholder={t(uiLanguage, "jan 2022", "Jan 2022")}
                                     className={s.input}
@@ -1031,8 +1077,9 @@ export function SideActivitiesSection({ control, register, uiLanguage = "nl" }: 
                                 />
                             </div>
                             <div>
-                                <label className={s.label}>{t(uiLanguage, "Eind", "End")}</label>
+                                <label htmlFor={`sideActivities.${index}.end`} className={s.label}>{t(uiLanguage, "Eind", "End")}</label>
                                 <input
+                                    id={`sideActivities.${index}.end`}
                                     {...register(`sideActivities.${index}.end` as any)}
                                     placeholder={t(uiLanguage, "heden", "Present")}
                                     className={s.input}
@@ -1041,8 +1088,9 @@ export function SideActivitiesSection({ control, register, uiLanguage = "nl" }: 
                             </div>
                         </div>
                         <div>
-                            <label className={s.label}>{t(uiLanguage, "Omschrijving", "Description")}</label>
+                            <label htmlFor={`sideActivities.${index}.description`} className={s.label}>{t(uiLanguage, "Omschrijving", "Description")}</label>
                             <textarea
+                                id={`sideActivities.${index}.description`}
                                 {...register(`sideActivities.${index}.description` as any)}
                                 placeholder={t(uiLanguage, "Beschrijf je bijdrage of resultaten...", "Describe your contribution or results...")}
                                 className={`${s.input} min-h-[60px]`}
@@ -1087,8 +1135,9 @@ function CustomSectionItem({ sectionIndex, control, register, onRemoveSection, u
             </button>
 
             <div className="mb-4">
-                <label className={s.label}>{t(uiLanguage, "Titel onderdeel", "Section title")}</label>
+                <label htmlFor={`customSections.${sectionIndex}.title`} className={s.label}>{t(uiLanguage, "Titel onderdeel", "Section title")}</label>
                 <input
+                    id={`customSections.${sectionIndex}.title`}
                     {...register(`customSections.${sectionIndex}.title` as any)}
                     placeholder={t(uiLanguage, "bv. Publicaties", "e.g. Publications")}
                     className={s.input}
@@ -1098,7 +1147,7 @@ function CustomSectionItem({ sectionIndex, control, register, onRemoveSection, u
 
             <div>
                 <div className="flex justify-between items-center mb-2">
-                    <label className={s.labelBare}>{t(uiLanguage, "Inhoud", "Content")}</label>
+                    <p className={s.labelBare}>{t(uiLanguage, "Inhoud", "Content")}</p>
                     <button
                         type="button"
                         onClick={() => append("" as any)}
@@ -1113,6 +1162,7 @@ function CustomSectionItem({ sectionIndex, control, register, onRemoveSection, u
                             <span className="text-black mt-2">•</span>
                             <textarea
                                 {...register(`customSections.${sectionIndex}.items.${itemIndex}` as any)}
+                                aria-label={t(uiLanguage, "Inhoud", "Content")}
                                 placeholder={t(uiLanguage, "Voeg detail toe...", "Add detail...")}
                                 className={`${s.input} min-h-[50px] flex-1`}
                                 style={inputStyle}

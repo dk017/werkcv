@@ -18,6 +18,22 @@ export const EDITOR_STEPS = [
 
 export type EditorStepId = (typeof EDITOR_STEPS)[number];
 
+export type PreviewEntryTarget = {
+  section: "experience" | "education" | "internships";
+  index: number;
+};
+
+// Indices refer to the currently rendered form arrays, including legacy entries
+// without persistent IDs. Resolve them to field-array IDs when opening the form.
+export function entryForPreviewTarget(value: string | undefined): PreviewEntryTarget | null {
+  const match = value?.match(/^(experience|education|internships):(0|[1-9]\d*)$/);
+  if (!match) return null;
+  const index = Number(match[2]);
+  return Number.isSafeInteger(index)
+    ? { section: match[1] as PreviewEntryTarget["section"], index }
+    : null;
+}
+
 export const CONTENT_STEPS = EDITOR_STEPS.filter((step) => step !== "afronden");
 
 type StepCopy = { label: string; title: string; intro: string };

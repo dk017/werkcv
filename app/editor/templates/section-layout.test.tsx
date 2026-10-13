@@ -55,6 +55,10 @@ test("all 13 React templates preserve exact lane order and emit each section onc
         const resolved = resolveCvSectionLayout(data, templateId);
         const ids = renderedSectionIds(html);
 
+        for (const section of ["experience", "education", "internships"]) {
+            assert.equal((html.match(new RegExp(`data-cv-entry="${section}:0"`, "g")) ?? []).length, 1, `${templateId}: ${section} entry target`);
+        }
+
         assert.deepEqual(ids, expectedDomOrder(data, templateId), `${templateId}: section/lane order`);
         assert.deepEqual([...ids].sort(), [...CV_BODY_SECTION_IDS].sort(), `${templateId}: complete section set`);
         for (const id of CV_BODY_SECTION_IDS) {
