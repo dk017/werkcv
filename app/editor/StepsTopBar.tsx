@@ -7,8 +7,8 @@ import { CONTENT_STEPS, EDITOR_STEP_COPY, type EditorStepId } from "@/lib/editor
 import { appPaths, type AppLocale } from "@/lib/app-v2-paths";
 
 const TOP_BAR_COPY = {
-    nl: { notSaved: "Niet opgeslagen", saved: "Opgeslagen", saving: "Opslaan…", toDashboard: "Naar Mijn CV's", dashboard: "Mijn CV's", steps: "Stappen", done: "klaar", upload: "Bestaand CV uploaden", preview: "Voorbeeld", previewLabel: "Voorbeeld bekijken", busy: "Bezig…" },
-    en: { notSaved: "Not saved", saved: "Saved", saving: "Saving…", toDashboard: "Go to My CVs", dashboard: "My CVs", steps: "Steps", done: "done", upload: "Upload an existing CV", preview: "Preview", previewLabel: "View preview", busy: "Working…" },
+    nl: { notSaved: "Niet opgeslagen", saved: "Opgeslagen", saving: "Opslaan…", toDashboard: "Naar Mijn CV's", dashboard: "Mijn CV's", steps: "Stappen", done: "klaar", upload: "Bestaand CV uploaden", preview: "Voorbeeld", previewLabel: "Voorbeeld bekijken", busy: "Bezig…", mode: "Werkwijze", form: "Formulier", document: "Op je CV", documentTitle: "Bewerk direct op je CV", documentHint: "Klik op tekst om die aan te passen" },
+    en: { notSaved: "Not saved", saved: "Saved", saving: "Saving…", toDashboard: "Go to My CVs", dashboard: "My CVs", steps: "Steps", done: "done", upload: "Upload an existing CV", preview: "Preview", previewLabel: "View preview", busy: "Working…", mode: "Way of working", form: "Form", document: "On your CV", documentTitle: "Edit directly on your CV", documentHint: "Click any text to change it" },
 } as const;
 
 export type StepsSaveState = "saved" | "saving" | "problem";
@@ -41,6 +41,8 @@ export default function StepsTopBar({
     priceCaption,
     completionScore,
     locale = "nl",
+    mode = "form",
+    onModeChange,
 }: {
     activeStep: EditorStepId;
     stepStates: Record<EditorStepId, boolean>;
@@ -56,6 +58,9 @@ export default function StepsTopBar({
     priceCaption?: string | null;
     completionScore: number;
     locale?: AppLocale;
+    /** "Formulier | Op je CV" switch (desktop). Hidden when onModeChange is not given. */
+    mode?: "form" | "document";
+    onModeChange?: (mode: "form" | "document") => void;
 }) {
     const c = TOP_BAR_COPY[locale];
     const stepCopy = EDITOR_STEP_COPY[locale];
@@ -79,6 +84,12 @@ export default function StepsTopBar({
                     W
                 </Link>
 
+                {mode === "document" ? (
+                    <div className="min-w-0 flex-1">
+                        <p className="truncate text-[15px] font-extrabold text-[var(--wk-ink)]">{c.documentTitle}</p>
+                        <p className="truncate text-[12px] font-medium text-[var(--wk-ink-muted)]">{c.documentHint}</p>
+                    </div>
+                ) : (
                 <nav ref={navRef} aria-label={c.steps} className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none]">
                     <ol className="flex w-max items-center gap-1 xl:mx-auto">
                         {CONTENT_STEPS.map((step, index) => {
@@ -125,6 +136,27 @@ export default function StepsTopBar({
                         </li>
                     </ol>
                 </nav>
+                )}
+
+                {onModeChange ? (
+                    <div role="radiogroup" aria-label={c.mode} className="hidden shrink-0 items-center rounded-full border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-1 lg:inline-flex">
+                        {(["form", "document"] as const).map((option) => (
+                            <button
+                                key={option}
+                                type="button"
+                                role="radio"
+                                aria-checked={mode === option}
+                                onClick={() => onModeChange(option)}
+                                className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-3.5 text-[13px] font-bold transition-colors ${mode === option
+                                    ? "bg-[var(--wk-surface)] text-[var(--wk-primary)] shadow-sm"
+                                    : "text-[var(--wk-ink-muted)] hover:text-[var(--wk-ink)]"}`}
+                            >
+                                <Icon name={option === "form" ? "menu" : "pencil"} size={15} aria-hidden="true" />
+                                {option === "form" ? c.form : c.document}
+                            </button>
+                        ))}
+                    </div>
+                ) : null}
 
                 <div className="flex shrink-0 items-center gap-2 sm:gap-3">
                     <SaveStatus state={saveState} locale={locale} />

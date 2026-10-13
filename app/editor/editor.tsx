@@ -22,6 +22,7 @@ import { appPaths, type AppLocale } from "@/lib/app-v2-paths";
 import { AppSidebar } from "@/components/app/AppFrame";
 import { Icon } from "@/components/app/icons";
 import { InlineEditProvider, type InlineEditApi, type InlineField } from "./templates/inline-edit";
+import DocumentDesignPanel from "./DocumentDesignPanel";
 import { NewCvDialogProvider } from "@/components/app/NewCvDialog";
 import StepsTopBar from "./StepsTopBar";
 import { StepHeader, StepNav } from "./StepParts";
@@ -155,7 +156,7 @@ interface EditorProps {
 const inputClass = "w-full rounded-md border border-slate-300 px-3 py-2 text-sm font-medium text-slate-900 placeholder:text-slate-400 outline-none focus:border-emerald-400 focus:ring-2 focus:ring-emerald-100";
 const inputStyle = undefined;
 // Steps layout: parts of the live preview that open a step get a dashed outline on hover.
-const INLINE_EDIT_STORAGE_KEY = "werkcv_inline_edit_v1";
+const EDITOR_MODE_STORAGE_KEY = "werkcv_editor_mode_v1";
 
 const STEPS_CARD_HEADING = "text-[17px] font-extrabold text-[var(--wk-ink)]";
 
@@ -607,6 +608,27 @@ export default function Editor({
     const showLivePreview = isPublicMode || !isReadOnlyWorkspace || showDesignWorkspace || isReadyToDownload;
     const shouldRenderDesktopPreview = showLivePreview && (isDesktopSplit || isPublicMode);
     const previewData = isCurrentCvEmpty ? getTemplatePreviewData(uiLanguage) : data;
+
+    // Two ways to work (stepped editor, desktop): "Formulier" (the steps) or "Op je CV" (document
+    // mode: the form pane hides, the CV is edited in place, design controls sit on the right).
+    // In-place edits write to the same form values, so autosave, the steps and the PDF stay in sync.
+    const [editorMode, setEditorMode] = useState<"form" | "document">("form");
+    useEffect(() => {
+        try {
+            if (window.localStorage.getItem(EDITOR_MODE_STORAGE_KEY) === "document") setEditorMode("document");
+        } catch { /* storage blocked: keep the form */ }
+    }, []);
+    const documentModeAvailable = isSteps && !isCurrentCvEmpty && !isReadOnlyWorkspace;
+    const documentMode = documentModeAvailable && editorMode === "document" && isDesktopSplit;
+    const inlineEditActive = documentMode;
+    const inlineFirstEditTracked = useRef(false);
+    const inlineFocusRequest = useRef<string | null>(null);
+    const changeEditorMode = (mode: "form" | "document") => {
+        if (mode === editorMode) return;
+        setEditorMode(mode);
+        try { window.localStorage.setItem(EDITOR_MODE_STORAGE_KEY, mode); } catch { /* ignore */ }
+        track("cta_clicked", { location: "editor_mode", label: mode });
+    };
 
     useEffect(() => {
         let storedWidth: number | null = null;
@@ -1116,7 +1138,7 @@ export default function Editor({
             computeScale(
                 desktopPreviewViewportRef.current,
                 DESKTOP_PREVIEW_MIN_SCALE,
-                DESKTOP_PREVIEW_MAX_SCALE,
+                documentMode ? 1 : DESKTOP_PREVIEW_MAX_SCALE,
                 setDesktopPreviewScale
             );
         };
@@ -1127,7 +1149,7 @@ export default function Editor({
         if (desktopPreviewViewportRef.current) observer.observe(desktopPreviewViewportRef.current);
 
         return () => observer.disconnect();
-    }, [shouldRenderDesktopPreview]);
+    }, [shouldRenderDesktopPreview, documentMode]);
 
     useEffect(() => {
         if (!isMobilePreviewOpen) return;
@@ -1734,24 +1756,6 @@ export default function Editor({
         void handleDownload("toolbar");
     };
 
-    // In-place editing of the CV page (Afronden, desktop). Writes to the same form values as the
-    // step forms, so autosave, the step forms and the PDF stay in sync.
-    const [inlineEditPreferred, setInlineEditPreferred] = useState(true);
-    useEffect(() => {
-        try {
-            if (window.localStorage.getItem(INLINE_EDIT_STORAGE_KEY) === "0") setInlineEditPreferred(false);
-        } catch { /* storage blocked: keep the default */ }
-    }, []);
-    const inlineEditAvailable = isSteps && activeStep === "afronden" && !isCurrentCvEmpty && !isReadOnlyWorkspace;
-    const inlineEditActive = inlineEditAvailable && inlineEditPreferred;
-    const inlineFirstEditTracked = useRef(false);
-    const inlineFocusRequest = useRef<string | null>(null);
-    const toggleInlineEdit = () => {
-        const next = !inlineEditPreferred;
-        setInlineEditPreferred(next);
-        try { window.localStorage.setItem(INLINE_EDIT_STORAGE_KEY, next ? "1" : "0"); } catch { /* ignore */ }
-        track("cta_clicked", { location: "editor_inline_edit", label: next ? "toggle_on" : "toggle_off" });
-    };
     const inlineEditApi = useMemo<InlineEditApi>(() => {
         const labels: Record<InlineField, [string, string]> = {
             name: ["Naam", "Name"], title: ["Functietitel", "Job title"], summary: ["Schrijf hier je profiel", "Write your profile here"],
@@ -1760,6 +1764,7 @@ export default function Editor({
             role: ["Functie", "Job title"], company: ["Bedrijf", "Company"], location: ["Plaats", "Location"],
             start: ["Start", "Start"], end: ["Eind", "End"], description: ["Omschrijving", "Description"], bullet: ["Punt", "Bullet"],
             degree: ["Opleiding", "Degree"], school: ["School", "School"], skill: ["Vaardigheid", "Skill"], language: ["Taal", "Language"],
+            heading: ["Kop", "Heading"],
         };
         const update = (path: string, value: unknown) => setValue(path as never, value as never, { shouldDirty: true });
         return {
@@ -1829,7 +1834,7 @@ export default function Editor({
             </div>
         </section>
     );
-    const previewHighlightSelectors = isSteps ? previewSelectorsForStep(activeStep) : [];
+    const previewHighlightSelectors = isSteps && !documentMode ? previewSelectorsForStep(activeStep) : [];
     const previewHighlightStyle = previewHighlightSelectors.length ? (
         <style>{`${previewHighlightSelectors.map((selector) => `[data-preview-step-scope] ${selector}`).join(",")}{outline:2px solid rgba(78,205,196,.55);outline-offset:6px;border-radius:2px}`}</style>
     ) : null;
@@ -1839,6 +1844,8 @@ export default function Editor({
             activeStep={activeStep}
             stepStates={stepStates}
             onStep={(step) => goToStep(step, "top_bar")}
+            mode={documentMode ? "document" : "form"}
+            onModeChange={documentModeAvailable ? changeEditorMode : undefined}
             saveState={saveProblem ? "problem" : isSaved ? "saved" : "saving"}
             onUpload={!isReadOnlyWorkspace ? () => openUploader("toolbar") : undefined}
             onOpenPreview={() => {
@@ -1876,7 +1883,7 @@ export default function Editor({
                     : "h-[540px] shrink-0 lg:h-auto lg:w-1/2 lg:flex-none lg:border-r"
                 : `${isSteps ? "h-full" : "h-screen"} ${showLivePreview ? "lg:w-1/2 lg:flex-none lg:border-r" : "lg:w-full"}`
             }`}
-                style={isSteps ? { ...desktopEditorPaneStyle, minHeight: 0 } : desktopEditorPaneStyle}
+                style={documentMode ? { display: "none" } : isSteps ? { ...desktopEditorPaneStyle, minHeight: 0 } : desktopEditorPaneStyle}
             >
                 {saveProblem && <div role="alert" className="border-b border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
                     {tr("Opslaan is gestopt om je tekst te beschermen. Een andere tab kan dit CV hebben gewijzigd, of de verbinding is onderbroken. Bewaar eerst een kopie van je tekst voordat je opnieuw laadt. Je lokale wijzigingen blijven hier zichtbaar.",
@@ -2846,7 +2853,7 @@ export default function Editor({
                 </div>
             </div>
 
-            {showLivePreview ? (
+            {showLivePreview && !documentMode ? (
                 <div
                     role="separator"
                     aria-orientation="vertical"
@@ -2876,30 +2883,16 @@ export default function Editor({
                     : "h-[420px] shrink-0 lg:h-auto lg:w-1/2 lg:flex-none"
                 : "hidden lg:flex lg:w-1/2 lg:flex-none"
             }`}
-                style={desktopPreviewPaneStyle}
+                style={documentMode ? { flex: "1 1 auto", minWidth: 0 } : desktopPreviewPaneStyle}
             >
                 {/* Fixed header */}
                 <div className="shrink-0 flex items-center justify-between px-4 py-2.5 bg-white/95 backdrop-blur border-b border-slate-200">
                     <div className="flex min-w-0 items-center gap-2">
                         <span className="text-xs font-semibold text-slate-600">
-                            {inlineEditActive
-                                ? tr("Klik op tekst om die direct aan te passen", "Click any text to change it")
+                            {documentMode
+                                ? null
                                 : isSteps ? tr("Klik op een onderdeel om het te bewerken", "Click any part to edit it") : tr("Live preview", "Live preview")}
                         </span>
-                        {inlineEditAvailable ? (
-                            <button
-                                type="button"
-                                role="switch"
-                                aria-checked={inlineEditPreferred}
-                                onClick={toggleInlineEdit}
-                                className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-slate-200 bg-white px-2 py-1 text-[11px] font-bold text-slate-700 hover:bg-slate-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-                            >
-                                <span aria-hidden="true" className={`relative h-3.5 w-6 rounded-full transition-colors ${inlineEditPreferred ? "bg-emerald-600" : "bg-slate-300"}`}>
-                                    <span className={`absolute top-0.5 h-2.5 w-2.5 rounded-full bg-white transition-[left] ${inlineEditPreferred ? "left-3" : "left-0.5"}`} />
-                                </span>
-                                {tr("Direct bewerken", "Edit in place")}
-                            </button>
-                        ) : null}
                         {isCurrentCvEmpty ? (
                             <span className="truncate rounded-full border border-amber-200 bg-amber-50 px-2 py-0.5 text-[10px] font-bold text-amber-800">
                                 {tr("Voorbeeldtemplate", "Example template")}
@@ -2930,6 +2923,7 @@ export default function Editor({
                         </div>
                     </div>
                 </div>
+                <div className="flex min-h-0 flex-1">
                 {/* Scrollable preview area */}
                 <div
                     ref={desktopPreviewViewportRef}
@@ -2966,6 +2960,31 @@ export default function Editor({
                             onPageCountChange={handlePageCountChange}
                         />
                     )}
+                </div>
+                {documentMode ? (
+                    <DocumentDesignPanel
+                        locale={appLocale}
+                        colorPicker={canChangeWorkspaceDesign ? (
+                            <ColorThemePicker
+                                templateId={templateId}
+                                currentThemeId={colorThemeId}
+                                onSelectTheme={handleColorThemeChange}
+                                uiLanguage={uiLanguage}
+                                disabled={isDesignSaving}
+                            />
+                        ) : null}
+                        templateSelector={canChangeWorkspaceDesign ? (
+                            <TemplateGallery
+                                compact
+                                currentTemplateId={templateId}
+                                data={data}
+                                onSelectTemplate={handleTemplateChange}
+                                uiLanguage={uiLanguage}
+                                idPrefix="document-template"
+                            />
+                        ) : null}
+                    />
+                ) : null}
                 </div>
             </div> : null}
 

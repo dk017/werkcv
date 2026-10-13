@@ -21,7 +21,7 @@ export type InlineEditApi = {
 export type InlineField =
     | "name" | "title" | "summary" | "email" | "phone" | "city" | "linkedIn" | "github" | "website"
     | "role" | "company" | "location" | "start" | "end" | "description" | "bullet"
-    | "degree" | "school" | "skill" | "language";
+    | "degree" | "school" | "skill" | "language" | "heading";
 
 const InlineEditContext = createContext<InlineEditApi | null>(null);
 
@@ -45,6 +45,10 @@ type EditableProps = {
     list?: { path: string; index: number };
     /** What to render outside edit mode, when it differs from the plain value (a link, a fallback name). */
     fallback?: ReactNode;
+    /** Hint while empty, when it should differ from the field label (e.g. the default heading). */
+    placeholder?: string;
+    /** Applied before storing (e.g. a heading typed back to its default is stored as "use default"). */
+    normalize?: (text: string) => string;
 };
 
 const EDITABLE_CLASS = "cursor-text rounded-[2px] outline-none transition-colors hover:bg-[#4ecdc4]/10 focus:bg-[#4ecdc4]/15 focus:shadow-[0_0_0_2px_#4ecdc4] empty:inline-block empty:min-w-[3ch] empty:before:text-[#94a3b8] empty:before:content-[attr(data-placeholder)]";
@@ -56,9 +60,16 @@ export function Editable(props: EditableProps) {
 }
 
 function readText(element: HTMLElement, multiline: boolean): string {
-    let text = (element.innerText ?? element.textContent ?? "").replace(/ /g, " ");
-    // Browsers add a trailing newline for an empty or line-ending editable element.
-    if (text.endsWith("\n") && !(element.textContent ?? "").endsWith("\n")) text = text.slice(0, -1);
+    // The raw text, not innerText: innerText returns what CSS shows, so an uppercase heading
+    // would be stored in capitals. Line breaks (<br>, or block elements in browsers without
+    // plaintext-only) become newlines.
+    const clone = element.cloneNode(true) as HTMLElement;
+    clone.querySelectorAll("br").forEach((br) => br.replaceWith("\n"));
+    clone.querySelectorAll("div, p").forEach((block) => block.prepend("\n"));
+    let text = (clone.textContent ?? "").replace(/\u00a0/g, " ");
+    if (text.startsWith("\n") && !(element.firstChild instanceof Text)) text = text.slice(1);
+    // A trailing <br> keeps the caret on an empty last line; it is not content.
+    if (text.endsWith("\n") && element.lastChild instanceof HTMLBRElement) text = text.slice(0, -1);
     return multiline ? text : text.replace(/\s*\n+\s*/g, " ");
 }
 
@@ -72,8 +83,9 @@ function placeCaretAtEnd(element: HTMLElement) {
     selection.addRange(range);
 }
 
-function EditableField({ path, value, field, multiline = false, as: Tag = "span", className = "", list, api }: Omit<EditableProps, "fallback"> & { api: InlineEditApi }) {
-    const label = api.label(field);
+function EditableField({ path, value, field, multiline = false, as: Tag = "span", className = "", list, placeholder, normalize, api }: Omit<EditableProps, "fallback"> & { api: InlineEditApi }) {
+    const label = placeholder ? `${api.label(field)}: ${placeholder}` : api.label(field);
+    const store = (raw: string) => api.onChange(path, normalize ? normalize(raw) : raw);
     const ref = useRef<HTMLElement>(null);
     const valueAtFocus = useRef("");
     const text = value ?? "";
@@ -100,7 +112,7 @@ function EditableField({ path, value, field, multiline = false, as: Tag = "span"
         if (event.key === "Escape") {
             event.preventDefault();
             element.textContent = valueAtFocus.current;
-            api.onChange(path, valueAtFocus.current);
+            store(valueAtFocus.current);
             element.blur();
             return;
         }
@@ -128,10 +140,10 @@ function EditableField({ path, value, field, multiline = false, as: Tag = "span"
             tabIndex={0}
             spellCheck
             data-cv-inline=""
-            data-placeholder={label}
+            data-placeholder={placeholder ?? label}
             className={`${className} ${EDITABLE_CLASS}`.trim()}
             onFocus={() => { valueAtFocus.current = text; }}
-            onInput={(event: React.FormEvent<HTMLElement>) => api.onChange(path, readText(event.currentTarget, multiline))}
+            onInput={(event: React.FormEvent<HTMLElement>) => store(readText(event.currentTarget, multiline))}
             onKeyDown={onKeyDown}
             onPaste={(event: React.ClipboardEvent<HTMLElement>) => {
                 // Plain text only, also in browsers without contenteditable="plaintext-only".

@@ -21,7 +21,8 @@ export type TemplateVisualStyle = {
 
 export type TemplateSectionRenderProps = {
     id: CvBodySectionId;
-    title: string;
+    /** The heading: the user's own wording or the default, editable in place in document mode. */
+    title: ReactNode;
     children: ReactNode;
     inverse: boolean;
 };
@@ -81,7 +82,7 @@ function SectionBody({ id, data, visualStyle }: { id: CvBodySectionId; data: CVD
         case "properties": return <ArrayList items={(data.properties ?? []).filter(Boolean)} />;
         case "references": return <div className="space-y-3">{(data.references ?? []).map((item, index) => <div key={index} className="text-[11.5px]"><strong>{item.name}</strong>{item.role || item.company ? <div className="text-current/65">{[item.role, item.company].filter(Boolean).join(" · ")}</div> : null}{item.email ? <div><LinkText value={item.email} /></div> : null}{item.phone ? <div>{item.phone}</div> : null}</div>)}</div>;
         case "sideActivities": return <div className="space-y-3">{(data.sideActivities ?? []).map((item, index) => <article key={index}><div className="flex items-start justify-between gap-4"><div><h3 className="text-[13px] font-bold">{item.title}</h3><p className="text-[12px] text-current/65">{item.organization}</p></div><span className="text-[11px] text-current/65">{dateRange(item.start, item.end)}</span></div>{item.description ? <p className="mt-1 text-[11.5px] text-current/80">{item.description}</p> : null}</article>)}</div>;
-        case "customSections": return <div className="space-y-3">{(data.customSections ?? []).map((item, index) => <div key={index}>{item.title ? <h3 className="text-[13px] font-bold">{item.title}</h3> : null}{item.items?.length ? <ArrayList items={item.items} /> : null}</div>)}</div>;
+        case "customSections": return null; // rendered per custom section in BodySections
     }
 }
 
@@ -125,13 +126,35 @@ function Identity({ data, visualStyle, compact = false }: { data: CVData; visual
 }
 
 function Profile({ data, visualStyle }: { data: CVData; visualStyle: TemplateVisualStyle }) {
-    return <WhenFilledOrEditing value={data.personal.summary}><section data-cv-edit="profile" className="mb-6"><h2 className={headingClass(visualStyle.heading)} style={{ color: "var(--cv-primary)", borderColor: "var(--cv-border)" }}>{resumeText(data, "profile")}</h2><p className="whitespace-pre-wrap text-[12.5px] leading-[1.65]"><Editable path="personal.summary" value={data.personal.summary} field="summary" multiline /></p></section></WhenFilledOrEditing>;
+    return <WhenFilledOrEditing value={data.personal.summary}><section data-cv-edit="profile" className="mb-6"><h2 className={headingClass(visualStyle.heading)} style={{ color: "var(--cv-primary)", borderColor: "var(--cv-border)" }}><SectionHeading path="sectionTitles.profile" override={data.sectionTitles?.profile} fallback={resumeText(data, "profile")} /></h2><p className="whitespace-pre-wrap text-[12.5px] leading-[1.65]"><Editable path="personal.summary" value={data.personal.summary} field="summary" multiline /></p></section></WhenFilledOrEditing>;
+}
+
+/** A section heading the user can rename in place; empty or typed back to the default = default. */
+function SectionHeading({ path, override, fallback }: { path: string; override?: string; fallback: string }) {
+    const own = override?.trim();
+    return <Editable path={path} value={own || fallback} field="heading" placeholder={fallback} fallback={own || fallback} normalize={(text) => (text.trim() === fallback ? "" : text)} />;
 }
 
 function BodySections({ data, templateId, lane, visualStyle, renderSection, inverse = false }: { data: CVData; templateId: string; lane: "main" | "sidebar"; visualStyle: TemplateVisualStyle; renderSection: (props: TemplateSectionRenderProps) => ReactElement; inverse?: boolean }) {
     const resolved = resolveCvSectionLayout(data, templateId);
     const ids = lane === "sidebar" ? resolved.sidebar : resolved.main;
-    return <OrderedSectionContainer data={data} templateId={templateId} lane={lane} className={lane === "sidebar" ? "space-y-5" : "space-y-1"}>{ids.map((id) => cvSectionHasSubstantiveContent(data, id) ? cloneElement(renderSection({ id, title: resumeText(data, id === "sideActivities" ? "sideActivities" : id === "customSections" ? "customSection" : id as Parameters<typeof resumeText>[1]), children: <SectionBody id={id} data={data} visualStyle={visualStyle} />, inverse }), { key: id }) : null)}</OrderedSectionContainer>;
+    const sections = ids.flatMap((id) => {
+        if (!cvSectionHasSubstantiveContent(data, id)) return [];
+        if (id === "customSections") {
+            const fallback = resumeText(data, "customSection");
+            return (data.customSections ?? []).map((item, index) => item.title?.trim() || item.items?.some((line) => line.trim())
+                ? cloneElement(renderSection({
+                    id,
+                    title: <Editable path={`customSections.${index}.title`} value={item.title} field="heading" placeholder={fallback} fallback={item.title?.trim() || fallback} />,
+                    children: item.items?.length ? <ArrayList items={item.items} listPath={`customSections.${index}.items`} /> : null,
+                    inverse,
+                }), { key: `customSections-${index}` })
+                : null).filter((section) => section !== null);
+        }
+        const fallback = resumeText(data, id === "sideActivities" ? "sideActivities" : id as Parameters<typeof resumeText>[1]);
+        return [cloneElement(renderSection({ id, title: <SectionHeading path={`sectionTitles.${id}`} override={data.sectionTitles?.[id]} fallback={fallback} />, children: <SectionBody id={id} data={data} visualStyle={visualStyle} />, inverse }), { key: id })];
+    });
+    return <OrderedSectionContainer data={data} templateId={templateId} lane={lane} className={lane === "sidebar" ? "space-y-5" : "space-y-1"}>{sections}</OrderedSectionContainer>;
 }
 
 export default function CanonicalCvTemplate({ data, theme, templateId, visualStyle, renderSection }: CanonicalCvTemplateProps) {

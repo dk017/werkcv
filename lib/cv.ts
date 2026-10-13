@@ -115,6 +115,8 @@ export const cvSchema = z.object({
     // Persisted ordering for the core content sections. Older CV records do
     // not contain this field; Zod supplies the stable default during parsing.
     sectionOrder: z.array(z.enum(CV_BODY_SECTION_IDS)).default([...DEFAULT_CV_SECTION_ORDER]),
+    // Own wording for a section heading ("Relevante werkervaring"); empty or missing = the default.
+    sectionTitles: z.partialRecord(z.enum([...CV_BODY_SECTION_IDS, "profile"]), z.string().max(80)).optional(),
 });
 
 type ParsedCVData = z.infer<typeof cvSchema>;
