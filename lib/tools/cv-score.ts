@@ -1497,6 +1497,9 @@ function detectDateFormats(lines: string[]): Set<string> {
 
     if (new RegExp(`\\b(?:${[...DUTCH_MONTHS, ...ENGLISH_MONTHS].join("|")})\\s+\\d{4}\\b`, "i").test(normalized)) {
       formats.add("month_name");
+      // A numeric date in the same period ("2018-08 - juli 2021") is a second style too.
+      if (/\b\d{4}[-/]\d{1,2}\b/.test(normalized)) formats.add("year_month");
+      if (/\b\d{1,2}[-/]\d{4}\b/.test(normalized)) formats.add("month_year_numeric");
       continue;
     }
 

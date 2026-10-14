@@ -45,6 +45,9 @@ export default function StepsTopBar({
     onModeChange,
     dashboardHref,
     saveLabel,
+    gradeLabel,
+    gradeGood = false,
+    onGradeClick,
 }: {
     activeStep: EditorStepId;
     stepStates: Record<EditorStepId, boolean>;
@@ -64,6 +67,10 @@ export default function StepsTopBar({
     dashboardHref?: string | null;
     /** Replaces "Opgeslagen" (e.g. "Bewaard in deze browser" without an account). */
     saveLabel?: string;
+    /** The CV-check grade ("Cijfer 8,4"); opens the checklist. */
+    gradeLabel?: string | null;
+    gradeGood?: boolean;
+    onGradeClick?: () => void;
     /** "Formulier | Op je CV" switch (desktop). Hidden when onModeChange is not given. */
     mode?: "form" | "document";
     onModeChange?: (mode: "form" | "document") => void;
@@ -171,6 +178,15 @@ export default function StepsTopBar({
                 ) : null}
 
                 <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+                    {gradeLabel && onGradeClick ? (
+                        <button
+                            type="button"
+                            onClick={onGradeClick}
+                            className={`inline-flex min-h-9 shrink-0 items-center rounded-full px-3 text-[13px] font-extrabold ${gradeGood ? "bg-[var(--wk-success-soft)] text-[var(--wk-success)]" : "bg-[var(--wk-highlight-soft)] text-[var(--wk-warning)]"}`}
+                        >
+                            {gradeLabel}
+                        </button>
+                    ) : null}
                     <SaveStatus state={saveState} locale={locale} savedLabel={saveLabel} />
                     {onUpload ? (
                         <button

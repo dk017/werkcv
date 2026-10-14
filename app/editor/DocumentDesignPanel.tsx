@@ -9,8 +9,10 @@ const COPY = {
 } as const;
 
 // Right-hand panel of the document mode ("Op je CV"): the design controls next to the CV.
-export default function DocumentDesignPanel({ locale, colorPicker, templateSelector, layoutControls }: {
+export default function DocumentDesignPanel({ locale, colorPicker, templateSelector, layoutControls, checkPanel }: {
     locale: AppLocale;
+    /** The CV-check checklist, above the design controls. */
+    checkPanel?: ReactNode;
     colorPicker: ReactNode;
     templateSelector: ReactNode;
     layoutControls?: ReactNode;
@@ -22,6 +24,7 @@ export default function DocumentDesignPanel({ locale, colorPicker, templateSelec
                 <h2 className="text-[17px] font-extrabold text-[var(--wk-ink)]">{c.title}</h2>
                 <p className="mt-1 text-[13px] leading-relaxed text-[var(--wk-ink-muted)]">{c.hint}</p>
             </div>
+            {checkPanel}
             {layoutControls ? (
                 <section aria-label={c.layout} className="flex flex-col gap-3 border-t border-[var(--wk-border)] pt-4">
                     <h3 className="text-sm font-extrabold text-[var(--wk-ink)]">{c.layout}</h3>

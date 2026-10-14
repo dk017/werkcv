@@ -328,6 +328,8 @@ test("date check: a course year next to month-name periods is consistent; mixed 
   assert.equal(consistent.checks.find((item) => item.id === "score_date_format_consistency")?.status, "pass");
   const mixed = await runCvCheck({ cvText: `${baseCv}\n${work}\n${filler}\nStagiair, Voorbeeld BV, 2018-02 / 2018-07`, locale: "nl", ai: false });
   assert.equal(mixed.checks.find((item) => item.id === "score_date_format_consistency")?.status, "fail");
+  const mixedInOnePeriod = await runCvCheck({ cvText: `${baseCv}\n${work}\n${filler}\nStagiair, Voorbeeld BV, 2018-02 - juli 2018`, locale: "nl", ai: false });
+  assert.equal(mixedInOnePeriod.checks.find((item) => item.id === "score_date_format_consistency")?.status, "fail");
 });
 
 test("years of experience are recognised as digits and as spelled-out numbers, in Dutch and English", async () => {

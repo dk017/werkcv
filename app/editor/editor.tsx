@@ -101,7 +101,8 @@ import CheckoutPlanSheet, { type CheckoutPlan } from "./CheckoutPlanSheet";
 import CustomerQuote from "@/components/CustomerQuote";
 import { markCheckoutPending } from "@/lib/checkout-exit";
 import { hasEditorFileHandoff, isCvCheckStartSource, takeCheckedCvDataForEditor, takeCheckedCvForEditor, type HandedOverCheck } from "@/lib/cv-check/handoff";
-import CheckTodoPanel from "./CheckTodoPanel";
+import CheckTodoPanel, { formatCheckGrade } from "./CheckTodoPanel";
+import { useCvGrade } from "./useCvGrade";
 import { cvSchema } from "@/lib/cv";
 import WorkspaceSwitcher from "@/components/workspace/WorkspaceSwitcher";
 import type { WorkspaceEntitlements } from "@/lib/workspace/types";
@@ -708,6 +709,45 @@ export default function Editor({
         setEditorMode(mode);
         try { window.localStorage.setItem(EDITOR_MODE_STORAGE_KEY, mode); } catch { /* ignore */ }
         track("cta_clicked", { location: "editor_mode", label: mode });
+    };
+
+    // The CV-check grade of this CV (stepped editor): one request per change, shared by the top-bar
+    // chip and the checklist (CV-check flow on every step, otherwise on Afronden and in "Op je CV").
+    const cvGrade = useCvGrade({ data, templateId, locale: appLocale, enabled: isSteps });
+    const checkPanel = (surface: "steps" | "finish" | "document") => (
+        <CheckTodoPanel
+            grade={cvGrade}
+            checks={checkTodo}
+            surface={surface}
+            data={data}
+            locale={appLocale}
+            onApplyData={(next) => {
+                // Only the parts that changed, so react-hook-form marks just those dirty.
+                for (const key of Object.keys(next) as Array<keyof CVData>) {
+                    if (JSON.stringify(next[key]) !== JSON.stringify(data[key])) setValue(key, next[key], { shouldDirty: true });
+                }
+                setIsSaved(false);
+            }}
+            onSetField={(field, value) => {
+                setValue(`personal.${field}`, value, { shouldDirty: true });
+                setIsSaved(false);
+            }}
+            onGoToStep={(step) => {
+                // "Op je CV" has no steps: switch to the form first.
+                if (documentMode) changeEditorMode("form");
+                goToStep(step, "cv_check_todo");
+            }}
+            onSummaryChange={(summary) => { checkSummaryRef.current = summary; }}
+        />
+    );
+    const openCheckPanel = () => {
+        track("editor_grade_chip_clicked", { grade_bucket: cvGrade.status === "ok" ? String(Math.floor(cvGrade.grade)) : "none", document_mode: documentMode });
+        if (documentMode) {
+            document.getElementById("cv-check-todo-document")?.scrollIntoView({ behavior: "smooth", block: "start" });
+            return;
+        }
+        if (!checkTodo && activeStep !== "afronden") goToStep("afronden", "grade_chip");
+        window.setTimeout(() => document.getElementById(checkTodo ? "cv-check-todo-steps" : "cv-check-todo-finish")?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
     };
 
     useEffect(() => {
@@ -1985,6 +2025,9 @@ export default function Editor({
             priceCaption={hasExportableContent && showsDownloadPrice ? priceCopyExperiment.copy.toolbarCaption : null}
             completionScore={completionScore}
             locale={appLocale}
+            gradeLabel={cvGrade.status === "ok" ? `${isEnglish ? "Grade" : "Cijfer"} ${formatCheckGrade(cvGrade.grade, appLocale)}` : null}
+            gradeGood={cvGrade.status === "ok" && cvGrade.grade >= 8}
+            onGradeClick={openCheckPanel}
             dashboardHref={isPublicMode ? null : undefined}
             saveLabel={isPublicMode ? (isEnglish ? "Saved in this browser" : "Bewaard in deze browser") : undefined}
         />
@@ -2252,27 +2295,7 @@ export default function Editor({
                     onInputCapture={handleQuickBuildInput}
                 >
                     <div className={isSteps ? "mx-auto flex max-w-[680px] flex-col gap-5 pb-12" : "max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12"}>
-                        {checkTodo ? (
-                            <CheckTodoPanel
-                                checks={checkTodo}
-                                data={data}
-                                templateId={templateId}
-                                locale={appLocale}
-                                onApplyData={(next) => {
-                                    // Only the parts that changed, so react-hook-form marks just those dirty.
-                                    for (const key of Object.keys(next) as Array<keyof CVData>) {
-                                        if (JSON.stringify(next[key]) !== JSON.stringify(data[key])) setValue(key, next[key], { shouldDirty: true });
-                                    }
-                                    setIsSaved(false);
-                                }}
-                                onSetField={(field, value) => {
-                                    setValue(`personal.${field}`, value, { shouldDirty: true });
-                                    setIsSaved(false);
-                                }}
-                                onGoToStep={(step) => goToStep(step, "cv_check_todo")}
-                                onSummaryChange={(summary) => { checkSummaryRef.current = summary; }}
-                            />
-                        ) : null}
+                        {isSteps && (checkTodo || activeStep === "afronden") ? checkPanel(checkTodo ? "steps" : "finish") : null}
                         {planSheetSource ? (
                             <CheckoutPlanSheet
                                 uiLanguage={isEnglish ? "en" : "nl"}
@@ -2896,7 +2919,7 @@ export default function Editor({
                             ) : null}
 
                             <div className="mt-5 grid gap-4">
-                                <CvScoreWidget data={data} uiLanguage={uiLanguage} templateId={templateId} />
+                                {!isSteps ? <CvScoreWidget data={data} uiLanguage={uiLanguage} templateId={templateId} /> : null}
                                 {!isPublicMode ? (
                                     <KeywordScannerWidget
                                         cvId={id}
@@ -3119,6 +3142,7 @@ export default function Editor({
                 {documentMode ? (
                     <DocumentDesignPanel
                         locale={appLocale}
+                        checkPanel={checkPanel("document")}
                         layoutControls={(
                             <LayoutControls
                                 layout={data.layout}
