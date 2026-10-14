@@ -1,13 +1,27 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useRef, useState, type DragEvent } from "react";
 import { track } from "@/lib/analytics";
-import { saveCheckedCvForEditor } from "@/lib/cv-check/handoff";
+import type { CVData } from "@/lib/cv";
+import { fixEffort, resolvedByDesign, type FixEffort } from "@/lib/cv-check/fix-effort";
+import { saveCheckedCvDataForEditor, saveCheckedCvForEditor } from "@/lib/cv-check/handoff";
 import { cvDownloadPrice } from "@/lib/site-content";
 import type { CvCheckCategory, CvCheckItem, CvCheckLocale, CvCheckResult } from "@/lib/cv-check/types";
 
+// The templates only load once there is a result to preview.
+const CvThumbnail = dynamic(() => import("@/components/app/CvThumbnail").then((module) => module.CvThumbnail), { ssr: false });
+
+// The template the improve editor opens with (components/public-editor/PublicEditorSection.tsx).
+const PREVIEW_TEMPLATE_ID = "professional";
+
 type InputMode = "file" | "text";
+
+/** The checked CV as WerkCV reads it, graded again as a WerkCV CV (see /api/cv-check/editor-grade). */
+type Preview =
+  | { status: "none" | "loading" | "failed" }
+  | { status: "ready"; data: CVData; werkcvGrade: number | null; resolved: string[] };
 
 const COPY = {
   nl: {
@@ -32,9 +46,6 @@ const COPY = {
     match: "Match met vacature",
     bands: { onvoldoende: "Onvoldoende", voldoende: "Voldoende", goed: "Goed", uitstekend: "Uitstekend" },
     topFixes: "Verbeter eerst deze 3 punten",
-    fixInEditor: "Verbeter in de editor",
-    editorNoteFile: `Je gecheckte cv wordt direct in de editor ingeladen, je hoeft het niet opnieuw te uploaden. Aanpassen is gratis; je betaalt pas ${cvDownloadPrice.display} als je de PDF downloadt.`,
-    editorNoteText: `In de editor pas je je cv gratis aan. Je betaalt pas ${cvDownloadPrice.display} als je de PDF downloadt.`,
     openingEditor: "Editor openen...",
     requirements: "Eisen uit de vacature",
     hardFirst: "Harde eisen staan bovenaan; een 'pre' is een pluspunt, geen harde eis.",
@@ -70,6 +81,30 @@ const COPY = {
     methodology: "Zo berekenen we het cijfer",
     rescan: "Opnieuw checken",
     rescanHint: "Pas je cv aan en check opnieuw. Opnieuw checken is gratis.",
+    verdict: (band: CvCheckResult["gradeBand"], fixes: number) =>
+      fixes === 0
+        ? "Je cv is sterk"
+        : band === "onvoldoende"
+          ? "Je cv mist nog belangrijke punten"
+          : `Je cv is ${band === "voldoende" ? "voldoende" : "goed"}, maar ${fixes === 1 ? "1 punt kost" : `${fixes} punten kosten`} je kansen`,
+    effort: { design: "Al opgelost in WerkCV", quick: "Snel aan te passen", write: "Zelf aanpassen" } satisfies Record<FixEffort, string>,
+    previewTitle: "Zo ziet je cv eruit in WerkCV",
+    previewIntro: "Je eigen cv, al ingeladen, in een ATS-veilig ontwerp.",
+    previewLoading: "We zetten je cv in een WerkCV-ontwerp…",
+    previewFailed: "Het voorbeeld lukte niet, maar je kunt je cv wel in de editor openen en daar verbeteren.",
+    previewText: "In de editor pas je je cv aan en zie je het resultaat direct.",
+    gradeYourFile: "Je bestand",
+    gradeInWerkcv: "Zelfde inhoud in WerkCV",
+    resolvedTitle: "Al opgelost door het WerkCV-ontwerp",
+    cta: (fixes: number) => (fixes === 0 ? "Open mijn cv in de editor" : fixes === 1 ? "Verbeter dit punt in mijn cv" : `Verbeter mijn cv met deze ${fixes} punten`),
+    ctaNote: `Gratis aanpassen, zonder account · je betaalt pas ${cvDownloadPrice.display} als je de PDF downloadt · geen abonnement`,
+    strongTitle: "Wat nu?",
+    strongVacancyTitle: "Check je cv tegen een vacature",
+    strongVacancyText: "Plak een vacature. Je ziet welke eisen je cv al raakt en welke nog ontbreken.",
+    strongVacancyButton: "Check tegen een vacature",
+    strongDesignTitle: "Zet je cv in een ATS-veilig ontwerp",
+    strongDesignText: "Je inhoud blijft, de opmaak wordt strak en goed leesbaar voor systemen.",
+    strongDesignButton: "Bekijk mijn cv in de editor",
   },
   en: {
     upload: "Upload",
@@ -93,9 +128,6 @@ const COPY = {
     match: "Match with the job",
     bands: { onvoldoende: "Below standard", voldoende: "Sufficient", goed: "Good", uitstekend: "Excellent" },
     topFixes: "Fix these 3 points first",
-    fixInEditor: "Improve in the editor",
-    editorNoteFile: `The CV you checked opens in the editor straight away, no need to upload it again. Editing is free; you only pay ${cvDownloadPrice.displayEn} when you download the PDF.`,
-    editorNoteText: `Editing your CV in the editor is free. You only pay ${cvDownloadPrice.displayEn} when you download the PDF.`,
     openingEditor: "Opening the editor...",
     requirements: "Requirements from the job ad",
     hardFirst: "Hard requirements come first; a nice-to-have is a plus, not a requirement.",
@@ -131,6 +163,30 @@ const COPY = {
     methodology: "How we calculate the grade",
     rescan: "Check again",
     rescanHint: "Update your CV and check again. Re-checking is free.",
+    verdict: (band: CvCheckResult["gradeBand"], fixes: number) =>
+      fixes === 0
+        ? "Your CV is strong"
+        : band === "onvoldoende"
+          ? "Your CV is still missing important points"
+          : `Your CV is ${band === "voldoende" ? "decent" : "good"}, but ${fixes === 1 ? "1 point is" : `${fixes} points are`} costing you chances`,
+    effort: { design: "Already fixed in WerkCV", quick: "Quick to fix", write: "Edit yourself" } satisfies Record<FixEffort, string>,
+    previewTitle: "Your CV in WerkCV",
+    previewIntro: "Your own CV, already imported, in an ATS-safe design.",
+    previewLoading: "Putting your CV into a WerkCV design…",
+    previewFailed: "The preview did not work, but you can still open your CV in the editor and improve it there.",
+    previewText: "In the editor you update your CV and see the result straight away.",
+    gradeYourFile: "Your file",
+    gradeInWerkcv: "Same content in WerkCV",
+    resolvedTitle: "Already fixed by the WerkCV design",
+    cta: (fixes: number) => (fixes === 0 ? "Open my CV in the editor" : fixes === 1 ? "Fix this point in my CV" : `Improve my CV with these ${fixes} points`),
+    ctaNote: `Free to edit, no account · you only pay ${cvDownloadPrice.displayEn} when you download the PDF · no subscription`,
+    strongTitle: "What next?",
+    strongVacancyTitle: "Check your CV against a job ad",
+    strongVacancyText: "Paste a job ad. You see which requirements your CV already covers and which are missing.",
+    strongVacancyButton: "Check against a job ad",
+    strongDesignTitle: "Put your CV in an ATS-safe design",
+    strongDesignText: "Your content stays; the layout becomes clean and easy for systems to read.",
+    strongDesignButton: "View my CV in the editor",
   },
 } as const;
 
@@ -193,17 +249,80 @@ export default function CvCheckTool({
   const [result, setResult] = useState<CvCheckResult | null>(null);
   const [dragging, setDragging] = useState(false);
   const [openingEditor, setOpeningEditor] = useState(false);
+  const [preview, setPreview] = useState<Preview>({ status: "none" });
   const fileInputRef = useRef<HTMLInputElement>(null);
   const reportRef = useRef<HTMLDivElement>(null);
+  const vacancyRef = useRef<HTMLTextAreaElement>(null);
   // The checked file is handed to the editor (see lib/cv-check/handoff.ts) so it opens with this CV.
   const canHandOffFile = inputMode === "file" && Boolean(file);
 
-  async function openEditor(fix: { checkId: string; category: string }) {
-    if (openingEditor) return;
+  async function openEditor(source: "main" | "mobile" | "strong_design") {
+    if (openingEditor || !result) return;
     setOpeningEditor(true);
-    const handoff = canHandOffFile && file ? await saveCheckedCvForEditor(file) : false;
-    track("cv_check_fix_clicked", { locale, check_id: fix.checkId, category: fix.category, handoff });
+    const failedIds = result.checks.filter((check) => check.status === "fail").map((check) => check.id);
+    // Prefer the CV as already read for the preview; the file stays as a fallback for the editor's own import.
+    const dataHandoff = preview.status === "ready" && file ? await saveCheckedCvDataForEditor(preview.data, failedIds, file.name) : false;
+    const fileHandoff = canHandOffFile && file ? await saveCheckedCvForEditor(file) : false;
+    const handoff = dataHandoff || fileHandoff;
+    const firstFix = result.topFixes[0];
+    track("cv_check_fix_clicked", {
+      locale,
+      check_id: firstFix?.checkId ?? "none",
+      category: firstFix?.category ?? "none",
+      handoff,
+      source,
+      preview: preview.status,
+    });
     window.location.assign(handoff ? `${editorHref}${editorHref.includes("?") ? "&" : "?"}upload=1` : editorHref);
+  }
+
+  // Reads the checked file the way the editor will (one AI parse, reused by the editor) and grades it
+  // as a WerkCV CV. Checks that fail on the file but not in WerkCV are "fixed by the design".
+  async function preparePreview(checkedFile: File, checked: CvCheckResult) {
+    setPreview({ status: "loading" });
+    const fail = (outcome: "parse_failed" | "rate_limited" | "grade_failed") => {
+      setPreview({ status: "failed" });
+      track("cv_check_preview_ready", { locale, outcome });
+    };
+    try {
+      const form = new FormData();
+      form.append("file", checkedFile);
+      const parseResponse = await fetch("/api/public/cv/parse", { method: "POST", body: form, headers: { "x-werkcv-language": locale } });
+      const parsed = (await parseResponse.json().catch(() => ({}))) as { data?: CVData };
+      if (!parseResponse.ok || !parsed.data) return fail(parseResponse.status === 429 ? "rate_limited" : "parse_failed");
+
+      const gradeResponse = await fetch("/api/cv-check/editor-grade", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: parsed.data, locale, templateId: PREVIEW_TEMPLATE_ID }),
+      });
+      const graded = (await gradeResponse.json().catch(() => ({}))) as { status?: string; grade?: number; failed?: Array<{ id: string }> };
+      if (!gradeResponse.ok || graded.status !== "ok" || typeof graded.grade !== "number" || !graded.failed) return fail("grade_failed");
+
+      const originalFailed = checked.checks.filter((check) => check.status === "fail").map((check) => check.id);
+      const resolved = resolvedByDesign(originalFailed, graded.failed.map((check) => check.id));
+      // Only claim a better grade when there is one; the general grade is the fair comparison.
+      const werkcvGrade = graded.grade > checked.generalGrade ? graded.grade : null;
+      setPreview({ status: "ready", data: parsed.data, werkcvGrade, resolved });
+      track("cv_check_preview_ready", {
+        locale,
+        outcome: "ok",
+        grade_bucket: String(Math.floor(graded.grade)),
+        grade_gain: Math.round((graded.grade - checked.generalGrade) * 10) / 10,
+        resolved_count: resolved.length,
+      });
+    } catch {
+      fail("parse_failed");
+    }
+  }
+
+  function checkAgainstVacancy() {
+    track("cv_check_vacancy_path_clicked", { locale });
+    setResult(null);
+    setPreview({ status: "none" });
+    setShowVacancy(true);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.setTimeout(() => vacancyRef.current?.focus(), 400);
   }
 
   const withVacancy = showVacancy && vacancyText.trim().length > 0;
@@ -236,6 +355,7 @@ export default function CvCheckTool({
 
     setLoading(true);
     setResult(null);
+    setPreview({ status: "none" });
     const startedAt = Date.now();
     track("cv_check_started", { locale, mode, input_type: inputMode });
 
@@ -277,6 +397,7 @@ export default function CvCheckTool({
         duration_ms: Date.now() - startedAt,
         score_version: data.result.scoreVersion,
       });
+      if (inputMode === "file" && file) void preparePreview(file, data.result);
       window.setTimeout(() => reportRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
     } catch {
       track("cv_check_failed", { locale, mode, input_type: inputMode, code: "NETWORK_ERROR" });
@@ -296,6 +417,7 @@ export default function CvCheckTool({
   function rescan() {
     track("cv_check_rescan_clicked", { locale });
     setResult(null);
+    setPreview({ status: "none" });
     setError("");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -368,6 +490,7 @@ export default function CvCheckTool({
             </button>
             {showVacancy && (
               <textarea
+                ref={vacancyRef}
                 className="wk-input mt-3 min-h-[160px] w-full"
                 placeholder={copy.vacancyPlaceholder}
                 value={vacancyText}
@@ -413,14 +536,27 @@ export default function CvCheckTool({
       {result && (
         <div ref={reportRef} className="scroll-mt-24 space-y-6">
           <Summary result={result} locale={locale} />
-          <TopFixes
-            result={result}
-            locale={locale}
-            editorHref={editorHref}
-            note={canHandOffFile ? copy.editorNoteFile : copy.editorNoteText}
-            opening={openingEditor}
-            onImprove={(fix) => void openEditor(fix)}
-          />
+          {result.topFixes.length > 0 ? (
+            <>
+              {/* On phones the main action sits right under the grade. */}
+              <div className="lg:hidden">
+                <ImproveButton locale={locale} fixes={result.topFixes.length} opening={openingEditor} onClick={() => void openEditor("mobile")} />
+              </div>
+              <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
+                <TopFixes result={result} locale={locale} preview={preview} />
+                <ImprovePanel result={result} locale={locale} preview={preview} opening={openingEditor} onImprove={() => void openEditor("main")} />
+              </div>
+            </>
+          ) : (
+            <StrongPaths
+              result={result}
+              locale={locale}
+              preview={preview}
+              opening={openingEditor}
+              onVacancy={checkAgainstVacancy}
+              onDesign={() => void openEditor("strong_design")}
+            />
+          )}
           {result.aiStatus === "unavailable" && (
             <p className="rounded-[var(--wk-radius-sm)] border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">{copy.aiUnavailable}</p>
           )}
@@ -454,6 +590,7 @@ function Summary({ result, locale }: { result: CvCheckResult; locale: CvCheckLoc
   const copy = COPY[locale];
   return (
     <section className="wk-card p-5 md:p-6" aria-labelledby="cv-check-grade">
+      <h2 className="mb-4 text-2xl font-semibold text-[var(--wk-ink)]">{copy.verdict(result.gradeBand, result.topFixes.length)}</h2>
       <div className="flex flex-wrap items-end gap-x-8 gap-y-4">
         <div>
           <p id="cv-check-grade" className="text-sm font-semibold text-[var(--wk-ink-muted)]">
@@ -486,53 +623,178 @@ function Summary({ result, locale }: { result: CvCheckResult; locale: CvCheckLoc
   );
 }
 
-function TopFixes({
-  result,
-  locale,
-  editorHref,
-  note,
-  opening,
-  onImprove,
-}: {
-  result: CvCheckResult;
-  locale: CvCheckLocale;
-  editorHref: string;
-  note: string;
-  opening: boolean;
-  onImprove: (fix: { checkId: string; category: string }) => void;
-}) {
+const EFFORT_BADGE: Record<FixEffort, string> = {
+  design: "wk-badge-success",
+  quick: "wk-badge-accent",
+  write: "wk-badge-warning",
+};
+
+function TopFixes({ result, locale, preview }: { result: CvCheckResult; locale: CvCheckLocale; preview: Preview }) {
   const copy = COPY[locale];
-  if (!result.topFixes.length) return null;
+  // "Already fixed in WerkCV" is only claimed once the preview has measured it.
+  const resolved = new Set(preview.status === "ready" ? preview.resolved : []);
   return (
     <section aria-labelledby="cv-check-top-fixes">
       <h2 id="cv-check-top-fixes" className="text-xl font-semibold text-[var(--wk-ink)]">
         {copy.topFixes}
       </h2>
       <ol className="mt-3 space-y-3">
-        {result.topFixes.map((fix, index) => (
-          <li key={fix.checkId} className="wk-card p-4">
-            <p className="font-semibold text-[var(--wk-ink)]">
-              {index + 1}. {fix.title}
-            </p>
-            {fix.evidence && <p className="mt-1 text-sm italic text-[var(--wk-ink-muted)]">“{fix.evidence}”</p>}
-            <p className="mt-2 text-sm text-[var(--wk-ink)]">{fix.fix}</p>
-            <Link
-              href={editorHref}
-              onClick={(event) => {
-                // Plain clicks go through the handoff; new-tab clicks just open the editor.
-                if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
-                event.preventDefault();
-                onImprove(fix);
-              }}
-              aria-disabled={opening}
-              className="mt-3 inline-block text-sm font-semibold underline underline-offset-4"
-            >
-              {opening ? copy.openingEditor : copy.fixInEditor}
-            </Link>
-          </li>
-        ))}
+        {result.topFixes.map((fix, index) => {
+          const effort = fixEffort(fix.checkId, resolved);
+          return (
+            <li key={fix.checkId} className="wk-card p-4">
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <p className="font-semibold text-[var(--wk-ink)]">
+                  {index + 1}. {fix.title}
+                </p>
+                <span className={`wk-badge ${EFFORT_BADGE[effort]}`}>{copy.effort[effort]}</span>
+              </div>
+              {fix.evidence && <p className="mt-1 text-sm italic text-[var(--wk-ink-muted)]">“{fix.evidence}”</p>}
+              <p className="mt-2 text-sm text-[var(--wk-ink)]">{fix.fix}</p>
+            </li>
+          );
+        })}
       </ol>
-      <p className="mt-3 text-sm text-[var(--wk-ink-muted)]">{note}</p>
+    </section>
+  );
+}
+
+function ImproveButton({ locale, fixes, opening, onClick }: { locale: CvCheckLocale; fixes: number; opening: boolean; onClick: () => void }) {
+  const copy = COPY[locale];
+  return (
+    <div>
+      <button type="button" className="wk-button wk-button-primary w-full justify-center py-4 text-base" onClick={onClick} disabled={opening}>
+        {opening ? copy.openingEditor : `${copy.cta(fixes)} →`}
+      </button>
+      <p className="mt-2 text-center text-xs text-[var(--wk-ink-muted)]">{copy.ctaNote}</p>
+    </div>
+  );
+}
+
+function PreviewThumbnail({ preview, locale }: { preview: Preview; locale: CvCheckLocale }) {
+  const copy = COPY[locale];
+  if (preview.status === "ready") {
+    return (
+      <div className="mx-auto w-full max-w-[340px] overflow-hidden rounded-md border border-[var(--wk-border)] shadow-[var(--wk-shadow-md)]">
+        <CvThumbnail data={preview.data} templateId={PREVIEW_TEMPLATE_ID} />
+      </div>
+    );
+  }
+  if (preview.status === "loading") {
+    return (
+      <div className="mx-auto flex aspect-[210/240] w-full max-w-[340px] items-center justify-center rounded-md border border-dashed border-[var(--wk-border-strong)] bg-[var(--wk-surface)] p-6 text-center text-sm text-[var(--wk-ink-muted)]" aria-live="polite">
+        <span className="animate-pulse">{copy.previewLoading}</span>
+      </div>
+    );
+  }
+  return null;
+}
+
+function ImprovePanel({
+  result,
+  locale,
+  preview,
+  opening,
+  onImprove,
+}: {
+  result: CvCheckResult;
+  locale: CvCheckLocale;
+  preview: Preview;
+  opening: boolean;
+  onImprove: () => void;
+}) {
+  const copy = COPY[locale];
+  const resolvedLabels =
+    preview.status === "ready"
+      ? preview.resolved.map((id) => result.checks.find((check) => check.id === id)?.label).filter((label): label is string => Boolean(label))
+      : [];
+  return (
+    <section aria-labelledby="cv-check-improve" className="wk-card bg-[var(--wk-surface-subtle)] p-5 md:p-6">
+      <h2 id="cv-check-improve" className="text-xl font-semibold text-[var(--wk-ink)]">
+        {copy.previewTitle}
+      </h2>
+      <p className="mt-1 text-sm text-[var(--wk-ink-muted)]">
+        {preview.status === "failed" ? copy.previewFailed : preview.status === "none" ? copy.previewText : copy.previewIntro}
+      </p>
+      <div className="mt-4">
+        <PreviewThumbnail preview={preview} locale={locale} />
+      </div>
+      {preview.status === "ready" && preview.werkcvGrade !== null && (
+        <dl className="mt-4 flex items-center justify-center gap-4 text-center">
+          <div>
+            <dt className="text-xs font-semibold text-[var(--wk-ink-muted)]">{copy.gradeYourFile}</dt>
+            <dd className="text-2xl font-semibold text-[var(--wk-ink-muted)]">{formatGrade(result.generalGrade, locale)}</dd>
+          </div>
+          <span aria-hidden="true" className="text-xl text-[var(--wk-ink-muted)]">→</span>
+          <div>
+            <dt className="text-xs font-semibold text-[var(--wk-ink-muted)]">{copy.gradeInWerkcv}</dt>
+            <dd className="text-3xl font-semibold text-[var(--wk-success)]">{formatGrade(preview.werkcvGrade, locale)}</dd>
+          </div>
+        </dl>
+      )}
+      {resolvedLabels.length > 0 && (
+        <div className="mt-4">
+          <p className="text-sm font-semibold text-[var(--wk-ink)]">{copy.resolvedTitle}</p>
+          <ul className="mt-1 space-y-1 text-sm text-[var(--wk-ink)]">
+            {resolvedLabels.map((label) => (
+              <li key={label}>
+                <span aria-hidden="true" className="mr-1 font-bold text-[var(--wk-success)]">✓</span>
+                {label}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div className="mt-5">
+        <ImproveButton locale={locale} fixes={result.topFixes.length} opening={opening} onClick={onImprove} />
+      </div>
+    </section>
+  );
+}
+
+function StrongPaths({
+  result,
+  locale,
+  preview,
+  opening,
+  onVacancy,
+  onDesign,
+}: {
+  result: CvCheckResult;
+  locale: CvCheckLocale;
+  preview: Preview;
+  opening: boolean;
+  onVacancy: () => void;
+  onDesign: () => void;
+}) {
+  const copy = COPY[locale];
+  return (
+    <section aria-labelledby="cv-check-next">
+      <h2 id="cv-check-next" className="text-xl font-semibold text-[var(--wk-ink)]">
+        {copy.strongTitle}
+      </h2>
+      <div className={`mt-3 grid gap-6 ${result.vacancy ? "" : "lg:grid-cols-2"}`}>
+        {!result.vacancy && (
+          <div className="wk-card p-5 md:p-6">
+            <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{copy.strongVacancyTitle}</h3>
+            <p className="mt-1 text-sm text-[var(--wk-ink-muted)]">{copy.strongVacancyText}</p>
+            <button type="button" className="wk-button wk-button-primary mt-4" onClick={onVacancy}>
+              {copy.strongVacancyButton}
+            </button>
+          </div>
+        )}
+        <div className="wk-card p-5 md:p-6">
+          <h3 className="text-lg font-semibold text-[var(--wk-ink)]">{copy.strongDesignTitle}</h3>
+          <p className="mt-1 text-sm text-[var(--wk-ink-muted)]">{copy.strongDesignText}</p>
+          <div className="mt-4">
+            <PreviewThumbnail preview={preview} locale={locale} />
+          </div>
+          <button type="button" className="wk-button wk-button-secondary mt-4" onClick={onDesign} disabled={opening}>
+            {opening ? copy.openingEditor : copy.strongDesignButton}
+          </button>
+          <p className="mt-2 text-xs text-[var(--wk-ink-muted)]">{copy.ctaNote}</p>
+        </div>
+      </div>
     </section>
   );
 }
@@ -659,7 +921,8 @@ function AllChecks({ result, locale }: { result: CvCheckResult; locale: CvCheckL
         const info = checks.filter((check) => check.status === "info");
         const passed = checks.filter((check) => check.status === "pass");
         return (
-          <details key={categoryId} className="wk-card p-4" open={failed.length > 0}>
+          // Collapsed: the screen leads with the top fixes and one action; the full report is one click away.
+          <details key={categoryId} className="wk-card p-4">
             <summary className="flex cursor-pointer items-center justify-between gap-3 font-semibold text-[var(--wk-ink)]">
               <span>{category.label}</span>
               <span className="text-sm text-[var(--wk-ink-muted)]">

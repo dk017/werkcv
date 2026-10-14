@@ -100,7 +100,8 @@ import CheckoutExitQuestion from "@/components/checkout/CheckoutExitQuestion";
 import CheckoutPlanSheet, { type CheckoutPlan } from "./CheckoutPlanSheet";
 import CustomerQuote from "@/components/CustomerQuote";
 import { markCheckoutPending } from "@/lib/checkout-exit";
-import { hasEditorFileHandoff, isCvCheckStartSource, takeCheckedCvForEditor } from "@/lib/cv-check/handoff";
+import { hasEditorFileHandoff, isCvCheckStartSource, takeCheckedCvDataForEditor, takeCheckedCvForEditor } from "@/lib/cv-check/handoff";
+import { cvSchema } from "@/lib/cv";
 import WorkspaceSwitcher from "@/components/workspace/WorkspaceSwitcher";
 import type { WorkspaceEntitlements } from "@/lib/workspace/types";
 import {
@@ -606,6 +607,8 @@ export default function Editor({
     const progressTrackingInitializedRef = useRef(false);
     const readyToDownloadTrackedRef = useRef(false);
     const uploadIntentHandledRef = useRef(false);
+    // Set after handleCVParsed is defined; lets the handoff effect below apply a CV without re-parsing.
+    const handleCVParsedRef = useRef<(data: CVData) => void>(() => undefined);
     // Link from an AI assistant (MCP): "loading" while the one-time token is exchanged, "failed" when it is no longer valid.
     const [handoffState, setHandoffState] = useState<"idle" | "loading" | "failed" | "busy">(publicHandoffToken ? "loading" : "idle");
     const handoffExchangedRef = useRef(false);
@@ -943,13 +946,28 @@ export default function Editor({
         setShowUploader(true);
     }, [id, templateId, uiLanguage]);
 
+    // The CV-check already read this CV for its result-screen preview: use that instead of parsing
+    // the same file again (the anonymous import is rate limited and costs an AI call).
+    const applyCheckedCvData = useCallback(async (): Promise<boolean> => {
+        const handed = await takeCheckedCvDataForEditor();
+        const parsed = handed ? cvSchema.safeParse(handed.data) : null;
+        if (!handed || !parsed?.success) return false;
+        await takeCheckedCvForEditor(); // the file is no longer needed: remove it from this browser
+        const extension = handed.fileName.toLowerCase().split(".").pop();
+        track("cv_upload_completed", { cvId: id, source: "cv_check", uiLanguage, fileType: extension === "doc" || extension === "docx" ? extension : "pdf", durationMs: 0 });
+        handleCVParsedRef.current(parsed.data);
+        return true;
+    }, [id, uiLanguage]);
+
     useEffect(() => {
         if (isPublicMode) {
             // CV-check visitors without an account: load the checked file once. Without a handed-over
             // file (pasted text, expired, blocked storage) the editor simply opens as usual.
             if (!publicImportCheckedCv || uploadIntentHandledRef.current) return;
             uploadIntentHandledRef.current = true;
-            void takeCheckedCvForEditor().then((checkedFile) => {
+            void applyCheckedCvData().then(async (applied) => {
+                if (applied) return;
+                const checkedFile = await takeCheckedCvForEditor();
                 if (!checkedFile) return;
                 setUploaderInitialFile(checkedFile);
                 openUploader("cv_check");
@@ -973,15 +991,18 @@ export default function Editor({
             const startSourceParam = params.get('startSource');
             if (hasEditorFileHandoff(startSourceParam)) {
                 // The file was already chosen (CV-check or the New CV dialog): import it straight away.
-                void takeCheckedCvForEditor().then((checkedFile) => {
+                const fromCheck = isCvCheckStartSource(startSourceParam);
+                void (fromCheck ? applyCheckedCvData() : Promise.resolve(false)).then(async (applied) => {
+                    if (applied) return;
+                    const checkedFile = await takeCheckedCvForEditor();
                     setUploaderInitialFile(checkedFile);
-                    openUploader(checkedFile ? (isCvCheckStartSource(startSourceParam) ? "cv_check" : "dashboard") : "route_intent");
+                    openUploader(checkedFile ? (fromCheck ? "cv_check" : "dashboard") : "route_intent");
                 });
             } else {
                 openUploader("route_intent");
             }
         }
-    }, [isPublicMode, openUploader, publicImportCheckedCv]);
+    }, [applyCheckedCvData, isPublicMode, openUploader, publicImportCheckedCv]);
 
     useEffect(() => {
         if (isPublicMode) return;
@@ -1596,6 +1617,10 @@ export default function Editor({
             entryMethod: 'upload',
         });
     };
+
+    useEffect(() => {
+        handleCVParsedRef.current = handleCVParsed;
+    });
 
     useEffect(() => {
         if (!isPublicMode || !publicHandoffToken || handoffExchangedRef.current) return;
@@ -2815,7 +2840,7 @@ export default function Editor({
                             ) : null}
 
                             <div className="mt-5 grid gap-4">
-                                <CvScoreWidget data={data} uiLanguage={uiLanguage} />
+                                <CvScoreWidget data={data} uiLanguage={uiLanguage} templateId={templateId} />
                                 {!isPublicMode ? (
                                     <KeywordScannerWidget
                                         cvId={id}
@@ -3262,8 +3287,8 @@ export default function Editor({
                     }}
                     uiLanguage={uiLanguage}
                     endpoint={isPublicMode ? "/api/public/cv/parse" : undefined}
-                    allowLegacyDoc={!isPublicMode}
-                    maxFileSizeMb={isPublicMode ? 5 : 10}
+                    allowLegacyDoc
+                    maxFileSizeMb={10}
                 />
             )}
 

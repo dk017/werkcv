@@ -6,6 +6,8 @@ import { UiLanguage } from "@/lib/ui-language";
 interface CvScoreWidgetProps {
     data: CVData;
     uiLanguage?: UiLanguage;
+    /** Grades the layout checks on this template (one or two columns). */
+    templateId?: string;
 }
 
 type GradeBand = "onvoldoende" | "voldoende" | "goed" | "uitstekend";
@@ -30,7 +32,7 @@ const BAND: Record<GradeBand, { nl: string; en: string; text: string; ring: stri
  * The CV-check grade (the same checks and 1–10 grade as /cv-check) for the CV in the editor. It
  * regrades shortly after each edit, so fixing a point from the report visibly raises the grade.
  */
-export default function CvScoreWidget({ data, uiLanguage = "nl" }: CvScoreWidgetProps) {
+export default function CvScoreWidget({ data, uiLanguage = "nl", templateId }: CvScoreWidgetProps) {
     const isEnglish = uiLanguage === "en";
     const tr = (nl: string, en: string) => (isEnglish ? en : nl);
     const formatGrade = (value: number) => (isEnglish ? value.toFixed(1) : value.toFixed(1).replace(".", ","));
@@ -49,7 +51,7 @@ export default function CvScoreWidget({ data, uiLanguage = "nl" }: CvScoreWidget
                 const response = await fetch("/api/cv-check/editor-grade", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: `{"locale":${JSON.stringify(uiLanguage)},"data":${gradedData}}`,
+                    body: `{"locale":${JSON.stringify(uiLanguage)},"templateId":${JSON.stringify(templateId ?? null)},"data":${gradedData}}`,
                     signal: controller.signal,
                 });
                 if (!response.ok) throw new Error(String(response.status));
@@ -67,7 +69,7 @@ export default function CvScoreWidget({ data, uiLanguage = "nl" }: CvScoreWidget
         };
         // Regrade on content changes only; `result` just picks the first-load delay.
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [gradedData, uiLanguage]);
+    }, [gradedData, templateId, uiLanguage]);
 
     const methodologyHref = isEnglish ? "/en/cv-check/methodology" : "/cv-check/methodologie";
     const header = (

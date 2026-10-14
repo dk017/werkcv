@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { cvSchema } from "@/lib/cv";
 import { cvDataToCheckText } from "@/lib/cv-check/cv-data-text";
 import { CvCheckInputError, runCvCheck } from "@/lib/cv-check/engine";
-import { emptyLayoutSignals } from "@/lib/cv-check/layout";
+import { emptyLayoutSignals, werkcvPdfLayoutSignals } from "@/lib/cv-check/layout";
+import { templateRegistry } from "@/lib/templates/registry";
 import { rankFailedChecks } from "@/lib/cv-check/score";
 import type { CvCheckLocale } from "@/lib/cv-check/types";
 import { isAllowedSameOriginRequest } from "@/lib/request-origin";
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ code: "TOO_LARGE" }, { status: 413 });
   }
 
-  let body: { data?: unknown; locale?: unknown };
+  let body: { data?: unknown; locale?: unknown; templateId?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -40,7 +41,13 @@ export async function POST(request: NextRequest) {
   if (!parsed.success) return NextResponse.json({ code: "INVALID_CV" }, { status: 400 });
 
   try {
-    const result = await runCvCheck({ cvText: cvDataToCheckText(parsed.data), locale, layout: emptyLayoutSignals("text"), ai: false });
+    // With a template the layout checks are graded on what the WerkCV PDF is (text, small, named file,
+    // the template's columns); without one they are skipped, as before.
+    const template = typeof body.templateId === "string" ? templateRegistry[body.templateId] : undefined;
+    const layout = template
+      ? werkcvPdfLayoutSignals({ templateLayout: template.layout, personName: parsed.data.personal.name })
+      : emptyLayoutSignals("text");
+    const result = await runCvCheck({ cvText: cvDataToCheckText(parsed.data), locale, layout, fileName: layout.fileName, ai: false });
     return NextResponse.json(
       {
         status: "ok",

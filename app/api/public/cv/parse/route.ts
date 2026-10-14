@@ -6,8 +6,9 @@ import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
 
 export const runtime = "nodejs";
 
-const MAX_PUBLIC_UPLOAD_BYTES = 5 * 1024 * 1024;
-const MAX_PUBLIC_BODY_BYTES = 6 * 1024 * 1024;
+// Same limits as the CV-check (/api/cv-check), so a file that could be checked can also be imported.
+const MAX_PUBLIC_UPLOAD_BYTES = 10 * 1024 * 1024;
+const MAX_PUBLIC_BODY_BYTES = 11 * 1024 * 1024;
 const MAX_PUBLIC_PDF_PAGES = 5;
 const MAX_PUBLIC_TEXT_CHARS = 40_000;
 const PUBLIC_PARSE_TIMEOUT_MS = 30_000;
@@ -18,6 +19,11 @@ function getExtension(filename: string): string {
 
 function hasPdfSignature(buffer: Buffer): boolean {
   return buffer.subarray(0, 5).toString("ascii") === "%PDF-";
+}
+
+// Legacy Word (.doc) files are OLE compound documents.
+function hasDocSignature(buffer: Buffer): boolean {
+  return buffer.subarray(0, 8).equals(Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]));
 }
 
 function hasDocxSignature(buffer: Buffer): boolean {
@@ -32,7 +38,8 @@ export async function POST(request: NextRequest) {
   const isEnglish = isEnglishRequest(request);
   const rateLimit = checkRateLimit(getClientIp(request), {
     bucket: "public-cv-parse",
-    maxRequests: 2,
+    // The CV-check preview and the editor share one parse (see lib/cv-check/handoff.ts); 4 leaves room for a re-check.
+    maxRequests: 4,
     windowMs: 10 * 60 * 1000,
   });
 
@@ -64,21 +71,21 @@ export async function POST(request: NextRequest) {
     }
 
     const extension = getExtension(file.name);
-    if (extension !== "pdf" && extension !== "docx") {
+    if (extension !== "pdf" && extension !== "docx" && extension !== "doc") {
       return NextResponse.json(
-        { error: isEnglish ? "Upload a PDF or DOCX file." : "Upload een PDF- of DOCX-bestand.", code: "UNSUPPORTED_FILE_TYPE" },
+        { error: isEnglish ? "Upload a PDF or Word file." : "Upload een PDF- of Word-bestand.", code: "UNSUPPORTED_FILE_TYPE" },
         { status: 400 },
       );
     }
     fileKind = extension;
 
     if (file.size <= 0 || file.size > MAX_PUBLIC_UPLOAD_BYTES) {
-      return NextResponse.json({ error: isEnglish ? "File is too large. Maximum size is 5MB." : "Bestand is te groot. Maximale grootte is 5MB.", code: "FILE_TOO_LARGE" }, { status: 413 });
+      return NextResponse.json({ error: isEnglish ? "File is too large. Maximum size is 10 MB." : "Bestand is te groot. Maximale grootte is 10 MB.", code: "FILE_TOO_LARGE" }, { status: 413 });
     }
 
     stage = "validate_signature";
     const buffer = Buffer.from(await file.arrayBuffer());
-    const validSignature = extension === "pdf" ? hasPdfSignature(buffer) : hasDocxSignature(buffer);
+    const validSignature = extension === "pdf" ? hasPdfSignature(buffer) : extension === "doc" ? hasDocSignature(buffer) : hasDocxSignature(buffer);
     if (!validSignature) {
       return NextResponse.json(
         { error: isEnglish ? "The file content does not match its file type." : "De bestandsinhoud komt niet overeen met het bestandstype.", code: "INVALID_FILE_CONTENT" },

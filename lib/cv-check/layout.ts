@@ -24,6 +24,27 @@ export type LayoutSignals = {
   fileName: string | null;
 };
 
+/**
+ * What a WerkCV PDF is, for grading an editor CV: real text (no scans or text boxes), well under 2 MB,
+ * named "<name>-cv.pdf" (as /api/pdf names the download). One column only for single-column
+ * templates; two-column templates are reported as such, so the reading-order check still applies.
+ */
+export function werkcvPdfLayoutSignals(input: { templateLayout: string; personName: string }): LayoutSignals {
+  const safeName = input.personName.replace(/[<>:"/\\|?*\x00-\x1F]/g, "").trim() || "cv";
+  return {
+    fileType: "pdf",
+    pageCount: null,
+    imageOnlyPages: [],
+    textFromImages: false,
+    twoColumnRowShare: input.templateLayout === "single-column" ? 0 : 0.5,
+    contactOnlyInHeaderFooter: false,
+    textBoxCount: 0,
+    tableCount: 0,
+    fileSizeBytes: 150 * 1024,
+    fileName: `${safeName}-cv.pdf`,
+  };
+}
+
 type TextItem = { str?: string; transform?: number[]; width?: number };
 
 const EMAIL = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i;

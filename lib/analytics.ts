@@ -813,7 +813,9 @@ export type AnalyticsEvent =
           };
       }
     | { event: 'cv_check_failed'; properties: { locale: 'nl' | 'en'; mode: 'general' | 'vacancy'; input_type: 'file' | 'text'; code: string } }
-    | { event: 'cv_check_fix_clicked'; properties: { locale: 'nl' | 'en'; check_id: string; category: string; handoff?: boolean } }
+    | { event: 'cv_check_fix_clicked'; properties: { locale: 'nl' | 'en'; check_id: string; category: string; handoff?: boolean; source?: 'main' | 'mobile' | 'strong_design'; preview?: 'ready' | 'loading' | 'failed' | 'none' } }
+    | { event: 'cv_check_preview_ready'; properties: { locale: 'nl' | 'en'; outcome: 'ok' | 'parse_failed' | 'rate_limited' | 'grade_failed'; grade_bucket?: string; grade_gain?: number; resolved_count?: number } }
+    | { event: 'cv_check_vacancy_path_clicked'; properties: { locale: 'nl' | 'en' } }
     | { event: 'cv_check_rescan_clicked'; properties: { locale: 'nl' | 'en' } }
     | {
           event: 'letter_check_completed';
