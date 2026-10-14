@@ -71,6 +71,7 @@ export default function EnglishPrivacyPage() {
                 <li>Process payments and provide paid download access</li>
                 <li>Run AI features you actively request, such as import, analysis, rewriting, or the guided voice interview</li>
                 <li>Send login codes, service messages, and support replies</li>
+                <li>Occasionally email you about your own CV, for example a reminder that it is ready to download. Every such email says how to unsubscribe: reply &quot;stop&quot;.</li>
                 <li>Measure reliability and improve the website and editor</li>
                 <li>Prevent abuse, investigate errors, and protect the service</li>
               </ul>
@@ -83,6 +84,8 @@ export default function EnglishPrivacyPage() {
                 request or perform our agreement with you. Security, limited internal analytics,
                 and error investigation may rely on our legitimate interests. Consent is the legal
                 basis for external analytics where applicable rules or technical impact require it.
+                Occasional emails about your own CV rely on our legitimate interest; you can object at
+                any time by replying &quot;stop&quot; or emailing contact@werkcv.nl.
               </p>
             </section>
 

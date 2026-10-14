@@ -76,6 +76,7 @@ export default function PrivacyPage() {
                                 <li>Het uitvoeren van AI-functies die je zelf start, zoals CV-import, optimalisatie, tekstgeneratie of het gesproken CV-interview</li>
                                 <li>Het meten en verbeteren van de werking, betrouwbaarheid en gebruiksvriendelijkheid van WerkCV</li>
                                 <li>Het voorkomen van misbruik en het oplossen van technische problemen</li>
+                                <li>Af en toe een e-mail over je eigen cv, bijvoorbeeld een herinnering dat het klaarstaat om te downloaden. In elke mail staat hoe je je afmeldt: antwoord met &quot;stop&quot;.</li>
                             </ul>
                         </section>
 
@@ -86,7 +87,9 @@ export default function PrivacyPage() {
                                 de gevraagde dienst of overeenkomst (Art. 6(1)(b) AVG). Voor beveiliging, foutonderzoek
                                 en beperkte interne productanalyse kunnen wij ons beroepen op een gerechtvaardigd belang
                                 (Art. 6(1)(f) AVG). Voor externe analytics is toestemming de rechtsgrond waar de
-                                toepasselijke regels of technische impact dat vereisen.
+                                toepasselijke regels of technische impact dat vereisen. Voor af en toe een e-mail over
+                                je eigen cv beroepen wij ons op een gerechtvaardigd belang; je kunt daar altijd bezwaar
+                                tegen maken door met &quot;stop&quot; te antwoorden of te mailen naar contact@werkcv.nl.
                             </p>
                         </section>
 

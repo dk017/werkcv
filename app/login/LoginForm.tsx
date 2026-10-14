@@ -11,7 +11,7 @@ const loginCopy = {
   nl: {
     eyebrow: "Je CV-editor staat klaar",
     title: "Ga verder naar je CV-editor",
-    intro: "Geen wachtwoord nodig. We gebruiken je e-mailadres alleen om je CV veilig op te slaan en later terug te openen.",
+    intro: "Geen wachtwoord nodig. We gebruiken je e-mailadres om je CV veilig op te slaan, zodat je later verder kunt.",
     emailLabel: "E-mailadres",
     emailPlaceholder: "jij@voorbeeld.nl",
     sendCode: "Stuur code en ga verder",
@@ -25,6 +25,7 @@ const loginCopy = {
     devCode: "Dev code",
     proof: ["Gratis bouwen", "Geen wachtwoord", "Geen abonnement"],
     reassurance: "Je betaalt pas wanneer je een PDF wilt downloaden.",
+    emailNotice: "We sturen je af en toe een bericht over je cv. Afmelden kan altijd.",
     exampleEyebrow: "Je voorbeeld staat klaar",
     exampleTitle: "Sla dit voorbeeld op en open de editor",
     exampleIntro: "Stuur jezelf een eenmalige code. Daarna zetten we dit voorbeeld direct klaar in jouw CV-editor.",
@@ -41,7 +42,7 @@ const loginCopy = {
   en: {
     eyebrow: "Your CV editor is ready",
     title: "Continue to your CV editor",
-    intro: "No password needed. We only use your email to save your CV securely and let you return later.",
+    intro: "No password needed. We use your email to save your CV securely so you can return later.",
     emailLabel: "Email address",
     emailPlaceholder: "you@example.com",
     sendCode: "Send code and continue",
@@ -55,6 +56,7 @@ const loginCopy = {
     devCode: "Dev code",
     proof: ["Free to build", "No password", "No subscription"],
     reassurance: "You only pay when you want to download the PDF.",
+    emailNotice: "We occasionally email you about your CV. You can unsubscribe at any time.",
     exampleEyebrow: "Your example is ready",
     exampleTitle: "Save this example and open the editor",
     exampleIntro: "Send yourself a one-time code. Then we will open this example directly in your CV editor.",
@@ -263,6 +265,7 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
             >
               {loading ? copy.sending : copy.sendCode}
             </button>
+            <p className="text-xs text-slate-500">{copy.emailNotice}</p>
           </form>
         ) : (
           <form onSubmit={verifyCode} className="space-y-4">
