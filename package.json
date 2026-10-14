@@ -62,6 +62,7 @@
     "analytics:matchpack": "npx tsx scripts/agency-validation-report.ts --days=28",
     "benchmark:claim-evidence": "npx tsx lib/benchmark/claim-evidence-evaluator.ts",
     "analytics:certify": "npx tsx lib/maintenance/conversion-funnel-certify.ts",
+    "test:followups-cv-ready": "tsx --test lib/followup-cv-ready.test.ts",
     "test:conversion-funnel": "npx tsx --test lib/conversion-funnel.test.ts lib/cv-meaningful.test.ts lib/cv-meaningful-persistence.test.ts lib/dodo.test.ts",
     "test:organic-conversion": "npx tsx --test lib/commercial/consumer-cv-pricing.test.ts lib/checkout-recovery.test.ts lib/organic-conversion-contract.test.ts",
     "test:checkout-pricing": "npx tsx --test lib/pricing-copy-experiment.test.ts lib/checkout-exit.test.ts lib/cv-price-literals.test.ts lib/dodo.test.ts lib/checkout-recovery.test.ts",

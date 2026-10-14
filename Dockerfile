@@ -120,6 +120,7 @@ COPY --from=production-deps --chown=nextjs:nodejs /app/package.json /app/package
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
 COPY --from=builder --chown=nextjs:nodejs /app/prisma.config.ts ./prisma.config.ts
 COPY --from=builder --chown=nextjs:nodejs /app/scripts/followups-signup-feedback.mjs ./scripts/followups-signup-feedback.mjs
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/followups-cv-ready.mjs /app/scripts/followups-mailer.mjs ./scripts/
 
 COPY --chown=nextjs:nodejs entrypoint.sh ./entrypoint.sh
 # npm, npx and the base-image Yarn installation are build-time tools only. The
