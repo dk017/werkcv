@@ -63,7 +63,10 @@ export async function POST(request: NextRequest) {
   const { pdf } = await generateCvPdf(parsed.data, safeTemplateId, safeThemeId, {
     requestOrigin: request.nextUrl.origin,
     renderer: resolvePdfRenderer(getPdfRendererSetting(), await isAppV2Active()),
-    onFallback: (error) => console.error("pdf_render_fallback", { route: "/api/pdf-preview", cvId, templateId: safeTemplateId, error }),
+    onFallback: (error) => {
+      console.error("pdf_render_fallback", { route: "/api/pdf-preview", cvId, templateId: safeTemplateId, error });
+      void prisma.analyticsEvent.create({ data: { event: "pdf_render_fallback", path: "/api/pdf-preview", cvId, properties: { templateId: safeTemplateId } } }).catch(() => undefined);
+    },
   });
   const pages = await renderPdfPreviewImages(pdf);
 

@@ -12,6 +12,7 @@ import { isAnalyticsAdminEmail } from "@/lib/admin-auth";
 import { getCurrentUser } from "@/lib/auth";
 import { formatCitedAuthorityRate } from "@/lib/cited-authority-funnel";
 import { AnalyticsGlobe } from "./AnalyticsGlobe";
+import { getNewAppAnalytics } from "@/lib/admin-new-app-analytics";
 
 export const dynamic = "force-dynamic";
 
@@ -33,7 +34,7 @@ const rangeLabels = {
   "30d": "Last 30 days",
 };
 
-type AnalyticsView = "overview" | "live" | "conversion" | "acquisition" | "checkout" | "raw";
+type AnalyticsView = "overview" | "live" | "conversion" | "acquisition" | "checkout" | "app" | "raw";
 
 const viewLabels: Array<{ value: AnalyticsView; label: string; description: string }> = [
   { value: "overview", label: "Overview", description: "Action queue, core metrics, and trends" },
@@ -41,6 +42,7 @@ const viewLabels: Array<{ value: AnalyticsView; label: string; description: stri
   { value: "conversion", label: "Conversion", description: "Signup cohorts and user-level drop-off" },
   { value: "acquisition", label: "Acquisition", description: "Sources, landing pages, and revenue" },
   { value: "checkout", label: "Checkout", description: "Payment intent and checkout leaks" },
+  { value: "app", label: "New app", description: "Document mode, job search and the new PDF" },
   { value: "raw", label: "Raw tables", description: "Detailed event and funnel tables" },
 ];
 
@@ -120,6 +122,8 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
   const data = await getAnalyticsDashboardData(range, {
     includeCitedAuthority: view === "conversion",
   });
+  // Loaded only on its own tab.
+  const newApp = view === "app" ? await getNewAppAnalytics(range) : null;
   const ctaToEditorRate =
     data.summary.ctaClicks > 0 ? Math.round((data.summary.editorStarts / data.summary.ctaClicks) * 100) : 0;
   const checkoutToPaidRate =
@@ -659,6 +663,57 @@ export default async function AdminAnalyticsPage({ searchParams }: PageProps) {
             />
           </div>
         </section>
+              </>
+            ) : null}
+
+            {view === "app" && newApp ? (
+              <>
+                <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  <StatCard label="Document mode sessions" value={number(newApp.modes.find((row) => row.mode === "document")?.sessions ?? 0)} detail={`form: ${number(newApp.modes.find((row) => row.mode === "form")?.sessions ?? 0)} · classic: ${number(newApp.modes.find((row) => row.mode === "classic")?.sessions ?? 0)}`} />
+                  <StatCard label="Job searches" value={number(newApp.jobs.searches)} detail={`${number(newApp.jobs.searchesWithResults)} with results · ${number(newApp.jobs.cachedSearches)} cached · ${number(newApp.jobs.searchErrors)} errors`} />
+                  <StatCard label="Tailored CVs from vacancies" value={number(newApp.jobs.tailoredCvs)} detail={`${number(newApp.jobs.tailoredDownloads)} downloads started on them`} />
+                  <StatCard label="PDF fallbacks" value={number(newApp.pdf.downloadFallbacks + newApp.pdf.previewFallbacks)} detail={`downloads: ${number(newApp.pdf.downloadFallbacks)} · preview: ${number(newApp.pdf.previewFallbacks)}`} />
+                </section>
+
+                <section className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                  <TableHeader title="Conversion by editor mode" subtitle="Sessions and conversion steps by how people worked at that moment: document mode (Op je CV), stepped form, or the classic editor. Paid orders use the mode of the last download/checkout step on that CV." />
+                  <SimpleTable
+                    headers={["Mode", "Sessions", "Downloads started", "Paywall reached", "Checkouts", "Paid orders", "Paid per session"]}
+                    alignRight={[1, 2, 3, 4, 5, 6]}
+                    rows={newApp.modes.map((row) => [row.mode, number(row.sessions), number(row.downloads), number(row.paywall), number(row.checkouts), number(row.paid), percentage(row.paid, row.sessions)])}
+                  />
+                </section>
+
+                <section className="grid gap-6 lg:grid-cols-2">
+                  <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                    <TableHeader title="Document mode actions" subtitle="Mode switches, first in-place edit, layout changes, fit-to-page, reordering and add-in-place." />
+                    <SimpleTable headers={["Action", "Count"]} alignRight={[1]} rows={newApp.document.map((row) => [row.label, number(row.count)])} />
+                  </div>
+                  <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                    <TableHeader title="Job search funnel" subtitle="Searches to saved vacancies to tailored CVs and downloads. Status changes are tracker updates." />
+                    <SimpleTable
+                      headers={["Step", "Count"]}
+                      alignRight={[1]}
+                      rows={[
+                        ["Searches", number(newApp.jobs.searches)],
+                        ["Searches with results", number(newApp.jobs.searchesWithResults)],
+                        ["Saved from search", number(newApp.jobs.savedFromSearch)],
+                        ["Added manually", number(newApp.jobs.savedManual)],
+                        ["Tailored CVs created", number(newApp.jobs.tailoredCvs)],
+                        ["Downloads started on tailored CVs", number(newApp.jobs.tailoredDownloads)],
+                        ...newApp.jobs.statusChanges.map((row) => [`Status → ${row.label}`, number(row.count)]),
+                      ]}
+                    />
+                  </div>
+                  <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                    <TableHeader title="PDF downloads by generator" subtitle="react = printed from the preview templates; legacy = the old builder; (fallback) = react failed and legacy produced the PDF." />
+                    <SimpleTable headers={["Generator", "Downloads"]} alignRight={[1]} rows={newApp.pdf.downloadsByRenderer.map((row) => [row.label, number(row.count)])} />
+                  </div>
+                  <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+                    <TableHeader title="New CVs by start" subtitle="How new CVs were started: dashboard (blank/upload/copy), examples gallery, tailored from a vacancy, CV-check, or other pages." />
+                    <SimpleTable headers={["Start", "CVs"]} alignRight={[1]} rows={newApp.starts.map((row) => [row.label, number(row.count)])} />
+                  </div>
+                </section>
               </>
             ) : null}
 

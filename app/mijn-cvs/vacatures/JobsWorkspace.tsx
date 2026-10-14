@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { appPaths, type AppLocale } from "@/lib/app-v2-paths";
 import { applicationStatuses, type AppJob, type ApplicationStatus, type CvChoice, type JobErrorCode, type JobResult, type SavedApplication } from "@/lib/app-jobs/model";
 import { addManualVacancy, changeJobStatus, findJobs, saveVacancy, tailorForJob } from "./actions";
+import { track } from "@/lib/analytics";
 
 const COPY = {
   nl: {
@@ -107,12 +108,13 @@ export default function JobsWorkspace({ locale, view, cvs, initialApplications, 
       <div className="mt-4 flex flex-wrap gap-2">
         {!saved && results && <button className={primary} disabled={!!busy} onClick={() => void work(job.key, async () => {
           const response = await saveVacancy({ searchKey: results.searchKey, jobKey: job.key });
-          if (response.ok) remember(response.value); else setError(response.code);
+          if (response.ok) { remember(response.value); track("job_saved", { locale, source: "search" }); } else setError(response.code);
         })}>{busy === job.key ? "…" : c.save}</button>}
         {job.url && <a className={secondary} href={job.url} target="_blank" rel="noopener noreferrer">{c.visit} ↗</a>}
         {saved?.tailoredCvId ? <Link className={primary} href={editorUrl(saved.tailoredCvId)}>{c.openCv}</Link> : saved && <button className={primary} disabled={!!busy || !cvId || job.description.trim().length < 40} onClick={() => void work(saved.id, async () => {
           const response = await tailorForJob({ id: saved.id, cvId, locale });
           if (!response.ok) { setError(response.code); return; }
+          track("job_tailored_cv_created", { locale, reused: response.value.reused });
           remember({ ...saved, tailoredCvId: response.value.cvId });
           router.push(editorUrl(response.value.cvId));
         })}>{busy === saved.id ? "…" : c.tailor}</button>}
@@ -125,7 +127,7 @@ export default function JobsWorkspace({ locale, view, cvs, initialApplications, 
               const status = event.target.value as ApplicationStatus;
               void work(saved.id, async () => {
                 const response = await changeJobStatus({ id: saved.id, status });
-                if (response.ok) remember({ ...saved, status }); else setError(response.code);
+                if (response.ok) { remember({ ...saved, status }); track("job_status_changed", { locale, status }); } else setError(response.code);
               });
             }}>{applicationStatuses.map(status => <option key={status} value={status}>{c.statusLabels[status]}</option>)}</select>
           </label>
@@ -149,6 +151,7 @@ export default function JobsWorkspace({ locale, view, cvs, initialApplications, 
       event.preventDefault(); void work("manual", async () => {
         const response = await addManualVacancy(manual);
         if (!response.ok) { setError(response.code); return; }
+        track("job_saved", { locale, source: "manual" });
         remember(response.value); setShowManual(false); setNotice(c.pasted); setManual({ title: "", company: "", location: "", description: "", url: "" });
       });
     }}>
@@ -162,6 +165,10 @@ export default function JobsWorkspace({ locale, view, cvs, initialApplications, 
       void work("search", async () => {
         setResults(null);
         const response = await findJobs({ ...(cvId ? { cvId } : {}), role, location, remote, locale });
+        // Counts only: no role, region or CV text in analytics.
+        track("job_search_submitted", response.ok
+          ? { locale, remote, with_cv: Boolean(cvId), outcome: "ok", results: response.value.results.length, cached: response.value.cached }
+          : { locale, remote, with_cv: Boolean(cvId), outcome: "error", results: 0, cached: false, error: response.code });
         if (response.ok) setResults(response.value); else setError(response.code);
       });
     }}>

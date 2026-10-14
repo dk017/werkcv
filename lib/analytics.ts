@@ -101,6 +101,8 @@ export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboa
 export type FullPreviewSource = 'desktop_preview_header' | 'desktop_document' | 'mobile_floating' | 'upload_success';
 
 type EditorSourceContext = {
+    /** How the person was working when the event happened: classic editor, stepped form, or document mode ("Op je CV"). */
+    editorMode?: 'classic' | 'form' | 'document';
     templateId?: string;
     startSource?: string;
     requestedTemplate?: string;
@@ -789,6 +791,10 @@ export type AnalyticsEvent =
     | { event: 'ats_checker_started'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text' } }
     | { event: 'ats_checker_completed'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text'; score_band: string; duration_ms: number } }
     | { event: 'ats_checker_failed'; properties: { locale: 'nl' | 'en'; input_type: 'file' | 'text'; status: number } }
+    | { event: 'job_search_submitted'; properties: { locale: 'nl' | 'en'; remote: boolean; with_cv: boolean; outcome: 'ok' | 'error'; results: number; cached: boolean; error?: string } }
+    | { event: 'job_saved'; properties: { locale: 'nl' | 'en'; source: 'search' | 'manual' } }
+    | { event: 'job_status_changed'; properties: { locale: 'nl' | 'en'; status: string } }
+    | { event: 'job_tailored_cv_created'; properties: { locale: 'nl' | 'en'; reused: boolean } }
     | { event: 'cv_check_viewed'; properties: { locale: 'nl' | 'en'; entry: 'direct' | 'vacancy_page' | 'vacancy_mode' | 'chatgpt_guide' | 'app' | 'app_vacancy' } }
     | { event: 'cv_check_started'; properties: { locale: 'nl' | 'en'; mode: 'general' | 'vacancy'; input_type: 'file' | 'text' } }
     | {

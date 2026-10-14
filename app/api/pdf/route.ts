@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateCvPdf, getPdfRendererSetting, resolvePdfRenderer } from '@/lib/pdf';
 import { isAppV2Active } from '@/lib/app-v2';
+import { prisma } from '@/lib/prisma';
 import { CVData } from '@/lib/cv';
 import { getCurrentUserFromRequest } from '@/lib/auth';
 import { reportOpsIncident } from '@/lib/ops-alerts';
@@ -52,7 +53,9 @@ export async function GET(request: NextRequest) {
     let pdfBuffer: Buffer;
     try {
         const renderer = resolvePdfRenderer(getPdfRendererSetting(), await isAppV2Active());
-        ({ pdf: pdfBuffer } = await generateCvPdf(
+        let fellBack = false;
+        let usedRenderer: string = renderer;
+        ({ pdf: pdfBuffer, renderer: usedRenderer } = await generateCvPdf(
             cv.data as CVData,
             cv.templateId,
             cv.colorThemeId ?? getDefaultThemeId(cv.templateId),
@@ -60,9 +63,12 @@ export async function GET(request: NextRequest) {
                 requestOrigin: request.nextUrl.origin,
                 renderer,
                 // The template renderer failed; the legacy builder produced this PDF instead.
-                onFallback: (error) => console.error('pdf_render_fallback', { route: '/api/pdf', cvId: cv.id, templateId: cv.templateId, error }),
+                onFallback: (error) => { fellBack = true; console.error('pdf_render_fallback', { route: '/api/pdf', cvId: cv.id, templateId: cv.templateId, error }); },
             },
         ));
+        // Which generator made the paid PDF, and whether the new one had to fall back (analytics only;
+        // never blocks the download).
+        void prisma.analyticsEvent.create({ data: { event: 'pdf_generated', path: '/api/pdf', cvId: cv.id, properties: { renderer: usedRenderer, requested: renderer, fallback: fellBack, templateId: cv.templateId } } }).catch(() => undefined);
     } catch (error) {
         console.error('PDF generation failed:', error);
         const cvData = cv.data as CVData;

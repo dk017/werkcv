@@ -201,9 +201,14 @@ type OptionalSectionId =
     | 'sideActivities'
     | 'customSections';
 
+// How the person is working right now (classic editor, stepped form or "Op je CV"); added to every
+// editor event so downloads, checkouts and payments can be compared by mode.
+let currentEditorMode: "classic" | "form" | "document" = "classic";
+
 function getEditorSearchContext() {
     if (typeof window === 'undefined') {
         return {
+            editorMode: currentEditorMode,
             startSource: undefined,
             requestedTemplate: undefined,
             pagePath: undefined,
@@ -214,6 +219,7 @@ function getEditorSearchContext() {
     const startSource = params.get('startSource') || undefined;
     const roleExampleSource = parseEnglishRoleExampleStartSource(startSource);
     return {
+        editorMode: currentEditorMode,
         startSource,
         requestedTemplate: params.get('template') || undefined,
         pagePath: window.location.pathname,
@@ -630,8 +636,15 @@ export default function Editor({
     const [isFittingPage, setIsFittingPage] = useState(false);
     const [fitPageFailed, setFitPageFailed] = useState(false);
     const setCvLayout = (next: CvLayout) => {
+        const previous: CvLayout = getValues("layout") ?? {};
+        const label = Object.keys(next).length === 0 ? "reset"
+            : next.font !== previous.font ? `font_${next.font ?? "template"}`
+            : next.fontScale !== previous.fontScale ? "font_size"
+            : next.lineSpacing !== previous.lineSpacing ? "line_spacing"
+            : next.sectionSpacing !== previous.sectionSpacing ? "section_spacing" : null;
         setFitPageFailed(false);
         setValue("layout", next, { shouldDirty: true });
+        if (label) track("cta_clicked", { location: "editor_document_layout", label });
     };
     // Tighten spacing, then line height, then font size, until the CV fits on one page. Never
     // loosens what the user already set; restores the original settings when it cannot fit.
@@ -662,6 +675,9 @@ export default function Editor({
         setValue("sectionOrder", next, { shouldDirty: true });
         track("cta_clicked", { location: "editor_document_reorder", label: sectionId });
     };
+    useEffect(() => {
+        currentEditorMode = !isSteps ? "classic" : documentMode ? "document" : "form";
+    }, [isSteps, documentMode]);
     const changeEditorMode = (mode: "form" | "document") => {
         if (mode === editorMode) return;
         setEditorMode(mode);
