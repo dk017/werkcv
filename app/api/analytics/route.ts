@@ -331,7 +331,11 @@ export async function POST(request: NextRequest) {
                 ? safeProperties.referrer
                 : request.headers.get('referer') || eventAttribution?.firstTouchReferrer || '';
         const source = classifyTrafficSource(referrer, eventAttribution);
-        const geo = event === 'page_view' ? await geolocateIp(getClientIp(request)) : null;
+        // Crawlers that run JavaScript (Googlebot, Bingbot, link previews) would otherwise count as
+        // visitors and flood the funnel (hundreds of login_view events in minutes). Keep only their
+        // page views, so crawler volume stays visible, and never geolocate them.
+        const isBot = parsedUserAgent.deviceType === 'bot';
+        const geo = event === 'page_view' && !isBot ? await geolocateIp(getClientIp(request)) : null;
         const enrichedProperties = {
             ...safeProperties,
             ...(typeof visitorId === 'string' ? { visitorId } : {}),
@@ -364,7 +368,7 @@ export async function POST(request: NextRequest) {
             ? sanitizeEventPath(sanitizeEnglishRoleAnalyticsUrl(url))
             : sanitizeEventPath(url);
 
-        if (PERSISTED_FUNNEL_EVENTS.has(event)) {
+        if (PERSISTED_FUNNEL_EVENTS.has(event) && (!isBot || event === 'page_view')) {
             try {
                 await prismaWithOptionalAnalytics.analyticsEvent?.create({
                     data: {
