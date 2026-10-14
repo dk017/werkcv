@@ -1545,9 +1545,22 @@ export async function generatePDFFromHTML(html: string): Promise<Buffer> {
 // ============================================================
 
 export type PdfRenderer = 'legacy' | 'react';
+/** PDF_RENDERER: "legacy" (default), "react" (everyone), or "app" (react only where the new app is active, e.g. opted-in browsers). */
+export type PdfRendererSetting = PdfRenderer | 'app';
+
+export function getPdfRendererSetting(env: Record<string, string | undefined> = process.env): PdfRendererSetting {
+    const value = env.PDF_RENDERER?.trim().toLowerCase();
+    return value === 'react' || value === 'app' ? value : 'legacy';
+}
+
+/** The renderer for one request; with "app" the new templates go only to browsers with the new app on. */
+export function resolvePdfRenderer(setting: PdfRendererSetting, appV2Active: boolean): PdfRenderer {
+    if (setting === 'app') return appV2Active ? 'react' : 'legacy';
+    return setting;
+}
 
 export function getPdfRenderer(env: Record<string, string | undefined> = process.env): PdfRenderer {
-    return env.PDF_RENDERER?.trim().toLowerCase() === 'react' ? 'react' : 'legacy';
+    return resolvePdfRenderer(getPdfRendererSetting(env), false);
 }
 
 /**

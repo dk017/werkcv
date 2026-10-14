@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getPdfRenderOrigin, getPdfRenderer } from "./pdf";
+import { getPdfRenderOrigin, getPdfRenderer, getPdfRendererSetting, resolvePdfRenderer } from "./pdf";
 
 test("the template renderer is opt-in; anything else keeps the legacy builder", () => {
   assert.equal(getPdfRenderer({}), "legacy");
@@ -14,4 +14,13 @@ test("production renders through the app inside its own container, not the publi
   assert.equal(getPdfRenderOrigin("https://werkcv.nl", { NODE_ENV: "production", PORT: "4000" }), "http://127.0.0.1:4000");
   assert.equal(getPdfRenderOrigin("https://werkcv.nl", { NODE_ENV: "production", PDF_RENDER_ORIGIN: "http://app:3000/" }), "http://app:3000");
   assert.equal(getPdfRenderOrigin("http://localhost:3021", { NODE_ENV: "development" }), "http://localhost:3021");
+});
+
+test("PDF_RENDERER=app gives the new PDF only where the new app is active", () => {
+  assert.equal(getPdfRendererSetting({ PDF_RENDERER: "app" }), "app");
+  assert.equal(resolvePdfRenderer("app", true), "react");
+  assert.equal(resolvePdfRenderer("app", false), "legacy");
+  assert.equal(resolvePdfRenderer("react", false), "react");
+  assert.equal(resolvePdfRenderer("legacy", true), "legacy");
+  assert.equal(getPdfRenderer({ PDF_RENDERER: "app" }), "legacy");
 });
