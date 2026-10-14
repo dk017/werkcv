@@ -56,7 +56,8 @@ export default function StepsFinishPanel({
     isDownloading: boolean;
     downloadDisabled: boolean;
     onDownload: () => void;
-    onPreviewPdf: () => void;
+    /** Absent without an account: the exact PDF preview needs one. */
+    onPreviewPdf?: () => void;
     onFillIn: () => void;
     locale?: AppLocale;
 }) {
@@ -77,14 +78,16 @@ export default function StepsFinishPanel({
                             <Icon name="download" strokeWidth={2} />
                             {isDownloading ? c.busy : downloadLabel}
                         </button>
-                        <button
-                            type="button"
-                            onClick={onPreviewPdf}
-                            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[10px] border border-white/40 px-4 text-[15px] font-bold text-white hover:bg-white/10"
-                        >
-                            <Icon name="eye" />
-                            {c.previewPdf}
-                        </button>
+                        {onPreviewPdf ? (
+                            <button
+                                type="button"
+                                onClick={onPreviewPdf}
+                                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-[10px] border border-white/40 px-4 text-[15px] font-bold text-white hover:bg-white/10"
+                            >
+                                <Icon name="eye" />
+                                {c.previewPdf}
+                            </button>
+                        ) : null}
                     </div>
                     {!isReady ? (
                         <p className="text-[13px] leading-relaxed text-[#cfe7e2]">{c.notReady}</p>

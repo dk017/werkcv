@@ -102,6 +102,17 @@ test("Dutch checks: languages with levels pass; missing levels get half credit",
   assert.equal(languageCheck.credit, 0.5);
 });
 
+test("Dutch checks: a nationality line is not a language without a level", () => {
+  const cv = baseCv.replace(
+    "Nederlands (moedertaal), Engels (C1)",
+    "Nederlands (moedertaal), Engels (C1)\nGeboren 4 juli 1994, Amsterdam Nationaliteit: Nederlands Rijbewijs: B",
+  );
+  const checks = dutchConventionChecks({ cvText: cv, vacancyText: null, layout: emptyLayoutSignals("text"), wordCount: 400, locale: "nl" });
+  assert.equal(find(checks, "nl_language_levels").status, "pass");
+  const english = dutchConventionChecks({ cvText: `${cv}\nNationality: Dutch`, vacancyText: null, layout: emptyLayoutSignals("text"), wordCount: 400, locale: "en" });
+  assert.equal(find(english, "nl_language_levels").status, "pass");
+});
+
 test("Dutch checks: BSN or IBAN on a CV is critical; optional details are neutral info", () => {
   const cv = `${baseCv}\nBSN: 123456782\nGeboortedatum: 1 januari 2000\nNationaliteit: Nederlandse`;
   const checks = dutchConventionChecks({ cvText: cv, vacancyText: null, layout: emptyLayoutSignals("text"), wordCount: 400, locale: "nl" });
@@ -308,6 +319,16 @@ test("the editor grade runs the score checks without calling AI", async () => {
   }
 });
 
+
+test("date check: a course year next to month-name periods is consistent; mixed period styles are not", async () => {
+  const { runCvCheck } = await import("./engine");
+  const work = "Werkervaring\nVerkoper, Voorbeeld BV, aug 2021 - heden\nKassamedewerker, Winkel BV, jan 2019 - jul 2021";
+  const filler = Array.from({ length: 30 }, (_, index) => `Hielp ${index + 5} klanten per uur met advies over producten.`).join("\n");
+  const consistent = await runCvCheck({ cvText: `${baseCv}\n${work}\n${filler}\nCursussen\nKassatraining, Voorbeeld Academie, 2021`, locale: "nl", ai: false });
+  assert.equal(consistent.checks.find((item) => item.id === "score_date_format_consistency")?.status, "pass");
+  const mixed = await runCvCheck({ cvText: `${baseCv}\n${work}\n${filler}\nStagiair, Voorbeeld BV, 2018-02 / 2018-07`, locale: "nl", ai: false });
+  assert.equal(mixed.checks.find((item) => item.id === "score_date_format_consistency")?.status, "fail");
+});
 
 test("years of experience are recognised as digits and as spelled-out numbers, in Dutch and English", async () => {
   const { hasYearsOfExperience } = await import("../tools/cv-score");

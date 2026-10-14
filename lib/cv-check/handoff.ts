@@ -64,16 +64,18 @@ export async function takeCheckedCvForEditor(now = Date.now()): Promise<File | n
 }
 
 const DATA_KEY = "cv_check_data";
-type StoredData = { data: unknown; failedCheckIds: string[]; fileName: string; at: number };
+/** A failed check as shown in the improve editor's to-do list (top fixes first). */
+export type HandedOverCheck = { id: string; label: string; fix: string | null };
+type StoredData = { data: unknown; failedChecks: HandedOverCheck[]; fileName: string; at: number };
 
 /**
  * The CV as WerkCV already read it for the result-screen preview, plus the checks that failed on the
- * original file. The editor uses it instead of parsing the same file again (the anonymous import is
+ * original file (for the to-do list). The editor uses it instead of parsing the same file again (the anonymous import is
  * rate limited and costs an AI call). Same lifetime and browser-only storage as the file.
  */
-export async function saveCheckedCvDataForEditor(data: unknown, failedCheckIds: string[], fileName: string, now = Date.now()): Promise<boolean> {
+export async function saveCheckedCvDataForEditor(data: unknown, failedChecks: HandedOverCheck[], fileName: string, now = Date.now()): Promise<boolean> {
   try {
-    const value: StoredData = { data, failedCheckIds, fileName, at: now };
+    const value: StoredData = { data, failedChecks, fileName, at: now };
     await withStore("readwrite", (store) => store.put(value, DATA_KEY));
     return true;
   } catch {
@@ -82,12 +84,15 @@ export async function saveCheckedCvDataForEditor(data: unknown, failedCheckIds: 
 }
 
 /** Reads and removes the parsed CV; null when there is none, it is stale, or storage is blocked. */
-export async function takeCheckedCvDataForEditor(now = Date.now()): Promise<{ data: unknown; failedCheckIds: string[]; fileName: string } | null> {
+export async function takeCheckedCvDataForEditor(now = Date.now()): Promise<{ data: unknown; failedChecks: HandedOverCheck[]; fileName: string } | null> {
   try {
     const stored = await withStore<StoredData | undefined>("readonly", (store) => store.get(DATA_KEY));
     await withStore("readwrite", (store) => store.delete(DATA_KEY));
     if (!stored || !isFreshHandoff(stored.at, now) || !stored.data || typeof stored.data !== "object") return null;
-    return { data: stored.data, failedCheckIds: Array.isArray(stored.failedCheckIds) ? stored.failedCheckIds : [], fileName: typeof stored.fileName === "string" ? stored.fileName : "" };
+    const failedChecks = Array.isArray(stored.failedChecks)
+      ? stored.failedChecks.filter((check): check is HandedOverCheck => typeof check?.id === "string" && typeof check?.label === "string")
+      : [];
+    return { data: stored.data, failedChecks, fileName: typeof stored.fileName === "string" ? stored.fileName : "" };
   } catch {
     return null;
   }

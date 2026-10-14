@@ -24,6 +24,8 @@ type PublicEditorSectionProps = {
     importCheckedCv?: boolean;
     /** Single-use token from an AI-assistant (MCP) link: the editor exchanges it for the CV it carries. */
     handoffToken?: string | null;
+    /** CV-check improve page with the new app on: the stepped editor, full screen, opening on Afronden. */
+    stepsLayout?: boolean;
 };
 
 function createEmptyData(locale: UiLanguage): CVData {
@@ -44,6 +46,7 @@ export default function PublicEditorSection({
     variant = "home",
     importCheckedCv = false,
     handoffToken = null,
+    stepsLayout = false,
 }: PublicEditorSectionProps) {
     const isCvCheck = variant === "cv_check" && flow === "consumer";
     const draftKey = useSyncExternalStore(
@@ -143,6 +146,9 @@ export default function PublicEditorSection({
                         publicSource={source}
                         onPublicDownloadRequest={handlePublicDownloadRequest}
                         publicImportCheckedCv={importCheckedCv}
+                        layoutVariant={stepsLayout && flow === "consumer" ? "steps" : "classic"}
+                        publicStepsLayout={stepsLayout && flow === "consumer"}
+                        initialStep={stepsLayout && importCheckedCv ? "afronden" : undefined}
                         publicHandoffToken={handoffToken}
                     />
                 ) : (

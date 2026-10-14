@@ -1510,7 +1510,9 @@ function detectDateFormats(lines: string[]): Set<string> {
       continue;
     }
 
-    if (/\b\d{4}\b(?:\s*[-–]\s*(?:\d{4}|heden|nu|present|current))?/.test(normalized)) {
+    // Only a period counts as a date style: a lone year ("Kanjertraining, 2021") is how courses and
+    // awards are listed and is not an inconsistency next to "aug 2021 - heden".
+    if (/\b\d{4}\s*[-–]\s*(?:\d{4}|heden|nu|present|current)\b/.test(normalized)) {
       formats.add("year_only");
     }
   }

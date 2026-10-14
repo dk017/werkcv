@@ -259,9 +259,14 @@ export default function CvCheckTool({
   async function openEditor(source: "main" | "mobile" | "strong_design") {
     if (openingEditor || !result) return;
     setOpeningEditor(true);
-    const failedIds = result.checks.filter((check) => check.status === "fail").map((check) => check.id);
+    // The to-do list in the editor: the top fixes first, then the other failed checks.
+    const topIds = result.topFixes.map((fix) => fix.checkId);
+    const failedChecks = result.checks
+      .filter((check) => check.status === "fail")
+      .sort((a, b) => (topIds.includes(a.id) ? topIds.indexOf(a.id) : 99) - (topIds.includes(b.id) ? topIds.indexOf(b.id) : 99))
+      .map((check) => ({ id: check.id, label: check.label, fix: check.fix }));
     // Prefer the CV as already read for the preview; the file stays as a fallback for the editor's own import.
-    const dataHandoff = preview.status === "ready" && file ? await saveCheckedCvDataForEditor(preview.data, failedIds, file.name) : false;
+    const dataHandoff = preview.status === "ready" && file ? await saveCheckedCvDataForEditor(preview.data, failedChecks, file.name) : false;
     const fileHandoff = canHandOffFile && file ? await saveCheckedCvForEditor(file) : false;
     const handoff = dataHandoff || fileHandoff;
     const firstFix = result.topFixes[0];

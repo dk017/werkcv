@@ -41,8 +41,14 @@ function firstMatch(text: string, pattern: RegExp): string | null {
   return match ? match[0] : null;
 }
 
+// "Nationaliteit: Nederlands" names a language but is not a language skill.
+const NATIONALITY = /\b(nationaliteit|nationality)\s*:?\s*[\p{L}-]+/giu;
+
 function languageLines(text: string): string[] {
-  return text.split("\n").filter((line) => LANGUAGE_NAMES.test(line) && line.length < 160);
+  return text
+    .split("\n")
+    .map((line) => line.replace(NATIONALITY, "").trim())
+    .filter((line) => LANGUAGE_NAMES.test(line) && line.length < 160);
 }
 
 export function dutchConventionChecks(input: {

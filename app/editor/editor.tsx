@@ -100,7 +100,8 @@ import CheckoutExitQuestion from "@/components/checkout/CheckoutExitQuestion";
 import CheckoutPlanSheet, { type CheckoutPlan } from "./CheckoutPlanSheet";
 import CustomerQuote from "@/components/CustomerQuote";
 import { markCheckoutPending } from "@/lib/checkout-exit";
-import { hasEditorFileHandoff, isCvCheckStartSource, takeCheckedCvDataForEditor, takeCheckedCvForEditor } from "@/lib/cv-check/handoff";
+import { hasEditorFileHandoff, isCvCheckStartSource, takeCheckedCvDataForEditor, takeCheckedCvForEditor, type HandedOverCheck } from "@/lib/cv-check/handoff";
+import CheckTodoPanel from "./CheckTodoPanel";
 import { cvSchema } from "@/lib/cv";
 import WorkspaceSwitcher from "@/components/workspace/WorkspaceSwitcher";
 import type { WorkspaceEntitlements } from "@/lib/workspace/types";
@@ -153,6 +154,8 @@ interface EditorProps {
     }) => void | Promise<void>;
     /** "steps" shows one part of the CV at a time (app v2, lib/app-v2.ts). */
     layoutVariant?: "classic" | "steps";
+    /** Public mode only: allow the stepped layout (full screen, no account rail). */
+    publicStepsLayout?: boolean;
     initialStep?: EditorStepId;
     initialTargetVacancy?: string;
 }
@@ -406,13 +409,17 @@ export default function Editor({
     publicHandoffToken = null,
     onPublicDownloadRequest,
     layoutVariant = "classic",
+    publicStepsLayout = false,
     initialStep = "persoonlijk",
     initialTargetVacancy = "",
 }: EditorProps) {
     const isEnglish = uiLanguage === "en";
     const isPublicMode = mode === "public";
     const isMatchPackWorkspace = workspaceContext?.kind === "matchpack" || agencyRouteLocked;
-    const isSteps = layoutVariant === "steps" && !isPublicMode && !isMatchPackWorkspace;
+    // Visitors without an account get the stepped app layout only where a page asks for it (the
+    // CV-check improve page); the homepage editor stays classic.
+    const isSteps = layoutVariant === "steps" && (!isPublicMode || publicStepsLayout) && !isMatchPackWorkspace;
+    const isPublicSteps = isPublicMode && isSteps;
     const appLocale: AppLocale = isEnglish ? "en" : "nl";
     const isReadOnlyWorkspace = Boolean(isMatchPackWorkspace && workspaceContext && !workspaceContext.canEdit);
     const canChangeWorkspaceDesign = !isMatchPackWorkspace || !workspaceContext || workspaceContext.canEditDesign;
@@ -609,6 +616,18 @@ export default function Editor({
     const uploadIntentHandledRef = useRef(false);
     // Set after handleCVParsed is defined; lets the handoff effect below apply a CV without re-parsing.
     const handleCVParsedRef = useRef<(data: CVData) => void>(() => undefined);
+    // The CV-check findings shown as a to-do list (CV-check flow only). Kept per CV for this browser
+    // session so a reload keeps the list.
+    const checkTodoKey = `werkcv_cv_check_todo_v1:${id}`;
+    const [checkTodo, setCheckTodo] = useState<HandedOverCheck[] | null>(() => {
+        if (typeof window === "undefined") return null;
+        try {
+            const stored = JSON.parse(window.sessionStorage.getItem(checkTodoKey) || "null");
+            return Array.isArray(stored) && stored.length ? (stored as HandedOverCheck[]) : null;
+        } catch {
+            return null;
+        }
+    });
     // Link from an AI assistant (MCP): "loading" while the one-time token is exchanged, "failed" when it is no longer valid.
     const [handoffState, setHandoffState] = useState<"idle" | "loading" | "failed" | "busy">(publicHandoffToken ? "loading" : "idle");
     const handoffExchangedRef = useRef(false);
@@ -619,7 +638,7 @@ export default function Editor({
     // Keep the guided checklist while showing the visual result immediately.
     // Editable workspaces should never make users earn access to the preview.
     const showLivePreview = isPublicMode || !isReadOnlyWorkspace || showDesignWorkspace || isReadyToDownload;
-    const shouldRenderDesktopPreview = showLivePreview && (isDesktopSplit || isPublicMode);
+    const shouldRenderDesktopPreview = showLivePreview && (isDesktopSplit || (isPublicMode && layoutVariant !== "steps"));
     const previewData = isCurrentCvEmpty ? getTemplatePreviewData(uiLanguage) : data;
 
     // Two ways to work (stepped editor, desktop): "Formulier" (the steps) or "Op je CV" (document
@@ -956,8 +975,18 @@ export default function Editor({
         const extension = handed.fileName.toLowerCase().split(".").pop();
         track("cv_upload_completed", { cvId: id, source: "cv_check", uiLanguage, fileType: extension === "doc" || extension === "docx" ? extension : "pdf", durationMs: 0 });
         handleCVParsedRef.current(parsed.data);
+        if (handed.failedChecks.length) {
+            setCheckTodo(handed.failedChecks);
+            // The to-do list replaces the generic "check your CV" card that follows an upload.
+            setShowPostUploadReview(false);
+            try {
+                window.sessionStorage.setItem(checkTodoKey, JSON.stringify(handed.failedChecks));
+            } catch {
+                // Storage full or blocked: the list still shows until the page is reloaded.
+            }
+        }
         return true;
-    }, [id, uiLanguage]);
+    }, [checkTodoKey, id, uiLanguage]);
 
     useEffect(() => {
         if (isPublicMode) {
@@ -1952,13 +1981,15 @@ export default function Editor({
             priceCaption={hasExportableContent && showsDownloadPrice ? priceCopyExperiment.copy.toolbarCaption : null}
             completionScore={completionScore}
             locale={appLocale}
+            dashboardHref={isPublicMode ? null : undefined}
+            saveLabel={isPublicMode ? (isEnglish ? "Saved in this browser" : "Bewaard in deze browser") : undefined}
         />
     ) : null;
 
     const editorRow = (
         <div
             ref={editorSplitRef}
-            className={`${isPublicEditorFullscreen ? "" : "relative"} flex flex-col lg:flex-row bg-[#FFFEF9] font-sans text-slate-900 overflow-hidden ${isResizingPanes ? "select-none" : ""} ${isPublicMode
+            className={`${isPublicEditorFullscreen ? "" : "relative"} flex flex-col lg:flex-row bg-[#FFFEF9] font-sans text-slate-900 overflow-hidden ${isResizingPanes ? "select-none" : ""} ${isPublicMode && !isSteps
             ? isPublicEditorFullscreen
                 ? "fixed inset-0 z-[70] h-[100dvh] min-h-0 w-full rounded-none border-0 shadow-none"
                 : "h-[980px] min-h-[760px] rounded-2xl border border-slate-200 shadow-[0_20px_60px_rgba(15,23,42,0.12)] lg:h-[760px]"
@@ -1968,7 +1999,7 @@ export default function Editor({
             {/* Left: Editor Form */}
             <div
                 ref={editorPaneRef}
-                className={`${isSteps ? "werkcv-brand bg-[var(--wk-canvas)]" : "bg-[#FFFEF9]"} flex w-full min-h-0 flex-col border-r-0 border-slate-200 z-10 ${isPublicMode
+                className={`${isSteps ? "werkcv-brand bg-[var(--wk-canvas)]" : "bg-[#FFFEF9]"} flex w-full min-h-0 flex-col border-r-0 border-slate-200 z-10 ${isPublicMode && !isSteps
                 ? isPublicEditorFullscreen
                     ? "h-[55%] min-h-0 shrink-0 lg:h-auto lg:w-1/2 lg:flex-none lg:border-r"
                     : "h-[540px] shrink-0 lg:h-auto lg:w-1/2 lg:flex-none lg:border-r"
@@ -2217,6 +2248,26 @@ export default function Editor({
                     onInputCapture={handleQuickBuildInput}
                 >
                     <div className={isSteps ? "mx-auto flex max-w-[680px] flex-col gap-5 pb-12" : "max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12"}>
+                        {checkTodo ? (
+                            <CheckTodoPanel
+                                checks={checkTodo}
+                                data={data}
+                                templateId={templateId}
+                                locale={appLocale}
+                                onApplyData={(next) => {
+                                    // Only the parts that changed, so react-hook-form marks just those dirty.
+                                    for (const key of Object.keys(next) as Array<keyof CVData>) {
+                                        if (JSON.stringify(next[key]) !== JSON.stringify(data[key])) setValue(key, next[key], { shouldDirty: true });
+                                    }
+                                    setIsSaved(false);
+                                }}
+                                onSetField={(field, value) => {
+                                    setValue(`personal.${field}`, value, { shouldDirty: true });
+                                    setIsSaved(false);
+                                }}
+                                onGoToStep={(step) => goToStep(step, "cv_check_todo")}
+                            />
+                        ) : null}
                         {planSheetSource ? (
                             <CheckoutPlanSheet
                                 uiLanguage={isEnglish ? "en" : "nl"}
@@ -2764,7 +2815,7 @@ export default function Editor({
                                 isDownloading={isDownloading}
                                 downloadDisabled={isDownloading || !canDownloadWorkspace}
                                 onDownload={() => void handleDownload("post_completion_tools")}
-                                onPreviewPdf={() => setIsFinalPdfPreviewOpen(true)}
+                                onPreviewPdf={isPublicMode ? undefined : () => setIsFinalPdfPreviewOpen(true)}
                                 onFillIn={() => goToStep(stepStates.persoonlijk ? "werkervaring" : "persoonlijk", "finish_fill_in")}
                                 locale={appLocale}
                             />
@@ -2968,7 +3019,7 @@ export default function Editor({
 
             {/* Right: Live Preview */}
             {shouldRenderDesktopPreview ? <div
-                className={`flex flex-col bg-[#f0faf9] overflow-hidden ${isPublicMode
+                className={`flex flex-col bg-[#f0faf9] overflow-hidden ${isPublicMode && !isSteps
                 ? isPublicEditorFullscreen
                     ? "h-[45%] min-h-0 shrink-0 lg:h-auto lg:w-1/2 lg:flex-none"
                     : "h-[420px] shrink-0 lg:h-auto lg:w-1/2 lg:flex-none"
@@ -3296,13 +3347,15 @@ export default function Editor({
     );
 
     const editorMarkup = isSteps ? (
-        <div className="flex h-screen overflow-hidden bg-[var(--wk-canvas)]">
+        // Without an account the app opens full screen over the page and has no account rail
+        // (its links and "Nieuw CV" need an account).
+        <div className={`flex overflow-hidden bg-[var(--wk-canvas)] ${isPublicSteps ? "fixed inset-0 z-[70] h-[100dvh]" : "h-screen"}`}>
             {/* Only the rail carries the brand wrapper: the CV preview keeps its own fonts and colours. */}
-            <div className="werkcv-brand hidden min-[520px]:flex" style={{ minHeight: 0 }}>
+            {!isPublicSteps && <div className="werkcv-brand hidden min-[520px]:flex" style={{ minHeight: 0 }}>
                 <NewCvDialogProvider locale={appLocale}>
                     <AppSidebar active="none" email={accountEmail} locale={appLocale} mode="rail" />
                 </NewCvDialogProvider>
-            </div>
+            </div>}
             <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
                 {stepsTopBar}
                 <SectionStylesProvider value={sectionStyles}>{editorRow}</SectionStylesProvider>

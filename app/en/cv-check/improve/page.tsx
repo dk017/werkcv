@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
+import { isAppV2Active } from "@/lib/app-v2";
 import { getCurrentUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -22,7 +23,7 @@ export default async function EnglishCvCheckImprovePage({ searchParams }: { sear
 
   return (
     <main>
-      <PublicEditorSection locale="en" source="public_editor_cv_check_en" variant="cv_check" importCheckedCv={upload === "1"} handoffToken={handoffToken} />
+      <PublicEditorSection locale="en" source="public_editor_cv_check_en" variant="cv_check" importCheckedCv={upload === "1"} handoffToken={handoffToken} stepsLayout={await isAppV2Active()} />
     </main>
   );
 }

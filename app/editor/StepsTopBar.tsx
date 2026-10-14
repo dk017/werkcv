@@ -13,7 +13,7 @@ const TOP_BAR_COPY = {
 
 export type StepsSaveState = "saved" | "saving" | "problem";
 
-function SaveStatus({ state, locale }: { state: StepsSaveState; locale: AppLocale }) {
+function SaveStatus({ state, locale, savedLabel }: { state: StepsSaveState; locale: AppLocale; savedLabel?: string }) {
     const c = TOP_BAR_COPY[locale];
     if (state === "problem") {
         return <span role="status" className="hidden text-[13px] font-semibold text-[var(--wk-danger)] sm:inline">{c.notSaved}</span>;
@@ -21,7 +21,7 @@ function SaveStatus({ state, locale }: { state: StepsSaveState; locale: AppLocal
     return (
         <span role="status" className={`hidden items-center gap-1.5 text-[13px] font-semibold sm:inline-flex ${state === "saved" ? "text-[var(--wk-success)]" : "text-[var(--wk-ink-muted)]"}`}>
             {state === "saved" ? <Icon name="check" size={16} strokeWidth={2.2} /> : null}
-            {state === "saved" ? c.saved : c.saving}
+            {state === "saved" ? savedLabel ?? c.saved : c.saving}
         </span>
     );
 }
@@ -43,6 +43,8 @@ export default function StepsTopBar({
     locale = "nl",
     mode = "form",
     onModeChange,
+    dashboardHref,
+    saveLabel,
 }: {
     activeStep: EditorStepId;
     stepStates: Record<EditorStepId, boolean>;
@@ -58,6 +60,10 @@ export default function StepsTopBar({
     priceCaption?: string | null;
     completionScore: number;
     locale?: AppLocale;
+    /** null: no dashboard link (no account); undefined: the app dashboard. */
+    dashboardHref?: string | null;
+    /** Replaces "Opgeslagen" (e.g. "Bewaard in deze browser" without an account). */
+    saveLabel?: string;
     /** "Formulier | Op je CV" switch (desktop). Hidden when onModeChange is not given. */
     mode?: "form" | "document";
     onModeChange?: (mode: "form" | "document") => void;
@@ -75,14 +81,20 @@ export default function StepsTopBar({
     return (
         <header className="werkcv-brand z-40 shrink-0 border-b border-[var(--wk-border)] bg-[var(--wk-surface)]" style={{ minHeight: 0 }}>
             <div className="flex items-center gap-3 px-3 py-2 sm:px-5">
-                <Link
-                    href={appPaths(locale).dashboard}
-                    aria-label={c.toDashboard}
-                    title={c.dashboard}
-                    className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-[var(--wk-primary)] text-[15px] font-extrabold text-white min-[520px]:hidden"
-                >
-                    W
-                </Link>
+                {dashboardHref === null ? (
+                    <span aria-hidden="true" className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-[var(--wk-primary)] text-[15px] font-extrabold text-white">
+                        W
+                    </span>
+                ) : (
+                    <Link
+                        href={dashboardHref ?? appPaths(locale).dashboard}
+                        aria-label={c.toDashboard}
+                        title={c.dashboard}
+                        className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-[var(--wk-primary)] text-[15px] font-extrabold text-white min-[520px]:hidden"
+                    >
+                        W
+                    </Link>
+                )}
 
                 {mode === "document" ? (
                     <div className="min-w-0 flex-1">
@@ -159,7 +171,7 @@ export default function StepsTopBar({
                 ) : null}
 
                 <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-                    <SaveStatus state={saveState} locale={locale} />
+                    <SaveStatus state={saveState} locale={locale} savedLabel={saveLabel} />
                     {onUpload ? (
                         <button
                             type="button"
