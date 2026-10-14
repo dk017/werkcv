@@ -476,7 +476,7 @@ export default async function ArticlePage({ params }: PageProps) {
                     {(article.category === 'schrijven' || article.category === 'opmaak') && (
                         <p className="text-gray-700 mb-4">
                             Eerst de hele aanpak doorlopen? Lees de gids over{' '}
-                            <Link href="/cv-maken" className="font-semibold underline underline-offset-4">
+                            <Link href="/" className="font-semibold underline underline-offset-4">
                                 stap voor stap een CV maken
                             </Link>.
                         </p>

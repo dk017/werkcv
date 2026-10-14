@@ -105,7 +105,7 @@ export default function CvVoorbeeldStarterPage() {
           body: "Past goed als je nog dicht tegen studie, stage of bijbaan aan zit.",
         },
         {
-          href: "/professioneel-cv-maken",
+          href: "/",
           label: "Professioneel CV maken",
           body: "Gebruik deze stap als je starter-CV inhoudelijk staat en je uitstraling wilt aanscherpen.",
         },

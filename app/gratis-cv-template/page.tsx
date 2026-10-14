@@ -42,16 +42,10 @@ const faqs = [
 
 const freeTemplateIntentLinks = [
   {
-    href: "/gratis-cv-maken",
+    href: "/",
     label: "Gratis CV maken zodra je een template hebt gekozen",
     description:
       "Gebruik de gratis template als startpunt en bouw daarna direct je eerste sollicitatieversie op.",
-  },
-  {
-    href: "/cv-maken",
-    label: "CV aanmaken met een structuur die bij je gekozen stijl past",
-    description:
-      "Open meteen een Nederlandse basisopbouw waarin profieltekst, ervaring en vaardigheden logisch staan.",
   },
   {
     href: "/cv-maken-template",
@@ -167,7 +161,7 @@ export default function GratisCvTemplatePage() {
                 Bekijk gratis templates
               </Link>
               <Link
-                href="/gratis-cv-maken"
+                href="/"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 Gratis CV maken
@@ -254,7 +248,7 @@ export default function GratisCvTemplatePage() {
                 </p>
                 <div className="mt-auto pt-5">
                   <Link
-                    href="/cv-maken"
+                    href="/"
                     className="inline-block border-2 border-black bg-yellow-400 px-3 py-2 text-xs font-black uppercase tracking-[0.18em] text-black"
                   >
                     Start met deze stijl
@@ -456,7 +450,7 @@ export default function GratisCvTemplatePage() {
               </p>
             </div>
             <Link
-              href="/gratis-cv-maken"
+              href="/"
               className="inline-block border-4 border-black bg-yellow-400 px-5 py-3 text-base font-black text-black"
             >
               Begin gratis met je CV

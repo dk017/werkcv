@@ -94,7 +94,7 @@ const intentCards = [
 
 const relatedLinks = [
   {
-    href: "/cv-maken",
+    href: "/",
     title: "Zo maak je stap voor stap een CV",
     body: "Gebruik de volledige CV-workflow als je nog hulp wilt bij opbouw, tekst en controle voordat je een PDF downloadt.",
   },
@@ -109,17 +109,12 @@ const relatedLinks = [
     body: "Gebruik eerst de template-overzichtspagina als je wilt zien welke layout het best past bij jouw vacaturetype.",
   },
   {
-    href: "/gratis-cv-maken",
-    title: "Gratis starten en later beslissen",
-    body: "Goede vervolgstap als je eerst zonder drempel wilt bouwen en pas later over de PDF beslist.",
-  },
-  {
     href: "/goedkoopste-cv-maker-nederland",
     title: "Vergelijk gratis, betaald en proefmodellen",
     body: "Gebruik deze route als je prijsmodellen naast elkaar wilt zien op basis van wat een eerste download je echt kost.",
   },
   {
-    href: "/cv-maken-zonder-verborgen-kosten",
+    href: "/cv-maken-zonder-abonnement",
     title: "CV maken zonder verborgen kosten",
     body: "Ga hierheen als je vooral wilt weten wanneer je betaalt en wat er niet stilletjes doorloopt.",
   },
@@ -468,7 +463,7 @@ export default function CvMakenZonderAbonnementPage() {
               Geen abonnement betekent bij WerkCV dat je gratis kunt bouwen, pas betaalt bij PDF-download en daarna geen automatische verlenging krijgt. Dat maakt de kosten vooraf duidelijker dan een proefperiode of maandmodel.
             </p>
             <Link
-              href="/cv-maken-zonder-verborgen-kosten"
+              href="/cv-maken-zonder-abonnement"
               className="mt-5 inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >
               Bekijk verborgen-kosten uitleg

@@ -142,7 +142,7 @@ export default function CvMakenTemplatePage() {
                 stappenplan rond inhoud, schrijfkwaliteit en vacaturematch gebruik je daarna beter
                 de{" "}
                 <Link
-                  href="/cv-maken"
+                  href="/"
                   className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
                 >
                   hoofdgids CV maken
@@ -285,7 +285,7 @@ export default function CvMakenTemplatePage() {
                 body: "Vergelijk alle layouts met je eigen inhoud en kies daarna de beste versie.",
               },
               {
-                href: "/cv-maken",
+                href: "/",
                 title: "CV maken",
                 body: "Ga hierna verder als de layout gekozen is en je de inhoud recruiter-proof wilt aanscherpen.",
               },

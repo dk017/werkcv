@@ -165,7 +165,7 @@ export default function CvMaken16JarigePage() {
               beschikbaarheid en eerste werkervaring. Vervang de voorbeeldgegevens daarna door je eigen gegevens.
             </p>
             <p className="mt-3 text-sm font-medium leading-relaxed text-slate-600">
-              Zoek je een algemene route? Bekijk ook <Link href="/cv-maken" className="font-black text-black underline decoration-2 underline-offset-4">CV maken voor Nederlandse vacatures</Link>.
+              Zoek je een algemene route? Bekijk ook <Link href="/" className="font-black text-black underline decoration-2 underline-offset-4">CV maken voor Nederlandse vacatures</Link>.
             </p>
           </div>
 
@@ -229,7 +229,7 @@ export default function CvMaken16JarigePage() {
               body: "Ga breder als je ook stage en startersrollen wilt meenemen.",
             },
             {
-              href: "/cv-maken",
+              href: "/",
               title: "CV maken voor Nederlandse vacatures",
               body: "Gebruik de algemene WerkCV-route als je CV niet alleen voor een bijbaan bedoeld is.",
             },

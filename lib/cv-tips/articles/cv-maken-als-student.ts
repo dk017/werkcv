@@ -77,7 +77,7 @@ export const cvMakenAlsStudent: BlogArticle = {
                     description: 'Pak een compact BOFU voorbeeld als je snel van school, stage of project naar sollicitatie wilt gaan.',
                 },
                 {
-                    href: '/gratis-cv-maken',
+                    href: '/',
                     label: 'Gratis CV maken en daarna per vacature aanscherpen',
                     description: 'Start snel met een basisversie zonder direct in Word of losse sjablonen te duiken.',
                 },

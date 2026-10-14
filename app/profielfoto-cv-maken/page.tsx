@@ -197,7 +197,7 @@ export default function ProfielfotoCvMakenPage() {
             <Link href="/cv-tips/foto-op-je-cv" className="hover:text-slate-900">
               Foto op je cv
             </Link>
-            <Link href="/cv-maken" className="hover:text-slate-900">
+            <Link href="/" className="hover:text-slate-900">
               CV maken
             </Link>
             <Link href="/tools" className="hover:text-slate-900">
@@ -481,7 +481,7 @@ export default function ProfielfotoCvMakenPage() {
                 Maak daarna je cv compleet in WerkCV met een nette template, duidelijke profieltekst en PDF-export.
               </p>
               <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                <Link href="/cv-maken" className="inline-flex justify-center border-2 border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-black">
+                <Link href="/" className="inline-flex justify-center border-2 border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-black">
                   Maak mijn cv
                 </Link>
                 <Link href="/tools/linkedin-naar-cv" className="inline-flex justify-center border-2 border-black bg-white px-4 py-3 text-sm font-black text-black">

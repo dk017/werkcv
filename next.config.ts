@@ -116,11 +116,26 @@ const nextConfig: NextConfig = {
         destination: '/prijzen',
         statusCode: 301,
       },
-      {
-        source: '/cv-aanmaken',
-        destination: '/cv-maken',
-        statusCode: 301,
-      },
+      // "cv maken" consolidation (14 Oct 2026): Google split the head terms between the homepage
+      // (~position 29) and /cv-maken (~51, 0 clicks), and the thin variants had 0 orders in 90 days.
+      // The homepage owns "cv maken / opstellen / online / gratis"; near-duplicates go to the page
+      // that already covers the topic. The page files stay until a cleanup, so a rollback is only
+      // a matter of removing these entries.
+      ...[
+        ['/cv-aanmaken', '/'],
+        ['/cv-maken', '/'],
+        ['/cv-opstellen', '/'],
+        ['/online-cv-maken', '/'],
+        ['/makkelijk-cv-maken', '/'],
+        ['/snel-cv-maken', '/'],
+        ['/mooie-cv-maken', '/'],
+        ['/professioneel-cv-maken', '/'],
+        ['/gratis-cv-maken', '/'],
+        ['/cv-maken-in-word', '/cv-tips/cv-maken-in-word'],
+        ['/cv-maken-zonder-verborgen-kosten', '/cv-maken-zonder-abonnement'],
+        ['/eerste-cv-maken', '/cv-maken-student'],
+        ['/beste-cv-maker-nederland', '/cv-gids/beste-cv-builder-zonder-abonnement'],
+      ].map(([source, destination]) => ({ source, destination, statusCode: 301 as const })),
       // Consolidate overlapping English CV intent onto one owner per cluster.
       {
         source: '/en/netherlands-cv-format',

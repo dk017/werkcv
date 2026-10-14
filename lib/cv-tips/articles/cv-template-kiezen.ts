@@ -158,7 +158,7 @@ export const cvTemplateKiezen: BlogArticle = {
                     description: 'Kies een flow waarbij het verzendformaat vanaf het begin al klopt.',
                 },
                 {
-                    href: '/cv-maken-in-word',
+                    href: '/cv-tips/cv-maken-in-word',
                     label: 'CV maken in Word zonder ATS-fouten',
                     description: 'Gebruik Word alleen met een veilige structuur als een vacature echt om DOCX vraagt.',
                 },

@@ -59,30 +59,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/cv-maken`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.92,
-        },
-        {
-            url: `${baseUrl}/gratis-cv-maken`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.91,
-        },
-        {
-            url: `${baseUrl}/online-cv-maken`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.82,
-        },
-        {
-            url: `${baseUrl}/cv-opstellen`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.8,
-        },
-        {
             url: `${baseUrl}/cv-tools-links`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
@@ -129,12 +105,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.77,
-        },
-        {
-            url: `${baseUrl}/cv-maken-in-word`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.88,
         },
         {
             url: `${baseUrl}/cv-maken-in-engels`,
@@ -203,40 +173,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.87,
         },
         {
-            url: `${baseUrl}/professioneel-cv-maken`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.73,
-        },
-        {
-            url: `${baseUrl}/eerste-cv-maken`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.86,
-        },
-        {
-            url: `${baseUrl}/mooie-cv-maken`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.85,
-        },
-        {
             url: `${baseUrl}/cv-ontwerpen`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.85,
-        },
-        {
-            url: `${baseUrl}/makkelijk-cv-maken`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.72,
-        },
-        {
-            url: `${baseUrl}/snel-cv-maken`,
-            lastModified: new Date(),
-            changeFrequency: 'monthly',
-            priority: 0.71,
         },
         {
             url: `${baseUrl}/cv-opmaak-voorbeeld`,
@@ -941,12 +881,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.82,
         },
         {
-            url: `${baseUrl}/cv-maken-zonder-verborgen-kosten`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.81,
-        },
-        {
             url: `${baseUrl}/cv-downloaden-zonder-abonnement`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -1042,12 +976,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: new Date('2026-10-05'),
             changeFrequency: 'monthly',
             priority: 0.55,
-        },
-        {
-            url: `${baseUrl}/beste-cv-maker-nederland`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.82,
         },
         {
             url: `${baseUrl}/goedkoopste-cv-maker-nederland`,

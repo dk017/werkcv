@@ -43,7 +43,7 @@ const partnerAssets = [
     description:
       "Dutch-first content voor CV-opbouw, voorbeeldteksten, templates en rolgerichte gidsen.",
     links: [
-      { href: "/cv-maken", label: "CV maken" },
+      { href: "/", label: "CV maken" },
       { href: "/gratis-cv-template", label: "Gratis CV template" },
       { href: "/cv-gids", label: "CV gidsen" },
     ],

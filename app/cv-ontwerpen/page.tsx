@@ -172,7 +172,7 @@ export default function CvOntwerpenPage() {
               Zoek je eerst het brede stappenplan voor inhoud, vacaturematch en
               ATS-structuur? Gebruik dan de{" "}
               <Link
-                href="/cv-maken"
+                href="/"
                 className="font-black text-black underline decoration-2 underline-offset-4"
               >
                 hoofdgids CV maken
@@ -290,7 +290,7 @@ export default function CvOntwerpenPage() {
         <section className="mb-14 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {[
             {
-              href: "/mooie-cv-maken",
+              href: "/",
               title: "Mooie CV maken",
               body: "Gebruik deze route als je vooral een verzorgde uitstraling zoekt zonder diep in ontwerpprincipes te duiken.",
             },
@@ -303,11 +303,6 @@ export default function CvOntwerpenPage() {
               href: "/cv-opmaken",
               title: "CV opmaken",
               body: "Werk daarna aan witruimte, sectievolgorde en de eindafwerking van je gekozen ontwerp.",
-            },
-            {
-              href: "/professioneel-cv-maken",
-              title: "CV maken",
-              body: "Ga daarna naar de brede hoofdgids als je naast design ook inhoud, ATS en vacaturematch wilt aanscherpen.",
             },
           ].map((item) => (
             <Link

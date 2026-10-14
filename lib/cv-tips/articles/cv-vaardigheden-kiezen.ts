@@ -91,7 +91,7 @@ export const cvVaardighedenKiezen: BlogArticle = {
                     description: 'Gebruik een layout waarin je top 6 tot 10 skills compact en vacaturegericht zichtbaar blijven.',
                 },
                 {
-                    href: '/gratis-cv-maken',
+                    href: '/',
                     label: 'Gratis CV maken en je vaardigheden per vacature aanscherpen',
                     description: 'Start met een basisset skills en herschik daarna per sollicitatie alleen de relevante termen.',
                 },

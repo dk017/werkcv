@@ -128,7 +128,7 @@ export default function CvMakenOpMobielPage() {
                 CV-strategie. Voor de brede workflow rond inhoud, structuur en ATS gebruik je beter
                 de{" "}
                 <Link
-                  href="/cv-maken"
+                  href="/"
                   className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
                 >
                   algemene CV maken gids
@@ -139,7 +139,7 @@ export default function CvMakenOpMobielPage() {
                 <Link href="/editor" className="wk-button wk-button-primary">
                   Start mobiel je CV
                 </Link>
-                <Link href="/gratis-cv-maken" className="wk-button wk-button-secondary">
+                <Link href="/" className="wk-button wk-button-secondary">
                   Start gratis
                 </Link>
               </div>
@@ -197,7 +197,7 @@ export default function CvMakenOpMobielPage() {
           <div className="grid gap-4 md:grid-cols-3">
             {[
               {
-                href: "/online-cv-maken",
+                href: "/",
                 title: "Online CV maken",
                 body: "Brede online flow als je buiten mobiel ook laptopgebruik meeneemt.",
               },
@@ -205,11 +205,6 @@ export default function CvMakenOpMobielPage() {
                 href: "/cv-maken-pdf",
                 title: "CV maken PDF",
                 body: "Zet je mobiele versie daarna stabiel om naar de eind-PDF.",
-              },
-              {
-                href: "/cv-maken",
-                title: "Algemene CV-workflow",
-                body: "Gebruik de hoofdgids als je naast mobiel gemak ook inhoud, structuur en ATS-stappen wilt aanscherpen.",
               },
             ].map((item) => (
               <Link

@@ -48,14 +48,9 @@ export const cvSchrijvenTips: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/cv-maken',
+                    href: '/',
                     label: 'CV aanmaken met een heldere standaardstructuur',
                     description: 'Gebruik direct een Nederlandse opbouw zonder zelf de hele volgorde te moeten bedenken.',
-                },
-                {
-                    href: '/gratis-cv-maken',
-                    label: 'Gratis CV maken zonder eerst met de opmaak te worstelen',
-                    description: 'Start met een duidelijke basis en verfijn daarna pas de inhoud per vacature.',
                 },
             ],
         },

@@ -56,14 +56,9 @@ export const profieltekstSchrijven: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/cv-maken',
+                    href: '/',
                     label: 'CV aanmaken met direct de juiste profielopbouw',
                     description: 'Start vanuit een vaste Nederlandse structuur zodat je profieltekst logisch bovenaan je cv landt.',
-                },
-                {
-                    href: '/gratis-cv-maken',
-                    label: 'Gratis CV maken zonder eerst zelf een indeling te verzinnen',
-                    description: 'Gebruik een basisflow waarin je profieltekst, ervaring en opleiding al in de juiste volgorde staan.',
                 },
                 {
                     href: '/cv-tips/gat-in-cv-uitleggen',
@@ -166,31 +161,9 @@ export const profieltekstSchrijven: BlogArticle = {
                     description: 'Gebruik een starterflow waarin profieltekst en opleiding direct de juiste nadruk krijgen.',
                 },
                 {
-                    href: '/gratis-cv-maken',
+                    href: '/',
                     label: 'Gratis CV maken als je eerst een sterke basisversie wilt',
                     description: 'Begin met een compacte opzet en pas daarna je profieltekst verder aan per vacature.',
-                },
-            ],
-        },
-        {
-            id: 'aanpassen-per-vacature',
-            title: 'Je profieltekst aanpassen per vacature',
-            answerCapsule: 'Maak een basis-profieltekst en pas per sollicitatie 2–3 zinnen aan: verwissel zoekwoorden, pas de specialisatie aan en stem de ambitiezin af op de organisatiecultuur.',
-            content: [
-                'Het aanpassen van je profieltekst per vacature is de meest effectieve en minst tijdrovende verbetering die je kunt maken. Begin met het zorgvuldig lezen van de vacaturetekst en identificeer de drie belangrijkste eisen. Een vacature die "bewezen ervaring in B2B-verkoop" als eerste eis noemt, vraagt om een profieltekst die direct opent met je B2B-verkoopervaring.',
-                'Maak een sterke basis-profieltekst die je als template gebruikt. Deze bevat je kerngegevens: functietitel, jaren ervaring en vakgebied. Pas voor elke vacature de specialisatie, prestaties en ambities aan. Dit hoeft geen groot werk te zijn — vaak volstaan 2 tot 3 herschreven zinnen en het verwisselen van de juiste zoekwoorden om je profiel fundamenteel anders te laten aanvoelen voor de recruiter.',
-                'Houd per sollicitatie bij welke versie je hebt gebruikt — een simpele spreadsheet met bedrijfsnaam, datum en de variabele onderdelen is voldoende. Zo weet je bij een uitnodiging exact wat je hebt geschreven en kun je je gesprek goed voorbereiden. Je profieltekst is immers het startpunt van elk sollicitatiegesprek: de recruiter heeft hem gelezen en wil er dieper op ingaan.',
-            ],
-            intentLinks: [
-                {
-                    href: '/cv-maken',
-                    label: 'CV aanmaken met een basisversie die je per vacature kunt aanpassen',
-                    description: 'Werk vanuit een vaste kern en wissel daarna alleen profieltekst, keywords en accenten per sollicitatie.',
-                },
-                {
-                    href: '/cv-maken-in-engels',
-                    label: 'Engels CV maken als de vacature om een Engelstalige versie vraagt',
-                    description: 'Houd je profieltekst vacaturegericht zonder de Nederlandse recruiter-logica uit het oog te verliezen.',
                 },
             ],
         },

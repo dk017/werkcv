@@ -153,7 +153,7 @@ const sourceLinks = [
 
 const officeTemplateIntentLinks = [
   {
-    href: "/cv-maken",
+    href: "/",
     label: "CV aanmaken voor office management",
     description: "Ga door naar een sollicitatieversie waarin structuur, planning en operationele regie meteen zichtbaar zijn.",
   },

@@ -35,7 +35,7 @@ export default function CvToolsLinksPage() {
           </h2>
           <ul className="mt-6 space-y-4 text-base font-medium text-black">
             <li>
-              <Link href="/cv-maken" className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]">CV maken: de complete stappen</Link>
+              <Link href="/" className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]">CV maken: de complete stappen</Link>
             </li>
             <li>
               <Link href="/cv-check" className="underline decoration-2 underline-offset-4 hover:text-[#0F766E]">Controleer je CV-score</Link>

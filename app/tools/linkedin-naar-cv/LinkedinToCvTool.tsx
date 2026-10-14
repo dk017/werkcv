@@ -221,7 +221,7 @@ export default function LinkedinToCvTool() {
               {status === "submitting" ? "Bezig met omzetten..." : "Zet om naar cv"}
             </button>
             <TrackedToolLink
-              href="/cv-maken"
+              href="/"
               eventName="linkedin_to_cv_cta_editor_click"
               trackingLocation="linkedin_to_cv:hero_secondary"
               trackingLabel="Maak direct een nieuw cv"

@@ -63,7 +63,7 @@ const modernIntentLinks = [
       "Bekijk hoe moderne, professionele en ATS-veilige layouts zich tot elkaar verhouden voordat je begint.",
   },
   {
-    href: "/cv-maken",
+    href: "/",
     label: "CV aanmaken zodra je een moderne stijl hebt gekozen",
     description:
       "Open direct een Nederlandse basisstructuur en vul die daarna met een moderne uitstraling aan.",

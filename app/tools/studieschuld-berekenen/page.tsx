@@ -37,7 +37,7 @@ const routeChoiceCards = [
     body: "Gebruik deze route als je een eerste baan of overstap vergelijkt en je bruto salaris nog wilt ijken aan de markt.",
   },
   {
-    href: "/gratis-cv-maken",
+    href: "/",
     title: "Gratis CV maken",
     body: "Past goed als je berekening onderdeel is van een bredere overstap en je direct verder wilt met solliciteren.",
   },

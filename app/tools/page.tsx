@@ -601,11 +601,11 @@ export default function ToolsPage() {
                         </h2>
                         <p className="mt-4 text-sm leading-7 text-[var(--wk-ink-muted)] sm:text-base">
                             Dat geldt vooral voor salaris-, WW- en parttime-vragen. Wie zijn loon vergelijkt of contractruimte onderzoekt, zoekt vaak daarna ook naar{" "}
-                            <Link href="/gratis-cv-maken" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
+                            <Link href="/" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                                 gratis CV maken
                             </Link>
                             ,{" "}
-                            <Link href="/cv-maken" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
+                            <Link href="/" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
                                 CV aanmaken
                             </Link>
                             {" "}of een snellere route voor{" "}
@@ -618,14 +618,9 @@ export default function ToolsPage() {
                     <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
                         {[
                             {
-                                href: "/gratis-cv-maken",
+                                href: "/",
                                 title: "Gratis CV maken",
                                 description: "Sterk voor bezoekers die gratis willen starten, vergelijken en pas betalen wanneer de PDF echt klaar is.",
-                            },
-                            {
-                                href: "/cv-maken",
-                                title: "CV aanmaken",
-                                description: "Voor zoekers die vooral van lege pagina naar een eerste complete basisversie willen zonder layoutgedoe.",
                             },
                             {
                                 href: "/cv-maken-op-mobiel",
@@ -681,7 +676,7 @@ export default function ToolsPage() {
                                 Maak gratis je CV
                             </Link>
                             <Link
-                                href="/cv-maken"
+                                href="/"
                                 className="wk-button wk-button-secondary flex-1"
                             >
                                 Lees hoe je een sterk CV maakt

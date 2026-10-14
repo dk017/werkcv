@@ -1777,7 +1777,7 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
                 ],
                 intentLinks: [
                     {
-                        href: '/gratis-cv-maken',
+                        href: '/',
                         label: 'Gratis CV maken voor een eerste nette sollicitatieversie',
                         description: 'Start snel met een compact cv en voeg daarna vacaturewoorden en bewijs per rol toe.',
                     },
@@ -1842,7 +1842,7 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
                         description: 'Gebruik een layout waarin stage, afstudeeronderzoek en concrete oplevering sterker zichtbaar worden.',
                     },
                     {
-                        href: '/gratis-cv-maken',
+                        href: '/',
                         label: 'Gratis CV maken en daarna je junior-verhaal per vacature aanscherpen',
                         description: 'Begin met een basisversie en benadruk vervolgens per functie de meest relevante studie-output.',
                     },
@@ -1856,7 +1856,7 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
                 ],
                 intentLinks: [
                     {
-                        href: '/gratis-cv-maken',
+                        href: '/',
                         label: 'Gratis CV maken met een eenvoudige, ATS-veilige starterstructuur',
                         description: 'Voorkom ruis en laat projecttermen, tools en stagebewijs als gewone tekst uitlezen.',
                     },
@@ -4010,7 +4010,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         description: 'Voor wie vooral inhoudelijke ondersteuning zoekt zonder direct in een platformabonnement te stappen.',
                     },
                     {
-                        href: '/cv-maken',
+                        href: '/',
                         label: 'Bekijk eerst de simpele WerkCV-flow van start tot PDF',
                         description: 'Handig als je twijfelt of je echt een breder platform nodig hebt.',
                     },
@@ -4228,7 +4228,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         description: 'Praktisch als je inhoudelijke steun wilt zonder direct een breder platformabonnement.',
                     },
                     {
-                        href: '/cv-maken',
+                        href: '/',
                         label: 'Bekijk hoe ver je met een simpelere WerkCV-flow al komt',
                         description: 'Voor veel sollicitanten blijkt dat ruimschoots genoeg.',
                     },
@@ -5429,7 +5429,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         description: 'Handig als je bang bent dat design ten koste gaat van recruiter- of ATS-leesbaarheid.',
                     },
                     {
-                        href: '/cv-maken-in-word',
+                        href: '/cv-tips/cv-maken-in-word',
                         label: 'Bekijk eerst de Word-route als je alles handmatig wilt doen',
                         description: 'Goed om de trade-off tussen gratis en tijdsinvestering scherp te zien.',
                     },
@@ -5962,7 +5962,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 ],
                 intentLinks: [
                     {
-                        href: '/cv-maken-in-word',
+                        href: '/cv-tips/cv-maken-in-word',
                         label: 'Bekijk eerst de Word-route',
                         description: 'Goed om het verschil tussen gratis handmatig werken en een builder scherp te zien.',
                     },
@@ -6206,7 +6206,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 ],
                 intentLinks: [
                     {
-                        href: '/cv-maken',
+                        href: '/',
                         label: 'Bekijk eerst de eenvoudige WerkCV-route',
                         description: 'Handig als je wilt toetsen of je echt een groter platform nodig hebt.',
                     },
@@ -6664,7 +6664,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         description: 'Handig als je wel visueel wilt werken, maar niet ten koste van leesbaarheid.',
                     },
                     {
-                        href: '/cv-maken-in-word',
+                        href: '/cv-tips/cv-maken-in-word',
                         label: 'Vergelijk Canva ook met een handmatige Word-route',
                         description: 'Zo zie je beter of je echt een designtool nodig hebt of alleen meer controle zoekt.',
                     },

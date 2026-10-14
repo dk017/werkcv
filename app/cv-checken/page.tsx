@@ -131,7 +131,7 @@ export default function CvCheckenPage() {
               Bekijk tools
             </Link>
             <Link
-              href="/cv-maken"
+              href="/"
               className="border-2 border-black bg-[#4ECDC4] px-4 py-2 text-sm font-black text-black"
             >
               Maak een nieuw cv
@@ -179,7 +179,7 @@ export default function CvCheckenPage() {
                 Check mijn cv gratis
               </TrackedLandingLink>
               <Link
-                href="/cv-maken"
+                href="/"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 Maak een nieuw cv
@@ -327,7 +327,7 @@ export default function CvCheckenPage() {
               </p>
             </Link>
             <Link
-              href="/cv-maken"
+              href="/"
               className="block border-2 border-white bg-white/10 p-4 transition-colors hover:bg-white hover:text-black"
             >
               <p className="text-sm font-black">Maak direct een nieuwe versie</p>

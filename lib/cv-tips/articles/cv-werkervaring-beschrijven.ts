@@ -53,14 +53,9 @@ export const cvWerkervaringBeschrijven: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/cv-maken',
+                    href: '/',
                     label: 'CV aanmaken met de juiste werkervaring-volgorde al ingebouwd',
                     description: 'Gebruik een vaste structuur waarin recente functies automatisch vooraan staan.',
-                },
-                {
-                    href: '/gratis-cv-maken',
-                    label: 'Gratis CV maken zonder zelf met chronologie en sectievolgorde te puzzelen',
-                    description: 'Begin vanuit een heldere basis en vul daarna alleen je sterkste bullets per functie in.',
                 },
             ],
         },

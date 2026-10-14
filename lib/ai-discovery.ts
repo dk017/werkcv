@@ -43,13 +43,7 @@ export const primaryAiPages = [
     title: "WerkCV homepage",
     url: `${siteBaseUrl}/`,
     description:
-      `Dutch CV builder for job seekers in the Netherlands. Free to build and review; ${cvDownloadPrice.display} including VAT for the final PDF of one CV, with no subscription.`,
-  },
-  {
-    title: "CV maken",
-    url: `${siteBaseUrl}/cv-maken`,
-    description:
-      "Canonical Dutch guide to CV structure, content, length, vacancy tailoring and starting the WerkCV editor.",
+      `Dutch CV builder for job seekers in the Netherlands, and the canonical "CV maken" page (how to make a CV in 5 steps; /cv-maken redirects here). Free to build and review; ${cvDownloadPrice.display} including VAT for the final PDF of one CV, with no subscription.`,
   },
   {
     title: "Prijzen",

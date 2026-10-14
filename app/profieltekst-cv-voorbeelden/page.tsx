@@ -124,7 +124,7 @@ const routeChoiceCards = [
     body: "Gebruik deze stap zodra je profieltekst inhoudelijk staat en je een rustige recruiter-safe layout wilt kiezen.",
   },
   {
-    href: "/cv-maken",
+    href: "/",
     title: "CV aanmaken",
     body: "Kies dit pad als je de opening meteen boven een volledige Nederlandse CV-versie wilt zetten.",
   },
@@ -172,7 +172,7 @@ const faqs = [
 
 const profileIntentLinks = [
   {
-    href: "/cv-maken",
+    href: "/",
     label: "CV aanmaken met een profieltekst die meteen de toon zet",
     description:
       "Gebruik een Nederlandse CV-opbouw waarin je opening, werkervaring en vaardigheden elkaar logisch versterken.",
@@ -182,12 +182,6 @@ const profileIntentLinks = [
     label: "Vergelijk templates zodra je profieltekst inhoudelijk staat",
     description:
       "Kies daarna pas de layout die past bij je rol, zodat inhoud en opbouw elkaar versterken in plaats van concurreren.",
-  },
-  {
-    href: "/gratis-cv-maken",
-    label: "Gratis CV maken en je profieltekst daarna per vacature aanscherpen",
-    description:
-      "Start gratis met een basisversie en verfijn je opening pas wanneer je inhoud en layout goed staan.",
   },
   {
     href: "/cv-maken-student",
@@ -286,7 +280,7 @@ export default function ProfieltekstCvVoorbeeldenPage() {
               >
                 Genereer je profieltekst
               </Link>
-              <Link href="/cv-maken" className="wk-button wk-button-quiet">
+              <Link href="/" className="wk-button wk-button-quiet">
                 CV aanmaken met deze opening
               </Link>
             </div>
@@ -467,7 +461,7 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                   body: "Genereer in seconden een profieltekst op basis van jouw doelrol.",
                 },
                 {
-                  href: "/cv-maken",
+                  href: "/",
                   title: "CV aanmaken",
                   body: "Zet je profieltekst meteen boven een eerste Nederlandse basisversie als je nog vanaf nul begint.",
                 },
@@ -475,11 +469,6 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                   href: "/templates",
                   title: "Templates vergelijken",
                   body: "Kies een layout zodra je profieltekst goed staat en laat daarna de rest van je CV op dezelfde toon aansluiten.",
-                },
-                {
-                  href: "/gratis-cv-maken",
-                  title: "Gratis CV maken",
-                  body: "Begin gratis als je eerst wilt schrijven, vergelijken en pas bij download wilt betalen.",
                 },
                 {
                   href: "/cv-maken-student",

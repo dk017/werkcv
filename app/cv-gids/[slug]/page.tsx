@@ -248,7 +248,7 @@ export default async function DutchWavePage({ params }: PageProps) {
                                     </Link>
                                 )}
                                 <Link
-                                    href="/cv-maken"
+                                    href="/"
                                     className="wk-button wk-button-secondary"
                                 >
                                     Hoe maak je een CV?

@@ -59,7 +59,7 @@ const faqItems = [
 ];
 const cvIntentLinks = [
   {
-    href: "/gratis-cv-maken",
+    href: "/",
     label: "Gratis CV maken als je rond vakantiegeld over een nieuwe baan nadenkt",
     description: "Gebruik je extra loonruimte of vergelijking direct als aanleiding voor een sterkere sollicitatie.",
   },
@@ -69,7 +69,7 @@ const cvIntentLinks = [
     description: "Sluit goed aan op bezoekers die hun opties vergelijken maar niet vast willen zitten aan maandelijkse kosten.",
   },
   {
-    href: "/beste-cv-maker-nederland",
+    href: "/cv-gids/beste-cv-builder-zonder-abonnement",
     label: "Vergelijk eerst de beste CV maker voor Nederlandse sollicitaties",
     description: "Gebruik deze route als prijs, templates en ATS-veiligheid meewegen in je keuze.",
   },

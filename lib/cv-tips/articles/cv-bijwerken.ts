@@ -133,7 +133,7 @@ export const cvBijwerken: BlogArticle = {
                     description: 'Handig als je cv niet alleen verouderd is, maar ook anders gepositioneerd moet worden.',
                 },
                 {
-                    href: '/cv-opstellen',
+                    href: '/',
                     label: 'Herbouw je cv-structuur als de richting echt verandert',
                     description: 'Nuttig als je huidige document inhoudelijk niet meer bij je doelrol past.',
                 },
@@ -162,7 +162,7 @@ export const cvBijwerken: BlogArticle = {
                     description: 'Zo maak je snel weer een nette, actuele sollicitatieversie.',
                 },
                 {
-                    href: '/cv-maken',
+                    href: '/',
                     label: 'Werk je hele cv direct af als nieuwe basisversie',
                     description: 'Gebruik deze route als je update inmiddels voelt als een halve herbouw.',
                 },

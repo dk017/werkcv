@@ -764,7 +764,7 @@ export const applicationHelpArticles: ApplicationHelpArticle[] = [
         description: "Kies de juiste term en inhoud voor Nederland, Europa of de VS.",
       },
       {
-        href: "/cv-maken",
+        href: "/",
         label: "Een cv maken dat bij de vacature past",
         description: "Ga van betekenis en structuur naar een compleet document.",
       },
@@ -1177,7 +1177,7 @@ export const applicationHelpArticles: ApplicationHelpArticle[] = [
         description: "Bekijk wat een modern sollicitatie-cv wel en niet hoeft te bevatten.",
       },
       {
-        href: "/cv-maken-zonder-verborgen-kosten",
+        href: "/cv-maken-zonder-abonnement",
         label: "Cv maken met duidelijke keuzes",
         description: "Werk je gegevens uit in een transparante Nederlandse cv-flow.",
       },

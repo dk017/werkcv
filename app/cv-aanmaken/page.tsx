@@ -204,7 +204,7 @@ export default function CvAanmakenPage() {
               vooral gratis starten en duidelijkheid over wanneer je betaalt?
               Gebruik dan{" "}
               <Link
-                href="/gratis-cv-maken"
+                href="/"
                 className="font-black text-black underline decoration-2 underline-offset-4"
               >
                 Gratis CV maken
@@ -212,7 +212,7 @@ export default function CvAanmakenPage() {
               . Voor de volledige aanpak rond structuur, vacatureaanpassing en
               ATS-logica gebruik je daarna beter{" "}
               <Link
-                href="/cv-maken"
+                href="/"
                 className="font-black text-black underline decoration-2 underline-offset-4"
               >
                 de hoofdgids CV maken
@@ -261,7 +261,7 @@ export default function CvAanmakenPage() {
             </ul>
             <div className="mt-6 border-t-4 border-black pt-5">
               <Link
-                href="/cv-maken"
+                href="/"
                 className="text-sm font-black text-black underline decoration-2 underline-offset-4"
               >
                 Ga daarna verder met het volledige CV stappenplan
@@ -389,19 +389,9 @@ export default function CvAanmakenPage() {
             <div className="mt-4 space-y-4">
               {[
                 {
-                  href: "/gratis-cv-maken",
+                  href: "/",
                   title: "Gratis CV maken",
                   body: `Voor bezoekers die vooral duidelijkheid zoeken over gratis starten, ${cvDownloadPrice.display} bij download en het moment van betalen.`,
-                },
-                {
-                  href: "/cv-maken",
-                  title: "CV maken",
-                  body: "Gebruik daarna de uitgebreidere gids voor profieltekst, bulletwriting en vacaturegerichte optimalisatie.",
-                },
-                {
-                  href: "/cv-opstellen",
-                  title: "CV opstellen",
-                  body: "Loopt de basis wel, maar twijfel je nog over volgorde en structuur? Dan is dit de juiste vervolgstap.",
                 },
                 {
                   href: "/cv-voorbeelden",

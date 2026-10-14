@@ -38,7 +38,7 @@ const faqItems = [
 
 const vacationCvIntentLinks = [
   {
-    href: "/cv-maken",
+    href: "/",
     label: "CV aanmaken voor een baanwissel",
     description: "Gebruik je verlof- en contractcheck als opstap naar een nieuwe sollicitatieversie.",
   },
@@ -48,7 +48,7 @@ const vacationCvIntentLinks = [
     description: "Past goed als je wel een nieuwe sollicitatieroute wilt, maar niet vast wilt zitten aan maandelijkse kosten.",
   },
   {
-    href: "/beste-cv-maker-nederland",
+    href: "/cv-gids/beste-cv-builder-zonder-abonnement",
     label: "Beste CV maker vergelijken",
     description: "Handig als je eerst prijsmodel, templates en Nederlandse sollicitatiefit wilt vergelijken.",
   },

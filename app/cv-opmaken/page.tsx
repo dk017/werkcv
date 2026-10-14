@@ -144,7 +144,7 @@ export default function CvOpmakenPage() {
                 schrijfstrategie. Voor de algemene workflow rond inhoud, structuur en sub-intents
                 gebruik je{" "}
                 <Link
-                  href="/cv-maken"
+                  href="/"
                   className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
                 >
                   de CV maken gids

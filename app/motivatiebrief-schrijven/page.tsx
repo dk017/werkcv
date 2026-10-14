@@ -113,7 +113,7 @@ export default function MotivatiebriefSchrijvenPage() {
                 Maak mijn motivatiebrief
               </TrackedCareerLink>
               <TrackedCareerLink
-                href="/cv-maken"
+                href="/"
                 eventName="cta_motivatiebrief_cv_click"
                 ctaLocation="motivatiebrief:hero_cv"
                 ctaText="Maak bijpassende cv"
@@ -276,7 +276,7 @@ export default function MotivatiebriefSchrijvenPage() {
               body: "Vergelijk complete voorbeeldbrieven voor meer inspiratie per situatie.",
             },
             {
-              href: "/cv-maken",
+              href: "/",
               title: "Cv maken",
               body: "Bouw direct een cv die dezelfde vacature en functierichting ondersteunt.",
             },
@@ -302,7 +302,7 @@ export default function MotivatiebriefSchrijvenPage() {
           title="Maak ook een cv die past bij je motivatiebrief"
           text="Een sterke motivatiebrief werkt beter met een duidelijke, professionele cv erbij. Gebruik WerkCV om een nette, ATS-vriendelijke cv te maken voor dezelfde vacature."
           buttonLabel="Maak bijpassende cv"
-          buttonHref="/cv-maken"
+          buttonHref="/"
           supportLine={`Gratis bouwen. Eenmalig ${cvDownloadPrice.display} bij PDF-download. Geen abonnement.`}
           eventName="cta_motivatiebrief_cv_click"
           ctaLocation="motivatiebrief:bottom_cv"

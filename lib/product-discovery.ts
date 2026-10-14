@@ -14,7 +14,7 @@ export function getProductDescriptions(capabilities = getAgencyPublicCapabilitie
     {
       id: `${siteUrl}/#cv-builder`, name: "WerkCV CV Builder",
       audience: "Individuals applying for jobs in the Netherlands",
-      url: `${siteUrl}/cv-maken`, englishUrl: `${siteUrl}/en`, privacyUrl: `${siteUrl}/privacy`,
+      url: `${siteUrl}`, englishUrl: `${siteUrl}/en`, privacyUrl: `${siteUrl}/privacy`,
       description: "Create or import a CV, edit it and preview all pages before downloading the final PDF.",
       pricing: { kind: "one_time_per_document", amount: cvDownloadPrice.value, currency: cvDownloadPrice.currency,
         description: `Consumer CV Builder: ${cvDownloadPrice.displayEn} including VAT once for the final PDF of one CV. No subscription. Editing and repeat downloads of that paid CV do not require another payment.` },

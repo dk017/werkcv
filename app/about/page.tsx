@@ -44,7 +44,7 @@ export default function AboutPage() {
           <h2 className="text-2xl font-black">Important pages</h2>
           <div className="mt-4 flex flex-wrap gap-3 text-sm font-black">
             {[
-              ["/cv-maken", "Create a CV"],
+              ["/", "Create a CV"],
               ["/prijzen", "Pricing"],
               ["/tools", "Free tools"],
               ["/cv-voorbeelden", "CV examples"],

@@ -190,7 +190,7 @@ export const cvSchrijvenMetAi: BlogArticle = {
                     description: 'Rond pas af als tekst, structuur en design samen kloppen.',
                 },
                 {
-                    href: '/cv-maken',
+                    href: '/',
                     label: 'Werk daarna je hele cv vacaturegericht af',
                     description: 'Gebruik deze route als je niet alleen wilt herschrijven, maar ook echt wilt afronden.',
                 },

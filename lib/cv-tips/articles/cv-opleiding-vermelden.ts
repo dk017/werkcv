@@ -257,7 +257,7 @@ export const cvOpleidingVermelden: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/cv-maken',
+                    href: '/',
                     label: 'CV aanmaken met ATS-veilige opleidingstekst',
                     description: 'Gebruik een opmaak waarin diploma en schoolnaam als gewone tekst leesbaar blijven.',
                 },

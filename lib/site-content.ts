@@ -75,6 +75,22 @@ export const homepageFaqItems = [
     answer:
       "Ja. Je kunt een PDF- of Word-bestand uploaden om de editor automatisch te vullen. Controleer daarna altijd namen, datums en bullets in de live preview; complexe kolommen, tabellen en gescande documenten kunnen minder nauwkeurig worden overgenomen.",
   },
+  // From the former /cv-maken guide (now redirected to the homepage).
+  {
+    question: "Wat moet er minimaal in een cv staan?",
+    answer:
+      "Je naam en contactgegevens, een korte profieltekst of doelrol, relevante werkervaring, opleiding en vaardigheden. Talen met niveau, certificaten, projecten of vrijwilligerswerk voeg je toe wanneer ze bewijs leveren voor de functie waarop je solliciteert.",
+  },
+  {
+    question: "Hoe lang mag een cv zijn in Nederland?",
+    answer:
+      "Een starter komt vaak uit op één pagina; met relevante ervaring zijn één tot twee pagina's gebruikelijk. Schrap liever oude of irrelevante details dan het lettertype te verkleinen: relevantie en scanbaarheid zijn belangrijker dan een vaste paginalimiet.",
+  },
+  {
+    question: "In welke volgorde zet je onderdelen op een cv?",
+    answer:
+      "Bovenaan je contactgegevens en profiel, daarna je werkervaring met de meest recente functie eerst, gevolgd door opleiding en vaardigheden. Is je opleiding sterker dan je ervaring, zoals bij starters, dan mag opleiding eerder komen.",
+  },
 ];
 
 export type SiteAggregateRating = {

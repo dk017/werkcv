@@ -140,7 +140,7 @@ export const atsVriendelijkCv: BlogArticle = {
                     description: 'Werk direct naar een verzendklare PDF toe zonder scan- of Canva-problemen.',
                 },
                 {
-                    href: '/cv-maken-in-word',
+                    href: '/cv-tips/cv-maken-in-word',
                     label: 'CV maken in Word met minder ATS-risico',
                     description: 'Gebruik Word alleen met een veilige opmaak als een formulier echt om DOCX vraagt.',
                 },

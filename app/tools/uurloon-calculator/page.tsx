@@ -43,7 +43,7 @@ const faqItems = [
 
 const cvIntentLinks = [
   {
-    href: "/cv-maken",
+    href: "/",
     label: "CV aanmaken zodra je uurloon laat zien wat je volgende stap waard is",
     description: "Gebruik je uurlooncheck om gerichter te mikken op functies die beter betalen dan je huidige situatie.",
   },
@@ -53,7 +53,7 @@ const cvIntentLinks = [
     description: "Sterk voor bezoekers die wel direct willen bouwen, maar niet in een abonnementsmodel willen belanden.",
   },
   {
-    href: "/beste-cv-maker-nederland",
+    href: "/cv-gids/beste-cv-builder-zonder-abonnement",
     label: "Vergelijk eerst de beste CV makers in Nederland",
     description: "Handig als je salarissignalen al hebt en nu de juiste tool of prijslogica wilt kiezen.",
   },

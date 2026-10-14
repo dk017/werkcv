@@ -45,7 +45,7 @@ const faqs = [
 
 const wordIntentLinks = [
   {
-    href: "/cv-maken-in-word",
+    href: "/cv-tips/cv-maken-in-word",
     label: "CV maken in Word-intent omzetten naar een snellere online flow",
     description:
       "Lees eerst wanneer Word nog logisch is en wanneer een online editor je minder opmaakstress geeft.",
@@ -165,7 +165,7 @@ export default function CvTemplateWordPage() {
                 Bekijk CV templates
               </Link>
               <Link
-                href="/cv-maken"
+                href="/"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 CV aanmaken zonder Word

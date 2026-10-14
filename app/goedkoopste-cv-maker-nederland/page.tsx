@@ -519,12 +519,12 @@ export default function GoedkoopsteCvMakerNederlandPage() {
                 body: "Ga hierna door als prijsmodel voor jou het hoofdcriterium is en je proefabonnementen actief wilt vermijden.",
               },
               {
-                href: "/beste-cv-maker-nederland",
+                href: "/cv-gids/beste-cv-builder-zonder-abonnement",
                 title: "Brede buildervergelijking",
                 body: "Gebruik deze route als je behalve prijs ook ATS, templates en algemene productfit wilt vergelijken.",
               },
               {
-                href: "/gratis-cv-maken",
+                href: "/",
                 title: "Gratis starten",
                 body: "Handig als je eerst zonder drempel wilt bouwen en pas later wilt beslissen over je definitieve document.",
               },

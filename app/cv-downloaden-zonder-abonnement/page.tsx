@@ -88,11 +88,6 @@ const relatedLinks = [
     body: "Bekijk deze pagina als je meer zoekt op de combinatie van bouwen, betalen en later opnieuw downloaden.",
   },
   {
-    href: "/cv-maken-zonder-verborgen-kosten",
-    title: "CV maken zonder verborgen kosten",
-    body: "Handig als je vooral wilt controleren wat je wel en niet betaalt en wanneer de betaalstap precies komt.",
-  },
-  {
     href: "/prijzen",
     title: "Bekijk het prijsmodel",
     body: `Hier zie je in één oogopslag wat je krijgt voor ${cvDownloadPrice.display} en waarom er geen abonnement achter zit.`,
@@ -103,7 +98,7 @@ const relatedLinks = [
     body: "Vergelijk eerst de beschikbare ATS-vriendelijke layouts voordat je je definitieve PDF downloadt.",
   },
   {
-    href: "/gratis-cv-maken",
+    href: "/",
     title: "Start gratis met je cv",
     body: "Goede route als je eerst zonder drempel wilt bouwen en pas later wilt beslissen over de download.",
   },
@@ -383,7 +378,7 @@ export default function CvDownloadenZonderAbonnementPage() {
               Gebruik deze route als je vooral wilt controleren wat je betaalt, wanneer je betaalt en waarom er geen maandbedrag doorloopt nadat je cv al is gedownload.
             </p>
             <Link
-              href="/cv-maken-zonder-verborgen-kosten"
+              href="/cv-maken-zonder-abonnement"
               className="mt-5 inline-block border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
             >
               Bekijk verborgen-kosten uitleg

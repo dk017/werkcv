@@ -140,7 +140,7 @@ export const cvMakenInWord: BlogArticle = {
                     description: 'Kies een flow waarbij je eindbestand meteen geschikt is om te versturen.',
                 },
                 {
-                    href: '/cv-maken-in-word',
+                    href: '/cv-tips/cv-maken-in-word',
                     label: 'CV maken in Word met een duidelijkere route',
                     description: 'Gebruik de canonieke pagina als je specifiek op Word-intentie wilt landen en vergelijken.',
                 },
@@ -184,7 +184,7 @@ export const cvMakenInWord: BlogArticle = {
                     description: 'Ga naar de templatekeuze als je Word-opmaak wilt overslaan en sneller wilt afronden.',
                 },
                 {
-                    href: '/gratis-cv-maken',
+                    href: '/',
                     label: 'Gratis CV maken voordat je beslist om te downloaden',
                     description: 'Bewerk eerst alles online en betaal pas op het moment dat je PDF klaar is.',
                 },

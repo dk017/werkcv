@@ -171,7 +171,7 @@ export default function AgencyGuideArticle({
             <div className="flex shrink-0 flex-col gap-3">
               <AgencyContentLink href="/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld" path={path} location="guide_bottom_sample" intent="sample" className="wk-button wk-button-secondary">Bekijk het fictieve voorbeeld</AgencyContentLink>
               {slug === "cv-in-huisstijl-recruitmentbureau" ? <AgencyContentLink href="/tools/kandidaatvoorstel-checker" path={path} location="guide_bottom_checker" intent="learn" className="wk-button wk-button-secondary">{messaging.freeToolCta}</AgencyContentLink> : null}
-              {slug === "cv-in-huisstijl-recruitmentbureau" ? <AgencyGuideSpecialLink href="/cv-maken-in-word" path={path} location="agency_guide_word_context" event="agency_docx_cta_clicked">Lees over Word-bestanden</AgencyGuideSpecialLink> : null}
+              {slug === "cv-in-huisstijl-recruitmentbureau" ? <AgencyGuideSpecialLink href="/cv-tips/cv-maken-in-word" path={path} location="agency_guide_word_context" event="agency_docx_cta_clicked">Lees over Word-bestanden</AgencyGuideSpecialLink> : null}
               {slug === "cv-anonimiseren-recruitment" ? <AgencyGuideSpecialLink href="/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld" path={path} location="agency_guide_redaction_context" event="agency_redaction_cta_clicked">Bekijk de contact-reduced versie</AgencyGuideSpecialLink> : null}
               <AgencyContentLink href="/agency#plan" path={path} location="guide_bottom_product" intent="product" className="wk-button wk-button-primary">Start MatchPack · {monthlyPrice}</AgencyContentLink>
             </div>

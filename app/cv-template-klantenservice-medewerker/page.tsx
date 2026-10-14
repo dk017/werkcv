@@ -138,7 +138,7 @@ const faqs = [
 
 const supportTemplateIntentLinks = [
   {
-    href: "/cv-maken",
+    href: "/",
     label: "CV aanmaken voor klantenservice",
     description: "Start direct met een sollicitatieversie die servicekwaliteit en structuur combineert.",
   },

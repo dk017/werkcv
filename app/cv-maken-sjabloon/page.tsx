@@ -156,7 +156,7 @@ export default function CvMakenSjabloonPage() {
               en snelle structuur. Voor het bredere stappenplan rond inhoud,
               profieltekst en vacaturematch gebruik je daarna beter de{" "}
               <Link
-                href="/cv-maken"
+                href="/"
                 className="font-black text-black underline decoration-2 underline-offset-4"
               >
                 hoofdgids CV maken
@@ -273,7 +273,7 @@ export default function CvMakenSjabloonPage() {
               body: "Voor een rustige, zakelijke indruk in brede Nederlandse functies.",
             },
             {
-              href: "/cv-maken",
+              href: "/",
               title: "CV maken",
               body: "Ga hierna verder als je behalve het sjabloon ook inhoud, structuur en vacaturematch wilt aanscherpen.",
             },

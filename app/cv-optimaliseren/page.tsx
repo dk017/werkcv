@@ -152,7 +152,7 @@ export default function CvOptimaliserenPage() {
               >
                 Check en optimaliseer mijn cv
               </TrackedLandingLink>
-              <Link href="/cv-maken" className="wk-button wk-button-secondary">
+              <Link href="/" className="wk-button wk-button-secondary">
                 Maak direct een nieuw cv
               </Link>
             </div>
@@ -307,7 +307,7 @@ export default function CvOptimaliserenPage() {
               </p>
             </Link>
             <Link
-              href="/cv-maken"
+              href="/"
               className="block rounded-[var(--wk-radius-md)] border border-[var(--wk-primary-contrast)]/25 bg-[var(--wk-primary-contrast)]/10 p-4 transition-colors hover:bg-[var(--wk-primary-contrast)] hover:text-[var(--wk-ink)]"
             >
               <p className="text-sm font-semibold">Direct een nieuwe cv-versie bouwen</p>

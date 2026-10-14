@@ -209,7 +209,7 @@ export default function CvMakenInEngelsPage() {
                 Deze pagina is bedoeld voor Nederlandse zoekers die een Engelstalig CV willen
                 schrijven. Zoek je juist de brede Nederlandse CV-workflow? Gebruik{" "}
                 <Link
-                  href="/cv-maken"
+                  href="/"
                   className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
                 >
                   CV maken

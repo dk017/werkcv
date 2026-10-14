@@ -127,7 +127,7 @@ export default function CvMakenPdfPage() {
                 Deze route gaat daarom vooral over export en eindformaat. Voor de brede schrijf- en
                 structuurflow gebruik je beter{" "}
                 <Link
-                  href="/cv-maken"
+                  href="/"
                   className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
                 >
                   de algemene CV maken pagina
@@ -138,7 +138,7 @@ export default function CvMakenPdfPage() {
                 <Link href="/editor" className="wk-button wk-button-primary">
                   Bouw je PDF-versie
                 </Link>
-                <Link href="/gratis-cv-maken" className="wk-button wk-button-secondary">
+                <Link href="/" className="wk-button wk-button-secondary">
                   Start gratis
                 </Link>
               </div>
@@ -208,19 +208,14 @@ export default function CvMakenPdfPage() {
           <div className="grid gap-4 md:grid-cols-3">
             {[
               {
-                href: "/cv-maken",
+                href: "/",
                 title: "Algemene CV-workflow",
                 body: "Gebruik eerst het hoofd-stappenplan als je inhoud, structuur en ATS-logica nog moet opbouwen.",
               },
               {
-                href: "/cv-maken-in-word",
+                href: "/cv-tips/cv-maken-in-word",
                 title: "CV maken in Word",
                 body: "Zie waarom Word vaak vooral een tussenstap is richting PDF.",
-              },
-              {
-                href: "/online-cv-maken",
-                title: "Online CV maken",
-                body: "Bouw eerst flexibel online voordat je de eindversie vastzet.",
               },
             ].map((item) => (
               <Link

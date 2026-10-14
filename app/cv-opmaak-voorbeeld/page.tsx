@@ -113,7 +113,7 @@ const layoutIntentLinks = [
     description: "Handig als je layout ook softwareveilig moet blijven voor sollicitatiesystemen.",
   },
   {
-    href: "/cv-maken-in-word",
+    href: "/cv-tips/cv-maken-in-word",
     label: "CV maken in Word vergelijken",
     description: "Zie wanneer Word meer opmaakfrictie geeft dan een vaste templateflow.",
   },
@@ -232,7 +232,7 @@ export default function CvOpmaakVoorbeeldPage() {
                 Pas je opmaak direct toe
               </Link>
               <Link
-                href="/cv-opstellen"
+                href="/"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 Eerst structuur bepalen

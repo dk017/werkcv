@@ -623,7 +623,7 @@ export function getRelatedExamples(example: CVExample, limit = 3): CVExampleWith
 export function getRelatedGuideLink(example: CVExample): CVExampleInternalLink {
     const key = `${example.categorySlug}/${example.slug}`;
     return exactGuideLinks[key] ?? categoryGuideLinks[example.categorySlug] ?? {
-        href: '/cv-maken',
+        href: '/',
         title: 'Hoe maak je een CV?',
         description: 'Gebruik de algemene CV-gids als je eerst structuur, volgorde en inhoud scherp wilt krijgen.',
     };

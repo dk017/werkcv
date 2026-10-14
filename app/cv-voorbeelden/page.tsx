@@ -139,7 +139,7 @@ const routeChoiceCards = [
         body: 'Handig als je de inhoud al scherp hebt en nu vooral een recruiter-safe layout wilt kiezen.',
     },
     {
-        href: '/cv-maken',
+        href: '/',
         title: 'CV maken stappenplan',
         body: 'Kies deze route als je liever het volledige proces volgt van eerste opzet tot definitieve PDF.',
     },
@@ -553,7 +553,7 @@ export default function CVVoorbeeldenOverview() {
                             <p className="text-sm font-semibold text-[var(--wk-ink)]">Voorbeeld profiel CV</p>
                             <p className="mt-1 text-xs leading-5 text-[var(--wk-ink-muted)]">Gebruik profieltekst voorbeelden die direct onder je naam en functietitel passen.</p>
                         </Link>
-                        <Link href="/cv-maken" className="wk-card p-4 transition-colors hover:bg-[var(--wk-surface-subtle)]">
+                        <Link href="/" className="wk-card p-4 transition-colors hover:bg-[var(--wk-surface-subtle)]">
                             <p className="text-sm font-semibold text-[var(--wk-ink)]">CV maken stappenplan</p>
                             <p className="mt-1 text-xs leading-5 text-[var(--wk-ink-muted)]">Volg een complete workflow van voorbeeld naar eindversie.</p>
                         </Link>

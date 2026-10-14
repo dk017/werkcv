@@ -136,7 +136,7 @@ export const extraDutchEditorialPages: SeoGuidePage[] = [
               "Voor wie inhoudelijke hulp wil zonder meteen in een groter platform te stappen.",
           },
           {
-            href: "/cv-maken",
+            href: "/",
             label: "Bekijk eerst de simpele WerkCV-flow",
             description:
               "Handig als je nog niet zeker weet of je echt een grotere suite nodig hebt.",

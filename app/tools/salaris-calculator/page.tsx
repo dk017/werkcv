@@ -34,14 +34,9 @@ const faqItems = [
 
 const cvIntentLinks = [
   {
-    href: "/cv-maken",
+    href: "/",
     label: "CV aanmaken zodra je weet welke salarisrange je wilt targeten",
     description: "Gebruik je benchmark om gerichter te solliciteren op rollen die echt bij je niveau passen.",
-  },
-  {
-    href: "/gratis-cv-maken",
-    label: "Gratis CV maken voor je volgende salarissprong",
-    description: "Trek je salarischeck direct door naar een sollicitatieversie zonder eerst te betalen.",
   },
   {
     href: "/cv-maken-template",

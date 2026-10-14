@@ -14,12 +14,12 @@ test("AI discovery keeps the intentional first-twelve order without duplicate UR
     "/cv-gids/cv-maken-met-chatgpt",
     "/en/guides/create-cv-with-chatgpt",
     "/",
-    "/cv-maken",
     "/prijzen",
     "/cv-maken-zonder-abonnement",
     "/en",
     "/en/pricing",
     "/en/dutch-cv-template",
+    "/en/guides/cv-format-netherlands-english",
   ].map((path) => `${siteBaseUrl}${path}`);
   assert.deepEqual(primaryAiPages.slice(0, 12).map((page) => page.url), expected);
   assert.equal(new Set(primaryAiPages.map((page) => page.url)).size, primaryAiPages.length);

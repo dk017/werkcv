@@ -86,7 +86,7 @@ export default function LinkedinNaarCvPage() {
               LinkedIn-profiel omzetten naar cv
             </Link>
             <Link
-              href="/cv-maken"
+              href="/"
               className="border-4 border-black bg-white px-5 py-3 text-sm font-black text-black"
             >
               Maak direct een nieuw cv
@@ -155,7 +155,7 @@ export default function LinkedinNaarCvPage() {
           </p>
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             {[
-              { href: "/cv-maken", label: "Maak een nieuw cv" },
+              { href: "/", label: "Maak een nieuw cv" },
               { href: "/cv-maken-zonder-abonnement", label: "CV maken zonder abonnement" },
               { href: "/cv-optimaliseren", label: "CV optimaliseren" },
               { href: "/cv-check", label: "CV-check en ATS checker" },

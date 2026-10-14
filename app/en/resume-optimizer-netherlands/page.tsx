@@ -312,7 +312,7 @@ export default function ResumeOptimizerNetherlandsPage() {
                 the English editor
               </Link>
               {" "}or use the Dutch{" "}
-              <Link href="/cv-maken" className="font-black underline">
+              <Link href="/" className="font-black underline">
                 CV builder
               </Link>
               {" "}if you want the local-language flow.

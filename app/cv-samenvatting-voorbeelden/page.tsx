@@ -75,16 +75,10 @@ const faqs = [
 
 const summaryIntentLinks = [
   {
-    href: "/gratis-cv-maken",
+    href: "/",
     label: "Gratis CV maken met een sterke samenvatting bovenaan",
     description:
       "Start met een basis-CV en werk daarna je profieltekst verder uit per vacature.",
-  },
-  {
-    href: "/cv-maken",
-    label: "CV aanmaken met de juiste plek voor je profieltekst",
-    description:
-      "Gebruik een Nederlandse opbouw waarin samenvatting, werkervaring en vaardigheden logisch op elkaar volgen.",
   },
   {
     href: "/cv-maken-student",
@@ -195,7 +189,7 @@ export default function CvSamenvattingVoorbeeldenPage() {
                 Maak je samenvatting in tool
               </Link>
               <Link
-                href="/cv-maken"
+                href="/"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 CV aanmaken met deze opening
@@ -305,14 +299,9 @@ export default function CvSamenvattingVoorbeeldenPage() {
                   body: "Gebruik de voorbeelden als input en genereer een versie op jouw doelrol.",
                 },
                 {
-                  href: "/gratis-cv-maken",
+                  href: "/",
                   title: "Gratis CV maken",
                   body: "Zet je samenvatting direct in een gratis startflow als je eerst wilt schrijven en later pas wilt downloaden.",
-                },
-                {
-                  href: "/cv-maken",
-                  title: "CV aanmaken",
-                  body: "Gebruik een heldere eerste basisstructuur waarin je samenvatting meteen op de juiste plek staat.",
                 },
                 {
                   href: "/cv-maken-student",

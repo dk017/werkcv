@@ -135,7 +135,7 @@ export default function CvMakenStudentPage() {
                 Deze route is specifiek voor stage, bijbaan, trainee en starter-intentie. Zoek je
                 eerst het brede stappenplan voor een algemeen CV? Gebruik dan de{" "}
                 <Link
-                  href="/cv-maken"
+                  href="/"
                   className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4"
                 >
                   hoofdgids CV maken

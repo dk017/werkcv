@@ -198,7 +198,7 @@ export default function CurriculumVitaeMakenPage() {
               Zie deze route als de formele taalvariant van de algemene CV-flow. Voor
               de brede, minder formele hoofdpagina gebruik je{" "}
               <Link
-                href="/cv-maken"
+                href="/"
                 className="font-black text-black underline decoration-2 underline-offset-4"
               >
                 CV maken
@@ -247,7 +247,7 @@ export default function CurriculumVitaeMakenPage() {
             </ul>
             <div className="mt-6 border-t-4 border-black pt-5">
               <Link
-                href="/cv-opstellen"
+                href="/"
                 className="text-sm font-black text-black underline decoration-2 underline-offset-4"
               >
                 Lees ook: CV opstellen met de juiste volgorde
@@ -380,19 +380,9 @@ export default function CurriculumVitaeMakenPage() {
                   body: "Gebruik deze route als je formele templatekeuze belangrijker is dan algemene schrijfbegeleiding.",
                 },
                 {
-                  href: "/cv-maken",
+                  href: "/",
                   title: "CV maken",
                   body: "De hoofdgids als je behalve formele taal ook praktische schrijfrichtlijnen en copy-ready voorbeelden wilt.",
-                },
-                {
-                  href: "/cv-opstellen",
-                  title: "CV opstellen",
-                  body: "Sterke volgende stap voor bezoekers die vooral op zoek zijn naar juiste volgorde en sectie-indeling.",
-                },
-                {
-                  href: "/gratis-cv-maken",
-                  title: "Gratis CV maken",
-                  body: "Voor bezoekers die tegelijk zekerheid willen over prijsmodel, gratis starten en eenmalig betalen.",
                 },
                 {
                   href: "/professioneel-cv-template",

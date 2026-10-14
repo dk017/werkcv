@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import SalaryResultCvCta from "@/components/tools/SalaryResultCvCta";
 
 type Situation =
@@ -606,13 +607,13 @@ export default function TransitievergoedingTool() {
                         >
                             Bereken ook je opzegtermijn
                         </a>
-                        <a
-                            href="/cv-maken"
+                        <Link
+                            href="/"
                             className="flex-1 flex items-center justify-center gap-2 py-3 px-4 bg-black text-white font-black text-sm border-3 border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,0.35)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,0.35)] hover:-translate-x-0.5 hover:-translate-y-0.5 transition-all"
                             style={{ borderWidth: "3px" }}
                         >
                             Maak CV voor je volgende stap
-                        </a>
+                        </Link>
                     </div>
                 </div>
             )}

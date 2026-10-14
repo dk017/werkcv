@@ -7,6 +7,7 @@ import Link from "next/link";
 import type { TemplateConfig } from "@/lib/templates";
 import { getStoredAttribution, track } from "@/lib/analytics";
 import CustomerQuote from "@/components/CustomerQuote";
+import HowToMakeCv from "@/components/home/HowToMakeCv";
 import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
 import {
     cvDownloadPrice,
@@ -388,6 +389,8 @@ export default function HomePageClient({
                 </div>
             </section>
 
+            {/* HOW TO MAKE A CV - the homepage owns the "cv maken" intent since /cv-maken redirects here */}
+            <HowToMakeCv />
             {/* ============================================================ */}
             {/* HOW IT WORKS - 3 steps */}
             {/* ============================================================ */}
@@ -671,29 +674,13 @@ export default function HomePageClient({
                             Start direct op de route die bij je zoekintentie past
                         </h2>
                         <p className="mt-4 text-base md:text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">
-                            Niet iedereen zoekt op dezelfde manier. Sommige bezoekers willen{" "}
-                            <Link href="/gratis-cv-maken" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
-                                gratis een CV maken
-                            </Link>
-                            , anderen willen snel een professioneel CV{" "}
-                            <Link href="/cv-maken" className="font-semibold text-[var(--wk-primary)] underline decoration-[var(--wk-accent)] underline-offset-4">
-                                maken
-                            </Link>
-                            , op mobiel werken of direct weten hoe een eerste CV voor school, stage of bijbaan eruitziet. Daarom linken we hieronder direct naar de belangrijkste routes.
+                            Niet iedereen zoekt op dezelfde manier. Sommige bezoekers willen gratis een CV maken, anderen
+                            willen snel een professioneel CV, op mobiel werken of direct weten hoe een eerste CV voor school,
+                            stage of bijbaan eruitziet. Daarom linken we hieronder direct naar de belangrijkste routes.
                         </p>
                     </div>
                     <div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                         {[
-                            {
-                                href: "/gratis-cv-maken",
-                                title: "Gratis CV maken",
-                                body: "Voor bezoekers die gratis willen starten, templates willen vergelijken en pas bij download willen betalen.",
-                            },
-                            {
-                                href: "/cv-maken",
-                                title: "CV maken voor Nederlandse vacatures",
-                                body: "Voor snelle starters die vanaf nul een professioneel CV willen opzetten zonder blanco-pagina stress.",
-                            },
                             {
                                 href: "/cv-maken-student",
                                 title: "CV maken student",

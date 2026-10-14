@@ -50,7 +50,7 @@ const routeLinks: OptimizerLinkCard[] = [
     body: "Sterk als je de feedback wilt omzetten in betere zinnen, bullets en structuur.",
   },
   {
-    href: "/cv-maken",
+    href: "/",
     title: "CV maken",
     body: "Ga direct verder in de editor als je na de review een nieuwe cv-versie wilt bouwen.",
   },
@@ -124,7 +124,7 @@ export default function CvNakijkenPage() {
               Bekijk tools
             </Link>
             <Link
-              href="/cv-maken"
+              href="/"
               className="border-2 border-black bg-[#4ECDC4] px-4 py-2 text-sm font-black text-black"
             >
               Maak mijn cv opnieuw
@@ -172,7 +172,7 @@ export default function CvNakijkenPage() {
                 Doe de gratis cv-check
               </TrackedLandingLink>
               <Link
-                href="/cv-maken"
+                href="/"
                 className="border-4 border-black bg-white px-5 py-3 text-base font-black text-black"
               >
                 Maak mijn cv opnieuw

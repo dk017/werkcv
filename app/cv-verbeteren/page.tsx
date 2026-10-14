@@ -150,7 +150,7 @@ export default function CvVerbeterenPage() {
               Bekijk cv-voorbeelden
             </Link>
             <Link
-              href="/cv-maken"
+              href="/"
               className="border-2 border-black bg-[#4ECDC4] px-4 py-2 text-sm font-black text-black"
             >
               Maak direct een cv
@@ -387,7 +387,7 @@ export default function CvVerbeterenPage() {
                 LinkedIn-profiel omzetten naar cv
               </Link>
               . Daarna zet je alles om in een nieuwe versie via{" "}
-              <Link href="/cv-maken" className="font-black underline">
+              <Link href="/" className="font-black underline">
                 cv maken
               </Link>
               .

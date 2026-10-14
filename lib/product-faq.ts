@@ -26,7 +26,7 @@ export const productFaqGroups: readonly ProductFaqGroup[] = [
         question: "Wat is WerkCV?",
         answer:
           "WerkCV is een online CV-builder voor sollicitaties in Nederland. Je vult je gegevens zelf in of gebruikt een bestaand CV als startpunt, vergelijkt templates in een live voorbeeld en controleert het volledige document voordat je een PDF downloadt.",
-        href: "/cv-maken",
+        href: "/",
         linkLabel: "Bekijk hoe je een CV maakt",
       },
       {

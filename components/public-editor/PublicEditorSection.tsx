@@ -155,7 +155,7 @@ export default function PublicEditorSection({
                         publicImportCheckedCv={importCheckedCv}
                         layoutVariant={stepsLayout && flow === "consumer" ? "steps" : "classic"}
                         publicStepsLayout={stepsLayout && flow === "consumer"}
-                        initialStep={stepsLayout && importCheckedCv ? "afronden" : undefined}
+                        initialStep={stepsLayout && (importCheckedCv || handoffToken) ? "afronden" : undefined}
                         publicHandoffToken={handoffToken}
                     />
                 ) : (
