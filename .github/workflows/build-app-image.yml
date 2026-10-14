@@ -31,14 +31,6 @@ on:
         description: "Changed page paths to submit to IndexNow after deploy (space or comma separated, e.g. /cv-check /prijzen). Empty = skip."
         required: false
         default: ""
-      prune_dangling_images:
-        description: "Remove only untagged Docker images on the deploy host"
-        required: true
-        default: "false"
-        type: choice
-        options:
-          - "false"
-          - "true"
 
 jobs:
   build:
@@ -124,12 +116,25 @@ jobs:
             if [ -n "${GHCR_TOKEN:-}" ]; then
               echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
             fi
+            # Each WerkCV image is ~2 GB; old ones filled the disk and broke a deploy (14 Oct 2026).
+            # Remove every werkcv-app image no container uses: before the pull (room for the new one)
+            # and after the restart (the replaced one). Other apps' images are never touched (the
+            # bengaluruevents ingestor image is used by a timer, not a running container).
+            remove_unused_werkcv_images() {
+              in_use=$(docker ps -a --format '{{.Image}}' | sort -u)
+              for image in $(docker images --format '{{.Repository}}:{{.Tag}}' ghcr.io/dk017/werkcv-app); do
+                if ! printf '%s\n' "$in_use" | grep -qxF "$image"; then
+                  docker rmi "$image" >/dev/null 2>&1 && echo "removed $image" || true
+                fi
+              done
+              docker image prune -f >/dev/null
+            }
+            remove_unused_werkcv_images
             docker compose -p werkcv -f docker-compose.ghcr.yml pull app
             docker compose -p werkcv -f docker-compose.ghcr.yml up -d app
             docker compose -p werkcv ps
-            if [ "${{ github.event.inputs.prune_dangling_images }}" = "true" ]; then
-              docker image prune -f
-            fi
+            remove_unused_werkcv_images
+            df -h / | tail -1
 
       # Tell Bing (and other IndexNow engines, e.g. used by DuckDuckGo, Ecosia and Yahoo results)
       # which pages changed. Only the given paths are sent; unchanged pages should not be resubmitted.
