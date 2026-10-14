@@ -59,6 +59,8 @@ export function buildCvReadyLink({ cvId, language, origin = "https://werkcv.nl" 
   const url = new URL(language === "en" ? "/en/editor" : "/editor", origin);
   if (url.protocol !== "https:" && url.hostname !== "localhost") throw new Error("CV_READY_HTTPS_ORIGIN_REQUIRED");
   url.searchParams.set("id", cvId);
+  // The new app's finish step (design, checks, download), with the full CV preview open on top.
+  url.searchParams.set(language === "en" ? "step" : "stap", "afronden");
   url.searchParams.set("downloadIntent", "1");
   url.searchParams.set("utm_source", "werkcv");
   url.searchParams.set("utm_medium", "email");

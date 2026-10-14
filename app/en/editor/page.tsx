@@ -12,7 +12,7 @@ import { getWorkspaceEntitlementsForUser, isWorkspaceSwitcherEnabled } from "@/l
 import type { Metadata } from "next";
 import { normalizeEditorFocus } from "@/lib/editor-focus";
 import { isAppV2Active } from "@/lib/app-v2";
-import { resolveInitialStep } from "@/lib/editor-steps";
+import { normalizeEditorStep, resolveInitialStep } from "@/lib/editor-steps";
 import { isCvEmpty } from "@/lib/cv-empty";
 import { jobVacancyForCv } from "@/lib/app-jobs/service";
 
@@ -63,6 +63,8 @@ export default async function EnglishEditorPage({
     if (uploadRequested) nextParams.set("upload", "1");
     if (workspace === "agency") nextParams.set("workspace", "agency");
     if (downloadIntent === "1") nextParams.set("downloadIntent", "1");
+    const requestedStep = normalizeEditorStep(step ?? stap);
+    if (requestedStep) nextParams.set("step", requestedStep);
     const next = `/en/editor?${nextParams.toString()}`;
     redirect(`/login?next=${encodeURIComponent(next)}`);
   }

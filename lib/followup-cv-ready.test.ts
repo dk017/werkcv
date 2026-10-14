@@ -47,6 +47,8 @@ test("the price in the email is the live download price", () => {
 
 test("the link opens the download preview and is tagged for attribution", () => {
   const url = new URL(buildCvReadyLink({ cvId: "abc", language: "nl" }));
+  assert.equal(url.searchParams.get("stap"), "afronden");
+  assert.equal(new URL(buildCvReadyLink({ cvId: "abc", language: "en" })).searchParams.get("step"), "afronden");
   assert.equal(url.searchParams.get("downloadIntent"), "1");
   assert.equal(url.searchParams.get("utm_medium"), "email");
   assert.throws(() => buildCvReadyLink({ cvId: "abc", language: "nl", origin: "http://werkcv.nl" }));

@@ -11,7 +11,7 @@ import { getWorkspaceEntitlementsForUser, isWorkspaceSwitcherEnabled } from "@/l
 import { normalizeEditorFocus } from "@/lib/editor-focus";
 import { consumerAiEnabled } from "@/lib/consumer-ai-availability";
 import { isAppV2Active } from "@/lib/app-v2";
-import { resolveInitialStep } from "@/lib/editor-steps";
+import { normalizeEditorStep, resolveInitialStep } from "@/lib/editor-steps";
 import { isCvEmpty } from "@/lib/cv-empty";
 import { jobVacancyForCv } from "@/lib/app-jobs/service";
 
@@ -52,6 +52,8 @@ export default async function EditorPage({
         if (resolvedFocus) nextParams.set("focus", resolvedFocus);
         if (uploadRequested) nextParams.set("upload", "1");
         if (downloadIntent === "1") nextParams.set("downloadIntent", "1");
+        const requestedStep = normalizeEditorStep(stap ?? step);
+        if (requestedStep) nextParams.set("stap", requestedStep);
         if (workspace === "agency") nextParams.set("workspace", "agency");
         const next = `/editor?${nextParams.toString()}`;
         redirect(`/login?next=${encodeURIComponent(next)}`);
