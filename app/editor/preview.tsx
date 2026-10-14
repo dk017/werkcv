@@ -81,7 +81,10 @@ export default function Preview({
             onPageCountChange(pages);
         }
 
+        // Innermost elements only (text, images, bars): column boxes stretch to the page height
+        // and include their padding, which would count as content.
         const contentBottom = Array.from(container.querySelectorAll<HTMLElement>("[data-cv-template] *"))
+            .filter((element) => element.childElementCount === 0)
             .reduce((lowest, element) => Math.max(lowest, (element.getBoundingClientRect().bottom - containerRect.top) / renderScale), 0);
 
         onLayoutChange?.({ height: measuredHeight, contentBottom: contentBottom || measuredHeight, breakAvoidRanges });

@@ -8,8 +8,8 @@ type Hover = { id: CvBodySectionId; lane: HTMLElement; top: number; left: number
 type Drag = { id: CvBodySectionId; lane: HTMLElement; ids: CvBodySectionId[]; from: number; target: number; indicatorTop: number };
 
 const COPY = {
-    nl: { move: (name: string) => `Verplaats ${name}: sleep, of gebruik pijltje omhoog en omlaag` },
-    en: { move: (name: string) => `Move ${name}: drag, or use the up and down arrow keys` },
+    nl: { move: (name: string) => `Verplaats ${name}: sleep, of gebruik pijltje omhoog en omlaag. Tijdens het typen: Alt + pijltje.` },
+    en: { move: (name: string) => `Move ${name}: drag, or use the up and down arrow keys. While typing: Alt + arrow.` },
 } as const;
 
 /** The sections shown in a lane, in order (custom sections share one id and move together). */
@@ -64,9 +64,46 @@ export default function SectionDragHandles({ rootRef, sectionLabel, onReorder, l
             if (section && lane) hoverSection(section.dataset.cvSection as CvBodySectionId, lane);
             else if (document.activeElement !== gripRef.current) setHover(null);
         };
+        // Keyboard: focus inside a section shows its grip, and Alt + arrow moves the section you are
+        // typing in (the grip itself also takes the arrow keys).
+        const onFocusIn = (event: FocusEvent) => {
+            const target = event.target as HTMLElement | null;
+            if (target?.closest("[data-section-grip]")) return;
+            const section = target?.closest<HTMLElement>("[data-cv-section]");
+            const lane = section?.closest<HTMLElement>("[data-cv-lane]");
+            if (section && lane) hoverSection(section.dataset.cvSection as CvBodySectionId, lane);
+        };
+        const onKey = (event: KeyboardEvent) => {
+            if (!event.altKey || (event.key !== "ArrowUp" && event.key !== "ArrowDown")) return;
+            const target = event.target as HTMLElement | null;
+            const section = target?.closest<HTMLElement>("[data-cv-section]");
+            const lane = section?.closest<HTMLElement>("[data-cv-lane]");
+            if (!section || !lane || target?.closest("[data-section-grip]")) return;
+            event.preventDefault();
+            const id = section.dataset.cvSection as CvBodySectionId;
+            const ids = laneSections(lane).map((entry) => entry.id);
+            const from = ids.indexOf(id);
+            const to = from + (event.key === "ArrowUp" ? -1 : 1);
+            if (from < 0 || to < 0 || to >= ids.length) return;
+            const label = target?.getAttribute("aria-label");
+            onReorder(id, ids, to);
+            // Moving the section can drop focus; put it back on the same field.
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+                const moved = lane.querySelector<HTMLElement>(`[data-cv-section="${id}"]`);
+                const field = (label && moved?.querySelector<HTMLElement>(`[data-cv-inline][aria-label="${CSS.escape(label)}"]`)) || moved?.querySelector<HTMLElement>("[data-cv-inline]");
+                field?.focus();
+                hoverSection(id, lane);
+            }));
+        };
         root.addEventListener("pointermove", onMove);
-        return () => root.removeEventListener("pointermove", onMove);
-    }, [drag, hoverSection, rootRef]);
+        root.addEventListener("focusin", onFocusIn);
+        root.addEventListener("keydown", onKey);
+        return () => {
+            root.removeEventListener("pointermove", onMove);
+            root.removeEventListener("focusin", onFocusIn);
+            root.removeEventListener("keydown", onKey);
+        };
+    }, [drag, hoverSection, onReorder, rootRef]);
 
     const indicatorFor = (sections: ReturnType<typeof laneSections>, target: number, dragged: CvBodySectionId) => {
         const others = sections.filter((section) => section.id !== dragged);

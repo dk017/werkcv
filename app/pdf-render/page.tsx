@@ -18,6 +18,9 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
    Keep a full-page minimum (sidebar colour) just under the A4 height. */
 #pdf-root [data-cv-template] { min-height: calc(297mm - 2px) !important; padding-bottom: 0 !important; }
 #pdf-root [data-cv-lane] { padding-bottom: 0 !important; }
+/* The last section's bottom margin collapses out of the CV box and, when the content ends right at
+   the bottom of a page, makes an empty extra page. */
+#pdf-root [data-cv-lane] > div > :last-child, #pdf-root [data-cv-lane] > :last-child { margin-bottom: 0 !important; }
 nextjs-portal { display: none !important; }
 `;
 

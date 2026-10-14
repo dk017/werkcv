@@ -4,8 +4,8 @@ import type { ReactNode } from "react";
 import type { AppLocale } from "@/lib/app-v2-paths";
 
 const COPY = {
-    nl: { title: "Ontwerp", hint: "Klik op tekst in je CV om die aan te passen. Je wijzigingen worden automatisch opgeslagen.", color: "Kleur", template: "Template", layout: "Opmaak" },
-    en: { title: "Design", hint: "Click any text in your CV to change it. Your changes are saved automatically.", color: "Colour", template: "Template", layout: "Layout" },
+    nl: { title: "Ontwerp", hint: "Klik op tekst in je CV om die aan te passen. Sleep een onderdeel aan het grijpertje links, of druk Alt + ↑/↓ terwijl je erin typt. Alles wordt automatisch opgeslagen.", color: "Kleur", template: "Template", layout: "Opmaak" },
+    en: { title: "Design", hint: "Click any text in your CV to change it. Drag a section by the grip on its left, or press Alt + ↑/↓ while typing in it. Everything is saved automatically.", color: "Colour", template: "Template", layout: "Layout" },
 } as const;
 
 // Right-hand panel of the document mode ("Op je CV"): the design controls next to the CV.
