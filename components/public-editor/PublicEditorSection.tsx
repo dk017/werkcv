@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Editor from "@/app/editor/editor";
 import { defaultCV, type CVData } from "@/lib/cv";
 import { getDefaultThemeId } from "@/lib/templates/registry";
@@ -11,6 +11,7 @@ import {
     type PublicEditorFlow,
 } from "@/lib/public-cv-draft";
 import { track } from "@/lib/analytics";
+import DownloadDialog, { type CheckSummary } from "./DownloadDialog";
 import type { UiLanguage } from "@/lib/ui-language";
 
 type PublicEditorSectionProps = {
@@ -49,6 +50,7 @@ export default function PublicEditorSection({
     stepsLayout = false,
 }: PublicEditorSectionProps) {
     const isCvCheck = variant === "cv_check" && flow === "consumer";
+    const [downloadDialog, setDownloadDialog] = useState<{ claimPath: string; summary: CheckSummary | null } | null>(null);
     const draftKey = useSyncExternalStore(
         () => () => undefined,
         () => getPublicDraftHydrationKey(source),
@@ -69,7 +71,7 @@ export default function PublicEditorSection({
         });
     }, [flow, locale, source]);
 
-    const handlePublicDownloadRequest = async () => {
+    const handlePublicDownloadRequest = async (input?: { checkSummary?: CheckSummary | null }) => {
         if (!draftId) return;
 
         track("public_editor_claim_started", {
@@ -84,6 +86,11 @@ export default function PublicEditorSection({
             intent: "download",
         });
         const claimPath = `/editor/claim?${claimParams.toString()}`;
+        // CV-check flow: email and code in a dialog beside the CV instead of a separate login page.
+        if (isCvCheck) {
+            setDownloadDialog({ claimPath, summary: input?.checkSummary ?? null });
+            return;
+        }
         const loginParams = new URLSearchParams({ next: claimPath });
         if (locale === "en") loginParams.set("locale", "en");
         window.location.assign(`/login?${loginParams.toString()}`);
@@ -156,6 +163,14 @@ export default function PublicEditorSection({
                         {locale === "en" ? "Preparing the editor…" : "De editor wordt voorbereid…"}
                     </div>
                 )}
+                {downloadDialog ? (
+                    <DownloadDialog
+                        locale={locale}
+                        claimPath={downloadDialog.claimPath}
+                        summary={downloadDialog.summary}
+                        onClose={() => setDownloadDialog(null)}
+                    />
+                ) : null}
             </div>
         </section>
     );

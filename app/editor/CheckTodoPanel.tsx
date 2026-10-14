@@ -56,6 +56,7 @@ export default function CheckTodoPanel({
   onApplyData,
   onSetField,
   onGoToStep,
+  onSummaryChange,
 }: {
   checks: HandedOverCheck[];
   data: CVData;
@@ -64,6 +65,8 @@ export default function CheckTodoPanel({
   onApplyData: (next: CVData) => void;
   onSetField: (field: TodoInputField, value: string) => void;
   onGoToStep: (step: EditorStepId) => void;
+  /** The first and current grade and progress, for the download dialog. */
+  onSummaryChange?: (summary: { first: number; current: number; doneCount: number; total: number }) => void;
 }) {
   const copy = COPY[locale];
   const [graded, setGraded] = useState<Grade | null>(null);
@@ -96,6 +99,16 @@ export default function CheckTodoPanel({
     // Re-grade when the CV, template or language changes.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gradedData, templateId, locale]);
+
+  useEffect(() => {
+    if (!graded || firstGradeRef.current === null) return;
+    onSummaryChange?.({
+      first: firstGradeRef.current,
+      current: graded.grade,
+      doneCount: checks.filter((check) => !graded.failed.has(check.id)).length,
+      total: checks.length,
+    });
+  }, [graded, checks, onSummaryChange]);
 
   if (!checks.length) return null;
   const isDone = (id: string) => Boolean(graded && !graded.failed.has(id));

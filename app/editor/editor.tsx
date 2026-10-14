@@ -145,6 +145,8 @@ interface EditorProps {
     /** Public mode: single-use token from an AI-assistant (MCP) link, exchanged for the CV it carries. */
     publicHandoffToken?: string | null;
     onPublicDownloadRequest?: (input: {
+        /** CV-check flow: the grade before and after the to-do list, for the download dialog. */
+        checkSummary?: { first: number; current: number; doneCount: number; total: number } | null;
         data: CVData;
         templateId: string;
         colorThemeId: string;
@@ -619,6 +621,7 @@ export default function Editor({
     // The CV-check findings shown as a to-do list (CV-check flow only). Kept per CV for this browser
     // session so a reload keeps the list.
     const checkTodoKey = `werkcv_cv_check_todo_v1:${id}`;
+    const checkSummaryRef = useRef<{ first: number; current: number; doneCount: number; total: number } | null>(null);
     const [checkTodo, setCheckTodo] = useState<HandedOverCheck[] | null>(() => {
         if (typeof window === "undefined") return null;
         try {
@@ -1781,6 +1784,7 @@ export default function Editor({
                 if (!persistPublicDraft(formData)) return;
                 if (publicDraftId && onPublicDownloadRequest) {
                     await onPublicDownloadRequest({
+                        checkSummary: checkSummaryRef.current,
                         data: formData,
                         templateId,
                         colorThemeId,
@@ -2266,6 +2270,7 @@ export default function Editor({
                                     setIsSaved(false);
                                 }}
                                 onGoToStep={(step) => goToStep(step, "cv_check_todo")}
+                                onSummaryChange={(summary) => { checkSummaryRef.current = summary; }}
                             />
                         ) : null}
                         {planSheetSource ? (
