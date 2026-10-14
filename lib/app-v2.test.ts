@@ -24,3 +24,8 @@ test("the switch only redirects to same-site paths", () => {
   assert.equal(safeAppV2Next("/\\evil.example"), "/mijn-cvs");
   assert.equal(safeAppV2Next(null), "/mijn-cvs");
 });
+
+test("the opt-in redirect target cannot carry control characters into the Location header", () => {
+  assert.equal(safeAppV2Next("/en/my-cvs" + String.fromCharCode(13, 10) + "Set-Cookie: x=1"), "/mijn-cvs");
+  assert.equal(safeAppV2Next("/en/my-cvs"), "/en/my-cvs");
+});

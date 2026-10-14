@@ -5,7 +5,9 @@ import { APP_V2_COOKIE, safeAppV2Next } from "@/lib/app-v2";
 export async function GET(request: NextRequest) {
   const on = request.nextUrl.searchParams.get("aan") !== "0";
   const next = safeAppV2Next(request.nextUrl.searchParams.get("next"));
-  const response = NextResponse.redirect(new URL(next, request.url));
+  // Relative Location: behind the proxy request.url carries the container address
+  // (http://0.0.0.0:3000), so an absolute redirect sent people there. `next` is a same-site path.
+  const response = new NextResponse(null, { status: 307, headers: { Location: next } });
   response.cookies.set(APP_V2_COOKIE, on ? "1" : "0", {
     path: "/",
     maxAge: 60 * 60 * 24 * 365,

@@ -27,6 +27,6 @@ export async function isAppV2Active(): Promise<boolean> {
 
 // Only same-site relative paths, so the switch cannot be used as an open redirect.
 export function safeAppV2Next(value: string | null | undefined): string {
-  if (!value || !value.startsWith("/") || value.startsWith("//") || value.startsWith("/\\")) return "/mijn-cvs";
+  if (!value || !value.startsWith("/") || value.startsWith("//") || value.startsWith("/\\") || /[\u0000-\u001f\u007f]/.test(value)) return "/mijn-cvs";
   return value.slice(0, 512);
 }
