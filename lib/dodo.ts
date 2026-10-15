@@ -83,6 +83,11 @@ const EU_LOCAL_PAYMENT_METHODS: Record<string, string> = {
   PT: "multibanco",
 };
 
+// Euro-area countries: charge in EUR with the visitor's country filled in, so the checkout shows the
+// same euro price as the site and skips the country step. English checkouts outside NL started 2026-10:
+// 49 of 61 sessions ended without a payment attempt (most from outside NL).
+const EURO_AREA = new Set(["AT", "BE", "CY", "DE", "EE", "ES", "FI", "FR", "GR", "HR", "IE", "IT", "LT", "LU", "LV", "MT", "NL", "PT", "SI", "SK"]);
+
 function euroCheckoutCountry(visitorCountry: string | null, resumeLanguage: ResumeLanguage): string | null {
   if (!visitorCountry) return resumeLanguage === "nl" ? "NL" : null;
   if (visitorCountry === "NL") return "NL";
@@ -107,6 +112,7 @@ export function buildDodoCheckoutBody(
 
   const visitorCountry = normalizeCountryCode(visitorCountryCode);
   const euroCountry = euroCheckoutCountry(visitorCountry, resumeLanguage);
+  const chargeInEuro = Boolean(euroCountry) || Boolean(visitorCountry && EURO_AREA.has(visitorCountry));
   const localMethod = euroCountry ? EU_LOCAL_PAYMENT_METHODS[euroCountry] : null;
   const allowedPaymentMethodTypes = [
     ...new Set([
@@ -116,7 +122,7 @@ export function buildDodoCheckoutBody(
       "debit",
       "apple_pay",
       "google_pay",
-      ...(euroCountry ? [] : ["upi_collect"]),
+      ...(chargeInEuro ? [] : ["upi_collect"]),
     ]),
   ];
   const body: Record<string, unknown> = {
@@ -137,7 +143,7 @@ export function buildDodoCheckoutBody(
       force_language: resumeLanguage,
     },
     feature_flags: {
-      allow_currency_selection: !euroCountry,
+      allow_currency_selection: !chargeInEuro,
       allow_discount_code: false,
       allow_phone_number_collection: false,
     },
@@ -153,6 +159,12 @@ export function buildDodoCheckoutBody(
   } else if (euroCountry) {
     body.billing_currency = "EUR";
     body.billing_address = { country: euroCountry };
+  } else if (visitorCountry && EURO_AREA.has(visitorCountry)) {
+    body.billing_currency = "EUR";
+    body.billing_address = { country: visitorCountry };
+  } else if (visitorCountry) {
+    // Outside the euro area: the country is filled in (one step less); the currency follows it.
+    body.billing_address = { country: visitorCountry };
   }
 
   if (email) {
@@ -173,15 +185,27 @@ export async function buildDodoCheckoutURL(
     throw new Error("DODO_API_KEY is not configured");
   }
   const body = buildDodoCheckoutBody(cvId, email, resumeLanguage, visitorCountryCode, checkoutProduct);
+  const create = (payload: Record<string, unknown>) =>
+    fetch(`${DODO_API_BASE}/checkouts`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${DODO_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
 
-  const res = await fetch(`${DODO_API_BASE}/checkouts`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${DODO_API_KEY}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+  let res = await create(body);
+  // If Dodo rejects the filled-in country or currency, retry once with neither (the buyer picks them
+  // on the checkout page), so a preset can never leave someone without a checkout.
+  if (!res.ok && res.status < 500 && (body.billing_address || body.billing_currency)) {
+    const firstError = await res.text();
+    console.error("dodo_checkout_preset_rejected", { status: res.status, country: (body.billing_address as { country?: string } | undefined)?.country, error: firstError.slice(0, 300) });
+    const plain: Record<string, unknown> = { ...body, feature_flags: { ...(body.feature_flags as Record<string, unknown>), allow_currency_selection: true } };
+    delete plain.billing_address;
+    delete plain.billing_currency;
+    res = await create(plain);
+  }
 
   if (!res.ok) {
     const error = await res.text();
