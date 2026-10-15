@@ -21,10 +21,55 @@ export const PUBLIC_DRAFT_STORAGE_PREFIX = "werkcv_public_cv_draft_v1:";
 export const PUBLIC_DRAFT_LAST_ID_KEY = "werkcv_public_cv_last_draft_v1";
 export const PUBLIC_DRAFT_ACTIVE_PREFIX = "werkcv_public_cv_active_v1:";
 export const MAX_PUBLIC_DRAFT_JSON_CHARS = 900_000;
+/** A draft without an account is kept in this browser for a week after its last change, then dropped. */
+export const PUBLIC_DRAFT_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
 const clientDraftIdCache = new Map<string, string>();
 
 function isBrowser(): boolean {
-  return typeof window !== "undefined" && typeof window.sessionStorage !== "undefined";
+  return typeof window !== "undefined" && (typeof window.localStorage !== "undefined" || typeof window.sessionStorage !== "undefined");
+}
+
+// Drafts live in localStorage so closing the tab does not lose a CV built without an account (before
+// 15 Oct 2026 they lived in sessionStorage, which a closed tab wipes). sessionStorage is still read,
+// so a draft started before the change is found, and every write or removal covers both.
+function storages(): Storage[] {
+  const list: Storage[] = [];
+  try { if (window.localStorage) list.push(window.localStorage); } catch { /* blocked */ }
+  try { if (window.sessionStorage) list.push(window.sessionStorage); } catch { /* blocked */ }
+  return list;
+}
+
+function getItem(key: string): string | null {
+  for (const storage of storages()) {
+    try {
+      const value = storage.getItem(key);
+      if (value !== null) return value;
+    } catch {
+      // try the next one
+    }
+  }
+  return null;
+}
+
+function setItem(key: string, value: string): void {
+  const [primary, ...rest] = storages();
+  if (!primary) throw new Error("STORAGE_UNAVAILABLE");
+  primary.setItem(key, value);
+  // Remove an older copy elsewhere so a stale tab copy can never shadow the current one.
+  for (const storage of rest) {
+    try { storage.removeItem(key); } catch { /* best effort */ }
+  }
+}
+
+function removeItem(key: string): void {
+  for (const storage of storages()) {
+    try { storage.removeItem(key); } catch { /* best effort */ }
+  }
+}
+
+export function isPublicDraftExpired(updatedAt: string, now = Date.now()): boolean {
+  const time = Date.parse(updatedAt);
+  return !Number.isFinite(time) || now - time > PUBLIC_DRAFT_MAX_AGE_MS;
 }
 
 export function isPublicDraftId(value: unknown): value is string {
@@ -87,7 +132,12 @@ function parseSnapshot(raw: string | null): PublicDraftSnapshot | null {
 
 export function readPublicDraft(draftId: string): PublicDraftSnapshot | null {
   if (!isBrowser() || !isPublicDraftId(draftId)) return null;
-  return parseSnapshot(window.sessionStorage.getItem(getPublicDraftStorageKey(draftId)));
+  const snapshot = parseSnapshot(getItem(getPublicDraftStorageKey(draftId)));
+  if (snapshot && isPublicDraftExpired(snapshot.updatedAt)) {
+    clearPublicDraft(draftId);
+    return null;
+  }
+  return snapshot;
 }
 
 export function savePublicDraft(snapshot: PublicDraftSnapshot): { ok: true } | { ok: false; code: "TOO_LARGE" | "STORAGE_UNAVAILABLE" } {
@@ -107,9 +157,9 @@ export function savePublicDraft(snapshot: PublicDraftSnapshot): { ok: true } | {
   }
 
   try {
-    window.sessionStorage.setItem(getPublicDraftStorageKey(snapshot.draftId), serialized);
-    window.sessionStorage.setItem(PUBLIC_DRAFT_LAST_ID_KEY, snapshot.draftId);
-    window.sessionStorage.setItem(getActiveDraftStorageKey(snapshot.source), snapshot.draftId);
+    setItem(getPublicDraftStorageKey(snapshot.draftId), serialized);
+    setItem(PUBLIC_DRAFT_LAST_ID_KEY, snapshot.draftId);
+    setItem(getActiveDraftStorageKey(snapshot.source), snapshot.draftId);
     return { ok: true };
   } catch {
     return { ok: false, code: "STORAGE_UNAVAILABLE" };
@@ -120,13 +170,13 @@ export function clearPublicDraft(draftId: string): void {
   if (!isBrowser() || !isPublicDraftId(draftId)) return;
 
   try {
-    const snapshot = parseSnapshot(window.sessionStorage.getItem(getPublicDraftStorageKey(draftId)));
-    window.sessionStorage.removeItem(getPublicDraftStorageKey(draftId));
-    if (snapshot) {
-      window.sessionStorage.removeItem(getActiveDraftStorageKey(snapshot.source));
+    const snapshot = parseSnapshot(getItem(getPublicDraftStorageKey(draftId)));
+    removeItem(getPublicDraftStorageKey(draftId));
+    if (snapshot && getItem(getActiveDraftStorageKey(snapshot.source)) === draftId) {
+      removeItem(getActiveDraftStorageKey(snapshot.source));
     }
-    if (window.sessionStorage.getItem(PUBLIC_DRAFT_LAST_ID_KEY) === draftId) {
-      window.sessionStorage.removeItem(PUBLIC_DRAFT_LAST_ID_KEY);
+    if (getItem(PUBLIC_DRAFT_LAST_ID_KEY) === draftId) {
+      removeItem(PUBLIC_DRAFT_LAST_ID_KEY);
     }
   } catch {
     // Storage cleanup is best effort and must never interrupt the paid flow.
@@ -137,8 +187,16 @@ export function readPublicDraftIdForSource(source: string): string | null {
   if (!isBrowser() || !source) return null;
 
   try {
-    const draftId = window.sessionStorage.getItem(getActiveDraftStorageKey(source));
-    return isPublicDraftId(draftId) ? draftId : null;
+    const draftId = getItem(getActiveDraftStorageKey(source));
+    if (!isPublicDraftId(draftId)) return null;
+    // A stored but expired draft is dropped here, so the editor starts fresh instead of reopening it.
+    // An id without a stored snapshot yet (nothing typed so far) is still returned.
+    const snapshot = parseSnapshot(getItem(getPublicDraftStorageKey(draftId)));
+    if (snapshot && isPublicDraftExpired(snapshot.updatedAt)) {
+      clearPublicDraft(draftId);
+      return null;
+    }
+    return draftId;
   } catch {
     return null;
   }
@@ -166,7 +224,7 @@ export function readLastPublicDraftId(): string | null {
   if (!isBrowser()) return null;
 
   try {
-    const draftId = window.sessionStorage.getItem(PUBLIC_DRAFT_LAST_ID_KEY);
+    const draftId = getItem(PUBLIC_DRAFT_LAST_ID_KEY);
     return isPublicDraftId(draftId) ? draftId : null;
   } catch {
     return null;

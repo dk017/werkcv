@@ -1560,8 +1560,23 @@ export default function Editor({
                 }
             }, 3000);
         });
+        // A browser draft is saved synchronously, so a change still waiting for the debounce is
+        // written straight away when the tab is hidden or closed.
+        const flushPublicDraft = () => {
+            if (!isPublicMode || !autoSaveTimerRef.current) return;
+            clearTimeout(autoSaveTimerRef.current);
+            autoSaveTimerRef.current = null;
+            persistPublicDraft(watch() as CVData);
+        };
+        const flushWhenHidden = () => {
+            if (document.visibilityState === "hidden") flushPublicDraft();
+        };
+        window.addEventListener("pagehide", flushPublicDraft);
+        document.addEventListener("visibilitychange", flushWhenHidden);
         return () => {
             subscription.unsubscribe();
+            window.removeEventListener("pagehide", flushPublicDraft);
+            document.removeEventListener("visibilitychange", flushWhenHidden);
             if (autoSaveTimerRef.current) {
                 clearTimeout(autoSaveTimerRef.current);
             }
