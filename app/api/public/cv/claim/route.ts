@@ -98,7 +98,9 @@ export async function POST(request: NextRequest) {
     const completion = getCompletionState(parsedData.data as CVData, uiLanguage);
 
     const source = typeof body.source === "string" ? body.source.slice(0, 160) : "public_editor";
-    const startSource = normalizeStartSource(`public:${flow}:${draftId}`);
+    // Build-first visitors keep where they started (e.g. home_hero_primary); other public drafts as before.
+    const requestedStartSource = typeof body.startSource === "string" && /^[a-z0-9_:-]{1,80}$/i.test(body.startSource) ? body.startSource : null;
+    const startSource = normalizeStartSource(requestedStartSource ?? `public:${flow}:${draftId}`);
     let agencySubscriptionId: string | null = null;
     let agencyOwnerUserId: string | null = null;
     let agencyAccess: Awaited<ReturnType<typeof getAgencyAccessForUser>> | null = null;

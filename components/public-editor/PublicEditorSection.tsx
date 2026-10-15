@@ -19,14 +19,20 @@ type PublicEditorSectionProps = {
     flow?: PublicEditorFlow;
     source: string;
     className?: string;
-    /** "cv_check": opened from a CV-check fix, with copy about improving the checked CV. */
-    variant?: "home" | "cv_check";
+    /** "cv_check": opened from a CV-check fix. "editor": /editor without an account (build-first split). */
+    variant?: "home" | "cv_check" | "editor";
     /** Load the CV the visitor just checked (see lib/cv-check/handoff.ts) into the editor. */
     importCheckedCv?: boolean;
     /** Single-use token from an AI-assistant (MCP) link: the editor exchanges it for the CV it carries. */
     handoffToken?: string | null;
     /** CV-check improve page with the new app on: the stepped editor, full screen, opening on Afronden. */
     stepsLayout?: boolean;
+    /** Where the visitor started (e.g. home_hero_primary), kept on the claimed CV. */
+    startSource?: string;
+    /** The template asked for in the link (e.g. from a template page). */
+    initialTemplateId?: string;
+    /** Open the uploader straight away ("Upload je cv" starts). */
+    openUploader?: boolean;
 };
 
 function createEmptyData(locale: UiLanguage): CVData {
@@ -48,8 +54,14 @@ export default function PublicEditorSection({
     importCheckedCv = false,
     handoffToken = null,
     stepsLayout = false,
+    startSource,
+    initialTemplateId,
+    openUploader = false,
 }: PublicEditorSectionProps) {
     const isCvCheck = variant === "cv_check" && flow === "consumer";
+    // Email and code in a dialog beside the CV (instead of the login page) wherever the stepped
+    // no-account editor is used: the CV-check flow and build-first visitors.
+    const usesDownloadDialog = flow === "consumer" && (isCvCheck || stepsLayout);
     const [downloadDialog, setDownloadDialog] = useState<{ claimPath: string; summary: CheckSummary | null } | null>(null);
     const draftKey = useSyncExternalStore(
         () => () => undefined,
@@ -87,7 +99,7 @@ export default function PublicEditorSection({
         });
         const claimPath = `/editor/claim?${claimParams.toString()}`;
         // CV-check flow: email and code in a dialog beside the CV instead of a separate login page.
-        if (isCvCheck) {
+        if (usesDownloadDialog) {
             setDownloadDialog({ claimPath, summary: input?.checkSummary ?? null });
             return;
         }
@@ -96,7 +108,7 @@ export default function PublicEditorSection({
         window.location.assign(`/login?${loginParams.toString()}`);
     };
 
-    const templateId = snapshot?.templateId || "professional";
+    const templateId = snapshot?.templateId || initialTemplateId || "professional";
     const colorThemeId = snapshot?.colorThemeId || getDefaultThemeId(templateId);
     const initialData = snapshot?.data || createEmptyData(locale);
 
@@ -153,6 +165,8 @@ export default function PublicEditorSection({
                         publicSource={source}
                         onPublicDownloadRequest={handlePublicDownloadRequest}
                         publicImportCheckedCv={importCheckedCv}
+                        publicStartSource={startSource}
+                        publicOpenUploader={openUploader}
                         layoutVariant={stepsLayout && flow === "consumer" ? "steps" : "classic"}
                         publicStepsLayout={stepsLayout && flow === "consumer"}
                         initialStep={stepsLayout && (importCheckedCv || handoffToken) ? "afronden" : undefined}

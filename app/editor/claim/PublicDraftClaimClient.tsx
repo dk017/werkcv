@@ -90,6 +90,7 @@ export default function PublicDraftClaimClient({ draftId, flow, intent, appV2 = 
                         flow,
                         uiLanguage: snapshot.uiLanguage,
                         source: snapshot.source,
+                        startSource: snapshot.startSource,
                     }),
                 });
                 const result = await response.json().catch(() => null) as {

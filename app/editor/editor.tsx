@@ -145,6 +145,10 @@ interface EditorProps {
     publicImportCheckedCv?: boolean;
     /** Public mode: single-use token from an AI-assistant (MCP) link, exchanged for the CV it carries. */
     publicHandoffToken?: string | null;
+    /** Public mode: where the visitor started, kept on the draft so the claimed CV keeps it. */
+    publicStartSource?: string;
+    /** Public mode: open the uploader once ("Upload je cv" starts without an account). */
+    publicOpenUploader?: boolean;
     onPublicDownloadRequest?: (input: {
         /** CV-check flow: the grade before and after the to-do list, for the download dialog. */
         checkSummary?: { first: number; current: number; doneCount: number; total: number } | null;
@@ -410,6 +414,8 @@ export default function Editor({
     publicSource = "public_editor",
     publicImportCheckedCv = false,
     publicHandoffToken = null,
+    publicStartSource,
+    publicOpenUploader = false,
     onPublicDownloadRequest,
     layoutVariant = "classic",
     publicStepsLayout = false,
@@ -947,6 +953,7 @@ export default function Editor({
             uiLanguage,
             flow: publicFlow,
             source: publicSource,
+            ...(publicStartSource ? { startSource: publicStartSource } : {}),
             updatedAt: new Date().toISOString(),
         });
 
@@ -958,7 +965,7 @@ export default function Editor({
         }
 
         return result.ok;
-    }, [colorThemeId, isEnglish, isPublicMode, publicDraftId, publicFlow, publicSource, templateId, uiLanguage]);
+    }, [colorThemeId, isEnglish, isPublicMode, publicDraftId, publicFlow, publicSource, publicStartSource, templateId, uiLanguage]);
     // Price copy (price_copy_v2): consumer CVs that still need paying, including the anonymous draft
     // editor. Paid CVs and agency workspaces keep the plain label and are not enrolled.
     const showsDownloadPrice = !isMatchPackWorkspace && !downloadIncluded;
@@ -1032,6 +1039,12 @@ export default function Editor({
     }, [checkTodoKey, id, uiLanguage]);
 
     useEffect(() => {
+        if (isPublicMode && publicOpenUploader && !publicImportCheckedCv) {
+            if (uploadIntentHandledRef.current) return;
+            uploadIntentHandledRef.current = true;
+            openUploader("route_intent");
+            return;
+        }
         if (isPublicMode) {
             // CV-check visitors without an account: load the checked file once. Without a handed-over
             // file (pasted text, expired, blocked storage) the editor simply opens as usual.
@@ -1074,7 +1087,7 @@ export default function Editor({
                 openUploader("route_intent");
             }
         }
-    }, [applyCheckedCvData, isPublicMode, openUploader, publicImportCheckedCv]);
+    }, [applyCheckedCvData, isPublicMode, openUploader, publicImportCheckedCv, publicOpenUploader]);
 
     useEffect(() => {
         if (isPublicMode) return;

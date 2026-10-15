@@ -11,6 +11,9 @@ import { getWorkspaceEntitlementsForUser, isWorkspaceSwitcherEnabled } from "@/l
 import { normalizeEditorFocus } from "@/lib/editor-focus";
 import { consumerAiEnabled } from "@/lib/consumer-ai-availability";
 import { isAppV2Active } from "@/lib/app-v2";
+import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
+import { BUILD_FIRST_COOKIE, isBuildFirstEligible, parseBuildFirstArm } from "@/lib/build-first";
+import { recordBuildFirstEntry } from "@/lib/build-first-server";
 import { normalizeEditorStep, resolveInitialStep } from "@/lib/editor-steps";
 import { isCvEmpty } from "@/lib/cv-empty";
 import { jobVacancyForCv } from "@/lib/app-jobs/service";
@@ -45,6 +48,27 @@ export default async function EditorPage({
         "editor_direct";
 
     if (!user) {
+        // Build-first split (lib/build-first.ts): half of the eligible visitors build without an account
+        // and log in at download; the other half keep the login page first. Both arms are recorded.
+        const buildFirstArm = parseBuildFirstArm(cookieStore.get(BUILD_FIRST_COOKIE)?.value);
+        if (buildFirstArm && isBuildFirstEligible({ id, workspace, startSource: resolvedStartSource }) && (await isAppV2Active())) {
+            await recordBuildFirstEntry({ arm: buildFirstArm, startSource: resolvedStartSource, locale: "nl" });
+            if (buildFirstArm === "on") {
+                return (
+                    <main>
+                        <PublicEditorSection
+                            locale="nl"
+                            source="public_editor_build_first_nl"
+                            variant="editor"
+                            stepsLayout
+                            startSource={resolvedStartSource}
+                            initialTemplateId={templateId || undefined}
+                            openUploader={uploadRequested}
+                        />
+                    </main>
+                );
+            }
+        }
         const nextParams = new URLSearchParams();
         if (id) nextParams.set("id", id);
         nextParams.set("template", templateId || "professional");

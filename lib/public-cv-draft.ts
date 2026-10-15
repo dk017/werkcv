@@ -12,6 +12,8 @@ export type PublicDraftSnapshot = {
   uiLanguage: PublicEditorLocale;
   flow: PublicEditorFlow;
   source: string;
+  /** Where the visitor started (e.g. home_hero_primary); kept so the claimed CV keeps its attribution. */
+  startSource?: string;
   updatedAt: string;
 };
 
@@ -75,6 +77,7 @@ function parseSnapshot(raw: string | null): PublicDraftSnapshot | null {
       uiLanguage: candidate.uiLanguage,
       flow: candidate.flow,
       source: candidate.source.slice(0, 160),
+      ...(typeof candidate.startSource === "string" && candidate.startSource ? { startSource: candidate.startSource.slice(0, 120) } : {}),
       updatedAt: candidate.updatedAt,
     };
   } catch {
