@@ -26,8 +26,8 @@ export default function MobileStickyCta({
     <div
       className={
         isBrand
-          ? "fixed inset-x-0 bottom-0 z-40 border-t border-[var(--wk-border)] bg-[var(--wk-surface)]/95 backdrop-blur md:hidden"
-          : "fixed inset-x-0 bottom-0 z-40 border-t-4 border-black bg-white/95 backdrop-blur md:hidden"
+          ? "wk-mobile-sticky-cta fixed inset-x-0 bottom-0 z-40 border-t border-[var(--wk-border)] bg-[var(--wk-surface)]/95 backdrop-blur md:hidden"
+          : "wk-mobile-sticky-cta fixed inset-x-0 bottom-0 z-40 border-t-4 border-black bg-white/95 backdrop-blur md:hidden"
       }
     >
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">

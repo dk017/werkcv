@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { UiLanguage } from "@/lib/ui-language";
 
 type FooterLink = { href: string; label: string };
@@ -94,6 +93,14 @@ const matchpackGroupsEn: FooterGroup[] = [
   { label: "Products", links: [{ href: "/en", label: "Personal CVs" }] },
 ];
 
+// Directory listings (the directories check for the badge). Shown small and muted in the footer.
+const DIRECTORY_BADGES = [
+  { href: "https://www.scrolllaunch.com/products/werkcv?ref=badge", src: "https://www.scrolllaunch.com/api/badge/werkcv?variant=featured&theme=light", alt: "WerkCV - Featured on ScrollLaunch" },
+  { href: "https://weliketools.com/tool/werkcv", src: "https://weliketools.com/assets/images/badge-dark.png", alt: "WerkCV on We Like Tools" },
+  { href: "https://toolcosmos.com/tool/werkcv", src: "https://toolcosmos.com/assets/images/badge-dark.png", alt: "WerkCV on Tool Cosmos" },
+  { href: "https://mylaunchstash.com/product/werkcv", src: "https://mylaunchstash.com/assets/images/badge-dark.png", alt: "WerkCV on My Launch Stash" },
+];
+
 export default function Footer({
   uiLanguage = "nl",
   variant = "brand",
@@ -146,21 +153,16 @@ export default function Footer({
               : isEnglish ? "Build a professional CV for jobs in the Netherlands" : "Maak een professioneel CV voor Nederlandse vacatures"}
           </p>
           {product === "personal" && (
-            <a
-              href="https://www.scrolllaunch.com/products/werkcv?ref=badge"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="wk-footer-badge"
-              aria-label="WerkCV featured on ScrollLaunch (opens in a new tab)"
-            >
-              <Image
-                src="https://www.scrolllaunch.com/api/badge/werkcv?variant=featured&theme=light"
-                alt="WerkCV - Featured on ScrollLaunch"
-                width={220}
-                height={48}
-                unoptimized
-              />
-            </a>
+            <ul className="wk-footer-badges" aria-label={isEnglish ? "WerkCV in tool directories" : "WerkCV in tooloverzichten"}>
+              {DIRECTORY_BADGES.map((badge) => (
+                <li key={badge.href}>
+                  <a href={badge.href} target="_blank" rel="noopener" className="wk-footer-badge" aria-label={`${badge.alt} (${isEnglish ? "opens in a new tab" : "opent in een nieuw tabblad"})`}>
+                    {/* eslint-disable-next-line @next/next/no-img-element -- external badge images, shown small */}
+                    <img src={badge.src} alt={badge.alt} height={28} loading="lazy" decoding="async" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           )}
         </div>
       </div>

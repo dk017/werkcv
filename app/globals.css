@@ -659,16 +659,43 @@ body {
   line-height: 1.5;
 }
 
+/* Pages with the fixed mobile CTA bar (components/landing/MobileStickyCta.tsx): leave room under the
+   footer so its last row (legal links, badges) is not hidden behind the bar. */
+@media (max-width: 767px) {
+  body:has(.wk-mobile-sticky-cta) .wk-footer {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom));
+  }
+}
+
+/* Directory badges: small and muted, two per row (at most two lines). */
+.wk-footer-badges {
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  gap: 6px 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .wk-footer-badge {
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.wk-footer-badge:hover,
+.wk-footer-badge:focus-visible {
+  opacity: 1;
 }
 
 .wk-footer-badge img {
   display: block;
-  max-width: 100%;
-  height: auto;
+  width: auto;
+  height: 28px;
+  max-width: 140px;
+  object-fit: contain;
 }
 
 .wk-footer-legal {
