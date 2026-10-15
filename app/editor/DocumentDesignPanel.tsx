@@ -19,7 +19,7 @@ export default function DocumentDesignPanel({ locale, colorPicker, templateSelec
 }) {
     const c = COPY[locale];
     return (
-        <aside aria-label={c.title} className="werkcv-brand flex w-[320px] shrink-0 flex-col gap-5 overflow-y-auto border-l border-[var(--wk-border)] bg-[var(--wk-surface)] p-5">
+        <aside aria-label={c.title} className="werkcv-brand flex w-[320px] shrink-0 flex-col gap-5 overflow-y-auto border-l border-[var(--wk-border)] bg-[var(--wk-surface)] p-5" style={{ minHeight: 0 }}>
             <div>
                 <h2 className="text-[17px] font-extrabold text-[var(--wk-ink)]">{c.title}</h2>
                 <p className="mt-1 text-[13px] leading-relaxed text-[var(--wk-ink-muted)]">{c.hint}</p>

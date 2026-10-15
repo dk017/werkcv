@@ -198,7 +198,7 @@ export default function CheckTodoPanel({
   const top = items.slice(0, TOP_COUNT);
   const rest = items.slice(TOP_COUNT);
   return (
-    <section id={`cv-check-todo-${surface}`} aria-labelledby={`cv-check-todo-title-${surface}`} className="werkcv-brand scroll-mt-4 rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4">
+    <section id={`cv-check-todo-${surface}`} aria-labelledby={`cv-check-todo-title-${surface}`} className="werkcv-brand shrink-0 scroll-mt-4 rounded-[var(--wk-radius-lg)] border border-[var(--wk-border)] bg-[var(--wk-surface-subtle)] p-4" style={{ minHeight: 0 }}>
       <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
         <div>
           <p className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-[var(--wk-success)]">{mode === "check" ? copy.eyebrowCheck : copy.eyebrowLive}</p>

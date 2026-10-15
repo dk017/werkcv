@@ -2323,7 +2323,8 @@ export default function Editor({
                     onInputCapture={handleQuickBuildInput}
                 >
                     <div className={isSteps ? "mx-auto flex max-w-[680px] flex-col gap-5 pb-12" : "max-w-3xl mx-auto space-y-4 sm:space-y-6 pb-12"}>
-                        {isSteps && (checkTodo || activeStep === "afronden") ? checkPanel(checkTodo ? "steps" : "finish") : null}
+                        {/* On Afronden the list sits under the download block (StepsFinishPanel afterDownload). */}
+                        {isSteps && checkTodo && activeStep !== "afronden" ? checkPanel("steps") : null}
                         {planSheetSource ? (
                             <CheckoutPlanSheet
                                 uiLanguage={isEnglish ? "en" : "nl"}
@@ -2873,6 +2874,7 @@ export default function Editor({
                                 onDownload={() => void handleDownload("post_completion_tools")}
                                 onPreviewPdf={isPublicMode ? undefined : () => setIsFinalPdfPreviewOpen(true)}
                                 onFillIn={() => goToStep(stepStates.persoonlijk ? "werkervaring" : "persoonlijk", "finish_fill_in")}
+                                afterDownload={checkPanel(checkTodo ? "steps" : "finish")}
                                 locale={appLocale}
                             />
                         ) : null}

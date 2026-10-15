@@ -45,6 +45,7 @@ export default function StepsFinishPanel({
     onDownload,
     onPreviewPdf,
     onFillIn,
+    afterDownload,
     locale = "nl",
 }: {
     templateSelector: ReactNode;
@@ -59,6 +60,8 @@ export default function StepsFinishPanel({
     /** Absent without an account: the exact PDF preview needs one. */
     onPreviewPdf?: () => void;
     onFillIn: () => void;
+    /** Shown right under the download block (the CV-check list), so the download stays at the top. */
+    afterDownload?: ReactNode;
     locale?: AppLocale;
 }) {
     const c = FINISH_COPY[locale];
@@ -103,6 +106,7 @@ export default function StepsFinishPanel({
                     </button>
                 </section>
             )}
+            {afterDownload}
 
             {templateSelector || colorPicker ? (
                 <section aria-labelledby="finish-design-title" className="flex flex-col gap-4 rounded-2xl border border-[var(--wk-border)] bg-[var(--wk-surface)] p-5">
