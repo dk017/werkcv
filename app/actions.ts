@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { cvSchema, CVData, defaultCV } from '@/lib/cv'
 import { buildCheckoutURL, CheckoutAddon, CheckoutProduct, JOB_PASS_CHECKOUT_PRODUCT, parseCheckoutAddons, parseCheckoutProduct } from '@/lib/polar'
 import { buildDodoCheckoutURL, isDodoEnabledForCheckout, isJobPassOffered } from '@/lib/dodo'
-import { isCoveredByJobPass, jobPassStatusFrom } from '@/lib/job-pass'
+import { isCoveredByJobPass, jobPassStatusFrom, shouldOfferJobPass } from '@/lib/job-pass'
 import { getJobPassPaidAts } from '@/lib/job-pass-server'
 import { getCurrentUser } from '@/lib/auth'
 import { reportOpsIncident } from '@/lib/ops-alerts'
@@ -128,6 +128,13 @@ export async function getCVWithSettings(id: string, expectedWorkspace?: 'persona
         }
     }
     const downloadIncluded = await hasCvDownloadAccess(user.id, id, cv.workspace.kind);
+    // The "Sollicitatiepas" choice before checkout: only when it is for sale, this CV still needs
+    // paying, and the person already has several CVs or came through a pass link (shouldOfferJobPass).
+    const jobPassOffered = !downloadIncluded && cv.workspace.kind === 'personal' && isJobPassOffered()
+        && shouldOfferJobPass({
+            personalCvCount: await prisma.cVDocument.count({ where: { userId: user.id, agencySubscriptionId: null } }),
+            startSource: cv.startSource,
+        });
     return {
         data: cv.data as unknown as CVData,
         contentVersion: cvContentVersion(cv.data),
@@ -137,8 +144,7 @@ export async function getCVWithSettings(id: string, expectedWorkspace?: 'persona
         workspace: cv.workspace,
         // Already paid (or free): the editor then shows the download button without a price.
         downloadIncluded,
-        // Show the "Sollicitatiepas" choice at checkout only when it is for sale and this CV still needs paying.
-        jobPassOffered: !downloadIncluded && cv.workspace.kind === 'personal' && isJobPassOffered(),
+        jobPassOffered,
         workspaceContext: {
             kind: isMatchPack ? 'matchpack' as const : 'personal' as const,
             label: isMatchPack ? 'MatchPack' : 'Persoonlijke CV',

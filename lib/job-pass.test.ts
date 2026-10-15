@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { isCoveredByJobPass, jobPassExpiry, jobPassStatusFrom } from "./job-pass";
+import { isCoveredByJobPass, jobPassExpiry, jobPassStatusFrom, shouldOfferJobPass } from "./job-pass";
 
 const paidAt = new Date("2026-10-01T12:00:00Z");
 const day = 86_400_000;
@@ -31,4 +31,12 @@ test("status reports days left and turns inactive at expiry", () => {
     daysLeft: 0,
   });
   assert.deepEqual(jobPassStatusFrom([]), { active: false, expiresAt: null, daysLeft: 0 });
+});
+
+test("the pass choice is shown from the third CV, or after a pass link", () => {
+  assert.equal(shouldOfferJobPass({ personalCvCount: 1 }), false);
+  assert.equal(shouldOfferJobPass({ personalCvCount: 2, startSource: "home_hero_primary" }), false);
+  assert.equal(shouldOfferJobPass({ personalCvCount: 3 }), true);
+  assert.equal(shouldOfferJobPass({ personalCvCount: 1, startSource: "job_pass_sponsor_list_hub" }), true);
+  assert.equal(shouldOfferJobPass({ personalCvCount: 1, startSource: null }), false);
 });
