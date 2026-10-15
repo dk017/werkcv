@@ -1,6 +1,8 @@
 import type { CVData } from "@/lib/cv";
 import type { EditorStepId } from "@/lib/editor-steps";
 import { getResumeLanguage } from "@/lib/resume-language";
+import { cvDataToCheckText } from "./cv-data-text";
+import { hasConsistentDateFormat } from "./date-formats";
 
 /**
  * The CV-check findings as a to-do list in the improve editor. Each failed check gets one action:
@@ -89,14 +91,12 @@ export function normalizeResumeDate(value: string, language: "nl" | "en"): strin
   return value;
 }
 
-/** Every period on the CV in one date style (experience, education, internships, side activities). */
-export function normalizeCvDates(data: CVData): CVData {
+type PeriodSection = "experience" | "education" | "internships" | "sideActivities";
+type Period = { start: string; end: string };
+
+function mapCvDates(data: CVData, map: (value: string, language: "nl" | "en") => string): CVData {
   const language = getResumeLanguage(data);
-  const period = <T extends { start: string; end: string }>(item: T): T => ({
-    ...item,
-    start: normalizeResumeDate(item.start, language),
-    end: normalizeResumeDate(item.end, language),
-  });
+  const period = <T extends Period>(item: T): T => ({ ...item, start: map(item.start, language), end: map(item.end, language) });
   return {
     ...data,
     experience: data.experience.map(period),
@@ -104,6 +104,63 @@ export function normalizeCvDates(data: CVData): CVData {
     internships: data.internships.map(period),
     sideActivities: data.sideActivities?.map(period),
   };
+}
+
+/** Every period on the CV in one date style (experience, education, internships, side activities). */
+export function normalizeCvDates(data: CVData): CVData {
+  return mapCvDates(data, normalizeResumeDate);
+}
+
+const isMonthDate = (value: string, language: "nl" | "en") => {
+  const parts = value.trim().split(" ");
+  return parts.length === 2 && /^\d{4}$/.test(parts[1]) && SHORT[language].includes(parts[0]);
+};
+const isYear = (value: string) => /^\d{4}$/.test(value.trim());
+
+/** One date as its year only ("aug 2021" becomes "2021"); "heden" and free text ("zomer 2016") stay. */
+export function yearOnlyResumeDate(value: string, language: "nl" | "en"): string {
+  const normalized = normalizeResumeDate(value, language);
+  return isMonthDate(normalized, language) ? normalized.trim().split(" ")[1] : normalized;
+}
+
+/** Every period as years only ("2022 – heden"): the one style a CV with year-only periods supports without inventing months. */
+export function yearOnlyCvDates(data: CVData): CVData {
+  return mapCvDates(data, yearOnlyResumeDate);
+}
+
+export type MissingMonthPeriod = { section: PeriodSection; index: number; label: string; period: string };
+
+/**
+ * What the date to-do can do for this CV. "auto": putting the dates in one style makes the check pass.
+ * "months": it cannot, because periods with only a year sit next to periods with a month. The person
+ * adds the months (`missing`) or, when that passes the check (`yearsOnly`), switches every period to
+ * years only. Decided with the check's own detector on the text the grade reads, so it matches the grade.
+ */
+export type DateFix = { kind: "auto" } | { kind: "months"; missing: MissingMonthPeriod[]; yearsOnly: boolean };
+
+export function planDateFix(data: CVData): DateFix {
+  const normalized = normalizeCvDates(data);
+  if (hasConsistentDateFormat(cvDataToCheckText(normalized))) return { kind: "auto" };
+
+  const language = getResumeLanguage(data);
+  const sections: Array<[PeriodSection, Array<Period & { label: string }>]> = [
+    ["experience", normalized.experience.map((item) => ({ ...item, label: item.role || item.company }))],
+    ["internships", normalized.internships.map((item) => ({ ...item, label: item.role || item.company }))],
+    ["education", normalized.education.map((item) => ({ ...item, label: item.degree || item.school }))],
+    ["sideActivities", (normalized.sideActivities ?? []).map((item) => ({ ...item, label: item.title || item.organization }))],
+  ];
+  const hasMonths = sections.some(([, items]) => items.some((item) => isMonthDate(item.start, language) || isMonthDate(item.end, language)));
+  const missing: MissingMonthPeriod[] = [];
+  if (hasMonths) {
+    for (const [section, items] of sections) {
+      items.forEach((item, index) => {
+        if (!isYear(item.start) && !isYear(item.end)) return;
+        const period = [item.start.trim(), item.end.trim()].filter(Boolean).join(" – ");
+        missing.push({ section, index, label: item.label.trim() || period, period });
+      });
+    }
+  }
+  return { kind: "months", missing, yearsOnly: hasConsistentDateFormat(cvDataToCheckText(yearOnlyCvDates(data))) };
 }
 
 export function profileWordCount(data: CVData): number {

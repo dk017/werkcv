@@ -344,3 +344,10 @@ test("years of experience are recognised as digits and as spelled-out numbers, i
     "Gedreven en resultaatgericht", "Bijna vijfhonderd klanten per jaar", "Winner of the one year award",
   ]) assert.equal(hasYearsOfExperience(text), false, text);
 });
+
+test("date check: a birth date is not a period style, year-only periods next to it stay consistent", async () => {
+  const { detectDateFormats } = await import("./date-formats");
+  assert.equal(detectDateFormats(["Geboortedatum: 15 maart 1994, Naarden", "2020 - heden", "2016 - 2020"]).size, 1);
+  assert.equal(detectDateFormats(["Date of Birth: 15-03-1994", "2020 - current"]).size, 1);
+  assert.equal(detectDateFormats(["aug 2021 - heden", "2016 - 2020"]).size, 2);
+});

@@ -1,5 +1,6 @@
 import { cvDownloadPrice } from "@/lib/site-content";
 import openai from "@/lib/openai-client";
+import { detectDateFormats } from "@/lib/cv-check/date-formats";
 
 export type CvScoreStatus = "good" | "improvement" | "critical";
 export type CvScoreSeverity = "critical" | "improvement" | "passed";
@@ -359,20 +360,6 @@ const DUTCH_CITY_NAMES = [
   "venlo",
   "leeuwarden",
   "roosendaal",
-];
-
-const DUTCH_MONTHS = [
-  "jan", "januari", "feb", "februari", "mrt", "maart", "apr", "april",
-  "mei", "jun", "juni", "jul", "juli", "aug", "augustus", "sep", "sept",
-  "september", "okt", "oktober", "nov", "november", "dec", "december",
-  "present", "heden", "nu",
-];
-
-const ENGLISH_MONTHS = [
-  "jan", "january", "feb", "february", "mar", "march", "apr", "april",
-  "may", "jun", "june", "jul", "july", "aug", "august", "sep", "sept",
-  "september", "oct", "october", "nov", "november", "dec", "december",
-  "present", "current",
 ];
 
 const DUTCH_FUNCTION_WORDS = [
@@ -1487,40 +1474,6 @@ function getIssueSeverity(dimensionId: string, check: CvScoreCheck): CvScoreSeve
   }
 
   return "improvement";
-}
-
-function detectDateFormats(lines: string[]): Set<string> {
-  const formats = new Set<string>();
-
-  for (const line of lines) {
-    const normalized = normalizeForMatching(line);
-
-    if (new RegExp(`\\b(?:${[...DUTCH_MONTHS, ...ENGLISH_MONTHS].join("|")})\\s+\\d{4}\\b`, "i").test(normalized)) {
-      formats.add("month_name");
-      // A numeric date in the same period ("2018-08 - juli 2021") is a second style too.
-      if (/\b\d{4}[-/]\d{1,2}\b/.test(normalized)) formats.add("year_month");
-      if (/\b\d{1,2}[-/]\d{4}\b/.test(normalized)) formats.add("month_year_numeric");
-      continue;
-    }
-
-    if (/\b\d{4}[-/]\d{1,2}\b/.test(normalized)) {
-      formats.add("year_month");
-      continue;
-    }
-
-    if (/\b\d{1,2}[-/]\d{4}\b/.test(normalized)) {
-      formats.add("month_year_numeric");
-      continue;
-    }
-
-    // Only a period counts as a date style: a lone year ("Kanjertraining, 2021") is how courses and
-    // awards are listed and is not an inconsistency next to "aug 2021 - heden".
-    if (/\b\d{4}\s*[-–]\s*(?:\d{4}|heden|nu|present|current)\b/.test(normalized)) {
-      formats.add("year_only");
-    }
-  }
-
-  return formats;
 }
 
 function countBuzzwords(

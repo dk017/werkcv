@@ -4,8 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { track } from "@/lib/analytics";
 import type { CVData } from "@/lib/cv";
 import type { HandedOverCheck } from "@/lib/cv-check/handoff";
-import { normalizeCvDates, profileWordCount, todoActionFor, type TodoInputField } from "@/lib/cv-check/improve-todo";
-import { EDITOR_STEP_COPY, type EditorStepId } from "@/lib/editor-steps";
+import { normalizeCvDates, planDateFix, profileWordCount, todoActionFor, yearOnlyCvDates, type TodoInputField } from "@/lib/cv-check/improve-todo";
+import { EDITOR_STEP_COPY, stepForSection, type EditorStepId } from "@/lib/editor-steps";
 import type { CvGrade } from "./useCvGrade";
 
 // The CV-check as a to-do list in the editor. After a CV-check the items are that check's findings;
@@ -32,6 +32,10 @@ const COPY = {
     words: (count: number) => `Nu ${count} woorden, doel 50–120.`,
     placeholders: { linkedIn: "linkedin.com/in/jouw-naam", location: "Woonplaats", phone: "06-12345678", email: "naam@voorbeeld.nl" },
     autoHint: "We zetten alle periodes in één notatie, zoals “aug 2021 – heden”.",
+    monthsHint: "Deze periodes hebben alleen een jaartal. Vul de maand aan, zoals “mrt 2017”, dan staan alle periodes in één notatie:",
+    moreMissing: (count: number) => `en nog ${count}`,
+    yearsOnlyHint: "Weet je de maanden niet meer? Gebruik dan overal alleen jaartallen, zoals “2022 – heden”.",
+    yearsOnly: "Alleen jaartallen",
     method: "Zelfde cijfer als de gratis CV-check",
   },
   en: {
@@ -51,6 +55,10 @@ const COPY = {
     words: (count: number) => `Now ${count} words, aim for 50–120.`,
     placeholders: { linkedIn: "linkedin.com/in/your-name", location: "City", phone: "+31 6 12345678", email: "name@example.com" },
     autoHint: "We put every period in one style, such as “Aug 2021 – present”.",
+    monthsHint: "These periods only have a year. Add the month, such as “Mar 2017”, so every period has one style:",
+    moreMissing: (count: number) => `and ${count} more`,
+    yearsOnlyHint: "Don't remember the months? Then use years only everywhere, such as “2022 – present”.",
+    yearsOnly: "Years only",
     method: "Same grade as the free CV check",
   },
 } as const;
@@ -105,6 +113,9 @@ export default function CheckTodoPanel({
   const items: Item[] = useMemo(() => (mode === "check" ? (checks ?? []) : liveItems), [mode, checks, liveItems]);
   const isDone = (id: string) => Boolean(failed && !failed.has(id));
   const doneCount = items.filter((item) => isDone(item.id)).length;
+  // Whether "Pas toe" can fix the dates, or months are missing that only the person knows.
+  const hasDateItem = items.some((item) => todoActionFor(item.id).kind === "auto");
+  const dateFix = useMemo(() => (hasDateItem ? planDateFix(data) : null), [hasDateItem, data]);
 
   // Analytics: one view per mount once graded, and each item that becomes done.
   const viewedRef = useRef(false);
@@ -130,9 +141,66 @@ export default function CheckTodoPanel({
   if (grade.status === "loading" || grade.status === "error") return null;
   const improved = grade.status === "ok" && grade.grade > grade.firstGrade;
 
+  const renderDateMonths = (item: Item, fix: Extract<NonNullable<typeof dateFix>, { kind: "months" }>) => {
+    const step = fix.missing.length ? stepForSection(fix.missing[0].section) : "werkervaring";
+    const shown = fix.missing.slice(0, 3);
+    return (
+      <>
+        {fix.missing.length > 0 ? (
+          <>
+            <p className="mt-1 text-[13px] leading-snug text-[var(--wk-ink-muted)]">{copy.monthsHint}</p>
+            <ul className="mt-1 space-y-0.5 text-[13px] text-[var(--wk-ink)]">
+              {shown.map((period) => (
+                <li key={`${period.section}-${period.index}`}>
+                  <span className="font-bold">{period.label}</span>: {period.period}
+                </li>
+              ))}
+              {fix.missing.length > shown.length && <li className="text-[var(--wk-ink-muted)]">{copy.moreMissing(fix.missing.length - shown.length)}</li>}
+            </ul>
+          </>
+        ) : (
+          item.fix && <p className="mt-1 text-[13px] leading-snug text-[var(--wk-ink-muted)]">{item.fix}</p>
+        )}
+        {fix.yearsOnly && <p className="mt-1 text-[13px] leading-snug text-[var(--wk-ink-muted)]">{copy.yearsOnlyHint}</p>}
+        <div className="mt-2 flex flex-wrap gap-2">
+          <button
+            type="button"
+            className="wk-button wk-button-primary wk-button-small"
+            onClick={() => {
+              track("cta_clicked", { location: "cv_check_todo", label: `date_months_${step}` });
+              onGoToStep(step);
+            }}
+          >
+            {copy.goTo(EDITOR_STEP_COPY[locale][step].label.toLowerCase())}
+          </button>
+          {fix.yearsOnly && (
+            <button
+              type="button"
+              className="wk-button wk-button-secondary wk-button-small"
+              onClick={() => {
+                track("cta_clicked", { location: "cv_check_todo", label: "auto_years_only" });
+                onApplyData(yearOnlyCvDates(data));
+              }}
+            >
+              {copy.yearsOnly}
+            </button>
+          )}
+        </div>
+      </>
+    );
+  };
+
   const renderItem = (item: Item) => {
     const done = isDone(item.id);
     const action = todoActionFor(item.id);
+    if (!done && action.kind === "auto" && dateFix?.kind === "months") {
+      return (
+        <li key={item.id} className="rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-3">
+          <p className="text-[14px] font-bold text-[var(--wk-ink)]">{item.label}</p>
+          {renderDateMonths(item, dateFix)}
+        </li>
+      );
+    }
     return (
       <li key={item.id} className={`rounded-[var(--wk-radius-md)] border p-3 ${done ? "border-[#9fd2b8] bg-[var(--wk-success-soft)]" : "border-[var(--wk-border)] bg-[var(--wk-surface)]"}`}>
         <p className="text-[14px] font-bold text-[var(--wk-ink)]">{item.label}</p>
