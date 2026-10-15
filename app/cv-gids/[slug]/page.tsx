@@ -11,6 +11,7 @@ import { UseExampleButton } from '@/components/cv-voorbeelden/UseExampleButton';
 import { RoleCvPrefillPanel } from '@/components/cv-voorbeelden/RoleCvPrefillPanel';
 import { zzpCvSample } from '@/lib/cv-samples/zzp-cv';
 import { getWavePageRoleConversion } from '@/lib/role-cv-conversions';
+import { cvDownloadPrice } from '@/lib/site-content';
 
 type PageProps = {
     params: Promise<{ slug: string }>;
@@ -71,6 +72,9 @@ export default async function DutchWavePage({ params }: PageProps) {
     const metaDesc = normalizeBrandCopy(page.metaDesc);
     const isZzpExample = page.slug === 'cv-voorbeeld-zzper';
     const roleConversion = getWavePageRoleConversion(page.slug);
+    // Comparison pages (WerkCV vs X, builder choice): straight into the editor, with the price on the
+    // first screen. Visitors comparing builders mostly want to know what it costs.
+    const isComparison = page.slug.startsWith('werkcv-vs-') || page.slug === 'beste-cv-builder-zonder-abonnement' || page.slug === 'welke-cv-builder-past-bij-jou-in-nederland';
     const heroProofPoints = [
         isZzpExample || roleConversion ? 'Vooraf ingevuld CV-voorbeeld' : 'Maak dit CV in 5 minuten',
         'ATS-vriendelijke templates',
@@ -178,6 +182,13 @@ export default async function DutchWavePage({ params }: PageProps) {
                                         label={`Open ingevuld ${roleConversion.roleLabel} CV`}
                                         startSource="role_example_page"
                                     />
+                                ) : isComparison ? (
+                                    <Link
+                                        href={`/editor?template=professional&startSource=vs_${page.slug}`}
+                                        className="wk-button wk-button-primary"
+                                    >
+                                        Maak je cv, gratis beginnen
+                                    </Link>
                                 ) : (
                                     <Link
                                         href={`${page.ctaHref}#quick-start`}
@@ -193,6 +204,11 @@ export default async function DutchWavePage({ params }: PageProps) {
                                     Kies de juiste template
                                 </Link>
                             </div>
+                            {isComparison ? (
+                                <p className="mt-3 text-sm font-semibold text-[var(--wk-ink)]">
+                                    Gratis bouwen en bekijken. Pas bij downloaden betaal je {cvDownloadPrice.display} eenmalig, geen abonnement.
+                                </p>
+                            ) : null}
 
                             <div className="mt-8 grid gap-3 sm:grid-cols-3">
                                 {heroProofPoints.map((item) => (
