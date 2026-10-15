@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type RefObject } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type RefObject } from "react";
 import Link from "next/link";
 import { Icon } from "@/components/app/icons";
 import { CONTENT_STEPS, EDITOR_STEP_COPY, type EditorStepId } from "@/lib/editor-steps";
@@ -13,15 +13,26 @@ const TOP_BAR_COPY = {
 
 export type StepsSaveState = "saved" | "saving" | "problem";
 
-function SaveStatus({ state, locale, savedLabel }: { state: StepsSaveState; locale: AppLocale; savedLabel?: string }) {
+// How far the bar is squeezed to fit its row: 0 spells everything out, 1 shows the save status as an
+// icon, 2 tightens the step pills, 3 shows the other steps as numbers, 4 shows the
+// "Formulier | Op je CV" switch as icons. The download button always keeps its label.
+const MAX_DENSITY = 4;
+
+function SaveStatus({ state, locale, savedLabel, compact }: { state: StepsSaveState; locale: AppLocale; savedLabel?: string; compact: boolean }) {
     const c = TOP_BAR_COPY[locale];
     if (state === "problem") {
-        return <span role="status" className="hidden text-[13px] font-semibold text-[var(--wk-danger)] sm:inline">{c.notSaved}</span>;
+        // Always spelled out: the person has to notice this one.
+        return <span role="status" className="hidden whitespace-nowrap text-[13px] font-semibold text-[var(--wk-danger)] sm:inline">{c.notSaved}</span>;
     }
+    const label = state === "saved" ? savedLabel ?? c.saved : c.saving;
     return (
-        <span role="status" className={`hidden items-center gap-1.5 text-[13px] font-semibold sm:inline-flex ${state === "saved" ? "text-[var(--wk-success)]" : "text-[var(--wk-ink-muted)]"}`}>
-            {state === "saved" ? <Icon name="check" size={16} strokeWidth={2.2} /> : null}
-            {state === "saved" ? savedLabel ?? c.saved : c.saving}
+        <span
+            role="status"
+            title={compact ? label : undefined}
+            className={`hidden items-center gap-1.5 whitespace-nowrap text-[13px] font-semibold sm:inline-flex ${compact ? "h-10 w-6 justify-center" : ""} ${state === "saved" ? "text-[var(--wk-success)]" : "text-[var(--wk-ink-muted)]"}`}
+        >
+            {state === "saved" ? <Icon name="check" size={16} strokeWidth={2.2} aria-hidden="true" /> : compact ? <span aria-hidden="true" className="h-2 w-2 animate-pulse rounded-full bg-current" /> : null}
+            <span className={compact ? "sr-only" : undefined}>{label}</span>
         </span>
     );
 }
@@ -77,16 +88,78 @@ export default function StepsTopBar({
 }) {
     const c = TOP_BAR_COPY[locale];
     const stepCopy = EDITOR_STEP_COPY[locale];
+    const headerRef = useRef<HTMLElement>(null);
     const navRef = useRef<HTMLElement>(null);
+    const documentTitleRef = useRef<HTMLParagraphElement>(null);
+    const [barWidth, setBarWidth] = useState(0);
+    const [fontsReady, setFontsReady] = useState(false);
+    const [edges, setEdges] = useState({ start: false, end: false });
 
-    // On narrow screens the step list scrolls sideways: keep the current step visible.
     useEffect(() => {
-        const current = navRef.current?.querySelector<HTMLElement>('[aria-current="step"]');
-        current?.scrollIntoView({ block: "nearest", inline: "center" });
-    }, [activeStep]);
+        const header = headerRef.current;
+        if (!header) return;
+        const update = () => setBarWidth(Math.round(header.getBoundingClientRect().width));
+        update();
+        if (typeof ResizeObserver === "undefined") {
+            window.addEventListener("resize", update);
+            return () => window.removeEventListener("resize", update);
+        }
+        const observer = new ResizeObserver(update);
+        observer.observe(header);
+        return () => observer.disconnect();
+    }, []);
+
+    // Labels get wider once the web font is in.
+    useEffect(() => {
+        let cancelled = false;
+        document.fonts?.ready.then(() => {
+            if (!cancelled) setFontsReady(true);
+        });
+        return () => {
+            cancelled = true;
+        };
+    }, []);
+
+    // Squeeze the bar one level at a time until the steps (or the "Op je CV" title) fit. Everything that
+    // changes a width is in the key, so the bar starts spelled out again whenever one of them changes.
+    // Layout effects run before paint, so the in-between levels never show.
+    const fitKey = [barWidth, fontsReady, mode, activeStep, locale, gradeLabel, saveState, saveLabel, downloadLabel, isDownloading, priceCaption, Boolean(onUpload), Boolean(onModeChange)].join("|");
+    const [fit, setFit] = useState({ key: "", density: 0 });
+    const density = fit.key === fitKey ? fit.density : 0;
+
+    const updateEdges = () => {
+        const nav = navRef.current;
+        const next = nav
+            ? { start: nav.scrollLeft > 1, end: nav.scrollLeft + nav.clientWidth < nav.scrollWidth - 1 }
+            : { start: false, end: false };
+        setEdges((prev) => (prev.start === next.start && prev.end === next.end ? prev : next));
+    };
+
+    useLayoutEffect(() => {
+        const target = mode === "document" ? documentTitleRef.current : navRef.current;
+        if (target && density < MAX_DENSITY && target.scrollWidth > target.clientWidth + 1) {
+            // Measuring layout and adjusting before paint is what layout effects are for.
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setFit({ key: fitKey, density: density + 1 });
+            return;
+        }
+        if (fit.key !== fitKey) setFit({ key: fitKey, density });
+        // When it still does not fit (small screens), the step list scrolls sideways: keep the current step visible.
+        navRef.current?.querySelector<HTMLElement>('[aria-current="step"]')?.scrollIntoView({ block: "nearest", inline: "center" });
+        updateEdges();
+    }, [density, fitKey, fit.key, mode]);
+
+    const tightSteps = density >= 2;
+    const stepNumbersOnly = density >= 3;
+    const modeIconsOnly = density >= 4;
+
+    const fadeWidth = "28px";
+    const navMask = edges.start || edges.end
+        ? `linear-gradient(to right, ${edges.start ? `transparent, #000 ${fadeWidth}` : "#000"}, ${edges.end ? `#000 calc(100% - ${fadeWidth}), transparent` : "#000"})`
+        : undefined;
 
     return (
-        <header className="werkcv-brand z-40 shrink-0 border-b border-[var(--wk-border)] bg-[var(--wk-surface)]" style={{ minHeight: 0 }}>
+        <header ref={headerRef} className="werkcv-brand z-40 shrink-0 border-b border-[var(--wk-border)] bg-[var(--wk-surface)]" style={{ minHeight: 0 }}>
             <div className="flex items-center gap-3 px-3 py-2 sm:px-5">
                 {dashboardHref === null ? (
                     <span aria-hidden="true" className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] bg-[var(--wk-primary)] text-[15px] font-extrabold text-white">
@@ -105,12 +178,18 @@ export default function StepsTopBar({
 
                 {mode === "document" ? (
                     <div className="min-w-0 flex-1">
-                        <p className="truncate text-[15px] font-extrabold text-[var(--wk-ink)]">{c.documentTitle}</p>
+                        <p ref={documentTitleRef} className="truncate text-[15px] font-extrabold text-[var(--wk-ink)]">{c.documentTitle}</p>
                         <p className="truncate text-[12px] font-medium text-[var(--wk-ink-muted)]">{c.documentHint}</p>
                     </div>
                 ) : (
-                <nav ref={navRef} aria-label={c.steps} className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none]">
-                    <ol className="flex w-max items-center gap-1 xl:mx-auto">
+                <nav
+                    ref={navRef}
+                    aria-label={c.steps}
+                    onScroll={updateEdges}
+                    className="min-w-0 flex-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                    style={navMask ? { maskImage: navMask, WebkitMaskImage: navMask } : undefined}
+                >
+                    <ol className={`flex w-max items-center xl:mx-auto ${tightSteps ? "gap-0.5" : "gap-1"}`}>
                         {CONTENT_STEPS.map((step, index) => {
                             const current = step === activeStep;
                             const done = stepStates[step];
@@ -120,7 +199,8 @@ export default function StepsTopBar({
                                         type="button"
                                         onClick={() => onStep(step)}
                                         aria-current={current ? "step" : undefined}
-                                        className={`inline-flex min-h-10 items-center gap-2 rounded-full px-2.5 text-sm font-bold transition-colors ${current
+                                        title={current ? undefined : stepCopy[step].label}
+                                        className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full text-sm ${tightSteps ? "gap-1.5 px-2" : "gap-2 px-2.5"} font-bold transition-colors ${current
                                             ? "bg-[var(--wk-primary)] text-white"
                                             : "text-[#3c4744] hover:bg-[var(--wk-surface-subtle)]"}`}
                                     >
@@ -134,19 +214,19 @@ export default function StepsTopBar({
                                         >
                                             {done && !current ? <Icon name="check" size={13} strokeWidth={2.6} /> : index + 1}
                                         </span>
-                                        <span className={current ? "" : "sr-only xl:not-sr-only"}>{stepCopy[step].label}</span>
+                                        <span className={current ? "" : stepNumbersOnly ? "sr-only" : "sr-only xl:not-sr-only"}>{stepCopy[step].label}</span>
                                         {done && !current ? <span className="sr-only"> ({c.done})</span> : null}
                                     </button>
                                 </li>
                             );
                         })}
-                        <li aria-hidden="true" className="mx-1.5 h-6 w-px bg-[var(--wk-border)]" />
+                        <li aria-hidden="true" className={`h-6 w-px bg-[var(--wk-border)] ${tightSteps ? "mx-1" : "mx-1.5"}`} />
                         <li>
                             <button
                                 type="button"
                                 onClick={() => onStep("afronden")}
                                 aria-current={activeStep === "afronden" ? "step" : undefined}
-                                className={`inline-flex min-h-10 items-center rounded-full px-3.5 text-sm font-bold transition-colors ${activeStep === "afronden"
+                                className={`inline-flex min-h-10 items-center whitespace-nowrap rounded-full text-sm font-bold transition-colors ${tightSteps ? "px-3" : "px-3.5"} ${activeStep === "afronden"
                                     ? "bg-[var(--wk-primary)] text-white"
                                     : "text-[#3c4744] hover:bg-[var(--wk-surface-subtle)]"}`}
                             >
@@ -166,12 +246,13 @@ export default function StepsTopBar({
                                 role="radio"
                                 aria-checked={mode === option}
                                 onClick={() => onModeChange(option)}
-                                className={`inline-flex min-h-9 items-center gap-1.5 rounded-full px-3.5 text-[13px] font-bold transition-colors ${mode === option
+                                title={modeIconsOnly ? (option === "form" ? c.form : c.document) : undefined}
+                                className={`inline-flex min-h-9 items-center gap-1.5 whitespace-nowrap rounded-full text-[13px] font-bold transition-colors ${modeIconsOnly ? "px-2.5" : "px-3.5"} ${mode === option
                                     ? "bg-[var(--wk-surface)] text-[var(--wk-primary)] shadow-sm"
                                     : "text-[var(--wk-ink-muted)] hover:text-[var(--wk-ink)]"}`}
                             >
                                 <Icon name={option === "form" ? "menu" : "pencil"} size={15} aria-hidden="true" />
-                                {option === "form" ? c.form : c.document}
+                                <span className={modeIconsOnly ? "sr-only" : undefined}>{option === "form" ? c.form : c.document}</span>
                             </button>
                         ))}
                     </div>
@@ -187,7 +268,7 @@ export default function StepsTopBar({
                             {gradeLabel}
                         </button>
                     ) : null}
-                    <SaveStatus state={saveState} locale={locale} savedLabel={saveLabel} />
+                    <SaveStatus state={saveState} locale={locale} savedLabel={saveLabel} compact={density >= 1} />
                     {onUpload ? (
                         <button
                             type="button"
@@ -215,7 +296,7 @@ export default function StepsTopBar({
                             onClick={onDownload}
                             disabled={downloadDisabled}
                             aria-label={isDownloading ? c.busy : downloadLabel}
-                            className="inline-flex min-h-10 items-center gap-2 rounded-[10px] bg-[var(--wk-primary)] px-3 text-sm font-bold text-white hover:bg-[var(--wk-primary-hover)] disabled:opacity-50 sm:px-4"
+                            className="inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-[10px] bg-[var(--wk-primary)] px-3 text-sm font-bold text-white hover:bg-[var(--wk-primary-hover)] disabled:opacity-50 sm:px-4"
                         >
                             <Icon name="download" size={17} strokeWidth={2} />
                             <span className="hidden sm:inline">{isDownloading ? c.busy : downloadLabel}</span>
