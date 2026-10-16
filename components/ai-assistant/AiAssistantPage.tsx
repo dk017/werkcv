@@ -26,7 +26,7 @@ const COPY = {
     ],
     privacyTitle: "Privacy",
     privacy:
-      "De check en de vacaturevergelijking bewaren je cv niet. Alleen voor de editorlink bewaren we de tekst tijdelijk (maximaal 60 minuten, en weg zodra de link is geopend). Meer in onze",
+      "De check en de vacaturevergelijking bewaren je cv niet. Voor de vacaturevergelijking gaat de tekst naar OpenAI voor de analyse. Alleen voor de editorlink bewaren we de tekst tijdelijk (maximaal 60 minuten, en weg zodra de link is geopend). We registreren alleen aantallen, nooit de tekst. Meer in onze",
     privacyLink: "privacyverklaring",
     costTitle: "Kosten",
     cost: `De koppeling is gratis. In de editor bouw en bekijk je je cv ook gratis; de PDF downloaden kost ${cvDownloadPrice.display}, eenmalig en zonder abonnement.`,
@@ -54,7 +54,7 @@ const COPY = {
     ],
     privacyTitle: "Privacy",
     privacy:
-      "The check and the vacancy comparison do not store your CV. Only the editor link keeps the text for a short time (at most 60 minutes, gone once the link is opened). More in our",
+      "The check and the vacancy comparison do not store your CV. For the vacancy comparison the text is sent to OpenAI for the analysis. Only the editor link keeps the text for a short time (at most 60 minutes, gone once the link is opened). We record only counts, never the text. More in our",
     privacyLink: "privacy policy",
     costTitle: "Cost",
     cost: `The connector is free. Building and previewing your CV in the editor is free too; downloading the PDF costs ${cvDownloadPrice.displayEn}, one-time, no subscription.`,
