@@ -1,8 +1,12 @@
 import { afterEach, beforeEach, describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { defaultCV } from "./cv";
+import { defaultCV, sampleCV } from "./cv";
+import { PENDING_EXAMPLE_CV_STORAGE_KEY } from "./pending-example-cv";
+import { getDefaultThemeId } from "./templates/registry";
 import {
   PUBLIC_DRAFT_LAST_ID_KEY,
+  adoptPendingExampleIntoPublicDraft,
+  takeAdoptedPendingExample,
   PUBLIC_DRAFT_MAX_AGE_MS,
   clearPublicDraft,
   createPublicDraftId,
@@ -122,5 +126,53 @@ describe("public CV draft storage", () => {
   it("treats an unreadable date as expired", () => {
     assert.equal(isPublicDraftExpired("not a date"), true);
     assert.equal(isPublicDraftExpired(new Date().toISOString()), false);
+  });
+});
+
+describe("an example chosen without an account", () => {
+  const source = "public_editor_build_first_nl";
+  const pending = (overrides: Record<string, unknown> = {}) => JSON.stringify({
+    templateId: "professional",
+    colorThemeId: getDefaultThemeId("professional"),
+    sampleCV,
+    startSource: "example_page",
+    pagePath: "/cv-voorbeelden/zorg-en-welzijn/verpleegkundige",
+    uiLanguage: "nl",
+    ...overrides,
+  });
+
+  it("becomes the draft of the no-account editor, once", () => {
+    session.setItem(PENDING_EXAMPLE_CV_STORAGE_KEY, pending());
+    const adopted = adoptPendingExampleIntoPublicDraft(source, { locale: "nl", flow: "consumer" });
+    assert.ok(adopted);
+    assert.equal(session.getItem(PENDING_EXAMPLE_CV_STORAGE_KEY), null);
+    assert.equal(readPublicDraftIdForSource(source), adopted.draftId);
+    const draft = readPublicDraft(adopted.draftId);
+    assert.equal(draft?.data.personal.name, sampleCV.personal.name);
+    assert.equal(draft?.startSource, "example_page");
+    assert.equal(draft?.templateId, "professional");
+    assert.deepEqual(takeAdoptedPendingExample(), adopted);
+    assert.equal(takeAdoptedPendingExample(), null);
+    assert.equal(adoptPendingExampleIntoPublicDraft(source, { locale: "nl", flow: "consumer" }), null);
+  });
+
+  it("starts a new draft and leaves an earlier draft stored", () => {
+    const earlier = snapshot({ source });
+    savePublicDraft(earlier);
+    session.setItem(PENDING_EXAMPLE_CV_STORAGE_KEY, pending());
+    const adopted = adoptPendingExampleIntoPublicDraft(source, { locale: "nl", flow: "consumer" });
+    assert.ok(adopted && adopted.draftId !== earlier.draftId);
+    assert.equal(readPublicDraftIdForSource(source), adopted.draftId);
+    assert.ok(readPublicDraft(earlier.draftId));
+  });
+
+  it("ignores a blank template and an invalid record, and removes both", () => {
+    session.setItem(PENDING_EXAMPLE_CV_STORAGE_KEY, pending({ sampleCV: undefined, startSource: "example_blank_template" }));
+    assert.equal(adoptPendingExampleIntoPublicDraft(source, { locale: "nl", flow: "consumer" }), null);
+    assert.equal(session.getItem(PENDING_EXAMPLE_CV_STORAGE_KEY), null);
+    session.setItem(PENDING_EXAMPLE_CV_STORAGE_KEY, pending({ templateId: "does-not-exist" }));
+    assert.equal(adoptPendingExampleIntoPublicDraft(source, { locale: "nl", flow: "consumer" }), null);
+    assert.equal(session.getItem(PENDING_EXAMPLE_CV_STORAGE_KEY), null);
+    assert.equal(readPublicDraftIdForSource(source), null);
   });
 });

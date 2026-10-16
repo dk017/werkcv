@@ -17,9 +17,10 @@ export function parseBuildFirstArm(value: string | undefined): BuildFirstArm | n
   return value === "on" || value === "off" ? value : null;
 }
 
-// Starts that rely on something applied after login (an example CV, a tool handoff, an agency
-// workspace) keep the login-first route.
-const LOGIN_FIRST_START = /(example|linkedin|salary_role|role|handoff|agency|matchpack|workspace|claim|public:)/i;
+// Starts that rely on something applied after login (a tool handoff, an agency workspace, a claim)
+// keep the login-first route. Example, role and LinkedIn starts are eligible since 16 Oct 2026: their
+// pending CV becomes a browser draft in the no-account editor (adoptPendingExampleIntoPublicDraft).
+const LOGIN_FIRST_START = /(handoff|agency|matchpack|workspace|claim|public:)/i;
 
 /** Whether this /editor visit can open the no-account editor at all (both arms are counted only when it can). */
 export function isBuildFirstEligible(input: { id?: string; workspace?: string; startSource: string }): boolean {

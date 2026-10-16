@@ -367,6 +367,16 @@ export type AnalyticsEvent =
               uiLanguage?: 'nl' | 'en';
           };
       }
+    | {
+          // Build-first: an example (or LinkedIn) CV opened in the no-account editor instead of after login.
+          event: 'example_cv_applied_public';
+          properties: {
+              location: string;
+              startSource: string;
+              templateId: string;
+              uiLanguage: 'nl' | 'en';
+          };
+      }
     | { event: 'complete_cv'; properties: { cvId: string; completionScore: number } }
     | { event: 'cv_progress_milestone'; properties: { cvId: string; milestone: 25 | 50 | 75 | 100; completionScore: number } }
     | { event: 'cv_section_completed'; properties: { cvId: string; section: string; completionScore: number } }

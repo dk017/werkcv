@@ -5,8 +5,10 @@ import Editor from "@/app/editor/editor";
 import { defaultCV, type CVData } from "@/lib/cv";
 import { getDefaultThemeId } from "@/lib/templates/registry";
 import {
+    adoptPendingExampleIntoPublicDraft,
     getPublicDraftHydrationKey,
     readPublicDraft,
+    takeAdoptedPendingExample,
     type PublicDraftSnapshot,
     type PublicEditorFlow,
 } from "@/lib/public-cv-draft";
@@ -65,7 +67,12 @@ export default function PublicEditorSection({
     const [downloadDialog, setDownloadDialog] = useState<{ claimPath: string; summary: CheckSummary | null } | null>(null);
     const draftKey = useSyncExternalStore(
         () => () => undefined,
-        () => getPublicDraftHydrationKey(source),
+        () => {
+            // Build-first: an example chosen on an example page (or the LinkedIn tool) opens here.
+            // Runs once; afterwards the key is stable.
+            if (variant === "editor") adoptPendingExampleIntoPublicDraft(source, { locale, flow });
+            return getPublicDraftHydrationKey(source);
+        },
         () => "",
     );
     const draftId = draftKey ? draftKey.split("|", 1)[0] : null;
@@ -74,6 +81,18 @@ export default function PublicEditorSection({
         const storedSnapshot = readPublicDraft(draftId);
         return storedSnapshot?.source === source ? storedSnapshot : null;
     }, [draftId, source]);
+
+    useEffect(() => {
+        const adopted = takeAdoptedPendingExample();
+        if (adopted) {
+            track("example_cv_applied_public", {
+                location: source,
+                startSource: adopted.startSource,
+                templateId: adopted.templateId,
+                uiLanguage: locale,
+            });
+        }
+    }, [draftId, locale, source]);
 
     useEffect(() => {
         track("public_editor_viewed", {

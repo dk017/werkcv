@@ -1,4 +1,5 @@
 import { cvSchema, type CVData } from "@/lib/cv";
+import { PENDING_EXAMPLE_CV_STORAGE_KEY, parsePendingExampleCV } from "@/lib/pending-example-cv";
 
 export type PublicEditorFlow = "consumer" | "agency";
 export type PublicEditorLocale = "nl" | "en";
@@ -206,6 +207,64 @@ export function readPublicDraftIdForSource(source: string): string | null {
  * Stable external-store snapshot for client components that need to wait for
  * browser storage without causing a synchronous setState in an effect.
  */
+export type AdoptedPendingExample = { startSource: string; templateId: string; draftId: string };
+let lastAdoptedExample: AdoptedPendingExample | null = null;
+
+/**
+ * "Gebruik dit voorbeeld" (and the LinkedIn tool) without an account leaves the CV in
+ * sessionStorage for after login. When the no-account editor opens instead (build-first), the
+ * example becomes a fresh browser draft for that editor right away, so it is shown and kept even
+ * if the visitor types nothing. A draft the visitor already had stays stored until it expires.
+ * Runs once: the pending record is removed.
+ */
+export function adoptPendingExampleIntoPublicDraft(
+  source: string,
+  context: { locale: PublicEditorLocale; flow: PublicEditorFlow },
+): AdoptedPendingExample | null {
+  if (!isBrowser() || !source) return null;
+  let raw: string | null = null;
+  try {
+    raw = window.sessionStorage.getItem(PENDING_EXAMPLE_CV_STORAGE_KEY);
+    if (raw === null) return null;
+    window.sessionStorage.removeItem(PENDING_EXAMPLE_CV_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+
+  let pending;
+  try {
+    pending = parsePendingExampleCV(JSON.parse(raw));
+  } catch {
+    return null;
+  }
+  // A blank template carries no CV; the template in the link is enough.
+  if (!pending?.sampleCV) return null;
+
+  const draftId = createPublicDraftId();
+  const result = savePublicDraft({
+    version: 1,
+    draftId,
+    data: pending.sampleCV,
+    templateId: pending.templateId,
+    colorThemeId: pending.colorThemeId,
+    uiLanguage: pending.uiLanguage || context.locale,
+    flow: context.flow,
+    source,
+    startSource: pending.startSource,
+    updatedAt: new Date().toISOString(),
+  });
+  if (!result.ok) return null;
+  lastAdoptedExample = { startSource: pending.startSource, templateId: pending.templateId, draftId };
+  return lastAdoptedExample;
+}
+
+/** The example adopted in this page load, once (for analytics). */
+export function takeAdoptedPendingExample(): AdoptedPendingExample | null {
+  const adopted = lastAdoptedExample;
+  lastAdoptedExample = null;
+  return adopted;
+}
+
 export function getPublicDraftHydrationKey(source: string): string {
   if (!isBrowser() || !source) return "";
 

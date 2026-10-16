@@ -38,7 +38,8 @@ export function BlankTemplateButton({ templateId, colorThemeId }: BlankTemplateB
                 };
                 window.sessionStorage.setItem(PENDING_EXAMPLE_CV_STORAGE_KEY, JSON.stringify(pendingExample));
                 const nextPath = `/editor?template=${encodeURIComponent(templateId)}&startSource=example_blank_template`;
-                router.push(`/login?next=${encodeURIComponent(nextPath)}`);
+                // The editor decides: the no-account editor (build-first) or the login page.
+                router.push(nextPath);
                 return;
             }
 

@@ -142,7 +142,8 @@ export default function LinkedinToCvTool() {
         };
         window.sessionStorage.setItem(PENDING_EXAMPLE_CV_STORAGE_KEY, JSON.stringify(pendingCv));
         const nextPath = "/editor?template=professional&startSource=linkedin_to_cv_tool";
-        router.push(`/login?next=${encodeURIComponent(nextPath)}`);
+        // The editor decides: the no-account editor (build-first) or the login page.
+        router.push(nextPath);
         return;
       }
 

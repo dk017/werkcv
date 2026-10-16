@@ -79,7 +79,8 @@ export function EnglishRoleExampleButton({
         };
         window.sessionStorage.setItem(PENDING_EXAMPLE_CV_STORAGE_KEY, JSON.stringify(pendingExample));
         const nextPath = `/en/editor?template=${encodeURIComponent(templateId)}&startSource=${encodeURIComponent(startSource)}`;
-        router.push(`/login?next=${encodeURIComponent(nextPath)}`);
+        // The editor decides: the no-account editor (build-first) or the login page.
+        router.push(nextPath);
         return;
       }
 
