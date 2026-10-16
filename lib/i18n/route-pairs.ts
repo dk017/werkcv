@@ -37,6 +37,14 @@ export const routePairs = [
     preserveSearch: false,
   },
   {
+    id: "ai-assistant",
+    nl: "/ai-assistent",
+    en: "/en/ai-assistant",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
     id: "editor",
     nl: "/editor",
     en: "/en/editor",

@@ -1002,6 +1002,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.6,
         },
         {
+            url: `${baseUrl}/ai-assistent`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.5,
+        },
+        {
+            url: `${baseUrl}/en/ai-assistant`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.5,
+        },
+        {
             url: `${baseUrl}/about`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
