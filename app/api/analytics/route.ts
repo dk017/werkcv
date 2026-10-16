@@ -111,6 +111,8 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'cv_upload_cancelled',
     'example_cv_applied_after_login',
     'example_cv_applied_public',
+    'start_choice_exposed',
+    'start_choice_selected',
     'complete_cv',
     'cv_progress_milestone',
     'cv_section_completed',

@@ -97,7 +97,7 @@ export type ProfilePhotoEvent =
     | 'profile_photo_offer_viewed'
     | 'profile_photo_offer_clicked';
 
-export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboarding' | 'cv_check' | 'dashboard';
+export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboarding' | 'cv_check' | 'dashboard' | 'start_choice';
 export type FullPreviewSource = 'desktop_preview_header' | 'desktop_document' | 'mobile_floating' | 'upload_success';
 
 type EditorSourceContext = {
@@ -375,6 +375,30 @@ export type AnalyticsEvent =
               startSource: string;
               templateId: string;
               uiLanguage: 'nl' | 'en';
+          };
+      }
+    | {
+          // "Hoe wil je beginnen?" test (lib/start-choice.ts). cvId is the draft id without an account.
+          event: 'start_choice_exposed';
+          properties: {
+              experiment: string;
+              variant: 'choice' | 'form';
+              cvId: string;
+              mode: 'account' | 'public';
+              uiLanguage: 'nl' | 'en';
+              newAssignment: boolean;
+          };
+      }
+    | {
+          event: 'start_choice_selected';
+          properties: {
+              experiment: string;
+              option: 'upload' | 'example' | 'blank';
+              cvId: string;
+              mode: 'account' | 'public';
+              uiLanguage: 'nl' | 'en';
+              exampleKey?: string;
+              queryLength?: number;
           };
       }
     | { event: 'complete_cv'; properties: { cvId: string; completionScore: number } }

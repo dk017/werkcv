@@ -28,6 +28,17 @@ import SectionDragHandles from "./SectionDragHandles";
 import { NewCvDialogProvider } from "@/components/app/NewCvDialog";
 import StepsTopBar from "./StepsTopBar";
 import { StepHeader, StepNav } from "./StepParts";
+import StartChoicePanel from "./StartChoicePanel";
+import {
+    START_CHOICE_EXPERIMENT,
+    getOrAssignStartChoiceVariant,
+    isStartChoiceDone,
+    markStartChoiceDone,
+    withoutExamplePerson,
+    type StartChoiceOption,
+    type StartChoiceVariant,
+    type StartExampleSummary,
+} from "@/lib/start-choice";
 import StepsFinishPanel from "./StepsFinishPanel";
 import { CLASSIC_SECTION_STYLES, SectionStylesProvider, stepsSectionStyles } from "./section-styles";
 import { updateCV, updateCVTemplate, updateCVColorTheme, getCheckoutURL } from "../actions";
@@ -1583,6 +1594,96 @@ export default function Editor({
         };
     }, [isPublicMode, isReadOnlyWorkspace, maybeTrackCompletion, persistPublicDraft, watch, id, uiLanguage, saveEditorData]);
 
+    // "Hoe wil je beginnen?" for a new, empty CV: upload, an example for your job, or the empty form
+    // (lib/start-choice.ts). A 50/50 test against today's form; decided once when the editor opens.
+    const startChoiceKey = (isPublicMode ? publicDraftId : id) || "";
+    // Without an account an untouched draft gets a new id on reload, so the choice is kept per editor.
+    const startChoiceDoneKey = isPublicMode ? `public:${publicSource || "editor"}` : startChoiceKey;
+    const [startChoiceVariant, setStartChoiceVariant] = useState<StartChoiceVariant | undefined>(undefined);
+    const [startChoiceClosed, setStartChoiceClosed] = useState(false);
+    // Read before the route-intent effect strips ?upload=1 from the address.
+    const startedWithUploadIntentRef = useRef(typeof window !== "undefined" && new URLSearchParams(window.location.search).get("upload") === "1");
+    useEffect(() => {
+        const eligible = isSteps && !isMatchPackWorkspace && !isReadOnlyWorkspace
+            && (!isPublicMode || publicFlow === "consumer")
+            && isCurrentCvEmpty && initialStep === "persoonlijk"
+            && !publicImportCheckedCv && !publicHandoffToken && !publicOpenUploader
+            && !startedWithUploadIntentRef.current && Boolean(startChoiceKey);
+        if (!eligible) return;
+        // Deferred like usePriceCopy: the assignment and the checks below read browser storage.
+        const timeoutId = window.setTimeout(() => {
+            try {
+                // An example chosen before login is applied by its own effect.
+                if (window.sessionStorage.getItem(PENDING_EXAMPLE_CV_STORAGE_KEY)) return;
+            } catch {
+                // no storage: carry on
+            }
+            if (isStartChoiceDone(startChoiceDoneKey)) return;
+            const assigned = getOrAssignStartChoiceVariant();
+            setStartChoiceVariant(assigned.variant);
+            track("start_choice_exposed", {
+                experiment: START_CHOICE_EXPERIMENT,
+                variant: assigned.variant,
+                cvId: startChoiceKey,
+                mode: isPublicMode ? "public" : "account",
+                uiLanguage,
+                newAssignment: assigned.isNew,
+            });
+        }, 0);
+        return () => window.clearTimeout(timeoutId);
+        // Decided once, when the editor opens.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    const showStartChoice = startChoiceVariant === "choice" && !startChoiceClosed && isCurrentCvEmpty && activeStep === "persoonlijk" && !showUploader;
+    const trackStartChoice = (option: StartChoiceOption, extra: { exampleKey?: string; queryLength?: number } = {}) => {
+        track("start_choice_selected", {
+            experiment: START_CHOICE_EXPERIMENT,
+            option,
+            cvId: startChoiceKey,
+            mode: isPublicMode ? "public" : "account",
+            uiLanguage,
+            ...extra,
+        });
+    };
+    const closeStartChoice = () => {
+        markStartChoiceDone(startChoiceDoneKey);
+        setStartChoiceClosed(true);
+    };
+    const handleStartChoiceUpload = () => {
+        // Not closed: if the visitor cancels the upload, the choice is still there.
+        trackStartChoice("upload");
+        openUploader("start_choice");
+    };
+    const handleStartChoiceBlank = () => {
+        trackStartChoice("blank");
+        closeStartChoice();
+    };
+    const handleStartChoiceExample = async (example: StartExampleSummary, query: string): Promise<boolean> => {
+        try {
+            const response = await fetch(`/api/start-examples?key=${encodeURIComponent(example.key)}`);
+            if (!response.ok) return false;
+            const body = (await response.json()) as { sampleCV?: unknown };
+            const parsed = cvSchema.safeParse(body.sampleCV);
+            if (!parsed.success) return false;
+            // The job content of the example, without its fictional person: step 1 asks for theirs.
+            const normalizedData = ensureEditorData(withoutExamplePerson(parsed.data as CVData), uiLanguage);
+            reset(normalizedData);
+            setVisibleOptionalSections(deriveVisibleOptionalSections(normalizedData));
+            setShowAdditionalPersonalDetails(hasAdditionalPersonalDetails(normalizedData));
+            setIsSaved(false);
+            if (isPublicMode) {
+                setIsSaved(persistPublicDraft(normalizedData));
+            } else {
+                await saveEditorData(normalizedData, "upload");
+            }
+            trackStartChoice("example", { exampleKey: example.key, queryLength: query.length });
+            closeStartChoice();
+            return true;
+        } catch {
+            return false;
+        }
+    };
+
     // Warn user before closing tab with unsaved changes
     useEffect(() => {
         const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -2353,7 +2454,14 @@ export default function Editor({
                             onRetry={() => void handleDownload("checkout_exit_question")}
                         />
 
-                        {isSteps ? <StepHeader step={activeStep} locale={appLocale} /> : isGuidedBuild ? (
+                        {isSteps ? (showStartChoice ? (
+                            <StartChoicePanel
+                                locale={appLocale}
+                                onUpload={handleStartChoiceUpload}
+                                onBlank={handleStartChoiceBlank}
+                                onExample={handleStartChoiceExample}
+                            />
+                        ) : <StepHeader step={activeStep} locale={appLocale} />) : isGuidedBuild ? (
                             <section className="rounded-2xl border border-teal-200 bg-white p-4 shadow-sm sm:p-5">
                                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                     <div className="min-w-0">
@@ -2476,7 +2584,7 @@ export default function Editor({
                             </section>
                         ) : null}
 
-                        {isSteps && activeStep === "persoonlijk" && isCurrentCvEmpty && !isReadOnlyWorkspace ? (
+                        {isSteps && activeStep === "persoonlijk" && isCurrentCvEmpty && !isReadOnlyWorkspace && !showStartChoice ? (
                             <button
                                 type="button"
                                 onClick={() => openUploader("empty_state")}
@@ -2569,7 +2677,7 @@ export default function Editor({
                         ) : null}
 
                         {/* Personal Section */}
-                        {!isSteps || activeStep === "persoonlijk" || activeStep === "profiel" ? (
+                        {(!isSteps || activeStep === "persoonlijk" || activeStep === "profiel") && !showStartChoice ? (
                         <section id="section-personal" className="scroll-mt-28 bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 shadow-sm">
                             {!isSteps ? (
                             <h2 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
@@ -3048,7 +3156,7 @@ export default function Editor({
                         ) : null}
                         </div>
 
-                        {isSteps ? <StepNav step={activeStep} onStep={(step) => goToStep(step, "step_nav")} locale={appLocale} /> : null}
+                        {isSteps && !showStartChoice ? <StepNav step={activeStep} onStep={(step) => goToStep(step, "step_nav")} locale={appLocale} /> : null}
                     </div>
                 </div>
             </div>
