@@ -89,9 +89,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "ATS CV Maken Nederland | ATS Template & Checker | WerkCV",
+  title: "ATS cv template en format (2026) + gratis ATS-check | WerkCV",
   description:
-    "ATS CV maken voor Nederlandse sollicitaties: kies een rustige template, verwerk vacature-keywords en test je CV met de ATS checker. Gratis starten.",
+    "ATS cv template en format voor Nederlandse vacatures: een rustige opmaak die systemen goed lezen, vacature-keywords en een gratis ATS-check. Gratis starten.",
   keywords: [
     "ats cv maken",
     "ats cv maken nederland",
@@ -115,7 +115,7 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "ATS CV Maken Nederland | ATS Template & Checker | WerkCV",
+    title: "ATS cv template en format (2026) + gratis ATS-check | WerkCV",
     description:
       "Maak een ATS-vriendelijk CV voor Nederlandse sollicitaties. Kies een rustige template, verwerk vacature-keywords en test je CV met de ATS checker.",
     url: "https://werkcv.nl/ats-cv-template",
@@ -134,7 +134,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@werkcvnl",
-    title: "ATS CV Maken Nederland | WerkCV",
+    title: "ATS cv template en format (2026) | WerkCV",
     description:
       "Kies een rustige ATS-template, verwerk vacature-keywords en test je CV voordat je solliciteert.",
     images: ["https://werkcv.nl/opengraph-image"],

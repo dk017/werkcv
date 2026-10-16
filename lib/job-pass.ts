@@ -15,7 +15,7 @@ export type JobPassStatus = { active: boolean; expiresAt: string | null; daysLef
  * Who sees the pass choice before checkout. Oct 2026: 0 of 19 people chose it, 14 of them had a
  * single CV, and buyers rarely start a new CV after paying (re-editing the paid CV is free). So the
  * choice is only shown to people who already have several CVs, or who came in through a pass link;
- * everyone else goes straight to the €7,95 checkout without the extra step.
+ * everyone else goes straight to the single-CV checkout without the extra step.
  */
 export const JOB_PASS_OFFER_MIN_CVS = 3;
 

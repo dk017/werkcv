@@ -9,9 +9,9 @@ import CustomerQuote from "@/components/CustomerQuote";
 import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
 
 export const metadata = buildEnglishMetadata({
-  title: "English CV Builder for Jobs in the Netherlands",
+  title: "Netherlands CV Template & Format: English CV Builder (2026)",
   description:
-    `Build an English CV for jobs in the Netherlands. Start free, use Dutch-market structure and ATS-safe templates, then pay ${cvDownloadPrice.displayEn} once to download the PDF.`,
+    `A Netherlands CV template and format in English, ATS-safe for Dutch employers. Start free, fill in or upload your CV, then pay ${cvDownloadPrice.displayEn} once for the PDF.`,
   path: "/en",
   nlPath: "/",
   keywords: [

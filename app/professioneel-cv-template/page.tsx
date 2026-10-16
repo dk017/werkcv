@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cvDownloadPrice } from "@/lib/site-content";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
@@ -77,9 +78,9 @@ const professionalIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "Professioneel CV Template - Zakelijk en Strak CV Ontwerp | WerkCV",
+  title: "Professioneel cv template, gratis invullen (2026) | WerkCV",
   description:
-    "Zoek je een professioneel CV template? Kies een zakelijke, strakke layout voor administratie, finance, HR en operations. Start gratis in de editor en download pas als je tevreden bent.",
+    `Professioneel cv template voor administratie, finance, HR en operations. Gratis invullen en bekijken in de editor; de PDF kost ${cvDownloadPrice.display} eenmalig.`,
   keywords: [
     "professioneel cv template",
     "zakelijk cv template",

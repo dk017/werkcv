@@ -4126,8 +4126,8 @@ const dutchEditorialPages: SeoGuidePage[] = [
         locale: 'nl',
         title: 'CV.nl alternatief in Nederland: WerkCV vs CV.nl',
         description: 'Zoek je een alternatief voor CV.nl? Eerlijke vergelijking tussen WerkCV en CV.nl voor Nederlandse werkzoekenden. Vergelijk abonnement, productbreedte, app, jobs en eenmalig CV-model.',
-        metaTitle: 'CV.nl alternatief Nederland (2026) | WerkCV vs CV.nl | WerkCV.nl',
-        metaDesc: 'Zoek je een CV.nl alternatief in Nederland? Vergelijk WerkCV en CV.nl op eenmalige prijs vs abonnement, compacte CV-flow vs breder platform met jobs en tracker.',
+        metaTitle: 'Is CV.nl gratis? Kosten en alternatief vergeleken (2026) | WerkCV',
+        metaDesc: `Is CV.nl gratis? Vergelijk de kosten van CV.nl (abonnement) met WerkCV (${cvDownloadPrice.display} eenmalig), wat je gratis kunt doen en wanneer je betaalt.`,
         keywords: [],
         intro: 'Zoek je een alternatief voor CV.nl, dan draait de keuze meestal om productomvang en prijsrust. WerkCV past meestal beter als je zonder abonnement snel een sterk CV wilt afronden. CV.nl past beter als je juist een groter Nederlands sollicitatieplatform met vacatures, tracker, app en doorlopende toegang zoekt.',
         sections: [

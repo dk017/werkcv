@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cvDownloadPrice } from "@/lib/site-content";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import { templateList } from "@/lib/templates/registry";
@@ -53,9 +54,9 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Maken PDF - Maak Eerst Goed, Download Daarna Stabiel | WerkCV",
+  title: "CV als PDF maken en downloaden (2026) | WerkCV",
   description:
-    "CV maken als PDF? Leer waarom PDF de beste eindvorm is voor sollicitaties en bouw je CV eerst rustig op in de editor voordat je downloadt.",
+    `CV als PDF maken: waarom PDF de beste vorm is voor sollicitaties, en hoe je je cv eerst opbouwt en daarna als nette PDF downloadt (${cvDownloadPrice.display} eenmalig).`,
   keywords: [
     "cv maken pdf",
     "cv pdf maken",

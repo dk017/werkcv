@@ -14,10 +14,10 @@ import {
 const homepageWebPageJsonLd = {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  name: "CV Maken voor Nederlandse Vacatures – Gratis Starten | WerkCV",
+  name: `CV maken: gratis starten, eenmalig ${cvDownloadPrice.display}, geen abonnement | WerkCV`,
   url: siteUrl,
   description:
-    `Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig ${cvDownloadPrice.display} bij download, geen abonnement.`,
+    `Online je cv maken of opstellen in 5 stappen: kies een van 13+ templates, vul in of upload je cv. Gratis starten; de PDF kost ${cvDownloadPrice.display} eenmalig.`,
   inLanguage: "nl-NL",
   isPartOf: { "@id": "https://werkcv.nl/#website" },
 };
@@ -66,10 +66,10 @@ const homepageSoftwareApplicationJsonLd = {
 
 export const metadata: Metadata = {
   title: {
-    absolute: "CV Maken voor Nederlandse Vacatures – Gratis Starten | WerkCV",
+    absolute: `CV maken: gratis starten, eenmalig ${cvDownloadPrice.display}, geen abonnement | WerkCV`,
   },
   description:
-    `Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig ${cvDownloadPrice.display} bij download, geen abonnement. | WerkCV`,
+    `Online je cv maken of opstellen in 5 stappen: kies een van 13+ templates, vul in of upload je cv. Gratis starten; de PDF kost ${cvDownloadPrice.display} eenmalig.`,
   keywords: [
     "cv maken",
     "cv maken nederland",
@@ -91,9 +91,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "CV Maken voor Nederlandse Vacatures – Gratis Starten | WerkCV",
+    title: `CV maken: gratis starten, eenmalig ${cvDownloadPrice.display}, geen abonnement | WerkCV`,
     description:
-      `Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig ${cvDownloadPrice.display} bij download, geen abonnement.`,
+      `Online je cv maken of opstellen in 5 stappen: kies een van 13+ templates, vul in of upload je cv. Gratis starten; de PDF kost ${cvDownloadPrice.display} eenmalig.`,
     url: "https://werkcv.nl",
     siteName: "WerkCV",
     locale: "nl_NL",
@@ -110,9 +110,9 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@werkcvnl",
-    title: "CV Maken voor Nederlandse Vacatures – Gratis Starten | WerkCV",
+    title: `CV maken: gratis starten, eenmalig ${cvDownloadPrice.display}, geen abonnement | WerkCV`,
     description:
-      `Bouw gratis een professioneel, ATS-vriendelijk CV met 13+ templates voor de Nederlandse arbeidsmarkt. Eenmalig ${cvDownloadPrice.display} bij download, geen abonnement.`,
+      `Online je cv maken of opstellen in 5 stappen: kies een van 13+ templates, vul in of upload je cv. Gratis starten; de PDF kost ${cvDownloadPrice.display} eenmalig.`,
     images: ["/opengraph-image"],
   },
 };
