@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { AttributionSnapshot, LocaleCode } from '@/lib/attribution';
+import { SMTP_TIMEOUT_MS, sendMailWithRetry } from '@/lib/mail-retry';
 import { resolvePartnerPilotForSignup } from '@/lib/partner-pilot';
 
 const SESSION_COOKIE_NAME = 'werkcv_session';
@@ -44,9 +45,10 @@ function getEmailTransporter() {
         port,
         secure: port === 465,
         auth: { user, pass },
-        connectionTimeout: 5000,
-        greetingTimeout: 5000,
-        socketTimeout: 5000,
+        // 5 s made about 1 in 14 login-code mails fail in Oct 2026 (lib/mail-retry.ts).
+        connectionTimeout: SMTP_TIMEOUT_MS,
+        greetingTimeout: SMTP_TIMEOUT_MS,
+        socketTimeout: SMTP_TIMEOUT_MS,
     });
 }
 
@@ -97,7 +99,7 @@ export async function requestEmailLoginCode(
     if (transporter) {
         try {
             const isEnglish = locale === 'en';
-            await transporter.sendMail({
+            await sendMailWithRetry(() => transporter.sendMail({
                 from,
                 to: email,
                 subject: isEnglish ? 'Your WerkCV login code' : 'Je WerkCV login code',
@@ -107,6 +109,9 @@ export async function requestEmailLoginCode(
                 html: isEnglish
                     ? `<p>Your login code is <strong>${code}</strong>.</p><p>This code expires in ${LOGIN_CODE_TTL_MINUTES} minutes.</p>`
                     : `<p>Je login code is <strong>${code}</strong>.</p><p>Deze code verloopt over ${LOGIN_CODE_TTL_MINUTES} minuten.</p>`,
+            }), {
+                // The error type only, never the address or the code.
+                onFailure: (info) => console.error('auth_smtp_send_failed', info),
             });
             return {};
         } catch (error) {
