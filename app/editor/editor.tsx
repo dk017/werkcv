@@ -176,6 +176,8 @@ interface EditorProps {
     publicStepsLayout?: boolean;
     initialStep?: EditorStepId;
     initialTargetVacancy?: string;
+    /** Opened from a content page while this CV was in progress (lib/editor-resume.ts): link to a new CV. */
+    resumedNewCvHref?: string;
 }
 
 // Reusable input styles for cleaner, calmer form UI
@@ -431,6 +433,7 @@ export default function Editor({
     layoutVariant = "classic",
     publicStepsLayout = false,
     initialStep = "persoonlijk",
+    resumedNewCvHref,
     initialTargetVacancy = "",
 }: EditorProps) {
     const isEnglish = uiLanguage === "en";
@@ -1684,6 +1687,13 @@ export default function Editor({
         }
     };
 
+    const [resumeNoticeOpen, setResumeNoticeOpen] = useState(Boolean(resumedNewCvHref));
+    useEffect(() => {
+        if (resumedNewCvHref) track("cta_viewed", { location: "editor_resume_notice", variant: "shown", locale: appLocale });
+        // Once per opening.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     // Warn user before closing tab with unsaved changes
     useEffect(() => {
         const handleBeforeUnload = (e: BeforeUnloadEvent) => {
@@ -2454,6 +2464,28 @@ export default function Editor({
                             onRetry={() => void handleDownload("checkout_exit_question")}
                         />
 
+                        {resumeNoticeOpen && resumedNewCvHref ? (
+                            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-[14px] border border-[var(--wk-border)] bg-[var(--wk-accent-soft)] px-4 py-3 text-[14px] text-[var(--wk-ink)]" role="status">
+                                <span className="font-semibold">{tr("Je gaat verder met je cv.", "You are continuing your CV.")}</span>
+                                <span className="flex items-center gap-3">
+                                    <a
+                                        href={resumedNewCvHref}
+                                        onClick={() => track("cta_clicked", { location: "editor_resume_notice", label: "new_cv" })}
+                                        className="font-bold text-[var(--wk-primary)] underline underline-offset-4"
+                                    >
+                                        {tr("Nieuw cv maken", "Start a new CV")}
+                                    </a>
+                                    <button
+                                        type="button"
+                                        onClick={() => setResumeNoticeOpen(false)}
+                                        aria-label={tr("Melding sluiten", "Close notice")}
+                                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-[var(--wk-ink-muted)] hover:bg-white/60"
+                                    >
+                                        ×
+                                    </button>
+                                </span>
+                            </div>
+                        ) : null}
                         {isSteps ? (showStartChoice ? (
                             <StartChoicePanel
                                 locale={appLocale}

@@ -14,6 +14,8 @@ import { isAppV2Active } from "@/lib/app-v2";
 import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
 import { BUILD_FIRST_COOKIE, isBuildFirstEligible, parseBuildFirstArm } from "@/lib/build-first";
 import { recordBuildFirstEntry } from "@/lib/build-first-server";
+import { shouldResumeLatestCv } from "@/lib/editor-resume";
+import { findRecentCvToResume } from "@/lib/editor-resume-server";
 import { normalizeEditorStep, resolveInitialStep } from "@/lib/editor-steps";
 import { isCvEmpty } from "@/lib/cv-empty";
 import { jobVacancyForCv } from "@/lib/app-jobs/service";
@@ -34,9 +36,9 @@ function isUploadRequested(value: string | string[] | undefined): boolean {
 export default async function EditorPage({
     searchParams,
 }: {
-    searchParams: Promise<{ id?: string; template?: string; startSource?: string; upload?: string; workspace?: string; focus?: string; downloadIntent?: string; stap?: string; step?: string }>;
+    searchParams: Promise<{ id?: string; template?: string; new?: string; resumed?: string; startSource?: string; upload?: string; workspace?: string; focus?: string; downloadIntent?: string; stap?: string; step?: string }>;
 }) {
-    const { id, template, startSource, upload, workspace, focus, downloadIntent, stap, step } = await searchParams;
+    const { id, template, new: forceNewParam, resumed, startSource, upload, workspace, focus, downloadIntent, stap, step } = await searchParams;
     const user = await getCurrentUser();
     const templateId = normalizeTemplateId(template);
     const uploadRequested = isUploadRequested(upload);
@@ -81,6 +83,17 @@ export default async function EditorPage({
         if (workspace === "agency") nextParams.set("workspace", "agency");
         const next = `/editor?${nextParams.toString()}`;
         redirect(`/login?next=${encodeURIComponent(next)}`);
+    }
+
+    // A content-page "Start je CV" while already working on a CV continues that CV (lib/editor-resume.ts).
+    if (!id && shouldResumeLatestCv({ startSource: resolvedStartSource, uploadRequested, workspace, forceNew: forceNewParam === "1" })) {
+        const latestCvId = await findRecentCvToResume(user.id);
+        if (latestCvId) {
+            const resumeParams = new URLSearchParams({ id: latestCvId, startSource: resolvedStartSource, resumed: "1" });
+            if (resolvedFocus) resumeParams.set("focus", resolvedFocus);
+            if (downloadIntent === "1") resumeParams.set("downloadIntent", "1");
+            redirect(`/editor?${resumeParams.toString()}`);
+        }
     }
 
     if (!id) {
@@ -140,6 +153,7 @@ export default async function EditorPage({
       initialColorThemeId={cv.colorThemeId}
       accountEmail={user.email}
       uiLanguage="nl"
+      resumedNewCvHref={resumed === "1" ? `/editor?${new URLSearchParams({ template: "professional", startSource: resolvedStartSource, new: "1" }).toString()}` : undefined}
       agencyRouteLocked={cv.agencyRouteLocked}
       workspaceContext={cv.workspaceContext}
       downloadIncluded={cv.downloadIncluded}
