@@ -4,8 +4,8 @@ export const juridischEnOverheid: CVExampleCategory = {
     slug: 'juridisch-en-overheid',
     name: 'Juridisch & Overheid',
     description: 'CV voorbeelden voor juridisch medewerkers, beleidsadviseurs, ambtenaren en compliance officers. Presenteer je kennis en ervaring op een professionele en gestructureerde manier.',
-    metaTitle: 'CV Voorbeeld Juridisch & Overheid | Ambtenaar, Jurist | WerkCV.nl',
-    metaDesc: 'Professionele CV voorbeelden voor de juridische sector en overheid. Van juridisch medewerker tot beleidsadviseur. Download gratis templates voor een sterk CV.',
+    metaTitle: 'CV voorbeeld jurist, advocaat en ambtenaar (2026) | WerkCV',
+    metaDesc: 'Ingevulde cv voorbeelden voor de juridische sector en overheid, van advocaat-stagiair tot beleidsadviseur en ambtenaar. Pas het voorbeeld direct aan.',
     keywords: [
         'cv voorbeeld juridisch medewerker',
         'cv beleidsadviseur',

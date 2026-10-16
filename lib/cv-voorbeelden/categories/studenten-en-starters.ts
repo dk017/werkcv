@@ -5,7 +5,7 @@ export const studentenEnStarters: CVExampleCategory = {
     name: 'Studenten & Starters',
     description: 'CV voorbeelden voor studenten, afgestudeerden en starters. Perfect als je weinig werkervaring hebt maar wel indruk wilt maken. Met tips voor bijbanen, stages en je eerste baan.',
     metaTitle: 'CV Voorbeeld Student & Starter | Zonder Ervaring | WerkCV.nl',
-    metaDesc: 'Professionele CV voorbeelden voor studenten en starters. Geen ervaring? Geen probleem. Download gratis templates met voorbeeldteksten voor je eerste CV.',
+    metaDesc: 'Cv voorbeelden voor studenten en starters, ook zonder werkervaring. Met voorbeeldteksten voor je eerste cv: kies een voorbeeld en pas het direct aan.',
     keywords: [
         'cv voorbeeld student',
         'cv zonder ervaring',

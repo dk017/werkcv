@@ -8,8 +8,8 @@ export const grafischOntwerper: CVExample = {
     templateId: 'dynamic',
     colorThemeId: 'purple-royal',
 
-    metaTitle: 'CV Voorbeeld Grafisch Ontwerper | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor grafisch ontwerpers. Met voorbeeldteksten voor branding, UX/UI design en visuele communicatie. Maak direct je eigen CV.',
+    metaTitle: 'CV grafisch vormgever / ontwerper: voorbeeld 2026 | WerkCV',
+    metaDesc: 'CV voorbeeld voor grafisch vormgevers en ontwerpers, met profieltekst en voorbeeldteksten voor branding, UX/UI en visuele communicatie. Pas het direct aan.',
     keywords: ['cv voorbeeld grafisch ontwerper', 'cv designer', 'cv grafisch vormgever', 'grafisch ontwerper cv', 'cv visual designer'],
     heroTitle: 'CV Voorbeeld Grafisch Ontwerper',
     heroText: 'Als grafisch ontwerper is je CV een reflectie van je ontwerpvaardigheden. Dit voorbeeld laat zien hoe je je creatieve expertise, technische kennis en projectresultaten overtuigend presenteert. Combineer een opvallend ontwerp met sterke inhoud om werkgevers te overtuigen van je talent.',

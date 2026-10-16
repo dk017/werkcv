@@ -4,8 +4,8 @@ export const technologieEnIct: CVExampleCategory = {
     slug: 'technologie-en-ict',
     name: 'Technologie & ICT',
     description: 'CV voorbeelden voor IT-professionals. Software developers, data engineers, systeembeheerders en meer. Met tips voor het presenteren van technische skills, certificeringen en projecten.',
-    metaTitle: 'CV Voorbeeld ICT & Technologie | Developer, Data, Security | WerkCV.nl',
-    metaDesc: 'Professionele CV voorbeelden voor ICT professionals. Software developer, data engineer, systeembeheerder en meer. ATS-vriendelijke templates met voorbeeldteksten.',
+    metaTitle: 'CV voorbeeld ICT medewerker, developer en data (2026) | WerkCV',
+    metaDesc: 'Ingevulde cv voorbeelden voor ICT: software developer, data engineer, systeembeheerder, cybersecurity en meer. ATS-vriendelijk; pas het voorbeeld direct aan.',
     keywords: [
         'cv voorbeeld ict',
         'cv ict medewerker',

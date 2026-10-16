@@ -8,8 +8,8 @@ export const hrMedewerker: CVExample = {
     templateId: 'dynamic',
     colorThemeId: 'purple-royal',
 
-    metaTitle: 'CV Voorbeeld HR-medewerker | AFAS, Recruitment & Verzuim | WerkCV.nl',
-    metaDesc: 'Professioneel cv voorbeeld voor HR-medewerker en HR-adviseur. Met AFAS, recruitment, onboarding, verzuim, arbeidsrecht, AVG en HR-administratie.',
+    metaTitle: 'CV HR-medewerker voorbeeld 2026 | Recruitment & AFAS | WerkCV',
+    metaDesc: 'CV voorbeeld voor HR-medewerker en HR-adviseur, met AFAS, recruitment, onboarding, verzuim, arbeidsrecht en HR-administratie. Pas het voorbeeld direct aan.',
     keywords: ['cv voorbeeld hr-medewerker', 'hr medewerker cv', 'cv hr-adviseur', 'cv human resources', 'cv personeelszaken', 'cv AFAS', 'cv recruitment', 'cv verzuim'],
     heroTitle: 'CV Voorbeeld HR-medewerker',
     heroText: 'Als HR-professional moet je CV laten zien dat je zorgvuldig met mensen, data en processen omgaat. Dit voorbeeld toont hoe je recruitment, AFAS, onboarding, offboarding, verzuim, arbeidsrecht, AVG en HR-rapportages overtuigend presenteert.',

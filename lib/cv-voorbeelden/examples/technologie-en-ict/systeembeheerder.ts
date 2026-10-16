@@ -8,8 +8,8 @@ export const systeembeheerder: CVExample = {
     templateId: 'ats',
     colorThemeId: 'charcoal',
 
-    metaTitle: 'CV Voorbeeld Systeembeheerder | Azure, VMware & AD | WerkCV.nl',
-    metaDesc: 'Professioneel cv voorbeeld voor systeembeheerder met Windows Server, Linux, Azure AD, Microsoft 365, VMware, Veeam, monitoring en patchmanagement.',
+    metaTitle: 'CV systeembeheerder voorbeeld 2026 | Azure, VMware & AD | WerkCV',
+    metaDesc: 'CV voorbeeld voor systeembeheerders, met Windows Server, Linux, Azure AD, Microsoft 365, VMware, back-up en monitoring. Pas het voorbeeld direct aan.',
     keywords: ['cv voorbeeld systeembeheerder', 'systeembeheerder cv', 'cv system administrator', 'cv infrastructuur', 'systeembeheer cv', 'netwerk beheerder cv', 'cv Azure AD', 'cv VMware'],
     heroTitle: 'CV Voorbeeld Systeembeheerder',
     heroText: 'Als systeembeheerder zorg je ervoor dat de IT-infrastructuur betrouwbaar, veilig en herstelbaar draait. Dit CV voorbeeld laat zien hoe je Windows Server, Active Directory, Azure AD, VMware, Veeam, monitoring, patchmanagement, incidenten en uptime resultaatgericht presenteert.',

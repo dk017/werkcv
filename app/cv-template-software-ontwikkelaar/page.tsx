@@ -183,9 +183,9 @@ const developerTemplateIntentLinks = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Template Software Ontwikkelaar - ATS-proof en Sollicitatieklaar | WerkCV",
+  title: "CV software developer / ontwikkelaar: voorbeeld 2026 | WerkCV",
   description:
-    "Gebruik het beste CV template voor software ontwikkelaar. Inclusief profieltekst voorbeelden, project-bullets met metrics, stack-opbouw en ATS-keywords. Start gratis in de editor.",
+    "CV voorbeeld en template voor software developers, met profieltekst, project-bullets met resultaten, stack-opbouw en ATS-keywords. Start gratis in de editor.",
   keywords: [
     "cv template software ontwikkelaar",
     "software ontwikkelaar cv template",

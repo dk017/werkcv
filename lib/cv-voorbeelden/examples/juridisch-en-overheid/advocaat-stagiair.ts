@@ -8,8 +8,8 @@ export const advocaatStagiair: CVExample = {
     templateId: 'formal',
     colorThemeId: 'classic-blue',
 
-    metaTitle: 'CV Voorbeeld Advocaat-Stagiair | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor advocaat-stagiairs. Met voorbeeldteksten voor procederen, juridisch onderzoek en de beroepsopleiding advocatuur. Direct te gebruiken.',
+    metaTitle: 'CV advocaat-stagiair voorbeeld 2026 | Advocatuur | WerkCV',
+    metaDesc: 'CV voorbeeld voor advocaten en advocaat-stagiairs, met voorbeeldteksten voor procederen, juridisch onderzoek en de beroepsopleiding. Pas het direct aan.',
     keywords: ['cv voorbeeld advocaat-stagiair', 'advocaat stagiair cv', 'cv advocaat', 'cv advocatenkantoor', 'togastage cv'],
     heroTitle: 'CV Voorbeeld Advocaat-Stagiair',
     heroText: 'Als advocaat-stagiair combineer je de beroepsopleiding advocatuur met het werken aan echte juridische zaken. Dit CV voorbeeld laat zien hoe je je juridische kennis, proceservaring en je ontwikkeling tijdens de togastage overtuigend presenteert aan advocatenkantoren.',

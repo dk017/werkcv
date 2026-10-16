@@ -8,8 +8,8 @@ export const kokChef: CVExample = {
     templateId: 'dynamic',
     colorThemeId: 'warm-earth',
 
-    metaTitle: 'CV Voorbeeld Kok / Chef-kok | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor koks en chef-koks. Met voorbeeldteksten voor keukenervaring, menuontwikkeling en HACCP-certificering. Maak direct je eigen CV.',
+    metaTitle: 'CV kok / chef-kok voorbeeld 2026 | Keuken en HACCP | WerkCV',
+    metaDesc: 'CV voorbeeld voor koks en chef-koks, met voorbeeldteksten voor keukenervaring, menuontwikkeling en HACCP. Gebruik het voorbeeld en pas het direct aan.',
     keywords: ['cv voorbeeld kok', 'cv chef-kok', 'cv horeca', 'cv keuken'],
     heroTitle: 'CV Voorbeeld Kok / Chef-kok',
     heroText: 'Als kok of chef-kok draait alles om passie voor het vak en kwaliteit in de keuken. Dit CV voorbeeld laat zien hoe je je culinaire ervaring, menuontwikkeling en leidinggevende kwaliteiten in de keuken overtuigend op papier zet.',

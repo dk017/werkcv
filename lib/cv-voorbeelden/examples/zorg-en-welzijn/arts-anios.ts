@@ -8,8 +8,8 @@ export const artsAnios: CVExample = {
     templateId: 'classical',
     colorThemeId: 'elegant-navy',
 
-    metaTitle: 'CV Voorbeeld Arts ANIOS | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor artsen en ANIOS. Met voorbeeldteksten voor coschappen, BIG-registratie en medische ervaring. Direct te gebruiken als template.',
+    metaTitle: 'CV arts (ANIOS) voorbeeld 2026: coschappen en BIG | WerkCV',
+    metaDesc: 'CV voorbeeld voor artsen en ANIOS, met voorbeeldteksten voor coschappen, BIG-registratie en medische ervaring in de juiste volgorde. Pas het direct aan.',
     keywords: ['cv voorbeeld arts', 'cv anios', 'arts cv maken', 'cv basisarts', 'cv coschappen', 'medisch cv'],
     heroTitle: 'CV Voorbeeld Arts (ANIOS)',
     heroText: 'Als recent afgestudeerde basisarts wil je opvallen bij ziekenhuizen en klinieken. Dit CV voorbeeld laat zien hoe je je coschappen, wetenschappelijke ervaring en BIG-registratie professioneel presenteert voor een ANIOS-positie.',

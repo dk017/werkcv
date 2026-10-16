@@ -8,8 +8,8 @@ export const ambtenaar: CVExample = {
     templateId: 'classical',
     colorThemeId: 'slate-modern',
 
-    metaTitle: 'CV Voorbeeld Ambtenaar Rijksoverheid | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor ambtenaren bij de Rijksoverheid. Met voorbeeldteksten voor beleidsvorming, Kamervragen en interdepartementaal overleg. Direct bruikbaar.',
+    metaTitle: 'CV ambtenaar voorbeeld 2026 | Rijksoverheid en beleid | WerkCV',
+    metaDesc: 'CV voorbeeld voor ambtenaren bij de Rijksoverheid, met voorbeeldteksten voor beleidsvorming, Kamervragen en interdepartementaal overleg. Pas het direct aan.',
     keywords: ['cv voorbeeld ambtenaar', 'cv rijksoverheid', 'cv beleidsmedewerker', 'ambtenaar cv maken', 'cv ministerie'],
     heroTitle: 'CV Voorbeeld Ambtenaar Rijksoverheid',
     heroText: 'Als senior beleidsmedewerker bij de Rijksoverheid werk je aan complexe maatschappelijke vraagstukken op het hoogste bestuurlijke niveau. Dit CV voorbeeld laat zien hoe je je ervaring met wetgeving, Kamervragen en interdepartementaal overleg professioneel presenteert aan ministeries en uitvoeringsorganisaties.',

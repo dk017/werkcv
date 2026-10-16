@@ -9,7 +9,7 @@ export const dataEngineer: CVExample = {
     colorThemeId: 'modern-teal',
 
     metaTitle: 'CV Voorbeeld Data Engineer | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor data engineers. Met voorbeeldteksten voor datapipelines, cloud en ETL, tips en een gratis template. Maak direct je eigen CV.',
+    metaDesc: 'CV voorbeeld voor data engineers, met voorbeeldteksten voor datapipelines, cloud en ETL, plus tips. Gebruik het voorbeeld en pas het direct aan.',
     keywords: ['cv voorbeeld data engineer', 'cv data pipeline', 'cv etl specialist', 'data engineer cv maken', 'big data cv'],
     heroTitle: 'CV Voorbeeld Data Engineer',
     heroText: 'Als data engineer ben je de ruggengraat van datagedreven organisaties. Dit CV voorbeeld laat zien hoe je je technische expertise met cloud-platforms, datapipelines en ETL-processen overtuigend presenteert. Benadruk je impact op datakwaliteit en bedrijfsresultaten.',

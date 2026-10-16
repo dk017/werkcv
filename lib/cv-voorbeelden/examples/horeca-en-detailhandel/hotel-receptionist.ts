@@ -8,8 +8,8 @@ export const hotelReceptionist: CVExample = {
     templateId: 'elegant',
     colorThemeId: 'elegant-navy',
 
-    metaTitle: 'CV Voorbeeld Hotel Receptionist | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor hotel receptionisten. Met voorbeeldteksten voor gastvrijheid, meertaligheid en PMS-systemen. Maak direct je eigen CV.',
+    metaTitle: 'CV receptioniste voorbeeld 2026 (hotel en front office) | WerkCV',
+    metaDesc: 'CV voorbeeld voor receptionistes en hotelreceptionisten, met voorbeeldteksten voor gastvrijheid, meertaligheid en PMS-systemen. Pas het direct aan.',
     keywords: ['cv voorbeeld hotel receptionist', 'cv receptie hotel', 'cv front office', 'cv gastvrijheid'],
     heroTitle: 'CV Voorbeeld Hotel Receptionist',
     heroText: 'Als hotel receptionist ben je het eerste aanspreekpunt voor gasten. Dit CV voorbeeld laat zien hoe je je gastvrijheid, talenkennis en ervaring met property management-systemen professioneel presenteert aan hotels en hospitality-bedrijven.',

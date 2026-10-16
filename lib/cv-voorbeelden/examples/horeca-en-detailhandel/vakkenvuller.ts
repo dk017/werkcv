@@ -8,8 +8,8 @@ export const vakkenvuller: CVExample = {
     templateId: 'simple',
     colorThemeId: 'modern-teal',
 
-    metaTitle: 'CV Voorbeeld Vakkenvuller | Supermarkt & Bijbaan | WerkCV.nl',
-    metaDesc: 'Professioneel cv voorbeeld voor vakkenvullers. Met profieltekst, FIFO, schappen spiegelen, voorraad, klantvragen, fysieke inzet en beschikbaarheid.',
+    metaTitle: 'CV vakkenvuller voorbeeld 2026 + tips | Supermarkt bijbaan | WerkCV',
+    metaDesc: 'CV voorbeeld en tips voor vakkenvullers, met profieltekst, FIFO, schappen spiegelen, voorraad, klantvragen en beschikbaarheid. Pas het voorbeeld direct aan.',
     keywords: [
         'cv voorbeeld vakkenvuller',
         'vakkenvuller cv',

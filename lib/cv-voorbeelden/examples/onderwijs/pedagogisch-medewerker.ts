@@ -8,8 +8,8 @@ export const pedagogischMedewerker: CVExample = {
     templateId: 'modern',
     colorThemeId: 'forest-green',
 
-    metaTitle: 'CV Voorbeeld Pedagogisch Medewerker | WerkCV.nl',
-    metaDesc: 'Professioneel cv voorbeeld voor pedagogisch medewerker kinderopvang. Met profieltekst, werkervaring, ontwikkeling, oudercontact, VVE, BSO en vaardigheden.',
+    metaTitle: 'CV pedagogisch medewerker voorbeeld 2026 | Kinderopvang | WerkCV',
+    metaDesc: 'Hoe schrijf je een cv als pedagogisch medewerker? Een ingevuld voorbeeld voor kinderopvang en BSO, met profieltekst, VVE, oudercontact en vaardigheden.',
     keywords: [
         'cv voorbeeld pedagogisch medewerker',
         'pedagogisch medewerker cv',

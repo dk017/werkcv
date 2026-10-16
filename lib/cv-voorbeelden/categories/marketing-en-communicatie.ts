@@ -4,8 +4,8 @@ export const marketingEnCommunicatie: CVExampleCategory = {
     slug: 'marketing-en-communicatie',
     name: 'Marketing & Communicatie',
     description: 'CV voorbeelden voor marketing professionals, communicatieadviseurs, content creators en designers. Laat je creativiteit en resultaten zien in een professioneel CV.',
-    metaTitle: 'CV Voorbeeld Marketing & Communicatie | Content, Social Media | WerkCV.nl',
-    metaDesc: 'Professionele CV voorbeelden voor marketing en communicatie. Van social media specialist tot grafisch ontwerper. Download gratis templates en val op bij werkgevers.',
+    metaTitle: 'CV voorbeeld marketing en communicatie (2026) | WerkCV',
+    metaDesc: 'Ingevulde cv voorbeelden voor marketing en communicatie, van social media specialist tot grafisch ontwerper. Kies een voorbeeld en pas het direct aan.',
     keywords: [
         'cv voorbeeld marketing',
         'cv communicatie',

@@ -5,7 +5,7 @@ export const bouwEnTechniek: CVExampleCategory = {
     name: 'Bouw & Techniek',
     description: 'CV voorbeelden voor bouwvakkers, technici, werkvoorbereiders en projectleiders in de bouw. Presenteer je vakmanschap, certificaten en projectervaring op een overtuigende manier.',
     metaTitle: 'CV Voorbeeld Bouw & Techniek | Timmerman, Projectleider | WerkCV.nl',
-    metaDesc: 'Professionele CV voorbeelden voor de bouw en techniek. Van timmerman tot projectleider. Download gratis templates en presenteer je vakmanschap.',
+    metaDesc: 'Ingevulde cv voorbeelden voor de bouw en techniek, van timmerman tot projectleider. Kies het voorbeeld dat bij je vak past en pas het direct aan.',
     keywords: [
         'cv voorbeeld timmerman',
         'cv metselaar',

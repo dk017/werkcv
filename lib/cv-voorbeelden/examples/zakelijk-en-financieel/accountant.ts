@@ -9,7 +9,7 @@ export const accountant: CVExample = {
     colorThemeId: 'classic-blue',
 
     metaTitle: 'CV Voorbeeld Accountant | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor accountants. Met voorbeeldteksten voor audit, jaarrekeningen en fiscaliteit. Download gratis en maak direct je eigen CV.',
+    metaDesc: 'CV voorbeeld voor accountants, met voorbeeldteksten voor audit, jaarrekeningen en fiscaliteit. Gebruik het voorbeeld en pas het direct aan.',
     keywords: ['cv voorbeeld accountant', 'cv registeraccountant', 'accountant cv maken', 'cv audit', 'ra cv voorbeeld'],
     heroTitle: 'CV Voorbeeld Accountant',
     heroText: 'Als accountant toon je nauwkeurigheid, integriteit en diepgaande financiele kennis. Dit CV voorbeeld laat zien hoe je je audit-ervaring, certificeringen en sectorkennis effectief presenteert. Benadruk je resultaten bij controles en advisering om je te onderscheiden.',

@@ -8,8 +8,8 @@ export const productiemedewerker: CVExample = {
     templateId: 'robust',
     colorThemeId: 'charcoal',
 
-    metaTitle: 'CV Voorbeeld Productiemedewerker | WerkCV.nl',
-    metaDesc: 'Professioneel cv voorbeeld voor productiemedewerkers. Met profieltekst, werkervaring, productie, machinebediening, kwaliteitscontrole, veiligheid en ploegendienst.',
+    metaTitle: 'CV productiemedewerker / fabrieksarbeider: voorbeeld 2026 | WerkCV',
+    metaDesc: 'CV voorbeeld voor productiemedewerkers en fabrieksarbeiders, met profieltekst, machines, kwaliteitscontrole, veiligheid en ploegendienst. Pas het direct aan.',
     keywords: [
         'cv voorbeeld productiemedewerker',
         'productiemedewerker cv',

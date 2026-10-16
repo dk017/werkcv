@@ -25,7 +25,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "CV Middelbare School Student | Eerste CV voor Bijbaan of Stage",
+  title: "CV middelbare school student: voorbeeld en opbouw (2026) | WerkCV",
   description:
     "Maak een sterk CV als middelbare school student. Bekijk opbouw, wat je bovenaan zet en hoe je school, bijbaan en projecten professioneel presenteert.",
   keywords: [

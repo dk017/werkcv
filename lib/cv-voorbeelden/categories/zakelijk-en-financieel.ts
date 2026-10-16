@@ -5,7 +5,7 @@ export const zakelijkEnFinancieel: CVExampleCategory = {
     name: 'Zakelijk & Financieel',
     description: 'CV voorbeelden voor financieel professionals, accountants, controllers en adviseurs. Laat zien hoe je je analytische vaardigheden en zakelijke ervaring presenteert op een overtuigende manier.',
     metaTitle: 'CV Voorbeeld Zakelijk & Financieel | Accountant, Controller | WerkCV.nl',
-    metaDesc: 'Professionele CV voorbeelden voor de zakelijke en financiele sector. Van accountant tot HR-medewerker. Download gratis templates en maak direct je CV.',
+    metaDesc: 'Ingevulde cv voorbeelden voor de zakelijke en financiële sector, van accountant tot HR-medewerker. Kies een voorbeeld en pas het direct aan.',
     keywords: [
         'cv voorbeeld accountant',
         'cv financieel analist',

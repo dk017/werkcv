@@ -8,8 +8,8 @@ export const cv15Jarige: CVExample = {
     templateId: 'simple',
     colorThemeId: 'modern-teal',
 
-    metaTitle: 'CV Voorbeeld 15-jarige | Bijbaan & Zonder Ervaring | WerkCV.nl',
-    metaDesc: 'CV voorbeeld voor een 15-jarige scholier. Met profieltekst, school, beschikbaarheid, vrijwilligerswerk, oppassen en eerste bijbaan voor supermarkt of horeca.',
+    metaTitle: 'CV 15-jarige: voorbeeld voor je eerste bijbaan (2026) | WerkCV',
+    metaDesc: 'Hoe maak je een cv als 15-jarige scholier? Bekijk een ingevuld voorbeeld voor een bijbaan in de supermarkt of horeca, zonder werkervaring, en pas het direct aan.',
     keywords: [
         'cv voorbeeld 15-jarige',
         'cv voorbeeld 15 jarige',

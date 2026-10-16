@@ -8,8 +8,8 @@ export const kassamedewerker: CVExample = {
     templateId: 'remarkable',
     colorThemeId: 'modern-teal',
 
-    metaTitle: 'CV Voorbeeld Kassamedewerker | Kassa & Retail | WerkCV.nl',
-    metaDesc: 'Professioneel cv voorbeeld voor kassamedewerkers. Met profieltekst, POS/kassa, klantcontact, retouren, dagafsluiting, nauwkeurigheid en beschikbaarheid.',
+    metaTitle: 'CV kassamedewerker / supermarktmedewerker: voorbeeld 2026 | WerkCV',
+    metaDesc: 'CV voorbeeld voor kassamedewerkers en supermarktmedewerkers, met profieltekst, kassa, klantcontact, retouren en dagafsluiting. Pas het direct aan.',
     keywords: [
         'cv voorbeeld kassamedewerker',
         'kassamedewerker cv',

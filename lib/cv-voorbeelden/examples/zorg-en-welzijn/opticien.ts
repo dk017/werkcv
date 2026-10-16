@@ -8,8 +8,8 @@ export const opticien: CVExample = {
     templateId: 'elegant',
     colorThemeId: 'elegant-navy',
 
-    metaTitle: 'CV Voorbeeld Opticien | WerkCV.nl',
-    metaDesc: 'Professioneel CV voorbeeld voor opticiens en optometristen. Met voorbeeldteksten voor oogzorgervaring, refractie en contactlensaanpassing. Direct te gebruiken.',
+    metaTitle: 'CV opticien voorbeeld 2026: refractie en contactlenzen | WerkCV',
+    metaDesc: 'CV voorbeeld voor opticiens en optometristen, met voorbeeldteksten voor oogzorg, refractie en contactlensaanpassing. Gebruik het voorbeeld en pas het direct aan.',
     keywords: ['cv voorbeeld opticien', 'opticien cv', 'cv optometrist', 'cv oogzorg', 'cv brillenspecialist'],
     heroTitle: 'CV Voorbeeld Opticien',
     heroText: 'Als opticien combineer je oogzorgkennis met klantgerichtheid en commercieel inzicht. Dit CV voorbeeld laat zien hoe je je ervaring met refracties, contactlensaanpassingen en brillenadvisering professioneel presenteert aan optiekzaken en oogzorgketens.',

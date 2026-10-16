@@ -751,6 +751,8 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
         ],
     },
     'cv-voorbeeld-klantenservice-medewerker': {
+        metaTitle: 'CV medewerker klantenservice: voorbeeld 2026 | WerkCV',
+        metaDesc: 'CV voorbeeld voor klantenservice medewerkers, met een sterke profieltekst, werkervaring met KPI-resultaten en ATS-keywords, plus de fouten die je beter vermijdt.',
         intro: 'Bij klantenservice draait selectie om twee dingen: klanttevredenheid en consistente performance. Dit CV helpt je precies die combinatie zichtbaar te maken.',
         sectionOverrides: {
             profieltekst: {
@@ -830,7 +832,7 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
     'cv-voorbeeld-horeca-medewerker': {
         title: 'CV voorbeeld horeca medewerker (restaurant / cafe)',
         description: 'BOFU gids voor een horeca-CV met profieltekst, beschikbaarheid, werkervaring en recruiterproof voorbeeldzinnen voor restaurant, cafe en fastservice.',
-        metaTitle: 'CV voorbeeld horeca medewerker (2026) | WerkCV.nl',
+        metaTitle: 'CV horeca voorbeeld 2026: bediening, café en bijbaan | WerkCV',
         metaDesc: 'Gebruik dit horeca CV voorbeeld voor restaurant, cafe of fastservice. Met profieltekst, werkervaring, skills en tips voor starters en bijbanen.',
         keywords: [
             'cv horeca voorbeeld',
@@ -2033,8 +2035,8 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
     'cv-voorbeeld-zzper': {
         title: 'CV voorbeeld zzp\'er (2026)',
         description: 'Praktische gids voor een ZZP-CV met opdrachtstructuur, opdrachtgevercontext, profieltekst, NDA-aanpak en recruiterproof voorbeeldbullets.',
-        metaTitle: 'CV voorbeeld zzp\'er (2026) | WerkCV',
-        metaDesc: 'Gebruik dit CV voorbeeld voor zzp\'ers en freelancers. Met opdrachtstructuur, profieltekst, NDA-opdrachten, intermediairproof bullets en voorbeeldformuleringen.',
+        metaTitle: 'ZZP CV maken: voorbeeld voor freelancers (2026) | WerkCV',
+        metaDesc: 'Zo schrijf je een zzp cv: een ingevuld voorbeeld met opdrachten, opdrachtgevers en resultaten, en een profieltekst die intermediairs overtuigt.',
         keywords: [
             'cv voorbeeld zzp\'er',
             'zzp cv voorbeeld',
