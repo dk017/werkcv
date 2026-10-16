@@ -351,3 +351,14 @@ test("date check: a birth date is not a period style, year-only periods next to 
   assert.equal(detectDateFormats(["Date of Birth: 15-03-1994", "2020 - current"]).size, 1);
   assert.equal(detectDateFormats(["aug 2021 - heden", "2016 - 2020"]).size, 2);
 });
+
+test("date check: a study with years only next to work periods with months is consistent", async () => {
+  const { runCvCheck } = await import("./engine");
+  const work = "Werkervaring\nVerkoper, Voorbeeld BV, aug 2021 - heden\nKassamedewerker, Winkel BV, jan 2019 - jul 2021";
+  const filler = Array.from({ length: 30 }, (_, index) => `Hielp ${index + 5} klanten per uur met advies over producten.`).join("\n");
+  const status = async (cvText: string) => (await runCvCheck({ cvText, locale: "nl", ai: false })).checks.find((item) => item.id === "score_date_format_consistency")?.status;
+  const education = "Opleiding\nMBO Retail\nROC Utrecht, 2015 - 2018";
+  assert.equal(await status(`${baseCv}\n${work}\n${filler}\n${education}`), "pass");
+  // A job with years only still counts, also when it has the same years as the study.
+  assert.equal(await status(`${baseCv}\n${work}\nVakkenvuller, Super BV\n2015 - 2018\n${filler}\nOpleiding\nMBO Retail\n2015 - 2018`), "fail");
+});

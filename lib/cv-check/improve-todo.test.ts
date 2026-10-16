@@ -102,3 +102,19 @@ test("years only keeps free text and the ongoing word", () => {
   assert.equal(yearOnlyResumeDate("zomer 2016", "nl"), "zomer 2016");
   assert.equal(yearOnlyResumeDate("2016", "nl"), "2016");
 });
+
+test("a study with years only next to jobs with months needs no fix; a job with years only does", async () => {
+  const data = getDefaultCvData();
+  const job = data.experience[0];
+  data.experience = [{ ...job, start: "jan 2022", end: "heden" }, { ...job, start: "mrt 2019", end: "dec 2021" }];
+  data.education = [{ ...data.education[0], start: "2013", end: "2017" }];
+  assert.deepEqual(planDateFix(data), { kind: "auto" });
+  assert.equal(await dateCheck(data), "pass");
+
+  data.experience[1] = { ...job, role: "Medewerker", start: "2019", end: "2021" };
+  const plan = planDateFix(data);
+  assert.equal(plan.kind, "months");
+  if (plan.kind !== "months") return;
+  assert.deepEqual(plan.missing.map(({ section, label }) => [section, label]), [["experience", "Medewerker"]]);
+  assert.equal(await dateCheck(normalizeCvDates(data)), "fail");
+});

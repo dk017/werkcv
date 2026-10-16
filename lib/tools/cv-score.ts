@@ -945,7 +945,7 @@ function scoreStructure(context: PreparedContext): CvScoreDimension {
         ["experience", "education", "skills", "profile", "languages", "courses"].includes(key)
       )
   );
-  const dateFormats = detectDateFormats(context.lines);
+  const dateFormats = detectDateFormats(context.lines, context.sections.education?.lines);
   const tableLikeLineCount = context.rawLines.filter((line) => {
     const trimmed = line.trim();
     if (!trimmed) {

@@ -1,6 +1,6 @@
 import type { CVData } from "@/lib/cv";
 import type { EditorStepId } from "@/lib/editor-steps";
-import { getResumeLanguage } from "@/lib/resume-language";
+import { formatResumeDateRange, getResumeLanguage } from "@/lib/resume-language";
 import { cvDataToCheckText } from "./cv-data-text";
 import { hasConsistentDateFormat } from "./date-formats";
 
@@ -135,12 +135,18 @@ export type MissingMonthPeriod = { section: PeriodSection; index: number; label:
  * "months": it cannot, because periods with only a year sit next to periods with a month. The person
  * adds the months (`missing`) or, when that passes the check (`yearsOnly`), switches every period to
  * years only. Decided with the check's own detector on the text the grade reads, so it matches the grade.
+ * A study listed with years only ("2013 – 2017") is accepted next to work periods with months.
  */
 export type DateFix = { kind: "auto" } | { kind: "months"; missing: MissingMonthPeriod[]; yearsOnly: boolean };
 
+/** The date lines of the education section, as the grade finds them under the education heading. */
+const educationDateLines = (data: CVData) =>
+  data.education.map((item) => formatResumeDateRange(item.start, item.end, data).trim()).filter(Boolean);
+const passesDateCheck = (data: CVData) => hasConsistentDateFormat(cvDataToCheckText(data), educationDateLines(data));
+
 export function planDateFix(data: CVData): DateFix {
   const normalized = normalizeCvDates(data);
-  if (hasConsistentDateFormat(cvDataToCheckText(normalized))) return { kind: "auto" };
+  if (passesDateCheck(normalized)) return { kind: "auto" };
 
   const language = getResumeLanguage(data);
   const sections: Array<[PeriodSection, Array<Period & { label: string }>]> = [
@@ -155,12 +161,14 @@ export function planDateFix(data: CVData): DateFix {
     for (const [section, items] of sections) {
       items.forEach((item, index) => {
         if (!isYear(item.start) && !isYear(item.end)) return;
+        // Years only is fine for a study, unless one side has a month.
+        if (section === "education" && !isMonthDate(item.start, language) && !isMonthDate(item.end, language)) return;
         const period = [item.start.trim(), item.end.trim()].filter(Boolean).join(" – ");
         missing.push({ section, index, label: item.label.trim() || period, period });
       });
     }
   }
-  return { kind: "months", missing, yearsOnly: hasConsistentDateFormat(cvDataToCheckText(yearOnlyCvDates(data))) };
+  return { kind: "months", missing, yearsOnly: passesDateCheck(yearOnlyCvDates(data)) };
 }
 
 export function profileWordCount(data: CVData): number {
