@@ -5,8 +5,9 @@ import { classifyMcpClient } from "./context";
 import { alertAiCapReached, resetAlertForTests } from "./alerts";
 import { CHECKED_CV_KIND, CHECKED_CV_TTL_MS, createCheckedCvHandoff, HandoffCapacityError, maxLiveHandoffs, peekCheckedCvHandoff, takeCheckedCvHandoff } from "./handoff";
 import { aiDailyCap, resetAiBudgetForTests, takeAiBudget, takeToolSlot } from "./limits";
-import { formatCheck, formatMatch, MCP_INSTRUCTIONS } from "./server";
-import { checkCv, editorLink, matchVacancy, openInEditor, type CheckCvData, type MatchVacancyData } from "./tools";
+import { MCP_INSTRUCTIONS } from "./server";
+import { checkCv, matchVacancy, openInEditor } from "./tools";
+import { editorUrl } from "./v2/open";
 
 // All CV text below is fictional.
 const CV = [
@@ -113,10 +114,10 @@ test("check_cv grades pasted text without calling the AI", async () => {
     assert.equal(aiCalls, 0);
     if (!result.ok) return;
     assert.equal(result.locale, "nl");
-    assert.ok(result.data.grade >= 1 && result.data.grade <= 10);
-    assert.ok(result.data.categories.length >= 3);
+    assert.ok(result.data.grade10 >= 1 && result.data.grade10 <= 10);
+    assert.equal(result.data.categories.length, 4);
     assert.ok(result.data.sectionsFound.includes("experience") && result.data.sectionsFound.includes("education"));
-    assert.equal(result.data.canOpenInEditor, result.data.grade < 8);
+    assert.equal(result.data.canOpenInEditor, true, "v2: a valid CV can always be opened in the editor");
     assert.ok(result.data.topFixes.length <= 3);
   } finally {
     openai.chat.completions.create = original;
@@ -134,49 +135,36 @@ test("check_cv answers in the language of the request and refuses a too-short te
   }
 });
 
-test("match_vacancy maps the result, and reports the daily cap and AI errors plainly", async () => {
-  const fakeResult = {
-    score: 72,
-    scoreBand: "good",
-    scoreLabel: "Goede match",
-    summary: "Je cv past bij de kern van de functie.",
-    perceivedRole: "Klantenservice",
-    perceivedSeniority: "mid",
-    dimensions: [],
-    strengths: [],
-    requirements: [
-      { requirement: "Ervaring met Salesforce", vacancyEvidence: "Salesforce is een pre", importance: "preferred", status: "strong", cvEvidence: "registreer elk contact in Salesforce", honestAction: "" },
-      { requirement: "Rijbewijs B", vacancyEvidence: "Rijbewijs B vereist", importance: "essential", status: "missing", cvEvidence: "", honestAction: "Vermeld je rijbewijs als je dat hebt." },
-    ],
-    missingKeywords: ["rijbewijs"],
-    topFixes: [{ category: "completeness", title: "Rijbewijs", evidence: "Niet op je cv", action: "Voeg je rijbewijs toe." }],
-    limitations: [],
-  };
+test("match_vacancy computes the result from the AI's requirements, and reports the daily cap and AI errors plainly", async () => {
+  const requirements = [
+    { id: "x", requirement: "Salesforce", type: "nice" as const, category: "tool" as const, status: "match" as const, vacancyQuote: "Salesforce is een pre", cvQuote: "registreer elk contact in Salesforce", gap: null, honestAction: null, keywords: ["Salesforce"] },
+    { id: "y", requirement: "Rijbewijs B", type: "must" as const, category: "other" as const, status: "missing" as const, vacancyQuote: "Rijbewijs B vereist", cvQuote: null, gap: "Geen rijbewijs genoemd.", honestAction: "Als dit klopt: vermeld je rijbewijs.", keywords: ["rijbewijs B"] },
+  ];
   const vacancy = "x".repeat(150);
 
-  const ok = await matchVacancy({ cvText: CV, vacancyText: vacancy }, { runMatch: (async () => fakeResult) as never, takeBudget: () => true });
+  const ok = await matchVacancy({ cvText: CV, vacancyText: vacancy }, { extractRequirements: async () => requirements, takeBudget: () => true });
   assert.equal(ok.ok, true);
   if (ok.ok) {
-    assert.equal(ok.data.score, 72);
+    assert.equal(ok.data.score, 25, "must 3x nice: (1x1 + 0x3) / 4");
     assert.equal(ok.data.requirements.length, 2);
-    assert.equal(ok.data.canOpenInEditor, true, "a missing requirement offers the editor");
-    assert.equal("dimensions" in ok.data, false, "only the needed fields are passed on");
+    assert.deepEqual(ok.data.missingKeywords, ["rijbewijs B"]);
+    assert.equal(ok.data.canOpenInEditor, true);
   }
 
   let called = false;
-  const capped = await matchVacancy({ cvText: CV, vacancyText: vacancy, locale: "en" }, { runMatch: (async () => { called = true; return fakeResult; }) as never, takeBudget: () => false });
+  const capped = await matchVacancy({ cvText: CV, vacancyText: vacancy, locale: "en" }, { extractRequirements: async () => { called = true; return requirements; }, takeBudget: () => false });
   assert.equal(called, false, "no AI call once the daily budget is used");
   assert.equal(capped.ok === false && capped.code, "RATE_LIMITED");
 
-  const broken = await matchVacancy({ cvText: CV, vacancyText: vacancy }, { runMatch: (async () => { throw new Error("quota"); }) as never, takeBudget: () => true });
+  const broken = await matchVacancy({ cvText: CV, vacancyText: vacancy }, { extractRequirements: async () => { throw new Error("quota"); }, takeBudget: () => true });
   assert.equal(broken.ok === false && broken.code, "AI_UNAVAILABLE");
   assert.ok(broken.ok === false && !/quota/i.test(broken.message), "the cause is not shown");
 });
 
 test("the editor link carries a token and tracking, never the CV text", async () => {
-  assert.equal(editorLink("t".repeat(43), "nl", "claude").startsWith("https://werkcv.nl/cv-check/verbeteren?handoff="), true);
-  assert.equal(editorLink("t".repeat(43), "en", "chatgpt").startsWith("https://werkcv.nl/en/cv-check/improve?handoff="), true);
-  const url = new URL(editorLink("t".repeat(43), "nl", "claude"));
+  assert.equal(editorUrl("t".repeat(43), "nl", "claude").startsWith("https://werkcv.nl/cv-check/verbeteren?handoff="), true);
+  assert.equal(editorUrl("t".repeat(43), "en", "chatgpt").startsWith("https://werkcv.nl/en/cv-check/improve?handoff="), true);
+  const url = new URL(editorUrl("t".repeat(43), "nl", "claude"));
   assert.equal(url.searchParams.get("utm_source"), "mcp");
   assert.equal(url.searchParams.get("utm_medium"), "claude");
   assert.equal(url.searchParams.get("utm_campaign"), "cv-check");
@@ -282,41 +270,20 @@ test("the daily AI cap alerts once per UTC day, with counts only", () => {
 });
 
 
-// What the real Claude session showed: the model only offered the editor when asked, did not know which
-// requirements were optional, and the user was never told the PDF is paid.
-const matchData: MatchVacancyData = {
-  score: 79,
-  scoreLabel: "Goede match",
-  summary: "Past bij de functie.",
-  requirements: [
-    { requirement: "minimaal mbo 4 niveau", importance: "essential", status: "strong", cvEvidence: "MBO 4", vacancyEvidence: "mbo 4", honestAction: "" },
-    { requirement: "rijbewijs B is een pre", importance: "preferred", status: "missing", cvEvidence: "", vacancyEvidence: "rijbewijs B", honestAction: "Vermeld je rijbewijs als je dat hebt." },
-  ],
-  topFixes: [{ title: "Vermeld je rijbewijs B", action: "Zet het bij je persoonsgegevens.", evidence: "" }],
-  missingKeywords: [],
-  canOpenInEditor: true,
-};
-const checkData: CheckCvData = {
-  grade: 6.8, band: "voldoende", categories: [{ label: "Inhoud", score: 60 }], topFixes: [], criticalIssues: 0,
-  sectionsFound: ["profile"], canOpenInEditor: true, limitations: "Alleen tekst.",
-};
-
-test("the vacancy match text says which requirements are essential and which are preferred", () => {
-  const text = formatMatch(matchData, "nl");
-  assert.match(text, /\[aangetoond, essentieel\] minimaal mbo 4 niveau/);
-  assert.match(text, /\[ontbreekt, pre\] rijbewijs B is een pre/);
-  assert.match(formatMatch(matchData, "en"), /\[missing, nice to have\]/);
-});
-
-test("results that can be opened in the editor state what is free and what costs money", () => {
-  for (const text of [formatCheck(checkData, "nl"), formatMatch(matchData, "nl")]) {
-    assert.match(text, /Bewerken is gratis/);
-    assert.match(text, /eenmalig €7,95/);
-    assert.match(text, /zonder abonnement/);
+test("the editor link answer states what is free and what costs money, as a fact", async () => {
+  const deps = { createHandoff: async () => ({ token: "a".repeat(43) }) };
+  const nl = await openInEditor({ cvText: CV, locale: "nl" }, "claude", deps);
+  const en = await openInEditor({ cvText: CV, locale: "en" }, "claude", deps);
+  assert.ok(nl.ok && en.ok);
+  if (!nl.ok || !en.ok) return;
+  assert.match(nl.data.userMessage, /Bewerken is gratis/);
+  assert.match(nl.data.userMessage, /eenmalig €7,95/);
+  assert.match(nl.data.userMessage, /zonder abonnement/);
+  assert.match(en.data.userMessage, /costs €7.95 once/);
+  for (const text of [nl.data.userMessage, en.data.userMessage]) {
+    assert.doesNotMatch(text, /(you should|you must|always|tell the user|mention (this|that)|offer (this|it))/i);
+    assert.doesNotMatch(text, /(moet je|vertel de gebruiker|noem altijd|bied (dit|het) aan)/i);
   }
-  assert.match(formatCheck(checkData, "en"), /costs €7\.95 once/);
-  assert.doesNotMatch(formatCheck({ ...checkData, canOpenInEditor: false, grade: 9 }, "nl"), /WerkCV-editor/, "no offer when there is nothing to fix");
-  assert.doesNotMatch(formatMatch({ ...matchData, canOpenInEditor: false }, "nl"), /WerkCV-editor/);
 });
 
 test("the server instructions only describe the tools and when to call them (directory policy: no promotion)", () => {
@@ -328,9 +295,4 @@ test("the server instructions only describe the tools and when to call them (dir
   }
 });
 
-test("tool results state the price as a fact and carry no instruction to the model", () => {
-  for (const text of [formatCheck(checkData, "nl"), formatMatch(matchData, "nl"), formatCheck(checkData, "en"), formatMatch(matchData, "en")]) {
-    assert.doesNotMatch(text, /\b(you should|you must|always|tell the user|mention (this|that)|offer (this|it))\b/i);
-    assert.doesNotMatch(text, /\b(moet je|vertel de gebruiker|noem altijd|bied (dit|het) aan)\b/i);
-  }
-});
+

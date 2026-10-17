@@ -1,0 +1,143 @@
+{
+  "_note": "Expected v2 responses for the test CV 'Sanne de Vries' (fictional) and the Performance Marketeer vacancy. Use as fixtures in your tests.",
+  "check_cv": {
+    "score": 69,
+    "grade10": 6.9,
+    "band": "in_ontwikkeling",
+    "bandLabel": "In ontwikkeling",
+    "summary": "Je CV is netjes opgebouwd en goed leesbaar, maar laat geen meetbare resultaten zien en beschrijft vooral taken.",
+    "categories": [
+      { "id": "content", "label": "Inhoud en bewijs", "score": 56, "weight": 0.5 },
+      { "id": "ats", "label": "Leesbaarheid voor systemen", "score": 100, "weight": 0.2 },
+      { "id": "basics", "label": "Basis en contact", "score": 100, "weight": 0.15 },
+      { "id": "dutch_conventions", "label": "Nederlandse conventies", "score": 100, "weight": 0.15 }
+    ],
+    "stats": {
+      "wordCount": 130,
+      "profileWordCount": 28,
+      "experienceBulletCount": 8,
+      "quantifiedBulletCount": 0,
+      "weakBulletOpeners": ["Verantwoordelijk voor", "Meewerken aan", "Ondersteuning bij"],
+      "clichesFound": ["Enthousiaste en leergierige", "echte teamplayer", "nieuwe uitdaging"]
+    },
+    "topFixes": [
+      {
+        "id": "quantified_achievement",
+        "severity": "high",
+        "section": "experience",
+        "where": "Werkervaring > Junior Online Marketeer, bullet 1",
+        "quote": "Google Ads campagnes beheren",
+        "problem": "Geen enkele van je 8 bullets bevat een cijfer of resultaat.",
+        "fix": "Voeg per functie minstens één resultaat toe met een cijfer, budget of percentage.",
+        "example": "Beheerde Google Ads-campagnes met een maandbudget van €[X] en verhoogde de ROAS van [X] naar [X]."
+      },
+      {
+        "id": "active_verbs",
+        "severity": "medium",
+        "section": "experience",
+        "where": "Werkervaring > Marketing Coördinator, bullet 1",
+        "quote": "Verantwoordelijk voor social media kanalen",
+        "problem": "3 bullets beginnen met een zwakke opener zoals 'Verantwoordelijk voor'.",
+        "fix": "Begin elke bullet met een actief werkwoord en eindig met het resultaat.",
+        "example": "Bouwde de social media-kanalen uit van [X] naar [X] volgers in [X] maanden."
+      },
+      {
+        "id": "profile_length_and_cliches",
+        "severity": "medium",
+        "section": "profile",
+        "where": "Profiel",
+        "quote": "Ik ben een echte teamplayer en werk graag met mensen. Op zoek naar een nieuwe uitdaging.",
+        "problem": "Je profiel telt 28 woorden (advies: 50-120) en bestaat vooral uit clichés.",
+        "fix": "Schrijf 3-5 zinnen over je specialisme, je belangrijkste resultaat en de functie die je zoekt.",
+        "example": null
+      }
+    ],
+    "otherFixesCount": 2,
+    "criticalIssues": 0,
+    "sectionsFound": ["contact", "profile", "experience", "education", "skills", "languages", "hobbies"],
+    "canOpenInEditor": true,
+    "nextStep": {
+      "action": "open_in_editor",
+      "reason": "Fixes are easiest to apply in the editor.",
+      "suggestedUserPrompt": "Zal ik je CV openen in de WerkCV-editor, zodat je deze verbeteringen direct kunt doorvoeren en als PDF kunt downloaden?"
+    },
+    "limitations": "Alleen gebaseerd op de geplakte tekst: opmaak zoals kolommen of scans is niet beoordeeld.",
+    "meta": { "tool": "check_cv", "schemaVersion": "2.0.0", "scoringVersion": "2026-10", "locale": "nl" }
+  },
+  "match_vacancy": {
+    "score": 49,
+    "grade10": 4.9,
+    "band": "zwak",
+    "bandLabel": "Zwak",
+    "summary": "Je hebt e-commerce-, SEO- en Google Ads-ervaring, maar Meta Ads, Looker Studio, A/B-tests en aantoonbare resultaten ontbreken.",
+    "vacancyTitle": "Performance Marketeer – Fietsenplein",
+    "requirements": [
+      { "id": "r1", "requirement": "3 jaar performance marketing", "type": "must", "category": "experience", "status": "partial", "vacancyQuote": "Minimaal 3 jaar ervaring in performance marketing", "cvQuote": "Google Ads campagnes beheren", "gap": "Ongeveer 1,5 jaar aantoonbare Google Ads-ervaring (sep 2020 – feb 2022); de huidige functie noemt geen betaalde campagnes.", "honestAction": "Als je in je huidige functie ook betaalde campagnes draait, zet dat er expliciet bij.", "keywords": ["performance marketing"] },
+      { "id": "r2", "requirement": "E-commerce", "type": "nice", "category": "experience", "status": "match", "vacancyQuote": "bij voorkeur e-commerce", "cvQuote": "SEO teksten schrijven voor de webshop", "gap": null, "honestAction": null, "keywords": ["e-commerce", "webshop"] },
+      { "id": "r3", "requirement": "Resultaten met Google Ads", "type": "must", "category": "tool", "status": "partial", "vacancyQuote": "Aantoonbare resultaten met Google Ads", "cvQuote": "Google Ads campagnes beheren", "gap": "Google Ads genoemd, maar zonder resultaat of cijfer.", "honestAction": "Als dit klopt: noem budget, ROAS of conversiegroei.", "keywords": ["Google Ads", "ROAS"] },
+      { "id": "r4", "requirement": "Meta Ads", "type": "must", "category": "tool", "status": "missing", "vacancyQuote": "Aantoonbare resultaten met Google Ads en Meta Ads", "cvQuote": null, "gap": "Meta Ads komt niet voor in je CV.", "honestAction": "Als je ooit Meta- of Facebook-advertenties hebt gedraaid, voeg dat toe.", "keywords": ["Meta Ads"] },
+      { "id": "r5", "requirement": "GA4", "type": "must", "category": "tool", "status": "partial", "vacancyQuote": "Ervaring met GA4 en Looker Studio", "cvQuote": "Rapportages maken in Google Analytics", "gap": "Google Analytics genoemd, GA4 niet.", "honestAction": "Als dit klopt: schrijf 'GA4' in plaats van alleen 'Google Analytics'.", "keywords": ["GA4"] },
+      { "id": "r6", "requirement": "Looker Studio", "type": "must", "category": "tool", "status": "missing", "vacancyQuote": "Ervaring met GA4 en Looker Studio", "cvQuote": null, "gap": "Looker Studio komt niet voor in je CV.", "honestAction": "Als je dashboards hebt gebouwd, noem de tool en wat het dashboard liet zien.", "keywords": ["Looker Studio", "dashboards"] },
+      { "id": "r7", "requirement": "Datagedreven werken", "type": "must", "category": "skill", "status": "partial", "vacancyQuote": "Analytisch sterk; je werkt datagedreven.", "cvQuote": "Rapportages maken in Google Analytics", "gap": "Rapportages genoemd, maar geen beslissing of resultaat op basis van data.", "honestAction": "Als dit klopt: beschrijf één keer dat data tot een aanpassing en beter resultaat leidde.", "keywords": ["datagedreven"] },
+      { "id": "r8", "requirement": "HBO-niveau", "type": "must", "category": "education", "status": "match", "vacancyQuote": "HBO werk- en denkniveau.", "cvQuote": "Bachelor Commerciële Economie – Hogeschool Utrecht", "gap": null, "honestAction": null, "keywords": ["HBO"] },
+      { "id": "r9", "requirement": "Nederlands", "type": "must", "category": "language", "status": "match", "vacancyQuote": "Uitstekende beheersing van de Nederlandse taal", "cvQuote": "Nederlands (moedertaal)", "gap": null, "honestAction": null, "keywords": ["Nederlands"] },
+      { "id": "r10", "requirement": "Engels", "type": "nice", "category": "language", "status": "match", "vacancyQuote": "goed Engels is een pré", "cvQuote": "Engels (goed)", "gap": null, "honestAction": null, "keywords": ["Engels"] },
+      { "id": "r11", "requirement": "A/B-tests", "type": "must", "category": "duty", "status": "missing", "vacancyQuote": "Je voert A/B-tests uit op landingspagina's en advertenties.", "cvQuote": null, "gap": "Geen A/B-tests genoemd.", "honestAction": "Als je advertentie- of paginavarianten hebt getest, noem dat met de uitkomst.", "keywords": ["A/B-testen", "landingspagina's"] },
+      { "id": "r12", "requirement": "SEO", "type": "must", "category": "duty", "status": "match", "vacancyQuote": "Je werkt samen met het contentteam aan SEO.", "cvQuote": "SEO teksten schrijven voor de webshop", "gap": null, "honestAction": null, "keywords": ["SEO"] },
+      { "id": "r13", "requirement": "E-mailflows in Klaviyo", "type": "must", "category": "duty", "status": "partial", "vacancyQuote": "Je zet e-mailflows op in Klaviyo.", "cvQuote": "Nieuwsbrieven maken en versturen", "gap": "Nieuwsbrieven in Mailchimp, geen geautomatiseerde flows of Klaviyo.", "honestAction": "Als je automatische e-mailflows hebt opgezet, noem dat; Mailchimp-ervaring is overdraagbaar.", "keywords": ["Klaviyo", "e-mailflows", "marketing automation"] },
+      { "id": "r14", "requirement": "Budget €40.000 per maand", "type": "must", "category": "duty", "status": "missing", "vacancyQuote": "met een maandbudget van €40.000", "cvQuote": null, "gap": "Geen budget genoemd bij je campagnes.", "honestAction": "Als dit klopt: noem het budget dat je beheerde, ook als het kleiner was.", "keywords": ["mediabudget"] }
+    ],
+    "counts": { "mustMatched": 3, "mustPartial": 5, "mustMissing": 4, "niceMatched": 2 },
+    "matchedKeywords": ["SEO", "Google Ads", "HBO", "e-commerce", "Nederlands", "Engels"],
+    "missingKeywords": ["Meta Ads", "Looker Studio", "GA4", "A/B-testen", "Klaviyo", "ROAS", "mediabudget"],
+    "topFixes": [
+      {
+        "id": "add_results_google_ads",
+        "severity": "high",
+        "section": "experience",
+        "where": "Werkervaring > Junior Online Marketeer, bullet 1",
+        "quote": "Google Ads campagnes beheren",
+        "problem": "De vacature vraagt aantoonbare resultaten; je bullet noemt alleen de taak.",
+        "fix": "Voeg budget en resultaat toe, als die kloppen.",
+        "example": "Beheerde Google Ads-campagnes (€[X]/maand) en verhoogde de ROAS van [X] naar [X]."
+      },
+      {
+        "id": "name_ga4",
+        "severity": "medium",
+        "section": "skills",
+        "where": "Vaardigheden",
+        "quote": "Google Analytics",
+        "problem": "De vacature vraagt GA4; je CV noemt alleen Google Analytics.",
+        "fix": "Schrijf 'GA4' als je met GA4 werkt, en noem Looker Studio als je dashboards bouwt.",
+        "example": null
+      },
+      {
+        "id": "add_meta_ads",
+        "severity": "medium",
+        "section": "experience",
+        "where": null,
+        "quote": null,
+        "problem": "Meta Ads is een harde eis en komt niet voor in je CV.",
+        "fix": "Voeg Meta Ads toe als je het hebt gebruikt; anders benoem dit eerlijk in je motivatie.",
+        "example": null
+      }
+    ],
+    "canOpenInEditor": true,
+    "nextStep": {
+      "action": "open_in_editor",
+      "reason": "The editor can show this vacancy next to the CV while the user applies the fixes.",
+      "suggestedUserPrompt": "Wil je dat ik je CV met deze vacature open in de WerkCV-editor, zodat je hem gericht kunt aanpassen?"
+    },
+    "limitations": "AI-analyse van de geplakte tekst; controleer de citaten. Er wordt niets opgeslagen.",
+    "meta": { "tool": "match_vacancy", "schemaVersion": "2.0.0", "scoringVersion": "2026-10", "locale": "nl" }
+  },
+  "open_in_editor": {
+    "url": "https://werkcv.nl/cv-check/verbeteren?handoff=EXAMPLE&utm_source=mcp&utm_medium=claude&utm_campaign=cv-check",
+    "expiresInMinutes": 60,
+    "singleUse": true,
+    "includesVacancy": true,
+    "opensWith": "match",
+    "userMessage": "Deze link werkt één keer en verloopt na 60 minuten. Je hebt geen account nodig.",
+    "meta": { "tool": "open_in_editor", "schemaVersion": "2.0.0", "scoringVersion": "2026-10", "locale": "nl" }
+  }
+}

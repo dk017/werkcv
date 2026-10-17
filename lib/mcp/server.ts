@@ -1,21 +1,12 @@
 import type { McpServer } from "@modelcontextprotocol/server";
 import { z } from "zod";
-import { cvDownloadPrice } from "@/lib/site-content";
 import { currentMcpContext } from "./context";
 import { recordMcpEvent } from "./events";
 import { CV_TEXT_MAX, CV_TEXT_MIN, VACANCY_TEXT_MAX, VACANCY_TEXT_MIN, type HandoffLocale } from "./handoff";
 import { takeToolSlot, type McpLimitedTool } from "./limits";
-import {
-  checkCv,
-  failure,
-  gradeBucket,
-  matchVacancy,
-  openInEditor,
-  resolveLocale,
-  type CheckCvData,
-  type MatchVacancyData,
-  type McpToolResult,
-} from "./tools";
+import { checkCv, failure, gradeBucket, matchVacancy, openInEditor, resolveLocale, type McpToolResult } from "./tools";
+import { CheckCvOutput, MatchVacancyOutput, OpenInEditorOutput, TOOL_DESCRIPTIONS } from "./v2/contract";
+import { resolveUtmMedium } from "./v2/open";
 
 export const MCP_SERVER_INFO = { name: "werkcv-cv-check", version: "0.1.0" } as const;
 
@@ -26,9 +17,6 @@ export const MCP_INSTRUCTIONS = [
   "open_in_editor opens the CV in the WerkCV editor and returns a one-time link; the text is stored for at most 60 minutes and deleted when the link is first opened. Call it when the user asks to edit the CV in that editor or to download it as a PDF.",
   "Report the grade and fixes as given; do not invent facts about the person's experience.",
 ].join(" ");
-
-const priceNl = cvDownloadPrice.display;
-const priceEn = cvDownloadPrice.displayEn;
 
 const locale = z.enum(["nl", "en"]).optional().describe('Language of the CV and the answer. Detected from the text when omitted.');
 const cvText = z
@@ -54,59 +42,16 @@ function overLimit(tool: McpLimitedTool, loc: HandoffLocale): ToolContent | null
   return asError(failure("RATE_LIMITED", loc));
 }
 
-export function formatCheck(data: CheckCvData, loc: HandoffLocale): string {
-  const en = loc === "en";
-  const lines = [
-    en ? `Grade: ${data.grade.toFixed(1)} / 10 (${data.band})` : `Cijfer: ${String(data.grade.toFixed(1)).replace(".", ",")} / 10 (${data.band})`,
-    ...data.categories.map((category) => `- ${category.label}: ${category.score}/100`),
-  ];
-  if (data.topFixes.length) {
-    lines.push("", en ? "Fix first:" : "Verbeter eerst:");
-    data.topFixes.forEach((fix, index) => lines.push(`${index + 1}. ${fix.title}: ${fix.fix}`));
-  }
-  if (data.criticalIssues) lines.push("", en ? `Critical issues: ${data.criticalIssues}` : `Kritieke punten: ${data.criticalIssues}`);
-  lines.push("", data.limitations);
-  if (data.canOpenInEditor) {
-    lines.push(
-      en
-        ? `The CV can be opened in the WerkCV editor without an account. Editing is free; downloading the PDF costs ${priceEn} once, with no subscription.`
-        : `Het cv kan zonder account in de WerkCV-editor worden geopend. Bewerken is gratis; het pdf downloaden kost eenmalig ${priceNl}, zonder abonnement.`,
-    );
-  }
-  return lines.join("\n");
-}
-
-export function formatMatch(data: MatchVacancyData, loc: HandoffLocale): string {
-  const en = loc === "en";
-  const status = { strong: en ? "shown" : "aangetoond", partial: en ? "partly" : "deels", missing: en ? "missing" : "ontbreekt" } as const;
-  // Essential versus preferred decides what to fix first, so the text states it (the vacancy's "pre" is "preferred").
-  const importance = { essential: en ? "essential" : "essentieel", preferred: en ? "nice to have" : "pre" } as const;
-  const lines = [`${en ? "Match" : "Match"}: ${data.score}/100 (${data.scoreLabel})`, data.summary, ""];
-  data.requirements.forEach((requirement) => {
-    lines.push(
-      `- [${status[requirement.status]}, ${importance[requirement.importance]}] ${requirement.requirement}${requirement.status === "strong" ? "" : ` - ${requirement.honestAction}`}`,
-    );
-  });
-  if (data.topFixes.length) {
-    lines.push("", en ? "Fix first:" : "Verbeter eerst:");
-    data.topFixes.forEach((fix, index) => lines.push(`${index + 1}. ${fix.title}: ${fix.action}`));
-  }
-  if (data.canOpenInEditor) {
-    lines.push(
-      "",
-      en
-        ? `The CV can be opened in the WerkCV editor without an account. Editing is free; downloading the PDF costs ${priceEn} once, with no subscription.`
-        : `Het cv kan zonder account in de WerkCV-editor worden geopend. Bewerken is gratis; het pdf downloaden kost eenmalig ${priceNl}, zonder abonnement.`,
-    );
-  }
-  return lines.join("\n");
-}
-
+/**
+ * v2 answers: the same object as structuredContent and as a JSON text block (for clients without
+ * structured output). Outside production every answer is checked against its contract schema, so a
+ * drifting shape fails loudly in development and tests.
+ */
 async function respond<T>(
   tool: string,
   result: McpToolResult<T> & { locale: HandoffLocale },
   startedAt: number,
-  render: (data: T, loc: HandoffLocale) => string,
+  schema: { parse: (value: unknown) => unknown },
   grade?: (data: T) => number | null,
 ): Promise<ToolContent> {
   const { client } = currentMcpContext();
@@ -115,9 +60,16 @@ async function respond<T>(
     void recordMcpEvent("mcp_tool_called", { ...properties, error: result.code });
     return asError(result);
   }
+  const content = successContent(result.data, schema);
   const value = grade?.(result.data);
   void recordMcpEvent("mcp_tool_called", { ...properties, error: null, grade_bucket: value == null ? null : gradeBucket(value) });
-  return { content: [{ type: "text", text: render(result.data, result.locale) }], structuredContent: result.data as Record<string, unknown> };
+  return content;
+}
+
+/** A successful v2 answer: validated outside production, returned as structuredContent and as JSON text. */
+export function successContent<T>(data: T, schema: { parse: (value: unknown) => unknown }): ToolContent {
+  if (process.env.NODE_ENV !== "production") schema.parse(data);
+  return { content: [{ type: "text", text: JSON.stringify(data) }], structuredContent: data as Record<string, unknown> };
 }
 
 export function registerWerkcvTools(server: McpServer): void {
@@ -125,9 +77,9 @@ export function registerWerkcvTools(server: McpServer): void {
     "check_cv",
     {
       title: "Check a CV (Dutch conventions)",
-      description:
-        "Grades a CV from 1 to 10 against Dutch hiring conventions and ATS readability, and lists the fixes to make first. Free, no AI, nothing is stored. Use when the user wants to know how strong their CV is.",
+      description: TOOL_DESCRIPTIONS.check_cv,
       inputSchema: z.object({ cv_text: cvText, locale }),
+      outputSchema: CheckCvOutput,
       annotations: { title: "Check a CV", readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false },
     },
     async ({ cv_text, locale: requested }) => {
@@ -136,7 +88,7 @@ export function registerWerkcvTools(server: McpServer): void {
       const blocked = overLimit("check_cv", loc);
       if (blocked) return blocked;
       const result = await checkCv({ cvText: cv_text, locale: requested });
-      return respond("check_cv", result, startedAt, formatCheck, (data) => data.grade);
+      return respond("check_cv", result, startedAt, CheckCvOutput, (data) => data.grade10);
     },
   );
 
@@ -144,9 +96,9 @@ export function registerWerkcvTools(server: McpServer): void {
     "match_vacancy",
     {
       title: "Compare a CV with a vacancy",
-      description:
-        "Compares a CV with one vacancy, requirement by requirement, with quotes from both texts, and gives the fixes to make first. Uses AI, so it is rate-limited. Nothing is stored.",
+      description: TOOL_DESCRIPTIONS.match_vacancy,
       inputSchema: z.object({ cv_text: cvText, vacancy_text: vacancyText, locale }),
+      outputSchema: MatchVacancyOutput,
       annotations: { title: "Compare a CV with a vacancy", readOnlyHint: true, destructiveHint: false, idempotentHint: false, openWorldHint: false },
     },
     async ({ cv_text, vacancy_text, locale: requested }) => {
@@ -155,7 +107,7 @@ export function registerWerkcvTools(server: McpServer): void {
       const blocked = overLimit("match_vacancy", loc);
       if (blocked) return blocked;
       const result = await matchVacancy({ cvText: cv_text, vacancyText: vacancy_text, locale: requested });
-      return respond("match_vacancy", result, startedAt, formatMatch, () => null);
+      return respond("match_vacancy", result, startedAt, MatchVacancyOutput, (data) => data.grade10);
     },
   );
 
@@ -163,9 +115,9 @@ export function registerWerkcvTools(server: McpServer): void {
     "open_in_editor",
     {
       title: "Open the CV in the WerkCV editor",
-      description:
-        "Returns a link that opens this CV in the WerkCV editor, no account needed. The text is stored for at most 60 minutes and deleted the first time the link is opened. Call only when the user wants to edit or download the CV.",
+      description: TOOL_DESCRIPTIONS.open_in_editor,
       inputSchema: z.object({ cv_text: cvText, vacancy_text: vacancyText.optional(), locale }),
+      outputSchema: OpenInEditorOutput,
       annotations: { title: "Open in the editor", readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false },
     },
     async ({ cv_text, vacancy_text, locale: requested }) => {
@@ -174,17 +126,11 @@ export function registerWerkcvTools(server: McpServer): void {
       const blocked = overLimit("open_in_editor", loc);
       if (blocked) return blocked;
       const { client } = currentMcpContext();
-      const result = await openInEditor({ cvText: cv_text, vacancyText: vacancy_text ?? null, locale: requested }, client);
+      // The client's own name when the server has it (initialize), else the User-Agent label (stateless route).
+      const utmMedium = resolveUtmMedium(server.server.getClientVersion(), client);
+      const result = await openInEditor({ cvText: cv_text, vacancyText: vacancy_text ?? null, locale: requested }, utmMedium);
       if (result.ok) void recordMcpEvent("mcp_link_created", { locale: result.locale, client, with_vacancy: Boolean(vacancy_text) });
-      return respond(
-        "open_in_editor",
-        result,
-        startedAt,
-        (data, l) =>
-          l === "en"
-            ? `Open your CV in the editor: ${data.url}\nThe link works once and expires in ${data.expiresInMinutes} minutes. Editing is free and needs no account; you sign in only to download, and the PDF costs ${priceEn} once, with no subscription.`
-            : `Open je cv in de editor: ${data.url}\nDe link werkt één keer en verloopt over ${data.expiresInMinutes} minuten. Bewerken is gratis en zonder account; je meldt je pas aan om te downloaden, en het pdf kost eenmalig ${priceNl}, zonder abonnement.`,
-      );
+      return respond("open_in_editor", result, startedAt, OpenInEditorOutput);
     },
   );
 }
