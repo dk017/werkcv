@@ -18,6 +18,7 @@ import {
 import { findCliches, readCvStructure, weakOpenerOf } from "./cv-structure";
 import { isShortKeyword, reconcileRequirements, vacancyTitleOf } from "./match";
 import { resolveUtmMedium } from "./open";
+import { redactGovernmentIds } from "./redact";
 
 // Fictional test CV and vacancy, reconstructed from every quote in fixtures/examples.json.
 const FIXTURES = join(__dirname, "fixtures");
@@ -143,6 +144,43 @@ test("open_in_editor returns the v2 fields and a valid answer", async () => {
   assert.match(withVacancy.data.userMessage, /één keer/);
   assert.equal(new URL(withVacancy.data.url).searchParams.get("utm_medium"), "cursor");
   assert.ok(!withVacancy.data.url.includes("Sanne"), "no CV text in the URL");
+});
+
+test("open_in_editor states the price for Claude but not for ChatGPT (OpenAI app directory rule)", async () => {
+  const deps = { createHandoff: async () => ({ token: "b".repeat(43) }) };
+  const claude = await openInEditor({ cvText: CV, locale: "nl" }, "claude", deps);
+  const chatgpt = await openInEditor({ cvText: CV, locale: "nl" }, "chatgpt", deps);
+  const chatgptEn = await openInEditor({ cvText: CV, locale: "en" }, "chatgpt", deps);
+  assert.ok(claude.ok && chatgpt.ok && chatgptEn.ok);
+  if (!claude.ok || !chatgpt.ok || !chatgptEn.ok) return;
+  assert.match(claude.data.userMessage, /eenmalig/);
+  for (const answer of [chatgpt.data, chatgptEn.data]) {
+    OpenInEditorOutput.parse(answer);
+    assert.doesNotMatch(answer.userMessage, /€|eenmalig|abonnement|subscription|PDF|pdf|pay|kost/);
+  }
+});
+
+test("BSN, passport/ID and IBAN numbers are removed; ordinary text and phone numbers stay", () => {
+  assert.equal(redactGovernmentIds("BSN: 123456789\nRijbewijs B", "nl"), "BSN: [verwijderd]\nRijbewijs B");
+  assert.equal(redactGovernmentIds("Burgerservicenummer 123 456 789 – Utrecht", "nl"), "Burgerservicenummer [verwijderd] – Utrecht");
+  assert.equal(redactGovernmentIds("Passport no. AB1234567", "en"), "Passport no. [removed]");
+  assert.equal(redactGovernmentIds("IBAN NL91 ABNA 0417 1643 00", "nl"), "IBAN [verwijderd]");
+  for (const kept of ["Paspoort aanwezig", "Telefoon 06 12345678", "Werkte aan het BSN-register van 2019 tot 2021"]) {
+    assert.equal(redactGovernmentIds(kept, "nl"), kept);
+  }
+});
+
+test("the editor link and the vacancy comparison never receive the BSN; check_cv still sees it", async () => {
+  const withBsn = CV.replace(/\n/, "\nBSN: 123456789\n");
+  let stored = "";
+  await openInEditor({ cvText: withBsn, locale: "nl" }, "claude", { createHandoff: async (h) => { stored = h.cvText; return { token: "c".repeat(43) }; } });
+  assert.ok(stored.includes("BSN: [verwijderd]") && !stored.includes("123456789"));
+  let sentToAi = "";
+  await matchVacancy(
+    { cvText: withBsn, vacancyText: VACANCY, locale: "nl" },
+    { extractRequirements: async (cv) => { sentToAi = cv; return EXAMPLE_REQUIREMENTS; }, takeBudget: () => true },
+  );
+  assert.ok(sentToAi.length > 0 && !sentToAi.includes("123456789"));
 });
 
 test("utm_medium comes from the client's name, with the User-Agent label as fallback", () => {

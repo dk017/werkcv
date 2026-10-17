@@ -87,6 +87,13 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  async rewrites() {
+    return [
+      // OpenAI app directory domain check (app/api/openai-apps-challenge/route.ts).
+      { source: '/.well-known/openai-apps-challenge', destination: '/api/openai-apps-challenge' },
+    ];
+  },
+
   async redirects() {
     return [
       {

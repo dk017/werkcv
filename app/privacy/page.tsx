@@ -35,7 +35,7 @@ export default function PrivacyPage() {
             <main className="relative z-10 max-w-3xl mx-auto px-6 py-12">
                 <div className="bg-white border-4 border-black p-6 sm:p-10 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
                     <h1 className="text-3xl font-black text-black mb-2">Privacybeleid</h1>
-                    <p className="text-sm font-medium text-gray-500 mb-8">Laatst bijgewerkt: juli 2026</p>
+                    <p className="text-sm font-medium text-gray-500 mb-8">Laatst bijgewerkt: oktober 2026</p>
 
                     <div className="prose prose-sm max-w-none space-y-6 text-black">
                         <section>
@@ -129,14 +129,16 @@ export default function PrivacyPage() {
                             </p>
                             <p className="font-medium leading-relaxed mt-2">
                                 <strong>Gebruik via een AI-assistent (MCP-koppeling).</strong> Laat je je cv of een
-                                vacature controleren via de WerkCV-koppeling in een AI-assistent zoals Claude, dan
+                                vacature controleren via de WerkCV-koppeling in een AI-assistent zoals Claude of ChatGPT, dan
                                 verwerken wij de tekst die de assistent doorstuurt. Bij het controleren van een cv
                                 bewaren wij die tekst niet. Bij het vergelijken met een vacature wordt de tekst voor de
                                 analyse naar OpenAI gestuurd en ook die bewaren wij niet. Vraag je om je cv in de editor
                                 te openen, dan bewaart WerkCV de cv-tekst (en eventueel de vacaturetekst) maximaal 60
                                 minuten op onze server, voor één eenmalige link. De tekst wordt verwijderd zodra de link
                                 voor het eerst wordt geopend, of na 60 minuten. Stuur nooit je BSN, identiteitsnummer of
-                                bankgegevens mee. Wij registreren alleen aantallen (welke functie, taal en uitkomst),
+                                bankgegevens mee; staat er in het cv toch een BSN, paspoort- of ID-nummer of een Nederlands
+                                IBAN, dan halen wij dat nummer weg vóór het vergelijken en vóór het bewaren voor de link.
+                                Wij registreren alleen aantallen (welke functie, taal en uitkomst),
                                 nooit de tekst zelf. Je IP-adres gebruiken we alleen kortdurend in het werkgeheugen om
                                 misbruik te beperken en slaan we daarvoor niet op.
                             </p>

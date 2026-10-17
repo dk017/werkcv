@@ -35,7 +35,7 @@ export default function EnglishPrivacyPage() {
       <main className="relative z-10 mx-auto max-w-3xl px-6 py-12">
         <div className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:p-10">
           <h1 className="mb-2 text-3xl font-black text-black">Privacy Policy</h1>
-          <p className="mb-8 text-sm font-medium text-gray-500">Last updated: July 2026</p>
+          <p className="mb-8 text-sm font-medium text-gray-500">Last updated: October 2026</p>
 
           <div className="max-w-none space-y-6 text-black">
             <section>
@@ -156,13 +156,15 @@ export default function EnglishPrivacyPage() {
               </p>
               <p className="mt-2 font-medium leading-relaxed">
                 <strong>Use through an AI assistant (MCP connector).</strong> If you have your CV or a
-                vacancy checked through the WerkCV connector in an AI assistant such as Claude, we
+                vacancy checked through the WerkCV connector in an AI assistant such as Claude or ChatGPT, we
                 process the text the assistant sends. When a CV is checked we do not store that text.
                 When it is compared with a vacancy, the text is sent to OpenAI for the analysis, and we
                 do not store it either. If you ask for your CV to be opened in the editor, WerkCV keeps
                 the CV text (and the vacancy text, if any) on our server for at most 60 minutes, for one
                 single-use link. The text is deleted the first time the link is opened, or after 60
-                minutes. Never send your BSN, ID number or bank details. We record only counts (which
+                minutes. Never send your BSN, ID number or bank details; if a CV contains a BSN, passport
+                or ID number or a Dutch IBAN, we remove that number before the comparison and before
+                storing the text for the link. We record only counts (which
                 function, language and outcome), never the text itself. We use your IP address only
                 briefly in working memory to limit abuse and do not store it for that purpose.
               </p>

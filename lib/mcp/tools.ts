@@ -5,6 +5,7 @@ import { emptyLayoutSignals } from "@/lib/cv-check/layout";
 import { classifyAiToolError } from "@/lib/tools/ai-tool-errors";
 import { takeAiBudgetOrAlert } from "./alerts";
 import { createCheckedCvHandoff, HandoffCapacityError, type HandoffLocale } from "./handoff";
+import { redactGovernmentIds } from "./v2/redact";
 import type { z } from "zod";
 import { toCheckCvV2 } from "./v2/check";
 import type { CheckCvOutput, MatchVacancyOutput, OpenInEditorOutput, Requirement } from "./v2/contract";
@@ -74,17 +75,19 @@ export async function matchVacancy(
 ): Promise<McpToolResult<MatchVacancyOutput> & { locale: HandoffLocale }> {
   const locale = resolveLocale(input.locale, input.cvText);
   if (!deps.takeBudget()) return { locale, ...failure("RATE_LIMITED", locale) };
+  // ID and bank numbers are not sent to OpenAI (lib/mcp/v2/redact.ts).
+  const cvText = redactGovernmentIds(input.cvText, locale);
   let requirements: Array<z.infer<typeof Requirement>>;
   try {
     // The AI only extracts and judges the requirements; score, counts and keywords are computed in code.
-    requirements = await deps.extractRequirements(input.cvText, input.vacancyText, locale);
+    requirements = await deps.extractRequirements(cvText, input.vacancyText, locale);
   } catch (error) {
     // The AI step failing is reported as unavailable; the cause (quota, timeout) is logged as a code only.
     console.error("mcp_match_vacancy_failed", { code: classifyAiToolError(error) });
     return { locale, ...failure("AI_UNAVAILABLE", locale) };
   }
   if (!requirements.length) return { locale, ...failure("FAILED", locale) };
-  return { locale, ok: true, data: buildMatchV2({ requirements, cvText: input.cvText, vacancyText: input.vacancyText, locale }) };
+  return { locale, ok: true, data: buildMatchV2({ requirements, cvText, vacancyText: input.vacancyText, locale }) };
 }
 
 type OpenDeps = { createHandoff: (input: { cvText: string; vacancyText: string | null; locale: HandoffLocale }) => Promise<{ token: string }> };
@@ -96,8 +99,9 @@ export async function openInEditor(
 ): Promise<McpToolResult<OpenInEditorOutput> & { locale: HandoffLocale }> {
   const locale = resolveLocale(input.locale, input.cvText);
   try {
+    // ID and bank numbers in the CV are not stored for the link (lib/mcp/v2/redact.ts).
     const vacancyText = input.vacancyText ?? null;
-    const { token } = await deps.createHandoff({ cvText: input.cvText, vacancyText, locale });
+    const { token } = await deps.createHandoff({ cvText: redactGovernmentIds(input.cvText, locale), vacancyText, locale });
     return { locale, ok: true, data: buildOpenInEditorV2({ token, locale, utmMedium, includesVacancy: Boolean(vacancyText) }) };
   } catch (error) {
     // All links in use: the same plain "limit reached" answer as a rate limit.

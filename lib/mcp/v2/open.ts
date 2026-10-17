@@ -19,6 +19,21 @@ export function editorUrl(token: string, locale: Locale, utmMedium: string): str
   return `https://werkcv.nl${path}?${params.toString()}`;
 }
 
+/**
+ * Claude and other clients get the price as a fact: editing is free, the PDF is a one-time payment.
+ * OpenAI's app directory does not allow apps to promote prices, so the ChatGPT answer leaves it out
+ * (the editor itself still shows the price before anyone pays).
+ */
+function openUserMessage(nl: boolean, utmMedium: string): string {
+  const base = nl
+    ? "Deze link werkt één keer en verloopt na 60 minuten. Je hebt geen account nodig."
+    : "This link works once and expires after 60 minutes. No account needed.";
+  if (utmMedium === "chatgpt") return base;
+  return nl
+    ? `${base} Bewerken is gratis; de pdf downloaden kost eenmalig ${cvDownloadPrice.display}, zonder abonnement.`
+    : `${base} Editing is free; downloading the PDF costs ${cvDownloadPrice.displayEn} once, with no subscription.`;
+}
+
 export function buildOpenInEditorV2(input: { token: string; locale: Locale; utmMedium: string; includesVacancy: boolean }): OpenInEditorOutput {
   const nl = input.locale === "nl";
   return {
@@ -27,10 +42,7 @@ export function buildOpenInEditorV2(input: { token: string; locale: Locale; utmM
     singleUse: true,
     includesVacancy: input.includesVacancy,
     opensWith: input.includesVacancy ? "match" : "check",
-    // The price is stated as a fact, as before: editing is free, the PDF is a one-time payment.
-    userMessage: nl
-      ? `Deze link werkt één keer en verloopt na 60 minuten. Je hebt geen account nodig. Bewerken is gratis; de pdf downloaden kost eenmalig ${cvDownloadPrice.display}, zonder abonnement.`
-      : `This link works once and expires after 60 minutes. No account needed. Editing is free; downloading the PDF costs ${cvDownloadPrice.displayEn} once, with no subscription.`,
+    userMessage: openUserMessage(nl, input.utmMedium),
     meta: { tool: "open_in_editor", schemaVersion: SCHEMA_VERSION, scoringVersion: SCORING_VERSION, locale: input.locale },
   };
 }
