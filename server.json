@@ -3,8 +3,12 @@
   "name": "nl.werkcv/cv-check",
   "title": "WerkCV – Dutch CV check",
   "description": "Check a CV against Dutch hiring norms, compare it with a vacancy, and open it in WerkCV.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "websiteUrl": "https://werkcv.nl/en/ai-assistant",
+  "repository": {
+    "url": "https://github.com/dk017/werkcv-mcp",
+    "source": "github"
+  },
   "remotes": [
     {
       "type": "streamable-http",
