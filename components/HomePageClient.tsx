@@ -778,7 +778,7 @@ export default function HomePageClient({
                             href="/tools"
                             className="hidden sm:flex items-center gap-1 font-bold text-sm text-[var(--wk-primary)] hover:underline"
                         >
-                            Bekijk alle 30 tools
+                            Bekijk alle tools
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                             </svg>
@@ -810,7 +810,7 @@ export default function HomePageClient({
                     </div>
                     <div className="sm:hidden text-center mt-6">
                         <Link href="/tools" className="inline-flex items-center gap-1 font-bold text-sm text-[var(--wk-primary)] hover:underline">
-                            Bekijk alle 30 gratis tools
+                            Bekijk alle gratis tools
                             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                             </svg>

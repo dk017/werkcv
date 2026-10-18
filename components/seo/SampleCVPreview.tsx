@@ -5,6 +5,7 @@ import { CVData } from '@/lib/cv';
 import { getTemplateComponent } from '@/app/editor/templates';
 import { getDefaultThemeId, getThemeById } from '@/lib/templates/registry';
 import { LinkTextProvider } from '@/app/editor/templates/link-utils';
+import { IllustrativeCvProvider } from '@/app/editor/templates/document-heading';
 
 interface SampleCVPreviewProps {
     data: CVData;
@@ -38,7 +39,9 @@ export function SampleCVPreview({
             >
                 <div className="pointer-events-none">
                     <LinkTextProvider disableAnchors>
-                        <TemplateComponent data={data} theme={theme} />
+                        <IllustrativeCvProvider>
+                            <TemplateComponent data={data} theme={theme} />
+                        </IllustrativeCvProvider>
                     </LinkTextProvider>
                 </div>
             </div>

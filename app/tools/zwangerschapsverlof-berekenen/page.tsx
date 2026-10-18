@@ -36,6 +36,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
+  alternates: { canonical: "https://werkcv.nl/tools/zwangerschapsverlof-berekenen" },
   title:
     "Zwangerschapsverlof Berekenen 2026 – Startdatum, Duur en UWV Uitkering | WerkCV",
   description:

@@ -31,6 +31,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
+  alternates: { canonical: "https://werkcv.nl/tools/zzp-uurtarief-berekenen" },
   title:
     "ZZP Uurtarief Berekenen 2026 – Wat Moet Je Vragen als Freelancer? | WerkCV",
   description:

@@ -26,12 +26,15 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
     const metaTitle = normalizeBrandCopy(category.metaTitle);
     const metaDesc = normalizeBrandCopy(category.metaDesc);
+    const pageUrl = `https://werkcv.nl/cv-voorbeelden/${category.slug}`;
 
     return {
         title: metaTitle,
         description: metaDesc,
         keywords: category.keywords,
+        alternates: { canonical: pageUrl },
         openGraph: {
+            url: pageUrl,
             title: metaTitle,
             description: metaDesc,
             type: 'website',

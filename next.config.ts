@@ -84,6 +84,12 @@ const nextConfig: NextConfig = {
           { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },
         ],
       },
+      {
+        // The shared root layout prerenders <html lang="nl"> for every page (a script corrects it
+        // in the browser). Tell crawlers that read the raw response, such as Bing, that /en is English.
+        source: '/en/:path*',
+        headers: [{ key: 'Content-Language', value: 'en' }],
+      },
     ];
   },
 

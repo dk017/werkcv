@@ -30,6 +30,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
+  alternates: { canonical: "https://werkcv.nl/tools/overuren-berekenen" },
   title: "Overuren Berekenen 2026 - Wat Zijn Jouw Extra Uren Waard? | WerkCV",
   description:
     "Bereken de waarde van jouw overuren op basis van je maandsalaris en contracturen. Met of zonder overwerktoeslag. Gratis tool, direct resultaat.",

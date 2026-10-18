@@ -57,10 +57,10 @@ export const metadata: Metadata = {
     "sollicitatie cv",
     "cv nederland",
   ],
+  // No url/title/description here: a page without its own openGraph inherits this object, and
+  // the homepage's values would make it claim to be the homepage. Crawlers fall back to the
+  // page's <title> and URL. The homepage sets its own openGraph.
   openGraph: {
-    title: "WerkCV - Professioneel CV Maken | Online CV Builder",
-    description: `Maak binnen 5 minuten een professioneel CV. Kies uit 13+ ATS-vriendelijke templates en download als PDF. Eenmalig ${cvDownloadPrice.display}.`,
-    url: "https://werkcv.nl",
     siteName: "WerkCV",
     locale: "nl_NL",
     type: "website",
@@ -76,8 +76,6 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     site: "@werkcvnl",
-    title: "WerkCV - Professioneel CV Maken",
-    description: `Maak binnen 5 minuten een professioneel CV. 13+ templates, eenmalig ${cvDownloadPrice.display}, geen abonnement.`,
     images: ["/opengraph-image"],
   },
 };

@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import SollicitatieQuizTool from './SollicitatieQuizTool';
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://werkcv.nl/tools/sollicitatiegesprek-quiz" },
     title: 'Sollicitatiegesprek Voorbereiding — 8 Oefenvragen met Antwoorden | WerkCV',
     description: 'Bereid je voor op je sollicitatiegesprek met 8 op maat gemaakte vragen voor jouw functie. Inclusief antwoordtips en voorbeeldantwoorden.',
     keywords: ['sollicitatiegesprek voorbereiding', 'sollicitatievragen oefenen', 'interview vragen', 'sollicitatie vragen'],

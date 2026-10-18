@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { TemplateConfig, ColorTheme } from "@/lib/templates";
 import { CVData, defaultCV, sampleCV } from "@/lib/cv";
 import { getTemplateComponent, getTheme } from "@/app/editor/templates";
+import { IllustrativeCvProvider } from "@/app/editor/templates/document-heading";
 import Footer from "@/components/Footer";
 import { getStoredAttribution, track } from "@/lib/analytics";
 import { UiLanguage } from "@/lib/ui-language";
@@ -193,7 +194,9 @@ function RichTemplatePreview({
           width: `${100 / 0.24}%`,
         }}
       >
-        <TemplateComponent data={data} theme={theme} />
+        <IllustrativeCvProvider>
+          <TemplateComponent data={data} theme={theme} />
+        </IllustrativeCvProvider>
       </div>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-white via-white/95 to-transparent" />
     </div>

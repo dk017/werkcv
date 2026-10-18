@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import SalarisOnderhandelingTool from './SalarisOnderhandelingTool';
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://werkcv.nl/tools/salaris-onderhandeling" },
     title: 'Salaris onderhandeling script generator | WerkCV',
     description: 'Genereer een persoonlijk salarisonderhandelingsscript met AI. Inclusief reacties op lage aanbiedingen, bezwaren en salarisonderhandeling in sollicitatiegesprekken.',
     keywords: ['salaris onderhandelen', 'salarisverhoging vragen', 'onderhandeling script', 'salaris negotiation'],

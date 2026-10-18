@@ -30,6 +30,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
+  alternates: { canonical: "https://werkcv.nl/tools/salaris-vergelijker" },
   title: "Salaris Vergelijker - Vergelijk Twee Salarissen Netto | WerkCV",
   description:
     "Vergelijk twee baanaanbiedingen op netto maandsalaris, reiskosten, thuiswerkvergoeding en vakantiedagen. Welk aanbod is echt beter? Bereken het direct.",

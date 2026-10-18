@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import JobTitleTranslatorTool from './JobTitleTranslatorTool';
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://werkcv.nl/tools/job-title-translator" },
     title: 'Functietitel Vertaler NL↔EN — Gratis Tool | WerkCV',
     description: 'Vertaal Nederlandse functietitels naar Engels of andersom. Ideaal voor je LinkedIn profiel, internationaal CV of wanneer je in Nederland solliciteert als expat.',
     keywords: ['functietitel vertalen', 'job title vertaler', 'functienaam engels', 'english job title dutch'],

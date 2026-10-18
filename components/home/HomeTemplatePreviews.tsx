@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { getTemplateComponent, getTheme } from "@/app/editor/templates";
 import { LinkTextProvider } from "@/app/editor/templates/link-utils";
+import { IllustrativeCvProvider } from "@/app/editor/templates/document-heading";
 import { CVData, sampleCV } from "@/lib/cv";
 
 const HERO_SCALE = 220 / 794;
@@ -108,7 +109,9 @@ export function HomeTemplatePreview({
         style={{ transform: "scale(0.24)", width: `${100 / 0.24}%` }}
       >
         <LinkTextProvider disableAnchors>
-          <TemplateComponent data={previewData} theme={theme} />
+          <IllustrativeCvProvider>
+            <TemplateComponent data={previewData} theme={theme} />
+          </IllustrativeCvProvider>
         </LinkTextProvider>
       </div>
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-white via-white/95 to-transparent" />
@@ -167,7 +170,9 @@ export function HeroCarousel() {
                   style={{ transform: `scale(${HERO_SCALE})`, width: `${100 / HERO_SCALE}%` }}
                 >
                   <LinkTextProvider disableAnchors>
-                    <TemplateComponent data={previewData} theme={theme} />
+                    <IllustrativeCvProvider>
+                      <TemplateComponent data={previewData} theme={theme} />
+                    </IllustrativeCvProvider>
                   </LinkTextProvider>
                 </div>
               </div>

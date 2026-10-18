@@ -5,6 +5,7 @@ import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import OpzegtermijnTool from "./OpzegtermijnTool";
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://werkcv.nl/tools/opzegtermijn-berekenen" },
     title: "Opzegtermijn Berekenen - Gratis Tool | WerkCV",
     description: "Bereken snel je wettelijke opzegtermijn op basis van je dienstjaren en contracttype. Gebaseerd op artikel 7:672 Burgerlijk Wetboek.",
     keywords: [

@@ -5,6 +5,7 @@ import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import WerkervaringTool from "./WerkervaringTool";
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://werkcv.nl/tools/werkervaring-bullets" },
     title: "Werkervaring Bullets Generator - CV Bullet Points | WerkCV",
     description: "Zet je werkervaring om in krachtige CV-bullets. Onze AI schrijft sterke, resultaatgerichte bullet points die opvallen bij recruiters.",
     keywords: [

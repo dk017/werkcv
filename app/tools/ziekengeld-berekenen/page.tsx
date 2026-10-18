@@ -30,6 +30,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
+  alternates: { canonical: "https://werkcv.nl/tools/ziekengeld-berekenen" },
   title: "Ziekengeld Berekenen 2026 - Wat Krijg Je Bij Ziekte? | WerkCV",
   description:
     "Bereken je ziekengeld bij ziekte in Nederland. Hoeveel procent van je salaris ontvang je in jaar 1 en jaar 2? Direct inzichtelijk met onze 2026 calculator.",

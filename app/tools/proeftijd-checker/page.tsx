@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import ProeftijdTool from "./ProeftijdTool";
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://werkcv.nl/tools/proeftijd-checker" },
     title: "Proeftijd Checker - Wat is de Maximale Proeftijd? | WerkCV",
     description: "Check direct wat de maximale proeftijd is voor jouw contract. Gebaseerd op artikel 7:652 Burgerlijk Wetboek — gratis en in seconden.",
     keywords: [

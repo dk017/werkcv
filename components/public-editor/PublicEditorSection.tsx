@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Editor from "@/app/editor/editor";
+import { IllustrativeCvProvider } from "@/app/editor/templates/document-heading";
 import { defaultCV, type CVData } from "@/lib/cv";
 import { getDefaultThemeId } from "@/lib/templates/registry";
 import {
@@ -170,27 +171,30 @@ export default function PublicEditorSection({
                 </div>
 
                 {draftId ? (
-                    <Editor
-                        initialData={initialData}
-                        id={draftId}
-                        initialTemplateId={templateId}
-                        initialColorThemeId={colorThemeId}
-                        accountEmail=""
-                        uiLanguage={locale}
-                        agencyRouteLocked={flow === "agency"}
-                        mode="public"
-                        publicDraftId={draftId}
-                        publicFlow={flow}
-                        publicSource={source}
-                        onPublicDownloadRequest={handlePublicDownloadRequest}
-                        publicImportCheckedCv={importCheckedCv}
-                        publicStartSource={startSource}
-                        publicOpenUploader={openUploader}
-                        layoutVariant={stepsLayout && flow === "consumer" ? "steps" : "classic"}
-                        publicStepsLayout={stepsLayout && flow === "consumer"}
-                        initialStep={stepsLayout && (importCheckedCv || handoffToken) ? "afronden" : undefined}
-                        publicHandoffToken={handoffToken}
-                    />
+                    // Landing-page embed: the page has its own H1, so the CV name renders as a div here.
+                    <IllustrativeCvProvider>
+                        <Editor
+                            initialData={initialData}
+                            id={draftId}
+                            initialTemplateId={templateId}
+                            initialColorThemeId={colorThemeId}
+                            accountEmail=""
+                            uiLanguage={locale}
+                            agencyRouteLocked={flow === "agency"}
+                            mode="public"
+                            publicDraftId={draftId}
+                            publicFlow={flow}
+                            publicSource={source}
+                            onPublicDownloadRequest={handlePublicDownloadRequest}
+                            publicImportCheckedCv={importCheckedCv}
+                            publicStartSource={startSource}
+                            publicOpenUploader={openUploader}
+                            layoutVariant={stepsLayout && flow === "consumer" ? "steps" : "classic"}
+                            publicStepsLayout={stepsLayout && flow === "consumer"}
+                            initialStep={stepsLayout && (importCheckedCv || handoffToken) ? "afronden" : undefined}
+                            publicHandoffToken={handoffToken}
+                        />
+                    </IllustrativeCvProvider>
                 ) : (
                     <div className="flex min-h-[760px] items-center justify-center rounded-2xl border border-slate-200 bg-white text-sm font-semibold text-slate-500">
                         {locale === "en" ? "Preparing the editor…" : "De editor wordt voorbereid…"}

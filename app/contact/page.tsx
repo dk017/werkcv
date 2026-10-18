@@ -3,6 +3,7 @@ import Link from "next/link";
 import ContactForm from "@/components/contact/ContactForm";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "https://werkcv.nl/contact" },
   title: "Contact | WerkCV",
   description: "Neem contact op met WerkCV.nl. Heb je een vraag, feedback of een probleem? Stuur direct een bericht via het contactformulier.",
 };

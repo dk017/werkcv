@@ -26,6 +26,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
+  alternates: { canonical: "https://werkcv.nl/tools/loonstrook-uitleggen" },
   title:
     "Loonstrook Uitleggen – Wat Betekent Elke Regel op je Salarisstrook? | WerkCV",
   description:

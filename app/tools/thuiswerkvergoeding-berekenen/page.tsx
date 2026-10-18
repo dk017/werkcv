@@ -30,6 +30,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
+  alternates: { canonical: "https://werkcv.nl/tools/thuiswerkvergoeding-berekenen" },
   title: "Thuiswerkvergoeding Berekenen 2026 - €2,35 per Dag | WerkCV",
   description:
     "Bereken je belastingvrije thuiswerkvergoeding voor 2026. Het tarief is €2,35 per dag thuiswerken. Bereken hoeveel je maandelijks belastingvrij kunt ontvangen.",

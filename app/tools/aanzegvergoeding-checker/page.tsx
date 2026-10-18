@@ -22,6 +22,7 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = {
+    alternates: { canonical: "https://werkcv.nl/tools/aanzegvergoeding-checker" },
     title: "Aanzegvergoeding Checker - Gratis Tool | WerkCV",
     description: "Controleer snel of je mogelijk recht hebt op aanzegvergoeding bij een tijdelijk contract. Inclusief uiterste aanzegdatum en indicatie van de vergoeding.",
     keywords: [
