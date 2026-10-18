@@ -239,7 +239,9 @@ export const MATCH_EXTRACTION_RULES = `
 - Split compound requirements: "Google Ads en Meta Ads" becomes two requirements.
 - Requirements under "Wat vragen wij" are "must" unless they say "pré", "bij voorkeur", "nice to have"; duties are "must" with category "duty".
 - Years of experience: count from the dates of the relevant jobs, not from claims in the profile text.
-  Only count jobs whose bullets show the asked skill.
+  Only count jobs whose title or bullets show the asked skill. Take each job's length from JOB_DURATIONS (computed
+  from the CV dates, "heden"/"present" = today); never calculate dates yourself. Add up the relevant jobs and
+  compare with the requirement: enough years is a "match", fewer is "partial" with the real total in "gap".
 - "partial" when the CV shows an adjacent tool or an older version (Google Analytics vs GA4, Mailchimp vs Klaviyo),
   and say so in "gap".
 - "match" needs a cvQuote copied exactly from the CV. No quote, no match.

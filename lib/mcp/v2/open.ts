@@ -13,6 +13,15 @@ export function resolveUtmMedium(clientVersion: { name?: string } | undefined, u
   return clientVersion?.name ? utmMediumFromClient(clientVersion) : userAgentClient;
 }
 
+/**
+ * Where an editor link opens. ChatGPT users start on the profile step, so the first screen is editing:
+ * OpenAI's app rules do not allow linking straight to a transactional page, and Afronden leads with the
+ * download/price block. Other clients keep Afronden, where the CV-check points to improve are listed.
+ */
+export function handoffLandingStep(utmMedium: string | undefined): "profiel" | "afronden" {
+  return utmMedium === "chatgpt" ? "profiel" : "afronden";
+}
+
 export function editorUrl(token: string, locale: Locale, utmMedium: string): string {
   const path = locale === "en" ? "/en/cv-check/improve" : "/cv-check/verbeteren";
   const params = new URLSearchParams({ handoff: token, utm_source: "mcp", utm_medium: utmMedium, utm_campaign: "cv-check" });

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import PublicEditorSection from "@/components/public-editor/PublicEditorSection";
+import { handoffLandingStep } from "@/lib/mcp/v2/open";
 import { isAppV2Active } from "@/lib/app-v2";
 import { getCurrentUser } from "@/lib/auth";
 
@@ -13,8 +14,8 @@ export const metadata: Metadata = {
 
 // "Verbeter in de editor" from the CV-check. Visitors without an account edit their checked CV here
 // and only sign in at download; signed-in visitors keep their account editor.
-export default async function CvCheckImprovePage({ searchParams }: { searchParams: Promise<{ upload?: string; handoff?: string }> }) {
-  const { upload, handoff } = await searchParams;
+export default async function CvCheckImprovePage({ searchParams }: { searchParams: Promise<{ upload?: string; handoff?: string; utm_medium?: string }> }) {
+  const { upload, handoff, utm_medium } = await searchParams;
   // A link from an AI assistant (MCP) carries a one-time token that only the public editor can open.
   const handoffToken = typeof handoff === "string" && /^[A-Za-z0-9_-]{43}$/.test(handoff) ? handoff : null;
   if (!handoffToken && (await getCurrentUser())) {
@@ -23,7 +24,7 @@ export default async function CvCheckImprovePage({ searchParams }: { searchParam
 
   return (
     <main>
-      <PublicEditorSection locale="nl" source="public_editor_cv_check_nl" variant="cv_check" importCheckedCv={upload === "1"} handoffToken={handoffToken} stepsLayout={await isAppV2Active()} />
+      <PublicEditorSection locale="nl" source="public_editor_cv_check_nl" variant="cv_check" importCheckedCv={upload === "1"} handoffToken={handoffToken} handoffStep={handoffLandingStep(utm_medium)} stepsLayout={await isAppV2Active()} />
     </main>
   );
 }

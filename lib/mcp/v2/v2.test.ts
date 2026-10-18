@@ -17,7 +17,8 @@ import {
 } from "./contract";
 import { findCliches, readCvStructure, weakOpenerOf } from "./cv-structure";
 import { isShortKeyword, reconcileRequirements, vacancyTitleOf } from "./match";
-import { resolveUtmMedium } from "./open";
+import { jobDurationLines, rangeMonths, requiredYears } from "./durations";
+import { handoffLandingStep, resolveUtmMedium } from "./open";
 import { redactGovernmentIds } from "./redact";
 
 // Fictional test CV and vacancy, reconstructed from every quote in fixtures/examples.json.
@@ -115,6 +116,44 @@ test("match_vacancy with the example's requirements: score 49, counts, short mis
   for (const fix of data.topFixes) if (fix.quote) assert.ok(CV.includes(fix.quote), fix.quote);
 });
 
+test("job durations are computed in code (nl/en months, heden/present, year-only ranges)", () => {
+  const today = new Date("2026-10-18T12:00:00Z");
+  assert.equal(rangeMonths("(June 2021 – present)", today), 65);
+  assert.equal(rangeMonths("(maart 2022 – heden)", today), 56);
+  assert.equal(rangeMonths("(september 2020 – februari 2022)", today), 18);
+  assert.equal(rangeMonths("jan. 2020 t/m dec. 2020", today), 12);
+  assert.equal(rangeMonths("(2017 - 2021)", today), 48);
+  assert.equal(rangeMonths("01/2019 - 03/2020", today), 15);
+  assert.equal(rangeMonths("Postcode 1234 AB, 2010", today), null);
+  assert.equal(requiredYears("At least 3 years of experience leading a warehouse team"), 3);
+  assert.equal(requiredYears("Minimaal drie jaar ervaring"), 3);
+  assert.equal(requiredYears("5+ yrs SQL"), 5);
+  assert.equal(requiredYears("Een jaarcontract met uitzicht op vast"), null);
+  assert.deepEqual(jobDurationLines(CV, today, "nl"), [
+    "Marketing Coördinator – Fietsplaats B.V., Utrecht (maart 2022 – heden): 4 jaar en 8 maanden",
+    "Junior Online Marketeer – Webwinkel Groen, Amersfoort (september 2020 – februari 2022): 1 jaar en 6 maanden",
+  ]);
+});
+
+test("a years-of-experience requirement is a match when the quoted job is long enough (the model miscounts dates)", () => {
+  const today = new Date("2026-10-18T12:00:00Z");
+  const cv = "Daniel Okafor\n\nWork experience\nWarehouse Team Lead – PortLink Logistics, Rotterdam (June 2021 – present)\n- Responsible for the night shift team\n- Helped with inventory counts\n\nLogistics Assistant – Lagos Freight Ltd (2017 – 2021)\n- Handled shipping documents\n";
+  const base = {
+    id: "r1", requirement: "At least 3 years of experience leading a warehouse team", type: "must" as const, category: "experience" as const,
+    vacancyQuote: "At least 3 years of experience leading a warehouse team", keywords: ["team leadership"],
+    status: "partial" as const, gap: "Only 2 years shown.", honestAction: "If this is true, add the years.",
+  };
+  const viaBullet = reconcileRequirements([{ ...base, cvQuote: "Responsible for the night shift team" }], cv, today)[0];
+  assert.equal(viaBullet.status, "match");
+  assert.equal(viaBullet.gap, null);
+  assert.equal(viaBullet.honestAction, null);
+  const tooShort = reconcileRequirements([{ ...base, requirement: "At least 6 years leading a warehouse team", cvQuote: "Responsible for the night shift team" }], cv, today)[0];
+  assert.equal(tooShort.status, "partial", "65 months is not 6 years; the model's judgement stays");
+  assert.equal(tooShort.gap, "Gevraagd: 6 jaar. De functie bij dit citaat duurt 5 jaar en 5 maanden.", "the gap states the computed length, not the model's count");
+  const noQuote = reconcileRequirements([{ ...base, cvQuote: null }], cv, today)[0];
+  assert.equal(noQuote.status, "partial");
+});
+
 test("match_vacancy enforces the quote rules in code", () => {
   const [base] = EXAMPLE_REQUIREMENTS.filter((r) => r.status === "match");
   const invented = reconcileRequirements([{ ...base, cvQuote: "Leidde een team van 12 marketeers" }], CV)[0];
@@ -181,6 +220,12 @@ test("the editor link and the vacancy comparison never receive the BSN; check_cv
     { extractRequirements: async (cv) => { sentToAi = cv; return EXAMPLE_REQUIREMENTS; }, takeBudget: () => true },
   );
   assert.ok(sentToAi.length > 0 && !sentToAi.includes("123456789"));
+});
+
+test("ChatGPT editor links open on the profile step; other clients keep Afronden", () => {
+  assert.equal(handoffLandingStep("chatgpt"), "profiel");
+  assert.equal(handoffLandingStep("claude"), "afronden");
+  assert.equal(handoffLandingStep(undefined), "afronden");
 });
 
 test("utm_medium comes from the client's name, with the User-Agent label as fallback", () => {

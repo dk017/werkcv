@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import type { EditorStepId } from "@/lib/editor-steps";
 import Editor from "@/app/editor/editor";
 import { IllustrativeCvProvider } from "@/app/editor/templates/document-heading";
 import { defaultCV, type CVData } from "@/lib/cv";
@@ -28,6 +29,8 @@ type PublicEditorSectionProps = {
     importCheckedCv?: boolean;
     /** Single-use token from an AI-assistant (MCP) link: the editor exchanges it for the CV it carries. */
     handoffToken?: string | null;
+    /** First step for a handoff link (default Afronden, where the CV-check points are). See lib/mcp/v2/open.ts. */
+    handoffStep?: EditorStepId;
     /** CV-check improve page with the new app on: the stepped editor, full screen, opening on Afronden. */
     stepsLayout?: boolean;
     /** Where the visitor started (e.g. home_hero_primary), kept on the claimed CV. */
@@ -56,6 +59,7 @@ export default function PublicEditorSection({
     variant = "home",
     importCheckedCv = false,
     handoffToken = null,
+    handoffStep = "afronden",
     stepsLayout = false,
     startSource,
     initialTemplateId,
@@ -191,7 +195,7 @@ export default function PublicEditorSection({
                             publicOpenUploader={openUploader}
                             layoutVariant={stepsLayout && flow === "consumer" ? "steps" : "classic"}
                             publicStepsLayout={stepsLayout && flow === "consumer"}
-                            initialStep={stepsLayout && (importCheckedCv || handoffToken) ? "afronden" : undefined}
+                            initialStep={stepsLayout && handoffToken ? handoffStep : stepsLayout && importCheckedCv ? "afronden" : undefined}
                             publicHandoffToken={handoffToken}
                         />
                     </IllustrativeCvProvider>
