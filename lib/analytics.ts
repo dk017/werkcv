@@ -74,6 +74,8 @@ export type LinkedinToCvEvent =
     | 'linkedin_to_cv_tool_view'
     | 'linkedin_to_cv_submit'
     | 'linkedin_to_cv_text_pasted'
+    | 'linkedin_to_cv_pdf_selected'
+    | 'linkedin_to_cv_failed'
     | 'linkedin_to_cv_output_generated'
     | 'linkedin_to_cv_copy_section'
     | 'linkedin_to_cv_cta_editor_click'
@@ -751,13 +753,15 @@ export type AnalyticsEvent =
       }
     | { event: 'linkedin_to_cv_tool_view'; properties: { page_path: string } }
     | { event: 'linkedin_to_cv_text_pasted'; properties: { page_path: string; chars_bucket: 'under_500' | '500_2000' | 'over_2000' } }
+    | { event: 'linkedin_to_cv_pdf_selected'; properties: { page_path: string; size_bucket: 'under_200kb' | '200kb_1mb' | 'over_1mb'; is_pdf: boolean } }
+    | { event: 'linkedin_to_cv_failed'; properties: { page_path: string; input: 'text' | 'pdf'; status: number } }
     | {
           event: 'linkedin_to_cv_submit';
-          properties: { page_path: string; target_role?: string; language: 'nl' | 'en' };
+          properties: { page_path: string; target_role?: string; language: 'nl' | 'en'; input?: 'text' | 'pdf' };
       }
     | {
           event: 'linkedin_to_cv_output_generated';
-          properties: { page_path: string; language: 'nl' | 'en'; sections_generated: number };
+          properties: { page_path: string; language: 'nl' | 'en'; sections_generated: number; input?: 'text' | 'pdf' };
       }
     | { event: 'linkedin_to_cv_copy_section'; properties: { page_path: string; section: string } }
     | {

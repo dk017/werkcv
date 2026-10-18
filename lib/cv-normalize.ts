@@ -19,6 +19,17 @@ const languageLevelAliases: Record<string, "Moedertaal" | "Vloeiend" | "Goed" | 
   beginner: "Basis",
   a2: "Basis",
   a1: "Basis",
+  // LinkedIn proficiency labels (profile and "Save to PDF" export), with and without "proficiency".
+  "native or bilingual": "Moedertaal",
+  "native or bilingual proficiency": "Moedertaal",
+  "full professional": "Vloeiend",
+  "full professional proficiency": "Vloeiend",
+  "professional working": "Goed",
+  "professional working proficiency": "Goed",
+  "limited working": "Basis",
+  "limited working proficiency": "Basis",
+  elementary: "Basis",
+  "elementary proficiency": "Basis",
 };
 
 const genderAliases: Record<string, string> = {

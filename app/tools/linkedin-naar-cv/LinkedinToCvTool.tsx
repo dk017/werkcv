@@ -1,7 +1,7 @@
 "use client";
 
 import { cvDownloadPrice } from "@/lib/site-content";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import TrackedToolLink from "@/components/analytics/TrackedToolLink";
 import { getStoredAttribution, track } from "@/lib/analytics";
@@ -31,6 +31,8 @@ function sectionToClipboardText(section: PreviewSection) {
 export default function LinkedinToCvTool() {
   const router = useRouter();
   const [profileText, setProfileText] = useState("");
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [targetRole, setTargetRole] = useState("");
   const [language, setLanguage] = useState<ToolLanguage>("nl");
   const [status, setStatus] = useState<"idle" | "submitting" | "done">("idle");
@@ -46,19 +48,47 @@ export default function LinkedinToCvTool() {
 
   const sectionCount = useMemo(() => result?.sections.length || 0, [result]);
 
+  function handlePdfSelected(file: File | undefined) {
+    setError("");
+    if (!file) return;
+    const isPdf = file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf");
+    track("linkedin_to_cv_pdf_selected", {
+      page_path: "/tools/linkedin-naar-cv",
+      size_bucket: file.size < 200 * 1024 ? "under_200kb" : file.size <= 1024 * 1024 ? "200kb_1mb" : "over_1mb",
+      is_pdf: isPdf,
+    });
+    if (!isPdf) {
+      setError("Kies een PDF-bestand. LinkedIn maakt die via Bronnen (of Meer) → Opslaan als PDF.");
+      return;
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      setError("Dit bestand is groter dan 10 MB. Kies de PDF die je uit LinkedIn hebt gedownload.");
+      return;
+    }
+    setPdfFile(file);
+  }
+
+  function clearPdf() {
+    setPdfFile(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
   async function handleSubmit() {
     const trimmed = profileText.trim();
+    const input = pdfFile ? "pdf" : "text";
     setError("");
     setResult(null);
 
-    if (!trimmed) {
-      setError("Plak eerst de tekst van je LinkedIn-profiel.");
-      return;
-    }
+    if (!pdfFile) {
+      if (!trimmed) {
+        setError("Upload de PDF van je LinkedIn-profiel of plak je profieltekst.");
+        return;
+      }
 
-    if (trimmed.length < 180) {
-      setError("De tekst lijkt te kort. Plak bijvoorbeeld ook je info-sectie, werkervaring en vaardigheden.");
-      return;
+      if (trimmed.length < 180) {
+        setError("De tekst lijkt te kort. Plak bijvoorbeeld ook je info-sectie, werkervaring en vaardigheden.");
+        return;
+      }
     }
 
     setStatus("submitting");
@@ -66,22 +96,32 @@ export default function LinkedinToCvTool() {
       page_path: "/tools/linkedin-naar-cv",
       target_role: targetRole.trim() || undefined,
       language,
+      input,
     });
 
     try {
-      const response = await fetch("/api/linkedin-to-cv-preview", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      let body: BodyInit;
+      const headers: HeadersInit = {};
+      if (pdfFile) {
+        const formData = new FormData();
+        formData.append("file", pdfFile);
+        formData.append("targetRole", targetRole.trim());
+        formData.append("language", language);
+        body = formData;
+      } else {
+        headers["Content-Type"] = "application/json";
+        body = JSON.stringify({
           profileText: trimmed,
           targetRole: targetRole.trim(),
           language,
-        }),
-      });
+        });
+      }
+      const response = await fetch("/api/linkedin-to-cv-preview", { method: "POST", headers, body });
 
       const payload = await response.json().catch(() => null);
 
       if (!response.ok) {
+        track("linkedin_to_cv_failed", { page_path: "/tools/linkedin-naar-cv", input, status: response.status });
         setError(payload?.error || "Omzetten mislukt. Probeer het opnieuw.");
         setStatus("idle");
         return;
@@ -93,9 +133,11 @@ export default function LinkedinToCvTool() {
         page_path: "/tools/linkedin-naar-cv",
         language,
         sections_generated: (payload as PreviewPayload).sections.length,
+        input,
       });
     } catch (fetchError) {
       console.error("linkedin_to_cv_submit_failed", fetchError);
+      track("linkedin_to_cv_failed", { page_path: "/tools/linkedin-naar-cv", input, status: 0 });
       setError("Omzetten mislukt. Probeer het opnieuw.");
       setStatus("idle");
     }
@@ -167,10 +209,49 @@ export default function LinkedinToCvTool() {
       <section className="rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
         <h2 className="text-2xl font-black text-slate-900">LinkedIn-profiel omzetten naar cv</h2>
         <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
-          Plak je LinkedIn-tekst hieronder. Je krijgt daarna een cv-structuur met profieltekst, werkervaring, opleiding, vaardigheden en verbeterpunten.
+          Upload de PDF van je LinkedIn-profiel of plak je profieltekst. Je krijgt daarna een cv-structuur met profieltekst, werkervaring, opleiding, vaardigheden en verbeterpunten.
         </p>
 
         <div className="mt-6 grid gap-5">
+          <div className="rounded-2xl border-2 border-black bg-[#F0FBFA] p-4">
+            <p className="text-sm font-black text-slate-900">Snelste manier: upload je LinkedIn-PDF</p>
+            <ol className="mt-2 list-decimal space-y-1 pl-5 text-sm font-medium text-slate-700">
+              <li>Open je eigen profiel op linkedin.com, op een computer.</li>
+              <li>Klik onder je naam op <span className="font-black">Bronnen</span> (of <span className="font-black">Meer</span>).</li>
+              <li>Kies <span className="font-black">Opslaan als PDF</span> en upload dat bestand hier.</li>
+            </ol>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="application/pdf,.pdf"
+              className="sr-only"
+              id="linkedin-pdf-input"
+              onChange={(event) => handlePdfSelected(event.target.files?.[0])}
+            />
+            {pdfFile ? (
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <span className="rounded-full border-2 border-black bg-white px-3 py-1.5 text-sm font-black text-slate-900">
+                  {pdfFile.name}
+                </span>
+                <button type="button" onClick={clearPdf} className="text-sm font-bold text-slate-600 underline">
+                  Ander bestand
+                </button>
+              </div>
+            ) : (
+              <label
+                htmlFor="linkedin-pdf-input"
+                className="mt-3 inline-block cursor-pointer border-2 border-black bg-white px-4 py-2 text-sm font-black text-black"
+              >
+                Kies LinkedIn-PDF
+              </label>
+            )}
+            <p className="mt-2 text-xs font-medium text-slate-500">
+              We lezen alleen de tekst om je cv te vullen en bewaren het bestand niet.
+            </p>
+          </div>
+
+          <p className="text-center text-xs font-black uppercase tracking-[0.18em] text-slate-500">of plak je profieltekst</p>
+
           <label className="block">
             <span className="mb-2 block text-sm font-black text-slate-900">LinkedIn-profieltekst</span>
             <textarea
@@ -185,7 +266,8 @@ export default function LinkedinToCvTool() {
                 });
               }}
               placeholder="Plak hier de tekst van je LinkedIn-profiel, bijvoorbeeld je headline, info-sectie, werkervaring, opleiding en vaardigheden."
-              className="min-h-[240px] w-full rounded-2xl border-2 border-black p-4 text-sm text-slate-800 outline-none"
+              disabled={Boolean(pdfFile)}
+              className="min-h-[240px] w-full rounded-2xl border-2 border-black p-4 text-sm text-slate-800 outline-none disabled:bg-slate-100 disabled:text-slate-400"
             />
           </label>
 
@@ -219,7 +301,7 @@ export default function LinkedinToCvTool() {
               disabled={status === "submitting"}
               className="border-4 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] disabled:cursor-not-allowed disabled:bg-slate-200 disabled:text-slate-500"
             >
-              {status === "submitting" ? "Bezig met omzetten..." : "Zet om naar cv"}
+              {status === "submitting" ? "Bezig met omzetten..." : pdfFile ? "Zet PDF om naar cv" : "Zet om naar cv"}
             </button>
             <TrackedToolLink
               href="/"

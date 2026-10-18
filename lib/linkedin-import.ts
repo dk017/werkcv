@@ -70,6 +70,7 @@ Critical rules:
 - Do not invent dates, employers, achievements, or years of experience.
 - Extract technical skills from project and stack descriptions.
 - Put certifications in "courses" and volunteer/community items in "sideActivities" when clearly present.
+- languages[].level must be one of "Moedertaal", "Vloeiend", "Goed", "Basis". Map LinkedIn proficiency labels: "Native or Bilingual" / "Moedertaal of tweetalig" -> "Moedertaal"; "Full Professional" / "Volledig professioneel" -> "Vloeiend"; "Professional Working" / "Professionele werkvaardigheid" -> "Goed"; "Limited Working" / "Beperkte werkvaardigheid" / "Elementary" / "Elementaire vaardigheid" -> "Basis".
 
 Critical rules for personal.summary:
 - personal.summary MUST be a concise top-of-CV profile summary, not copied raw LinkedIn body text.

@@ -79,6 +79,8 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'linkedin_to_cv_tool_view',
     'linkedin_to_cv_submit',
     'linkedin_to_cv_text_pasted',
+    'linkedin_to_cv_pdf_selected',
+    'linkedin_to_cv_failed',
     'linkedin_to_cv_output_generated',
     'linkedin_to_cv_copy_section',
     'linkedin_to_cv_cta_editor_click',

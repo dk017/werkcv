@@ -11,7 +11,7 @@ const faqItems = [
   {
     question: "Kan WerkCV automatisch mijn LinkedIn-profiel ophalen?",
     answer:
-      "Nee. Je plakt zelf de tekst uit je LinkedIn-profiel. WerkCV vraagt niet om je LinkedIn-login en gebruikt geen LinkedIn API.",
+      "Nee. Je uploadt zelf de PDF die LinkedIn van je profiel maakt (Bronnen of Meer → Opslaan als PDF), of je plakt je profieltekst. WerkCV vraagt niet om je LinkedIn-login en gebruikt geen LinkedIn API.",
   },
   {
     question: "Is een LinkedIn-profiel hetzelfde als een cv?",
@@ -38,7 +38,7 @@ const faqItems = [
 export const metadata: Metadata = buildDutchMetadata({
   title: "LinkedIn naar CV Omzetten 2026 | Gratis CV Maken | WerkCV",
   description:
-    "Zet je LinkedIn-profiel om naar een professioneel Nederlands cv. Plak je LinkedIn-tekst, controleer de inhoud en maak gratis een ATS-vriendelijke cv.",
+    "Zet je LinkedIn-profiel om naar een professioneel Nederlands cv. Upload je LinkedIn-PDF of plak je tekst, controleer de inhoud en maak gratis een ATS-vriendelijke cv.",
   path: "/tools/linkedin-naar-cv",
   keywords: [
     "linkedin naar cv",
@@ -76,7 +76,7 @@ export default function LinkedinNaarCvPage() {
             LinkedIn naar CV omzetten
           </h1>
           <p className="mt-4 max-w-3xl text-lg font-medium text-slate-600">
-            Plak de tekst van je LinkedIn-profiel en zet je ervaring, profieltekst, vaardigheden en opleidingen om naar een duidelijke Nederlandse cv-structuur. Daarna kun je je cv direct verder bewerken in WerkCV.
+            Upload de PDF van je LinkedIn-profiel of plak je profieltekst en zet je ervaring, profieltekst, vaardigheden en opleidingen om naar een duidelijke Nederlandse cv-structuur. Daarna kun je je cv direct verder bewerken in WerkCV.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Link
@@ -104,8 +104,8 @@ export default function LinkedinNaarCvPage() {
         <section className="mb-10 rounded-3xl border-2 border-slate-200 bg-white p-6">
           <h2 className="text-2xl font-black text-slate-900">Hoe werkt LinkedIn naar CV omzetten?</h2>
           <ol className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-            <li>1. Kopieer tekst uit je LinkedIn-profiel.</li>
-            <li>2. Plak de tekst in de tool.</li>
+            <li>1. Sla je LinkedIn-profiel op als PDF, of kopieer de tekst uit je profiel.</li>
+            <li>2. Upload de PDF of plak de tekst in de tool.</li>
             <li>3. Zet de inhoud om naar een duidelijke cv-structuur.</li>
           </ol>
         </section>
@@ -133,14 +133,16 @@ export default function LinkedinNaarCvPage() {
         </section>
 
         <section className="mb-10 rounded-3xl border-2 border-slate-200 bg-white p-6">
-          <h2 className="text-2xl font-black text-slate-900">LinkedIn-profiel exporteren als tekst</h2>
+          <h2 className="text-2xl font-black text-slate-900">LinkedIn-profiel exporteren: PDF of tekst</h2>
           <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
-            Open je LinkedIn-profiel, kopieer de onderdelen die relevant zijn voor je cv en plak die in de tool. Denk aan je headline, info-sectie, werkervaring, opleiding en vaardigheden. WerkCV gebruikt geen LinkedIn scraping of automatische login.
+            Het snelst is de PDF die LinkedIn zelf maakt: open je profiel op een computer, klik onder je naam op
+            <span className="font-black"> Bronnen</span> (of <span className="font-black">Meer</span>) en kies
+            <span className="font-black"> Opslaan als PDF</span>. Upload dat bestand in de tool. WerkCV gebruikt geen LinkedIn scraping of automatische login.
           </p>
           <p className="mt-3 text-sm font-medium leading-relaxed text-slate-600">
-            LinkedIn biedt op desktop soms ook <span className="font-black">Profiel opslaan als PDF</span>.
-            Volgens LinkedIn is die functie niet voor iedereen beschikbaar en werkt zij betrouwbaar bij een
-            Engelstalig profiel. Tekst kopiëren blijft daarom de meest voorspelbare invoer voor deze tool.
+            Volgens LinkedIn is die PDF-functie niet voor iedereen beschikbaar en werkt zij het best bij een
+            Engelstalig profiel. Zie je de optie niet, of werk je op je telefoon? Kopieer dan je headline, info-sectie,
+            werkervaring, opleiding en vaardigheden en plak die in de tool.
           </p>
         </section>
 
@@ -193,7 +195,7 @@ export default function LinkedinNaarCvPage() {
           <h2 className="mt-2 text-2xl font-black text-slate-900">Wat de tool wel en niet doet</h2>
           <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
             WerkCV vraagt niet om je LinkedIn-login en haalt je profiel niet automatisch op. Jij kiest welke
-            profieltekst je plakt. De tool structureert die invoer als CV en verzint geen ontbrekende werkgevers,
+            PDF of profieltekst je aanlevert. De tool structureert die invoer als CV en verzint geen ontbrekende werkgevers,
             periodes of resultaten. Controleer de gegenereerde versie altijd voordat je haar gebruikt.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
