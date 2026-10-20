@@ -5,6 +5,13 @@
  * the arm is assigned once per browser by proxy.ts and recorded server-side per editor entry.
  */
 
+/**
+ * Split switched OFF on 20 Oct 2026: since launch (15 Oct) the no-account arm had ~6 real builders, 1 download
+ * click and 0 sales, while sales fell from 6 (8–14 Oct) to 2 in 5 days, both from the login-first arm.
+ * Off = nobody is assigned and existing "on" cookies are ignored: every visitor gets login-first again.
+ */
+export const BUILD_FIRST_SPLIT_ACTIVE = false;
+
 export const BUILD_FIRST_COOKIE = "werkcv_build_first";
 export type BuildFirstArm = "on" | "off";
 export const BUILD_FIRST_COOKIE_MAX_AGE = 60 * 60 * 24 * 90;

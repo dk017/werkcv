@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { assignBuildFirstArm, BUILD_FIRST_COOKIE, BUILD_FIRST_COOKIE_MAX_AGE, parseBuildFirstArm } from "@/lib/build-first";
+import { assignBuildFirstArm, BUILD_FIRST_COOKIE, BUILD_FIRST_COOKIE_MAX_AGE, BUILD_FIRST_SPLIT_ACTIVE, parseBuildFirstArm } from "@/lib/build-first";
 
 const PRIMARY_HOST = "werkcv.nl";
 const BUILD_ID =
@@ -50,7 +50,7 @@ export function proxy(request: NextRequest) {
   if (hostname !== "www.werkcv.nl") {
     const response = NextResponse.next();
     // Build-first split (lib/build-first.ts): assign once per browser, on the first editor visit.
-    if ((pathname === "/editor" || pathname === "/en/editor") && !parseBuildFirstArm(request.cookies.get(BUILD_FIRST_COOKIE)?.value)) {
+    if (BUILD_FIRST_SPLIT_ACTIVE && (pathname === "/editor" || pathname === "/en/editor") && !parseBuildFirstArm(request.cookies.get(BUILD_FIRST_COOKIE)?.value)) {
       const arm = assignBuildFirstArm();
       // Make the arm visible to this same request's page render, then keep it for 90 days.
       request.cookies.set(BUILD_FIRST_COOKIE, arm);
