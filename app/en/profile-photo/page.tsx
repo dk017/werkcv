@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import NavUserMenu from "@/components/NavUserMenu";
+import ProfilePhotoLanding, { type ProfilePhotoFaq } from "@/components/profile-photo/ProfilePhotoLanding";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { profilePhotoPrice } from "@/lib/site-content";
 import ProfilePhotoGenerator from "@/app/profielfoto-cv-maken/ProfilePhotoGenerator";
@@ -52,98 +53,67 @@ const profilePhotoSamples: ProfilePhotoSample[] = [
   },
 ];
 
-const faqItems = [
+const faqItems: ProfilePhotoFaq[] = [
   {
-    question: "Do I need a photo on my CV in the Netherlands?",
-    answer:
-      "No. A photo is not required on a Dutch CV. Many applicants still use one for roles where presentation, trust or personal contact matters. Always follow the vacancy instructions.",
+    question: "How much does an AI profile photo cost at WerkCV?",
+    answer: `You see 4 previews for free first. To use them, you pay ${profilePhotoPrice.displayEn} once, which includes 2 refinements. There is no subscription.`,
   },
   {
-    question: "Can I use the same photo for CV and LinkedIn?",
-    answer:
-      "Yes. A consistent photo on your CV and LinkedIn helps recruiters recognize you when they review both.",
+    question: "How long does it take?",
+    answer: "Your 4 previews are usually ready within a minute. A refinement takes about as long.",
   },
   {
-    question: "Do I pay before seeing the result?",
-    answer:
-      `No. You create preview variants first. You only pay the one-time ${profilePhotoPrice.displayEn} when you want to download the chosen photo.`,
+    question: "Which photo should I upload?",
+    answer: "A recent selfie or portrait where your face is clear and facing the camera, without sunglasses or a cap, in reasonable light. Group photos or very dark photos work less well. You can upload 1 to 4 photos.",
   },
   {
-    question: "What do I receive?",
-    answer:
-      "You create 4 square preview variants and can refine your selected photo up to 2 times. A paid download is delivered as a 1024 × 1024 JPEG for use on your CV, LinkedIn profile or professional account.",
+    question: "Will it really look like me?",
+    answer: "The tool deliberately keeps your face, skin tone, hair, glasses and features the same and mainly changes light, background and clothing. If you don't recognise yourself, use a refinement or simply don't use the photo: you only pay if you want to download one.",
   },
   {
-    question: "How long does generation take?",
-    answer:
-      "Generation time varies with demand and can take several minutes. Keep the page open while WerkCV creates the four previews.",
+    question: "Why 4 photos and not 40?",
+    answer: "You need one good photo. You see your 4 previews before you pay and can adjust something with 2 refinements, so you only pay for a photo you will actually use.",
   },
   {
-    question: "What if the result does not look enough like me?",
-    answer:
-      "Do not use a photo that no longer feels recognizable. Select the closest preview and use the included refinements for a small correction. If none of the previews is usable, contact WerkCV support so the generation can be investigated.",
+    question: "Can I put the photo straight onto my CV?",
+    answer: "Yes. After payment you add your favourite photo to your WerkCV CV in one click, or download it for LinkedIn and other profiles.",
   },
   {
-    question: "What happens to my uploaded and generated photos?",
-    answer:
-      "WerkCV does not save your original source photos after the generation request. Generated results are kept in your account so you can return to them. You can request deletion by contacting WerkCV.",
+    question: "Can I use it as a passport photo?",
+    answer: "No. Photos for a passport, ID card or driving licence must be unedited. The AI profile photo is meant for your CV, LinkedIn and other professional profiles.",
   },
   {
-    question: "Can I use the downloaded photo professionally?",
-    answer:
-      "Yes. You may use your purchased result for your own CV, LinkedIn profile, professional biography, company profile and similar personal professional purposes. You remain responsible for using a photo that accurately represents you.",
-  },
-];
-
-const valueComparison = [
-  {
-    label: "Traditional photoshoot",
-    price: "Often €95-€150+",
-    detail: "Best when you want full control over lighting, location, clothing and posing, but it usually requires planning a session.",
+    question: "What happens to my photo?",
+    answer: "WerkCV uses your upload only to create the photos and does not store your original photo afterwards. The generated photos are kept in your account so you can return to them. You can always ask WerkCV to delete them.",
   },
   {
-    label: "WerkCV AI profile photo",
-    price: profilePhotoPrice.displayEn,
-    detail: "A faster option when you already have a usable photo and need a cleaner CV, LinkedIn or application profile today.",
-  },
-];
-
-const trustStats = [
-  "A clear, recent photo helps people recognize you across your LinkedIn profile, CV and professional accounts.",
-  "Preview variants first. Pay only if you choose to download.",
-  "No LinkedIn login, no scraping and no subscription.",
-];
-
-const deliverables = [
-  {
-    title: "4 preview variants",
-    detail: "Compare four square results before deciding whether to pay.",
+    question: "Is my photo used to train AI?",
+    answer: "No. The photos are made through the OpenAI API, which by default does not use data sent through the API to train models. WerkCV does not use your photo for anything else either.",
   },
   {
-    title: "2 included refinements",
-    detail: "Select your closest result and request up to two small adjustments.",
+    question: "Do Dutch employers expect a photo on a CV?",
+    answer: "A photo is optional in the Netherlands. Many applicants include a professional one, but follow the vacancy: if it asks for a CV without a photo, leave it out.",
   },
   {
-    title: "1024 × 1024 JPEG",
-    detail: "A square file suitable for LinkedIn, CVs and professional profiles.",
+    question: "Can I use the same photo for my CV and LinkedIn?",
+    answer: "Yes, that is useful. The same photo on your CV and LinkedIn makes you recognisable to recruiters who look at both.",
   },
   {
-    title: "One-time payment",
-    detail: `Pay ${profilePhotoPrice.displayEn} including VAT only when you choose to download. No subscription.`,
+    question: "Does this replace a professional photographer?",
+    answer: "Not always. A photographer is still the best choice if you want full control over location, light and clothing. This tool is the fast, affordable route when you need a clean photo today.",
   },
 ];
 
 export const metadata: Metadata = {
-  title: `AI headshot generator Netherlands | CV & LinkedIn photo | ${profilePhotoPrice.displayEn}`,
-  description:
-    `AI headshot generator for the Netherlands. Create a realistic profile photo for your Dutch CV and LinkedIn. Preview first, download for ${profilePhotoPrice.displayEn}.`,
+  title: `AI headshot for your CV & LinkedIn – see it free first | ${profilePhotoPrice.displayEn}`,
+  description: `Turn a regular photo or selfie into a professional profile photo for your Dutch CV and LinkedIn. See 4 previews for free; pay only if you use one (${profilePhotoPrice.displayEn}, no subscription).`,
   keywords: [
     "ai headshot generator netherlands",
+    "ai headshot free preview",
     "linkedin profile photo netherlands",
     "professional headshot ai",
     "cv photo netherlands",
     "ai profile photo maker",
-    "ai linkedin photo netherlands",
   ],
   alternates: {
     canonical: "https://werkcv.nl/en/profile-photo",
@@ -156,28 +126,19 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: `AI headshot generator Netherlands | CV & LinkedIn photo | WerkCV`,
-    description:
-      `Create a professional AI profile photo for Dutch job applications, CVs and LinkedIn. Preview first, download for ${profilePhotoPrice.displayEn}.`,
+    title: "AI headshot for your CV & LinkedIn – see it free first | WerkCV",
+    description: `Professional profile photo from your selfie for Dutch job applications and LinkedIn. 4 free previews, ${profilePhotoPrice.displayEn} only if you use one.`,
     url: "https://werkcv.nl/en/profile-photo",
     siteName: "WerkCV",
     locale: "en_NL",
     type: "website",
-    images: [
-      {
-        url: "https://werkcv.nl/opengraph-image",
-        width: 1200,
-        height: 630,
-        alt: "AI headshot generator Netherlands for CV and LinkedIn",
-      },
-    ],
+    images: [{ url: "https://werkcv.nl/opengraph-image", width: 1200, height: 630, alt: "AI profile photo for CV and LinkedIn" }],
   },
   twitter: {
     card: "summary_large_image",
     site: "@werkcvnl",
-    title: `AI headshot generator Netherlands | WerkCV`,
-    description:
-      `Create a realistic AI profile photo for your Dutch CV and LinkedIn. Preview first, download for ${profilePhotoPrice.displayEn}.`,
+    title: "AI headshot for your CV & LinkedIn – see it free first | WerkCV",
+    description: `4 free previews from your selfie; ${profilePhotoPrice.displayEn} only if you use one.`,
     images: ["https://werkcv.nl/opengraph-image"],
   },
 };
@@ -195,216 +156,47 @@ export default function EnglishProfilePhotoPage() {
             </span>
           </Link>
           <nav className="hidden items-center gap-5 text-sm font-bold text-slate-600 sm:flex">
-            <Link href="/en/ai-headshot-photo-requirements" className="hover:text-slate-900">
-              Photo tips
-            </Link>
-            <Link href="/en/editor" className="hover:text-slate-900">
-              CV maker
-            </Link>
-            <Link href="/en/templates" className="hover:text-slate-900">
-              Templates
-            </Link>
-            <Link href="/en/cv-check" className="hover:text-slate-900">
-              CV checker
-            </Link>
-            <NavUserMenu uiLanguage="en" />
+            <Link href="/en/ai-headshot-photo-requirements" className="hover:text-slate-900">Photo tips</Link>
+            <Link href="/en/guides/netherlands-cv-photo-rules" className="hover:text-slate-900">CV photo rules</Link>
+            <Link href="/en" className="hover:text-slate-900">Make a CV</Link>
+            <NavUserMenu />
           </nav>
         </div>
       </header>
 
-      <main>
-        <section className="border-b-4 border-black bg-[radial-gradient(circle_at_top_left,#E9FFFC_0,#FFFEF9_42%,#FFF4D8_100%)]">
-          <div className="mx-auto grid max-w-6xl gap-10 px-6 py-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
-            <div>
-              <span className="inline-flex rounded-full border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-slate-900">
-                AI headshot generator Netherlands
-              </span>
-              <h1 className="mt-5 text-4xl font-black leading-tight text-slate-950 sm:text-5xl">
-                Create a professional profile photo for your CV and LinkedIn
-              </h1>
-              <p className="mt-5 text-lg font-medium leading-relaxed text-slate-700">
-                Upload an existing photo or selfie and turn it into a realistic, recognizable profile photo for your
-                Dutch CV, LinkedIn profile and job applications. Preview first, pay only when you want to download.
-              </p>
-              <div className="mt-5 rounded-2xl border-2 border-black bg-white p-4">
-                <p className="text-sm font-black leading-relaxed text-slate-950">
-                  Use a clear, recent photo that accurately reflects how you look. That helps recruiters and
-                  professional contacts recognize you when they compare your CV and LinkedIn profile.
+      <ProfilePhotoLanding
+        locale="en"
+        tool={<ProfilePhotoGenerator uiLanguage="en" />}
+        styleGallery={<ProfilePhotoSamples samples={profilePhotoSamples} mode="gallery" uiLanguage="en" />}
+        faq={faqItems}
+        seoContent={
+          <section className="mx-auto max-w-6xl px-6 pt-12">
+            <div className="rounded-3xl border-2 border-slate-200 bg-white p-6">
+              <h2 className="text-2xl font-black text-slate-950">Photo on a Dutch CV: optional, often useful</h2>
+              <div className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
+                <p>
+                  In the Netherlands a CV photo is not required, but many applicants add a professional one, especially for
+                  client-facing roles in sales, healthcare, education, hospitality and HR. Leave it out if the vacancy asks for
+                  an anonymous application or a CV without a photo.
                 </p>
-                <p className="mt-2 text-xs font-bold leading-relaxed text-slate-600">
-                  WerkCV focuses on a result that still looks like you. This follows{" "}
-                  <a
-                    href="https://www.linkedin.com/business/talent/blog/product-tips/tips-for-taking-professional-linkedin-profile-pictures"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline decoration-2 underline-offset-2"
-                  >
-                    LinkedIn&apos;s current profile-photo guidance
-                  </a>
-                  , which recommends a recent, recognizable photo.
+                <p>
+                  Not sure? Read the{" "}
+                  <Link href="/en/guides/netherlands-cv-photo-rules" className="font-black underline decoration-2 underline-offset-4">
+                    CV photo rules for the Netherlands
+                  </Link>{" "}
+                  or the{" "}
+                  <Link href="/en/ai-headshot-photo-requirements" className="font-black underline decoration-2 underline-offset-4">
+                    tips for your source photo
+                  </Link>
+                  .
                 </p>
               </div>
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="#profielfoto-tool"
-                  className="inline-flex items-center justify-center border-4 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-                >
-                  Create my profile photo
-                </Link>
-                <Link
-                  href="/en/templates"
-                  className="inline-flex items-center justify-center border-4 border-black bg-white px-5 py-3 text-sm font-black text-black"
-                >
-                  Build my CV
-                </Link>
-              </div>
-              <p className="mt-4 text-sm font-bold text-slate-700">
-                4 free previews first. A one-time {profilePhotoPrice.displayEn} to download them and put one on your CV. No subscription.
-              </p>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Not sure which source photo to use?{" "}
-                <Link href="/en/ai-headshot-photo-requirements" className="font-bold underline decoration-2 underline-offset-2">
-                  Check the photo requirements first
-                </Link>
-                .
-              </p>
-            </div>
-
-            <ProfilePhotoSamples samples={profilePhotoSamples.slice(0, 1)} mode="hero" uiLanguage="en" />
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl px-6 py-12">
-          <div className="mb-6 grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-                Recognizable by design
-              </p>
-              <h2 className="mt-2 text-3xl font-black leading-tight text-slate-950">
-                See the kind of profile photo WerkCV aims for
-              </h2>
-            </div>
-            <p className="text-sm font-medium leading-relaxed text-slate-700">
-              The goal is not a fake studio portrait. The result should still look like you, but cleaner, sharper and
-              safer for Dutch recruiters who see your CV and LinkedIn profile together.
-            </p>
-          </div>
-          <ProfilePhotoSamples samples={profilePhotoSamples.slice(1)} mode="gallery" uiLanguage="en" />
-        </section>
-
-        <section id="profielfoto-tool" className="mx-auto max-w-6xl px-6 py-12">
-          <section className="mb-8 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="rounded-3xl border-4 border-black bg-[#FFD166] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-800">
-                AI or a photographer?
-              </p>
-              <h2 className="mt-2 text-3xl font-black leading-tight text-black">
-                No full photoshoot needed when you only need a cleaner application photo
-              </h2>
-              <p className="mt-3 text-sm font-bold leading-relaxed text-slate-900">
-                A photographer is still the premium option for full personal branding. WerkCV is for the faster moment:
-                you already have a usable photo, but need it to look more professional for your CV, LinkedIn or Dutch
-                job application.
-              </p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {valueComparison.map((item) => (
-                <article key={item.label} className="rounded-3xl border-2 border-black bg-white p-5">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">{item.label}</p>
-                  <p className="mt-2 text-3xl font-black text-slate-950">{item.price}</p>
-                  <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{item.detail}</p>
-                </article>
-              ))}
             </div>
           </section>
+        }
+      />
 
-          <section className="mb-8 rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <div className="grid gap-5 md:grid-cols-3">
-              {[
-                "Upload 1 to 4 clear photos",
-                "Create 4 preview variants",
-                "Pay once only if you download",
-              ].map((item) => (
-                <div key={item} className="border-2 border-black bg-[#E9FFFC] p-4 text-sm font-black text-black">
-                  {item}
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <ProfilePhotoGenerator uiLanguage="en" />
-        </section>
-
-        <section className="mx-auto max-w-6xl px-6 pb-12">
-          <div className="rounded-3xl border-4 border-black bg-[#E9FFFC] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">
-              What you receive
-            </p>
-            <h2 className="mt-2 text-3xl font-black text-slate-950">
-              Clear deliverables before you upload
-            </h2>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {deliverables.map((item) => (
-                <article key={item.title} className="rounded-2xl border-2 border-black bg-white p-4">
-                  <h3 className="text-sm font-black text-slate-950">{item.title}</h3>
-                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">{item.detail}</p>
-                </article>
-              ))}
-            </div>
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <div className="rounded-2xl border-2 border-black bg-white p-5">
-                <h3 className="text-base font-black text-slate-950">Your source photos</h3>
-                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
-                  Original uploads are used for the generation request and are not saved by WerkCV afterward. Upload
-                  only photos of yourself that you are allowed to use.
-                </p>
-              </div>
-              <div className="rounded-2xl border-2 border-black bg-white p-5">
-                <h3 className="text-base font-black text-slate-950">Your generated results</h3>
-                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
-                  Results are stored in your account so you can return to them. You may use a purchased result for your
-                  own CV, LinkedIn and professional profiles, or request deletion through WerkCV support.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl px-6 pb-12">
-          <div className="rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-              Preview before payment
-            </p>
-            <h2 className="mt-2 text-3xl font-black text-slate-950">
-              Why improve your profile photo first?
-            </h2>
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {trustStats.map((stat) => (
-                <div key={stat} className="rounded-2xl border-2 border-slate-200 bg-[#FFFEF9] p-4 text-sm font-bold leading-relaxed text-slate-800">
-                  {stat}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl px-6 pb-12">
-          <div className="rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">FAQ</p>
-            <h2 className="mt-2 text-3xl font-black text-slate-950">Profile photo questions</h2>
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              {faqItems.map((item) => (
-                <article key={item.question} className="rounded-2xl border border-slate-200 p-4">
-                  <h3 className="text-sm font-black text-slate-950">{item.question}</h3>
-                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">{item.answer}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <Footer uiLanguage="en" />
+      <Footer />
     </div>
   );
 }

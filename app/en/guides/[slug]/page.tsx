@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
+import { Fragment } from 'react';
 import Link from 'next/link';
+import ProfilePhotoPromoCard from '@/components/profile-photo/ProfilePhotoPromoCard';
 import { notFound } from 'next/navigation';
 import { getEnglishWavePage, getEnglishWavePages } from '@/lib/seo-wave/data';
 import CtaExperiment from '@/components/seo/CtaExperiment';
@@ -233,7 +235,8 @@ export default async function EnglishWavePage({ params }: PageProps) {
             <article className="max-w-4xl mx-auto px-6 py-10">
                 <div className="space-y-10">
                     {page.sections.map((section) => (
-                        <section key={section.id} id={section.id}>
+                        <Fragment key={section.id}>
+                        <section id={section.id}>
                             <h2 className="text-2xl md:text-3xl font-black mb-4 text-gray-900">
                                 {section.title}
                             </h2>
@@ -290,6 +293,11 @@ export default async function EnglishWavePage({ params }: PageProps) {
                                 <SectionIntentLinks links={section.intentLinks} locale="en" />
                             </div>
                         </section>
+                        {/* CV photo rules guide: the profile photo tool high on the page (research 20 Oct 2026). */}
+                        {page.slug === 'netherlands-cv-photo-rules' && section.id === page.sections[0]?.id && (
+                            <ProfilePhotoPromoCard locale="en" source="en_photo_rules_top" exampleId="mei" />
+                        )}
+                        </Fragment>
                     ))}
                 </div>
 

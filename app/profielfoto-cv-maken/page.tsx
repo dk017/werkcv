@@ -2,52 +2,69 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import NavUserMenu from "@/components/NavUserMenu";
+import ProfilePhotoLanding, { type ProfilePhotoFaq } from "@/components/profile-photo/ProfilePhotoLanding";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
 import { buildDutchMetadata } from "@/lib/page-metadata";
 import { profilePhotoPrice } from "@/lib/site-content";
 import ProfilePhotoGenerator from "./ProfilePhotoGenerator";
 import ProfilePhotoSamples, { type ProfilePhotoSample } from "./ProfilePhotoSamples";
 
-const faqItems = [
+const faqItems: ProfilePhotoFaq[] = [
   {
-    question: "Is een foto verplicht op mijn cv in Nederland?",
-    answer:
-      "Nee. Een foto op je cv is niet verplicht. In Nederland wordt een professionele foto wel vaak gebruikt, maar volg altijd de instructies in de vacature. Als er om een cv zonder foto wordt gevraagd, laat je de foto weg.",
+    question: "Wat kost een AI-profielfoto bij WerkCV?",
+    answer: `Je ziet eerst gratis 4 voorbeelden. Wil je ze gebruiken, dan betaal je eenmalig ${profilePhotoPrice.display}. Daarin zitten ook 2 verfijningen. Er is geen abonnement.`,
   },
   {
-    question: "Kan ik dezelfde foto gebruiken voor cv en LinkedIn?",
-    answer:
-      "Ja, dat is vaak juist handig. Een consistente profielfoto op je cv en LinkedIn maakt je herkenbaar voor recruiters die beide bekijken.",
+    question: "Hoe lang duurt het?",
+    answer: "Meestal heb je je 4 voorbeelden binnen een minuut. Een verfijning duurt ongeveer even lang.",
   },
   {
-    question: "Vervangt dit een professionele fotograaf?",
-    answer:
-      "Niet altijd. Een fotograaf blijft de beste keuze als je volledige controle wilt over licht, houding en kleding. Deze tool is bedoeld als snelle, betaalbare route als je al een redelijke foto hebt en die professioneler wilt maken.",
+    question: "Welke foto kan ik het beste uploaden?",
+    answer: "Een recente selfie of portret waarop je gezicht duidelijk en recht te zien is, zonder zonnebril of pet, met redelijk licht. Een groepsfoto of erg donkere foto werkt slechter. Je mag 1 tot 4 foto's uploaden.",
+  },
+  {
+    question: "Lijkt de foto echt op mij?",
+    answer: "De tool houdt je gezicht, huidskleur, haar, bril en kenmerken bewust hetzelfde en verandert vooral licht, achtergrond en kleding. Herken je jezelf niet goed? Gebruik dan een verfijning, of gebruik de foto niet: je betaalt alleen als je er een wilt downloaden.",
+  },
+  {
+    question: "Waarom 4 foto's en niet 40?",
+    answer: "Je hebt één goede foto nodig. Je ziet je 4 voorbeelden voordat je betaalt en kunt met 2 verfijningen nog iets aanpassen. Zo betaal je alleen voor een foto die je echt gebruikt.",
+  },
+  {
+    question: "Kan ik de foto direct in mijn cv zetten?",
+    answer: "Ja. Na betaling zet je je favoriete foto met één klik in je WerkCV-cv, of je downloadt hem voor LinkedIn en andere profielen.",
+  },
+  {
+    question: "Kan ik deze foto als pasfoto gebruiken?",
+    answer: "Nee. Een pasfoto voor paspoort, ID-kaart of rijbewijs moet onbewerkt zijn. De AI-profielfoto is bedoeld voor je cv, LinkedIn en andere professionele profielen.",
   },
   {
     question: "Wat gebeurt er met mijn foto?",
-    answer:
-      "WerkCV gebruikt je upload alleen voor de generatieaanvraag en bewaart je oorspronkelijke bronfoto daarna niet. De gegenereerde foto's bewaren we in je account zodat je er later naar kunt terugkeren. Je kunt WerkCV vragen om verwijdering.",
+    answer: "WerkCV gebruikt je upload alleen om de foto's te maken en bewaart je oorspronkelijke foto daarna niet. De gemaakte foto's bewaren we in je account zodat je er later bij kunt. Je kunt WerkCV altijd vragen ze te verwijderen.",
+  },
+  {
+    question: "Wordt mijn foto gebruikt om AI te trainen?",
+    answer: "Nee. De foto's worden gemaakt via de OpenAI API, en die gebruikt gegevens die via de API binnenkomen standaard niet om modellen te trainen. WerkCV gebruikt je foto ook niet voor andere doeleinden.",
+  },
+  {
+    question: "Is een foto verplicht op mijn cv in Nederland?",
+    answer: "Nee. Een foto op je cv is niet verplicht. In Nederland wordt een professionele foto wel vaak gebruikt, maar volg altijd de instructies in de vacature. Vraagt de werkgever om een cv zonder foto, laat hem dan weg.",
+  },
+  {
+    question: "Kan ik dezelfde foto gebruiken voor cv en LinkedIn?",
+    answer: "Ja, dat is juist handig. Met dezelfde foto op je cv en LinkedIn ben je herkenbaar voor recruiters die beide bekijken.",
+  },
+  {
+    question: "Mag ik de foto professioneel gebruiken?",
+    answer: "Ja. Je mag je gekochte foto gebruiken voor je cv, LinkedIn, een professionele bio, bedrijfsprofiel en vergelijkbare persoonlijke professionele toepassingen. Gebruik alleen een foto die je eerlijk weergeeft.",
   },
   {
     question: "Kan WerkCV mijn LinkedIn-foto automatisch ophalen?",
-    answer:
-      "Nee. WerkCV scrapt LinkedIn niet, gebruikt geen LinkedIn API en vraagt niet om je LinkedIn-login. Je uploadt zelf een foto die je wilt gebruiken.",
+    answer: "Nee. WerkCV scrapt LinkedIn niet en vraagt niet om je LinkedIn-login. Je uploadt zelf de foto die je wilt gebruiken.",
   },
   {
-    question: "Wat gaat de profielfoto-tool kosten?",
-    answer:
-      `De AI-profielfoto is een eenmalige add-on van ${profilePhotoPrice.display}. Je krijgt 4 startvarianten en 2 inbegrepen verfijningen, en je betaalt pas als je een variant wilt gebruiken. Er is geen abonnement.`,
-  },
-  {
-    question: "Mag ik de gedownloade foto professioneel gebruiken?",
-    answer:
-      "Ja. Je mag een gekocht resultaat gebruiken voor je eigen cv, LinkedIn-profiel, professionele biografie, bedrijfsprofiel en vergelijkbare persoonlijke professionele toepassingen. Gebruik alleen een foto die jou nog herkenbaar en eerlijk weergeeft.",
-  },
-  {
-    question: "Wat als de foto niet genoeg op mij lijkt?",
-    answer:
-      "Gebruik geen foto waarin je jezelf niet goed herkent. Kies de beste startvariant en gebruik de inbegrepen verfijningen voor een kleine correctie. Is geen enkele variant bruikbaar, neem dan contact op met WerkCV zodat we de generatie kunnen onderzoeken.",
+    question: "Vervangt dit een professionele fotograaf?",
+    answer: "Niet altijd. Een fotograaf blijft de beste keuze als je volledige controle wilt over locatie, licht en kleding. Deze tool is de snelle, betaalbare route als je vandaag een nette foto nodig hebt.",
   },
 ];
 
@@ -57,40 +74,6 @@ const qualityChecks = [
   "De foto voelt professioneel, maar niet stijf of onnatuurlijk.",
   "De uitsnede werkt als kleine profielfoto op LinkedIn en als compacte cv-foto.",
   "De kleding en uitstraling passen bij de sector waarin je solliciteert.",
-];
-
-const sampleTransformations = [
-  {
-    before: "Selfie met drukke achtergrond",
-    after: "Rustige LinkedIn-foto met neutrale achtergrond en professionele uitsnede",
-  },
-  {
-    before: "Goede foto, maar te casual",
-    after: "Nettere kledingstijl en belichting die beter past bij cv en sollicitatie",
-  },
-  {
-    before: "LinkedIn-foto voelt verouderd",
-    after: "Nieuwe variant met herkenbare uitstraling, direct oogcontact en moderne studio-look",
-  },
-];
-
-const valueComparison = [
-  {
-    label: "Traditionele fotoshoot",
-    price: "Vaak €95-€150+",
-    detail: "Sterk als je volledige controle wilt over locatie, licht, houding en kleding, maar je moet meestal een afspraak plannen.",
-  },
-  {
-    label: "WerkCV AI-profielfoto",
-    price: profilePhotoPrice.display,
-    detail: "Snelle preview op basis van je eigen upload. Handig als je vandaag een nettere foto nodig hebt voor CV, LinkedIn of een sollicitatieprofiel.",
-  },
-];
-
-const trustStats = [
-  "Een duidelijke, recente foto helpt mensen je herkennen op LinkedIn, je cv en andere professionele profielen.",
-  "Je betaalt pas als je een variant wilt downloaden; previewen kan eerst.",
-  "Geen LinkedIn-login, geen scraping en geen abonnement.",
 ];
 
 const profilePhotoSamples: ProfilePhotoSample[] = [
@@ -160,20 +143,19 @@ const profilePhotoSamples: ProfilePhotoSample[] = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: `AI headshot generator Nederland | Profielfoto CV & LinkedIn | ${profilePhotoPrice.display}`,
-  description:
-    `AI headshot generator voor Nederland: maak van een gewone foto een professionele profielfoto voor cv en LinkedIn. Preview eerst, download voor ${profilePhotoPrice.display}.`,
+  title: `AI profielfoto voor cv en LinkedIn – eerst gratis zien | ${profilePhotoPrice.display}`,
+  description: `Maak van een gewone foto of selfie een professionele profielfoto voor je cv en LinkedIn. Bekijk eerst gratis 4 voorbeelden; pas betalen als je er een gebruikt (${profilePhotoPrice.display}, geen abonnement).`,
   path: "/profielfoto-cv-maken",
   keywords: [
-    "ai headshot generator nederland",
-    "ai headshot linkedin nederland",
-    "headshot generator nederland",
-    "profielfoto cv maken",
+    "ai profielfoto",
     "ai profielfoto cv",
     "linkedin profielfoto maken",
-    "professionele profielfoto maken",
-    "cv foto maken",
+    "linkedin foto maken",
     "zakelijke profielfoto ai",
+    "profielfoto cv maken",
+    "cv foto maken",
+    "professionele profielfoto maken",
+    "ai headshot generator nederland",
   ],
   type: "article",
 });
@@ -191,357 +173,63 @@ export default function ProfielfotoCvMakenPage() {
             </span>
           </Link>
           <nav className="hidden items-center gap-5 text-sm font-bold text-slate-600 sm:flex">
-            <Link href="/ai-headshot-foto-tips" className="hover:text-slate-900">
-              Fototips
-            </Link>
-            <Link href="/cv-tips/foto-op-je-cv" className="hover:text-slate-900">
-              Foto op je cv
-            </Link>
-            <Link href="/" className="hover:text-slate-900">
-              CV maken
-            </Link>
-            <Link href="/tools" className="hover:text-slate-900">
-              Tools
-            </Link>
+            <Link href="/ai-headshot-foto-tips" className="hover:text-slate-900">Fototips</Link>
+            <Link href="/cv-tips/foto-op-je-cv" className="hover:text-slate-900">Foto op je cv</Link>
+            <Link href="/" className="hover:text-slate-900">CV maken</Link>
+            <Link href="/tools" className="hover:text-slate-900">Tools</Link>
             <NavUserMenu />
           </nav>
         </div>
       </header>
 
-      <main>
-        <section className="border-b-4 border-black bg-[radial-gradient(circle_at_top_left,#E9FFFC_0,#FFFEF9_42%,#FFF4D8_100%)]">
-          <div className="mx-auto grid max-w-6xl gap-10 px-6 py-12 lg:grid-cols-[0.92fr_1.08fr] lg:items-center">
-            <div>
-              <span className="inline-flex rounded-full border-2 border-black bg-white px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-slate-900">
-                AI headshot generator Nederland
-              </span>
-              <h1 className="mt-5 text-4xl font-black leading-tight text-slate-950 sm:text-5xl">
-                Professionele profielfoto maken voor je cv en LinkedIn
-              </h1>
-              <p className="mt-5 text-lg font-medium leading-relaxed text-slate-700">
-                Upload een bestaande foto of selfie en maak er een realistische, herkenbare AI-profielfoto van die past
-                bij je sollicitatie, CV en LinkedIn-profiel. Geen fotoshoot nodig; handig als laatste stap
-                nadat je CV klaar is of wanneer je LinkedIn-profiel nog rommelig oogt.
-              </p>
-              <div className="mt-5 rounded-2xl border-2 border-black bg-white p-4">
-                <p className="text-sm font-black leading-relaxed text-slate-950">
-                  Gebruik een duidelijke, recente foto die eerlijk weergeeft hoe je eruitziet. Zo kunnen recruiters en
-                  professionele contacten je herkennen wanneer zij je cv en LinkedIn-profiel naast elkaar bekijken.
-                </p>
-                <p className="mt-2 text-xs font-bold leading-relaxed text-slate-600">
-                  WerkCV focust daarom op een resultaat dat herkenbaar blijft. Dat sluit aan op de{" "}
-                  <a
-                    href="https://www.linkedin.com/business/talent/blog/product-tips/tips-for-taking-professional-linkedin-profile-pictures"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="underline decoration-2 underline-offset-2"
-                  >
-                    actuele profielfotorichtlijnen van LinkedIn
-                  </a>
-                  .
-                </p>
+      <ProfilePhotoLanding
+        locale="nl"
+        tool={<ProfilePhotoGenerator />}
+        styleGallery={<ProfilePhotoSamples samples={profilePhotoSamples.slice(0, 6)} mode="gallery" />}
+        faq={faqItems}
+        seoContent={
+          <section className="mx-auto max-w-6xl px-6 pt-12">
+            <div className="grid gap-8 lg:grid-cols-2">
+              <div className="rounded-3xl border-2 border-slate-200 bg-white p-6">
+                <h2 className="text-2xl font-black text-slate-950">Wanneer zet je een foto op je cv?</h2>
+                <div className="mt-4 space-y-4 text-sm font-medium leading-relaxed text-slate-700">
+                  <p>
+                    In Nederland is een foto op je cv niet verplicht. Veel sollicitanten kiezen wel voor een professionele
+                    foto, vooral bij functies met persoonlijk contact: sales, zorg, onderwijs, hospitality, HR, klantenservice
+                    en veel kantoorfuncties.
+                  </p>
+                  <p>
+                    Laat een foto weg als de vacature vraagt om anoniem solliciteren of om een cv zonder foto. Solliciteer je
+                    in de VS, het VK of Canada, dan wordt een foto meestal afgeraden.
+                  </p>
+                  <p>
+                    Twijfel je? Lees de gids over{" "}
+                    <Link href="/cv-tips/foto-op-je-cv" className="font-black underline decoration-2 underline-offset-4">
+                      een foto op je cv in Nederland
+                    </Link>
+                    .
+                  </p>
+                </div>
               </div>
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  href="#profielfoto-tool"
-                  className="inline-flex items-center justify-center border-4 border-black bg-[#4ECDC4] px-5 py-3 text-sm font-black text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
-                >
-                  Maak mijn profielfoto
-                </Link>
-                <Link
-                  href="/cv-tips/foto-op-je-cv"
-                  className="inline-flex items-center justify-center border-4 border-black bg-white px-5 py-3 text-sm font-black text-black"
-                >
-                  Wanneer foto op je cv?
-                </Link>
-              </div>
-              <p className="mt-4 text-sm font-bold text-slate-700">
-                Eerst gratis 4 voorbeelden. Eenmalig {profilePhotoPrice.display} om ze te downloaden en in je cv te zetten. Geen abonnement.
-              </p>
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Weet je niet welke bronfoto geschikt is?{" "}
-                <Link href="/ai-headshot-foto-tips" className="font-bold underline decoration-2 underline-offset-2">
-                  Bekijk eerst de fotochecklist
-                </Link>
-                .
-              </p>
-            </div>
-
-            <ProfilePhotoSamples samples={profilePhotoSamples.slice(0, 1)} mode="hero" />
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl px-6 py-12">
-          <div className="mb-6 grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-                Bekijk de stijlen
-              </p>
-              <h2 className="mt-2 text-3xl font-black leading-tight text-slate-950">
-                Kies een foto die past bij je sollicitatie, niet alleen bij een fotoshoot
-              </h2>
-            </div>
-            <p className="text-sm font-medium leading-relaxed text-slate-700">
-              De beste profielfoto verschilt per situatie. Een starter wil vaak benaderbaar blijven, een consultant
-              moet direct vertrouwen geven en een zorgprofessional heeft baat bij een warmere uitstraling. Klik op een
-              voorbeeld om de stijl groter te bekijken.
-            </p>
-          </div>
-          <ProfilePhotoSamples samples={profilePhotoSamples.slice(1)} mode="gallery" />
-          <div className="mt-6 rounded-3xl border-2 border-black bg-[#E9FFFC] p-5">
-            <h3 className="text-lg font-black text-slate-950">Waarom deze voorbeelden helpen</h3>
-            <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">
-              Mensen vertrouwen een AI-fototool pas als ze zien welke richting het resultaat opgaat. Daarom tonen we
-              bewust meerdere Nederlandse sollicitatiecontexten: studenten, starters, zorg, tech, HR en senior rollen.
-              Dit zijn demo&apos;s, geen klantfoto&apos;s; jouw foto wordt apart gemaakt op basis van je eigen upload.
-            </p>
-          </div>
-        </section>
-
-        <section id="profielfoto-tool" className="mx-auto max-w-6xl px-6 py-12">
-          <section className="mb-8 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="rounded-3xl border-4 border-black bg-[#FFD166] p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-800">
-                AI of een fotograaf?
-              </p>
-              <h2 className="mt-2 text-3xl font-black leading-tight text-black">
-                Geen afspraak van een uur als je alleen een nette sollicitatiefoto nodig hebt
-              </h2>
-              <p className="mt-3 text-sm font-bold leading-relaxed text-slate-900">
-                Een fotograaf blijft waardevol voor volledige personal branding. WerkCV is bedoeld voor het snellere
-                moment: je hebt al een bruikbare foto, maar je wilt hem vandaag professioneler maken voor je CV,
-                LinkedIn of sollicitatieprofiel.
-              </p>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              {valueComparison.map((item) => (
-                <article key={item.label} className="rounded-3xl border-2 border-black bg-white p-5">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">{item.label}</p>
-                  <p className="mt-2 text-3xl font-black text-slate-950">{item.price}</p>
-                  <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{item.detail}</p>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className="mb-8 rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <div className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-                  Eerst preview, dan betalen
-                </p>
-                <h2 className="mt-2 text-3xl font-black text-slate-950">
-                  Bekijk je varianten voordat je {profilePhotoPrice.display} betaalt
-                </h2>
-                <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">
-                  Je logt in, maakt 4 voorbeeldvarianten en kiest de beste foto. Pas als je wilt downloaden start de
-                  eenmalige betaling. Zo betaal je niet blind voor een resultaat dat je nog niet hebt gezien.
-                </p>
-                <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                  {["4 startvarianten", "2 verfijningen", "Betalen bij download"].map((item) => (
-                    <div key={item} className="border-2 border-black bg-[#E9FFFC] p-3 text-sm font-black text-black">
-                      {item}
-                    </div>
+              <div className="rounded-3xl border-2 border-slate-200 bg-white p-6">
+                <h2 className="text-2xl font-black text-slate-950">Wat maakt een goede cv-profielfoto?</h2>
+                <ul className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
+                  {qualityChecks.map((check) => (
+                    <li key={check} className="flex gap-3">
+                      <span className="mt-1 h-5 w-5 flex-none rounded-full bg-[#4ECDC4] text-center text-xs font-black text-black">✓</span>
+                      <span>{check}</span>
+                    </li>
                   ))}
-                </div>
-              </div>
-              <div className="grid gap-3">
-                {sampleTransformations.map((item) => (
-                  <div key={item.before} className="grid gap-3 rounded-2xl border-2 border-slate-200 bg-[#FFFEF9] p-4 sm:grid-cols-2">
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">Vaak nu</p>
-                      <p className="mt-1 text-sm font-medium leading-relaxed text-slate-700">{item.before}</p>
-                    </div>
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500">Doeloutput</p>
-                      <p className="mt-1 text-sm font-black leading-relaxed text-slate-900">{item.after}</p>
-                    </div>
-                  </div>
-                ))}
+                </ul>
+                <p className="mt-4 text-sm font-medium text-slate-700">
+                  Meer tips over je bronfoto in de{" "}
+                  <Link href="/ai-headshot-foto-tips" className="font-black underline decoration-2 underline-offset-4">fotochecklist</Link>.
+                </p>
               </div>
             </div>
           </section>
-
-          <ProfilePhotoGenerator />
-        </section>
-
-        <section className="mx-auto max-w-6xl px-6 pb-12">
-          <div className="rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-              Eerst previewen
-            </p>
-            <h2 className="mt-2 text-3xl font-black text-slate-950">
-              Waarom eerst je profielfoto verbeteren?
-            </h2>
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {trustStats.map((stat) => (
-                <div key={stat} className="rounded-2xl border-2 border-slate-200 bg-[#FFFEF9] p-4 text-sm font-bold leading-relaxed text-slate-800">
-                  {stat}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto grid max-w-6xl gap-6 px-6 pb-12 md:grid-cols-3">
-          {[
-            {
-              title: "1. Upload een redelijke basisfoto",
-              text: "Een duidelijke selfie of portret werkt beter dan een groepsfoto, vakantiefoto of foto met zonnebril.",
-            },
-            {
-              title: "2. Kies de juiste uitstraling",
-              text: "Zakelijk voor kantoorfuncties, warmer voor zorg en onderwijs, of een strakke LinkedIn-stijl.",
-            },
-            {
-              title: "3. Gebruik de beste variant bewust",
-              text: "Controleer of je nog steeds herkenbaar bent en gebruik de foto alleen als hij natuurlijk aanvoelt.",
-            },
-          ].map((step) => (
-            <article key={step.title} className="rounded-3xl border-2 border-slate-200 bg-white p-6">
-              <h2 className="text-xl font-black text-slate-950">{step.title}</h2>
-              <p className="mt-3 text-sm font-medium leading-relaxed text-slate-700">{step.text}</p>
-            </article>
-          ))}
-        </section>
-
-        <section className="mx-auto max-w-6xl px-6 pb-12">
-          <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-            <div className="rounded-3xl border-2 border-slate-200 bg-white p-6">
-              <h2 className="text-2xl font-black text-slate-950">Wanneer gebruik je een profielfoto op je cv?</h2>
-              <div className="mt-4 space-y-4 text-sm font-medium leading-relaxed text-slate-700">
-                <p>
-                  In Nederland is een foto op je cv niet verplicht. Toch kiezen veel sollicitanten voor een
-                  professionele foto, vooral bij functies waarin persoonlijk contact, vertrouwen of presentatie
-                  belangrijk is. Denk aan sales, zorg, onderwijs, hospitality, HR, klantenservice en veel
-                  kantoorfuncties.
-                </p>
-                <p>
-                  Laat een foto weg als de vacature expliciet vraagt om anoniem solliciteren of om een cv zonder
-                  foto. Solliciteer je internationaal, controleer dan de lokale norm. Voor de VS, het VK en Canada
-                  wordt een foto op het resume meestal afgeraden.
-                </p>
-                <p>
-                  Twijfel je? Lees eerst de uitgebreide gids over{" "}
-                  <Link href="/cv-tips/foto-op-je-cv" className="font-black underline decoration-2 underline-offset-4">
-                    foto op je cv in Nederland
-                  </Link>
-                  .
-                </p>
-              </div>
-            </div>
-
-            <div className="rounded-3xl border-2 border-slate-200 bg-white p-6">
-              <h2 className="text-2xl font-black text-slate-950">Wat maakt een goede cv-profielfoto?</h2>
-              <ul className="mt-4 space-y-3 text-sm font-medium leading-relaxed text-slate-700">
-                {qualityChecks.map((check) => (
-                  <li key={check} className="flex gap-3">
-                    <span className="mt-1 h-5 w-5 flex-none rounded-full bg-[#4ECDC4] text-center text-xs font-black text-black">
-                      ✓
-                    </span>
-                    <span>{check}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section className="border-y-4 border-black bg-slate-950 text-white">
-          <div className="mx-auto grid max-w-6xl gap-8 px-6 py-12 lg:grid-cols-2 lg:items-center">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#4ECDC4]">Volgende stap</p>
-              <h2 className="mt-3 text-3xl font-black leading-tight">Maak je hele sollicitatieprofiel netjes</h2>
-              <p className="mt-4 text-sm font-medium leading-relaxed text-slate-300">
-                Een professionele foto helpt pas echt wanneer je CV en LinkedIn hetzelfde niveau uitstralen.
-                Gebruik je beste variant daarom direct met een rustige CV-template en een duidelijke profieltekst.
-              </p>
-            </div>
-            <div className="grid gap-3">
-              {[
-                "Gebruik dezelfde foto op je CV en LinkedIn.",
-                "Werk je profieltekst bij zodat foto en verhaal kloppen.",
-                "Kies een rustige template die de foto niet te dominant maakt.",
-                "Download pas als je complete sollicitatieprofiel klaar is.",
-              ].map((item) => (
-                <div key={item} className="border-2 border-white/20 bg-white/10 p-4 text-sm font-bold leading-relaxed">
-                  {item}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl px-6 py-12">
-          <div className="grid gap-8 lg:grid-cols-2">
-            <div className="rounded-3xl border-2 border-slate-200 bg-white p-6">
-              <h2 className="text-2xl font-black text-slate-950">Voor sollicitanten</h2>
-              <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
-                Gebruik de tool als je al een cv hebt, maar je foto nog niet past bij het niveau van je document.
-                Maak daarna je cv compleet in WerkCV met een nette template, duidelijke profieltekst en PDF-export.
-              </p>
-              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                <Link href="/" className="inline-flex justify-center border-2 border-black bg-[#4ECDC4] px-4 py-3 text-sm font-black text-black">
-                  Maak mijn cv
-                </Link>
-                <Link href="/tools/linkedin-naar-cv" className="inline-flex justify-center border-2 border-black bg-white px-4 py-3 text-sm font-black text-black">
-                  LinkedIn naar cv
-                </Link>
-              </div>
-            </div>
-
-            <div className="rounded-3xl border-2 border-slate-200 bg-white p-6">
-              <h2 className="text-2xl font-black text-slate-950">Voor coaches en begeleiders</h2>
-              <p className="mt-4 text-sm font-medium leading-relaxed text-slate-700">
-                Loopbaancoaches zien vaak dat het verhaal van een cliënt sterker wordt, maar cv en profielfoto nog
-                achterlopen. Deze tool kan later als praktische add-on helpen om het eindprofiel netter en
-                consistenter te maken.
-              </p>
-              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                <Link href="/loopbaancoach" className="inline-flex justify-center border-2 border-black bg-[#FFD166] px-4 py-3 text-sm font-black text-black">
-                  CV tool voor coaches
-                </Link>
-                <Link href="/for-coaches" className="inline-flex justify-center border-2 border-black bg-white px-4 py-3 text-sm font-black text-black">
-                  Voor coaches
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl px-6 pb-12">
-          <div className="rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">FAQ</p>
-            <h2 className="mt-2 text-3xl font-black text-slate-950">Veelgestelde vragen</h2>
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              {faqItems.map((item) => (
-                <article key={item.question} className="rounded-2xl border border-slate-200 p-4">
-                  <h3 className="text-sm font-black text-slate-950">{item.question}</h3>
-                  <p className="mt-2 text-sm font-medium leading-relaxed text-slate-700">{item.answer}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="mx-auto max-w-6xl px-6 pb-16">
-          <div className="border-4 border-black bg-[#4ECDC4] p-8 text-center shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-            <h2 className="text-3xl font-black text-black">Maak je sollicitatieprofiel compleet</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-sm font-bold leading-relaxed text-slate-900">
-              Start met een professionele profielfoto, zet daarna je cv netjes in WerkCV en download alleen als je
-              tevreden bent met de PDF.
-            </p>
-            <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link href="#profielfoto-tool" className="inline-flex justify-center border-4 border-black bg-white px-5 py-3 text-sm font-black text-black">
-                Maak mijn profielfoto
-              </Link>
-              <Link href="/editor" className="inline-flex justify-center border-4 border-black bg-black px-5 py-3 text-sm font-black text-white">
-                Maak mijn cv
-              </Link>
-            </div>
-          </div>
-        </section>
-      </main>
+        }
+      />
 
       <Footer />
     </div>

@@ -65,6 +65,8 @@ import KeywordScannerWidget from "./KeywordScannerWidget";
 import PhotoUpload from "./PhotoUpload";
 import { cvDownloadPrice, jobPassPrice, profilePhotoPrice } from "@/lib/site-content";
 import { getProfilePhotoToolPath } from "@/lib/profile-photo-cv";
+import { PhotoTransformation } from "@/components/profile-photo/PhotoBeforeAfter";
+import { profilePhotoExamples } from "@/lib/profile-photo-examples";
 import { usePriceCopy } from "@/components/pricing/usePriceCopy";
 import {
     hasCompletionTracked,
@@ -2810,6 +2812,14 @@ export default function Editor({
                                                     `Optional. No good photo? Make one from a regular photo or selfie. Free previews first, then a one-time ${profilePhotoPrice.displayEn} if you want to use them.`
                                                 )}
                                         </p>
+                                        {!isPublicMode && !isMatchPackWorkspace && !data.personal.photo ? (
+                                            <div className="mt-2 flex items-center gap-2">
+                                                <div className="w-[136px]">
+                                                    <PhotoTransformation example={profilePhotoExamples[0]} locale={isEnglish ? "en" : "nl"} size="sm" />
+                                                </div>
+                                                <span className="text-[10px] leading-tight text-slate-500">{tr("AI-voorbeeld", "AI example")}</span>
+                                            </div>
+                                        ) : null}
                                         {!isPublicMode && !isMatchPackWorkspace ? (
                                             <button
                                                 type="button"

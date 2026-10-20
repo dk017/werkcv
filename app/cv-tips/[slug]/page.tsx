@@ -14,6 +14,7 @@ import { getCitedAuthorityRouteConfig } from '@/lib/cited-authority-conversion';
 import { cvDownloadPrice } from '@/lib/site-content';
 import { normalizeBrandCopy } from '@/lib/seo-branding';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import ProfilePhotoPromoCard from '@/components/profile-photo/ProfilePhotoPromoCard';
 import { getLanguageAlternates } from '@/lib/i18n/route-pairs';
 
 interface PageProps {
@@ -377,24 +378,18 @@ export default async function ArticlePage({ params }: PageProps) {
                                 )}
                                 <SectionIntentLinks links={section.intentLinks} locale="nl" />
                                 {article.slug === 'foto-op-je-cv' && section.id === 'juiste-foto-kiezen' && (
-                                    <div className="wk-editorial-card-muted mt-6 p-5">
-                                        <h3 className="text-xl font-black text-gray-900">
-                                            Geen professionele foto?
-                                        </h3>
-                                        <p className="mt-2 text-gray-800 font-semibold leading-relaxed">
-                                            Maak online in 2 minuten een nette profielfoto voor je CV en LinkedIn.
-                                            Je ziet eerst previewvarianten en betaalt pas bij downloaden.
-                                        </p>
-                                        <Link
-                                            href="/profielfoto-cv-maken"
-                                            className="wk-button wk-button-primary mt-4"
-                                        >
-                                            Maak profielfoto voor €9,99
-                                        </Link>
-                                    </div>
+                                    <ProfilePhotoPromoCard locale="nl" source="foto_op_cv_juiste_foto" exampleId="daniel" compact />
                                 )}
                             </div>
                         </section>
+                        {/* Photo guides: the profile photo tool high on the page (research 20 Oct 2026: these pages get the photo searches). */}
+                        {(article.slug === 'foto-op-je-cv' || article.slug === 'linkedin-profiel-maken') && section.id === article.sections[0]?.id && (
+                            <ProfilePhotoPromoCard
+                                locale="nl"
+                                source={article.slug === 'foto-op-je-cv' ? 'foto_op_cv_top' : 'linkedin_profiel_top'}
+                                exampleId={article.slug === 'foto-op-je-cv' ? 'sanne' : 'peter'}
+                            />
+                        )}
                         {englishCvCitedAuthorityConfig && section.id === 'structuur' ? (
                             <CitedAuthorityConversionBridge
                                 config={englishCvCitedAuthorityConfig}
