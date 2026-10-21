@@ -224,6 +224,10 @@ export default function ProfielfotoCvMakenPage() {
                 <p className="mt-4 text-sm font-medium text-slate-700">
                   Meer tips over je bronfoto in de{" "}
                   <Link href="/ai-headshot-foto-tips" className="font-black underline decoration-2 underline-offset-4">fotochecklist</Link>.
+                  Benieuwd hoe je huidige foto scoort? Doe de{" "}
+                  <Link href="/linkedin-foto-check" className="font-black underline decoration-2 underline-offset-4">gratis LinkedIn-foto check</Link>
+                  , of lees{" "}
+                  <Link href="/linkedin-foto-maken" className="font-black underline decoration-2 underline-offset-4">hoe je een goede LinkedIn-foto maakt</Link>.
                 </p>
               </div>
             </div>

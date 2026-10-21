@@ -76,6 +76,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             changeFrequency: 'monthly',
             priority: 0.72,
         },
+        { url: `${baseUrl}/linkedin-foto-maken`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.74 },
+        { url: `${baseUrl}/gratis-ai-profielfoto`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.72 },
+        { url: `${baseUrl}/linkedin-foto-check`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.72 },
+        { url: `${baseUrl}/en/linkedin-photo-check`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.66 },
         {
             url: `${baseUrl}/ai-headshot-foto-tips`,
             lastModified: new Date(),

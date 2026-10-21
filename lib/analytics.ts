@@ -97,7 +97,11 @@ export type ProfilePhotoEvent =
     | 'profile_photo_cv_photo_used'
     | 'profile_photo_applied_to_cv'
     | 'profile_photo_offer_viewed'
-    | 'profile_photo_offer_clicked';
+    | 'profile_photo_offer_clicked'
+    | 'linkedin_photo_check_started'
+    | 'linkedin_photo_check_completed'
+    | 'linkedin_photo_check_failed'
+    | 'linkedin_photo_check_cta_clicked';
 
 export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboarding' | 'cv_check' | 'dashboard' | 'start_choice';
 export type FullPreviewSource = 'desktop_preview_header' | 'desktop_document' | 'mobile_floating' | 'upload_success';
@@ -773,6 +777,10 @@ export type AnalyticsEvent =
           properties: { page_path: string; cta_location: string; cta_text: string };
       }
     | { event: 'profile_photo_tool_view'; properties: { page_path: string; source?: string; has_return_cv?: boolean } }
+    | { event: 'linkedin_photo_check_started'; properties: { page_path: string; locale: 'nl' | 'en' } }
+    | { event: 'linkedin_photo_check_completed'; properties: { page_path: string; locale: 'nl' | 'en'; score: number; band: string } }
+    | { event: 'linkedin_photo_check_failed'; properties: { page_path: string; locale: 'nl' | 'en'; error: string } }
+    | { event: 'linkedin_photo_check_cta_clicked'; properties: { page_path: string; locale: 'nl' | 'en'; score: number } }
     | { event: 'profile_photo_cv_photo_used'; properties: { page_path: string } }
     | { event: 'profile_photo_applied_to_cv'; properties: { page_path: string; target: 'return_cv' | 'new_cv' } }
     | { event: 'profile_photo_offer_viewed'; properties: ProfilePhotoOfferContext }

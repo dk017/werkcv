@@ -110,6 +110,16 @@ export const linkedinProfielMaken: BlogArticle = {
                     description: 'Handig als je nu alleen een selfie, vakantiefoto of rommelige achtergrond hebt.',
                 },
                 {
+                    href: '/linkedin-foto-maken',
+                    label: 'LinkedIn-foto maken: zelf, bij een fotograaf of met AI',
+                    description: 'Tips voor je telefoon, wat een fotograaf kost en hoe je je nieuwe foto op LinkedIn zet.',
+                },
+                {
+                    href: '/linkedin-foto-check',
+                    label: 'Check je LinkedIn-foto gratis',
+                    description: 'Score van 0 tot 100 met een concrete tip per punt. Zonder account.',
+                },
+                {
                     href: '/cv-tips/linkedin-kopregel-voorbeeld',
                     label: 'Bekijk sterke LinkedIn kopregel voorbeelden',
                     description: 'Gebruik voorbeelden per rol, carrierefase en switch-situatie.',

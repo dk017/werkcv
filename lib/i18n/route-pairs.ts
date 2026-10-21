@@ -222,6 +222,14 @@ export const routePairs = [
     preserveSearch: false,
   },
   {
+    id: "linkedin-photo-check",
+    nl: "/linkedin-foto-check",
+    en: "/en/linkedin-photo-check",
+    useForSwitcher: true,
+    useForHreflang: true,
+    preserveSearch: false,
+  },
+  {
     id: "ai-headshot-source-photo-guide",
     nl: "/ai-headshot-foto-tips",
     en: "/en/ai-headshot-photo-requirements",
