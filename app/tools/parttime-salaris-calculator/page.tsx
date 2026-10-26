@@ -77,9 +77,9 @@ const parttimeCvIntentLinks = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "Parttime Salaris Berekenen (2026) — Fulltime naar Parttime | WerkCV",
+  title: "Fulltime naar parttime berekenen: salaris en uren per maand | WerkCV",
   description:
-    "Bereken gratis je parttime salaris in 2026. Vul je fulltime salaris en uren in en bekijk bruto maandloon, jaarloon, vakantiegeld en een uitgewerkt voorbeeld.",
+    "32 uur per week is gemiddeld 138,7 uur per maand, 40 uur 173,3. Reken je salaris om van 40 naar 32, 36 of 24 uur en zie bruto maandloon, jaarloon en vakantiegeld.",
   path: "/tools/parttime-salaris-calculator",
   keywords: [
     "parttime salaris calculator",
@@ -325,6 +325,8 @@ export default function ParttimeSalarisCalculatorPage() {
                     ["28 uur per week", "121,3 uur"],
                     ["32 uur per week", "138,7 uur"],
                     ["36 uur per week", "156 uur"],
+                    ["38 uur per week", "164,7 uur"],
+                    ["40 uur per week", "173,3 uur"],
                   ].map(([contract, monthlyHours]) => (
                     <tr key={contract} className="border-b border-slate-200">
                       <td className="px-3 py-2 font-medium text-slate-700">{contract}</td>

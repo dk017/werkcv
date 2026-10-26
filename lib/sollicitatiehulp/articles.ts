@@ -209,9 +209,9 @@ export const applicationHelpArticles: ApplicationHelpArticle[] = [
     title: "‘Hopende u hiermee voldoende te hebben geïnformeerd’: beter afsluiten",
     description:
       "De bekende slotzin klinkt afstandelijk en is vaak geen volledige zin. Kies een helder alternatief dat past bij het doel van je brief of e-mail.",
-    metaTitle: "Hopende u hiermee voldoende te hebben geïnformeerd: beter",
+    metaTitle: "Hopende u hiermee voldoende te hebben geïnformeerd: 18 alternatieven",
     metaDescription:
-      "Vervang ‘Hopende u hiermee voldoende te hebben geïnformeerd’ door een moderne slotzin. 18 alternatieven voor informatie, actie en sollicitatie.",
+      "Is ‘Hopende u hiermee voldoende te hebben geïnformeerd’ of ‘Ik hoop u hiermee voldoende te hebben geïnformeerd’ nog goed? 18 moderne slotzinnen voor mail en brief.",
     keywords: [
       "hopende u hiermee voldoende te hebben geïnformeerd",
       "ik hoop u hiermee voldoende geïnformeerd te hebben",

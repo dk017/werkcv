@@ -132,8 +132,8 @@ const comparisonRows = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-    title: "Vakantiegeld Berekenen 2026 — Netto & Bruto | WerkCV",
-    description: "Hoeveel vakantiegeld krijg je in 2026? Bereken gratis minimaal 8% bruto, bekijk de netto-indicatie en volg een duidelijk rekenvoorbeeld.",
+    title: "Netto vakantiegeld berekenen 2026: hoeveel krijg ik? | WerkCV",
+    description: "Hoeveel vakantiegeld krijg je in 2026? Minimaal 8% van je bruto loon. Vul je salaris in en zie je vakantiegeld bruto en netto, met een rekenvoorbeeld.",
     path: "/tools/vakantiegeld-berekenen",
     keywords: [
         "vakantiegeld berekenen",

@@ -7,8 +7,8 @@ export const sollicitatiebriefTips: BlogArticle = {
     publishedAt: "2025-02-10",
     updatedAt: "2026-08-13",
 
-    metaTitle: "Sollicitatiebrief tips 2026: structuur en eindcheck | WerkCV",
-    metaDesc: "Praktische sollicitatiebrief tips: analyseer de vacature, kies concreet bewijs, schrijf een heldere structuur en controleer je brief voor verzending.",
+    metaTitle: "Opbouw en opmaak sollicitatiebrief 2026: tips + eindcheck | WerkCV",
+    metaDesc: "Zo bouw je een sollicitatiebrief op in 2026: opening, motivatie, bewijs en afsluiting op maximaal één A4, in een rustige opmaak. Met tips en een eindcheck.",
     keywords: ["sollicitatiebrief tips", "sollicitatiebrief schrijven", "motivatiebrief tips", "sollicitatiebrief structuur", "sollicitatiebrief controleren"],
 
     readingTime: 10,

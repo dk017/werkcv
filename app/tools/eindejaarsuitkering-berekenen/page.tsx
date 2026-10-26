@@ -73,7 +73,7 @@ const faqItems = [
 
 export const metadata: Metadata = buildDutchMetadata({
   title: "Eindejaarsuitkering Berekenen (Netto) 2026 | WerkCV",
-  description: "Bereken gratis je eindejaarsuitkering of 13e maand in 2026. Bekijk bruto, netto-indicatie, pro-rata uitkering en een duidelijk rekenvoorbeeld.",
+  description: "Hoeveel is een eindejaarsuitkering? Vaak 8,33% van je jaarsalaris, maar je cao bepaalt het. Bereken je eindejaarsuitkering 2026 bruto en netto, ook pro rata.",
   path: "/tools/eindejaarsuitkering-berekenen",
   keywords: [
     "eindejaarsuitkering berekenen",

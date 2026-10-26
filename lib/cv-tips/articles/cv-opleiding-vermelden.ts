@@ -7,8 +7,8 @@ export const cvOpleidingVermelden: BlogArticle = {
     publishedAt: '2025-03-15',
     updatedAt: '2026-05-13',
 
-    metaTitle: 'Opleiding op je CV zetten: voorbeelden + diploma\'s | WerkCV',
-    metaDesc: 'Opleiding op je CV zetten? Bekijk voorbeelden voor mbo, hbo, wo, lopende studie, diploma\'s en certificaten. Inclusief juiste volgorde en duidelijke CV-regels.',
+    metaTitle: 'Opleiding op je cv: middelbare school, diploma en certificaten | WerkCV',
+    metaDesc: 'Moet je middelbare school op je cv? Alleen als dat je hoogste diploma is. Zo zet je opleiding, lopende studie, diploma\'s en certificaten in de juiste volgorde.',
     keywords: [
         'opleiding cv',
         'opleiding vermelden cv',

@@ -52,9 +52,9 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "Kilometervergoeding Berekenen 2026 — Onbelaste Vergoeding | WerkCV",
+  title: "Kilometervergoeding berekenen 2026: €0,25 per km onbelast | WerkCV",
   description:
-    "Bereken gratis je kilometervergoeding in 2026. Gebruik het onbelaste tarief van €0,25 per km, de 214-dagenregeling en een duidelijk woon-werkvoorbeeld.",
+    "Bereken je km-vergoeding voor woon-werkverkeer: kilometers × werkdagen × €0,25 onbelast in 2026. Met de 214-dagenregeling en een uitgewerkt rekenvoorbeeld.",
   path: "/tools/kilometervergoeding-berekenen",
   keywords: [
     "kilometervergoeding berekenen",

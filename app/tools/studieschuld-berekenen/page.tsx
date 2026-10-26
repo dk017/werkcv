@@ -88,9 +88,9 @@ const faqItems = [
 
 export const metadata: Metadata = buildDutchMetadata({
   title:
-    "Studieschuld DUO Berekenen 2026 – Maandelijkse Aflossing Calculator | WerkCV",
+    "DUO aflossing berekenen 2026: je maandbedrag op draagkracht | WerkCV",
   description:
-    "Bereken hoeveel je maandelijks terugbetaalt aan DUO op basis van je inkomen. Voor oud stelsel (voor 2015) en nieuw stelsel (na 2015). Gratis en direct inzichtelijk.",
+    "Bereken je maandbedrag voor DUO: hoeveel je per maand aflost op basis van je inkomen (draagkracht). Voor het oude stelsel (voor 2015) en het nieuwe stelsel.",
   path: "/tools/studieschuld-berekenen",
   keywords: [
     "studieschuld duo berekenen",

@@ -26,8 +26,8 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-    title: "Werkjubileum Tekst Generator – 25 Jaar in Dienst | WerkCV",
-    description: "Maak gratis een persoonlijke tekst voor een werkjubileum. Kies jaren, relatie, toon en kanaal en krijg 3 teksten voor kaart, Teams, e-mail of LinkedIn.",
+    title: "Tekst 25 jaar in dienst collega: 3 felicitaties op maat | WerkCV",
+    description: "Gefeliciteerd met 25 jaar in dienst! Maak gratis een persoonlijke jubileumtekst voor je collega: kies jaren, toon en kanaal en krijg 3 teksten voor kaart, Teams of LinkedIn.",
     path: "/tools/jubileumtekst-generator",
     keywords: [
         "werkjubileum tekst",

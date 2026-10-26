@@ -65,8 +65,8 @@ const cvIntentLinks = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-    title: "Uurloon Berekenen 2026 — Maandloon naar Uurloon | WerkCV",
-    description: "Bereken direct je bruto uurloon uit maandloon of jaarloon, of zet uurloon om naar maandloon. Met 36-, 38- en 40-urige werkweken en vakantiegeld.",
+    title: "Maandloon naar uurloon berekenen 2026 (en andersom) | WerkCV",
+    description: "Bruto maandloon naar uurloon: maandloon × 12 ÷ 52 ÷ uren per week. €3.120 bij 36 uur is €20 per uur. Reken ook uurloon naar maandloon, met of zonder vakantiegeld.",
     path: "/tools/uurloon-calculator",
     keywords: [
         "uurloon berekenen",

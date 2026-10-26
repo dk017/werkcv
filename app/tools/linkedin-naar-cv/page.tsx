@@ -36,9 +36,9 @@ const faqItems = [
 ];
 
 export const metadata: Metadata = buildDutchMetadata({
-  title: "LinkedIn naar CV Omzetten 2026 | Gratis CV Maken | WerkCV",
+  title: "CV maken vanuit LinkedIn: profiel gratis omzetten naar cv | WerkCV",
   description:
-    "Zet je LinkedIn-profiel om naar een professioneel Nederlands cv. Upload je LinkedIn-PDF of plak je tekst, controleer de inhoud en maak gratis een ATS-vriendelijke cv.",
+    "Maak een cv van je LinkedIn-profiel: upload de LinkedIn-PDF (Opslaan als PDF) of plak je tekst. Je ziet direct een Nederlands cv dat je gratis kunt aanpassen.",
   path: "/tools/linkedin-naar-cv",
   keywords: [
     "linkedin naar cv",

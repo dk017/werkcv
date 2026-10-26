@@ -31,9 +31,9 @@ const faqItems = [
 
 export const metadata: Metadata = {
   alternates: { canonical: "https://werkcv.nl/tools/ziekengeld-berekenen" },
-  title: "Ziekengeld Berekenen 2026 - Wat Krijg Je Bij Ziekte? | WerkCV",
+  title: "70% salaris bij ziekte berekenen: ziekengeld 2026 | WerkCV",
   description:
-    "Bereken je ziekengeld bij ziekte in Nederland. Hoeveel procent van je salaris ontvang je in jaar 1 en jaar 2? Direct inzichtelijk met onze 2026 calculator.",
+    "Hoeveel salaris krijg je bij ziekte? Je werkgever betaalt 104 weken meestal minimaal 70% van je loon; veel cao's betalen in jaar 1 meer. Bereken je loon bij ziekte.",
 };
 
 export default function ZiekengeldBerekenenPage() {

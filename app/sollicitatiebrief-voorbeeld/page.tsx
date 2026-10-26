@@ -48,7 +48,7 @@ const faqs = [
 ];
 
 export const metadata: Metadata = {
-  title: "Sollicitatiebrief voorbeeld in 2026: opening, midden en afsluiting | WerkCV",
+  title: "Sollicitatiebrief voorbeeld 2026: opbouw en voorbeeldzinnen | WerkCV",
   description:
     "Zoek je een sollicitatiebrief voorbeeld? Bekijk sterke openingszinnen, voorbeeldalinea's en een heldere briefstructuur. Gebruik voorbeelden als basis en schrijf daarna vacaturegericht verder.",
   keywords: [

@@ -7,8 +7,8 @@ import { buildDutchMetadata } from '@/lib/page-metadata';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export const metadata: Metadata = buildDutchMetadata({
-    title: '80+ CV Voorbeelden per Beroep 2026 - Maak je CV | WerkCV',
-    description: 'Bekijk 80+ Nederlandse CV voorbeelden per beroep. Kies een voorbeeld, pas profiel en werkervaring aan en maak direct een ATS-vriendelijk PDF-CV.',
+    title: 'Voorbeeld CV 2026: 80+ cv voorbeelden per beroep | WerkCV',
+    description: 'Een voorbeeld cv voor 2026 in jouw beroep: 80+ ingevulde Nederlandse cv voorbeelden. Kies er een, pas profiel en werkervaring aan en maak er je eigen PDF-cv van.',
     path: '/cv-voorbeelden',
     keywords: [
         'cv voorbeelden',
