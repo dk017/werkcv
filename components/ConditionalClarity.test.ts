@@ -13,3 +13,10 @@ test("session replay is excluded from source-content, handoff and candidate revi
   assert.equal(clarityAllowedOnPath("/voor-bureaus/kennisbank/kandidaatvoorstel-voorbeeld"), false);
   assert.equal(clarityAllowedOnPath("/prijzen"), true);
 });
+
+test("session replay is excluded from the owner's admin pages", () => {
+  assert.equal(clarityAllowedOnPath("/admin"), false);
+  assert.equal(clarityAllowedOnPath("/admin/analytics"), false);
+  assert.equal(clarityAllowedOnPath("/admin/analytics?tab=conversion"), false);
+  assert.equal(clarityAllowedOnPath("/administratief-medewerker-cv"), true);
+});

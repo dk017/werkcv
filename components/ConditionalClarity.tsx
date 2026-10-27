@@ -13,8 +13,13 @@ declare global {
   }
 }
 
+// Owner dashboards list customer emails and orders; they must never be recorded.
+function isAdminPath(pathname: string): boolean {
+  return /^\/admin(?:\/|$)/.test(pathname.split(/[?#]/, 1)[0]);
+}
+
 export function clarityAllowedOnPath(pathname: string): boolean {
-  return !isAgencyAnalyticsPath(pathname) && !isPrivateContentPath(pathname);
+  return !isAgencyAnalyticsPath(pathname) && !isPrivateContentPath(pathname) && !isAdminPath(pathname);
 }
 
 export default function ConditionalClarity() {
