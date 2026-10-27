@@ -112,7 +112,13 @@ export default async function ArticlePage({ params }: PageProps) {
                 href: '/editor?template=professional&startSource=nl_guide_sollicitatie_bedankbrief',
                 label: 'Maak je CV voor je volgende sollicitatie',
             }
-            : null;
+            // Cited by AI answers for ATS formatting; its first button used to sit 21 screens down on mobile.
+            : article.slug === 'cv-fouten'
+                ? {
+                    href: '/cv-check?startSource=nl_guide_cv_fouten',
+                    label: 'Check je cv gratis op deze fouten',
+                }
+                : null;
 
     // Resolve related CV examples
     const relatedExamples = article.relatedExampleSlugs

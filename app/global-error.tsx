@@ -1,5 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
+import { track } from "@/lib/analytics";
+import { clientErrorProperties } from "@/lib/client-error";
+
 export default function GlobalError({
     error,
     reset,
@@ -7,6 +11,10 @@ export default function GlobalError({
     error: Error & { digest?: string };
     reset: () => void;
 }) {
+    useEffect(() => {
+        track("client_error_shown", clientErrorProperties(error, "global"));
+    }, [error]);
+
     return (
         <html lang="nl">
             <body style={{ margin: 0, fontFamily: "system-ui, sans-serif", backgroundColor: "#FFFEF0" }}>

@@ -103,7 +103,8 @@ export type ProfilePhotoEvent =
     | 'linkedin_photo_check_failed'
     | 'linkedin_photo_check_cta_clicked'
     | 'clarity_consent_shown'
-    | 'clarity_consent_chosen';
+    | 'clarity_consent_chosen'
+    | 'client_error_shown';
 
 export type CvUploadSource = 'route_intent' | 'toolbar' | 'empty_state' | 'onboarding' | 'cv_check' | 'dashboard' | 'start_choice';
 export type FullPreviewSource = 'desktop_preview_header' | 'desktop_document' | 'mobile_floating' | 'upload_success';
@@ -785,6 +786,7 @@ export type AnalyticsEvent =
     | { event: 'linkedin_photo_check_cta_clicked'; properties: { page_path: string; locale: 'nl' | 'en'; score: number } }
     | { event: 'clarity_consent_shown'; properties: { page_path: string; locale: 'nl' | 'en'; reopened: boolean } }
     | { event: 'clarity_consent_chosen'; properties: { page_path: string; locale: 'nl' | 'en'; choice: 'granted' | 'denied'; reopened: boolean } }
+    | { event: 'client_error_shown'; properties: { page_path: string; boundary: 'route' | 'global'; message: string; digest: string | null } }
     | { event: 'profile_photo_cv_photo_used'; properties: { page_path: string } }
     | { event: 'profile_photo_applied_to_cv'; properties: { page_path: string; target: 'return_cv' | 'new_cv' } }
     | { event: 'profile_photo_offer_viewed'; properties: ProfilePhotoOfferContext }

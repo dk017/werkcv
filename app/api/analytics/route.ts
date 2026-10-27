@@ -104,6 +104,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'linkedin_photo_check_cta_clicked',
     'clarity_consent_shown',
     'clarity_consent_chosen',
+    'client_error_shown',
     'start_cv',
     'editor_started',
     'public_editor_viewed',

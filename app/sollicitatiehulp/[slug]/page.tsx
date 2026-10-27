@@ -175,6 +175,14 @@ export default async function ApplicationHelpArticlePage({ params }: PageProps) 
               <p className="text-xs font-black uppercase tracking-[0.2em] text-black">Kort antwoord</p>
               <p className="mt-3 text-lg font-bold leading-relaxed text-black">{article.quickAnswer}</p>
             </div>
+
+            {/* On phones the sidebar CTA only appears after the whole article (10+ screens down). */}
+            <Link
+              href={article.primaryCta.href}
+              className="mt-6 block border-4 border-black bg-black px-5 py-3 text-center font-black text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] lg:hidden"
+            >
+              {article.primaryCta.label}
+            </Link>
           </div>
         </section>
 

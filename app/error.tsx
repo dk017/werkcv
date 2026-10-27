@@ -2,6 +2,8 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { track } from "@/lib/analytics";
+import { clientErrorProperties } from "@/lib/client-error";
 
 export default function Error({
     error,
@@ -12,6 +14,7 @@ export default function Error({
 }) {
     useEffect(() => {
         console.error("Application error:", error);
+        track("client_error_shown", clientErrorProperties(error, "route"));
     }, [error]);
 
     return (
