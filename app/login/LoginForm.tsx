@@ -269,7 +269,7 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
           </form>
         ) : (
           <form onSubmit={verifyCode} className="space-y-4">
-            <div className="text-sm text-slate-600">
+            <div data-clarity-mask="true" className="text-sm text-slate-600">
               {copy.sentTo} <strong>{email}</strong>.
             </div>
             <div>

@@ -84,7 +84,7 @@ export default function LinkedInPhotoCheck({ locale, source }: { locale: Locale;
   const price = nl ? profilePhotoPrice.display : profilePhotoPrice.displayEn;
 
   return (
-    <div className="rounded-3xl border-4 border-black bg-white p-5 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:p-7">
+    <div data-clarity-mask="true" className="rounded-3xl border-4 border-black bg-white p-5 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] sm:p-7">
       <div className="grid gap-6 md:grid-cols-[0.9fr_1.1fr] md:items-start">
         {/* Upload + LinkedIn circle preview */}
         <div>

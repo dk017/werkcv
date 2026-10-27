@@ -61,7 +61,7 @@ export default function JubileumtekstTool() {
     const inputClass = "mt-2 w-full border-2 border-black bg-white px-3 py-3 text-sm font-medium text-slate-900 outline-none focus:ring-4 focus:ring-yellow-200";
 
     return (
-        <div id="generator" className="scroll-mt-24 border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+        <div data-clarity-mask="true" id="generator" className="scroll-mt-24 border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <div className="border-b-4 border-black bg-[#F7F3FF] p-5 sm:p-7">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>

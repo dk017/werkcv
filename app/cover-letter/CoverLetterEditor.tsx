@@ -212,7 +212,7 @@ export default function CoverLetterEditor({ cvId, initialTargetRole, uiLanguage,
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div data-clarity-mask="true" className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
           <Link href={editorHref} className="text-sm font-semibold text-slate-600 hover:text-slate-950">

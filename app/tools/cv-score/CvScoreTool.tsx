@@ -419,7 +419,7 @@ export default function CvScoreTool() {
   }
 
   return (
-    <div className="rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] shadow-[var(--wk-shadow-md,0_14px_34px_rgb(24_33_31/0.08))] p-6 md:p-8">
+    <div data-clarity-mask="true" className="rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] shadow-[var(--wk-shadow-md,0_14px_34px_rgb(24_33_31/0.08))] p-6 md:p-8">
       {!result ? (
         <div className="space-y-6">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">

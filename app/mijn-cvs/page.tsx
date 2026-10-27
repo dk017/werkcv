@@ -27,7 +27,7 @@ export default async function MijnCvsPage({ searchParams }: { searchParams: Prom
 
     return (
         <PersonalAppShell>
-            <main className="min-h-[calc(100vh-86px)] px-4 pb-16 pt-4 sm:px-6">
+            <main data-clarity-mask="true" className="min-h-[calc(100vh-86px)] px-4 pb-16 pt-4 sm:px-6">
                 <div className="mx-auto max-w-6xl">
                     <section className="mb-8 rounded-3xl border border-slate-200 bg-white px-5 py-7 shadow-sm sm:px-8">
                         <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.18em] text-emerald-700">Persoonlijke CV-ruimte</p>

@@ -703,7 +703,7 @@ export default function ProfilePhotoGenerator({ uiLanguage = "nl", context = "pu
   }
 
   return (
-    <div className="border-4 border-black bg-white p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] sm:p-6">
+    <div data-clarity-mask="true" className="border-4 border-black bg-white p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] sm:p-6">
       {authStatus === "loading" && (
         <div className="rounded-3xl border-2 border-slate-200 bg-[#FFFEF9] p-6 text-sm font-black text-slate-700">
           {tr("Accountstatus laden...", "Loading account status...")}

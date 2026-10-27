@@ -46,7 +46,7 @@ export default function JobTitleTranslatorTool() {
     }
 
     return (
-        <div className="space-y-6">
+        <div data-clarity-mask="true" className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Direction toggle */}
                 <div>

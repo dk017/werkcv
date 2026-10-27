@@ -163,7 +163,7 @@ function NavContent({ active, email, locale, mode }: { active: AppSection; email
                         >
                             {email.slice(0, 1) || '?'}
                         </span>
-                        <span className={`min-w-0 flex-1 truncate text-[13px] text-[#3c4744] ${m ? m.email : ''}`}>
+                        <span data-clarity-mask="true" className={`min-w-0 flex-1 truncate text-[13px] text-[#3c4744] ${m ? m.email : ''}`}>
                             {email}
                         </span>
                     </Link>
@@ -228,7 +228,7 @@ export function AppFrame({ active, email, locale = 'nl', children }: { active: A
                     ) : null}
                 </header>
 
-                <div className="min-w-0 flex-1">{children}</div>
+                <div data-clarity-mask="true" className="min-w-0 flex-1">{children}</div>
             </div>
         </NewCvDialogProvider>
         </div>

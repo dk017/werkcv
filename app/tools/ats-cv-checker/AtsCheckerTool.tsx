@@ -205,7 +205,7 @@ export default function AtsCheckerTool({
   const totalCount = result?.checks.length ?? 0;
 
   return (
-    <div className="rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] p-6 shadow-[var(--wk-shadow-md,0_14px_34px_rgb(24_33_31/0.08))] md:p-8">
+    <div data-clarity-mask="true" className="rounded-[var(--wk-radius-lg,22px)] border border-[var(--wk-border,#d7ded9)] bg-[var(--wk-surface,#ffffff)] p-6 shadow-[var(--wk-shadow-md,0_14px_34px_rgb(24_33_31/0.08))] md:p-8">
       {!result ? (
         <div className="space-y-5">
           <div className="flex overflow-hidden rounded-[var(--wk-radius-md,14px)] border border-[var(--wk-border,#d7ded9)]">

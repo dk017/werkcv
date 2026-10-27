@@ -57,7 +57,7 @@ export default function ProfieltekstTool() {
     const inputClass = "mt-2 w-full rounded-xl border border-[var(--wk-line)] bg-white px-4 py-3 text-[var(--wk-ink)] placeholder:text-[var(--wk-ink-muted)] outline-none focus:border-[var(--wk-accent)] focus:ring-2 focus:ring-[var(--wk-accent-soft)]";
 
     return (
-        <div className="wk-card p-5 sm:p-8">
+        <div data-clarity-mask="true" className="wk-card p-5 sm:p-8">
             {!result ? (
                 <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

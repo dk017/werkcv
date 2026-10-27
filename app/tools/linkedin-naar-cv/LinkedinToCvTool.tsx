@@ -205,7 +205,7 @@ export default function LinkedinToCvTool() {
   }
 
   return (
-    <div className="space-y-8">
+    <div data-clarity-mask="true" className="space-y-8">
       <section className="rounded-3xl border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
         <h2 className="text-2xl font-black text-slate-900">LinkedIn-profiel omzetten naar cv</h2>
         <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">

@@ -116,7 +116,7 @@ export default function NavUserMenu({
   const accountLabel = getCompactAccountLabel(email);
 
   return (
-    <div className="wk-nav-user-menu" ref={menuRef}>
+    <div data-clarity-mask="true" className="wk-nav-user-menu" ref={menuRef}>
       {canShowWorkspaceSwitcher && workspaces ? (
         <WorkspaceSwitcher
           workspaces={workspaces}

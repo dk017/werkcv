@@ -374,7 +374,7 @@ export default function TemplateSelector({
         ? `Choose template. Current: ${currentTemplateLabel}`
         : `Template kiezen. Huidig: ${currentTemplateLabel}`;
   const templateModal = (
-    <div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto p-4 pt-16 sm:pt-20">
+    <div data-clarity-mask="true" className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto p-4 pt-16 sm:pt-20">
       <div className="fixed inset-0 bg-black/50" onClick={() => onClose("dismissed")} />
 
       <div className="relative flex max-h-[calc(100vh-5rem)] w-full max-w-4xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl sm:max-h-[calc(100vh-6rem)]">

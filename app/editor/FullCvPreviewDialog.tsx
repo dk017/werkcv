@@ -391,7 +391,7 @@ export default function FullCvPreviewDialog({
   if (!hasMounted || typeof document === "undefined") return null;
 
   return createPortal(
-    <dialog
+    <dialog data-clarity-mask="true"
       ref={dialogRef}
       className="fixed inset-0 m-0 h-dvh max-h-none w-screen max-w-none overflow-hidden border-0 bg-white p-0 text-slate-900 backdrop:bg-slate-950/55 lg:inset-4 lg:h-[calc(100dvh-2rem)] lg:w-[calc(100vw-2rem)] lg:rounded-lg lg:border lg:border-white/30 lg:shadow-2xl"
       aria-label={isEnglish ? "Review your CV" : "Controleer je CV"}

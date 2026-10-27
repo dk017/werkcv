@@ -428,7 +428,7 @@ export default function CvCheckTool({
   }
 
   return (
-    <div className="space-y-8">
+    <div data-clarity-mask="true" className="space-y-8">
       {!result && (
         <div className="wk-card p-5 md:p-6">
           <div role="tablist" aria-label={copy.upload} className="mb-4 inline-flex rounded-[var(--wk-radius-sm)] border border-[var(--wk-border)] p-1">

@@ -80,7 +80,7 @@ export default async function SuccessPage({
     return (
       <AppShell active="cvs" locale={resolvedLanguage}>
         <main className="flex justify-center px-4 py-10 sm:py-16">
-          <div className="w-full max-w-xl rounded-2xl border border-[var(--wk-border)] bg-[var(--wk-surface)] p-8 text-center shadow-[var(--wk-shadow-md)]">
+          <div data-clarity-mask="true" className="w-full max-w-xl rounded-2xl border border-[var(--wk-border)] bg-[var(--wk-surface)] p-8 text-center shadow-[var(--wk-shadow-md)]">
             {actions}
           </div>
         </main>
@@ -89,7 +89,7 @@ export default async function SuccessPage({
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4 py-10">
+    <div data-clarity-mask="true" className="flex min-h-screen items-center justify-center bg-gray-100 px-4 py-10">
       <div className="w-full max-w-xl rounded-xl bg-white p-8 text-center shadow-lg">
         {actions}
       </div>

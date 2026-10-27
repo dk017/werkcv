@@ -268,7 +268,7 @@ export default function CvVacatureMatchTool({
   const canSubmit = hasValidCvInput && vacancyText.trim().length >= 120 && !loading;
 
   return (
-    <div className="space-y-6">
+    <div data-clarity-mask="true" className="space-y-6">
       {!result ? (
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="grid gap-5 lg:grid-cols-2">

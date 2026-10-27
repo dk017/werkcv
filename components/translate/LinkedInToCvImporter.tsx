@@ -115,7 +115,7 @@ export default function LinkedInToCvImporter({
   };
 
   return (
-    <section className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-6">
+    <section data-clarity-mask="true" className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] space-y-6">
       <div>
         <p className="mb-2 text-xs uppercase tracking-[0.3em] text-slate-500">
           {tr('LinkedIn import', 'LinkedIn import')}

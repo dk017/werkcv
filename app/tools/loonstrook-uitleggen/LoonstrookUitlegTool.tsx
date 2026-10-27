@@ -21,7 +21,7 @@ export default function LoonstrookUitlegTool() {
   const selectedItems = PAYROLL_LINE_ITEMS.filter((item) => selectedIds.includes(item.id));
 
   return (
-    <div className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:p-8">
+    <div data-clarity-mask="true" className="border-4 border-black bg-white p-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] md:p-8">
       <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
         <p className="text-xs font-black uppercase tracking-wide text-slate-500">
           Selecteer jouw regels

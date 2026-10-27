@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { UiLanguage } from "@/lib/ui-language";
+import ClarityConsentLink from "@/components/ClarityConsentLink";
 
 type FooterLink = { href: string; label: string };
 type FooterGroup = { label: string; links: FooterLink[] };
@@ -142,6 +143,9 @@ export default function Footer({
                     {link.label}
                   </Link>
                 ))}
+                {product === "personal" && (group.label === "Juridisch" || group.label === "Legal") && (
+                  <ClarityConsentLink label={isEnglish ? "Session recordings" : "Sessie-opnames"} />
+                )}
               </nav>
             </div>
           ))}

@@ -103,6 +103,14 @@ export default function PrivacyPage() {
                                 statistiek en productverbetering, niet om CV-inhoud te verkopen of voor gepersonaliseerde
                                 advertenties.
                             </p>
+                            <p className="font-medium leading-relaxed mt-2">
+                                Sessie-opnames: als je toestemming geeft, legt Microsoft Clarity vast hoe je de site gebruikt
+                                (klikken, scrollen en bezochte pagina&apos;s), zodat we zien wat onduidelijk is of niet werkt.
+                                Je cv-tekst, geüploade bestanden, foto&apos;s en wat je in formuliervelden typt, worden in die
+                                opnames afgeschermd. Zonder toestemming werkt Clarity zonder cookies en kan het paginabezoeken
+                                niet aan elkaar koppelen. Je kunt je keuze altijd wijzigen via &quot;Sessie-opnames&quot; in de footer
+                                van de website.
+                            </p>
                         </section>
 
                         <section>

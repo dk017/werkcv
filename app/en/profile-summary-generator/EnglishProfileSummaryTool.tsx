@@ -42,7 +42,7 @@ export default function EnglishProfileSummaryTool() {
 
   async function copy() { try { await navigator.clipboard.writeText(result); setCopied(true); window.setTimeout(() => setCopied(false), 1800); } catch { setError("Copying is unavailable in this browser. Select the text manually."); } }
 
-  return <section className="wk-card p-5 sm:p-8" aria-labelledby="profile-tool-title">
+  return <section data-clarity-mask="true" className="wk-card p-5 sm:p-8" aria-labelledby="profile-tool-title">
     {!result ? <div className="space-y-5">
       <h2 id="profile-tool-title" className="text-xl font-semibold">Generate an English profile</h2>
       <div className="grid gap-5 sm:grid-cols-2"><label><span className="text-sm font-semibold">Current or latest role *</span><input className={inputClass} value={currentRole} onChange={event => setCurrentRole(event.target.value)} maxLength={800} placeholder="e.g. Customer service assistant" /></label><label><span className="text-sm font-semibold">Target role *</span><input className={inputClass} value={targetRole} onChange={event => setTargetRole(event.target.value)} maxLength={800} placeholder="e.g. Customer success specialist" /></label></div>

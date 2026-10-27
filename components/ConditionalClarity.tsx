@@ -5,6 +5,7 @@ import Script from "next/script";
 import { usePathname } from "next/navigation";
 import { isAgencyAnalyticsPath } from "@/lib/agency-analytics-consent";
 import { isPrivateContentPath } from "@/lib/privacy-content-paths";
+import { CLARITY_STORED_CONSENT_SNIPPET } from "@/lib/clarity-consent";
 
 declare global {
   interface Window {
@@ -30,7 +31,7 @@ export default function ConditionalClarity() {
   if (!allowed) return null;
   return (
     <Script id="microsoft-clarity" strategy="lazyOnload">
-      {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "wpik4m2kyh");`}
+      {`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "wpik4m2kyh");${CLARITY_STORED_CONSENT_SNIPPET}`}
     </Script>
   );
 }

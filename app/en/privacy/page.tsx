@@ -98,6 +98,14 @@ export default function EnglishPrivacyPage() {
                 product improvement. CV content is not included in WerkCV analytics events and is
                 not used for personalised advertising.
               </p>
+              <p className="mt-2 font-medium leading-relaxed">
+                Session recordings: with your permission, Microsoft Clarity records how you use the
+                site (clicks, scrolling and page views) across pages, so we can find what is unclear
+                or broken. Your CV text, uploaded files, photos and what you type in form fields are
+                hidden from these recordings. Without permission, Clarity runs without cookies and
+                cannot link page views together. You can change your choice at any time via
+                &quot;Session recordings&quot; in the website footer.
+              </p>
             </section>
 
             <section>

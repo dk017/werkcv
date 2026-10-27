@@ -2175,7 +2175,7 @@ export default function Editor({
     ) : null;
 
     const editorRow = (
-        <div
+        <div data-clarity-mask="true"
             ref={editorSplitRef}
             className={`${isPublicEditorFullscreen ? "" : "relative"} flex flex-col lg:flex-row bg-[#FFFEF9] font-sans text-slate-900 overflow-hidden ${isResizingPanes ? "select-none" : ""} ${isPublicMode && !isSteps
             ? isPublicEditorFullscreen
@@ -3558,7 +3558,7 @@ export default function Editor({
     const editorMarkup = isSteps ? (
         // Without an account the app opens full screen over the page and has no account rail
         // (its links and "Nieuw CV" need an account).
-        <div className={`flex overflow-hidden bg-[var(--wk-canvas)] ${isPublicSteps ? "fixed inset-0 z-[70] h-[100dvh]" : "h-screen"}`}>
+        <div data-clarity-mask="true" className={`flex overflow-hidden bg-[var(--wk-canvas)] ${isPublicSteps ? "fixed inset-0 z-[70] h-[100dvh]" : "h-screen"}`}>
             {/* Only the rail carries the brand wrapper: the CV preview keeps its own fonts and colours. */}
             {!isPublicSteps && <div className="werkcv-brand hidden min-[520px]:flex" style={{ minHeight: 0 }}>
                 <NewCvDialogProvider locale={appLocale}>

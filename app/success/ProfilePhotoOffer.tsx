@@ -21,7 +21,7 @@ export default function ProfilePhotoOffer({ cvId, language, cvPhoto, inApp = fal
   }, [cvId, cvPhoto, language]);
 
   return (
-    <div className="rounded-2xl border border-teal-200 bg-teal-50 p-4 text-left">
+    <div data-clarity-mask="true" className="rounded-2xl border border-teal-200 bg-teal-50 p-4 text-left">
       {/* Show the transformation (research 20 Oct 2026: every leading headshot service leads with selfie → result). */}
       {cvPhoto ? null : (
         <div className="mx-auto mb-4 max-w-[260px]">
