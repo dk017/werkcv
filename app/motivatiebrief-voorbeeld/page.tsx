@@ -13,33 +13,120 @@ const checklist = [
   "Houd je toon concreet en professioneel, niet te algemeen.",
 ];
 
+const letterParts = [
+  ["Contactgegevens", "Jouw naam, telefoon en e-mail, daaronder organisatie, contactpersoon en adres."],
+  ["Plaats, datum en onderwerp", "Bijvoorbeeld: Betreft: sollicitatie administratief medewerker, vacature 2026-114."],
+  ["Aanhef", "Geachte mevrouw De Vries, of Geachte heer/mevrouw als je geen naam kunt vinden."],
+  ["Opening (1 alinea)", "Noem de functie en de belangrijkste eis uit de vacature die jij waarmaakt."],
+  ["Bewijs (1-2 alinea's)", "Eén of twee concrete prestaties, het liefst met een cijfer, gekoppeld aan de vacature."],
+  ["Motivatie (1 alinea)", "Waarom deze organisatie: een product, klantgroep of project dat je zelf hebt gecheckt."],
+  ["Afsluiting en groet", "Vraag om een gesprek, verwijs naar je cv en sluit af met Met vriendelijke groet."],
+];
+
+const fullExamples = [
+  {
+    id: "voorbeeld-algemeen",
+    title: "Voorbeeld motivatiebrief (algemeen, om in te vullen)",
+    intro:
+      "Vervang alles tussen [haakjes]. Deze opbouw werkt voor bijna elke vacature en past op één A4 (ongeveer 250-350 woorden).",
+    letter: `[Jouw naam]
+[Adres], [postcode en woonplaats]
+[Telefoonnummer] · [e-mailadres]
+
+[Naam organisatie]
+T.a.v. [naam contactpersoon]
+[Adres]
+[Postcode en plaats]
+
+[Plaats], [datum]
+
+Betreft: sollicitatie [functie], vacature [nummer]
+
+Geachte [mevrouw/heer] [achternaam],
+
+In uw vacature voor [functie] vraagt u iemand die [belangrijkste eis uit de vacature]. Dat is precies wat ik de afgelopen [aantal] jaar bij [huidige of vorige werkgever] doe. Daarom solliciteer ik graag naar deze functie.
+
+Als [huidige of vorige functie] ben ik verantwoordelijk voor [belangrijkste taak]. Zo heb ik [concreet resultaat, bij voorkeur met een cijfer]. Daarbij werk ik dagelijks met [tool, vaardigheid of werkwijze uit de vacature], wat direct aansluit bij wat u in deze rol vraagt.
+
+[Organisatie] spreekt mij aan omdat [specifieke reden: product, klantgroep, project of waarde die je zelf hebt gecheckt]. In deze functie wil ik [wat je wilt bijdragen] en mij verder ontwikkelen in [wat je wilt leren].
+
+Graag licht ik in een gesprek toe hoe ik [concrete bijdrage] kan versterken. Mijn cv vindt u in de bijlage.
+
+Met vriendelijke groet,
+
+[Jouw naam]`,
+  },
+  {
+    id: "voorbeeld-ingevuld",
+    title: "Ingevuld voorbeeld: administratief medewerker",
+    intro:
+      "Een fictief maar realistisch voorbeeld van dezelfde opbouw. Namen, bedrijf en cijfers zijn verzonnen: gebruik je eigen feiten.",
+    letter: `Sanne de Vries
+Lindelaan 12, 3521 AB Utrecht
+06 12345678 · sanne.devries@email.nl
+
+Noordkade Logistiek B.V.
+T.a.v. mevrouw Bakker
+Havenweg 40
+3542 AD Utrecht
+
+Utrecht, 12 november 2026
+
+Betreft: sollicitatie administratief medewerker, vacature 2026-114
+
+Geachte mevrouw Bakker,
+
+In uw vacature voor administratief medewerker vraagt u iemand die nauwkeurig werkt en een grote orderstroom overzichtelijk houdt. Dat is precies wat ik de afgelopen vier jaar bij een groothandel in bouwmaterialen doe. Daarom solliciteer ik graag naar deze functie.
+
+Als administratief medewerker verwerk ik gemiddeld 80 orders per dag en beantwoord ik vragen van klanten over leveringen en facturen. Toen ik merkte dat dezelfde invoerfouten steeds terugkwamen, heb ik een controlelijst ingevoerd. Daarmee daalde het aantal gecorrigeerde facturen in een half jaar met ongeveer een derde. Ik werk dagelijks met Excel en Exact, de systemen die u in de vacature noemt.
+
+Noordkade Logistiek spreekt mij aan omdat u snelgroeiende webwinkels ontzorgt: daar telt elke foutloze zending. In deze functie wil ik mijn ervaring met orderverwerking inzetten en mij verder ontwikkelen in procesverbetering.
+
+Graag licht ik in een gesprek toe hoe ik uw orderadministratie nog betrouwbaarder kan maken. Mijn cv vindt u in de bijlage.
+
+Met vriendelijke groet,
+
+Sanne de Vries`,
+  },
+];
+
 const faqs = [
   {
     question: "Wat is een goed motivatiebrief voorbeeld?",
     answer:
-      "Een goed voorbeeld laat zien waarom jij juist voor deze rol en dit bedrijf kiest, en onderbouwt dat met concrete ervaring of resultaten. De brief is specifiek, kort en overtuigend.",
+      "Een goed voorbeeld heeft vier korte alinea's: een opening die de functie en de belangrijkste vacature-eis noemt, een alinea met één of twee concrete prestaties (liefst met een cijfer), een alinea over waarom juist deze organisatie, en een afsluiting waarin je om een gesprek vraagt.",
   },
   {
     question: "Hoe verschilt een motivatiebrief van een sollicitatiebrief?",
     answer:
-      "In veel vacatures bedoelt men hetzelfde. Praktisch gezien kun je beide benamingen gebruiken voor een brief waarin je motivatie en geschiktheid voor de functie toelicht.",
+      "In Nederland bedoelen de meeste werkgevers hetzelfde: een brief bij je cv. Wordt het verschil wel gemaakt, dan legt een motivatiebrief meer nadruk op waarom je iets wilt (vaak bij een opleiding, stage of studie) en een sollicitatiebrief meer op waarom je geschikt bent.",
   },
   {
     question: "Hoe lang moet een motivatiebrief zijn?",
     answer:
-      "Meestal is 3 tot 5 korte alinea's voldoende. Recruiters willen snel zien waarom je past, zonder lange algemene tekst.",
+      "Maximaal één A4, ongeveer 250 tot 400 woorden in drie tot vijf korte alinea's. Vraagt de vacature om een bepaald aantal woorden, houd je dan daaraan.",
+  },
+  {
+    question: "Hoe begin je een motivatiebrief?",
+    answer:
+      "Begin met de aanhef (Geachte mevrouw/heer + achternaam) en open direct met de functie en de eis uit de vacature die jij waarmaakt. Vermijd openingszinnen als 'Hierbij solliciteer ik naar'.",
+  },
+  {
+    question: "Hoe sluit je een motivatiebrief af?",
+    answer:
+      "Vraag in één zin om een gesprek, verwijs naar je cv in de bijlage en sluit af met 'Met vriendelijke groet' en je naam.",
   },
   {
     question: "Mag ik een motivatiebrief voorbeeld letterlijk overnemen?",
     answer:
-      "Gebruik voorbeelden als structuur en inspiratie. Personaliseer altijd op jouw situatie, rol en resultaten om geloofwaardig te blijven.",
+      "Neem de opbouw over, niet de tekst. Recruiters herkennen standaardbrieven: vervang elke voorbeeldzin door jouw eigen functie, organisatie en resultaten.",
   },
 ];
 
 export const metadata: Metadata = {
-  title: "Motivatiebrief Voorbeeld 2026 – 8 Voorbeelden + Generator | WerkCV",
+  title: "Motivatiebrief Voorbeeld 2026 – Complete Brief + 8 Voorbeelden | WerkCV",
   description:
-    "Bekijk 8 motivatiebrief voorbeelden voor starters, carrièreswitch, stage, Albert Heijn en kinderopvang. Open direct een vooraf ingevulde generator.",
+    "Bekijk een complete motivatiebrief om in te vullen, een ingevuld voorbeeld en 8 voorbeelden voor starters, carrièreswitch, stage, Albert Heijn en kinderopvang.",
   keywords: [
     "motivatiebrief voorbeeld",
     "goede motivatiebrief",
@@ -117,12 +204,19 @@ export default function MotivatiebriefVoorbeeldPage() {
               Motivatie-intent
             </p>
             <h1 className="max-w-3xl text-4xl font-black leading-tight text-black md:text-5xl">
-              Motivatiebrief voorbeelden die je snel omzet naar een overtuigende brief
+              Motivatiebrief voorbeeld: complete brief + 8 voorbeelden per situatie
             </h1>
             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-slate-700">
-              Een sterke motivatiebrief draait om één ding: duidelijk maken waarom jij deze functie echt wilt en waarom jij geschikt bent. Gebruik de voorbeelden hieronder als basis en vul ze aan met
-              jouw concrete ervaring en resultaten.
+              Een sterke motivatiebrief past op één A4 en laat in vier korte alinea&apos;s zien waarom jij deze functie wilt
+              en waarom jij geschikt bent. Hieronder vind je een complete brief om in te vullen, hetzelfde voorbeeld
+              ingevuld, en voorbeelden per situatie.
             </p>
+            <a
+              href="#volledig-voorbeeld"
+              className="mt-4 inline-block text-sm font-black text-black underline decoration-2 underline-offset-4"
+            >
+              Direct naar de complete voorbeeldbrief
+            </a>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/tools/sollicitatiebrief-generator"
@@ -174,6 +268,52 @@ export default function MotivatiebriefVoorbeeldPage() {
                 Lees ook: sollicitatiebrief tips
               </Link>
             </div>
+          </div>
+        </section>
+
+        <section id="volledig-voorbeeld" className="mb-14 scroll-mt-24">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-600">Volledige brieven</p>
+          <h2 className="mt-2 text-3xl font-black text-black">Voorbeeld motivatiebrief: zo ziet een complete brief eruit</h2>
+          <p className="mt-3 max-w-3xl text-sm font-medium leading-relaxed text-slate-700">
+            Een goede motivatiebrief is maximaal één A4: contactgegevens, onderwerp, aanhef, drie of vier korte
+            alinea&apos;s (opening, bewijs, motivatie, afsluiting) en een groet. Hieronder staat dezelfde opbouw eerst
+            als invulbrief en daarna ingevuld.
+          </p>
+          <div className="mt-6 grid gap-6 lg:grid-cols-2">
+            {fullExamples.map((example) => (
+              <article
+                key={example.id}
+                id={example.id}
+                className="flex flex-col border-4 border-black bg-white p-6 shadow-[5px_5px_0px_0px_rgba(0,0,0,1)]"
+              >
+                <h3 className="text-xl font-black text-black">{example.title}</h3>
+                <p className="mt-2 text-sm font-medium leading-relaxed text-slate-600">{example.intro}</p>
+                <div className="mt-4 flex-1 whitespace-pre-line border-2 border-slate-200 bg-[#FFFEF0] p-4 text-sm leading-relaxed text-slate-800">
+                  {example.letter}
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="mt-6 border-4 border-black bg-white p-6">
+            <h3 className="text-xl font-black text-black">Wat hoort er in een motivatiebrief?</h3>
+            <ol className="mt-4 grid gap-3 md:grid-cols-2">
+              {letterParts.map(([title, body], index) => (
+                <li key={title} className="flex gap-3">
+                  <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center border-2 border-black bg-yellow-300 text-xs font-black">
+                    {index + 1}
+                  </span>
+                  <p className="text-sm leading-relaxed text-slate-700">
+                    <strong className="font-black text-black">{title}:</strong> {body}
+                  </p>
+                </li>
+              ))}
+            </ol>
+            <Link
+              href="/tools/sollicitatiebrief-generator"
+              className="mt-5 inline-block text-sm font-black text-black underline decoration-2 underline-offset-4"
+            >
+              Liever niet zelf invullen? Laat de generator deze opbouw voor jouw vacature schrijven
+            </Link>
           </div>
         </section>
 
