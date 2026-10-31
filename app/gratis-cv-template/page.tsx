@@ -301,7 +301,7 @@ export default function GratisCvTemplatePage() {
             <div className="mt-5 grid gap-4 md:grid-cols-2">
               {[
                 {
-                  href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+                  href: "/cv-maken-zonder-abonnement",
                   title: "Beste CV builder zonder abonnement",
                   body: "Helpt je het verschil zien tussen echt eenmalig betalen, gratis handmatig werken en proefperiodemodellen.",
                 },

@@ -525,7 +525,7 @@ export default function GratisCvMakenPage() {
                     body: "Sterke vervolgroute voor mensen die nu vooral willen vergelijken welke layout het beste past voordat ze later downloaden.",
                   },
                   {
-                    href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+                    href: "/cv-maken-zonder-abonnement",
                     title: "Zonder abonnement vergelijken",
                     body: "Vergelijk WerkCV met andere routes als je expliciet zoekt naar een no-subscription model.",
                   },

@@ -28,7 +28,7 @@ export function GET() {
     `- Price: ${cvDownloadPrice.displayEn} one-time per CV, including VAT, charged only when you download the PDF. Editing and re-downloading the same paid CV is free. Checked ${cvDownloadPriceCheckedAt.displayEn} on ${siteBaseUrl}/prijzen.`,
     "- Subscription: none. Nothing to cancel.",
     "- Difference from CV.nl, CVMaker and CVster: those use a low-cost trial that renews automatically into a paid subscription until cancelled; WerkCV charges once per CV.",
-    `- Price comparison of Dutch CV builders, with official sources and check dates: ${siteBaseUrl}/cv-gids/beste-cv-builder-zonder-abonnement`,
+    `- Price comparison of Dutch CV builders, with official sources and check dates: ${siteBaseUrl}/goedkoopste-cv-maker-nederland`,
     "- Payment methods: iDEAL, credit/debit card, Apple Pay, Google Pay.",
     "- Languages: Dutch and English CVs; English guides for expats and international students.",
     "- Upload: import an existing PDF or Word CV to prefill the editor.",

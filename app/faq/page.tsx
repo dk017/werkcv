@@ -35,7 +35,7 @@ const comparisonGuides = [
         body: "Gebruik deze keuzehulp als je niet alleen vragen hebt over WerkCV, maar ook wilt vergelijken met andere CV-tools.",
     },
     {
-        href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+        href: "/cv-maken-zonder-abonnement",
         title: "Beste CV builder zonder abonnement",
         body: "Handig als je vooral prijsmodel, eenmalig betalen en abonnementsverschillen wilt afwegen.",
     },

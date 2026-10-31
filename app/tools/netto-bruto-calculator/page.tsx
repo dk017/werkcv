@@ -40,7 +40,7 @@ const cvIntentLinks = [
     description: "Handig als je wel meteen wilt bouwen, maar niet in een doorlopend prijsmodel wilt stappen.",
   },
   {
-    href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+    href: "/goedkoopste-cv-maker-nederland",
     label: "Vergelijk de beste CV makers in Nederland",
     description: "Gebruik deze stap als je je salarisdoel al scherper hebt en nu de juiste tool wilt kiezen.",
   },
@@ -122,7 +122,7 @@ export default function NettoBrutoCalculatorPage() {
                                 Zonder abonnement
                             </Link>
                             <Link
-                                href="/cv-gids/beste-cv-builder-zonder-abonnement"
+                                href="/goedkoopste-cv-maker-nederland"
                                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-900 font-black text-sm border-2 border-black hover:bg-slate-100 transition-colors"
                             >
                                 Beste CV maker NL

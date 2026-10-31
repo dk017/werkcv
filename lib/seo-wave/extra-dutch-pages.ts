@@ -222,8 +222,8 @@ export const extraDutchEditorialPages: SeoGuidePage[] = [
           "Gebruik deze route als het prijsmodel het belangrijkste verschil voor jou is.",
       },
       {
-        href: "/cv-gids/beste-cv-builder-zonder-abonnement",
-        title: "Beste CV builder zonder abonnement",
+        href: "/goedkoopste-cv-maker-nederland",
+        title: "Prijzen van CV-makers vergeleken",
         description:
           "Vergelijk WerkCV ook naast andere routes voor mensen die abonnementen willen vermijden.",
       },

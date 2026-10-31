@@ -4733,8 +4733,8 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         description: 'Handig als juist het prijsmodel je reden is om naar een alternatief voor Zety te zoeken.',
                     },
                     {
-                        href: '/cv-gids/beste-cv-builder-zonder-abonnement',
-                        label: 'Vergelijk WerkCV ook met andere no-subscription opties',
+                        href: '/goedkoopste-cv-maker-nederland',
+                        label: 'Vergelijk de prijzen van CV-makers in Nederland',
                         description: 'Zo zie je of je probleem echt Zety is, of vooral abonnementen in het algemeen.',
                     },
                 ],
@@ -4831,8 +4831,8 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 description: 'Gebruik deze pagina als alternatief-intentie vooral door abonnementsfrictie wordt gedreven.',
             },
             {
-                href: '/cv-gids/beste-cv-builder-zonder-abonnement',
-                title: 'Beste no-subscription builder',
+                href: '/goedkoopste-cv-maker-nederland',
+                title: 'Prijzen van CV-makers vergeleken',
                 description: 'Vergelijk WerkCV ook met andere no-subscription routes en niet alleen met Zety.',
             },
             {
@@ -5296,315 +5296,6 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ctaHref: '/templates',
     },
     {
-        slug: 'beste-cv-builder-zonder-abonnement',
-        locale: 'nl',
-        title: 'Beste CV builder zonder abonnement: welke opties zijn er echt?',
-        description: 'Direct antwoord voor Nederlandse werkzoekenden die een CV builder zonder abonnement zoeken. Vergelijk WerkCV, Canva Free en Word-webapps, en zie welke grote spelers wél met abonnement werken.',
-        metaTitle: 'Beste CV builder zonder abonnement (2026) | WerkCV.nl',
-        metaDesc: 'Zoek je een CV builder zonder abonnement? Vergelijk WerkCV, Canva Free en Word-webapps, en zie welke bekende CV-platformen in Nederland wél met proef- of maandabonnementen werken.',
-        keywords: [
-            'beste cv builder zonder abonnement',
-            'cv builder zonder abonnement',
-            'cv maken zonder abonnement',
-            'cv maker zonder abonnement',
-            'cv tool zonder abonnement',
-            'cv maker zonder proefperiode',
-            'abonnement of eenmalig betalen cv',
-        ],
-        intro: 'Als je specifiek een CV builder zonder abonnement zoekt, is WerkCV op dit moment de duidelijkste Nederlandse keuze. De meeste grote CV-platformen in Nederland werken namelijk met een proefperiode of maandabonnement, terwijl volledig gratis alternatieven zoals Canva Free of Word-webapps meer handwerk vragen en minder zijn ingericht op een snelle sollicitatieflow.',
-        sections: [
-            {
-                id: 'direct-antwoord',
-                title: 'Direct antwoord: welke optie past het best bij jou?',
-                paragraphs: [
-                    'Niet elke “gratis” of “professionele” CV tool is ook echt zonder abonnement. In de praktijk vallen veel bekende spelers af zodra je specifiek zoekt naar een simpele Nederlandse route zonder proefomslag, maandkosten of opzegstress.',
-                    'Voor de meeste werkzoekenden is de keuze daarom minder ingewikkeld dan het lijkt: wil je een echte CV-builder met duidelijke eenmalige betaling, of kies je liever voor een volledig gratis maar meer handmatige route?',
-                ],
-                comparisonTable: {
-                    columns: ['Situatie', 'Beste keuze', 'Waarom'],
-                    rows: [
-                        {
-                            label: 'Je wilt een echte Nederlandse CV-builder zonder abonnement',
-                            primary: 'WerkCV',
-                            secondary: 'Je start gratis, betaalt eenmalig per CV bij download, en kunt datzelfde document later opnieuw openen en opnieuw downloaden.',
-                        },
-                        {
-                            label: 'Je wilt volledig gratis werken en handmatige opmaak accepteren',
-                            primary: 'Word-webapps of vergelijkbare docs-tools',
-                            secondary: 'Geen abonnement nodig voor de gratis webversies, maar je bouwt en onderhoudt je opmaak grotendeels zelf.',
-                        },
-                        {
-                            label: 'Je wilt vooral designvrijheid en gratis sjablonen proberen',
-                            primary: 'Canva Free',
-                            secondary: 'Gratis voor individuen, maar minder gericht op de standaard CV-flow en ATS-rust die veel sollicitanten juist nodig hebben.',
-                        },
-                        {
-                            label: 'Je wilt een breder sollicitatieplatform met extra tools',
-                            primary: 'Geen echte no-subscription route',
-                            secondary: 'Dan kom je meestal uit bij platformen met proef- of maandabonnementen zoals CVMaker, CV.nl, CVster of maakeencv Pro.',
-                        },
-                    ],
-                },
-                intentLinks: [
-                    {
-                        href: '/templates',
-                        label: 'Open eerst de WerkCV templates',
-                        description: 'Zo zie je direct of de no-subscription route voor jou al genoeg is.',
-                    },
-                    {
-                        href: '/prijzen',
-                        label: 'Bekijk exact hoe WerkCV-pricing werkt',
-                        description: 'Handig als je zeker wilt weten wanneer je wel en niet betaalt.',
-                    },
-                ],
-            },
-            {
-                id: 'welke-vallen-af',
-                title: 'Welke bekende CV-platformen vallen af als je echt “zonder abonnement” bedoelt?',
-                paragraphs: [
-                    'Dit is het onderdeel waar veel zoekresultaten onduidelijk over zijn. Veel platforms laten je gratis starten, maar dat is iets anders dan een blijvende no-subscription route. Zodra je premium templates, PDF-export of extra sollicitatietools wilt gebruiken, verschuift het model vaak naar een proefperiode of maandabonnement.',
-                    'Sommige platforms bieden inmiddels ook vaste passen die vanzelf aflopen, zoals CVster (6 maanden) en maakeencv.nl (3 maanden). Dat is geen abonnement, maar wel een hoger bedrag vooraf dan één CV-download. De tabel hieronder zet de officiële prijzen naast elkaar, met de datum waarop we ze hebben gecontroleerd.',
-                ],
-                comparisonTable: {
-                    columns: ['CV-tool', 'Wat je betaalt', 'Verlenging en controle'],
-                    rows: buildConsumerPricingComparisonRows(),
-                },
-                exampleTitle: 'Praktische conclusie',
-                exampleItems: [
-                    'Zoek je expliciet zonder abonnement, dan vallen de proefroutes van CV.nl, CVMaker en CVster af, omdat die automatisch doorlopen tot je opzegt.',
-                    'Zoek je een breder platform en vind je maandtoegang of een vaste pas prima, dan zijn die spelers weer wel relevant.',
-                    'De vraag is dus niet alleen: welke tool is goed? De vraag is: welk prijsmodel past bij jouw sollicitatiegedrag?',
-                ],
-                intentLinks: [
-                    {
-                        href: '/cv-gids/werkcv-vs-cvmaker',
-                        label: 'Bekijk het CVMaker alternatief',
-                        description: 'Voor het sterkste voorbeeld van een eenmalig model versus proef- en maandabonnement.',
-                    },
-                    {
-                        href: '/cv-gids/werkcv-vs-cv-nl',
-                        label: 'Bekijk het CV.nl alternatief',
-                        description: 'Voor de vergelijking met een groter Nederlands sollicitatieplatform.',
-                    },
-                    {
-                        href: '/cv-gids/werkcv-vs-cvster',
-                        label: 'Bekijk het CVster alternatief',
-                        description: 'Voor de vergelijking met een grotere CV- en briefsuite inclusief ATS-checking.',
-                    },
-                ],
-            },
-            {
-                id: 'abonnement-of-eenmalig',
-                title: 'Abonnement of eenmalig betalen voor je CV: wat is meestal slimmer?',
-                paragraphs: [
-                    'Deze vergelijking zit vaak onder zoektermen als “cv maker zonder proefperiode” of “abonnement of eenmalig betalen cv”. De onderliggende vraag is meestal niet technisch, maar economisch: hoe wil je eigenlijk betalen voor een tool die je waarschijnlijk maar tijdelijk nodig hebt?',
-                    'Voor de meeste werkzoekenden is een eenmalige betaling logischer zodra je maar een of enkele CV-versies wilt afronden. Een abonnement wordt pas rationeler als je langere tijd actief solliciteert en extra platformlagen ook echt gebruikt.',
-                ],
-                comparisonTable: {
-                    columns: ['Situatie', 'Eenmalig betalen', 'Abonnement'],
-                    rows: [
-                        {
-                            label: 'Je wilt vooral 1 of 2 goede CV-versies afronden',
-                            primary: 'Meestal het logischste model, omdat je betaalt voor een concreet document en daarna klaar bent.',
-                            secondary: 'Vaak meer doorlopende toegang dan je echt nodig hebt voor dezelfde taak.',
-                        },
-                        {
-                            label: 'Je wilt geen proefperiode of verlengdatum hoeven bewaken',
-                            primary: 'Past beter, omdat er geen trial-naar-maandstructuur boven je document hangt.',
-                            secondary: 'Minder passend als je juist die proef- en maandstructuur wilt accepteren.',
-                        },
-                        {
-                            label: 'Je wilt maandenlang CV, brief, tracker en extra tools gebruiken',
-                            primary: 'Kan nog steeds prima zijn, maar de prijslogica is dan minder het hoofdargument.',
-                            secondary: 'Kan rationeel zijn als je die extra functies echt intensief gebruikt.',
-                        },
-                    ],
-                },
-                bullets: [
-                    'Een eenmalig model voelt meestal beter zodra jouw echte doel één nette sollicitatie-PDF is.',
-                    'Een abonnementsmodel wordt pas sterker als je ook de bredere suite rond dat CV wilt gebruiken.',
-                    'Wie vooral op “zonder proefperiode” zoekt, zoekt meestal rust in billing en niet per se de laagste startprijs.',
-                ],
-                intentLinks: [
-                    {
-                        href: '/cv-maken-zonder-abonnement',
-                        label: 'Bekijk de eenmalige route zonder abonnement',
-                        description: 'Handig als je de transactionele pagina achter deze vergelijking wilt zien.',
-                    },
-                    {
-                        href: '/prijzen',
-                        label: 'Controleer wanneer je precies betaalt',
-                        description: 'Gebruik dit als je vooral op betaalmoment en downloadlogica vergelijkt.',
-                    },
-                ],
-            },
-            {
-                id: 'beste-keuze-per-type',
-                title: 'Beste keuze per type gebruiker',
-                paragraphs: [
-                    'De beste no-subscription optie verschilt nog steeds per type gebruiker. Sommige mensen willen een echte CV-builder die het meeste werk uit handen neemt. Anderen willen juist niets betalen en accepteren dan extra handwerk in lay-out en export.',
-                    'Daarom is het nuttiger om te kiezen op gebruikssituatie dan op marketingclaim.',
-                ],
-                exampleTitle: 'Kies zo',
-                exampleItems: [
-                    'Kies WerkCV als je een echte CV-builder wilt zonder abonnement, met Nederlandse focus en een duidelijke eenmalige downloadprijs.',
-                    'Kies Canva Free als je gratis wilt ontwerpen en designvrijheid belangrijker vindt dan een snelle standaard sollicitatieflow.',
-                    'Kies Word-webapps of vergelijkbare docs-tools als je volledig gratis wilt werken en bereid bent de opmaak zelf te bouwen en te onderhouden.',
-                ],
-                bullets: [
-                    'WerkCV is het sterkst als je snel wilt schrijven, vergelijken en afronden zonder doorlopende kosten.',
-                    'Canva Free is sterker als je vooral op design speelt en zelf goed kunt beoordelen of je CV nog rustig en scanbaar blijft.',
-                    'Word-webapps zijn sterker als je maximale eenvoud en nul tool-lock-in wilt, maar je levert tijd in op opmaak en consistentie.',
-                ],
-                intentLinks: [
-                    {
-                        href: '/ats-cv-template',
-                        label: 'Gebruik de ATS-veilige route als scanbaarheid voorop staat',
-                        description: 'Handig als je bang bent dat design ten koste gaat van recruiter- of ATS-leesbaarheid.',
-                    },
-                    {
-                        href: '/cv-tips/cv-maken-in-word',
-                        label: 'Bekijk eerst de Word-route als je alles handmatig wilt doen',
-                        description: 'Goed om de trade-off tussen gratis en tijdsinvestering scherp te zien.',
-                    },
-                ],
-            },
-            {
-                id: 'wanneer-niet',
-                title: 'Wanneer WerkCV niet de beste keuze is',
-                paragraphs: [
-                    'Een eerlijke no-subscription gids moet ook zeggen wanneer WerkCV níet wint. Als je absoluut niets wilt betalen, dan zijn Word-webapps of Canva Free logischer. Als je juist een breder platform met vacatures, tracker, sollicitatiebrieven, ATS-checking of grotere suitefuncties wilt, dan kijk je eerder naar tools die wel met premiumplannen werken.',
-                    'WerkCV is dus niet “beste” in elke situatie. WerkCV is vooral de beste keuze als je een echte CV-builder wilt zonder abonnement, niet als je ofwel volledig gratis wilt blijven of juist een grote sollicitatiesuite wilt gebruiken.',
-                ],
-                bullets: [
-                    'Niet kiezen voor WerkCV als je volledig gratis wilt blijven en geen bezwaar hebt tegen extra handwerk.',
-                    'Niet kiezen voor WerkCV als je vooral een grotere suite met tracker, jobs of uitgebreide brief- en ATS-tools zoekt.',
-                    'Wel kiezen voor WerkCV als je de combinatie zoekt van echte builder + geen abonnement + duidelijke Nederlandse sollicitatiefocus.',
-                ],
-            },
-            {
-                id: 'beste-route',
-                title: 'Beste keuze voor de meeste Nederlandse sollicitanten',
-                paragraphs: [
-                    'Voor de meeste mensen die zoeken op “beste CV builder zonder abonnement” is WerkCV de meest logische uitkomst. Niet omdat gratis alternatieven nutteloos zijn, maar omdat die meestal meer handwerk vragen. En niet omdat andere CV-platformen slecht zijn, maar omdat die vaak juist niet zonder abonnement werken.',
-                    'De praktische regel is simpel: begin met de kleinste tool die jouw probleem volledig oplost. Als je een echte builder wilt zonder maandkosten, is WerkCV de duidelijkste route. Als je gratis wilt blijven koste wat kost, kies dan bewust voor een handmatige tool en accepteer de extra tijd en opmaakverantwoordelijkheid.',
-                ],
-                intentLinks: [
-                    {
-                        href: '/templates',
-                        label: 'Start direct zonder abonnement met een template',
-                        description: 'De snelste manier om te testen of WerkCV voor jouw sollicitaties al genoeg is.',
-                    },
-                    {
-                        href: '/prijzen',
-                        label: 'Controleer nog één keer het eenmalige model',
-                        description: 'Handig als je specifiek op prijsstructuur vergelijkt.',
-                    },
-                ],
-            },
-        ],
-        checklist: [
-            'Je weet nu het verschil tussen gratis starten en echt zonder abonnement werken.',
-            'Je weet welke bekende CV-platformen in Nederland wél met proef- of maandabonnementen werken.',
-            'Je weet of jij een echte builder zoekt of een gratis handmatige route.',
-            'Je kiest op basis van jouw sollicitatiegedrag, niet alleen op basis van “gratis” of “premium” labels.',
-            'Je begrijpt dat eenvoud voor veel werkzoekenden waardevoller is dan extra features die ze niet gebruiken.',
-        ],
-        faq: [
-            {
-                question: 'Wat is de beste CV builder zonder abonnement in Nederland?',
-                answer: 'Voor mensen die een echte Nederlandse CV-builder zonder abonnement zoeken, is WerkCV de duidelijkste keuze. Je start gratis en betaalt alleen eenmalig per CV wanneer je wilt downloaden.',
-            },
-            {
-                question: 'Bestaat er ook een cv maker zonder proefperiode?',
-                answer: 'Ja. WerkCV laat je gratis starten zonder eerst een proefabonnement te activeren. De betaling volgt pas wanneer je jouw definitieve CV als PDF wilt downloaden.',
-            },
-            {
-                question: 'Zijn CVMaker, CV.nl en CVster zonder abonnement?',
-                answer: 'Nee, niet in de strikte zin. Volgens hun officiële pricingpagina’s werken deze platforms met een proefperiode en daarna een maand- of premiumplan.',
-            },
-            {
-                question: 'Wat is meestal slimmer: abonnement of eenmalig betalen voor een CV?',
-                answer: 'Voor iemand die vooral een of enkele CV-versies wil afronden is een eenmalige betaling meestal logischer. Een abonnement wordt vooral rationeel als je langere tijd actief solliciteert en extra functies zoals tracker, briefbuilder of grotere suite-toegang ook echt gebruikt.',
-            },
-            {
-                question: 'Wat is beter: WerkCV of Canva Free?',
-                answer: 'WerkCV is beter als je een echte sollicitatiegerichte CV-builder wilt. Canva Free is beter als je volledig gratis wilt ontwerpen en extra handmatige opmaak prima vindt.',
-            },
-            {
-                question: 'Kan ik ook helemaal gratis een CV maken zonder abonnement?',
-                answer: 'Ja, bijvoorbeeld met gratis web-apps of Canva Free. De trade-off is meestal dat je meer zelf moet doen in structuur, opmaak en consistentie dan in een echte CV-builder.',
-            },
-        ],
-        relatedLinks: [
-            {
-                href: '/cv-maken-zonder-abonnement',
-                title: 'CV maken zonder abonnement',
-                description: 'Gebruik deze pagina als je direct door wilt naar de transactionele route rond eenmalig betalen.',
-            },
-            {
-                href: '/templates',
-                title: 'WerkCV templates',
-                description: 'Open eerst de templates en kijk of de no-subscription route al genoeg is voor jouw sollicitaties.',
-            },
-            {
-                href: '/prijzen',
-                title: 'WerkCV prijzen',
-                description: 'Bekijk precies hoe het eenmalige model werkt en wanneer je wel of niet betaalt.',
-            },
-            {
-                href: '/cv-gids/werkcv-vs-cvmaker',
-                title: 'CVMaker alternatief',
-                description: 'Sterke vervolgstap als je eenmalig betalen wilt vergelijken met een proef- en maandabonnement.',
-            },
-        ],
-        sources: [
-            {
-                label: 'WerkCV prijzen',
-                href: 'https://werkcv.nl/prijzen',
-                note: 'Openbare WerkCV-prijzenpagina met eenmalige betaling per CV en uitleg over later opnieuw bewerken en downloaden.',
-            },
-            {
-                label: 'CVMaker prijzen',
-                href: 'https://www.cvmaker.nl/prijzen',
-                note: 'Officiële prijzenpagina met EUR2,95 voor 14 dagen en daarna EUR21,99 per maand. Gecontroleerd op 26 september 2026.',
-            },
-            {
-                label: 'CV.nl pricing',
-                href: 'https://www.cv.nl/pricing',
-                note: 'Officiële prijzenpagina met EUR0,99 voor 14 dagen en daarna EUR19,99 per maand. Gecontroleerd op 26 september 2026.',
-            },
-            {
-                label: 'CVster pricing',
-                href: 'https://cvster.nl/pricing',
-                note: 'Officiële prijzenpagina met EUR2,95 voor 7 dagen en daarna EUR14,95 per 4 weken; de facturatie-uitleg noemt nog 7 dagen gratis proberen en zegt dat prijzen per regio of ouder prijsmodel kunnen verschillen. Gecontroleerd op 7 juni 2026.',
-            },
-            {
-                label: 'CVster gratis gebruiken',
-                href: 'https://help.cvster.nl/article/267-hoe-kan-ik-cvsternl-gratis-gebruiken',
-                note: 'Officiële help-pagina met huidige gratis limieten: één CV, één sollicitatiebrief, TXT-download en beperkt aantal gratis PDF-sjablonen. Gecontroleerd op 7 juni 2026.',
-            },
-            {
-                label: 'maakeencv.nl homepage',
-                href: 'https://www.maakeencv.nl/',
-                note: 'Prijzenpagina toont een gratis plan met 1 PDF per maand (extra PDF EUR4,95), Pro voor EUR9,95 per maand en een pas van 3 maanden voor EUR19,95. Gecontroleerd op 26 september 2026.',
-            },
-            {
-                label: 'Canva Pro / Canva Free',
-                href: 'https://www.canva.com/pro/',
-                note: 'Officiële productpagina bevestigt dat Canva Free altijd beschikbaar is voor individuen en Canva Pro de premiumlaag is.',
-            },
-            {
-                label: 'Microsoft 365 gratis web-apps',
-                href: 'https://support.microsoft.com/nl-nl/office/wat-is-het-verschil-tussen-een-betaald-microsoft-365-abonnement-en-de-gratis-web-apps-7c813f33-d3bf-4e5b-9b92-dcab8ae910d2',
-                note: 'Officiële Microsoft supportpagina die bevestigt dat gratis webversies van Word, Excel en PowerPoint beschikbaar zijn zonder betaald Microsoft 365 Personal- of Family-abonnement.',
-            },
-        ],
-        ctaTitle: 'Wil je een echte CV-builder zonder abonnement?',
-        ctaText: 'Begin dan met een WerkCV template, bouw je versie gratis op en beslis pas op het einde of je jouw PDF wilt downloaden.',
-        ctaHref: '/templates',
-    },
-    {
         slug: 'cv-na-vaststellingsovereenkomst',
         locale: 'nl',
         title: 'CV na vaststellingsovereenkomst: zo solliciteer je sterk verder',
@@ -5915,7 +5606,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         description: 'De snelste manier om te testen of een kleine no-subscription route al genoeg is.',
                     },
                     {
-                        href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                        href: '/cv-maken-zonder-abonnement',
                         label: 'Lees eerst de no-subscription keuzehulp',
                         description: 'Handig als prijsmodel voor jou het belangrijkste beslispunt is.',
                     },
@@ -6040,7 +5731,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         description: 'Test eerst de simpele route voordat je denkt dat je meer platform nodig hebt.',
                     },
                     {
-                        href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                        href: '/cv-maken-zonder-abonnement',
                         label: 'Lees de no-subscription gids',
                         description: 'Handig als prijsmodel je keuze vrijwel helemaal bepaalt.',
                     },
@@ -6074,7 +5765,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ],
         relatedLinks: [
             {
-                href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                href: '/cv-maken-zonder-abonnement',
                 title: 'Beste CV builder zonder abonnement',
                 description: 'Gebruik deze pagina als no-subscription keuzehulp als dat jouw hoofdcriterium is.',
             },
@@ -6220,7 +5911,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         description: 'Handig als je later nog varianten per vacature wilt maken.',
                     },
                     {
-                        href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                        href: '/cv-maken-zonder-abonnement',
                         label: 'Vergelijk eerst no-subscription opties',
                         description: 'Voor gebruikers bij wie het prijsmodel het belangrijkste verschil maakt.',
                     },
@@ -6318,7 +6009,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ],
         relatedLinks: [
             {
-                href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                href: '/cv-maken-zonder-abonnement',
                 title: 'Beste CV builder zonder abonnement',
                 description: 'Gebruik deze gids als je vooral het prijsmodel en abonnementsverschil wilt vergelijken.',
             },
@@ -6459,7 +6150,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         description: 'Handig als je meerdere sollicitatievarianten uit hetzelfde CV wilt halen.',
                     },
                     {
-                        href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                        href: '/cv-maken-zonder-abonnement',
                         label: 'Vergelijk eerst no-subscription routes',
                         description: 'Voor gebruikers die vooral prijsmodel en billingrust willen vergelijken.',
                     },
@@ -6557,7 +6248,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
         ],
         relatedLinks: [
             {
-                href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                href: '/cv-maken-zonder-abonnement',
                 title: 'Beste CV builder zonder abonnement',
                 description: 'Gebruik deze gids als je vooral het prijsmodel en abonnementsverschil wilt vergelijken.',
             },
@@ -6801,7 +6492,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 description: 'Gebruik deze route als je vooral een scanbaar, rustig en recruiter-proof CV wilt maken.',
             },
             {
-                href: '/cv-gids/beste-cv-builder-zonder-abonnement',
+                href: '/cv-maken-zonder-abonnement',
                 title: 'Beste CV builder zonder abonnement',
                 description: 'Handig als je Canva ook afweegt tegen no-subscription builders.',
             },

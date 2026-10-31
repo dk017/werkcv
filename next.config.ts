@@ -147,7 +147,8 @@ const nextConfig: NextConfig = {
         ['/cv-maken-in-word', '/cv-tips/cv-maken-in-word'],
         ['/cv-maken-zonder-verborgen-kosten', '/cv-maken-zonder-abonnement'],
         ['/eerste-cv-maken', '/cv-maken-student'],
-        ['/beste-cv-maker-nederland', '/cv-gids/beste-cv-builder-zonder-abonnement'],
+        ['/beste-cv-maker-nederland', '/goedkoopste-cv-maker-nederland'],
+        ['/cv-gids/beste-cv-builder-zonder-abonnement', '/cv-maken-zonder-abonnement'],
       ].map(([source, destination]) => ({ source, destination, statusCode: 301 as const })),
       // Consolidate overlapping English CV intent onto one owner per cluster.
       {
@@ -215,7 +216,7 @@ const nextConfig: NextConfig = {
       },
       {
         source: '/cv-gids/cv-builder-opzeggen-en-alternatieven',
-        destination: '/cv-gids/beste-cv-builder-zonder-abonnement',
+        destination: '/cv-maken-zonder-abonnement',
         permanent: true,
       },
 

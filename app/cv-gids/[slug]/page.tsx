@@ -74,7 +74,7 @@ export default async function DutchWavePage({ params }: PageProps) {
     const roleConversion = getWavePageRoleConversion(page.slug);
     // Comparison pages (WerkCV vs X, builder choice): straight into the editor, with the price on the
     // first screen. Visitors comparing builders mostly want to know what it costs.
-    const isComparison = page.slug.startsWith('werkcv-vs-') || page.slug === 'beste-cv-builder-zonder-abonnement' || page.slug === 'welke-cv-builder-past-bij-jou-in-nederland';
+    const isComparison = page.slug.startsWith('werkcv-vs-') || page.slug === 'welke-cv-builder-past-bij-jou-in-nederland';
     const heroProofPoints = [
         isZzpExample || roleConversion ? 'Vooraf ingevuld CV-voorbeeld' : 'Maak dit CV in 5 minuten',
         'ATS-vriendelijke templates',

@@ -423,7 +423,7 @@ export default function CvOpmaakVoorbeeldPage() {
                   body: "Vergelijk WerkCV, CV.nl, CVMaker, CVster en Canva op use case, prijsmodel en output.",
                 },
                 {
-                  href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+                  href: "/cv-maken-zonder-abonnement",
                   title: "Beste zonder abonnement",
                   body: "Gebruik deze gids als je heldere prijzen wilt zonder proefperiode of maandkosten.",
                 },

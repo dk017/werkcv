@@ -382,7 +382,7 @@ export default function HomePageClient({
                     </dl>
                     <p className="mt-4 text-xs text-[var(--wk-ink-muted)]">
                         Prijs gecontroleerd op <time dateTime={cvDownloadPriceCheckedAt.iso}>{cvDownloadPriceCheckedAt.display}</time>.{" "}
-                        <Link href="/cv-gids/beste-cv-builder-zonder-abonnement" className="underline underline-offset-4">
+                        <Link href="/goedkoopste-cv-maker-nederland" className="underline underline-offset-4">
                             Vergelijk de prijzen van CV-makers in Nederland
                         </Link>
                     </p>

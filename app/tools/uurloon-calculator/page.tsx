@@ -53,7 +53,7 @@ const cvIntentLinks = [
     description: "Sterk voor bezoekers die wel direct willen bouwen, maar niet in een abonnementsmodel willen belanden.",
   },
   {
-    href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+    href: "/goedkoopste-cv-maker-nederland",
     label: "Vergelijk eerst de beste CV makers in Nederland",
     description: "Handig als je salarissignalen al hebt en nu de juiste tool of prijslogica wilt kiezen.",
   },

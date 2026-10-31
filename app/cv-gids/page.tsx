@@ -77,7 +77,7 @@ const comparisonGuideGroups = [
       "Gebruik deze pagina's als je niet alleen een template zoekt, maar wilt kiezen op prijsmodel, ATS-risico, designvrijheid of type sollicitatieworkflow.",
     links: [
       { href: "/cv-gids/welke-cv-builder-past-bij-jou-in-nederland", label: "Welke CV builder past bij jou?" },
-      { href: "/cv-gids/beste-cv-builder-zonder-abonnement", label: "Beste zonder abonnement" },
+      { href: "/cv-maken-zonder-abonnement", label: "Beste zonder abonnement" },
       { href: "/cv-gids/ats-vriendelijke-cv-builder-voor-nederlandse-vacatures", label: "ATS-vriendelijke builder" },
       { href: "/cv-gids/canva-vs-cv-builder-voor-sollicitaties", label: "Canva vs CV builder" },
     ],

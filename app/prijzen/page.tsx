@@ -174,7 +174,7 @@ const pricingBreadcrumbJsonLd = {
 
 const comparisonLinks = [
     { href: "/cv-maken-zonder-abonnement", label: "CV zonder abonnement" },
-    { href: "/cv-gids/beste-cv-builder-zonder-abonnement", label: "Beste CV maker NL" },
+    { href: "/goedkoopste-cv-maker-nederland", label: "Beste CV maker NL" },
     { href: "/cv-gids/welke-cv-builder-past-bij-jou-in-nederland", label: "Welke CV builder past bij jou?" },
     { href: "/cv-gids/werkcv-vs-cvmaker", label: "CVMaker alternatief" },
     { href: "/alternatief-voor-cv-nl", label: "CV.nl alternatief" },

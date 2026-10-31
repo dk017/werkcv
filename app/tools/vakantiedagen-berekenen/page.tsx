@@ -48,7 +48,7 @@ const vacationCvIntentLinks = [
     description: "Past goed als je wel een nieuwe sollicitatieroute wilt, maar niet vast wilt zitten aan maandelijkse kosten.",
   },
   {
-    href: "/cv-gids/beste-cv-builder-zonder-abonnement",
+    href: "/goedkoopste-cv-maker-nederland",
     label: "Beste CV maker vergelijken",
     description: "Handig als je eerst prijsmodel, templates en Nederlandse sollicitatiefit wilt vergelijken.",
   },
