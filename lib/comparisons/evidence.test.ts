@@ -8,7 +8,7 @@ import { monthlyWorkflowCost } from "../agency-cost-worksheet";
 test("consumer comparisons reuse the pricing source and suppress expired prices in both languages", () => {
   assert.equal(getComparisonEvidence("cvmaker-terms-2026-09").sourceUrl, consumerCvPricingFactsById.cvmaker.officialUrl);
   for (const locale of ["nl", "en"] as const) {
-    assert.match(consumerComparisonPrice("cvmaker", locale, new Date("2026-10-01")), /21,99/);
+    assert.match(consumerComparisonPrice("cvmaker", locale, new Date(`${consumerCvPricingFactsById.cvmaker.checkedAt}T12:00:00.000Z`)), /21,99/);
     assert.doesNotMatch(consumerComparisonPrice("cvmaker", locale, new Date("2027-01-01")), /21,99|2,95/);
   }
 });

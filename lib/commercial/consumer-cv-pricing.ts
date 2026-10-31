@@ -23,6 +23,8 @@ export const consumerCvPricingFactSchema = z
     model: z.enum(consumerCvPricingModels),
     initialPriceTextNl: z.string().min(1).max(100).nullable(),
     recurringPriceTextNl: z.string().min(1).max(100).nullable(),
+    // What one CV costs six weeks after starting, if a renewing plan keeps running.
+    sixWeekCostTextNl: z.string().min(1).max(100).nullable(),
     renewalTextNl: z.string().min(1).max(220),
     cancellationRequired: z.boolean().nullable(),
     factualNoteNl: z.string().min(1).max(320),
@@ -40,7 +42,7 @@ export const consumerCvPricingFactSchema = z
 
     if (
       fact.status === "temporarily_unverifiable" &&
-      (fact.initialPriceTextNl !== null || fact.recurringPriceTextNl !== null)
+      (fact.initialPriceTextNl !== null || fact.recurringPriceTextNl !== null || fact.sixWeekCostTextNl !== null)
     ) {
       context.addIssue({
         code: "custom",
@@ -52,8 +54,8 @@ export const consumerCvPricingFactSchema = z
 
 export type ConsumerCvPricingFact = z.infer<typeof consumerCvPricingFactSchema>;
 
-const verifiedAt = "2026-08-30";
-const subscriptionPricesVerifiedAt = "2026-09-26";
+const verifiedAt = "2026-10-31";
+const subscriptionPricesVerifiedAt = "2026-10-31";
 
 const rawConsumerCvPricingFacts: ConsumerCvPricingFact[] = [
   {
@@ -65,6 +67,7 @@ const rawConsumerCvPricingFacts: ConsumerCvPricingFact[] = [
     model: "free",
     initialPriceTextNl: "€0",
     recurringPriceTextNl: "Geen",
+    sixWeekCostTextNl: "€0",
     renewalTextNl: "Geen betaald abonnement nodig voor de beschreven CV-makerroute.",
     cancellationRequired: false,
     factualNoteNl:
@@ -80,6 +83,7 @@ const rawConsumerCvPricingFacts: ConsumerCvPricingFact[] = [
     model: "mixed",
     initialPriceTextNl: "€0 voor gratis templates en PDF-download",
     recurringPriceTextNl: "Betaalde functies zijn optioneel",
+    sixWeekCostTextNl: "€0 met gratis templates",
     renewalTextNl: "De gratis CV-route vereist geen betaald abonnement; Pro-functies hebben eigen voorwaarden.",
     cancellationRequired: null,
     factualNoteNl:
@@ -95,6 +99,7 @@ const rawConsumerCvPricingFacts: ConsumerCvPricingFact[] = [
     model: "trial_subscription",
     initialPriceTextNl: "14 dagen voor €0,99",
     recurringPriceTextNl: "Daarna €19,99 per maand",
+    sixWeekCostTextNl: "€20,98 (€0,99 + één maand)",
     renewalTextNl: "De officiële prijzenpagina vermeldt automatische maandelijkse verlenging.",
     cancellationRequired: true,
     factualNoteNl:
@@ -110,6 +115,7 @@ const rawConsumerCvPricingFacts: ConsumerCvPricingFact[] = [
     model: "trial_subscription",
     initialPriceTextNl: "14 dagen voor €2,95",
     recurringPriceTextNl: "Daarna €21,99 per maand",
+    sixWeekCostTextNl: "€24,94 (€2,95 + één maand)",
     renewalTextNl: "De officiële prijzenpagina vermeldt automatische verlenging na de proefperiode; per kwartaal kost het €44,97.",
     cancellationRequired: true,
     factualNoteNl:
@@ -125,6 +131,7 @@ const rawConsumerCvPricingFacts: ConsumerCvPricingFact[] = [
     model: "mixed",
     initialPriceTextNl: "Gratis beperkt of 7 dagen premium voor €2,95",
     recurringPriceTextNl: "Daarna €14,95 per 4 weken",
+    sixWeekCostTextNl: "€32,85 (€2,95 + twee keer 4 weken)",
     renewalTextNl:
       "De premiumproef wordt automatisch per 4 weken verlengd als je niet annuleert; een pas van 6 maanden voor €44,95 hoef je niet op te zeggen.",
     cancellationRequired: true,
@@ -141,12 +148,29 @@ const rawConsumerCvPricingFacts: ConsumerCvPricingFact[] = [
     model: "mixed",
     initialPriceTextNl: "Gratis met 1 PDF per maand; extra PDF €4,95",
     recurringPriceTextNl: "Pro €9,95 per maand of pas van 3 maanden voor €19,95",
+    sixWeekCostTextNl: "€0 voor één PDF per maand",
     renewalTextNl:
       "Pro loopt maandelijks door tot je opzegt; de pas van 3 maanden is een eenmalige betaling die vanzelf afloopt.",
     cancellationRequired: null,
     factualNoteNl:
       "Het gratis plan geeft één PDF-download per maand; extra downloads kosten los €4,95 zonder abonnement.",
     bestForNl: "Wie maandelijks hooguit één PDF nodig heeft of een tracker en AI-functies in één platform wil.",
+  },
+  {
+    id: "livecareer",
+    providerName: "LiveCareer",
+    officialUrl: "https://www.livecareer.nl/gebruiksvoorwaarden",
+    checkedAt: verifiedAt,
+    status: "temporarily_unverifiable",
+    model: "unverified",
+    initialPriceTextNl: null,
+    recurringPriceTextNl: null,
+    sixWeekCostTextNl: null,
+    renewalTextNl: "Betaalde toegang loopt via een abonnement dat automatisch verlengt.",
+    cancellationRequired: true,
+    factualNoteNl:
+      "De builder en een .txt-download zijn gratis; PDF, Word, afdrukken en delen vragen een abonnement. LiveCareer.nl toont de bedragen pas bij het afrekenen, niet op een openbare prijzenpagina.",
+    bestForNl: "Wie veel templates, Word-export en upload van een bestaand CV wil.",
   },
 ];
 
@@ -175,6 +199,7 @@ export type ConsumerCvPricingView = ConsumerCvPricingFact & {
   fresh: boolean;
   displayedInitialPriceTextNl: string | null;
   displayedRecurringPriceTextNl: string | null;
+  displayedSixWeekCostTextNl: string | null;
 };
 
 export function toConsumerCvPricingView(
@@ -187,6 +212,7 @@ export function toConsumerCvPricingView(
     fresh,
     displayedInitialPriceTextNl: fresh ? fact.initialPriceTextNl : null,
     displayedRecurringPriceTextNl: fresh ? fact.recurringPriceTextNl : null,
+    displayedSixWeekCostTextNl: fresh ? fact.sixWeekCostTextNl : null,
   };
 }
 

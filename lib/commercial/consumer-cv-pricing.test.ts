@@ -9,11 +9,13 @@ import {
 } from "./consumer-cv-pricing";
 
 const verifiedFact = consumerCvPricingFacts.find((fact) => fact.id === "cvmaker");
+const daysAfterCheck = (days: number) =>
+  new Date(new Date(`${verifiedFact!.checkedAt}T00:00:00.000Z`).getTime() + days * 24 * 60 * 60 * 1000);
 
 test("consumer pricing facts satisfy the shared contract", () => {
-  assert.equal(consumerCvPricingFacts.length, 5);
+  assert.equal(consumerCvPricingFacts.length, 7);
   assert.ok(consumerCvPricingFacts.every((fact) => fact.officialUrl.startsWith("https://")));
-  assert.equal(verifiedFact?.initialPriceTextNl, "14 dagen voor €2,99");
+  assert.equal(verifiedFact?.initialPriceTextNl, "14 dagen voor €2,95");
 });
 
 test("invalid calendar dates are rejected", () => {
@@ -34,17 +36,18 @@ test("unverifiable facts cannot retain old price text", () => {
 
 test("freshness rejects future and older-than-45-day facts", () => {
   assert.ok(verifiedFact);
-  assert.equal(isPricingFactFresh(verifiedFact, new Date("2026-09-15T00:00:00.000Z")), true);
-  assert.equal(isPricingFactFresh(verifiedFact, new Date("2026-10-15T00:00:00.000Z")), false);
-  assert.equal(isPricingFactFresh(verifiedFact, new Date("2026-08-29T00:00:00.000Z")), false);
+  assert.equal(isPricingFactFresh(verifiedFact, daysAfterCheck(16)), true);
+  assert.equal(isPricingFactFresh(verifiedFact, daysAfterCheck(46)), false);
+  assert.equal(isPricingFactFresh(verifiedFact, daysAfterCheck(-1)), false);
 });
 
 test("stale views suppress exact numeric price text", () => {
   assert.ok(verifiedFact);
-  const view = toConsumerCvPricingView(verifiedFact, new Date("2026-10-15T00:00:00.000Z"));
+  const view = toConsumerCvPricingView(verifiedFact, daysAfterCheck(46));
   assert.equal(view.fresh, false);
   assert.equal(view.displayedInitialPriceTextNl, null);
   assert.equal(view.displayedRecurringPriceTextNl, null);
+  assert.equal(view.displayedSixWeekCostTextNl, null);
 });
 
 test("checked dates are localized consistently", () => {

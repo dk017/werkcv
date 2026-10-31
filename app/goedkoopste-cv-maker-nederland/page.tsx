@@ -20,7 +20,8 @@ const comparisonNow = new Date();
 const competitorViews = consumerCvPricingFacts.map((fact) =>
   toConsumerCvPricingView(fact, comparisonNow),
 );
-const lastChecked = formatPricingCheckedAtNl(consumerCvPricingFacts[0].checkedAt);
+const latestCheckedAt = consumerCvPricingFacts.map((fact) => fact.checkedAt).sort().at(-1)!;
+const lastChecked = formatPricingCheckedAtNl(latestCheckedAt);
 
 const modelLabels: Record<ConsumerCvPricingModel, string> = {
   free: "Gratis",
@@ -37,6 +38,7 @@ const comparisonRows = [
     officialUrl: "https://werkcv.nl/prijzen",
     start: cvDownloadPrice.display,
     later: "Geen maandbedrag",
+    sixWeeks: cvDownloadPrice.display,
     model: "Eenmalig per afzonderlijk CV",
     cancellation: "Nee",
     checkedAt: "Actueel via WerkCV-prijsbron",
@@ -48,6 +50,7 @@ const comparisonRows = [
     officialUrl: fact.officialUrl,
     start: fact.displayedInitialPriceTextNl || "Actuele prijs niet onafhankelijk geverifieerd",
     later: fact.displayedRecurringPriceTextNl || "Controleer de officiële bron",
+    sixWeeks: fact.displayedSixWeekCostTextNl || "Niet openbaar vermeld",
     model: fact.fresh ? modelLabels[fact.model] : "Prijs tijdelijk niet geverifieerd",
     cancellation:
       fact.cancellationRequired === null
@@ -57,7 +60,11 @@ const comparisonRows = [
           : "Nee voor deze route",
     checkedAt: formatPricingCheckedAtNl(fact.checkedAt),
     bestFor: fact.bestForNl,
-    note: fact.fresh ? fact.factualNoteNl : "Open de officiële bron voor de actuele prijs en voorwaarden.",
+    // Unverifiable facts carry no prices (schema rule), so their note is still safe to show.
+    note:
+      fact.fresh || fact.status === "temporarily_unverifiable"
+        ? fact.factualNoteNl
+        : "Open de officiële bron voor de actuele prijs en voorwaarden.",
   })),
 ];
 
@@ -89,7 +96,20 @@ const scenarioRows = [
   },
 ];
 
+const sixWeekCosts = competitorViews.filter((fact) => fact.displayedSixWeekCostTextNl);
+const sixWeekFaq = sixWeekCosts.length
+  ? [
+      {
+        question: "Wat kost een CV-maker als je zes weken solliciteert?",
+        answer: `Bij WerkCV blijft het ${cvDownloadPrice.display} voor één CV. Bij de andere aanbieders, als een verlengende route doorloopt: ${sixWeekCosts
+          .map((fact) => `${fact.providerName} ${fact.displayedSixWeekCostTextNl}`)
+          .join("; ")}. Gecontroleerd op ${lastChecked}.`,
+      },
+    ]
+  : [];
+
 const faqs = [
+  ...sixWeekFaq,
   {
     question: "Wat is de goedkoopste manier om één professioneel CV te maken in Nederland?",
     answer: `Als je puur naar euro's kijkt, is een volledig gratis optie zoals YoungCapital het goedkoopst. WerkCV is een betaalde route zonder abonnement: je bouwt en bekijkt je CV gratis en betaalt ${cvDownloadPrice.display} voor de eerste PDF-download van dat afzonderlijke CV. Welke optie het voordeligst is, hangt af van de gewenste begeleiding en vormgeving.`,
@@ -123,7 +143,7 @@ const faqs = [
 
 export function generateMetadata(): Metadata {
   return {
-    title: "Goedkoopste CV-maker Nederland: kosten vergeleken | WerkCV",
+    title: "Goedkoopste CV-maker Nederland 2026: prijzen vergeleken | WerkCV",
     description: `Vergelijk gratis CV-tools, eenmalige downloads en abonnementen. Zie actuele prijsmodellen, verlenging en wat WerkCV voor ${cvDownloadPrice.display} inclusief btw biedt.`,
     keywords: [
       "goedkoopste cv maker nederland",
@@ -143,7 +163,7 @@ export function generateMetadata(): Metadata {
       },
     },
     openGraph: {
-      title: "Goedkoopste CV-maker Nederland: kosten vergeleken | WerkCV",
+      title: "Goedkoopste CV-maker Nederland 2026: prijzen vergeleken | WerkCV",
       description:
         "Vergelijk gratis opties, eenmalige betaling en proefabonnementen op basis van wat één professioneel CV je echt kost.",
       url: pageUrl,
@@ -164,7 +184,7 @@ export default function GoedkoopsteCvMakerNederlandPage() {
     inLanguage: "nl-NL",
     mainEntityOfPage: pageUrl,
     datePublished: "2026-04-10",
-    dateModified: "2026-08-30",
+    dateModified: latestCheckedAt,
     author: { "@id": "https://werkcv.nl/#organization" },
     publisher: { "@id": "https://werkcv.nl/#organization" },
   };
@@ -310,6 +330,7 @@ export default function GoedkoopsteCvMakerNederlandPage() {
                   "Tool",
                   "Startprijs",
                   "Daarna",
+                  "Na 6 weken",
                   "Model",
                   "Opzeggen",
                   "Gecontroleerd",
@@ -345,6 +366,9 @@ export default function GoedkoopsteCvMakerNederlandPage() {
                   </td>
                   <td className="border-t-2 border-black px-4 py-3 align-top font-medium text-slate-700">
                     {row.later}
+                  </td>
+                  <td className="border-t-2 border-black px-4 py-3 align-top font-black text-black">
+                    {row.sixWeeks}
                   </td>
                    <td className="border-t-2 border-black px-4 py-3 align-top font-medium text-slate-700">
                      {row.model}
