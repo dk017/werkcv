@@ -70,8 +70,10 @@ import { profilePhotoExamples } from "@/lib/profile-photo-examples";
 import { usePriceCopy } from "@/components/pricing/usePriceCopy";
 import {
     hasCompletionTracked,
+    hasEditorFirstEditTracked,
     hasEditorStartedTracked,
     markCompletionTracked,
+    markEditorFirstEditTracked,
     markEditorStartedTracked,
     track,
     type CvUploadSource,
@@ -1433,6 +1435,44 @@ export default function Editor({
                 : {}),
         });
         markEditorStartedTracked(id);
+    }, [id, templateId, uiLanguage]);
+
+    // editor_started fires when the editor loads, so it also counts people who only looked. This
+    // marks the first time someone types or chooses something in the CV itself: trusted events on
+    // a CV form field (name starts with a CV section) or an in-place field. Programmatic fills
+    // (example CV, import, upload) are not trusted events. Only the section name is sent.
+    useEffect(() => {
+        if (hasEditorFirstEditTracked(id)) return;
+        const openedAt = Date.now();
+        const cvSections = new Set(Object.keys(cvSchema.shape));
+        const onEdit = (event: Event) => {
+            if (!event.isTrusted || !(event.target instanceof HTMLElement)) return;
+            const target = event.target;
+            const fieldName = target.getAttribute("name") ?? "";
+            const formSection = fieldName.split(".")[0];
+            const section = cvSections.has(formSection)
+                ? formSection
+                : target.closest("[data-cv-inline]") ? "document" : null;
+            if (!section) return;
+            document.removeEventListener("input", onEdit, true);
+            document.removeEventListener("change", onEdit, true);
+            if (hasEditorFirstEditTracked(id)) return;
+            markEditorFirstEditTracked(id);
+            track("editor_first_edit", {
+                cvId: id,
+                section,
+                secondsToFirstEdit: Math.round((Date.now() - openedAt) / 1000),
+                templateId,
+                uiLanguage,
+                ...getEditorSearchContext(),
+            });
+        };
+        document.addEventListener("input", onEdit, true);
+        document.addEventListener("change", onEdit, true);
+        return () => {
+            document.removeEventListener("input", onEdit, true);
+            document.removeEventListener("change", onEdit, true);
+        };
     }, [id, templateId, uiLanguage]);
 
     useEffect(() => {

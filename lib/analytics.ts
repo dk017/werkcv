@@ -25,6 +25,7 @@ const ATTRIBUTION_STORAGE_KEY = 'werkcv_attribution_v1';
 const LANDING_TRACKED_SESSION_KEY = 'werkcv_landing_tracked_v1';
 const COMPLETION_TRACKED_PREFIX = 'werkcv_complete_cv_tracked_';
 const EDITOR_STARTED_TRACKED_PREFIX = 'werkcv_editor_started_tracked_';
+const EDITOR_FIRST_EDIT_TRACKED_PREFIX = 'werkcv_editor_first_edit_tracked_';
 const PREVIOUS_PATH_SESSION_KEY = 'werkcv_previous_path_v1';
 const VISITOR_ID_STORAGE_KEY = 'werkcv_visitor_id_v1';
 const SESSION_ID_SESSION_KEY = 'werkcv_session_id_v1';
@@ -363,6 +364,8 @@ export type AnalyticsEvent =
           };
       }
     | { event: 'editor_started'; properties: { cvId: string; fromPath?: string } & EditorSourceContext }
+    // First time the person types or chooses something in their CV (editor_started only means the editor loaded).
+    | { event: 'editor_first_edit'; properties: { cvId: string; section: string; secondsToFirstEdit: number } & EditorSourceContext }
     | {
           event: 'example_cv_applied_after_login';
           properties: {
@@ -1065,6 +1068,16 @@ export function markEditorStartedTracked(cvId: string): void {
 export function hasEditorStartedTracked(cvId: string): boolean {
     if (typeof window === 'undefined') return false;
     return window.sessionStorage.getItem(`${EDITOR_STARTED_TRACKED_PREFIX}${cvId}`) === '1';
+}
+
+export function markEditorFirstEditTracked(cvId: string): void {
+    if (typeof window === 'undefined') return;
+    window.sessionStorage.setItem(`${EDITOR_FIRST_EDIT_TRACKED_PREFIX}${cvId}`, '1');
+}
+
+export function hasEditorFirstEditTracked(cvId: string): boolean {
+    if (typeof window === 'undefined') return false;
+    return window.sessionStorage.getItem(`${EDITOR_FIRST_EDIT_TRACKED_PREFIX}${cvId}`) === '1';
 }
 
 function maybeTrackLandingToEditor(currentPath: string): void {

@@ -82,6 +82,7 @@ function eventLabel(event: string): string {
     cta_clicked: "Clicked CTA",
     start_cv: "Started CV",
     editor_started: "Opened editor",
+    editor_first_edit: "Edited CV",
     landing_to_editor: "Went to editor",
     checkout_modal_viewed: "Saw checkout modal",
     checkout_option_clicked: "Clicked checkout option",

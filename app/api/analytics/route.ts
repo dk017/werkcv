@@ -107,6 +107,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'client_error_shown',
     'start_cv',
     'editor_started',
+    'editor_first_edit',
     'public_editor_viewed',
     'public_editor_download_intent',
     'public_editor_claim_started',
