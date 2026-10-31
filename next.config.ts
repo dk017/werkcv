@@ -90,6 +90,17 @@ const nextConfig: NextConfig = {
         source: '/en/:path*',
         headers: [{ key: 'Content-Language', value: 'en' }],
       },
+      {
+        // Agent discovery (RFC 8288) on pages: the site guides for language models and the AI catalog
+        // that lists the MCP server card (lib/mcp/server-card.ts).
+        source: '/((?!api/|_next/).*)',
+        headers: [
+          {
+            key: 'Link',
+            value: '</llms.txt>; rel="describedby"; type="text/plain", </ai.txt>; rel="describedby"; type="text/plain", </.well-known/ai-catalog.json>; rel="ai-catalog"; type="application/ai-catalog+json"',
+          },
+        ],
+      },
     ];
   },
 
@@ -97,6 +108,8 @@ const nextConfig: NextConfig = {
     return [
       // OpenAI app directory domain check (app/api/openai-apps-challenge/route.ts).
       { source: '/.well-known/openai-apps-challenge', destination: '/api/openai-apps-challenge' },
+      // Scanners and the llms.txt convention look for ai.txt at the root as well.
+      { source: '/ai.txt', destination: '/.well-known/ai.txt' },
     ];
   },
 

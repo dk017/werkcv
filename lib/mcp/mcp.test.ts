@@ -5,7 +5,8 @@ import { classifyMcpClient } from "./context";
 import { alertAiCapReached, resetAlertForTests } from "./alerts";
 import { CHECKED_CV_KIND, CHECKED_CV_TTL_MS, createCheckedCvHandoff, HandoffCapacityError, maxLiveHandoffs, peekCheckedCvHandoff, takeCheckedCvHandoff } from "./handoff";
 import { aiDailyCap, resetAiBudgetForTests, takeAiBudget, takeToolSlot } from "./limits";
-import { MCP_INSTRUCTIONS } from "./server";
+import { MCP_INSTRUCTIONS, MCP_SERVER_INFO } from "./server";
+import { AI_CATALOG, discoveryResponse, SERVER_CARD, SERVER_CARD_MEDIA_TYPE, SERVER_CARD_URL } from "./server-card";
 import { checkCv, matchVacancy, openInEditor } from "./tools";
 import { editorUrl } from "./v2/open";
 
@@ -295,4 +296,31 @@ test("the server instructions only describe the tools and when to call them (dir
   }
 });
 
+test("server card meets the schema limits and points at the live endpoint", () => {
+  assert.match(SERVER_CARD.name, /^[^/]+\/[^/]+$/);
+  assert.ok(SERVER_CARD.description.length <= 100);
+  assert.equal(SERVER_CARD.version, MCP_SERVER_INFO.version);
+  assert.equal(SERVER_CARD.remotes[0].url, "https://werkcv.nl/api/mcp");
+  assert.equal(AI_CATALOG.entries[0].url, SERVER_CARD_URL);
+});
 
+test("discovery responses: off with MCP, media type on request, 304 on a matching ETag", async () => {
+  const url = "https://werkcv.nl/api/mcp/server-card";
+  const saved = process.env.MCP_ENABLED;
+  try {
+    delete process.env.MCP_ENABLED;
+    assert.equal(discoveryResponse(new Request(url), SERVER_CARD, SERVER_CARD_MEDIA_TYPE).status, 404);
+    process.env.MCP_ENABLED = "true";
+    const plain = discoveryResponse(new Request(url), SERVER_CARD, SERVER_CARD_MEDIA_TYPE);
+    assert.equal(plain.headers.get("content-type"), "application/json; charset=utf-8");
+    assert.equal(plain.headers.get("access-control-allow-origin"), "*");
+    assert.deepEqual(await plain.json(), SERVER_CARD);
+    const typed = discoveryResponse(new Request(url, { headers: { accept: SERVER_CARD_MEDIA_TYPE } }), SERVER_CARD, SERVER_CARD_MEDIA_TYPE);
+    assert.equal(typed.headers.get("content-type"), `${SERVER_CARD_MEDIA_TYPE}; charset=utf-8`);
+    const etag = plain.headers.get("etag")!;
+    assert.equal(discoveryResponse(new Request(url, { headers: { "if-none-match": etag } }), SERVER_CARD, SERVER_CARD_MEDIA_TYPE).status, 304);
+  } finally {
+    if (saved === undefined) delete process.env.MCP_ENABLED;
+    else process.env.MCP_ENABLED = saved;
+  }
+});
