@@ -4130,6 +4130,16 @@ const dutchEditorialPages: SeoGuidePage[] = [
         metaDesc: `Is CV.nl gratis? Vergelijk de kosten van CV.nl (abonnement) met WerkCV (${cvDownloadPrice.display} eenmalig), wat je gratis kunt doen en wanneer je betaalt.`,
         keywords: [],
         intro: 'Zoek je een alternatief voor CV.nl, dan draait de keuze meestal om productomvang en prijsrust. WerkCV past meestal beter als je zonder abonnement snel een sterk CV wilt afronden. CV.nl past beter als je juist een groter Nederlands sollicitatieplatform met vacatures, tracker, app en doorlopende toegang zoekt.',
+        priceAnswer: {
+            question: 'Is CV.nl gratis?',
+            answer: `Nee, niet als je je CV wilt downloaden. Je kunt je CV bij CV.nl gratis opbouwen, maar downloaden als PDF kan alleen met een betaald account. Dat kost €0,99 voor de eerste 14 dagen en daarna €19,99 per maand, automatisch verlengd. Houd je het account langer dan 14 dagen aan, dan betaal je in de eerste anderhalve maand dus €20,98. Bij WerkCV bouw je ook gratis en betaal je ${cvDownloadPrice.display} eenmalig per CV, zonder abonnement.`,
+            facts: [
+                { label: 'CV.nl', value: '€0,99 voor 14 dagen, daarna €19,99 per maand (automatisch verlengd)' },
+                { label: 'Gratis bij CV.nl', value: 'CV opbouwen in de editor; downloaden als PDF vraagt een betaald account. Word is niet beschikbaar.' },
+                { label: 'WerkCV', value: `Gratis bouwen, ${cvDownloadPrice.display} eenmalig per CV voor de PDF. Geen abonnement.` },
+            ],
+            checkedOn: '31 oktober 2026',
+        },
         sections: [
             {
                 id: 'vergelijking',
@@ -4358,8 +4368,8 @@ const dutchEditorialPages: SeoGuidePage[] = [
         locale: 'nl',
         title: 'CVster alternatief in Nederland: WerkCV vs CVster',
         description: 'Zoek je een CVster alternatief? Eerlijke vergelijking tussen WerkCV en CVster. Vergelijk eenmalige prijs vs proefabonnement, ATS-checker, CV- en sollicitatiebrief-templates en downloads.',
-        metaTitle: 'CVster alternatief Nederland (2026) | WerkCV vs CVster | WerkCV.nl',
-        metaDesc: 'Zoek je een CVster alternatief in Nederland? Vergelijk WerkCV en CVster op prijsmodel, proefabonnement, ATS-checker, CV- en briefsuite en downloads.',
+        metaTitle: 'Wat kost CVster? Kosten en alternatief (2026) | WerkCV',
+        metaDesc: `Wat kost CVster? €2,95 voor 7 dagen, daarna €14,95 per 4 weken, of €44,95 voor 6 maanden. Vergelijk met WerkCV: ${cvDownloadPrice.display} eenmalig per CV, geen abonnement.`,
         keywords: [
             'werkcv vs cvster',
             'cvster alternatief',
@@ -4370,6 +4380,17 @@ const dutchEditorialPages: SeoGuidePage[] = [
             'werkcv of cvster',
         ],
         intro: 'Zoek je een CVster alternatief, dan draait de keuze meestal om één vraag: heb je vooral een rustige Nederlandse CV-route nodig of juist een grotere suite met meer tools. WerkCV past meestal beter als je zonder abonnement snel één sterk CV wilt afronden. CVster past beter als je bewust een grotere CV- en sollicitatiebriefsuite met ATS-checker en meerdere betaalopties zoekt.',
+        priceAnswer: {
+            question: 'Wat kost CVster?',
+            answer: `CVster heeft een gratis account met één CV en één sollicitatiebrief, maar dan download je alleen als TXT, of als PDF met vijf gratis sjablonen. Premium kost €2,95 voor een proef van 7 dagen en wordt daarna automatisch €14,95 per 4 weken. Je kunt ook €44,95 eenmalig betalen voor 6 maanden toegang. Bij WerkCV betaal je ${cvDownloadPrice.display} eenmalig per CV, zonder abonnement.`,
+            facts: [
+                { label: 'CVster maandelijks', value: '€2,95 voor 7 dagen, daarna €14,95 per 4 weken (automatisch verlengd)' },
+                { label: 'CVster 6 maanden', value: '€44,95 eenmalige betaling' },
+                { label: 'Gratis bij CVster', value: 'Eén CV en één brief; download als TXT, of als PDF met vijf gratis sjablonen' },
+                { label: 'WerkCV', value: `Gratis bouwen, ${cvDownloadPrice.display} eenmalig per CV voor de PDF. Geen abonnement.` },
+            ],
+            checkedOn: '31 oktober 2026',
+        },
         sections: [
             {
                 id: 'vergelijking',
@@ -4384,7 +4405,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                         {
                             label: 'Prijsmodel',
                             primary: `Gratis starten, daarna eenmalig ${cvDownloadPrice.display} per CV zodra je wilt downloaden.`,
-                            secondary: 'Gratis toegang met beperkingen, 7-daagse proef voor EUR2,95, daarna EUR14,95 per 4 weken; ook 6-maanden- en jaarpakketten als eenmalige betaling.',
+                            secondary: 'Gratis toegang met beperkingen, 7-daagse proef voor EUR2,95, daarna EUR14,95 per 4 weken; ook een 6-maandenpakket van EUR44,95 als eenmalige betaling.',
                         },
                         {
                             label: 'Productscope',
@@ -5057,8 +5078,8 @@ const dutchEditorialPages: SeoGuidePage[] = [
         locale: 'nl',
         title: 'LiveCareer alternatief in Nederland: WerkCV vs LiveCareer',
         description: 'Zoek je een LiveCareer alternatief? Eerlijke vergelijking tussen WerkCV en LiveCareer voor Nederlandse werkzoekenden. Vergelijk subscription, 30+ templates, PDF/Word-download, bestaande CV-upload en eenmalige Nederlandse CV-flow.',
-        metaTitle: 'LiveCareer alternatief Nederland (2026) | WerkCV vs LiveCareer | WerkCV.nl',
-        metaDesc: 'Zoek je een LiveCareer alternatief in Nederland? Vergelijk WerkCV en LiveCareer op subscription vs eenmalige download, templates, PDF/Word, CV-upload en Nederlandse focus.',
+        metaTitle: 'LiveCareer abonnement: kosten en alternatief (2026) | WerkCV',
+        metaDesc: `Is LiveCareer gratis? Bouwen en TXT-download wel; PDF of Word vraagt een abonnement dat automatisch verlengt. Vergelijk met WerkCV: ${cvDownloadPrice.display} eenmalig, geen abonnement.`,
         keywords: [
             'livecareer alternatief',
             'beste livecareer alternatief',
@@ -5069,6 +5090,17 @@ const dutchEditorialPages: SeoGuidePage[] = [
             'livecareer abonnement',
         ],
         intro: 'Zoek je een LiveCareer alternatief, dan gaat het meestal niet alleen over opzeggen. De echte vraag is of je liever een groter internationaal builder-platform met veel templatekeuze en Word-downloads gebruikt, of een rustigere Nederlandse CV-route zonder doorlopend abonnement. WerkCV past meestal beter als je vooral één sterk CV wilt afronden. LiveCareer past beter als je bewust een bredere wizard met meer templates, voorgedefinieerde inhoud en extra exportopties zoekt.',
+        priceAnswer: {
+            question: 'Is LiveCareer gratis?',
+            answer: `Deels. De CV-builder van LiveCareer is gratis en een .txt-versie van je CV downloaden kost niets. Voor een PDF of Word-bestand, afdrukken en delen heb je een abonnement nodig dat automatisch verlengt. Zonder actief abonnement kun je je documenten nog wel bekijken, maar niet bewerken of downloaden. LiveCareer.nl zet zijn bedragen niet op een openbare prijzenpagina; je ziet ze pas bij het afrekenen, dus kijk daar naar de proefprijs én het bedrag waarnaar die verlengt. Bij WerkCV betaal je ${cvDownloadPrice.display} eenmalig per CV, zonder abonnement.`,
+            facts: [
+                { label: 'Gratis bij LiveCareer', value: 'CV-builder gebruiken en je CV als .txt downloaden' },
+                { label: 'Betaald bij LiveCareer', value: 'PDF- en Word-download, afdrukken en delen, via een abonnement dat automatisch verlengt' },
+                { label: 'Na het abonnement', value: 'Documenten bekijken kan nog, bewerken en downloaden niet' },
+                { label: 'WerkCV', value: `Gratis bouwen, ${cvDownloadPrice.display} eenmalig per CV voor de PDF. Geen abonnement.` },
+            ],
+            checkedOn: '31 oktober 2026',
+        },
         sections: [
             {
                 id: 'direct-antwoord',

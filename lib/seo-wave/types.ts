@@ -43,6 +43,14 @@ export interface SeoSourceLink {
     note?: string;
 }
 
+// Short "Is X gratis / wat kost X?" answer shown under the intro, with prices as checked on the given date.
+export interface SeoPriceAnswer {
+    question: string;
+    answer: string;
+    facts: { label: string; value: string }[];
+    checkedOn: string;
+}
+
 export interface SeoGuidePage {
     slug: string;
     title: string;
@@ -52,6 +60,7 @@ export interface SeoGuidePage {
     keywords: string[];
     locale: 'nl' | 'en';
     intro: string;
+    priceAnswer?: SeoPriceAnswer;
     sections: SeoSection[];
     checklist: string[];
     faq: SeoFaq[];

@@ -115,11 +115,14 @@ export default async function DutchWavePage({ params }: PageProps) {
         // TODO(seo): Add real publishedAt/updatedAt fields to SeoGuidePage.
         // Dates are intentionally omitted until the content source stores them.
     };
-    const faqJsonLd = page.faq.length
+    const faqItems = page.priceAnswer
+        ? [{ question: page.priceAnswer.question, answer: page.priceAnswer.answer }, ...page.faq]
+        : page.faq;
+    const faqJsonLd = faqItems.length
         ? {
               '@context': 'https://schema.org',
               '@type': 'FAQPage',
-              mainEntity: page.faq.map((item) => ({
+              mainEntity: faqItems.map((item) => ({
                   '@type': 'Question',
                   name: item.question,
                   acceptedAnswer: {
@@ -165,6 +168,22 @@ export default async function DutchWavePage({ params }: PageProps) {
                             </span>
                             <h1 className="max-w-4xl text-balance text-4xl font-extrabold leading-tight tracking-[-0.045em] text-[var(--wk-ink)] md:text-5xl">{page.title}</h1>
                             <p className="mt-5 max-w-3xl text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">{page.intro}</p>
+
+                            {page.priceAnswer ? (
+                                <div id="kosten" className="mt-6 max-w-3xl rounded-2xl border border-[var(--wk-border)] bg-[var(--wk-surface)] p-5">
+                                    <h2 className="text-xl font-extrabold tracking-[-0.02em] text-[var(--wk-ink)]">{page.priceAnswer.question}</h2>
+                                    <p className="mt-2 leading-relaxed text-[var(--wk-ink)]">{page.priceAnswer.answer}</p>
+                                    <dl className="mt-4 grid gap-2 text-sm">
+                                        {page.priceAnswer.facts.map((fact) => (
+                                            <div key={fact.label} className="grid gap-1 sm:grid-cols-[10rem_1fr]">
+                                                <dt className="font-bold text-[var(--wk-ink)]">{fact.label}</dt>
+                                                <dd className="text-[var(--wk-ink-muted)]">{fact.value}</dd>
+                                            </div>
+                                        ))}
+                                    </dl>
+                                    <p className="mt-3 text-xs text-[var(--wk-ink-muted)]">Gecontroleerd op {page.priceAnswer.checkedOn} op de officiële sites.</p>
+                                </div>
+                            ) : null}
 
                             <div className="mt-7 flex flex-wrap gap-3">
                                 {isZzpExample ? (
