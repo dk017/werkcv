@@ -10,7 +10,7 @@ export const zzpCvSample: CVData = {
     address: "",
     postalCode: "",
     summary:
-      "Freelance projectmanager gespecialiseerd in digitale implementaties en procesverbetering bij middelgrote organisaties. Verbindt operatie, IT en leveranciers en stuurt opdrachten van intake tot overdracht. Beschikbaar vanaf september 2026 voor 24-32 uur per week, regio Midden-Nederland of hybride.",
+      "Freelance projectmanager gespecialiseerd in digitale implementaties en procesverbetering bij middelgrote organisaties. Verbindt operatie, IT en leveranciers en stuurt opdrachten van intake tot overdracht. Beschikbaar vanaf januari 2027 voor 24-32 uur per week, regio Midden-Nederland of hybride.",
     birthDate: "",
     birthPlace: "",
     nationality: "",

@@ -104,8 +104,8 @@ export const cvVoorDetachering: BlogArticle = {
             "Handig als je nu vooral taken hebt staan en nog weinig bewijs of impact.",
         },
         {
-          href: "/cv-tips/freelance-cv-maken",
-          label: "Gebruik ook de freelance-gids als je veel opdrachtwerk hebt",
+          href: "/cv-gids/cv-voorbeeld-zzper",
+          label: "Gebruik ook de zzp-cv gids als je veel opdrachtwerk hebt",
           description:
             "Relevant als je cv sterk lijkt op een interim- of zzp-profiel met meerdere losse projecten.",
         },
@@ -176,7 +176,7 @@ export const cvVoorDetachering: BlogArticle = {
             "Handig wanneer jouw cv minder op projectdetachering en meer op snelle bureauplaatsing is gericht.",
         },
         {
-          href: "/cv-tips/freelance-cv-maken",
+          href: "/cv-gids/cv-voorbeeld-zzper",
           label: "Gebruik deze gids als je profiel meer op interim of zzp lijkt",
           description:
             "Relevant als je meerdere opdrachtgevers en projectperiodes op je cv hebt staan.",
@@ -238,7 +238,6 @@ export const cvVoorDetachering: BlogArticle = {
   ],
 
   relatedArticleSlugs: [
-    "freelance-cv-maken",
     "cv-voor-uitzendbureau",
     "ats-vriendelijk-cv",
     "profieltekst-schrijven",

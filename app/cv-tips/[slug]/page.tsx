@@ -270,7 +270,7 @@ export default async function ArticlePage({ params }: PageProps) {
                 </section>
             )}
 
-            {(article.slug === 'freelance-cv-maken' || article.slug === 'linkedin-samenvatting-schrijven') && (
+            {article.slug === 'linkedin-samenvatting-schrijven' && (
                 <section className="border-b-4 border-black bg-[#FFF7E8]">
                     <div className="wk-editorial-container max-w-4xl mx-auto px-6 py-8">
                         <div className="wk-editorial-card flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between">
@@ -279,25 +279,17 @@ export default async function ArticlePage({ params }: PageProps) {
                                     Direct toepassen
                                 </p>
                                 <h2 className="mt-2 text-2xl font-black text-gray-900">
-                                    {article.slug === 'freelance-cv-maken'
-                                        ? 'Start met een vooraf ingevuld ZZP-CV'
-                                        : 'Zet je LinkedIn-samenvatting om naar een ingevuld CV'}
+                                    Zet je LinkedIn-samenvatting om naar een ingevuld CV
                                 </h2>
                                 <p className="mt-2 text-sm leading-relaxed text-gray-700">
-                                    {article.slug === 'freelance-cv-maken'
-                                        ? 'Bekijk een opdrachtgerichte structuur met profieltekst, drie projecten, NDA-formulering en resultaatbullets. Vervang daarna de voorbeeldgegevens door je eigen bewijs.'
-                                        : 'Plak je profieltekst, kies je doelrol en controleer de gegenereerde CV-structuur voordat je deze in de editor opent.'}
+                                    Plak je profieltekst, kies je doelrol en controleer de gegenereerde CV-structuur voordat je deze in de editor opent.
                                 </p>
                             </div>
                             <Link
-                                href={article.slug === 'freelance-cv-maken'
-                                    ? '/cv-gids/cv-voorbeeld-zzper'
-                                    : '/tools/linkedin-naar-cv#linkedin-tool'}
+                                href="/tools/linkedin-naar-cv#linkedin-tool"
                                 className="wk-button wk-button-primary flex-shrink-0"
                             >
-                                {article.slug === 'freelance-cv-maken'
-                                    ? 'Open het ZZP-voorbeeld'
-                                    : 'Open LinkedIn naar CV'}
+                                Open LinkedIn naar CV
                             </Link>
                         </div>
                     </div>

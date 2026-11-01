@@ -2033,10 +2033,11 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
         },
     },
     'cv-voorbeeld-zzper': {
-        title: 'CV voorbeeld zzp\'er (2026)',
-        description: 'Praktische gids voor een ZZP-CV met opdrachtstructuur, opdrachtgevercontext, profieltekst, NDA-aanpak en recruiterproof voorbeeldbullets.',
-        metaTitle: 'ZZP CV maken: voorbeeld voor freelancers (2026) | WerkCV',
-        metaDesc: 'Zo schrijf je een zzp cv: een ingevuld voorbeeld met opdrachten, opdrachtgevers en resultaten, en een profieltekst die intermediairs overtuigt.',
+        // Rendered by app/cv-gids/cv-voorbeeld-zzper (components/seo/ZzpCvGuide.tsx); this entry feeds the hub and sitemap.
+        title: 'ZZP CV schrijven: voorbeeld en opbouw per opdracht',
+        description: 'Ingevuld zzp cv, het format per opdracht, wat je met KvK en tarief doet en hoe inhuurdesks cv\'s op eisen scoren.',
+        metaTitle: 'ZZP CV schrijven: voorbeeld en opbouw per opdracht (2026) | WerkCV',
+        metaDesc: 'Zo schrijf je een zzp cv dat door de selectie komt: opbouw per opdracht, een ingevuld voorbeeld, wat je doet met KvK en tarief en hoe inhuurdesks cv\'s scoren.',
         keywords: [
             'cv voorbeeld zzp\'er',
             'zzp cv voorbeeld',
@@ -2056,7 +2057,7 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
         ],
         relatedLinks: [
             {
-                href: '/cv-tips/freelance-cv-maken',
+                href: '/cv-gids/cv-voorbeeld-zzper',
                 title: 'ZZP CV maken: complete gids',
                 description: 'Gebruik de lange gids als je niet alleen een voorbeeld zoekt, maar ook strategie voor tarief, intermediairs en meerdere CV-versies.',
             },
@@ -2083,7 +2084,7 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
                 ],
                 intentLinks: [
                     {
-                        href: '/cv-tips/freelance-cv-maken',
+                        href: '/cv-gids/cv-voorbeeld-zzper',
                         label: 'Lees eerst de complete gids voor een ZZP-CV',
                         description: 'Handig als je behalve een voorbeeld ook de bredere strategie wilt rond intermediairs, NDA-opdrachten en meerdere versies.',
                     },

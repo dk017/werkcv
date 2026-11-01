@@ -162,6 +162,8 @@ const nextConfig: NextConfig = {
         ['/eerste-cv-maken', '/cv-maken-student'],
         ['/beste-cv-maker-nederland', '/goedkoopste-cv-maker-nederland'],
         ['/cv-gids/beste-cv-builder-zonder-abonnement', '/cv-maken-zonder-abonnement'],
+        // ZZP cv (1 Nov 2026): the guide ranked ~38 next to the example page at ~11 for the same queries.
+        ['/cv-tips/freelance-cv-maken', '/cv-gids/cv-voorbeeld-zzper'],
       ].map(([source, destination]) => ({ source, destination, statusCode: 301 as const })),
       // Consolidate overlapping English CV intent onto one owner per cluster.
       {

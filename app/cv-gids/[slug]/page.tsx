@@ -9,7 +9,6 @@ import { normalizeBrandCopy } from '@/lib/seo-branding';
 import { getLanguageAlternates } from '@/lib/i18n/route-pairs';
 import { UseExampleButton } from '@/components/cv-voorbeelden/UseExampleButton';
 import { RoleCvPrefillPanel } from '@/components/cv-voorbeelden/RoleCvPrefillPanel';
-import { zzpCvSample } from '@/lib/cv-samples/zzp-cv';
 import { getWavePageRoleConversion } from '@/lib/role-cv-conversions';
 import { cvDownloadPrice } from '@/lib/site-content';
 
@@ -17,8 +16,13 @@ type PageProps = {
     params: Promise<{ slug: string }>;
 };
 
+// These slugs have their own page folder under app/cv-gids; their data entry only feeds the hub and sitemap.
+const OWN_ROUTE_SLUGS = new Set(['cv-voorbeeld-zzper']);
+
 export function generateStaticParams() {
-    return getDutchWavePages().map((page) => ({ slug: page.slug }));
+    return getDutchWavePages()
+        .filter((page) => !OWN_ROUTE_SLUGS.has(page.slug))
+        .map((page) => ({ slug: page.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -70,23 +74,16 @@ export default async function DutchWavePage({ params }: PageProps) {
     const page = getDutchWavePage(slug);
     if (!page) notFound();
     const metaDesc = normalizeBrandCopy(page.metaDesc);
-    const isZzpExample = page.slug === 'cv-voorbeeld-zzper';
     const roleConversion = getWavePageRoleConversion(page.slug);
     // Comparison pages (WerkCV vs X, builder choice): straight into the editor, with the price on the
     // first screen. Visitors comparing builders mostly want to know what it costs.
     const isComparison = page.slug.startsWith('werkcv-vs-') || page.slug === 'welke-cv-builder-past-bij-jou-in-nederland';
     const heroProofPoints = [
-        isZzpExample || roleConversion ? 'Vooraf ingevuld CV-voorbeeld' : 'Maak dit CV in 5 minuten',
+        roleConversion ? 'Vooraf ingevuld CV-voorbeeld' : 'Maak dit CV in 5 minuten',
         'ATS-vriendelijke templates',
         'Eenmalig betalen, geen abonnement',
     ];
-    const heroWorkflow = isZzpExample
-        ? [
-            'Open het ingevulde voorbeeld met drie realistische opdrachten.',
-            'Vervang voorbeeldgegevens, opdrachtgevers en resultaten door je eigen bewijs.',
-            'Maak per opdracht een gerichte versie en exporteer die als PDF.',
-        ]
-        : roleConversion
+    const heroWorkflow = roleConversion
         ? [
             `Open het vooraf ingevulde ${roleConversion.roleLabel} CV.`,
             'Vervang alle voorbeeldgegevens en resultaten door je eigen controleerbare bewijs.',
@@ -186,14 +183,7 @@ export default async function DutchWavePage({ params }: PageProps) {
                             ) : null}
 
                             <div className="mt-7 flex flex-wrap gap-3">
-                                {isZzpExample ? (
-                                    <UseExampleButton
-                                        templateId="professional"
-                                        colorThemeId="classic-blue"
-                                        sampleCV={zzpCvSample}
-                                        label="Start met ingevuld ZZP-CV"
-                                    />
-                                ) : roleConversion ? (
+                                {roleConversion ? (
                                     <UseExampleButton
                                         templateId={roleConversion.templateId}
                                         colorThemeId={roleConversion.colorThemeId}
@@ -260,14 +250,7 @@ export default async function DutchWavePage({ params }: PageProps) {
                             </div>
 
                             <div className="mt-6 flex flex-wrap gap-3">
-                                {isZzpExample ? (
-                                    <UseExampleButton
-                                        templateId="professional"
-                                        colorThemeId="classic-blue"
-                                        sampleCV={zzpCvSample}
-                                        label="Gebruik dit ZZP-voorbeeld"
-                                    />
-                                ) : roleConversion ? (
+                                {roleConversion ? (
                                     <Link
                                         href="#prefilled-role-cv"
                                         className="wk-button wk-button-primary"

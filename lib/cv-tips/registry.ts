@@ -31,7 +31,6 @@ import { cvTemplateKiezen } from './articles/cv-template-kiezen';
 import { salarisverwachtingBepalen } from './articles/salarisverwachting-bepalen';
 import { salarisBesprekenSollicitatie } from './articles/salaris-bespreken-sollicitatie';
 import { gewenstSalarisInvullen } from './articles/gewenst-salaris-invullen';
-import { freelanceCvMaken } from './articles/freelance-cv-maken';
 import { fotoOpJeCv } from './articles/foto-op-je-cv';
 import { linkedinNaarCv } from './articles/linkedin-naar-cv';
 import { salarisverwachtingCv } from './articles/salarisverwachting-cv';
@@ -82,7 +81,6 @@ const allArticles: BlogArticle[] = [
     salarisverwachtingBepalen,
     salarisBesprekenSollicitatie,
     gewenstSalarisInvullen,
-    freelanceCvMaken,
     fotoOpJeCv,
     linkedinNaarCv,
     salarisverwachtingCv,
