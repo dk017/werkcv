@@ -17,8 +17,12 @@ export type SiteSelectors = {
 };
 
 export const SITE_SELECTORS: Record<"linkedin" | "indeed", SiteSelectors> = {
+  // Two LinkedIn layouts are live: the classic one and the rewrite on /jobs/search-results (checked logged in,
+  // 1 Nov 2026), which has hashed class names and no company link in its cards. In the rewrite the employer is the
+  // first paragraph of the card after the title, which is the paragraph that holds an aria-hidden copy of the title.
   linkedin: {
     cards: [
+      "[componentkey^='job-card-component-ref-']",
       "li[data-occludable-job-id]",
       "[data-job-id]",
       "div.job-card-container",
@@ -34,6 +38,7 @@ export const SITE_SELECTORS: Record<"linkedin" | "indeed", SiteSelectors> = {
       ".job-card-container__primary-description",
       ".job-card-container__company-name",
       ".base-search-card__subtitle",
+      "p:not(:has(span[aria-hidden='true']))",
     ],
     detailEmployer: [
       ".job-details-jobs-unified-top-card__company-name a[href*='/company/']",
@@ -43,6 +48,8 @@ export const SITE_SELECTORS: Record<"linkedin" | "indeed", SiteSelectors> = {
       "a.topcard__org-name-link",
       ".top-card-layout__card a[href*='/company/']",
       "[data-view-name='job-details-company-name'] a[href*='/company/']",
+      "[aria-label^='Company, '] a[href*='/company/']",
+      "a[componentkey^='auto-binding'][href*='/company/']",
     ],
     detailDescription: [
       "#job-details",
@@ -50,6 +57,7 @@ export const SITE_SELECTORS: Record<"linkedin" | "indeed", SiteSelectors> = {
       ".jobs-description-content__text",
       ".show-more-less-html__markup",
       ".description__text",
+      "[data-testid='expandable-text-box']:not([componentkey^='JobDetails_AboutTheCompany'] *)",
     ],
     detailSalary: [
       ".job-details-fit-level-preferences",

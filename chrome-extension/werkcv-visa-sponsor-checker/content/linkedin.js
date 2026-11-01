@@ -4,7 +4,7 @@
 (() => {
   WerkcvSponsorContent.start({
     site: "linkedin",
-    jobLinkSelector: "a[href*='/jobs/view/']",
+    jobLinkSelector: "a[href*='/jobs/view/'], [role='button'][componentkey^='job-card-component-ref-']",
     isJobPage: () => /^\/(?:jobs|comm\/jobs)(?:\/|$)/.test(location.pathname),
     isResultsPage: () => /^\/jobs\/(?:search|collections|search-results)/.test(location.pathname),
     jobKey: () => new URLSearchParams(location.search).get("currentJobId") || (/\/jobs\/view\/[^/]*?(\d{6,})/.exec(location.pathname) || [])[1] || "",
