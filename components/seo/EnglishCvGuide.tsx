@@ -3,6 +3,7 @@ import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd, JsonLd } from "@/components/seo/JsonLd";
 import { UseExampleButton } from "@/components/cv-voorbeelden/UseExampleButton";
 import { englishCvSample } from "@/lib/cv-samples/english-cv";
+import SimpleTable from "@/components/seo/GuideTable";
 
 // One owner page for the Dutch "engels cv (maken/voorbeeld/template)" searches (merged 1 Nov 2026 with
 // /cv-gids/engels-cv-in-nederland, /engels-cv-voorbeeld and /cv-maken-in-engels).
@@ -160,42 +161,6 @@ function Source({ id }: { id: keyof typeof SOURCES }) {
     <a href={SOURCES[id].href} className="underline underline-offset-4" rel="noopener" target="_blank">
       {SOURCES[id].label}
     </a>
-  );
-}
-
-function SimpleTable({ head, rows, firstColumnIsHeader = true }: { head: readonly string[]; rows: readonly (readonly string[])[]; firstColumnIsHeader?: boolean }) {
-  return (
-    <div className="wk-table-scroll-hint mt-6 overflow-x-auto">
-      <table className="min-w-full text-left text-sm">
-        <thead>
-          <tr className="border-b border-[var(--wk-border)]">
-            {head.map((column) => (
-              <th key={column} className="py-2 pr-4" scope="col">
-                {column}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map(([first, ...rest]) => (
-            <tr key={first} className="border-b border-[var(--wk-border)] align-top">
-              {firstColumnIsHeader ? (
-                <th className="py-2 pr-4 font-semibold text-[var(--wk-ink)]" scope="row">
-                  {first}
-                </th>
-              ) : (
-                <td className="py-2 pr-4 text-[var(--wk-ink)]">{first}</td>
-              )}
-              {rest.map((cell, index) => (
-                <td key={index} className={`py-2 pr-4 ${index === 0 ? "text-[var(--wk-ink)]" : "text-[var(--wk-ink-muted)]"}`}>
-                  {cell}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
   );
 }
 

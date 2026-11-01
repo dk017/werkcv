@@ -39,7 +39,6 @@ import { sollicitatieBedankbrief } from './articles/sollicitatie-bedankbrief';
 import { cvNaLoopbaanonderbreking } from './articles/cv-na-loopbaanonderbreking';
 import { cvVoorTechsector } from './articles/cv-voor-techsector';
 import { videoCvMaken } from './articles/video-cv-maken';
-import { cvMakenAlsStudent } from './articles/cv-maken-als-student';
 import { cvMakenInHetEngels } from './articles/cv-maken-in-het-engels';
 import { cvMakenInWord } from './articles/cv-maken-in-word';
 import { cvVoorUitzendbureau } from './articles/cv-voor-uitzendbureau';
@@ -89,7 +88,6 @@ const allArticles: BlogArticle[] = [
     cvNaLoopbaanonderbreking,
     cvVoorTechsector,
     videoCvMaken,
-    cvMakenAlsStudent,
     cvMakenInHetEngels,
     cvMakenInWord,
     cvVoorUitzendbureau,

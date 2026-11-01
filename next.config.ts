@@ -168,6 +168,8 @@ const nextConfig: NextConfig = {
         ['/cv-gids/engels-cv-in-nederland', '/engels-cv-template'],
         ['/engels-cv-voorbeeld', '/engels-cv-template'],
         ['/cv-maken-in-engels', '/engels-cv-template'],
+        // Student cv (1 Nov 2026): the guide ranked ~70 for the same "cv student" searches as /cv-maken-student (~55).
+        ['/cv-tips/cv-maken-als-student', '/cv-maken-student'],
       ].map(([source, destination]) => ({ source, destination, statusCode: 301 as const })),
       // Consolidate overlapping English CV intent onto one owner per cluster.
       {
