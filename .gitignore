@@ -83,3 +83,6 @@ local/profile-photos/
 chrome-extension/artifacts/
 
 __pycache__/
+
+# Chrome extension upload zips (built by build.mjs)
+chrome-extension/*/dist/

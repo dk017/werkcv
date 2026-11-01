@@ -1,0 +1,188 @@
+/* Badges, popover and job card shown on LinkedIn and Indeed. Every rule is scoped to werkcv-sp- classes and sets its own
+   font, so the job site's styles neither leak in nor get changed. */
+
+.werkcv-sp-badge {
+  all: initial;
+  position: relative;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 0 6px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font: 600 11px/16px -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  letter-spacing: 0;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.werkcv-sp-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.werkcv-sp-badge:focus-visible {
+  outline: 2px solid #0a66c2;
+  outline-offset: 1px;
+}
+
+.werkcv-sp-badge--sponsor {
+  color: #0b5d4b;
+  background: #e2f4ec;
+  border-color: #a9dcc7;
+}
+
+.werkcv-sp-badge--likely {
+  color: #7a4b00;
+  background: #fdf1d8;
+  border-color: #efd19a;
+}
+
+.werkcv-sp-badge--not_found {
+  color: #5e6670;
+  background: transparent;
+  border-color: #d4d8dd;
+  font-weight: 500;
+}
+
+.werkcv-sp-dim {
+  opacity: 0.38;
+  transition: opacity 0.15s ease;
+}
+
+.werkcv-sp-dim:hover {
+  opacity: 0.85;
+}
+
+.werkcv-sp-popover {
+  all: initial;
+  position: fixed;
+  z-index: 2147483000;
+  box-sizing: border-box;
+  width: 320px;
+  max-width: calc(100vw - 16px);
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d4d8dd;
+  background: #ffffff;
+  color: #1d2226;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  font: 400 13px/1.45 -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.werkcv-sp-popover p,
+.werkcv-sp-popover ul {
+  margin: 0 0 8px;
+  padding: 0;
+}
+
+.werkcv-sp-popover__title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.werkcv-sp-popover__title--sponsor { color: #0b5d4b; }
+.werkcv-sp-popover__title--likely { color: #7a4b00; }
+.werkcv-sp-popover__title--not_found { color: #3d4349; }
+
+.werkcv-sp-popover__employer {
+  color: #5e6670;
+}
+
+.werkcv-sp-popover__list {
+  list-style: none;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.werkcv-sp-popover__list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0;
+  border-top: 1px solid #eef0f2;
+}
+
+.werkcv-sp-popover__legal { font-weight: 600; }
+
+.werkcv-sp-popover__kvk {
+  flex-shrink: 0;
+  color: #5e6670;
+  font-variant-numeric: tabular-nums;
+}
+
+.werkcv-sp-popover__more,
+.werkcv-sp-popover__date {
+  color: #5e6670;
+  font-size: 12px;
+}
+
+.werkcv-sp-popover__note {
+  padding: 8px 10px !important;
+  border-radius: 8px;
+  background: #f4f6f8;
+}
+
+.werkcv-sp-popover a {
+  color: #0a66c2;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.werkcv-sp-popover a:hover { text-decoration: underline; }
+
+.werkcv-sp-card {
+  all: initial;
+  display: block;
+  box-sizing: border-box;
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #d4d8dd;
+  background: #f8faf9;
+  color: #1d2226;
+  font: 400 14px/1.45 -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+.werkcv-sp-card__row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0 0 6px;
+}
+
+.werkcv-sp-card__row .werkcv-sp-badge { margin-left: 0; }
+
+.werkcv-sp-card__dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #9aa3ad;
+  transform: translateY(-1px);
+}
+
+.werkcv-sp-card__row--good .werkcv-sp-card__dot { background: #1f8a6d; }
+.werkcv-sp-card__row--warn .werkcv-sp-card__dot { background: #d08a12; }
+
+.werkcv-sp-card__foot {
+  margin: 8px 0 0;
+  color: #5e6670;
+  font-size: 12px;
+}
+
+/* LinkedIn's dark theme and the system dark mode on Indeed. */
+html.theme--dark .werkcv-sp-badge--sponsor { color: #8fe0c2; background: #12372d; border-color: #2b6b57; }
+html.theme--dark .werkcv-sp-badge--likely { color: #f3cf86; background: #3d2e10; border-color: #7a5d22; }
+html.theme--dark .werkcv-sp-badge--not_found { color: #a8b0b8; border-color: #48505a; }
+html.theme--dark .werkcv-sp-card,
+html.theme--dark .werkcv-sp-popover { background: #1f2326; color: #e8ebee; border-color: #3b4148; }
+html.theme--dark .werkcv-sp-popover__note { background: #2a2f33; }
+html.theme--dark .werkcv-sp-popover__list li { border-color: #33393f; }
+html.theme--dark .werkcv-sp-popover a { color: #71b7fb; }

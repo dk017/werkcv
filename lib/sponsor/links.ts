@@ -2,3 +2,7 @@
 // it without importing server code (database, file system).
 export const IND_REGISTER_URL = "https://ind.nl/nl/openbaar-register-erkende-referenten/openbaar-register-arbeid";
 export const IND_REGISTER_PAGE_URL_EN = "https://ind.nl/en/public-register-recognised-sponsors/public-register-work";
+
+// The Netherlands Visa Sponsor Checker on the Chrome Web Store. Null until the listing is published; pages hide their
+// "Add to Chrome" button until then.
+export const SPONSOR_EXTENSION_STORE_URL: string | null = null;

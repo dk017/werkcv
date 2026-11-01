@@ -118,15 +118,18 @@ export function parseIndRegisterHtml(html: string): SponsorRegister {
   }
 
   const entries: SponsorEntry[] = [];
-  const keys: string[][] = [];
   for (const [rawName, rawKvk] of rows.slice(1)) {
     const name = tidyDisplayName(rawName);
     const kvk = rawKvk.replace(/\s/g, "");
     if (!name || !/^\d{8}$/.test(kvk)) continue;
     entries.push({ name, kvk });
-    keys.push(nameKeys(name));
   }
-  return { entries, registerDate: registerDateFromText(cellText(html)), keys };
+  return registerFromEntries(entries, registerDateFromText(cellText(html)));
+}
+
+/** A register from entries already read, such as the compact copy the Chrome extension ships. */
+export function registerFromEntries(entries: SponsorEntry[], registerDate: string | null): SponsorRegister {
+  return { entries, registerDate, keys: entries.map((entry) => nameKeys(entry.name)) };
 }
 
 /**

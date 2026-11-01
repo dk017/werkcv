@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { kvkFromQuery, searchSponsors } from "@/lib/sponsor/register";
+import { compileAliases } from "@/lib/sponsor/aliases";
+import { searchEmployer } from "@/lib/sponsor/employer-match";
+import { kvkFromQuery } from "@/lib/sponsor/register";
 import { getSponsorRegister } from "@/lib/sponsor/store";
 import { checkRateLimit, getClientIp } from "@/lib/tools/rate-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+const ALIASES = compileAliases();
 
 const MESSAGES = {
   tooShort: {
@@ -40,7 +44,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const register = await getSponsorRegister();
-    const result = searchSponsors(register, query, 10);
+    const result = searchEmployer(register, ALIASES, query, 10);
     return NextResponse.json(
       { query, queryKind: kvkFromQuery(query) ? "kvk" : "name", registerDate: register.registerDate, ...result },
       { headers: { "Cache-Control": "public, max-age=300" } },

@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import { formatEuro, parseDecimal } from "@/lib/tools/calculator-utils";
+import { thresholdsFor } from "@/lib/sponsor/thresholds";
 
 type RouteType = "under_30" | "age_30_plus" | "reduced";
 
+const { amounts } = thresholdsFor();
 const thresholdMap: Record<RouteType, number> = {
-    under_30: 4357,
-    age_30_plus: 5942,
-    reduced: 3122,
+    under_30: amounts.hsmUnder30,
+    age_30_plus: amounts.hsm30,
+    reduced: amounts.reduced,
 };
 
 const labelMap: Record<RouteType, string> = {

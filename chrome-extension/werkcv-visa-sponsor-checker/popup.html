@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Netherlands Visa Sponsor Checker</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="popup">
+      <header class="head">
+        <img src="icons/icon-48.png" alt="" width="32" height="32" />
+        <div>
+          <h1 data-i18n="popupTitle">Visa Sponsor Checker</h1>
+          <p class="muted" id="register-date"></p>
+        </div>
+      </header>
+
+      <section class="panel" id="page-panel">
+        <p id="page-summary" class="summary"></p>
+        <p id="layout-miss" class="notice" hidden data-i18n="layoutMiss"></p>
+        <button type="button" id="check-page" class="button" hidden data-i18n="checkPage">Check this page</button>
+        <div id="check-result" class="results" hidden></div>
+      </section>
+
+      <section class="panel">
+        <label class="label" for="search" data-i18n="searchLabel">Search the register</label>
+        <input id="search" type="search" autocomplete="off" spellcheck="false" maxlength="160" />
+        <div id="search-results" class="results" aria-live="polite"></div>
+      </section>
+
+      <section class="panel settings">
+        <label class="label" for="route" data-i18n="routeLabel">Salary threshold to compare with</label>
+        <select id="route">
+          <option value="hsm30" data-i18n="route_hsm30"></option>
+          <option value="hsmUnder30" data-i18n="route_hsmUnder30"></option>
+          <option value="reduced" data-i18n="route_reduced"></option>
+          <option value="blueCard" data-i18n="route_blueCard"></option>
+        </select>
+        <label class="check"><input type="checkbox" id="badges" /> <span data-i18n="settingBadges"></span></label>
+        <label class="check"><input type="checkbox" id="onlySponsors" /> <span data-i18n="settingOnlySponsors"></span></label>
+      </section>
+
+      <p id="rate" class="rate" hidden>
+        <a id="rate-link" target="_blank" rel="noopener" data-i18n="rateLink"></a>
+        <button type="button" id="rate-dismiss" class="link" data-i18n="rateDismiss"></button>
+      </p>
+
+      <footer class="foot">
+        <a id="cv-link" target="_blank" rel="noopener" data-i18n="cvLink"></a>
+        <p class="muted">
+          <span data-i18n="privacyLine"></span>
+          <a id="privacy-link" target="_blank" rel="noopener" data-i18n="privacyLink"></a>
+        </p>
+      </footer>
+    </main>
+    <script src="lib/sponsor.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

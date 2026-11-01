@@ -1,0 +1,212 @@
+{
+  "extName": {
+    "message": "Erkend referent check – kennismigrant visum Nederland"
+  },
+  "extDescription": {
+    "message": "Zie direct op vacatures of een Nederlandse werkgever erkend referent is bij de IND voor het kennismigrantenvisum."
+  },
+  "actionTitle": {
+    "message": "Erkend referent check"
+  },
+  "popupTitle": {
+    "message": "Erkend referent check"
+  },
+  "badgeSponsor": {
+    "message": "Erkend referent"
+  },
+  "badgeLikely": {
+    "message": "Mogelijk referent"
+  },
+  "badgeNotFound": {
+    "message": "Niet in IND-lijst"
+  },
+  "tipSponsor": {
+    "message": "In het IND-register van erkende referenten:"
+  },
+  "tipCheckEntity": {
+    "message": "Controleer welke rechtspersoon in je aanbod staat."
+  },
+  "tipLikely": {
+    "message": "Een verwante of vergelijkbare naam staat in het IND-register:"
+  },
+  "tipPerEntity": {
+    "message": "Erkenning geldt per rechtspersoon."
+  },
+  "tipNotFound": {
+    "message": "$1 staat niet onder deze naam in het IND-register. Merknaam en juridische naam kunnen verschillen: klik om te zoeken."
+  },
+  "title_sponsor": {
+    "message": "In het IND-register"
+  },
+  "title_likely": {
+    "message": "Mogelijk in het IND-register"
+  },
+  "title_not_found": {
+    "message": "Niet gevonden onder deze naam"
+  },
+  "moreEntities": {
+    "message": "en nog $1 geregistreerde rechtspersonen"
+  },
+  "note_sponsor": {
+    "message": "Erkenning geldt per rechtspersoon. Controleer of het bedrijf in je contract een van deze is."
+  },
+  "note_likely": {
+    "message": "Een bedrijf met een vergelijkbare naam is erkend. Controleer of dat het bedrijf is dat jou in dienst neemt."
+  },
+  "note_not_found": {
+    "message": "Het register noemt juridische namen, die kunnen afwijken van de merknaam in de vacature. Zoek in het register voordat je deze werkgever afschrijft."
+  },
+  "searchRegister": {
+    "message": "Zoek in het IND-register"
+  },
+  "reportWrong": {
+    "message": "Foute match melden"
+  },
+  "registerDate": {
+    "message": "IND-register van $1"
+  },
+  "registerDateShort": {
+    "message": "IND-register van $1 · $2 werkgevers"
+  },
+  "cardLabel": {
+    "message": "Erkend referent check"
+  },
+  "cardFoot": {
+    "message": "Salaris vergeleken met: $1. Wijzig dit in het extensiemenu."
+  },
+  "route_hsm30": {
+    "message": "Kennismigrant, 30 jaar of ouder"
+  },
+  "route_hsmUnder30": {
+    "message": "Kennismigrant, jonger dan 30"
+  },
+  "route_reduced": {
+    "message": "Verlaagd criterium (afgestudeerd)"
+  },
+  "route_blueCard": {
+    "message": "Europese blauwe kaart"
+  },
+  "per_month": {
+    "message": "/maand"
+  },
+  "per_year": {
+    "message": "/jaar"
+  },
+  "per_hour": {
+    "message": "/uur"
+  },
+  "salaryAbove": {
+    "message": "Geadverteerd $1: boven de grens van $2 ($3)."
+  },
+  "salaryBelow": {
+    "message": "Geadverteerd $1: onder de grens van $2 ($3)."
+  },
+  "salaryRange": {
+    "message": "Geadverteerd $1: de grens van $2 ($3) valt binnen deze bandbreedte."
+  },
+  "salaryUnclear": {
+    "message": "Geadverteerd $1: dicht bij de grens van $2 ($3); het hangt ervan af of vakantiegeld is meegerekend."
+  },
+  "salaryHourly": {
+    "message": "Geadverteerd $1: vergelijk het maandsalaris in het aanbod met de grens van $2 ($3)."
+  },
+  "salaryYearlyNote": {
+    "message": "Een jaarbedrag kan vakantiegeld bevatten; de IND telt dat niet mee."
+  },
+  "dutchRequired": {
+    "message": "Nederlands waarschijnlijk vereist: “$1”"
+  },
+  "dutchPlus": {
+    "message": "Nederlands is een pré, geen eis."
+  },
+  "dutchNotRequired": {
+    "message": "Volgens de vacature is Nederlands niet vereist."
+  },
+  "dutchNoneFoundEnglish": {
+    "message": "In het Engels geschreven, geen eis voor Nederlands gevonden."
+  },
+  "dutchWrittenInDutch": {
+    "message": "In het Nederlands geschreven: Nederlands is waarschijnlijk nodig."
+  },
+  "summarySponsor": {
+    "message": "Erkend referent bij de IND: $1"
+  },
+  "summaryLikely": {
+    "message": "Vergelijkbare naam in het IND-register: $1"
+  },
+  "summaryNotFound": {
+    "message": "$1 staat niet onder deze naam in het IND-register."
+  },
+  "layoutMiss": {
+    "message": "Deze vacaturesite heeft de opmaak veranderd, dus labels kunnen ontbreken. We werken eraan."
+  },
+  "checkPage": {
+    "message": "Controleer deze pagina"
+  },
+  "checking": {
+    "message": "Bezig met controleren…"
+  },
+  "checkNoJob": {
+    "message": "Geen vacature gevonden op deze pagina. Zoek de werkgever hieronder op naam."
+  },
+  "checkBlocked": {
+    "message": "Deze pagina kan niet worden gecontroleerd. Zoek de werkgever hieronder op naam."
+  },
+  "searchLabel": {
+    "message": "Zoek in het register"
+  },
+  "searchPlaceholder": {
+    "message": "Bedrijfsnaam of KvK-nummer"
+  },
+  "searchNone": {
+    "message": "Niets in het register voor “$1”. Probeer de juridische naam of het KvK-nummer."
+  },
+  "searchHint": {
+    "message": "Erkenning geldt per rechtspersoon: controleer die in je contract."
+  },
+  "routeLabel": {
+    "message": "Salarisgrens om mee te vergelijken"
+  },
+  "settingBadges": {
+    "message": "Labels tonen op vacaturesites"
+  },
+  "settingOnlySponsors": {
+    "message": "Alleen referenten: vacatures buiten de IND-lijst dimmen"
+  },
+  "rateLink": {
+    "message": "Handig? Geef een beoordeling in de Chrome Web Store"
+  },
+  "rateDismiss": {
+    "message": "Niet nu"
+  },
+  "cvLink": {
+    "message": "Solliciteren in Nederland? Maak een cv in Nederlandse opmaak"
+  },
+  "privacyLine": {
+    "message": "De controle draait in je browser. Geen account, er wordt niets over je surfgedrag verstuurd."
+  },
+  "privacyLink": {
+    "message": "Privacy"
+  },
+  "summaryChecked": {
+    "message": "$1 werkgevers gecontroleerd op deze pagina:"
+  },
+  "summarySponsors": {
+    "message": "$1 erkende referenten"
+  },
+  "summaryLikelyCount": {
+    "message": "$1 mogelijk"
+  },
+  "summaryNone": {
+    "message": "Geen werkgevers gevonden op deze pagina."
+  },
+  "summaryWaiting": {
+    "message": "Werkgevers op deze pagina worden gecontroleerd…"
+  },
+  "summaryOpenJobs": {
+    "message": "Open een zoekopdracht naar vacatures om de labels te zien."
+  },
+  "summaryOtherSite": {
+    "message": "Labels verschijnen op LinkedIn en Indeed Nederland. Op een andere vacaturesite controleer je de open vacature:"
+  }
+}

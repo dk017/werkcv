@@ -1,0 +1,212 @@
+{
+  "extName": {
+    "message": "Netherlands Visa Sponsor Checker – IND Recognised Sponsors"
+  },
+  "extDescription": {
+    "message": "See which Dutch employers are IND recognised sponsors for the highly skilled migrant (kennismigrant) visa, right on job ads."
+  },
+  "actionTitle": {
+    "message": "Netherlands Visa Sponsor Checker"
+  },
+  "popupTitle": {
+    "message": "Visa Sponsor Checker"
+  },
+  "badgeSponsor": {
+    "message": "IND sponsor"
+  },
+  "badgeLikely": {
+    "message": "Possible sponsor"
+  },
+  "badgeNotFound": {
+    "message": "Not on IND list"
+  },
+  "tipSponsor": {
+    "message": "On the IND register of recognised sponsors:"
+  },
+  "tipCheckEntity": {
+    "message": "Check which entity employs you in the offer."
+  },
+  "tipLikely": {
+    "message": "A related or similar name is on the IND register:"
+  },
+  "tipPerEntity": {
+    "message": "Recognition is per legal entity."
+  },
+  "tipNotFound": {
+    "message": "$1 is not on the IND register under this name. Brand and legal names can differ: click to search."
+  },
+  "title_sponsor": {
+    "message": "On the IND register"
+  },
+  "title_likely": {
+    "message": "Possibly on the IND register"
+  },
+  "title_not_found": {
+    "message": "Not found under this name"
+  },
+  "moreEntities": {
+    "message": "and $1 more registered entities"
+  },
+  "note_sponsor": {
+    "message": "Recognition is per legal entity. Check that the company named in your contract is one of these."
+  },
+  "note_likely": {
+    "message": "A company with a similar name is recognised. Check whether it is the one that would employ you."
+  },
+  "note_not_found": {
+    "message": "The register lists legal names, which can differ from the brand on the advert. Search the register before you rule this employer out."
+  },
+  "searchRegister": {
+    "message": "Search the IND register"
+  },
+  "reportWrong": {
+    "message": "Report a wrong match"
+  },
+  "registerDate": {
+    "message": "IND register of $1"
+  },
+  "registerDateShort": {
+    "message": "IND register of $1 · $2 employers"
+  },
+  "cardLabel": {
+    "message": "Visa sponsor check"
+  },
+  "cardFoot": {
+    "message": "Salary compared with: $1. Change this in the extension menu."
+  },
+  "route_hsm30": {
+    "message": "Highly skilled migrant, 30 or over"
+  },
+  "route_hsmUnder30": {
+    "message": "Highly skilled migrant, under 30"
+  },
+  "route_reduced": {
+    "message": "Reduced criterion (recent graduate)"
+  },
+  "route_blueCard": {
+    "message": "EU Blue Card"
+  },
+  "per_month": {
+    "message": "/month"
+  },
+  "per_year": {
+    "message": "/year"
+  },
+  "per_hour": {
+    "message": "/hour"
+  },
+  "salaryAbove": {
+    "message": "Advertised $1: above the $2 threshold ($3)."
+  },
+  "salaryBelow": {
+    "message": "Advertised $1: below the $2 threshold ($3)."
+  },
+  "salaryRange": {
+    "message": "Advertised $1: the $2 threshold ($3) falls inside this range."
+  },
+  "salaryUnclear": {
+    "message": "Advertised $1: close to the $2 threshold ($3); it depends on whether holiday allowance is included."
+  },
+  "salaryHourly": {
+    "message": "Advertised $1: compare the monthly salary in the offer with the $2 threshold ($3)."
+  },
+  "salaryYearlyNote": {
+    "message": "A yearly amount may include holiday allowance; the IND leaves it out."
+  },
+  "dutchRequired": {
+    "message": "Dutch likely required: “$1”"
+  },
+  "dutchPlus": {
+    "message": "Dutch is a plus, not a requirement."
+  },
+  "dutchNotRequired": {
+    "message": "The advert says Dutch is not required."
+  },
+  "dutchNoneFoundEnglish": {
+    "message": "Written in English, no Dutch requirement found."
+  },
+  "dutchWrittenInDutch": {
+    "message": "Written in Dutch: Dutch is likely needed."
+  },
+  "summarySponsor": {
+    "message": "IND recognised sponsor: $1"
+  },
+  "summaryLikely": {
+    "message": "Similar name on the IND register: $1"
+  },
+  "summaryNotFound": {
+    "message": "$1 is not on the IND register under this name."
+  },
+  "layoutMiss": {
+    "message": "This job site changed its layout, so badges may be missing. We are on it."
+  },
+  "checkPage": {
+    "message": "Check this page"
+  },
+  "checking": {
+    "message": "Checking…"
+  },
+  "checkNoJob": {
+    "message": "No job posting found on this page. Search the employer by name below."
+  },
+  "checkBlocked": {
+    "message": "This page can't be checked. Search the employer by name below."
+  },
+  "searchLabel": {
+    "message": "Search the register"
+  },
+  "searchPlaceholder": {
+    "message": "Company name or KvK number"
+  },
+  "searchNone": {
+    "message": "Nothing on the register for “$1”. Try the legal name or the KvK number."
+  },
+  "searchHint": {
+    "message": "Recognition is per legal entity: check the one in your contract."
+  },
+  "routeLabel": {
+    "message": "Salary threshold to compare with"
+  },
+  "settingBadges": {
+    "message": "Show badges on job sites"
+  },
+  "settingOnlySponsors": {
+    "message": "Only sponsors: dim jobs not on the IND list"
+  },
+  "rateLink": {
+    "message": "Finding it useful? Rate it on the Chrome Web Store"
+  },
+  "rateDismiss": {
+    "message": "Not now"
+  },
+  "cvLink": {
+    "message": "Applying in the Netherlands? Make a Dutch-format CV in English"
+  },
+  "privacyLine": {
+    "message": "Matching runs in your browser. No account, nothing about your browsing is sent."
+  },
+  "privacyLink": {
+    "message": "Privacy"
+  },
+  "summaryChecked": {
+    "message": "$1 employers checked on this page:"
+  },
+  "summarySponsors": {
+    "message": "$1 IND sponsors"
+  },
+  "summaryLikelyCount": {
+    "message": "$1 possible"
+  },
+  "summaryNone": {
+    "message": "No employers found on this page."
+  },
+  "summaryWaiting": {
+    "message": "Checking the employers on this page…"
+  },
+  "summaryOpenJobs": {
+    "message": "Open a job search to see sponsor badges."
+  },
+  "summaryOtherSite": {
+    "message": "Badges show on LinkedIn and Indeed Netherlands. On another job site, check the open job:"
+  }
+}
