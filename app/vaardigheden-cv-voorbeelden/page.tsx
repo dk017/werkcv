@@ -146,12 +146,6 @@ const skillsIntentLinks = [
       "Voorkom iconen, kolommen en layout-ruis die je vaardigheden minder goed vindbaar maken in software.",
   },
   {
-    href: "/cv-maken-in-engels",
-    label: "Engels CV maken als taalniveau en internationale skills tellen",
-    description:
-      "Laat Engelse copy en Nederlandse recruiterlogica samenwerken wanneer je op internationale rollen mikt.",
-  },
-  {
     href: "/engels-cv-template",
     label: "Kies een Engels CV template voor internationale sollicitaties",
     description:
@@ -425,11 +419,6 @@ export default function VaardighedenCvVoorbeeldenPage() {
                   href: "/ats-cv-template",
                   title: "ATS CV template",
                   body: "Houd je skillssectie schoon, scanbaar en beter matchbaar met vacaturekeywords.",
-                },
-                {
-                  href: "/cv-maken-in-engels",
-                  title: "Engels CV maken",
-                  body: "Handig als taalniveau, tools en internationale context samen belangrijk zijn.",
                 },
                 {
                   href: "/engels-cv-template",

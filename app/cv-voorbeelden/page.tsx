@@ -305,7 +305,7 @@ const contentRouteCards = [
         body: "Speciaal voor studenten, starters en profielen met weinig formele werkervaring.",
     },
     {
-        href: "/cv-maken-in-engels",
+        href: "/engels-cv-template",
         title: "CV maken in Engels",
         body: "Handig als je internationaal solliciteert maar wel de Nederlandse structuur wilt aanhouden.",
     },

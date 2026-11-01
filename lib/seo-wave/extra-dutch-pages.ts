@@ -412,7 +412,7 @@ export const extraDutchEditorialPages: SeoGuidePage[] = [
               "Voor internationals die nog twijfelen tussen een Europees standaardprofiel en lokale Nederlandse verwachtingen.",
           },
           {
-            href: "/cv-maken-in-engels",
+            href: "/engels-cv-template",
             label: "Gebruik de Engels-voor-Nederland route",
             description:
               "Handig als je wel Engelstalig solliciteert, maar vooral op Nederlandse vacatures mikt.",
@@ -504,7 +504,7 @@ export const extraDutchEditorialPages: SeoGuidePage[] = [
           "Handig als je builderkeuze vooral draait om scanbaarheid en Nederlandse vacatureflows.",
       },
       {
-        href: "/cv-maken-in-engels",
+        href: "/engels-cv-template",
         title: "CV maken in Engels",
         description:
           "Praktisch voor internationals die wel een Nederlands georiënteerd CV nodig hebben.",

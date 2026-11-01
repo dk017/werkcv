@@ -64,7 +64,7 @@ const guideGroups = [
       { href: "/cv-gids/cv-na-vaststellingsovereenkomst", label: "CV na vaststellingsovereenkomst" },
       { href: "/cv-maken-pdf", label: "CV maken PDF" },
       { href: "/cv-maken-op-mobiel", label: "CV maken op mobiel" },
-      { href: "/cv-maken-in-engels", label: "CV maken in Engels" },
+      { href: "/engels-cv-template", label: "Engels cv maken" },
       { href: "/baan-wisselen", label: "Baan wisselen checklist" },
     ],
   },

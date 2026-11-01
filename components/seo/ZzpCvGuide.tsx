@@ -126,7 +126,7 @@ const RELATED = [
   { href: "/tools/werkervaring-bullets", label: "Werkervaring omzetten naar resultaten", body: "Van een takenlijst per opdracht naar twee of drie resultaatregels." },
   { href: "/cv-tips/cv-voor-detachering", label: "CV voor detachering", body: "Als je via een detacheerder werkt in plaats van op eigen naam." },
   { href: "/profieltekst-cv-voorbeelden", label: "Profieltekst voorbeelden", body: "Meer voorbeelden van een korte profieltekst bovenaan je cv." },
-  { href: "/cv-gids/engels-cv-in-nederland", label: "Engels cv in Nederland", body: "Voor opdrachten bij internationale teams die een Engels cv vragen." },
+  { href: "/engels-cv-template", label: "Engels cv maken", body: "Voor opdrachten bij internationale teams die een Engels cv vragen." },
 ];
 
 function Source({ id }: { id: keyof typeof SOURCES }) {

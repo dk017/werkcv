@@ -164,6 +164,10 @@ const nextConfig: NextConfig = {
         ['/cv-gids/beste-cv-builder-zonder-abonnement', '/cv-maken-zonder-abonnement'],
         // ZZP cv (1 Nov 2026): the guide ranked ~38 next to the example page at ~11 for the same queries.
         ['/cv-tips/freelance-cv-maken', '/cv-gids/cv-voorbeeld-zzper'],
+        // Engels cv (1 Nov 2026): five Dutch pages split ~1,550 impressions (1 click in 90 days); the template page ranked best.
+        ['/cv-gids/engels-cv-in-nederland', '/engels-cv-template'],
+        ['/engels-cv-voorbeeld', '/engels-cv-template'],
+        ['/cv-maken-in-engels', '/engels-cv-template'],
       ].map(([source, destination]) => ({ source, destination, statusCode: 301 as const })),
       // Consolidate overlapping English CV intent onto one owner per cluster.
       {

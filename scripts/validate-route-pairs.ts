@@ -24,10 +24,9 @@ assert.equal(
   "/en/guides/netherlands-cv-photo-rules",
 );
 assert.equal(getCounterpart("/en/guides/cv-format-netherlands-english"), null);
-assert.equal(
-  getCounterpart("/en/guides/cv-format-netherlands-english", "hreflang"),
-  "/cv-gids/engels-cv-in-nederland",
-);
+// Its Dutch guide 301s to /engels-cv-template since 1 Nov 2026, so it has no Dutch counterpart.
+assert.equal(getCounterpart("/en/guides/cv-format-netherlands-english", "hreflang"), null);
+assert.equal(getCounterpart("/engels-cv-template"), "/en/english-cv-example-netherlands");
 
 const duplicateDutchRoute: readonly RoutePair[] = [
   ...routePairs,

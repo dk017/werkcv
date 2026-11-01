@@ -54,7 +54,6 @@ const partnerAssets = [
       "Ondersteuning voor internationals die een CV of sollicitatiebrief voor de Nederlandse markt nodig hebben.",
     links: [
       { href: "/engels-cv-template", label: "Engels CV template" },
-      { href: "/cv-maken-in-engels", label: "CV maken in Engels" },
       { href: "/tools/zoekjaar-checker", label: "Zoekjaar checker" },
     ],
   },

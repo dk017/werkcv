@@ -159,7 +159,7 @@ export const routePairs = [
   },
   {
     id: "english-cv-example",
-    nl: "/engels-cv-voorbeeld",
+    nl: "/engels-cv-template",
     en: "/en/english-cv-example-netherlands",
     useForSwitcher: true,
     useForHreflang: true,
@@ -186,14 +186,6 @@ export const routePairs = [
     nl: "/cv-tips/ats-vriendelijk-cv",
     en: "/en/ats-resume-netherlands",
     useForSwitcher: true,
-    useForHreflang: true,
-    preserveSearch: false,
-  },
-  {
-    id: "guide-english-cv-in-netherlands",
-    nl: "/cv-gids/engels-cv-in-nederland",
-    en: "/en/guides/cv-format-netherlands-english",
-    useForSwitcher: false,
     useForHreflang: true,
     preserveSearch: false,
   },

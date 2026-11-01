@@ -111,12 +111,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.77,
         },
         {
-            url: `${baseUrl}/cv-maken-in-engels`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.88,
-        },
-        {
             url: `${baseUrl}/cv-maken-pdf`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
@@ -220,12 +214,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         },
         {
             url: `${baseUrl}/engels-cv-template`,
-            lastModified: new Date(),
-            changeFrequency: 'weekly',
-            priority: 0.83,
-        },
-        {
-            url: `${baseUrl}/engels-cv-voorbeeld`,
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 0.83,

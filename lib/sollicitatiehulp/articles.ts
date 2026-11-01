@@ -957,7 +957,7 @@ export const applicationHelpArticles: ApplicationHelpArticle[] = [
         description: "Bekijk de Nederlandse betekenis, spelling en kernonderdelen.",
       },
       {
-        href: "/cv-maken-in-engels",
+        href: "/engels-cv-template",
         label: "Cv maken in het Engels",
         description: "Pas taal, functietitels en internationale conventies goed toe.",
       },
@@ -968,7 +968,7 @@ export const applicationHelpArticles: ApplicationHelpArticle[] = [
       },
     ],
     primaryCta: {
-      href: "/cv-maken-in-engels",
+      href: "/engels-cv-template",
       label: "Maak je Engelse cv",
       description: "Zet inhoud en conventies om voor een internationale sollicitatie.",
     },

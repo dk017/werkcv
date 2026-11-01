@@ -115,11 +115,6 @@ export const cvVaardighedenKiezen: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/cv-maken-in-engels',
-                    label: 'Engels CV maken met een duidelijke talen-sectie',
-                    description: 'Gebruik een flow waarin Engels en Nederlands logisch naast elkaar kunnen worden gepresenteerd.',
-                },
-                {
                     href: '/engels-cv-template',
                     label: 'Kies een Engels CV template voor internationale sollicitaties',
                     description: 'Laat taalniveau en internationale context netjes landen in een recruiter-vriendelijke opmaak.',

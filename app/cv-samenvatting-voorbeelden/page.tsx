@@ -87,7 +87,7 @@ const summaryIntentLinks = [
       "Geef opleiding, stage en leervermogen sneller context met een korte sterke opening.",
   },
   {
-    href: "/cv-maken-in-engels",
+    href: "/engels-cv-template",
     label: "Engels CV maken voor Nederlandse recruiters",
     description:
       "Houd je samenvatting Engelstalig, maar laat de structuur wel aansluiten op Nederlandse scanverwachtingen.",
@@ -309,7 +309,7 @@ export default function CvSamenvattingVoorbeeldenPage() {
                   body: "Handige route als je samenvatting opleiding, stage en potentieel moet verbinden.",
                 },
                 {
-                  href: "/cv-maken-in-engels",
+                  href: "/engels-cv-template",
                   title: "Engels CV maken",
                   body: "Houd je opening Engelstalig, maar wel afgestemd op Nederlandse recruiters.",
                 },

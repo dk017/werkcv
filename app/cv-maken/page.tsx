@@ -791,7 +791,7 @@ export default function CvMakenPage() {
                     body: "Formelere variant van dezelfde intentie, handig voor zakelijke en traditionele zoekers.",
                   },
                   {
-                    href: "/cv-maken-in-engels",
+                    href: "/engels-cv-template",
                     title: "CV maken in Engels",
                     body: "Solliciteer je internationaal? Gebruik de Engelse workflow met copy-ready voorbeeldzinnen.",
                   },

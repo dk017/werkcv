@@ -190,7 +190,7 @@ const profileIntentLinks = [
       "Laat opleiding, stages en leervermogen sneller landen met een compacte opening bovenaan je CV.",
   },
   {
-    href: "/cv-maken-in-engels",
+    href: "/engels-cv-template",
     label: "Engels CV maken met Nederlandse scanstructuur",
     description:
       "Houd je profieltekst Engelstalig, maar laat de opbouw wel aansluiten op wat Nederlandse recruiters verwachten.",
@@ -476,7 +476,7 @@ export default function ProfieltekstCvVoorbeeldenPage() {
                   body: "Handig als je profieltekst opleiding, stages en eerste ervaring extra duidelijk moet maken.",
                 },
                 {
-                  href: "/cv-maken-in-engels",
+                  href: "/engels-cv-template",
                   title: "Engels CV maken",
                   body: "Gebruik een Engelstalige opening met een structuur die Nederlandse recruiters nog steeds snel kunnen scannen.",
                 },

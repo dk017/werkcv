@@ -6,7 +6,7 @@ export const metadata = buildEnglishMetadata({
   description:
     "See how an English CV for jobs in the Netherlands should read: profile summary, proof bullets, language levels, and Dutch-market structure.",
   path: "/en/english-cv-example-netherlands",
-  nlPath: "/engels-cv-voorbeeld",
+  nlPath: "/engels-cv-template",
   keywords: [
     "english cv example netherlands",
     "english cv netherlands example",

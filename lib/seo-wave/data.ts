@@ -77,7 +77,6 @@ const dutchSeeds: DutchSeed[] = [
     { slug: 'cv-zonder-ervaring-mbo', keyword: 'cv zonder ervaring mbo', role: 'MBO-starter', painPoint: 'relevantie te creeren zonder formele werkervaring' },
     { slug: 'cv-bbl-opleiding', keyword: 'cv bbl opleiding', role: 'BBL-starter', painPoint: 'leren en werken, praktische ervaring en beschikbaarheid helder te combineren' },
     { slug: 'cv-zonder-ervaring-hbo', keyword: 'cv zonder ervaring hbo', role: 'HBO-starter', painPoint: 'stage-, project- en studieresultaten slim te positioneren' },
-    { slug: 'engels-cv-in-nederland', keyword: 'engels cv in nederland', role: 'internationale kandidaat', painPoint: 'Nederlandse verwachtingen met Engelse inhoud te combineren' },
     { slug: 'foto-op-cv-nederland', keyword: 'foto op cv nederland', role: 'sollicitant in Nederland', painPoint: 'de juiste keuze te maken tussen wel of geen foto' },
 ];
 
@@ -360,207 +359,6 @@ const dutchBespokeOverrides: Record<string, GuideOverride> = {
                 ],
             },
         },
-    },
-    'engels-cv-in-nederland': {
-        intro: 'Voor internationale kandidaten in Nederland is de grootste uitdaging niet taal op zich, maar positionering. Dit CV moet tegelijk Engels leesbaar en Nederlands vacaturegericht zijn.',
-        sectionOverrides: {
-            'recruiter-scan': {
-                paragraphs: [
-                    'Recruiters in Nederland accepteren vaak Engels, maar verwachten wel lokale relevantie in functiebenaming, context en resultaatniveau.',
-                    'Zet daarom direct je target role, werkvergunningstatus (indien relevant) en meest relevante NL-marktresultaten bovenaan.',
-                    'Een goed Engels CV in Nederland voelt lokaal in structuur en bewijs, niet als een ongewijzigde US/UK resume.',
-                ],
-                intentLinks: [
-                    {
-                        href: '/cv-maken-in-engels',
-                        label: 'Engels CV maken met Nederlandse recruiter-logica',
-                        description: 'Start vanuit een flow die Engelse copy combineert met de structuur die in Nederland verwacht wordt.',
-                    },
-                    {
-                        href: '/engels-cv-template',
-                        label: 'Kies een Engels CV template voor sollicitaties in Nederland',
-                        description: 'Gebruik een template waarin je target role, taalniveau en relevante resultaten direct bovenaan staan.',
-                    },
-                ],
-            },
-            ats: {
-                bullets: [
-                    'Combineer Engelse kerntermen met Nederlandse vacaturewoorden: bijvoorbeeld "customer success / klanttevredenheid".',
-                    'Gebruik functietitels uit de vacature en voeg zo nodig een alternatieve titel tussen haakjes toe.',
-                    'Noem taalniveau expliciet (Nederlands A2/B1/B2, English C1/C2) zodat recruiters risico beter inschatten.',
-                ],
-                intentLinks: [
-                    {
-                        href: '/engels-cv-template',
-                        label: 'Gebruik een Engels CV template met sterkere ATS-leesbaarheid',
-                        description: 'Houd Engelse termen en Nederlandse vacaturekeywords samen in een layout die recruitersoftware goed begrijpt.',
-                    },
-                    {
-                        href: '/en/dutch-cv-template',
-                        label: 'Open de Dutch CV template flow in het Engels',
-                        description: 'Behoud je Engelse inhoud terwijl je CV de Nederlandse structuur en scanvolgorde volgt.',
-                    },
-                ],
-            },
-        },
-        additionalSections: [
-            {
-                id: 'startup-vs-corporate',
-                title: 'Hoe stem je een CV af op een Nederlandse startup of corporate werkgever?',
-                paragraphs: [
-                    'Een startup-CV en corporate-CV hebben dezelfde heldere Nederlandse basis. Je verandert vooral welk bewijs je bovenaan zet voor de werkomgeving, de vacature en de persoon die selecteert.',
-                    'Bij startups en scale-ups benadruk je eigenaarschap in een veranderlijke omgeving: wat je hebt gebouwd, gelanceerd, getest of verbeterd, hoe je over teams heen werkte en hoe dicht je bij klant of product stond. Gebruik termen als ownership, experimenten of go-to-market alleen wanneer ze je echte ervaring beschrijven.',
-                    'Bij corporate functies laat je schaal en betrouwbare uitvoering zien: scope, stakeholders, procesverbetering, risico of compliance, budgetten, systemen en KPI’s. Zet certificaten, talen en de omvang of complexiteit van je verantwoordelijkheden duidelijk neer wanneer die relevant zijn.',
-                    'Pas dus vooral de bovenste helft van je CV aan. Een startup-versie kan beginnen met hands-on eigenaarschap en breedte; een corporate-versie met schaal, structuur en stakeholderdelivery. Houd beide versies feitelijk, compact en ATS-leesbaar.',
-                ],
-                comparisonTable: {
-                    columns: ['Wat benadruk je?', 'Startup of scale-up', 'Corporate of enterprise'],
-                    rows: [
-                        {
-                            label: 'Profiel',
-                            primary: 'Eigenaarschap, aanpassingsvermogen en klant- of productnabijheid.',
-                            secondary: 'Rolomvang, betrouwbare levering, stakeholders en domeinkennis.',
-                        },
-                        {
-                            label: 'Werkervaring',
-                            primary: 'Gebouwd, gelanceerd, getest of verbeterd; samenwerking over teams heen.',
-                            secondary: 'Aangestuurd, geleverd of gestandaardiseerd; schaal, governance en KPI’s.',
-                        },
-                        {
-                            label: 'Bewijs',
-                            primary: 'Experimenten, adoptie, activatie, doorlooptijd, klantfeedback of omzetimpact.',
-                            secondary: 'Budget, volume, SLA, besparing, kwaliteit, compliance of continuïteit.',
-                        },
-                        {
-                            label: 'Opmaak',
-                            primary: 'Iets meer persoonlijkheid mag, zolang tekst selecteerbaar en scanbaar blijft.',
-                            secondary: 'Een rustige eenkolomsopmaak is het veiligst voor portals en screening.',
-                        },
-                    ],
-                },
-                bullets: [
-                    'Lees de vacature en onderzoek de bedrijfstaal; niet elke startup wil een informeel CV en niet elk corporate bedrijf een stijve presentatie.',
-                    'Houd je loopbaanfeiten gelijk en wijzig vooral kopregel, profiel, volgorde en sterkste bullets.',
-                    'Link alleen naar een portfolio, case of GitHub als die link actuele en relevante bewijsvoering bevat.',
-                ],
-                intentLinks: [
-                    {
-                        href: '/cv-tips/ats-vriendelijk-cv',
-                        label: 'Maak je CV ATS-vriendelijk',
-                        description: 'Houd je doelgroepgerichte bewijs leesbaar voor zowel software als recruiter.',
-                    },
-                    {
-                        href: '/cv-tips/cv-template-kiezen',
-                        label: 'Kies de juiste CV-template',
-                        description: 'Gebruik een rustige basis en voeg alleen visuele persoonlijkheid toe als de context dat ondersteunt.',
-                    },
-                ],
-            },
-            {
-                id: 'cv-length',
-                title: '1 of 2 pagina’s op een CV in Nederland?',
-                paragraphs: [
-                    'Werkgevers hebben geen universele voorkeur. Nederlandse loopbaanbegeleiding behandelt één tot twee pagina’s als normaal. De beste regel is: gebruik de kortste versie die alle relevante bewijs voor deze vacature bewaart.',
-                    'Kies één pagina voor studenten, starters en kandidaten met een beperkte maar duidelijke relevante geschiedenis. Twee pagina’s zijn logisch wanneer pagina twee relevante functies, projecten, certificaten, technische diepgang of leiderschap toevoegt. Schrap sterke bewijzen niet alleen om een willekeurige paginagrens te halen.',
-                    'Pagina één moet zelfstandig overtuigen met doelrol, profiel, recente resultaten, vaardigheden en talen. Pagina twee moet het verhaal verdiepen en geen opvulling of irrelevante oude details bevatten. Bestaat pagina twee uit slechts enkele regels, bewerk dan terug naar één pagina.',
-                ],
-                comparisonTable: {
-                    columns: ['Situatie', 'Eén pagina is meestal genoeg', 'Twee pagina’s zijn logisch'],
-                    rows: [
-                        {
-                            label: 'Student of starter',
-                            primary: 'Opleiding, projecten, stages en relevante bijbaan.',
-                            secondary: 'Meerdere substantiële projecten of stages vragen om extra bewijsruimte.',
-                        },
-                        {
-                            label: 'Junior',
-                            primary: 'Een duidelijke doelrol met enkele relevante functies.',
-                            secondary: 'Meerdere direct relevante functies of een carrièreswitch vraagt context.',
-                        },
-                        {
-                            label: 'Medior of senior',
-                            primary: 'Een smalle specialisatie of korte loopbaan met weinig herhaling.',
-                            secondary: 'Relevante leiding, schaal, certificaten, projecten of domeindiepte.',
-                        },
-                    ],
-                },
-                bullets: [
-                    'Schrap eerst irrelevante details, herhaalde taken en oude functies met weinig waarde.',
-                    'Maak het lettertype niet kleiner dan prettig leesbaar om één pagina af te dwingen.',
-                    'Laat de vacature bepalen welk bewijs ruimte verdient; relevantie is belangrijker dan een vaste regel.',
-                ],
-            },
-            {
-                id: 'creative-templates',
-                title: 'Zijn creatieve CV-templates geaccepteerd in Nederland?',
-                paragraphs: [
-                    'Soms, maar creatief betekent niet automatisch decoratief. Voor design-, branding- en contentfuncties kan een beheerste visuele identiteit helpen, vooral bij een directe menselijke beoordeling. Je portfolio en relevante werk blijven het belangrijkste bewijs.',
-                    'Voor corporate portals, bureaus, gereguleerde werkgevers en internationale bedrijven met ATS is een eenvoudige eenkolomsversie veiliger. Afbeeldingen, tekst als plaatje, complexe tabellen, tekstvakken, kop- en voetteksten of meerdere kolommen kunnen het uitlezen bemoeilijken.',
-                    'Bewaar daarom een ATS-veilige masterversie en maak alleen een terughoudende visuele variant als de werkgever of context daar ruimte voor geeft. Skillbars, sterren en grafieken vervangen geen concreet bewijs.',
-                ],
-                bullets: [
-                    'Gebruik typografie, witruimte en maximaal één accentkleur voor persoonlijkheid zonder inhoud te verstoppen.',
-                    'Zet naam, contactgegevens, datums, koppen en functietitels als normale selecteerbare tekst.',
-                    'Zet bij creatieve functies portfolio en relevante resultaten boven decoratieve elementen.',
-                    'Volg de instructies van het sollicitatieportal en kies bij twijfel de rustigere versie.',
-                ],
-            },
-            {
-                id: 'graduate-without-experience',
-                title: 'Hoe maak je als starter een sterk CV zonder veel werkervaring?',
-                paragraphs: [
-                    'Bied geen excuses aan voor beperkte ervaring. Bouw je CV rond bewijs dat je iets hebt uitgevoerd: stages, studie- of eigen projecten, scriptie, bijbanen, vrijwilligerswerk, commissies, competities, freelance werk, open source of relevante vakken.',
-                    'Zet opleiding, afstudeerdatum en beschikbaarheid hoog wanneer die informatie helpt. Beschrijf per project wat je deed, welke tool of methode je gebruikte, wat de omvang was en wat je opleverde. Gebruik echte resultaten en verzin geen bedrijfsmetrics.',
-                    'Een gerichte CV van één pagina is meestal een goed startpunt. Vervang een algemeen studentenprofiel door doelrol, relevante tools, taalniveau en twee of drie bewijsbullets. Een bijbaan telt mee als je betrouwbaarheid, klantcontact, planning of teamwork laat zien.',
-                ],
-                exampleTitle: 'Voorbeelden voor een starter-CV',
-                exampleItems: [
-                    'Studieproject: Een churnanalyse in Python gebouwd op een cursusdataset en drie retentieadviezen aan een projectteam van vijf studenten gepresenteerd.',
-                    'Bijbaan: Zes nieuwe collega’s ingewerkt op openings- en sluitprocedures tijdens drukke weekenddiensten.',
-                    'Studievereniging: Werkgeversbijeenkomsten georganiseerd en sprekers, promotie en logistiek op de dag zelf gecoördineerd.',
-                ],
-                bullets: [
-                    'Gebruik Projecten of Relevante ervaring als formele werkervaring beperkt is.',
-                    'Noem alleen vaardigheden die je in een opdracht of gesprek kunt demonstreren; laat tools in projectbullets terugkomen.',
-                    'Voeg alleen een directe portfolio-, GitHub- of LinkedIn-link toe als er relevant afgerond werk op staat.',
-                    'Houd irrelevante vakken en schooldetails kort en geef ruimte aan bewijs en beschikbaarheid.',
-                ],
-            },
-        ],
-        faq: [
-            {
-                question: 'Mag ik volledig in het Engels solliciteren in Nederland?',
-                answer: 'Ja, vooral bij internationale werkgevers en veel techrollen. Controleer altijd de vacaturenaam en bedrijfstaal voordat je verstuurt.',
-            },
-            {
-                question: 'Moet ik Nederlandse termen opnemen in een Engels CV?',
-                answer: 'Ja, selectief. Gebruik cruciale vacaturetermen zodat ATS en recruiters je profiel sneller koppelen aan de functie.',
-            },
-            {
-                question: 'Hoe vermeld ik taalniveau slim?',
-                answer: 'Noem taalniveau concreet per taal (bijv. Dutch B1, English C1) en plaats dit in een aparte talen-sectie.',
-            },
-            {
-                question: 'Wat is de meest gemaakte fout van expats op CV?',
-                answer: 'Te generieke, lange summaries zonder lokale context. Korte, resultaatgerichte formulering werkt beter in de Nederlandse markt.',
-            },
-            {
-                question: 'Hoe stem ik mijn CV af op een Nederlandse startup versus corporate werkgever?',
-                answer: 'Leg bij startups de nadruk op eigenaarschap, breedte, experimenten en klant- of productimpact. Leg bij corporate functies de nadruk op schaal, stakeholders, processen, governance, risico en KPI’s. Houd je feiten gelijk en pas vooral profiel en sterkste bullets aan.',
-            },
-            {
-                question: 'Hebben werkgevers in Nederland liever een CV van één of twee pagina’s?',
-                answer: 'Er is geen vaste voorkeur. Eén gerichte pagina past meestal bij starters; twee pagina’s zijn prima als de tweede pagina relevante ervaring, projecten of certificaten toevoegt en geen opvulling bevat.',
-            },
-            {
-                question: 'Zijn creatieve CV-templates geaccepteerd in Nederland?',
-                answer: 'Soms, vooral bij creatieve functies of directe menselijke beoordeling. Gebruik voor portals en ATS een rustige eenkolomsversie met selecteerbare tekst en laat je portfolio de creativiteit bewijzen.',
-            },
-            {
-                question: 'Hoe maak ik als pas afgestudeerde een sterk CV zonder veel ervaring?',
-                answer: 'Gebruik stages, studie- en eigen projecten, scriptie, bijbanen, vrijwilligerswerk en commissies als bewijs. Beschrijf je actie, tools en resultaat, zet opleiding en beschikbaarheid duidelijk neer en houd de CV gericht op één pagina.',
-            },
-        ],
     },
     'cv-voorbeeld-administratief-medewerker': {
         intro: 'Een administratief medewerker wordt vaak op details geselecteerd: nauwkeurigheid, structuur en betrouwbaarheid. Dit CV-format laat zien hoe je dat direct overtuigend bewijst.',
@@ -3346,7 +3144,7 @@ function getDutchRelatedLinks(seed: DutchSeed): SeoGuidePage['relatedLinks'] {
     if (seed.slug.includes('engels-cv') || seed.slug.includes('foto-op-cv')) {
         return [
             {
-                href: '/cv-gids/engels-cv-in-nederland',
+                href: '/engels-cv-template',
                 title: 'Engels CV in Nederland',
                 description: 'Zo positioneer je een Engelstalig CV voor Nederlandse recruiters en ATS-systemen.',
             },
@@ -4754,7 +4552,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 ],
                 intentLinks: [
                     {
-                        href: '/cv-maken-in-engels',
+                        href: '/engels-cv-template',
                         label: 'Gebruik WerkCV als je vooral een Engels cv voor Nederland wilt maken',
                         description: 'Handig als je niet per se een internationale suite nodig hebt, maar wel een Engelstalig sollicitatiedocument.',
                     },
@@ -4837,7 +4635,7 @@ const dutchEditorialPages: SeoGuidePage[] = [
                 description: 'Vergelijk WerkCV ook met andere no-subscription routes en niet alleen met Zety.',
             },
             {
-                href: '/cv-maken-in-engels',
+                href: '/engels-cv-template',
                 title: 'Engels cv maken',
                 description: 'Handig als je Zety overwoog vanwege de Engelstalige builder-ervaring maar toch in Nederland solliciteert.',
             },

@@ -199,7 +199,7 @@ export const cvOpleidingVermelden: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/cv-maken-in-engels',
+                    href: '/engels-cv-template',
                     label: 'Engels CV maken met internationale opleiding',
                     description: 'Presenteer buitenlandse diploma\'s en Nederlandse niveau-uitleg in een Engelstalige CV-route.',
                 },

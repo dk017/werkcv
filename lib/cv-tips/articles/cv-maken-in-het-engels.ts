@@ -83,11 +83,6 @@ export const cvMakenInHetEngels: BlogArticle = {
             ],
             intentLinks: [
                 {
-                    href: '/cv-maken-in-engels',
-                    label: 'CV maken in Engels met de juiste internationale structuur',
-                    description: 'Gebruik een canonieke Engelse landingspagina die direct op deze intentie aansluit.',
-                },
-                {
                     href: '/engels-cv-template',
                     label: 'Engels CV template kiezen voor je eerste versie',
                     description: 'Ga direct naar templates die passen bij internationale en Nederlandstalige recruiters.',
@@ -222,7 +217,7 @@ export const cvMakenInHetEngels: BlogArticle = {
                     description: 'Use the translator flow if you already have a PDF resume and want a faster starting draft.',
                 },
                 {
-                    href: '/cv-maken-in-engels',
+                    href: '/engels-cv-template',
                     label: 'Build an English CV directly inside WerkCV',
                     description: 'Open the main English-building route if you prefer to start fresh instead of translating.',
                 },

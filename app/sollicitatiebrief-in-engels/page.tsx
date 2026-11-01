@@ -360,7 +360,7 @@ export default function SollicitatiebriefInEngelsPage() {
               </div>
               <div className="mt-3">
                 <Link
-                  href="/cv-maken-in-engels"
+                  href="/engels-cv-template"
                   className="text-sm font-black text-black underline decoration-2 underline-offset-4"
                 >
                   Bouw ook je CV in het Engels met de complete gids
