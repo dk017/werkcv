@@ -3,6 +3,7 @@ import type { CVData, CvLayoutFont } from "@/lib/cv";
 import type { ColorTheme } from "@/lib/templates";
 import { formatGender, formatLanguageLevel, formatMaritalStatus, resumeText } from "@/lib/resume-language";
 import { cvSectionHasSubstantiveContent, resolveCvSectionLayout, type CvBodySectionId } from "@/lib/cv-sections";
+import { groupExperienceByCompany, type ExperienceGroup } from "@/lib/experience-groups";
 import { OrderedSectionContainer } from "./section-layout";
 import { LinkText } from "./link-utils";
 import { CvDocumentHeading } from "./document-heading";
@@ -79,10 +80,42 @@ function RatedItems({ items, style }: { items: Array<{ name: string; level?: num
     return <div className="flex flex-wrap gap-2">{items.map((item, index) => <span key={index} className="rounded-full px-3 py-1 text-[length:calc(11px*var(--cv-fs,1))] font-medium" style={{ backgroundColor: "var(--cv-soft)", color: "var(--cv-primary)" }}>{name(item, index)}</span>)}</div>;
 }
 
+function EntryDates({ path, item }: { path: string; item: { start: string; end: string } }) {
+    return <span className="shrink-0 text-[length:calc(11px*var(--cv-fs,1))] text-current/65"><Editable path={`${path}.start`} value={item.start} field="start" /><InlineSeparator show={Boolean(item.start && item.end)} text=" – " /><WhenFilledOrEditing value={item.end}><Editable path={`${path}.end`} value={item.end} field="end" /></WhenFilledOrEditing></span>;
+}
+
+function EntryDetails({ path, item }: { path: string; item: CVData["experience"][number] }) {
+    return <>{item.description ? <p className="mt-1 text-[length:calc(11.5px*var(--cv-fs,1))] leading-[calc(1.625*var(--cv-lh,1))] text-current/80"><Editable path={`${path}.description`} value={item.description} field="description" /></p> : null}{item.highlights?.length ? <ArrayList items={item.highlights} listPath={`${path}.highlights`} /> : <InlineAddButton kind="bullet" listPath={`${path}.highlights`} count={0} />}</>;
+}
+
+function ExperienceEntry({ data, index }: { data: CVData; index: number }) {
+    const item = data.experience[index];
+    const path = `experience.${index}`;
+    return <article data-cv-entry={`experience:${index}`} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div className="min-w-0"><h3 className="text-[length:calc(13px*var(--cv-fs,1))] font-bold"><Editable path={`${path}.role`} value={item.role} field="role" /></h3><p className="text-[length:calc(12px*var(--cv-fs,1))] text-current/65"><Editable path={`${path}.company`} value={item.company} field="company" /><InlineSeparator show={Boolean(item.location)} text=" | " /><WhenFilledOrEditing value={item.location}><Editable path={`${path}.location`} value={item.location} field="location" /></WhenFilledOrEditing></p></div><EntryDates path={path} item={item} /></div><EntryDetails path={path} item={item} /></article>;
+}
+
+/** Several roles at one company: the company once as the heading, each role with its own dates below it. */
+function ExperienceCompanyGroup({ data, group }: { data: CVData; group: ExperienceGroup }) {
+    const [first, ...rest] = group.indexes;
+    const head = data.experience[first];
+    const linked = (field: "company" | "location") => rest.map((index) => `experience.${index}.${field}`);
+    return <div data-cv-experience-group="">{group.indexes.map((index, position) => {
+        const item = data.experience[index];
+        const path = `experience.${index}`;
+        return <article data-cv-entry={`experience:${index}`} key={index} className="break-inside-avoid">
+            {position === 0 ? <h3 className="text-[length:calc(13px*var(--cv-fs,1))] font-bold"><Editable path={`${path}.company`} value={head.company} field="company" linkedPaths={linked("company")} />{group.sharedLocation ? <span className="font-normal text-current/65"><InlineSeparator show={Boolean(head.location)} text=" | " /><WhenFilledOrEditing value={head.location}><Editable path={`${path}.location`} value={head.location} field="location" linkedPaths={linked("location")} /></WhenFilledOrEditing></span> : null}</h3> : null}
+            <div className={`border-l-2 border-current/15 pl-3 ${position === 0 ? "mt-1.5" : "pt-[calc(0.75rem*var(--cv-gap,1))]"}`}>
+                <div className="flex items-start justify-between gap-4"><div className="min-w-0"><h4 className="text-[length:calc(12.5px*var(--cv-fs,1))] font-semibold"><Editable path={`${path}.role`} value={item.role} field="role" /></h4>{group.sharedLocation ? null : <WhenFilledOrEditing value={item.location}><p className="text-[length:calc(11.5px*var(--cv-fs,1))] text-current/65"><Editable path={`${path}.location`} value={item.location} field="location" /></p></WhenFilledOrEditing>}</div><EntryDates path={path} item={item} /></div>
+                <EntryDetails path={path} item={item} />
+            </div>
+        </article>;
+    })}</div>;
+}
+
 function SectionBody({ id, data, visualStyle }: { id: CvBodySectionId; data: CVData; visualStyle: TemplateVisualStyle }) {
     switch (id) {
         case "experience":
-            return <div className="space-y-[calc(1rem*var(--cv-gap,1))]">{data.experience.map((item, index) => <article data-cv-entry={`experience:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div className="min-w-0"><h3 className="text-[length:calc(13px*var(--cv-fs,1))] font-bold"><Editable path={`experience.${index}.role`} value={item.role} field="role" /></h3><p className="text-[length:calc(12px*var(--cv-fs,1))] text-current/65"><Editable path={`experience.${index}.company`} value={item.company} field="company" /><InlineSeparator show={Boolean(item.location)} text=" | " /><WhenFilledOrEditing value={item.location}><Editable path={`experience.${index}.location`} value={item.location} field="location" /></WhenFilledOrEditing></p></div><span className="shrink-0 text-[length:calc(11px*var(--cv-fs,1))] text-current/65"><Editable path={`experience.${index}.start`} value={item.start} field="start" /><InlineSeparator show={Boolean(item.start && item.end)} text=" – " /><WhenFilledOrEditing value={item.end}><Editable path={`experience.${index}.end`} value={item.end} field="end" /></WhenFilledOrEditing></span></div>{item.description ? <p className="mt-1 text-[length:calc(11.5px*var(--cv-fs,1))] leading-[calc(1.625*var(--cv-lh,1))] text-current/80"><Editable path={`experience.${index}.description`} value={item.description} field="description" /></p> : null}{item.highlights?.length ? <ArrayList items={item.highlights} listPath={`experience.${index}.highlights`} /> : <InlineAddButton kind="bullet" listPath={`experience.${index}.highlights`} count={0} />}</article>)}<InlineAddButton kind="experience" listPath="experience" count={data.experience.length} /></div>;
+            return <div className="space-y-[calc(1rem*var(--cv-gap,1))]">{groupExperienceByCompany(data.experience).map((group) => group.indexes.length === 1 ? <ExperienceEntry key={group.indexes[0]} data={data} index={group.indexes[0]} /> : <ExperienceCompanyGroup key={group.indexes[0]} data={data} group={group} />)}<InlineAddButton kind="experience" listPath="experience" count={data.experience.length} /></div>;
         case "education":
             return <div className="space-y-[calc(0.75rem*var(--cv-gap,1))]">{data.education.map((item, index) => <article data-cv-entry={`education:${index}`} key={index} className="break-inside-avoid"><div className="flex items-start justify-between gap-4"><div><h3 className="text-[length:calc(13px*var(--cv-fs,1))] font-bold"><Editable path={`education.${index}.degree`} value={item.degree} field="degree" /></h3><p className="text-[length:calc(12px*var(--cv-fs,1))] text-current/65"><Editable path={`education.${index}.school`} value={item.school} field="school" /><InlineSeparator show={Boolean(item.location)} text=" | " /><WhenFilledOrEditing value={item.location}><Editable path={`education.${index}.location`} value={item.location} field="location" /></WhenFilledOrEditing></p></div><span className="shrink-0 text-[length:calc(11px*var(--cv-fs,1))] text-current/65"><Editable path={`education.${index}.start`} value={item.start} field="start" /><InlineSeparator show={Boolean(item.start && item.end)} text=" – " /><WhenFilledOrEditing value={item.end}><Editable path={`education.${index}.end`} value={item.end} field="end" /></WhenFilledOrEditing></span></div>{item.description ? <p className="mt-1 text-[length:calc(11.5px*var(--cv-fs,1))] leading-[calc(1.625*var(--cv-lh,1))] text-current/80"><Editable path={`education.${index}.description`} value={item.description} field="description" /></p> : null}</article>)}<InlineAddButton kind="education" listPath="education" count={data.education.length} /></div>;
         case "internships":

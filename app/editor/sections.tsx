@@ -93,7 +93,7 @@ export function ExperienceSection({ control, register, entryRequest, uiLanguage 
     writingBlocked?: boolean;
 }) {
     const s = useSectionStyles();
-    const { fields, append, remove } = useFieldArray({
+    const { fields, append, remove, move } = useFieldArray({
         control,
         name: "experience",
     });
@@ -118,6 +118,13 @@ export function ExperienceSection({ control, register, entryRequest, uiLanguage 
                     {t(uiLanguage, "+ Toevoegen", "+ Add")}
                 </button>
             </div>
+            {fields.length > 0 && (
+                <p className={s.hint}>
+                    {t(uiLanguage,
+                        "Meerdere functies bij één werkgever? Voeg elke functie apart toe met precies dezelfde bedrijfsnaam en zet ze onder elkaar: je cv toont ze dan onder één bedrijfskop.",
+                        "Several roles at one employer? Add each role as its own entry with exactly the same company name, one after the other: your CV then shows them under one company heading.")}
+                </p>
+            )}
 
             <div className="space-y-4">
                 {fields.map((item, index) => {
@@ -128,6 +135,9 @@ export function ExperienceSection({ control, register, entryRequest, uiLanguage 
                         register={register}
                         control={control}
                         onRemove={() => remove(index)}
+                        onMove={fields.length > 1 ? (offset) => move(index, index + offset) : undefined}
+                        canMoveUp={index > 0}
+                        canMoveDown={index < fields.length - 1}
                         fieldName="experience"
                         onBulletAssist={onWritingAssist && item.entryId ? (action, bullet) => onWritingAssist(item.entryId!, action, bullet) : undefined}
                         writingBlocked={writingBlocked}
@@ -157,11 +167,15 @@ export function ExperienceSection({ control, register, entryRequest, uiLanguage 
     );
 }
 
-function ExperienceItem({ index, register, control, onRemove, fieldName, uiLanguage, onBulletAssist, writingBlocked }: {
+function ExperienceItem({ index, register, control, onRemove, onMove, canMoveUp, canMoveDown, fieldName, uiLanguage, onBulletAssist, writingBlocked }: {
     index: number;
     register: UseFormRegister<CVData>;
     control: Control<CVData>;
     onRemove: () => void;
+    /** Move the entry one place up (-1) or down (1): roles at one company group only when they are next to each other. */
+    onMove?: (offset: -1 | 1) => void;
+    canMoveUp?: boolean;
+    canMoveDown?: boolean;
     fieldName: "experience" | "internships";
     uiLanguage: UiLanguage;
     onBulletAssist?: (action: WritingAction, bullet: BulletSelection) => void;
@@ -328,6 +342,16 @@ function ExperienceItem({ index, register, control, onRemove, fieldName, uiLangu
                     ))}
                 </div>
             </div>
+            {onMove && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                    <button type="button" onClick={() => onMove(-1)} disabled={!canMoveUp} className={`${s.smallAdd} disabled:cursor-not-allowed disabled:opacity-40`}>
+                        {t(uiLanguage, "↑ Functie omhoog", "↑ Move role up")}
+                    </button>
+                    <button type="button" onClick={() => onMove(1)} disabled={!canMoveDown} className={`${s.smallAdd} disabled:cursor-not-allowed disabled:opacity-40`}>
+                        {t(uiLanguage, "↓ Functie omlaag", "↓ Move role down")}
+                    </button>
+                </div>
+            )}
         </div>
     );
 }

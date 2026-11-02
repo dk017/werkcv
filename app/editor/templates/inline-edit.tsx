@@ -52,6 +52,8 @@ type EditableProps = {
     placeholder?: string;
     /** Applied before storing (e.g. a heading typed back to its default is stored as "use default"). */
     normalize?: (text: string) => string;
+    /** Other fields that show as this one (a company heading shared by grouped jobs): written along with path. */
+    linkedPaths?: string[];
 };
 
 const EDITABLE_CLASS = "cursor-text rounded-[2px] outline-none transition-colors hover:bg-[#4ecdc4]/10 focus:bg-[#4ecdc4]/15 focus:shadow-[0_0_0_2px_#4ecdc4] empty:inline-block empty:min-w-[3ch] empty:before:text-[#94a3b8] empty:before:content-[attr(data-placeholder)]";
@@ -86,9 +88,12 @@ function placeCaretAtEnd(element: HTMLElement) {
     selection.addRange(range);
 }
 
-function EditableField({ path, value, field, multiline = false, as: Tag = "span", className = "", list, placeholder, normalize, api }: Omit<EditableProps, "fallback"> & { api: InlineEditApi }) {
+function EditableField({ path, value, field, multiline = false, as: Tag = "span", className = "", list, placeholder, normalize, linkedPaths = [], api }: Omit<EditableProps, "fallback"> & { api: InlineEditApi }) {
     const label = placeholder ? `${api.label(field)}: ${placeholder}` : api.label(field);
-    const store = (raw: string) => api.onChange(path, normalize ? normalize(raw) : raw);
+    const store = (raw: string) => {
+        const next = normalize ? normalize(raw) : raw;
+        for (const target of [path, ...linkedPaths]) api.onChange(target, next);
+    };
     const ref = useRef<HTMLElement>(null);
     const valueAtFocus = useRef("");
     const text = value ?? "";
