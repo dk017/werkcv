@@ -150,13 +150,9 @@ export function buildDodoCheckoutBody(
     minimal_address: true,
   };
 
-  if (euroCountry === "NL") {
-    body.billing_currency = "EUR";
-    body.billing_address = {
-      country: "NL",
-      zipcode: "1012JS",
-    };
-  } else if (euroCountry) {
+  // Never fill in a zipcode: Dodo locks pre-filled address fields and prints them on the invoice,
+  // so a placeholder ended up as the buyer's address on business invoices (2026-11).
+  if (euroCountry) {
     body.billing_currency = "EUR";
     body.billing_address = { country: euroCountry };
   } else if (visitorCountry && EURO_AREA.has(visitorCountry)) {

@@ -48,7 +48,7 @@ test("English CV bought from the Netherlands gets EUR, NL billing and iDEAL", as
   assert.equal(body.return_url, "https://werkcv.nl/success?lang=en&cvId=cv-789");
   assert.equal(featureFlags.allow_currency_selection, false);
   assert.equal(body.billing_currency, "EUR");
-  assert.deepEqual(body.billing_address, { country: "NL", zipcode: "1012JS" });
+  assert.deepEqual(body.billing_address, { country: "NL" });
   assert.ok((body.allowed_payment_method_types as string[]).includes("ideal"));
   assert.ok(!(body.allowed_payment_method_types as string[]).includes("upi_collect"));
 });
@@ -211,7 +211,7 @@ test("With DODO_EU_LOCAL_METHODS on, BE/AT/PT get EUR, their country and their l
     assert.equal(germany.billing_currency, "EUR", "euro-area countries without a local method get EUR");
     assert.equal((germany.allowed_payment_method_types as string[])[0], "ideal", "and no local method of their own");
     const nl = buildDodoCheckoutBody("cv-803", undefined, "en", "NL");
-    assert.deepEqual(nl.billing_address, { country: "NL", zipcode: "1012JS" });
+    assert.deepEqual(nl.billing_address, { country: "NL" });
   } finally {
     delete process.env.DODO_EU_LOCAL_METHODS;
   }
