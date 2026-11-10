@@ -248,7 +248,7 @@ export default function HomePageClient({
                                 Nederlandse CV builder
                             </div>
                             <h1 className="max-w-3xl text-4xl sm:text-5xl md:text-6xl font-black text-black leading-tight mb-6">
-                                Maak een{" "}
+                                CV maken: een{" "}
                                 <span className="wk-hero-highlight">
                                     duidelijk
                                 </span>{" "}
@@ -758,113 +758,6 @@ export default function HomePageClient({
                         >
                             Bekijk alle veelgestelde vragen
                         </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* ============================================================ */}
-            {/* TOOLS PROMO - 4 highlighted tools */}
-            {/* ============================================================ */}
-            <section className="relative z-10 wk-section bg-[var(--wk-surface)]">
-                <div className="max-w-6xl mx-auto px-6">
-                    <div className="flex items-center justify-between mb-10">
-                        <div>
-                            <h2 className="text-3xl md:text-4xl font-semibold text-[var(--wk-ink)]">
-                                Gratis carrière tools
-                            </h2>
-                            <p className="text-[var(--wk-ink-muted)] font-medium mt-1">Geen registratie vereist</p>
-                        </div>
-                        <Link
-                            href="/tools"
-                            className="hidden sm:flex items-center gap-1 font-bold text-sm text-[var(--wk-primary)] hover:underline"
-                        >
-                            Bekijk alle tools
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
-                            </svg>
-                        </Link>
-                    </div>
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                        {[
-                            { href: "/tools/salaris-calculator", title: "Salaris check", desc: "Vergelijk je salaris met CBS-marktdata per beroep.", badge: "Geld" },
-                            { href: "/tools/netto-bruto-calculator", title: "Netto-Bruto", desc: "Bereken bruto naar netto en netto naar bruto voor 2026.", badge: "Geld" },
-                            { href: "/tools/vakantiegeld-berekenen", title: "Vakantiegeld", desc: "Bereken je bruto vakantiegeld op basis van 8% en je loon.", badge: "Geld" },
-                            { href: "/tools/ww-recht-checker", title: "WW-recht", desc: "Controleer snel de basisvoorwaarden voor WW.", badge: "NL wetgeving" },
-                        ].map((tool) => (
-                            <Link
-                                key={tool.href}
-                                href={tool.href}
-                                className="group block rounded-[var(--wk-radius-md)] border border-[var(--wk-border)] bg-[var(--wk-surface)] p-4 shadow-[var(--wk-shadow-sm)] transition-all hover:-translate-y-0.5 hover:shadow-[var(--wk-shadow-md)]"
-                            >
-                                <div className="flex items-start justify-between gap-2 mb-2">
-                                    <h3 className="font-semibold text-[var(--wk-ink)] text-sm leading-tight group-hover:text-[var(--wk-primary)] transition-colors">
-                                        {tool.title}
-                                    </h3>
-                                    <span className="flex-shrink-0 rounded-full border border-[var(--wk-border)] bg-[var(--wk-accent-soft)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-[var(--wk-primary)]">
-                                        {tool.badge}
-                                    </span>
-                                </div>
-                                <p className="text-xs text-[var(--wk-ink-muted)] leading-relaxed">{tool.desc}</p>
-                            </Link>
-                        ))}
-                    </div>
-                    <div className="sm:hidden text-center mt-6">
-                        <Link href="/tools" className="inline-flex items-center gap-1 font-bold text-sm text-[var(--wk-primary)] hover:underline">
-                            Bekijk alle gratis tools
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
-                            </svg>
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            <section className="relative z-10 wk-section">
-                <div className="max-w-6xl mx-auto px-6">
-                    <div className="max-w-3xl">
-                        <span className="wk-eyebrow">
-                            B2B routes
-                        </span>
-                        <h2 className="mt-4 text-3xl md:text-4xl font-semibold text-[var(--wk-ink)]">
-                            Werk je met kandidaten, cliënten of deelnemers?
-                        </h2>
-                        <p className="mt-4 text-base md:text-lg font-medium leading-relaxed text-[var(--wk-ink-muted)]">
-                            WerkCV heeft ook routes voor coaches, recruitmentbureaus en partners die hun doelgroep sneller
-                            van advies naar een concrete sollicitatieversie willen brengen.
-                        </p>
-                    </div>
-
-                    <div className="mt-8 grid gap-4 md:grid-cols-3">
-                        {[
-                            {
-                                href: "/for-coaches",
-                                title: "Voor coaches",
-                                body: "Voor loopbaancoaches, jobcoaches, re-integratie en outplacement met Nederlandse en expat-doelgroepen.",
-                            },
-                            {
-                                href: "/agency",
-                                title: "WerkCV MatchPack",
-                                body: "Voor recruiters en boutique bureaus die onderbouwde kandidaatvoorstellen sneller in bureau-uitstraling willen opleveren.",
-                            },
-                            {
-                                href: "/partners",
-                                title: "Partners",
-                                body: "Voor scholen, communities, career services en programma's die bruikbare WerkCV-assets willen delen.",
-                            },
-                        ].map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className="group block wk-card transition-transform hover:-translate-y-0.5"
-                            >
-                                <h3 className="text-lg font-semibold text-[var(--wk-ink)] group-hover:text-[var(--wk-primary)] transition-colors">
-                                    {item.title}
-                                </h3>
-                                <p className="mt-2 text-sm font-medium leading-relaxed text-[var(--wk-ink-muted)]">
-                                    {item.body}
-                                </p>
-                            </Link>
-                        ))}
                     </div>
                 </div>
             </section>

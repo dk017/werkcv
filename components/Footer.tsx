@@ -21,6 +21,11 @@ const personalGroupsNl: FooterGroup[] = [
     { href: "/contact", label: "Contact" },
     { href: "/over-ons", label: "Over WerkCV" },
   ] },
+  { label: "Zakelijk", links: [
+    { href: "/for-coaches", label: "Voor coaches" },
+    { href: "/agency", label: "MatchPack voor bureaus" },
+    { href: "/partners", label: "Partners" },
+  ] },
   { label: "Juridisch", links: [
     { href: "/privacy", label: "Privacy" },
     { href: "/voorwaarden", label: "Voorwaarden" },
@@ -119,7 +124,7 @@ export default function Footer({
   return (
     <footer className="wk-footer" data-footer-product={product} data-footer-variant={variant}>
       <div className="wk-container wk-footer-inner">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-[1.1fr_repeat(5,minmax(0,1fr))]">
+        <div className={`grid grid-cols-1 gap-8 sm:grid-cols-2 ${groups.length > 5 ? "lg:grid-cols-[1.1fr_repeat(6,minmax(0,1fr))]" : "lg:grid-cols-[1.1fr_repeat(5,minmax(0,1fr))]"}`}>
           <div>
             <Link href={isEnglish ? "/en" : "/"} className="wk-footer-logo">
               Werk<span className="wk-footer-logo-mark">CV</span>.nl
