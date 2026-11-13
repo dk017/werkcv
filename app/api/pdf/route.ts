@@ -8,6 +8,7 @@ import { reportOpsIncident } from '@/lib/ops-alerts';
 import { getDefaultThemeId } from '@/lib/templates/registry';
 import { authorizeCvDocument, CvAuthorizationError } from '@/lib/workspace/cv-authorization';
 import { hasCvDownloadAccess } from '@/lib/cv-download-access';
+import { attachmentContentDisposition } from '@/lib/content-disposition';
 
 export async function GET(request: NextRequest) {
     const user = await getCurrentUserFromRequest(request);
@@ -109,7 +110,7 @@ export async function GET(request: NextRequest) {
         headers: {
             'Content-Type': 'application/pdf',
             'Cache-Control': 'private, no-store',
-            'Content-Disposition': `attachment; filename="${filename}"`,
+            'Content-Disposition': attachmentContentDisposition(filename),
         },
     });
 }
