@@ -7,6 +7,7 @@ import { prisma } from '@/lib/prisma';
 import { AttributionSnapshot, LocaleCode } from '@/lib/attribution';
 import { SMTP_TIMEOUT_MS, sendMailWithRetry } from '@/lib/mail-retry';
 import { resolvePartnerPilotForSignup } from '@/lib/partner-pilot';
+import { MAX_EMAIL_LENGTH, countLoginCodeAttempt } from '@/lib/auth-limits';
 
 const SESSION_COOKIE_NAME = 'werkcv_session';
 const LOGIN_CODE_TTL_MINUTES = 15;
@@ -26,10 +27,10 @@ function hashValue(value: string): string {
 }
 
 function generateCode(): string {
-    return String(Math.floor(100000 + Math.random() * 900000));
+    return String(crypto.randomInt(100000, 1000000));
 }
 
-function normalizeEmail(email: string): string {
+export function normalizeEmail(email: string): string {
     return email.trim().toLowerCase();
 }
 
@@ -53,7 +54,7 @@ function getEmailTransporter() {
 }
 
 export function isValidEmail(email: string): boolean {
-    return emailRegex.test(email);
+    return email.length <= MAX_EMAIL_LENGTH && emailRegex.test(email);
 }
 
 function buildUserAttributionData(attribution: AttributionSnapshot | null) {
@@ -154,7 +155,18 @@ export async function verifyEmailLoginCode(
     });
 
     if (!record) return null;
-    if (record.codeHash !== hashValue(code)) return null;
+
+    // At most MAX_CODE_ATTEMPTS tries per code; then it is marked used so it stays dead after a restart.
+    const attempt = countLoginCodeAttempt(record.id);
+    const burn = () => prisma.loginCode.update({ where: { id: record.id }, data: { usedAt: now } });
+    if (!attempt.allowed) {
+        await burn();
+        return null;
+    }
+    if (record.codeHash !== hashValue(code)) {
+        if (attempt.lastAttempt) await burn();
+        return null;
+    }
 
     const existingUser = await prisma.user.findUnique({
         where: { email },

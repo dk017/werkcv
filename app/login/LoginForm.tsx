@@ -22,6 +22,7 @@ const loginCopy = {
     otherEmail: "Ander e-mailadres gebruiken",
     requestError: "Kon geen login code versturen.",
     verifyError: "Code is ongeldig of verlopen.",
+    rateLimited: "Te veel pogingen. Wacht een paar minuten en probeer het opnieuw.",
     devCode: "Dev code",
     proof: ["Gratis bouwen", "Geen wachtwoord", "Geen abonnement"],
     reassurance: "Je betaalt pas wanneer je een PDF wilt downloaden.",
@@ -53,6 +54,7 @@ const loginCopy = {
     otherEmail: "Use a different email address",
     requestError: "Could not send the login code.",
     verifyError: "The code is invalid or expired.",
+    rateLimited: "Too many attempts. Wait a few minutes and try again.",
     devCode: "Dev code",
     proof: ["Free to build", "No password", "No subscription"],
     reassurance: "You only pay when you want to download the PDF.",
@@ -156,9 +158,9 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
           locale,
           nextPath,
           stage: "request_code",
-          reason: data?.code === "INVALID_EMAIL" ? "invalid_email" : "server_error",
+          reason: data?.code === "INVALID_EMAIL" ? "invalid_email" : data?.code === "RATE_LIMITED" ? "rate_limited" : "server_error",
         });
-        setError(data?.error || copy.requestError);
+        setError(data?.code === "RATE_LIMITED" ? copy.rateLimited : data?.error || copy.requestError);
         return;
       }
       if (data?.devCode) {
@@ -196,9 +198,9 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
           locale,
           nextPath,
           stage: "verify_code",
-          reason: data?.code === "INVALID_CODE" ? "invalid_code" : "server_error",
+          reason: data?.code === "INVALID_CODE" ? "invalid_code" : data?.code === "RATE_LIMITED" ? "rate_limited" : "server_error",
         });
-        setError(data?.error || copy.verifyError);
+        setError(data?.code === "RATE_LIMITED" ? copy.rateLimited : data?.error || copy.verifyError);
         return;
       }
       track("login_verified", {
@@ -251,6 +253,7 @@ export default function LoginForm({ initialNext, initialLocale }: LoginFormProps
               <input
                 type="email"
                 autoComplete="email"
+                maxLength={254}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required

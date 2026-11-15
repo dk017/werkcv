@@ -29,6 +29,7 @@ const COPY = {
     back: "Terug naar je cv",
     requestError: "Kon geen code versturen. Controleer je e-mailadres.",
     verifyError: "De code is ongeldig of verlopen.",
+    rateLimited: "Te veel pogingen. Wacht een paar minuten en probeer het opnieuw.",
     devCode: "Dev code",
   },
   en: {
@@ -49,6 +50,7 @@ const COPY = {
     back: "Back to your CV",
     requestError: "Could not send a code. Check your email address.",
     verifyError: "The code is invalid or expired.",
+    rateLimited: "Too many attempts. Wait a few minutes and try again.",
     devCode: "Dev code",
   },
 } as const;
@@ -113,8 +115,8 @@ export default function DownloadDialog({
       });
       const data = await response.json().catch(() => null);
       if (!response.ok) {
-        track("login_failed", { locale, nextPath: "/editor/claim", stage: "request_code", reason: data?.code === "INVALID_EMAIL" ? "invalid_email" : "server_error" });
-        setError(data?.error || copy.requestError);
+        track("login_failed", { locale, nextPath: "/editor/claim", stage: "request_code", reason: data?.code === "INVALID_EMAIL" ? "invalid_email" : data?.code === "RATE_LIMITED" ? "rate_limited" : "server_error" });
+        setError(data?.code === "RATE_LIMITED" ? copy.rateLimited : data?.error || copy.requestError);
         return;
       }
       if (data?.devCode) setDevCode(data.devCode);
@@ -140,8 +142,8 @@ export default function DownloadDialog({
       });
       const data = await response.json().catch(() => null);
       if (!response.ok) {
-        track("login_failed", { locale, nextPath: "/editor/claim", stage: "verify_code", reason: data?.code === "INVALID_CODE" ? "invalid_code" : "server_error" });
-        setError(data?.error || copy.verifyError);
+        track("login_failed", { locale, nextPath: "/editor/claim", stage: "verify_code", reason: data?.code === "INVALID_CODE" ? "invalid_code" : data?.code === "RATE_LIMITED" ? "rate_limited" : "server_error" });
+        setError(data?.code === "RATE_LIMITED" ? copy.rateLimited : data?.error || copy.verifyError);
         return;
       }
       track("login_verified", { locale, nextPath: "/editor/claim", isNewUser: data?.isNewUser === true });
@@ -186,6 +188,7 @@ export default function DownloadDialog({
               id="download-dialog-email"
               type="email"
               autoComplete="email"
+              maxLength={254}
               required
               value={email}
               onChange={(event) => setEmail(event.target.value)}

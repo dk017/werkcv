@@ -256,7 +256,7 @@ export type AnalyticsEvent =
               locale: 'nl' | 'en';
               nextPath: string;
               stage: 'request_code' | 'verify_code';
-              reason: 'invalid_email' | 'invalid_code' | 'server_error' | 'network_error';
+              reason: 'invalid_email' | 'invalid_code' | 'rate_limited' | 'server_error' | 'network_error';
           };
       }
     // CV lifecycle

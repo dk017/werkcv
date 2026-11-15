@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Prisma } from '@prisma/client';
 import { applySessionCookie, verifyEmailLoginCode } from '@/lib/auth';
+import { allowLoginCodeVerify } from '@/lib/auth-limits';
+import { getClientIp } from '@/lib/tools/rate-limit';
 import { sanitizeAttribution } from '@/lib/attribution';
 import { prisma } from '@/lib/prisma';
 import { sanitizeInternalReturnPath } from '@/lib/auth/safe-return-path';
@@ -29,6 +31,13 @@ export async function POST(request: NextRequest) {
         const redirectTo = await isAppV2Active()
             ? appPostLoginPath(nextPath, appEntryLocale({ next: nextPath, locale: body.locale, firstTouchPath: attribution?.firstTouchPath, attributionLocale: attribution?.locale }))
             : resolvePostLoginPath(nextPath, attribution);
+
+        if (!allowLoginCodeVerify(getClientIp(request))) {
+            return NextResponse.json(
+                { error: 'Too many attempts. Please wait a few minutes.', code: 'RATE_LIMITED' },
+                { status: 429, headers: { 'Retry-After': '900' } }
+            );
+        }
 
         const session = await verifyEmailLoginCode(email, code, attribution);
         if (!session) {
