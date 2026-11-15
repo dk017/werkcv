@@ -99,12 +99,12 @@ const matchpackGroupsEn: FooterGroup[] = [
   { label: "Products", links: [{ href: "/en", label: "Personal CVs" }] },
 ];
 
-// Directory listings (the directories check for the badge). Shown small and muted in the footer.
+// Directory listings (the directory checks for the badge). Shown small and muted in the footer.
+// The We Like Tools, Tool Cosmos and My Launch Stash badges (added 15 Oct 2026) were removed on
+// 15 Nov 2026: site-wide links to launch directories look like a link exchange, and Google
+// rankings fell from the day they went live. Don't add new site-wide directory badges.
 const DIRECTORY_BADGES = [
   { href: "https://www.scrolllaunch.com/products/werkcv?ref=badge", src: "https://www.scrolllaunch.com/api/badge/werkcv?variant=featured&theme=light", alt: "WerkCV - Featured on ScrollLaunch" },
-  { href: "https://weliketools.com/tool/werkcv", src: "https://weliketools.com/assets/images/badge-dark.png", alt: "WerkCV on We Like Tools" },
-  { href: "https://toolcosmos.com/tool/werkcv", src: "https://toolcosmos.com/assets/images/badge-dark.png", alt: "WerkCV on Tool Cosmos" },
-  { href: "https://mylaunchstash.com/product/werkcv", src: "https://mylaunchstash.com/assets/images/badge-dark.png", alt: "WerkCV on My Launch Stash" },
 ];
 
 export default function Footer({
