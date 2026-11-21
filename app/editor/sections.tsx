@@ -672,24 +672,29 @@ export function LanguagesSection({ control, register, uiLanguage = "nl" }: Secti
             </div>
             <div className="space-y-3">
                 {fields.map((item, index) => (
-                    <div key={item.id} className={s.row}>
+                    <div key={item.id} className={`${s.row} flex-wrap`}>
                         <input
                             {...register(`languages.${index}.name`)}
                             aria-label={t(uiLanguage, "Taal", "Language")}
                             placeholder={t(uiLanguage, "bv. Engels", "e.g. English")}
-                            className={`${s.input} flex-1`}
+                            className={`${s.input} min-w-32 flex-1`}
                             style={inputStyle}
                         />
-                        <select
-                            {...register(`languages.${index}.level`)}
-                            aria-label={t(uiLanguage, "Taalniveau", "Language level")}
-                            className={`${s.input} w-40`}
-                            style={inputStyle}
-                        >
-                            {levels.map((level) => (
-                                <option key={level.value} value={level.value}>{level.label}</option>
-                            ))}
-                        </select>
+                        {/* s.input carries w-full, which beats a width class on the same element and squeezed
+                            the language field to a sliver nobody could type in. The wrapper holds the width;
+                            in a narrow pane it drops to a second line instead. */}
+                        <div className="w-36 shrink-0">
+                            <select
+                                {...register(`languages.${index}.level`)}
+                                aria-label={t(uiLanguage, "Taalniveau", "Language level")}
+                                className={s.input}
+                                style={inputStyle}
+                            >
+                                {levels.map((level) => (
+                                    <option key={level.value} value={level.value}>{level.label}</option>
+                                ))}
+                            </select>
+                        </div>
                         <button
                             type="button"
                             onClick={() => remove(index)}
@@ -785,28 +790,34 @@ export function CoursesSection({ control, register, uiLanguage = "nl" }: Section
             </div>
             <div className="space-y-3">
                 {fields.map((item, index) => (
-                    <div key={item.id} className={s.row}>
+                    <div key={item.id} className={`${s.row} flex-wrap`}>
+                        {/* The form pane can be narrow at any viewport size, so the course name always gets
+                            its own line. Widths sit on wrappers: s.input's w-full beats a width class on the input. */}
                         <input
                             {...register(`courses.${index}.name`)}
                             aria-label={t(uiLanguage, "Cursus", "Course")}
                             placeholder={t(uiLanguage, "Naam van cursus", "Course name")}
-                            className={`${s.input} flex-1`}
+                            className={`${s.input} basis-full`}
                             style={inputStyle}
                         />
-                        <input
-                            {...register(`courses.${index}.institution`)}
-                            aria-label={t(uiLanguage, "Opleider", "Provider")}
-                            placeholder={t(uiLanguage, "Instituut", "Institution")}
-                            className={`${s.input} w-32`}
-                            style={inputStyle}
-                        />
-                        <input
-                            {...register(`courses.${index}.year`)}
-                            aria-label={t(uiLanguage, "Jaar", "Year")}
-                            placeholder={t(uiLanguage, "Jaar", "Year")}
-                            className={`${s.input} w-20`}
-                            style={inputStyle}
-                        />
+                        <div className="min-w-0 flex-1">
+                            <input
+                                {...register(`courses.${index}.institution`)}
+                                aria-label={t(uiLanguage, "Opleider", "Provider")}
+                                placeholder={t(uiLanguage, "Instituut", "Institution")}
+                                className={s.input}
+                                style={inputStyle}
+                            />
+                        </div>
+                        <div className="w-20 shrink-0">
+                            <input
+                                {...register(`courses.${index}.year`)}
+                                aria-label={t(uiLanguage, "Jaar", "Year")}
+                                placeholder={t(uiLanguage, "Jaar", "Year")}
+                                className={s.input}
+                                style={inputStyle}
+                            />
+                        </div>
                         <button
                             type="button"
                             onClick={() => remove(index)}
