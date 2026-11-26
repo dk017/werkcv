@@ -6,10 +6,14 @@ import { cvDownloadPrice } from "./site-content";
 const FRESH = new Date("2026-09-28T12:00:00Z");
 const STALE = new Date("2027-03-01T12:00:00Z");
 
-test("every arm shows the current price on the download button", () => {
+test("every arm uses a clean download button label while keeping the price in preview copy", () => {
   for (const variant of PRICE_COPY_VARIANTS) {
-    assert.equal(getPriceCopy(variant, "nl", FRESH).downloadLabel, `PDF downloaden · ${cvDownloadPrice.display}`);
-    assert.equal(getPriceCopy(variant, "en", FRESH).downloadLabel, `Download PDF · ${cvDownloadPrice.displayEn}`);
+    const nlCopy = getPriceCopy(variant, "nl", FRESH);
+    const enCopy = getPriceCopy(variant, "en", FRESH);
+    assert.equal(nlCopy.downloadLabel, "PDF downloaden");
+    assert.equal(enCopy.downloadLabel, "Download PDF");
+    assert.ok(nlCopy.previewLine.includes(cvDownloadPrice.display));
+    assert.ok(enCopy.previewLine.includes(cvDownloadPrice.displayEn));
   }
 });
 

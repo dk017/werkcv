@@ -52,7 +52,7 @@ export function getOrAssignPriceCopyVariant(random: () => number = Math.random):
 }
 
 export type PriceCopy = {
-  /** Download button label with the price; the same in every arm. */
+  /** Clean download button label; price is shown in supporting copy and the unlock modal. */
   downloadLabel: string;
   /** Short anchor line under the editor's download button; null = none (plain). */
   toolbarCaption: string | null;
@@ -74,7 +74,7 @@ function cvNlMonthlyPrice(now: Date): string | null {
 export function getPriceCopy(variant: PriceCopyVariant, locale: "nl" | "en", now: Date = new Date()): PriceCopy {
   const en = locale === "en";
   const price = en ? cvDownloadPrice.displayEn : cvDownloadPrice.display;
-  const downloadLabel = en ? `Download PDF · ${price}` : `PDF downloaden · ${price}`;
+  const downloadLabel = en ? "Download PDF" : "PDF downloaden";
 
   if (variant === "pizza") {
     return en

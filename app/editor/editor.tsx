@@ -113,6 +113,7 @@ import SectionOrderPanel from "./SectionOrderPanel";
 import EditorFeedbackWidget from "./EditorFeedbackWidget";
 import CheckoutExitQuestion from "@/components/checkout/CheckoutExitQuestion";
 import CheckoutPlanSheet, { type CheckoutPlan } from "./CheckoutPlanSheet";
+import DownloadUnlockModal from "./DownloadUnlockModal";
 import CustomerQuote from "@/components/CustomerQuote";
 import { markCheckoutPending } from "@/lib/checkout-exit";
 import { hasEditorFileHandoff, isCvCheckStartSource, takeCheckedCvDataForEditor, takeCheckedCvForEditor, type HandedOverCheck } from "@/lib/cv-check/handoff";
@@ -529,6 +530,7 @@ export default function Editor({
     const [isDownloading, setIsDownloading] = useState(false);
     // Download source that opened the plan choice (this CV vs Sollicitatiepas); null = closed.
     const [planSheetSource, setPlanSheetSource] = useState<DownloadSource | null>(null);
+    const [unlockModalSource, setUnlockModalSource] = useState<DownloadSource | null>(null);
     const [isStartingCheckout, setIsStartingCheckout] = useState(false);
     const [isPublicEditorFullscreen, setIsPublicEditorFullscreen] = useState(false);
     const [templateId, setTemplateId] = useState(initialTemplateId);
@@ -2049,8 +2051,20 @@ export default function Editor({
                     if (jobPassOffered) {
                         setPlanSheetSource(source);
                         track('checkout_plan_viewed', { cvId: id, source, uiLanguage });
-                    } else {
+                    } else if (source === "checkout_exit_question") {
                         await startCheckout(source);
+                    } else {
+                        setUnlockModalSource(source);
+                        track('checkout_modal_viewed', {
+                            cvId: id,
+                            source: 'pdf_download',
+                            variant: CHECKOUT_FLOW_VARIANT,
+                            experimentVariant: CHECKOUT_FLOW_VARIANT,
+                            priceCopyVariant: priceCopyExperiment.variant,
+                            templateId,
+                            uiLanguage,
+                            ...getEditorSearchContext(),
+                        });
                     }
                 } else if (errorData?.code === 'PDF_ERROR') {
                     alert(errorData?.supportNotified
@@ -2494,6 +2508,25 @@ export default function Editor({
                                 onClose={(plan) => {
                                     track('checkout_plan_closed', { cvId: id, plan, source: planSheetSource, uiLanguage });
                                     setPlanSheetSource(null);
+                                }}
+                            />
+                        ) : null}
+                        {unlockModalSource ? (
+                            <DownloadUnlockModal
+                                uiLanguage={isEnglish ? "en" : "nl"}
+                                busy={isStartingCheckout}
+                                priceAnchorLine={priceCopyExperiment.copy.previewLine}
+                                onContinue={async () => {
+                                    setIsStartingCheckout(true);
+                                    try {
+                                        await startCheckout(unlockModalSource, "cv-download");
+                                    } finally {
+                                        setIsStartingCheckout(false);
+                                    }
+                                }}
+                                onClose={(reason) => {
+                                    track('checkout_modal_closed', { cvId: id, reason });
+                                    setUnlockModalSource(null);
                                 }}
                             />
                         ) : null}

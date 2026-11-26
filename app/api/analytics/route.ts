@@ -245,6 +245,7 @@ const PERSISTED_FUNNEL_EVENTS = new Set([
     'cv_check_completed',
     'cv_check_failed',
     'cv_check_fix_clicked',
+    'cv_check_direct_download_clicked',
     'cv_check_preview_ready',
     'cv_check_vacancy_path_clicked',
     'editor_check_viewed',

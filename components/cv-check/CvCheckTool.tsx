@@ -3,11 +3,14 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useRef, useState, type DragEvent } from "react";
+import DownloadDialog, { type CheckSummary } from "@/components/public-editor/DownloadDialog";
 import { track } from "@/lib/analytics";
 import type { CVData } from "@/lib/cv";
 import { fixEffort, resolvedByDesign, type FixEffort } from "@/lib/cv-check/fix-effort";
 import { saveCheckedCvDataForEditor, saveCheckedCvForEditor } from "@/lib/cv-check/handoff";
+import { createPublicDraftId, savePublicDraft } from "@/lib/public-cv-draft";
 import { cvDownloadPrice } from "@/lib/site-content";
+import { getDefaultThemeId } from "@/lib/templates/registry";
 import type { CvCheckCategory, CvCheckItem, CvCheckLocale, CvCheckResult } from "@/lib/cv-check/types";
 
 // The templates only load once there is a result to preview.
@@ -98,6 +101,10 @@ const COPY = {
     resolvedTitle: "Al opgelost door het WerkCV-ontwerp",
     cta: (fixes: number) => (fixes === 0 ? "Open mijn cv in de editor" : fixes === 1 ? "Verbeter dit punt in mijn cv" : `Verbeter mijn cv met deze ${fixes} punten`),
     ctaNote: `Gratis aanpassen, zonder account · je betaalt pas ${cvDownloadPrice.display} als je de PDF downloadt · geen abonnement`,
+    directDownloadCta: "Download dit verbeterde cv (PDF)",
+    directDownloadStrongCta: "Download deze ATS-versie (PDF)",
+    editFirstCta: "Eerst aanpassen in de editor →",
+    directDownloadNote: `${cvDownloadPrice.display} eenmalig · geen abonnement · daarna onbeperkt aanpassen`,
     strongTitle: "Wat nu?",
     strongVacancyTitle: "Check je cv tegen een vacature",
     strongVacancyText: "Plak een vacature. Je ziet welke eisen je cv al raakt en welke nog ontbreken.",
@@ -180,6 +187,10 @@ const COPY = {
     resolvedTitle: "Already fixed by the WerkCV design",
     cta: (fixes: number) => (fixes === 0 ? "Open my CV in the editor" : fixes === 1 ? "Fix this point in my CV" : `Improve my CV with these ${fixes} points`),
     ctaNote: `Free to edit, no account · you only pay ${cvDownloadPrice.displayEn} when you download the PDF · no subscription`,
+    directDownloadCta: "Download this improved CV (PDF)",
+    directDownloadStrongCta: "Download this ATS version (PDF)",
+    editFirstCta: "Edit in the editor first →",
+    directDownloadNote: `${cvDownloadPrice.displayEn} one-time · no subscription · edit anytime afterwards`,
     strongTitle: "What next?",
     strongVacancyTitle: "Check your CV against a job ad",
     strongVacancyText: "Paste a job ad. You see which requirements your CV already covers and which are missing.",
@@ -250,6 +261,7 @@ export default function CvCheckTool({
   const [dragging, setDragging] = useState(false);
   const [openingEditor, setOpeningEditor] = useState(false);
   const [preview, setPreview] = useState<Preview>({ status: "none" });
+  const [downloadDialog, setDownloadDialog] = useState<{ claimPath: string; summary: CheckSummary | null } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const reportRef = useRef<HTMLDivElement>(null);
   const vacancyRef = useRef<HTMLTextAreaElement>(null);
@@ -279,6 +291,51 @@ export default function CvCheckTool({
       preview: preview.status,
     });
     window.location.assign(handoff ? `${editorHref}${editorHref.includes("?") ? "&" : "?"}upload=1` : editorHref);
+  }
+
+  function downloadPreview(source: "improve_panel" | "strong_design") {
+    if (!result || preview.status !== "ready") return;
+    const draftId = createPublicDraftId();
+    const saved = savePublicDraft({
+      version: 1,
+      draftId,
+      data: preview.data,
+      templateId: PREVIEW_TEMPLATE_ID,
+      colorThemeId: getDefaultThemeId(PREVIEW_TEMPLATE_ID),
+      uiLanguage: locale,
+      flow: "consumer",
+      source: "cv_check_preview",
+      startSource: "cv_check_direct_download",
+      updatedAt: new Date().toISOString(),
+    });
+    if (!saved.ok) {
+      void openEditor(source === "strong_design" ? "strong_design" : "main");
+      return;
+    }
+    const gradeGain = preview.werkcvGrade !== null
+      ? Math.round((preview.werkcvGrade - result.generalGrade) * 10) / 10
+      : 0;
+    track("cv_check_direct_download_clicked", {
+      locale,
+      source,
+      resolved_count: preview.resolved.length,
+      grade_gain: gradeGain,
+    });
+    const claimParams = new URLSearchParams({
+      draftId,
+      flow: "consumer",
+      intent: "download",
+    });
+    const total = Math.max(result.topFixes.length, preview.resolved.length);
+    setDownloadDialog({
+      claimPath: `/editor/claim?${claimParams.toString()}`,
+      summary: {
+        first: result.generalGrade,
+        current: preview.werkcvGrade ?? result.generalGrade,
+        doneCount: preview.resolved.length,
+        total,
+      },
+    });
   }
 
   // Reads the checked file the way the editor will (one AI parse, reused by the editor) and grades it
@@ -549,7 +606,14 @@ export default function CvCheckTool({
               </div>
               <div className="grid gap-6 lg:grid-cols-2 lg:items-start">
                 <TopFixes result={result} locale={locale} preview={preview} />
-                <ImprovePanel result={result} locale={locale} preview={preview} opening={openingEditor} onImprove={() => void openEditor("main")} />
+                <ImprovePanel
+                  result={result}
+                  locale={locale}
+                  preview={preview}
+                  opening={openingEditor}
+                  onImprove={() => void openEditor("main")}
+                  onDirectDownload={() => downloadPreview("improve_panel")}
+                />
               </div>
             </>
           ) : (
@@ -560,6 +624,7 @@ export default function CvCheckTool({
               opening={openingEditor}
               onVacancy={checkAgainstVacancy}
               onDesign={() => void openEditor("strong_design")}
+              onDirectDownload={() => downloadPreview("strong_design")}
             />
           )}
           {result.aiStatus === "unavailable" && (
@@ -587,6 +652,15 @@ export default function CvCheckTool({
           </div>
         </div>
       )}
+
+      {downloadDialog ? (
+        <DownloadDialog
+          locale={locale}
+          claimPath={downloadDialog.claimPath}
+          summary={downloadDialog.summary}
+          onClose={() => setDownloadDialog(null)}
+        />
+      ) : null}
     </div>
   );
 }
@@ -701,12 +775,14 @@ function ImprovePanel({
   preview,
   opening,
   onImprove,
+  onDirectDownload,
 }: {
   result: CvCheckResult;
   locale: CvCheckLocale;
   preview: Preview;
   opening: boolean;
   onImprove: () => void;
+  onDirectDownload: () => void;
 }) {
   const copy = COPY[locale];
   const resolvedLabels =
@@ -751,7 +827,29 @@ function ImprovePanel({
         </div>
       )}
       <div className="mt-5">
-        <ImproveButton locale={locale} fixes={result.topFixes.length} opening={opening} onClick={onImprove} />
+        {preview.status === "ready" ? (
+          <div className="flex flex-col gap-2.5">
+            <button
+              type="button"
+              className="wk-button wk-button-primary w-full justify-center py-4 text-base"
+              onClick={onDirectDownload}
+              disabled={opening}
+            >
+              {copy.directDownloadCta}
+            </button>
+            <button
+              type="button"
+              className="wk-button wk-button-secondary w-full justify-center py-3 text-sm"
+              onClick={onImprove}
+              disabled={opening}
+            >
+              {opening ? copy.openingEditor : copy.editFirstCta}
+            </button>
+            <p className="text-center text-xs text-[var(--wk-ink-muted)]">{copy.directDownloadNote}</p>
+          </div>
+        ) : (
+          <ImproveButton locale={locale} fixes={result.topFixes.length} opening={opening} onClick={onImprove} />
+        )}
       </div>
     </section>
   );
@@ -764,6 +862,7 @@ function StrongPaths({
   opening,
   onVacancy,
   onDesign,
+  onDirectDownload,
 }: {
   result: CvCheckResult;
   locale: CvCheckLocale;
@@ -771,6 +870,7 @@ function StrongPaths({
   opening: boolean;
   onVacancy: () => void;
   onDesign: () => void;
+  onDirectDownload: () => void;
 }) {
   const copy = COPY[locale];
   return (
@@ -794,10 +894,24 @@ function StrongPaths({
           <div className="mt-4">
             <PreviewThumbnail preview={preview} locale={locale} />
           </div>
-          <button type="button" className="wk-button wk-button-secondary mt-4" onClick={onDesign} disabled={opening}>
-            {opening ? copy.openingEditor : copy.strongDesignButton}
-          </button>
-          <p className="mt-2 text-xs text-[var(--wk-ink-muted)]">{copy.ctaNote}</p>
+          {preview.status === "ready" ? (
+            <div className="mt-4 flex flex-col gap-2">
+              <button type="button" className="wk-button wk-button-primary w-full justify-center" onClick={onDirectDownload} disabled={opening}>
+                {copy.directDownloadStrongCta}
+              </button>
+              <button type="button" className="wk-button wk-button-secondary w-full justify-center" onClick={onDesign} disabled={opening}>
+                {opening ? copy.openingEditor : copy.strongDesignButton}
+              </button>
+              <p className="text-xs text-[var(--wk-ink-muted)]">{copy.directDownloadNote}</p>
+            </div>
+          ) : (
+            <>
+              <button type="button" className="wk-button wk-button-secondary mt-4" onClick={onDesign} disabled={opening}>
+                {opening ? copy.openingEditor : copy.strongDesignButton}
+              </button>
+              <p className="mt-2 text-xs text-[var(--wk-ink-muted)]">{copy.ctaNote}</p>
+            </>
+          )}
         </div>
       </div>
     </section>
