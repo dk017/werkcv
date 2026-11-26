@@ -55,24 +55,24 @@ const faqItems = [
 
 const parttimeCvIntentLinks = [
   {
-    href: "/",
-    label: "CV aanmaken voor je volgende stap",
-    description: "Zet je salarisvergelijking direct om in een sollicitatieversie voor een andere rol of urenafspraak.",
-  },
-  {
     href: "/cv-maken-zonder-abonnement",
     label: "CV maken zonder abonnement",
     description: "Sterk voor bezoekers die een nieuwe baan overwegen, maar geen maandelijkse CV-tool willen.",
   },
   {
-    href: "/cv-voorbeeld-starter",
-    label: "CV voorbeeld starter",
-    description: "Handig als je parttime of junior zoekt en eerst een inhoudelijke voorbeeldstructuur wilt zien.",
+    href: "/prijzen",
+    label: "Prijzen bekijken (eenmalig per CV)",
+    description: "Zie direct hoe eenmalig betalen zonder abonnement werkt voordat je start.",
   },
   {
-    href: "/cv-maken-pdf",
-    label: "CV als PDF afronden",
-    description: "Maak de vergelijking af met een stabiele sollicitatie-PDF zodra je keuze duidelijk is.",
+    href: "/cv-check",
+    label: "Gratis CV-check doen",
+    description: "Upload je huidige cv en zie meteen wat er sterker kan voor je volgende sollicitatie.",
+  },
+  {
+    href: "/cv-voorbeelden",
+    label: "CV voorbeelden bekijken",
+    description: "Handig als je parttime of naar een nieuwe rol zoekt en eerst een sterke opbouw wilt zien.",
   },
 ];
 
@@ -416,6 +416,20 @@ export default function ParttimeSalarisCalculatorPage() {
           <SectionIntentLinks links={parttimeCvIntentLinks} locale="nl" />
         </section>
 
+        <ToolToCvCTA
+          toolName="parttime-salaris-calculator"
+          eyebrow="Volgende stap na je salarisvergelijking"
+          title="Op zoek naar een baan die beter bij je uren past?"
+          description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je tevreden bent en de PDF wilt downloaden."
+          primaryLabel="Werk mijn CV bij"
+          primaryHref="/editor?template=professional&startSource=parttime_salary_page"
+          secondaryHref="/cv-check"
+          secondaryLabel="Check eerst je huidige cv (gratis)"
+          insightText="Gebruik je vergelijking als voorbereiding op je volgende sollicitatie: houd je cv praktisch, duidelijk en gericht op de uren en functie die je zoekt."
+          intent="salary"
+          resultState="parttime_salary_page_cta"
+        />
+
         <section id="veelgestelde-vragen" className="mt-12 mb-12 scroll-mt-6">
           <div className="mb-5">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
@@ -434,20 +448,6 @@ export default function ParttimeSalarisCalculatorPage() {
             ))}
           </div>
         </section>
-
-        <ToolToCvCTA
-          toolName="parttime-salaris-calculator"
-          eyebrow="Volgende stap na je salarisvergelijking"
-          title="Op zoek naar een baan die beter bij je uren past?"
-          description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je tevreden bent en de PDF wilt downloaden."
-          primaryLabel="Werk mijn CV bij"
-          primaryHref="/editor?template=professional&startSource=parttime_salary_page"
-          secondaryHref="/cv-maken-zonder-abonnement?startSource=parttime_salary_no_subscription"
-          secondaryLabel="Hoe betalen werkt"
-          insightText="Gebruik je vergelijking als voorbereiding op je volgende sollicitatie: houd je cv praktisch, duidelijk en gericht op de uren en functie die je zoekt."
-          intent="salary"
-          resultState="parttime_salary_page_cta"
-        />
 
         <section className="bg-slate-50 border-2 border-slate-200 p-6">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">

@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
@@ -367,6 +368,51 @@ export default function EindejaarsuitkeringBerekenenPage() {
           ]}
         />
 
+        <ToolToCvCTA
+          toolName="eindejaarsuitkering-berekenen"
+          eyebrow="Volgende stap na je pakketcheck"
+          title="Vergelijk je totale pakket met je volgende baan"
+          description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
+          primaryLabel="Maak je CV voor je volgende baan"
+          primaryHref="/editor?template=professional&startSource=tool_eindejaarsuitkering_berekenen"
+          insightText="Gebruik je eindejaarsuitkering samen met salaris, uren en vakantiegeld als je een aanbod vergelijkt of een nieuwe rol overweegt."
+          intent="salary"
+        />
+
+        <section className="mt-10 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+            Solliciteren zonder abonnement
+          </p>
+          <h2 className="mt-2 text-2xl font-black text-slate-900">
+            Klaar voor een betere baan of salarisstap?
+          </h2>
+          <SectionIntentLinks
+            locale="nl"
+            links={[
+              {
+                href: "/cv-maken-zonder-abonnement",
+                label: "CV maken zonder abonnement",
+                description: "Bouw gratis je Nederlandse cv en betaal pas eenmalig als je de PDF wilt downloaden.",
+              },
+              {
+                href: "/prijzen",
+                label: "Transparante prijzen bekijken",
+                description: "Eenmalig betalen per cv, geen proefperiode en geen automatische verlenging.",
+              },
+              {
+                href: "/cv-check",
+                label: "Gratis CV-check doen",
+                description: "Upload je huidige cv en zie direct welke punten je kansen op een gesprek verhogen.",
+              },
+              {
+                href: "/cv-voorbeelden",
+                label: "Nederlandse CV-voorbeelden",
+                description: "Bekijk voorbeelden per sector en neem de opbouw direct over.",
+              },
+            ]}
+          />
+        </section>
+
         <section className="mt-12 mb-12">
           <div className="mb-5">
             <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-2">
@@ -385,17 +431,6 @@ export default function EindejaarsuitkeringBerekenenPage() {
             ))}
           </div>
         </section>
-
-        <ToolToCvCTA
-          toolName="eindejaarsuitkering-berekenen"
-          eyebrow="Volgende stap na je pakketcheck"
-          title="Vergelijk je totale pakket met je volgende baan"
-          description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
-          primaryLabel="Maak je CV voor je volgende baan"
-          primaryHref="/editor?template=professional&startSource=tool_eindejaarsuitkering_berekenen"
-          insightText="Gebruik je eindejaarsuitkering samen met salaris, uren en vakantiegeld als je een aanbod vergelijkt of een nieuwe rol overweegt."
-          intent="salary"
-        />
 
         <section className="bg-slate-50 border-2 border-slate-200 p-6">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500 mb-3">

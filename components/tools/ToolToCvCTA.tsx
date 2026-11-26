@@ -23,8 +23,8 @@ export function ToolToCvCTA({
   description,
   primaryLabel,
   primaryHref = "/cv-maken-zonder-abonnement",
-  secondaryHref = "/templates",
-  secondaryLabel = "Bekijk cv-templates",
+  secondaryHref = "/cv-check",
+  secondaryLabel = "Check eerst je huidige cv (gratis)",
   eyebrow = "Maak je volgende stap concreet",
   insightText = "Gebruik dit resultaat terwijl het nog vers is: zet je CV klaar voor de functie, uren of voorwaarden die je nu serieus overweegt.",
   intent = "general",
@@ -76,12 +76,17 @@ export function ToolToCvCTA({
       <p className="mt-3 text-sm text-[var(--wk-ink-muted,#606a67)]">
         {proofItems.join(" · ")}.
       </p>
-      <div className="mt-4 text-sm text-[var(--wk-ink-muted,#606a67)]">
-        Liever eerst weten hoe downloaden werkt?{" "}
-        <Link href="/cv-maken-zonder-abonnement" className="font-semibold text-[var(--wk-primary,#173f38)] underline underline-offset-4">
-          Bekijk de route zonder abonnement
+      <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[var(--wk-ink-muted,#606a67)]">
+        <span>
+          Liever eerst weten hoe downloaden werkt?{" "}
+          <Link href="/cv-maken-zonder-abonnement" className="font-semibold text-[var(--wk-primary,#173f38)] underline underline-offset-4">
+            CV maken zonder abonnement
+          </Link>
+        </span>
+        <span>·</span>
+        <Link href="/prijzen" className="font-semibold text-[var(--wk-primary,#173f38)] underline underline-offset-4">
+          Bekijk prijzen ({cvDownloadPrice.display} eenmalig)
         </Link>
-        .
       </div>
     </section>
   );

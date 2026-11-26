@@ -3,6 +3,7 @@ import Link from "next/link";
 import Footer from "@/components/Footer";
 import { Breadcrumbs } from "@/components/seo/Breadcrumbs";
 import { FAQJsonLd } from "@/components/seo/JsonLd";
+import SectionIntentLinks from "@/components/seo/SectionIntentLinks";
 import { RelatedToolsSection } from "@/components/tools/RelatedToolsSection";
 import { ToolToCvCTA } from "@/components/tools/ToolToCvCTA";
 import { buildDutchMetadata } from "@/lib/page-metadata";
@@ -251,6 +252,51 @@ export default function KilometervergoedingBerekenenPage() {
           ]}
         />
 
+        <ToolToCvCTA
+          toolName="kilometervergoeding-berekenen"
+          eyebrow="Volgende stap na je aanbodcheck"
+          title="Vergelijk je reiskosten met je volgende baan"
+          description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
+          primaryLabel="Maak je CV voor je volgende baan"
+          primaryHref="/editor?template=professional&startSource=tool_kilometervergoeding_berekenen"
+          insightText="Reiskosten zijn onderdeel van je totale pakket. Gebruik je uitkomst wanneer je een nieuwe rol of werkgever vergelijkt."
+          intent="salary"
+        />
+
+        <section className="mt-10 border-2 border-black bg-white p-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
+            Solliciteren zonder abonnement
+          </p>
+          <h2 className="mt-2 text-2xl font-black text-slate-900">
+            Nieuwe werkgever of kortere reistijd op het oog?
+          </h2>
+          <SectionIntentLinks
+            locale="nl"
+            links={[
+              {
+                href: "/cv-maken-zonder-abonnement",
+                label: "CV maken zonder abonnement",
+                description: "Bouw gratis je Nederlandse cv en betaal pas eenmalig als je de PDF wilt downloaden.",
+              },
+              {
+                href: "/prijzen",
+                label: "Bekijk eenmalige prijzen",
+                description: "Geen proefabonnement of maandelijkse verlenging; eenmalig per cv.",
+              },
+              {
+                href: "/cv-check",
+                label: "Gratis CV-check",
+                description: "Check je huidige cv in 30 seconden op ATS-leesbaarheid en verbeterpunten.",
+              },
+              {
+                href: "/cv-voorbeelden",
+                label: "CV voorbeelden per beroep",
+                description: "Kies een passend voorbeeld voor jouw vakgebied en werk het direct bij.",
+              },
+            ]}
+          />
+        </section>
+
         <section className="mb-12 mt-12">
           <div className="mb-5">
             <p className="mb-2 text-xs font-black uppercase tracking-[0.2em] text-slate-500">FAQ</p>
@@ -267,17 +313,6 @@ export default function KilometervergoedingBerekenenPage() {
             ))}
           </div>
         </section>
-
-        <ToolToCvCTA
-          toolName="kilometervergoeding-berekenen"
-          eyebrow="Volgende stap na je aanbodcheck"
-          title="Vergelijk je reiskosten met je volgende baan"
-          description="Maak je Nederlandse cv zonder abonnement. Je bouwt gratis en betaalt alleen eenmalig wanneer je de PDF wilt downloaden."
-          primaryLabel="Maak je CV voor je volgende baan"
-          primaryHref="/editor?template=professional&startSource=tool_kilometervergoeding_berekenen"
-          insightText="Reiskosten zijn onderdeel van je totale pakket. Gebruik je uitkomst wanneer je een nieuwe rol of werkgever vergelijkt."
-          intent="salary"
-        />
 
         <section className="border-2 border-slate-200 bg-slate-50 p-6">
           <p className="mb-3 text-xs font-black uppercase tracking-[0.2em] text-slate-500">Bronnen</p>
